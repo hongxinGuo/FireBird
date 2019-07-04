@@ -5,6 +5,7 @@
 
 #include"globedef.h"
 #include"accessory.h"
+#include"ClientThread.h"
 
 #include"Market.h"
 
@@ -259,15 +260,6 @@ int CMarket::GetInquiringStockStr(CString& str)
     m_itStock--;
   }
   return iCount;
-}
-
-UINT ClientThreadSaveDayLineProc(LPVOID pParam) {
-
-  gl_sMarket.SaveDayLineData();
-
-  gl_stDayLineInquire.fDataBaseInProcess = false;
-
-  return 8;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -674,84 +666,6 @@ void CMarket::SetShowStock(CStockPtr pStock)
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 日线装载工作线程
-//
-// 从数据库中装入相应股票的日线数据，然后计算各相对强度
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
-  CSetDayLine setDayLine;
-  CDayLinePtr pDayLine;
-
-  setDayLine.m_strFilter = _T("[StockCode] = '");
-  setDayLine.m_strFilter += gl_sMarket.m_pCurrentStock->m_strStockCode;
-  setDayLine.m_strFilter += _T("'");
-  setDayLine.m_strSort = _T("[Time]");
-  setDayLine.Open();
-  gl_sMarket.m_pCurrentStock->m_vDayLine.clear();
-  while (!setDayLine.IsEOF()) {
-    pDayLine = make_shared<CDayLine>();
-    pDayLine->SetData(&setDayLine);
-    gl_sMarket.m_pCurrentStock->m_vDayLine.push_back(pDayLine);
-    setDayLine.MoveNext();
-  }
-
-  // 计算各相对强度
-  double dTempRS = 0;
-  long lTotalNumber = gl_sMarket.m_pCurrentStock->m_vDayLine.size();
-  for (int i = 3; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 3; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d3DayRS = dTempRS / 3;
-  }
-  dTempRS = 0;
-  lTotalNumber = gl_sMarket.m_pCurrentStock->m_vDayLine.size();
-  for (int i = 5; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 5; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 5;
-  }
-  for (int i = 10; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 10; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 10;
-  }
-  for (int i = 30; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 30; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 30;
-  }
-  for (int i = 60; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 60; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 60;
-  }
-  for (int i = 120; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 120; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
-    }
-    gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 120;
-  }
-
-  gl_sMarket.m_pCurrentStock->m_fDayLineLoaded = true;
-  setDayLine.Close();
-
-  return 9;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //	通过股票代码和市场代码设置当前选择股票
@@ -951,51 +865,6 @@ bool CMarket::SaveRTData(CSetRealTimeData * psetRT) {
   psetRT->m_pDatabase->CommitTrans();
   psetRT->Close();
   return(true);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 此线程由系统在收市后于15:05自动唤醒，每日只执行一次
-//
-//
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
-
-  long lHour = gl_lTime / 10000;
-  //ASSERT(lHour >= 15); // 下午三点后开始执行。
-
-  time_t time = 0;
-  switch (gl_tm.tm_wday) {
-  case 6: // 星期六
-    time = gl_ttime - 24 * 3600; // 
-    break;
-  case 0: //星期日
-    time = gl_ttime - 2 * 24 * 3600; // 
-    break;
-  default: // 其他
-    time = gl_ttime;
-    break;
-  }
-  tm tm_;
-  localtime_s(&tm_, &time);
-  long lCurrentTradeDay;
-  if (tm_.tm_hour < 9) {
-    lCurrentTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday - 1;
-  }
-  else {
-    lCurrentTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-
-  }
-  
-  int i = gl_sMarket.GetTotalStock();
-  gl_sMarket.CompileCurrentTradeDayStocks(lCurrentTradeDay);
-  i = gl_sMarket.GetTotalStock();
-  CalculateOneDayRelativeStrong(lCurrentTradeDay);
-  UpdateStockCodeDataBase(); // 更新代码。
-
-  return 7;
 }
 
 bool CMarket::IsTotalStockDayLineChecked(void) {

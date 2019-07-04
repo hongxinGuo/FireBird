@@ -149,10 +149,10 @@ bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
   long lCurrentGuaDanTransactionPrice = 0;
 
-  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。队列长度会由于被数据接收线程加入数据而增长，故不能直接使用size().
+  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
-    pRTData = PopRTStockData();
+    pRTData = PopRTStockData(); // 采用同步机制获取数据
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       if (m_fStartCalculating) {
         m_lCurrentGuadanTransactionVolume = pRTData->m_lVolume - m_pLastRTData->m_lVolume;
@@ -310,7 +310,7 @@ bool CStock::CalculateRTData(void) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 计算挂单量的变化，
+// 计算挂单量的变化，由工作线程调用
 //
 // 采用map结构存储，这样简单且易于理解，唯一问题就是寻址花费时间长。需要测试后看看速度如何。
 //
@@ -549,7 +549,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
     }
   }
 
-
+  // 显示当前取消挂单的情况
   if (gl_sMarket.m_pCurrentStock != nullptr) {
     if (gl_sMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
       CString str1;
@@ -559,7 +559,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
         str1 = buffer;
         sprintf_s(buffer, "  总取消卖单量：%d", m_lCancelSellVolume);
         str1 += buffer;
-        gl_systemMessage.PushDataBaseMessage(str1);
+        gl_systemMessage.PushDataBaseMessage(str1);   // 采用同步机制传递消息
 
       }
       if (m_lCurrentCanselBuyVolume > 0) {
@@ -567,7 +567,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
         str1 = buffer;
         sprintf_s(buffer, "  总取消买单量：%d", m_lCancelBuyVolume);
         str1 += buffer;
-        gl_systemMessage.PushTrace1Message(str1);
+        gl_systemMessage.PushTrace1Message(str1); // 采用同步机制传递消息
 
       }
     }

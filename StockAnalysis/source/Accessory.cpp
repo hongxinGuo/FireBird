@@ -138,28 +138,28 @@ bool CalculateOneDayRelativeStrong(long lDay) {
 //////////////////////////////////////////////////////////////////////////////////
 bool CalculateRelativeStrong(CTime ctStart) {
   CString strSQL;
-  DWORD dwToday = 0, dwStartDay;
+  DWORD dwToday = 0;
   CString strDay;
 
 
   CTimeSpan oneDay(1, 0, 0, 0);
   CTime ctCurrent;
-  dwStartDay = ctStart.GetYear() * 10000 + ctStart.GetMonth() * 100 + ctStart.GetDay();
+  dwToday = ctStart.GetYear() * 10000 + ctStart.GetMonth() * 100 + ctStart.GetDay();
 
-  if (dwStartDay > gl_lToday) return(true);
+  if (dwToday >= gl_lToday) return(true);
 
   ctCurrent = ctStart;
   do {
-    ctCurrent += oneDay;
-    dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
     gl_lRelativeStrongEndDay = dwToday; // 设置最后日期。
     if ((ctCurrent.GetDayOfWeek() != 1) // sunday
-      && (ctCurrent.GetDayOfWeek() != 7)) { // saturday, sunday and saturday no data, so skiped.
+      && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
       CalculateOneDayRelativeStrong(dwToday);
     }
     if (gl_fExitingCalculatingRelativeStrong) return false;
     if (gl_fExiting) return true;
-  } while (dwToday <= gl_lToday);
+    ctCurrent += oneDay;
+    dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
+  } while (dwToday < gl_lToday);
 
   return(true);
 }

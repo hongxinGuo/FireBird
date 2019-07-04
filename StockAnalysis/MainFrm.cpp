@@ -18,6 +18,7 @@
 #include"StockID.h"
 
 #include"accessory.h"
+#include"ClientThread.h"
 
 using namespace std;
 #include<string>
@@ -59,51 +60,6 @@ static UINT indicators[] =
   ID_CURRENT_SELECT_STOCKNAME,
   ID_CURRENT_TIME,
 };
-
-
-UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
-  // 
-
-  return 6;
-}
-
-UINT ClientThreadCalculatingRelativeStrong(LPVOID pParam) {
-  long lCurrentDay = gl_lOption_CalculatingRelativeStrongStartDay;
-  long lYear = lCurrentDay / 10000;
-  long lMonth = lCurrentDay / 100 - lYear * 100;
-  long lDay = lCurrentDay - lYear * 10000 - lMonth * 100;
-  CTime timeStart(lYear, lMonth, lDay, 12, 0, 0);
-  CTimeSpan span(1, 0, 0, 0);
-  CTime timeCurrent;
-  bool Done = false;
-
-  while (!Done) {
-    timeCurrent -= span;
-    lCurrentDay = timeCurrent.GetYear() * 10000 + timeCurrent.GetMonth() * 100 + timeCurrent.GetDay();
-    switch (timeCurrent.GetDayOfWeek()) {
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-      CalculateOneDayRelativeStrong(lCurrentDay);
-      break;
-    case 1:
-    case 7:
-      break;
-    default:
-      ASSERT(0);
-      break;
-    }
-    gl_lOption_CalculatingRelativeStrongStartDay = lCurrentDay;
-    if (gl_fExiting) break;
-    if (gl_fExitingCalculatingRelativeStrong) break;
-    if (lCurrentDay <= 19900101) break;
-  }
-
-  return 3;
-}
-
 
 
 // CMainFrame 构造/析构
@@ -436,73 +392,7 @@ bool CMainFrame::CreateTodayActiveStockRTInquiringStr(CString &str) {
   return false;
 }
 
-UINT ClientThreadRTDataProc(LPVOID pParam) {
-  CInternetSession session;
-  CHttpFile * pFile = nullptr;
-  long iCount = 0;
-  bool fDone = false;
-  char * pChar = gl_stRTDataInquire.buffer;
-  try {
-    gl_stRTDataInquire.fReceiveFromWebInProcess = true;
-    gl_stRTDataInquire.fError = false;
-    gl_stRTDataInquire.lByteRead = 0;
-    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire);
-    Sleep(100); // 新浪服务器100ms延迟即可。
-    while (!fDone) {
-      do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          gl_stRTDataInquire.lByteRead += iCount;
-        }
-      } while (iCount > 0);
-      Sleep(30); // 等待20毫秒后再读一次，确认没有新数据后才返回。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        gl_stRTDataInquire.lByteRead += iCount;
-      }
-      else fDone = true;
-    }
-    gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
-    gl_stRTDataInquire.fDataReady = true;
-  }
-  catch (CInternetException * e) {
-    e->Delete();
-    gl_stRTDataInquire.fError = true;
-    gl_stRTDataInquire.fDataReady = false;
-  }
-  if (pFile) pFile->Close();
-  if (pFile) delete pFile;
-  gl_stRTDataInquire.fReceiveFromWebInProcess = false;
 
-  return 4;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 处理实时数据的工作线程。
-//
-// 此线程只操作各股票的m_dequeRTData变量，这样可以将数据同步的问题减到最小。
-// 此线程在系统启动后就一直工作着，直到系统退出时才跟随系统一起退出。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
-
-  while (true) { //此线程永远执行，直到得到系统通知
-    if (gl_fExiting) { // 
-      return 0; // 
-    }
-    if (gl_sMarket.MarketReady()) { // 只有市场初始态设置好后，才允许处理实时数据。
-      gl_sMarket.CalculateRTData();
-    }
-    Sleep(50); // 暂停50毫秒。当计算繁忙时，无所谓是否暂停；当没有计算任务时，此200毫秒能够保证此线程不过多占用系统计算能力。
-    // 研究使用挂起唤醒机制节约计算能力。
-    // 采用事件方式。实现之。
-  }
-  return 2;
-}
 
 bool CMainFrame::GetSinaStockRTData(void)
 {
@@ -708,85 +598,6 @@ bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString
   }
   return true;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读取网易日线历史数据的线程。
-//
-// 读取数据时多试几次，防止网络延迟导致数据截断。目前在读完数据后，在测试两次，都没有数据后才返回。
-//
-// 有时fReadingInProcess == false的断言会失败，但程序中只有两处设置此变量，故估计是不同线程同时操作的原因，需要改为
-// 同步事件模式唤醒此线程为好。研究之。（在调用此线程前就设置，就不会出现故障了，可见时启动线程时会出现延时所致）。
-//
-// 此线程最终的功能，要比现在只是提取数据要多一些，应该加入解码和存储功能。
-// 亦即此线程的功能为：
-// 1.从管道处读取需要提取日线历史数据的股票代码，将该代码处理成网易日线服务器所要求的格式，然后发送给日线服务器；
-// 2.等待一段时间后（100ms）开始从服务器处接收数据。
-// 3.将接收到的数据解码，成功的话存入相应股票的日线容器中，最后设置相应的标识。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadReadDayLineProc(LPVOID pParam) {
-  static int siDelayTime = 600;
-  static bool fStarted = false;
-  CInternetSession session;
-  CHttpFile * pFile = nullptr;
-  long iCount = 0;
-  bool fDone = false;
-  char * pChar = gl_stDayLineInquire.buffer;
-  CString str;
-
-  try {
-    gl_stDayLineInquire.fReadingInProcess = true;
-    gl_stDayLineInquire.fError = false;
-    gl_stDayLineInquire.lByteRead = 0;
-    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire);
-    // 不能采用下述读取文件长度的方式。读取出来的数值不对。
-    // pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
-    Sleep(siDelayTime);
-    while (!fDone) {
-      do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          gl_stDayLineInquire.lByteRead += iCount;
-        }
-      } while (iCount > 0);
-      Sleep(50); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        gl_stDayLineInquire.lByteRead += iCount;
-      }
-      else {
-        Sleep(50); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          gl_stDayLineInquire.lByteRead += iCount;
-        }
-        else fDone = true;
-      }
-    }
-    gl_stDayLineInquire.fDataReady = true;
-    gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
-  }
-  catch (CInternetException * e) {
-    e->Delete();
-    gl_stDayLineInquire.fError = true;
-    gl_stDayLineInquire.fDataReady = false;
-    gl_stDayLineInquire.lByteRead = 0;
-  }
-  if (pFile) pFile->Close();
-  if (pFile) delete pFile;
-  gl_stDayLineInquire.fReadingInProcess = false;
-  if (!fStarted) {
-    fStarted = true;
-    siDelayTime = 50;
-  }
-  return 5;
-}
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1067,20 +878,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }
-
-
-UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
-  long year = gl_lRelativeStrongEndDay / 10000;
-  long month = gl_lRelativeStrongEndDay / 100 - year * 100;
-  long day = gl_lRelativeStrongEndDay - year * 10000 - month * 100;
-
-  CTime ctStart(year, month, day, 12, 0, 0);
-
-  CalculateRelativeStrong(ctStart);
-
-  return 1;
-}
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

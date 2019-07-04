@@ -78,7 +78,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   bNameValid = strTabName.LoadString(IDS_FIND2_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
-  bNameValid = strTabName.LoadString(IDS_FIND2_TAB);
+  bNameValid = strTabName.LoadString(IDS_TRACE1_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputTrace1, strTabName, (UINT)3);
 
