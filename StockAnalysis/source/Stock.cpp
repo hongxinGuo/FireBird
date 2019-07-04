@@ -47,7 +47,6 @@ CStock::CStock() : CObject() {
   m_fMinLineUpdated = false;
   m_fDayKLineUpdated = false;
 
-  m_dequeRTData.clear();
   m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
 
   m_lAttackBuyAbove200000 = m_lAttackBuyBelow200000 = m_lAttackBuyBelow50000 = 0;
@@ -150,11 +149,10 @@ bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
   long lCurrentGuaDanTransactionPrice = 0;
 
-  long lTotalNumber = m_dequeRTData.size(); //  缓存队列的长度。队列长度会由于被数据接收线程加入数据而增长，故不能直接使用size().
+  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。队列长度会由于被数据接收线程加入数据而增长，故不能直接使用size().
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
-    pRTData = m_dequeRTData.front();
-    m_dequeRTData.pop_front(); // 从队列中扔掉此数据
+    pRTData = PopRTStockData();
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       if (m_fStartCalculating) {
         m_lCurrentGuadanTransactionVolume = pRTData->m_lVolume - m_pLastRTData->m_lVolume;
@@ -580,7 +578,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
 bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
 
   ASSERT(psetRTData->IsOpen());
-  for ( auto pRTData : m_dequeRTData) {
+  for ( auto pRTData : m_dequeRTStockData) {
     psetRTData->AddNew();
     psetRTData->m_Time = pRTData->m_time;
     psetRTData->m_lMarket = m_wMarket;
@@ -623,6 +621,42 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
   }
 
   return true;
+}
+
+void CStock::PushRTStockData(CStockRTDataPtr pData)
+{
+  CSingleLock singleLock(&m_RTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_dequeRTStockData.push_back(pData);
+    singleLock.Unlock();
+  }
+}
+
+CStockRTDataPtr CStock::PopRTStockData(void)
+{
+  CStockRTDataPtr pData;
+  CSingleLock singleLock(&m_RTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    pData = m_dequeRTStockData.front();
+    m_dequeRTStockData.pop_front();
+    singleLock.Unlock();
+    return pData;
+  }
+  return nullptr;
+}
+
+long CStock::GetRTDataDequeSize(void)
+{
+  CSingleLock singleLock(&m_RTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    long lCount = m_dequeRTStockData.size();
+    singleLock.Unlock();
+    return lCount;
+  }
+  return 0;
 }
 
 #ifdef _DEBUG

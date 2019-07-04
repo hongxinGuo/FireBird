@@ -203,7 +203,7 @@ bool CMarket::ProcessRTData(void)
 
         m_vActiveStock.push_back(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
         ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);
-				pStock->m_dequeRTData.push_back(pRTData);
+				pStock->PushRTStockData(pRTData);
         pStock->UpdataCurrentStatus(pRTData);
 				lIndex = gl_mapTotalStockToIndex[pStock->m_strStockCode];
 				gl_vTotalStock.at(lIndex)->m_strStockName = pStock->m_strStockName;
@@ -219,7 +219,7 @@ bool CMarket::ProcessRTData(void)
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->m_time > m_vActiveStock.at(lIndex)->m_Time) { // 新的数据？
           m_vActiveStock.at(lIndex)->UpdataCurrentStatus(pRTData);
-          m_vActiveStock.at(lIndex)->m_dequeRTData.push_back(pRTData); // 存储新的数据至数据池
+          m_vActiveStock.at(lIndex)->PushRTStockData(pRTData); // 存储新的数据至数据池
         }
       }
     }

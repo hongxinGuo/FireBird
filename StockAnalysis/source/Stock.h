@@ -52,6 +52,10 @@ public:
   bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, double dCurrentTransactionPrice);
 
 	bool SaveRealTimeData(CSetRealTimeData * psetRT);
+
+  void PushRTStockData(CStockRTDataPtr pData);
+  CStockRTDataPtr PopRTStockData(void);
+  long GetRTDataDequeSize(void);
 		
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
@@ -69,7 +73,7 @@ public:
 
 	bool			m_fDayLineLoaded;					// 是否装入了日线数据
   bool      m_fDayLineNeededSaving;   // 日线数据是否需要存储
-  deque<CStockRTDataPtr>		m_dequeRTData;  // 实时数据队列
+
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
 
   bool      m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
@@ -140,6 +144,10 @@ public:
   long                  m_lCurrentCanselSellVolume;
   long                  m_lCurrentCanselBuyVolume;
 protected:
+  
+  deque<CStockRTDataPtr>		m_dequeRTStockData;  // 实时数据队列
+  CCriticalSection          m_RTDataLock;   // 实时数据队列的同步锁
+
  	
 	bool			m_fChoiced;									// 此股票是否是自选股票.
 	bool			m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
