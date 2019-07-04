@@ -23,8 +23,6 @@ CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chdda
 CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 DWORD		gl_dwDayLineHttpFileStatus = 0;
 
-deque<CStockRTDataPtr> gl_dequeRTStockData;
-
 vector<StockIDPtr>		gl_vTotalStock;
 map<CString, long>		gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 
@@ -47,6 +45,7 @@ long gl_lRelativeStrongEndDay;
 CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
 
 CSystemMessage gl_systemMessage;       // 系统消息汇总类
+CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
 
 deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。

@@ -183,11 +183,10 @@ bool CMarket::ProcessRTData(void)
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
 	CStockRTDataPtr pRTDataCompact = nullptr;
-  long lTotalNumber = gl_dequeRTStockData.size();
+  long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
 
   for (int i = 0; i < lTotalNumber; i++) {
-    CStockRTDataPtr pRTData = gl_dequeRTStockData.front();
-    gl_dequeRTStockData.pop_front();
+    CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
     if (pRTData->m_fActive) { // 此实时数据有效？
       long lIndex = 0;
       if (m_mapActiveStockToIndex.find(pRTData->m_strStockCode) == m_mapActiveStockToIndex.end()) { // 新的股票代码？

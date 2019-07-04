@@ -521,7 +521,7 @@ bool CMainFrame::GetSinaStockRTData(void)
         pRTData = make_shared<CStockRTData>();
         if (pRTData->ReadData(pCurrentPos, iCount)) {
           i++;
-          gl_dequeRTStockData.push_back(pRTData); // 将此实时数据指针存入实时数据队列
+          gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         }
         else {
           TRACE("实时数据有误,抛掉不用\n");

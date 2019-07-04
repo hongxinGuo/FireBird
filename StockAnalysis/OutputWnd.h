@@ -38,6 +38,10 @@ protected:
 	COutputList m_wndOutputBuild;
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputFind;
+  COutputList m_wndOutputWaring;
+  COutputList m_wndOutputTrace1;
+
+  UINT        m_uIdTimer;
 
 protected:
 	void FillBuildWindow();
@@ -55,5 +59,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
+public:
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 

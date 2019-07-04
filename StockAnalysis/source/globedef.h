@@ -8,6 +8,7 @@
 #include"StockID.h"
 
 #include"SystemMessage.h"
+#include"SystemDequeData.h"
 
 using namespace std;
 #include<deque>
@@ -36,8 +37,6 @@ extern DWORD	 gl_dwDayLineHttpFileStatus;
 
 extern CString	gl_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
 
-extern deque<CStockRTDataPtr> gl_dequeRTStockData;    // 队列，存储从新浪服务器处提取的实时数据。
-
 extern vector<StockIDPtr>	gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
 extern map<CString, long>	gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 
@@ -55,8 +54,9 @@ extern long gl_lRelativeStrongEndDay;
 
 extern CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
 
-extern CSystemMessage gl_systemMessage;       // 系统消息汇总类
+extern CSystemMessage gl_systemMessage;       // 系统消息汇总类，被各个工作线程所使用
 
+extern CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
 
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。

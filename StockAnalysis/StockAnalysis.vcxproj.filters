@@ -105,6 +105,9 @@
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SystemDequeData.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StockAnalysis.cpp">
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemDequeData.cpp">
+      <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
