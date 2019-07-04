@@ -76,6 +76,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -88,11 +89,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,6 +190,23 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\CurrentTime.h" />
+    <ClInclude Include="source\DayLine.h" />
+    <ClInclude Include="source\globedef.h" />
+    <ClInclude Include="source\Market.h" />
+    <ClInclude Include="source\MutualLock.h" />
+    <ClInclude Include="source\OneDeal.h" />
+    <ClInclude Include="source\RTData.h" />
+    <ClInclude Include="source\SetChoicedStock.h" />
+    <ClInclude Include="source\SetDayLine.h" />
+    <ClInclude Include="source\SetDayLineInfo.h" />
+    <ClInclude Include="source\SetOption.h" />
+    <ClInclude Include="source\SetRealTimeData.h" />
+    <ClInclude Include="source\SetStockCode.h" />
+    <ClInclude Include="source\Stock.h" />
+    <ClInclude Include="source\StockID.h" />
+    <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
@@ -197,6 +217,23 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\CurrentTime.cpp" />
+    <ClCompile Include="source\DayLine.cpp" />
+    <ClCompile Include="source\globedef.cpp" />
+    <ClCompile Include="source\Market.cpp" />
+    <ClCompile Include="source\MutualLock.cpp" />
+    <ClCompile Include="source\OneDeal.cpp" />
+    <ClCompile Include="source\RTData.cpp" />
+    <ClCompile Include="source\SetChoicedStock.cpp" />
+    <ClCompile Include="source\SetDayLine.cpp" />
+    <ClCompile Include="source\SetDayLineInfo.cpp" />
+    <ClCompile Include="source\SetOption.cpp" />
+    <ClCompile Include="source\SetRealTimeData.cpp" />
+    <ClCompile Include="source\SetStockCode.cpp" />
+    <ClCompile Include="source\Stock.cpp" />
+    <ClCompile Include="source\StockID.cpp" />
+    <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

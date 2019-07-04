@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\实现类">
+      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\数据库">
+      <UniqueIdentifier>{a1fe4dd0-a07a-4fac-8e77-595b2c79d08b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\实现类">
+      <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\数据库">
+      <UniqueIdentifier>{fad8b004-f8ce-49d4-a1ce-8cbebe538b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StockAnalysis.h">
@@ -42,6 +54,57 @@
     <ClInclude Include="OutputWnd.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="source\SetChoicedStock.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLine.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLineInfo.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetOption.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetRealTimeData.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetStockCode.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Accessory.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CurrentTime.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DayLine.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Market.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MutualLock.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\OneDeal.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\RTData.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Stock.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockID.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SystemMessage.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\globedef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StockAnalysis.cpp">
@@ -63,6 +126,57 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="OutputWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetChoicedStock.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLine.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLineInfo.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetOption.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetRealTimeData.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetStockCode.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Accessory.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CurrentTime.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DayLine.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Market.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MutualLock.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\OneDeal.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RTData.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Stock.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockID.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SystemMessage.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

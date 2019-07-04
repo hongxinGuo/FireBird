@@ -7,6 +7,21 @@
 
 #include "MainFrm.h"
 
+#include"globedef.h"
+
+#include "MainFrm.h"
+
+#include"RTData.h"
+#include"DayLine.h"
+#include"Stock.h"
+#include"Market.h"
+#include"StockID.h"
+
+#include"accessory.h"
+
+using namespace std;
+#include<string>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -25,25 +40,214 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_WM_SETTINGCHANGE()
+  ON_WM_TIMER()
+  ON_COMMAND(ID_SAVE_RTDATA, &CMainFrame::OnSaveRtdata)
+  ON_COMMAND(ID_DownLoad_DayLine, &CMainFrame::OnDownloadDayline)
+  ON_COMMAND(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnSaveDaylineData)
+  ON_UPDATE_COMMAND_UI(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnUpdateSaveDaylineData)
+  ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
+  ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
+  ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
+  ON_WM_SYSCOMMAND()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
 	ID_SEPARATOR,           // 状态行指示器
-	ID_INDICATOR_CAPS,
-	ID_INDICATOR_NUM,
-	ID_INDICATOR_SCRL,
+  ID_CURRENT_INPUT,
+  ID_CURRENT_SELECT_STOCK,
+  ID_CURRENT_SELECT_STOCKNAME,
+  ID_CURRENT_TIME,
 };
+
+
+UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
+  // 
+
+  return 6;
+}
+
+UINT ClientThreadCalculatingRelativeStrong(LPVOID pParam) {
+  long lCurrentDay = gl_lOption_CalculatingRelativeStrongStartDay;
+  long lYear = lCurrentDay / 10000;
+  long lMonth = lCurrentDay / 100 - lYear * 100;
+  long lDay = lCurrentDay - lYear * 10000 - lMonth * 100;
+  CTime timeStart(lYear, lMonth, lDay, 12, 0, 0);
+  CTimeSpan span(1, 0, 0, 0);
+  CTime timeCurrent;
+  bool Done = false;
+
+  while (!Done) {
+    timeCurrent -= span;
+    lCurrentDay = timeCurrent.GetYear() * 10000 + timeCurrent.GetMonth() * 100 + timeCurrent.GetDay();
+    switch (timeCurrent.GetDayOfWeek()) {
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+      CalculateOneDayRelativeStrong(lCurrentDay);
+      break;
+    case 1:
+    case 7:
+      break;
+    default:
+      ASSERT(0);
+      break;
+    }
+    gl_lOption_CalculatingRelativeStrongStartDay = lCurrentDay;
+    if (gl_fExiting) break;
+    if (gl_fExitingCalculatingRelativeStrong) break;
+    if (lCurrentDay <= 19900101) break;
+  }
+
+  return 3;
+}
+
+
 
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() noexcept
 {
 	// TODO: 在此添加成员初始化代码
+    // 生成所有股票代码池.这个函数必须最先调用。
+  CreateTotalStockContainer();
+
+  // 设置股票日线查询环境
+  time(&gl_ttime);
+  localtime_s(&gl_tm, &gl_ttime);
+  CString str2;
+  gl_lToday = (gl_tm.tm_year + 1900) * 10000 + (gl_tm.tm_mon + 1) * 100 + gl_tm.tm_mday;
+  gl_lTime = gl_tm.tm_hour * 10000 + gl_tm.tm_min * 100 + gl_tm.tm_sec;
+  switch (gl_tm.tm_wday) {
+  case 1: // 星期一
+    gl_ttime -= 3 * 24 * 3600; // 
+    break;
+  case 0: //星期日
+    gl_ttime -= 3 * 24 * 3600; // 
+    break;
+  case 6: // 星期六
+    gl_ttime -= 2 * 24 * 3600;
+    break;
+  default: // 其他
+    gl_ttime -= 24 * 3600; // 
+  }
+  tm tm_;
+  localtime_s(&tm_, &gl_ttime);
+  gl_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+
+
+  m_fCheckTodayActiveStock = true;
+
+  m_fGetRTStockData = true;
+  m_fGetDayLineData = true;
+  m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
+  m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
+
+  m_psetRT = new CSetRealTimeData(NULL);
+  m_psetStockCode = new CSetStockCode(NULL);
+
+  m_psetStockCode->Open();
+
+  // 装入股票代码数据库
+  while (!m_psetStockCode->IsEOF()) {
+    long lIndex = 1;
+    lIndex = gl_mapTotalStockToIndex.at(m_psetStockCode->m_StockCode);
+    if (m_psetStockCode->m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
+      gl_vTotalStock.at(lIndex)->m_lIPOed = m_psetStockCode->m_IPOed;
+    }
+    gl_vTotalStock.at(lIndex)->m_lDayLineStartDay = m_psetStockCode->m_DayLineStartDay;
+    if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay < m_psetStockCode->m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
+      gl_vTotalStock.at(lIndex)->m_lDayLineEndDay = m_psetStockCode->m_DayLineEndDay;
+    }
+    if (gl_vTotalStock.at(lIndex)->m_lNewestDayLineDay < m_psetStockCode->m_NewestDayLineDay) { // 有时一个股票会有多个记录，以最后的日期为准。
+      gl_vTotalStock.at(lIndex)->m_lNewestDayLineDay = m_psetStockCode->m_NewestDayLineDay;
+    }
+    // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
+    if (gl_lLastTradeDay <= gl_vTotalStock.at(lIndex)->m_lDayLineEndDay) { // 最新日线数据为今日或者上一个交易日的数据。
+      gl_vTotalStock.at(lIndex)->m_fDayLineNeedUpdated = false; // 日线数据不需要更新
+    }
+    if (m_psetStockCode->m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
+      gl_vTotalStock.at(lIndex)->m_fDayLineNeedUpdated = false;
+    }
+    if (m_psetStockCode->m_IPOed == __STOCK_DELISTED__) { // 退市股票不需更新日线数据
+      gl_vTotalStock.at(lIndex)->m_fDayLineNeedUpdated = false;
+    }
+    m_psetStockCode->MoveNext();
+  }
+  m_psetStockCode->Close();
+
+  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
+  gl_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+  gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
+
+  CSetOption setOption;
+  setOption.Open();
+  if (setOption.IsEOF()) {
+    gl_lRelativeStrongEndDay = gl_lRelativeStrongStartDay = 19900101;
+  }
+  else {
+    if (setOption.m_RelativeStrongEndDay == 0) {
+      gl_lRelativeStrongEndDay = 19900101;
+    }
+    else {
+      gl_lRelativeStrongEndDay = setOption.m_RelativeStrongEndDay;
+    }
+    if (setOption.m_RalativeStrongStartDay == 0) {
+      gl_lRelativeStrongStartDay = 19900101;
+    }
+    else {
+      gl_lRelativeStrongStartDay = setOption.m_RalativeStrongStartDay;
+    }
+  }
+  setOption.Close();
+
+  // 启动数据处理线程
+  AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
+  // 启动计算实时数据线程
+  AfxBeginThread(ClientThreadCalculatingRTDataProc, GetSafeHwnd());
+
 }
 
 CMainFrame::~CMainFrame()
 {
+  gl_fExiting = true;
+
+  if (gl_setSavingDayLineOnly.IsOpen()) gl_setSavingDayLineOnly.Close();
+
+  delete m_psetRT;
+
+  CSetOption setOption;
+  setOption.Open();
+  setOption.m_pDatabase->BeginTrans();
+  if (setOption.IsEOF()) {
+    setOption.AddNew();
+    setOption.m_RelativeStrongEndDay = gl_lRelativeStrongEndDay;
+    setOption.m_RalativeStrongStartDay = gl_lRelativeStrongStartDay;
+    setOption.Update();
+  }
+  else {
+    setOption.Edit();
+    setOption.m_RelativeStrongEndDay = gl_lRelativeStrongEndDay;
+    setOption.m_RalativeStrongStartDay = gl_lRelativeStrongStartDay;
+    setOption.Update();
+  }
+  setOption.m_pDatabase->CommitTrans();
+  setOption.Close();
+
+
+  while (gl_stDayLineInquire.fDataBaseInProcess) {
+    Sleep(100); // 等待处理日线历史数据的线程结束。
+  }
+
+  // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
+  // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
+  UpdateStockCodeDataBase();
+  delete m_psetStockCode;
+
+  TRACE("finally exited\n");
+
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -166,8 +370,536 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
+  // 设置200毫秒每次的软调度，用于接受处理实时网络数据
+  m_uIdTimer = SetTimer(1, 200, nullptr);     // 100毫秒每次调度，用于从股票数据提供网站读取数据。
+  if (m_uIdTimer == 0) {
+    CString str;
+  }
 	return 0;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成今日日线数据。每日只能执行一次。此函数目前手动启动，待稍微成熟后即自动启动（每日下午三点后自动执行）。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::CompileTodayStocks(void) {
+
+  if (!gl_sMarket.MarketReady()) return false;
+
+  AfxBeginThread(ClientThreadCompileTodayStocks, 0);
+
+  return(true);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+//
+//
+//
+//
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::CreateTodayActiveStockRTInquiringStr(CString &str) {
+  static int iStarted = 0;
+  static bool fCreateStr = false;
+  static int siCounter = 0, siTotalStock;
+
+  if (fCreateStr == false) {
+    siTotalStock = gl_vTotalStock.size();
+    fCreateStr = true;
+  }
+
+  str = gl_vTotalStock.at(siCounter)->m_strStockCode;
+  siCounter++;
+  if (siCounter == siTotalStock) {
+    siCounter = 0;
+    return true; // 查询到头了
+  }
+
+  for (int i = 1; i < 900; i++) {  // 每次轮询900个股票.
+    if (siCounter == siTotalStock) {
+      siCounter = 0;
+      return true; // 查询到头了
+    }
+    str += _T(",");
+    str += gl_vTotalStock.at(siCounter)->m_strStockCode;
+    siCounter++;
+  }
+  siCounter -= 2; // 后退两格。为了防止边缘数据错误，故边缘数据查询两遍。
+
+  return false;
+}
+
+UINT ClientThreadRTDataProc(LPVOID pParam) {
+  CInternetSession session;
+  CHttpFile * pFile = nullptr;
+  long iCount = 0;
+  bool fDone = false;
+  char * pChar = gl_stRTDataInquire.buffer;
+  try {
+    gl_stRTDataInquire.fReceiveFromWebInProcess = true;
+    gl_stRTDataInquire.fError = false;
+    gl_stRTDataInquire.lByteRead = 0;
+    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire);
+    Sleep(100); // 新浪服务器100ms延迟即可。
+    while (!fDone) {
+      do {
+        iCount = pFile->Read(pChar, 1024);
+        if (iCount > 0) {
+          pChar += iCount;
+          gl_stRTDataInquire.lByteRead += iCount;
+        }
+      } while (iCount > 0);
+      Sleep(30); // 等待20毫秒后再读一次，确认没有新数据后才返回。
+      iCount = pFile->Read(pChar, 1024);
+      if (iCount > 0) {
+        pChar += iCount;
+        gl_stRTDataInquire.lByteRead += iCount;
+      }
+      else fDone = true;
+    }
+    gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
+    gl_stRTDataInquire.fDataReady = true;
+  }
+  catch (CInternetException * e) {
+    e->Delete();
+    gl_stRTDataInquire.fError = true;
+    gl_stRTDataInquire.fDataReady = false;
+  }
+  if (pFile) pFile->Close();
+  if (pFile) delete pFile;
+  gl_stRTDataInquire.fReceiveFromWebInProcess = false;
+
+  return 4;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 处理实时数据的工作线程。
+//
+// 此线程只操作各股票的m_dequeRTData变量，这样可以将数据同步的问题减到最小。
+// 此线程在系统启动后就一直工作着，直到系统退出时才跟随系统一起退出。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
+
+  while (true) { //此线程永远执行，直到得到系统通知
+    if (gl_fExiting) { // 
+      return 0; // 
+    }
+    if (gl_sMarket.MarketReady()) { // 只有市场初始态设置好后，才允许处理实时数据。
+      gl_sMarket.CalculateRTData();
+    }
+    Sleep(50); // 暂停50毫秒。当计算繁忙时，无所谓是否暂停；当没有计算任务时，此200毫秒能够保证此线程不过多占用系统计算能力。
+    // 研究使用挂起唤醒机制节约计算能力。
+    // 采用事件方式。实现之。
+  }
+  return 2;
+}
+
+bool CMainFrame::GetSinaStockRTData(void)
+{
+  static int iCountUp = 0;
+  char * pCurrentPos = nullptr;
+  CStockRTDataPtr pRTData = nullptr;
+  long i = 0;
+  long long iTotalNumber = 0;
+
+  if (!gl_stRTDataInquire.fReceiveFromWebInProcess) {
+    if ((gl_stRTDataInquire.fError == false) && gl_stRTDataInquire.fDataReady) { //网络通信一切顺利？
+      iTotalNumber = gl_stRTDataInquire.lByteRead;
+      pCurrentPos = gl_stRTDataInquire.buffer;
+      long  iCount = 0;
+      while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
+        pRTData = make_shared<CStockRTData>();
+        if (pRTData->ReadData(pCurrentPos, iCount)) {
+          i++;
+          gl_dequeRTStockData.push_back(pRTData); // 将此实时数据指针存入实时数据队列
+        }
+        else {
+          TRACE("实时数据有误,抛掉不用\n");
+          iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
+        }
+      }
+    }
+    else {
+      TRACE("Error reading http file ：hq.sinajs.cn, code = %i\n", gl_dwRTDataHttpFileStatus);
+    }
+
+    // 处理接收到的实时数据
+    gl_sMarket.ProcessRTData();
+
+    bool fFinished = false;
+    CString strTemp = _T("");
+
+    // 申请下一批次股票实时数据
+    if (m_fCheckTodayActiveStock) {
+      gl_stRTDataInquire.strInquire = gl_strRTStockSource;
+      fFinished = CreateTodayActiveStockRTInquiringStr(strTemp);
+      gl_stRTDataInquire.strInquire += strTemp;
+      if (fFinished) m_fCheckTodayActiveStock = false;
+    }
+    else {
+      gl_sMarket.SetMarketReadyFlag(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+      gl_stRTDataInquire.strInquire = gl_strRTStockSource;
+      gl_sMarket.GetInquiringStockStr(gl_stRTDataInquire.strInquire);
+    }
+    gl_stRTDataInquire.fDataReady = false;
+    gl_stRTDataInquire.fReceiveFromWebInProcess = true; // 在此先设置一次，以防重入（线程延迟导致）
+    AfxBeginThread(ClientThreadRTDataProc, GetSafeHwnd());
+
+  }
+
+  if (iCountUp == 1000) {
+    m_fCheckTodayActiveStock = true;
+    iCountUp = 0;
+  }
+  else iCountUp++;
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 初始化所有可能的股票代码池，只被CMainFrame的初始函数调用一次。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::CreateTotalStockContainer(void)
+{
+  char buffer[10];
+
+  StockIDPtr pStockID;
+  int iCount = 0;
+
+
+  // 生成上海股票代码
+  for (int i = 600000; i < 602000; i++) {
+    _itoa_s(i, buffer, 10);
+    pStockID = make_shared<CStockID>();
+    pStockID->m_nIndex = iCount;
+    pStockID->m_strStockCode = _T("sh");
+    pStockID->m_strStockCode += buffer;
+    pStockID->m_wMarket = 1; // 上海市场
+    pStockID->m_nIndex = iCount;
+    gl_vTotalStock.push_back(pStockID);
+    gl_mapTotalStockToIndex[pStockID->m_strStockCode] = iCount++; // 生成新的映射
+  }
+
+
+  ///////////////////////////////////////////////
+  // 生成深圳股票代码
+  for (int i = 0; i < 3000; i++) {
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->m_nIndex = iCount;
+    pStockID->m_strStockCode = _T("sz");
+    pStockID->m_strStockCode += buffer;
+    pStockID->m_wMarket = 2; // 深圳市场
+    pStockID->m_nIndex = iCount;
+    gl_vTotalStock.push_back(pStockID);
+    gl_mapTotalStockToIndex[pStockID->m_strStockCode] = iCount++;
+  }
+
+
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+// 
+//  此函数是检查gl_vTotalStock股票池
+//
+//
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString& strStartDay) {
+  static int iStarted = 0;
+  static bool fCreateStr = false;
+  static int siCounter = 0, siTotalStock;
+
+  StockIDPtr pStockID;
+
+  if (fCreateStr == false) {
+    siTotalStock = gl_vTotalStock.size();
+    fCreateStr = true;
+  }
+
+  bool fFound = false;
+  int iCount = 0;
+  CString strTemp;
+  while (!fFound && (iCount < 1000)) {
+    if (!gl_vTotalStock.at(siCounter)->m_fDayLineNeedUpdated) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdated标识
+      // TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(gl_vTotalStock.at(siCounter)->m_strStockCode));
+      siCounter++;
+      iCount++;
+      if (siCounter == siTotalStock) {
+        siCounter = 0;
+      }
+    }
+    else if (gl_vTotalStock.at(siCounter)->m_lIPOed == __STOCK_NULL__) {	// 尚未使用过的股票代码无需查询日线数据
+      gl_vTotalStock.at(siCounter)->m_fDayLineNeedUpdated = false; // 此股票日线资料不需要更新了。
+      // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(gl_vTotalStock.at(siCounter)->m_strStockCode));
+      iCount++;
+      siCounter++;
+      if (siCounter == siTotalStock) {
+        siCounter = 0;
+      }
+    }
+    else if (gl_vTotalStock.at(siCounter)->m_lDayLineEndDay >= gl_lLastTradeDay) { // 上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+      gl_vTotalStock.at(siCounter)->m_fDayLineNeedUpdated = false; // 此股票日线资料不需要更新了。
+      // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(gl_vTotalStock.at(siCounter)->m_strStockCode));
+      siCounter++;
+      iCount++;
+      if (siCounter == siTotalStock) {
+        siCounter = 0;
+      }
+    }
+    else {
+      fFound = true;
+    }
+  }
+
+  if (iCount >= 1000) { //  没有找到需要申请日线的股票
+    TRACE("未找到需更新日线历史数据的股票\n");
+    return false;
+  }
+
+  switch (gl_vTotalStock.at(siCounter)->m_wMarket) {
+  case 1: // 上海市场？
+    str += '0'; // 上海市场标识
+    break;
+  case 2: // 深圳市场？
+    str += '1'; // 深圳市场标识
+    break;
+  default: // 越界
+    ASSERT(0);
+  }
+  char buffer[30];
+  gl_strCurrentStockDownLoading = gl_vTotalStock.at(siCounter)->m_strStockCode;
+  str += gl_vTotalStock.at(siCounter)->m_strStockCode.Right(6); // 取股票代码的右边六位数字。
+  tm tm_;
+  tm_.tm_year = gl_vTotalStock.at(siCounter)->m_lDayLineEndDay / 10000 - 1900;
+  tm_.tm_mon = gl_vTotalStock.at(siCounter)->m_lDayLineEndDay / 100 - (tm_.tm_year + 1900) * 100 - 1;
+  tm_.tm_mday = gl_vTotalStock.at(siCounter)->m_lDayLineEndDay - (tm_.tm_year + 1900) * 10000 - (tm_.tm_mon + 1) * 100;
+  tm_.tm_hour = 12;
+  tm_.tm_min = 0;
+  tm_.tm_sec = 0;
+  time_t tTime;
+  tTime = mktime(&tm_);
+  tTime += 3600 * 24; // 增加一天。
+  localtime_s(&tm_, &tTime);
+  long lDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday; // 日线的起始日期是最新日期的后一天。
+  sprintf_s(buffer, "%8d", lDay);
+  strStartDay = buffer;
+  siCounter++;
+  if (siCounter == siTotalStock) {
+    siCounter = 0;
+  }
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 读取网易日线历史数据的线程。
+//
+// 读取数据时多试几次，防止网络延迟导致数据截断。目前在读完数据后，在测试两次，都没有数据后才返回。
+//
+// 有时fReadingInProcess == false的断言会失败，但程序中只有两处设置此变量，故估计是不同线程同时操作的原因，需要改为
+// 同步事件模式唤醒此线程为好。研究之。（在调用此线程前就设置，就不会出现故障了，可见时启动线程时会出现延时所致）。
+//
+// 此线程最终的功能，要比现在只是提取数据要多一些，应该加入解码和存储功能。
+// 亦即此线程的功能为：
+// 1.从管道处读取需要提取日线历史数据的股票代码，将该代码处理成网易日线服务器所要求的格式，然后发送给日线服务器；
+// 2.等待一段时间后（100ms）开始从服务器处接收数据。
+// 3.将接收到的数据解码，成功的话存入相应股票的日线容器中，最后设置相应的标识。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+UINT ClientThreadReadDayLineProc(LPVOID pParam) {
+  static int siDelayTime = 600;
+  static bool fStarted = false;
+  CInternetSession session;
+  CHttpFile * pFile = nullptr;
+  long iCount = 0;
+  bool fDone = false;
+  char * pChar = gl_stDayLineInquire.buffer;
+  CString str;
+
+  try {
+    gl_stDayLineInquire.fReadingInProcess = true;
+    gl_stDayLineInquire.fError = false;
+    gl_stDayLineInquire.lByteRead = 0;
+    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire);
+    // 不能采用下述读取文件长度的方式。读取出来的数值不对。
+    // pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
+    Sleep(siDelayTime);
+    while (!fDone) {
+      do {
+        iCount = pFile->Read(pChar, 1024);
+        if (iCount > 0) {
+          pChar += iCount;
+          gl_stDayLineInquire.lByteRead += iCount;
+        }
+      } while (iCount > 0);
+      Sleep(50); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
+      iCount = pFile->Read(pChar, 1024);
+      if (iCount > 0) {
+        pChar += iCount;
+        gl_stDayLineInquire.lByteRead += iCount;
+      }
+      else {
+        Sleep(50); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
+        iCount = pFile->Read(pChar, 1024);
+        if (iCount > 0) {
+          pChar += iCount;
+          gl_stDayLineInquire.lByteRead += iCount;
+        }
+        else fDone = true;
+      }
+    }
+    gl_stDayLineInquire.fDataReady = true;
+    gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
+  }
+  catch (CInternetException * e) {
+    e->Delete();
+    gl_stDayLineInquire.fError = true;
+    gl_stDayLineInquire.fDataReady = false;
+    gl_stDayLineInquire.lByteRead = 0;
+  }
+  if (pFile) pFile->Close();
+  if (pFile) delete pFile;
+  gl_stDayLineInquire.fReadingInProcess = false;
+  if (!fStarted) {
+    fStarted = true;
+    siDelayTime = 50;
+  }
+  return 5;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用网易日线申请接口，读取日线数据。
+// 每次读取一个股票。
+//
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::GetNetEaseStockDayLineData(void)
+{
+  CString strRead;
+  string str;
+  static bool sfFoundStock = true;
+  CDayLinePtr pDayLine = nullptr;
+
+  if (!gl_stDayLineInquire.fReadingInProcess) {
+    if (sfFoundStock) {
+      if ((gl_stDayLineInquire.fError == false) && gl_stDayLineInquire.fDataReady) { //网络通信一切顺利？
+        TRACE("股票%S日线数据为%d字节\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading), gl_stDayLineInquire.lByteRead);
+        ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
+        // 处理当前股票日线数据
+        gl_sMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
+      }
+      else {
+        if (gl_stDayLineInquire.lByteRead > 0) {
+          TRACE("Error reading http file ：quotes.money.163.com/service/, code = %i\n", gl_dwRTDataHttpFileStatus);
+          gl_stDayLineInquire.lByteRead = 0;
+        }
+      }
+    }
+
+    CString strTemp;
+    char buffer2[200];
+    CString strStartDay;
+
+    // 准备网易日线数据申请格式
+    strRead = gl_strDayLineStockSource;
+    sfFoundStock = CreateTodayActiveStockDayLineInquiringStr(strRead, strStartDay);
+    if (sfFoundStock) {
+      strRead += _T("&start=");
+      strRead += strStartDay;
+      strRead += _T("&end=");
+      sprintf_s(buffer2, "%8d", gl_lLastTradeDay);
+      strRead += buffer2;
+      strRead += gl_strDayLinePostfix;
+
+      gl_stDayLineInquire.strInquire = strRead;
+      gl_stDayLineInquire.fDataReady = false;
+      gl_stDayLineInquire.fReadingInProcess = true; // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      // 这个线程的启动可以采用唤醒模式而不是这样直接调用
+      AfxBeginThread(ClientThreadReadDayLineProc, GetSafeHwnd());
+      return true;
+    }
+    else return false;
+  }
+  return false;
+}
+
+bool CMainFrame::SchedulingTask(void)
+{
+  static int i10SecondsCounter = 50; // 十秒每次的计算
+  static int i1MinuteCounter = 300;  // 一分钟每次的计算
+  static bool sfUpdatedStockCodeDataBase = false;
+
+  if (((gl_lTime > 91000) && (gl_lTime < 113500)) || ((gl_lTime > 125500) && (gl_lTime < 150500))) {
+    m_fCountDownRT = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
+  }
+  else m_fCountDownRT = true;
+
+  if ((gl_lTime < 90000) || (gl_lTime > 150001)) { //下午三点市场交易结束
+    gl_fMarketOpened = false;
+  }
+  else gl_fMarketOpened = true;
+
+  if (i10SecondsCounter >= 0) {
+    i10SecondsCounter = 50;
+    // do something
+  }
+  else i10SecondsCounter--;
+
+  if (i1MinuteCounter <= 0) {
+    i1MinuteCounter = 300;
+    if (gl_sMarket.IsTotalStockDayLineChecked() && !sfUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+      if (!gl_stDayLineInquire.fDataBaseInProcess) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
+        // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
+        sfUpdatedStockCodeDataBase = true;
+        TRACE("日线历史数据更新完毕\n");
+        CString str;
+        str = _T("日线历史数据更新完毕");
+        gl_systemMessage.PushOutputMessage(str);
+        UpdateStockCodeDataBase();  // 更新股票池数据库
+        ASSERT(gl_setSavingDayLineOnly.IsOpen());
+        gl_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
+        m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
+      }
+    }
+    else {
+      if (!gl_stDayLineInquire.fDataBaseInProcess && m_fGetDayLineData) {
+        gl_stDayLineInquire.fDataBaseInProcess = true;
+        AfxBeginThread(ClientThreadSaveDayLineProc, GetSafeHwnd());
+      }
+    }
+
+  }
+  else i1MinuteCounter--;
+
+  return true;
+
+}
+
+
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -288,3 +1020,147 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
 }
+
+
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+  static int iCountReadRT = 2;
+  static int iCountDayLine = 2;
+  static int iCountDown = 0;
+
+  time(&gl_ttime);
+  localtime_s(&gl_tm, &gl_ttime);
+  gl_lToday = (gl_tm.tm_year + 1900) * 10000 + (gl_tm.tm_mon + 1) * 100 + gl_tm.tm_mday;
+  gl_lTime = gl_tm.tm_hour * 10000 + gl_tm.tm_min * 100 + gl_tm.tm_sec;
+
+  //根据时间，调度各项任务
+  SchedulingTask();
+
+  if (m_fGetRTStockData && (iCountDown <= 0)) {
+    GetSinaStockRTData(); // 每200毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    if (m_fCountDownRT && gl_sMarket.MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    else iCountDown = 1;
+  }
+  iCountDown--;
+
+  if (m_fGetDayLineData && gl_sMarket.MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
+    GetNetEaseStockDayLineData();
+  }
+
+  //更新状态条
+  if (gl_sMarket.IsCurrentStockChanged()) {
+    m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_sMarket.m_pCurrentStock->m_strStockCode);
+    m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_sMarket.m_pCurrentStock->m_strStockName);
+  }
+  CString str;
+  if (gl_sMarket.m_fCurrentEditStockChanged) {
+    str = gl_sMarket.m_aStockCodeTemp;
+    m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
+    gl_sMarket.m_fCurrentEditStockChanged = false;
+  }
+  //更新时间
+  char buffer[30];
+  sprintf_s(buffer, "%02d:%02d:%02d", gl_tm.tm_hour, gl_tm.tm_min, gl_tm.tm_sec);
+  str = buffer;
+  m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
+
+  CMDIFrameWndEx::OnTimer(nIDEvent);
+}
+
+
+UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
+  long year = gl_lRelativeStrongEndDay / 10000;
+  long month = gl_lRelativeStrongEndDay / 100 - year * 100;
+  long day = gl_lRelativeStrongEndDay - year * 10000 - month * 100;
+
+  CTime ctStart(year, month, day, 12, 0, 0);
+
+  CalculateRelativeStrong(ctStart);
+
+  return 1;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 当系统退出时，需要先退出工作线程。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
+{
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+  if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
+    if (gl_stDayLineInquire.fDataBaseInProcess) { // 如果正在处理日线历史数据
+      gl_fExiting = true; // 提示各工作线程中途退出
+
+      while (gl_stDayLineInquire.fDataBaseInProcess) {
+        Sleep(100); // 等待处理日线历史数据的线程退出
+      }
+    }
+  }
+
+  CMDIFrameWndEx::OnSysCommand(nID, lParam);
+}
+
+void CMainFrame::OnCalculateRelativeStrong()
+{
+  // TODO: 在此添加命令处理程序代码
+  static bool sfCalculating = false;
+
+  if (sfCalculating) {
+    gl_fExitingCalculatingRelativeStrong = true;
+    sfCalculating = false;
+  }
+  else {
+    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
+    sfCalculating = true;
+  }
+}
+
+void CMainFrame::OnCompileTodayStock()
+{
+  // TODO: 在此添加命令处理程序代码
+  CompileTodayStocks();
+}
+
+
+void CMainFrame::OnDownloadDayline()
+{
+  // TODO: 在此添加命令处理程序代码
+  if (!m_fGetDayLineData) {
+    m_fGetDayLineData = true;
+  }
+  else m_fGetDayLineData = false;
+}
+
+
+void CMainFrame::OnSaveDaylineData()
+{
+  // TODO: 在此添加命令处理程序代码
+
+}
+
+void CMainFrame::OnSaveRtdata()
+{
+  // TODO: 在此添加命令处理程序代码
+  gl_sMarket.SaveRTData(m_psetRT);
+}
+
+void CMainFrame::OnUpdateCompileTodayStock(CCmdUI *pCmdUI)
+{
+  // TODO: 在此添加命令更新用户界面处理程序代码
+  /*if (m_fGetDayLineData || gl_fMarketOpened) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
+    pCmdUI->Enable(false);
+  }
+  else*/ pCmdUI->Enable(true);
+}
+
+void CMainFrame::OnUpdateSaveDaylineData(CCmdUI *pCmdUI)
+{
+  // TODO: 在此添加命令更新用户界面处理程序代码
+  //for( auto pStock : gl_sMark)
+}
+
+

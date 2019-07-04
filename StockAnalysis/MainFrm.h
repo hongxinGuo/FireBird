@@ -3,7 +3,15 @@
 //
 
 #pragma once
+#include"afxinet.h"
+
 #include "OutputWnd.h"
+
+#include"SetDayLine.h"
+#include"SetRealTimeData.h"
+#include"SetChoicedStock.h"
+#include"SetStockCode.h"
+#include"SetOption.h"
 
 class CMainFrame : public CMDIFrameWndEx
 {
@@ -17,6 +25,18 @@ public:
 // 操作
 public:
 
+private:
+  bool CreateTodayActiveStockRTInquiringStr(CString& str);
+  bool GetSinaStockRTData(void);
+
+  bool CreateTotalStockContainer(void);
+  bool CreateTodayActiveStockDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool GetNetEaseStockDayLineData(void);
+
+  bool SchedulingTask(void);
+
+  bool CompileTodayStocks(void);
+
 // 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -29,6 +49,24 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+
+protected:
+  UINT                    m_uIdTimer;
+
+  // 数据库
+  CSetRealTimeData *			m_psetRT;								// 实时数据库
+  CSetStockCode *					m_psetStockCode;				// 股票池基本数据库
+  CSetChoicedStock	*		  m_psetChoicedStock;			// 自选股票
+  CSetOption        *     m_psetOption;           // 系统的可选项都存于Options表中。
+  CString									m_strDatabaseDir;
+
+  bool                    m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
+
+  bool										m_fGetRTStockData;
+  bool										m_fGetDayLineData;
+  bool                    m_fCountDownRT;
+  int                     m_iCountDownDayLine;        // 日线数据读取延时计数。
+
 
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;
@@ -48,6 +86,18 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+
+public:
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg void OnSaveRtdata();
+  afx_msg void OnDownloadDayline();
+  afx_msg void OnSaveDaylineData();
+  afx_msg void OnUpdateSaveDaylineData(CCmdUI *pCmdUI);
+  afx_msg void OnCompileTodayStock();
+  afx_msg void OnUpdateCompileTodayStock(CCmdUI *pCmdUI);
+  afx_msg void OnCalculateRelativeStrong();
+  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+  afx_msg void OnRebuildDaylineDatabase();
 };
 
 
