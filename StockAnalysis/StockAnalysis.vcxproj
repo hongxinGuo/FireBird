@@ -212,6 +212,7 @@
     <ClInclude Include="source\Stock.h" />
     <ClInclude Include="source\StockID.h" />
     <ClInclude Include="source\SystemMessage.h" />
+    <ClInclude Include="source\SystemStatus.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
@@ -233,7 +234,10 @@
     <ClCompile Include="source\OneDeal.cpp" />
     <ClCompile Include="source\RTData.cpp" />
     <ClCompile Include="source\SetChoicedStock.cpp" />
-    <ClCompile Include="source\SetDayLine.cpp" />
+    <ClCompile Include="source\SetDayLine.cpp">
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">None</DebugInformationFormat>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
+    </ClCompile>
     <ClCompile Include="source\SetDayLineInfo.cpp" />
     <ClCompile Include="source\SetOption.cpp" />
     <ClCompile Include="source\SetRealTimeData.cpp" />
@@ -241,6 +245,7 @@
     <ClCompile Include="source\Stock.cpp" />
     <ClCompile Include="source\StockID.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
+    <ClCompile Include="source\SystemStatus.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

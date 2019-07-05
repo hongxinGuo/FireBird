@@ -111,6 +111,9 @@
     <ClInclude Include="source\ClientThread.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
+    <ClInclude Include="source\SystemStatus.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StockAnalysis.cpp">
@@ -189,6 +192,9 @@
       <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\ClientThread.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SystemStatus.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

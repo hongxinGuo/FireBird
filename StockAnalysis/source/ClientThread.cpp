@@ -96,7 +96,7 @@ UINT ClientThreadRTDataProc(LPVOID pParam) {
   bool fDone = false;
   char * pChar = gl_stRTDataInquire.buffer;
   try {
-    gl_stRTDataInquire.fReceiveFromWebInProcess = true;
+    gl_systemStatus.SetReceiveFromWebInProcess(true);
     gl_stRTDataInquire.fError = false;
     gl_stRTDataInquire.lByteRead = 0;
     pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire);
@@ -118,16 +118,16 @@ UINT ClientThreadRTDataProc(LPVOID pParam) {
       else fDone = true;
     }
     gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
-    gl_stRTDataInquire.fDataReady = true;
+    gl_systemStatus.SetRTDataReady(true);
   }
   catch (CInternetException * e) {
     e->Delete();
     gl_stRTDataInquire.fError = true;
-    gl_stRTDataInquire.fDataReady = false;
+    gl_systemStatus.SetRTDataReady(false);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_stRTDataInquire.fReceiveFromWebInProcess = false;
+  gl_systemStatus.SetReceiveFromWebInProcess(false);
 
   return 4;
 }
@@ -160,7 +160,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
   CString str;
 
   try {
-    gl_stDayLineInquire.fReadingInProcess = true;
+    gl_systemStatus.SetReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
     pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire);
@@ -191,18 +191,18 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
         else fDone = true;
       }
     }
-    gl_stDayLineInquire.fDataReady = true;
+    gl_systemStatus.SetDayLineDataReady(true);
     gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
   }
   catch (CInternetException * e) {
     e->Delete();
     gl_stDayLineInquire.fError = true;
-    gl_stDayLineInquire.fDataReady = false;
+    gl_systemStatus.SetDayLineDataReady(false);
     gl_stDayLineInquire.lByteRead = 0;
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_stDayLineInquire.fReadingInProcess = false;
+  gl_systemStatus.SetReadingInProcess(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;
@@ -262,7 +262,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID pParam) {
 
   gl_sMarket.SaveDayLineData();
 
-  gl_stDayLineInquire.fDataBaseInProcess = false;
+  gl_systemStatus.SetDataBaseInProcess(false);
 
   return 8;
 }

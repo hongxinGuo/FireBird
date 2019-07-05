@@ -9,6 +9,7 @@
 
 #include"SystemMessage.h"
 #include"SystemDequeData.h"
+#include"SystemStatus.h"
 
 using namespace std;
 #include<deque>
@@ -55,45 +56,42 @@ extern long gl_lRelativeStrongEndDay;
 extern CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
 
 extern CSystemMessage gl_systemMessage;       // 系统消息汇总类，被各个工作线程所使用
-
 extern CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
+extern CSystemStatus gl_systemStatus;         // 系统中的各种状态，被各个工作线程所使用。
 
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。
 
 typedef struct stDayLine {    // 日线数据结构
   stDayLine() {
-    fDataReady = false;
-    fReadingInProcess = false;
-    fDataBaseInProcess = false;
     fCalculatingRelativeStrongInProcess = false;
     lByteRead = 0;
     fError = false;
     strInquire = "";
   }
+
+
   CString strInquire;   // 申请提取数据的字符串
-  bool fDataReady;      // 数据已提取完成标识
-  bool fReadingInProcess; // 是否处于提取中标识
-  bool fDataBaseInProcess; // 是否处于存储日线历史数据的数据库操作中。
+  
   bool fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   char buffer[2048 * 1024]; // 提取到的日线历史数据缓存器
   long lByteRead;           // 本次读到的字节数
   bool fError;              // 本次处理日线数据是否有误的标识
+
+protected:
+
+
 } DayLineInquire;
 
 extern DayLineInquire gl_stDayLineInquire; 
 
 typedef struct stRTData {
   stRTData() {
-    fDataReady = false;
-    fReceiveFromWebInProcess = false;
     lByteRead = 0;
     fError = false;
     strInquire = "";
   }
   CString strInquire;
-  bool fDataReady;
-  bool fReceiveFromWebInProcess;  // 接收实时数据线程是否执行标识
   char buffer[2048 * 1024];
   long lByteRead;
   bool fError;

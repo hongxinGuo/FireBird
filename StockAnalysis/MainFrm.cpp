@@ -193,7 +193,7 @@ CMainFrame::~CMainFrame()
   setOption.Close();
 
 
-  while (gl_stDayLineInquire.fDataBaseInProcess) {
+  while (gl_systemStatus.IsDataBaseInProcess()) {
     Sleep(100); // 等待处理日线历史数据的线程结束。
   }
 
@@ -402,8 +402,8 @@ bool CMainFrame::GetSinaStockRTData(void)
   long i = 0;
   long long iTotalNumber = 0;
 
-  if (!gl_stRTDataInquire.fReceiveFromWebInProcess) {
-    if ((gl_stRTDataInquire.fError == false) && gl_stRTDataInquire.fDataReady) { //网络通信一切顺利？
+  if (!gl_systemStatus.IsReceiveFromWebInProcess()) {
+    if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReady()) { //网络通信一切顺利？
       iTotalNumber = gl_stRTDataInquire.lByteRead;
       pCurrentPos = gl_stRTDataInquire.buffer;
       long  iCount = 0;
@@ -441,10 +441,9 @@ bool CMainFrame::GetSinaStockRTData(void)
       gl_stRTDataInquire.strInquire = gl_strRTStockSource;
       gl_sMarket.GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
-    gl_stRTDataInquire.fDataReady = false;
-    gl_stRTDataInquire.fReceiveFromWebInProcess = true; // 在此先设置一次，以防重入（线程延迟导致）
+    gl_systemStatus.SetRTDataReady(false);
+    gl_systemStatus.SetReceiveFromWebInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ClientThreadRTDataProc, GetSafeHwnd());
-
   }
 
   if (iCountUp == 1000) {
@@ -615,9 +614,9 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_stDayLineInquire.fReadingInProcess) {
+  if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
-      if ((gl_stDayLineInquire.fError == false) && gl_stDayLineInquire.fDataReady) { //网络通信一切顺利？
+      if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
         TRACE("股票%S日线数据为%d字节\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading), gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
@@ -647,8 +646,8 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
       strRead += gl_strDayLinePostfix;
 
       gl_stDayLineInquire.strInquire = strRead;
-      gl_stDayLineInquire.fDataReady = false;
-      gl_stDayLineInquire.fReadingInProcess = true; // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      gl_systemStatus.SetDayLineDataReady(false);
+      gl_systemStatus.SetReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
       AfxBeginThread(ClientThreadReadDayLineProc, GetSafeHwnd());
       return true;
@@ -683,7 +682,7 @@ bool CMainFrame::SchedulingTask(void)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 300;
     if (gl_sMarket.IsTotalStockDayLineChecked() && !sfUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      if (!gl_stDayLineInquire.fDataBaseInProcess) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
+      if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
         sfUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -697,8 +696,8 @@ bool CMainFrame::SchedulingTask(void)
       }
     }
     else {
-      if (!gl_stDayLineInquire.fDataBaseInProcess && m_fGetDayLineData) {
-        gl_stDayLineInquire.fDataBaseInProcess = true;
+      if (!gl_systemStatus.IsDataBaseInProcess() && m_fGetDayLineData) {
+        gl_systemStatus.SetDataBaseInProcess(true);
         AfxBeginThread(ClientThreadSaveDayLineProc, GetSafeHwnd());
       }
     }
@@ -889,10 +888,10 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
-    if (gl_stDayLineInquire.fDataBaseInProcess) { // 如果正在处理日线历史数据
+    if (gl_systemStatus.IsDataBaseInProcess()) { // 如果正在处理日线历史数据
       gl_fExiting = true; // 提示各工作线程中途退出
 
-      while (gl_stDayLineInquire.fDataBaseInProcess) {
+      while (gl_systemStatus.IsDataBaseInProcess()) {
         Sleep(100); // 等待处理日线历史数据的线程退出
       }
     }
