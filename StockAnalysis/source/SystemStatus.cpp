@@ -10,6 +10,25 @@ CSystemStatus::CSystemStatus() {
   m_fDayLineDataReady = false;
 }
 
+void CSystemStatus::SetCalculateRSInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_CalculateRSInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fCalculatingRelativeStrongInProcess = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsCalculateRSInProcess(void) {
+  CSingleLock singleLock(&m_CalculateRSInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag = m_fCalculatingRelativeStrongInProcess;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
 void CSystemStatus::SetReadingInProcess(bool fFlag) {
   CSingleLock singleLock(&m_ReadingInProcessLock);
   singleLock.Lock();

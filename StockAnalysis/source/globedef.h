@@ -64,7 +64,6 @@ extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列
 
 typedef struct stDayLine {    // 日线数据结构
   stDayLine() {
-    fCalculatingRelativeStrongInProcess = false;
     lByteRead = 0;
     fError = false;
     strInquire = "";
@@ -72,8 +71,6 @@ typedef struct stDayLine {    // 日线数据结构
 
 
   CString strInquire;   // 申请提取数据的字符串
-  
-  bool fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   char buffer[2048 * 1024]; // 提取到的日线历史数据缓存器
   long lByteRead;           // 本次读到的字节数
   bool fError;              // 本次处理日线数据是否有误的标识

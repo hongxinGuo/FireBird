@@ -109,7 +109,7 @@ UINT ClientThreadRTDataProc(LPVOID pParam) {
           gl_stRTDataInquire.lByteRead += iCount;
         }
       } while (iCount > 0);
-      Sleep(30); // 等待20毫秒后再读一次，确认没有新数据后才返回。
+      Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
@@ -191,8 +191,8 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
         else fDone = true;
       }
     }
-    gl_systemStatus.SetDayLineDataReady(true);
     gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
+    gl_systemStatus.SetDayLineDataReady(true);
   }
   catch (CInternetException * e) {
     e->Delete();

@@ -389,7 +389,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
   }
 	ASSERT(lIndex >= 0);
 	m_vActiveStock.at(lIndex)->m_fDayLineLoaded = true;
-  m_vActiveStock.at(lIndex)->m_fDayLineNeededSaving = true; // 设置存储日线标识 
+  m_vActiveStock.at(lIndex)->SetDayLineNeedSavingFlag(true); // 设置存储日线标识 
   m_vActiveStock.at(lIndex)->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
@@ -807,7 +807,7 @@ bool CMarket::SaveDayLineData(void) {
   if (!gl_setSavingDayLineOnly.IsOpen()) gl_setSavingDayLineOnly.Open();
 
 	for (auto pStock : m_vActiveStock) {
-		if (pStock->m_fDayLineNeededSaving) {
+		if (pStock->IsDayLineNeedSaving()) {
  			lIndex = gl_mapTotalStockToIndex.at(pStock->m_strStockCode);
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
         SaveDayLine(&gl_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
@@ -823,7 +823,7 @@ bool CMarket::SaveDayLineData(void) {
       CString str = gl_vTotalStock.at(lIndex)->m_strStockCode;
       str += _T("日线资料存储完成");
       gl_systemMessage.PushOutputMessage(str);
-      pStock->m_fDayLineNeededSaving = false;
+      pStock->SetDayLineNeedSavingFlag(false);
 
 		}
     if (gl_fExiting) {

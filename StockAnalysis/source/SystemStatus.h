@@ -6,6 +6,9 @@ class CSystemStatus {    // 日线数据结构
 public:
   CSystemStatus();
 
+  void SetCalculateRSInProcess(bool fFlag);
+  bool IsCalculateRSInProcess(void);
+    
   void SetReadingInProcess(bool fFlag);
   bool IsReadingInProcess(void);
 
@@ -23,7 +26,7 @@ public:
 
 protected:
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
-  bool m_ffErrorProcessDayLine;              // 本次处理日线数据是否有误的标识
+  CCriticalSection m_CalculateRSInProcessLock;
 
   bool m_fReadingInProcess; // 是否处于提取中标识
   CCriticalSection m_ReadingInProcessLock;

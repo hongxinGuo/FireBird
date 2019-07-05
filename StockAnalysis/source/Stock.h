@@ -56,6 +56,10 @@ public:
   void PushRTStockData(CStockRTDataPtr pData);
   CStockRTDataPtr PopRTStockData(void);
   long GetRTDataDequeSize(void);
+
+  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
+  void SetDayLineNeedSavingFlag(bool fFlag);
+  bool IsDayLineNeedSaving(void);
 		
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
@@ -72,7 +76,6 @@ public:
 	short			m_nHand;									// 每手股数
 
 	bool			m_fDayLineLoaded;					// 是否装入了日线数据
-  bool      m_fDayLineNeededSaving;   // 日线数据是否需要存储
 
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
 
@@ -144,7 +147,10 @@ public:
   long                  m_lCurrentCanselSellVolume;
   long                  m_lCurrentCanselBuyVolume;
 protected:
-  
+
+  bool      m_fDayLineNeededSaving;   // 日线数据是否需要存储
+  CCriticalSection m_DayLineNeedSacingLock;
+
   deque<CStockRTDataPtr>		m_dequeRTStockData;  // 实时数据队列
   CCriticalSection          m_RTDataLock;   // 实时数据队列的同步锁
 

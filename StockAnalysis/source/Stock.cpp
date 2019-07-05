@@ -281,7 +281,7 @@ bool CStock::CalculateRTData(void) {
                 break;
               }
               str += str1;
-              gl_systemMessage.PushWarningMessage(str);
+              gl_systemMessage.PushWarningMessage(str); // 采用同步机制传送信息
             }
           }
         }
@@ -657,6 +657,28 @@ long CStock::GetRTDataDequeSize(void)
     return lCount;
   }
   return 0;
+}
+
+void CStock::SetDayLineNeedSavingFlag(bool fFlag)
+{
+  CSingleLock singleLock(&m_DayLineNeedSacingLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fDayLineNeededSaving = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CStock::IsDayLineNeedSaving(void)
+{
+  CSingleLock singleLock(&m_DayLineNeedSacingLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag = m_fDayLineNeededSaving;
+    singleLock.Unlock();
+    return fFlag;
+  }
+  return false;
 }
 
 #ifdef _DEBUG

@@ -59,7 +59,7 @@ bool CalculateOneDayRelativeStrong(long lDay) {
   long lMonth = lDay / 100 - lYear * 100;
   long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
-  gl_stDayLineInquire.fCalculatingRelativeStrongInProcess = true;
+  gl_systemStatus.SetCalculateRSInProcess(true);
 
   for (j = 0; j < 30; j++) pch[j] = 0x000;
 
@@ -126,7 +126,7 @@ bool CalculateOneDayRelativeStrong(long lDay) {
   strTemp = buffer;
   gl_systemMessage.PushFindMessage(strTemp);    // 采用同步机制报告信息
 
-  gl_stDayLineInquire.fCalculatingRelativeStrongInProcess = false; // 此处需要采用同步机制修改，采用信号标识。
+  gl_systemStatus.SetCalculateRSInProcess(false);
   return(true);
 }
 
