@@ -48,7 +48,6 @@ END_MESSAGE_MAP()
 CStockAnalysisView::CStockAnalysisView() noexcept
 {
 	// TODO: 在此处添加构造代码
-  m_fCreateMemoryDC = false;
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;
   m_lDataShowType = 0;
@@ -140,7 +139,6 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
   int y7 = y6 + 20, y8 = y7 + 20, y9 = y8 + 30, y10 = y9 + 20, y11 = y10 + 20;
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
-  crBefore = pdc->SetBkColor(crYellow);
   crBefore = pdc->SetBkColor(crYellow);
   pStock = gl_sMarket.GetShowStock();
 
@@ -363,33 +361,15 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
   pdc = GetDC();
   CBitmap * pOldBitmap = nullptr;
 
-  // create memory DC
-  if (!m_fCreateMemoryDC) {
-    m_MemoryDC.CreateCompatibleDC(pdc);
-    m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
-    m_MemoryDC.SetBkColor(RGB(0, 0, 0));
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
-    m_fCreateMemoryDC = TRUE;
-  }
-
   //UpdateShowBuffer();
 
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data
     if (gl_sMarket.GetShowStock() == NULL) return;
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
-    ShowStockDayLine(&m_MemoryDC);
-    pdc->BitBlt(0, 0, 1920, 1200, &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
+    ShowStockDayLine(pdc);
     break;
   case 2:	// show realtime stock data
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
-    ShowRealtimeStockData(&m_MemoryDC);
-    pdc->BitBlt(0, 0, 1920, 1200,
-      &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
+    ShowRealtimeStockData(pdc);
     break;
   default:
     break;
@@ -407,7 +387,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
   // TODO:  在此添加您专用的创建代码
   GetClientRect(&m_rectClient);
 
-  m_uIdTimer = SetTimer(3, 500, nullptr);     // 200毫秒每次调度，用于从股票数据提供网站读取数据。
+  m_uIdTimer = SetTimer(3, 500, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
   if (m_uIdTimer == 0) {
     CString str;
   }
