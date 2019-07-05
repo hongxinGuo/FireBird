@@ -861,7 +861,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   //更新状态条
   if (gl_sMarket.IsCurrentStockChanged()) {
+    m_wndStatusBar.SetPaneBackgroundColor(2, COLORREF(RGB(0, 0, 0)));
+    m_wndStatusBar.SetPaneTextColor(2, COLORREF(RGB(255,255,0)));
     m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_sMarket.m_pCurrentStock->m_strStockCode);
+    m_wndStatusBar.SetPaneTextColor(3, COLORREF(RGB(255, 255, 0)));
     m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_sMarket.m_pCurrentStock->m_strStockName);
   }
   CString str;
@@ -874,6 +877,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   char buffer[30];
   sprintf_s(buffer, "%02d:%02d:%02d", gl_tm.tm_hour, gl_tm.tm_min, gl_tm.tm_sec);
   str = buffer;
+  m_wndStatusBar.SetPaneTextColor(4, COLORREF(RGB(255, 255, 0)));
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
 
   CMDIFrameWndEx::OnTimer(nIDEvent);

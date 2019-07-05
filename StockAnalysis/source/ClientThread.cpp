@@ -43,53 +43,47 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
   return 6;
 }
 
-UINT ClientThreadCalculatingRelativeStrong(LPVOID pParam) {
-  long lCurrentDay = gl_lOption_CalculatingRelativeStrongStartDay;
-  long lYear = lCurrentDay / 10000;
-  long lMonth = lCurrentDay / 100 - lYear * 100;
-  long lDay = lCurrentDay - lYear * 10000 - lMonth * 100;
-  CTime timeStart(lYear, lMonth, lDay, 12, 0, 0);
-  CTimeSpan span(1, 0, 0, 0);
-  CTime timeCurrent;
-  bool Done = false;
-
-  while (!Done) {
-    timeCurrent -= span;
-    lCurrentDay = timeCurrent.GetYear() * 10000 + timeCurrent.GetMonth() * 100 + timeCurrent.GetDay();
-    switch (timeCurrent.GetDayOfWeek()) {
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-      CalculateOneDayRelativeStrong(lCurrentDay);
-      break;
-    case 1:
-    case 7:
-      break;
-    default:
-      ASSERT(0);
-      break;
-    }
-    gl_lOption_CalculatingRelativeStrongStartDay = lCurrentDay;
-    if (gl_fExiting) break;
-    if (gl_fExitingCalculatingRelativeStrong) break;
-    if (lCurrentDay <= 19900101) break;
-  }
-
-  return 3;
-}
-
-
-
+///////////////////////////////////////////////////////////////////////////////////
+//
+// 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
+//
+// 
+///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
   long year = gl_lRelativeStrongEndDay / 10000;
   long month = gl_lRelativeStrongEndDay / 100 - year * 100;
   long day = gl_lRelativeStrongEndDay - year * 10000 - month * 100;
 
-  CTime ctStart(year, month, day, 12, 0, 0);
+  CTime ctCurrent(year, month, day, 12, 0, 0);
 
-  CalculateRelativeStrong(ctStart);
+  DWORD dwToday = gl_lRelativeStrongEndDay;
+
+  CTimeSpan oneDay(1, 0, 0, 0);
+
+  if (dwToday >= gl_lToday) return(true);
+
+  time_t tStart, tEnd;
+  time(&tStart);
+  do {
+    gl_lRelativeStrongEndDay = dwToday; // 设置最后日期。
+    if ((ctCurrent.GetDayOfWeek() != 1) // sunday
+      && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
+      CalculateOneDayRelativeStrong(dwToday);
+    }
+    if (gl_fExitingCalculatingRelativeStrong) return false;
+    if (gl_fExiting) return true;
+    ctCurrent += oneDay;
+    dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
+  } while (dwToday < gl_lToday);
+  time(&tEnd);
+  long tDiffer = tEnd - tStart;
+  long hour = tDiffer / 3600;
+  long min = tDiffer / 60 - hour * 60;
+  long second = tDiffer - hour * 3600 - min * 60;
+  char buffer[100];
+  sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
+  CString str = buffer;
+  gl_systemMessage.PushFindMessage(str);
 
   return 1;
 }

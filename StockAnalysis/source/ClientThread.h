@@ -11,6 +11,5 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);
 UINT ClientThreadCompileTodayStocks(LPVOID pParam);
 UINT ClientThreadSaveDayLineProc(LPVOID pParam);
 UINT ClientthreadLoadDayLineProc(LPVOID pParam);
-UINT ClientThreadCalculatingRelativeStrong(LPVOID pParam);
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam);
 UINT ClientthreadLoadDayLineProc(LPVOID pParam);

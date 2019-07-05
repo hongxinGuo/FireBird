@@ -124,43 +124,9 @@ bool CalculateOneDayRelativeStrong(long lDay) {
   sprintf_s(buffer, "%4d年%2d月%2d日的股票相对强度计算完成", lYear, lMonth, lDayOfMonth);
   CString strTemp;
   strTemp = buffer;
-  gl_systemMessage.PushFindMessage(strTemp);
+  gl_systemMessage.PushFindMessage(strTemp);    // 采用同步机制报告信息
 
-  gl_stDayLineInquire.fCalculatingRelativeStrongInProcess = false;
-  return(true);
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////
-//
-// 计算从19900101开始到ctStart的日线相对强度。
-//
-//////////////////////////////////////////////////////////////////////////////////
-bool CalculateRelativeStrong(CTime ctStart) {
-  CString strSQL;
-  DWORD dwToday = 0;
-  CString strDay;
-
-
-  CTimeSpan oneDay(1, 0, 0, 0);
-  CTime ctCurrent;
-  dwToday = ctStart.GetYear() * 10000 + ctStart.GetMonth() * 100 + ctStart.GetDay();
-
-  if (dwToday >= gl_lToday) return(true);
-
-  ctCurrent = ctStart;
-  do {
-    gl_lRelativeStrongEndDay = dwToday; // 设置最后日期。
-    if ((ctCurrent.GetDayOfWeek() != 1) // sunday
-      && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
-      CalculateOneDayRelativeStrong(dwToday);
-    }
-    if (gl_fExitingCalculatingRelativeStrong) return false;
-    if (gl_fExiting) return true;
-    ctCurrent += oneDay;
-    dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (dwToday < gl_lToday);
-
+  gl_stDayLineInquire.fCalculatingRelativeStrongInProcess = false; // 此处需要采用同步机制修改，采用信号标识。
   return(true);
 }
 
