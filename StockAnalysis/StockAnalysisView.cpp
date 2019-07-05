@@ -361,24 +361,10 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
-  CDC * pdc;
-  pdc = GetDC();
-  CBitmap * pOldBitmap = nullptr;
-
   //UpdateShowBuffer();
 
-  switch (m_iCurrentShowType) {
-  case 1: // show day line stock data
-    if (gl_sMarket.GetShowStock() == NULL) return;
-    ShowStockDayLine(pdc);
-    break;
-  case 2:	// show realtime stock data
-    ShowRealtimeStockData(pdc);
-    break;
-  default:
-    break;
-  } // switch
-  ReleaseDC(pdc);
+  Invalidate();
+
   CView::OnTimer(nIDEvent);
 }
 
