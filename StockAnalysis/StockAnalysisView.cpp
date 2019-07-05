@@ -274,7 +274,11 @@ void CStockAnalysisView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
+  CRect rect;
+  GetClientRect(&rect);
 	// TODO: 在此处为本机数据添加绘制代码
+  pDC->SetBkColor(COLORREF(RGB(0, 0, 0)));
+  pDC->BitBlt(0, 0, rect.Width(), rect.Height(), NULL, 0, 0, BLACKNESS);
   switch (m_lDataShowType) {
   case 0: // 显示实时数据
     ShowRealtimeStockData(pDC);

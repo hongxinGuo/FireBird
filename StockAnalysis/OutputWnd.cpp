@@ -80,7 +80,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
   bNameValid = strTabName.LoadString(IDS_TRACE1_TAB);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputTrace1, strTabName, (UINT)3);
+  m_wndTabs.AddTab(&m_wndOutputTrace1, strTabName, (UINT)4);
 
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据

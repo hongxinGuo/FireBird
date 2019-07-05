@@ -47,11 +47,11 @@ CString CSystemMessage::PopOutputMessage(void)
 CString CSystemMessage::PopDataBaseMessage(void)
 {
   CString str;
-  CSingleLock singleLock(&m_OutputLock);
+  CSingleLock singleLock(&m_DataBaseLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    str = m_dequeOutputMessage.front();
-    m_dequeOutputMessage.pop_front();
+    str = m_dequeDataBaseMessage.front();
+    m_dequeDataBaseMessage.pop_front();
     singleLock.Unlock();
     return str;
   }
