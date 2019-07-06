@@ -37,52 +37,18 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\Repos\jpeg-9c;$(SolutionDir)\DACView\Source;$(SolutionDir)\DACView\Source\Objects;$(SolutionDir)\DACView\Source\Units;$(SolutionDir)\DACView\Source\测试用;$(SolutionDir)\DACView\UnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\hxguo\source\Repos\jpeg-9c\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Dacview.vcxproj">
-      <Project>{4ee2a70c-63ce-47a8-a6f1-1f9aebe4d571}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\CurrentTime.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\MutualLock.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\Stock.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockID.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="StockTest.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
