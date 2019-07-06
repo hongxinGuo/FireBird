@@ -47,11 +47,42 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CurrentTime.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\MutualLock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Stock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockID.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
-    <Import Project="..\..\packages\boost.1.70.0.0\build\boost.targets" Condition="Exists('..\..\packages\boost.1.70.0.0\build\boost.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +123,7 @@
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>jpeg64.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <GenerateMapFile>true</GenerateMapFile>
@@ -138,7 +169,6 @@
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
-    <Error Condition="!Exists('..\..\packages\boost.1.70.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost.1.70.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>
