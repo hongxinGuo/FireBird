@@ -44,9 +44,7 @@ public:
 protected:
 protected:
   UINT      m_uIdTimer;
-  int       m_iCurrentShowType;
-
-  long      m_lDataShowType;    // 当前显示状态（日线或实时。。。）
+  int       m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
 
   CRect			m_rectClient;
 

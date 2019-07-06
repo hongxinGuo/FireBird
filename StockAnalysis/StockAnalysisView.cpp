@@ -50,7 +50,6 @@ CStockAnalysisView::CStockAnalysisView() noexcept
 	// TODO: 在此处添加构造代码
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;
-  m_lDataShowType = 0;
 
   m_fShowRS = false;
   m_fShow3DayRS = true;;
@@ -279,7 +278,7 @@ void CStockAnalysisView::OnDraw(CDC* pDC)
 	// TODO: 在此处为本机数据添加绘制代码
   pDC->SetBkColor(COLORREF(RGB(0, 0, 0)));
   pDC->BitBlt(0, 0, rect.Width(), rect.Height(), NULL, 0, 0, BLACKNESS);
-  switch (m_lDataShowType) {
+  switch (m_iCurrentShowType) {
   case 0: // 显示实时数据
     ShowRealtimeStockData(pDC);
     break;
