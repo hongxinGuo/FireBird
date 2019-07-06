@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StockAnalysis", "StockAnalysis\StockAnalysis.vcxproj", "{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{B59E4FFF-9041-490E-96BF-E492C1DD7C23}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D} = {37404DD5-58A1-46DC-A0A9-23D4FF0E007D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
