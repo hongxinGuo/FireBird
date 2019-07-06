@@ -419,7 +419,6 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   tm_.tm_year = year - 1900;
   tm_.tm_mon = month - 1;
   tm_.tm_mday = day;
-  long lTemp =  year * 10000 + month * 100 + day;
   tm_.tm_hour = hour;
   tm_.tm_min = minute;
   tm_.tm_sec = second;
