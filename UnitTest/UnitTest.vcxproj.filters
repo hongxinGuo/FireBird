@@ -24,9 +24,6 @@
     <ClCompile Include="MarketTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="SystemStatusTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="DayLineTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemStatusTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>
