@@ -45,15 +45,8 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="DayLineTest.cpp" />
-    <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="RTDataTest.cpp" />
-    <ClCompile Include="StockIDTest.cpp" />
     <ClCompile Include="StockTest.cpp" />
-    <ClCompile Include="SystemDequeDataTest.cpp" />
-    <ClCompile Include="SystemMessageTest.cpp" />
-    <ClCompile Include="SystemStatusTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
@@ -137,7 +130,7 @@
       <GenerateMapFile>true</GenerateMapFile>
       <MapExports>true</MapExports>
       <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>false</OptimizeReferences>
+      <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
