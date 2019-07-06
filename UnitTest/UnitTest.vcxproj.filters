@@ -1,21 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="StockTest.cpp">
-      <Filter>测试类</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="pch.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="测试类">
-      <UniqueIdentifier>{8a4f6117-e0d7-460f-8e6c-40110bbbe810}</UniqueIdentifier>
+    <Filter Include="dependency">
+      <UniqueIdentifier>{5b11154d-daeb-45c5-866a-d0e89b85667b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependency">
-      <UniqueIdentifier>{0dfd86ae-dda3-429e-a8d2-403cd9454a66}</UniqueIdentifier>
+    <Filter Include="Test源文件">
+      <UniqueIdentifier>{2ab98a78-c6ad-4adb-af4d-5d58250ca9b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,85 +13,90 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\CurrentTime.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\MutualLock.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\Stock.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockID.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj">
-      <Filter>Dependency</Filter>
+      <Filter>dependency</Filter>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StockTest.cpp">
+      <Filter>Test源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include"afxdb.h"
+
 // 代码生成在 2019年6月2日, 5:10
 
 class CSetDayLine : public CRecordset
