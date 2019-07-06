@@ -24,7 +24,7 @@
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -45,8 +45,15 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="DayLineTest.cpp" />
+    <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="RTDataTest.cpp" />
+    <ClCompile Include="StockIDTest.cpp" />
     <ClCompile Include="StockTest.cpp" />
+    <ClCompile Include="SystemDequeDataTest.cpp" />
+    <ClCompile Include="SystemMessageTest.cpp" />
+    <ClCompile Include="SystemStatusTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />

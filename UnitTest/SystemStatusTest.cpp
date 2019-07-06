@@ -2,7 +2,7 @@
 #include"pch.h"
 
 #include"SystemStatus.h"
-/*
+
 namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestIsCalculateRSInProcess) {
     CSystemStatus status;
@@ -12,4 +12,3 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(status.IsCalculateRSInProcess());
   }
 }
-*/
