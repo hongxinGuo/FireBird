@@ -41,8 +41,8 @@ public:
 	bool IsMinLineUpdated( void ) { return ( m_fMinLineUpdated ); }
 	void SetMinLineUpdated( bool fUpdate ) { m_fMinLineUpdated = fUpdate; }
 
-	bool IsDayKLineUpdated( void ) { return ( m_fDayKLineUpdated ); }
-	void SetDayKLineUpdated( bool fUpdate ) { m_fDayKLineUpdated = fUpdate; }
+	bool IsDayLineUpdated( void ) { return ( m_fDayKLineUpdated ); }
+	void SetDayLineUpdated( bool fUpdate ) { m_fDayKLineUpdated = fUpdate; }
 
 	void UpdataCurrentStatus(CStockRTDataPtr pRTData);
 	bool LoadDayLine(CSetDayLine * psetDayLine);
@@ -148,16 +148,16 @@ public:
   long                  m_lCurrentCanselBuyVolume;
 protected:
 
-  bool      m_fDayLineNeededSaving;   // 日线数据是否需要存储
-  CCriticalSection m_DayLineNeedSacingLock;
+  bool                      m_fDayLineNeededSaving;   // 日线数据是否需要存储
+  CCriticalSection          m_DayLineNeedSacingLock;
 
   deque<CStockRTDataPtr>		m_dequeRTStockData;  // 实时数据队列
   CCriticalSection          m_RTDataLock;   // 实时数据队列的同步锁
 
  	
-	bool			m_fChoiced;									// 此股票是否是自选股票.
-	bool			m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
-	bool			m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
+	bool			                m_fChoiced;									// 此股票是否是自选股票.
+	bool			                m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
+	bool			                m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
 
 };
 
