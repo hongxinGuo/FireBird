@@ -19,7 +19,6 @@ public:
 
 protected:
   deque<CStockRTDataPtr>  m_dequeRTStockData;
-
   CCriticalSection        m_RTDataLock;
 };
 
