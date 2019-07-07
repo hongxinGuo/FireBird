@@ -41,7 +41,7 @@ public :
 
 
 // 数据
-public :
+public:
 	// Serialized data
 	time_t		m_time;									// 交易发生时的时间
 	WORD	    m_wMarket;				      // 市场标示
