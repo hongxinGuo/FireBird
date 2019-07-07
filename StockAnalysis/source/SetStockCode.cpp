@@ -15,7 +15,6 @@ IMPLEMENT_DYNAMIC(CSetStockCode, CRecordset)
 CSetStockCode::CSetStockCode(CDatabase* pdb)
 	: CRecordset(pdb)
 {
-  m_ID = 0;
 	m_Counter = 0;
 	m_StockType = 0;
 	m_StockCode = "";

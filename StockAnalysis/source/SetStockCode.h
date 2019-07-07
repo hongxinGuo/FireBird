@@ -24,7 +24,7 @@ public:
 	long	m_Counter;
 	int	m_StockType;
 	CString	m_StockCode;
-	CString	m_StockName;
+	CStringW	m_StockName;
   long m_DayLineStartDay;   //  日线的起始日
 	long m_DayLineEndDay;     // 从网易历史日线服务器上得到的最新日
   long m_NewestDayLineDay;  // 执行所有日线处理得到的最新日（如果处理了实时数据，则此日期要晚于m_DayLineEndDay
