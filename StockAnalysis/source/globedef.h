@@ -18,6 +18,10 @@ using namespace std;
 #include<deque>
 #include<memory>
 
+// 这两个定义决定使用多字节字符集还是unicode字符集。目前改为使用多字节字符集（因为googletest无法使用unicode）
+#define __USING_UNICODE_CHARSET__
+//#define __USING_ANSI_CHARSET__
+
 class CMarket;
 
 class CStock;

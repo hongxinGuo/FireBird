@@ -89,7 +89,7 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
       strPrice = buffer;
     }
     str += strPrice;
-    pDC->TextOutW(iXStart + 10, iYStart + sizeText.cy * j + 10, str);
+    pDC->TextOut(iXStart + 10, iYStart + sizeText.cy * j + 10, str);
     j++;
   }
 
@@ -110,7 +110,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock,
   sprintf_s(buffer, "%8.3f", pStock->m_dCurrentGuaDanTransactionPrice);
   str = _T("当前挂单成交价格： ");
   str += buffer;
-  pDC->TextOutW(iXStart, iYStart + 10, str);
+  pDC->TextOut(iXStart, iYStart + 10, str);
 
   return true;
 }

@@ -17,7 +17,7 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
 {
 	m_Time = 0;
   m_lMarket = 0;
-	m_StockCode = L"";
+	m_StockCode = "";
 	m_LastClose = 0.0;
 	m_Open = 0;
 	m_High = 0;
@@ -55,18 +55,11 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
 // 储为其他格式或使用其他的用户身份验证。
 CString CSetRealTimeData::GetDefaultConnect()
 {
-  /*
-  CString str;
-  str = _T("DSN=MS Access Database;DBQ=");
-  str += gl_sDataBaseDir;
-  str += _T("RealTimeData.mdb");
-  str += _T(";DefaultDir=");
-  str += gl_sDataBaseDir;
-  str += _T("; DriverId = 25; FIL = MS Access; MaxBufferSize = 4096; PageTimeout = 5; UID = admin; ");
-  return str;
-  */
-
-  return _T("DSN=mysql;MaxBufferSize=4096;PageTimeout=5;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#ifdef __USING_UNICODE_CHARSET__
+  return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=gb2312");
+#endif
 
 	//return _T("DSN=MS Access Database;DBQ=E:\\SmartStockDataBase\\Database\\RealTimeData.mdb;DefaultDir=E:\\SmartStockDataBase\\Database;DriverId=25;FIL=MS Access;MaxBufferSize=4096;PageTimeout=5;UID=admin;");
 }

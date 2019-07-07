@@ -15,27 +15,19 @@ IMPLEMENT_DYNAMIC(CSetChoicedStock, CRecordset)
 CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb)
 {
 	m_Market = 0;
-	m_StockCode = L"";
-	m_StockName = L"";
+	m_StockCode = "";
+	m_StockName = "";
 	m_nFields = 3;
 	m_nDefaultType = dynaset;
 }
 
 CString CSetChoicedStock::GetDefaultConnect()
 {
-  /*
-  CString str;
-  str = _T("DSN=MS Access Database;DBQ=");
-  str += gl_sDataBaseDir;
-  str += _T("StockCode.mdb");
-  str += _T(";DefaultDir=");
-  str += gl_sDataBaseDir;
-  str += _T("; DriverId = 25; FIL = MS Access; MaxBufferSize = 4096; PageTimeout = 5; UID = admin; ");
-  return str;
-  */
-  return _T("DSN=mysql;MaxBufferSize=4096;PageTimeout=5;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-
-  //return _T("DSN=MS Access Database;DBQ=E:\\SmartStockDataBase\\Database\\StockCode.mdb;DefaultDir=E:\\SmartStockDataBase\\Database;DriverId=25;FIL=MS Access;MaxBufferSize=4096;PageTimeout=5;UID=admin;");
+#ifdef __USING_UNICODE_CHARSET__
+  return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=gb2312");
+#endif
 }
 
 CString CSetChoicedStock::GetDefaultSQL()

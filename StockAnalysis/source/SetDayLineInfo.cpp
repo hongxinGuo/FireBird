@@ -18,8 +18,8 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_ID = 0;
   m_Time = 0;
   m_Market = 0;
-  m_StockCode = L"";
-  m_StockName = L"";
+  m_StockCode = "";
+  m_StockName = "";
   m_RelativeStrong = 0;	//相对于总市场的强度
   m_TransactionNumber = 0;
   m_TransactionNumberBelow5000 = 0; // 本日的盘口变化数
@@ -47,7 +47,11 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
 
 CString CSetDayLineInfo::GetDefaultConnect()
 {
+#ifdef __USING_UNICODE_CHARSET__
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=gb2312");
+#endif
 }
 
 CString CSetDayLineInfo::GetDefaultSQL()

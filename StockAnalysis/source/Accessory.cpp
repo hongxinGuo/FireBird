@@ -140,9 +140,11 @@ bool UpdateStockCodeDataBase(void)
     setStockCode.Delete();
     setStockCode.MoveNext();
   }
+  int i = 0;
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.m_pDatabase->BeginTrans();
   for (auto pStockID : gl_vTotalStock) {
+    TRACE("%d\n", i++);
     setStockCode.AddNew();
     setStockCode.m_Counter = pStockID->m_nIndex;
     setStockCode.m_StockType = pStockID->m_wMarket;

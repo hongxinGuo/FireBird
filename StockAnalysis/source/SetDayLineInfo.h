@@ -21,8 +21,8 @@ public:
   long m_ID;  // 索引用，自动生成。
   long	m_Time;	//成交时间，以日期表示，如20090222即2009年2月22日
   long	m_Market;	//市场（上海，深圳）
-  CStringW	m_StockCode;	//六位股票代码
-  CStringW	m_StockName;	//六位股票代码
+  CString	m_StockCode;	//六位股票代码
+  CString	m_StockName;	//六位股票代码
   double	m_RelativeStrong;	//相对于总市场的强度
   long  m_TransactionNumber; // 本日的盘口变化数
   long  m_TransactionNumberBelow5000; // 本日的盘口变化数
