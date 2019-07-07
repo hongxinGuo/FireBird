@@ -10,12 +10,36 @@
     <Filter Include="Test源文件\实现类">
       <UniqueIdentifier>{27c6973c-ec73-41f0-b043-4d04d6e6b343}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\数据库">
+      <UniqueIdentifier>{4de35834-a737-4d99-87e9-8b8bceb44dc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="StockTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="DayLineTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="RTDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="StockIDTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemDequeDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemMessageTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemStatusTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

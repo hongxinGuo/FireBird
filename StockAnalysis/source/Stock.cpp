@@ -253,7 +253,7 @@ bool CStock::CalculateRTData(void) {
           if( gl_sMarket.m_pCurrentStock != nullptr) {
             if (gl_sMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
               CTime ctime(pRTData->m_time);
-              sprintf_s(buffer, "%02d:%02d:%02d %S %d股成交于%10.3f", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), static_cast<LPCWSTR>(m_strStockCode),
+              sprintf_s(buffer, "%02d:%02d:%02d %S %d股成交于%10.3f", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode,
                 m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
               str = buffer;
               CString str1;

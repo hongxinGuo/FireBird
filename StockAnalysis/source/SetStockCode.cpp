@@ -15,11 +15,10 @@ IMPLEMENT_DYNAMIC(CSetStockCode, CRecordset)
 CSetStockCode::CSetStockCode(CDatabase* pdb)
 	: CRecordset(pdb)
 {
-  m_ID = 0;
 	m_Counter = 0;
 	m_StockType = 0;
-	m_StockCode = L"";
-	m_StockName = L"";
+	m_StockCode = "";
+	m_StockName = "";
   m_DayLineStartDay = 19900101;
 	m_DayLineEndDay = 19900101;
   m_NewestDayLineDay = 19900101;
@@ -33,17 +32,11 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 // 储为其他格式或使用其他的用户身份验证。
 CString CSetStockCode::GetDefaultConnect()
 {
-  /*
-  CString str;
-  str = _T("DSN=MS Access Database;DBQ=");
-  str += gl_sDataBaseDir;
-  str += _T("StockCode.mdb");
-  str += _T(";DefaultDir=");
-  str += gl_sDataBaseDir;
-  str += _T("; DriverId = 25; FIL = MS Access; MaxBufferSize = 4096; PageTimeout = 5; UID = admin; ");
-  return str;
-  */
+#ifdef __USING_UNICODE_CHARSET__
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=gb2312");
+#endif
 
   //MaxBufferSize=4096;PageTimeout=5;return _T("DSN=MS Access Database;DBQ=E:\\SmartStockDataBase\\Database\\StockCode.mdb;DefaultDir=E:\\SmartStockDataBase\\Database;DriverId=25;FIL=MS Access;MaxBufferSize=4096;PageTimeout=5;UID=admin;");
 

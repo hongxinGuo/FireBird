@@ -21,8 +21,8 @@ public:
 // 以同时支持 Unicode 和这些转换)。
 
 	long	m_Market;
-	CStringW	m_StockCode;
-	CStringW	m_StockName;
+	CString	m_StockCode;
+	CString	m_StockName;
 
 // 重写
 	// 向导生成的虚函数重写

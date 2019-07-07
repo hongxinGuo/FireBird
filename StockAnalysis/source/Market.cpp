@@ -273,7 +273,7 @@ bool CMarket::CalculateRTData(void)
   for ( auto pStock : m_vActiveStock) {
     if( pStock != nullptr) pStock->CalculateRTData();
     else {
-      TRACE(_T("警告：当日活跃股票池中发现nulltr, %S"), static_cast<LPCWSTR>(pStock->m_strStockCode));
+      TRACE(_T("警告：当日活跃股票池中发现nulltr, %S"), pStock->m_strStockCode);
     }
     if (gl_fExiting) return false;
   }
@@ -341,7 +341,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 	while (iCount < lLength) {
 		pDayLine = make_shared<CDayLine>();
 		if (!ProcessOneItemDayLineData(pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
-			TRACE("%S 日线数据出错\n", static_cast<LPCWSTR>(pDayLine->GetStockCode()));
+			TRACE("%S 日线数据出错\n", pDayLine->GetStockCode());
       // 清除已暂存的日线数据
 			vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
@@ -360,7 +360,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 			pStock->m_strStockCode = pDayLine->GetStockCode();
 			pStock->m_strStockName = pDayLine->GetStockName();
 			strTemp = pStock->m_strStockCode.Right(6); // 截取股票代码右边的六个数字
-			pStock->m_iStockCode = _wtoi(strTemp.GetBuffer());
+			pStock->m_iStockCode = atoi(strTemp.GetBuffer());
 			lIndex = m_lTotalActiveStock - 1;
 			m_vActiveStock.push_back(pStock);
       ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);

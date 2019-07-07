@@ -617,7 +617,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%S日线数据为%d字节\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading), gl_stDayLineInquire.lByteRead);
+        TRACE("股票%S日线数据为%d字节\n", gl_strCurrentStockDownLoading, gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
         gl_sMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
@@ -641,7 +641,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
       strRead += _T("&start=");
       strRead += strStartDay;
       strRead += _T("&end=");
-      sprintf_s(buffer2, "%8d", gl_lLastTradeDay);
+      sprintf_s(buffer2, "%8d", gl_lToday);
       strRead += buffer2;
       strRead += gl_strDayLinePostfix;
 
