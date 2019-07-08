@@ -19,11 +19,12 @@ static char THIS_FILE[] = __FILE__;
 
 CMarket::CMarket ( void ) : CObject() {
   static int siInstance = 0;
-  m_fLoadedSelectedStock = false;
   if (++siInstance > 1) {
     TRACE("市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
+
+  m_fLoadedSelectedStock = false;
 	m_fMarketReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
   m_fCurrentEditStockChanged = false;
@@ -343,7 +344,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 	while (iCount < lLength) {
 		pDayLine = make_shared<CDayLine>();
 		if (!ProcessOneItemDayLineData(pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
-			TRACE("%s 日线数据出错\n", pDayLine->GetStockCode());
+			TRACE("%s 日线数据出错\n", (LPCSTR)(pDayLine->GetStockCode()));
       // 清除已暂存的日线数据
 			vTempDayLine.clear();
 			return false; // 数据出错，放弃载入

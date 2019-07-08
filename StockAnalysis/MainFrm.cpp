@@ -105,7 +105,8 @@ CMainFrame::CMainFrame() noexcept
   m_fGetDayLineData = true;
   m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
-  
+  m_uIdTimer = 0;
+
   CSetStockCode setStockCode;
 
   setStockCode.Open();

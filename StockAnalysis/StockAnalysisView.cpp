@@ -61,6 +61,7 @@ CStockAnalysisView::CStockAnalysisView() noexcept
   m_fShow60DayRS = true;
   m_fShow120DayRS = true;
 
+  m_uIdTimer = 0;
 }
 
 CStockAnalysisView::~CStockAnalysisView()

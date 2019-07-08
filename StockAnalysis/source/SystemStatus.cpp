@@ -6,6 +6,7 @@ CSystemStatus::CSystemStatus() {
   m_fReadingInProcess = false;
   m_fDataBaseInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
+  m_fReceiveFromWebInProcess = false;
   m_fRTDataReady = false;
   m_fDayLineDataReady = false;
 }

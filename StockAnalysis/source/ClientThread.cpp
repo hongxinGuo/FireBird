@@ -222,9 +222,6 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
 
-  long lHour = gl_lTime / 10000;
-  //ASSERT(lHour >= 15); // 下午三点后开始执行。
-
   time_t time = 0;
   switch (gl_tm.tm_wday) {
   case 6: // 星期六
