@@ -53,6 +53,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
 //  ON_WM_CHAR()
 //  ON_WM_KEYUP()
+ON_WM_CHAR()
+ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -997,3 +999,116 @@ void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
   }
 }
 
+///////////////////////////////////////////////////////////////////
+//
+// 转发WM_CHAR和WM_KEYUP梁消息至本主框架，由主框架处理之。
+//
+//
+//////////////////////////////////////////////////////////////////
+BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
+{
+  // TODO: 在此添加专用代码和/或调用基类
+  if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) {
+    SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
+  }
+
+  return CMDIFrameWndEx::PreTranslateMessage(pMsg);
+}
+
+
+void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+  StockIDPtr pStockID;
+  CStockPtr pStock;
+  CString strTemp;
+
+  switch (nChar) {
+  case '0':
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+  case 's':
+  case 'h':
+  case 'z':
+    if (m_lCurrentPos < 10) {
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
+      m_lCurrentPos++;
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+    }
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+    break;
+  case 0x00d: // 回车
+    strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+    if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+      gl_ChinaStockMarket.SetShowStock(pStock);
+      //m_fNeedUpdateTitle = true;
+      Invalidate();
+    }
+    gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
+    m_lCurrentPos = 0;
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+    break;
+  case 0x008: // back space
+    if (m_lCurrentPos > 0) {
+      m_lCurrentPos--;
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+    }
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+    break;
+  default:
+    break;
+  }
+
+  CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
+}
+
+
+void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+  CStockPtr pStock;
+  long lIndex = 0;
+  CString strTemp;
+  StockIDPtr pStockID;
+
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    switch (nChar) {
+    case 45: // Ins 加入自选股票 
+      pStock = gl_ChinaStockMarket.GetShowStock();
+      pStock->SetChoicedFlag(true);
+      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->m_strStockCode, pStockID)) {
+        gl_vStockChoice.push_back(pStockID);
+      }
+      break;
+    case 33: // PAGE UP
+      // last stock
+      pStock = gl_ChinaStockMarket.GetShowStock();
+      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      if (lIndex > 0) lIndex--;
+      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+      gl_ChinaStockMarket.SetShowStock(pStock);
+      //m_fNeedUpdateTitle = true;
+      break;
+    case 34: // PAGE DOWN
+      // next stock
+      pStock = gl_ChinaStockMarket.GetShowStock();
+      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      if (lIndex < gl_ChinaStockMarket.GetTotalStock()) lIndex++;
+      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+      gl_ChinaStockMarket.SetShowStock(pStock);
+      //m_fNeedUpdateTitle = true;
+      break;
+    default:
+      break;
+    }
+  }
+
+  CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
+}

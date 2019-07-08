@@ -41,8 +41,8 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
 //  ON_WM_CHAR()
 //  ON_WM_KEYUP()
   ON_WM_SIZE()
-  ON_WM_CHAR()
-  ON_WM_KEYUP()
+//  ON_WM_CHAR()
+//  ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -396,104 +396,6 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //   BackSpace : 删除缓冲区内的一个数字．
 //
 //////////////////////////////////////////////////////////////////////////////////  
-
-
-void CStockAnalysisView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  // TODO: 在此添加消息处理程序代码和/或调用默认值
-  StockIDPtr pStockID;
-  CStockPtr pStock;
-  CString strTemp;
-
-  switch (nChar) {
-  case '0':
-  case '1':
-  case '2':
-  case '3':
-  case '4':
-  case '5':
-  case '6':
-  case '7':
-  case '8':
-  case '9':
-  case 's':
-  case 'h':
-  case 'z':
-    if (m_lCurrentPos < 10) {
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
-      m_lCurrentPos++;
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-    }
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-    break;
-  case 0x00d: // 回车
-    strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
-    if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
-     gl_ChinaStockMarket.SetShowStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      Invalidate();
-    }
-    gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
-    m_lCurrentPos = 0;
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-    break;
-  case 0x008: // back space
-    if (m_lCurrentPos > 0) {
-      m_lCurrentPos--;
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-    }
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-    break;
-  default:
-    break;
-  }
-  CView::OnChar(nChar, nRepCnt, nFlags);
-}
-
-
-void CStockAnalysisView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CStockPtr pStock;
-  long lIndex = 0;
-  CString strTemp;
-  StockIDPtr pStockID;
-
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    switch (nChar) {
-    case 45: // Ins 加入自选股票 
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      pStock->SetChoicedFlag(true);
-      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->m_strStockCode, pStockID)) {
-        gl_vStockChoice.push_back(pStockID);
-      }
-      break;
-    case 33: // PAGE UP
-      // last stock
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
-      if (lIndex > 0) lIndex--;
-      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
-      gl_ChinaStockMarket.SetShowStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      break;
-    case 34: // PAGE DOWN
-      // next stock
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
-      if (lIndex < gl_ChinaStockMarket.GetTotalStock()) lIndex++;
-      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
-      gl_ChinaStockMarket.SetShowStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      break;
-    default:
-      break;
-    }
-  } 
-  
-  CView::OnKeyUp(nChar, nRepCnt, nFlags);
-}
-
 
 void CStockAnalysisView::OnSize(UINT nType, int cx, int cy)
 {

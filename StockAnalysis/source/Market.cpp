@@ -590,6 +590,11 @@ bool CMarket::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long 
   return true;
 }
 
+bool CMarket::SchedulingTask(void)
+{
+  return false;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 得到股票的简称

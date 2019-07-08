@@ -68,8 +68,6 @@ public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
   afx_msg void OnSize(UINT nType, int cx, int cy);
-  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-  afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本

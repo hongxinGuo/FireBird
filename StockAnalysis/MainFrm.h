@@ -53,6 +53,8 @@ public:
 protected:
   UINT                    m_uIdTimer;
 
+  long                    m_lCurrentPos;
+
   // 数据库
   CString									m_strDatabaseDir;
 
@@ -95,6 +97,9 @@ public:
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnRebuildDaylineDatabase();
   afx_msg void OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI);
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 
