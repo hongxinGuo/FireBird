@@ -61,8 +61,11 @@ public:
                             CStockPtr pStock, vector<CDayLinePtr> & vectorDayLine, bool fReversed = true );
   bool          SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine);
 
+  bool          IsTodayStockCompiled(void) { return m_fTodayStockCompiled; }
+  void          SetTodayStockCompiledFlag(bool fFlag) { m_fTodayStockCompiled = fFlag; }
+
   // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool          SaveRTData( CSetRealTimeData * psetDayLine );
+  bool          SaveRTData(void);
 
 	  // 日线数据处理函数，将读取到的日线数据存入数据库中
   bool          SaveDayLineData(void);
@@ -99,15 +102,17 @@ public :
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];
   bool                        m_fCurrentEditStockChanged;
-
+  bool                        m_fMarketOpened;          // 是否开市
 protected :
+  bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
+
 	map<CString, long>          m_mapActiveStockToIndex;		// 将市场活跃的股票代码映射为偏移量
 	vector<CStockPtr>						m_vActiveStock;									//当天股票数据
 
   long												m_lTotalActiveStock;						// 当天股票总数
-  vector<CStockPtr>::iterator  m_itStock;
+  vector<CStockPtr>::iterator m_itStock;
 
-	vector<CStockPtr>            m_vpSelectedStock;		// 当前选择的股票
+	vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
 	bool												m_fLoadedSelectedStock;
 	
 	bool												m_fMarketReady;					// 市场初始态已经设置好

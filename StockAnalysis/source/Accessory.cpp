@@ -76,7 +76,7 @@ bool CalculateOneDayRelativeStrong(long lDay) {
   setDayKLine.m_pDatabase->BeginTrans();
   iStockNumber = 0;
   while (!setDayKLine.IsEOF()) {
-    if (gl_sMarket.IsAStock(setDayKLine.m_StockCode)) {
+    if (gl_ChinaStockMarket.IsAStock(setDayKLine.m_StockCode)) {
       long lIndex = gl_mapTotalStockToIndex.at(setDayKLine.m_StockCode);
       vStockID.push_back(gl_vTotalStock.at(lIndex));
       vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。

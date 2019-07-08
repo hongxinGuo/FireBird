@@ -31,6 +31,8 @@ CMarket::CMarket ( void ) : CObject() {
 	m_lTotalMarketBuy = m_lTotalMarketSell = 0;
 
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
+
+  m_fTodayStockCompiled = false;
 }
 
 CMarket::~CMarket( ) {
@@ -128,10 +130,10 @@ bool CMarket::IsAStock(CString strStockCode) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsStock( CString strStockCode, CStockPtr & pStock ) {
-	if ( (pStock = gl_sMarket.GetStockPtr( strStockCode )) != NULL ) {
+	if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != NULL ) {
 		return( true );
 	}
-	else if ( (pStock = gl_sMarket.GetStockPtr( strStockCode )) != NULL ) {
+	else if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != NULL ) {
 		return ( true );
 	}
 	else {
@@ -850,19 +852,21 @@ bool CMarket::ClearAllDayLineVector(void)
 //  
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SaveRTData(CSetRealTimeData * psetRT) {
-  ASSERT(!psetRT->IsOpen());
-  psetRT->Open();
-  psetRT->m_pDatabase->BeginTrans();
+bool CMarket::SaveRTData( void ) {
+  CSetRealTimeData setRTData;
+  setRTData.m_strFilter = _T("[ID] = 1");
+
+  setRTData.Open();
+  setRTData.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
     if (pStock != nullptr) {
       if (pStock->m_fActive) {
-        pStock->SaveRealTimeData(psetRT);
+        pStock->SaveRealTimeData(&setRTData);
       }
     }
   }
-  psetRT->m_pDatabase->CommitTrans();
-  psetRT->Close();
+  setRTData.m_pDatabase->CommitTrans();
+  setRTData.Close();
   return(true);
 }
 

@@ -30,7 +30,7 @@ extern CString gl_sCurrentBaseDir;
 extern CString gl_sDataBaseDir;
 extern CString gl_sDataBaseName;
 
-extern CMarket gl_sMarket;        // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
+extern CMarket gl_ChinaStockMarket;        // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
 
 
 extern CString gl_strRTStockSource;
@@ -52,7 +52,6 @@ extern long gl_lLastTradeDay; // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾
 extern long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
 extern tm gl_tm;						  // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
 extern time_t gl_ttime;       // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-extern bool gl_fMarketOpened; // ÊĞ³¡ÊÇ·ñ´¦ÓÚ½»Ò×Ê±¶Î
 
 extern long gl_lRelativeStrongStartDay;
 extern long gl_lRelativeStrongEndDay;

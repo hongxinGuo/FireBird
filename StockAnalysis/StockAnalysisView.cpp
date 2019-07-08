@@ -38,9 +38,11 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
 	ON_WM_RBUTTONUP()
   ON_WM_TIMER()
   ON_WM_CREATE()
+//  ON_WM_CHAR()
+//  ON_WM_KEYUP()
+  ON_WM_SIZE()
   ON_WM_CHAR()
   ON_WM_KEYUP()
-  ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -97,8 +99,8 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
 }
 
 bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock, int iXStart, int iYStart) {
-  if (gl_sMarket.GetTotalStock() > 0) {
-    pStock = gl_sMarket.GetStockPtr(0); // 600000
+  if (gl_ChinaStockMarket.GetTotalStock() > 0) {
+    pStock = gl_ChinaStockMarket.GetStockPtr(0); // 600000
   }
   else return false;
 
@@ -139,7 +141,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
   crBefore = pdc->SetBkColor(crYellow);
-  pStock = gl_sMarket.GetShowStock();
+  pStock = gl_ChinaStockMarket.GetShowStock();
 
   ppen = pdc->SelectObject(&penRed);
   ptCurrent.x = iTextStart - 5;
@@ -174,8 +176,8 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
   pdc->LineTo(ptCurrent);
   pdc->SelectObject(ppen);
 
-  if (gl_sMarket.m_pCurrentStock != nullptr) {
-    ShowGuaDan(pdc, gl_sMarket.m_pCurrentStock, 10, 10, 500);
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    ShowGuaDan(pdc, gl_ChinaStockMarket.m_pCurrentStock, 10, 10, 500);
 
     //ShowCurrentTransactionInfo(pdc, gl_sMarketm_pCurrentStock, 200, 10);
   }
@@ -193,9 +195,9 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   CPoint ptCurrent;
 
 
-  if (gl_sMarket.m_pCurrentStock == nullptr) return;
-  if (!gl_sMarket.m_pCurrentStock->m_fDayLineLoaded) return;
-  long lDayLineNumber = gl_sMarket.m_pCurrentStock->m_vDayLine.size();
+  if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
+  if (!gl_ChinaStockMarket.m_pCurrentStock->m_fDayLineLoaded) return;
+  long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
 
   long lXHigh = m_rectClient.bottom / 2;
   long lXLow = m_rectClient.bottom;
@@ -206,7 +208,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   pDC->MoveTo(m_rectClient.right, m_rectClient.bottom * 3 / 4);
   pDC->LineTo(0, m_rectClient.bottom * 3 / 4);
   // 显示各相对强度
-  vector<CDayLinePtr>::iterator it = gl_sMarket.m_pCurrentStock->m_vDayLine.end();
+  vector<CDayLinePtr>::iterator it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
 
   // 画相对强度
   if (m_fShowRS) {
@@ -214,7 +216,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     it--;
     y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right, y);
-    for (; it != gl_sMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 3 * i++, y);
       if (m_rectClient.right <= 3 * i) break; // 画到
@@ -223,12 +225,12 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
     pDC->SelectObject(&penYellow);
-    it = gl_sMarket.m_pCurrentStock->m_vDayLine.end();
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 0;
     it--;
     y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right, y);
-    for (; it != gl_sMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 3 * i++, y);
       if (3 * i > lDayLineNumber) break;
@@ -239,12 +241,12 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
     pDC->SelectObject(&penYellow);
-    it = gl_sMarket.m_pCurrentStock->m_vDayLine.end();
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 0;
     it--;
     y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right, y);
-    for (; it != gl_sMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 3 * i++, y);
       if (3 * i > lDayLineNumber) break;
@@ -418,29 +420,29 @@ void CStockAnalysisView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   case 'h':
   case 'z':
     if (m_lCurrentPos < 10) {
-      gl_sMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
       m_lCurrentPos++;
-      gl_sMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
     }
-    gl_sMarket.m_fCurrentEditStockChanged = true;
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
     break;
   case 0x00d: // 回车
-    strTemp = gl_sMarket.m_aStockCodeTemp;
-    if (gl_sMarket.IsStock(strTemp, pStock)) {
-      gl_sMarket.SetShowStock(pStock);
+    strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+    if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+     gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       Invalidate();
     }
-    gl_sMarket.m_aStockCodeTemp[0] = 0x000;
+    gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
     m_lCurrentPos = 0;
-    gl_sMarket.m_fCurrentEditStockChanged = true;
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
     break;
   case 0x008: // back space
     if (m_lCurrentPos > 0) {
       m_lCurrentPos--;
-      gl_sMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
     }
-    gl_sMarket.m_fCurrentEditStockChanged = true;
+    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
     break;
   default:
     break;
@@ -457,37 +459,39 @@ void CStockAnalysisView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CString strTemp;
   StockIDPtr pStockID;
 
-  if (gl_sMarket.m_pCurrentStock != nullptr) {
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
     switch (nChar) {
     case 45: // Ins 加入自选股票 
-      pStock = gl_sMarket.GetShowStock();
+      pStock = gl_ChinaStockMarket.GetShowStock();
       pStock->SetChoicedFlag(true);
-      if (gl_sMarket.GetStockIDPtr(pStock->m_strStockCode, pStockID)) {
+      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->m_strStockCode, pStockID)) {
         gl_vStockChoice.push_back(pStockID);
       }
       break;
     case 33: // PAGE UP
       // last stock
-      pStock = gl_sMarket.GetShowStock();
-      gl_sMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      pStock = gl_ChinaStockMarket.GetShowStock();
+      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
       if (lIndex > 0) lIndex--;
-      pStock = gl_sMarket.GetStockPtr(lIndex);
-      gl_sMarket.SetShowStock(pStock);
+      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+      gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       break;
     case 34: // PAGE DOWN
       // next stock
-      pStock = gl_sMarket.GetShowStock();
-      gl_sMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
-      if (lIndex < gl_sMarket.GetTotalStock()) lIndex++;
-      pStock = gl_sMarket.GetStockPtr(lIndex);
-      gl_sMarket.SetShowStock(pStock);
+      pStock = gl_ChinaStockMarket.GetShowStock();
+      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      if (lIndex < gl_ChinaStockMarket.GetTotalStock()) lIndex++;
+      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+      gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       break;
     default:
       break;
     }
-  }  CView::OnKeyUp(nChar, nRepCnt, nFlags);
+  } 
+  
+  CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 
@@ -499,3 +503,4 @@ void CStockAnalysisView::OnSize(UINT nType, int cx, int cy)
   m_rectClient.right = cx;
   m_rectClient.bottom = cy;
 }
+
