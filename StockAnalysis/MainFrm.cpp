@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
   ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
   ON_WM_SYSCOMMAND()
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -960,3 +961,15 @@ void CMainFrame::OnUpdateSaveDaylineData(CCmdUI *pCmdUI)
 }
 
 
+
+
+void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
+{
+  // TODO: 在此添加命令更新用户界面处理程序代码
+  if (gl_sMarket.MarketReady()) {
+    pCmdUI->Enable(true);
+  }
+  else {
+    pCmdUI->Enable(false);
+  }
+}

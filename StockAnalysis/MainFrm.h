@@ -98,6 +98,7 @@ public:
   afx_msg void OnCalculateRelativeStrong();
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnRebuildDaylineDatabase();
+  afx_msg void OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI);
 };
 
 
