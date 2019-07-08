@@ -298,7 +298,7 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
   for (int i = 3; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 3; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d3DayRS = dTempRS / 3;
   }
@@ -307,35 +307,35 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
   for (int i = 5; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 5; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 5;
   }
   for (int i = 10; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 10; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 10;
   }
   for (int i = 30; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 30; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 30;
   }
   for (int i = 60; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 60; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 60;
   }
   for (int i = 120; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 120; j < i; j++) {
-      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->m_dRelativeStrong;
+      dTempRS += gl_sMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
     }
     gl_sMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 120;
   }

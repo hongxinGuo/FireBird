@@ -273,7 +273,7 @@ bool CMarket::CalculateRTData(void)
   for ( auto pStock : m_vActiveStock) {
     if( pStock != nullptr) pStock->CalculateRTData();
     else {
-      TRACE(_T("警告：当日活跃股票池中发现nulltr, %S"), pStock->m_strStockCode);
+      TRACE(_T("警告：当日活跃股票池中发现nulltr, %s\n"), (LPCSTR)pStock->m_strStockCode);
     }
     if (gl_fExiting) return false;
   }
@@ -341,7 +341,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 	while (iCount < lLength) {
 		pDayLine = make_shared<CDayLine>();
 		if (!ProcessOneItemDayLineData(pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
-			TRACE("%S 日线数据出错\n", pDayLine->GetStockCode());
+			TRACE("%s 日线数据出错\n", pDayLine->GetStockCode());
       // 清除已暂存的日线数据
 			vTempDayLine.clear();
 			return false; // 数据出错，放弃载入
@@ -394,7 +394,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
-    if (pDayLine->m_lDay < gl_lToday) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
+    if (pDayLine->GetDay() < gl_lToday) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
       // 当新股第一天上市时，其日线只有一天，而且在这里扔掉了，导致其日线容器为空。处理时注意。
       // 由于是调取gl_lLastTradeDay及之前的日线数据，故而新股的日线容器肯定为空。
       m_vActiveStock.at(lIndex)->m_vDayLine.push_back(pDayLine);
@@ -420,7 +420,6 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPo
   int year = 0, month = 0, day = 0;
 	long lDay = 0;
 	CString str;
-	char * pTestPos = pCurrentPos;
 	i = 0;
 	while (*pCurrentPos != 0x2c) {
 		if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {

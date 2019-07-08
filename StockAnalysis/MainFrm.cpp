@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
   ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
   ON_WM_SYSCOMMAND()
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -617,7 +618,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%S日线数据为%d字节\n", gl_strCurrentStockDownLoading, gl_stDayLineInquire.lByteRead);
+        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)gl_strCurrentStockDownLoading, gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
         gl_sMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
@@ -960,3 +961,15 @@ void CMainFrame::OnUpdateSaveDaylineData(CCmdUI *pCmdUI)
 }
 
 
+
+
+void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
+{
+  // TODO: 在此添加命令更新用户界面处理程序代码
+  if (gl_sMarket.MarketReady()) {
+    pCmdUI->Enable(true);
+  }
+  else {
+    pCmdUI->Enable(false);
+  }
+}

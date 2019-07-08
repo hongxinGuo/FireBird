@@ -26,6 +26,7 @@
 #define IDS_FIND_TAB                    302
 #define IDS_FIND2_TAB                   303
 #define IDS_TRACE1_TAB                  304
+#define IDS_TRACE2_TAB                  305
 #define IDS_EDIT_MENU                   306
 #define ID_COMPILE_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772

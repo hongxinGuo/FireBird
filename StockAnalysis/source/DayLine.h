@@ -23,6 +23,7 @@ public:
 	void		  SetStockCode(CString str) { m_strStockCode = str; }
 	CString   GetStockName(void) { return m_strStockName; }
 	void		  SetStockName(CString str) { m_strStockName = str; }
+
   long		  GetLastClose(void) { return m_lLastClose; }
   void		  SetLastClose(long fValue) { m_lLastClose = fValue; }
   long		  GetOpen(void) { return m_lOpen; }
@@ -43,12 +44,16 @@ public:
 	void		  SetVolume(long long lValue) { m_lVolume = lValue; }
 	long long	GetAmount(void) { return m_lAmount; }
 	void		  SetAmount(long long dValue) { m_lAmount = dValue; }
+
 	long long GetTotalValue(void) { return m_lTotalValue; }
 	void      SetTotalValue(long long dValue) { m_lTotalValue = dValue; }
 	long long GetCurrentValue(void) { return m_lCurrentValue; }
 	void      SetCurrentValue(long long dValue) { m_lCurrentValue = dValue; }
+  double    GetRelativeStrong(void) { return m_dRelativeStrong; }
+  void      SetRelativeStrong(double dValue) { m_dRelativeStrong = dValue; }
   long      GetTransactionNumber(void) { return m_lTransactionNumber; }
   void      SetTransactionNumber(long lValue) { m_lTransactionNumber = lValue; }
+
   long      GetTransactionNumberBelow5000(void) { return m_lTransactionNumberBelow5000; }
   void      SetTransactionNumberBelow5000(long lValue) { m_lTransactionNumberBelow5000 = lValue; }
   long      GetTransactionNumberBelow50000(void) { return m_lTransactionNumberBelow50000; }
@@ -72,8 +77,6 @@ public:
   void		  SetCancelBuyVolume(long fValue) { m_lCancelBuyVolume = fValue; }
   long		  GetCancelSellVolume(void) { return m_lCancelSellVolume; }
   void		  SetCancelSellVolume(long fValue) { m_lCancelSellVolume = fValue; }
-  double		GetRelativeStrong(void) { return m_dRelativeStrong; }
-  void		  SetRelativeStrong(double fValue) { m_dRelativeStrong = fValue; }
 
   long		  GetOrdinaryBuyVolume(void) { return m_lOrdinaryBuyVolume; }
   void		  SetOrdinaryBuyVolume(long fValue) { m_lOrdinaryBuyVolume = fValue; }
@@ -105,7 +108,7 @@ public:
   void		  Set120DayRS(double fValue) { m_d120DayRS = fValue; }
   double		Get120DayRS(void) { return m_d120DayRS; }
 
-public:
+protected:
 // need to save
 	long			  m_lDay;									// ¿‡–Õ(YYYYMMDD)
 	time_t		  m_time;
@@ -153,6 +156,7 @@ public:
 	long			  m_lAttackSellBelow200000;
 	long			  m_lAttackSellAbove200000;
 
+public:
 	// don't need to save
   double      m_d3DayRS;
 	double			m_d5DayRS;

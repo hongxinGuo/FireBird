@@ -212,10 +212,10 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   if (m_fShowRS) {
     pDC->SelectObject(&penRed);
     it--;
-    y = m_rectClient.bottom - (*it--)->m_dRelativeStrong * m_rectClient.bottom / 200;
+    y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right, y);
     for (; it != gl_sMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->m_dRelativeStrong * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 3 * i++, y);
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
