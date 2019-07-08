@@ -656,10 +656,18 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   return false;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 定时调度函数，每秒一次
+//
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void)
 {
-  static int i10SecondsCounter = 50; // 十秒每次的计算
-  static int i1MinuteCounter = 300;  // 一分钟每次的计算
+  static int i10SecondsCounter = 10; // 十秒一次的计算
+  static int i1MinuteCounter = 60;  // 一分钟一次的计算
   static bool sfUpdatedStockCodeDataBase = false;
 
   if (((gl_lTime > 91000) && (gl_lTime < 113500)) || ((gl_lTime > 125500) && (gl_lTime < 150500))) {
@@ -672,16 +680,19 @@ bool CMainFrame::SchedulingTask(void)
   }
   else gl_ChinaStockMarket.m_fMarketOpened = true;
 
-  if( gl_lTime > 150005)
+  if ((gl_lTime > 150005) && !gl_ChinaStockMarket.IsTodayStockCompiled()) {
+    CompileTodayStocks();
+    gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
+  }
 
   if (i10SecondsCounter >= 0) {
-    i10SecondsCounter = 50;
+    i10SecondsCounter = 10;
     // do something
   }
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    i1MinuteCounter = 300;
+    i1MinuteCounter = 60;
     if (gl_ChinaStockMarket.IsTotalStockDayLineChecked() && !sfUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
@@ -839,14 +850,18 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   static int iCountReadRT = 2;
   static int iCountDayLine = 2;
   static int iCountDown = 0;
+  static time_t s_time = 0;
 
   time(&gl_ttime);
   localtime_s(&gl_tm, &gl_ttime);
   gl_lToday = (gl_tm.tm_year + 1900) * 10000 + (gl_tm.tm_mon + 1) * 100 + gl_tm.tm_mday;
   gl_lTime = gl_tm.tm_hour * 10000 + gl_tm.tm_min * 100 + gl_tm.tm_sec;
 
-  //根据时间，调度各项任务
-  SchedulingTask();
+  //根据时间，调度各项任务.每秒调度一次
+  if (gl_ttime > s_time) {
+    SchedulingTask();
+    s_time = gl_ttime;
+  }
 
   if (m_fGetRTStockData && (iCountDown <= 0)) {
     GetSinaStockRTData(); // 每200毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
