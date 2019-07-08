@@ -248,8 +248,8 @@ bool CStock::CalculateRTData(void) {
             }
           }
           ASSERT(m_Time >= pRTData->m_time);
-          if( gl_sMarket.m_pCurrentStock != nullptr) {
-            if (gl_sMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
+          if( gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+            if (gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
               CTime ctime(pRTData->m_time);
               sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
                 m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
@@ -550,8 +550,8 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
   }
 
   // 显示当前取消挂单的情况
-  if (gl_sMarket.m_pCurrentStock != nullptr) {
-    if (gl_sMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    if (gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
       CString str1;
       char buffer[30];
       if (m_lCurrentCanselSellVolume > 0) {

@@ -7,7 +7,7 @@
 #include "CurrentTime.h"
 #include "MutualLock.h"
 
-CMarket gl_sMarket;
+CMarket gl_ChinaStockMarket;
 
 CCurrentTime gl_sTime;
 
@@ -36,7 +36,6 @@ long gl_lLastTradeDay;  // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾İµÄ×îĞ
 long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
 tm gl_tm;						    // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
 time_t gl_ttime;        // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-bool gl_fMarketOpened = false; // ÊĞ³¡ÊÇ·ñ´¦ÓÚ½»Ò×Ê±¶Î
 
 long gl_lRelativeStrongStartDay;
 long gl_lRelativeStrongEndDay;

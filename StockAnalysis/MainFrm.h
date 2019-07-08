@@ -54,10 +54,6 @@ protected:
   UINT                    m_uIdTimer;
 
   // 数据库
-  CSetRealTimeData *			m_psetRT;								// 实时数据库
-  CSetStockCode *					m_psetStockCode;				// 股票池基本数据库
-  CSetChoicedStock	*		  m_psetChoicedStock;			// 自选股票
-  CSetOption        *     m_psetOption;           // 系统的可选项都存于Options表中。
   CString									m_strDatabaseDir;
 
   bool                    m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
