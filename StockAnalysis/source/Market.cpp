@@ -808,16 +808,20 @@ bool CMarket::SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SaveDayLineData(void) {
   CSetStockCode setStockCode;
+  CSetDayLine setSavingDayLine;
+
+  CString str2 = _T("[ID] = 1"); // 采用主键作为搜索Index。
+  setSavingDayLine.m_strFilter = str2; // 必须设置，否则会把所有的数据读入，浪费时间
+  setSavingDayLine.Open(); // 永远打开，用于存储接收到的日线历史数据。
 
   setStockCode.Open();
   long lIndex = 0;
-  if (!gl_setSavingDayLineOnly.IsOpen()) gl_setSavingDayLineOnly.Open();
 
 	for (auto pStock : m_vActiveStock) {
 		if (pStock->IsDayLineNeedSaving()) {
  			lIndex = gl_mapTotalStockToIndex.at(pStock->m_strStockCode);
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
-        SaveDayLine(&gl_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
+        SaveDayLine(&setSavingDayLine, &setStockCode, pStock, pStock->m_vDayLine, false);
       }
       else {
         CString str1 = gl_vTotalStock.at(lIndex)->m_strStockCode;

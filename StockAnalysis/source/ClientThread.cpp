@@ -70,7 +70,6 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday£¬sunday and saturday no data, so skiped.
       CalculateOneDayRelativeStrong(dwToday);
     }
-    if (gl_fExitingCalculatingRelativeStrong) return false;
     if (gl_fExiting) return true;
     ctCurrent += oneDay;
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();

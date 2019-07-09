@@ -26,10 +26,6 @@ class CMarket;
 
 class CStock;
 
-extern CString gl_sCurrentBaseDir;
-extern CString gl_sDataBaseDir;
-extern CString gl_sDataBaseName;
-
 extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
 
 
@@ -56,8 +52,6 @@ extern time_t gl_ttime;       // 全局时间。由CMainFrame的OnTimer函数负责更新
 extern long gl_lRelativeStrongStartDay;
 extern long gl_lRelativeStrongEndDay;
 
-extern CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
-
 extern CSystemMessage gl_systemMessage;       // 系统消息汇总类，被各个工作线程所使用
 extern CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
 extern CSystemStatus gl_systemStatus;         // 系统中的各种状态，被各个工作线程所使用。
@@ -72,14 +66,12 @@ typedef struct stDayLine {    // 日线数据结构
     strInquire = "";
   }
 
-
   CString strInquire;   // 申请提取数据的字符串
   char buffer[2048 * 1024]; // 提取到的日线历史数据缓存器
   long lByteRead;           // 本次读到的字节数
   bool fError;              // 本次处理日线数据是否有误的标识
 
 protected:
-
 
 } DayLineInquire;
 
@@ -101,6 +93,4 @@ extern RTDataInquire gl_stRTDataInquire;
 
 extern bool gl_fExiting;
 
-extern long gl_lOption_CalculatingRelativeStrongStartDay;
-extern bool gl_fExitingCalculatingRelativeStrong;
 #endif

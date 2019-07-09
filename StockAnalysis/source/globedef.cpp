@@ -13,9 +13,6 @@ CCurrentTime gl_sTime;
 
 CMutualLock gl_sMutualLock;
 
-CString gl_sCurrentBaseDir = _T("c:\\SmartStockDataBase\\"); ;
-CString gl_sDataBaseDir = _T("C:\\SmartStockDataBase\\DataBase\\");
-
 CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
 DWORD		gl_dwRTDataHttpFileStatus = 0;
 
@@ -50,15 +47,10 @@ CSystemStatus gl_systemStatus;         // 系统中的各种状态，被各个工作线程所使用
 deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。
 
-
-
 DayLineInquire gl_stDayLineInquire;
 RTDataInquire gl_stRTDataInquire;
 
 bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
-
-long gl_lOption_CalculatingRelativeStrongStartDay = 20190620;
-bool gl_fExitingCalculatingRelativeStrong = false;
 
 
 

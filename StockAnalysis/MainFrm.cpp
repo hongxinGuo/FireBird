@@ -140,10 +140,6 @@ CMainFrame::CMainFrame() noexcept
   }
   setStockCode.Close();
 
-  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-  gl_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
-
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
@@ -175,8 +171,6 @@ CMainFrame::CMainFrame() noexcept
 CMainFrame::~CMainFrame()
 {
   gl_fExiting = true;
-
-  if (gl_setSavingDayLineOnly.IsOpen()) gl_setSavingDayLineOnly.Close();
 
   CSetOption setOption;
   setOption.Open();
@@ -708,8 +702,6 @@ bool CMainFrame::SchedulingTask(void)
         str = _T("日线历史数据更新完毕");
         gl_systemMessage.PushOutputMessage(str);
         UpdateStockCodeDataBase();  // 更新股票池数据库
-        ASSERT(gl_setSavingDayLineOnly.IsOpen());
-        gl_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
         m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
       }
     }
@@ -932,16 +924,8 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
-  static bool sfCalculating = false;
-
-  if (sfCalculating) {
-    gl_fExitingCalculatingRelativeStrong = true;
-    sfCalculating = false;
-  }
-  else {
-    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
-    sfCalculating = true;
-  }
+  
+  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
 }
 
 void CMainFrame::OnCompileTodayStock()
