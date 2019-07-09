@@ -4,12 +4,12 @@
 #include "Stock.h"
 //#include "RTData.h"
 #include "Market.h"
-#include "CurrentTime.h"
+#include "SystemTime.h"
 #include "MutualLock.h"
 
 CMarket gl_ChinaStockMarket;
 
-CCurrentTime gl_sTime;
+CSystemTime gl_sTime;
 
 CMutualLock gl_sMutualLock;
 
@@ -18,17 +18,11 @@ map<CString, long>		gl_mapTotalStockToIndex;		// ½«ËùÓĞ±»²éÑ¯µÄ¹ÉÆ±´úÂëÓ³ÉäÎªÆ«Ò
 
 vector<StockIDPtr> gl_vStockChoice;   // ×ÔÑ¡¹ÉÆ±³Ø
 
-CString		gl_strCurrentStockDownLoading;
-
 long gl_lToday;           // ½ñÈÕÈÕÆÚ¡£¸ñÊ½Îª£º19990102
 long gl_lLastTradeDay;  // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾İµÄ×îĞÂÈÕ£¬²ÉÓÃÉÏÒ»¸ö½»Ò×ÈÕ£¬±¾½»Ò×ÈÕµÄÊı¾İÓÉÊµÊ±Êı¾İ²úÉú¡£
 long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
 tm gl_tm;						    // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
 time_t gl_ttime;        // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-
-long gl_lRelativeStrongStartDay;
-long gl_lRelativeStrongEndDay;
-
 
 CSetDayLine gl_setSavingDayLineOnly; // ´Ë±äÁ¿×¨ÓÃÓÚ´æ´¢½ÓÊÕµ½µÄÈÕÏßÀúÊ·Êı¾İ¡£
 

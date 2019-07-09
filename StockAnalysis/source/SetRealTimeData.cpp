@@ -47,7 +47,6 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
 	m_PSell5 = 0;
 	m_VSell5 = 0;
 	m_nFields = 31;
-	//m_nDefaultType = dynaset;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
@@ -56,8 +55,6 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
 CString CSetRealTimeData::GetDefaultConnect()
 {
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-
-	//return _T("DSN=MS Access Database;DBQ=E:\\SmartStockDataBase\\Database\\RealTimeData.mdb;DefaultDir=E:\\SmartStockDataBase\\Database;DriverId=25;FIL=MS Access;MaxBufferSize=4096;PageTimeout=5;UID=admin;");
 }
 
 CString CSetRealTimeData::GetDefaultSQL()

@@ -55,14 +55,11 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
   m_AttackSellBelow200000 = 0;
   m_AttackSellAbove200000 = 0;
 	m_nFields = 38;
-	//m_nDefaultType = dynaset;
 }
 
 CString CSetDayLine::GetDefaultConnect()
 {
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-
-	//MaxBufferSize=4096;PageTimeout=5;return _T("DSN=MS Access Database;DBQ=E:\\SmartStockDataBase\\Database\\DayKLine.mdb;DefaultDir=E:\\SmartStockDataBase\\Database;DriverId=25;FIL=MS Access;MaxBufferSize=4096;PageTimeout=5;UID=admin;");
 }
 
 CString CSetDayLine::GetDefaultSQL()

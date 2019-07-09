@@ -18,7 +18,6 @@ CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb)
 	m_StockCode = "";
 	m_StockName = "";
 	m_nFields = 3;
-	m_nDefaultType = dynaset;
 }
 
 CString CSetChoicedStock::GetDefaultConnect()

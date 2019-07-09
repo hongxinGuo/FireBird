@@ -80,6 +80,14 @@ public:
 	bool					IsLoadSelectedStock( void ) { return m_fLoadedSelectedStock; }
 	void					SetLoadedSelectedStock( bool fLoad ) { m_fLoadedSelectedStock = fLoad; }
 
+  CString       GetCurrentDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
+  void          SetCurrentDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
+
+  long          GetRelativeStrongStartDay(void) { return m_lRelativeStrongStartDay; }
+  void          SetRelativeStrongStartDay(long lDay) { m_lRelativeStrongStartDay = lDay; }
+  long          GetRelativeStrongEndDay(void) { return m_lRelativeStrongEndDay; }
+  void          SetRelativeStrongEndDay(long lDay) { m_lRelativeStrongEndDay = lDay; }
+
 	long long	    GetTotalAttackBuyAmount( void );
 	long long     GetTotalAttackSellAmount( void );
 
@@ -104,6 +112,11 @@ public :
   bool                        m_fCurrentEditStockChanged;
   bool                        m_fMarketOpened;          // 是否开市
 protected :
+  CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
+  
+  long                        m_lRelativeStrongStartDay;
+  long                        m_lRelativeStrongEndDay;
+
   bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
 
 	map<CString, long>          m_mapActiveStockToIndex;		// 将市场活跃的股票代码映射为偏移量

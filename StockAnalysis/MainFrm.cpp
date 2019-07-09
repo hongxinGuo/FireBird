@@ -143,20 +143,21 @@ CMainFrame::CMainFrame() noexcept
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    gl_lRelativeStrongEndDay = gl_lRelativeStrongStartDay = 19900101;
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   }
   else {
     if (setOption.m_RelativeStrongEndDay == 0) {
-      gl_lRelativeStrongEndDay = 19900101;
+      gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
     }
     else {
-      gl_lRelativeStrongEndDay = setOption.m_RelativeStrongEndDay;
+      gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
     }
     if (setOption.m_RalativeStrongStartDay == 0) {
-      gl_lRelativeStrongStartDay = 19900101;
+      gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
     }
     else {
-      gl_lRelativeStrongStartDay = setOption.m_RalativeStrongStartDay;
+      gl_ChinaStockMarket.SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
     }
   }
   setOption.Close();
@@ -177,14 +178,14 @@ CMainFrame::~CMainFrame()
   setOption.m_pDatabase->BeginTrans();
   if (setOption.IsEOF()) {
     setOption.AddNew();
-    setOption.m_RelativeStrongEndDay = gl_lRelativeStrongEndDay;
-    setOption.m_RalativeStrongStartDay = gl_lRelativeStrongStartDay;
+    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
     setOption.Update();
   }
   else {
     setOption.Edit();
-    setOption.m_RelativeStrongEndDay = gl_lRelativeStrongEndDay;
-    setOption.m_RalativeStrongStartDay = gl_lRelativeStrongStartDay;
+    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();
@@ -574,7 +575,7 @@ bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString
     ASSERT(0);
   }
   char buffer[30];
-  gl_strCurrentStockDownLoading = gl_vTotalStock.at(siCounter)->m_strStockCode;
+  gl_ChinaStockMarket.SetCurrentDownLoadingStockCodeStr(gl_vTotalStock.at(siCounter)->m_strStockCode);
   str += gl_vTotalStock.at(siCounter)->m_strStockCode.Right(6); // 取股票代码的右边六位数字。
   tm tm_;
   tm_.tm_year = gl_vTotalStock.at(siCounter)->m_lDayLineEndDay / 10000 - 1900;
@@ -616,7 +617,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)gl_strCurrentStockDownLoading, gl_stDayLineInquire.lByteRead);
+        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)(gl_ChinaStockMarket.GetCurrentDownLoadingStockCodeStr()), gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
         gl_ChinaStockMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);

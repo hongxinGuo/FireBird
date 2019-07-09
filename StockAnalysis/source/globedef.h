@@ -4,6 +4,7 @@
 #include"stdafx.h"
 
 #include"RTData.h"
+
 #include"SetDayLine.h"
 #include"StockID.h"
 
@@ -18,17 +19,9 @@ using namespace std;
 #include<deque>
 #include<memory>
 
-// ÕâÁ½¸ö¶¨Òå¾ö¶¨Ê¹ÓÃ¶à×Ö½Ú×Ö·û¼¯»¹ÊÇunicode×Ö·û¼¯¡£Ä¿Ç°¸ÄÎªÊ¹ÓÃ¶à×Ö½Ú×Ö·û¼¯£¨ÒòÎªgoogletestÎŞ·¨Ê¹ÓÃunicode£©
-#define __USING_UNICODE_CHARSET__
-//#define __USING_ANSI_CHARSET__
-
 class CMarket;
 
-class CStock;
-
 extern CMarket gl_ChinaStockMarket;        // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
-
-extern CString	gl_strCurrentStockDownLoading; // Ä¿Ç°ÕıÔÚÏÂÔØÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±´úÂë
 
 extern vector<StockIDPtr>	gl_vTotalStock;             // ±¾ÏµÍ³ÔÊĞíµÄËùÓĞ¹ÉÆ±³Ø£¨ÎŞÂÛ´úÂëÊÇ·ñ´æÔÚ£©
 extern map<CString, long>	gl_mapTotalStockToIndex;		// ½«ËùÓĞ±»²éÑ¯µÄ¹ÉÆ±´úÂëÓ³ÉäÎªÆ«ÒÆÁ¿£¨Ä¿Ç°Ö»½ÓÊÜA¹ÉĞÅÏ¢£©
@@ -40,9 +33,6 @@ extern long gl_lLastTradeDay; // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾
 extern long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
 extern tm gl_tm;						  // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
 extern time_t gl_ttime;       // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-
-extern long gl_lRelativeStrongStartDay;
-extern long gl_lRelativeStrongEndDay;
 
 extern CSystemMessage gl_systemMessage;       // ÏµÍ³ÏûÏ¢»ã×ÜÀà£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
 extern CSystemDequeData gl_systemDequeData;    // ÏµÍ³ÖĞµÄ¸÷ÖÖ¶ÓÁĞ£¬±»¸÷¸ö¹¤×÷Ïß³ÌÊ¹ÓÃ¡£

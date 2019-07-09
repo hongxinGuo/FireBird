@@ -1,32 +1,32 @@
 #include "stdafx.h"
 
-#include "CurrentTime.h"
+#include "SystemTime.h"
 
-CCurrentTime::CCurrentTime(void)
+CSystemTime::CSystemTime(void)
 {
 	m_tCurrentTime = 0;
 }
 
-CCurrentTime::~CCurrentTime(void)
+CSystemTime::~CSystemTime(void)
 {
 }
 
-time_t CCurrentTime::GetCurrentTime() {
+time_t CSystemTime::GetCurrentTime() {
 	return m_tCurrentTime;
 }
 
-void CCurrentTime::SetCurrentTime( time_t Time ) {
+void CSystemTime::SetCurrentTime( time_t Time ) {
 	m_tCurrentTime = Time; 
 }
 
-long CCurrentTime::ChangeTimeToDay( time_t time ) {
+long CSystemTime::ChangeTimeToDay( time_t time ) {
 	ASSERT( time >= 0 );
 	CTime ct( time );
 	long lDay = ct.GetYear() * 10000 + ct.GetMonth() * 100 + ct.GetDay();
 	return ( lDay );
 }
 
-time_t CCurrentTime::ChangeDayToMarketCloseTime( long lDay ) {
+time_t CSystemTime::ChangeDayToMarketCloseTime( long lDay ) {
   ASSERT ( lDay > 19700000 );
   long lYear = lDay / 10000;
   long lMonth = (lDay - lYear * 10000)/100;

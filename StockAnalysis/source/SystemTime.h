@@ -1,9 +1,9 @@
 #pragma once
 
-class CCurrentTime {
+class CSystemTime {
 public:
-	CCurrentTime(void);
-	~CCurrentTime(void);
+	CSystemTime(void);
+	~CSystemTime(void);
 
 	time_t				GetCurrentTime();
 	void					SetCurrentTime( time_t Time );

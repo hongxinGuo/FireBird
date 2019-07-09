@@ -75,9 +75,6 @@
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\CurrentTime.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\DayLine.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -112,6 +109,9 @@
       <Filter>头文件\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\SystemStatus.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,9 +158,6 @@
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\CurrentTime.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\DayLine.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
@@ -195,6 +192,9 @@
       <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\SystemStatus.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

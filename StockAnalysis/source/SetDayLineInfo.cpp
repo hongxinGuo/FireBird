@@ -42,7 +42,6 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_AttackSellBelow200000 = 0;
   m_AttackSellAbove200000 = 0;
   m_nFields = 26;
-  //m_nDefaultType = dynaset;
 }
 
 CString CSetDayLineInfo::GetDefaultConnect()

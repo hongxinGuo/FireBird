@@ -203,7 +203,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
     <ClInclude Include="source\ClientThread.h" />
-    <ClInclude Include="source\CurrentTime.h" />
+    <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
     <ClInclude Include="source\globedef.h" />
     <ClInclude Include="source\Market.h" />
@@ -233,7 +233,7 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\ClientThread.cpp" />
-    <ClCompile Include="source\CurrentTime.cpp" />
+    <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />
     <ClCompile Include="source\Market.cpp" />

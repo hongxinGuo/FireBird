@@ -34,6 +34,8 @@ CMarket::CMarket ( void ) : CObject() {
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fTodayStockCompiled = false;
+
+  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
 }
 
 CMarket::~CMarket( ) {
@@ -318,12 +320,12 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 	pTestPos += iCount;
 	ASSERT(*pTestPos == *pCurrentPos);
 	if (iCount == lLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-		lIndex = gl_mapTotalStockToIndex.at(gl_strCurrentStockDownLoading);
+		lIndex = gl_mapTotalStockToIndex.at(m_strCurrentStockDownLoading);
 		// ASSERT(!gl_vTotalStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
     // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
     if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       gl_vTotalStock.at(lIndex)->m_lIPOed = __STOCK_NULL__;   // 此股票代码尚未使用。
-      //TRACE("无效股票代码：%S\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading));
+      //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_strCurrentStockDownLoading));
     }
     else { // 已经退市的股票
       if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay + 100 < gl_lToday) {
@@ -453,8 +455,8 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPo
 
 	if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
 	str = buffer2;
-	pDayLine->SetStockCode(gl_strCurrentStockDownLoading);
-	str = gl_strCurrentStockDownLoading.Left(2);
+	pDayLine->SetStockCode(m_strCurrentStockDownLoading);
+	str = m_strCurrentStockDownLoading.Left(2);
 	if (str == _T("sh")) {
 		pDayLine->SetMarket(1);
 	}

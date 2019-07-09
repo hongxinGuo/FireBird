@@ -50,13 +50,13 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
 // 
 ///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
-  long year = gl_lRelativeStrongEndDay / 10000;
-  long month = gl_lRelativeStrongEndDay / 100 - year * 100;
-  long day = gl_lRelativeStrongEndDay - year * 10000 - month * 100;
+  long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
+  long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
+  long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
 
   CTime ctCurrent(year, month, day, 12, 0, 0);
 
-  DWORD dwToday = gl_lRelativeStrongEndDay;
+  DWORD dwToday = gl_ChinaStockMarket.GetRelativeStrongEndDay();
 
   CTimeSpan oneDay(1, 0, 0, 0);
 
@@ -65,7 +65,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
   time_t tStart, tEnd;
   time(&tStart);
   do {
-    gl_lRelativeStrongEndDay = dwToday; // 设置最后日期。
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(dwToday); // 设置最后日期。
     if ((ctCurrent.GetDayOfWeek() != 1) // sunday
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
       CalculateOneDayRelativeStrong(dwToday);
