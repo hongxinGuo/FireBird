@@ -175,7 +175,7 @@ bool CStock::CalculateRTData(void) {
             m_lTransactionNumberAbove200000++;
           }
           m_dCurrentGuaDanTransactionPrice = ((double)(pRTData->m_lAmount - m_pLastRTData->m_lAmount)) / m_lCurrentGuadanTransactionVolume;
-          lCurrentGuaDanTransactionPrice = m_dCurrentGuaDanTransactionPrice * 1000;
+          lCurrentGuaDanTransactionPrice = m_dCurrentGuaDanTransactionPrice * 1000; // 生成比较用的价格（放大一千倍后采用长整型）
           if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->m_lPBuy[0]) { // 高于前买盘1
             if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->m_lPSell[0]) { // 低于前卖盘1
               if ((m_pLastRTData->m_lPSell[0] - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
@@ -251,7 +251,7 @@ bool CStock::CalculateRTData(void) {
           if( gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
             if (gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
               CTime ctime(pRTData->m_time);
-              sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
+              sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f    ", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
                 m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
               str = buffer;
               CString str1;
@@ -623,6 +623,12 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
   return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用同步机制存储实时数据。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
 void CStock::PushRTStockData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
@@ -633,6 +639,12 @@ void CStock::PushRTStockData(CStockRTDataPtr pData)
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用同步机制提取实时数据。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
 CStockRTDataPtr CStock::PopRTStockData(void)
 {
   CStockRTDataPtr pData;
@@ -647,6 +659,12 @@ CStockRTDataPtr CStock::PopRTStockData(void)
   return nullptr;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用同步机制提取栈内的实时数据数量。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
 long CStock::GetRTDataDequeSize(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
@@ -659,6 +677,13 @@ long CStock::GetRTDataDequeSize(void)
   return 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用同步机制设置日线是否需要存储标识。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CStock::SetDayLineNeedSavingFlag(bool fFlag)
 {
   CSingleLock singleLock(&m_DayLineNeedSacingLock);
@@ -669,6 +694,12 @@ void CStock::SetDayLineNeedSavingFlag(bool fFlag)
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 采用同步机制提取日线是否需要存储标识。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::IsDayLineNeedSaving(void)
 {
   CSingleLock singleLock(&m_DayLineNeedSacingLock);
@@ -693,21 +724,5 @@ void CStock::Dump(CDumpContext& dc) const
 }
 
 #endif //_DEBUG
-
-
-///////////////////////////////////////////////////////////////////////////////////
-//
-//	将本股票的历史数据存入日线数据库(DayKLine.mdb)
-//
-//	一次处理不能太多，所以将数据库打开和关闭放在这里，如果放在上一层的话，
-// 当处理的股票太多时(>400)，数据库引擎出现故障。
-//
-// 调用本函数最好使用On_Timer, On_Idle.在系统空闲时一次处理一只股票。
-//
-// 存储时要倒着存，使用m_lTotalDLDayKLine,因为有可能股票的日线数量大于下载的日线数量，
-// 此存储函数只将下载的日线存入数据库。其他不管。
-//
-////////////////////////////////////////////////////////////////////////////////////
-
 
 

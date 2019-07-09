@@ -196,21 +196,19 @@ CMainFrame::~CMainFrame()
   setOption.m_pDatabase->CommitTrans();
   setOption.Close();
 
-
   while (gl_systemStatus.IsDataBaseInProcess()) {
-    Sleep(100); // 等待处理日线历史数据的线程结束。
+    Sleep(50); // 等待处理日线历史数据的线程结束。
   }
 
   while (gl_systemStatus.IsRTDataReadingInProcess()) {
-    Sleep(100); // 等待实时数据读取线程结束
+    Sleep(50); // 等待实时数据读取线程结束
   }
-
+ 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
   UpdateStockCodeDataBase();
 
   TRACE("finally exited\n");
-
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -913,18 +911,17 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-#ifndef _DEBUG
-  // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序
-  if (gl_ChinaStockMarket.m_fMarketOpened || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
-    return;
-  }
-#endif
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
+#ifndef _DEBUG
+    // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序
+    if (gl_ChinaStockMarket.m_fMarketOpened || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
+      return;
+    }
+#endif      
+    gl_fExiting = true; // 提示各工作线程中途退出
     if (gl_systemStatus.IsDataBaseInProcess()) { // 如果正在处理日线历史数据
-      gl_fExiting = true; // 提示各工作线程中途退出
-
       while (gl_systemStatus.IsDataBaseInProcess()) {
-        Sleep(100); // 等待处理日线历史数据的线程退出
+        Sleep(50); // 等待处理日线历史数据的线程退出
       }
     }
   }
