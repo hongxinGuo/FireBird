@@ -22,7 +22,7 @@ public:
 
 	long	m_Time;	//成交时间，以秒计算，从1970年1月1日起
   long  m_lMarket; // 上海为1，深圳为2， 。。。
-	CString	m_StockName;	//四位股票简称
+	CStringW	m_StockName;	//四位股票简称
 	CString	m_StockCode;	//六位股票代码
 	double	m_LastClose;	//昨天收盘价
 	double	m_Open;	//今天开盘价
