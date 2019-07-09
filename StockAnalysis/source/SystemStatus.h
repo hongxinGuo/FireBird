@@ -15,8 +15,8 @@ public:
   void SetDataBaseInProcess(bool fFlag);
   bool IsDataBaseInProcess(void);
 
-  void SetReceiveFromWebInProcess(bool fFlag);
-  bool IsReceiveFromWebInProcess(void);
+  void SetRTDataReadingInProcess(bool fFlag);
+  bool IsRTDataReadingInProcess(void);
 
   void SetRTDataReady(bool fFlag);
   bool IsRTDataReady(void);
@@ -34,8 +34,8 @@ protected:
   bool m_fDataBaseInProcess; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_DataBaseInProcessLock;
 
-  bool m_fReceiveFromWebInProcess;  // 接收实时数据线程是否执行标识
-  CCriticalSection m_ReceiveFromWebInProcessLock;
+  bool m_fRTDataReadingInProcess;  // 接收实时数据线程是否执行标识
+  CCriticalSection m_RTDataReadingInProcessLock;
 
   bool m_fRTDataReady;             // 实时数据已提取完成标识
   CCriticalSection m_RTDataReadyLock;

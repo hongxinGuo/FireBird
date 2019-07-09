@@ -6,7 +6,7 @@ CSystemStatus::CSystemStatus() {
   m_fReadingInProcess = false;
   m_fDataBaseInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
-  m_fReceiveFromWebInProcess = false;
+  m_fRTDataReadingInProcess = false;
   m_fRTDataReady = false;
   m_fDayLineDataReady = false;
 }
@@ -68,20 +68,20 @@ bool CSystemStatus::IsDataBaseInProcess(void) {
   }
 }
 
-void CSystemStatus::SetReceiveFromWebInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_ReceiveFromWebInProcessLock);
+void CSystemStatus::SetRTDataReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_RTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fReceiveFromWebInProcess = fFlag;
+    m_fRTDataReadingInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CSystemStatus::IsReceiveFromWebInProcess(void) {
-  CSingleLock singleLock(&m_ReceiveFromWebInProcessLock);
+bool CSystemStatus::IsRTDataReadingInProcess(void) {
+  CSingleLock singleLock(&m_RTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fReceiveFromWebInProcess;
+    bool fFlag = m_fRTDataReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }

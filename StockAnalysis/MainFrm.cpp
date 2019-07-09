@@ -106,6 +106,7 @@ CMainFrame::CMainFrame() noexcept
   m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
   m_uIdTimer = 0;
+  m_lCurrentPos = 0;
 
   CSetStockCode setStockCode;
 
@@ -198,6 +199,10 @@ CMainFrame::~CMainFrame()
 
   while (gl_systemStatus.IsDataBaseInProcess()) {
     Sleep(100); // 等待处理日线历史数据的线程结束。
+  }
+
+  while (gl_systemStatus.IsRTDataReadingInProcess()) {
+    Sleep(100); // 等待实时数据读取线程结束
   }
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
@@ -404,7 +409,7 @@ bool CMainFrame::GetSinaStockRTData(void)
   long i = 0;
   long long iTotalNumber = 0;
 
-  if (!gl_systemStatus.IsReceiveFromWebInProcess()) {
+  if (!gl_systemStatus.IsRTDataReadingInProcess()) {
     if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReady()) { //网络通信一切顺利？
       iTotalNumber = gl_stRTDataInquire.lByteRead;
       pCurrentPos = gl_stRTDataInquire.buffer;
@@ -444,8 +449,8 @@ bool CMainFrame::GetSinaStockRTData(void)
       gl_ChinaStockMarket.GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
     gl_systemStatus.SetRTDataReady(false);
-    gl_systemStatus.SetReceiveFromWebInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ClientThreadRTDataProc, GetSafeHwnd());
+    gl_systemStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    AfxBeginThread(ClientThreadReadingRTDataProc, GetSafeHwnd());
   }
 
   if (iCountUp == 1000) {
@@ -866,14 +871,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     s_time = gl_ttime;
   }
 
-  if (m_fGetRTStockData && (iCountDown <= 0)) {
-    GetSinaStockRTData(); // 每200毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+  if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
+    GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
     else iCountDown = 1;
   }
   iCountDown--;
 
-  if (m_fGetDayLineData && gl_ChinaStockMarket.MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
+  if (!gl_fExiting && m_fGetDayLineData && gl_ChinaStockMarket.MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
     GetNetEaseStockDayLineData();
   }
 

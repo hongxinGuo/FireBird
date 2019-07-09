@@ -89,14 +89,14 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 }
 
 
-UINT ClientThreadRTDataProc(LPVOID pParam) {
+UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   CInternetSession session;
   CHttpFile * pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
   char * pChar = gl_stRTDataInquire.buffer;
   try {
-    gl_systemStatus.SetReceiveFromWebInProcess(true);
+    gl_systemStatus.SetRTDataReadingInProcess(true);
     gl_stRTDataInquire.fError = false;
     gl_stRTDataInquire.lByteRead = 0;
     pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire);
@@ -127,7 +127,7 @@ UINT ClientThreadRTDataProc(LPVOID pParam) {
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_systemStatus.SetReceiveFromWebInProcess(false);
+  gl_systemStatus.SetRTDataReadingInProcess(false);
 
   return 4;
 }

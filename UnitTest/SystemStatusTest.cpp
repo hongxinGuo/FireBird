@@ -28,12 +28,12 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(status.IsDataBaseInProcess());
   }
 
-  TEST(SystemStatusTest, TestIsReceiveFromWebInProcess) {
+  TEST(SystemStatusTest, TestIsRTDataReadInProcess) {
     CSystemStatus status;
-    status.SetReceiveFromWebInProcess(true);
-    EXPECT_TRUE(status.IsReceiveFromWebInProcess());
-    status.SetReceiveFromWebInProcess(false);
-    EXPECT_FALSE(status.IsReceiveFromWebInProcess());
+    status.SetRTDataReadInProcess(true);
+    EXPECT_TRUE(status.IsRTDataReadInProcess());
+    status.SetRTDataReadInProcess(false);
+    EXPECT_FALSE(status.IsRTDataReadInProcess());
   }
 
   TEST(SystemStatusTest, TestIsRTDataReady) {
