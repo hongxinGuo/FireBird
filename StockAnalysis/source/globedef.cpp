@@ -37,6 +37,7 @@ DayLineInquire gl_stDayLineInquire;
 RTDataInquire gl_stRTDataInquire;
 
 bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
+bool gl_fExitingCalculatingRelativeStrong = false;
 
 
 

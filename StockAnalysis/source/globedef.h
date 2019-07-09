@@ -34,6 +34,9 @@ extern long gl_lTime;				  // 今日时间。格式为：hhmmss
 extern tm gl_tm;						  // 全局时间。由CMainFrame的OnTimer函数负责更新
 extern time_t gl_ttime;       // 全局时间。由CMainFrame的OnTimer函数负责更新
 
+extern CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
+
+
 extern CSystemMessage gl_systemMessage;       // 系统消息汇总类，被各个工作线程所使用
 extern CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
 extern CSystemStatus gl_systemStatus;         // 系统中的各种状态，被各个工作线程所使用。
@@ -74,5 +77,6 @@ typedef struct stRTData {
 extern RTDataInquire gl_stRTDataInquire;
 
 extern bool gl_fExiting;
+extern bool gl_fExitingCalculatingRelativeStrong;
 
 #endif
