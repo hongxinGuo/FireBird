@@ -925,8 +925,16 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
-  
-  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
+  static bool sfCalculating = false;
+
+  if (sfCalculating) {
+    sfCalculating = false;
+    return;
+  }
+  else {
+    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
+    sfCalculating = true;
+  }
 }
 
 void CMainFrame::OnCompileTodayStock()
