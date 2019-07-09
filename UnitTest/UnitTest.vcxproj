@@ -45,6 +45,8 @@
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp" />
+    <ClCompile Include="CalculateRTDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="pch.cpp" />

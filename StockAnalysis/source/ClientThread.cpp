@@ -336,7 +336,7 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
     gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 120;
   }
 
-  gl_ChinaStockMarket.m_pCurrentStock->m_fDayLineLoaded = true;
+  gl_ChinaStockMarket.m_pCurrentStock->SetDayLineLoaded(true);
   setDayLine.Close();
 
   return 9;

@@ -360,7 +360,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 			m_mapActiveStockToIndex[pDayLine->GetStockCode()] = m_lTotalActiveStock++;
 			auto pStock = make_shared<CStock>();
 			pStock->m_fActive = true;
-			pStock->m_fDayLineLoaded = false;
+			pStock->SetDayLineLoaded(false);
 			pStock->m_wMarket = pDayLine->GetMarket();
 			pStock->m_strStockCode = pDayLine->GetStockCode();
 			pStock->m_strStockName = pDayLine->GetStockName();
@@ -393,7 +393,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
     gl_vTotalStock.at(gl_mapTotalStockToIndex.at(pDayLine->GetStockCode()))->m_lIPOed = __STOCK_IPOED__; // 正常交易股票
   }
 	ASSERT(lIndex >= 0);
-	m_vActiveStock.at(lIndex)->m_fDayLineLoaded = true;
+	m_vActiveStock.at(lIndex)->SetDayLineLoaded(true);
   m_vActiveStock.at(lIndex)->SetDayLineNeedSavingFlag(true); // 设置存储日线标识 
   m_vActiveStock.at(lIndex)->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
@@ -670,7 +670,7 @@ void CMarket::SetShowStock(CStockPtr pStock)
   if (m_pCurrentStock != pStock) {
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
-    m_pCurrentStock->m_fDayLineLoaded = false;
+    m_pCurrentStock->SetDayLineLoaded(false);
     AfxBeginThread(ClientthreadLoadDayLineProc, 0);
   }
 }
@@ -828,7 +828,7 @@ bool CMarket::SaveDayLineData(void) {
 
       }
       pStock->m_vDayLine.clear();
-      pStock->m_fDayLineLoaded = false;
+      pStock->SetDayLineLoaded(false);
       CString str = gl_vTotalStock.at(lIndex)->m_strStockCode;
       str += _T("日线资料存储完成");
       gl_systemMessage.PushOutputMessage(str);

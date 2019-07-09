@@ -44,6 +44,12 @@ public:
 	bool IsDayLineUpdated( void ) { return ( m_fDayKLineUpdated ); }
 	void SetDayLineUpdated( bool fUpdate ) { m_fDayKLineUpdated = fUpdate; }
 
+  bool IsDayLineLoaded(void) { return m_fDayLineLoaded; }
+  void SetDayLineLoaded(bool fFlag) { m_fDayLineLoaded = fFlag; }
+
+  bool IsStartCalculating(void) { return m_fStartCalculating; }
+  bool SetStartCalculating(bool fFlag) { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
+
 	void UpdataCurrentStatus(CStockRTDataPtr pRTData);
 	bool LoadDayLine(CSetDayLine * psetDayLine);
 	
@@ -53,6 +59,7 @@ public:
 
 	bool SaveRealTimeData(CSetRealTimeData * psetRT);
 
+  // 采用同步机制存取实时数据
   void PushRTStockData(CStockRTDataPtr pData);
   CStockRTDataPtr PopRTStockData(void);
   long GetRTDataDequeSize(void);
@@ -75,11 +82,9 @@ public:
   int       m_iStockCode;             // 证券代码值
 	short			m_nHand;									// 每手股数
 
-	bool			m_fDayLineLoaded;					// 是否装入了日线数据
 
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
 
-  bool      m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
 
 	// 实时数据
 	time_t    m_Time;
@@ -146,17 +151,19 @@ public:
   long                  m_lCurrentCanselSellVolume;
   long                  m_lCurrentCanselBuyVolume;
 protected:
+  bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 
-  bool                      m_fDayLineNeededSaving;   // 日线数据是否需要存储
-  CCriticalSection          m_DayLineNeedSacingLock;
+  bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
+  CCriticalSection      m_DayLineNeedSacingLock;
 
-  deque<CStockRTDataPtr>		m_dequeRTStockData;  // 实时数据队列
-  CCriticalSection          m_RTDataLock;   // 实时数据队列的同步锁
+  deque<CStockRTDataPtr>m_dequeRTStockData;  // 实时数据队列
+  CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁
 
+  bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
  	
-	bool			                m_fChoiced;									// 此股票是否是自选股票.
-	bool			                m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
-	bool			                m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
+	bool			            m_fChoiced;									// 此股票是否是自选股票.
+	bool			            m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
+	bool			            m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
 
 };
 

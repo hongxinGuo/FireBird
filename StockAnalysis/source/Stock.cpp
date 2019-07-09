@@ -154,7 +154,7 @@ bool CStock::CalculateRTData(void) {
   for (int i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTStockData(); // 采用同步机制获取数据
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
-      if (m_fStartCalculating) {
+      if (IsStartCalculating()) {
         m_lCurrentGuadanTransactionVolume = pRTData->m_lVolume - m_pLastRTData->m_lVolume;
         if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
           // 检查挂单情况
@@ -293,7 +293,7 @@ bool CStock::CalculateRTData(void) {
       }
       else { // 第一个数据，初始化系统
         m_pLastRTData = pRTData;
-        m_fStartCalculating = true;
+        SetStartCalculating(true);
         // 设置第一次的挂单映射。
         for (int j = 0; j < 5; j++) {
           m_mapGuaDan[pRTData->m_lPBuy[j]] = pRTData->m_lVBuy[i];

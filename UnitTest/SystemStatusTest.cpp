@@ -30,10 +30,10 @@ namespace StockAnalysisTest {
 
   TEST(SystemStatusTest, TestIsRTDataReadInProcess) {
     CSystemStatus status;
-    status.SetRTDataReadInProcess(true);
-    EXPECT_TRUE(status.IsRTDataReadInProcess());
-    status.SetRTDataReadInProcess(false);
-    EXPECT_FALSE(status.IsRTDataReadInProcess());
+    status.SetRTDataReadingInProcess(true);
+    EXPECT_TRUE(status.IsRTDataReadingInProcess());
+    status.SetRTDataReadingInProcess(false);
+    EXPECT_FALSE(status.IsRTDataReadingInProcess());
   }
 
   TEST(SystemStatusTest, TestIsRTDataReady) {

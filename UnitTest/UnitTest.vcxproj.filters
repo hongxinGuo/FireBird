@@ -42,6 +42,12 @@
     <ClCompile Include="SystemStatusTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateRTDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">

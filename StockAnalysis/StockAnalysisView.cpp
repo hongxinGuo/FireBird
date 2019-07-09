@@ -197,7 +197,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
 
   if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
-  if (!gl_ChinaStockMarket.m_pCurrentStock->m_fDayLineLoaded) return;
+  if (!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded()) return;
   long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
 
   long lXHigh = m_rectClient.bottom / 2;
