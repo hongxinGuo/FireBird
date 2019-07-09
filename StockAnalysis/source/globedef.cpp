@@ -13,18 +13,10 @@ CCurrentTime gl_sTime;
 
 CMutualLock gl_sMutualLock;
 
-CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
-DWORD		gl_dwRTDataHttpFileStatus = 0;
-
-CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
-CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-DWORD		gl_dwDayLineHttpFileStatus = 0;
-
 vector<StockIDPtr>		gl_vTotalStock;
 map<CString, long>		gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 
 vector<StockIDPtr> gl_vStockChoice;   // 自选股票池
-
 
 CString		gl_strCurrentStockDownLoading;
 

@@ -419,7 +419,7 @@ bool CMainFrame::GetSinaStockRTData(void)
       }
     }
     else {
-      TRACE("Error reading http file ：hq.sinajs.cn, code = %i\n", gl_dwRTDataHttpFileStatus);
+      TRACE("Error reading http file ：hq.sinajs.cn\n");
     }
 
     // 处理接收到的实时数据
@@ -623,7 +623,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
       }
       else {
         if (gl_stDayLineInquire.lByteRead > 0) {
-          TRACE("Error reading http file ：quotes.money.163.com/service/, code = %i\n", gl_dwRTDataHttpFileStatus);
+          TRACE("Error reading http file ：quotes.money.163.com/service/\n");
           gl_stDayLineInquire.lByteRead = 0;
         }
       }

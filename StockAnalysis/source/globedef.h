@@ -28,14 +28,6 @@ class CStock;
 
 extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
 
-
-extern CString gl_strRTStockSource;
-extern DWORD	 gl_dwRTDataHttpFileStatus;
-
-extern CString gl_strDayLineStockSource;
-extern CString gl_strDayLinePostfix;
-extern DWORD	 gl_dwDayLineHttpFileStatus;
-
 extern CString	gl_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
 
 extern vector<StockIDPtr>	gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
