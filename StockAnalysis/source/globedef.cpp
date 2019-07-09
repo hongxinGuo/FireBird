@@ -1,8 +1,6 @@
 #include"globedef.h"
 
 #include"StockID.h"
-#include "Stock.h"
-//#include "RTData.h"
 #include "Market.h"
 #include "SystemTime.h"
 #include "MutualLock.h"
@@ -24,7 +22,7 @@ long gl_lTime;				  // 今日时间。格式为：hhmmss
 tm gl_tm;						    // 全局时间。由CMainFrame的OnTimer函数负责更新
 time_t gl_ttime;        // 全局时间。由CMainFrame的OnTimer函数负责更新
 
-CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。
+CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。永远打开状态，否则当同时操作数据库时速度奇慢。
 
 CSystemMessage gl_systemMessage;       // 系统消息汇总类
 CSystemDequeData gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。

@@ -218,7 +218,6 @@ bool CStock::CalculateRTData(void) {
                 m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
               }
             }
-
           }
           else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy[1]) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
             m_nCurrentTransactionType = __ATTACK_SELL__;
@@ -235,8 +234,8 @@ bool CStock::CalculateRTData(void) {
           }
           else { // 低于买盘二。强力卖出。StrongSell
             m_nCurrentTransactionType = __STRONG_SELL__;
-            m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
-            m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
+            m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+            m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
             if (m_lCurrentGuadanTransactionVolume < 50000) {
               m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
             }
