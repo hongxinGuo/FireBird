@@ -5,6 +5,63 @@
 #include"Stock.h"
 
 namespace StockAnalysisTest {
+  TEST(StockTest, TestGetTime) {
+    CStock stock;
+    EXPECT_EQ(stock.GetTime(), 0);
+    stock.SetTime(100100100100);
+    EXPECT_EQ(stock.GetTime(), 100100100100);
+  }
+
+  TEST(StockTest, TestGetLastClose) {
+    CStock stock;
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    stock.SetLastClose(100100100);
+    EXPECT_EQ(stock.GetLastClose(), 100100100);
+  }
+
+  TEST(StockTest, TestGetOpen) {
+    CStock stock;
+    EXPECT_EQ(stock.GetOpen(), 0);
+    stock.SetOpen(100100100);
+    EXPECT_EQ(stock.GetOpen(), 100100100);
+  }
+
+  TEST(StockTest, TestGetHigh) {
+    CStock stock;
+    EXPECT_EQ(stock.GetHigh(), 0);
+    stock.SetHigh(100100100);
+    EXPECT_EQ(stock.GetHigh(), 100100100);
+  }
+
+  TEST(StockTest, TestGetLow) {
+    CStock stock;
+    EXPECT_EQ(stock.GetLow(), 0);
+    stock.SetLow(100100100);
+    EXPECT_EQ(stock.GetLow(), 100100100);
+  }
+
+  TEST(StockTest, TestGetNew) {
+    CStock stock;
+    EXPECT_EQ(stock.GetNew(), 0);
+    stock.SetNew(100100100);
+    EXPECT_EQ(stock.GetNew(), 100100100);
+  }
+
+  TEST(StockTest, TestGetAmount) {
+    CStock stock;
+    EXPECT_EQ(stock.GetAmount(), 0);
+    stock.SetAmount(100100100);
+    EXPECT_EQ(stock.GetAmount(), 100100100);
+  }
+
+  TEST(StockTest, TestGetVolume) {
+    CStock stock;
+    EXPECT_EQ(stock.GetVolume(), 0);
+    stock.SetVolume(100100100);
+    EXPECT_EQ(stock.GetVolume(), 100100100);
+  }
+
+
   TEST(StockTest, TestIsChoiced) {
     CStock stock;
     EXPECT_FALSE(stock.IsChoiced());

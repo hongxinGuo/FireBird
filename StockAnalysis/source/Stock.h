@@ -34,6 +34,22 @@ public:
 	void operator=( CStock & );
 
 public:
+  time_t GetTime(void) { return m_Time; }
+  void SetTime(time_t time) { m_Time = time; }
+  long GetLastClose(void) { return m_lLastClose; }
+  void SetLastClose(long lValue) { m_lLastClose = lValue; }
+  long GetOpen(void) { return m_lOpen; }
+  void SetOpen(long lValue) { m_lOpen = lValue; }
+  long GetHigh(void) { return m_lHigh; }
+  void SetHigh(long lValue) { m_lHigh = lValue; }
+  long GetLow(void) { return m_lLow; }
+  void SetLow(long lValue) { m_lLow = lValue; }
+  long GetNew(void) { return m_lNew; }
+  void SetNew(long lValue) { m_lNew = lValue; }
+  long long GetAmount(void) { return m_lAmount; }
+  void SetAmount(long long llValue) { m_lAmount = llValue; }
+  long long GetVolume(void) { return m_lVolume; }
+  void SetVolume(long long llValue) { m_lVolume = llValue; }
 
 	bool IsChoiced( void ) { return m_fChoiced; }
 	void SetChoicedFlag( bool fChoiced ) { m_fChoiced = fChoiced; }
@@ -82,19 +98,8 @@ public:
   int       m_iStockCode;             // 证券代码值
 	short			m_nHand;									// 每手股数
 
-
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
 
-
-	// 实时数据
-	time_t    m_Time;
-	long	    m_lLastClose;		// 以0.001元计的收盘价
-	long		  m_lOpen;				// 以0.001元计的开盘价		
-	long		  m_lHigh;				// 以0.001元计的最高价
-	long		  m_lLow;					// 以0.001元计的最低价
-	long		  m_lNew;					// 以0.001元计的最新价
-	long long	m_lVolume;			// 以1股计的成交量
-	long long m_lAmount;			// 以元计的成交金额
   double    m_dRelativeStrong; // 单位：1%
   long      m_lTransactionNumber; // 本交易日的成交笔数
   long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
@@ -107,9 +112,6 @@ public:
 	long			m_lVSell[5];		// 卖盘量。单位：股
 
 	// 以下变量用于分析买入卖出具体情况
-  long      m_lSellPrice;     // 竞卖价格
-  long      m_lBuyPrice;      // 竞买价格
-
 	long long	m_lAttackBuyAmount;		// 向上买入金额
 	long long m_lAttackSellAmount;	// 向下卖出金额
 	long			m_lCurrentVolume;
@@ -138,7 +140,17 @@ public:
 	//
 	long long	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
  
-public:
+protected:
+  // 实时数据
+  time_t    m_Time;
+  long	    m_lLastClose;		// 以0.001元计的收盘价
+  long		  m_lOpen;				// 以0.001元计的开盘价		
+  long		  m_lHigh;				// 以0.001元计的最高价
+  long		  m_lLow;					// 以0.001元计的最低价
+  long		  m_lNew;					// 以0.001元计的最新价
+  long long	m_lVolume;			// 以1股计的成交量
+  long long m_lAmount;			// 以元计的成交金额
+
 
   deque<COneDealPtr>    m_dequeDeal;        // 具体成交信息队列
 
@@ -150,7 +162,7 @@ public:
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   long                  m_lCurrentCanselSellVolume;
   long                  m_lCurrentCanselBuyVolume;
-protected:
+  
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储

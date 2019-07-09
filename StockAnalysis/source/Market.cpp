@@ -203,8 +203,8 @@ bool CMarket::ProcessRTData(void)
 				pStock->m_strStockCode = pRTData->m_strStockCode;
 				pStock->m_strStockName = pRTData->m_strStockName;
 				pStock->m_iStockCode = pRTData->m_iStockCode;
-				pStock->m_lLastClose = pRTData->m_lLastClose;
-				pStock->m_lOpen = pRTData->m_lOpen;
+				pStock->SetLastClose(pRTData->m_lLastClose);
+				pStock->SetOpen(pRTData->m_lOpen);
 				pStock->UpdataCurrentStatus(pRTData);
 
         m_vActiveStock.push_back(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
@@ -223,7 +223,7 @@ bool CMarket::ProcessRTData(void)
       else {
         lIndex = m_mapActiveStockToIndex.at(pRTData->m_strStockCode);
         ASSERT(lIndex <= m_lTotalActiveStock);
-        if (pRTData->m_time > m_vActiveStock.at(lIndex)->m_Time) { // 新的数据？
+        if (pRTData->m_time > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
           m_vActiveStock.at(lIndex)->UpdataCurrentStatus(pRTData);
           m_vActiveStock.at(lIndex)->PushRTStockData(pRTData); // 存储新的数据至数据池
         }
@@ -918,8 +918,8 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayKLine.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock ) {
     if (pStock == nullptr) continue; // 空置位置。应该不存在。
-    if ((pStock->m_lHigh == 0) && (pStock->m_lLow == 0) && (pStock->m_lAmount == 0)
-      && (pStock->m_lVolume == 0) && (pStock->m_lNew == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
+      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     lIndex = gl_mapTotalStockToIndex.at(pStock->m_strStockCode);
@@ -934,13 +934,13 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayKLine.m_Market = pStock->m_wMarket;
     setDayKLine.m_StockName = pStock->m_strStockName;
     setDayKLine.m_StockCode = pStock->m_strStockCode;
-    lLastClose = pStock->m_lLastClose;
-    setDayKLine.m_LastClose = (double)pStock->m_lLastClose / 1000;
-    setDayKLine.m_Open = (double)pStock->m_lOpen / 1000;
-    setDayKLine.m_High = (double)pStock->m_lHigh / 1000;
-    setDayKLine.m_Low = (double)pStock->m_lLow / 1000;
-    lClose = pStock->m_lNew;
-    setDayKLine.m_Close = (double)pStock->m_lNew / 1000;
+    lLastClose = pStock->GetLastClose();
+    setDayKLine.m_LastClose = (double)pStock->GetLastClose() / 1000;
+    setDayKLine.m_Open = (double)pStock->GetOpen() / 1000;
+    setDayKLine.m_High = (double)pStock->GetHigh() / 1000;
+    setDayKLine.m_Low = (double)pStock->GetLow() / 1000;
+    lClose = pStock->GetNew();
+    setDayKLine.m_Close = (double)pStock->GetNew() / 1000;
     setDayKLine.m_UpAndDown = ((double)(lClose - lLastClose)) / 1000;
     if (lLastClose == 0) { // 新上市第一天的股票
       setDayKLine.m_UpDownRate = 0;
@@ -949,8 +949,8 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
       setDayKLine.m_UpDownRate = (((double)(lClose - lLastClose)) * 100.0) / lLastClose;
     }
     
-    setDayKLine.m_Volume = pStock->m_lVolume;
-    setDayKLine.m_Amount = pStock->m_lAmount;
+    setDayKLine.m_Volume = pStock->GetVolume();
+    setDayKLine.m_Amount = pStock->GetAmount();
     setDayKLine.m_TotalValue = 0;
     setDayKLine.m_CurrentValue = 0;
     setDayKLine.m_RelativeStrong = pStock->m_dRelativeStrong;
@@ -992,8 +992,8 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayLineInfo.m_pDatabase->CommitTrans();
   setDayLineInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if ((pStock->m_lHigh == 0) && (pStock->m_lLow == 0) && (pStock->m_lAmount == 0)
-      && (pStock->m_lVolume == 0) && (pStock->m_lNew == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
+      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     setDayLineInfo.AddNew();
