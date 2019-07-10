@@ -247,42 +247,6 @@ bool CStock::CalculateRTData(void) {
             }
           }
           ASSERT(m_Time >= pRTData->m_time);
-          if( gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-            if (gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
-              CTime ctime(pRTData->m_time);
-              sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f    ", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
-                m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
-              str = buffer;
-              CString str1;
-              switch (m_nCurrentTransactionType) {
-              case __STRONG_BUY__:
-                str1 = _T(" STRONG BUY");
-                break;
-              case __STRONG_SELL__:
-                str1 = _T(" STRONG SELL");
-                break;
-              case __ATTACK_BUY__:
-                str1 = _T(" ATTACK BUY");
-                break;
-              case __ATTACK_SELL__:
-                str1 = _T(" ATTACK SELL");
-                break;
-              case __ORDINARY_BUY__:
-                str1 = _T(" ORDINARY BUY");
-                break;
-              case __ORDINARY_SELL__:
-                str1 = _T(" ORDINARY SELL");
-                break;
-              case __UNKNOWN_BUYSELL__:
-                str1 = _T(" UNKNOWN BUYSELL");
-                break;
-              default:
-                break;
-              }
-              str += str1;
-              gl_systemMessage.PushWarningMessage(str); // 采用同步机制传送信息
-            }
-          }
         }
 
         // 下面开始分析挂单情况
@@ -548,30 +512,67 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
     }
   }
 
-  // 显示当前取消挂单的情况
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    if (gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode.Compare(m_strStockCode) == 0) {
-      CString str1;
-      char buffer[30];
-      if (m_lCurrentCanselSellVolume > 0) {
-        sprintf_s(buffer, "当前取消卖单量：%d", m_lCurrentCanselSellVolume);
-        str1 = buffer;
-        sprintf_s(buffer, "  总取消卖单量：%d", m_lCancelSellVolume);
-        str1 += buffer;
-        gl_systemMessage.PushDataBaseMessage(str1);   // 采用同步机制传递消息
-
-      }
-      if (m_lCurrentCanselBuyVolume > 0) {
-        sprintf_s(buffer, "当前取消买单量：%d", m_lCurrentCanselBuyVolume);
-        str1 = buffer;
-        sprintf_s(buffer, "  总取消买单量：%d", m_lCancelBuyVolume);
-        str1 += buffer;
-        gl_systemMessage.PushTrace1Message(str1); // 采用同步机制传递消息
-
-      }
-    }
-  }
   return(true);
+}
+
+void CStock::ReportGuaDanTransaction(void)
+{
+  char buffer[100];
+  CString str;
+  CTime ctime(m_pLastRTData->m_time);
+  sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f    ", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
+    m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
+  str = buffer;
+  CString str1;
+  switch (m_nCurrentTransactionType) {
+  case __STRONG_BUY__:
+    str1 = _T(" STRONG BUY");
+    break;
+  case __STRONG_SELL__:
+    str1 = _T(" STRONG SELL");
+    break;
+  case __ATTACK_BUY__:
+    str1 = _T(" ATTACK BUY");
+    break;
+  case __ATTACK_SELL__:
+    str1 = _T(" ATTACK SELL");
+    break;
+  case __ORDINARY_BUY__:
+    str1 = _T(" ORDINARY BUY");
+    break;
+  case __ORDINARY_SELL__:
+    str1 = _T(" ORDINARY SELL");
+    break;
+  case __UNKNOWN_BUYSELL__:
+    str1 = _T(" UNKNOWN BUYSELL");
+    break;
+  default:
+    break;
+  }
+  str += str1;
+  gl_systemMessage.PushWarningMessage(str); // 采用同步机制传送信息
+}
+
+void CStock::ReportGuaDan(void)
+{
+  CString str1;
+  char buffer[30];
+  if (m_lCurrentCanselSellVolume > 0) {
+    sprintf_s(buffer, "当前取消卖单量：%d", m_lCurrentCanselSellVolume);
+    str1 = buffer;
+    sprintf_s(buffer, "  总取消卖单量：%d", m_lCancelSellVolume);
+    str1 += buffer;
+    gl_systemMessage.PushDataBaseMessage(str1);   // 采用同步机制传递消息
+
+  }
+  if (m_lCurrentCanselBuyVolume > 0) {
+    sprintf_s(buffer, "当前取消买单量：%d", m_lCurrentCanselBuyVolume);
+    str1 = buffer;
+    sprintf_s(buffer, "  总取消买单量：%d", m_lCancelBuyVolume);
+    str1 += buffer;
+    gl_systemMessage.PushTrace1Message(str1); // 采用同步机制传递消息
+
+  }
 }
 
 bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {

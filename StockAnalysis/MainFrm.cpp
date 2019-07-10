@@ -681,12 +681,12 @@ bool CMainFrame::SchedulingTask(void)
   }
   else m_fCountDownRT = true;
 
-  if ((gl_lTime < 91000) || (gl_lTime > 150001)) { //下午三点市场交易结束
+  if ((gl_lTime < 91000) || (gl_lTime > 150001)) { //下午三点市场交易结束，
     gl_ChinaStockMarket.m_fMarketOpened = false;
   }
   else gl_ChinaStockMarket.m_fMarketOpened = true;
 
-  if ((gl_lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) {
+  if ((gl_lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
     CompileTodayStocks();
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
   }
