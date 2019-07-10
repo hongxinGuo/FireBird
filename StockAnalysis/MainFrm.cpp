@@ -882,8 +882,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   //更新状态条
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
-    m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode);
-    m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->m_strStockName);
+    m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockCode());
+    m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockName());
   }
   CString str;
   if (gl_ChinaStockMarket.m_fCurrentEditStockChanged) {
@@ -1086,14 +1086,14 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     case 45: // Ins 加入自选股票 
       pStock = gl_ChinaStockMarket.GetShowStock();
       pStock->SetChoicedFlag(true);
-      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->m_strStockCode, pStockID)) {
+      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->GetStockCode(), pStockID)) {
         gl_vStockChoice.push_back(pStockID);
       }
       break;
     case 33: // PAGE UP
       // last stock
       pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
       if (lIndex > 0) lIndex--;
       pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
       gl_ChinaStockMarket.SetShowStock(pStock);
@@ -1102,7 +1102,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     case 34: // PAGE DOWN
       // next stock
       pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->m_strStockCode, lIndex);
+      gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
       if (lIndex < gl_ChinaStockMarket.GetTotalStock()) lIndex++;
       pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
       gl_ChinaStockMarket.SetShowStock(pStock);

@@ -34,6 +34,18 @@ public:
 	void operator=( CStock & );
 
 public:
+  WORD GetMarket(void) { return m_wMarket; }
+  void SetMarket(WORD wValue) { m_wMarket = wValue; }
+  bool IsActive(void) { return m_fActive; }
+  void SetActive(bool fFlag) { m_fActive = fFlag; }
+  CString GetStockCode(void) { return m_strStockCode; }
+  void SetStockCode(CString str) { m_strStockCode = str; }
+  long GetCode(void) { return m_iStockCode; }
+  void SetCode(long lValue) { m_iStockCode = lValue; }
+  CString GetStockName(void) { return m_strStockName; }
+  void SetStockName(CString str) { m_strStockName = str; }
+
+
   time_t GetTime(void) { return m_Time; }
   void SetTime(time_t time) { m_Time = time; }
   long GetLastClose(void) { return m_lLastClose; }
@@ -90,13 +102,6 @@ public:
 #endif
 
 public:
-  // 基本信息
-	WORD      m_wMarket;                // 市场索引
-  bool      m_fActive;                // 今天是否接受到实时数据
-	CString		m_strStockCode;						// 证券代码，
-	CString		m_strStockName;						// 证券名称
-  int       m_iStockCode;             // 证券代码值
-	short			m_nHand;									// 每手股数
 
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
 
@@ -141,6 +146,15 @@ public:
 	long long	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
  
 protected:
+  // 基本信息
+  WORD      m_wMarket;                // 市场索引
+  bool      m_fActive;                // 今天是否接受到实时数据
+  CString		m_strStockCode;						// 证券代码，
+  CString		m_strStockName;						// 证券名称
+  int       m_iStockCode;             // 证券代码值
+  short			m_nHand;									// 每手股数
+
+
   // 实时数据
   time_t    m_Time;
   long	    m_lLastClose;		// 以0.001元计的收盘价

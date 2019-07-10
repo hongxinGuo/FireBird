@@ -276,7 +276,7 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
   CDayLinePtr pDayLine;
 
   setDayLine.m_strFilter = _T("[StockCode] = '");
-  setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->m_strStockCode;
+  setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
   setDayLine.m_strFilter += _T("'");
   setDayLine.m_strSort = _T("[Time]");
   setDayLine.Open();
