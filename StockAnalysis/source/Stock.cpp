@@ -338,7 +338,10 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
     ASSERT(0); // 不可能执行到此分支。
     break;
   }
-  
+  // 先清空当前挂单之间的挂单数量，然后填上当前量。如果由空当的话，则自然清空了。
+  for (int i2 = pCurrentRTData->m_lPBuy[4]; i2 <= pCurrentRTData->m_lPSell[4]; i2 += 10) {
+    m_mapGuaDan[i2] = 0;
+  }
   for (int i = 0; i < 5; i++) { // 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
     SetGuaDan(pCurrentRTData->m_lPSell[i], pCurrentRTData->m_lVSell[i]);
     SetGuaDan(pCurrentRTData->m_lPBuy[i], pCurrentRTData->m_lVBuy[i]);

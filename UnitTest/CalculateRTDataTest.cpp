@@ -50,28 +50,28 @@ namespace StockAnalysisTest {
 
   // 没有任何变化，无成交
   GuaDanData GuaDan1(0, __NO_TRANSACTION__, 0,
-    1005, 10000, 1004, 10000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 997, 10000, 996, 10000,
-    1005, 10000, 1004, 10000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 997, 10000, 996, 10000);
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 无成交，出现新的挂单位置
   GuaDanData GuaDan2(1, __NO_TRANSACTION__, 0,
-    1025, 10000, 1014, 20000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 987, 20000, 986, 10000,
-    1005, 10000, 1004, 10000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 997, 10000, 996, 10000);
+    10250, 10000, 10140, 20000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9870, 20000, 9860, 10000,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 无成交，出现新的挂单量
   GuaDanData GuaDan3(2, __NO_TRANSACTION__, 0,
-    1005, 10100, 1004, 10200, 1003, 10400, 1002, 10800, 1001, 11600,
-    1000, 10100, 999, 10200, 998, 10400, 997, 10800, 996, 11600,
-    1005, 10000, 1004, 10000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 997, 10000, 996, 10000);
+    10050, 10100, 10040, 10200, 10030, 10400, 10020, 10800, 10010, 11600,
+    10000, 10100, 9990, 10200, 9980, 10400, 9970, 10800, 9960, 11600,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 无成交，出现撤单
   GuaDanData GuaDan4(3, __NO_TRANSACTION__, 0,
-    1005, 9900, 1004, 9800, 1003, 9600, 1002, 9200, 1001, 8400,
-    1000, 9900, 999, 9800, 998, 9600, 997, 9200, 996, 8400,
-    1005, 10000, 1004, 10000, 1003, 10000, 1002, 10000, 1001, 10000,
-    1000, 10000, 999, 10000, 998, 10000, 997, 10000, 996, 10000);
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
   class RTDataGuaDanTest : public::testing::TestWithParam<GuaDanData *>
   {
@@ -79,8 +79,8 @@ namespace StockAnalysisTest {
     void SetUp(void) override {
       GuaDanData * pData = GetParam();
       // 预设20个挂单
-      for (int i = 0; i < 20; i++) {
-        m_stock.TestSetGuaDanDeque(990 + i, 10000); // 所有的挂单量皆设置为一万股
+      for (int i = 0; i < 200; i+=10) {
+        m_stock.TestSetGuaDanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
       pCurrentData = make_shared<CStockRTData>();
       for (int i = 0; i < 5; i++) {
@@ -123,48 +123,57 @@ namespace StockAnalysisTest {
     case 0: // 无成交，无变化
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
-      for (int i = 0; i < 20; i++) {
-        EXPECT_EQ(m_stock.GetGuaDan(990 + i), 10000);
+      for (int i = 0; i < 200; i+=10) {
+        EXPECT_EQ(m_stock.GetGuaDan(9900 + i), 10000);
       }
       break;
     case 1: // 无成交，出现新的挂单位置：1025，1014， 987， 986，挂单量同时变化。
-      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
-      EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
-      for (int i = 0; i < 20; i++) {
-        EXPECT_EQ(m_stock.GetGuaDan(990 + i), 10000);
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 20000);
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 20000);
+      for (int i = 9880; i < 9980; i+=10) {
+        EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
       }
-      EXPECT_EQ(m_stock.GetGuaDan(1025), 10000);
-      EXPECT_EQ(m_stock.GetGuaDan(1014), 20000);
-      EXPECT_EQ(m_stock.GetGuaDan(987), 20000);
-      EXPECT_EQ(m_stock.GetGuaDan(986), 10000);
+      for (int i = 9980; i <= 10030; i+=10) {
+        EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
+      }
+      for (int i = 10050; i < 10140; i+=10) {
+        EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
+      }
+      for (int i = 10150; i < 10250; i+=10) {
+        EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
+      }
+      EXPECT_EQ(m_stock.GetGuaDan(10250), 10000);
+      EXPECT_EQ(m_stock.GetGuaDan(10140), 20000);
+      EXPECT_EQ(m_stock.GetGuaDan(9870), 20000);
+      EXPECT_EQ(m_stock.GetGuaDan(9860), 10000);
       break;
     case 2: // 无成交，出现新的挂单量
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
-      EXPECT_EQ(m_stock.GetGuaDan(996), 11600);
-      EXPECT_EQ(m_stock.GetGuaDan(997), 10800);
-      EXPECT_EQ(m_stock.GetGuaDan(998), 10400);
-      EXPECT_EQ(m_stock.GetGuaDan(999), 10200);
-      EXPECT_EQ(m_stock.GetGuaDan(1000), 10100);
-      EXPECT_EQ(m_stock.GetGuaDan(1001), 11600);
-      EXPECT_EQ(m_stock.GetGuaDan(1002), 10800);
-      EXPECT_EQ(m_stock.GetGuaDan(1003), 10400);
-      EXPECT_EQ(m_stock.GetGuaDan(1004), 10200);
-      EXPECT_EQ(m_stock.GetGuaDan(1005), 10100);
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 11600);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 10800);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 10400);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 10200);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 10100);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 11600);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 10800);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 10400);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 10200);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 10100);
       break;
     case 3: // 无成交，出现撤单。
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3100);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 3100);
-      EXPECT_EQ(m_stock.GetGuaDan(996), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(997), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(998), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(999), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(1000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(1001), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(1002), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(1003), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(1004), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(1005), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
       break;
     default:
       break;
