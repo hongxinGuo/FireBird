@@ -686,7 +686,7 @@ bool CMainFrame::SchedulingTask(void)
   }
   else gl_ChinaStockMarket.m_fMarketOpened = true;
 
-  if ((gl_lTime > 150005) && !gl_ChinaStockMarket.IsTodayStockCompiled()) {
+  if ((gl_lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) {
     CompileTodayStocks();
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
   }

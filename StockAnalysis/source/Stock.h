@@ -132,6 +132,10 @@ public:
 #endif
 
 public:
+  // 测试专用函数
+  void TestSetGuaDanDeque(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; } // 预先设置挂单。
+
+public:
 
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
  
