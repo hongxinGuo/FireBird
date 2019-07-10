@@ -357,9 +357,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
             m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
             m_lCancelSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
           }
-          else { // 
-            SetGuaDan(pLastRTData->m_lPSell[4], pLastRTData->m_lVSell[4]);
-          }
         }
       }
       break;
@@ -372,9 +369,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
           if (GetGuaDan(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
             m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
             m_lCancelSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
-          }
-          else {
-            SetGuaDan(pLastRTData->m_lPSell[3], pLastRTData->m_lVSell[3]);
           }
         }
       }
@@ -389,9 +383,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
             m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[2] - m_mapGuaDan.at(pLastRTData->m_lPSell[2]);
             m_lCancelSellVolume += pLastRTData->m_lVSell[2] - m_mapGuaDan.at(pLastRTData->m_lPSell[2]);
           }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPSell[2]) = pLastRTData->m_lVSell[2];
-          }
         }
       }
       break;
@@ -404,9 +395,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
           if (m_mapGuaDan.at(pLastRTData->m_lPSell[1]) < pLastRTData->m_lVSell[1]) { // 撤单了的话
             m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[1] - m_mapGuaDan.at(pLastRTData->m_lPSell[1]);
             m_lCancelSellVolume += pLastRTData->m_lVSell[1] - m_mapGuaDan.at(pLastRTData->m_lPSell[1]);
-          }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPSell[1]) = pLastRTData->m_lVSell[1];
           }
         }
       }
@@ -421,9 +409,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
             m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[0] - m_mapGuaDan.at(pLastRTData->m_lPSell[0]);
             m_lCancelSellVolume += pLastRTData->m_lVSell[0] - m_mapGuaDan.at(pLastRTData->m_lPSell[0]);
           }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPSell[0]) = pLastRTData->m_lVSell[0];
-          }
         }
       }
       break;
@@ -436,9 +421,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
           if (m_mapGuaDan.at(pLastRTData->m_lPBuy[0]) < pLastRTData->m_lVBuy[0]) { // 撤单了的话
             m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[0] - m_mapGuaDan.at(pLastRTData->m_lPBuy[0]);
             m_lCancelBuyVolume += pLastRTData->m_lVBuy[0] - m_mapGuaDan.at(pLastRTData->m_lPBuy[0]);
-          }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPBuy[0]) = pLastRTData->m_lVBuy[0];
           }
         }
       }
@@ -453,9 +435,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
             m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[1] - m_mapGuaDan.at(pLastRTData->m_lPBuy[1]);
             m_lCancelBuyVolume += pLastRTData->m_lVBuy[1] - m_mapGuaDan.at(pLastRTData->m_lPBuy[1]);
           }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPBuy[1]) = pLastRTData->m_lVBuy[1];
-          }
         }
       }
       break;
@@ -468,9 +447,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
           if (m_mapGuaDan.at(pLastRTData->m_lPBuy[2]) < pLastRTData->m_lVBuy[2]) { // 撤单了的话
             m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[2] - m_mapGuaDan.at(pLastRTData->m_lPBuy[2]);
             m_lCancelBuyVolume += pLastRTData->m_lVBuy[2] - m_mapGuaDan.at(pLastRTData->m_lPBuy[2]);
-          }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPBuy[2]) = pLastRTData->m_lVBuy[2];
           }
         }
       }
@@ -485,9 +461,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
             m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[3] - m_mapGuaDan.at(pLastRTData->m_lPBuy[3]);
             m_lCancelBuyVolume += pLastRTData->m_lVBuy[3] - m_mapGuaDan.at(pLastRTData->m_lPBuy[3]);
           }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPBuy[3]) = pLastRTData->m_lVBuy[3];
-          }
         }
       }
       break;
@@ -500,9 +473,6 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
           if (m_mapGuaDan.at(pLastRTData->m_lPBuy[4]) < pLastRTData->m_lVBuy[4]) { // 撤单了的话
             m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[4] - m_mapGuaDan.at(pLastRTData->m_lPBuy[4]);
             m_lCancelBuyVolume += pLastRTData->m_lVBuy[4] - m_mapGuaDan.at(pLastRTData->m_lPBuy[4]);
-          }
-          else {
-            m_mapGuaDan.at(pLastRTData->m_lPBuy[4]) = pLastRTData->m_lVBuy[4];
           }
         }
       }
