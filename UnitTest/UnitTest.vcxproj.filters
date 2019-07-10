@@ -59,9 +59,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CurrentTime.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
       <Filter>dependency</Filter>
     </Object>

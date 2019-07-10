@@ -133,11 +133,8 @@ bool CMarket::IsAStock(CString strStockCode) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsStock( CString strStockCode, CStockPtr & pStock ) {
-	if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != NULL ) {
+	if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != nullptr ) {
 		return( true );
-	}
-	else if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != NULL ) {
-		return ( true );
 	}
 	else {
 		pStock = NULL;
@@ -155,7 +152,7 @@ long long CMarket::GetTotalAttackBuyAmount( void ) {
 	long long lAmount = 0;
 	for ( auto pStock : m_vActiveStock ) {
 		if ( IsAStock( pStock ) ) {
-			lAmount += pStock->m_lAttackBuyAmount;
+			lAmount += pStock->GetAttackBuyAmount();
 		}
 	}
 	return( lAmount );
@@ -171,7 +168,7 @@ long long CMarket::GetTotalAttackSellAmount( void ) {
 	long long lAmount = 0;
 	for ( auto pStock : m_vActiveStock ) {
 		if ( IsAStock( pStock ) ) {
-			lAmount += pStock->m_lAttackSellAmount;
+			lAmount += pStock->GetAttackSellAmount();
 		}
 	}
 	return( lAmount );
@@ -953,27 +950,27 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayKLine.m_Amount = pStock->GetAmount();
     setDayKLine.m_TotalValue = 0;
     setDayKLine.m_CurrentValue = 0;
-    setDayKLine.m_RelativeStrong = pStock->m_dRelativeStrong;
-    setDayKLine.m_TransactionNumber = pStock->m_lTransactionNumber;
-    setDayKLine.m_TransactionNumberBelow5000 = pStock->m_lTransactionNumberBelow5000;
-    setDayKLine.m_TransactionNumberBelow50000 = pStock->m_lTransactionNumberBelow50000;
-    setDayKLine.m_TransactionNumberBelow200000 = pStock->m_lTransactionNumberBelow200000;
-    setDayKLine.m_TransactionNumberAbove200000 = pStock->m_lTransactionNumberAbove200000;
-    setDayKLine.m_CancelBuyVolume = pStock->m_lCancelBuyVolume;
-    setDayKLine.m_CancelSellVolume = pStock->m_lCancelSellVolume;
-    setDayKLine.m_AttackBuyVolume = pStock->m_lAttackBuyVolume;
-    setDayKLine.m_AttackSellVolume = pStock->m_lAttackSellVolume;
-    setDayKLine.m_StrongBuyVolume = pStock->m_lStrongBuyVolume;
-    setDayKLine.m_StrongSellVolume = pStock->m_lStrongSellVolume;
-    setDayKLine.m_UnknownVolume = pStock->m_lUnknownVolume;
-    setDayKLine.m_OrdinaryBuyVolume = pStock->m_lOrdinaryBuyVolume;
-    setDayKLine.m_OrdinarySellVolume = pStock->m_lOrdinarySellVolume;
-    setDayKLine.m_AttackBuyBelow50000 = pStock->m_lAttackBuyBelow50000;
-    setDayKLine.m_AttackBuyBelow200000 = pStock->m_lAttackBuyBelow200000;
-    setDayKLine.m_AttackBuyAbove200000 = pStock->m_lAttackBuyAbove200000;
-    setDayKLine.m_AttackSellBelow50000 = pStock->m_lAttackSellBelow50000;
-    setDayKLine.m_AttackSellBelow200000 = pStock->m_lAttackSellBelow200000;
-    setDayKLine.m_AttackSellAbove200000 = pStock->m_lAttackSellAbove200000;
+    setDayKLine.m_RelativeStrong = pStock->GetRelativeStrong();
+    setDayKLine.m_TransactionNumber = pStock->GetTransactionNumber();
+    setDayKLine.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
+    setDayKLine.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
+    setDayKLine.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
+    setDayKLine.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
+    setDayKLine.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
+    setDayKLine.m_CancelSellVolume = pStock->GetCancelSellVolume();
+    setDayKLine.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
+    setDayKLine.m_AttackSellVolume = pStock->GetAttackSellVolume();
+    setDayKLine.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
+    setDayKLine.m_StrongSellVolume = pStock->GetStrongSellVolume();
+    setDayKLine.m_UnknownVolume = pStock->GetUnknownVolume();
+    setDayKLine.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
+    setDayKLine.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
+    setDayKLine.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
+    setDayKLine.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
+    setDayKLine.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
+    setDayKLine.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
+    setDayKLine.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
+    setDayKLine.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
     setDayKLine.Update();
   }
   setDayKLine.m_pDatabase->CommitTrans();
@@ -1002,27 +999,27 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayLineInfo.m_StockName = pStock->GetStockName();
     setDayLineInfo.m_StockCode = pStock->GetStockCode();
 
-    setDayLineInfo.m_RelativeStrong = pStock->m_dRelativeStrong;
-    setDayLineInfo.m_TransactionNumber = pStock->m_lTransactionNumber;
-    setDayLineInfo.m_TransactionNumberBelow5000 = pStock->m_lTransactionNumberBelow5000;
-    setDayLineInfo.m_TransactionNumberBelow50000 = pStock->m_lTransactionNumberBelow50000;
-    setDayLineInfo.m_TransactionNumberBelow200000 = pStock->m_lTransactionNumberBelow200000;
-    setDayLineInfo.m_TransactionNumberAbove200000 = pStock->m_lTransactionNumberAbove200000;
-    setDayLineInfo.m_CancelBuyVolume = pStock->m_lCancelBuyVolume;
-    setDayLineInfo.m_CancelSellVolume = pStock->m_lCancelSellVolume;
-    setDayLineInfo.m_AttackBuyVolume = pStock->m_lAttackBuyVolume;
-    setDayLineInfo.m_AttackSellVolume = pStock->m_lAttackSellVolume;
-    setDayLineInfo.m_StrongBuyVolume = pStock->m_lStrongBuyVolume;
-    setDayLineInfo.m_StrongSellVolume = pStock->m_lStrongSellVolume;
-    setDayLineInfo.m_UnknownVolume = pStock->m_lUnknownVolume;
-    setDayLineInfo.m_OrdinaryBuyVolume = pStock->m_lOrdinaryBuyVolume;
-    setDayLineInfo.m_OrdinarySellVolume = pStock->m_lOrdinarySellVolume;
-    setDayLineInfo.m_AttackBuyBelow50000 = pStock->m_lAttackBuyBelow50000;
-    setDayLineInfo.m_AttackBuyBelow200000 = pStock->m_lAttackBuyBelow200000;
-    setDayLineInfo.m_AttackBuyAbove200000 = pStock->m_lAttackBuyAbove200000;
-    setDayLineInfo.m_AttackSellBelow50000 = pStock->m_lAttackSellBelow50000;
-    setDayLineInfo.m_AttackSellBelow200000 = pStock->m_lAttackSellBelow200000;
-    setDayLineInfo.m_AttackSellAbove200000 = pStock->m_lAttackSellAbove200000;
+    setDayLineInfo.m_RelativeStrong = pStock->GetRelativeStrong();
+    setDayLineInfo.m_TransactionNumber = pStock->GetTransactionNumber();
+    setDayLineInfo.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
+    setDayLineInfo.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
+    setDayLineInfo.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
+    setDayLineInfo.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
+    setDayLineInfo.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
+    setDayLineInfo.m_CancelSellVolume = pStock->GetCancelSellVolume();
+    setDayLineInfo.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
+    setDayLineInfo.m_AttackSellVolume = pStock->GetAttackSellVolume();
+    setDayLineInfo.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
+    setDayLineInfo.m_StrongSellVolume = pStock->GetStrongSellVolume();
+    setDayLineInfo.m_UnknownVolume = pStock->GetUnknownVolume();
+    setDayLineInfo.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
+    setDayLineInfo.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
+    setDayLineInfo.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
+    setDayLineInfo.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
+    setDayLineInfo.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
+    setDayLineInfo.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
+    setDayLineInfo.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
+    setDayLineInfo.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
     setDayLineInfo.Update();
   }
   setDayLineInfo.m_pDatabase->CommitTrans();

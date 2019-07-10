@@ -27,11 +27,11 @@ using namespace std;
 // 证券名称数据包
 class CStock : public CObject {
 public:
-	CStock( void );
-	~CStock ( void );
-	void Reset( void );
+  CStock(void);
+  ~CStock(void);
+  void Reset(void);
 
-	void operator=( CStock & );
+  void operator=(CStock &);
 
 public:
   WORD GetMarket(void) { return m_wMarket; }
@@ -44,7 +44,6 @@ public:
   void SetCode(long lValue) { m_iStockCode = lValue; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
-
 
   time_t GetTime(void) { return m_Time; }
   void SetTime(time_t time) { m_Time = time; }
@@ -62,6 +61,37 @@ public:
   void SetAmount(long long llValue) { m_lAmount = llValue; }
   long long GetVolume(void) { return m_lVolume; }
   void SetVolume(long long llValue) { m_lVolume = llValue; }
+
+  long long GetAttackBuyAmount(void) { return m_lAttackBuyAmount; }
+  long long GetAttackSellAmount(void) { return m_lAttackSellAmount; }
+  long GetOrdinaryBuyVolume(void) { return m_lOrdinaryBuyVolume; }
+  long GetOrdinarySellVolume(void) { return m_lOrdinarySellVolume; }
+  long GetAttackBuyVolume(void) { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  long GetStrongBuyVolume(void) { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
+  long GetCurrentAttackBuy(void) { return m_lCurrentAttackBuy; }
+  long GetCurrentStrongBuy(void) { return m_lCurrentStrongBuy; }
+  long GetAttackSellVolume(void) { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
+  long GetStrongSellVolume(void) { return m_lStrongSellVolume; }
+  long GetCurrentAttackSell(void) { return m_lCurrentAttackSell; }
+  long GetCurrentStrongSell(void) { return m_lCurrentStrongSell; }
+  long GetUnknownVolume(void) { return m_lUnknownVolume; }
+  long GetCurrentUnknown(void) { return m_lCurrentUnknown; }
+  long GetCancelBuyVolume(void) { return m_lCancelBuyVolume; }
+  long GetCancelSellVolume(void) { return m_lCancelSellVolume; }
+
+  double GetRelativeStrong(void) { return m_dRelativeStrong; }
+  long GetTransactionNumber(void) { return m_lTransactionNumber; }
+  long GetTransactionNumberBelow5000(void) { return m_lTransactionNumberBelow5000; }
+  long GetTransactionNumberBelow50000(void) { return m_lTransactionNumberBelow50000; }
+  long GetTransactionNumberBelow200000(void) { return m_lTransactionNumberBelow200000; }
+  long GetTransactionNumberAbove200000(void) { return m_lTransactionNumberAbove200000; }
+
+  long GetAttackBuyBelow50000(void) { return m_lAttackBuyBelow50000; }
+  long GetAttackBuyBelow200000(void) { return m_lAttackBuyBelow200000; }
+  long GetAttackBuyAbove200000(void) { return m_lAttackBuyAbove200000; }
+  long GetAttackSellBelow50000(void) { return m_lAttackSellBelow50000; }
+  long GetAttackSellBelow200000(void) { return m_lAttackSellBelow200000; }
+  long GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
 
 	bool IsChoiced( void ) { return m_fChoiced; }
 	void SetChoicedFlag( bool fChoiced ) { m_fChoiced = fChoiced; }
@@ -104,46 +134,6 @@ public:
 public:
 
 	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
-
-  double    m_dRelativeStrong; // 单位：1%
-  long      m_lTransactionNumber; // 本交易日的成交笔数
-  long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
-  long      m_lTransactionNumberBelow50000; // 
-  long      m_lTransactionNumberBelow200000; // 
-  long      m_lTransactionNumberAbove200000; // 
-	long		  m_lPBuy[5];			// 买盘价。单位：0.001元
-	long			m_lVBuy[5];			// 买盘量。单位：股
-	long		  m_lPSell[5];		// 卖盘价。单位：0.001元
-	long			m_lVSell[5];		// 卖盘量。单位：股
-
-	// 以下变量用于分析买入卖出具体情况
-	long long	m_lAttackBuyAmount;		// 向上买入金额
-	long long m_lAttackSellAmount;	// 向下卖出金额
-	long			m_lCurrentVolume;
-  long      m_lOrdinaryBuyVolume;
-  long      m_lOrdinarySellVolume;
-	long			m_lAttackBuyVolume;		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-	long			m_lStrongBuyVolume;		// 向上强力买入,成交价超过之前的卖二报价
-	long			m_lCurrentAttackBuy;
-	long			m_lCurrentStrongBuy;
-	long			m_lAttackSellVolume;			// 向下卖出。成交价低于买一价但高于买二价。
-	long			m_lStrongSellVolume;		// 向下强力卖出,成交价低于之前的买二报价
-	long			m_lCurrentAttackSell;
-	long			m_lCurrentStrongSell;
-	long			m_lUnknownVolume;
-	long			m_lCurrentUnknown;
-	long			m_lCancelBuyVolume;		// 买单撤单量
-	long			m_lCancelSellVolume;			// 卖单撤单量
-
-	long			m_lAttackBuyBelow50000;
-	long			m_lAttackBuyBelow200000;
-	long			m_lAttackBuyAbove200000;
-	long			m_lAttackSellBelow50000;
-	long			m_lAttackSellBelow200000;
-	long			m_lAttackSellAbove200000;
-
-	//
-	long long	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
  
 protected:
   // 基本信息
@@ -165,6 +155,47 @@ protected:
   long long	m_lVolume;			// 以1股计的成交量
   long long m_lAmount;			// 以元计的成交金额
 
+  long		  m_lPBuy[5];			// 买盘价。单位：0.001元
+  long			m_lVBuy[5];			// 买盘量。单位：股
+  long		  m_lPSell[5];		// 卖盘价。单位：0.001元
+  long			m_lVSell[5];		// 卖盘量。单位：股
+
+    // 以下变量用于分析买入卖出具体情况
+  long long	m_lAttackBuyAmount;		// 向上买入金额
+  long long m_lAttackSellAmount;	// 向下卖出金额
+  long			m_lCurrentVolume;
+
+  double    m_dRelativeStrong; // 单位：1%
+  long      m_lTransactionNumber; // 本交易日的成交笔数
+  long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
+  long      m_lTransactionNumberBelow50000; // 
+  long      m_lTransactionNumberBelow200000; // 
+  long      m_lTransactionNumberAbove200000; // 
+
+  long      m_lOrdinaryBuyVolume;
+  long      m_lOrdinarySellVolume;
+  long			m_lAttackBuyVolume;		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  long			m_lStrongBuyVolume;		// 向上强力买入,成交价超过之前的卖二报价
+  long			m_lCurrentAttackBuy;
+  long			m_lCurrentStrongBuy;
+  long			m_lAttackSellVolume;			// 向下卖出。成交价低于买一价但高于买二价。
+  long			m_lStrongSellVolume;		// 向下强力卖出,成交价低于之前的买二报价
+  long			m_lCurrentAttackSell;
+  long			m_lCurrentStrongSell;
+  long			m_lUnknownVolume;
+  long			m_lCurrentUnknown;
+  long			m_lCancelBuyVolume;		// 买单撤单量
+  long			m_lCancelSellVolume;			// 卖单撤单量
+
+  long			m_lAttackBuyBelow50000;
+  long			m_lAttackBuyBelow200000;
+  long			m_lAttackBuyAbove200000;
+  long			m_lAttackSellBelow50000;
+  long			m_lAttackSellBelow200000;
+  long			m_lAttackSellAbove200000;
+
+  //
+  long long	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
 
   deque<COneDealPtr>    m_dequeDeal;        // 具体成交信息队列
 

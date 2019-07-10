@@ -5,6 +5,43 @@
 #include"Stock.h"
 
 namespace StockAnalysisTest {
+  TEST(StockTest, TestGetMarket) {
+    CStock stock;
+    EXPECT_EQ(stock.GetMarket(), 0);
+    stock.SetMarket(1);
+    EXPECT_EQ(stock.GetMarket(), 1);
+  }
+
+  TEST(StockTest, TestGetStockCode) {
+    CStock stock;
+    EXPECT_STREQ(stock.GetStockCode(), _T(""));
+    stock.SetStockCode(_T("sh600000"));
+    EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
+  }
+
+  TEST(StockTest, TestGetStockName) {
+    CStock stock;
+    EXPECT_STREQ(stock.GetStockName(), _T(""));
+    stock.SetStockName(_T("浦东银行"));
+    EXPECT_STREQ(stock.GetStockName(), _T("浦东银行"));
+  }
+
+  TEST(StockTest, TestGetCode) {
+    CStock stock;
+    EXPECT_EQ(stock.GetCode(), 0);
+    stock.SetCode(600000);
+    EXPECT_EQ(stock.GetCode(), 600000);
+  }
+  
+  TEST(StockTest, TestIsActive) {
+    CStock stock;
+    EXPECT_FALSE(stock.IsActive());
+    stock.SetActive(true);
+    EXPECT_TRUE(stock.IsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.IsActive());
+  }
+
   TEST(StockTest, TestGetTime) {
     CStock stock;
     EXPECT_EQ(stock.GetTime(), 0);
