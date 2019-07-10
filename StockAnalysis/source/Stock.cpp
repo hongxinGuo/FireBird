@@ -384,7 +384,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 2: // 卖单三
       if (fNeedCheck[2]) {
-        if (HaveGuaDan(pLastRTData->m_lPSell[2])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPSell[2])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPSell[2], pLastRTData->m_lVSell[2]);
         }
@@ -398,7 +398,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 3: // 卖单二
       if (fNeedCheck[3]) {
-        if (HaveGuaDan(pLastRTData->m_lPSell[1])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPSell[1])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPSell[1], pLastRTData->m_lVSell[1]);
         }
@@ -412,7 +412,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 4: // 卖单一
       if (fNeedCheck[4]) {
-        if (HaveGuaDan(pLastRTData->m_lPSell[0])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPSell[0])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPSell[0], pLastRTData->m_lVSell[0]);
         }
@@ -426,7 +426,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 5:   // 以下为买单变化情况，买单一
       if (fNeedCheck[5]) {
-        if (HaveGuaDan(pLastRTData->m_lPBuy[0])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPBuy[0])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPBuy[0], pLastRTData->m_lVBuy[0]);
         }
@@ -440,7 +440,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 6: // 买单二
       if (fNeedCheck[6]) {
-        if (HaveGuaDan(pLastRTData->m_lPBuy[1])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPBuy[1])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPBuy[1], pLastRTData->m_lVBuy[1]);
         }
@@ -454,7 +454,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 7: // 买单三
       if (fNeedCheck[7]) {
-        if (HaveGuaDan(pLastRTData->m_lPBuy[2])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPBuy[2])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPBuy[2], pLastRTData->m_lVBuy[2]);
         }
@@ -468,7 +468,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 8: // 买单四
       if (fNeedCheck[8]) {
-        if (HaveGuaDan(pLastRTData->m_lPBuy[3])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPBuy[3])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPBuy[3], pLastRTData->m_lVBuy[3]);
         }
@@ -482,7 +482,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
       break;
     case 9: // 买单五
       if (fNeedCheck[9]) {
-        if (HaveGuaDan(pLastRTData->m_lPBuy[4])) { // 此价位没有挂单
+        if (!HaveGuaDan(pLastRTData->m_lPBuy[4])) { // 此价位没有挂单
           //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
           SetGuaDan(pLastRTData->m_lPBuy[4], pLastRTData->m_lVBuy[4]);
         }

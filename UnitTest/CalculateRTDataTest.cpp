@@ -9,14 +9,14 @@ using namespace std;
 namespace StockAnalysisTest {
 
   struct GuaDanData { // 共四十三个数据，一个序列号，二十个当前实时数据（挂单价位和数量），二十个上次实时数据（挂单价位和数量），一个成交类型，一个成交价格
-    GuaDanData(int count, int type, double price,
+    GuaDanData(int count, int type, long price,
       long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
       long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
       long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
       long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
       iCount = count;
       iType = type;
-      dPrice = price;
+      lPrice = price;
       CurrentData.m_lPSell[4] = dS5; CurrentData.m_lVSell[4] = lS5;
       CurrentData.m_lPSell[3] = dS4; CurrentData.m_lVSell[3] = lS4;
       CurrentData.m_lPSell[2] = dS3; CurrentData.m_lVSell[2] = lS3;
@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
     CStockRTData CurrentData;
     CStockRTData LastData;
     int iType;
-    double dPrice;
+    long lPrice;
   };
 
   // 没有任何变化，无成交
@@ -96,7 +96,7 @@ namespace StockAnalysisTest {
         pLastData->m_lVSell[i] = pData->LastData.m_lVSell[i];
         pLastData->m_lPSell[i] = pData->LastData.m_lPSell[i];
       }
-      dPrice = pData->dPrice;
+      lPrice = pData->lPrice;
       iType = pData->iType;
       iCount = pData->iCount;
     }
@@ -108,7 +108,7 @@ namespace StockAnalysisTest {
   public:
     int iCount;
     int iType;
-    double dPrice;
+    long lPrice;
     CStockRTDataPtr pCurrentData;
     CStockRTDataPtr pLastData;
     CStock m_stock;
@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
-    m_stock.AnalysisingGuaDan(pCurrentData, pLastData, iType, dPrice);
+    m_stock.AnalysisingGuaDan(pCurrentData, pLastData, iType, lPrice);
     switch (iCount) {
     case 0: // 无成交，无变化
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
