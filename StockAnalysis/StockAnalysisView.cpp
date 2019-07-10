@@ -75,7 +75,7 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
   CSize sizeText = pDC->GetTextExtent(str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
-  long lStartPrice = 0; //= ((long)(pStock->m_dCurrentGuaDanTransactionPrice * 100) - iNumberOfLine / 2) * 10;
+  long lStartPrice = ((long)(pStock->GetCurrentGuaDanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
   char buffer[20];
   int j = 0;
 
@@ -84,15 +84,15 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
     CString strPrice;
     str = buffer;
     long lCurrentPrice = lStartPrice + i * 10;
-    /*
-    if (pStock->m_mapGuaDan.find(lCurrentPrice) == pStock->m_mapGuaDan.end()) { // 此价位没有挂单
+    
+    if (!pStock->HaveGuaDan(lCurrentPrice)) { // 此价位没有挂单
       strPrice = _T("    ----------");
     }
     else {
-      sprintf_s(buffer, "    %10d", pStock->m_mapGuaDan.at(lCurrentPrice));
+      sprintf_s(buffer, "    %10d", pStock->GetGuaDan(lCurrentPrice));
       strPrice = buffer;
     }
-    */
+
     str += strPrice;
     pDC->TextOut(iXStart + 10, iYStart + sizeText.cy * j + 10, str);
     j++;

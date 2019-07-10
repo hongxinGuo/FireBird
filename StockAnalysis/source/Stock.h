@@ -93,6 +93,11 @@ public:
   long GetAttackSellBelow200000(void) { return m_lAttackSellBelow200000; }
   long GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
 
+  double GetCurrentGuaDanTransactionPrice(void) { return m_dCurrentGuaDanTransactionPrice; }
+  long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
+  void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
+  bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
+
 	bool IsChoiced( void ) { return m_fChoiced; }
 	void SetChoicedFlag( bool fChoiced ) { m_fChoiced = fChoiced; }
 

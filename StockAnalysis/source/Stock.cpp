@@ -260,8 +260,8 @@ bool CStock::CalculateRTData(void) {
         SetStartCalculating(true);
         // 设置第一次的挂单映射。
         for (int j = 0; j < 5; j++) {
-          m_mapGuaDan[pRTData->m_lPBuy[j]] = pRTData->m_lVBuy[i];
-          m_mapGuaDan[pRTData->m_lPSell[j]] = pRTData->m_lVSell[i];
+          SetGuaDan(pRTData->m_lPBuy[j], pRTData->m_lVBuy[i]);
+          SetGuaDan(pRTData->m_lPSell[j], pRTData->m_lVSell[i]);
         }
       }
     }
@@ -340,8 +340,8 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
   }
   
   for (int i = 0; i < 5; i++) { // 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
-    m_mapGuaDan[pCurrentRTData->m_lPSell[i]] = pCurrentRTData->m_lVSell[i];
-    m_mapGuaDan[pCurrentRTData->m_lPBuy[i]] = pCurrentRTData->m_lVBuy[i];
+    SetGuaDan(pCurrentRTData->m_lPSell[i], pCurrentRTData->m_lVSell[i]);
+    SetGuaDan(pCurrentRTData->m_lPBuy[i], pCurrentRTData->m_lVBuy[i]);
   }
 
   // 检查这十个挂单价位上股数的变化情况.将目前挂单状态与之前的十个价位（pLastRTData包含的）相比，查看变化
@@ -349,32 +349,32 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
     switch (i) {
     case 0: // 卖单五
       if (fNeedCheck[0]) {
-        if (m_mapGuaDan.find(pLastRTData->m_lPSell[4]) == m_mapGuaDan.end()) { // 如果此价位上没有挂单
-          m_mapGuaDan[pLastRTData->m_lPSell[4]] = pLastRTData->m_lVSell[4]; // 则在此价位上存储目前的股数（建立新的映射）。
+        if (!HaveGuaDan(pLastRTData->m_lPSell[4])) { // 如果此价位上没有挂单
+          SetGuaDan(pLastRTData->m_lPSell[4], pLastRTData->m_lVSell[4]); // 则在此价位上存储目前的股数（建立新的映射）。
         }
         else {  // 有挂单
-          if (m_mapGuaDan.at(pLastRTData->m_lPSell[4]) < pLastRTData->m_lVSell[4]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - m_mapGuaDan.at(pLastRTData->m_lPSell[4]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[4] - m_mapGuaDan.at(pLastRTData->m_lPSell[4]);
+          if (GetGuaDan(pLastRTData->m_lPSell[4]) < pLastRTData->m_lVSell[4]) { // 撤单了的话
+            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
+            m_lCancelSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
           }
           else { // 
-            m_mapGuaDan.at(pLastRTData->m_lPSell[4]) = pLastRTData->m_lVSell[4];
+            SetGuaDan(pLastRTData->m_lPSell[4], pLastRTData->m_lVSell[4]);
           }
         }
       }
       break;
     case 1: // 卖单四
       if (fNeedCheck[1]) {
-        if (m_mapGuaDan.find(pLastRTData->m_lPSell[3]) == m_mapGuaDan.end()) { // 此价位没有挂单
-          m_mapGuaDan[pLastRTData->m_lPSell[3]] = pLastRTData->m_lVSell[3];
+        if (!HaveGuaDan(pLastRTData->m_lPSell[3])) { // 此价位没有挂单
+          SetGuaDan(pLastRTData->m_lPSell[3], pLastRTData->m_lVSell[3]);
         }
         else {  // 有挂单
-          if (m_mapGuaDan.at(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - m_mapGuaDan.at(pLastRTData->m_lPSell[3]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[3] - m_mapGuaDan.at(pLastRTData->m_lPSell[3]);
+          if (GetGuaDan(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
+            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
+            m_lCancelSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
           }
           else {
-            m_mapGuaDan.at(pLastRTData->m_lPSell[3]) = pLastRTData->m_lVSell[3];
+            SetGuaDan(pLastRTData->m_lPSell[3], pLastRTData->m_lVSell[3]);
           }
         }
       }
