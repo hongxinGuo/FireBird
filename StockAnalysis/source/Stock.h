@@ -118,7 +118,7 @@ public:
 	
   // 计算实时数据, 由工作线程ClientThreadCalculatingRTDataProc调用
   bool CalculateRTData(void);
-  bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, double dCurrentTransactionPrice);
+  bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
 
