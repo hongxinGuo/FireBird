@@ -95,7 +95,7 @@ public:
   long		  GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
   void		  SetAttackSellAbove200000(long fValue) { m_lAttackSellAbove200000 = fValue; }
 
-  void      Set3DAyRS(double dValue) { m_d3DayRS = dValue; }
+  void      Set3DayRS(double dValue) { m_d3DayRS = dValue; }
   double    Get3DayRS(void) { return m_d3DayRS; }
   void		  Set5DayRS(double fValue) { m_d5DayRS = fValue; }
   double		Get5DayRS(void) { return m_d5DayRS; }

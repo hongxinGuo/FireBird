@@ -132,6 +132,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetAttackSellAbove200000(), 0);
   }
 
+  TEST(StockTest, TestGetGuaDan) {
+    CStock stock;
+    EXPECT_FALSE(stock.HaveGuaDan(10000));
+    stock.SetGuaDan(10000, 10000);
+    EXPECT_TRUE(stock.HaveGuaDan(10000));
+    EXPECT_EQ(stock.GetGuaDan(10000), 10000);
+  }
+
   TEST(StockTest, TestIsChoiced) {
     CStock stock;
     EXPECT_FALSE(stock.IsChoiced());
