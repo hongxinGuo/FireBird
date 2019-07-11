@@ -147,128 +147,135 @@ bool CStock::CalculateRTData(void) {
   CString str;
   char buffer[100];
   CStockRTDataPtr pRTData;
-  long lCurrentGuaDanTransactionPrice = 0;
+
 
   long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTStockData(); // 采用同步机制获取数据
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
-      if (IsStartCalculating()) {
-        m_lCurrentGuadanTransactionVolume = pRTData->m_lVolume - m_pLastRTData->m_lVolume;
-        if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
-          // 检查挂单情况
-          m_nCurrentTransactionType = __NO_TRANSACTION__;
-        }
-        else { // 有成交？
-          m_lTransactionNumber++; // 成交数加一。
-          if (m_lCurrentGuadanTransactionVolume < 5000) {
-            m_lTransactionNumberBelow5000++;
-          }
-          else if (m_lCurrentGuadanTransactionVolume < 50000) {
-            m_lTransactionNumberBelow50000++;
-          }
-          else if (m_lCurrentGuadanTransactionVolume < 200000) {
-            m_lTransactionNumberBelow200000++;
-          }
-          else {
-            m_lTransactionNumberAbove200000++;
-          }
-          m_dCurrentGuaDanTransactionPrice = ((double)(pRTData->m_lAmount - m_pLastRTData->m_lAmount)) / m_lCurrentGuadanTransactionVolume;
-          lCurrentGuaDanTransactionPrice = m_dCurrentGuaDanTransactionPrice * 1000; // 生成比较用的价格（放大一千倍后采用长整型）
-          if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->m_lPBuy[0]) { // 高于前买盘1
-            if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->m_lPSell[0]) { // 低于前卖盘1
-              if ((m_pLastRTData->m_lPSell[0] - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
-                m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
-                m_nCurrentTransactionType = __ORDINARY_BUY__;
-              }
-              else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->m_lPBuy[0]) <= 2) { // 一般性卖出
-                m_nCurrentTransactionType = __ORDINARY_SELL__;
-                m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
-              }
-              else { // 买卖混杂，不分析。
-                m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-                m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
-              }
-            }
-            else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->m_lPSell[1]) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
-              m_nCurrentTransactionType = __ATTACK_BUY__;
-              m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
-              if (m_lCurrentGuadanTransactionVolume < 50000) {
-                m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
-              }
-              else if (m_lCurrentGuadanTransactionVolume < 200000) {
-                m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
-              }
-              else {
-                m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
-              }
-            }
-            else { // 高于卖盘二。强力买入。StrongBuy。
-              m_nCurrentTransactionType = __STRONG_BUY__;
-              m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
-              m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
-              if (m_lCurrentGuadanTransactionVolume < 50000) {
-                m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
-              }
-              else if (m_lCurrentGuadanTransactionVolume < 200000) {
-                m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
-              }
-              else {
-                m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
-              }
-            }
-          }
-          else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy[1]) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
-            m_nCurrentTransactionType = __ATTACK_SELL__;
-            m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
-            if (m_lCurrentGuadanTransactionVolume < 50000) {
-              m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
-            }
-            else if (m_lCurrentGuadanTransactionVolume < 200000) {
-              m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
-            }
-            else {
-              m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-            }
-          }
-          else { // 低于买盘二。强力卖出。StrongSell
-            m_nCurrentTransactionType = __STRONG_SELL__;
-            m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
-            m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
-            if (m_lCurrentGuadanTransactionVolume < 50000) {
-              m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
-            }
-            else if (m_lCurrentGuadanTransactionVolume < 200000) {
-              m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
-            }
-            else {
-              m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-            }
-          }
-          ASSERT(m_Time >= pRTData->m_time);
-        }
-
-        // 下面开始分析挂单情况
-        AnalysisingGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
-
-        // 更新前交易状态
-        m_pLastRTData = pRTData;
-      }
-      else { // 第一个数据，初始化系统
-        m_pLastRTData = pRTData;
-        SetStartCalculating(true);
-        // 设置第一次的挂单映射。
-        for (int j = 0; j < 5; j++) {
-          SetGuaDan(pRTData->m_lPBuy[j], pRTData->m_lVBuy[i]);
-          SetGuaDan(pRTData->m_lPSell[j], pRTData->m_lVSell[i]);
-        }
-      }
+      CalculateOneRTData(pRTData);
     }
   }
 
   if (lTotalNumber == 0) return false;
   else return true;
+}
+
+bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
+  long lCurrentGuaDanTransactionPrice = 0;
+
+  if (IsStartCalculating()) {
+    m_lCurrentGuadanTransactionVolume = pRTData->m_lVolume - m_pLastRTData->m_lVolume;
+    if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
+      // 检查挂单情况
+      m_nCurrentTransactionType = __NO_TRANSACTION__;
+    }
+    else { // 有成交？
+      m_lTransactionNumber++; // 成交数加一。
+      if (m_lCurrentGuadanTransactionVolume < 5000) {
+        m_lTransactionNumberBelow5000++;
+      }
+      else if (m_lCurrentGuadanTransactionVolume < 50000) {
+        m_lTransactionNumberBelow50000++;
+      }
+      else if (m_lCurrentGuadanTransactionVolume < 200000) {
+        m_lTransactionNumberBelow200000++;
+      }
+      else {
+        m_lTransactionNumberAbove200000++;
+      }
+      m_dCurrentGuaDanTransactionPrice = ((double)(pRTData->m_lAmount - m_pLastRTData->m_lAmount)) / m_lCurrentGuadanTransactionVolume;
+      lCurrentGuaDanTransactionPrice = m_dCurrentGuaDanTransactionPrice * 1000; // 生成比较用的价格（放大一千倍后采用长整型）
+      if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->m_lPBuy[0]) { // 高于前买盘1
+        if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->m_lPSell[0]) { // 低于前卖盘1
+          if ((m_pLastRTData->m_lPSell[0] - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
+            m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
+            m_nCurrentTransactionType = __ORDINARY_BUY__;
+          }
+          else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->m_lPBuy[0]) <= 2) { // 一般性卖出
+            m_nCurrentTransactionType = __ORDINARY_SELL__;
+            m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+          }
+          else { // 买卖混杂，不分析。
+            m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+            m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+          }
+        }
+        else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->m_lPSell[1]) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
+          m_nCurrentTransactionType = __ATTACK_BUY__;
+          m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
+          if (m_lCurrentGuadanTransactionVolume < 50000) {
+            m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+          }
+          else if (m_lCurrentGuadanTransactionVolume < 200000) {
+            m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+          }
+          else {
+            m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+          }
+        }
+        else { // 高于卖盘二。强力买入。StrongBuy。
+          m_nCurrentTransactionType = __STRONG_BUY__;
+          m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
+          m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
+          if (m_lCurrentGuadanTransactionVolume < 50000) {
+            m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+          }
+          else if (m_lCurrentGuadanTransactionVolume < 200000) {
+            m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+          }
+          else {
+            m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+          }
+        }
+      }
+      else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy[1]) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
+        m_nCurrentTransactionType = __ATTACK_SELL__;
+        m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+        if (m_lCurrentGuadanTransactionVolume < 50000) {
+          m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+        }
+        else if (m_lCurrentGuadanTransactionVolume < 200000) {
+          m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+        }
+        else {
+          m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+        }
+      }
+      else { // 低于买盘二。强力卖出。StrongSell
+        m_nCurrentTransactionType = __STRONG_SELL__;
+        m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+        m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
+        if (m_lCurrentGuadanTransactionVolume < 50000) {
+          m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+        }
+        else if (m_lCurrentGuadanTransactionVolume < 200000) {
+          m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+        }
+        else {
+          m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+        }
+      }
+      ASSERT(m_Time >= pRTData->m_time);
+    }
+
+    // 下面开始分析挂单情况
+    AnalysisingGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
+
+    // 更新前交易状态
+    m_pLastRTData = pRTData;
+  }
+  else { // 第一个数据，初始化系统
+    m_pLastRTData = pRTData;
+    SetStartCalculating(true);
+    // 设置第一次的挂单映射。
+    for (int j = 0; j < 5; j++) {
+      SetGuaDan(pRTData->m_lPBuy[j], pRTData->m_lVBuy[j]);
+      SetGuaDan(pRTData->m_lPSell[j], pRTData->m_lVSell[j]);
+    }
+  }
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -132,6 +132,11 @@ namespace StockAnalysisTest {
         pLastData->m_lVSell[i] = pData->LastData.m_lVSell[i];
         pLastData->m_lPSell[i] = pData->LastData.m_lPSell[i];
       }
+      for (int i = 0; i < 5; i++) {
+        m_stock.SetGuaDan(pLastData->m_lPBuy[i], pLastData->m_lVBuy[i]);
+        m_stock.SetGuaDan(pLastData->m_lPSell[i], pLastData->m_lVSell[i]);
+
+      }
       lPrice = pData->lPrice;
       iType = pData->iType;
       iCount = pData->iCount;

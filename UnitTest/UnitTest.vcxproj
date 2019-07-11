@@ -53,6 +53,7 @@
   <ItemGroup>
     <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
+    <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="pch.cpp" />
