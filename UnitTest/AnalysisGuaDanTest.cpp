@@ -72,6 +72,42 @@ namespace StockAnalysisTest {
     10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
     10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
     10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，一般型买入（比卖一价低），买卖单出现撤单。
+  GuaDanData GuaDan5(4, __ORDINARY_BUY__, 10009,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，进攻型买入（比卖二价低），卖单出现撤单，买单增单。
+  GuaDanData GuaDan6(5, __ATTACK_BUY__, 10019,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，强买入（比卖二价高，此例高于卖三），卖单出现撤单，买单也出现撤单。
+  GuaDanData GuaDan7(6, __STRONG_BUY__, 10039,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，一般型卖出（比买一价高），买卖单出现撤单。
+  GuaDanData GuaDan8(7, __ORDINARY_SELL__, 10001,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，进攻型买入（比买二价高），买卖单出现撤单，。
+  GuaDanData GuaDan9(8, __ATTACK_SELL__, 9991,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+  // 有成交，强买入（比买二价低，此例低于买三），买卖单出现撤单。
+  GuaDanData GuaDan10(9, __STRONG_SELL__, 9971,
+    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
   class RTDataGuaDanTest : public::testing::TestWithParam<GuaDanData *>
   {
@@ -114,7 +150,8 @@ namespace StockAnalysisTest {
     CStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestGuaDanData, RTDataGuaDanTest, testing::Values(&GuaDan1,&GuaDan2, &GuaDan3, &GuaDan4));
+  INSTANTIATE_TEST_CASE_P(TestGuaDanData, RTDataGuaDanTest, testing::Values(&GuaDan1,&GuaDan2, &GuaDan3, &GuaDan4, 
+        &GuaDan5, &GuaDan6, &GuaDan7, &GuaDan8, &GuaDan9, &GuaDan10));
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
@@ -164,6 +201,90 @@ namespace StockAnalysisTest {
     case 3: // 无成交，出现撤单。
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3100);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 3100);
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 4:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3000);
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 由于是正常买入，故卖一的撤单不计
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 5:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3000);
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 700); // 由于是进攻型买入，故卖一和卖二的撤单不计
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 6:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3000); // 只要出现买卖盘，卖一和买一的撤单就不计算。
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 100); // 由于是强买入（此例低于卖四），故卖一、卖二、卖三和卖四的撤单不计
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 7:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3000);
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 由于是正常买入，故卖一的撤单不计
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 8:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 2800);
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 由于是进攻型买入，故卖一和卖二的撤单不计
+      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+      break;
+    case 9:
+      EXPECT_EQ(m_stock.GetCancelBuyVolume(), 1600); //买一、买二、买三和买四的撤单不计。
+      EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 只要有成交，卖一的撤单就不计
       EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
       EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
       EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);

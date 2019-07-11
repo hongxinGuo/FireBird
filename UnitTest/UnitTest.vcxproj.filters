@@ -45,7 +45,7 @@
     <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="CalculateRTDataTest.cpp">
+    <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

@@ -356,141 +356,81 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
     switch (i) {
     case 0: // 卖单五
       if (fNeedCheck[0]) {
-        if (!HaveGuaDan(pLastRTData->m_lPSell[4])) { // 如果此价位上没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPSell[4], pLastRTData->m_lVSell[4]); // 则在此价位上存储目前的股数（建立新的映射）。
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPSell[4]) < pLastRTData->m_lVSell[4]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPSell[4]) < pLastRTData->m_lVSell[4]) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
+          m_lCancelSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
         }
       }
       break;
     case 1: // 卖单四
       if (fNeedCheck[1]) {
-        if (!HaveGuaDan(pLastRTData->m_lPSell[3])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPSell[3], pLastRTData->m_lVSell[3]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
+          m_lCancelSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
         }
       }
       break;
     case 2: // 卖单三
       if (fNeedCheck[2]) {
-        if (!HaveGuaDan(pLastRTData->m_lPSell[2])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPSell[2], pLastRTData->m_lVSell[2]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPSell[2]) < pLastRTData->m_lVSell[2]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPSell[2]) < pLastRTData->m_lVSell[2]) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
+          m_lCancelSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
         }
       }
       break;
     case 3: // 卖单二
       if (fNeedCheck[3]) {
-        if (!HaveGuaDan(pLastRTData->m_lPSell[1])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPSell[1], pLastRTData->m_lVSell[1]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPSell[1]) < pLastRTData->m_lVSell[1]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPSell[1]) < pLastRTData->m_lVSell[1]) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
+          m_lCancelSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
         }
       }
       break;
     case 4: // 卖单一
-      if (fNeedCheck[4]) {
-        if (!HaveGuaDan(pLastRTData->m_lPSell[0])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPSell[0], pLastRTData->m_lVSell[0]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPSell[0]) < pLastRTData->m_lVSell[0]) { // 撤单了的话
-            m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
-            m_lCancelSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
-          }
+      if(fNeedCheck[4]) {
+        if (GetGuaDan(pLastRTData->m_lPSell[0]) < pLastRTData->m_lVSell[0]) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
+          m_lCancelSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
         }
       }
       break;
     case 5:   // 以下为买单变化情况，买单一
       if (fNeedCheck[5]) {
-        if (!HaveGuaDan(pLastRTData->m_lPBuy[0])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPBuy[0], pLastRTData->m_lVBuy[0]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPBuy[0]) < pLastRTData->m_lVBuy[0]) { // 撤单了的话
-            m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
-            m_lCancelBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPBuy[0]) < pLastRTData->m_lVBuy[0]) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
         }
       }
       break;
     case 6: // 买单二
       if (fNeedCheck[6]) {
-        if (!HaveGuaDan(pLastRTData->m_lPBuy[1])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPBuy[1], pLastRTData->m_lVBuy[1]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPBuy[1]) < pLastRTData->m_lVBuy[1]) { // 撤单了的话
-            m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
-            m_lCancelBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPBuy[1]) < pLastRTData->m_lVBuy[1]) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
         }
       }
       break;
     case 7: // 买单三
       if (fNeedCheck[7]) {
-        if (!HaveGuaDan(pLastRTData->m_lPBuy[2])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPBuy[2], pLastRTData->m_lVBuy[2]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPBuy[2]) < pLastRTData->m_lVBuy[2]) { // 撤单了的话
-            m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
-            m_lCancelBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPBuy[2]) < pLastRTData->m_lVBuy[2]) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
         }
       }
       break;
     case 8: // 买单四
       if (fNeedCheck[8]) {
-        if (!HaveGuaDan(pLastRTData->m_lPBuy[3])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPBuy[3], pLastRTData->m_lVBuy[3]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPBuy[3]) < pLastRTData->m_lVBuy[3]) { // 撤单了的话
-            m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
-            m_lCancelBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPBuy[3]) < pLastRTData->m_lVBuy[3]) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
         }
       }
       break;
     case 9: // 买单五
       if (fNeedCheck[9]) {
-        if (!HaveGuaDan(pLastRTData->m_lPBuy[4])) { // 此价位没有挂单
-          //ASSERT(0); //其实不可能有这种情况，因为必然存在将挂单量存入此map的过程
-          SetGuaDan(pLastRTData->m_lPBuy[4], pLastRTData->m_lVBuy[4]);
-        }
-        else {  // 有挂单
-          if (GetGuaDan(pLastRTData->m_lPBuy[4]) < pLastRTData->m_lVBuy[4]) { // 撤单了的话
-            m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
-            m_lCancelBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
-          }
+        if (GetGuaDan(pLastRTData->m_lPBuy[4]) < pLastRTData->m_lVBuy[4]) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
         }
       }
       break;
