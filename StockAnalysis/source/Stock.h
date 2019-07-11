@@ -79,6 +79,8 @@ public:
   long GetCancelBuyVolume(void) { return m_lCancelBuyVolume; }
   long GetCancelSellVolume(void) { return m_lCancelSellVolume; }
 
+  int  GetCurrentTransactionType(void) { return m_nCurrentTransactionType; }
+
   double GetRelativeStrong(void) { return m_dRelativeStrong; }
   long GetTransactionNumber(void) { return m_lTransactionNumber; }
   long GetTransactionNumberBelow5000(void) { return m_lTransactionNumberBelow5000; }
