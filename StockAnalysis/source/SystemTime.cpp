@@ -4,19 +4,41 @@
 
 CSystemTime::CSystemTime(void)
 {
-	m_tCurrentTime = 0;
 }
 
 CSystemTime::~CSystemTime(void)
 {
 }
 
-time_t CSystemTime::GetCurrentTime() {
-	return m_tCurrentTime;
+void CSystemTime::CalculatingTime(void)
+{
+  time(&m_ttime);
+  localtime_s(&m_tm, &m_ttime);
+  m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
+  m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
-void CSystemTime::SetCurrentTime( time_t Time ) {
-	m_tCurrentTime = Time; 
+void CSystemTime::CalculateLastTradeDay(void)
+{
+  time_t ttime = 0;
+
+  switch (m_tm.tm_wday) {
+  case 1: // 星期一
+    ttime = m_ttime - 3 * 24 * 3600; // 
+    break;
+  case 0: //星期日
+    ttime = m_ttime - 3 * 24 * 3600; // 
+    break;
+  case 6: // 星期六
+    ttime = m_ttime - 2 * 24 * 3600; // 
+    break;
+  default: // 其他
+    ttime = m_ttime - 24 * 3600; // 
+  }
+  tm tm_;
+  localtime_s(&tm_, &ttime);
+  m_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+
 }
 
 long CSystemTime::ChangeTimeToDay( time_t time ) {
@@ -33,5 +55,13 @@ time_t CSystemTime::ChangeDayToMarketCloseTime( long lDay ) {
   long lD = (lDay - lYear * 10000 - lMonth * 100);
 	CTime ct( lYear, lMonth, lD, 15, 0, 0 );	// 北京时间15时即UTC7时
   return ( ct.GetTime() );
+}
+
+CString CSystemTime::GetTimeStr(void) {
+  char buffer[30];
+  sprintf_s(buffer, "%02d:%02d:%02d", m_tm.tm_hour, m_tm.tm_min, m_tm.tm_sec);
+  CString str;
+  str = buffer;
+  return(str);
 }
 

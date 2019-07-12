@@ -76,28 +76,10 @@ CMainFrame::CMainFrame() noexcept
   CreateTotalStockContainer();
 
   // 设置股票日线查询环境
-  time(&gl_ttime);
-  localtime_s(&gl_tm, &gl_ttime);
-  CString str2;
-  gl_lToday = (gl_tm.tm_year + 1900) * 10000 + (gl_tm.tm_mon + 1) * 100 + gl_tm.tm_mday;
-  gl_lTime = gl_tm.tm_hour * 10000 + gl_tm.tm_min * 100 + gl_tm.tm_sec;
-  switch (gl_tm.tm_wday) {
-  case 1: // 星期一
-    gl_ttime -= 3 * 24 * 3600; // 
-    break;
-  case 0: //星期日
-    gl_ttime -= 3 * 24 * 3600; // 
-    break;
-  case 6: // 星期六
-    gl_ttime -= 2 * 24 * 3600;
-    break;
-  default: // 其他
-    gl_ttime -= 24 * 3600; // 
-  }
-  tm tm_;
-  localtime_s(&tm_, &gl_ttime);
-  gl_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+  gl_systemTime.CalculatingTime();
+  gl_systemTime.CalculateLastTradeDay();
 
+  CString str2;
 
   m_fCheckTodayActiveStock = true;
 
@@ -127,7 +109,7 @@ CMainFrame::CMainFrame() noexcept
       gl_vTotalStock.at(lIndex)->m_lNewestDayLineDay = setStockCode.m_NewestDayLineDay;
     }
     // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-    if (gl_lLastTradeDay <= gl_vTotalStock.at(lIndex)->m_lDayLineEndDay) { // 最新日线数据为今日或者上一个交易日的数据。
+    if (gl_systemTime.GetLastTradeDay() <= gl_vTotalStock.at(lIndex)->m_lDayLineEndDay) { // 最新日线数据为今日或者上一个交易日的数据。
       gl_vTotalStock.at(lIndex)->m_fDayLineNeedUpdated = false; // 日线数据不需要更新
     }
     if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
@@ -552,7 +534,7 @@ bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString
         siCounter = 0;
       }
     }
-    else if (gl_vTotalStock.at(siCounter)->m_lDayLineEndDay >= gl_lLastTradeDay) { // 上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+    else if (gl_vTotalStock.at(siCounter)->m_lDayLineEndDay >= gl_systemTime.GetLastTradeDay()) { // 上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       gl_vTotalStock.at(siCounter)->m_fDayLineNeedUpdated = false; // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(gl_vTotalStock.at(siCounter)->m_strStockCode));
       siCounter++;
@@ -648,7 +630,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
       strRead += _T("&start=");
       strRead += strStartDay;
       strRead += _T("&end=");
-      sprintf_s(buffer2, "%8d", gl_lToday);
+      sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
       strRead += buffer2;
       strRead += gl_strDayLinePostfix;
 
@@ -677,18 +659,19 @@ bool CMainFrame::SchedulingTask(void)
   static int i10SecondsCounter = 10; // 十秒一次的计算
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
   static bool sfUpdatedStockCodeDataBase = false;
+  long lTime = gl_systemTime.GetTime();
 
-  if (((gl_lTime > 91000) && (gl_lTime < 113500)) || ((gl_lTime > 125500) && (gl_lTime < 150500))) {
+  if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150500))) {
     m_fCountDownRT = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
   }
   else m_fCountDownRT = true;
 
-  if ((gl_lTime < 91000) || (gl_lTime > 150001)) { //下午三点市场交易结束，
+  if ((lTime < 91000) || (lTime > 150001)) { //下午三点市场交易结束，
     gl_ChinaStockMarket.m_fMarketOpened = false;
   }
   else gl_ChinaStockMarket.m_fMarketOpened = true;
 
-  if ((gl_lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
+  if ((lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
     CompileTodayStocks();
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
   }
@@ -860,15 +843,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   static int iCountDown = 0;
   static time_t s_time = 0;
 
-  time(&gl_ttime);
-  localtime_s(&gl_tm, &gl_ttime);
-  gl_lToday = (gl_tm.tm_year + 1900) * 10000 + (gl_tm.tm_mon + 1) * 100 + gl_tm.tm_mday;
-  gl_lTime = gl_tm.tm_hour * 10000 + gl_tm.tm_min * 100 + gl_tm.tm_sec;
+  gl_systemTime.CalculatingTime();
+
 
   //根据时间，调度各项任务.每秒调度一次
-  if (gl_ttime > s_time) {
+  if (gl_systemTime.Gett_time() > s_time) {
     SchedulingTask();
-    s_time = gl_ttime;
+    s_time = gl_systemTime.Gett_time();
   }
 
   if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
@@ -894,10 +875,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     gl_ChinaStockMarket.m_fCurrentEditStockChanged = false;
   }
   //更新时间
-  char buffer[30];
-  sprintf_s(buffer, "%02d:%02d:%02d", gl_tm.tm_hour, gl_tm.tm_min, gl_tm.tm_sec);
-  str = buffer;
-  m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
+  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_systemTime.GetTimeStr());
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }

@@ -60,7 +60,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 
   CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (dwToday >= gl_lToday) return(true);
+  if (dwToday >= gl_systemTime.GetDay()) return(true);
 
   time_t tStart, tEnd;
   time(&tStart);
@@ -73,7 +73,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
     if (gl_fExiting) return true;
     ctCurrent += oneDay;
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (dwToday < gl_lToday);
+  } while (dwToday < gl_systemTime.GetDay());
   time(&tEnd);
   long tDiffer = tEnd - tStart;
   long hour = tDiffer / 3600;
@@ -222,15 +222,15 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
 UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
 
   time_t time = 0;
-  switch (gl_tm.tm_wday) {
+  switch (gl_systemTime.GetDayOfWeek()) {
   case 6: // 星期六
-    time = gl_ttime - 24 * 3600; // 
+    time = gl_systemTime.Gett_time() - 24 * 3600; // 
     break;
   case 0: //星期日
-    time = gl_ttime - 2 * 24 * 3600; // 
+    time = gl_systemTime.Gett_time() - 2 * 24 * 3600; // 
     break;
   default: // 其他
-    time = gl_ttime;
+    time = gl_systemTime.Gett_time();
     break;
   }
   tm tm_;

@@ -11,6 +11,7 @@
 #include"SystemMessage.h"
 #include"SystemDequeData.h"
 #include"SystemStatus.h"
+#include"SystemTime.h"
 
 using namespace std;
 #include<deque>
@@ -28,18 +29,13 @@ extern map<CString, long>	gl_mapTotalStockToIndex;		// ½«ËùÓĞ±»²éÑ¯µÄ¹ÉÆ±´úÂëÓ³É
 
 extern vector<StockIDPtr> gl_vStockChoice;   // ×ÔÑ¡¹ÉÆ±³Ø
 
-extern long gl_lToday;          // ½ñÈÕÈÕÆÚ¡£¸ñÊ½Îª£º19990102
-extern long gl_lLastTradeDay; // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾İµÄ×îĞÂÈÕ£¬²ÉÓÃÉÏÒ»¸ö½»Ò×ÈÕ£¬±¾½»Ò×ÈÕµÄÊı¾İÓÉÊµÊ±Êı¾İ²úÉú¡£
-extern long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
-extern tm gl_tm;						  // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-extern time_t gl_ttime;       // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
 
 extern CSetDayLine gl_setSavingDayLineOnly; // ´Ë±äÁ¿×¨ÓÃÓÚ´æ´¢½ÓÊÕµ½µÄÈÕÏßÀúÊ·Êı¾İ¡£ÓÀÔ¶´ò¿ª×´Ì¬£¬·ñÔòµ±Í¬Ê±²Ù×÷Êı¾İ¿âÊ±ËÙ¶ÈÆæÂı¡£
 
-
-extern CSystemMessage gl_systemMessage;       // ÏµÍ³ÏûÏ¢»ã×ÜÀà£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
-extern CSystemDequeData gl_systemDequeData;    // ÏµÍ³ÖĞµÄ¸÷ÖÖ¶ÓÁĞ£¬±»¸÷¸ö¹¤×÷Ïß³ÌÊ¹ÓÃ¡£
-extern CSystemStatus gl_systemStatus;         // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ¡£
+extern CSystemTime        gl_systemTime;         // ÏµÍ³Ê±¼ä»ã×Ü¡£
+extern CSystemMessage     gl_systemMessage;      // ÏµÍ³ÏûÏ¢»ã×ÜÀà£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
+extern CSystemDequeData   gl_systemDequeData;    // ÏµÍ³ÖĞµÄ¸÷ÖÖ¶ÓÁĞ£¬±»¸÷¸ö¹¤×÷Ïß³ÌÊ¹ÓÃ¡£
+extern CSystemStatus      gl_systemStatus;       // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ¡£
 
 extern deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ
 extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ¡£

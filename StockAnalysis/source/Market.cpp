@@ -343,7 +343,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
       //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_strCurrentStockDownLoading));
     }
     else { // 已经退市的股票
-      if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay + 100 < gl_lToday) {
+      if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay + 100 < gl_systemTime.GetDay()) {
         gl_vTotalStock.at(lIndex)->m_lIPOed = __STOCK_DELISTED__;   // 此股票代码已经退市。
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading));
@@ -401,7 +401,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushFindMessage(strTemp);
   gl_vTotalStock.at(gl_mapTotalStockToIndex.at(pDayLine->GetStockCode()))->m_fDayLineNeedUpdated = false; // 日线数据下载完毕，不需要申请新数据了。
-  if ((vTempDayLine.at(0)->GetDay() + 100) < gl_lToday) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
+  if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     gl_vTotalStock.at(gl_mapTotalStockToIndex.at(pDayLine->GetStockCode()))->m_lIPOed = __STOCK_DELISTED__; // 已退市或暂停交易。
   }
   else {
@@ -414,7 +414,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
-    if (pDayLine->GetDay() < gl_lToday) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
+    if (pDayLine->GetDay() < gl_systemTime.GetDay()) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
       // 当新股第一天上市时，其日线只有一天，而且在这里扔掉了，导致其日线容器为空。处理时注意。
       // 由于是调取gl_lLastTradeDay及之前的日线数据，故而新股的日线容器肯定为空。
       m_vActiveStock.at(lIndex)->m_vDayLine.push_back(pDayLine);
@@ -939,7 +939,7 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     }
     lIndex = gl_mapTotalStockToIndex.at(pStock->GetStockCode());
     gl_vTotalStock.at(lIndex)->m_lNewestDayLineDay = lCurrentTradeDay; // 更新最新接收到日线数据日期。
-    if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay == gl_lLastTradeDay) { // 如果日线最新历史数据日期就是上一个交易日，则更新此日期
+    if (gl_vTotalStock.at(lIndex)->m_lDayLineEndDay == gl_systemTime.GetLastTradeDay()) { // 如果日线最新历史数据日期就是上一个交易日，则更新此日期
       // 此判断有缺陷：当出现平常日期也是节假日时，就不会更新了。研究之。
       gl_vTotalStock.at(lIndex)->m_lDayLineEndDay = lCurrentTradeDay;
     }

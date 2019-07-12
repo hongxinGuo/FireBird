@@ -13,17 +13,12 @@ map<CString, long>		gl_mapTotalStockToIndex;		// ½«ËùÓĞ±»²éÑ¯µÄ¹ÉÆ±´úÂëÓ³ÉäÎªÆ«Ò
 
 vector<StockIDPtr> gl_vStockChoice;   // ×ÔÑ¡¹ÉÆ±³Ø
 
-long gl_lToday;           // ½ñÈÕÈÕÆÚ¡£¸ñÊ½Îª£º19990102
-long gl_lLastTradeDay;  // ÉÏÒ»¸ö½»Ò×ÈÕ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñÉêÇëÈÕÏßÊı¾İ¡£ÈÕÏßÊı¾İµÄ×îĞÂÈÕ£¬²ÉÓÃÉÏÒ»¸ö½»Ò×ÈÕ£¬±¾½»Ò×ÈÕµÄÊı¾İÓÉÊµÊ±Êı¾İ²úÉú¡£
-long gl_lTime;				  // ½ñÈÕÊ±¼ä¡£¸ñÊ½Îª£ºhhmmss
-tm gl_tm;						    // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-time_t gl_ttime;        // È«¾ÖÊ±¼ä¡£ÓÉCMainFrameµÄOnTimerº¯Êı¸ºÔğ¸üĞÂ
-
 CSetDayLine gl_setSavingDayLineOnly; // ´Ë±äÁ¿×¨ÓÃÓÚ´æ´¢½ÓÊÕµ½µÄÈÕÏßÀúÊ·Êı¾İ¡£ÓÀÔ¶´ò¿ª×´Ì¬£¬·ñÔòµ±Í¬Ê±²Ù×÷Êı¾İ¿âÊ±ËÙ¶ÈÆæÂı¡£
 
-CSystemMessage gl_systemMessage;       // ÏµÍ³ÏûÏ¢»ã×ÜÀà
-CSystemDequeData gl_systemDequeData;    // ÏµÍ³ÖĞµÄ¸÷ÖÖ¶ÓÁĞ£¬±»¸÷¸ö¹¤×÷Ïß³ÌÊ¹ÓÃ¡£
-CSystemStatus gl_systemStatus;         // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ¡£
+CSystemTime       gl_systemTime;            // ÏµÍ³Ê±¼ä»ã×Ü¡£
+CSystemMessage    gl_systemMessage;         // ÏµÍ³ÏûÏ¢»ã×ÜÀà
+CSystemDequeData  gl_systemDequeData;       // ÏµÍ³ÖĞµÄ¸÷ÖÖ¶ÓÁĞ£¬±»¸÷¸ö¹¤×÷Ïß³ÌÊ¹ÓÃ¡£
+CSystemStatus     gl_systemStatus;          // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ¡£
 
 deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ
 deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ¡£
