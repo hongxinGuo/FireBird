@@ -420,12 +420,14 @@ bool CMainFrame::GetSinaStockRTData(void)
         }
         else {
           TRACE("实时数据有误,抛掉不用\n");
+          gl_systemMessage.PushOutputMessage(_T("实时数据有误"));
           iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
         }
       }
     }
     else {
       TRACE("Error reading http file ：hq.sinajs.cn\n");
+      gl_systemMessage.PushOutputMessage(_T("Error reading http file ：hq.sinajs.cn"));
     }
 
     // 处理接收到的实时数据

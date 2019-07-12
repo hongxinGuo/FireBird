@@ -399,7 +399,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 	}
 	strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushOutputMessage(strTemp);
+  gl_systemMessage.PushFindMessage(strTemp);
   gl_vTotalStock.at(gl_mapTotalStockToIndex.at(pDayLine->GetStockCode()))->m_fDayLineNeedUpdated = false; // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_lToday) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     gl_vTotalStock.at(gl_mapTotalStockToIndex.at(pDayLine->GetStockCode()))->m_lIPOed = __STOCK_DELISTED__; // 已退市或暂停交易。
@@ -839,14 +839,14 @@ bool CMarket::SaveDayLineData(void) {
       else {
         CString str1 = gl_vTotalStock.at(lIndex)->m_strStockCode;
         str1 += _T(" 新股上市,没有日线资料");
-        gl_systemMessage.PushOutputMessage(str1);
+        gl_systemMessage.PushFindMessage(str1);
 
       }
       pStock->m_vDayLine.clear();
       pStock->SetDayLineLoaded(false);
       CString str = gl_vTotalStock.at(lIndex)->m_strStockCode;
       str += _T("日线资料存储完成");
-      gl_systemMessage.PushOutputMessage(str);
+      gl_systemMessage.PushFindMessage(str);
       pStock->SetDayLineNeedSavingFlag(false);
 
 		}

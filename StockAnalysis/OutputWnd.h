@@ -35,9 +35,9 @@ public:
 protected:
 	CMFCTabCtrl	m_wndTabs;
 
-	COutputList m_wndOutputBuild;
+	COutputList m_wndOutputInformation;
+	COutputList m_wndOutputDayLine;
 	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
   COutputList m_wndOutputWaring;
   COutputList m_wndOutputTrace1;
 
