@@ -29,6 +29,8 @@ CMarket::CMarket ( void ) : CObject() {
   m_fCurrentStockChanged = false;
   m_fCurrentEditStockChanged = false;
 
+  m_pCurrentStock = nullptr;
+
 	m_lTotalMarketBuy = m_lTotalMarketSell = 0;
 
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零

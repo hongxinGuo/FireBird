@@ -46,7 +46,10 @@ public:
 	// 得到当前显示股票
 	CStockPtr       GetShowStock( void ) { return m_pCurrentStock; }
   void					  SetShowStock(CStockPtr pStock);
-  bool            IsCurrentStockChanged(void) { return m_fCurrentStockChanged; }
+  bool            IsCurrentStockChanged(void) {
+    if (m_fCurrentStockChanged) { m_fCurrentStockChanged = false; return true; }
+    else return false;
+  }
 
 	void					SetShowStock( CString strStockCode );
 
@@ -78,7 +81,7 @@ public:
   bool          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
 
 	bool					IsLoadSelectedStock( void ) { return m_fLoadedSelectedStock; }
-	void					SetLoadedSelectedStock( bool fLoad ) { m_fLoadedSelectedStock = fLoad; }
+	void					SetLoadSelectedStock( bool fLoad ) { m_fLoadedSelectedStock = fLoad; }
 
   CString       GetCurrentDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
   void          SetCurrentDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
