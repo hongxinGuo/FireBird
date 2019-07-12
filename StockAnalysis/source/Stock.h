@@ -225,7 +225,7 @@ protected:
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
-  CCriticalSection      m_DayLineNeedSacingLock;
+  CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
   deque<CStockRTDataPtr>m_dequeRTStockData;  // 实时数据队列
   CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁

@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetShowStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetShowStock(pStock);
-    EXPECT_TRUE(gl_ChinaStockMarket.GetShowStock(), pStock);
+    EXPECT_EQ(gl_ChinaStockMarket.GetShowStock(), pStock);
     EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetShowStock(pStock);

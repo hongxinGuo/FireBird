@@ -94,14 +94,15 @@ public:
 	long long	    GetTotalAttackBuyAmount( void );
 	long long     GetTotalAttackSellAmount( void );
 
-  //处理实时股票变化等
-  bool          ProcessRTData(void);
-  int						GetInquiringStockStr(CString& str);
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ClientThreadCalculatingRTDataProc调用。
   bool          CalculateRTData(void);
 
-	bool					ProcessDayLineData(char * buffer, long lLength);
+  //处理实时股票变化等
+  bool          ProcessRTData(void);
+  int						GetInquiringStockStr(CString& str);
+  // 处理日线历史数据
+  bool					ProcessDayLineData(char * buffer, long lLength);
 	bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPos, long & lLength);
 	bool					ReadOneValue(char *& pCurrentPos, char * buffer, long& iReadNumber);
   bool          ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter);

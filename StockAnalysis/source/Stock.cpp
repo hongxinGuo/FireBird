@@ -626,7 +626,7 @@ long CStock::GetRTDataDequeSize(void)
 
 void CStock::SetDayLineNeedSavingFlag(bool fFlag)
 {
-  CSingleLock singleLock(&m_DayLineNeedSacingLock);
+  CSingleLock singleLock(&m_DayLineNeedSavingLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     m_fDayLineNeededSaving = fFlag;
@@ -642,7 +642,7 @@ void CStock::SetDayLineNeedSavingFlag(bool fFlag)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::IsDayLineNeedSaving(void)
 {
-  CSingleLock singleLock(&m_DayLineNeedSacingLock);
+  CSingleLock singleLock(&m_DayLineNeedSavingLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     bool fFlag = m_fDayLineNeededSaving;
