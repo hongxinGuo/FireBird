@@ -83,8 +83,8 @@ public:
 	bool					IsLoadSelectedStock( void ) { return m_fLoadedSelectedStock; }
 	void					SetLoadSelectedStock( bool fLoad ) { m_fLoadedSelectedStock = fLoad; }
 
-  CString       GetCurrentDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
-  void          SetCurrentDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
+  CString       GetDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
+  void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
 
   long          GetRelativeStrongStartDay(void) { return m_lRelativeStrongStartDay; }
   void          SetRelativeStrongStartDay(long lDay) { m_lRelativeStrongStartDay = lDay; }

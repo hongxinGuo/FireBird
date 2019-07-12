@@ -580,7 +580,7 @@ bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString
     ASSERT(0);
   }
   char buffer[30];
-  gl_ChinaStockMarket.SetCurrentDownLoadingStockCodeStr(gl_vTotalStock.at(siCounter)->m_strStockCode);
+  gl_ChinaStockMarket.SetDownLoadingStockCodeStr(gl_vTotalStock.at(siCounter)->m_strStockCode);
   str += gl_vTotalStock.at(siCounter)->m_strStockCode.Right(6); // 取股票代码的右边六位数字。
   tm tm_;
   tm_.tm_year = gl_vTotalStock.at(siCounter)->m_lDayLineEndDay / 10000 - 1900;
@@ -622,7 +622,7 @@ bool CMainFrame::GetNetEaseStockDayLineData(void)
   if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)(gl_ChinaStockMarket.GetCurrentDownLoadingStockCodeStr()), gl_stDayLineInquire.lByteRead);
+        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)(gl_ChinaStockMarket.GetDownLoadingStockCodeStr()), gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
         gl_ChinaStockMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);

@@ -79,10 +79,10 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
   }
 
-  TEST_F(MarketTest, TestGetCurrentDownLoadingStockCodeStr) {
-    EXPECT_STREQ(gl_ChinaStockMarket.GetCurrentDownLoadingStockCodeStr(), _T(""));
-    gl_ChinaStockMarket.SetCurrentDownLoadingStockCodeStr(_T("abcd"));
-    EXPECT_STREQ(gl_ChinaStockMarket.GetCurrentDownLoadingStockCodeStr(), _T("abcd"));
+  TEST_F(MarketTest, TestGetDownLoadingStockCodeStr) {
+    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
+    gl_ChinaStockMarket.SetDownLoadingStockCodeStr(_T("abcd"));
+    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T("abcd"));
   }
   TEST_F(MarketTest, TestGetRelativeStartDay) {
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongStartDay(), 19900101);
