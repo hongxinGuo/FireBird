@@ -51,7 +51,6 @@
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
@@ -91,6 +90,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -42,9 +42,6 @@
     <ClCompile Include="SystemStatusTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
@@ -129,6 +126,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

@@ -23,7 +23,7 @@ CMarket::CMarket ( void ) : CObject() {
     TRACE("市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
-
+  
   m_fLoadedSelectedStock = false;
 	m_fMarketReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
@@ -93,11 +93,11 @@ long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
 bool CMarket::IsAStock(CStockPtr pStock) {
   ASSERT(pStock != nullptr);
 
-  if ((pStock->GetStockCode()[1] == 'h') && (pStock->GetStockCode()[2] == '6')) {
+  if ((pStock->GetStockCode()[0] == 's') && (pStock->GetStockCode()[1] == 'h') && (pStock->GetStockCode()[2] == '6')) {
     return true;
   }
   else {
-    if ((pStock->GetStockCode()[1] == 'z') && (pStock->GetStockCode()[2] == '0') && (pStock->GetStockCode()[3] == '0')) {
+    if ((pStock->GetStockCode()[0] == 's') && (pStock->GetStockCode()[1] == 'z') && (pStock->GetStockCode()[2] == '0') && (pStock->GetStockCode()[3] == '0')) {
       return true;
     }
   }
@@ -114,11 +114,11 @@ bool CMarket::IsAStock(CStockPtr pStock) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsAStock(CString strStockCode) {
 
-  if ((strStockCode[1] == 'h') && (strStockCode[2] == '6')) {
+  if ((strStockCode[0] == 's') && (strStockCode[1] == 'h') && (strStockCode[2] == '6')) {
     return true;
   }
   else {
-    if ((strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
+    if ((strStockCode[0] == 's') && (strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
       return true;
     }
   }
