@@ -3,13 +3,10 @@
 #include"StockID.h"
 #include "Market.h"
 #include "SystemTime.h"
-#include "MutualLock.h"
 
 CMarket gl_ChinaStockMarket;
 
 CSystemTime gl_sTime;
-
-CMutualLock gl_sMutualLock;
 
 vector<StockIDPtr>		gl_vTotalStock;
 map<CString, long>		gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）

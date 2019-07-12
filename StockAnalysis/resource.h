@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 StockAnalysis.rc 使用
+// Microsoft Visual C++ generated include file.
+// Used by StockAnalysis.rc
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -22,8 +22,10 @@
 #define IDI_OUTPUT_WND_HC               166
 #define IDR_OUTPUT_POPUP                182
 #define IDS_BUILD_TAB                   300
+#define IDS_INFORMATION_TAB             300
 #define IDS_DEBUG_TAB                   301
 #define IDS_FIND_TAB                    302
+#define IDS_DAYLINE_TAB                 302
 #define IDS_FIND2_TAB                   303
 #define IDS_TRACE1_TAB                  304
 #define IDS_TRACE2_TAB                  305

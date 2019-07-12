@@ -71,9 +71,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\MutualLock.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
       <Filter>dependency</Filter>
     </Object>

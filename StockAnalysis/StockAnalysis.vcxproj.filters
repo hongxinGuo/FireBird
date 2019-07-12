@@ -81,9 +81,6 @@
     <ClInclude Include="source\Market.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\MutualLock.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\OneDeal.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -162,9 +159,6 @@
       <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\Market.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MutualLock.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\OneDeal.cpp">
