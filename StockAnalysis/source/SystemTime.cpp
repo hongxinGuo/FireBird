@@ -16,6 +16,13 @@ CSystemTime::~CSystemTime(void)
 {
 }
 
+void CSystemTime::Sett_time(time_t ttime) {
+  m_ttime = ttime;
+  localtime_s(&m_tm, &m_ttime);
+  m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
+  m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
+}
+ 
 void CSystemTime::CalculateTime(void)
 {
   time(&m_ttime);

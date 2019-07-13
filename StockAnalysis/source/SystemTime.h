@@ -6,7 +6,7 @@ public:
 	~CSystemTime(void);
 
   time_t				Gett_time(void) { return m_ttime; }
-  void					Sett_time(time_t Time) { m_ttime = Time; }
+  void					Sett_time(time_t Time);
 
   long          GetDay(void) { return m_lToday; }
   long          GetTime(void) { return m_lTime; }
