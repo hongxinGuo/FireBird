@@ -17,6 +17,30 @@ public:
   CStockID();
   ~CStockID();
 
+  WORD      GetMarket(void) { return m_wMarket; }
+  void      SetMarket(WORD wValue) { m_wMarket = wValue; }
+  CString   GetStockCode(void) { return m_strStockCode; }
+  void      SetStockCode(CString str) { m_strStockCode = str; }
+  CString   GetStockName(void) { return m_strStockName; }
+  void      SetStockName(CString str) { m_strStockName = str; }
+  long      GetIndex(void) { return m_nIndex; }
+  void      SetIndex(long lValue) { m_nIndex = lValue; }
+  long      GetDayLineStartDay(void) { return m_lDayLineStartDay; }
+  void      SetDayLineStartDay(long lDay) { m_lDayLineStartDay = lDay; }
+  long      GetDayLineEndDay(void) { return m_lDayLineEndDay; }
+  void      SetDayLineEndDay(long lDay) { m_lDayLineEndDay = lDay; }
+  long      GetNewestDayLineDay(void) { return m_lNewestDayLineDay; }
+  void      SetNewestDayLineDay(long lDay) { m_lNewestDayLineDay = lDay; }
+  long      GetIPOStatus(void) { return m_lIPOed; }
+  void      SetIPOStatus(long lValue) { m_lIPOed = lValue; }
+  bool      IsActive(void) { return m_fActive; }
+  void      SetActive(bool fFlag) { m_fActive = fFlag; }
+  bool      IsDayLineNeedUpdate(void) { return m_fDayLineNeedUpdate; }
+  void      SetDayLineNeedUpdate(bool fFlag) { m_fDayLineNeedUpdate = fFlag; }
+  bool      IsInquiringOnce(void) { return m_fInquiringOnce; }
+  void      SetInquiringOnce(bool fFlag) { m_fInquiringOnce = fFlag; }
+
+protected:
   WORD			m_wMarket;				// 市场
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString   m_strStockName;		// 股票名称
@@ -27,8 +51,9 @@ public:
   long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                               // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
   bool			m_fActive;				// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
-  bool			m_fDayLineNeedUpdated; // 日线需要更新。默认为真
-  bool			m_fInquiriingOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
+  bool			m_fDayLineNeedUpdate; // 日线需要更新。默认为真
+  bool			m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
+
 };
 
 typedef shared_ptr<CStockID> StockIDPtr;

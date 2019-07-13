@@ -144,14 +144,14 @@ bool UpdateStockCodeDataBase(void)
   setStockCode.m_pDatabase->BeginTrans();
   for (auto pStockID : gl_vTotalStock) {
     setStockCode.AddNew();
-    setStockCode.m_Counter = pStockID->m_nIndex;
-    setStockCode.m_StockType = pStockID->m_wMarket;
-    setStockCode.m_StockCode = pStockID->m_strStockCode;
-    setStockCode.m_StockName = pStockID->m_strStockName;
-    setStockCode.m_IPOed = pStockID->m_lIPOed;
-    setStockCode.m_DayLineStartDay = pStockID->m_lDayLineStartDay;
-    setStockCode.m_DayLineEndDay = pStockID->m_lDayLineEndDay;
-    setStockCode.m_NewestDayLineDay = pStockID->m_lNewestDayLineDay;
+    setStockCode.m_Counter = pStockID->GetIndex();
+    setStockCode.m_StockType = pStockID->GetMarket();
+    setStockCode.m_StockCode = pStockID->GetStockCode();
+    setStockCode.m_StockName = pStockID->GetStockName();
+    setStockCode.m_IPOed = pStockID->GetIPOStatus();
+    setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
+    setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
+    setStockCode.m_NewestDayLineDay = pStockID->GetNewestDayLineDay();
     setStockCode.Update();
   }
   setStockCode.m_pDatabase->CommitTrans();

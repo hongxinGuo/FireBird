@@ -9,8 +9,8 @@ CStockID::CStockID() {
   m_lNewestDayLineDay = 19900101; // 最新的日线数据日。如果处理了实时数据，则此日期要新于m_lDayLineEndDay
   m_lIPOed = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_fActive = false;
-  m_fDayLineNeedUpdated = true;
-  m_fInquiriingOnce = false;
+  m_fDayLineNeedUpdate = true;
+  m_fInquiringOnce = false;
 }
 
 CStockID::~CStockID() {
