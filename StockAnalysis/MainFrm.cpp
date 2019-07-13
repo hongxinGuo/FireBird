@@ -76,7 +76,7 @@ CMainFrame::CMainFrame() noexcept
   CreateTotalStockContainer();
 
   // 设置股票日线查询环境
-  gl_systemTime.CalculatingTime();
+  gl_systemTime.CalculateTime();
   gl_systemTime.CalculateLastTradeDay();
 
   CString str2;
@@ -843,7 +843,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   static int iCountDown = 0;
   static time_t s_time = 0;
 
-  gl_systemTime.CalculatingTime();
+  gl_systemTime.CalculateTime();
 
 
   //根据时间，调度各项任务.每秒调度一次

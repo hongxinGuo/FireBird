@@ -6,7 +6,7 @@ public:
 	~CSystemTime(void);
 
   time_t				Gett_time(void) { return m_ttime; }
-  void					SetTime(time_t Time) { m_ttime = Time; }
+  void					Sett_time(time_t Time) { m_ttime = Time; }
 
   long          GetDay(void) { return m_lToday; }
   long          GetTime(void) { return m_lTime; }
@@ -15,7 +15,7 @@ public:
 
   CString       GetTimeStr(void);
 
-  void          CalculatingTime(void);
+  void          CalculateTime(void);
   void          CalculateLastTradeDay(void);
 
 	long					ChangeTimeToDay( time_t time ); // 将时间转变为整型(YYYYMMDD)形式

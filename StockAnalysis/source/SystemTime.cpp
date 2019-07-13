@@ -4,13 +4,19 @@
 
 CSystemTime::CSystemTime(void)
 {
+  m_lLastTradeDay = 0;
+  m_lTime = 0;
+  m_lToday = 0;
+  m_ttime = 0;
+  m_tm.tm_hour = m_tm.tm_mday = m_tm.tm_min = m_tm.tm_mon = m_tm.tm_sec
+    = m_tm.tm_wday = m_tm.tm_yday = m_tm.tm_year = 0;
 }
 
 CSystemTime::~CSystemTime(void)
 {
 }
 
-void CSystemTime::CalculatingTime(void)
+void CSystemTime::CalculateTime(void)
 {
   time(&m_ttime);
   localtime_s(&m_tm, &m_ttime);
