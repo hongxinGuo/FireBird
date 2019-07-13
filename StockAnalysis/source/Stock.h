@@ -80,6 +80,7 @@ public:
   long GetCancelSellVolume(void) { return m_lCancelSellVolume; }
 
   int  GetCurrentTransactionType(void) { return m_nCurrentTransactionType; }
+  long GetCurrentTransationVolume(void) { return m_lCurrentGuadanTransactionVolume; }
 
   double GetRelativeStrong(void) { return m_dRelativeStrong; }
   long GetTransactionNumber(void) { return m_lTransactionNumber; }

@@ -170,6 +170,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_stock.GetTransactionNumberBelow50000(), 0);
     EXPECT_EQ(m_stock.GetTransactionNumber(), 0);
     m_stock.CalculateOneRTData(pCurrentData);
+    long lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
+      + m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume();
+    EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume);
     switch (iCount) {
     case 0: // 成交1万股@10.00
       EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_SELL__);

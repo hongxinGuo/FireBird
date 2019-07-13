@@ -11,33 +11,6 @@
 
 #include"SetDayLine.h"
 
-////////////////////////////////////////////////////////////////////////////////////////
-//
-// 日期变化函数，将19990101制式的日期移动nDay,nDay可以是负值，那就是往更前面的日期移动。
-//
-//
-///////////////////////////////////////////////////////////////////////////////////////
-long ChangeDay(long lSourceDay, int nDay)
-{
-  long lYear = lSourceDay / 10000;
-  long lMonth = lSourceDay / 100 - lYear * 100;
-  long lDay = lSourceDay - lYear * 10000 - lMonth * 100;
-  CTime OldTime(lYear, lMonth, lDay, 12, 0, 0);
-  long iDay = abs(nDay);
-  CTimeSpan timespan(iDay, 0, 0, 0);
-  CTime newTime;
-  if (nDay < 0) {
-    newTime = OldTime - timespan;
-  }
-  else {
-    newTime = OldTime + timespan;
-  }
-  long lNewDay = newTime.GetYear() * 10000 + newTime.GetMonth() * 100 + newTime.GetDay();
-
-  return lNewDay;
-}
-
-
 ///////////////////////////////////////////////////////////////////////////////////
 //
 // 计算lDay的日线相对强度, lDay的格式为：YYYYMMDD,如 19990605.

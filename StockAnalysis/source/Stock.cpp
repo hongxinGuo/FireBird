@@ -235,7 +235,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
             m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
           }
         }
-      }
+      } // 高于前买一
       else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy[1]) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
         m_nCurrentTransactionType = __ATTACK_SELL__;
         m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
