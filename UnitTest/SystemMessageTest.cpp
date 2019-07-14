@@ -52,13 +52,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetTrace1DequeSize) {
+  TEST(SystemMessageTest, TestGetCancelBuyDequeSize) {
     CSystemMessage message;
-    EXPECT_EQ(message.GetTrace1DequeSize(), 0);
-    message.PushTrace1Message(_T("TEST"));
-    EXPECT_EQ(message.GetTrace1DequeSize(), 1);
-    CString str = message.PopTrace1Message();
-    EXPECT_EQ(message.GetTrace1DequeSize(), 0);
+    EXPECT_EQ(message.GetCancelBuyDequeSize(), 0);
+    message.PushCancelBuyMessage(_T("TEST"));
+    EXPECT_EQ(message.GetCancelBuyDequeSize(), 1);
+    CString str = message.PopCancelBuyMessage();
+    EXPECT_EQ(message.GetCancelBuyDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 

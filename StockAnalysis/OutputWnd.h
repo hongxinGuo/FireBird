@@ -39,7 +39,7 @@ protected:
 	COutputList m_wndOutputDayLineInfo;
 	COutputList m_wndOutputTransaction;
   COutputList m_wndOutputWaring;
-  COutputList m_wndOutputTrace1;
+  COutputList m_wndOutputCancelBuy;
 
   UINT        m_uIdTimer;
 

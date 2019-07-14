@@ -24,10 +24,14 @@
 #define IDS_BUILD_TAB                   300
 #define IDS_INFORMATION_TAB             300
 #define IDS_DEBUG_TAB                   301
+#define IDS_TRANSACTION_TAB             301
 #define IDS_FIND_TAB                    302
 #define IDS_DAYLINE_TAB                 302
+#define IDS_DAYLINE_INFO_TAB            302
 #define IDS_FIND2_TAB                   303
+#define IDS_CANCEL_SELL_TAB             303
 #define IDS_TRACE1_TAB                  304
+#define IDS_CANCEL_BUY_TAB              304
 #define IDS_TRACE2_TAB                  305
 #define IDS_EDIT_MENU                   306
 #define ID_COMPILE_TODAY_STOCK          32771

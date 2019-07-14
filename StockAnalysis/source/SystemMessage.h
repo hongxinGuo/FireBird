@@ -28,9 +28,9 @@ public:
   CString PopCancelSellMessage(void);
   long    GetCancelSellDequeSize(void);
 
-  void PushTrace1Message(CString str);
-  CString PopTrace1Message(void);
-  long    GetTrace1DequeSize(void);
+  void PushCancelBuyMessage(CString str);
+  CString PopCancelBuyMessage(void);
+  long    GetCancelBuyDequeSize(void);
 
   void PushTrace2Message(CString str);
   CString PopTrace2Message(void);
@@ -50,8 +50,8 @@ protected:
   deque<CString> m_dequeCancelSellMessage; // 警告显示队列
   CCriticalSection     m_CancelSellLock;       // 使用本资源
   
-  deque<CString> m_dequeTrace1Message; // 跟踪显示队列1
-  CCriticalSection     m_Trace1Lock;       // 使用本资源
+  deque<CString> m_dequeCancelBuyMessage; // 跟踪显示队列1
+  CCriticalSection     m_CancelBuyLock;       // 使用本资源
 
   deque<CString> m_dequeTrace2Message; // 跟踪显示队列2
   CCriticalSection     m_Trace2Lock;       // 使用本资源

@@ -20,7 +20,7 @@ CSystemMessage::~CSystemMessage()
   m_dequeTransactionMessage.clear();
   m_dequeInformationMessage.clear();
   m_dequeCancelSellMessage.clear();
-  m_dequeTrace1Message.clear();
+  m_dequeCancelBuyMessage.clear();
   m_dequeTrace2Message.clear();
 }
 
@@ -86,14 +86,14 @@ CString CSystemMessage::PopCancelSellMessage(void)
   }
 }
 
-CString CSystemMessage::PopTrace1Message(void)
+CString CSystemMessage::PopCancelBuyMessage(void)
 {
   CString str;
-  CSingleLock singleLock(&m_Trace1Lock);
+  CSingleLock singleLock(&m_CancelBuyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    str = m_dequeTrace1Message.front();
-    m_dequeTrace1Message.pop_front();
+    str = m_dequeCancelBuyMessage.front();
+    m_dequeCancelBuyMessage.pop_front();
     singleLock.Unlock();
     return str;
   }
@@ -160,12 +160,12 @@ long CSystemMessage::GetCancelSellDequeSize(void)
   return 0;
 }
 
-long CSystemMessage::GetTrace1DequeSize(void)
+long CSystemMessage::GetCancelBuyDequeSize(void)
 {
-  CSingleLock singleLock(&m_Trace1Lock);
+  CSingleLock singleLock(&m_CancelBuyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeTrace1Message.size();
+    long lCount = m_dequeCancelBuyMessage.size();
     singleLock.Unlock();
     return lCount;
   }
@@ -215,12 +215,12 @@ void CSystemMessage::PushCancelSellMessage(CString str)
   }
 }
 
-void CSystemMessage::PushTrace1Message(CString str)
+void CSystemMessage::PushCancelBuyMessage(CString str)
 {
-  CSingleLock singleLock(&m_Trace1Lock);
+  CSingleLock singleLock(&m_CancelBuyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeTrace1Message.push_back(str);
+    m_dequeCancelBuyMessage.push_back(str);
     singleLock.Unlock();
   }
 }

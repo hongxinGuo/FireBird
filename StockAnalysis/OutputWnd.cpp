@@ -54,7 +54,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
     !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
     !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
     !m_wndOutputWaring.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
-    !m_wndOutputTrace1.Create(dwStyle, rectDummy, &m_wndTabs, 6) )
+    !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) )
 {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
@@ -80,7 +80,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
   bNameValid = strTabName.LoadString(IDS_CANCEL_BUY_TAB);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputTrace1, strTabName, (UINT)4);
+  m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)4);
 
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据
@@ -125,7 +125,7 @@ void COutputWnd::UpdateFonts()
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputWaring.SetFont(&afxGlobalData.fontRegular);
-  m_wndOutputTrace1.SetFont(&afxGlobalData.fontRegular);
+  m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -263,17 +263,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputWaring.SetTopIndex(m_wndOutputWaring.GetCount() - 1);
   }
 
-  if (m_wndOutputTrace1.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputCancelBuy.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
-      m_wndOutputTrace1.DeleteString(0);
+      m_wndOutputCancelBuy.DeleteString(0);
     }
   }
-  if ((lTotal = gl_systemMessage.GetTrace1DequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetCancelBuyDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopTrace1Message();
-      m_wndOutputTrace1.AddString(str);
+      str = gl_systemMessage.PopCancelBuyMessage();
+      m_wndOutputCancelBuy.AddString(str);
     }
-    m_wndOutputTrace1.SetTopIndex(m_wndOutputTrace1.GetCount() - 1);
+    m_wndOutputCancelBuy.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
   }
 
   CDockablePane::OnTimer(nIDEvent);

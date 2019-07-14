@@ -522,7 +522,7 @@ void CStock::ReportGuaDan(void)
     str1 = buffer;
     sprintf_s(buffer, "  总取消买单量：%d", m_lCancelBuyVolume);
     str1 += buffer;
-    gl_systemMessage.PushTrace1Message(str1); // 采用同步机制传递消息
+    gl_systemMessage.PushCancelBuyMessage(str1); // 采用同步机制传递消息
 
   }
 }
