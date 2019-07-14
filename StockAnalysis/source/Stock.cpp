@@ -479,31 +479,31 @@ void CStock::ReportGuaDanTransaction(void)
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
-    sprintf_s(buffer, ": %d", m_lStrongBuyVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lStrongBuyVolume);
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
-    sprintf_s(buffer, ": %d", m_lStrongSellVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lStrongSellVolume);
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
-    sprintf_s(buffer, ": %d", m_lAttackBuyVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lAttackBuyVolume);
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
-    sprintf_s(buffer, ": %d", m_lAttackSellVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lAttackSellVolume);
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
-    sprintf_s(buffer, ": %d", m_lOrdinaryBuyVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lOrdinaryBuyVolume);
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %d", m_lOrdinarySellVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lOrdinarySellVolume);
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
-    sprintf_s(buffer, ": %d", m_lUnknownVolume);
+    sprintf_s(buffer, ": %d£¬  %d", m_lCurrentVolume, m_lUnknownVolume);
     break;
   default:
     break;
