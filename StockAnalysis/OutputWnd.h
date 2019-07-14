@@ -37,7 +37,7 @@ protected:
 
 	COutputList m_wndOutputInformation;
 	COutputList m_wndOutputDayLine;
-	COutputList m_wndOutputDebug;
+	COutputList m_wndOutputDayLineInfo;
   COutputList m_wndOutputWaring;
   COutputList m_wndOutputTrace1;
 

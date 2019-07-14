@@ -52,7 +52,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
     !m_wndOutputDayLine.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-    !m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
+    !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
     !m_wndOutputWaring.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
     !m_wndOutputTrace1.Create(dwStyle, rectDummy, &m_wndTabs, 6) )
 {
@@ -74,7 +74,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputDayLine, strTabName, (UINT)1);
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDebug, strTabName, (UINT)2);
+	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)2);
   bNameValid = strTabName.LoadString(IDS_FIND2_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
@@ -133,9 +133,9 @@ void COutputWnd::FillBuildWindow()
 
 void COutputWnd::FillDebugWindow()
 {
-	m_wndOutputDebug.AddString(_T("调试输出正显示在此处。"));
-	m_wndOutputDebug.AddString(_T("输出正显示在列表视图的行中"));
-	m_wndOutputDebug.AddString(_T("但您可以根据需要更改其显示方式..."));
+	m_wndOutputDayLineInfo.AddString(_T("调试输出正显示在此处。"));
+	m_wndOutputDayLineInfo.AddString(_T("输出正显示在列表视图的行中"));
+	m_wndOutputDayLineInfo.AddString(_T("但您可以根据需要更改其显示方式..."));
 }
 
 void COutputWnd::FillFindWindow()
@@ -148,7 +148,7 @@ void COutputWnd::FillFindWindow()
 void COutputWnd::UpdateFonts()
 {
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputDebug.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLine.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputWaring.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputTrace1.SetFont(&afxGlobalData.fontRegular);
@@ -249,18 +249,18 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
   }
 
-  if (m_wndOutputDebug.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputDayLineInfo.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
-      m_wndOutputDebug.DeleteString(0);
+      m_wndOutputDayLineInfo.DeleteString(0);
     }
   }
 
-  if ((lTotal = gl_systemMessage.GetDataBaseDequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopDataBaseMessage();
-      m_wndOutputDebug.AddString(str);
+      str = gl_systemMessage.PopDayLineInfoMessage();
+      m_wndOutputDayLineInfo.AddString(str);
     }
-    m_wndOutputDebug.SetTopIndex(m_wndOutputDebug.GetCount() - 1);
+    m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
   }
 
   if (m_wndOutputDayLine.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。

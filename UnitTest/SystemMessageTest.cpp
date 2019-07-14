@@ -12,23 +12,23 @@
 #include"SystemMessage.h"
 
 namespace StockAnalysisTest {
-  TEST(SystemMessageTest, TestGetOutputDequeSize) {
+  TEST(SystemMessageTest, TestGetInformationDequeSize) {
     CSystemMessage message;
-    EXPECT_EQ(message.GetOutputDequeSize(), 0);
-    message.PushOutputMessage(_T("TEST"));
-    EXPECT_EQ(message.GetOutputDequeSize(), 1);
-    CString str = message.PopOutputMessage();
-    EXPECT_EQ(message.GetOutputDequeSize(), 0);
+    EXPECT_EQ(message.GetInformationDequeSize(), 0);
+    message.PushInformationMessage(_T("TEST"));
+    EXPECT_EQ(message.GetInformationDequeSize(), 1);
+    CString str = message.PopInformationMessage();
+    EXPECT_EQ(message.GetInformationDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetDataBaseDequeSize) {
+  TEST(SystemMessageTest, TestGetDayLineInfoDequeSize) {
     CSystemMessage message;
-    EXPECT_EQ(message.GetDataBaseDequeSize(), 0);
-    message.PushDataBaseMessage(_T("TEST"));
-    EXPECT_EQ(message.GetDataBaseDequeSize(), 1);
-    CString str = message.PopDataBaseMessage();
-    EXPECT_EQ(message.GetDataBaseDequeSize(), 0);
+    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 0);
+    message.PushDayLineInfoMessage(_T("TEST"));
+    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 1);
+    CString str = message.PopDayLineInfoMessage();
+    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 

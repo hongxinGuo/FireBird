@@ -16,10 +16,12 @@ CSystemMessage::CSystemMessage()
 
 CSystemMessage::~CSystemMessage()
 {
-  m_dequeDataBaseMessage.clear();
+  m_dequeDayLineInfoMessage.clear();
   m_dequeFindMessage.clear();
   m_dequeInformationMessage.clear();
   m_dequeWarningMessage.clear();
+  m_dequeTrace1Message.clear();
+  m_dequeTrace2Message.clear();
 }
 
 void CSystemMessage::PushInformationMessage(CString str)
@@ -45,14 +47,14 @@ CString CSystemMessage::PopInformationMessage(void)
   }
 }
 
-CString CSystemMessage::PopDataBaseMessage(void)
+CString CSystemMessage::PopDayLineInfoMessage(void)
 {
   CString str;
-  CSingleLock singleLock(&m_DataBaseLock);
+  CSingleLock singleLock(&m_DayLineInfoLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    str = m_dequeDataBaseMessage.front();
-    m_dequeDataBaseMessage.pop_front();
+    str = m_dequeDayLineInfoMessage.front();
+    m_dequeDayLineInfoMessage.pop_front();
     singleLock.Unlock();
     return str;
   }
@@ -122,12 +124,12 @@ long CSystemMessage::GetInformationDequeSize(void)
   return 0;
 }
 
-long CSystemMessage::GetDataBaseDequeSize(void)
+long CSystemMessage::GetDayLineInfoDequeSize(void)
 {
-  CSingleLock singleLock(&m_DataBaseLock);
+  CSingleLock singleLock(&m_DayLineInfoLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeDataBaseMessage.size();
+    long lCount = m_dequeDayLineInfoMessage.size();
     singleLock.Unlock();
     return lCount;
   }
@@ -182,12 +184,12 @@ long CSystemMessage::GetTrace2DequeSize(void)
   return 0;
 }
 
-void CSystemMessage::PushDataBaseMessage(CString str)
+void CSystemMessage::PushDayLineInfoMessage(CString str)
 {
-  CSingleLock singleLock(&m_DataBaseLock);
+  CSingleLock singleLock(&m_DayLineInfoLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeDataBaseMessage.push_back(str);
+    m_dequeDayLineInfoMessage.push_back(str);
     singleLock.Unlock();
   }
 }

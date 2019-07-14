@@ -514,7 +514,7 @@ void CStock::ReportGuaDan(void)
     str1 = buffer;
     sprintf_s(buffer, "  总取消卖单量：%d", m_lCancelSellVolume);
     str1 += buffer;
-    gl_systemMessage.PushDataBaseMessage(str1);   // 采用同步机制传递消息
+    gl_systemMessage.PushDayLineInfoMessage(str1);   // 采用同步机制传递消息
 
   }
   if (m_lCurrentCanselBuyVolume > 0) {

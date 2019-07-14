@@ -13,21 +13,23 @@ public:
   ~CSystemMessage();
 
   void PushInformationMessage(CString str);
-  void PushDataBaseMessage(CString str);
+  CString PopInformationMessage(void);
+  long    GetInformationDequeSize(void);
+
+  void PushDayLineInfoMessage(CString str);
+  CString PopDayLineInfoMessage(void);
+  long    GetDayLineInfoDequeSize(void);
+
   void PushFindMessage(CString str);
   void PushWarningMessage(CString str);
   void PushTrace1Message(CString str);
   void PushTrace2Message(CString str);
 
-  CString PopInformationMessage(void);
-  CString PopDataBaseMessage(void);
   CString PopFindMessage(void);
   CString PopWarningMessage(void);
   CString PopTrace1Message(void);
   CString PopTrace2Message(void);
 
-  long    GetInformationDequeSize(void);
-  long    GetDataBaseDequeSize(void);
   long    GetFindDequeSize(void);
   long    GetWarningDequeSize(void);
   long    GetTrace1DequeSize(void);
@@ -38,8 +40,8 @@ protected:
   deque<CString> m_dequeInformationMessage; // 输出显示队列
   CCriticalSection     m_InformationLock;       // 使用本资源
 
-  deque<CString> m_dequeDataBaseMessage; // 输出显示队列
-  CCriticalSection     m_DataBaseLock;       // 使用本资源
+  deque<CString> m_dequeDayLineInfoMessage; // 输出显示队列
+  CCriticalSection     m_DayLineInfoLock;       // 使用本资源
   
   deque<CString> m_dequeFindMessage; // 输出显示队列
   CCriticalSection     m_Trace1Lock;       // 使用本资源
