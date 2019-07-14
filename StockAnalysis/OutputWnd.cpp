@@ -69,16 +69,16 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bNameValid = strTabName.LoadString(IDS_INFORMATION_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
-	bNameValid = strTabName.LoadString(IDS_DAYLINE_TAB);
+	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)1);
-	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
+	bNameValid = strTabName.LoadString(IDS_TRANSACTION_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)2);
-  bNameValid = strTabName.LoadString(IDS_FIND2_TAB);
+  bNameValid = strTabName.LoadString(IDS_CANCEL_SELL_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
-  bNameValid = strTabName.LoadString(IDS_TRACE1_TAB);
+  bNameValid = strTabName.LoadString(IDS_CANCEL_BUY_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputTrace1, strTabName, (UINT)4);
 
@@ -255,9 +255,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
       m_wndOutputWaring.DeleteString(0);
     }
   }
-  if ((lTotal = gl_systemMessage.GetWarningDequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetCancelSellDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopWarningMessage();
+      str = gl_systemMessage.PopCancelSellMessage();
       m_wndOutputWaring.AddString(str);
     }
     m_wndOutputWaring.SetTopIndex(m_wndOutputWaring.GetCount() - 1);
