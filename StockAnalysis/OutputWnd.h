@@ -36,17 +36,14 @@ protected:
 	CMFCTabCtrl	m_wndTabs;
 
 	COutputList m_wndOutputInformation;
-	COutputList m_wndOutputDayLine;
 	COutputList m_wndOutputDayLineInfo;
+	COutputList m_wndOutputTransaction;
   COutputList m_wndOutputWaring;
   COutputList m_wndOutputTrace1;
 
   UINT        m_uIdTimer;
 
 protected:
-	void FillBuildWindow();
-	void FillDebugWindow();
-	void FillFindWindow();
 
 	void AdjustHorzScroll(CListBox& wndListBox);
 

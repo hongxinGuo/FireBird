@@ -83,7 +83,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
   char buffer[100];
   sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
   CString str = buffer;
-  gl_systemMessage.PushFindMessage(str);
+  gl_systemMessage.PushDayLineInfoMessage(str);
 
   return 1;
 }

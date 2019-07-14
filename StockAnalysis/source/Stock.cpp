@@ -502,7 +502,7 @@ void CStock::ReportGuaDanTransaction(void)
     break;
   }
   str += str1;
-  gl_systemMessage.PushWarningMessage(str); // 采用同步机制传送信息
+  gl_systemMessage.PushTransactionMessage(str); // 采用同步机制传送信息
 }
 
 void CStock::ReportGuaDan(void)

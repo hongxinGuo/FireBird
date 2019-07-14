@@ -17,7 +17,7 @@ CSystemMessage::CSystemMessage()
 CSystemMessage::~CSystemMessage()
 {
   m_dequeDayLineInfoMessage.clear();
-  m_dequeFindMessage.clear();
+  m_dequeTransactionMessage.clear();
   m_dequeInformationMessage.clear();
   m_dequeWarningMessage.clear();
   m_dequeTrace1Message.clear();
@@ -60,14 +60,14 @@ CString CSystemMessage::PopDayLineInfoMessage(void)
   }
 }
 
-CString CSystemMessage::PopFindMessage(void)
+CString CSystemMessage::PopTransactionMessage(void)
 {
   CString str;
-  CSingleLock singleLock(&m_FindLock);
+  CSingleLock singleLock(&m_TransactionLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    str = m_dequeFindMessage.front();
-    m_dequeFindMessage.pop_front();
+    str = m_dequeTransactionMessage.front();
+    m_dequeTransactionMessage.pop_front();
     singleLock.Unlock();
     return str;
   }
@@ -136,12 +136,12 @@ long CSystemMessage::GetDayLineInfoDequeSize(void)
   return 0;
 }
 
-long CSystemMessage::GetFindDequeSize(void)
+long CSystemMessage::GetTransactionDequeSize(void)
 {
-  CSingleLock singleLock(&m_FindLock);
+  CSingleLock singleLock(&m_TransactionLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeFindMessage.size();
+    long lCount = m_dequeTransactionMessage.size();
     singleLock.Unlock();
     return lCount;
   }
@@ -194,12 +194,12 @@ void CSystemMessage::PushDayLineInfoMessage(CString str)
   }
 }
 
-void CSystemMessage::PushFindMessage(CString str)
+void CSystemMessage::PushTransactionMessage(CString str)
 {
-  CSingleLock singleLock(&m_FindLock);
+  CSingleLock singleLock(&m_TransactionLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeFindMessage.push_back(str);
+    m_dequeTransactionMessage.push_back(str);
     singleLock.Unlock();
   }
 

@@ -34,11 +34,11 @@ namespace StockAnalysisTest {
 
   TEST(SystemMessageTest, TestGetFindDequeSize) {
     CSystemMessage message;
-    EXPECT_EQ(message.GetFindDequeSize(), 0);
-    message.PushFindMessage(_T("TEST"));
-    EXPECT_EQ(message.GetFindDequeSize(), 1);
-    CString str = message.PopFindMessage();
-    EXPECT_EQ(message.GetFindDequeSize(), 0);
+    EXPECT_EQ(message.GetTransactionDequeSize(), 0);
+    message.PushTransactionMessage(_T("TEST"));
+    EXPECT_EQ(message.GetTransactionDequeSize(), 1);
+    CString str = message.PopTransactionMessage();
+    EXPECT_EQ(message.GetTransactionDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 

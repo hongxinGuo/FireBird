@@ -51,7 +51,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-    !m_wndOutputDayLine.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+    !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
     !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
     !m_wndOutputWaring.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
     !m_wndOutputTrace1.Create(dwStyle, rectDummy, &m_wndTabs, 6) )
@@ -71,7 +71,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDayLine, strTabName, (UINT)1);
+	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)1);
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)2);
@@ -88,11 +88,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   if (m_uIdTimer == 0) {
     CString str;
   }
-
-	// 使用一些虚拟文本填写输出选项卡(无需复杂数据)
-	FillBuildWindow();
-	FillDebugWindow();
-	FillFindWindow();
 
 	return 0;
 }
@@ -124,32 +119,11 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 	dc.SelectObject(pOldFont);
 }
 
-void COutputWnd::FillBuildWindow()
-{
-	m_wndOutputInformation.AddString(_T("生成输出正显示在此处。"));
-	m_wndOutputInformation.AddString(_T("输出正显示在列表视图的行中"));
-	m_wndOutputInformation.AddString(_T("但您可以根据需要更改其显示方式..."));
-}
-
-void COutputWnd::FillDebugWindow()
-{
-	m_wndOutputDayLineInfo.AddString(_T("调试输出正显示在此处。"));
-	m_wndOutputDayLineInfo.AddString(_T("输出正显示在列表视图的行中"));
-	m_wndOutputDayLineInfo.AddString(_T("但您可以根据需要更改其显示方式..."));
-}
-
-void COutputWnd::FillFindWindow()
-{
-	m_wndOutputDayLine.AddString(_T("查找输出正显示在此处。"));
-	m_wndOutputDayLine.AddString(_T("输出正显示在列表视图的行中"));
-	m_wndOutputDayLine.AddString(_T("但您可以根据需要更改其显示方式..."));
-}
-
 void COutputWnd::UpdateFonts()
 {
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputDayLine.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputWaring.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputTrace1.SetFont(&afxGlobalData.fontRegular);
 }
@@ -263,17 +237,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
   }
 
-  if (m_wndOutputDayLine.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputTransaction.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
-      m_wndOutputDayLine.DeleteString(0);
+      m_wndOutputTransaction.DeleteString(0);
     }
   }
-  if ((lTotal = gl_systemMessage.GetFindDequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetTransactionDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopFindMessage();
-      m_wndOutputDayLine.AddString(str);
+      str = gl_systemMessage.PopTransactionMessage();
+      m_wndOutputTransaction.AddString(str);
     }
-    m_wndOutputDayLine.SetTopIndex(m_wndOutputDayLine.GetCount() - 1);
+    m_wndOutputTransaction.SetTopIndex(m_wndOutputTransaction.GetCount() - 1);
   }
 
   if (m_wndOutputWaring.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
