@@ -5,7 +5,6 @@
 
 
 bool CalculateOneDayRelativeStrong(long lDay);
-bool CalculateRelativeStrong(CTime ctStart);
 bool UpdateStockCodeDataBase(void);
 
 

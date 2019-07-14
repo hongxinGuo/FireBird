@@ -7,7 +7,8 @@ CSystemStatus::CSystemStatus() {
   m_fDataBaseInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
   m_fRTDataReadingInProcess = false;
-  m_fRTDataReady = false;
+  m_fRTDataReceived = false;
+  m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
 }
 
@@ -87,20 +88,39 @@ bool CSystemStatus::IsRTDataReadingInProcess(void) {
   }
 }
 
-void CSystemStatus::SetRTDataReady(bool fFlag) {
-  CSingleLock singleLock(&m_RTDataReadyLock);
+void CSystemStatus::SetRTDataReceived(bool fFlag) {
+  CSingleLock singleLock(&m_RTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fRTDataReady = fFlag;
+    m_fRTDataReceived = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CSystemStatus::IsRTDataReady(void) {
-  CSingleLock singleLock(&m_RTDataReadyLock);
+bool CSystemStatus::IsRTDataReceived(void) {
+  CSingleLock singleLock(&m_RTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fRTDataReady;
+    bool fFlag = m_fRTDataReceived;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CSystemStatus::SetRTDataNeedCalculate(bool fFlag) {
+  CSingleLock singleLock(&m_RTDataNeedCalculateLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fRTDataNeedCalculate = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsRTDataNeedCalculate(void) {
+  CSingleLock singleLock(&m_RTDataNeedCalculateLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag = m_fRTDataNeedCalculate;
     singleLock.Unlock();
     return fFlag;
   }

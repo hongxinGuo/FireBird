@@ -146,13 +146,25 @@ bool CStock::LoadDayLine(CSetDayLine * psetDayLine)
 bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
 
-
   long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTStockData(); // 采用同步机制获取数据
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       CalculateOneRTData(pRTData);
+      // 显示当前交易情况
+      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
+          gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDanTransaction();
+        }
+      }
+      // 显示当前取消挂单的情况
+      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
+          gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDan();
+        }
+      }
+
     }
   }
 

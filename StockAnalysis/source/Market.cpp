@@ -229,7 +229,8 @@ bool CMarket::ProcessRTData(void)
       }
     }
   }
-  
+  gl_systemStatus.SetRTDataNeedCalculate(true);
+
   return true;
 }
 
@@ -275,26 +276,8 @@ int CMarket::GetInquiringStockStr(CString& str)
 bool CMarket::CalculateRTData(void)
 {
   for ( auto pStock : m_vActiveStock) {
-    if (pStock != nullptr) {
-      pStock->CalculateRTData();
-      // 显示当前交易情况
-      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(pStock->GetStockCode()) == 0) {
-          gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDanTransaction();
-        }
-      }
-      // 显示当前取消挂单的情况
-      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(pStock->GetStockCode()) == 0) {
-          gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDan();
-        }
-      }
-    }
-    else {
-      TRACE(_T("警告：当日活跃股票池中发现nulltr, %s\n"), (LPCSTR)pStock->GetStockCode());
-    }
-    
-
+    ASSERT(pStock != nullptr);
+    pStock->CalculateRTData();
     if (gl_fExiting) return false;
   }
   return true;

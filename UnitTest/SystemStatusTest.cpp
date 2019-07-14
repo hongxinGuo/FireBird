@@ -36,14 +36,22 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(status.IsRTDataReadingInProcess());
   }
 
-  TEST(SystemStatusTest, TestIsRTDataReady) {
+  TEST(SystemStatusTest, TestIsRTDataReceived) {
     CSystemStatus status;
-    status.SetRTDataReady(true);
-    EXPECT_TRUE(status.IsRTDataReady());
-    status.SetRTDataReady(false);
-    EXPECT_FALSE(status.IsRTDataReady());
+    status.SetRTDataReceived(true);
+    EXPECT_TRUE(status.IsRTDataReceived());
+    status.SetRTDataReceived(false);
+    EXPECT_FALSE(status.IsRTDataReceived());
   }
- 
+
+  TEST(SystemStatusTest, TestIsRTDataNeedCalculate) {
+    CSystemStatus status;
+    status.SetRTDataNeedCalculate(true);
+    EXPECT_TRUE(status.IsRTDataNeedCalculate());
+    status.SetRTDataNeedCalculate(false);
+    EXPECT_FALSE(status.IsRTDataNeedCalculate());
+  }
+
   TEST(SystemStatusTest, TestIsDayLineDataReady) {
     CSystemStatus status;
     status.SetDayLineDataReady(true);

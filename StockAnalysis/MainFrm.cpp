@@ -390,7 +390,7 @@ bool CMainFrame::GetSinaStockRTData(void)
   long long iTotalNumber = 0;
 
   if (!gl_systemStatus.IsRTDataReadingInProcess()) {
-    if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReady()) { //网络通信一切顺利？
+    if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReceived()) { //网络通信一切顺利？
       iTotalNumber = gl_stRTDataInquire.lByteRead;
       pCurrentPos = gl_stRTDataInquire.buffer;
       long  iCount = 0;
@@ -430,7 +430,7 @@ bool CMainFrame::GetSinaStockRTData(void)
       gl_stRTDataInquire.strInquire = gl_strRTStockSource;
       gl_ChinaStockMarket.GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
-    gl_systemStatus.SetRTDataReady(false);
+    gl_systemStatus.SetRTDataReceived(false);
     gl_systemStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ClientThreadReadingRTDataProc, GetSafeHwnd());
   }

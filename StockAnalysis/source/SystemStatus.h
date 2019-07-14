@@ -18,8 +18,11 @@ public:
   void SetRTDataReadingInProcess(bool fFlag);
   bool IsRTDataReadingInProcess(void);
 
-  void SetRTDataReady(bool fFlag);
-  bool IsRTDataReady(void);
+  void SetRTDataReceived(bool fFlag);
+  bool IsRTDataReceived(void);
+  
+  void SetRTDataNeedCalculate(bool fFlag);
+  bool IsRTDataNeedCalculate(void);
 
   void SetDayLineDataReady(bool fFlag);
   bool IsDayLineDataReady(void);
@@ -37,8 +40,11 @@ protected:
   bool m_fRTDataReadingInProcess;  // 接收实时数据线程是否执行标识
   CCriticalSection m_RTDataReadingInProcessLock;
 
-  bool m_fRTDataReady;             // 实时数据已提取完成标识
-  CCriticalSection m_RTDataReadyLock;
+  bool m_fRTDataReceived;             // 实时数据已接收完成标识
+  CCriticalSection m_RTDataReceivedLock;
+
+  bool m_fRTDataNeedCalculate;                // 实时数据已预处理好，准备计算
+  CCriticalSection m_RTDataNeedCalculateLock;
 
   bool m_fDayLineDataReady;      // 日线数据已提取完成标识
   CCriticalSection m_DayLineDataReadyLock;

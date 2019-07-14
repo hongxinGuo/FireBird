@@ -26,8 +26,9 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
     if (gl_fExiting) { // 
       return 0; // 
     }
-    if (gl_ChinaStockMarket.MarketReady()) { // 只有市场初始态设置好后，才允许处理实时数据。
+    if (gl_ChinaStockMarket.MarketReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
       gl_ChinaStockMarket.CalculateRTData();
+      gl_systemStatus.SetRTDataNeedCalculate(false); 
     }
     Sleep(50); // 暂停50毫秒。当计算繁忙时，无所谓是否暂停；当没有计算任务时，此50毫秒能够保证此线程不过多占用系统计算能力。
     // 研究使用挂起唤醒机制节约计算能力。
@@ -117,12 +118,12 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
       else fDone = true;
     }
     gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
-    gl_systemStatus.SetRTDataReady(true);
+    gl_systemStatus.SetRTDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();
     gl_stRTDataInquire.fError = true;
-    gl_systemStatus.SetRTDataReady(false);
+    gl_systemStatus.SetRTDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
