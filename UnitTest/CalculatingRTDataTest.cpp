@@ -163,6 +163,7 @@ namespace StockAnalysisTest {
   TEST_P(CalculateRTDataTest, TestRTData) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
     m_stock.CalculateOneRTData(pLastData);
+    long lFirstVolume = m_stock.GetUnknownVolume();
     for (int i = 9960; i < 10050; i += 10) {
       EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
     }
@@ -172,13 +173,14 @@ namespace StockAnalysisTest {
     m_stock.CalculateOneRTData(pCurrentData);
     long lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
       + m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume();
-    EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume);
+    EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);
     switch (iCount) {
     case 0: // 成交1万股@10.00
       EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_SELL__);
       EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10);
       EXPECT_EQ(m_stock.GetOrdinaryBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetOrdinarySellVolume(), 10000);
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetTransactionNumberBelow50000(), 1);
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
@@ -220,6 +222,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetGuaDan(9960), 11600);
       EXPECT_EQ(m_stock.GetGuaDan(9970), 10800);
       EXPECT_EQ(m_stock.GetGuaDan(9980), 10400);
@@ -244,6 +247,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 3000);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 300);
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
       EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
       EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
@@ -266,6 +270,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 2800);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 由于是正常买入，故卖一的撤单不计
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
       EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
       EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
@@ -290,6 +295,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 1600);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 1500); // 由于是进攻型买入，故卖一和卖二的撤单不计
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
       EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
       EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
@@ -310,6 +316,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetAttackSellVolume(), 0);
       EXPECT_EQ(m_stock.GetStrongBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetStrongSellVolume(), 0);
+      EXPECT_EQ(m_stock.GetUnknownVolume(), lFirstVolume);
       EXPECT_EQ(m_stock.GetTransactionNumberBelow50000(), 0);
       EXPECT_EQ(m_stock.GetTransactionNumberBelow200000(), 0);
       EXPECT_EQ(m_stock.GetTransactionNumberAbove200000(), 0);
@@ -332,7 +339,7 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.005);
       EXPECT_EQ(m_stock.GetOrdinaryBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetOrdinarySellVolume(), 0);
-      EXPECT_EQ(m_stock.GetUnknownVolume(), 4000);
+      EXPECT_EQ(m_stock.GetUnknownVolume(), 4000 + lFirstVolume);
       EXPECT_EQ(m_stock.GetAttackBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetAttackSellVolume(), 0);
       EXPECT_EQ(m_stock.GetStrongBuyVolume(), 0);
