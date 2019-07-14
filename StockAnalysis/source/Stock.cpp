@@ -276,6 +276,8 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
         }
       }
       ASSERT(m_Time >= pRTData->m_time);
+      ASSERT(pRTData->m_lVolume == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
+        + m_lAttackBuyVolume + m_lAttackSellVolume + m_lUnknownVolume);
     }
 
     // 下面开始分析挂单情况
@@ -470,7 +472,7 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
 void CStock::ReportGuaDanTransaction(void)
 {
   char buffer[100];
-  CString str;
+  CString str, str2;
   CTime ctime(m_pLastRTData->m_time);
   sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f    ", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
     m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
@@ -479,31 +481,66 @@ void CStock::ReportGuaDanTransaction(void)
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongBuyVolume);
+    if (gl_lShowGuaDanTransaction == __STRONG_BUY__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongBuyVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongSellVolume);
+    if (gl_lShowGuaDanTransaction == __STRONG_SELL__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongSellVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackBuyVolume);
+    if (gl_lShowGuaDanTransaction == __ATTACK_BUY__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackBuyVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackSellVolume);
+    if (gl_lShowGuaDanTransaction == __ATTACK_SELL__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackSellVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinaryBuyVolume);
+    if (gl_lShowGuaDanTransaction == __ORDINARY_BUY__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinaryBuyVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinarySellVolume);
+    if (gl_lShowGuaDanTransaction == __ORDINARY_SELL__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinarySellVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lUnknownVolume);
+    if (gl_lShowGuaDanTransaction == __UNKNOWN_BUYSELL__) {
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lUnknownVolume);
+      str2 = str1;
+      str2 += buffer;
+      gl_systemMessage.PushTrace2Message(str1);
+    }
     break;
   default:
     break;

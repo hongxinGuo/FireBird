@@ -75,4 +75,6 @@ extern RTDataInquire gl_stRTDataInquire;
 extern bool gl_fExiting;
 extern bool gl_fExitingCalculatingRelativeStrong;
 
+extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
+
 #endif

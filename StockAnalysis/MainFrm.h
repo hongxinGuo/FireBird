@@ -104,6 +104,13 @@ public:
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnShowOrdinaryBuy();
+  afx_msg void OnShowOrdinarySell();
+  afx_msg void OnShowStrongBuy();
+  afx_msg void OnShowStrongSell();
+  afx_msg void OnShowUnknownbuysell();
+  afx_msg void OnShowAttackBuy();
+  afx_msg void OnShowAttackSell();
 };
 
 

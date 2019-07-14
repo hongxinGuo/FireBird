@@ -29,5 +29,6 @@ RTDataInquire gl_stRTDataInquire;
 bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRelativeStrong = false;
 
+long gl_lShowGuaDanTransaction = __ORDINARY_BUY__; // 显示挂单成交具体情况
 
 

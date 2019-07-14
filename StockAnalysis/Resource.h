@@ -1,4 +1,4 @@
-﻿//{{NO_DEPENDENCIES}}
+//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by StockAnalysis.rc
 //
@@ -40,6 +40,21 @@
 #define ID_SAVE_RTDATA                  32774
 #define ID_DownLoad_DayLine             32775
 #define ID_SAVE_DAYLINE_DATA            32776
+#define ID_32777                        32777
+#define ID_32778                        32778
+#define ID_32779                        32779
+#define ID_32780                        32780
+#define ID_32781                        32781
+#define ID_32782                        32782
+#define ID_32783                        32783
+#define ID_32784                        32784
+#define ID_SHOW_ORDINARY_BUY            32785
+#define ID_SHOW_ORDINARY_SELL           32786
+#define ID_SHOW_ATTACK_BUY              32787
+#define ID_SHOW_ATTACK_SELL             32788
+#define ID_SHOW_STRONG_BUY              32789
+#define ID_SHOW_STRONG_SELL             32790
+#define ID_SHOW_UNKNOWNBUYSELL          32791
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -51,7 +66,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_COMMAND_VALUE         32792
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
