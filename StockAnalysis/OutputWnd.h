@@ -38,8 +38,9 @@ protected:
 	COutputList m_wndOutputInformation;
 	COutputList m_wndOutputDayLineInfo;
 	COutputList m_wndOutputTransaction;
-  COutputList m_wndOutputWaring;
+  COutputList m_wndOutputCancelSell;
   COutputList m_wndOutputCancelBuy;
+  COutputList m_wndOutputTrace2;
 
   UINT        m_uIdTimer;
 

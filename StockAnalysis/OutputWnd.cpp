@@ -53,8 +53,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
     !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
     !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
-    !m_wndOutputWaring.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
-    !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) )
+    !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
+    !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
+    !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) )
 {
 		TRACE0("未能创建输出窗口\n");
 		return -1;      // 未能创建
@@ -77,10 +78,13 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)2);
   bNameValid = strTabName.LoadString(IDS_CANCEL_SELL_TAB);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputWaring, strTabName, (UINT)3);
+  m_wndTabs.AddTab(&m_wndOutputCancelSell, strTabName, (UINT)3);
   bNameValid = strTabName.LoadString(IDS_CANCEL_BUY_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)4);
+  bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
+  ASSERT(bNameValid);
+  m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)5);
 
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据
@@ -124,8 +128,9 @@ void COutputWnd::UpdateFonts()
 	m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
-  m_wndOutputWaring.SetFont(&afxGlobalData.fontRegular);
+  m_wndOutputCancelSell.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
+  m_wndOutputTrace2.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -250,17 +255,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputTransaction.SetTopIndex(m_wndOutputTransaction.GetCount() - 1);
   }
 
-  if (m_wndOutputWaring.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputCancelSell.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
-      m_wndOutputWaring.DeleteString(0);
+      m_wndOutputCancelSell.DeleteString(0);
     }
   }
   if ((lTotal = gl_systemMessage.GetCancelSellDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopCancelSellMessage();
-      m_wndOutputWaring.AddString(str);
+      m_wndOutputCancelSell.AddString(str);
     }
-    m_wndOutputWaring.SetTopIndex(m_wndOutputWaring.GetCount() - 1);
+    m_wndOutputCancelSell.SetTopIndex(m_wndOutputCancelSell.GetCount() - 1);
   }
 
   if (m_wndOutputCancelBuy.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
@@ -274,6 +279,19 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
       m_wndOutputCancelBuy.AddString(str);
     }
     m_wndOutputCancelBuy.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
+  }
+
+  if (m_wndOutputTrace2.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+    for (int i = 0; i < 1000; i++) {
+      m_wndOutputTrace2.DeleteString(0);
+    }
+  }
+  if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
+    for (int i = 0; i < lTotal; i++) {
+      str = gl_systemMessage.PopTrace2Message();
+      m_wndOutputTrace2.AddString(str);
+    }
+    m_wndOutputTrace2.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
   }
 
   CDockablePane::OnTimer(nIDEvent);

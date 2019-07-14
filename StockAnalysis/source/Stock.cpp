@@ -479,30 +479,42 @@ void CStock::ReportGuaDanTransaction(void)
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
+    sprintf_s(buffer, ": %d", m_lStrongBuyVolume);
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
+    sprintf_s(buffer, ": %d", m_lStrongSellVolume);
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
+    sprintf_s(buffer, ": %d", m_lAttackBuyVolume);
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
+    sprintf_s(buffer, ": %d", m_lAttackSellVolume);
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
+    sprintf_s(buffer, ": %d", m_lOrdinaryBuyVolume);
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
+    sprintf_s(buffer, ": %d", m_lOrdinarySellVolume);
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
+    sprintf_s(buffer, ": %d", m_lUnknownVolume);
     break;
   default:
     break;
   }
   str += str1;
+  // 显示当前成交情况
   gl_systemMessage.PushTransactionMessage(str); // 采用同步机制传送信息
+
+  str1 += buffer;
+  // 显示总交易量的详细情况
+  gl_systemMessage.PushTrace2Message(str1);
 }
 
 void CStock::ReportGuaDan(void)
