@@ -7,6 +7,7 @@ CSystemMessage::CSystemMessage()
   static int siCounter = 0;
   if (siCounter > 1) { 
     TRACE("系统消息只允许一个实例\n");
+    m_dequeInformationMessage.push_back(_T("错误：系统消息只允许一个实例"));
   }
   else siCounter++;
 
@@ -17,28 +18,28 @@ CSystemMessage::~CSystemMessage()
 {
   m_dequeDataBaseMessage.clear();
   m_dequeFindMessage.clear();
-  m_dequeOutputMessage.clear();
+  m_dequeInformationMessage.clear();
   m_dequeWarningMessage.clear();
 }
 
-void CSystemMessage::PushOutputMessage(CString str)
+void CSystemMessage::PushInformationMessage(CString str)
 {
-  CSingleLock singleLock(&m_OutputLock);
+  CSingleLock singleLock(&m_InformationLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeOutputMessage.push_back(str);
+    m_dequeInformationMessage.push_back(str);
     singleLock.Unlock();
   }
 }
 
-CString CSystemMessage::PopOutputMessage(void)
+CString CSystemMessage::PopInformationMessage(void)
 {
   CString str;
-  CSingleLock singleLock(&m_OutputLock);
+  CSingleLock singleLock(&m_InformationLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    str = m_dequeOutputMessage.front();
-    m_dequeOutputMessage.pop_front();
+    str = m_dequeInformationMessage.front();
+    m_dequeInformationMessage.pop_front();
     singleLock.Unlock();
     return str;
   }
@@ -109,12 +110,12 @@ CString CSystemMessage::PopTrace2Message(void)
   }
 }
 
-long CSystemMessage::GetOutputDequeSize(void)
+long CSystemMessage::GetInformationDequeSize(void)
 {
-  CSingleLock singleLock(&m_OutputLock);
+  CSingleLock singleLock(&m_InformationLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeOutputMessage.size();
+    long lCount = m_dequeInformationMessage.size();
     singleLock.Unlock();
     return lCount;
   }

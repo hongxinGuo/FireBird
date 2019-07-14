@@ -402,14 +402,14 @@ bool CMainFrame::GetSinaStockRTData(void)
         }
         else {
           TRACE("实时数据有误,抛掉不用\n");
-          gl_systemMessage.PushOutputMessage(_T("实时数据有误"));
+          gl_systemMessage.PushInformationMessage(_T("实时数据有误"));
           iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
         }
       }
     }
     else {
       TRACE("Error reading http file ：hq.sinajs.cn\n");
-      gl_systemMessage.PushOutputMessage(_T("Error reading http file ：hq.sinajs.cn"));
+      gl_systemMessage.PushInformationMessage(_T("Error reading http file ：hq.sinajs.cn"));
     }
 
     // 处理接收到的实时数据
@@ -692,7 +692,7 @@ bool CMainFrame::SchedulingTask(void)
         TRACE("日线历史数据更新完毕\n");
         CString str;
         str = _T("日线历史数据更新完毕");
-        gl_systemMessage.PushOutputMessage(str);
+        gl_systemMessage.PushInformationMessage(str);
         UpdateStockCodeDataBase();  // 更新股票池数据库
         ASSERT(gl_setSavingDayLineOnly.IsOpen());
         gl_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集

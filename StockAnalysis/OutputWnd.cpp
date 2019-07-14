@@ -241,9 +241,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     }
   }
   // 将输出信息拷贝到消息队列中。
-  if ((lTotal = gl_systemMessage.GetOutputDequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopOutputMessage();
+      str = gl_systemMessage.PopInformationMessage();
       m_wndOutputInformation.AddString(str);
     }
     m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
