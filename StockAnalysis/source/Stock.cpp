@@ -473,72 +473,82 @@ bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr p
 void CStock::ReportGuaDanTransaction(void)
 {
   char buffer[100];
-  CString str, str2;
+  CString str, str2, strTime;
   CTime ctime(m_pLastRTData->m_time);
-  sprintf_s(buffer, "%02d:%02d:%02d %s %d股成交于%10.3f    ", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond(), m_strStockCode.GetBuffer(),
+  sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
+  strTime = buffer;
+  sprintf_s(buffer, " %s %d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
     m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
-  str = buffer;
+  str = strTime;
+  str += buffer;
   CString str1;
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
     if (gl_lShowGuaDanTransaction == __STRONG_BUY__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongBuyVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lStrongBuyVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
     if (gl_lShowGuaDanTransaction == __STRONG_SELL__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lStrongSellVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lStrongSellVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
     if (gl_lShowGuaDanTransaction == __ATTACK_BUY__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackBuyVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lAttackBuyVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
     if (gl_lShowGuaDanTransaction == __ATTACK_SELL__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lAttackSellVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lAttackSellVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
     if (gl_lShowGuaDanTransaction == __ORDINARY_BUY__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinaryBuyVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lOrdinaryBuyVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
     if (gl_lShowGuaDanTransaction == __ORDINARY_SELL__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lOrdinarySellVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
-      gl_systemMessage.PushTrace2Message(str1);
+      gl_systemMessage.PushTrace2Message(str2);
     }
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
     if (gl_lShowGuaDanTransaction == __UNKNOWN_BUYSELL__) {
-      sprintf_s(buffer, ": %d，  %d", m_lCurrentVolume, m_lUnknownVolume);
-      str2 = str1;
+      sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lUnknownVolume);
+      str2 = strTime;
+      str2 += str1;
       str2 += buffer;
       gl_systemMessage.PushTrace2Message(str1);
     }
@@ -550,9 +560,6 @@ void CStock::ReportGuaDanTransaction(void)
   // 显示当前成交情况
   gl_systemMessage.PushTransactionMessage(str); // 采用同步机制传送信息
 
-  str1 += buffer;
-  // 显示总交易量的详细情况
-  gl_systemMessage.PushTrace2Message(str1);
 }
 
 void CStock::ReportGuaDan(void)

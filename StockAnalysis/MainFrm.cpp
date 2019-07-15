@@ -276,8 +276,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
   m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
   DockPane(&m_wndOutput);
 
-  m_wndOutput2.EnableDocking(CBRS_ALIGN_ANY);
-  DockPane(&m_wndOutput2);
+  //m_wndOutput2.EnableDocking(CBRS_ALIGN_ANY);
+  //DockPane(&m_wndOutput2);
 
 
 	// 设置用于绘制所有用户界面元素的视觉管理器
@@ -747,7 +747,7 @@ BOOL CMainFrame::CreateDockingWindows()
     TRACE0("未能创建输出窗口\n");
     return FALSE; // 未能创建
   }
-  
+  /*
   CString strOutputWnd2;
   bNameValid = strOutputWnd2.LoadString(IDS_OUTPUT_WND2);
   ASSERT(bNameValid);
@@ -756,7 +756,7 @@ BOOL CMainFrame::CreateDockingWindows()
     TRACE0("未能创建输出窗口\n");
     return FALSE; // 未能创建
   }
-  
+  */
 
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 	return TRUE;

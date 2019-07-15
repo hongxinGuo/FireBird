@@ -51,8 +51,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-    !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-    !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
+    !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+    !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
     !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
     !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
     !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) )
@@ -72,10 +72,10 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
 	bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)1);
+	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
 	bNameValid = strTabName.LoadString(IDS_TRANSACTION_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)2);
+	m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)2);
   bNameValid = strTabName.LoadString(IDS_CANCEL_SELL_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputCancelSell, strTabName, (UINT)3);
@@ -84,7 +84,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)4);
   bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputCancelBuy, strTabName, (UINT)5);
+  m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)5);
 
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据
@@ -291,7 +291,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
       str = gl_systemMessage.PopTrace2Message();
       m_wndOutputTrace2.AddString(str);
     }
-    m_wndOutputTrace2.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
+    m_wndOutputTrace2.SetTopIndex(m_wndOutputTrace2.GetCount() - 1);
   }
 
   CDockablePane::OnTimer(nIDEvent);
