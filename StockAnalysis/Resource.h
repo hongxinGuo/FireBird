@@ -18,6 +18,7 @@
 #define ID_WINDOW_MANAGER               131
 #define ID_VIEW_OUTPUTWND               149
 #define IDS_OUTPUT_WND                  157
+#define IDS_OUTPUT_WND2                 158
 #define IDI_OUTPUT_WND                  165
 #define IDI_OUTPUT_WND_HC               166
 #define IDR_OUTPUT_POPUP                182

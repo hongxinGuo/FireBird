@@ -273,8 +273,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
-	m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndOutput);
+  m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
+  DockPane(&m_wndOutput);
+
+  m_wndOutput2.EnableDocking(CBRS_ALIGN_ANY);
+  DockPane(&m_wndOutput2);
 
 
 	// 设置用于绘制所有用户界面元素的视觉管理器
@@ -736,14 +739,24 @@ BOOL CMainFrame::CreateDockingWindows()
 {
 	BOOL bNameValid;
 	// 创建输出窗口
-	CString strOutputWnd;
-	bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
-	ASSERT(bNameValid);
-	if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
-	{
-		TRACE0("未能创建输出窗口\n");
-		return FALSE; // 未能创建
-	}
+  CString strOutputWnd;
+  bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
+  ASSERT(bNameValid);
+  if (!m_wndOutput.Create(strOutputWnd, this, CRect(0, 0, 100, 100), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
+  {
+    TRACE0("未能创建输出窗口\n");
+    return FALSE; // 未能创建
+  }
+  
+  CString strOutputWnd2;
+  bNameValid = strOutputWnd2.LoadString(IDS_OUTPUT_WND2);
+  ASSERT(bNameValid);
+  if (!m_wndOutput2.Create(strOutputWnd2, this, CRect(100, 100, 200, 200), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
+  {
+    TRACE0("未能创建输出窗口\n");
+    return FALSE; // 未能创建
+  }
+  
 
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 	return TRUE;
@@ -751,8 +764,8 @@ BOOL CMainFrame::CreateDockingWindows()
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 {
-	HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
-	m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
+  HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+  m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 
 	UpdateMDITabbedBarsIcons();
 }
