@@ -152,6 +152,10 @@ bool CStock::CalculateRTData(void) {
     pRTData = PopRTStockData(); // 采用同步机制获取数据
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       CalculateOneRTData(pRTData);
+      if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
+        || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
+        TRACE("%06d %s Error in volume\n", gl_systemTime.GetTime(),  m_strStockCode);
+      }
       // 显示当前交易情况
       if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
         if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
@@ -524,6 +528,7 @@ void CStock::ReportGuaDanTransaction(void)
   str2 += str1;
   str2 += buffer;
   gl_systemMessage.PushTrace2Message(str2);
+
 
 }
 
