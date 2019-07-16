@@ -57,30 +57,30 @@ public:
   void SetLow(long lValue) { m_lLow = lValue; }
   long GetNew(void) { return m_lNew; }
   void SetNew(long lValue) { m_lNew = lValue; }
-  long long GetAmount(void) { return m_lAmount; }
-  void SetAmount(long long llValue) { m_lAmount = llValue; }
-  long long GetVolume(void) { return m_lVolume; }
-  void SetVolume(long long llValue) { m_lVolume = llValue; }
+  INT64 GetAmount(void) { return m_lAmount; }
+  void SetAmount(INT64 llValue) { m_lAmount = llValue; }
+  INT64 GetVolume(void) { return m_lVolume; }
+  void SetVolume(INT64 llValue) { m_lVolume = llValue; }
 
-  long long GetAttackBuyAmount(void) { return m_lAttackBuyAmount; }
-  long long GetAttackSellAmount(void) { return m_lAttackSellAmount; }
-  long long GetOrdinaryBuyVolume(void) { return m_lOrdinaryBuyVolume; }
-  long long GetOrdinarySellVolume(void) { return m_lOrdinarySellVolume; }
-  long long GetAttackBuyVolume(void) { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  long long GetStrongBuyVolume(void) { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
-  long long GetCurrentAttackBuy(void) { return m_lCurrentAttackBuy; }
+  INT64 GetAttackBuyAmount(void) { return m_lAttackBuyAmount; }
+  INT64 GetAttackSellAmount(void) { return m_lAttackSellAmount; }
+  INT64 GetOrdinaryBuyVolume(void) { return m_lOrdinaryBuyVolume; }
+  INT64 GetOrdinarySellVolume(void) { return m_lOrdinarySellVolume; }
+  INT64 GetAttackBuyVolume(void) { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  INT64 GetStrongBuyVolume(void) { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
+  INT64 GetCurrentAttackBuy(void) { return m_lCurrentAttackBuy; }
   long GetCurrentStrongBuy(void) { return m_lCurrentStrongBuy; }
-  long long GetAttackSellVolume(void) { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
-  long long GetStrongSellVolume(void) { return m_lStrongSellVolume; }
+  INT64 GetAttackSellVolume(void) { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
+  INT64 GetStrongSellVolume(void) { return m_lStrongSellVolume; }
   long GetCurrentAttackSell(void) { return m_lCurrentAttackSell; }
   long GetCurrentStrongSell(void) { return m_lCurrentStrongSell; }
-  long long GetUnknownVolume(void) { return m_lUnknownVolume; }
+  INT64 GetUnknownVolume(void) { return m_lUnknownVolume; }
   long GetCurrentUnknown(void) { return m_lCurrentUnknown; }
-  long long GetCancelBuyVolume(void) { return m_lCancelBuyVolume; }
-  long long GetCancelSellVolume(void) { return m_lCancelSellVolume; }
+  INT64 GetCancelBuyVolume(void) { return m_lCancelBuyVolume; }
+  INT64 GetCancelSellVolume(void) { return m_lCancelSellVolume; }
 
   int  GetCurrentTransactionType(void) { return m_nCurrentTransactionType; }
-  long long GetCurrentTransationVolume(void) { return m_lCurrentGuadanTransactionVolume; }
+  INT64 GetCurrentTransationVolume(void) { return m_lCurrentGuadanTransactionVolume; }
 
   double GetRelativeStrong(void) { return m_dRelativeStrong; }
   long GetTransactionNumber(void) { return m_lTransactionNumber; }
@@ -89,12 +89,12 @@ public:
   long GetTransactionNumberBelow200000(void) { return m_lTransactionNumberBelow200000; }
   long GetTransactionNumberAbove200000(void) { return m_lTransactionNumberAbove200000; }
 
-  long long GetAttackBuyBelow50000(void) { return m_lAttackBuyBelow50000; }
-  long long GetAttackBuyBelow200000(void) { return m_lAttackBuyBelow200000; }
-  long long GetAttackBuyAbove200000(void) { return m_lAttackBuyAbove200000; }
-  long long GetAttackSellBelow50000(void) { return m_lAttackSellBelow50000; }
-  long long GetAttackSellBelow200000(void) { return m_lAttackSellBelow200000; }
-  long long GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
+  INT64 GetAttackBuyBelow50000(void) { return m_lAttackBuyBelow50000; }
+  INT64 GetAttackBuyBelow200000(void) { return m_lAttackBuyBelow200000; }
+  INT64 GetAttackBuyAbove200000(void) { return m_lAttackBuyAbove200000; }
+  INT64 GetAttackSellBelow50000(void) { return m_lAttackSellBelow50000; }
+  INT64 GetAttackSellBelow200000(void) { return m_lAttackSellBelow200000; }
+  INT64 GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
 
   double GetCurrentGuaDanTransactionPrice(void) { return m_dCurrentGuaDanTransactionPrice; }
   long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
@@ -167,8 +167,8 @@ protected:
   long		  m_lHigh;				// 以0.001元计的最高价
   long		  m_lLow;					// 以0.001元计的最低价
   long		  m_lNew;					// 以0.001元计的最新价
-  long long	m_lVolume;			// 以1股计的成交量
-  long long m_lAmount;			// 以元计的成交金额
+  INT64	m_lVolume;			// 以1股计的成交量
+  INT64 m_lAmount;			// 以元计的成交金额
 
   long		  m_lPBuy[5];			// 买盘价。单位：0.001元
   long			m_lVBuy[5];			// 买盘量。单位：股
@@ -176,9 +176,9 @@ protected:
   long			m_lVSell[5];		// 卖盘量。单位：股
 
     // 以下变量用于分析买入卖出具体情况
-  long long	m_lAttackBuyAmount;		// 向上买入金额
-  long long m_lAttackSellAmount;	// 向下卖出金额
-  long long	m_lCurrentVolume;
+  INT64	m_lAttackBuyAmount;		// 向上买入金额
+  INT64 m_lAttackSellAmount;	// 向下卖出金额
+  INT64	m_lCurrentVolume;
 
   double    m_dRelativeStrong; // 单位：1%
   long      m_lTransactionNumber; // 本交易日的成交笔数
@@ -187,41 +187,41 @@ protected:
   long      m_lTransactionNumberBelow200000; // 
   long      m_lTransactionNumberAbove200000; // 
 
-  long long m_lOrdinaryBuyVolume;
-  long long m_lOrdinarySellVolume;
-  long long m_lAttackBuyVolume;		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  long long	m_lStrongBuyVolume;		// 向上强力买入,成交价超过之前的卖二报价
+  INT64 m_lOrdinaryBuyVolume;
+  INT64 m_lOrdinarySellVolume;
+  INT64 m_lAttackBuyVolume;		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  INT64	m_lStrongBuyVolume;		// 向上强力买入,成交价超过之前的卖二报价
   long    	m_lCurrentAttackBuy;
   long    	m_lCurrentStrongBuy;
-  long long m_lAttackSellVolume;			// 向下卖出。成交价低于买一价但高于买二价。
-  long long m_lStrongSellVolume;		// 向下强力卖出,成交价低于之前的买二报价
+  INT64 m_lAttackSellVolume;			// 向下卖出。成交价低于买一价但高于买二价。
+  INT64 m_lStrongSellVolume;		// 向下强力卖出,成交价低于之前的买二报价
   long      m_lCurrentAttackSell;
   long      m_lCurrentStrongSell;
-  long long	m_lUnknownVolume;
+  INT64	m_lUnknownVolume;
   long      m_lCurrentUnknown;
-  long long	m_lCancelBuyVolume;		// 买单撤单量
-  long long m_lCancelSellVolume;			// 卖单撤单量
+  INT64	m_lCancelBuyVolume;		// 买单撤单量
+  INT64 m_lCancelSellVolume;			// 卖单撤单量
 
-  long long	m_lAttackBuyBelow50000;
-  long long	m_lAttackBuyBelow200000;
-  long long	m_lAttackBuyAbove200000;
-  long long	m_lAttackSellBelow50000;
-  long long	m_lAttackSellBelow200000;
-  long long	m_lAttackSellAbove200000;
+  INT64	m_lAttackBuyBelow50000;
+  INT64	m_lAttackBuyBelow200000;
+  INT64	m_lAttackBuyAbove200000;
+  INT64	m_lAttackSellBelow50000;
+  INT64	m_lAttackSellBelow200000;
+  INT64	m_lAttackSellAbove200000;
 
   //
-  long long	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
+  INT64	m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
 
   deque<COneDealPtr>    m_dequeDeal;        // 具体成交信息队列
 
   // 挂单的具体情况。
   map<long, long>       m_mapGuaDan;        // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CStockRTDataPtr       m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
-  long long             m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
+  INT64             m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double                m_dCurrentGuaDanTransactionPrice; // 当前成交价格
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
-  long long             m_lCurrentCanselSellVolume;
-  long long             m_lCurrentCanselBuyVolume;
+  INT64             m_lCurrentCanselSellVolume;
+  INT64             m_lCurrentCanselBuyVolume;
   
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 

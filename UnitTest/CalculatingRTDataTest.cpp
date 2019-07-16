@@ -9,10 +9,10 @@ using namespace std;
 namespace StockAnalysisTest {
 
   struct RTData { // 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
-    RTData(int count, long long llAmount, long lVolume,
+    RTData(int count, INT64 llAmount, long lVolume,
       long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
       long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
-      long long llAmountLast, long lVolumeLast,
+      INT64 llAmountLast, long lVolumeLast,
       long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
       long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
       iCount = count;

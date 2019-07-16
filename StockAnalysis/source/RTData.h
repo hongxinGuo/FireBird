@@ -55,8 +55,8 @@ public:
 	long  	  m_lLow;									// 今日最低。单位：元
   long      m_lBuy;                // 竞买价。单位：元
   long      m_lSell;               // 竞卖价。单位：元
-	long long	m_lVolume;							// 总成交量。单位：股
-	long long m_lAmount;							// 总成交金额。单位：元
+	INT64	m_lVolume;							// 总成交量。单位：股
+	INT64 m_lAmount;							// 总成交金额。单位：元
 	long  	  m_lPBuy[5];							// 买盘价1 -- 5。单位：元
 	long 		  m_lVBuy[5];							// 买盘量1 -- 5。单位：股
 	long  	  m_lPSell[5];						// 卖盘价1 -- 5。单位：元

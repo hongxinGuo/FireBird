@@ -397,7 +397,7 @@ bool CMainFrame::GetSinaStockRTData(void)
   char * pCurrentPos = nullptr;
   CStockRTDataPtr pRTData = nullptr;
   long i = 0;
-  long long iTotalNumber = 0;
+  INT64 iTotalNumber = 0;
 
   if (!gl_systemStatus.IsRTDataReadingInProcess()) {
     if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReceived()) { //网络通信一切顺利？

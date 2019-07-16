@@ -91,8 +91,8 @@ public:
   long          GetRelativeStrongEndDay(void) { return m_lRelativeStrongEndDay; }
   void          SetRelativeStrongEndDay(long lDay) { m_lRelativeStrongEndDay = lDay; }
 
-	long long	    GetTotalAttackBuyAmount( void );
-	long long     GetTotalAttackSellAmount( void );
+	INT64	    GetTotalAttackBuyAmount( void );
+	INT64     GetTotalAttackSellAmount( void );
 
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ClientThreadCalculatingRTDataProc调用。
@@ -135,8 +135,8 @@ protected :
 	bool												m_fMarketReady;					// 市场初始态已经设置好
 
   bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
-	long long										m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
-	long long										m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
+	INT64										m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
+	INT64										m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
 	
 private:
 

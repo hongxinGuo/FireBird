@@ -40,15 +40,15 @@ public:
   void      SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
   double    GetChangeHandRate(void) { return m_fChangeHandRate; }
   void      SetChangeHandRate(double dValue) { m_fChangeHandRate = dValue; }
-	long long GetVolume(void) { return m_lVolume; }
-	void		  SetVolume(long long lValue) { m_lVolume = lValue; }
-	long long	GetAmount(void) { return m_lAmount; }
-	void		  SetAmount(long long lValue) { m_lAmount = lValue; }
+	INT64 GetVolume(void) { return m_lVolume; }
+	void		  SetVolume(INT64 lValue) { m_lVolume = lValue; }
+	INT64	GetAmount(void) { return m_lAmount; }
+	void		  SetAmount(INT64 lValue) { m_lAmount = lValue; }
 
-	long long GetTotalValue(void) { return m_lTotalValue; }
-	void      SetTotalValue(long long lValue) { m_lTotalValue = lValue; }
-	long long GetCurrentValue(void) { return m_lCurrentValue; }
-	void      SetCurrentValue(long long lValue) { m_lCurrentValue = lValue; }
+	INT64 GetTotalValue(void) { return m_lTotalValue; }
+	void      SetTotalValue(INT64 lValue) { m_lTotalValue = lValue; }
+	INT64 GetCurrentValue(void) { return m_lCurrentValue; }
+	void      SetCurrentValue(INT64 lValue) { m_lCurrentValue = lValue; }
   double    GetRelativeStrong(void) { return m_dRelativeStrong; }
   void      SetRelativeStrong(double dValue) { m_dRelativeStrong = dValue; }
   long      GetTransactionNumber(void) { return m_lTransactionNumber; }
@@ -127,10 +127,10 @@ protected:
 	double			m_fUpDown;						// 涨跌额
   double      m_dUpDownRate;
 	double			m_fChangeHandRate;			// 换手率
-	long long	  m_lVolume;							// 成交量,单位:股
-	long long		m_lAmount;							// 成交金额,单位:元/万元（大盘）
-	long long	  m_lTotalValue;					// 总市值。单位：万元
-	long long   m_lCurrentValue;				// 流通市值。单位：万元
+	INT64	  m_lVolume;							// 成交量,单位:股
+	INT64		m_lAmount;							// 成交金额,单位:元/万元（大盘）
+	INT64	  m_lTotalValue;					// 总市值。单位：万元
+	INT64   m_lCurrentValue;				// 流通市值。单位：万元
 
 	long			  m_lOrdinaryBuyVolume;     // 向上买入。成交价接近或等于卖一，但不超过。单位：股
 	long			  m_lAttackBuyVolume;		    // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。

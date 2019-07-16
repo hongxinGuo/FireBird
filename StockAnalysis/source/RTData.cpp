@@ -156,7 +156,7 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   static char buffer3[200];
   static CString strHeader = _T("var hq_str_s");
   long lTemp = 0;
-  long long llTemp = 0;
+  INT64 llTemp = 0;
 
   m_fActive = true;
   strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
@@ -297,7 +297,7 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为long long。
+  llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为INT64。
   if (llTemp < 0) return false;
   if (llTemp > 0) m_lVolume = llTemp;
   // 读入成交金额

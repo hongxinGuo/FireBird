@@ -71,21 +71,21 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);
   RFX_Long(pFX, _T("[TransactionNumberBelow200000]"), m_TransactionNumberBelow200000);
   RFX_Long(pFX, _T("[TransactionNumberAbove200000]"), m_TransactionNumberAbove200000);
-  RFX_Long(pFX, _T("[AttackBuyVolume]"), m_AttackBuyVolume);	//攻击性买盘数量
-  RFX_Long(pFX, _T("[AttackSellVolume]"), m_AttackSellVolume);	//攻击性买盘数量
-  RFX_Long(pFX, _T("[StrongBuyVolume]"), m_StrongBuyVolume);	//强攻击性买盘数量
-  RFX_Long(pFX, _T("[StrongSellVolume]"), m_StrongSellVolume);	//强攻击性买盘数量
-  RFX_Long(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);	//强攻击性买盘数量
-  RFX_Long(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);	//强攻击性买盘数量
-  RFX_Long(pFX, _T("[UnknownVolume]"), m_UnknownVolume);
-  RFX_Long(pFX, _T("[CancelBuyVolume]"), m_CancelBuyVolume);
-  RFX_Long(pFX, _T("[CancelSellVolume]"), m_CancelSellVolume);
-  RFX_Long(pFX, _T("[AttackBuyBelow50000]"), m_AttackBuyBelow50000);
-  RFX_Long(pFX, _T("[AttackBuyBelow200000]"), m_AttackBuyBelow200000);
-  RFX_Long(pFX, _T("[AttackBuyAbove200000]"), m_AttackBuyAbove200000);
-  RFX_Long(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
-  RFX_Long(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
-  RFX_Long(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
+  RFX_Double(pFX, _T("[AttackBuyVolume]"), m_AttackBuyVolume);	//攻击性买盘数量
+  RFX_Double(pFX, _T("[AttackSellVolume]"), m_AttackSellVolume);	//攻击性买盘数量
+  RFX_Double(pFX, _T("[StrongBuyVolume]"), m_StrongBuyVolume);	//强攻击性买盘数量
+  RFX_Double(pFX, _T("[StrongSellVolume]"), m_StrongSellVolume);	//强攻击性买盘数量
+  RFX_Double(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);	//强攻击性买盘数量
+  RFX_Double(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);	//强攻击性买盘数量
+  RFX_Double(pFX, _T("[UnknownVolume]"), m_UnknownVolume);
+  RFX_Double(pFX, _T("[CancelBuyVolume]"), m_CancelBuyVolume);
+  RFX_Double(pFX, _T("[CancelSellVolume]"), m_CancelSellVolume);
+  RFX_Double(pFX, _T("[AttackBuyBelow50000]"), m_AttackBuyBelow50000);
+  RFX_Double(pFX, _T("[AttackBuyBelow200000]"), m_AttackBuyBelow200000);
+  RFX_Double(pFX, _T("[AttackBuyAbove200000]"), m_AttackBuyAbove200000);
+  RFX_Double(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
+  RFX_Double(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
+  RFX_Double(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
 
 }
 /////////////////////////////////////////////////////////////////////////////
