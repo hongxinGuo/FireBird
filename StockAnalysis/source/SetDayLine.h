@@ -45,21 +45,21 @@ public:
   long        m_TransactionNumberBelow50000;
   long        m_TransactionNumberBelow200000;
   long        m_TransactionNumberAbove200000;
-  long        m_OrdinaryBuyVolume; // 一般性买入股数。单位：股
-  long        m_OrdinarySellVolume; // 一般性卖出股数
-	long	      m_AttackBuyVolume;	//攻击性买盘数量
-	long	      m_AttackSellVolume;	//攻击性买盘数量
-	long	      m_StrongBuyVolume;	//强攻击性买盘数量
-	long	      m_StrongSellVolume;	//强攻击性买盘数量
-	long	      m_UnknownVolume;	//未知买卖盘数量
-	long	      m_CancelBuyVolume;	//买单撤单数量
-	long	      m_CancelSellVolume;	//卖单撤单数量
-	long	      m_AttackBuyBelow50000;
-	long	      m_AttackBuyBelow200000;
-	long	      m_AttackBuyAbove200000;
-	long	      m_AttackSellBelow50000;
-	long	      m_AttackSellBelow200000;
-	long	      m_AttackSellAbove200000;
+  double      m_OrdinaryBuyVolume; // 一般性买入股数。单位：股
+  double      m_OrdinarySellVolume; // 一般性卖出股数
+	double      m_AttackBuyVolume;	//攻击性买盘数量
+	double      m_AttackSellVolume;	//攻击性买盘数量
+	double      m_StrongBuyVolume;	//强攻击性买盘数量
+	double      m_StrongSellVolume;	//强攻击性买盘数量
+	double	    m_UnknownVolume;	//未知买卖盘数量
+	double	    m_CancelBuyVolume;	//买单撤单数量
+	double	    m_CancelSellVolume;	//卖单撤单数量
+	double	    m_AttackBuyBelow50000;
+	double	    m_AttackBuyBelow200000;
+	double      m_AttackBuyAbove200000;
+	double	    m_AttackSellBelow50000;
+	double      m_AttackSellBelow200000;
+	double      m_AttackSellAbove200000;
 
 // 重写
 	// 向导生成的虚函数重写
