@@ -503,13 +503,13 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPo
 	pDayLine->SetChangeHandRate(atof(buffer2));
 
 	if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-	pDayLine->SetVolume(atoi(buffer2)); // 读入的是股数
+	pDayLine->SetVolume(atoll(buffer2)); // 读入的是股数
 
 	if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-	pDayLine->SetAmount(atof(buffer2));
+	pDayLine->SetAmount(atoll(buffer2));
 
 	if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-	pDayLine->SetTotalValue(atof(buffer2)); // 总市值的单位为：元
+	pDayLine->SetTotalValue(atoll(buffer2)); // 总市值的单位为：元
 
 	i = 0;
 	while (*pCurrentPos != 0x0d) {
@@ -520,7 +520,7 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPo
 	pCurrentPos++;
 	iCount++;
 	buffer2[i] = 0x000;
-	pDayLine->SetCurrentValue(atof(buffer2)); // 流通市值的单位为：元。
+	pDayLine->SetCurrentValue(atoll(buffer2)); // 流通市值的单位为：元。
 	if(*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
 	iCount++;
 

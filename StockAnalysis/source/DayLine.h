@@ -43,12 +43,12 @@ public:
 	long long GetVolume(void) { return m_lVolume; }
 	void		  SetVolume(long long lValue) { m_lVolume = lValue; }
 	long long	GetAmount(void) { return m_lAmount; }
-	void		  SetAmount(long long dValue) { m_lAmount = dValue; }
+	void		  SetAmount(long long lValue) { m_lAmount = lValue; }
 
 	long long GetTotalValue(void) { return m_lTotalValue; }
-	void      SetTotalValue(long long dValue) { m_lTotalValue = dValue; }
+	void      SetTotalValue(long long lValue) { m_lTotalValue = lValue; }
 	long long GetCurrentValue(void) { return m_lCurrentValue; }
-	void      SetCurrentValue(long long dValue) { m_lCurrentValue = dValue; }
+	void      SetCurrentValue(long long lValue) { m_lCurrentValue = lValue; }
   double    GetRelativeStrong(void) { return m_dRelativeStrong; }
   void      SetRelativeStrong(double dValue) { m_dRelativeStrong = dValue; }
   long      GetTransactionNumber(void) { return m_lTransactionNumber; }

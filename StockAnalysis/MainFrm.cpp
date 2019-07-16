@@ -1109,6 +1109,17 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
       gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       break;
+    case 0x00d: // 回车
+      strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+      if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+        gl_ChinaStockMarket.SetShowStock(pStock);
+        //m_fNeedUpdateTitle = true;
+        Invalidate();
+      }
+      gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
+      m_lCurrentPos = 0;
+      gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+      break;
     default:
       break;
     }

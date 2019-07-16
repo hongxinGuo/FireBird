@@ -217,11 +217,11 @@ protected:
   // 挂单的具体情况。
   map<long, long>       m_mapGuaDan;        // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CStockRTDataPtr       m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
-  long                  m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
+  long long             m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double                m_dCurrentGuaDanTransactionPrice; // 当前成交价格
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
-  long                  m_lCurrentCanselSellVolume;
-  long                  m_lCurrentCanselBuyVolume;
+  long long             m_lCurrentCanselSellVolume;
+  long long             m_lCurrentCanselBuyVolume;
   
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 

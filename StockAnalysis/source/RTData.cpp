@@ -155,6 +155,8 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   char buffer2[7];
   static char buffer3[200];
   static CString strHeader = _T("var hq_str_s");
+  long lTemp = 0;
+  long long llTemp = 0;
 
   m_fActive = true;
   strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
@@ -246,150 +248,205 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lOpen = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lOpen = lTemp;
   // 读入前收盘价
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lLastClose = atol(buffer3);
-
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lLastClose = lTemp;
   // 读入当前价
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lNew = atol(buffer3);
-  // 读入最高价
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lNew = lTemp;
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lHigh = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lHigh = lTemp;
   // 读入最低价
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lLow = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lLow = lTemp;
   // 读入竞买价
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lBuy = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lBuy = lTemp;
   // 读入竞卖价
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lSell = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lSell = lTemp;
 
   // 读入成交股数。成交股数存储实际值
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVolume = atol(buffer3); // 读入的是股数，存储使用手（100股），否则长整型只有十亿，超过20亿会溢出。
+  llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为long long。
+  if (llTemp < 0) return false;
+  if (llTemp > 0) m_lVolume = llTemp;
   // 读入成交金额
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  double dTemp = atof(buffer3);
-  m_lAmount = (long long)dTemp;
+  llTemp = atoll(buffer3);
+  if (llTemp < 0) return false;
+  if (llTemp > 0) m_lAmount = lTemp;
   // 读入买一数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVBuy[0] = atol(buffer3);// 读入的是股数
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy[0] = lTemp;
   // 读入买一价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPBuy[0] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy[0] = lTemp;
   // 读入买二数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVBuy[1] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy[1] = lTemp;
   // 读入买二价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPBuy[1] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy[1] = lTemp;
   // 读入买三数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVBuy[2] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy[2] = lTemp;
   // 读入买三价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPBuy[2] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy[2] = lTemp;
   // 读入买四数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVBuy[3] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy[3] = lTemp;
   // 读入买四价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPBuy[3] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy[3] = lTemp;
   // 读入买五数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVBuy[4] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy[4] = lTemp;
   // 读入买五价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPBuy[4] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy[4] = lTemp;
   // 读入卖一数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVSell[0] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell[0] = lTemp;
   // 读入卖一价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPSell[0] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell[0] = lTemp;
   // 读入卖二数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVSell[1] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell[1] = lTemp;
   // 读入卖二价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPSell[1] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell[1] = lTemp;
   // 读入卖三数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVSell[2] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell[2] = lTemp;
   // 读入卖三价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPSell[2] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell[2] = lTemp;
   // 读入卖四数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVSell[3] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell[3] = lTemp;
   // 读入卖四价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPSell[3] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell[3] = lTemp;
   // 读入卖五数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lVSell[4] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell[4] = lTemp;
   // 读入卖五价格
   if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
     return false;
   }
-  m_lPSell[4] = atol(buffer3);
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell[4] = lTemp;
   // 读入成交日期和时间
   i = 0;
   while (*pCurrentPos != ',') {
