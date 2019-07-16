@@ -306,7 +306,7 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   }
   llTemp = atoll(buffer3);
   if (llTemp < 0) return false;
-  if (llTemp > 0) m_lAmount = lTemp;
+  if (llTemp > 0) m_lAmount = llTemp;
   // 读入买一数量
   if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
     return false;
