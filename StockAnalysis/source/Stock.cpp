@@ -116,9 +116,11 @@ void CStock::operator =(CStock &pStock) {
 void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
 {
   m_Time = pRTData->m_time;
+  m_lLastClose = pRTData->m_lLastClose;
   m_lNew = pRTData->m_lNew;
   m_lHigh = pRTData->m_lHigh;
   m_lLow = pRTData->m_lLow;
+  m_lOpen = pRTData->m_lOpen;
   m_lVolume = pRTData->m_lVolume;
   m_lAmount = pRTData->m_lAmount;
   for (int i = 0; i < 5; i++) {
