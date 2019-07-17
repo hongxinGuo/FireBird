@@ -23,7 +23,7 @@ public :
 	bool SetData( CStockRTData & data );
 	bool SetDataAll( CStockRTData & data );
 
-  // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到;结束
+  // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
   bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead);
 
 private:
