@@ -23,6 +23,7 @@ using namespace std;
 #include<memory>
 #include<deque>
 #include<map>
+#include<array>
 
 // 证券名称数据包
 class CStock : public CObject {
@@ -173,10 +174,10 @@ protected:
   long		  m_lNew;					// 以0.001元计的最新价
   INT64	    m_lVolume;			// 以1股计的成交量
   INT64     m_lAmount;			// 以元计的成交金额
-  long		  m_lPBuy[5];			// 买盘价。单位：0.001元
-  long			m_lVBuy[5];			// 买盘量。单位：股
-  long		  m_lPSell[5];		// 卖盘价。单位：0.001元
-  long			m_lVSell[5];		// 卖盘量。单位：股
+  array<long, 5> m_lPBuy;			// 买盘价。单位：0.001元
+  array<long, 5>			m_lVBuy;			// 买盘量。单位：股
+  array<long, 5>		  m_lPSell;		// 卖盘价。单位：0.001元
+  array<long, 5>			m_lVSell;		// 卖盘量。单位：股
 
     // 以下变量用于分析买入卖出具体情况
   INT64	    m_lAttackBuyAmount;		// 向上买入金额

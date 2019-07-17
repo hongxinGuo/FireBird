@@ -3,25 +3,7 @@
 #include "DayLine.h"
 
 CDayLine::CDayLine() : CObject() {
-		m_lDay = 0;												// 类型
-    m_wMarket = 0;
-		m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0;							// 收盘价
-		m_lVolume = 0;
-		m_lAmount = 0;
-    m_fUpDown = 0;
-    m_dUpDownRate = 0;
-    m_lCurrentValue = m_lTotalValue = 0;
-    m_fChangeHandRate = 0;
-    m_lTransactionNumber = 0; // 
-    m_lTransactionNumberBelow5000 = 0; // 
-    m_lTransactionNumberBelow50000 = 0; // 
-    m_lTransactionNumberBelow200000 = 0; // 
-    m_lTransactionNumberAbove200000 = 0; // 
-    m_lAttackBuyVolume = 	m_lStrongBuyVolume =	m_lAttackSellVolume =	m_lStrongSellVolume = 0;
-		m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = m_dRelativeStrong = 0;
-		m_lOrdinaryBuyVolume =	m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 =	m_lAttackBuyAbove200000 = 0;
-	  m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 =	m_lAttackSellAbove200000 = 0;
-		m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
+  Reset();
 }
 
 CDayLine::CDayLine( CDayLine& oneDl ) {
@@ -148,4 +130,29 @@ void CDayLine::SetData(CSetDayLine * pDayLine)
   m_lAttackSellBelow200000 = pDayLine->m_AttackSellBelow200000;
   m_lAttackSellAbove200000 = pDayLine->m_AttackSellAbove200000;
 
+}
+
+void CDayLine::Reset(void) {
+  m_lDay = 0;		// 类型
+  m_time = 0;
+  m_wMarket = 0;
+  m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0;							// 收盘价
+  m_lVolume = 0;
+  m_lAmount = 0;
+  m_fUpDown = 0;
+  m_dUpDownRate = 0;
+  m_lCurrentValue = m_lTotalValue = 0;
+  m_fChangeHandRate = 0;
+  
+  m_lTransactionNumber = 0; // 
+  m_lTransactionNumberBelow5000 = 0; // 
+  m_lTransactionNumberBelow50000 = 0; // 
+  m_lTransactionNumberBelow200000 = 0; // 
+  m_lTransactionNumberAbove200000 = 0; // 
+
+  m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
+  m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = m_dRelativeStrong = 0;
+  m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
+  m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
+  m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
 }

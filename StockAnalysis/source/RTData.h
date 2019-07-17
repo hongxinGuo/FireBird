@@ -13,6 +13,7 @@
 
 using namespace std;
 #include<memory>
+#include<array>
 
 class CStockRTData : public CObject {
 public :
@@ -57,10 +58,10 @@ public:
   long      m_lSell;               // 竞卖价。单位：元
 	INT64	    m_lVolume;							// 总成交量。单位：股
 	INT64     m_lAmount;							// 总成交金额。单位：元
-	long  	  m_lPBuy[5];							// 买盘价1 -- 5。单位：元
-	long 		  m_lVBuy[5];							// 买盘量1 -- 5。单位：股
-	long  	  m_lPSell[5];						// 卖盘价1 -- 5。单位：元
-	long  		m_lVSell[5];						// 卖盘量1 -- 5。单位: 股
+	array<long, 5>  	  m_lPBuy;							// 买盘价1 -- 5。单位：元
+  array<long, 5> 		  m_lVBuy;							// 买盘量1 -- 5。单位：股
+  array<long, 5>  	  m_lPSell;						// 卖盘价1 -- 5。单位：元
+  array<long, 5>  		m_lVSell;						// 卖盘量1 -- 5。单位: 股
 
 // 非存储数据
   bool      m_fActive;              // 本股票是否存在实时数据
