@@ -598,9 +598,7 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
     psetRTData->m_PSell5 = (double)pRTData->m_lPSell[4] / 1000;
     psetRTData->m_VSell5 = pRTData->m_lVSell[4];
     psetRTData->Update();
-
   }
-
   return true;
 }
 

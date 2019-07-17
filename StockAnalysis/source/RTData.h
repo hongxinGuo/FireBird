@@ -26,7 +26,7 @@ public :
   // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
   bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead);
 
-private:
+public:
   bool ReadOneValue(char *& pCurrentPos, char * buffer, long & lCounter); // 从file中读入一个浮点数据，最后字符为‘，’。
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
   bool ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter); 
