@@ -76,11 +76,13 @@ static UINT indicators[] =
 
 // CMainFrame 构造/析构
 
-CMainFrame::CMainFrame() noexcept
+CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
   Reset();
   
+  m_uIdTimer = 0;
+
   // 启动数据处理线程
   AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
   // 启动计算实时数据线程
@@ -112,7 +114,6 @@ void CMainFrame::Reset(void)
   m_fGetDayLineData = true;
   m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
-  m_uIdTimer = 0;
   m_lCurrentPos = 0;
 
   CSetStockCode setStockCode;

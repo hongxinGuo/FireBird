@@ -21,7 +21,7 @@ class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
 public:
-	CMainFrame() noexcept;
+	CMainFrame();
 
   void Reset(void);
 
