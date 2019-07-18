@@ -80,6 +80,12 @@ CMainFrame::CMainFrame() noexcept
 {
 	// TODO: 在此添加成员初始化代码
   Reset();
+  
+  // 启动数据处理线程
+  AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
+  // 启动计算实时数据线程
+  AfxBeginThread(ClientThreadCalculatingRTDataProc, GetSafeHwnd());
+
 }
 
 void CMainFrame::Reset(void)
@@ -167,11 +173,6 @@ void CMainFrame::Reset(void)
     }
   }
   setOption.Close();
-
-  // 启动数据处理线程
-  AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
-  // 启动计算实时数据线程
-  AfxBeginThread(ClientThreadCalculatingRTDataProc, GetSafeHwnd());
 
 }
 
