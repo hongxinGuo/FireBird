@@ -18,44 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 CStock::CStock() : CObject() {
 	
-  m_wMarket = 0;
-  m_strStockCode = "";
-	m_strStockName = "";
-	m_iStockCode = 0;
-	m_fActive = false;
-	m_lLastClose = m_lOpen = 0;
-  m_lHigh = m_lLow = m_lNew = 0;
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy[i] = m_lPSell[i] = 0;
-    m_lVBuy[i] = m_lVSell[i] = 0;
-  }
-  m_lVolume = 0;
-  m_lAmount = 0;
-   m_dRelativeStrong = 0;
-  m_nHand = 100;
-  m_lTransactionNumber = 0;
-  m_lTransactionNumberBelow5000 = 0;
-  m_lTransactionNumberBelow50000 = 0;
-  m_lTransactionNumberBelow200000 = 0;
-  m_lTransactionNumberAbove200000 = 0;
   Reset();
 
-  m_fDayLineLoaded = false;
-  m_fDayLineNeededSaving = false;
-
-  m_fChoiced = false;
-  m_fMinLineUpdated = false;
-  m_fDayKLineUpdated = false;
-
-  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
-
-  m_lAttackBuyAbove200000 = m_lAttackBuyBelow200000 = m_lAttackBuyBelow50000 = 0;
-  m_lAttackSellAbove200000 = m_lAttackSellBelow200000 = m_lAttackSellBelow50000 = 0;
-  m_lCancelBuyVolume = m_lCancelSellVolume = 0;
-  m_lStrongBuyVolume = m_lStrongSellVolume = 0;
-  m_lOrdinaryBuyVolume = m_lOrdinarySellVolume = 0;
-  m_lUnknownVolume = 0;
-  m_pLastRTData = nullptr;
 }
 
 CStock::~CStock(void) {
@@ -63,14 +27,24 @@ CStock::~CStock(void) {
 }
 
 void CStock::Reset(void) {
-  m_lHigh = m_lNew = m_lLow = 0;
+  m_wMarket = 0;
+  m_strStockCode = "";
+  m_strStockName = "";
+  m_iStockCode = 0;
+  m_fActive = false;
+  m_lLastClose = m_lOpen = 0;
+  m_lHigh = m_lLow = m_lNew = 0;
+  for (int i = 0; i < 5; i++) {
+    m_lPBuy.at(i) = m_lPSell.at(i) = 0;
+    m_lVBuy.at(i) = m_lVSell.at(i) = 0;
+  }
   m_lVolume = 0;
   m_lAmount = 0;
+  m_dRelativeStrong = 0;
+  m_nHand = 100;
 
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy[i] = m_lPSell[i] = 0;
-    m_lVBuy[i] = m_lVSell[i] = 0;
-  }
+  m_lHigh = m_lNew = m_lLow = 0;
+
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;
@@ -98,6 +72,17 @@ void CStock::Reset(void) {
   m_lFirstDataVolume = 0;
 
   m_dCurrentGuaDanTransactionPrice = 0;
+
+  m_fDayLineLoaded = false;
+  m_fDayLineNeededSaving = false;
+
+  m_fChoiced = false;
+  m_fMinLineUpdated = false;
+  m_fDayKLineUpdated = false;
+
+  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
+
+  m_pLastRTData = nullptr;
 }
 
 void CStock::operator =(CStock &pStock) {
@@ -124,10 +109,10 @@ void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
   m_lVolume = pRTData->m_lVolume;
   m_lAmount = pRTData->m_lAmount;
   for (int i = 0; i < 5; i++) {
-    m_lPBuy[i] = pRTData->m_lPBuy[i];
-    m_lPSell[i] = pRTData->m_lPSell[i];
-    m_lVBuy[i] = pRTData->m_lVBuy[i];
-    m_lVSell[i] = pRTData->m_lVSell[i];
+    m_lPBuy.at(i) = pRTData->m_lPBuy.at(i);
+    m_lPSell.at(i) = pRTData->m_lPSell.at(i);
+    m_lVBuy.at(i) = pRTData->m_lVBuy.at(i);
+    m_lVSell.at(i) = pRTData->m_lVSell.at(i);
   }
 }
 
@@ -148,7 +133,7 @@ bool CStock::LoadDayLine(CSetDayLine * psetDayLine)
 bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
 
-  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTStockData(); // 采用同步机制获取数据
@@ -211,15 +196,15 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
       else {
         m_lTransactionNumberAbove200000++;
       }
-      m_dCurrentGuaDanTransactionPrice = ((double)(pRTData->m_lAmount - m_pLastRTData->m_lAmount)) / m_lCurrentGuadanTransactionVolume;
+      m_dCurrentGuaDanTransactionPrice = (static_cast<double>(pRTData->m_lAmount - m_pLastRTData->m_lAmount)) / m_lCurrentGuadanTransactionVolume;
       lCurrentGuaDanTransactionPrice = m_dCurrentGuaDanTransactionPrice * 1000; // 生成比较用的价格（放大一千倍后采用长整型）
-      if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->m_lPBuy[0]) { // 高于前买盘1
-        if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->m_lPSell[0]) { // 低于前卖盘1
-          if ((m_pLastRTData->m_lPSell[0] - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
+      if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->m_lPBuy.at(0)) { // 高于前买盘1
+        if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->m_lPSell.at(0)) { // 低于前卖盘1
+          if ((m_pLastRTData->m_lPSell.at(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
             m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
             m_nCurrentTransactionType = __ORDINARY_BUY__;
           }
-          else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->m_lPBuy[0]) <= 2) { // 一般性卖出
+          else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->m_lPBuy.at(0)) <= 2) { // 一般性卖出
             m_nCurrentTransactionType = __ORDINARY_SELL__;
             m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
           }
@@ -228,7 +213,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
             m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
           }
         }
-        else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->m_lPSell[1]) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
+        else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->m_lPSell.at(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
           m_nCurrentTransactionType = __ATTACK_BUY__;
           m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
           if (m_lCurrentGuadanTransactionVolume < 50000) {
@@ -243,7 +228,6 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
         }
         else { // 高于卖盘二。强力买入。StrongBuy。
           m_nCurrentTransactionType = __STRONG_BUY__;
-          m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
           m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
           if (m_lCurrentGuadanTransactionVolume < 50000) {
             m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
@@ -256,7 +240,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
           }
         }
       } // 高于前买一
-      else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy[1]) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
+      else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->m_lPBuy.at(1)) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
         m_nCurrentTransactionType = __ATTACK_SELL__;
         m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
         if (m_lCurrentGuadanTransactionVolume < 50000) {
@@ -271,7 +255,6 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
       }
       else { // 低于买盘二。强力卖出。StrongSell
         m_nCurrentTransactionType = __STRONG_SELL__;
-        m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
         m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
         if (m_lCurrentGuadanTransactionVolume < 50000) {
           m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
@@ -285,7 +268,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
       }
       ASSERT(m_Time >= pRTData->m_time);
       ASSERT(pRTData->m_lVolume == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-        + m_lAttackBuyVolume + m_lAttackSellVolume + m_lUnknownVolume);
+        + m_lAttackBuyVolume + m_lAttackSellVolume + + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
     }
 
     // 下面开始分析挂单情况
@@ -300,8 +283,8 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
     m_lUnknownVolume = m_pLastRTData->m_lVolume; // 第一次挂单量无法判断买卖状态
     // 设置第一次的挂单映射。
     for (int j = 0; j < 5; j++) {
-      SetGuaDan(pRTData->m_lPBuy[j], pRTData->m_lVBuy[j]);
-      SetGuaDan(pRTData->m_lPSell[j], pRTData->m_lVSell[j]);
+      SetGuaDan(pRTData->m_lPBuy.at(j), pRTData->m_lVBuy.at(j));
+      SetGuaDan(pRTData->m_lPSell.at(j), pRTData->m_lVSell.at(j));
     }
   }
   return true;
@@ -316,157 +299,157 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
-  bool fNeedCheck[10]; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
+  array<bool, 10> fNeedCheck; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
   m_lCurrentCanselSellVolume = 0;
   m_lCurrentCanselBuyVolume = 0;
 
-  for (int i = 0; i < 10; i++) fNeedCheck[i] = true; // 预设为都要计算。
+  for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
 
   // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
   switch (nTRanscationType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
     break;
   case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
-    fNeedCheck[3] = false;
-    fNeedCheck[4] = fNeedCheck[5] = false;
+    fNeedCheck.at(3) = false;
+    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
     break;
   case __STRONG_BUY__: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
-    if (lCurrentTransactionPrice < pLastRTData->m_lPSell[2]) { // 卖单4和卖单5尚存
-      fNeedCheck[2] = false;
+    if (lCurrentTransactionPrice < pLastRTData->m_lPSell.at(2)) { // 卖单4和卖单5尚存
+      fNeedCheck.at(2) = false;
     }
-    else if (lCurrentTransactionPrice < pLastRTData->m_lPSell[3]) { // 卖单5尚存
-      fNeedCheck[1] = false;
-      fNeedCheck[2] = false;
+    else if (lCurrentTransactionPrice < pLastRTData->m_lPSell.at(3)) { // 卖单5尚存
+      fNeedCheck.at(1) = false;
+      fNeedCheck.at(2) = false;
     }
     else { // 所有的卖单都受影响
-      fNeedCheck[0] = false;
-      fNeedCheck[2] = false;
-      fNeedCheck[1] = false;
+      fNeedCheck.at(0) = false;
+      fNeedCheck.at(2) = false;
+      fNeedCheck.at(1) = false;
     }
-    fNeedCheck[3] = false;
-    fNeedCheck[4] = fNeedCheck[5] = false;
+    fNeedCheck.at(3) = false;
+    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
     break;
   case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
   case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
   case __ORDINARY_SELL__: // 买单一被影响。计算其他八个挂单。
-    fNeedCheck[4] = fNeedCheck[5] = false;
+    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
     break;
   case __ATTACK_SELL__: // 买单一消失，买单二被影响。计算其他七个挂单。
-    fNeedCheck[4] = fNeedCheck[5] = fNeedCheck[6] = false;
+    fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
     break;
   case __STRONG_SELL__: // 买单一和买单二消失，其他买单需要计算。
-    if (pLastRTData->m_lPBuy[3] > lCurrentTransactionPrice) { // 所有买单都受影响
-      fNeedCheck[7] = false;
-      fNeedCheck[8] = false;
-      fNeedCheck[9] = false;
+    if (pLastRTData->m_lPBuy.at(3) > lCurrentTransactionPrice) { // 所有买单都受影响
+      fNeedCheck.at(7) = false;
+      fNeedCheck.at(8) = false;
+      fNeedCheck.at(9) = false;
     }
-    else if (pLastRTData->m_lPBuy[2] > lCurrentTransactionPrice) { // 买单5尚存
-      fNeedCheck[7] = false;
-      fNeedCheck[8] = false;
+    else if (pLastRTData->m_lPBuy.at(2) > lCurrentTransactionPrice) { // 买单5尚存
+      fNeedCheck.at(7) = false;
+      fNeedCheck.at(8) = false;
     }
     else { // 买单4和买单5没变化
-      fNeedCheck[7] = false;
+      fNeedCheck.at(7) = false;
     }
-    fNeedCheck[6] = false;
-    fNeedCheck[4] = fNeedCheck[5] = false;
+    fNeedCheck.at(6) = false;
+    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
     break;
   default:
     ASSERT(0); // 不可能执行到此分支。
     break;
   }
 
-  if ((pCurrentRTData->m_lPSell[4] - pCurrentRTData->m_lPBuy[4]) > 90) { // 十个价位之间有空位
+  if ((pCurrentRTData->m_lPSell.at(4) - pCurrentRTData->m_lPBuy.at(4)) > 90) { // 十个价位之间有空位
     // 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
     // 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
-    for (int i2 = pCurrentRTData->m_lPBuy[4]; i2 <= pCurrentRTData->m_lPSell[4]; i2 += 10) {
-      m_mapGuaDan[i2] = 0;
+    for (int i2 = pCurrentRTData->m_lPBuy.at(4); i2 <= pCurrentRTData->m_lPSell.at(4); i2 += 10) {
+      m_mapGuaDan[i2] = 0; // 此处需要设置值，有可能之前为空，故而不能使用at操作符，而是用[]下标操作。
     }
   }
   for (int i = 0; i < 5; i++) { // 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
-    SetGuaDan(pCurrentRTData->m_lPSell[i], pCurrentRTData->m_lVSell[i]);
-    SetGuaDan(pCurrentRTData->m_lPBuy[i], pCurrentRTData->m_lVBuy[i]);
+    SetGuaDan(pCurrentRTData->m_lPSell.at(i), pCurrentRTData->m_lVSell.at(i));
+    SetGuaDan(pCurrentRTData->m_lPBuy.at(i), pCurrentRTData->m_lVBuy.at(i));
   }
 
   // 检查这十个挂单价位上股数的变化情况.将目前挂单状态与之前的十个价位（pLastRTData包含的）相比，查看变化
   for (int i = 0; i < 10; i++) {
     switch (i) {
     case 0: // 卖单五
-      if (fNeedCheck[0]) {
-        if (GetGuaDan(pLastRTData->m_lPSell[4]) < pLastRTData->m_lVSell[4]) { // 撤单了的话
-          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
-          m_lCancelSellVolume += pLastRTData->m_lVSell[4] - GetGuaDan(pLastRTData->m_lPSell[4]);
+      if (fNeedCheck.at(0)) {
+        if (GetGuaDan(pLastRTData->m_lPSell.at(4)) < pLastRTData->m_lVSell.at(4)) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell.at(4) - GetGuaDan(pLastRTData->m_lPSell.at(4));
+          m_lCancelSellVolume += pLastRTData->m_lVSell.at(4) - GetGuaDan(pLastRTData->m_lPSell.at(4));
         }
       }
       break;
     case 1: // 卖单四
-      if (fNeedCheck[1]) {
-        if (GetGuaDan(pLastRTData->m_lPSell[3]) < pLastRTData->m_lVSell[3]) { // 撤单了的话
-          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
-          m_lCancelSellVolume += pLastRTData->m_lVSell[3] - GetGuaDan(pLastRTData->m_lPSell[3]);
+      if (fNeedCheck.at(1)) {
+        if (GetGuaDan(pLastRTData->m_lPSell.at(3)) < pLastRTData->m_lVSell.at(3)) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell.at(3) - GetGuaDan(pLastRTData->m_lPSell.at(3));
+          m_lCancelSellVolume += pLastRTData->m_lVSell.at(3) - GetGuaDan(pLastRTData->m_lPSell.at(3));
         }
       }
       break;
     case 2: // 卖单三
-      if (fNeedCheck[2]) {
-        if (GetGuaDan(pLastRTData->m_lPSell[2]) < pLastRTData->m_lVSell[2]) { // 撤单了的话
-          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
-          m_lCancelSellVolume += pLastRTData->m_lVSell[2] - GetGuaDan(pLastRTData->m_lPSell[2]);
+      if (fNeedCheck.at(2)) {
+        if (GetGuaDan(pLastRTData->m_lPSell.at(2)) < pLastRTData->m_lVSell.at(2)) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell.at(2) - GetGuaDan(pLastRTData->m_lPSell.at(2));
+          m_lCancelSellVolume += pLastRTData->m_lVSell.at(2) - GetGuaDan(pLastRTData->m_lPSell.at(2));
         }
       }
       break;
     case 3: // 卖单二
-      if (fNeedCheck[3]) {
-        if (GetGuaDan(pLastRTData->m_lPSell[1]) < pLastRTData->m_lVSell[1]) { // 撤单了的话
-          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
-          m_lCancelSellVolume += pLastRTData->m_lVSell[1] - GetGuaDan(pLastRTData->m_lPSell[1]);
+      if (fNeedCheck.at(3)) {
+        if (GetGuaDan(pLastRTData->m_lPSell.at(1)) < pLastRTData->m_lVSell.at(1)) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell.at(1) - GetGuaDan(pLastRTData->m_lPSell.at(1));
+          m_lCancelSellVolume += pLastRTData->m_lVSell.at(1) - GetGuaDan(pLastRTData->m_lPSell.at(1));
         }
       }
       break;
     case 4: // 卖单一
-      if(fNeedCheck[4]) {
-        if (GetGuaDan(pLastRTData->m_lPSell[0]) < pLastRTData->m_lVSell[0]) { // 撤单了的话
-          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
-          m_lCancelSellVolume += pLastRTData->m_lVSell[0] - GetGuaDan(pLastRTData->m_lPSell[0]);
+      if(fNeedCheck.at(4)) {
+        if (GetGuaDan(pLastRTData->m_lPSell.at(0)) < pLastRTData->m_lVSell.at(0)) { // 撤单了的话
+          m_lCurrentCanselSellVolume += pLastRTData->m_lVSell.at(0) - GetGuaDan(pLastRTData->m_lPSell.at(0));
+          m_lCancelSellVolume += pLastRTData->m_lVSell.at(0) - GetGuaDan(pLastRTData->m_lPSell.at(0));
         }
       }
       break;
     case 5:   // 以下为买单变化情况，买单一
-      if (fNeedCheck[5]) {
-        if (GetGuaDan(pLastRTData->m_lPBuy[0]) < pLastRTData->m_lVBuy[0]) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
-          m_lCancelBuyVolume += pLastRTData->m_lVBuy[0] - GetGuaDan(pLastRTData->m_lPBuy[0]);
+      if (fNeedCheck.at(5)) {
+        if (GetGuaDan(pLastRTData->m_lPBuy.at(0)) < pLastRTData->m_lVBuy.at(0)) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy.at(0) - GetGuaDan(pLastRTData->m_lPBuy.at(0));
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy.at(0) - GetGuaDan(pLastRTData->m_lPBuy.at(0));
         }
       }
       break;
     case 6: // 买单二
-      if (fNeedCheck[6]) {
-        if (GetGuaDan(pLastRTData->m_lPBuy[1]) < pLastRTData->m_lVBuy[1]) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
-          m_lCancelBuyVolume += pLastRTData->m_lVBuy[1] - GetGuaDan(pLastRTData->m_lPBuy[1]);
+      if (fNeedCheck.at(6)) {
+        if (GetGuaDan(pLastRTData->m_lPBuy.at(1)) < pLastRTData->m_lVBuy.at(1)) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy.at(1) - GetGuaDan(pLastRTData->m_lPBuy.at(1));
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy.at(1) - GetGuaDan(pLastRTData->m_lPBuy.at(1));
         }
       }
       break;
     case 7: // 买单三
-      if (fNeedCheck[7]) {
-        if (GetGuaDan(pLastRTData->m_lPBuy[2]) < pLastRTData->m_lVBuy[2]) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
-          m_lCancelBuyVolume += pLastRTData->m_lVBuy[2] - GetGuaDan(pLastRTData->m_lPBuy[2]);
+      if (fNeedCheck.at(7)) {
+        if (GetGuaDan(pLastRTData->m_lPBuy.at(2)) < pLastRTData->m_lVBuy.at(2)) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy.at(2) - GetGuaDan(pLastRTData->m_lPBuy.at(2));
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy.at(2) - GetGuaDan(pLastRTData->m_lPBuy.at(2));
         }
       }
       break;
     case 8: // 买单四
-      if (fNeedCheck[8]) {
-        if (GetGuaDan(pLastRTData->m_lPBuy[3]) < pLastRTData->m_lVBuy[3]) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
-          m_lCancelBuyVolume += pLastRTData->m_lVBuy[3] - GetGuaDan(pLastRTData->m_lPBuy[3]);
+      if (fNeedCheck.at(8)) {
+        if (GetGuaDan(pLastRTData->m_lPBuy.at(3)) < pLastRTData->m_lVBuy.at(3)) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy.at(3) - GetGuaDan(pLastRTData->m_lPBuy.at(3));
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy.at(3) - GetGuaDan(pLastRTData->m_lPBuy.at(3));
         }
       }
       break;
     case 9: // 买单五
-      if (fNeedCheck[9]) {
-        if (GetGuaDan(pLastRTData->m_lPBuy[4]) < pLastRTData->m_lVBuy[4]) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
-          m_lCancelBuyVolume += pLastRTData->m_lVBuy[4] - GetGuaDan(pLastRTData->m_lPBuy[4]);
+      if (fNeedCheck.at(9)) {
+        if (GetGuaDan(pLastRTData->m_lPBuy.at(4)) < pLastRTData->m_lVBuy.at(4)) { // 撤单了的话
+          m_lCurrentCanselBuyVolume += pLastRTData->m_lVBuy.at(4) - GetGuaDan(pLastRTData->m_lPBuy.at(4));
+          m_lCancelBuyVolume += pLastRTData->m_lVBuy.at(4) - GetGuaDan(pLastRTData->m_lPBuy.at(4));
         }
       }
       break;
@@ -482,10 +465,10 @@ void CStock::ReportGuaDanTransaction(void)
 {
   char buffer[100];
   CString str, str2, strTime;
-  CTime ctime(m_pLastRTData->m_time);
+  const CTime ctime(m_pLastRTData->m_time);
   sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
-  sprintf_s(buffer, " %s %d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
+  sprintf_s(buffer, " %s %I64d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
     m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
   str = strTime;
   str += buffer;
@@ -493,31 +476,31 @@ void CStock::ReportGuaDanTransaction(void)
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lStrongBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lStrongBuyVolume);
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lStrongSellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lStrongSellVolume);
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lAttackBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lAttackBuyVolume);
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lAttackSellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lAttackSellVolume);
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lOrdinaryBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lOrdinaryBuyVolume);
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lUnknownVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lUnknownVolume);
     break;
   default:
     break;
@@ -539,15 +522,15 @@ void CStock::ReportGuaDan(void)
   CString str1;
   char buffer[30];
   if (m_lCurrentCanselSellVolume > 0) {
-    sprintf_s(buffer, "当前取消卖单量：%d", m_lCurrentCanselSellVolume);
+    sprintf_s(buffer, "当前取消卖单量：%I64d", m_lCurrentCanselSellVolume);
     str1 = buffer;
-    sprintf_s(buffer, "  总取消卖单量：%d", m_lCancelSellVolume);
+    sprintf_s(buffer, "  总取消卖单量：%I64d", m_lCancelSellVolume);
     str1 += buffer;
     gl_systemMessage.PushCancelSellMessage(str1);   // 采用同步机制传递消息
 
   }
   if (m_lCurrentCanselBuyVolume > 0) {
-    sprintf_s(buffer, "当前取消买单量：%d", m_lCurrentCanselBuyVolume);
+    sprintf_s(buffer, "当前取消买单量：%I64d", m_lCurrentCanselBuyVolume);
     str1 = buffer;
     sprintf_s(buffer, "  总取消买单量：%I64d", m_lCancelBuyVolume);
     str1 += buffer;
@@ -573,30 +556,30 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
     psetRTData->m_Volume = pRTData->m_lVolume;
     psetRTData->m_Amount = (double)pRTData->m_lAmount;
     psetRTData->m_Stroke = 0;
-    psetRTData->m_PBuy1 = (double)pRTData->m_lPBuy[0] / 1000;
-    psetRTData->m_VBuy1 = pRTData->m_lVBuy[0];
-    psetRTData->m_PSell1 = (double)pRTData->m_lPSell[0] / 1000;
-    psetRTData->m_VSell1 = pRTData->m_lVSell[0];
+    psetRTData->m_PBuy1 = (double)pRTData->m_lPBuy.at(0) / 1000;
+    psetRTData->m_VBuy1 = pRTData->m_lVBuy.at(0);
+    psetRTData->m_PSell1 = (double)pRTData->m_lPSell.at(0) / 1000;
+    psetRTData->m_VSell1 = pRTData->m_lVSell.at(0);
 
-    psetRTData->m_PBuy2 = (double)pRTData->m_lPBuy[1] / 1000;
-    psetRTData->m_VBuy2 = pRTData->m_lVBuy[1];
-    psetRTData->m_PSell2 = (double)pRTData->m_lPSell[1] / 1000;
-    psetRTData->m_VSell2 = pRTData->m_lVSell[1];
+    psetRTData->m_PBuy2 = (double)pRTData->m_lPBuy.at(1) / 1000;
+    psetRTData->m_VBuy2 = pRTData->m_lVBuy.at(1);
+    psetRTData->m_PSell2 = (double)pRTData->m_lPSell.at(1) / 1000;
+    psetRTData->m_VSell2 = pRTData->m_lVSell.at(1);
 
-    psetRTData->m_PBuy3 = (double)pRTData->m_lPBuy[2] / 1000;
-    psetRTData->m_VBuy3 = pRTData->m_lVBuy[2];
-    psetRTData->m_PSell3 = (double)pRTData->m_lPSell[2] / 1000;
-    psetRTData->m_VSell3 = pRTData->m_lVSell[2];
+    psetRTData->m_PBuy3 = (double)pRTData->m_lPBuy.at(2) / 1000;
+    psetRTData->m_VBuy3 = pRTData->m_lVBuy.at(2);
+    psetRTData->m_PSell3 = (double)pRTData->m_lPSell.at(2) / 1000;
+    psetRTData->m_VSell3 = pRTData->m_lVSell.at(2);
 
-    psetRTData->m_PBuy4 = (double)pRTData->m_lPBuy[3] / 1000;
-    psetRTData->m_VBuy4 = pRTData->m_lVBuy[3];
-    psetRTData->m_PSell4 = (double)pRTData->m_lPSell[3] / 1000;
-    psetRTData->m_VSell4 = pRTData->m_lVSell[3];
+    psetRTData->m_PBuy4 = (double)pRTData->m_lPBuy.at(3) / 1000;
+    psetRTData->m_VBuy4 = pRTData->m_lVBuy.at(3);
+    psetRTData->m_PSell4 = (double)pRTData->m_lPSell.at(3) / 1000;
+    psetRTData->m_VSell4 = pRTData->m_lVSell.at(3);
 
-    psetRTData->m_PBuy5 = (double)pRTData->m_lPBuy[4] / 1000;
-    psetRTData->m_VBuy5 = pRTData->m_lVBuy[4];
-    psetRTData->m_PSell5 = (double)pRTData->m_lPSell[4] / 1000;
-    psetRTData->m_VSell5 = pRTData->m_lVSell[4];
+    psetRTData->m_PBuy5 = (double)pRTData->m_lPBuy.at(4) / 1000;
+    psetRTData->m_VBuy5 = pRTData->m_lVBuy.at(4);
+    psetRTData->m_PSell5 = (double)pRTData->m_lPSell.at(4) / 1000;
+    psetRTData->m_VSell5 = pRTData->m_lVSell.at(4);
     psetRTData->Update();
 
   }

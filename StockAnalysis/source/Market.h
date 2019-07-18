@@ -18,6 +18,7 @@ public:
 	// 只能有一个实例
 	CMarket(void);
 	~CMarket(void);
+  void Reset(void);
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
@@ -44,28 +45,28 @@ public:
   bool            GetStockIDPtr(CString strStockCode, StockIDPtr & pStockIDPtr);
 
 	// 得到当前显示股票
-	CStockPtr       GetShowStock( void ) { return m_pCurrentStock; }
+	CStockPtr       GetShowStock( void ) noexcept { return m_pCurrentStock; }
   void					  SetShowStock(CStockPtr pStock);
-  bool            IsCurrentStockChanged(void) {
+  bool            IsCurrentStockChanged(void) noexcept {
     if (m_fCurrentStockChanged) { m_fCurrentStockChanged = false; return true; }
     else return false;
   }
 
 	void					SetShowStock( CString strStockCode );
 
-	long					GetTotalStock( void ) { return m_lTotalActiveStock; }
+	long					GetTotalStock( void ) noexcept { return m_lTotalActiveStock; }
 
 	long					GetMinLineOffset( CStockID sID, time_t Time );
 
-	bool					MarketReady( void ) { return m_fMarketReady; }
-  void          SetMarketReadyFlag(bool fFlag) { m_fMarketReady = fFlag; }
+	bool					MarketReady( void ) noexcept { return m_fMarketReady; }
+  void          SetMarketReadyFlag(bool fFlag) noexcept { m_fMarketReady = fFlag; }
 
 	bool					SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCode,
                             CStockPtr pStock, vector<CDayLinePtr> & vectorDayLine, bool fReversed = true );
   bool          SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine);
 
-  bool          IsTodayStockCompiled(void) { return m_fTodayStockCompiled; }
-  void          SetTodayStockCompiledFlag(bool fFlag) { m_fTodayStockCompiled = fFlag; }
+  bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
+  void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
 
   // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool          SaveRTData(void);
@@ -80,16 +81,16 @@ public:
 
   bool          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
 
-	bool					IsLoadSelectedStock( void ) { return m_fLoadedSelectedStock; }
-	void					SetLoadSelectedStock( bool fLoad ) { m_fLoadedSelectedStock = fLoad; }
+	bool					IsLoadSelectedStock( void ) noexcept { return m_fLoadedSelectedStock; }
+	void					SetLoadSelectedStock( bool fLoad ) noexcept { m_fLoadedSelectedStock = fLoad; }
 
   CString       GetDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
   void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
 
-  long          GetRelativeStrongStartDay(void) { return m_lRelativeStrongStartDay; }
-  void          SetRelativeStrongStartDay(long lDay) { m_lRelativeStrongStartDay = lDay; }
-  long          GetRelativeStrongEndDay(void) { return m_lRelativeStrongEndDay; }
-  void          SetRelativeStrongEndDay(long lDay) { m_lRelativeStrongEndDay = lDay; }
+  long          GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
+  void          SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
+  long          GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
+  void          SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
 
 	INT64	    GetTotalAttackBuyAmount( void );
 	INT64     GetTotalAttackSellAmount( void );
@@ -135,8 +136,8 @@ protected :
 	bool												m_fMarketReady;					// 市场初始态已经设置好
 
   bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
-	INT64										m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
-	INT64										m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
+	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
+	INT64										    m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
 	
 private:
 

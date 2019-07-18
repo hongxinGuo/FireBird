@@ -11,7 +11,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CStockRTData::ReSetData(void) {
+void CStockRTData::Reset(void) {
   m_time = 0;
   // 必须初始化m_strStockCode的长度为6.
   m_strStockCode = "      ";
@@ -34,8 +34,7 @@ void CStockRTData::ReSetData(void) {
 }
 
 CStockRTData::CStockRTData(void) : CObject() {
-  m_time = 0;
-  ReSetData();
+  Reset();
 }
 
 /////////////////////////////////////////////////////////////////////////////

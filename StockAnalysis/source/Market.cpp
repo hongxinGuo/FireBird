@@ -23,26 +23,32 @@ CMarket::CMarket ( void ) : CObject() {
     TRACE("市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
-  
-  m_fLoadedSelectedStock = false;
-	m_fMarketReady = false;    // 市场初始状态为未设置好。
-  m_fCurrentStockChanged = false;
-  m_fCurrentEditStockChanged = false;
-
-  m_pCurrentStock = nullptr;
-
-	m_lTotalMarketBuy = m_lTotalMarketSell = 0;
-
-  m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
-
-  m_fTodayStockCompiled = false;
-
-  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
+  Reset();
 }
 
 CMarket::~CMarket( ) {
 
    
+}
+
+void CMarket::Reset(void)
+{
+  m_mapActiveStockToIndex.clear();
+  m_vActiveStock.clear();
+  m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
+
+  m_fLoadedSelectedStock = false;
+  m_fMarketReady = false;    // 市场初始状态为未设置好。
+  m_fCurrentStockChanged = false;
+  m_fCurrentEditStockChanged = false;
+
+  m_pCurrentStock = nullptr;
+
+  m_lTotalMarketBuy = m_lTotalMarketSell = 0;
+
+  m_fTodayStockCompiled = false;
+
+  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
 }
 
 #ifdef _DEBUG

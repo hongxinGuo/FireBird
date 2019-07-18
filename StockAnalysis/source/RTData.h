@@ -20,7 +20,7 @@ public :
 // ≥ı ºªØ
 	CStockRTData( void );
 
-	void ReSetData( void );
+	void Reset( void );
 	bool SetData( CStockRTData & data );
 	bool SetDataAll( CStockRTData & data );
 
