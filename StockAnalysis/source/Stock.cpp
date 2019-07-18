@@ -45,8 +45,6 @@ void CStock::Reset(void) {
 
   m_lHigh = m_lNew = m_lLow = 0;
 
-  m_lTestRTDataNumber = 0;
-
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;
@@ -139,17 +137,11 @@ bool CStock::LoadDayLine(CSetDayLine * psetDayLine)
 ////////////////////////////////////////////////////////////////////////////////////
 bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
-  long lTest = 0;
 
   long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
-  if (lTotalNumber > 0) {
-    lTest = m_dequeRTData.size();
-  }
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
-    ASSERT(lTotalNumber > 0);
     pRTData = PopRTData(); // 采用同步机制获取数据
-    TRACE("计算%s的实时数据\n", pRTData->m_strStockCode);
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
@@ -612,7 +604,6 @@ void CStock::PushRTData(CStockRTDataPtr pData)
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     m_dequeRTData.push_back(pData);
-    m_lTestRTDataNumber++;
     singleLock.Unlock();
   }
 }
@@ -631,7 +622,6 @@ CStockRTDataPtr CStock::PopRTData(void)
   if (singleLock.IsLocked()) {
     pData = m_dequeRTData.front();
     m_dequeRTData.pop_front();
-    m_lTestRTDataNumber--;
     singleLock.Unlock();
     return pData;
   }
