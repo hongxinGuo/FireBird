@@ -9,7 +9,18 @@ using namespace std;
 
 
 namespace StockAnalysisTest {
+  TEST(CMarketTest, TestInitialize) {
+    EXPECT_EQ(gl_ChinaStockMarket.m_pCurrentStock, nullptr);
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fCurrentEditStockChanged);
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStock(), 0);
+    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
 
+  }
   class MarketTest : public::testing::Test
   {
   protected:

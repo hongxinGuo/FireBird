@@ -4,6 +4,29 @@
 #include"RTData.h"
 
 namespace StockAnalysisTest {
+  TEST(CStockRTDataTest, TestInitialize) {
+    CStockRTData RTData;
+    EXPECT_EQ(RTData.m_time, 0);
+    EXPECT_EQ(RTData.m_wMarket, 0);
+    EXPECT_STREQ(RTData.m_strStockCode, _T(""));
+    EXPECT_STREQ(RTData.m_strStockName, _T(""));
+    EXPECT_EQ(RTData.m_lOpen, 0);
+    EXPECT_EQ(RTData.m_lLastClose, 0);
+    EXPECT_EQ(RTData.m_lNew, 0);
+    EXPECT_EQ(RTData.m_lHigh, 0);
+    EXPECT_EQ(RTData.m_lLow, 0);
+    EXPECT_EQ(RTData.m_lBuy, 0);
+    EXPECT_EQ(RTData.m_lSell, 0);
+    EXPECT_EQ(RTData.m_lVolume, 0);
+    EXPECT_EQ(RTData.m_lAmount, 0);
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(RTData.m_lVBuy.at(i), 0);
+      EXPECT_EQ(RTData.m_lPBuy.at(i), 0);
+      EXPECT_EQ(RTData.m_lVSell.at(i), 0);
+      EXPECT_EQ(RTData.m_lPSell.at(i), 0);
+    }
+    EXPECT_FALSE(RTData.m_fActive);
+  }
   struct SinaRTData {
     SinaRTData(int count, CString Data) {
       m_iCount = count;

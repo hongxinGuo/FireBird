@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 void CStockRTData::Reset(void) {
   m_time = 0;
   // 必须初始化m_strStockCode的长度为6.
-  m_strStockCode = "      ";
+  m_strStockCode = "";
   m_wMarket = 0;
   m_lLastClose = 0;
   m_lOpen = 0;
@@ -31,6 +31,7 @@ void CStockRTData::Reset(void) {
     m_lPSell.at(i) = 0;
     m_lVSell.at(i) = 0;
   }
+  m_fActive = false;
 }
 
 CStockRTData::CStockRTData(void) : CObject() {

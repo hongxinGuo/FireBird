@@ -5,6 +5,71 @@
 #include"Stock.h"
 
 namespace StockAnalysisTest {
+  TEST(StockTest, TestInitialize) {
+    CStock stock;
+    EXPECT_EQ(stock.m_vDayLine.size(), 0);
+    EXPECT_FALSE(stock.IsActive());
+    EXPECT_STREQ(stock.GetStockCode(), _T(""));
+    EXPECT_STREQ(stock.GetStockName(), _T(""));
+    EXPECT_EQ(stock.GetTime(), 0);
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    EXPECT_EQ(stock.GetOpen(), 0);
+    EXPECT_EQ(stock.GetHigh(), 0);
+    EXPECT_EQ(stock.GetLow(), 0);
+    EXPECT_EQ(stock.GetNew(), 0);
+    EXPECT_EQ(stock.GetVolume(), 0);
+    EXPECT_EQ(stock.GetAmount(), 0);
+    EXPECT_EQ(stock.GetPBuy(0), 0);
+    EXPECT_EQ(stock.GetVBuy(0), 0);
+    EXPECT_EQ(stock.GetPBuy(1), 0);
+    EXPECT_EQ(stock.GetVBuy(1), 0);
+    EXPECT_EQ(stock.GetPBuy(2), 0);
+    EXPECT_EQ(stock.GetVBuy(2), 0);
+    EXPECT_EQ(stock.GetPBuy(3), 0);
+    EXPECT_EQ(stock.GetVBuy(3), 0);
+    EXPECT_EQ(stock.GetPBuy(4), 0);
+    EXPECT_EQ(stock.GetVBuy(4), 0);
+    EXPECT_EQ(stock.GetPSell(0), 0);
+    EXPECT_EQ(stock.GetVSell(0), 0);
+    EXPECT_EQ(stock.GetPSell(1), 0);
+    EXPECT_EQ(stock.GetVSell(1), 0);
+    EXPECT_EQ(stock.GetPSell(2), 0);
+    EXPECT_EQ(stock.GetVSell(2), 0);
+    EXPECT_EQ(stock.GetPSell(3), 0);
+    EXPECT_EQ(stock.GetVSell(3), 0);
+    EXPECT_EQ(stock.GetPSell(4), 0);
+    EXPECT_EQ(stock.GetVSell(4), 0);
+    EXPECT_EQ(stock.GetAttackBuyAmount(), 0);
+    EXPECT_EQ(stock.GetAttackSellAmount(), 0);
+    EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0);
+    EXPECT_EQ(stock.GetTransactionNumber(), 0);
+    EXPECT_EQ(stock.GetTransactionNumberBelow5000(), 0);
+    EXPECT_EQ(stock.GetTransactionNumberBelow50000(), 0);
+    EXPECT_EQ(stock.GetTransactionNumberBelow200000(), 0);
+    EXPECT_EQ(stock.GetTransactionNumberAbove200000(), 0);
+    EXPECT_EQ(stock.GetOrdinaryBuyVolume(), 0);
+    EXPECT_EQ(stock.GetOrdinarySellVolume(), 0);
+    EXPECT_EQ(stock.GetAttackBuyVolume(), 0);
+    EXPECT_EQ(stock.GetAttackSellVolume(), 0);
+    EXPECT_EQ(stock.GetStrongBuyVolume(), 0);
+    EXPECT_EQ(stock.GetStrongSellVolume(), 0);
+    EXPECT_EQ(stock.GetCancelBuyVolume(), 0);
+    EXPECT_EQ(stock.GetCancelSellVolume(), 0);
+    EXPECT_EQ(stock.GetCurrentAttackBuy(), 0);
+    EXPECT_EQ(stock.GetCurrentAttackSell(), 0);
+    EXPECT_EQ(stock.GetCurrentStrongBuy(), 0);
+    EXPECT_EQ(stock.GetCurrentStrongSell(), 0);
+    EXPECT_EQ(stock.GetUnknownVolume(), 0);
+    EXPECT_EQ(stock.GetCurrentUnknown(), 0);
+    EXPECT_EQ(stock.GetCurrentTransactionType(), 0);
+    EXPECT_EQ(stock.GetCurrentTransationVolume(), 0);
+    EXPECT_EQ(stock.GetAttackBuyBelow50000(), 0);
+    EXPECT_EQ(stock.GetAttackBuyBelow200000(), 0);
+    EXPECT_EQ(stock.GetAttackBuyAbove200000(), 0);
+    EXPECT_EQ(stock.GetAttackSellBelow50000(), 0);
+    EXPECT_EQ(stock.GetAttackSellBelow200000(), 0);
+    EXPECT_EQ(stock.GetAttackSellAbove200000(), 0);
+  }
   TEST(StockTest, TestGetMarket) {
     CStock stock;
     EXPECT_EQ(stock.GetMarket(), 0);
