@@ -129,6 +129,7 @@ protected :
 
   long												m_lTotalActiveStock;						// 当天股票总数
   vector<CStockPtr>::iterator m_itStock;
+  bool                        m_fResetm_ItStock;    // 重置m_itStock标识
 
 	vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
 	bool												m_fLoadedSelectedStock;

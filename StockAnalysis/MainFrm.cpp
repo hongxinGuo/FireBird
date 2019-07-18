@@ -91,9 +91,16 @@ void CMainFrame::Reset(void)
   gl_systemTime.CalculateTime();
   gl_systemTime.CalculateLastTradeDay();
 
+  long lTemp = gl_systemDequeData.GetRTDataDequeSize();
+  for (int i = 0; i < lTemp; i++) {
+    CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
+  }
+
   CString str2;
 
   m_fCheckTodayActiveStock = true;
+  m_fCreateStr = true;
+  m_fUpdatedStockCodeDataBase = false;
 
   m_fGetRTStockData = true;
   m_fGetDayLineData = true;
@@ -136,7 +143,7 @@ void CMainFrame::Reset(void)
 
   CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
   gl_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
+  if( !gl_setSavingDayLineOnly.IsOpen() ) gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
 
 
   CSetOption setOption;
@@ -352,6 +359,15 @@ bool CMainFrame::CompileTodayStocks(void) {
   return(true);
 }
 
+bool CMainFrame::ResetSystem(void)
+{
+  TRACE("重置系统开始\n");
+  gl_ChinaStockMarket.Reset();
+  Reset();
+  TRACE("重置系统结束\n");
+  return false;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
@@ -364,7 +380,6 @@ bool CMainFrame::CompileTodayStocks(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::CreateTodayActiveStockRTInquiringStr(CString &str) {
-  static int iStarted = 0;
   static bool fCreateStr = false;
   static int siCounter = 0, siTotalStock;
 
@@ -421,6 +436,7 @@ bool CMainFrame::GetSinaStockRTData(void)
           iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
         }
       }
+      TRACE("读入%d个实时数据\n", i);
     }
     else {
       TRACE("Error reading http file ：hq.sinajs.cn\n");
@@ -469,7 +485,7 @@ bool CMainFrame::CreateTotalStockContainer(void)
 {
   char buffer[10];
 
-  StockIDPtr pStockID;
+  StockIDPtr pStockID = nullptr;
   int iCount = 0;
 
   // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
@@ -522,14 +538,13 @@ bool CMainFrame::CreateTotalStockContainer(void)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::CreateTodayActiveStockDayLineInquiringStr(CString &str, CString& strStartDay) {
   static int iStarted = 0;
-  static bool fCreateStr = false;
   static int siCounter = 0, siTotalStock;
 
   StockIDPtr pStockID;
 
-  if (fCreateStr == false) {
+  if (m_fCreateStr) {
     siTotalStock = gl_vTotalStock.size();
-    fCreateStr = true;
+    m_fCreateStr = false;
   }
 
   bool fFound = false;
@@ -677,8 +692,7 @@ bool CMainFrame::SchedulingTask(void)
 {
   static int i10SecondsCounter = 10; // 十秒一次的计算
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
-  static bool sfUpdatedStockCodeDataBase = false;
-  long lTime = gl_systemTime.GetTime();
+  const long lTime = gl_systemTime.GetTime();
 
   if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150500))) {
     m_fCountDownRT = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
@@ -702,11 +716,12 @@ bool CMainFrame::SchedulingTask(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
+    ResetSystem();
     i1MinuteCounter = 60;
-    if (gl_ChinaStockMarket.IsTotalStockDayLineChecked() && !sfUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+    if (gl_ChinaStockMarket.IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
-        sfUpdatedStockCodeDataBase = true;
+        m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
         CString str;
         str = _T("日线历史数据更新完毕");
@@ -883,7 +898,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
     GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
     else iCountDown = 1;
   }
   iCountDown--;

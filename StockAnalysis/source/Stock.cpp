@@ -45,6 +45,8 @@ void CStock::Reset(void) {
 
   m_lHigh = m_lNew = m_lLow = 0;
 
+  m_lTestRTDataNumber = 0;
+
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;
@@ -83,6 +85,11 @@ void CStock::Reset(void) {
   m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
 
   m_pLastRTData = nullptr;
+
+  long lTotalNumber = GetRTDataDequeSize();
+  for (int i = 0; i < lTotalNumber; i++) {
+    CStockRTDataPtr pRTData = PopRTData();
+  }
 }
 
 void CStock::operator =(CStock &pStock) {
@@ -132,11 +139,17 @@ bool CStock::LoadDayLine(CSetDayLine * psetDayLine)
 ////////////////////////////////////////////////////////////////////////////////////
 bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
+  long lTest = 0;
 
-  const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  if (lTotalNumber > 0) {
+    lTest = m_dequeRTData.size();
+  }
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (int i = 0; i < lTotalNumber; i++) {
-    pRTData = PopRTStockData(); // 采用同步机制获取数据
+    ASSERT(lTotalNumber > 0);
+    pRTData = PopRTData(); // 采用同步机制获取数据
+    TRACE("计算%s的实时数据\n", pRTData->m_strStockCode);
     if ((pRTData->m_lNew != 0) && (pRTData->m_lOpen != 0)) { // 数据有效
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
@@ -542,7 +555,7 @@ void CStock::ReportGuaDan(void)
 bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
   ASSERT(psetRTData != nullptr);
   ASSERT(psetRTData->IsOpen());
-  for ( auto pRTData : m_dequeRTStockData) {
+  for ( auto pRTData : m_dequeRTData) {
     psetRTData->AddNew();
     psetRTData->m_Time = pRTData->m_time;
     psetRTData->m_lMarket = m_wMarket;
@@ -593,12 +606,13 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CStock::PushRTStockData(CStockRTDataPtr pData)
+void CStock::PushRTData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeRTStockData.push_back(pData);
+    m_dequeRTData.push_back(pData);
+    m_lTestRTDataNumber++;
     singleLock.Unlock();
   }
 }
@@ -609,14 +623,15 @@ void CStock::PushRTStockData(CStockRTDataPtr pData)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CStockRTDataPtr CStock::PopRTStockData(void)
+CStockRTDataPtr CStock::PopRTData(void)
 {
   CStockRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    pData = m_dequeRTStockData.front();
-    m_dequeRTStockData.pop_front();
+    pData = m_dequeRTData.front();
+    m_dequeRTData.pop_front();
+    m_lTestRTDataNumber--;
     singleLock.Unlock();
     return pData;
   }
@@ -634,7 +649,7 @@ long CStock::GetRTDataDequeSize(void)
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeRTStockData.size();
+    long lCount = m_dequeRTData.size();
     singleLock.Unlock();
     return lCount;
   }

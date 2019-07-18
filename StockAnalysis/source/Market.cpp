@@ -49,6 +49,8 @@ void CMarket::Reset(void)
   m_fTodayStockCompiled = false;
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
+
+  m_fResetm_ItStock = true;
 }
 
 #ifdef _DEBUG
@@ -214,7 +216,7 @@ bool CMarket::ProcessRTData(void)
 
         m_vActiveStock.push_back(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
         ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);
-				pStock->PushRTStockData(pRTData);
+				pStock->PushRTData(pRTData);
         pStock->UpdataCurrentStatus(pRTData);
 				lIndex = gl_mapTotalStockToIndex[pStock->GetStockCode()];
 				gl_vTotalStock.at(lIndex)->SetStockName(pStock->GetStockName());
@@ -230,7 +232,7 @@ bool CMarket::ProcessRTData(void)
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->m_time > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
           m_vActiveStock.at(lIndex)->UpdataCurrentStatus(pRTData);
-          m_vActiveStock.at(lIndex)->PushRTStockData(pRTData); // 存储新的数据至数据池
+          m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
       }
     }
@@ -249,12 +251,11 @@ bool CMarket::ProcessRTData(void)
 //////////////////////////////////////////////////////////////////////////////////////////
 int CMarket::GetInquiringStockStr(CString& str)
 {
-  static bool sfFirstTime = true;
   int iCount = 1;
 
-  if (sfFirstTime) {
+  if (m_fResetm_ItStock) {
     m_itStock = m_vActiveStock.begin();
-    sfFirstTime = false;
+    m_fResetm_ItStock = false;
   }
 
   while ((m_itStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票

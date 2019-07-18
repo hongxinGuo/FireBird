@@ -43,6 +43,9 @@ private:
 
   bool CompileTodayStocks(void);
 
+  // 重置系统（恢复系统的初始态，准备第二天继续工作。午夜时由SchedulingTask调用此函数，不允许其他函数调用。
+  bool ResetSystem(void);
+
 // 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -70,7 +73,9 @@ protected:
   bool										m_fGetDayLineData;
   bool                    m_fCountDownRT;
   int                     m_iCountDownDayLine;        // 日线数据读取延时计数。
+  bool                    m_fCreateStr;
 
+  bool                    m_fUpdatedStockCodeDataBase;
 
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;

@@ -134,8 +134,8 @@ public:
 	bool SaveRealTimeData(CSetRealTimeData * psetRT);
 
   // 采用同步机制存取实时数据
-  void PushRTStockData(CStockRTDataPtr pData);
-  CStockRTDataPtr PopRTStockData(void);
+  void PushRTData(CStockRTDataPtr pData);
+  CStockRTDataPtr PopRTData(void);
   long GetRTDataDequeSize(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
@@ -232,8 +232,9 @@ protected:
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
   CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
-  deque<CStockRTDataPtr>m_dequeRTStockData;  // 实时数据队列
+  deque<CStockRTDataPtr>m_dequeRTData;  // 实时数据队列
   CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁
+  long                  m_lTestRTDataNumber;
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
  	
