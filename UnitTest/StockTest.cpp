@@ -236,9 +236,9 @@ namespace StockAnalysisTest {
     pData->m_iStockCode = 600000;
     CStock stock;
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
-    stock.PushRTStockData(pData);
+    stock.PushRTData(pData);
     EXPECT_EQ(stock.GetRTDataDequeSize(), 1);
-    CStockRTDataPtr pData2 = stock.PopRTStockData();
+    CStockRTDataPtr pData2 = stock.PopRTData();
     EXPECT_EQ(pData2->m_iStockCode, 600000);
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
   }
