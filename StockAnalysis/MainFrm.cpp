@@ -55,13 +55,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 //  ON_WM_KEYUP()
 ON_WM_CHAR()
 ON_WM_KEYUP()
-ON_COMMAND(ID_SHOW_ORDINARY_BUY, &CMainFrame::OnShowOrdinaryBuy)
-ON_COMMAND(ID_SHOW_ORDINARY_SELL, &CMainFrame::OnShowOrdinarySell)
-ON_COMMAND(ID_SHOW_STRONG_BUY, &CMainFrame::OnShowStrongBuy)
-ON_COMMAND(ID_SHOW_STRONG_SELL, &CMainFrame::OnShowStrongSell)
-ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
-ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
-ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
+//ON_COMMAND(ID_SHOW_ORDINARY_BUY, &CMainFrame::OnShowOrdinaryBuy)
+//ON_COMMAND(ID_SHOW_ORDINARY_SELL, &CMainFrame::OnShowOrdinarySell)
+//ON_COMMAND(ID_SHOW_STRONG_BUY, &CMainFrame::OnShowStrongBuy)
+//ON_COMMAND(ID_SHOW_STRONG_SELL, &CMainFrame::OnShowStrongSell)
+//ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
+//ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
+//ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1136,51 +1136,3 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-
-void CMainFrame::OnShowOrdinaryBuy()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __ORDINARY_BUY__;
-}
-
-
-void CMainFrame::OnShowOrdinarySell()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __ORDINARY_SELL__;
-}
-
-
-void CMainFrame::OnShowStrongBuy()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __STRONG_BUY__;
-}
-
-
-void CMainFrame::OnShowStrongSell()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __STRONG_SELL__;
-}
-
-
-void CMainFrame::OnShowUnknownbuysell()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __UNKNOWN_BUYSELL__;
-}
-
-
-void CMainFrame::OnShowAttackBuy()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __ATTACK_BUY__;
-}
-
-
-void CMainFrame::OnShowAttackSell()
-{
-  // TODO: Add your command handler code here
-  gl_lShowGuaDanTransaction = __ATTACK_SELL__;
-}
