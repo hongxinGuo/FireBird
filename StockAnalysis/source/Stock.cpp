@@ -18,44 +18,9 @@ static char THIS_FILE[] = __FILE__;
 
 CStock::CStock() : CObject() {
 	
-  m_wMarket = 0;
-  m_strStockCode = "";
-	m_strStockName = "";
-	m_iStockCode = 0;
-	m_fActive = false;
-	m_lLastClose = m_lOpen = 0;
-  m_lHigh = m_lLow = m_lNew = 0;
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy.at(i) = m_lPSell.at(i) = 0;
-    m_lVBuy.at(i) = m_lVSell.at(i) = 0;
-  }
-  m_lVolume = 0;
-  m_lAmount = 0;
-   m_dRelativeStrong = 0;
-  m_nHand = 100;
-  m_lTransactionNumber = 0;
-  m_lTransactionNumberBelow5000 = 0;
-  m_lTransactionNumberBelow50000 = 0;
-  m_lTransactionNumberBelow200000 = 0;
-  m_lTransactionNumberAbove200000 = 0;
+
   Reset();
 
-  m_fDayLineLoaded = false;
-  m_fDayLineNeededSaving = false;
-
-  m_fChoiced = false;
-  m_fMinLineUpdated = false;
-  m_fDayKLineUpdated = false;
-
-  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
-
-  m_lAttackBuyAbove200000 = m_lAttackBuyBelow200000 = m_lAttackBuyBelow50000 = 0;
-  m_lAttackSellAbove200000 = m_lAttackSellBelow200000 = m_lAttackSellBelow50000 = 0;
-  m_lCancelBuyVolume = m_lCancelSellVolume = 0;
-  m_lStrongBuyVolume = m_lStrongSellVolume = 0;
-  m_lOrdinaryBuyVolume = m_lOrdinarySellVolume = 0;
-  m_lUnknownVolume = 0;
-  m_pLastRTData = nullptr;
 }
 
 CStock::~CStock(void) {
@@ -63,14 +28,27 @@ CStock::~CStock(void) {
 }
 
 void CStock::Reset(void) {
-  m_lHigh = m_lNew = m_lLow = 0;
-  m_lVolume = 0;
-  m_lAmount = 0;
-
+  m_wMarket = 0;
+  m_strStockCode = "";
+  m_strStockName = "";
+  m_iStockCode = 0;
+  m_fActive = false;
+  m_lLastClose = m_lOpen = 0;
+  m_lHigh = m_lLow = m_lNew = 0;
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = m_lPSell.at(i) = 0;
     m_lVBuy.at(i) = m_lVSell.at(i) = 0;
   }
+  m_lVolume = 0;
+  m_lAmount = 0;
+  m_dRelativeStrong = 0;
+  m_nHand = 100;
+  m_lTransactionNumber = 0;
+  m_lTransactionNumberBelow5000 = 0;
+  m_lTransactionNumberBelow50000 = 0;
+  m_lTransactionNumberBelow200000 = 0;
+  m_lTransactionNumberAbove200000 = 0;
+
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;
@@ -86,11 +64,6 @@ void CStock::Reset(void) {
   m_lCurrentUnknown = 0;
   m_lCancelBuyVolume = 0;
   m_lCancelSellVolume = 0;
-  m_lTransactionNumber = 0;
-  m_lTransactionNumberBelow5000 = 0;
-  m_lTransactionNumberBelow50000 = 0;
-  m_lTransactionNumberBelow200000 = 0;
-  m_lTransactionNumberAbove200000 = 0;
 
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
@@ -98,6 +71,16 @@ void CStock::Reset(void) {
   m_lFirstDataVolume = 0;
 
   m_dCurrentGuaDanTransactionPrice = 0;
+  m_fDayLineLoaded = false;
+  m_fDayLineNeededSaving = false;
+
+  m_fChoiced = false;
+  m_fMinLineUpdated = false;
+  m_fDayKLineUpdated = false;
+
+  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
+
+  m_pLastRTData = nullptr;
 }
 
 void CStock::operator =(CStock &pStock) {
@@ -485,7 +468,7 @@ void CStock::ReportGuaDanTransaction(void)
   const CTime ctime(m_pLastRTData->m_time);
   sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
-  sprintf_s(buffer, " %s %d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
+  sprintf_s(buffer, " %s %I64d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
     m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
   str = strTime;
   str += buffer;
@@ -513,7 +496,7 @@ void CStock::ReportGuaDanTransaction(void)
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %d，  %d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
@@ -573,15 +556,15 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
     psetRTData->m_Volume = pRTData->m_lVolume;
     psetRTData->m_Amount = (double)pRTData->m_lAmount;
     psetRTData->m_Stroke = 0;
-    psetRTData->m_PBuy1 = (double)pRTData->m_lPBuy[0] / 1000;
-    psetRTData->m_VBuy1 = pRTData->m_lVBuy[0];
-    psetRTData->m_PSell1 = (double)pRTData->m_lPSell[0] / 1000;
-    psetRTData->m_VSell1 = pRTData->m_lVSell[0];
+    psetRTData->m_PBuy1 = (double)pRTData->m_lPBuy.at(0) / 1000;
+    psetRTData->m_VBuy1 = pRTData->m_lVBuy.at(0);
+    psetRTData->m_PSell1 = (double)pRTData->m_lPSell.at(0) / 1000;
+    psetRTData->m_VSell1 = pRTData->m_lVSell.at(0);
 
-    psetRTData->m_PBuy2 = (double)pRTData->m_lPBuy[1] / 1000;
-    psetRTData->m_VBuy2 = pRTData->m_lVBuy[1];
-    psetRTData->m_PSell2 = (double)pRTData->m_lPSell[1] / 1000;
-    psetRTData->m_VSell2 = pRTData->m_lVSell[1];
+    psetRTData->m_PBuy2 = (double)pRTData->m_lPBuy.at(1) / 1000;
+    psetRTData->m_VBuy2 = pRTData->m_lVBuy.at(1);
+    psetRTData->m_PSell2 = (double)pRTData->m_lPSell.at(1) / 1000;
+    psetRTData->m_VSell2 = pRTData->m_lVSell.at(1);
 
     psetRTData->m_PBuy3 = (double)pRTData->m_lPBuy[2] / 1000;
     psetRTData->m_VBuy3 = pRTData->m_lVBuy[2];

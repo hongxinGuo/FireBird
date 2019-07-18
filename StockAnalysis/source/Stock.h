@@ -35,91 +35,91 @@ public:
   void operator=(CStock &);
 
 public:
-  WORD GetMarket(void) { return m_wMarket; }
-  void SetMarket(WORD wValue) { m_wMarket = wValue; }
-  bool IsActive(void) { return m_fActive; }
-  void SetActive(bool fFlag) { m_fActive = fFlag; }
+  WORD GetMarket(void) noexcept { return m_wMarket; }
+  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
+  bool IsActive(void) noexcept { return m_fActive; }
+  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   CString GetStockCode(void) { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
-  long GetCode(void) { return m_iStockCode; }
+  long GetCode(void) noexcept { return m_iStockCode; }
   void SetCode(long lValue) { m_iStockCode = lValue; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
-  time_t GetTime(void) { return m_Time; }
-  void SetTime(time_t time) { m_Time = time; }
-  long GetLastClose(void) { return m_lLastClose; }
-  void SetLastClose(long lValue) { m_lLastClose = lValue; }
-  long GetOpen(void) { return m_lOpen; }
-  void SetOpen(long lValue) { m_lOpen = lValue; }
-  long GetHigh(void) { return m_lHigh; }
-  void SetHigh(long lValue) { m_lHigh = lValue; }
-  long GetLow(void) { return m_lLow; }
-  void SetLow(long lValue) { m_lLow = lValue; }
-  long GetNew(void) { return m_lNew; }
-  void SetNew(long lValue) { m_lNew = lValue; }
-  INT64 GetAmount(void) { return m_lAmount; }
-  void SetAmount(INT64 llValue) { m_lAmount = llValue; }
-  INT64 GetVolume(void) { return m_lVolume; }
-  void SetVolume(INT64 llValue) { m_lVolume = llValue; }
-  long GetPBuy(int iIndex) { return m_lPBuy[iIndex]; }
-  long GetVBuy(int iIndex) { return m_lVBuy[iIndex]; }
-  long GetPSell(int iIndex) { return m_lPSell[iIndex]; }
-  long GetVSell(int iIndex) { return m_lVSell[iIndex]; }
+  time_t GetTime(void) noexcept { return m_Time; }
+  void SetTime(time_t time) noexcept { m_Time = time; }
+  long GetLastClose(void) noexcept { return m_lLastClose; }
+  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+  long GetOpen(void) noexcept { return m_lOpen; }
+  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+  long GetHigh(void) noexcept { return m_lHigh; }
+  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+  long GetLow(void) noexcept { return m_lLow; }
+  void SetLow(long lValue) noexcept { m_lLow = lValue; }
+  long GetNew(void) noexcept { return m_lNew; }
+  void SetNew(long lValue) noexcept { m_lNew = lValue; }
+  INT64 GetAmount(void) noexcept { return m_lAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_lAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_lVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_lVolume = llValue; }
+  long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
+  long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
+  long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
+  long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
 
-  INT64 GetAttackBuyAmount(void) { return m_lAttackBuyAmount; }
-  INT64 GetAttackSellAmount(void) { return m_lAttackSellAmount; }
-  INT64 GetOrdinaryBuyVolume(void) { return m_lOrdinaryBuyVolume; }
-  INT64 GetOrdinarySellVolume(void) { return m_lOrdinarySellVolume; }
-  INT64 GetAttackBuyVolume(void) { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  INT64 GetStrongBuyVolume(void) { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
-  INT64 GetCurrentAttackBuy(void) { return m_lCurrentAttackBuy; }
-  long GetCurrentStrongBuy(void) { return m_lCurrentStrongBuy; }
-  INT64 GetAttackSellVolume(void) { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
-  INT64 GetStrongSellVolume(void) { return m_lStrongSellVolume; }
-  long GetCurrentAttackSell(void) { return m_lCurrentAttackSell; }
-  long GetCurrentStrongSell(void) { return m_lCurrentStrongSell; }
-  INT64 GetUnknownVolume(void) { return m_lUnknownVolume; }
-  long GetCurrentUnknown(void) { return m_lCurrentUnknown; }
-  INT64 GetCancelBuyVolume(void) { return m_lCancelBuyVolume; }
-  INT64 GetCancelSellVolume(void) { return m_lCancelSellVolume; }
+  INT64 GetAttackBuyAmount(void) noexcept { return m_lAttackBuyAmount; }
+  INT64 GetAttackSellAmount(void) noexcept { return m_lAttackSellAmount; }
+  INT64 GetOrdinaryBuyVolume(void) noexcept { return m_lOrdinaryBuyVolume; }
+  INT64 GetOrdinarySellVolume(void) noexcept { return m_lOrdinarySellVolume; }
+  INT64 GetAttackBuyVolume(void) noexcept { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  INT64 GetStrongBuyVolume(void) noexcept { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
+  INT64 GetCurrentAttackBuy(void) noexcept { return m_lCurrentAttackBuy; }
+  long GetCurrentStrongBuy(void) noexcept { return m_lCurrentStrongBuy; }
+  INT64 GetAttackSellVolume(void) noexcept { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
+  INT64 GetStrongSellVolume(void) noexcept { return m_lStrongSellVolume; }
+  long GetCurrentAttackSell(void) noexcept { return m_lCurrentAttackSell; }
+  long GetCurrentStrongSell(void) noexcept { return m_lCurrentStrongSell; }
+  INT64 GetUnknownVolume(void) noexcept { return m_lUnknownVolume; }
+  long GetCurrentUnknown(void) noexcept { return m_lCurrentUnknown; }
+  INT64 GetCancelBuyVolume(void) noexcept { return m_lCancelBuyVolume; }
+  INT64 GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
 
-  int  GetCurrentTransactionType(void) { return m_nCurrentTransactionType; }
-  INT64 GetCurrentTransationVolume(void) { return m_lCurrentGuadanTransactionVolume; }
+  int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
+  INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
 
-  double GetRelativeStrong(void) { return m_dRelativeStrong; }
-  long GetTransactionNumber(void) { return m_lTransactionNumber; }
-  long GetTransactionNumberBelow5000(void) { return m_lTransactionNumberBelow5000; }
-  long GetTransactionNumberBelow50000(void) { return m_lTransactionNumberBelow50000; }
-  long GetTransactionNumberBelow200000(void) { return m_lTransactionNumberBelow200000; }
-  long GetTransactionNumberAbove200000(void) { return m_lTransactionNumberAbove200000; }
+  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
+  long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
+  long GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
+  long GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
+  long GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
+  long GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
 
-  INT64 GetAttackBuyBelow50000(void) { return m_lAttackBuyBelow50000; }
-  INT64 GetAttackBuyBelow200000(void) { return m_lAttackBuyBelow200000; }
-  INT64 GetAttackBuyAbove200000(void) { return m_lAttackBuyAbove200000; }
-  INT64 GetAttackSellBelow50000(void) { return m_lAttackSellBelow50000; }
-  INT64 GetAttackSellBelow200000(void) { return m_lAttackSellBelow200000; }
-  INT64 GetAttackSellAbove200000(void) { return m_lAttackSellAbove200000; }
+  INT64 GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
+  INT64 GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
+  INT64 GetAttackBuyAbove200000(void) noexcept { return m_lAttackBuyAbove200000; }
+  INT64 GetAttackSellBelow50000(void) noexcept { return m_lAttackSellBelow50000; }
+  INT64 GetAttackSellBelow200000(void) noexcept { return m_lAttackSellBelow200000; }
+  INT64 GetAttackSellAbove200000(void) noexcept { return m_lAttackSellAbove200000; }
 
-  double GetCurrentGuaDanTransactionPrice(void) { return m_dCurrentGuaDanTransactionPrice; }
-  long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
-  void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
-  bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
+  double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
+  long GetGuaDan(long lPrice) noexcept { return m_mapGuaDan.at(lPrice); }
+  void SetGuaDan(long lPrice, long lVolume) noexcept { m_mapGuaDan[lPrice] = lVolume; }
+  bool HaveGuaDan(long lPrice) noexcept { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
 
-	bool IsChoiced( void ) { return m_fChoiced; }
-	void SetChoicedFlag( bool fChoiced ) { m_fChoiced = fChoiced; }
+	bool IsChoiced( void ) noexcept { return m_fChoiced; }
+	void SetChoicedFlag( bool fChoiced ) noexcept { m_fChoiced = fChoiced; }
 
-	bool IsMinLineUpdated( void ) { return ( m_fMinLineUpdated ); }
-	void SetMinLineUpdated( bool fUpdate ) { m_fMinLineUpdated = fUpdate; }
+	bool IsMinLineUpdated( void ) noexcept { return ( m_fMinLineUpdated ); }
+	void SetMinLineUpdated( bool fUpdate ) noexcept { m_fMinLineUpdated = fUpdate; }
 
-	bool IsDayLineUpdated( void ) { return ( m_fDayKLineUpdated ); }
-	void SetDayLineUpdated( bool fUpdate ) { m_fDayKLineUpdated = fUpdate; }
+	bool IsDayLineUpdated(void) noexcept { return ( m_fDayKLineUpdated ); }
+	void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayKLineUpdated = fUpdate; }
 
-  bool IsDayLineLoaded(void) { return m_fDayLineLoaded; }
-  void SetDayLineLoaded(bool fFlag) { m_fDayLineLoaded = fFlag; }
+  bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
+  void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
 
-  bool IsStartCalculating(void) { return m_fStartCalculating; }
-  bool SetStartCalculating(bool fFlag) { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
+  bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
+  bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
 	void UpdataCurrentStatus(CStockRTDataPtr pRTData);
 	bool LoadDayLine(CSetDayLine * psetDayLine);
@@ -174,7 +174,7 @@ protected:
   long		  m_lNew;					// 以0.001元计的最新价
   INT64	    m_lVolume;			// 以1股计的成交量
   INT64     m_lAmount;			// 以元计的成交金额
-  array<long, 5> m_lPBuy;			// 买盘价。单位：0.001元
+  array<long, 5>      m_lPBuy;			// 买盘价。单位：0.001元
   array<long, 5>			m_lVBuy;			// 买盘量。单位：股
   array<long, 5>		  m_lPSell;		// 卖盘价。单位：0.001元
   array<long, 5>			m_lVSell;		// 卖盘量。单位：股

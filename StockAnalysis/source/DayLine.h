@@ -11,7 +11,7 @@ public :
 	CDayLine( CDayLine & );
 	void operator=( CDayLine& );
   void SetData(CSetDayLine * pDayLine);
-  void Reset(void);
+  void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 public:
   long		  GetDay(void) noexcept { return m_lDay; }
@@ -20,10 +20,10 @@ public:
 	void      SetTime(time_t t) noexcept { m_time = t; }
 	WORD		  GetMarket(void) noexcept { return m_wMarket; }
 	void      SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
-	CString   GetStockCode(void) noexcept { return m_strStockCode; }
+	CString   GetStockCode(void) { return m_strStockCode; }
 	void		  SetStockCode(CString str) noexcept { m_strStockCode = str; }
-	CString   GetStockName(void) noexcept { return m_strStockName; }
-	void		  SetStockName(CString str) noexcept { m_strStockName = str; }
+	CString   GetStockName(void) { return m_strStockName; }
+	void		  SetStockName(CString str) { m_strStockName = str; }
 
   long		  GetLastClose(void) noexcept { return m_lLastClose; }
   void		  SetLastClose(long fValue) noexcept { m_lLastClose = fValue; }
