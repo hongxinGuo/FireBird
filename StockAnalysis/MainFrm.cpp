@@ -79,7 +79,12 @@ static UINT indicators[] =
 CMainFrame::CMainFrame() noexcept
 {
 	// TODO: 在此添加成员初始化代码
-    // 生成所有股票代码池.这个函数必须最先调用。
+  Reset();
+}
+
+void CMainFrame::Reset(void)
+{
+  // 生成所有股票代码池.这个函数必须最先调用。
   CreateTotalStockContainer();
 
   // 设置股票日线查询环境
@@ -467,6 +472,9 @@ bool CMainFrame::CreateTotalStockContainer(void)
   StockIDPtr pStockID;
   int iCount = 0;
 
+  // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
+  gl_vTotalStock.clear();
+  gl_mapTotalStockToIndex.clear();
 
   // 生成上海股票代码
   for (int i = 600000; i < 602000; i++) {

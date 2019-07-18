@@ -23,6 +23,8 @@ class CMainFrame : public CMDIFrameWndEx
 public:
 	CMainFrame() noexcept;
 
+  void Reset(void);
+
 // 特性
 public:
 

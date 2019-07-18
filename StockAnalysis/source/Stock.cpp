@@ -534,13 +534,13 @@ void CStock::ReportGuaDan(void)
     str1 = buffer;
     sprintf_s(buffer, "  总取消买单量：%I64d", m_lCancelBuyVolume);
     str1 += buffer;
-    gl_systemMessage.PushCancelBuyMessage(str1); // 采用同步机制传递消息
+    gl_systemMessage.PushCancelSellMessage(str1); // 采用同步机制传递消息
 
   }
 }
 
 bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
-
+  ASSERT(psetRTData != nullptr);
   ASSERT(psetRTData->IsOpen());
   for ( auto pRTData : m_dequeRTStockData) {
     psetRTData->AddNew();
@@ -548,37 +548,37 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
     psetRTData->m_lMarket = m_wMarket;
     psetRTData->m_StockCode = m_strStockCode;
     psetRTData->m_StockName = m_strStockName;
-    psetRTData->m_CurrentPrice = (double)pRTData->m_lNew / 1000;
-    psetRTData->m_High = (double)pRTData->m_lHigh / 1000;
-    psetRTData->m_Low = (double)pRTData->m_lLow / 1000;
-    psetRTData->m_LastClose = (double)pRTData->m_lLastClose / 1000;
-    psetRTData->m_Open = (double)pRTData->m_lOpen / 1000;
+    psetRTData->m_CurrentPrice = static_cast<double>(pRTData->m_lNew) / 1000;
+    psetRTData->m_High = static_cast<double>(pRTData->m_lHigh) / 1000;
+    psetRTData->m_Low = static_cast<double>(pRTData->m_lLow) / 1000;
+    psetRTData->m_LastClose = static_cast<double>(pRTData->m_lLastClose) / 1000;
+    psetRTData->m_Open = static_cast<double>(pRTData->m_lOpen) / 1000;
     psetRTData->m_Volume = pRTData->m_lVolume;
-    psetRTData->m_Amount = (double)pRTData->m_lAmount;
+    psetRTData->m_Amount = static_cast<double>(pRTData->m_lAmount);
     psetRTData->m_Stroke = 0;
-    psetRTData->m_PBuy1 = (double)pRTData->m_lPBuy.at(0) / 1000;
+    psetRTData->m_PBuy1 = static_cast<double>(pRTData->m_lPBuy.at(0)) / 1000;
     psetRTData->m_VBuy1 = pRTData->m_lVBuy.at(0);
-    psetRTData->m_PSell1 = (double)pRTData->m_lPSell.at(0) / 1000;
+    psetRTData->m_PSell1 = static_cast<double>(pRTData->m_lPSell.at(0)) / 1000;
     psetRTData->m_VSell1 = pRTData->m_lVSell.at(0);
 
-    psetRTData->m_PBuy2 = (double)pRTData->m_lPBuy.at(1) / 1000;
+    psetRTData->m_PBuy2 = static_cast<double>(pRTData->m_lPBuy.at(1)) / 1000;
     psetRTData->m_VBuy2 = pRTData->m_lVBuy.at(1);
-    psetRTData->m_PSell2 = (double)pRTData->m_lPSell.at(1) / 1000;
+    psetRTData->m_PSell2 = static_cast<double>(pRTData->m_lPSell.at(1)) / 1000;
     psetRTData->m_VSell2 = pRTData->m_lVSell.at(1);
 
-    psetRTData->m_PBuy3 = (double)pRTData->m_lPBuy.at(2) / 1000;
+    psetRTData->m_PBuy3 = static_cast<double>(pRTData->m_lPBuy.at(2)) / 1000;
     psetRTData->m_VBuy3 = pRTData->m_lVBuy.at(2);
-    psetRTData->m_PSell3 = (double)pRTData->m_lPSell.at(2) / 1000;
+    psetRTData->m_PSell3 = static_cast<double>(pRTData->m_lPSell.at(2)) / 1000;
     psetRTData->m_VSell3 = pRTData->m_lVSell.at(2);
 
-    psetRTData->m_PBuy4 = (double)pRTData->m_lPBuy.at(3) / 1000;
+    psetRTData->m_PBuy4 = static_cast<double>(pRTData->m_lPBuy.at(3)) / 1000;
     psetRTData->m_VBuy4 = pRTData->m_lVBuy.at(3);
-    psetRTData->m_PSell4 = (double)pRTData->m_lPSell.at(3) / 1000;
+    psetRTData->m_PSell4 = static_cast<double>(pRTData->m_lPSell.at(3)) / 1000;
     psetRTData->m_VSell4 = pRTData->m_lVSell.at(3);
 
-    psetRTData->m_PBuy5 = (double)pRTData->m_lPBuy.at(4) / 1000;
+    psetRTData->m_PBuy5 = static_cast<double>(pRTData->m_lPBuy.at(4)) / 1000;
     psetRTData->m_VBuy5 = pRTData->m_lVBuy.at(4);
-    psetRTData->m_PSell5 = (double)pRTData->m_lPSell.at(4) / 1000;
+    psetRTData->m_PSell5 = static_cast<double>(pRTData->m_lPSell.at(4)) / 1000;
     psetRTData->m_VSell5 = pRTData->m_lVSell.at(4);
     psetRTData->Update();
 
