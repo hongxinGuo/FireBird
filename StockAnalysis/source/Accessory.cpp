@@ -122,7 +122,18 @@ bool UpdateStockCodeDataBase(void)
     setStockCode.m_StockType = pStockID->GetMarket();
     setStockCode.m_StockCode = pStockID->GetStockCode();
     setStockCode.m_StockName = pStockID->GetStockName();
-    setStockCode.m_IPOed = pStockID->GetIPOStatus();
+    if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
+      if ((pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100))
+        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票为已退市
+        setStockCode.m_IPOed = __STOCK_DELISTED__;
+      }
+      else {
+        setStockCode.m_IPOed = pStockID->GetIPOStatus();
+      }
+    }
+    else {
+      setStockCode.m_IPOed = pStockID->GetIPOStatus();
+    }
     setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
     setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
     setStockCode.m_NewestDayLineDay = pStockID->GetNewestDayLineDay();
