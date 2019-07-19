@@ -65,6 +65,14 @@
     <ClCompile Include="SystemTimeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
+      <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj" />
@@ -91,14 +99,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
-      <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
