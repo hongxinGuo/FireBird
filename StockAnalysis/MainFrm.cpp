@@ -718,7 +718,7 @@ bool CMainFrame::SchedulingTask(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    ResetSystem();
+    //ResetSystem(); // 这个调用处于调试状态，暂时不用
     i1MinuteCounter = 60;
     if (gl_ChinaStockMarket.IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
@@ -900,7 +900,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
     GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
     else iCountDown = 1;
   }
   iCountDown--;
