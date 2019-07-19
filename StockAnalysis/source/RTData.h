@@ -33,7 +33,37 @@ public:
   bool ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter); 
 
 public :
+  time_t GetTime(void) noexcept { return m_time; }
+  void SetTime(time_t time) noexcept { m_time = time; }
+  WORD GetMarket(void) noexcept { return m_wMarket; }
+  void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
+  CString GetStockCode(void) { return m_strStockCode; }
+  void SetStockCode(CString str) { m_strStockCode = str; }
+  CString GetStockName(void) { return m_strStockName; }
+  void SetStockName(CString str) { m_strStockName = str; }
+  int GetCode(void) noexcept { return m_iStockCode; }
+  void SetCode(int iStockCode) noexcept { m_iStockCode = iStockCode; }
+  long GetLastClose(void) noexcept { return m_lLastClose; }
+  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+  long GetOpen(void) noexcept { return m_lOpen; }
+  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+  long GetHigh(void) noexcept { return m_lHigh; }
+  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+  long GetLow(void) noexcept { return m_lLow; }
+  void SetLow(long lValue) noexcept { m_lLow = lValue; }
+  long GetNew(void) noexcept { return m_lNew; }
+  void SetNew(long lValue) noexcept { m_lNew = lValue; }
+  INT64 GetAmount(void) noexcept { return m_lAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_lAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_lVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_lVolume = llValue; }
+  long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
+  long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
+  long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
+  long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
 
+  bool IsActive(void) { return m_fActive; }
+  void SetActive(bool fFlag) { m_fActive = fFlag; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
@@ -43,6 +73,8 @@ public :
 
 // 数据
 public:
+
+protected:
 	// Serialized data
 	time_t		m_time;									// 交易发生时的时间
 	WORD	    m_wMarket;				      // 市场标示
@@ -62,6 +94,7 @@ public:
   array<long, 5> 		  m_lVBuy;							// 买盘量1 -- 5。单位：股
   array<long, 5>  	  m_lPSell;						// 卖盘价1 -- 5。单位：元
   array<long, 5>  		m_lVSell;						// 卖盘量1 -- 5。单位: 股
+
 
 // 非存储数据
   bool      m_fActive;              // 本股票是否存在实时数据

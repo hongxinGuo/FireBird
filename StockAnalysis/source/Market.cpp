@@ -73,7 +73,7 @@ void CMarket::Dump(CDumpContext& dc) const
 ////////////////////////////////////////////////////////////////////////
 long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
 	ASSERT( Time >= 0 );
-	tm tmTemp;
+	tm tmTemp{};
 	time_t t = 0;
 	long lIndex = 0;
 
@@ -200,18 +200,18 @@ bool CMarket::ProcessRTData(void)
 
   for (int i = 0; i < lTotalNumber; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
-    if (pRTData->m_fActive) { // 此实时数据有效？
+    if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
-      if (m_mapActiveStockToIndex.find(pRTData->m_strStockCode) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
-        m_mapActiveStockToIndex[pRTData->m_strStockCode] = m_lTotalActiveStock++; // 建立新的映射
+      if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
+        m_mapActiveStockToIndex[pRTData->GetStockCode()] = m_lTotalActiveStock++; // 建立新的映射
         pStock = make_shared<CStock>();
 				pStock->SetActive(true);
-				pStock->SetMarket(pRTData->m_wMarket);
-				pStock->SetStockCode(pRTData->m_strStockCode);
-				pStock->SetStockName(pRTData->m_strStockName);
-				pStock->SetCode(pRTData->m_iStockCode);
-				pStock->SetLastClose(pRTData->m_lLastClose);
-				pStock->SetOpen(pRTData->m_lOpen);
+				pStock->SetMarket(pRTData->GetMarket());
+				pStock->SetStockCode(pRTData->GetStockCode());
+				pStock->SetStockName(pRTData->GetStockName());
+				pStock->SetCode(pRTData->GetCode());
+				pStock->SetLastClose(pRTData->GetLastClose());
+				pStock->SetOpen(pRTData->GetOpen());
 				pStock->UpdataCurrentStatus(pRTData);
 
         m_vActiveStock.push_back(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
@@ -228,9 +228,9 @@ bool CMarket::ProcessRTData(void)
 				ASSERT(gl_vTotalStock.at(lIndex)->GetStockCode().Compare(pStock->GetStockCode()) == 0);
       }
       else {
-        lIndex = m_mapActiveStockToIndex.at(pRTData->m_strStockCode);
+        lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
-        if (pRTData->m_time > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
+        if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
           m_vActiveStock.at(lIndex)->UpdataCurrentStatus(pRTData);
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
@@ -943,18 +943,18 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayKLine.m_StockName = pStock->GetStockName();
     setDayKLine.m_StockCode = pStock->GetStockCode();
     lLastClose = pStock->GetLastClose();
-    setDayKLine.m_LastClose = (double)pStock->GetLastClose() / 1000;
-    setDayKLine.m_Open = (double)pStock->GetOpen() / 1000;
-    setDayKLine.m_High = (double)pStock->GetHigh() / 1000;
-    setDayKLine.m_Low = (double)pStock->GetLow() / 1000;
+    setDayKLine.m_LastClose = static_cast<double>(pStock->GetLastClose()) / 1000;
+    setDayKLine.m_Open = static_cast<double>(pStock->GetOpen()) / 1000;
+    setDayKLine.m_High = static_cast<double>(pStock->GetHigh()) / 1000;
+    setDayKLine.m_Low = static_cast<double>(pStock->GetLow()) / 1000;
     lClose = pStock->GetNew();
-    setDayKLine.m_Close = (double)pStock->GetNew() / 1000;
-    setDayKLine.m_UpAndDown = ((double)(lClose - lLastClose)) / 1000;
+    setDayKLine.m_Close = static_cast<double>(pStock->GetNew()) / 1000;
+    setDayKLine.m_UpAndDown = static_cast<double>(lClose - lLastClose) / 1000;
     if (lLastClose == 0) { // 新上市第一天的股票
       setDayKLine.m_UpDownRate = 0;
     }
     else {
-      setDayKLine.m_UpDownRate = (((double)(lClose - lLastClose)) * 100.0) / lLastClose;
+      setDayKLine.m_UpDownRate = (static_cast<double>(lClose - lLastClose)) * 100.0 / lLastClose;
     }
     
     setDayKLine.m_Volume = pStock->GetVolume();
