@@ -71,11 +71,11 @@ bool CalculateOneDayRelativeStrong(long lDay) {
     if ((((double)setDayKLine.m_Low / setDayKLine.m_LastClose) < 0.88) || (((double)setDayKLine.m_High / setDayKLine.m_LastClose) > 1.12)) { // 除权、新股上市等
       setDayKLine.m_RelativeStrong = 50; // 新股上市或者除权除息，不计算此股
     }
-    else if ((setDayKLine.m_High == setDayKLine.m_Close)
+    else if ((fabs(setDayKLine.m_High - setDayKLine.m_Close) < 0.0001)
       && (((double)setDayKLine.m_Close / setDayKLine.m_LastClose) > 1.095)) { // 涨停板
       setDayKLine.m_RelativeStrong = 100;
     }
-    else if ((setDayKLine.m_Close == setDayKLine.m_Low)
+    else if ((fabs(setDayKLine.m_Close - setDayKLine.m_Low) < 0.0001)
       && (((double)setDayKLine.m_Close / setDayKLine.m_LastClose) < 0.905)) { // 跌停板
       setDayKLine.m_RelativeStrong = 0;
     }
@@ -124,7 +124,7 @@ bool UpdateStockCodeDataBase(void)
     setStockCode.m_StockName = pStockID->GetStockName();
     if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
       if ((pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100))
-        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票为已退市
+        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
         setStockCode.m_IPOed = __STOCK_DELISTED__;
       }
       else {

@@ -92,8 +92,8 @@ public:
   long          GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
   void          SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
 
-	INT64	    GetTotalAttackBuyAmount( void );
-	INT64     GetTotalAttackSellAmount( void );
+	INT64	        GetTotalAttackBuyAmount( void );
+	INT64         GetTotalAttackSellAmount( void );
 
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ClientThreadCalculatingRTDataProc调用。

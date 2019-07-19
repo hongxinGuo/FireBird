@@ -356,7 +356,7 @@ bool CMainFrame::CompileTodayStocks(void) {
 
   if (!gl_ChinaStockMarket.MarketReady()) return false;
 
-  AfxBeginThread(ClientThreadCompileTodayStocks, 0);
+  AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
 
   return(true);
 }

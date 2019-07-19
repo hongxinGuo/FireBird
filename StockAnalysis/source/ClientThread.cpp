@@ -242,7 +242,6 @@ UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
   }
   else {
     lCurrentTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-
   }
 
   int i = gl_ChinaStockMarket.GetTotalStock();
