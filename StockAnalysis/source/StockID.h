@@ -16,29 +16,30 @@ class CStockID {					//证券标识
 public:
   CStockID();
   ~CStockID();
+  void Reset(void);
 
-  WORD      GetMarket(void) { return m_wMarket; }
-  void      SetMarket(WORD wValue) { m_wMarket = wValue; }
+  WORD      GetMarket(void) noexcept { return m_wMarket; }
+  void      SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString   GetStockCode(void) { return m_strStockCode; }
   void      SetStockCode(CString str) { m_strStockCode = str; }
   CString   GetStockName(void) { return m_strStockName; }
   void      SetStockName(CString str) { m_strStockName = str; }
-  long      GetIndex(void) { return m_nIndex; }
-  void      SetIndex(long lValue) { m_nIndex = lValue; }
-  long      GetDayLineStartDay(void) { return m_lDayLineStartDay; }
-  void      SetDayLineStartDay(long lDay) { m_lDayLineStartDay = lDay; }
-  long      GetDayLineEndDay(void) { return m_lDayLineEndDay; }
-  void      SetDayLineEndDay(long lDay) { m_lDayLineEndDay = lDay; }
-  long      GetNewestDayLineDay(void) { return m_lNewestDayLineDay; }
-  void      SetNewestDayLineDay(long lDay) { m_lNewestDayLineDay = lDay; }
-  long      GetIPOStatus(void) { return m_lIPOed; }
-  void      SetIPOStatus(long lValue) { m_lIPOed = lValue; }
-  bool      IsActive(void) { return m_fActive; }
-  void      SetActive(bool fFlag) { m_fActive = fFlag; }
-  bool      IsDayLineNeedUpdate(void) { return m_fDayLineNeedUpdate; }
-  void      SetDayLineNeedUpdate(bool fFlag) { m_fDayLineNeedUpdate = fFlag; }
-  bool      IsInquiringOnce(void) { return m_fInquiringOnce; }
-  void      SetInquiringOnce(bool fFlag) { m_fInquiringOnce = fFlag; }
+  long      GetIndex(void) noexcept { return m_nIndex; }
+  void      SetIndex(long lValue) noexcept { m_nIndex = lValue; }
+  long      GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
+  void      SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
+  long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
+  void      SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
+  long      GetNewestDayLineDay(void) noexcept { return m_lNewestDayLineDay; }
+  void      SetNewestDayLineDay(long lDay) noexcept { m_lNewestDayLineDay = lDay; }
+  long      GetIPOStatus(void) noexcept { return m_lIPOed; }
+  void      SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+  bool      IsActive(void) noexcept { return m_fActive; }
+  void      SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  bool      IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
+  void      SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
+  bool      IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
+  void      SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
 
 protected:
   WORD			m_wMarket;				// 市场

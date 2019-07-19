@@ -4,6 +4,55 @@
 #include"StockID.h"
 
 namespace StockAnalysisTest {
+  TEST(StockIDTest, TestInitialize) {
+    CStockID id;
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_STREQ(id.GetStockName(), _T(""));
+    EXPECT_EQ(id.GetIndex(), -1);
+    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetNewestDayLineDay(), 19900101);
+    EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(id.IsActive());
+    EXPECT_TRUE(id.IsDayLineNeedUpdate());
+    EXPECT_FALSE(id.IsInquiringOnce());
+    id.SetMarket(1);
+    id.SetStockCode(_T("abcde"));
+    id.SetStockName(_T("dcba"));
+    id.SetIndex(1);
+    id.SetDayLineStartDay(20010101);
+    id.SetDayLineEndDay(20020202);
+    id.SetNewestDayLineDay(20030303);
+    id.SetIPOStatus(0);
+    id.SetActive(true);
+    id.SetDayLineNeedUpdate(false);
+    id.SetInquiringOnce(true);
+    EXPECT_EQ(id.GetMarket(), 1);
+    EXPECT_STREQ(id.GetStockCode(), _T("abcde"));
+    EXPECT_STREQ(id.GetStockName(), _T("dcba"));
+    EXPECT_EQ(id.GetIndex(), 1);
+    EXPECT_EQ(id.GetDayLineStartDay(), 20010101);
+    EXPECT_EQ(id.GetDayLineEndDay(), 20020202);
+    EXPECT_EQ(id.GetNewestDayLineDay(), 20030303);
+    EXPECT_EQ(id.GetIPOStatus(), 0);
+    EXPECT_TRUE(id.IsActive());
+    EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    EXPECT_TRUE(id.IsInquiringOnce());
+    id.Reset();
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_STREQ(id.GetStockName(), _T(""));
+    EXPECT_EQ(id.GetIndex(), -1);
+    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetNewestDayLineDay(), 19900101);
+    EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    EXPECT_FALSE(id.IsActive());
+    EXPECT_TRUE(id.IsDayLineNeedUpdate());
+    EXPECT_FALSE(id.IsInquiringOnce());
+
+  }
   TEST(StockIDTest, TestGetMarket) {
     CStockID id;
     EXPECT_EQ(id.GetMarket(), 0);
