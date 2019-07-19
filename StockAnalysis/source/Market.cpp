@@ -67,49 +67,22 @@ void CMarket::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-/////////////////////////////////////////////////////////////////////////
-//
-//	得到分时线偏移量。09:30为0，15:00为240,步长为1分钟
-//
-//
-////////////////////////////////////////////////////////////////////////
-long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
-	ASSERT( Time >= 0 );
-	tm tmTemp{};
-	time_t t = 0;
-	long lIndex = 0;
-
-	localtime_s( &tmTemp, &Time );
-	tmTemp.tm_hour = (9 - 8);			// time_t, tm使用的是国际标准时(UTC),故北京时间09：30即UTC的01：30。要减去8小时
-	tmTemp.tm_min = 30;
-	tmTemp.tm_sec = 0;
-	t = mktime( &tmTemp );
-	lIndex = (Time - t)/60;
-	if ( lIndex < 0 ) lIndex = 0;
-	if ( (lIndex >= 120) && (lIndex < 209) ) lIndex = 119;
-	if ( lIndex >= 210 ) lIndex -= 90;
-	if ( lIndex >= 240 ) lIndex = 239;
-	
-	ASSERT( (lIndex >= 0) && (lIndex < 240) );
-	return( lIndex );
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 初始化所有可能的股票代码池，只被CMainFrame的初始函数调用一次。
-//
+// 初始化所有可能的股票代码池，只被CMarket的初始函数调用一次。
+// 这个函数需要其他全局变量初始化的支持，故而gl_ChinaStockMarket实例需要放在所有全局变量的最后。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::CreateTotalStockContainer(void)
 {
-    char buffer[10];
+  char buffer[10];
 
   StockIDPtr pStockID = nullptr;
   int iCount = 0;
 
   // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
   gl_vTotalStock.clear();
-  //gl_mapTotalStockToIndex.clear();
+  gl_mapTotalStockToIndex.clear();
 
   // 生成上海股票代码
   for (int i = 600000; i < 602000; i++) {
@@ -140,6 +113,33 @@ bool CMarket::CreateTotalStockContainer(void)
   }
 
   return true;
+}
+
+/////////////////////////////////////////////////////////////////////////
+//
+//	得到分时线偏移量。09:30为0，15:00为240,步长为1分钟
+//
+//
+////////////////////////////////////////////////////////////////////////
+long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
+	ASSERT( Time >= 0 );
+	tm tmTemp{};
+	time_t t = 0;
+	long lIndex = 0;
+
+	localtime_s( &tmTemp, &Time );
+	tmTemp.tm_hour = (9 - 8);			// time_t, tm使用的是国际标准时(UTC),故北京时间09：30即UTC的01：30。要减去8小时
+	tmTemp.tm_min = 30;
+	tmTemp.tm_sec = 0;
+	t = mktime( &tmTemp );
+	lIndex = (Time - t)/60;
+	if ( lIndex < 0 ) lIndex = 0;
+	if ( (lIndex >= 120) && (lIndex < 209) ) lIndex = 119;
+	if ( lIndex >= 210 ) lIndex -= 90;
+	if ( lIndex >= 240 ) lIndex = 239;
+	
+	ASSERT( (lIndex >= 0) && (lIndex < 240) );
+	return( lIndex );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

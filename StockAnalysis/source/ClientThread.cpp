@@ -56,15 +56,15 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
 // 
 ///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
-  long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
-  long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
-  long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
+  const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
+  const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
+  const long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
 
   CTime ctCurrent(year, month, day, 12, 0, 0);
 
   DWORD dwToday = gl_ChinaStockMarket.GetRelativeStrongEndDay();
 
-  CTimeSpan oneDay(1, 0, 0, 0);
+  const CTimeSpan oneDay(1, 0, 0, 0);
 
   if (dwToday >= gl_systemTime.GetDay()) return(true);
 
@@ -81,13 +81,14 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (dwToday < gl_systemTime.GetDay());
   time(&tEnd);
-  long tDiffer = tEnd - tStart;
-  long hour = tDiffer / 3600;
-  long min = tDiffer / 60 - hour * 60;
-  long second = tDiffer - hour * 3600 - min * 60;
+  const long tDiffer = tEnd - tStart;
+  const long hour = tDiffer / 3600;
+  const long min = tDiffer / 60 - hour * 60;
+  const long second = tDiffer - hour * 3600 - min * 60;
   char buffer[100];
   sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
-  CString str = buffer;
+  CString str = gl_systemTime.GetTimeStr();
+  str += buffer;
   gl_systemMessage.PushDayLineInfoMessage(str);
 
   return 1;
@@ -104,7 +105,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
     gl_systemStatus.SetRTDataReadingInProcess(true);
     gl_stRTDataInquire.fError = false;
     gl_stRTDataInquire.lByteRead = 0;
-    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire);
+    pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire));
     Sleep(100); // 新浪服务器100ms延迟即可。
     while (!fDone) {
       do {
@@ -168,7 +169,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
     gl_systemStatus.SetReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
-    pFile = (CHttpFile *)session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire);
+    pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
     // 不能采用下述读取文件长度的方式。读取出来的数值不对。
     // pFile->QueryInfo(HTTP_QUERY_CONTENT_LENGTH, str);
     Sleep(siDelayTime);
@@ -241,7 +242,7 @@ UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
   }
   tm tm_;
   localtime_s(&tm_, &time);
-  long lCurrentTradeDay;
+  long lCurrentTradeDay = 0;
   if (tm_.tm_hour < 9) {
     lCurrentTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday - 1;
   }
