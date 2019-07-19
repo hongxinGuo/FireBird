@@ -93,7 +93,7 @@ CMainFrame::CMainFrame()
 void CMainFrame::Reset(void)
 {
   // 生成所有股票代码池.这个函数必须最先调用。
-  CreateTotalStockContainer();
+  //CreateTotalStockContainer();
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
@@ -513,7 +513,7 @@ bool CMainFrame::CreateTotalStockContainer(void)
     pStockID->SetMarket(1); // 上海市场
     pStockID->SetIndex(iCount);
     gl_vTotalStock.push_back(pStockID);
-    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++; // 生成新的映射
+    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++; // 生成新的映射（使用下标）
   }
 
 

@@ -51,6 +51,8 @@ void CMarket::Reset(void)
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
 
   m_fResetm_ItStock = true;
+
+  CreateTotalStockContainer();
 }
 
 #ifdef _DEBUG
@@ -90,6 +92,54 @@ long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
 	
 	ASSERT( (lIndex >= 0) && (lIndex < 240) );
 	return( lIndex );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 初始化所有可能的股票代码池，只被CMainFrame的初始函数调用一次。
+//
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMarket::CreateTotalStockContainer(void)
+{
+    char buffer[10];
+
+  StockIDPtr pStockID = nullptr;
+  int iCount = 0;
+
+  // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
+  gl_vTotalStock.clear();
+  //gl_mapTotalStockToIndex.clear();
+
+  // 生成上海股票代码
+  for (int i = 600000; i < 602000; i++) {
+    CString str = _T("sh");
+    _itoa_s(i, buffer, 10);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(1); // 上海市场
+    pStockID->SetIndex(iCount);
+    gl_vTotalStock.push_back(pStockID);
+    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++; // 生成新的映射（使用下标）
+  }
+
+  ///////////////////////////////////////////////
+  // 生成深圳股票代码
+  for (int i = 0; i < 3000; i++) {
+    CString str = _T("sz");
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(2); // 深圳市场
+    gl_vTotalStock.push_back(pStockID);
+    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++;
+  }
+
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,7 @@ public:
 // interface function
 public:
 	// 初始化市场
+  bool            CreateTotalStockContainer(void);
 
   bool            IsAStock(CStockPtr pStock);			// 是否为沪深A股
   bool            IsAStock(CString strStockCode);			// 是否为沪深A股

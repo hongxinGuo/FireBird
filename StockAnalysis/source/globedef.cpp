@@ -4,8 +4,6 @@
 #include "Market.h"
 #include "SystemTime.h"
 
-CMarket gl_ChinaStockMarket;
-
 CSystemTime gl_sTime;
 
 vector<StockIDPtr>		gl_vTotalStock;
@@ -31,4 +29,5 @@ bool gl_fExitingCalculatingRelativeStrong = false;
 
 long gl_lShowGuaDanTransaction = __ORDINARY_BUY__; // 显示挂单成交具体情况
 
+CMarket gl_ChinaStockMarket; // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 

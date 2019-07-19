@@ -22,7 +22,6 @@ using namespace std;
 
 class CMarket;
 
-extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
 
 extern vector<StockIDPtr>	gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
 extern map<CString, long>	gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
@@ -41,7 +40,7 @@ extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。
 
 typedef struct stDayLine {    // 日线数据结构
-  stDayLine() {
+  stDayLine() noexcept {
     lByteRead = 0;
     fError = false;
     strInquire = "";
@@ -59,7 +58,7 @@ protected:
 extern DayLineInquire gl_stDayLineInquire; 
 
 typedef struct stRTData {
-  stRTData() {
+  stRTData() noexcept {
     lByteRead = 0;
     fError = false;
     strInquire = "";
@@ -76,5 +75,8 @@ extern bool gl_fExiting;
 extern bool gl_fExitingCalculatingRelativeStrong;
 
 extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
+
+// 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
+extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
 
 #endif
