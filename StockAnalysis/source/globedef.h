@@ -40,7 +40,7 @@ extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。
 
 typedef struct stDayLine {    // 日线数据结构
-  stDayLine() noexcept {
+  stDayLine() {
     lByteRead = 0;
     fError = false;
     strInquire = "";
@@ -58,7 +58,7 @@ protected:
 extern DayLineInquire gl_stDayLineInquire; 
 
 typedef struct stRTData {
-  stRTData() noexcept {
+  stRTData() {
     lByteRead = 0;
     fError = false;
     strInquire = "";
