@@ -16,23 +16,23 @@ using namespace std;
 #include<array>
 
 class CStockRTData : public CObject {
-public :
-// 初始化
-	CStockRTData( void );
+public:
+  // 初始化
+  CStockRTData(void);
 
-	void Reset( void );
-	bool SetData( CStockRTData & data );
-	bool SetDataAll( CStockRTData & data );
+  void Reset(void);
+  bool SetData(CStockRTData& data);
+  bool SetDataAll(CStockRTData& data);
 
   // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead);
+  bool CStockRTData::ReadData(char*& pCurrentPos, long& iTotalRead);
 
 public:
-  bool ReadOneValue(char *& pCurrentPos, char * buffer, long & lCounter); // 从file中读入一个浮点数据，最后字符为‘，’。
+  bool ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter); // 从file中读入一个浮点数据，最后字符为‘，’。
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
-  bool ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter); 
+  bool ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& lCounter);
 
-public :
+public:
   time_t GetTime(void) noexcept { return m_time; }
   void SetTime(time_t time) noexcept { m_time = time; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -57,13 +57,21 @@ public :
   void SetAmount(INT64 llValue) noexcept { m_lAmount = llValue; }
   INT64 GetVolume(void) noexcept { return m_lVolume; }
   void SetVolume(INT64 llValue) noexcept { m_lVolume = llValue; }
+  long GetBuy(void) noexcept { return m_lBuy; }
+  void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
+  long GetSell(void) { return m_lSell; }
+  void SetSell(long lValue) { m_lSell = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
+  void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
+  void SetVBuy(int iIndex, long lValue) { m_lVBuy.at(iIndex) = lValue; }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
+  void SetPSell(int iIndex, long lValue) { m_lPSell.at(iIndex) = lValue; }
   long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
+  void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
-  bool IsActive(void) { return m_fActive; }
-  void SetActive(bool fFlag) { m_fActive = fFlag; }
+  bool IsActive(void) noexcept { return m_fActive; }
+  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;

@@ -16,31 +16,31 @@ namespace StockAnalysisTest {
       long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
       long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
       iCount = count;
-      CurrentData.m_lAmount = llAmount;
-      CurrentData.m_lVolume = lVolume;
-      CurrentData.m_lPSell[4] = dS5; CurrentData.m_lVSell[4] = lS5;
-      CurrentData.m_lPSell[3] = dS4; CurrentData.m_lVSell[3] = lS4;
-      CurrentData.m_lPSell[2] = dS3; CurrentData.m_lVSell[2] = lS3;
-      CurrentData.m_lPSell[1] = dS2; CurrentData.m_lVSell[1] = lS2;
-      CurrentData.m_lPSell[0] = dS1; CurrentData.m_lVSell[0] = lS1;
-      CurrentData.m_lPBuy[4] = dB5; CurrentData.m_lVBuy[4] = lB5;
-      CurrentData.m_lPBuy[3] = dB4; CurrentData.m_lVBuy[3] = lB4;
-      CurrentData.m_lPBuy[2] = dB3; CurrentData.m_lVBuy[2] = lB3;
-      CurrentData.m_lPBuy[1] = dB2; CurrentData.m_lVBuy[1] = lB2;
-      CurrentData.m_lPBuy[0] = dB1; CurrentData.m_lVBuy[0] = lB1;
+      CurrentData.SetAmount(llAmount);
+      CurrentData.SetVolume(lVolume);
+      CurrentData.SetPSell(4, dS5); CurrentData.SetVSell(4, lS5);
+      CurrentData.SetPSell(3, dS4); CurrentData.SetVSell(3, lS4);
+      CurrentData.SetPSell(2, dS3); CurrentData.SetVSell(2, lS3);
+      CurrentData.SetPSell(1, dS2); CurrentData.SetVSell(1, lS2);
+      CurrentData.SetPSell(0, dS1); CurrentData.SetVSell(0, lS1);
+      CurrentData.SetPBuy(4, dB5); CurrentData.SetVBuy(4, lB5);
+      CurrentData.SetPBuy(3, dB4); CurrentData.SetVBuy(3, lB4);
+      CurrentData.SetPBuy(2, dB3); CurrentData.SetVBuy(2, lB3);
+      CurrentData.SetPBuy(1, dB2); CurrentData.SetVBuy(1, lB2);
+      CurrentData.SetPBuy(0, dB1); CurrentData.SetVBuy(0, lB1);
 
-      LastData.m_lAmount = llAmountLast;
-      LastData.m_lVolume = lVolumeLast;
-      LastData.m_lPSell[4] = dS5l; LastData.m_lVSell[4] = lS5l;
-      LastData.m_lPSell[3] = dS4l; LastData.m_lVSell[3] = lS4l;
-      LastData.m_lPSell[2] = dS3l; LastData.m_lVSell[2] = lS3l;
-      LastData.m_lPSell[1] = dS2l; LastData.m_lVSell[1] = lS2l;
-      LastData.m_lPSell[0] = dS1l; LastData.m_lVSell[0] = lS1l;
-      LastData.m_lPBuy[4] = dB5l; LastData.m_lVBuy[4] = lB5l;
-      LastData.m_lPBuy[3] = dB4l; LastData.m_lVBuy[3] = lB4l;
-      LastData.m_lPBuy[2] = dB3l; LastData.m_lVBuy[2] = lB3l;
-      LastData.m_lPBuy[1] = dB2l; LastData.m_lVBuy[1] = lB2l;
-      LastData.m_lPBuy[0] = dB1l; LastData.m_lVBuy[0] = lB1l;
+      LastData.SetAmount(llAmountLast);
+      LastData.SetVolume(lVolumeLast);
+      LastData.SetPSell(4, dS5l); LastData.SetVSell(4, lS5l);
+      LastData.SetPSell(3, dS4l); LastData.SetVSell(3, lS4l);
+      LastData.SetPSell(2, dS3l); LastData.SetVSell(2, lS3l);
+      LastData.SetPSell(1, dS2l); LastData.SetVSell(1, lS2l);
+      LastData.SetPSell(0, dS1l); LastData.SetVSell(0, lS1l);
+      LastData.SetPBuy(4, dB5l); LastData.SetVBuy(4, lB5l);
+      LastData.SetPBuy(3, dB4l); LastData.SetVBuy(3, lB4l);
+      LastData.SetPBuy(2, dB3l); LastData.SetVBuy(2, lB3l);
+      LastData.SetPBuy(1, dB2l); LastData.SetVBuy(1, lB2l);
+      LastData.SetPBuy(0, dB1l); LastData.SetVBuy(0, lB1l);
     }
 
   public:
@@ -126,22 +126,22 @@ namespace StockAnalysisTest {
     void SetUp(void) override {
       RTData * pData = GetParam();
       pCurrentData = make_shared<CStockRTData>();
-      pCurrentData->m_lAmount = pData->CurrentData.m_lAmount;
-      pCurrentData->m_lVolume = pData->CurrentData.m_lVolume;
+      pCurrentData->SetAmount(pData->CurrentData.GetAmount());
+      pCurrentData->SetVolume(pData->CurrentData.GetVolume());
       for (int i = 0; i < 5; i++) {
-        pCurrentData->m_lVBuy[i] = pData->CurrentData.m_lVBuy[i];
-        pCurrentData->m_lPBuy[i] = pData->CurrentData.m_lPBuy[i];
-        pCurrentData->m_lVSell[i] = pData->CurrentData.m_lVSell[i];
-        pCurrentData->m_lPSell[i] = pData->CurrentData.m_lPSell[i];
+        pCurrentData->SetVBuy(i, pData->CurrentData.GetVBuy(i));
+        pCurrentData->SetPBuy(i, pData->CurrentData.GetPBuy(i));
+        pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
+        pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
       pLastData = make_shared<CStockRTData>();
-      pLastData->m_lAmount = pData->LastData.m_lAmount;
-      pLastData->m_lVolume = pData->LastData.m_lVolume;
+      pLastData->SetAmount(pData->LastData.GetAmount());
+      pLastData->SetVolume(pData->LastData.GetVolume());
       for (int i = 0; i < 5; i++) {
-        pLastData->m_lVBuy[i] = pData->LastData.m_lVBuy[i];
-        pLastData->m_lPBuy[i] = pData->LastData.m_lPBuy[i];
-        pLastData->m_lVSell[i] = pData->LastData.m_lVSell[i];
-        pLastData->m_lPSell[i] = pData->LastData.m_lPSell[i];
+        pLastData->SetVBuy(i, pData->LastData.GetVBuy(i));
+        pLastData->SetPBuy(i, pData->LastData.GetPBuy(i));
+        pLastData->SetVSell(i, pData->LastData.GetVSell(i));
+        pLastData->SetPSell(i, pData->LastData.GetPSell(i));
       }
       iCount = pData->iCount;
     }

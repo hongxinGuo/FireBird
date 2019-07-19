@@ -268,19 +268,19 @@ namespace StockAnalysisTest {
     CStockRTDataPtr pRTData;
 
     pRTData = make_shared<CStockRTData>();
-    pRTData->m_time = 100100100100;
-    pRTData->m_lLastClose = 11111;
-    pRTData->m_lOpen = 22222;
-    pRTData->m_lNew = 33333;
-    pRTData->m_lHigh = 66666;
-    pRTData->m_lLow = 10000;
-    pRTData->m_lVolume = 1001001001001;
-    pRTData->m_lAmount = 2002002002002;
+    pRTData->SetTime(100100100100);
+    pRTData->SetLastClose(11111);
+    pRTData->SetOpen(22222);
+    pRTData->SetNew(33333);
+    pRTData->SetHigh(66666);
+    pRTData->SetLow(10000);
+    pRTData->SetVolume(1001001001001);
+    pRTData->SetAmount(2002002002002);
     for (int i = 0; i < 5; i++) {
-      pRTData->m_lPBuy[i] = i + 100;
-      pRTData->m_lVBuy[i] = i + 200;
-      pRTData->m_lPSell[i] = i + 300;
-      pRTData->m_lVSell[i] = i + 400;
+      pRTData->SetPBuy(i, i + 100);
+      pRTData->SetVBuy(i, i + 200);
+      pRTData->SetPSell(i, i + 300);
+      pRTData->SetVSell(i, i + 400);
     }
     stock.UpdataCurrentStatus(pRTData);
     EXPECT_EQ(stock.GetTime(), 100100100100);
@@ -301,13 +301,13 @@ namespace StockAnalysisTest {
 
   TEST(StockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CStockRTDataPtr pData = make_shared<CStockRTData>();
-    pData->m_iStockCode = 600000;
+    pData->SetCode(600000);
     CStock stock;
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
     stock.PushRTData(pData);
     EXPECT_EQ(stock.GetRTDataDequeSize(), 1);
     CStockRTDataPtr pData2 = stock.PopRTData();
-    EXPECT_EQ(pData2->m_iStockCode, 600000);
+    EXPECT_EQ(pData2->GetCode(), 600000);
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
   }
 }
