@@ -905,7 +905,10 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   CSetDayLine setDayKLine;
   CSetDayLineInfo setDayLineInfo;
   long lIndex = 0;
-  gl_systemMessage.PushDayLineInfoMessage(_T("开始处理最新交易日的实时数据"));
+
+  CString str = gl_systemTime.GetTimeStr();
+  str += _T("开始处理最新交易日的实时数据");
+  gl_systemMessage.PushDayLineInfoMessage(str);
 
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);

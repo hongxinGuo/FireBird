@@ -72,7 +72,7 @@ time_t CSystemTime::ChangeDayToMarketCloseTime( long lDay ) {
 
 CString CSystemTime::GetTimeStr(void) {
   char buffer[30];
-  sprintf_s(buffer, "%02d:%02d:%02d", m_tm.tm_hour, m_tm.tm_min, m_tm.tm_sec);
+  sprintf_s(buffer, "%02d:%02d:%02d ", m_tm.tm_hour, m_tm.tm_min, m_tm.tm_sec);
   CString str;
   str = buffer;
   return(str);
