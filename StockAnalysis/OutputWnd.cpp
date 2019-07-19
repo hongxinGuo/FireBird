@@ -213,8 +213,9 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
 
   CString str;
   long lTotal = 0;
-
-  if (m_wndOutputInformation.GetCount() > 2000) { // 如果显示列表超过2000个，则删除前面的1000个。
+  
+  // 如果显示列表超过10000个，则删除前面的1000个。
+  if (m_wndOutputInformation.GetCount() > 10000) { 
     for (int i = 0; i < 1000; i++) {
       m_wndOutputInformation.DeleteString(0);
     }
@@ -294,6 +295,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputTrace2.SetTopIndex(m_wndOutputTrace2.GetCount() - 1);
   }
 
+  // 调用基类的OnTimer函数
   CDockablePane::OnTimer(nIDEvent);
 }
 

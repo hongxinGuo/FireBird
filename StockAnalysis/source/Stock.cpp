@@ -68,10 +68,12 @@ void CStock::Reset(void) {
 
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
+  m_lCurrentCanselSellVolume = m_lCurrentCanselBuyVolume = m_lCurrentGuadanTransactionVolume = 0;
 
   m_lFirstDataVolume = 0;
 
   m_dCurrentGuaDanTransactionPrice = 0;
+  m_nCurrentTransactionType = 0;
 
   m_fDayLineLoaded = false;
   m_fDayLineNeededSaving = false;

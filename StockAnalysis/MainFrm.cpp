@@ -363,10 +363,13 @@ bool CMainFrame::CompileTodayStocks(void) {
 
 bool CMainFrame::ResetSystem(void)
 {
-  TRACE("重置系统开始\n");
+  CString str = gl_systemTime.GetTimeStr();
+  TRACE(_T("开始重置系统\n"));
+  str += _T("重置系统");
+  gl_systemMessage.PushInformationMessage(str);
   gl_ChinaStockMarket.Reset();
   Reset();
-  TRACE("重置系统结束\n");
+  TRACE(_T("重置系统结束\n"));
   return false;
 }
 
@@ -422,31 +425,36 @@ bool CMainFrame::GetSinaStockRTData(void)
   INT64 iTotalNumber = 0;
 
   if (!gl_systemStatus.IsRTDataReadingInProcess()) {
-    if ((gl_stRTDataInquire.fError == false) && gl_systemStatus.IsRTDataReceived()) { //网络通信一切顺利？
-      iTotalNumber = gl_stRTDataInquire.lByteRead;
-      pCurrentPos = gl_stRTDataInquire.buffer;
-      long  iCount = 0;
-      while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
-        pRTData = make_shared<CStockRTData>();
-        if (pRTData->ReadData(pCurrentPos, iCount)) {
-          i++;
-          gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+    if (gl_systemStatus.IsRTDataReceived()) {
+      if (gl_stRTDataInquire.fError == false) { //网络通信一切顺利？
+        iTotalNumber = gl_stRTDataInquire.lByteRead;
+        pCurrentPos = gl_stRTDataInquire.buffer;
+        long  iCount = 0;
+        while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
+          pRTData = make_shared<CStockRTData>();
+          if (pRTData->ReadData(pCurrentPos, iCount)) {
+            i++;
+            gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          }
+          else {
+            TRACE("实时数据有误,抛掉不用\n");
+            CString str = gl_systemTime.GetTimeStr();
+            str += _T("实时数据有误");
+            gl_systemMessage.PushInformationMessage(str);
+            iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
+          }
         }
-        else {
-          TRACE("实时数据有误,抛掉不用\n");
-          gl_systemMessage.PushInformationMessage(_T("实时数据有误"));
-          iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
-        }
+        TRACE("读入%d个实时数据\n", i);
+        // 处理接收到的实时数据
+        gl_ChinaStockMarket.ProcessRTData();
       }
-      TRACE("读入%d个实时数据\n", i);
+      else {  // 网络通信出现错误
+        TRACE("Error reading http file ：hq.sinajs.cn\n");
+        CString str = gl_systemTime.GetTimeStr();
+        str += _T("Error reading http file ：hq.sinajs.cn");
+        gl_systemMessage.PushInformationMessage(str);
+      }
     }
-    else {
-      TRACE("Error reading http file ：hq.sinajs.cn\n");
-      gl_systemMessage.PushInformationMessage(_T("Error reading http file ：hq.sinajs.cn"));
-    }
-
-    // 处理接收到的实时数据
-    gl_ChinaStockMarket.ProcessRTData();
 
     bool fFinished = false;
     CString strTemp = _T("");
@@ -726,7 +734,8 @@ bool CMainFrame::SchedulingTask(void)
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
         CString str;
-        str = _T("日线历史数据更新完毕");
+        str = gl_systemTime.GetTimeStr(); 
+        str += _T("日线历史数据更新完毕");
         gl_systemMessage.PushInformationMessage(str);
         UpdateStockCodeDataBase();  // 更新股票池数据库
         ASSERT(gl_setSavingDayLineOnly.IsOpen());

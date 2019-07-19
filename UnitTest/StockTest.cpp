@@ -61,8 +61,11 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetCurrentStrongSell(), 0);
     EXPECT_EQ(stock.GetUnknownVolume(), 0);
     EXPECT_EQ(stock.GetCurrentUnknown(), 0);
+    long l = stock.GetCurrentTransactionType();
     EXPECT_EQ(stock.GetCurrentTransactionType(), 0);
     EXPECT_EQ(stock.GetCurrentTransationVolume(), 0);
+    EXPECT_EQ(stock.GetCancelSellVolume(), 0);
+    EXPECT_EQ(stock.GetCancelBuyVolume(), 0);
     EXPECT_EQ(stock.GetAttackBuyBelow50000(), 0);
     EXPECT_EQ(stock.GetAttackBuyBelow200000(), 0);
     EXPECT_EQ(stock.GetAttackBuyAbove200000(), 0);

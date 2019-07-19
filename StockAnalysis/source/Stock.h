@@ -1,14 +1,14 @@
 #pragma once
 
 enum {
-  __NO_TRANSACTION__ = 0,
   __ATTACK_BUY__ = 1,
   __STRONG_BUY__ = 2,
   __ORDINARY_BUY__ = 3,
   __UNKNOWN_BUYSELL__ = 4,
   __ORDINARY_SELL__ = 5,
   __STRONG_SELL__ = 6,
-  __ATTACK_SELL__ = 7
+  __ATTACK_SELL__ = 7,
+  __NO_TRANSACTION__ = 8
 };
 
 #include"SetDayLine.h"
