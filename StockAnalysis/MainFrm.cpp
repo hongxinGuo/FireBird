@@ -92,19 +92,16 @@ CMainFrame::CMainFrame()
 
 void CMainFrame::Reset(void)
 {
-  // 生成所有股票代码池.这个函数必须最先调用。
-  //CreateTotalStockContainer();
+  // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
   gl_systemTime.CalculateLastTradeDay();
 
-  long lTemp = gl_systemDequeData.GetRTDataDequeSize();
+  const long lTemp = gl_systemDequeData.GetRTDataDequeSize();
   for (int i = 0; i < lTemp; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
   }
-
-  CString str2;
 
   m_lCurrentPos = 0;
 

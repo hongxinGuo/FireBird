@@ -296,50 +296,49 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
 
   // 计算各相对强度
   double dTempRS = 0;
-  long lTotalNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
+  const long lTotalNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
   for (int i = 3; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 3; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d3DayRS = dTempRS / 3;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d3DayRS = dTempRS / 3;
   }
   dTempRS = 0;
-  lTotalNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
   for (int i = 5; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 5; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 5;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d5DayRS = dTempRS / 5;
   }
   for (int i = 10; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 10; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 10;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d10DayRS = dTempRS / 10;
   }
   for (int i = 30; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 30; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 30;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d30DayRS = dTempRS / 30;
   }
   for (int i = 60; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 60; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 60;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d60DayRS = dTempRS / 60;
   }
   for (int i = 120; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 120; j < i; j++) {
-      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[j]->GetRelativeStrong();
+      dTempRS += gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(j)->GetRelativeStrong();
     }
-    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[i]->m_d5DayRS = dTempRS / 120;
+    gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.at(i)->m_d120DayRS = dTempRS / 120;
   }
 
   gl_ChinaStockMarket.m_pCurrentStock->SetDayLineLoaded(true);

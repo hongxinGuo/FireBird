@@ -53,7 +53,7 @@ protected:
   bool      m_fShowRS;
   bool      m_fShow3DayRS;
   bool      m_fShow5DayRS;
-  bool      m_fShow10RS;
+  bool      m_fShow10DayRS;
   bool      m_fShow30DayRS;
   bool      m_fShow60DayRS;
   bool      m_fShow120DayRS;

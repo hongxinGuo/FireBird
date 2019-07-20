@@ -54,9 +54,9 @@ CStockAnalysisView::CStockAnalysisView() noexcept
   m_lCurrentPos = 0;
 
   m_fShowRS = false;
-  m_fShow3DayRS = true;;
+  m_fShow3DayRS = false;;
   m_fShow5DayRS = true;
-  m_fShow10RS = true;
+  m_fShow10DayRS = true;
   m_fShow30DayRS = true;
   m_fShow60DayRS = true;
   m_fShow120DayRS = true;
@@ -190,21 +190,22 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
 
 void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 {
-  COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
+  const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
   COLORREF crBefore;
-  COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
+  const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
   CPen *ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
+  CPen penRed3(PS_SOLID, 3, crRed), penGreen3(PS_SOLID, 3, crGreen), penWhite3(PS_SOLID, 3, crWhite);
   CPen penYellow(PS_SOLID, 1, crYellow);
   CPoint ptCurrent;
 
 
   if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
   if (!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded()) return;
-  long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
+  const long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
 
-  long lXHigh = m_rectClient.bottom / 2;
-  long lXLow = m_rectClient.bottom;
-  long lYEnd = m_rectClient.right;
+  const long lXHigh = m_rectClient.bottom / 2;
+  const long lXLow = m_rectClient.bottom;
+  const long lYEnd = m_rectClient.right;
   long i = 0;
   long y = 0;
   ppen = pDC->SelectObject(&penRed);
@@ -216,12 +217,13 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   // 画相对强度
   if (m_fShowRS) {
     pDC->SelectObject(&penRed);
+    i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right, y);
+    pDC->MoveTo(m_rectClient.right -1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 3 * i++, y);
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
   }
@@ -229,13 +231,13 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   if (m_fShow3DayRS) {
     pDC->SelectObject(&penYellow);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 0;
+    i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right, y);
+    pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 3 * i++, y);
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
       if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
@@ -245,16 +247,82 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   if (m_fShow5DayRS) {
     pDC->SelectObject(&penYellow);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 0;
+    i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right, y);
+    pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 3 * i++, y);
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      i++;
       if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
+  }
+
+  // 画相对强度10日均线
+  if (m_fShow10DayRS) {
+    pDC->SelectObject(&penRed);
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+    i = 1;
+    it--;
+    y = m_rectClient.bottom - (*it--)->m_d10DayRS * m_rectClient.bottom / 200;
+    pDC->MoveTo(m_rectClient.right - 1, y);
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+      y = m_rectClient.bottom - (*it--)->m_d10DayRS * m_rectClient.bottom / 200;
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      i++;
+      if (3 * i > lDayLineNumber) break;
+      if (m_rectClient.right <= 3 * i) break; // 画到
+    }
+  }
+
+  // 画相对强度30日均线
+  if (m_fShow30DayRS) {
+    pDC->SelectObject(&penGreen3);
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+    i = 1;
+    it--;
+    y = m_rectClient.bottom - (*it--)->m_d30DayRS * m_rectClient.bottom / 200;
+    pDC->MoveTo(m_rectClient.right - 1, y);
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+      y = m_rectClient.bottom - (*it--)->m_d30DayRS * m_rectClient.bottom / 200;
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      i++;
+      if (3 * i > lDayLineNumber) break;
+      if (m_rectClient.right <= 3 * i) break; // 画到
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////画日线蜡烛线
+  long iTotalNumber = (m_rectClient.Width() + 2) / 3;
+  long lHigh = 0;
+  it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+  it--;
+  i = 0;
+  long lLow = (*it)->GetLow();
+  for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+    if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
+    if ((*it)->GetLow() > 0) {
+      if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
+    }
+    if (i >= iTotalNumber) break;
+    else i++;
+  }
+
+  it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+  it--;
+  i = 0;
+  long x = 0;
+  pDC->SelectObject(&penWhite);
+  for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+    x = m_rectClient.right - 2 - i * 3;
+    y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
+    pDC->MoveTo(x, y);
+    y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
+    pDC->LineTo(x, y);
+    i++;
+    if (i >= iTotalNumber) break;
   }
   pDC->SelectObject(ppen);
 }

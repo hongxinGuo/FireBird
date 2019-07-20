@@ -991,7 +991,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    gl_fResetSystem = true; // 重启系统
+    //gl_fResetSystem = true; // 重启系统
     i1MinuteCounter = 60;
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
