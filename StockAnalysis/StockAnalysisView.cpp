@@ -62,6 +62,8 @@ CStockAnalysisView::CStockAnalysisView() noexcept
   m_fShow120DayRS = true;
 
   m_uIdTimer = 0;
+
+  m_fCreateMemoryDC = false;
 }
 
 CStockAnalysisView::~CStockAnalysisView()
@@ -213,6 +215,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   pDC->LineTo(0, m_rectClient.bottom * 3 / 4);
   // 显示各相对强度
   vector<CDayLinePtr>::iterator it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+  long lDay = 0;
 
   // 画相对强度
   if (m_fShowRS) {
@@ -222,8 +225,9 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right -1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it)->GetRelativeStrong() * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
+      if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
   }
@@ -236,8 +240,9 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it)->m_d3DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
+      lDay = (*it)->GetDay();
       if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
     }
@@ -252,8 +257,9 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it)->m_d5DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      lDay = (*it)->GetDay();
       i++;
       if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
@@ -262,15 +268,16 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
-    pDC->SelectObject(&penRed);
+    pDC->SelectObject(&penRed3);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->m_d10DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->m_d10DayRS * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it)->m_d10DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      lDay = (*it)->GetDay();
       i++;
       if (3 * i > lDayLineNumber) break;
       if (m_rectClient.right <= 3 * i) break; // 画到
@@ -286,7 +293,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     y = m_rectClient.bottom - (*it--)->m_d30DayRS * m_rectClient.bottom / 200;
     pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it--)->m_d30DayRS * m_rectClient.bottom / 200;
+      y = m_rectClient.bottom - (*it)->m_d30DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
       i++;
       if (3 * i > lDayLineNumber) break;
@@ -306,7 +313,8 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     if ((*it)->GetLow() > 0) {
       if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
     }
-    if (i >= iTotalNumber) break;
+    if (3 * i > lDayLineNumber) break;
+    if (m_rectClient.right <= 3 * i) break; // 画到
     else i++;
   }
 
@@ -321,8 +329,10 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     pDC->MoveTo(x, y);
     y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
     pDC->LineTo(x, y);
+    lDay = (*it)->GetDay();
     i++;
-    if (i >= iTotalNumber) break;
+    if (3 * i > lDayLineNumber) break;
+    if (m_rectClient.right <= 3 * i) break; // 画到
   }
   pDC->SelectObject(ppen);
 }
@@ -349,6 +359,7 @@ void CStockAnalysisView::OnDraw(CDC* pDC)
   CRect rect;
   GetClientRect(&rect);
 	// TODO: 在此处为本机数据添加绘制代码
+  /*
   pDC->SetBkColor(COLORREF(RGB(0, 0, 0)));
   pDC->BitBlt(0, 0, rect.Width(), rect.Height(), NULL, 0, 0, BLACKNESS);
   switch (m_iCurrentShowType) {
@@ -361,7 +372,7 @@ void CStockAnalysisView::OnDraw(CDC* pDC)
   default: // 
     break;
   }
-
+  */
 }
 
 
@@ -434,8 +445,42 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   //UpdateShowBuffer();
+  CDC* pdc;
+  pdc = GetDC();
+  CBitmap* pOldBitmap = nullptr;
 
-  Invalidate();
+  // create memory DC
+  if (!m_fCreateMemoryDC) {
+    m_MemoryDC.CreateCompatibleDC(pdc);
+    m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
+    m_MemoryDC.SetBkColor(RGB(0, 0, 0));
+    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    m_fCreateMemoryDC = TRUE;
+  }
+
+  //UpdateShowBuffer();
+
+  switch (m_iCurrentShowType) {
+  case 1: // show day line stock data
+    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
+    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    ShowStockDayLine(&m_MemoryDC);
+    pdc->BitBlt(0, 0, 1920, 1200, &m_MemoryDC, 0, 0, SRCCOPY);
+    m_MemoryDC.SelectObject(pOldBitmap);
+    break;
+  case 2:	// show realtime stock data
+    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    ShowRealtimeStockData(&m_MemoryDC);
+    pdc->BitBlt(0, 0, 1920, 1200,
+      &m_MemoryDC, 0, 0, SRCCOPY);
+    m_MemoryDC.SelectObject(pOldBitmap);
+    break;
+  default:
+    break;
+  } // switch
+  ReleaseDC(pdc);
 
   CView::OnTimer(nIDEvent);
 }

@@ -46,6 +46,10 @@ protected:
   UINT      m_uIdTimer;
   int       m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
 
+  BOOL			m_fCreateMemoryDC;
+  CDC				m_MemoryDC;
+  CBitmap		m_Bitmap;
+
   CRect			m_rectClient;
 
   long      m_lCurrentPos;
