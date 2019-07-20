@@ -105,7 +105,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetMarket(1); // 上海市场
     pStockID->SetIndex(iCount);
     gl_vTotalStock.push_back(pStockID);
-    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++; // 生成新的映射（使用下标）
+    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   ///////////////////////////////////////////////
@@ -119,7 +119,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetStockCode(str);
     pStockID->SetMarket(2); // 深圳市场
     gl_vTotalStock.push_back(pStockID);
-    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++;
+    gl_mapTotalStockToIndex[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   return true;
@@ -942,7 +942,7 @@ bool CMarket::SchedulingTask(void)
   if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
     GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     if (m_fCountDownRT && MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else iCountDown = 1;
+    else iCountDown = 1;  // 计数两次
   }
   iCountDown--;
 

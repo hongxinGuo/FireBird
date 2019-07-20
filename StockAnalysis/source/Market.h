@@ -32,7 +32,6 @@ public:
 // interface function
 public:
 	// 初始化市场
-  bool            CreateTotalStockContainer(void);
 
   // 实时数据和日线历史数据读取
   bool CreateTodayActiveStockRTInquiringStr(CString& str);
@@ -123,6 +122,11 @@ public:
   // 调度函数，处理本类中的定时更新任务。由注线程的OnTimerha函数调用
   bool          SchedulingTask(void);
   bool          SchedulingTaskPerSecond(void);
+
+private:
+  // 初始化
+  bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
+
 
 public :
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票

@@ -51,9 +51,6 @@ protected:
 
   long                    m_lCurrentPos;
 
-  // 数据库
-  CString									m_strDatabaseDir;
-
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;
 	CMFCToolBar       m_wndToolBar;

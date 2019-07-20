@@ -10,17 +10,33 @@ using namespace std;
 
 namespace StockAnalysisTest {
   TEST(CMarketTest, TestInitialize) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
+    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
     EXPECT_EQ(gl_ChinaStockMarket.m_pCurrentStock, nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.m_fCurrentEditStockChanged);
     EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
-    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStock(), 0);
-    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
-
+    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStock(), 0);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fGetDayLineData);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fCountDownRT);
+    EXPECT_EQ(gl_vTotalStock.size(), 5000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
+    EXPECT_EQ(gl_mapTotalStockToIndex.size(), 5000);
+    EXPECT_STREQ(gl_vTotalStock.at(0)->GetStockCode(), _T("sh600000"));
+    EXPECT_EQ(gl_vTotalStock.at(0)->GetMarket(), 1);
+    EXPECT_STREQ(gl_vTotalStock.at(2000)->GetStockCode(), _T("sz000000"));
+    EXPECT_EQ(gl_vTotalStock.at(2000)->GetMarket(), 2);
+    for (int i = 0; i < 5000; i++) {
+      EXPECT_EQ(gl_vTotalStock.at(i)->GetIndex(), i);
+    }
+    EXPECT_EQ(gl_mapTotalStockToIndex.at(_T("sh600000")), 0);
+    EXPECT_EQ(gl_mapTotalStockToIndex.at(_T("sz000000")), 2000);
   }
+
+
   class MarketTest : public::testing::Test
   {
   protected:
