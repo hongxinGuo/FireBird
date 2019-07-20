@@ -12,6 +12,10 @@ using namespace std;
 #include<vector>
 #include<map>
 
+const CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
+const CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
+const CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+
 class CMarket: public CObject 
 {
 public:
@@ -29,6 +33,13 @@ public:
 public:
 	// 初始化市场
   bool            CreateTotalStockContainer(void);
+
+  // 实时数据和日线历史数据读取
+  bool CreateTodayActiveStockRTInquiringStr(CString& str);
+  bool GetSinaStockRTData(void);
+  bool CreateTodayActiveStockDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool GetNetEaseStockDayLineData(void);
+
 
   bool            IsAStock(CStockPtr pStock);			// 是否为沪深A股
   bool            IsAStock(CString strStockCode);			// 是否为沪深A股
@@ -141,6 +152,16 @@ protected :
 	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
 	INT64										    m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
 	
+  bool                        m_fCreateTodayActiveStockDayLineInquiringStr;
+  bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
+
+  bool										    m_fGetRTStockData;
+  bool										    m_fGetDayLineData;
+  bool                        m_fCountDownRT;
+  int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
+
+  bool                        m_fUpdatedStockCodeDataBase;
+
 private:
 
 

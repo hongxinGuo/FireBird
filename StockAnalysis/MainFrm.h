@@ -13,9 +13,6 @@
 #include"SetStockCode.h"
 #include"SetOption.h"
 
-const CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
-const CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
-const CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 
 class CMainFrame : public CMDIFrameWndEx
 {
@@ -32,18 +29,8 @@ public:
 public:
 
 private:
-  bool CreateTodayActiveStockRTInquiringStr(CString& str);
-  bool GetSinaStockRTData(void);
 
-  bool CreateTotalStockContainer(void);
-  bool CreateTodayActiveStockDayLineInquiringStr(CString& str, CString& strStartDay);
-  bool GetNetEaseStockDayLineData(void);
-
-  bool SchedulingTask(void);
-
-  bool CompileTodayStocks(void);
-
-  // 重置系统（恢复系统的初始态，准备第二天继续工作。午夜时由SchedulingTask调用此函数，不允许其他函数调用。
+  // 重置系统（恢复系统的初始态，准备第二天继续工作。第二天上午9时由SchedulingTask调用此函数，不允许其他函数调用。
   bool ResetSystem(void);
 
 // 重写
@@ -67,13 +54,10 @@ protected:
   // 数据库
   CString									m_strDatabaseDir;
 
-  bool                    m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
-
   bool										m_fGetRTStockData;
   bool										m_fGetDayLineData;
   bool                    m_fCountDownRT;
   int                     m_iCountDownDayLine;        // 日线数据读取延时计数。
-  bool                    m_fCreateStr;
 
   bool                    m_fUpdatedStockCodeDataBase;
 
