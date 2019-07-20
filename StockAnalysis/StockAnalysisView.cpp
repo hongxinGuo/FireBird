@@ -228,7 +228,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       y = m_rectClient.bottom - (*it)->GetRelativeStrong() * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
       if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
   // 画相对强度3日均线
@@ -244,7 +244,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
       lDay = (*it)->GetDay();
       if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
 
@@ -262,7 +262,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       lDay = (*it)->GetDay();
       i++;
       if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
 
@@ -280,7 +280,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       lDay = (*it)->GetDay();
       i++;
       if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
 
@@ -297,7 +297,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
       i++;
       if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
 
@@ -332,7 +332,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     lDay = (*it)->GetDay();
     i++;
     if (3 * i > lDayLineNumber) break;
-    if (m_rectClient.right <= 3 * i) break; // 画到
+    if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
   }
   pDC->SelectObject(ppen);
 }
