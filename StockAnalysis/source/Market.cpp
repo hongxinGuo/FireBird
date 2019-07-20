@@ -61,6 +61,7 @@ void CMarket::Reset(void)
   m_fGetDayLineData = true;
   m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
+  m_iCountDownRT = 1;
 
   CreateTotalStockContainer();
 }
@@ -925,13 +926,9 @@ bool CMarket::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long 
 
 bool CMarket::SchedulingTask(void)
 {
-  static int iCountReadRT = 2;
-  static int iCountDayLine = 2;
-  static int iCountDown = 0;
   static time_t s_time = 0;
 
   gl_systemTime.CalculateTime();
-
 
   //根据时间，调度各项任务.每秒调度一次
   if (gl_systemTime.Gett_time() > s_time) {
@@ -939,12 +936,12 @@ bool CMarket::SchedulingTask(void)
     s_time = gl_systemTime.Gett_time();
   }
 
-  if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
+  if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownRT <= 0)) {
     GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    if (m_fCountDownRT && MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else iCountDown = 1;  // 计数两次
+    if (m_fCountDownRT && MarketReady()) m_iCountDownRT = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    else m_iCountDownRT = 1;  // 计数两次
   }
-  iCountDown--;
+  m_iCountDownRT--;
 
   if (!gl_fExiting && m_fGetDayLineData && MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
     GetNetEaseStockDayLineData();
@@ -975,9 +972,12 @@ bool CMarket::SchedulingTaskPerSecond(void)
   if ((lTime < 91000) || (lTime > 150001)) { //下午三点市场交易结束，
     m_fMarketOpened = false;
   }
+  else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
+    m_fMarketOpened = false;
+  }
   else m_fMarketOpened = true;
 
-  if ((lTime > 150100) && !IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
+  if ((lTime > 150100) && !IsTodayStockCompiled() && m_fMarketOpened) { // 下午三点一分开始处理当日实时数据。
     if (MarketReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
       SetTodayStockCompiledFlag(true);
@@ -991,7 +991,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    //ResetSystem(); // 这个调用处于调试状态，暂时不用
+    gl_fResetSystem = true; // 重启系统
     i1MinuteCounter = 60;
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。

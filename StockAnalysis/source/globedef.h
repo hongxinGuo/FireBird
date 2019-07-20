@@ -73,6 +73,7 @@ extern RTDataInquire gl_stRTDataInquire;
 
 extern bool gl_fExiting;
 extern bool gl_fExitingCalculatingRelativeStrong;
+extern bool gl_fResetSystem; // 系统重启标识
 
 extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
 

@@ -483,6 +483,11 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
+  if (gl_fResetSystem) {
+    ResetSystem();
+    gl_fResetSystem = false;
+  }
+
   gl_ChinaStockMarket.SchedulingTask();
 
   //更新状态条

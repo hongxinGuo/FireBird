@@ -119,7 +119,7 @@ public:
 	bool					ReadOneValue(char *& pCurrentPos, char * buffer, long& iReadNumber);
   bool          ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter);
 
-  // 调度函数，处理本类中的定时更新任务。由注线程的OnTimerha函数调用
+  // 定时更新，完成具体调度任务。由主线程的OnTimerha函数调用
   bool          SchedulingTask(void);
   bool          SchedulingTaskPerSecond(void);
 
@@ -137,6 +137,7 @@ public :
   bool										    m_fGetDayLineData;
   bool                        m_fCountDownRT;
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
+  int                         m_iCountDownRT;
 
 protected :
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
