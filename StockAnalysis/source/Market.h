@@ -122,12 +122,18 @@ public:
 
   // 调度函数，处理本类中的定时更新任务。由注线程的OnTimerha函数调用
   bool          SchedulingTask(void);
+  bool          SchedulingTaskPerSecond(void);
 
 public :
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];
   bool                        m_fCurrentEditStockChanged;
   bool                        m_fMarketOpened;          // 是否开市
+  bool										    m_fGetRTStockData;
+  bool										    m_fGetDayLineData;
+  bool                        m_fCountDownRT;
+  int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
+
 protected :
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
   
@@ -155,10 +161,6 @@ protected :
   bool                        m_fCreateTodayActiveStockDayLineInquiringStr;
   bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
 
-  bool										    m_fGetRTStockData;
-  bool										    m_fGetDayLineData;
-  bool                        m_fCountDownRT;
-  int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
 
   bool                        m_fUpdatedStockCodeDataBase;
 

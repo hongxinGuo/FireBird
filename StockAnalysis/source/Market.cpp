@@ -54,6 +54,13 @@ void CMarket::Reset(void)
   
   m_fCreateTodayActiveStockDayLineInquiringStr = true;
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。 
+  
+  m_fUpdatedStockCodeDataBase = false;
+
+  m_fGetRTStockData = true;
+  m_fGetDayLineData = true;
+  m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
+  m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
 
   CreateTotalStockContainer();
 }
@@ -184,7 +191,7 @@ bool CMarket::GetSinaStockRTData(void)
         }
         TRACE("读入%d个实时数据\n", i);
         // 处理接收到的实时数据
-        gl_ChinaStockMarket.ProcessRTData();
+        ProcessRTData();
       }
       else {  // 网络通信出现错误
         TRACE("Error reading http file ：hq.sinajs.cn\n");
@@ -205,9 +212,9 @@ bool CMarket::GetSinaStockRTData(void)
       if (fFinished) m_fCheckTodayActiveStock = false;
     }
     else {
-      gl_ChinaStockMarket.SetMarketReadyFlag(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+      SetMarketReadyFlag(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
       gl_stRTDataInquire.strInquire = gl_strRTStockSource;
-      gl_ChinaStockMarket.GetInquiringStockStr(gl_stRTDataInquire.strInquire);
+      GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
     gl_systemStatus.SetRTDataReceived(false);
     gl_systemStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
@@ -297,7 +304,7 @@ bool CMarket::CreateTodayActiveStockDayLineInquiringStr(CString& str, CString& s
     ASSERT(0);
   }
   char buffer[30];
-  gl_ChinaStockMarket.SetDownLoadingStockCodeStr(gl_vTotalStock.at(siCounter)->GetStockCode());
+  SetDownLoadingStockCodeStr(gl_vTotalStock.at(siCounter)->GetStockCode());
   str += gl_vTotalStock.at(siCounter)->GetStockCode().Right(6); // 取股票代码的右边六位数字。
   tm tm_;
   tm_.tm_year = gl_vTotalStock.at(siCounter)->GetDayLineEndDay() / 10000 - 1900;
@@ -339,10 +346,10 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   if (!gl_systemStatus.IsReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)(gl_ChinaStockMarket.GetDownLoadingStockCodeStr()), gl_stDayLineInquire.lByteRead);
+        TRACE("股票%s日线数据为%d字节\n", (LPCSTR)(GetDownLoadingStockCodeStr()), gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
-        gl_ChinaStockMarket.ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
+        ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
       }
       else {
         if (gl_stDayLineInquire.lByteRead > 0) {
@@ -361,7 +368,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
 
     // 准备网易日线数据申请格式
     strRead = gl_strDayLineStockSource;
-    sfFoundStock = gl_ChinaStockMarket.CreateTodayActiveStockDayLineInquiringStr(strRead, strStartDay);
+    sfFoundStock = CreateTodayActiveStockDayLineInquiringStr(strRead, strStartDay);
     if (sfFoundStock) {
       strRead += _T("&start=");
       strRead += strStartDay;
@@ -461,7 +468,7 @@ bool CMarket::IsAStock(CString strStockCode) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsStock( CString strStockCode, CStockPtr & pStock ) {
-	if ( (pStock = gl_ChinaStockMarket.GetStockPtr( strStockCode )) != nullptr ) {
+	if ( (pStock = GetStockPtr( strStockCode )) != nullptr ) {
 		return( true );
 	}
 	else {
@@ -916,6 +923,36 @@ bool CMarket::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long 
   return true;
 }
 
+bool CMarket::SchedulingTask(void)
+{
+  static int iCountReadRT = 2;
+  static int iCountDayLine = 2;
+  static int iCountDown = 0;
+  static time_t s_time = 0;
+
+  gl_systemTime.CalculateTime();
+
+
+  //根据时间，调度各项任务.每秒调度一次
+  if (gl_systemTime.Gett_time() > s_time) {
+    SchedulingTaskPerSecond();
+    s_time = gl_systemTime.Gett_time();
+  }
+
+  if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
+    GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    if (m_fCountDownRT && MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    else iCountDown = 1;
+  }
+  iCountDown--;
+
+  if (!gl_fExiting && m_fGetDayLineData && MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
+    GetNetEaseStockDayLineData();
+  }
+
+  return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 定时调度函数，每秒一次
@@ -924,7 +961,7 @@ bool CMarket::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long 
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SchedulingTask(void)
+bool CMarket::SchedulingTaskPerSecond(void)
 {
   static int i10SecondsCounter = 10; // 十秒一次的计算
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
@@ -936,14 +973,14 @@ bool CMarket::SchedulingTask(void)
   else m_fCountDownRT = true;
 
   if ((lTime < 91000) || (lTime > 150001)) { //下午三点市场交易结束，
-    gl_ChinaStockMarket.m_fMarketOpened = false;
+    m_fMarketOpened = false;
   }
-  else gl_ChinaStockMarket.m_fMarketOpened = true;
+  else m_fMarketOpened = true;
 
-  if ((lTime > 150100) && !gl_ChinaStockMarket.IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
-    if (gl_ChinaStockMarket.MarketReady()) {
+  if ((lTime > 150100) && !IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
+    if (MarketReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
-      gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
+      SetTodayStockCompiledFlag(true);
     }
   }
 
@@ -956,7 +993,7 @@ bool CMarket::SchedulingTask(void)
   if (i1MinuteCounter <= 0) {
     //ResetSystem(); // 这个调用处于调试状态，暂时不用
     i1MinuteCounter = 60;
-    if (gl_ChinaStockMarket.IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+    if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
         m_fUpdatedStockCodeDataBase = true;

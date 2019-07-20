@@ -54,13 +54,6 @@ protected:
   // 数据库
   CString									m_strDatabaseDir;
 
-  bool										m_fGetRTStockData;
-  bool										m_fGetDayLineData;
-  bool                    m_fCountDownRT;
-  int                     m_iCountDownDayLine;        // 日线数据读取延时计数。
-
-  bool                    m_fUpdatedStockCodeDataBase;
-
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;
 	CMFCToolBar       m_wndToolBar;

@@ -106,12 +106,6 @@ void CMainFrame::Reset(void)
 
   CString str2;
 
-  m_fUpdatedStockCodeDataBase = false;
-
-  m_fGetRTStockData = true;
-  m_fGetDayLineData = true;
-  m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
-  m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
   m_lCurrentPos = 0;
 
   CSetStockCode setStockCode;
@@ -489,30 +483,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  static int iCountReadRT = 2;
-  static int iCountDayLine = 2;
-  static int iCountDown = 0;
-  static time_t s_time = 0;
-
-  gl_systemTime.CalculateTime();
-
-
-  //根据时间，调度各项任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > s_time) {
-    gl_ChinaStockMarket.SchedulingTask();
-    s_time = gl_systemTime.Gett_time();
-  }
-
-  if (!gl_fExiting && m_fGetRTStockData && (iCountDown <= 0)) {
-    gl_ChinaStockMarket.GetSinaStockRTData(); // 每400毫秒申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    if (m_fCountDownRT && gl_ChinaStockMarket.MarketReady()) iCountDown = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else iCountDown = 1;
-  }
-  iCountDown--;
-
-  if (!gl_fExiting && m_fGetDayLineData && gl_ChinaStockMarket.MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
-    gl_ChinaStockMarket.GetNetEaseStockDayLineData();
-  }
+  gl_ChinaStockMarket.SchedulingTask();
 
   //更新状态条
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
@@ -585,10 +556,10 @@ void CMainFrame::OnCompileTodayStock()
 void CMainFrame::OnDownloadDayline()
 {
   // TODO: 在此添加命令处理程序代码
-  if (!m_fGetDayLineData) {
-    m_fGetDayLineData = true;
+  if (!gl_ChinaStockMarket.m_fGetDayLineData) {
+    gl_ChinaStockMarket.m_fGetDayLineData = true;
   }
-  else m_fGetDayLineData = false;
+  else gl_ChinaStockMarket.m_fGetDayLineData = false;
 }
 
 
