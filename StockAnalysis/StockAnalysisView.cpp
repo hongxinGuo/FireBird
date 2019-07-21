@@ -59,7 +59,7 @@ CStockAnalysisView::CStockAnalysisView() noexcept
   m_fShow10DayRS = true;
   m_fShow30DayRS = true;
   m_fShow60DayRS = true;
-  m_fShow120DayRS = true;
+  m_fShow120DayRS = false;
 
   m_uIdTimer = 0;
 
@@ -125,7 +125,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock,
 void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
   char pch[20];
   CString str;
-  COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
+  COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
   COLORREF crBefore;
   COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
   CPen *ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
@@ -192,12 +192,13 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
 
 void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 {
-  const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
-  COLORREF crBefore;
+  const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
   const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-  CPen *ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
+  CPen *ppen = nullptr, penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed1(PS_SOLID, 1, crRed);
   CPen penRed3(PS_SOLID, 3, crRed), penGreen3(PS_SOLID, 3, crGreen), penWhite3(PS_SOLID, 3, crWhite);
-  CPen penYellow(PS_SOLID, 1, crYellow);
+  CPen penRed2(PS_SOLID, 2, crRed), penGreen2(PS_SOLID, 2, crGreen);
+  CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
+  CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPoint ptCurrent;
 
 
@@ -210,7 +211,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   const long lYEnd = m_rectClient.right;
   long i = 0;
   long y = 0;
-  ppen = pDC->SelectObject(&penRed);
+  ppen = pDC->SelectObject(&penRed1);
   pDC->MoveTo(m_rectClient.right, m_rectClient.bottom * 3 / 4);
   pDC->LineTo(0, m_rectClient.bottom * 3 / 4);
   // 显示各相对强度
@@ -219,7 +220,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
   // 画相对强度
   if (m_fShowRS) {
-    pDC->SelectObject(&penRed);
+    pDC->SelectObject(&penWhite1);
     i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
@@ -233,7 +234,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   }
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
-    pDC->SelectObject(&penYellow);
+    pDC->SelectObject(&penYellow2);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 1;
     it--;
@@ -250,7 +251,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
-    pDC->SelectObject(&penYellow);
+    pDC->SelectObject(&penRed2);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 1;
     it--;
@@ -268,7 +269,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
-    pDC->SelectObject(&penRed3);
+    pDC->SelectObject(&penBlue2);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 1;
     it--;
@@ -286,7 +287,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
 
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
-    pDC->SelectObject(&penGreen3);
+    pDC->SelectObject(&penGreen2);
     it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
     i = 1;
     it--;
@@ -294,6 +295,40 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it)->m_d30DayRS * m_rectClient.bottom / 200;
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      i++;
+      if (3 * i > lDayLineNumber) break;
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+    }
+  }
+  
+  // 画相对强度60日均线
+  if (m_fShow60DayRS) {
+    pDC->SelectObject(&penWhite2);
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+    i = 1;
+    it--;
+    y = m_rectClient.bottom - (*it--)->m_d60DayRS * m_rectClient.bottom / 200;
+    pDC->MoveTo(m_rectClient.right - 1, y);
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+      y = m_rectClient.bottom - (*it)->m_d60DayRS * m_rectClient.bottom / 200;
+      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
+      i++;
+      if (3 * i > lDayLineNumber) break;
+      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+    }
+  }
+  
+  // 画相对强度120日均线
+  if (m_fShow120DayRS) {
+    pDC->SelectObject(&penYellow2);
+    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
+    i = 1;
+    it--;
+    y = m_rectClient.bottom - (*it--)->m_d120DayRS * m_rectClient.bottom / 200;
+    pDC->MoveTo(m_rectClient.right - 1, y);
+    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
+      y = m_rectClient.bottom - (*it)->m_d120DayRS * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
       i++;
       if (3 * i > lDayLineNumber) break;
@@ -321,7 +356,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   it--;
   i = 0;
   long x = 0;
-  pDC->SelectObject(&penWhite);
+  pDC->SelectObject(&penWhite1);
   for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
     x = m_rectClient.right - 2 - i * 3;
     y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
@@ -348,17 +383,17 @@ BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CStockAnalysisView 绘图
 
-void CStockAnalysisView::OnDraw(CDC* pDC)
+void CStockAnalysisView::OnDraw(CDC*)
 {
 	CStockAnalysisDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-  CRect rect;
-  GetClientRect(&rect);
 	// TODO: 在此处为本机数据添加绘制代码
   /*
+  CRect rect;
+  GetClientRect(&rect);
   pDC->SetBkColor(COLORREF(RGB(0, 0, 0)));
   pDC->BitBlt(0, 0, rect.Width(), rect.Height(), NULL, 0, 0, BLACKNESS);
   switch (m_iCurrentShowType) {

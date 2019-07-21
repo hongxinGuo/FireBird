@@ -214,6 +214,7 @@ bool CMarket::GetSinaStockRTData(void)
     }
     else {
       SetMarketReadyFlag(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+      gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
       gl_stRTDataInquire.strInquire = gl_strRTStockSource;
       GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }

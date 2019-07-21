@@ -87,6 +87,8 @@ CMainFrame::CMainFrame()
   AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
   // 启动计算实时数据线程
   AfxBeginThread(ClientThreadCalculatingRTDataProc, GetSafeHwnd());
+  
+  gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
 }
 
@@ -463,31 +465,13 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-  static bool sfShowInitializeStatic = true;
-  static bool sfShowInitializedStatic = true;
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  if (gl_fResetSystem) {
-    sfShowInitializeStatic = true;
-    sfShowInitializedStatic = true; 
-    
+  if (gl_fResetSystem) {    
     ResetSystem();
     gl_fResetSystem = false;
   }
 
   gl_ChinaStockMarket.SchedulingTask();
-
-  if (!gl_ChinaStockMarket.MarketReady()) {
-    if (sfShowInitializeStatic) {
-      gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
-      sfShowInitializeStatic = false;
-    }
-  }
-  else {
-    if (sfShowInitializedStatic) {
-      gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
-      sfShowInitializedStatic = false;
-    }
-  }
 
   //更新状态条
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
