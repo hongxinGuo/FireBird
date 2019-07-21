@@ -9,8 +9,9 @@
 #include"Stock.h"
 #include"Market.h"
 
-#include"SetDayLine.h"
 #include"SetOption.h"
+
+#include"SetDayLine.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
@@ -146,7 +147,8 @@ bool UpdateStockCodeDataBase(void)
   return true;
 }
 
-bool UpdateOptionDataBase(void) {
+bool UpdateOptionDataBase(void)
+{
   CSetOption setOption;
   setOption.Open();
   setOption.m_pDatabase->BeginTrans();
@@ -164,4 +166,7 @@ bool UpdateOptionDataBase(void) {
   }
   setOption.m_pDatabase->CommitTrans();
   setOption.Close();
+  return false;
 }
+
+
