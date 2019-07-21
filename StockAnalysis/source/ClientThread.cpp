@@ -80,6 +80,9 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
     ctCurrent += oneDay;
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (dwToday < gl_systemTime.GetDay());
+
+  UpdateOptionDataBase();
+
   time(&tEnd);
   const long tDiffer = tEnd - tStart;
   const long hour = tDiffer / 3600;

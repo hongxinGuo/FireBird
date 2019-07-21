@@ -170,23 +170,7 @@ CMainFrame::~CMainFrame()
 {
   gl_fExiting = true;
 
-  CSetOption setOption;
-  setOption.Open();
-  setOption.m_pDatabase->BeginTrans();
-  if (setOption.IsEOF()) {
-    setOption.AddNew();
-    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
-    setOption.Update();
-  }
-  else {
-    setOption.Edit();
-    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
-    setOption.Update();
-  }
-  setOption.m_pDatabase->CommitTrans();
-  setOption.Close();
+  UpdateOptionDataBase();
 
   while (gl_systemStatus.IsDataBaseInProcess()) {
     Sleep(50); // 等待处理日线历史数据的线程结束。

@@ -302,7 +302,6 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   }
 
   ////////////////////////////////////////////////////////////////画日线蜡烛线
-  long iTotalNumber = (m_rectClient.Width() + 2) / 3;
   long lHigh = 0;
   it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
   it--;

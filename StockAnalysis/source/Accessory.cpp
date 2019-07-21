@@ -10,6 +10,7 @@
 #include"Market.h"
 
 #include"SetDayLine.h"
+#include"SetOption.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
@@ -143,4 +144,24 @@ bool UpdateStockCodeDataBase(void)
   setStockCode.Close();
 
   return true;
+}
+
+bool UpdateOptionDataBase(void) {
+  CSetOption setOption;
+  setOption.Open();
+  setOption.m_pDatabase->BeginTrans();
+  if (setOption.IsEOF()) {
+    setOption.AddNew();
+    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
+    setOption.Update();
+  }
+  else {
+    setOption.Edit();
+    setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
+    setOption.Update();
+  }
+  setOption.m_pDatabase->CommitTrans();
+  setOption.Close();
 }
