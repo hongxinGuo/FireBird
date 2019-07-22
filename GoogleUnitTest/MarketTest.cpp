@@ -25,19 +25,7 @@ namespace StockAnalysisTest {
     }
 
     static void SetUpTestCase() {
-      CSetStockCode setStockCode;
-      setStockCode.Open();
-      while (!setStockCode.IsEOF()) {
-        if (setStockCode.m_IPOed == __STOCK_IPOED__) {
-          CStockPtr pStock = make_shared<CStock>();
-          pStock->SetActive(true);
-          pStock->SetStockCode(setStockCode.m_StockCode);
-          pStock->SetMarket(setStockCode.m_StockType);
-          gl_ChinaStockMarket.AddStockToMarket(pStock);
-        }
-        setStockCode.MoveNext();
-      }
-      setStockCode.Close();
+      
     }
 
     static void TearDownTestCase() {
