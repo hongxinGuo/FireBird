@@ -397,9 +397,44 @@ void CStockAnalysisView::OnDraw(CDC* pdc)
   ReleaseDC(pdc);
 }
 
+void CStockAnalysisView::Show(CDC* pdc) {
+  CBitmap* pOldBitmap = nullptr;
+
+  // create memory DC
+  if (!m_fCreateMemoryDC) {
+    m_MemoryDC.CreateCompatibleDC(pdc);
+    m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
+    m_MemoryDC.SetBkColor(RGB(0, 0, 0));
+    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    m_fCreateMemoryDC = TRUE;
+  }
+
+  CRect rect;
+  GetClientRect(&rect);
+
+  switch (m_iCurrentShowType) {
+  case 1: // show day line stock data
+    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
+    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+    ShowStockDayLine(&m_MemoryDC);
+    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+    m_MemoryDC.SelectObject(pOldBitmap);
+    break;
+  case 2:	// show realtime stock data
+    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+    ShowRealtimeStockData(&m_MemoryDC);
+    pdc->BitBlt(0, 0, rect.right, rect.bottom,
+      &m_MemoryDC, 0, 0, SRCCOPY);
+    m_MemoryDC.SelectObject(pOldBitmap);
+    break;
+  default:
+    break;
+  } // switch
+}
 
 // CStockAnalysisView 打印
-
 
 void CStockAnalysisView::OnFilePrintPreview()
 {
@@ -451,43 +486,6 @@ void CStockAnalysisView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-void CStockAnalysisView::Show(CDC* pdc) {
-  CBitmap* pOldBitmap = nullptr;
-
-  // create memory DC
-  if (!m_fCreateMemoryDC) {
-    m_MemoryDC.CreateCompatibleDC(pdc);
-    m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
-    m_MemoryDC.SetBkColor(RGB(0, 0, 0));
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
-    m_fCreateMemoryDC = TRUE;
-  }
-
-  CRect rect;
-  GetClientRect(&rect);
-
-  switch (m_iCurrentShowType) {
-  case 1: // show day line stock data
-    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
-    ShowStockDayLine(&m_MemoryDC);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
-    break;
-  case 2:	// show realtime stock data
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
-    ShowRealtimeStockData(&m_MemoryDC);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom,
-      &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
-    break;
-  default:
-    break;
-  } // switch
-}
-
 CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
@@ -503,7 +501,6 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
-  //UpdateShowBuffer();
   CDC* pdc;
   pdc = GetDC();
   

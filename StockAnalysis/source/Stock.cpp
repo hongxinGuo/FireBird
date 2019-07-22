@@ -148,7 +148,14 @@ bool CStock::CalculateRTData(void) {
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
         || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
-        TRACE("%06d %s Error in volume\n", gl_systemTime.GetTime(),  m_strStockCode);
+        int i = 0;
+        if (m_lOrdinaryBuyVolume < 0) i = 1;
+        if (m_lOrdinarySellVolume < 0) i += 2;
+        if (m_lAttackBuyVolume < 0) i += 4;
+        if (m_lAttackSellVolume < 0) i += 8;
+        if (m_lStrongBuyVolume < 0) i += 16;
+        if (m_lStrongSellVolume < 0) i += 32;
+        TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(),  m_strStockCode, i);
       }
       // 显示当前交易情况
       if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
