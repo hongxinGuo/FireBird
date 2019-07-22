@@ -34,9 +34,9 @@ public:
 	// 初始化市场
 
   // 实时数据和日线历史数据读取
-  bool CreateTodayActiveStockRTInquiringStr(CString& str);
+  bool CreateRTDataInquiringStr(CString& str);
   bool GetSinaStockRTData(void);
-  bool CreateTodayActiveStockDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool CreateDayLineInquiringStr(CString& str, CString& strStartDay);
   bool GetNetEaseStockDayLineData(void);
 
 
@@ -52,16 +52,16 @@ public:
 	CStockPtr			  GetStockPtr(CString strStockCode);
 	CStockPtr       GetStockPtr( long lIndex );
 
+  // 存储新股票指针入活跃股票池
+  void            AddStockToMarket(CStockPtr pStock);
+
   // 得到股票ID指针
   bool            GetStockIDPtr(CString strStockCode, StockIDPtr & pStockIDPtr);
 
 	// 得到当前显示股票
 	CStockPtr       GetShowStock( void ) noexcept { return m_pCurrentStock; }
   void					  SetShowStock(CStockPtr pStock);
-  bool            IsCurrentStockChanged(void) noexcept {
-    if (m_fCurrentStockChanged) { m_fCurrentStockChanged = false; return true; }
-    else return false;
-  }
+  bool            IsCurrentStockChanged(void);
 
 	void					SetShowStock( CString strStockCode );
 
@@ -163,7 +163,6 @@ protected :
 	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
 	INT64										    m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
 	
-  bool                        m_fCreateTodayActiveStockDayLineInquiringStr;
   bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
 
 

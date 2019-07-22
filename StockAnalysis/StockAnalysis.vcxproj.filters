@@ -224,6 +224,5 @@
     <None Include="res\StockAnalysis.rc2">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

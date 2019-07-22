@@ -160,7 +160,7 @@ protected:
   WORD      m_wMarket;                // 市场索引
   bool      m_fActive;                // 今天是否接受到实时数据
   CString		m_strStockCode;						// 证券代码，
-  CString		m_strStockName;						// 证券名称
+  CString 	m_strStockName;						// 证券名称
   int       m_iStockCode;             // 证券代码值
   short			m_nHand;									// 每手股数
 

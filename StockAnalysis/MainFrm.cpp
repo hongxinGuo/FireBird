@@ -322,7 +322,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 bool CMainFrame::ResetSystem(void)
 {
-  CString str = gl_systemTime.GetTimeStr();
+  CString str = gl_systemTime.GetTimeString();
   TRACE(_T("开始重置系统\n"));
   str += _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
@@ -485,7 +485,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     gl_ChinaStockMarket.m_fCurrentEditStockChanged = false;
   }
   //更新时间
-  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_systemTime.GetTimeStr());
+  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_systemTime.GetTimeString());
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }

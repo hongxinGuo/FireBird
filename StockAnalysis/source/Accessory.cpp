@@ -98,7 +98,7 @@ bool CalculateOneDayRelativeStrong(long lDay) {
   
   sprintf_s(buffer, "%4d年%2d月%2d日的股票相对强度计算完成", lYear, lMonth, lDayOfMonth);
   CString strTemp;
-  strTemp = gl_systemTime.GetTimeStr();
+  strTemp = gl_systemTime.GetTimeString();
   strTemp += buffer;
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 

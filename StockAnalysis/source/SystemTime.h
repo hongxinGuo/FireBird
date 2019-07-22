@@ -1,5 +1,7 @@
 #pragma once
 
+#include"afxmt.h"
+
 class CSystemTime {
 public:
 	CSystemTime(void);
@@ -8,18 +10,18 @@ public:
   time_t				Gett_time(void) { return m_ttime; }
   void					Sett_time(time_t Time);
 
-  long          GetDay(void) { return m_lToday; }
-  long          GetTime(void) { return m_lTime; }
-  long          GetLastTradeDay(void) { return m_lLastTradeDay; }
-  long          GetDayOfWeek(void) { return m_tm.tm_wday; }
+  long          GetDay(void) noexcept { return m_lToday; }
+  long          GetTime(void) noexcept { return m_lTime; }
+  long          GetLastTradeDay(void) noexcept { return m_lLastTradeDay; }
+  long          GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }
 
-  CString       GetTimeStr(void);
 
   void          CalculateTime(void);
   void          CalculateLastTradeDay(void);
 
 	long					ChangeTimeToDay( time_t time ); // 将时间转变为整型(YYYYMMDD)形式
 	time_t				ChangeDayToMarketCloseTime( long lDay );// 将整型(YYYYMMDD)转变为time_t形式
+  CString       GetTimeString(void);
 
 protected:
   long    m_lToday;          // 今日日期。格式为：19990102

@@ -115,7 +115,7 @@ protected:
 	time_t		  m_time;
 	WORD			  m_wMarket;
 	CString     m_strStockCode;
-	CString		  m_strStockName;
+	CString	  m_strStockName;
 
   // 以下几个价格，是放大了一千倍
 	long			  m_lLastClose;					  // 前收盘。单位：0.001元
