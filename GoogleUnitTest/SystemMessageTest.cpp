@@ -11,6 +11,8 @@
 
 #include"SystemMessage.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(SystemMessageTest, TestGetInformationDequeSize) {
     CSystemMessage message;

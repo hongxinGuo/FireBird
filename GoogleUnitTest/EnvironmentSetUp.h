@@ -3,6 +3,8 @@
 #include"stdafx.h"
 #include"pch.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
 
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。

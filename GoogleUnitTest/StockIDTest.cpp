@@ -3,6 +3,8 @@
 
 #include"StockID.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(StockIDTest, TestInitialize) {
     CStockID id;

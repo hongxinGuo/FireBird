@@ -3,6 +3,7 @@
 
 #include"Stock.h"
 
+using namespace testing;
 using namespace std;
 #include<memory>
 

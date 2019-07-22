@@ -3,6 +3,8 @@
 
 #include"RTData.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(CStockRTDataTest, TestInitialize) {
     CStockRTData RTData;

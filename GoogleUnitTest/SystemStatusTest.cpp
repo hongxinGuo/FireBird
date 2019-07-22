@@ -3,6 +3,8 @@
 
 #include"SystemStatus.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestIsCalculateRSInProcess) {
     CSystemStatus status;

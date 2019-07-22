@@ -8,7 +8,9 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"MarketTest.h"
+#include"EnvironmentSetUp.h"
+
+using namespace testing;
 
 using namespace StockAnalysisTest;
 

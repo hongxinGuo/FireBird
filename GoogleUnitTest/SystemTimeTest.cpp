@@ -3,6 +3,8 @@
 
 #include"SystemTime.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(SystemTimeTest, TestGett_time) {
     CSystemTime systemtime;

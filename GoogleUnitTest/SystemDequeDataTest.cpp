@@ -11,6 +11,8 @@
 
 #include"SystemDequeData.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
     CSystemDequeData dequeData;

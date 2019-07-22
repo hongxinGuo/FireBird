@@ -3,6 +3,8 @@
 
 #include"DayLine.h"
 
+using namespace testing;
+
 namespace StockAnalysisTest {
   TEST(CDayLineTest, TestGetDay) {
     CDayLine dl;

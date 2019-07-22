@@ -139,8 +139,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MarketTest.h">
-      <Filter>Test源文件\实现类</Filter>
+    <ClInclude Include="EnvironmentSetUp.h">
+      <Filter>Test源文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
