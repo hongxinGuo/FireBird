@@ -1,5 +1,5 @@
 #include"stdafx.h"
-#include"gtest/gtest.h"
+#include"pch.h"
 
 #include"Market.h"
 #include"Stock.h"
@@ -11,32 +11,14 @@ using namespace std;
 
 namespace StockAnalysisTest {
 
-  class TestEnvironment : public::testing::Environment {
-  public:
-    virtual ~TestEnvironment() {
-    }
-
-    virtual void SetUp(void) {
-      int a = 0;
-      a = a + 1;
-
-    }
-
-    virtual void TearDown(void) {
-
-    }
-
-  };
-
-
   class CMarketTest : public ::testing::Test
   {
   protected:
-    void SetUp(void) override {
+    virtual void SetUp(void) override {
 
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -141,7 +123,13 @@ namespace StockAnalysisTest {
   }
   
   TEST_F(CMarketTest, TestIsTodayStockCompiled) {
-    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    gl_systemTime.CalculateTime();
+    if (gl_systemTime.GetTime() > 150000) {
+      EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    }
+    else {
+      EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    }
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(false);
