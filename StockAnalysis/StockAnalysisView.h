@@ -42,6 +42,8 @@ public:
 #endif
 
 protected:
+  void      Show(CDC* pdc);
+
 protected:
   UINT      m_uIdTimer;
   int       m_iCurrentShowType;// 当前显示状态（日线或实时。。。）

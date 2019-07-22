@@ -15,6 +15,14 @@ namespace StockAnalysisTest {
   {
   protected:
     void SetUp(void) override {
+
+    }
+
+    void TearDown(void) override {
+      // clearup
+    }
+
+    static void SetUpTestCase() {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
@@ -30,9 +38,9 @@ namespace StockAnalysisTest {
       setStockCode.Close();
     }
 
-    void TearDown(void) override {
-      // clearup
-    }    
+    static void TearDownTestCase() {
+
+    }
   };
  
   TEST_F(CMarketTest, TestInitialize) {

@@ -383,30 +383,18 @@ BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CStockAnalysisView 绘图
 
-void CStockAnalysisView::OnDraw(CDC*)
+void CStockAnalysisView::OnDraw(CDC* pdc)
 {
 	CStockAnalysisDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+  
+  pdc = GetDC();
+  
+  Show(pdc);
 
-	// TODO: 在此处为本机数据添加绘制代码
-  /*
-  CRect rect;
-  GetClientRect(&rect);
-  pDC->SetBkColor(COLORREF(RGB(0, 0, 0)));
-  pDC->BitBlt(0, 0, rect.Width(), rect.Height(), NULL, 0, 0, BLACKNESS);
-  switch (m_iCurrentShowType) {
-  case 0: // 显示实时数据
-    ShowRealtimeStockData(pDC);
-    break;
-  case 1:// 显示日线图和相对强度图
-    ShowStockDayLine(pDC);
-    break;
-  default: // 
-    break;
-  }
-  */
+  ReleaseDC(pdc);
 }
 
 
@@ -463,24 +451,7 @@ void CStockAnalysisView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
-	return (CStockAnalysisDoc*)m_pDocument;
-}
-#endif //_DEBUG
-
-
-// CStockAnalysisView 消息处理程序
-
-
-void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
-{
-  // TODO: 在此添加消息处理程序代码和/或调用默认值
-
-  //UpdateShowBuffer();
-  CDC* pdc;
-  pdc = GetDC();
+void CStockAnalysisView::Show(CDC* pdc) {
   CBitmap* pOldBitmap = nullptr;
 
   // create memory DC
@@ -515,6 +486,29 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
   default:
     break;
   } // switch
+}
+
+CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
+{
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
+	return (CStockAnalysisDoc*)m_pDocument;
+}
+#endif //_DEBUG
+
+
+// CStockAnalysisView 消息处理程序
+
+
+void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
+{
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+
+  //UpdateShowBuffer();
+  CDC* pdc;
+  pdc = GetDC();
+  
+  Show(pdc);
+
   ReleaseDC(pdc);
 
   CView::OnTimer(nIDEvent);
