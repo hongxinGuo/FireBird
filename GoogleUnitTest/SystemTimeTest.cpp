@@ -1,16 +1,28 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
 #include"SystemTime.h"
 
 using namespace testing;
 
 namespace StockAnalysisTest {
+  
+  TEST(SystemTimeTest, TestInitialize) {
+    long l = gl_systemMessage.GetInformationDequeSize();
+    CSystemTime systemtime; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
+    for (int i = 0; i < l+1; i++) {
+      CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
+    }
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+  }
+  
+
   TEST(SystemTimeTest, TestGett_time) {
-    CSystemTime systemtime;
-    EXPECT_EQ(systemtime.Gett_time(), 0);
-    systemtime.Sett_time(100100100100);
-    EXPECT_EQ(systemtime.Gett_time(), 100100100100);
+    EXPECT_NE(gl_systemTime.Gett_time(), 0);
+    gl_systemTime.Sett_time(100100100100);
+    EXPECT_EQ(gl_systemTime.Gett_time(), 100100100100);
   }
   TEST(SystemTimeTest, TestCalculateTime) {
     time_t ttime;
@@ -18,17 +30,16 @@ namespace StockAnalysisTest {
     time(&ttime);
     localtime_s(&tm_, &ttime);
 
-    CSystemTime systemtime;
-    systemtime.Sett_time(ttime);
-    systemtime.CalculateLastTradeDay();
+    gl_systemTime.Sett_time(ttime);
+    gl_systemTime.CalculateLastTradeDay();
 
-    EXPECT_EQ(systemtime.GetDayOfWeek(), tm_.tm_wday);
+    EXPECT_EQ(gl_systemTime.GetDayOfWeek(), tm_.tm_wday);
 
     long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(systemtime.GetDay(), day);
+    EXPECT_EQ(gl_systemTime.GetDay(), day);
 
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
-    EXPECT_EQ(systemtime.GetTime(), time);
+    EXPECT_EQ(gl_systemTime.GetTime(), time);
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
@@ -46,19 +57,19 @@ namespace StockAnalysisTest {
     localtime_s(&tm_, &ttime);
     long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 
-    EXPECT_EQ(systemtime.GetLastTradeDay(), LastTradeDay);
+    EXPECT_EQ(gl_systemTime.GetLastTradeDay(), LastTradeDay);
 
-    systemtime.CalculateTime();
-    ttime = systemtime.Gett_time();
+    gl_systemTime.CalculateTime();
+    ttime = gl_systemTime.Gett_time();
     localtime_s(&tm_, &ttime);
 
-    EXPECT_EQ(systemtime.GetDayOfWeek(), tm_.tm_wday);
+    EXPECT_EQ(gl_systemTime.GetDayOfWeek(), tm_.tm_wday);
 
     day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(systemtime.GetDay(), day);
+    EXPECT_EQ(gl_systemTime.GetDay(), day);
 
     time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
-    EXPECT_EQ(systemtime.GetTime(), time);
+    EXPECT_EQ(gl_systemTime.GetTime(), time);
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
@@ -75,7 +86,7 @@ namespace StockAnalysisTest {
     }
     localtime_s(&tm_, &ttime);
     LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(systemtime.GetLastTradeDay(), LastTradeDay);
+    EXPECT_EQ(gl_systemTime.GetLastTradeDay(), LastTradeDay);
   }
 
 }

@@ -1,65 +1,71 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"SystemStatus.h"
 
 using namespace testing;
 
 namespace StockAnalysisTest {
+  
+  TEST(SystemStatusTest, TestInitialize) {
+    long l = gl_systemMessage.GetInformationDequeSize();
+    CSystemStatus systemStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
+    for (int i = 0; i < l+1; i++) {
+      CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
+    }
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+  }
+  
   TEST(SystemStatusTest, TestIsCalculateRSInProcess) {
-    CSystemStatus status;
-    status.SetCalculateRSInProcess(true);
-    EXPECT_TRUE(status.IsCalculateRSInProcess());
-    status.SetCalculateRSInProcess(false);
-    EXPECT_FALSE(status.IsCalculateRSInProcess());
+    gl_systemStatus.SetCalculateRSInProcess(true);
+    EXPECT_TRUE(gl_systemStatus.IsCalculateRSInProcess());
+    gl_systemStatus.SetCalculateRSInProcess(false);
+    EXPECT_FALSE(gl_systemStatus.IsCalculateRSInProcess());
   }
   
   TEST(SystemStatusTest, TestReadingInProcess) {
-    CSystemStatus status;
-    status.SetReadingInProcess(true);
-    EXPECT_TRUE(status.IsReadingInProcess());
-    status.SetReadingInProcess(false);
-    EXPECT_FALSE(status.IsReadingInProcess());
+    gl_systemStatus.SetReadingInProcess(true);
+    EXPECT_TRUE(gl_systemStatus.IsReadingInProcess());
+    gl_systemStatus.SetReadingInProcess(false);
+    EXPECT_FALSE(gl_systemStatus.IsReadingInProcess());
   }
 
   TEST(SystemStatusTest, TestIsDataBaseInProcess) {
-    CSystemStatus status;
-    status.SetDataBaseInProcess(true);
-    EXPECT_TRUE(status.IsDataBaseInProcess());
-    status.SetDataBaseInProcess(false);
-    EXPECT_FALSE(status.IsDataBaseInProcess());
+    gl_systemStatus.SetDataBaseInProcess(true);
+    EXPECT_TRUE(gl_systemStatus.IsDataBaseInProcess());
+    gl_systemStatus.SetDataBaseInProcess(false);
+    EXPECT_FALSE(gl_systemStatus.IsDataBaseInProcess());
   }
 
   TEST(SystemStatusTest, TestIsRTDataReadInProcess) {
-    CSystemStatus status;
-    status.SetRTDataReadingInProcess(true);
-    EXPECT_TRUE(status.IsRTDataReadingInProcess());
-    status.SetRTDataReadingInProcess(false);
-    EXPECT_FALSE(status.IsRTDataReadingInProcess());
+    gl_systemStatus.SetRTDataReadingInProcess(true);
+    EXPECT_TRUE(gl_systemStatus.IsRTDataReadingInProcess());
+    gl_systemStatus.SetRTDataReadingInProcess(false);
+    EXPECT_FALSE(gl_systemStatus.IsRTDataReadingInProcess());
   }
 
   TEST(SystemStatusTest, TestIsRTDataReceived) {
-    CSystemStatus status;
-    status.SetRTDataReceived(true);
-    EXPECT_TRUE(status.IsRTDataReceived());
-    status.SetRTDataReceived(false);
-    EXPECT_FALSE(status.IsRTDataReceived());
+    gl_systemStatus.SetRTDataReceived(true);
+    EXPECT_TRUE(gl_systemStatus.IsRTDataReceived());
+    gl_systemStatus.SetRTDataReceived(false);
+    EXPECT_FALSE(gl_systemStatus.IsRTDataReceived());
   }
 
   TEST(SystemStatusTest, TestIsRTDataNeedCalculate) {
-    CSystemStatus status;
-    status.SetRTDataNeedCalculate(true);
-    EXPECT_TRUE(status.IsRTDataNeedCalculate());
-    status.SetRTDataNeedCalculate(false);
-    EXPECT_FALSE(status.IsRTDataNeedCalculate());
+    gl_systemStatus.SetRTDataNeedCalculate(true);
+    EXPECT_TRUE(gl_systemStatus.IsRTDataNeedCalculate());
+    gl_systemStatus.SetRTDataNeedCalculate(false);
+    EXPECT_FALSE(gl_systemStatus.IsRTDataNeedCalculate());
   }
 
   TEST(SystemStatusTest, TestIsDayLineDataReady) {
-    CSystemStatus status;
-    status.SetDayLineDataReady(true);
-    EXPECT_TRUE(status.IsDayLineDataReady());
-    status.SetDayLineDataReady(false);
-    EXPECT_FALSE(status.IsDayLineDataReady());
+    gl_systemStatus.SetDayLineDataReady(true);
+    EXPECT_TRUE(gl_systemStatus.IsDayLineDataReady());
+    gl_systemStatus.SetDayLineDataReady(false);
+    EXPECT_FALSE(gl_systemStatus.IsDayLineDataReady());
   }
 
 }

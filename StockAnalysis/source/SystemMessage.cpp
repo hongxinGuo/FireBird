@@ -1,16 +1,14 @@
+#include"globedef.h"
+
 #include "SystemMessage.h"
-
-
 
 CSystemMessage::CSystemMessage()
 {
   static int siCounter = 0;
-  if (siCounter > 1) { 
+  if (siCounter++ > 0) { 
     TRACE("系统消息只允许一个实例\n");
-    m_dequeInformationMessage.push_back(_T("错误：系统消息只允许一个实例"));
+    gl_systemMessage.PushInformationMessage(_T("错误：系统消息只允许生成一个实例"));
   }
-  else siCounter++;
-
 }
 
 

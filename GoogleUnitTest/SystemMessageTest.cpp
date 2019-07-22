@@ -9,58 +9,66 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"SystemMessage.h"
 
 using namespace testing;
 
 namespace StockAnalysisTest {
+  TEST(SystemMessageTest, TestInitialize) {
+    long l = gl_systemMessage.GetInformationDequeSize();
+    CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
+    for (int i = 0; i < l + 1; i++) {
+      CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
+    }
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+  }
+
+
   TEST(SystemMessageTest, TestGetInformationDequeSize) {
-    CSystemMessage message;
-    EXPECT_EQ(message.GetInformationDequeSize(), 0);
-    message.PushInformationMessage(_T("TEST"));
-    EXPECT_EQ(message.GetInformationDequeSize(), 1);
-    CString str = message.PopInformationMessage();
-    EXPECT_EQ(message.GetInformationDequeSize(), 0);
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+    gl_systemMessage.PushInformationMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
   TEST(SystemMessageTest, TestGetDayLineInfoDequeSize) {
-    CSystemMessage message;
-    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 0);
-    message.PushDayLineInfoMessage(_T("TEST"));
-    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 1);
-    CString str = message.PopDayLineInfoMessage();
-    EXPECT_EQ(message.GetDayLineInfoDequeSize(), 0);
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+    gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+    CString str = gl_systemMessage.PopDayLineInfoMessage();
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
   TEST(SystemMessageTest, TestGetFindDequeSize) {
-    CSystemMessage message;
-    EXPECT_EQ(message.GetTransactionDequeSize(), 0);
-    message.PushTransactionMessage(_T("TEST"));
-    EXPECT_EQ(message.GetTransactionDequeSize(), 1);
-    CString str = message.PopTransactionMessage();
-    EXPECT_EQ(message.GetTransactionDequeSize(), 0);
+    EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 0);
+    gl_systemMessage.PushTransactionMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 1);
+    CString str = gl_systemMessage.PopTransactionMessage();
+    EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
   TEST(SystemMessageTest, TestGetCancelSellDequeSize) {
-    CSystemMessage message;
-    EXPECT_EQ(message.GetCancelSellDequeSize(), 0);
-    message.PushCancelSellMessage(_T("TEST"));
-    EXPECT_EQ(message.GetCancelSellDequeSize(), 1);
-    CString str = message.PopCancelSellMessage();
-    EXPECT_EQ(message.GetCancelSellDequeSize(), 0);
+    EXPECT_EQ(gl_systemMessage.GetCancelSellDequeSize(), 0);
+    gl_systemMessage.PushCancelSellMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetCancelSellDequeSize(), 1);
+    CString str = gl_systemMessage.PopCancelSellMessage();
+    EXPECT_EQ(gl_systemMessage.GetCancelSellDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
   TEST(SystemMessageTest, TestGetCancelBuyDequeSize) {
-    CSystemMessage message;
-    EXPECT_EQ(message.GetCancelBuyDequeSize(), 0);
-    message.PushCancelBuyMessage(_T("TEST"));
-    EXPECT_EQ(message.GetCancelBuyDequeSize(), 1);
-    CString str = message.PopCancelBuyMessage();
-    EXPECT_EQ(message.GetCancelBuyDequeSize(), 0);
+    EXPECT_EQ(gl_systemMessage.GetCancelBuyDequeSize(), 0);
+    gl_systemMessage.PushCancelBuyMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetCancelBuyDequeSize(), 1);
+    CString str = gl_systemMessage.PopCancelBuyMessage();
+    EXPECT_EQ(gl_systemMessage.GetCancelBuyDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 

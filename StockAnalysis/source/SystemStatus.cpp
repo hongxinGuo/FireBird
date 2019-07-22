@@ -1,8 +1,17 @@
 #include"stdafx.h"
 
+#include"globedef.h"
+
 #include"SystemStatus.h"
+#include"SystemMessage.h"
 
 CSystemStatus::CSystemStatus() {
+  static int siInstance = 0;
+  if (siInstance++ > 0) {
+    TRACE("系统状态只允许生成一个实例\n");
+    gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
+  }
+  
   m_fReadingInProcess = false;
   m_fDataBaseInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;

@@ -22,19 +22,17 @@ using namespace std;
 
 class CMarket;
 
+extern CSystemMessage     gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
+extern CSystemTime        gl_systemTime;         // 系统时间汇总。
+extern CSystemDequeData   gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
+extern CSystemStatus      gl_systemStatus;       // 系统中的各种状态，被各个工作线程所使用。
 
 extern vector<StockIDPtr>	gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
 extern map<CString, long>	gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 
 extern vector<StockIDPtr> gl_vStockChoice;   // 自选股票池
 
-
 extern CSetDayLine gl_setSavingDayLineOnly; // 此变量专用于存储接收到的日线历史数据。永远打开状态，否则当同时操作数据库时速度奇慢。
-
-extern CSystemTime        gl_systemTime;         // 系统时间汇总。
-extern CSystemMessage     gl_systemMessage;      // 系统消息汇总类，被各个工作线程所使用
-extern CSystemDequeData   gl_systemDequeData;    // 系统中的各种队列，被各个工作线程使用。
-extern CSystemStatus      gl_systemStatus;       // 系统中的各种状态，被各个工作线程所使用。
 
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。

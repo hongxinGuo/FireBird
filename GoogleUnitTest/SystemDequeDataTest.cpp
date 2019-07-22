@@ -9,20 +9,32 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"SystemDequeData.h"
 
 using namespace testing;
 
 namespace StockAnalysisTest {
+  
+  TEST(SystemDaeuqDataTest, TestInitialize) {
+    long l = gl_systemMessage.GetInformationDequeSize();
+    CSystemDequeData systemdeque; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
+    for (int i = 0; i < l+1; i++) {
+      CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
+    }
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
+  }
+  
   TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
-    CSystemDequeData dequeData;
-    EXPECT_EQ(dequeData.GetRTDataDequeSize(), 0);
+    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
     pRTData->SetTime(100100100);
-    dequeData.PushRTData(pRTData);
-    EXPECT_EQ(dequeData.GetRTDataDequeSize(), 1);
-    CStockRTDataPtr p2 = dequeData.PopRTData();
-    EXPECT_EQ(dequeData.GetRTDataDequeSize(), 0);
+    gl_systemDequeData.PushRTData(pRTData);
+    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 1);
+    CStockRTDataPtr p2 = gl_systemDequeData.PopRTData();
+    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 0);
     EXPECT_EQ(p2->GetTime(), 100100100);
   }
 }

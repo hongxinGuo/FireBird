@@ -1,15 +1,16 @@
-#include "SystemDequeData.h"
+#include"globedef.h"
 
+#include "SystemDequeData.h"
+#include "SystemMessage.h"
 
 
 CSystemDequeData::CSystemDequeData()
 {
   static int siCounter = 0;
-  if (siCounter > 1) {
-    TRACE("系统消息只允许一个实例\n");
+  if (siCounter++ > 0) {
+    TRACE("系统数据队列只允许一个实例\n");
+    gl_systemMessage.PushInformationMessage(_T("错误：系统数据队列只允许生成一个实例"));
   }
-  else siCounter++;
-
 }
 
 
