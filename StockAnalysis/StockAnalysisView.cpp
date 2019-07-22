@@ -492,22 +492,23 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
     m_fCreateMemoryDC = TRUE;
   }
 
-  //UpdateShowBuffer();
+  CRect rect;
+  GetClientRect(&rect);
 
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data
     if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
     ShowStockDayLine(&m_MemoryDC);
-    pdc->BitBlt(0, 0, 1920, 1200, &m_MemoryDC, 0, 0, SRCCOPY);
+    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
     m_MemoryDC.SelectObject(pOldBitmap);
     break;
   case 2:	// show realtime stock data
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
     ShowRealtimeStockData(&m_MemoryDC);
-    pdc->BitBlt(0, 0, 1920, 1200,
+    pdc->BitBlt(0, 0, rect.right, rect.bottom,
       &m_MemoryDC, 0, 0, SRCCOPY);
     m_MemoryDC.SelectObject(pOldBitmap);
     break;
@@ -528,7 +529,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
   // TODO:  在此添加您专用的创建代码
   GetClientRect(&m_rectClient);
 
-  m_uIdTimer = SetTimer(3, 500, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。
+  m_uIdTimer = SetTimer(3, 1000, nullptr);     // 1000毫秒每次调度，用于显示实时股票数据。
   if (m_uIdTimer == 0) {
     CString str;
   }

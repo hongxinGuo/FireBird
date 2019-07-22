@@ -33,9 +33,9 @@ namespace StockAnalysisTest {
 
   TEST(CDayLineTest, TestGetStockName) {
     CDayLine dl;
-    EXPECT_STREQ(dl.GetStockName(), (""));
-    dl.SetStockName("浦东银行");
-    EXPECT_STREQ(dl.GetStockName(), ("浦东银行"));
+    EXPECT_STREQ(dl.GetStockName(), _T(""));
+    dl.SetStockName(_T("浦东银行"));
+    EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
   }
 
   TEST(CDayLineTest, TestGetLastClose) {

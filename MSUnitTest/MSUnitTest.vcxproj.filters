@@ -24,6 +24,9 @@
     <ClCompile Include="SystemTimeTest.cpp">
       <Filter>Source Files\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="SystemStatusTest.cpp">
+      <Filter>Source Files\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

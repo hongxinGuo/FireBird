@@ -695,7 +695,7 @@ bool CMarket::ProcessDayLineData(char * buffer, long lLength) {
 			pStock->SetStockCode(pDayLine->GetStockCode());
 			pStock->SetStockName(pDayLine->GetStockName());
 			strTemp = pStock->GetStockCode().Right(6); // 截取股票代码右边的六个数字
-			pStock->SetCode(_wtoi(strTemp.GetBuffer()));
+			pStock->SetCode(atoi(strTemp.GetBuffer()));
 			AddStockToMarket(pStock);
  			lIndex = m_lTotalActiveStock - 1;
      ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);

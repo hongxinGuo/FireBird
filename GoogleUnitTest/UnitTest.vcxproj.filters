@@ -132,4 +132,7 @@
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

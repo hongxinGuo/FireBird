@@ -12,18 +12,20 @@ namespace StockAnalysisUnitTest
 {
 	TEST_CLASS(SystemTimeTest) {
 	public:
-    CSystemTime systemtime;
 		TEST_METHOD(TestGett_time) {
+      CSystemTime systemtime;
       Assert::AreEqual(systemtime.Gett_time(), (time_t)0);
       systemtime.Sett_time(100100100100100100);
       Assert::AreEqual(systemtime.Gett_time(), (time_t)100100100100100100);
 		}
 
     TEST_METHOD(TestGetDay) {
+      CSystemTime systemtime;
       Assert::AreEqual(systemtime.GetDay(), (long)0);
     }
 
     TEST_METHOD(TestCalculateTime) {
+      CSystemTime systemtime;
       time_t ttime;
       tm tm_;
       time(&ttime);
