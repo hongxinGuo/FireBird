@@ -11,6 +11,24 @@ using namespace std;
 
 namespace StockAnalysisTest {
 
+  class TestEnvironment : public::testing::Environment {
+  public:
+    virtual ~TestEnvironment() {
+    }
+
+    virtual void SetUp(void) {
+      int a = 0;
+      a = a + 1;
+
+    }
+
+    virtual void TearDown(void) {
+
+    }
+
+  };
+
+
   class CMarketTest : public ::testing::Test
   {
   protected:

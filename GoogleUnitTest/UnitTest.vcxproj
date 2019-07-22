@@ -40,12 +40,13 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(LibraryPath)</LibraryPath>
+    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;$(IncludePath)</IncludePath>
@@ -54,6 +55,7 @@
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
@@ -99,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MarketTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

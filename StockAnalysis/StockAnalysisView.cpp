@@ -422,11 +422,11 @@ void CStockAnalysisView::Show(CDC* pdc) {
     m_MemoryDC.SelectObject(pOldBitmap);
     break;
   case 2:	// show realtime stock data
+    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
     m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
     ShowRealtimeStockData(&m_MemoryDC);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom,
-      &m_MemoryDC, 0, 0, SRCCOPY);
+    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
     m_MemoryDC.SelectObject(pOldBitmap);
     break;
   default:

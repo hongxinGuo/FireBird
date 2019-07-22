@@ -51,6 +51,9 @@
     <ClCompile Include="SystemTimeTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Test源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
@@ -134,5 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MarketTest.h">
+      <Filter>Test源文件\实现类</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
