@@ -12,7 +12,6 @@ using namespace std;
 #include<vector>
 #include<map>
 
-
 class CMarket: public CObject 
 {
 public:
@@ -29,36 +28,38 @@ public:
 // interface function
 public:
 	// 初始化市场
+  bool          UpdateStockCodeDataBase(void);
+  bool          UpdateOptionDataBase(void);
 
   // 实时数据和日线历史数据读取
-  bool CreateRTDataInquiringStr(CString& str);
-  bool GetSinaStockRTData(void);
-  bool CreateDayLineInquiringStr(CString& str, CString& strStartDay);
-  bool GetNetEaseStockDayLineData(void);
+  bool          CreateRTDataInquiringStr(CString& str);
+  bool          GetSinaStockRTData(void);
+  bool          CreateDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool          GetNetEaseStockDayLineData(void);
 
 
-  bool            IsAStock(CStockPtr pStock);			// 是否为沪深A股
-  bool            IsAStock(CString strStockCode);			// 是否为沪深A股
-  bool            IsStock( CString  strStockCode, CStockPtr & pStock );	// 是否为正确的股票代码
+  bool          IsAStock(CStockPtr pStock);			// 是否为沪深A股
+  bool          IsAStock(CString strStockCode);			// 是否为沪深A股
+  bool          IsStock( CString  strStockCode, CStockPtr & pStock );	// 是否为正确的股票代码
 
-	CString			    GetStockName( CString strStockCode );
+	CString			  GetStockName( CString strStockCode );
 
 	// 得到股票索引
-	bool			      GetStockIndex(CString strStockCode, long & lIndex );
+	bool			    GetStockIndex(CString strStockCode, long & lIndex );
 	// 得到股票指针
-	CStockPtr			  GetStockPtr(CString strStockCode);
-	CStockPtr       GetStockPtr( long lIndex );
+	CStockPtr			GetStockPtr(CString strStockCode);
+	CStockPtr     GetStockPtr( long lIndex );
 
   // 存储新股票指针入活跃股票池
-  void            AddStockToMarket(CStockPtr pStock);
+  void          AddStockToMarket(CStockPtr pStock);
 
   // 得到股票ID指针
-  bool            GetStockIDPtr(CString strStockCode, StockIDPtr & pStockIDPtr);
+  bool          GetStockIDPtr(CString strStockCode, StockIDPtr & pStockIDPtr);
 
 	// 得到当前显示股票
-	CStockPtr       GetShowStock( void ) noexcept { return m_pCurrentStock; }
-  void					  SetShowStock(CStockPtr pStock);
-  bool            IsCurrentStockChanged(void);
+	CStockPtr     GetShowStock( void ) noexcept { return m_pCurrentStock; }
+  void					SetShowStock(CStockPtr pStock);
+  bool          IsCurrentStockChanged(void);
 
 	void					SetShowStock( CString strStockCode );
 
@@ -88,6 +89,7 @@ public:
   bool          IsTotalStockDayLineChecked(void);
 
   bool          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
+  bool          CalculateOneDayRelativeStrong(long lDay);
 
 	bool					IsLoadSelectedStock( void ) noexcept { return m_fLoadedSelectedStock; }
 	void					SetLoadSelectedStock( bool fLoad ) noexcept { m_fLoadedSelectedStock = fLoad; }
@@ -140,7 +142,11 @@ public :
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
   int                         m_iCountDownRT;
 
+  vector<StockIDPtr>	        gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
+  size_t                      GetTotalStockMapIndexSize(void) { return gl_mapTotalStockToIndex.size(); }
+  long                        GetTotalStockIndex(CString str) { return gl_mapTotalStockToIndex.at(str); }
 protected :
+  map<CString, long>	        gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
   
   long                        m_lRelativeStrongStartDay;

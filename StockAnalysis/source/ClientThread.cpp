@@ -74,14 +74,14 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(dwToday); // 设置最后日期。
     if ((ctCurrent.GetDayOfWeek() != 1) // sunday
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
-      CalculateOneDayRelativeStrong(dwToday);
+      gl_ChinaStockMarket.CalculateOneDayRelativeStrong(dwToday);
     }
     if (gl_fExiting) return true;
     ctCurrent += oneDay;
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (dwToday < gl_systemTime.GetDay());
 
-  UpdateOptionDataBase();
+  gl_ChinaStockMarket.UpdateOptionDataBase();
 
   time(&tEnd);
   const long tDiffer = tEnd - tStart;
@@ -256,8 +256,8 @@ UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
   int i = gl_ChinaStockMarket.GetTotalStock();
   gl_ChinaStockMarket.CompileCurrentTradeDayStocks(lCurrentTradeDay);
   i = gl_ChinaStockMarket.GetTotalStock();
-  CalculateOneDayRelativeStrong(lCurrentTradeDay);
-  UpdateStockCodeDataBase(); // 更新代码。
+  gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lCurrentTradeDay);
+  gl_ChinaStockMarket.UpdateStockCodeDataBase(); // 更新代码。
 
   return 7;
 }
