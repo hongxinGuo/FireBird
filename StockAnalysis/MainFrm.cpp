@@ -431,11 +431,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   char buffer[30];
   sprintf_s(buffer, "%d", gl_RTReadingTime);
   str = buffer;
+  str += _T("ms");
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
 
   // 显示日线历史数据读取时间（单位为毫秒）
   sprintf_s(buffer, "%d", gl_DayLineReadingTime);
   str = buffer;
+  str += _T("ms");
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
   //更新时间

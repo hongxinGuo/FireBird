@@ -100,7 +100,37 @@ namespace StockAnalysisTest {
     CString strStartDay;
     strStartDay = _T("20190101");
     gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay);
-    
+    EXPECT_STREQ(str, _T("0600000"));
+    EXPECT_STREQ(strStartDay, _T("19700102")); //最初日期为19700101，这是第二天
+    // 一下四个股票由于不同的原因不查日线历史数据
+    gl_ChinaStockMarket.gl_vTotalStock.at(1)->SetDayLineNeedUpdate(false);
+    gl_ChinaStockMarket.gl_vTotalStock.at(5)->SetDayLineNeedUpdate(false);
+    gl_ChinaStockMarket.gl_vTotalStock.at(7)->SetIPOStatus(__STOCK_NULL__);
+    gl_ChinaStockMarket.gl_vTotalStock.at(6)->SetDayLineEndDay(20190101);
+    for (int i = 0; i < (12 - 4); i++) { // 跨过其他的八个股票，到达随后的两个无效代码处
+      strStartDay = _T("");
+      str = _T("");
+      gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay);
+      EXPECT_STREQ(strStartDay, _T("19700102"));
+    }
+    strStartDay = _T("");
+    str = _T("");
+    EXPECT_TRUE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay)); // 找到股票代码时返回真值
+    EXPECT_STREQ(str, _T("0600015")); // 600013、600014为无效代码，故而不去提取其日线数据
+    EXPECT_STREQ(strStartDay, _T("19700102")); //最初日期为19700101，这是第二天
+
+    // 设置随后的2000个为无需查询状态
+    for (int i = 16; i < 2016; i++) {
+      gl_ChinaStockMarket.gl_vTotalStock.at(i)->SetDayLineNeedUpdate(false);
+    }
+    EXPECT_FALSE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay)); // 此处跨过1000个，返回假值
+    EXPECT_FALSE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay));
+    str = _T("");
+    strStartDay = _T("");
+    EXPECT_TRUE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay));
+    EXPECT_STREQ(str, _T("1000016"));
+    EXPECT_STREQ(strStartDay, _T("19700102"));
+
   }
   
   TEST_F(CMarketTest, TestIsAStock) {
@@ -175,7 +205,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMarketTest, TestGetDownLoadingStockCodeStr) {
-    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
+    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T("sz000016")); // 前面测试时查询到这个代码处
     gl_ChinaStockMarket.SetDownLoadingStockCodeStr(_T("abcd"));
     EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T("abcd"));
   }

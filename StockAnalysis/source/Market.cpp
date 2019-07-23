@@ -390,7 +390,7 @@ bool CMarket::CreateDayLineInquiringStr(CString& str, CString& strStartDay) {
   tTime = mktime(&tm_);
   tTime += 3600 * 24; // 增加一天。
   localtime_s(&tm_, &tTime);
-  long lDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday; // 日线的起始日期是最新日期的后一天。
+  const long lDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday; // 日线的起始日期是最新日期的后一天。
   sprintf_s(buffer, "%8d", lDay);
   strStartDay = buffer;
   siCounter++;

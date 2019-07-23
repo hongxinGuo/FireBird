@@ -18,6 +18,11 @@ namespace StockAnalysisTest {
     }
 
     virtual void SetUp(void) {
+      // 重置股票池状态（因已装入实际状态）
+      for (auto pStockID : gl_ChinaStockMarket.gl_vTotalStock) {
+        pStockID->SetDayLineEndDay(-1);
+        pStockID->SetDayLineNeedUpdate(true);
+      }
       // 初始化股票池
       CSetStockCode setStockCode;
       setStockCode.Open();
