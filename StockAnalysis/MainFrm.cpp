@@ -107,65 +107,6 @@ void CMainFrame::Reset(void)
 
   m_lCurrentPos = 0;
 
-  CSetStockCode setStockCode;
-
-  setStockCode.Open();
-
-  // 装入股票代码数据库
-  while (!setStockCode.IsEOF()) {
-    long lIndex = 1;
-    lIndex = gl_mapTotalStockToIndex.at(setStockCode.m_StockCode);
-    if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
-      gl_vTotalStock.at(lIndex)->SetIPOStatus(setStockCode.m_IPOed);
-    }
-    gl_vTotalStock.at(lIndex)->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
-    if (gl_vTotalStock.at(lIndex)->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
-      gl_vTotalStock.at(lIndex)->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
-    }
-    if (gl_vTotalStock.at(lIndex)->GetNewestDayLineDay() < setStockCode.m_NewestDayLineDay) { // 有时一个股票会有多个记录，以最后的日期为准。
-      gl_vTotalStock.at(lIndex)->SetNewestDayLineDay(setStockCode.m_NewestDayLineDay);
-    }
-    // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-    if (gl_systemTime.GetLastTradeDay() <= gl_vTotalStock.at(lIndex)->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
-      gl_vTotalStock.at(lIndex)->SetDayLineNeedUpdate(false); // 日线数据不需要更新
-    }
-    if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
-      gl_vTotalStock.at(lIndex)->SetDayLineNeedUpdate(false);
-    }
-    if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票不需更新日线数据
-      gl_vTotalStock.at(lIndex)->SetDayLineNeedUpdate(false);
-    }
-    setStockCode.MoveNext();
-  }
-  setStockCode.Close();
-
-  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-  gl_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  if( !gl_setSavingDayLineOnly.IsOpen() ) gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
-
-
-  CSetOption setOption;
-  setOption.Open();
-  if (setOption.IsEOF()) {
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-  }
-  else {
-    if (setOption.m_RelativeStrongEndDay == 0) {
-      gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-    }
-    else {
-      gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
-    }
-    if (setOption.m_RalativeStrongStartDay == 0) {
-      gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
-    }
-    else {
-      gl_ChinaStockMarket.SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
-    }
-  }
-  setOption.Close();
-
 }
 
 CMainFrame::~CMainFrame()

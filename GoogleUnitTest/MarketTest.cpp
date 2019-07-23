@@ -94,6 +94,14 @@ namespace StockAnalysisTest {
     str2 = str.Left(8);
     EXPECT_EQ(str2.Compare(strCompare), 0);
   }
+
+  TEST_F(CMarketTest, TestCreateDayLineInquiringStr) {
+    CString str;
+    CString strStartDay;
+    strStartDay = _T("20190101");
+    gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay);
+    
+  }
   
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
