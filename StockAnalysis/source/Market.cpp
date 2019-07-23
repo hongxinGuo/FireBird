@@ -1098,8 +1098,11 @@ bool CMarket::SchedulingTaskPerSecond(void)
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetStockName( CString strStockCode ) {
-	long lIndex = m_mapActiveStockToIndex[strStockCode];
-	return ( m_vActiveStock.at(lIndex)->GetStockName());
+  if (m_mapActiveStockToIndex.find(strStockCode) != m_mapActiveStockToIndex.end()) {
+    long lIndex = m_mapActiveStockToIndex.at(strStockCode);
+    return (m_vActiveStock.at(lIndex)->GetStockName());
+  }
+  else return _T("");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1112,10 +1115,10 @@ CString CMarket::GetStockName( CString strStockCode ) {
 bool CMarket::GetStockIndex(CString strStockCode, long & lIndex) {
 
   if (m_mapActiveStockToIndex.find(strStockCode) == m_mapActiveStockToIndex.end()) {
+    lIndex = -1;
     return false;
   }
-  else lIndex = m_mapActiveStockToIndex[strStockCode];
-
+  else lIndex = m_mapActiveStockToIndex.at(strStockCode);
 	return true;
 }
 

@@ -31,6 +31,7 @@ namespace StockAnalysisTest {
           CStockPtr pStock = make_shared<CStock>();
           pStock->SetActive(true);
           pStock->SetStockCode(setStockCode.m_StockCode);
+          //pStock->SetStockName(setStockCode.m_StockName); // 字符串制式不相符
           pStock->SetMarket(setStockCode.m_StockType);
           gl_ChinaStockMarket.AddStockToMarket(pStock);
         }

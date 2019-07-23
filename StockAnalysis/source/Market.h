@@ -33,6 +33,7 @@ public:
 
   // 实时数据和日线历史数据读取
   bool          CreateRTDataInquiringStr(CString& str);
+  int						GetInquiringStockStr(CString& str);
   bool          GetSinaStockRTData(void);
   bool          CreateDayLineInquiringStr(CString& str, CString& strStartDay);
   bool          GetNetEaseStockDayLineData(void);
@@ -111,7 +112,6 @@ public:
 
   //处理实时股票变化等
   bool          ProcessRTData(void);
-  int						GetInquiringStockStr(CString& str);
   // 处理日线历史数据
   bool					ProcessDayLineData(char * buffer, long lLength);
 	bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPos, long & lLength);

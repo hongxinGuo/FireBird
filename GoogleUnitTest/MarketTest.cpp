@@ -95,6 +95,20 @@ namespace StockAnalysisTest {
     EXPECT_EQ(str2.Compare(strCompare), 0);
   }
 
+  TEST_F(CMarketTest, TestGetInquiringStockStr) {
+    CString str;
+    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+    str = _T("");
+    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+    str = _T("");
+    long l = 0;
+    EXPECT_GT(900, gl_ChinaStockMarket.GetInquiringStockStr(str));
+    str = _T("");
+    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+    CString str2 = str.Left(9);
+    EXPECT_STREQ(str2, _T(",sh600000"));
+  }
+
   TEST_F(CMarketTest, TestCreateDayLineInquiringStr) {
     CString str;
     CString strStartDay;
@@ -159,8 +173,24 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 1);
     EXPECT_TRUE(gl_ChinaStockMarket.IsStock(_T("sh600000"), pstock));
     EXPECT_NE(pstock, nullptr);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStock(_T("sh60000"), pstock));
+    EXPECT_EQ(pstock, nullptr);
   }
 
+  TEST_F(CMarketTest, TestGetStockName) {
+    // 未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
+    //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh600000")), _T("浦发银行"));
+    //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
+
+  }
+
+  TEST_F(CMarketTest, TestGetStockIndex) {
+    long lIndex = -2;
+    EXPECT_TRUE(gl_ChinaStockMarket.GetStockIndex(_T("sh600000"), lIndex));
+    EXPECT_STREQ(gl_ChinaStockMarket.GetStockPtr(lIndex)->GetStockCode(), _T("sh600000"));
+    EXPECT_FALSE(gl_ChinaStockMarket.GetStockIndex(_T("sh60000"), lIndex));
+    EXPECT_EQ(lIndex, -1);
+  }
   TEST_F(CMarketTest, TestGetShowStock) {
     CStockPtr pStock = make_shared<CStock>();
     EXPECT_EQ(gl_ChinaStockMarket.GetShowStock(), nullptr);
