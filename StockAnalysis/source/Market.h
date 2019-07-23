@@ -12,9 +12,6 @@ using namespace std;
 #include<vector>
 #include<map>
 
-const CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
-const CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
-const CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 
 class CMarket: public CObject 
 {
@@ -129,6 +126,10 @@ private:
 
 
 public :
+  const CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
+  const CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
+  const CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+  
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];
   bool                        m_fCurrentEditStockChanged;

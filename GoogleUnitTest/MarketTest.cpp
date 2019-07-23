@@ -24,7 +24,7 @@ namespace StockAnalysisTest {
       // clearup
     }
 
-    static void SetUpTestCase() {
+    static void SetUpTestCase() { // 本测试类的初始化函数
       
     }
 
@@ -34,6 +34,9 @@ namespace StockAnalysisTest {
   };
  
   TEST_F(CMarketTest, TestInitialize) {
+    EXPECT_EQ(gl_ChinaStockMarket.gl_strRTStockSource.Compare(_T("http://hq.sinajs.cn/list=")), 0);
+    EXPECT_EQ(gl_ChinaStockMarket.gl_strDayLineStockSource.Compare("http://quotes.money.163.com/service/chddata.html?code="), 0);
+    EXPECT_EQ(gl_ChinaStockMarket.gl_strDayLinePostfix.Compare("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"), 0);
     EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
@@ -61,8 +64,37 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_mapTotalStockToIndex.at(_T("sh600000")), 0);
     EXPECT_EQ(gl_mapTotalStockToIndex.at(_T("sz000000")), 2000);
   }
-
-
+  
+  TEST_F(CMarketTest, TestCreateRTDataInquiringStr) {
+    CString str;
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    CString strCompare, str2;
+    strCompare = gl_vTotalStock.at(898)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_vTotalStock.at(1796)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_vTotalStock.at(2694)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_vTotalStock.at(3592)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_vTotalStock.at(4490)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_vTotalStock.at(0)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+  }
+  
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
     pstock->SetStockCode(_T("sh600000"));

@@ -40,6 +40,12 @@ namespace StockAnalysisTest {
 
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
     EXPECT_EQ(gl_systemTime.GetTime(), time);
+    char buffer[30];
+    sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+    CString str;
+    str = buffer;
+
+    EXPECT_EQ(str.Compare(gl_systemTime.GetTimeString()), 0);
 
     switch (tm_.tm_wday) {
     case 1: // ÐÇÆÚÒ»

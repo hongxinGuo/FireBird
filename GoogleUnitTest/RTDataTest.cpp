@@ -135,6 +135,7 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
+      delete m_pData;
     }
 
   public:
@@ -954,6 +955,7 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
+      delete m_pData;
     }
 
   public:
@@ -1058,6 +1060,7 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
+      delete m_pData;
     }
 
   public:
