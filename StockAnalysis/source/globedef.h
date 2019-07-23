@@ -75,4 +75,7 @@ extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
 
+extern clock_t gl_RTReadingTime;
+extern clock_t gl_DayLineReadingTime;
+
 #endif

@@ -51,7 +51,7 @@ void CMarket::Reset(void)
   time(&ttime);
   tm tm_;
   localtime_s(&tm_, &ttime);
-  if (tm_.tm_hour > 15) { // 中国股票市场已经闭市
+  if (tm_.tm_hour >= 15) { // 中国股票市场已经闭市
     m_fTodayStockCompiled = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
   else m_fTodayStockCompiled = false;

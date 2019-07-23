@@ -104,6 +104,9 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   long iCount = 0;
   bool fDone = false;
   char * pChar = gl_stRTDataInquire.buffer;
+
+  clock_t tt = clock();
+
   try {
     gl_systemStatus.SetRTDataReadingInProcess(true);
     gl_stRTDataInquire.fError = false;
@@ -138,6 +141,8 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   if (pFile) delete pFile;
   gl_systemStatus.SetRTDataReadingInProcess(false);
 
+  gl_RTReadingTime = clock() - tt;
+
   return 4;
 }
 
@@ -168,6 +173,8 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
   char * pChar = gl_stDayLineInquire.buffer;
   CString str;
 
+  clock_t tt = clock();
+  
   try {
     gl_systemStatus.SetReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
@@ -216,6 +223,9 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
     fStarted = true;
     siDelayTime = 50;
   }
+
+  gl_DayLineReadingTime = clock() - tt;
+
   return 5;
 }
 

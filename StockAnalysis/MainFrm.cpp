@@ -70,6 +70,8 @@ static UINT indicators[] =
   ID_CURRENT_INPUT,
   ID_CURRENT_SELECT_STOCK,
   ID_CURRENT_SELECT_STOCKNAME,
+  ID_CURRENT_RTDATA_READING_TIME,
+  ID_CURRENT_DAYLINE_READING_TIME,
   ID_CURRENT_TIME,
 };
 
@@ -425,8 +427,19 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
     gl_ChinaStockMarket.m_fCurrentEditStockChanged = false;
   }
+  // 显示实时数据读取时间（单位为毫秒）
+  char buffer[30];
+  sprintf_s(buffer, "%d", gl_RTReadingTime);
+  str = buffer;
+  m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
+
+  // 显示日线历史数据读取时间（单位为毫秒）
+  sprintf_s(buffer, "%d", gl_DayLineReadingTime);
+  str = buffer;
+  m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
+
   //更新时间
-  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_systemTime.GetTimeString());
+  m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_systemTime.GetTimeString());
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }
