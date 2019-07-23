@@ -1154,6 +1154,7 @@ bool CMarket::GetStockIDPtr(CString strStockCode, StockIDPtr& pStockIDPtr)
 {
   long lIndex = 0;
   if (gl_mapTotalStockToIndex.find(strStockCode) == gl_mapTotalStockToIndex.end()) { // Œ¥’“µΩ
+    pStockIDPtr = nullptr;
     return false;
   }
   lIndex = gl_mapTotalStockToIndex.at(strStockCode);

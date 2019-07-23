@@ -191,6 +191,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.GetStockIndex(_T("sh60000"), lIndex));
     EXPECT_EQ(lIndex, -1);
   }
+
+  TEST_F(CMarketTest, TestGetStockIDPtr) {
+    StockIDPtr pID = nullptr;
+    EXPECT_TRUE(gl_ChinaStockMarket.GetStockIDPtr(_T("sh600000"), pID));
+    EXPECT_STREQ(pID->GetStockCode(), _T("sh600000"));
+    EXPECT_FALSE(gl_ChinaStockMarket.GetStockIDPtr(_T("sh600"), pID));
+    EXPECT_EQ(pID, nullptr);
+  }
   TEST_F(CMarketTest, TestGetShowStock) {
     CStockPtr pStock = make_shared<CStock>();
     EXPECT_EQ(gl_ChinaStockMarket.GetShowStock(), nullptr);

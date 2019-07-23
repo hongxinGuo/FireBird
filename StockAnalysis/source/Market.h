@@ -59,10 +59,9 @@ public:
 
 	// 得到当前显示股票
 	CStockPtr     GetShowStock( void ) noexcept { return m_pCurrentStock; }
+	void					SetShowStock( CString strStockCode );
   void					SetShowStock(CStockPtr pStock);
   bool          IsCurrentStockChanged(void);
-
-	void					SetShowStock( CString strStockCode );
 
 	long					GetTotalStock( void ) noexcept { return m_lTotalActiveStock; }
 
@@ -71,12 +70,12 @@ public:
 	bool					MarketReady( void ) noexcept { return m_fMarketReady; }
   void          SetMarketReadyFlag(bool fFlag) noexcept { m_fMarketReady = fFlag; }
 
+  bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
+  void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
+
 	bool					SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCode,
                             CStockPtr pStock, vector<CDayLinePtr> & vectorDayLine, bool fReversed = true );
   bool          SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine);
-
-  bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
-  void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
 
   // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool          SaveRTData(void);
