@@ -127,9 +127,9 @@ private:
 
 
 public :
-  const CString gl_strRTStockSource = _T("http://hq.sinajs.cn/list=");
-  const CString gl_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
-  const CString gl_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+  const CString m_strRTStockSource = _T("http://hq.sinajs.cn/list=");
+  const CString m_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
+  const CString m_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
   
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];
@@ -141,11 +141,11 @@ public :
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
   int                         m_iCountDownRT;
 
-  vector<StockIDPtr>	        gl_vTotalStock;             // 本系统允许的所有股票池（无论代码是否存在）
-  size_t                      GetTotalStockMapIndexSize(void) { return gl_mapTotalStockToIndex.size(); }
-  long                        GetTotalStockIndex(CString str) { return gl_mapTotalStockToIndex.at(str); }
+  vector<StockIDPtr>	        m_vChinaMarketAStock;             // 本系统允许的所有股票池（无论代码是否存在）
+  size_t                      GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
+  long                        GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 protected :
-  map<CString, long>	        gl_mapTotalStockToIndex;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+  map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
   
   long                        m_lRelativeStrongStartDay;

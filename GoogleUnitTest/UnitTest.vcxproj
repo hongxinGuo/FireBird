@@ -100,10 +100,10 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="EnvironmentSetUp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnvironmentSetUp.h" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
