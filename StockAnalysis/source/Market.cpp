@@ -1219,7 +1219,7 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     }
   }
   else {
-    for (int i = 0; i < vectorDayLine.size(); i++) { // 数据是倒序存储的，需要从尾部开始存储
+    for (int i = 0; i < vectorDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
       auto pDayLine = vectorDayLine.at(i);
       lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
       if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
@@ -1229,13 +1229,13 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
   psetDayLine->m_pDatabase->CommitTrans();
 
   // 更新最新日线日期和起始日线日期
-  bool fSave = false;
+  bool fSaved = false;
   if (fReversed) {
     m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(vectorDayLine.size()-1)->GetDay());
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(0)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      fSave = true;
+      fSaved = true;
     }
   }
   else {
@@ -1243,11 +1243,11 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(vectorDayLine.size() - 1)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      fSave = true;
+      fSaved = true;
     }
   }
 
-  if (fSave) {
+  if (fSaved) {
     psetStockCode->m_pDatabase->BeginTrans();
     psetStockCode->AddNew();
     psetStockCode->m_Counter = m_vChinaMarketAStock.at(lIndex)->GetIndex();
