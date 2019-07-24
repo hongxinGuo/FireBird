@@ -57,6 +57,7 @@
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
+    <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="StockIDTest.cpp" />

@@ -54,6 +54,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
+    <ClCompile Include="NetEaseDayLineDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
