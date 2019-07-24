@@ -26,7 +26,7 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
     if (gl_fExiting) { // 
       return 0; // 
     }
-    if (gl_ChinaStockMarket.MarketReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
+    if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
       gl_ChinaStockMarket.CalculateRTData();
       gl_systemStatus.SetRTDataNeedCalculate(false); 
     }

@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.m_strDayLinePostfix.Compare(_T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP")), 0);
     EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
-    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_EQ(gl_ChinaStockMarket.m_pCurrentStock, nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.m_fCurrentEditStockChanged);
     EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
@@ -49,9 +49,9 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetDayLineData);
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fCountDownRT);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 2);
-    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownRT, 1);
+    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 1);
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.size(), 5000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockMapIndexSize(), 5000);
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode(), _T("sh600000"));
@@ -213,11 +213,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMarketTest, TestMarketReady) {
-    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
-    gl_ChinaStockMarket.SetMarketReadyFlag(true);
-    EXPECT_TRUE(gl_ChinaStockMarket.MarketReady());
-    gl_ChinaStockMarket.SetMarketReadyFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.MarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.SetSystemReady(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.SetSystemReady(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
   }
   
   TEST_F(CMarketTest, TestIsTodayStockCompiled) {

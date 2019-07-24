@@ -38,7 +38,7 @@ void CMarket::Reset(void)
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fLoadedSelectedStock = false;
-  m_fMarketReady = false;    // 市场初始状态为未设置好。
+  m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
   m_fCurrentEditStockChanged = false;
 
@@ -58,6 +58,8 @@ void CMarket::Reset(void)
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
 
   m_fResetm_ItStock = true;
+
+  m_fTempDataLoaded = false;
   
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。 
   
@@ -65,9 +67,9 @@ void CMarket::Reset(void)
 
   m_fGetRTStockData = true;
   m_fGetDayLineData = true;
-  m_fCountDownRT = true;      // 初始时执行慢速查询实时行情。
+  m_fSlowReadingRTData = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
-  m_iCountDownRT = 1;
+  m_iCountDownSlowReadingRTData = 1;
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -278,7 +280,7 @@ bool CMarket::GetSinaStockRTData(void)
       if (fFinished) m_fCheckTodayActiveStock = false;
     }
     else {
-      SetMarketReadyFlag(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+      SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
       static bool sfShow = true;
       if (sfShow) {
         gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -996,23 +998,38 @@ bool CMarket::SchedulingTask(void)
 {
   static time_t s_time = 0;
 
-  gl_systemTime.CalculateTime();
+  gl_systemTime.CalculateTime();      // 计算系统各种时间
 
-  //根据时间，调度各项任务.每秒调度一次
+  //根据时间，调度各项定时任务.每秒调度一次
   if (gl_systemTime.Gett_time() > s_time) {
     SchedulingTaskPerSecond();
     s_time = gl_systemTime.Gett_time();
   }
 
-  if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownRT <= 0)) {
+  // 抓取新浪实时数据
+  if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    if (m_fCountDownRT && MarketReady()) m_iCountDownRT = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownRT = 1;  // 计数两次
   }
-  m_iCountDownRT--;
+  m_iCountDownSlowReadingRTData--;
 
-  if (!gl_fExiting && m_fGetDayLineData && MarketReady()) {// 如果允许抓取日线数据且系统初始态已经建立
-    GetNetEaseStockDayLineData();
+  
+  // 系统准备好了之后需要完成的各项工作
+  if (SystemReady()) {
+    // 装入之前存储的系统今日数据（如果有的话）
+    if (!m_fTempDataLoaded) { // 此工作仅进行一次。
+      //LoadTodayTempData();      
+      m_fTempDataLoaded = true;
+    }
+    
+    // 抓取日线数据
+    if (!gl_fExiting && m_fGetDayLineData) {
+        GetNetEaseStockDayLineData();
+    }
+
+    // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
+    if (m_fSlowReadingRTData) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    else m_iCountDownSlowReadingRTData = 1;  // 否则记数两次（400毫秒）后即执行
+
   }
 
   return true;
@@ -1033,9 +1050,9 @@ bool CMarket::SchedulingTaskPerSecond(void)
   const long lTime = gl_systemTime.GetTime();
 
   if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150500))) {
-    m_fCountDownRT = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
+    m_fSlowReadingRTData = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
   }
-  else m_fCountDownRT = true;
+  else m_fSlowReadingRTData = true;
 
   if ((lTime < 91000) || (lTime > 150130)) { //下午三点一分三秒市场交易结束，
     m_fMarketOpened = false;
@@ -1047,7 +1064,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   // 自动处理当日数据的窗口期为三十秒，自15:01:00至15:01:30，错过后需要手动处理。
   if ((lTime > 150100) && !IsTodayStockCompiled() && m_fMarketOpened) { // 下午三点一分开始处理当日实时数据。
-    if (MarketReady()) {
+    if (SystemReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
     }
   }

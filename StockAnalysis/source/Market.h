@@ -67,8 +67,8 @@ public:
 
 	long					GetMinLineOffset( CStockID sID, time_t Time );
 
-	bool					MarketReady( void ) noexcept { return m_fMarketReady; }
-  void          SetMarketReadyFlag(bool fFlag) noexcept { m_fMarketReady = fFlag; }
+	bool					SystemReady( void ) noexcept { return m_fSystemReady; }
+  void          SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
   bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
   void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
@@ -142,9 +142,9 @@ public :
   bool                        m_fMarketOpened;          // 是否开市
   bool										    m_fGetRTStockData;
   bool										    m_fGetDayLineData;
-  bool                        m_fCountDownRT;
+  bool                        m_fSlowReadingRTData;
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
-  int                         m_iCountDownRT;
+  int                         m_iCountDownSlowReadingRTData;
 
   vector<StockIDPtr>	        m_vChinaMarketAStock;             // 本系统允许的所有股票池（无论代码是否存在）
   size_t                      GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
@@ -168,7 +168,7 @@ protected :
 	vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
 	bool												m_fLoadedSelectedStock;
 	
-	bool												m_fMarketReady;					// 市场初始态已经设置好
+	bool												m_fSystemReady;					// 市场初始态已经设置好
   
   bool                        m_fTempDataLoaded;      //暂存的临时数据已经加载。
 

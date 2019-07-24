@@ -405,7 +405,13 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 	m_wndOutput.UpdateFonts();
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+// 大部分系统定时操作的发起者，但具体工作由CMarket类的SchedulingTask()完成，本函数只完成显示实时信息的工作。
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
@@ -493,7 +499,7 @@ void CMainFrame::OnCalculateRelativeStrong()
 void CMainFrame::OnCompileTodayStock()
 {
   // TODO: 在此添加命令处理程序代码
-  if (gl_ChinaStockMarket.MarketReady()) {
+  if (gl_ChinaStockMarket.SystemReady()) {
     AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
   }
 }
@@ -524,7 +530,7 @@ void CMainFrame::OnSaveRtdata()
 void CMainFrame::OnUpdateCompileTodayStock(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_ChinaStockMarket.MarketReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
+  if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     pCmdUI->Enable(true);
   }
   else pCmdUI->Enable(false);
@@ -542,7 +548,7 @@ void CMainFrame::OnUpdateSaveDaylineData(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_ChinaStockMarket.MarketReady()) {
+  if (gl_ChinaStockMarket.SystemReady()) {
     pCmdUI->Enable(true);
   }
   else {
