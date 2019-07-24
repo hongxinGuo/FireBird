@@ -114,6 +114,7 @@ public:
   // 处理日线历史数据
   bool					ProcessDayLineData(char * buffer, long lLength);
 	bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char *& pCurrentPos, long & lLength);
+  // 虽然这个函数与读取实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 	bool					ReadOneValue(char *& pCurrentPos, char * buffer, long& iReadNumber);
   bool          ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter);
 
