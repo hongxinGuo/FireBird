@@ -111,6 +111,9 @@
     <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
+    <ClInclude Include="SetDayLineToday.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StockAnalysis.cpp">
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SetDayLineToday.cpp">
+      <Filter>源文件\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

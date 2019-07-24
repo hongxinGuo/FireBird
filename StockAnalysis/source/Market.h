@@ -82,13 +82,14 @@ public:
 
 	  // 日线数据处理函数，将读取到的日线数据存入数据库中
   bool          SaveDayLineData(void);
-  
+ 
   bool          ClearAllDayLineVector(void);
 
   // 是否所有股票的历史日线数据都检查过了。
   bool          IsTotalStockDayLineChecked(void);
 
   bool          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
+  bool          CompileTodayTempData(long lCurrentTradeDay);
   bool          CalculateOneDayRelativeStrong(long lDay);
 
 	bool					IsLoadSelectedStock( void ) noexcept { return m_fLoadedSelectedStock; }
