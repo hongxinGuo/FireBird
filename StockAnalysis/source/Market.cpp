@@ -1038,7 +1038,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   }
   else m_fCountDownRT = true;
 
-  if ((lTime < 91000) || (lTime > 150001)) { //下午三点市场交易结束，
+  if ((lTime < 91000) || (lTime > 150130)) { //下午三点一分三秒市场交易结束，
     m_fMarketOpened = false;
   }
   else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
@@ -1049,7 +1049,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
   if ((lTime > 150100) && !IsTodayStockCompiled() && m_fMarketOpened) { // 下午三点一分开始处理当日实时数据。
     if (MarketReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
-      SetTodayStockCompiledFlag(true);
     }
   }
 

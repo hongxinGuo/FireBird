@@ -493,7 +493,9 @@ void CMainFrame::OnCalculateRelativeStrong()
 void CMainFrame::OnCompileTodayStock()
 {
   // TODO: 在此添加命令处理程序代码
-  if (gl_ChinaStockMarket.MarketReady()) AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+  if (gl_ChinaStockMarket.MarketReady()) {
+    AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+  }
 }
 
 
