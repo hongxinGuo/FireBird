@@ -137,6 +137,9 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineToday.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

@@ -29,8 +29,7 @@ CMarket::CMarket ( void ) : CObject() {
 }
 
 CMarket::~CMarket( ) {
-
-   
+  //SaveTodayTempData();
 }
 
 void CMarket::Reset(void)
@@ -1545,13 +1544,11 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayLineInfo.m_pDatabase->CommitTrans();
   setDayLineInfo.Close();
 
-  CompileTodayTempData(lCurrentTradeDay);
-
   gl_systemMessage.PushDayLineInfoMessage(_T("最新交易日实时数据处理完毕"));
   return true;
 }
 
-bool CMarket::CompileTodayTempData(long lCurrentTradeDay) {
+bool CMarket::SaveTodayTempData(void) {
   CSetDayLineToday setDayLineToday;
 
   // 存储今日生成的数据于DayLineToday表中。
@@ -1570,7 +1567,7 @@ bool CMarket::CompileTodayTempData(long lCurrentTradeDay) {
       continue;
     }
     setDayLineToday.AddNew();
-    setDayLineToday.m_Time = lCurrentTradeDay;
+    setDayLineToday.m_Time = gl_systemTime.GetDay();
     setDayLineToday.m_Market = pStock->GetMarket();
     setDayLineToday.m_StockName = pStock->GetStockName();
     setDayLineToday.m_StockCode = pStock->GetStockCode();
@@ -1604,6 +1601,58 @@ bool CMarket::CompileTodayTempData(long lCurrentTradeDay) {
   return true;
 }
 
+bool CMarket::LoadTodayTempData(void) {
+  CSetDayLineToday setDayLineToday;
+
+  // 存储今日生成的数据于DayLineToday表中。
+  setDayLineToday.Open();
+  setDayLineToday.m_pDatabase->BeginTrans();
+  while (!setDayLineToday.IsEOF()) {
+    setDayLineToday.Delete();
+    setDayLineToday.MoveNext();
+
+  }
+  setDayLineToday.m_pDatabase->CommitTrans();
+  setDayLineToday.m_pDatabase->BeginTrans();
+  for (auto pStock : m_vActiveStock) {
+    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
+      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+      continue;
+    }
+    setDayLineToday.AddNew();
+    setDayLineToday.m_Time = gl_systemTime.GetDay();
+    setDayLineToday.m_Market = pStock->GetMarket();
+    setDayLineToday.m_StockName = pStock->GetStockName();
+    setDayLineToday.m_StockCode = pStock->GetStockCode();
+
+    setDayLineToday.m_RelativeStrong = pStock->GetRelativeStrong();
+    setDayLineToday.m_TransactionNumber = pStock->GetTransactionNumber();
+    setDayLineToday.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
+    setDayLineToday.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
+    setDayLineToday.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
+    setDayLineToday.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
+    setDayLineToday.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
+    setDayLineToday.m_CancelSellVolume = pStock->GetCancelSellVolume();
+    setDayLineToday.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
+    setDayLineToday.m_AttackSellVolume = pStock->GetAttackSellVolume();
+    setDayLineToday.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
+    setDayLineToday.m_StrongSellVolume = pStock->GetStrongSellVolume();
+    setDayLineToday.m_UnknownVolume = pStock->GetUnknownVolume();
+    setDayLineToday.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
+    setDayLineToday.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
+    setDayLineToday.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
+    setDayLineToday.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
+    setDayLineToday.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
+    setDayLineToday.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
+    setDayLineToday.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
+    setDayLineToday.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
+    setDayLineToday.Update();
+  }
+  setDayLineToday.m_pDatabase->CommitTrans();
+  setDayLineToday.Close();
+
+  return true;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////

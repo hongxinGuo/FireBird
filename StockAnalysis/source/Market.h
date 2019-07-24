@@ -89,7 +89,10 @@ public:
   bool          IsTotalStockDayLineChecked(void);
 
   bool          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
-  bool          CompileTodayTempData(long lCurrentTradeDay);
+  
+  bool          SaveTodayTempData(void);
+  bool          LoadTodayTempData(void);
+
   bool          CalculateOneDayRelativeStrong(long lDay);
 
 	bool					IsLoadSelectedStock( void ) noexcept { return m_fLoadedSelectedStock; }
@@ -166,6 +169,8 @@ protected :
 	bool												m_fLoadedSelectedStock;
 	
 	bool												m_fMarketReady;					// 市场初始态已经设置好
+  
+  bool                        m_fTempDataLoaded;      //暂存的临时数据已经加载。
 
   bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
 	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
