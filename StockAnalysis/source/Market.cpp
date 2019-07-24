@@ -29,7 +29,6 @@ CMarket::CMarket ( void ) : CObject() {
 }
 
 CMarket::~CMarket( ) {
-  //SaveTodayTempData();
 }
 
 void CMarket::Reset(void)
@@ -1548,6 +1547,14 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+//
+// 将当日处理好的数据储存于数据库中，以备万一系统崩溃时重新装入。
+// 似乎应该以一个定时工作线程的形式存在。
+//
+// 研究之。
+//
+//////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SaveTodayTempData(void) {
   CSetDayLineToday setDayLineToday;
 
