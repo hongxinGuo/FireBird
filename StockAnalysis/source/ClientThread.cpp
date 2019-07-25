@@ -24,7 +24,11 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
 
   while (true) { //此线程永远执行，直到得到系统通知
     if (gl_fExiting) { // 
-      return 0; // 
+      return 2; // 
+    }
+    if (gl_fExitCalculatingRTData) {
+      gl_fExitCalculatingRTData = false;
+      return 2;
     }
     if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
       gl_ChinaStockMarket.CalculateRTData();

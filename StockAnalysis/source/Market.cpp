@@ -1008,6 +1008,9 @@ bool CMarket::SchedulingTask(void)
   // 抓取新浪实时数据
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
+    if (m_fSlowReadingRTData && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    else m_iCountDownSlowReadingRTData = 1;  // 计数两次
   }
   m_iCountDownSlowReadingRTData--;
 
@@ -1016,7 +1019,11 @@ bool CMarket::SchedulingTask(void)
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
     if (!m_fTempDataLoaded) { // 此工作仅进行一次。
-      //LoadTodayTempData();   
+      gl_fExitCalculatingRTData = true; // 通知计算实时数据的线程退出（为了防止出现数据同步问题）
+      while (gl_fExitCalculatingRTData) Sleep(10); // 等待工作线程退出
+      LoadTodayTempData();   
+      AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr); // 重新启动计算实时数据的工作线程
+      ASSERT(!gl_fExitCalculatingRTData);
       m_fTempDataLoaded = true;
     }
     
@@ -1025,9 +1032,6 @@ bool CMarket::SchedulingTask(void)
         GetNetEaseStockDayLineData();
     }
 
-    // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
-    if (m_fSlowReadingRTData) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownSlowReadingRTData = 1;  // 否则记数两次（400毫秒）后即执行
 
   }
 
@@ -1075,8 +1079,11 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    // 每分钟存储一次当前状态。
-    //AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+    if (m_fSystemReady) {
+      // 每分钟存储一次当前状态。
+      gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
+      AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+    }
 
     //gl_fResetSystem = true; // 重启系统
     i1MinuteCounter = 60;
@@ -1629,7 +1636,7 @@ bool CMarket::SaveTodayTempData(void) {
 bool CMarket::LoadTodayTempData(void) {
   CStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
-
+  INT64 iTotalVolume;
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   while(!setDayLineToday.IsEOF()) {
@@ -1645,7 +1652,13 @@ bool CMarket::LoadTodayTempData(void) {
       pStock->SetCancelSellVolume(setDayLineToday.m_AttackSellVolume);
       pStock->SetStrongBuyVolume(setDayLineToday.m_StrongBuyVolume);
       pStock->SetStrongSellVolume(setDayLineToday.m_StrongSellVolume);
-      pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
+      iTotalVolume = setDayLineToday.m_OrdinaryBuyVolume + setDayLineToday.m_OrdinarySellVolume
+        + setDayLineToday.m_AttackBuyVolume + setDayLineToday.m_AttackSellVolume
+        + setDayLineToday.m_StrongBuyVolume + setDayLineToday.m_StrongSellVolume;
+      if (pStock->GetVolume() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
+        pStock->SetUnknownVolume(pStock->GetVolume() - iTotalVolume);
+      }
+      else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
       pStock->SetOrdinaryBuyVolume(setDayLineToday.m_OrdinaryBuyVolume);
       pStock->SetOrdinarySellVolume(setDayLineToday.m_OrdinarySellVolume);
       pStock->SetAttackBuyBelow50000(setDayLineToday.m_AttackBuyBelow50000);

@@ -78,4 +78,6 @@ extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单
 extern clock_t gl_RTReadingTime;
 extern clock_t gl_DayLineReadingTime;
 
+extern bool gl_fExitCalculatingRTData;
+
 #endif

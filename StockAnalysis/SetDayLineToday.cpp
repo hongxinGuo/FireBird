@@ -65,7 +65,7 @@ CString CSetDayLineToday::GetDefaultConnect()
 
 CString CSetDayLineToday::GetDefaultSQL()
 {
-  return _T("[DayLine]");
+  return _T("[today]");
 }
 
 void CSetDayLineToday::DoFieldExchange(CFieldExchange* pFX)

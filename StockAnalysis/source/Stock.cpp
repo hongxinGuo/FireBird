@@ -281,6 +281,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
         }
       }
       ASSERT(m_Time >= pRTData->GetTime());
+      INT64 I = pRTData->GetVolume();
       ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
         + m_lAttackBuyVolume + m_lAttackSellVolume + + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
     }

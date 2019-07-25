@@ -86,9 +86,9 @@ CMainFrame::CMainFrame()
   m_uIdTimer = 0;
 
   // 启动数据处理线程
-  AfxBeginThread(ClientThreadUpdatingDataBaseProc, GetSafeHwnd());
+  AfxBeginThread(ClientThreadUpdatingDataBaseProc, nullptr);
   // 启动计算实时数据线程
-  AfxBeginThread(ClientThreadCalculatingRTDataProc, GetSafeHwnd());
+  AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
   
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 

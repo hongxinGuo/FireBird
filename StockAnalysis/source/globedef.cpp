@@ -31,3 +31,4 @@ CMarket gl_ChinaStockMarket; // 此市场实例必须位于全局变量的最后，因为其初始化需
 clock_t gl_RTReadingTime;
 clock_t gl_DayLineReadingTime;
 
+bool gl_fExitCalculatingRTData = false;
