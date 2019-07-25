@@ -21,13 +21,15 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
-
+  gl_fCalculatingRTDataRunning = true;
   while (true) { //此线程永远执行，直到得到系统通知
     if (gl_fExiting) { // 
+      gl_fCalculatingRTDataRunning = false;
       return 2; // 
     }
     if (gl_fExitCalculatingRTData) {
       gl_fExitCalculatingRTData = false;
+      gl_fCalculatingRTDataRunning = false;
       return 2;
     }
     if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
@@ -38,6 +40,9 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
     // 研究使用挂起唤醒机制节约计算能力。
     // 采用事件方式。实现之。
   }
+
+  gl_fCalculatingRTDataRunning = false;
+ 
   return 2;
 }
 
@@ -72,7 +77,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 
   if (dwToday >= gl_systemTime.GetDay()) return(true);
 
-  time_t tStart, tEnd;
+  time_t tStart = 0, tEnd = 0;
   time(&tStart);
   do {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(dwToday); // 设置最后日期。
@@ -105,6 +110,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 {
   gl_ChinaStockMarket.SaveTodayTempData();
   
+  gl_fSavedTempRTData = true;
   return 10;
 }
 

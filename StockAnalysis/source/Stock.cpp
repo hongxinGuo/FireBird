@@ -282,8 +282,10 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
       }
       ASSERT(m_Time >= pRTData->GetTime());
       INT64 I = pRTData->GetVolume();
+      INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
+        + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
       ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-        + m_lAttackBuyVolume + m_lAttackSellVolume + + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
+        + m_lAttackBuyVolume + m_lAttackSellVolume + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
     }
 
     // 下面开始分析挂单情况
@@ -632,6 +634,19 @@ CStockRTDataPtr CStock::PopRTData(void)
   if (singleLock.IsLocked()) {
     pData = m_dequeRTData.front();
     m_dequeRTData.pop_front();
+    singleLock.Unlock();
+    return pData;
+  }
+  return nullptr;
+}
+
+CStockRTDataPtr CStock::GetRTDataAtHead(void)
+{
+  CStockRTDataPtr pData;
+  CSingleLock singleLock(&m_RTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    pData = m_dequeRTData.front();
     singleLock.Unlock();
     return pData;
   }

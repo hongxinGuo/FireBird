@@ -169,6 +169,7 @@ public:
   // 采用同步机制存取实时数据
   void PushRTData(CStockRTDataPtr pData);
   CStockRTDataPtr PopRTData(void);
+  CStockRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
   long GetRTDataDequeSize(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识

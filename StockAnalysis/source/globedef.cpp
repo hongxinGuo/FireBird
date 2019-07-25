@@ -21,14 +21,16 @@ DayLineInquire gl_stDayLineInquire;
 RTDataInquire gl_stRTDataInquire;
 
 bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
-bool gl_fExitingCalculatingRelativeStrong = false;
+bool gl_fExitingCalculatingRelativeStrong = false; // 用于通知工作线程退出的信号
+bool gl_fExitCalculatingRTData = false;   // 用于通知工作线程退出的信号
+bool gl_fCalculatingRTDataRunning = false;
+bool gl_fSavedTempRTData = false;
 bool gl_fResetSystem = false; // 系统重启标识
 
 long gl_lShowGuaDanTransaction = __ORDINARY_BUY__; // 显示挂单成交具体情况
 
 CMarket gl_ChinaStockMarket; // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 
-clock_t gl_RTReadingTime;
-clock_t gl_DayLineReadingTime;
+clock_t gl_RTReadingTime;         // 每次读取新浪实时数据的时间
+clock_t gl_DayLineReadingTime;    // 每次读取网易日线历史数据的时间
 
-bool gl_fExitCalculatingRTData = false;

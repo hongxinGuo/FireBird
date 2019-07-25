@@ -584,7 +584,7 @@ INT64 CMarket::GetTotalAttackSellAmount( void ) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由CMainFrame的OnTimer函数调用。
+// 处理实时数据等，由SchedulingTask函数调用。
 //
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
 //
@@ -1014,7 +1014,6 @@ bool CMarket::SchedulingTask(void)
   }
   m_iCountDownSlowReadingRTData--;
 
-  
   // 系统准备好了之后需要完成的各项工作
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
@@ -1605,6 +1604,7 @@ bool CMarket::SaveTodayTempData(void) {
     setDayLineToday.m_StockName = pStock->GetStockName();
     setDayLineToday.m_StockCode = pStock->GetStockCode();
 
+    setDayLineToday.m_Volume = pStock->GetVolume();
     setDayLineToday.m_TransactionNumber = pStock->GetTransactionNumber();
     setDayLineToday.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
     setDayLineToday.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
@@ -1636,11 +1636,32 @@ bool CMarket::SaveTodayTempData(void) {
 bool CMarket::LoadTodayTempData(void) {
   CStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
+      CStockRTDataPtr pRTData;
   INT64 iTotalVolume;
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   while(!setDayLineToday.IsEOF()) {
     if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
+      iTotalVolume = pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() +
+        pStock->GetAttackBuyVolume() + pStock->GetAttackSellVolume() +
+        pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume();
+      /*
+      if (pStock->GetRTDataDequeSize() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
+        pRTData = pStock->GetRTDataAtHead();
+        pStock->SetUnknownVolume(pRTData->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+      }
+      else if (pStock->GetVolume() > 0) {
+        pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+      }
+      else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
+
+      */
+      if (pStock->GetVolume() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
+        pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume);
+      }
+      else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
+      
+
       pStock->SetTransactionNumber(pStock->GetTransactionNumber());
       pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
       pStock->SetTransactionNumberBelow50000(setDayLineToday.m_TransactionNumberBelow50000);
@@ -1649,16 +1670,9 @@ bool CMarket::LoadTodayTempData(void) {
       pStock->SetCancelBuyVolume(setDayLineToday.m_CancelBuyVolume);
       pStock->SetCancelSellVolume(setDayLineToday.m_CancelSellVolume);
       pStock->SetAttackBuyVolume(setDayLineToday.m_AttackBuyVolume);
-      pStock->SetCancelSellVolume(setDayLineToday.m_AttackSellVolume);
+      pStock->SetAttackSellVolume(setDayLineToday.m_AttackSellVolume);
       pStock->SetStrongBuyVolume(setDayLineToday.m_StrongBuyVolume);
       pStock->SetStrongSellVolume(setDayLineToday.m_StrongSellVolume);
-      iTotalVolume = setDayLineToday.m_OrdinaryBuyVolume + setDayLineToday.m_OrdinarySellVolume
-        + setDayLineToday.m_AttackBuyVolume + setDayLineToday.m_AttackSellVolume
-        + setDayLineToday.m_StrongBuyVolume + setDayLineToday.m_StrongSellVolume;
-      if (pStock->GetVolume() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
-        pStock->SetUnknownVolume(pStock->GetVolume() - iTotalVolume);
-      }
-      else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
       pStock->SetOrdinaryBuyVolume(setDayLineToday.m_OrdinaryBuyVolume);
       pStock->SetOrdinarySellVolume(setDayLineToday.m_OrdinarySellVolume);
       pStock->SetAttackBuyBelow50000(setDayLineToday.m_AttackBuyBelow50000);
