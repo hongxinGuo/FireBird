@@ -15,3 +15,5 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam);
 UINT ClientThreadCalculatingRTDataProc(LPVOID pParam);
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam);
 
+UINT ClientThreadSaveTempRTDataProc(LPVOID pParam);
+

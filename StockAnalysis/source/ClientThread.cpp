@@ -97,6 +97,13 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
   return 1;
 }
 
+UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
+{
+  gl_ChinaStockMarket.SaveTodayTempData();
+  
+  return 10;
+}
+
 
 UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   CInternetSession session;
@@ -360,4 +367,6 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
 
   return 9;
 }
+
+
 
