@@ -1659,10 +1659,9 @@ bool CMarket::LoadTodayTempData(void) {
 
           */
           if (pStock->GetVolume() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
-            pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume);
+            pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
           }
           else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
-
 
           pStock->SetTransactionNumber(pStock->GetTransactionNumber());
           pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
