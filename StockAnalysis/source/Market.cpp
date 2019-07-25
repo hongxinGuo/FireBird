@@ -74,7 +74,6 @@ void CMarket::Reset(void)
   // 生成股票代码池
   CreateTotalStockContainer();
 
-
   CSetStockCode setStockCode;
 
   setStockCode.Open();
@@ -1017,7 +1016,7 @@ bool CMarket::SchedulingTask(void)
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
     if (!m_fTempDataLoaded) { // 此工作仅进行一次。
-      //LoadTodayTempData();      
+      //LoadTodayTempData();   
       m_fTempDataLoaded = true;
     }
     
@@ -1076,6 +1075,9 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
+    // 每分钟存储一次当前状态。
+    //AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+
     //gl_fResetSystem = true; // 重启系统
     i1MinuteCounter = 60;
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
