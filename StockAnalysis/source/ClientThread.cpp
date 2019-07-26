@@ -147,7 +147,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   if (pFile) delete pFile;
   gl_systemStatus.SetRTDataReadingInProcess(false);
 
-  gl_RTReadingTime = clock() - tt;
+  gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
 
   return 4;
 }
@@ -230,7 +230,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
     siDelayTime = 50;
   }
 
-  gl_DayLineReadingTime = clock() - tt;
+  gl_ChinaStockMarket.gl_DayLineReadingTime = clock() - tt;
 
   return 5;
 }

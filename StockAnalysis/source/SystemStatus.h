@@ -56,10 +56,10 @@ protected:
   bool m_fDayLineDataReady;      // 日线数据已提取完成标识
   CCriticalSection m_DayLineDataReadyLock;
 
-  bool m_fCalculatingRTData; // 实时数据计算线程工作状态
+  bool m_fCalculatingRTData; // 实时数据计算线程工作状态标识
   CCriticalSection m_CalculatingRTDataLock;
 
-  bool m_fSavingTempData; // 实时数据计算线程工作状态
+  bool m_fSavingTempData; // 计算出的临时数据存储状态标识
   CCriticalSection m_SavingTempDataLock;
 
 };

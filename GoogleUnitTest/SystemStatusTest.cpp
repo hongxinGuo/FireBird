@@ -68,4 +68,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_systemStatus.IsDayLineDataReady());
   }
 
+  TEST(SystemStatusTest, TestIsCalculatingRTData) {
+    gl_systemStatus.SetCalculatingRTData(true);
+    EXPECT_TRUE(gl_systemStatus.IsCalculatingRTData());
+    gl_systemStatus.SetCalculatingRTData(false);
+    EXPECT_FALSE(gl_systemStatus.IsCalculatingRTData());
+  }
+
+  TEST(SystemStatusTest, TestIsSavingTempData) {
+    gl_systemStatus.SetSavingTempData(true);
+    EXPECT_TRUE(gl_systemStatus.IsSavingTempData());
+    gl_systemStatus.SetSavingTempData(false);
+    EXPECT_FALSE(gl_systemStatus.IsSavingTempData());
+  }
+
 }

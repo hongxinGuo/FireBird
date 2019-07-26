@@ -109,6 +109,8 @@ public:
 	INT64	        GetTotalAttackBuyAmount( void );
 	INT64         GetTotalAttackSellAmount( void );
 
+  size_t        GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
+  long          GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ClientThreadCalculatingRTDataProc调用。
   bool          CalculateRTData(void);
@@ -140,16 +142,22 @@ public :
   char                        m_aStockCodeTemp[30];
   bool                        m_fCurrentEditStockChanged;
   bool                        m_fMarketOpened;          // 是否开市
-  bool										    m_fGetRTStockData;
-  bool										    m_fGetDayLineData;
-  bool                        m_fSlowReadingRTData;
+  bool										    m_fGetRTStockData;        // 读取实时数据标识
+  bool										    m_fGetDayLineData;        // 读取日线历史数据标识
+  bool                        m_fSlowReadingRTData;     // 慢速读取实时数据标识
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
-  int                         m_iCountDownSlowReadingRTData;
+  int                         m_iCountDownSlowReadingRTData;  // 慢速读取实时数据计数器
 
   vector<StockIDPtr>	        m_vChinaMarketAStock;             // 本系统允许的所有股票池（无论代码是否存在）
-  size_t                      GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
-  long                        GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
+  
+  vector<StockIDPtr>          gl_vStockChoice;      // 自选股票池
+
+  clock_t                     gl_RTReadingTime;         // 每次读取新浪实时数据的时间
+  clock_t                     gl_DayLineReadingTime;    // 每次读取网易日线历史数据的时间
+
 protected :
+  CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据。永远打开状态，否则当同时操作数据库时速度奇慢。
+
   map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
   
@@ -178,8 +186,7 @@ protected :
 	
   bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
 
-
-  bool                        m_fUpdatedStockCodeDataBase;
+  bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
 
 private:
 

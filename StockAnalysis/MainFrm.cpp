@@ -430,13 +430,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   }
   // 显示实时数据读取时间（单位为毫秒）
   char buffer[30];
-  sprintf_s(buffer, "%d", gl_RTReadingTime);
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_RTReadingTime);
   str = buffer;
   str += _T("ms");
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
 
   // 显示日线历史数据读取时间（单位为毫秒）
-  sprintf_s(buffer, "%d", gl_DayLineReadingTime);
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_DayLineReadingTime);
   str = buffer;
   str += _T("ms");
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
@@ -636,7 +636,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
       pStock = gl_ChinaStockMarket.GetShowStock();
       pStock->SetChoicedFlag(true);
       if (gl_ChinaStockMarket.GetStockIDPtr(pStock->GetStockCode(), pStockID)) {
-        gl_vStockChoice.push_back(pStockID);
+        gl_ChinaStockMarket.gl_vStockChoice.push_back(pStockID);
       }
       break;
     case 33: // PAGE UP

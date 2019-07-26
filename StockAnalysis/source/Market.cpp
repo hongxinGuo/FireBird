@@ -107,8 +107,8 @@ void CMarket::Reset(void)
 
   // 更新日线历史数据的记录集永远处于打开状态（为了加速)
   CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-  gl_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  if (!gl_setSavingDayLineOnly.IsOpen()) gl_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
+  m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+  if (!m_setSavingDayLineOnly.IsOpen()) m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
 
 
   CSetOption setOption;
@@ -1062,6 +1062,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   if ((lTime > 150100) && !IsTodayStockCompiled() && m_fMarketOpened) { // 下午三点一分开始处理当日实时数据。
     if (SystemReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+      SetTodayStockCompiledFlag(true);
     }
   }
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
@@ -1096,8 +1097,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
         str += _T("日线历史数据更新完毕");
         gl_systemMessage.PushInformationMessage(str);
         UpdateStockCodeDataBase();  // 更新股票池数据库
-        ASSERT(gl_setSavingDayLineOnly.IsOpen());
-        gl_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
+        ASSERT(m_setSavingDayLineOnly.IsOpen());
+        m_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
         m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
       }
     }
@@ -1356,7 +1357,7 @@ bool CMarket::SaveDayLineData(void) {
 		if (pStock->IsDayLineNeedSaving()) {
  			lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
-        SaveDayLine(&gl_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
+        SaveDayLine(&m_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
       }
       else {
         CString str1 = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
