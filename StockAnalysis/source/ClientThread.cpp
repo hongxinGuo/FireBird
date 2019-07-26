@@ -95,11 +95,11 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 {
-  gl_fSavingTempRTData = true;
+  gl_systemStatus.SetSavingTempData(true);
   
   gl_ChinaStockMarket.SaveTodayTempData();
   
-  gl_fSavingTempRTData = false;
+  gl_systemStatus.SetSavingTempData(false);
   return 10;
 }
 
