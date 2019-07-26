@@ -19,6 +19,7 @@ CSystemStatus::CSystemStatus() {
   m_fRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
+  m_fCalculatingRTData = false;
 }
 
 void CSystemStatus::SetCalculateRSInProcess(bool fFlag) {
@@ -149,6 +150,25 @@ bool CSystemStatus::IsDayLineDataReady(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     bool fFlag = m_fDayLineDataReady;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CSystemStatus::SetCalculatingRTData(bool fFlag) {
+  CSingleLock singleLock(&m_CalculatingRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fCalculatingRTData = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsCalculatingRTData(void) {
+  CSingleLock singleLock(&m_CalculatingRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag = m_fCalculatingRTData;
     singleLock.Unlock();
     return fFlag;
   }

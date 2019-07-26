@@ -27,6 +27,10 @@ public:
   void SetDayLineDataReady(bool fFlag);
   bool IsDayLineDataReady(void);
 
+  void SetCalculatingRTData(bool fFlag);
+  bool IsCalculatingRTData(void);
+
+
 protected:
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateRSInProcessLock;
@@ -48,5 +52,8 @@ protected:
 
   bool m_fDayLineDataReady;      // 日线数据已提取完成标识
   CCriticalSection m_DayLineDataReadyLock;
+
+  bool m_fCalculatingRTData; // 实时数据计算线程工作状态
+  CCriticalSection m_CalculatingRTDataLock;
 
 };

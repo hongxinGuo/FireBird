@@ -16,32 +16,19 @@ using namespace std;
 // 处理实时数据的工作线程。
 //
 // 此线程只操作各股票的m_dequeRTData变量，这样可以将数据同步的问题减到最小。
-// 此线程在系统启动后就一直工作着，直到系统退出时才跟随系统一起退出。
+// 此线程由CMarket类的SchedulingTaskPerSecond()函数调用，每秒一次。
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
-  gl_fCalculatingRTDataRunning = true;
-  while (true) { //此线程永远执行，直到得到系统通知
-    if (gl_fExiting) { // 
-      gl_fCalculatingRTDataRunning = false;
-      return 2; // 
-    }
-    if (gl_fExitCalculatingRTData) {
-      gl_fExitCalculatingRTData = false;
-      gl_fCalculatingRTDataRunning = false;
-      return 2;
-    }
-    if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
-      gl_ChinaStockMarket.CalculateRTData();
-      gl_systemStatus.SetRTDataNeedCalculate(false); 
-    }
-    Sleep(50); // 暂停50毫秒。当计算繁忙时，无所谓是否暂停；当没有计算任务时，此50毫秒能够保证此线程不过多占用系统计算能力。
-    // 研究使用挂起唤醒机制节约计算能力。
-    // 采用事件方式。实现之。
+  gl_systemStatus.SetCalculatingRTData(true);
+
+  if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
+    gl_ChinaStockMarket.CalculateRTData();
+    gl_systemStatus.SetRTDataNeedCalculate(false); 
   }
 
-  gl_fCalculatingRTDataRunning = false;
+  gl_systemStatus.SetCalculatingRTData(false);
  
   return 2;
 }
@@ -108,9 +95,11 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 {
+  gl_fSavingTempRTData = true;
+  
   gl_ChinaStockMarket.SaveTodayTempData();
   
-  gl_fSavedTempRTData = true;
+  gl_fSavingTempRTData = false;
   return 10;
 }
 

@@ -68,9 +68,7 @@ extern RTDataInquire gl_stRTDataInquire;
 
 extern bool gl_fExiting; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRelativeStrong;// 用于通知工作线程退出的信号
-extern bool gl_fExitCalculatingRTData;   // 用于通知工作线程退出的信号
-extern bool gl_fCalculatingRTDataRunning;
-extern bool gl_fSavedTempRTData;
+extern bool gl_fSavingTempRTData;
 extern bool gl_fResetSystem; // 系统重启标识
 
 extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
