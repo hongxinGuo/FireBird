@@ -297,7 +297,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
   else { // 第一个数据，初始化系统
     m_pLastRTData = pRTData;
     SetStartCalculating(true);
-    m_lUnknownVolume = m_pLastRTData->GetVolume(); // 第一次挂单量无法判断买卖状态
+    m_lUnknownVolume += m_pLastRTData->GetVolume(); // 第一次挂单量无法判断买卖状态
     // 设置第一次的挂单映射。
     for (int j = 0; j < 5; j++) {
       SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));

@@ -1018,8 +1018,6 @@ bool CMarket::SchedulingTask(void)
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
     if (!m_fTempDataLoaded) { // 此工作仅进行一次。
-      gl_fExitCalculatingRTData = true; // 通知计算实时数据的线程退出（为了防止出现数据同步问题）
-      while (gl_fExitCalculatingRTData) Sleep(10); // 等待工作线程退出
       LoadTodayTempData();   
       AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr); // 重新启动计算实时数据的工作线程
       ASSERT(!gl_fExitCalculatingRTData);
@@ -1644,6 +1642,7 @@ bool CMarket::LoadTodayTempData(void) {
   CSetDayLineToday setDayLineToday;
       CStockRTDataPtr pRTData;
   INT64 iTotalVolume;
+  INT64 iCurrentVolume;
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   if (!setDayLineToday.IsEOF()) {
@@ -1653,22 +1652,24 @@ bool CMarket::LoadTodayTempData(void) {
           iTotalVolume = pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() +
             pStock->GetAttackBuyVolume() + pStock->GetAttackSellVolume() +
             pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume();
-          /*
-          if (pStock->GetRTDataDequeSize() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
-          pRTData = pStock->GetRTDataAtHead();
-          pStock->SetUnknownVolume(pRTData->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+          
+          if (pStock->IsStartCalculating()) {
+            if (pStock->GetRTDataDequeSize() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
+              pRTData = pStock->GetRTDataAtHead();
+              iCurrentVolume = pRTData->GetVolume();
+              pStock->SetUnknownVolume(pRTData->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+            }
+            else if (pStock->GetVolume() > 0) {
+              iCurrentVolume = pStock->GetVolume();
+              pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+            }
+            else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
           }
-          else if (pStock->GetVolume() > 0) {
-          pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
+          else { // 第一次处理实时数据，正常情况下应该是这样情况
+            ASSERT(iTotalVolume == 0);
+            pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume - setDayLineToday.m_Volume);
           }
-          else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
-
-          */
-          if (pStock->GetVolume() > 0) { // 如果此时已经处理了新的实时数据，则重新计算
-            pStock->SetUnknownVolume(pStock->GetVolume() - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume - iTotalVolume);
-          }
-          else pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume);
-
+   
           pStock->SetTransactionNumber(pStock->GetTransactionNumber());
           pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
           pStock->SetTransactionNumberBelow50000(setDayLineToday.m_TransactionNumberBelow50000);

@@ -135,9 +135,9 @@ public:
   void SetAttackSellAbove200000(INT64 value) noexcept {  m_lAttackSellAbove200000 = value; }
 
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
-  long GetGuaDan(long lPrice) noexcept { return m_mapGuaDan.at(lPrice); }
-  void SetGuaDan(long lPrice, long lVolume) noexcept { m_mapGuaDan[lPrice] = lVolume; }
-  bool HaveGuaDan(long lPrice) noexcept { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
+  long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
+  void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
+  bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
 
 	bool IsChoiced( void ) noexcept { return m_fChoiced; }
 	void SetChoicedFlag( bool fChoiced ) noexcept { m_fChoiced = fChoiced; }
