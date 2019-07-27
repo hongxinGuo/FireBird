@@ -268,19 +268,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMarketTest, TestSchedulingTest) { // 测试这个函数，一定要小心，不能导致出现改变系统实际数据的事情
     gl_ChinaStockMarket.SetSystemReady(false); // 禁止测试时执行实际操作
-    gl_systemTime.SetTime(90999);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(91000);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(150129);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(150130);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-
+    
     EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
     gl_systemTime.SetTime(91000);
     gl_ChinaStockMarket.SchedulingTaskPerSecond();
@@ -309,6 +297,27 @@ namespace StockAnalysisTest {
     gl_systemTime.SetTime(150300);
     gl_ChinaStockMarket.SchedulingTaskPerSecond();
     EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+
+    gl_systemTime.SetTime(90999);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(91000);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
+      EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+    }
+    else EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(150129);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
+      EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+    }
+    else EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(150130);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+
+
 
   }
 

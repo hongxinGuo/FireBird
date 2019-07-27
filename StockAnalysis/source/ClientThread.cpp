@@ -23,7 +23,8 @@ using namespace std;
 UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
   gl_systemStatus.SetCalculatingRTData(true);
 
-  if (gl_ChinaStockMarket.SystemReady() && gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
+  ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+  if (gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
     gl_ChinaStockMarket.CalculateRTData();
     gl_systemStatus.SetRTDataNeedCalculate(false); 
   }
@@ -95,6 +96,8 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 {
+  ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+
   gl_systemStatus.SetSavingTempData(true);
   
   gl_ChinaStockMarket.SaveTodayTempData();
@@ -246,6 +249,8 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
+
+  ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   time_t time = 0;
   switch (gl_systemTime.GetDayOfWeek()) {
