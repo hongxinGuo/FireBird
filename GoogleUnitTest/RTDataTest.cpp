@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
   // 无错误数据
   SinaRTData Data1(0, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,11.590,2019-07-16,15:00:00,00\";\n"));
   // 所有的价格皆为0
-  SinaRTData Data2(1, _T("var hq_str_sh600000=\"浦发银行,0,0,0,0,0,0,0,21606007,248901949.000,19900,0,54700,0,561500,0,105600,0,172400,0,259981,0,206108,0,325641,0,215109,0,262900,0,2019-07-16,15:00:00,00\";\n"));
+  SinaRTData Data2(1, _T("var hq_str_sz002385=\"平安银行,0,0,0,0,0,0,0,21606007,248901949.000,19900,0,54700,0,561500,0,105600,0,172400,0,259981,0,206108,0,325641,0,215109,0,262900,0,2019-07-16,15:00:00,00\";\n"));
   // 所有的数量皆为零
   SinaRTData Data3(2, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,0,0,0,11.540,0,11.530,0,11.520,0,11.510,0,11.500,0,11.550,0,11.560,0,11.570,0,11.580,0,11.590,2019-07-16,15:00:00,00\";\n"));
   // 出现负值
@@ -103,6 +103,20 @@ namespace StockAnalysisTest {
   SinaRTData Data31(30, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,-262900,11.590,2019-07-16,15:00:00,00\";\n"));
   // 出现负值
   SinaRTData Data32(31, _T("var hq_str_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 没有实时数据
+  SinaRTData Data33(32, _T("var hq_str_sz000001=\"\";\n"));
+  // 格式出错（前缀）
+  SinaRTData Data34(33, _T("var hq_st_sh600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 格式出错（）
+  SinaRTData Data35(34, _T("var hq_str_sa600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 格式出错（不是sh或者sz）
+  SinaRTData Data36(35, _T("var hq_str_sa600000=\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 格式出错（股票代码后面不是'='号
+  SinaRTData Data37(36, _T("var hq_str_sa600000a\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 格式出错（'='好后面不是'"'号
+  SinaRTData Data38(37, _T("var hq_str_sa600000a'浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
+  // 格式出错（股票代码后面不是'='号
+  SinaRTData Data39(38, _T("var hq_str_sa600000a\"浦发银行,11.510,11.490,11.560,11.570,11.440,11.540,11.550,21606007,248901949.000,19900,11.540,54700,11.530,561500,11.520,105600,11.510,172400,11.500,259981,11.550,206108,11.560,325641,11.570,215109,11.580,262900,-11.590,2019-07-16,15:00:00,00\";\n"));
 
   class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
@@ -149,7 +163,8 @@ namespace StockAnalysisTest {
   INSTANTIATE_TEST_CASE_P(TestSinaRTData, CalculateSinaRTDataTest, testing::Values(&Data1, &Data2, &Data3,
     &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
     &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-    &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30
+    &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+    &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38
   ));
 
   TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
@@ -201,8 +216,8 @@ namespace StockAnalysisTest {
       break;
     case 1:
       EXPECT_TRUE(fSucceed); // 没有错误
-      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
-      EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sz002385"));
+      EXPECT_STREQ(m_RTData.GetStockName(), _T("平安银行"));
       EXPECT_EQ(m_RTData.GetOpen(), -1);
       EXPECT_EQ(m_RTData.GetLastClose(), -1);
       EXPECT_EQ(m_RTData.GetNew(), -1);
@@ -764,7 +779,6 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVSell(2), 325641);
       EXPECT_EQ(m_RTData.GetPSell(2), 11570);
       EXPECT_EQ(m_RTData.GetVSell(3), 215109);
-      EXPECT_EQ(m_RTData.GetVSell(3), 215109);
       break;
     case 30:
       EXPECT_FALSE(fSucceed); // 有错误
@@ -797,9 +811,6 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(2), 11570);
       EXPECT_EQ(m_RTData.GetVSell(3), 215109);
       EXPECT_EQ(m_RTData.GetPSell(3), 11580);
-      EXPECT_EQ(m_RTData.GetVSell(4), 262900);
-      EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
       break;
     case 31:
       EXPECT_FALSE(fSucceed); // 有错误
@@ -833,77 +844,35 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVSell(3), 215109);
       EXPECT_EQ(m_RTData.GetPSell(3), 11580);
       EXPECT_EQ(m_RTData.GetVSell(4), 262900);
-      EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
       break;
-    case 32:
-      EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
-      EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
-      EXPECT_EQ(m_RTData.GetOpen(), 11510);
-      EXPECT_EQ(m_RTData.GetLastClose(), 11490);
-      EXPECT_EQ(m_RTData.GetNew(), 11560);
-      EXPECT_EQ(m_RTData.GetHigh(), 11570);
-      EXPECT_EQ(m_RTData.GetLow(), 11440);
-      EXPECT_EQ(m_RTData.GetBuy(), 11540);
-      EXPECT_EQ(m_RTData.GetSell(), 11550);
-      EXPECT_EQ(m_RTData.GetVolume(), 21606007);
-      EXPECT_EQ(m_RTData.GetAmount(), 248901949);
-      EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
-      EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
-      EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
-      EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
-      EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
-      EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
-      EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
-      EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
-      EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
-      EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
-      EXPECT_EQ(m_RTData.GetVSell(0), 259981);
-      EXPECT_EQ(m_RTData.GetPSell(0), 11550);
-      EXPECT_EQ(m_RTData.GetVSell(1), 206108);
-      EXPECT_EQ(m_RTData.GetPSell(1), 11560);
-      EXPECT_EQ(m_RTData.GetVSell(2), 325641);
-      EXPECT_EQ(m_RTData.GetPSell(2), 11570);
-      EXPECT_EQ(m_RTData.GetVSell(3), 215109);
-      EXPECT_EQ(m_RTData.GetPSell(3), 11580);
-      EXPECT_EQ(m_RTData.GetVSell(4), 262900);
-      EXPECT_EQ(m_RTData.GetPSell(4), 11590);
+    case 32: // 没有实时数据
+      EXPECT_TRUE(fSucceed); // 读取正确
+      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sz000001"));
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
       break;
-    case 33:
+    case 33: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
-      EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
-      EXPECT_EQ(m_RTData.GetOpen(), 11510);
-      EXPECT_EQ(m_RTData.GetLastClose(), 11490);
-      EXPECT_EQ(m_RTData.GetNew(), 11560);
-      EXPECT_EQ(m_RTData.GetHigh(), 11570);
-      EXPECT_EQ(m_RTData.GetLow(), 11440);
-      EXPECT_EQ(m_RTData.GetBuy(), 11540);
-      EXPECT_EQ(m_RTData.GetSell(), 11550);
-      EXPECT_EQ(m_RTData.GetVolume(), 21606007);
-      EXPECT_EQ(m_RTData.GetAmount(), 248901949);
-      EXPECT_EQ(m_RTData.GetVBuy(0), 19900);
-      EXPECT_EQ(m_RTData.GetPBuy(0), 11540);
-      EXPECT_EQ(m_RTData.GetVBuy(1), 54700);
-      EXPECT_EQ(m_RTData.GetPBuy(1), 11530);
-      EXPECT_EQ(m_RTData.GetVBuy(2), 561500);
-      EXPECT_EQ(m_RTData.GetPBuy(2), 11520);
-      EXPECT_EQ(m_RTData.GetVBuy(3), 105600);
-      EXPECT_EQ(m_RTData.GetPBuy(3), 11510);
-      EXPECT_EQ(m_RTData.GetVBuy(4), 172400);
-      EXPECT_EQ(m_RTData.GetPBuy(4), 11500);
-      EXPECT_EQ(m_RTData.GetVSell(0), 259981);
-      EXPECT_EQ(m_RTData.GetPSell(0), 11550);
-      EXPECT_EQ(m_RTData.GetVSell(1), 206108);
-      EXPECT_EQ(m_RTData.GetPSell(1), 11560);
-      EXPECT_EQ(m_RTData.GetVSell(2), 325641);
-      EXPECT_EQ(m_RTData.GetPSell(2), 11570);
-      EXPECT_EQ(m_RTData.GetVSell(3), 215109);
-      EXPECT_EQ(m_RTData.GetPSell(3), 11580);
-      EXPECT_EQ(m_RTData.GetVSell(4), 262900);
-      EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      break;
+    case 34: // 有错误，前缀出错
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      break;
+    case 35: // 有错误，前缀出错
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      break;
+    case 36: // 有错误，前缀出错
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      break;
+    case 37: // 有错误，前缀出错
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      break;
+    case 38: // 有错误，前缀出错
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     default:
       break;

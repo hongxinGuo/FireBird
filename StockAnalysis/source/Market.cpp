@@ -1045,7 +1045,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
   const long lTime = gl_systemTime.GetTime();
 
-  if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150500))) {
+  if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150300))) {
     m_fSlowReadingRTData = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
   }
   else m_fSlowReadingRTData = true;
@@ -1071,7 +1071,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
     AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
   }
 
-  if (i10SecondsCounter >= 0) {
+  if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 10;
     // do something
   }
@@ -1079,6 +1079,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   if (i1MinuteCounter <= 0) {
     if (m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
+      i1MinuteCounter = 60; // 重置计数器
       // 每分钟存储一次当前状态。
       gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
       gl_systemStatus.SetSavingTempData(true);
@@ -1086,7 +1087,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
     }
 
     //gl_fResetSystem = true; // 重启系统
-    i1MinuteCounter = 60;
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
@@ -1113,7 +1113,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i1MinuteCounter--;
 
   return true;
-
 }
 
 

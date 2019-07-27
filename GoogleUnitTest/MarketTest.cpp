@@ -25,14 +25,14 @@ namespace StockAnalysisTest {
     }
 
     static void SetUpTestCase() { // 本测试类的初始化函数
-      
+
     }
 
     static void TearDownTestCase() {
 
     }
   };
- 
+
   TEST_F(CMarketTest, TestInitialize) {
     EXPECT_EQ(gl_ChinaStockMarket.m_strRTStockSource.Compare(_T("http://hq.sinajs.cn/list=")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.m_strDayLineStockSource.Compare(_T("http://quotes.money.163.com/service/chddata.html?code=")), 0);
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 2000);
   }
-  
+
   TEST_F(CMarketTest, TestCreateRTDataInquiringStr) {
     CString str;
     gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
@@ -146,7 +146,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(strStartDay, _T("19700102"));
 
   }
-  
+
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
     pstock->SetStockCode(_T("sh600000"));
@@ -219,7 +219,7 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetSystemReady(false);
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
   }
-  
+
   TEST_F(CMarketTest, TestIsTodayStockCompiled) {
     gl_systemTime.CalculateTime();
     if (gl_systemTime.GetTime() > 150000) {
@@ -264,6 +264,52 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 20190721); // 此数据会不时变化，因为是从真实数据库读取的，系统会不时更新。
     gl_ChinaStockMarket.SetRelativeStrongEndDay(19900103);
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 19900103);
+  }
+
+  TEST_F(CMarketTest, TestSchedulingTest) { // 测试这个函数，一定要小心，不能导致出现改变系统实际数据的事情
+    gl_ChinaStockMarket.SetSystemReady(false); // 禁止测试时执行实际操作
+    gl_systemTime.SetTime(90999);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(91000);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(150129);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(150130);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
+
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(91000);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(91001);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(113499);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(113499);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(113500);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(125500);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(125501);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(150299);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+    gl_systemTime.SetTime(150300);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSlowReadingRTData);
+
   }
 
 }
