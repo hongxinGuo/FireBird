@@ -40,7 +40,6 @@ CStockRTDataPtr CSystemDequeData::PopRTData(void)
     singleLock.Unlock();
     return pData;
   }
-  return nullptr;
 }
 
 long CSystemDequeData::GetRTDataDequeSize(void)
@@ -48,10 +47,8 @@ long CSystemDequeData::GetRTDataDequeSize(void)
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeRTStockData.size();
+    const long lCount = m_dequeRTStockData.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
-
 }

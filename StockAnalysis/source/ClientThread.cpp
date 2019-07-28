@@ -21,14 +21,14 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
-  gl_systemStatus.SetCalculatingRTData(true);
-
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(!gl_systemStatus.IsSavingTempData()); // 此两个工作线程互斥
+
+  gl_systemStatus.SetCalculatingRTData(true);
   if (gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
     gl_ChinaStockMarket.CalculateRTData();
     gl_systemStatus.SetRTDataNeedCalculate(false); 
   }
-
   gl_systemStatus.SetCalculatingRTData(false);
  
   return 2;
@@ -97,6 +97,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
 UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 此两个工作线程互斥
 
   gl_systemStatus.SetSavingTempData(true);
   
@@ -114,7 +115,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
   bool fDone = false;
   char * pChar = gl_stRTDataInquire.buffer;
 
-  clock_t tt = clock();
+  const clock_t tt = clock();
 
   try {
     gl_systemStatus.SetRTDataReadingInProcess(true);
@@ -182,7 +183,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
   char * pChar = gl_stDayLineInquire.buffer;
   CString str;
 
-  clock_t tt = clock();
+  const clock_t tt = clock();
   
   try {
     gl_systemStatus.SetReadingInProcess(true);

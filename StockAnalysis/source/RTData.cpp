@@ -114,10 +114,10 @@ bool CStockRTData::SetDataAll(CStockRTData & data) {
   m_lSell = 0;
 
   for (int i = 0; i < 5; i++) {
-    m_lPBuy[i] = 0;
-    m_lVBuy[i] = 0;
-    m_lPSell[i] = 0;
-    m_lVSell[i] = 0;
+    m_lPBuy.at(i) = 0;
+    m_lVBuy.at(i) = 0;
+    m_lPSell.at(i) = 0;
+    m_lVSell.at(i) = 0;
   }
 
   m_time = data.m_time;
@@ -135,10 +135,10 @@ bool CStockRTData::SetDataAll(CStockRTData & data) {
   m_lSell = data.m_lSell;
 
   for (int i = 0; i < 5; i++) {
-    m_lPBuy[i] = data.m_lPBuy[i];
-    m_lVBuy[i] = data.m_lVBuy[i];
-    m_lPSell[i] = data.m_lPSell[i];
-    m_lVSell[i] = data.m_lVSell[i];
+    m_lPBuy.at(i) = data.m_lPBuy.at(i);
+    m_lVBuy.at(i) = data.m_lVBuy.at(i);
+    m_lPSell.at(i) = data.m_lPSell.at(i);
+    m_lVSell.at(i) = data.m_lVSell.at(i);
   }
   return(true);
 }

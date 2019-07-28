@@ -72,4 +72,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
+  TEST(SystemMessageTest, TestGetTrace2DequeSize) {
+    EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
+    gl_systemMessage.PushTrace2Message(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 1);
+    CString str = gl_systemMessage.PopTrace2Message();
+    EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
+    EXPECT_STREQ(str, _T("TEST"));
+  }
+
 }

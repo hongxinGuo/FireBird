@@ -140,22 +140,22 @@ bool CStock::LoadDayLine(CSetDayLine * psetDayLine)
 bool CStock::CalculateRTData(void) {
   CStockRTDataPtr pRTData;
 
-  long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
-  for (int i = 0; i < lTotalNumber; i++) {
+  for (long i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if ((pRTData->GetNew() != 0) && (pRTData->GetOpen() != 0)) { // 数据有效
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
         || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
-        int i = 0;
-        if (m_lOrdinaryBuyVolume < 0) i = 1;
-        if (m_lOrdinarySellVolume < 0) i += 2;
-        if (m_lAttackBuyVolume < 0) i += 4;
-        if (m_lAttackSellVolume < 0) i += 8;
-        if (m_lStrongBuyVolume < 0) i += 16;
-        if (m_lStrongSellVolume < 0) i += 32;
-        TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(),  m_strStockCode, i);
+        int j = 0;
+        if (m_lOrdinaryBuyVolume < 0) j = 1;
+        if (m_lOrdinarySellVolume < 0) j += 2;
+        if (m_lAttackBuyVolume < 0) j += 4;
+        if (m_lAttackSellVolume < 0) j += 8;
+        if (m_lStrongBuyVolume < 0) j += 16;
+        if (m_lStrongSellVolume < 0) j += 32;
+        TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(),  m_strStockCode, j);
       }
       // 显示当前交易情况
       if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
@@ -281,8 +281,8 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
         }
       }
       ASSERT(m_Time >= pRTData->GetTime());
-      INT64 I = pRTData->GetVolume();
-      INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
+      const INT64 I = pRTData->GetVolume();
+      const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
         + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
       ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
         + m_lAttackBuyVolume + m_lAttackSellVolume + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
@@ -316,7 +316,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
-  array<bool, 10> fNeedCheck; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
+  array<bool, 10> fNeedCheck{true,true,true,true,true,true,true,true,true,true}; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
   m_lCurrentCanselSellVolume = 0;
   m_lCurrentCanselBuyVolume = 0;
 

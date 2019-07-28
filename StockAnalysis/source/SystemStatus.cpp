@@ -37,7 +37,7 @@ bool CSystemStatus::IsCalculateRSInProcess(void) {
   CSingleLock singleLock(&m_CalculateRSInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fCalculatingRelativeStrongInProcess;
+    const bool fFlag = m_fCalculatingRelativeStrongInProcess;
     singleLock.Unlock();
     return fFlag;
   }
@@ -56,7 +56,7 @@ bool CSystemStatus::IsReadingInProcess(void) {
   CSingleLock singleLock(&m_ReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fReadingInProcess;
+    const bool fFlag = m_fReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }
@@ -75,7 +75,7 @@ bool CSystemStatus::IsDataBaseInProcess(void) {
   CSingleLock singleLock(&m_DataBaseInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fDataBaseInProcess;
+    const bool fFlag = m_fDataBaseInProcess;
     singleLock.Unlock();
     return fFlag;
   }
@@ -94,7 +94,7 @@ bool CSystemStatus::IsRTDataReadingInProcess(void) {
   CSingleLock singleLock(&m_RTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fRTDataReadingInProcess;
+    const bool fFlag = m_fRTDataReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }
@@ -113,7 +113,7 @@ bool CSystemStatus::IsRTDataReceived(void) {
   CSingleLock singleLock(&m_RTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fRTDataReceived;
+    const bool fFlag = m_fRTDataReceived;
     singleLock.Unlock();
     return fFlag;
   }
@@ -132,7 +132,7 @@ bool CSystemStatus::IsRTDataNeedCalculate(void) {
   CSingleLock singleLock(&m_RTDataNeedCalculateLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fRTDataNeedCalculate;
+    const bool fFlag = m_fRTDataNeedCalculate;
     singleLock.Unlock();
     return fFlag;
   }
@@ -151,7 +151,7 @@ bool CSystemStatus::IsDayLineDataReady(void) {
   CSingleLock singleLock(&m_DayLineDataReadyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fDayLineDataReady;
+    const bool fFlag = m_fDayLineDataReady;
     singleLock.Unlock();
     return fFlag;
   }
@@ -170,7 +170,7 @@ bool CSystemStatus::IsCalculatingRTData(void) {
   CSingleLock singleLock(&m_CalculatingRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fCalculatingRTData;
+    const bool fFlag = m_fCalculatingRTData;
     singleLock.Unlock();
     return fFlag;
   }
@@ -189,7 +189,7 @@ bool CSystemStatus::IsSavingTempData(void) {
   CSingleLock singleLock(&m_SavingTempDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    bool fFlag = m_fSavingTempData;
+    const bool fFlag = m_fSavingTempData;
     singleLock.Unlock();
     return fFlag;
   }

@@ -7,7 +7,7 @@ CSystemMessage::CSystemMessage()
   static int siCounter = 0;
   if (siCounter++ > 0) { 
     TRACE("系统消息只允许一个实例\n");
-    gl_systemMessage.PushInformationMessage(_T("错误：系统消息只允许生成一个实例"));
+    gl_systemMessage.PushInformationMessage(_T("错误：系统不允许生成多个CMarket实例"));
   }
 }
 
@@ -37,11 +37,11 @@ CString CSystemMessage::PopInformationMessage(void)
   CString str;
   CSingleLock singleLock(&m_InformationLock);
   singleLock.Lock();
-  if (singleLock.IsLocked()) {
+  if (singleLock.IsLocked()) {  // 如果没有锁住，则线程终止，一直等待
     str = m_dequeInformationMessage.front();
     m_dequeInformationMessage.pop_front();
     singleLock.Unlock();
-    return str;
+    return str;     // 只能从这里返回
   }
 }
 
@@ -115,11 +115,10 @@ long CSystemMessage::GetInformationDequeSize(void)
   CSingleLock singleLock(&m_InformationLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeInformationMessage.size();
+    const long lCount = m_dequeInformationMessage.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
 }
 
 long CSystemMessage::GetDayLineInfoDequeSize(void)
@@ -127,11 +126,10 @@ long CSystemMessage::GetDayLineInfoDequeSize(void)
   CSingleLock singleLock(&m_DayLineInfoLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeDayLineInfoMessage.size();
+    const long lCount = m_dequeDayLineInfoMessage.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
 }
 
 long CSystemMessage::GetTransactionDequeSize(void)
@@ -139,11 +137,10 @@ long CSystemMessage::GetTransactionDequeSize(void)
   CSingleLock singleLock(&m_TransactionLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeTransactionMessage.size();
+    const long lCount = m_dequeTransactionMessage.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
 }
 
 long CSystemMessage::GetCancelSellDequeSize(void)
@@ -151,11 +148,10 @@ long CSystemMessage::GetCancelSellDequeSize(void)
   CSingleLock singleLock(&m_CancelSellLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeCancelSellMessage.size();
+    const long lCount = m_dequeCancelSellMessage.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
 }
 
 long CSystemMessage::GetCancelBuyDequeSize(void)
@@ -163,11 +159,10 @@ long CSystemMessage::GetCancelBuyDequeSize(void)
   CSingleLock singleLock(&m_CancelBuyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeCancelBuyMessage.size();
+    const long lCount = m_dequeCancelBuyMessage.size();
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
 }
 
 long CSystemMessage::GetTrace2DequeSize(void)
@@ -175,7 +170,7 @@ long CSystemMessage::GetTrace2DequeSize(void)
   CSingleLock singleLock(&m_Trace2Lock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeTrace2Message.size();
+    const long lCount = m_dequeTrace2Message.size();
     singleLock.Unlock();
     return lCount;
   }

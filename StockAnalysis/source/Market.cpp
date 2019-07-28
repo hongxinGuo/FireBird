@@ -1653,11 +1653,11 @@ bool CMarket::LoadTodayTempData(void) {
     if (setDayLineToday.m_Time == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {          
-
           // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
           // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
           // 故而此处这样计算。
-          pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume - setDayLineToday.m_Volume);   
+          ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
+          pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume - setDayLineToday.m_Volume);  // 需要如此设置m_lUnknownVolume  
           
           pStock->SetTransactionNumber(pStock->GetTransactionNumber());
           pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
