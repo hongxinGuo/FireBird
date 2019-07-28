@@ -250,8 +250,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-  // 设置200毫秒每次的软调度，用于接受处理实时网络数据
-  m_uIdTimer = SetTimer(1, 200, nullptr);     // 100毫秒每次调度，用于从股票数据提供网站读取数据。
+  // 设置300毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而300毫秒读取900个股票就足够了。
+  m_uIdTimer = SetTimer(1, 300, nullptr);     // 300毫秒每次调度，用于从股票数据提供网站读取数据。
   if (m_uIdTimer == 0) {
     CString str;
   }

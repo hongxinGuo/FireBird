@@ -607,7 +607,7 @@ bool CMarket::IsAStock(CStockPtr pStock) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsAStock(CString strStockCode) {
 
-  if ((strStockCode[0] == 's') && (strStockCode[1] == 'h') && (strStockCode[2] == '6')) {
+  if ((strStockCode[0] == 's') && (strStockCode[1] == 'h') && (strStockCode[2] == '6') && (strStockCode[3] == '0')) {
     if ((strStockCode[4] == '0') || (strStockCode[4] == '1')) {
       return true;
     }
@@ -1099,7 +1099,7 @@ bool CMarket::SchedulingTask(void)
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownSlowReadingRTData = 1;  // 计数两次
+    else m_iCountDownSlowReadingRTData = 0;  // 计数1次
   }
   m_iCountDownSlowReadingRTData--;
 
