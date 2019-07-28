@@ -67,7 +67,6 @@ void CMarket::Reset(void)
 
   m_fGetRTStockData = true;
   m_fGetDayLineData = true;
-  m_fSlowReadingRTData = true;      // 初始时执行慢速查询实时行情。
   m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
   m_iCountDownSlowReadingRTData = 1;
 
@@ -155,7 +154,7 @@ void CMarket::Dump(CDumpContext& dc) const
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::CreateTotalStockContainer(void)
 {
-  char buffer[10];
+  char buffer[10]{};
 
   StockIDPtr pStockID = nullptr;
   int iCount = 0;
@@ -178,8 +177,50 @@ bool CMarket::CreateTotalStockContainer(void)
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
+  // 生成三版股票代码
+  for (int i = 603000; i < 604000; i++) {
+    CString str = _T("sh");
+    _itoa_s(i, buffer, 10);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(1); // 上海市场
+    pStockID->SetIndex(iCount);
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+  }
+
+  // 生成科创版股票代码
+  for (int i = 688000; i < 689000; i++) {
+    CString str = _T("sh");
+    _itoa_s(i, buffer, 10);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(1); // 上海市场
+    pStockID->SetIndex(iCount);
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+  }
+
+  // 生成上海指数代码
+  for (int i = 0; i < 1000; i++) {
+    CString str = _T("sh");
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(1); // 上海市场
+    pStockID->SetIndex(iCount);
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+  }
+
   ///////////////////////////////////////////////
-  // 生成深圳股票代码
+  // 生成深圳股票代码（包括中小板002XXX系列）
   for (int i = 0; i < 3000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
@@ -191,6 +232,33 @@ bool CMarket::CreateTotalStockContainer(void)
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
+
+  // 生成创业板股票代码
+  for (int i = 300000; i < 301000; i++) {
+    CString str = _T("sz");
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(2); // 深圳市场
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+  }
+
+  // 生成深圳指数
+  for (int i = 399000; i < 400000; i++) {
+    CString str = _T("sz");
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(2); // 深圳市场
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+  }
+
 
   return true;
 }
@@ -501,21 +569,13 @@ long CMarket::GetMinLineOffset( CStockID sID, time_t Time ) {
 bool CMarket::IsAStock(CStockPtr pStock) {
   ASSERT(pStock != nullptr);
 
-  if ((pStock->GetStockCode()[0] == 's') && (pStock->GetStockCode()[1] == 'h') && (pStock->GetStockCode()[2] == '6')) {
-    return true;
-  }
-  else {
-    if ((pStock->GetStockCode()[0] == 's') && (pStock->GetStockCode()[1] == 'z') && (pStock->GetStockCode()[2] == '0') && (pStock->GetStockCode()[3] == '0')) {
-      return true;
-    }
-  }
-  return(false);
+  return(IsAStock(pStock->GetStockCode()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //		判断strStockCode是否为沪深A股的股票代码。
-//		沪市A股代码以6开头，深市A股代码以00开头。
+//		沪市A股代码以600或601开头，深市A股代码以000或001开头。
 //
 //
 //
@@ -523,11 +583,15 @@ bool CMarket::IsAStock(CStockPtr pStock) {
 bool CMarket::IsAStock(CString strStockCode) {
 
   if ((strStockCode[0] == 's') && (strStockCode[1] == 'h') && (strStockCode[2] == '6')) {
-    return true;
+    if ((strStockCode[4] == '0') || (strStockCode[4] == '1')) {
+      return true;
+    }
   }
   else {
     if ((strStockCode[0] == 's') && (strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
-      return true;
+      if ((strStockCode[4] == '0') || (strStockCode[4] == '2')) {
+        return true;
+      }
     }
   }
   return(false);
@@ -594,7 +658,7 @@ bool CMarket::ProcessRTData(void)
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
 	CStockRTDataPtr pRTDataCompact = nullptr;
-  long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
+  const long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
 
   for (int i = 0; i < lTotalNumber; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
@@ -1009,7 +1073,7 @@ bool CMarket::SchedulingTask(void)
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
-    if (m_fSlowReadingRTData && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
     else m_iCountDownSlowReadingRTData = 1;  // 计数两次
   }
   m_iCountDownSlowReadingRTData--;
@@ -1044,11 +1108,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
   static int i10SecondsCounter = 10; // 十秒一次的计算
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
   const long lTime = gl_systemTime.GetTime();
-
-  if (((lTime > 91000) && (lTime < 113500)) || ((lTime > 125500) && (lTime < 150300))) {
-    m_fSlowReadingRTData = false;// 只在市场交易时间快速读取实时数据，其他时间则慢速读取
-  }
-  else m_fSlowReadingRTData = true;
 
   if ((lTime < 91000) || (lTime > 150130)) { //下午三点一分三秒市场交易结束，
     m_fMarketOpened = false;
@@ -1706,9 +1765,9 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   int iStockNumber = 0, j = 0;
   CTime ctTime;
   CSetDayLine setDayKLine;
-  long lYear = lDay / 10000;
-  long lMonth = lDay / 100 - lYear * 100;
-  long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
+  const long lYear = lDay / 10000;
+  const long lMonth = lDay / 100 - lYear * 100;
+  const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
   gl_systemStatus.SetCalculateRSInProcess(true);
 
@@ -1742,23 +1801,24 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   int iBefore = 0;
   while (iCount < vIndex.size()) { // 只计算活跃股票的相对强度
     if (gl_fExiting) break; // 数据库有时操作很费时间，当系统退出时数据库操作要主动中断。
-    for (int i = 0; i < vIndex.at(iCount) - iBefore; i++) { // 根据索引去更改数据库。
+    for (int i = 0; i < vIndex.at(iCount) - iBefore; i++) { // 根据索引去更改数据库,跨过不是A股的股票
       setDayKLine.MoveNext();
     }
     setDayKLine.Edit();
-    if ((((double)setDayKLine.m_Low / setDayKLine.m_LastClose) < 0.88) || (((double)setDayKLine.m_High / setDayKLine.m_LastClose) > 1.12)) { // 除权、新股上市等
+    if (((static_cast<double>(setDayKLine.m_Low) / setDayKLine.m_LastClose) < 0.88) 
+      || ((static_cast<double>(setDayKLine.m_High) / setDayKLine.m_LastClose) > 1.12)) { // 除权、新股上市等
       setDayKLine.m_RelativeStrong = 50; // 新股上市或者除权除息，不计算此股
     }
     else if ((fabs(setDayKLine.m_High - setDayKLine.m_Close) < 0.0001)
-      && (((double)setDayKLine.m_Close / setDayKLine.m_LastClose) > 1.095)) { // 涨停板
+      && ((static_cast<double>(setDayKLine.m_Close) / setDayKLine.m_LastClose) > 1.095)) { // 涨停板
       setDayKLine.m_RelativeStrong = 100;
     }
     else if ((fabs(setDayKLine.m_Close - setDayKLine.m_Low) < 0.0001)
-      && (((double)setDayKLine.m_Close / setDayKLine.m_LastClose) < 0.905)) { // 跌停板
+      && ((static_cast<double>(setDayKLine.m_Close) / setDayKLine.m_LastClose) < 0.905)) { // 跌停板
       setDayKLine.m_RelativeStrong = 0;
     }
     else {
-      setDayKLine.m_RelativeStrong = ((double)iCount * 100) / iTotalAShare;
+      setDayKLine.m_RelativeStrong = (static_cast<double>(iCount) * 100) / iTotalAShare;
     }
     setDayKLine.Update();
     iBefore = vIndex.at(iCount++);
