@@ -203,7 +203,21 @@ bool CMarket::CreateTotalStockContainer(void)
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
-
+  
+  // 生成B股股票代码
+  for (int i = 900000; i < 901000; i++) {
+    CString str = _T("sh");
+    _itoa_s(i, buffer, 10);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(1); // 上海市场
+    pStockID->SetIndex(iCount);
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+  }
+  
   // 生成上海指数代码
   for (int i = 0; i < 1000; i++) {
     CString str = _T("sh");
@@ -231,7 +245,20 @@ bool CMarket::CreateTotalStockContainer(void)
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
-
+  
+  // 生成B股股票代码
+  for (int i = 200000; i < 201000; i++) {
+    CString str = _T("sz");
+    sprintf_s(buffer, 10, "%06d", i);
+    pStockID = make_shared<CStockID>();
+    pStockID->SetIndex(iCount);
+    str += buffer;
+    pStockID->SetStockCode(str);
+    pStockID->SetMarket(2); // 深圳市场
+    m_vChinaMarketAStock.push_back(pStockID);
+    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+  }
+  
   // 生成创业板股票代码
   for (int i = 300000; i < 301000; i++) {
     CString str = _T("sz");
@@ -257,7 +284,6 @@ bool CMarket::CreateTotalStockContainer(void)
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
-
 
   return true;
 }

@@ -303,7 +303,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMarketTest, TestGetRelativeEndDay) {
-    EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 20190727); // 此数据会不时变化，因为是从真实数据库读取的，系统会不时更新。
+    //EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 20190727); // 此数据会不时变化，因为是从真实数据库读取的，系统会不时更新。暂时不测试初始态了
     gl_ChinaStockMarket.SetRelativeStrongEndDay(19900103);
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 19900103);
   }
