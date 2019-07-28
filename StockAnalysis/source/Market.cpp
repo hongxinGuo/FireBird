@@ -109,7 +109,6 @@ void CMarket::Reset(void)
   m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
   if (!m_setSavingDayLineOnly.IsOpen()) m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
 
-
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
@@ -1137,7 +1136,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
-    if (m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
+    if (m_fMarketOpened &&m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       i1MinuteCounter = 60; // 重置计数器
       // 每分钟存储一次当前状态。
       gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
