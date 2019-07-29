@@ -51,17 +51,17 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetDayLineData);
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 2);
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 1);
-    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.size(), 10000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
-    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockMapIndexSize(), 10000);
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.size(), 12000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockMapIndexSize(), 12000);
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode(), _T("sh600000"));
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetMarket(), 1);
-    EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(5000)->GetStockCode(), _T("sz000000"));
-    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(5000)->GetMarket(), 2);
+    EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetStockCode(), _T("sz000000"));
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetMarket(), 2);
     for (int i = 0; i < 10000; i++) {
       EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->GetIndex(), i);
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
-    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 5000);
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
   }
 
   TEST_F(CMarketTest, TestCreateRTDataInquiringStr) {
@@ -327,6 +327,9 @@ namespace StockAnalysisTest {
     }
     else EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
     gl_systemTime.SetTime(150130);
+    gl_ChinaStockMarket.SchedulingTaskPerSecond();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
+    gl_systemTime.SetTime(150131);
     gl_ChinaStockMarket.SchedulingTaskPerSecond();
     EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
 

@@ -599,7 +599,7 @@ bool CMarket::IsAStock(CStockPtr pStock) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-//		判断strStockCode是否为沪深A股的股票代码。
+//		判断strStockCode是否为沪深A股主板的股票代码。
 //		沪市A股代码以600或601开头，深市A股代码以000或001开头。
 //
 //
@@ -1162,8 +1162,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i10SecondsCounter--;
 
   if (i1MinuteCounter <= 0) {
+    i1MinuteCounter = 60; // 重置计数器
     if (m_fMarketOpened &&m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
-      i1MinuteCounter = 60; // 重置计数器
       // 每分钟存储一次当前状态。
       gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
       gl_systemStatus.SetSavingTempData(true);
