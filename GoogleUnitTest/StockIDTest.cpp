@@ -58,8 +58,10 @@ namespace StockAnalysisTest {
   TEST(StockIDTest, TestGetMarket) {
     CStockID id;
     EXPECT_EQ(id.GetMarket(), 0);
-    id.SetMarket(1);
-    EXPECT_EQ(id.GetMarket(), 1);
+    id.SetMarket(__SHANGHAI_MARKET__);
+    EXPECT_EQ(id.GetMarket(), __SHANGHAI_MARKET__);
+    id.SetMarket(__SHENZHEN_MARKET__);
+    EXPECT_EQ(id.GetMarket(), __SHENZHEN_MARKET__);
   }
 
   TEST(StockIDTest, TestGetStockCode) {

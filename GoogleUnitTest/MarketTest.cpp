@@ -54,10 +54,10 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.size(), 12000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockMapIndexSize(), 12000);
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode(), _T("sh600000"));
-    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetMarket(), 1);
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetMarket(), __SHANGHAI_MARKET__);
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetStockCode(), _T("sz000000"));
-    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetMarket(), 2);
-    for (int i = 0; i < 10000; i++) {
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetMarket(), __SHENZHEN_MARKET__);
+    for (int i = 0; i < 12000; i++) {
       EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->GetIndex(), i);
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);

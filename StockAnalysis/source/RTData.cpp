@@ -170,10 +170,10 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   iTotalRead += 12;
 
   if (*pCurrentPos == 'h') { // 上海股票
-    m_wMarket = 1; // 上海股票标识
+    m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
   }
   else if (*pCurrentPos == 'z') {
-    m_wMarket = 2; // 深圳股票标识
+    m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
   }
   else {
     return false;
@@ -185,10 +185,10 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   buffer2[6] = 0x000;
   m_strStockCode = buffer2;
   switch (m_wMarket) {
-  case 1:
+  case __SHANGHAI_MARKET__:
     m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
-  case 2:
+  case __SHENZHEN_MARKET__:
     m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
   default:
