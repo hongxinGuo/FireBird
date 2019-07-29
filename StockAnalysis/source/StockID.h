@@ -42,7 +42,8 @@ public:
   void      SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
 
 protected:
-  WORD			m_wMarket;				// 市场。1：上海主板；2：深圳主板；3：上海指数；4：深圳指数；5：上海三版；6：深圳中小板；7：深圳创业板；8：上海B股；9：深圳B股；10：上海科创版
+  WORD			m_wMarket;				// 市场。1：上海主板；2：深圳主板；3：上海指数；4：深圳指数；5：上海三版；6：深圳中小板；7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；
+                              // 上海市场采用单数标示，深圳市场采用双数标示
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString   m_strStockName;		// 股票名称
   long			m_nIndex;					// 在容器中的偏移量
