@@ -184,7 +184,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(5); // 上海三板
+    pStockID->SetMarket(1); // 上海三板
     pStockID->SetIndex(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
@@ -198,7 +198,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(9); // 上海科创板
+    pStockID->SetMarket(1); // 上海科创板
     pStockID->SetIndex(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
@@ -212,7 +212,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(7); // 上海B股
+    pStockID->SetMarket(1); // 上海B股
     pStockID->SetIndex(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
@@ -226,7 +226,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(3); // 上海指数
+    pStockID->SetMarket(1); // 上海指数
     pStockID->SetIndex(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
@@ -254,7 +254,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(6); // 深圳中小板
+    pStockID->SetMarket(2); // 深圳中小板
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
@@ -267,7 +267,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(8); // 深圳B股
+    pStockID->SetMarket(2); // 深圳B股
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
@@ -280,7 +280,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(10); // 深圳创业板
+    pStockID->SetMarket(2); // 深圳创业板
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
@@ -293,7 +293,7 @@ bool CMarket::CreateTotalStockContainer(void)
     pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
-    pStockID->SetMarket(4); // 深圳指数
+    pStockID->SetMarket(2); // 深圳指数
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
