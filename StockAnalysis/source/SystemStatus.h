@@ -33,6 +33,9 @@ public:
   void SetSavingTempData(bool fFlag);
   bool IsSavingTempData(void);
 
+  void SetSavingStockCodeData(bool fFlag);
+  bool IsSavingStockCodeData(void);
+
 
 protected:
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
@@ -61,5 +64,8 @@ protected:
 
   bool m_fSavingTempData; // 计算出的临时数据存储状态标识
   CCriticalSection m_SavingTempDataLock;
+
+  bool m_fSavingStockCodeData; // 股票代码数据存储状态标识
+  CCriticalSection m_SavingStockCodeDataLock;
 
 };

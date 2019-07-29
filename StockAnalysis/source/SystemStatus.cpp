@@ -21,6 +21,7 @@ CSystemStatus::CSystemStatus() {
   m_fDayLineDataReady = false;
   m_fCalculatingRTData = false;
   m_fSavingTempData = false; 
+  m_fSavingStockCodeData = false;
 
 }
 
@@ -190,6 +191,25 @@ bool CSystemStatus::IsSavingTempData(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fSavingTempData;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CSystemStatus::SetSavingStockCodeData(bool fFlag) {
+  CSingleLock singleLock(&m_SavingStockCodeDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fSavingStockCodeData = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsSavingStockCodeData(void) {
+  CSingleLock singleLock(&m_SavingStockCodeDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fSavingStockCodeData;
     singleLock.Unlock();
     return fFlag;
   }

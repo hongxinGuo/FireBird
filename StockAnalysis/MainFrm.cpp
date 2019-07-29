@@ -124,6 +124,8 @@ CMainFrame::~CMainFrame()
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
   gl_ChinaStockMarket.UpdateStockCodeDataBase();
 
+  if (gl_systemStatus.IsSavingStockCodeData()) Sleep(10); // 等待存储股票代码的工作线程结束
+
   TRACE("finally exited\n");
 }
 

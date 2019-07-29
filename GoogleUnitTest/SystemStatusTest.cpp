@@ -82,4 +82,11 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_systemStatus.IsSavingTempData());
   }
 
+  TEST(SystemStatusTest, TestIsSavingStockCodeData) {
+    gl_systemStatus.SetSavingStockCodeData(true);
+    EXPECT_TRUE(gl_systemStatus.IsSavingStockCodeData());
+    gl_systemStatus.SetSavingStockCodeData(false);
+    EXPECT_FALSE(gl_systemStatus.IsSavingStockCodeData());
+  }
+
 }
