@@ -145,6 +145,7 @@ bool CStock::CalculateRTData(void) {
   for (long i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if ((pRTData->GetNew() != 0) && (pRTData->GetOpen() != 0)) { // 数据有效
+      UpdataCurrentStatus(pRTData);   // 更新股票现时状态。
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
         || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
@@ -174,7 +175,6 @@ bool CStock::CalculateRTData(void) {
 
     }
   }
-  UpdataCurrentStatus(pRTData); // 其他状态只更新一次即可。
 
   if (lTotalNumber == 0) return false;
   else return true;

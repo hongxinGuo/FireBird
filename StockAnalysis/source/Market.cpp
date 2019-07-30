@@ -1163,8 +1163,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   }
   else m_fMarketOpened = true;
 
-  // 自动处理当日数据的窗口期为三十秒，自15:01:00至15:01:30，错过后需要手动处理。
-  if ((lTime > 150100) && !IsTodayStockCompiled() && m_fMarketOpened) { // 下午三点一分开始处理当日实时数据。
+  if ((lTime > 150100) && !IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
     if (SystemReady()) {
       AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
       SetTodayStockCompiledFlag(true);
@@ -1695,7 +1694,6 @@ bool CMarket::SaveTodayTempData(void) {
   while (!setDayLineToday.IsEOF()) {
     setDayLineToday.Delete();
     setDayLineToday.MoveNext();
-
   }
   setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.m_pDatabase->BeginTrans();
