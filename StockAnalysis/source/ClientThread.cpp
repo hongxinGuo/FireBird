@@ -199,14 +199,14 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
           gl_stDayLineInquire.lByteRead += iCount;
         }
       } while (iCount > 0);
-      Sleep(50); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
+      Sleep(30); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
         gl_stDayLineInquire.lByteRead += iCount;
       }
       else {
-        Sleep(50); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
+        Sleep(30); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
@@ -229,7 +229,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
   gl_systemStatus.SetReadingInProcess(false);
   if (!fStarted) {
     fStarted = true;
-    siDelayTime = 100;
+    siDelayTime = 50;
   }
 
   gl_ChinaStockMarket.gl_DayLineReadingTime = clock() - tt;
@@ -373,41 +373,8 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
 
 
 UINT ClientThreadSavingStockCodeDataProc(LPVOID pParam) {
-  CSetStockCode setStockCode;
-
-  setStockCode.Open();
-  setStockCode.m_pDatabase->BeginTrans();
-  while (!setStockCode.IsEOF()) {
-    setStockCode.Delete();
-    setStockCode.MoveNext();
-  }
-  setStockCode.m_pDatabase->CommitTrans();
-  setStockCode.m_pDatabase->BeginTrans();
-  for (auto pStockID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
-    setStockCode.AddNew();
-    setStockCode.m_Counter = pStockID->GetIndex();
-    setStockCode.m_StockType = pStockID->GetMarket();
-    setStockCode.m_StockCode = pStockID->GetStockCode();
-    setStockCode.m_StockName = pStockID->GetStockName();
-    if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
-      if ((pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100))
-        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
-        setStockCode.m_IPOed = __STOCK_DELISTED__;
-      }
-      else {
-        setStockCode.m_IPOed = pStockID->GetIPOStatus();
-      }
-    }
-    else {
-      setStockCode.m_IPOed = pStockID->GetIPOStatus();
-    }
-    setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
-    setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
-    setStockCode.m_NewestDayLineDay = pStockID->GetNewestDayLineDay();
-    setStockCode.Update();
-  }
-  setStockCode.m_pDatabase->CommitTrans();
-  setStockCode.Close();
+  
+  gl_ChinaStockMarket.SaveStockCodeDataBase();
 
   return 11;
 }

@@ -1102,6 +1102,13 @@ bool CMarket::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long 
   return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+// 大约每100毫秒调度一次
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTask(void)
 {
   static time_t s_time = 0;
@@ -1116,10 +1123,10 @@ bool CMarket::SchedulingTask(void)
 
   // 抓取新浪实时数据
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
-    GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownSlowReadingRTData = 1;  // 计数2次
+    else m_iCountDownSlowReadingRTData = 3;  // 计数4次
   }
   m_iCountDownSlowReadingRTData--;
 
@@ -1890,13 +1897,54 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
 
 bool CMarket::UpdateStockCodeDataBase(void)
 {
-  if (gl_systemStatus.IsSavingStockCodeData()) {
+  if (!gl_systemStatus.IsSavingStockCodeData()) {
     gl_systemStatus.SetSavingStockCodeData(true);
 
     AfxBeginThread(ClientThreadSavingStockCodeDataProc, nullptr);
 
     gl_systemStatus.SetSavingStockCodeData(false);
   }
+  return true;
+}
+
+bool CMarket::SaveStockCodeDataBase(void)
+{
+  CSetStockCode setStockCode;
+
+  setStockCode.Open();
+  setStockCode.m_pDatabase->BeginTrans();
+  while (!setStockCode.IsEOF()) {
+    setStockCode.Delete();
+    setStockCode.MoveNext();
+  }
+  setStockCode.m_pDatabase->CommitTrans();
+  setStockCode.m_pDatabase->BeginTrans();
+  for (auto pStockID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
+    setStockCode.AddNew();
+    setStockCode.m_Counter = pStockID->GetIndex();
+    setStockCode.m_StockType = pStockID->GetMarket();
+    setStockCode.m_StockCode = pStockID->GetStockCode();
+    setStockCode.m_StockName = pStockID->GetStockName();
+    if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
+      if ((pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100))
+        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+        setStockCode.m_IPOed = __STOCK_DELISTED__;
+      }
+      else {
+        setStockCode.m_IPOed = pStockID->GetIPOStatus();
+      }
+    }
+    else {
+      setStockCode.m_IPOed = pStockID->GetIPOStatus();
+    }
+    setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
+    setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
+    setStockCode.m_NewestDayLineDay = pStockID->GetNewestDayLineDay();
+    setStockCode.Update();
+  }
+  setStockCode.m_pDatabase->CommitTrans();
+  setStockCode.Close();
+  
   return true;
 }
 

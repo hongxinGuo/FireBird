@@ -112,6 +112,14 @@ namespace StockAnalysisTest {
     strCompare = gl_ChinaStockMarket.m_vChinaMarketAStock.at(9878)->GetStockCode();
     str2 = str.Left(8);
     EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_ChinaStockMarket.m_vChinaMarketAStock.at(10776)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
+    gl_ChinaStockMarket.CreateRTDataInquiringStr(str);
+    strCompare = gl_ChinaStockMarket.m_vChinaMarketAStock.at(11674)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
   }
 
   TEST_F(CMarketTest, TestGetInquiringStockStr) {
@@ -124,8 +132,9 @@ namespace StockAnalysisTest {
     str = _T("");
     EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
     str = _T("");
-    long l = 0;
-    EXPECT_GT(900, gl_ChinaStockMarket.GetInquiringStockStr(str));
+    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+    str = _T("");
+    EXPECT_GT(900, gl_ChinaStockMarket.GetInquiringStockStr(str)); // 目前不到五千个活跃股票，故而六次即可遍历一次
     str = _T("");
     EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
     CString str2 = str.Left(9);

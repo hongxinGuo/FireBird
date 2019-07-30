@@ -122,9 +122,7 @@ CMainFrame::~CMainFrame()
  
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-  gl_ChinaStockMarket.UpdateStockCodeDataBase();
-
-  if (gl_systemStatus.IsSavingStockCodeData()) Sleep(10); // 等待存储股票代码的工作线程结束
+  gl_ChinaStockMarket.SaveStockCodeDataBase(); // 这里直接调用存储函数，不采用工作线程的模式。
 
   TRACE("finally exited\n");
 }
@@ -252,8 +250,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
-  // 设置200毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
-  m_uIdTimer = SetTimer(1, 200, nullptr);     // 200毫秒每次调度，用于调度各类定时处理任务。
+  // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
+  m_uIdTimer = SetTimer(1, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     CString str;
   }

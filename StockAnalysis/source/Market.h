@@ -29,6 +29,7 @@ public:
 public:
 	// 初始化市场
   bool          UpdateStockCodeDataBase(void);
+  bool          SaveStockCodeDataBase(void);
   bool          UpdateOptionDataBase(void);
 
   bool          UpdateTempRTData(void);
