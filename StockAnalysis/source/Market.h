@@ -31,6 +31,8 @@ public:
   bool          UpdateStockCodeDataBase(void);
   bool          UpdateOptionDataBase(void);
 
+  bool          UpdateTempRTData(void);
+
   // 实时数据和日线历史数据读取
   bool          CreateRTDataInquiringStr(CString& str);
   int						GetInquiringStockStr(CString& str);

@@ -253,7 +253,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
   // 设置300毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而300毫秒读取900个股票就足够了。
-  m_uIdTimer = SetTimer(1, 300, nullptr);     // 300毫秒每次调度，用于从股票数据提供网站读取数据。
+  m_uIdTimer = SetTimer(1, 400, nullptr);     // 300毫秒每次调度，用于从股票数据提供网站读取数据。
   if (m_uIdTimer == 0) {
     CString str;
   }
@@ -462,9 +462,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 #ifndef _DEBUG
-    // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序
+    // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序（此功能目前不再使用了。因现在可以每分钟存储临时数据）
     if (gl_ChinaStockMarket.m_fMarketOpened || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
-      return;
+      //return; // 无动作
     }
 #endif      
     gl_fExiting = true; // 提示各工作线程中途退出

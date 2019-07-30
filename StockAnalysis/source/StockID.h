@@ -13,8 +13,8 @@ enum {
 };
 
 enum {
-  __SHANGHAI_MARKET__ = 21, // 上海市场
-  __SHENZHEN_MARKET__ = 22, // 深圳市场
+  __SHANGHAI_MARKET__ = 1, // 上海市场
+  __SHENZHEN_MARKET__ = 2, // 深圳市场
   __SHANGHAI_INDEX__ = 3, // 上海指数
   __SHENZHEN_INDEX__ = 4, // 深圳指数
   __SHANGHAI_MAIN__ = 5,   // 上海主板

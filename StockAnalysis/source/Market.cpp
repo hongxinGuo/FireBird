@@ -1122,7 +1122,7 @@ bool CMarket::SchedulingTask(void)
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownSlowReadingRTData = 0;  // 计数1次
+    else m_iCountDownSlowReadingRTData = 1;  // 计数1次
   }
   m_iCountDownSlowReadingRTData--;
 
@@ -1145,9 +1145,10 @@ bool CMarket::SchedulingTask(void)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 定时调度函数，每秒一次
+// 定时调度函数，每秒一次。
 //
-//
+// 各种任务之间有可能出现互斥的现象，如存储临时实时数据的工作线程与计算实时数据的工作线程之间就不允许同时运行，
+// 故而所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -1172,25 +1173,14 @@ bool CMarket::SchedulingTaskPerSecond(void)
       SetTodayStockCompiledFlag(true);
     }
   }
-  // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-  if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
-    gl_systemStatus.SetCalculatingRTData(true);
-    AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
-  }
 
-  if (i10SecondsCounter <= 0) {
-    i10SecondsCounter = 10;
-    // do something
-  }
-  else i10SecondsCounter--;
-
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 60; // 重置计数器
-    if (m_fMarketOpened &&m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
+    if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       // 每分钟存储一次当前状态。
       gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
-      gl_systemStatus.SetSavingTempData(true);
-      AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+      UpdateTempRTData();
     }
 
     //gl_fResetSystem = true; // 重启系统
@@ -1218,6 +1208,18 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   }
   else i1MinuteCounter--;
+
+  if (i10SecondsCounter <= 0) {
+    i10SecondsCounter = 10;
+    // do something
+  }
+  else i10SecondsCounter--;
+
+  // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
+  if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+    gl_systemStatus.SetCalculatingRTData(true);
+    AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
+  }
 
   return true;
 }
@@ -1921,6 +1923,17 @@ bool CMarket::UpdateOptionDataBase(void)
   }
   setOption.m_pDatabase->CommitTrans();
   setOption.Close();
+  return false;
+}
+
+bool CMarket::UpdateTempRTData(void)
+{
+  if (!gl_systemStatus.IsSavingTempData()) {
+    gl_systemStatus.SetSavingTempData(true);
+    AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+    gl_systemStatus.SetSavingTempData(false);
+  }
+
   return false;
 }
 

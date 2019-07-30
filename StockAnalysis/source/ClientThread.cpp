@@ -201,14 +201,14 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
           gl_stDayLineInquire.lByteRead += iCount;
         }
       } while (iCount > 0);
-      Sleep(50); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
+      Sleep(30); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
         gl_stDayLineInquire.lByteRead += iCount;
       }
       else {
-        Sleep(50); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
+        Sleep(30); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
