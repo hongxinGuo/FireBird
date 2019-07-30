@@ -721,11 +721,9 @@ bool CMarket::ProcessRTData(void)
 				pStock->SetCode(pRTData->GetCode());
 				pStock->SetLastClose(pRTData->GetLastClose());
 				pStock->SetOpen(pRTData->GetOpen());
-				pStock->UpdataCurrentStatus(pRTData);
         AddStockToMarket(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
         ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);
 				pStock->PushRTData(pRTData);
-        pStock->UpdataCurrentStatus(pRTData);
 				lIndex = m_mapChinaMarketAStock[pStock->GetStockCode()];
 				m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
 				m_vChinaMarketAStock.at(lIndex)->SetActive(true); // 本日接收到了数据，
@@ -739,7 +737,6 @@ bool CMarket::ProcessRTData(void)
         lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
-          m_vActiveStock.at(lIndex)->UpdataCurrentStatus(pRTData);
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
       }
@@ -1707,6 +1704,8 @@ bool CMarket::SaveTodayTempData(void) {
       && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
+    ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
+      + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
     setDayLineToday.AddNew();
     setDayLineToday.m_Time = gl_systemTime.GetDay();
     setDayLineToday.m_Market = pStock->GetMarket();

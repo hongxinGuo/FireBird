@@ -174,6 +174,7 @@ bool CStock::CalculateRTData(void) {
 
     }
   }
+  UpdataCurrentStatus(pRTData); // 其他状态只更新一次即可。
 
   if (lTotalNumber == 0) return false;
   else return true;
