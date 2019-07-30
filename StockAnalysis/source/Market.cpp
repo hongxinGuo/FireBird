@@ -1122,7 +1122,7 @@ bool CMarket::SchedulingTask(void)
     GetSinaStockRTData(); // 每400毫秒(200X2)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可 
-    else m_iCountDownSlowReadingRTData = 1;  // 计数1次
+    else m_iCountDownSlowReadingRTData = 1;  // 计数2次
   }
   m_iCountDownSlowReadingRTData--;
 
@@ -1751,10 +1751,9 @@ bool CMarket::SaveTodayTempData(void) {
 bool CMarket::LoadTodayTempData(void) {
   CStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
-      CStockRTDataPtr pRTData;
-  INT64 iTotalVolume;
-  INT64 iCurrentVolume;
+  CStockRTDataPtr pRTData;
 
+  ASSERT(!m_fTempDataLoaded);
   ASSERT(!gl_systemStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
