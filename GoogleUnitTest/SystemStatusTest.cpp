@@ -34,10 +34,10 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestIsDataBaseInProcess) {
-    gl_systemStatus.SetDataBaseInProcess(true);
-    EXPECT_TRUE(gl_systemStatus.IsDataBaseInProcess());
-    gl_systemStatus.SetDataBaseInProcess(false);
-    EXPECT_FALSE(gl_systemStatus.IsDataBaseInProcess());
+    gl_systemStatus.SetSavingDayLineInProcess(true);
+    EXPECT_TRUE(gl_systemStatus.IsSavingDayLineInProcess());
+    gl_systemStatus.SetSavingDayLineInProcess(false);
+    EXPECT_FALSE(gl_systemStatus.IsSavingDayLineInProcess());
   }
 
   TEST(SystemStatusTest, TestIsRTDataReadInProcess) {

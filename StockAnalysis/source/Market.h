@@ -101,6 +101,9 @@ public:
 	bool					IsLoadSelectedStock( void ) noexcept { return m_fLoadedSelectedStock; }
 	void					SetLoadSelectedStock( bool fLoad ) noexcept { m_fLoadedSelectedStock = fLoad; }
 
+  bool          IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
+  void          SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
+
   CString       GetDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
   void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
 
@@ -180,7 +183,7 @@ protected :
 	
 	bool												m_fSystemReady;					// 市场初始态已经设置好
   
-  bool                        m_fTempDataLoaded;      //暂存的临时数据已经加载。
+  bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
 
   bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
 	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额

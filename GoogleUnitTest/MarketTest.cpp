@@ -49,8 +49,9 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetDayLineData);
-    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 2);
-    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 1);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayTempRTDataLoaded());
+    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 3);
+    EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 3);
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.size(), 12000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockMapIndexSize(), 12000);
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode(), _T("sh600000"));

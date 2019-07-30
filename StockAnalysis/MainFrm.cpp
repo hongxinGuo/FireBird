@@ -112,12 +112,12 @@ CMainFrame::~CMainFrame()
 
   gl_ChinaStockMarket.UpdateOptionDataBase();
 
-  while (gl_systemStatus.IsDataBaseInProcess()) {
-    Sleep(50); // 等待处理日线历史数据的线程结束。
+  while (gl_systemStatus.IsSavingDayLineInProcess()) {
+    Sleep(10); // 等待处理日线历史数据的线程结束。
   }
 
   while (gl_systemStatus.IsRTDataReadingInProcess()) {
-    Sleep(50); // 等待实时数据读取线程结束
+    Sleep(10); // 等待实时数据读取线程结束
   }
  
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
@@ -410,7 +410,11 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  if (gl_fResetSystem) {    
+  if (gl_fResetSystem) {
+    while (gl_systemStatus.IsCalculateRSInProcess() || gl_systemStatus.IsCalculatingRTData() || gl_systemStatus.IsSavingTempData()
+      || gl_systemStatus.IsSavingDayLineInProcess()) {
+      Sleep(10);
+    }
     ResetSystem();
     gl_fResetSystem = false;
   }
@@ -466,9 +470,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
     }
 #endif      
     gl_fExiting = true; // 提示各工作线程中途退出
-    if (gl_systemStatus.IsDataBaseInProcess()) { // 如果正在处理日线历史数据
-      while (gl_systemStatus.IsDataBaseInProcess()) {
-        Sleep(50); // 等待处理日线历史数据的线程退出
+    if (gl_systemStatus.IsSavingDayLineInProcess()) { // 如果正在处理日线历史数据
+      while (gl_systemStatus.IsSavingDayLineInProcess()) {
+        Sleep(10); // 等待处理日线历史数据的线程退出
       }
     }
   }

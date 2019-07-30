@@ -12,8 +12,10 @@ CSystemStatus::CSystemStatus() {
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
   
+  m_fExitingClientThreadInProcess = false;
+
   m_fReadingInProcess = false;
-  m_fDataBaseInProcess = false;
+  m_fSavingDayLineInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
   m_fRTDataReadingInProcess = false;
   m_fRTDataReceived = false;
@@ -23,6 +25,25 @@ CSystemStatus::CSystemStatus() {
   m_fSavingTempData = false; 
   m_fSavingStockCodeData = false;
 
+}
+
+void CSystemStatus::SetExitingClientThreadInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fExitingClientThreadInProcess = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsExitingClientThreadInProcess(void) {
+  CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fExitingClientThreadInProcess;
+    singleLock.Unlock();
+    return fFlag;
+  }
 }
 
 void CSystemStatus::SetCalculateRSInProcess(bool fFlag) {
@@ -63,20 +84,20 @@ bool CSystemStatus::IsReadingInProcess(void) {
   }
 }
 
-void CSystemStatus::SetDataBaseInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_DataBaseInProcessLock);
+void CSystemStatus::SetSavingDayLineInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_SavingDayLineInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fDataBaseInProcess = fFlag;
+    m_fSavingDayLineInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CSystemStatus::IsDataBaseInProcess(void) {
-  CSingleLock singleLock(&m_DataBaseInProcessLock);
+bool CSystemStatus::IsSavingDayLineInProcess(void) {
+  CSingleLock singleLock(&m_SavingDayLineInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fDataBaseInProcess;
+    const bool fFlag = m_fSavingDayLineInProcess;
     singleLock.Unlock();
     return fFlag;
   }

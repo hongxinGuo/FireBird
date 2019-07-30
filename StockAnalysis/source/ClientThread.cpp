@@ -288,7 +288,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID pParam) {
 
   gl_ChinaStockMarket.SaveDayLineData();
 
-  gl_systemStatus.SetDataBaseInProcess(false);
+  gl_systemStatus.SetSavingDayLineInProcess(false);
 
   return 8;
 }

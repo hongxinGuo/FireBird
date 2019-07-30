@@ -59,7 +59,7 @@ void CMarket::Reset(void)
 
   m_fResetm_ItStock = true;
 
-  m_fTempDataLoaded = false;
+  m_fTodayTempDataLoaded = false;
   
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。 
   
@@ -67,8 +67,8 @@ void CMarket::Reset(void)
 
   m_fGetRTStockData = true;
   m_fGetDayLineData = true;
-  m_iCountDownDayLine = 2;    // 400ms延时（200ms每次）
-  m_iCountDownSlowReadingRTData = 1;
+  m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
+  m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -1133,9 +1133,9 @@ bool CMarket::SchedulingTask(void)
   // 系统准备好了之后需要完成的各项工作
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
-    if (!m_fTempDataLoaded) { // 此工作仅进行一次。
+    if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
       LoadTodayTempData();   
-      m_fTempDataLoaded = true;
+      m_fTodayTempDataLoaded = true;
     }
     
     // 抓取日线数据
@@ -1162,33 +1162,42 @@ bool CMarket::SchedulingTaskPerSecond(void)
   static int i1MinuteCounter = 60;  // 一分钟一次的计算
   const long lTime = gl_systemTime.GetTime();
 
-  if ((lTime < 91000) || (lTime > 150130)) { //下午三点一分三秒市场交易结束，
+  // 判断中国股票市场开市状态
+  if ((lTime < 91000) || (lTime > 150130)) { //下午三点零分三十秒市场交易结束，
     m_fMarketOpened = false;
   }
-  else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
+  else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
     m_fMarketOpened = false;
   }
   else m_fMarketOpened = true;
 
-  if ((lTime > 150100) && !IsTodayStockCompiled()) { // 下午三点一分开始处理当日实时数据。
-    if (SystemReady()) {
-      AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
-      SetTodayStockCompiledFlag(true);
-    }
-  }
-
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 60; // 重置计数器
+    // 重启系统
+    //gl_fResetSystem = true; 
+    //m_fSystemReady = false;
+    
+    // 开市时每分钟存储一次当前状态。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
-      // 每分钟存储一次当前状态。
-      gl_systemMessage.PushInformationMessage(_T("存储临时数据"));
+      CString str = gl_systemTime.GetTimeString();
+      str += _T(" 存储临时数据");
+      gl_systemMessage.PushInformationMessage(str);
       UpdateTempRTData();
     }
+    
+    // 下午三点一分开始处理当日实时数据。
+    if ((lTime > 150100) && !IsTodayStockCompiled()) { 
+      if (SystemReady()) {
+        AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+        SetTodayStockCompiledFlag(true);
+      }
+    }
 
-    //gl_fResetSystem = true; // 重启系统
+
+    // 判断是否结束下载日线历史数据
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      if (!gl_systemStatus.IsDataBaseInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
+      if (!gl_systemStatus.IsSavingDayLineInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -1203,8 +1212,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
       }
     }
     else {
-      if (!gl_systemStatus.IsDataBaseInProcess() && m_fGetDayLineData) {
-        gl_systemStatus.SetDataBaseInProcess(true);
+      if (!gl_systemStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
+        gl_systemStatus.SetSavingDayLineInProcess(true);
         AfxBeginThread(ClientThreadSaveDayLineProc, nullptr);
       }
     }
@@ -1757,7 +1766,7 @@ bool CMarket::LoadTodayTempData(void) {
   CSetDayLineToday setDayLineToday;
   CStockRTDataPtr pRTData;
 
-  ASSERT(!m_fTempDataLoaded);
+  ASSERT(!m_fTodayTempDataLoaded);
   ASSERT(!gl_systemStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
