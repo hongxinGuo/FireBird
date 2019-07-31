@@ -191,7 +191,7 @@ bool CStock::CalculateRTData(void) {
 bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
   long lCurrentGuaDanTransactionPrice = 0;
 
-  if (IsStartCalculating()) {
+  if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后
     m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
     if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
       // 检查挂单情况
@@ -298,7 +298,11 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
   else { // 第一个数据，初始化系统
     m_pLastRTData = pRTData;
     SetStartCalculating(true);
-    m_lUnknownVolume += m_pLastRTData->GetVolume(); // 第一次挂单量无法判断买卖状态
+    // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
+    // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
+    // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
+    // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
+    m_lUnknownVolume += m_pLastRTData->GetVolume(); 
     // 设置第一次的挂单映射。
     for (int j = 0; j < 5; j++) {
       SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));

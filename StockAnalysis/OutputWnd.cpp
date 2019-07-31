@@ -243,7 +243,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
   }
 
-  if (m_wndOutputTransaction.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputTransaction.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
       m_wndOutputTransaction.DeleteString(0);
     }
@@ -256,7 +256,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputTransaction.SetTopIndex(m_wndOutputTransaction.GetCount() - 1);
   }
 
-  if (m_wndOutputCancelSell.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputCancelSell.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
       m_wndOutputCancelSell.DeleteString(0);
     }
@@ -269,7 +269,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputCancelSell.SetTopIndex(m_wndOutputCancelSell.GetCount() - 1);
   }
 
-  if (m_wndOutputCancelBuy.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputCancelBuy.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
       m_wndOutputCancelBuy.DeleteString(0);
     }
@@ -282,7 +282,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
     m_wndOutputCancelBuy.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
   }
 
-  if (m_wndOutputTrace2.GetCount() > 2000) {// 如果显示列表超过2000个，则删除前面的1000个。
+  if (m_wndOutputTrace2.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
     for (int i = 0; i < 1000; i++) {
       m_wndOutputTrace2.DeleteString(0);
     }

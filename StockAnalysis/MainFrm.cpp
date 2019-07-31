@@ -410,6 +410,8 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
+
+  // 重启系统在此处执行，容易调用各重置函数
   if (gl_fResetSystem) {
     while (gl_systemStatus.IsCalculateRSInProcess() || gl_systemStatus.IsCalculatingRTData() || gl_systemStatus.IsSavingTempData()
       || gl_systemStatus.IsSavingDayLineInProcess()) {
@@ -419,6 +421,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     gl_fResetSystem = false;
   }
 
+  // 调用主调度函数。系统更新任务由CMarket类中的调度函数完成，CMainFrame只执行更新状态任务
   gl_ChinaStockMarket.SchedulingTask();
 
   //更新状态条
@@ -541,9 +544,6 @@ void CMainFrame::OnUpdateSaveDaylineData(CCmdUI * pCmdUI)
   //for( auto pStock : gl_sMark)
 }
 
-
-
-
 void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
@@ -570,7 +570,6 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 
   return CMDIFrameWndEx::PreTranslateMessage(pMsg);
 }
-
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -624,7 +623,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
   CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
 }
-
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
