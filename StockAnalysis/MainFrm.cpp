@@ -535,7 +535,7 @@ void CMainFrame::OnUpdateCompileTodayStock(CCmdUI *pCmdUI)
   else pCmdUI->Enable(false);
 }
 
-void CMainFrame::OnUpdateSaveDaylineData(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateSaveDaylineData(CCmdUI * pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   //for( auto pStock : gl_sMark)

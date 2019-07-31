@@ -107,25 +107,25 @@ public:
   void SetOrdinarySellVolume(INT64 value) noexcept { m_lOrdinarySellVolume = value; }
   void SetAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume = value; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
   void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; }		// 向上强力买入,成交价超过之前的卖二报价
-  void SetCurrentAttackBuy(INT64 value) noexcept { m_lCurrentAttackBuy = value; }
-  void SetCurrentStrongBuy(INT64 value) noexcept { m_lCurrentStrongBuy = value; }
+  void SetCurrentAttackBuy(long value) noexcept { m_lCurrentAttackBuy = value; }
+  void SetCurrentStrongBuy(long value) noexcept { m_lCurrentStrongBuy = value; }
   void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; }			// 向下卖出。成交价低于买一价但高于买二价。
   void SetStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume = value; }
-  void SetCurrentAttackSell(INT64 value) noexcept { m_lCurrentAttackSell = value; }
-  void SetCurrentStrongSell(INT64 value) noexcept { m_lCurrentStrongSell = value; }
+  void SetCurrentAttackSell(long value) noexcept { m_lCurrentAttackSell = value; }
+  void SetCurrentStrongSell(long value) noexcept { m_lCurrentStrongSell = value; }
   void SetUnknownVolume(INT64 value) noexcept { m_lUnknownVolume = value; }
-  void SetCurrentUnknown(INT64 value) noexcept { m_lCurrentUnknown = value; }
+  void SetCurrentUnknown(long value) noexcept { m_lCurrentUnknown = value; }
   void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
   void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
   
-  void SetCurrentTransactionType(INT64 value) noexcept {  m_nCurrentTransactionType = value; }
+  void SetCurrentTransactionType(int value) noexcept {  m_nCurrentTransactionType = value; }
   void SetCurrentTransationVolume(INT64 value) noexcept {  m_lCurrentGuadanTransactionVolume = value; }
 
-  void SetTransactionNumber(INT64 value) noexcept {  m_lTransactionNumber = value; }
-  void SetTransactionNumberBelow5000(INT64 value) noexcept {  m_lTransactionNumberBelow5000 = value; }
-  void SetTransactionNumberBelow50000(INT64 value) noexcept {  m_lTransactionNumberBelow50000 = value; }
-  void SetTransactionNumberBelow200000(INT64 value) noexcept {  m_lTransactionNumberBelow200000 = value; }
-  void SetTransactionNumberAbove200000(INT64 value) noexcept {  m_lTransactionNumberAbove200000 = value; }
+  void SetTransactionNumber(long value) noexcept {  m_lTransactionNumber = value; }
+  void SetTransactionNumberBelow5000(long value) noexcept {  m_lTransactionNumberBelow5000 = value; }
+  void SetTransactionNumberBelow50000(long value) noexcept {  m_lTransactionNumberBelow50000 = value; }
+  void SetTransactionNumberBelow200000(long value) noexcept {  m_lTransactionNumberBelow200000 = value; }
+  void SetTransactionNumberAbove200000(long value) noexcept {  m_lTransactionNumberAbove200000 = value; }
 
   void SetAttackBuyBelow50000(INT64 value) noexcept {  m_lAttackBuyBelow50000 = value; }
   void SetAttackBuyBelow200000(INT64 value) noexcept {  m_lAttackBuyBelow200000 = value; }

@@ -1193,10 +1193,12 @@ bool CMarket::SchedulingTaskPerSecond(void)
     }
     // 开市时每分钟存储一次当前状态。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
-      CString str = gl_systemTime.GetTimeString();
-      str += _T(" 存储临时数据");
-      gl_systemMessage.PushInformationMessage(str);
-      UpdateTempRTData();
+      if (((lTime > 93000) && (lTime < 113100)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定
+        CString str = gl_systemTime.GetTimeString();
+        str += _T(" 存储临时数据");
+        gl_systemMessage.PushInformationMessage(str);
+        UpdateTempRTData();
+      }
     }
     
     // 下午三点一分开始处理当日实时数据。

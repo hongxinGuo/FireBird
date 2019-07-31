@@ -114,7 +114,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock,
   CSize sizeText = pDC->GetTextExtent(str);
   char buffer[30];
 
-  //sprintf_s(buffer, "%8.3f", pStock->m_dCurrentGuaDanTransactionPrice);
+  sprintf_s(buffer, "%8.3f", pStock->GetCurrentGuaDanTransactionPrice());
   str = _T("当前挂单成交价格： ");
   str += buffer;
   pDC->TextOut(iXStart, iYStart + 10, str);

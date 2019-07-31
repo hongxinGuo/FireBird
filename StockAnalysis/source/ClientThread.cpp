@@ -52,7 +52,7 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
 //
 // 
 ///////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
+UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
   const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
   const long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
@@ -94,7 +94,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam) {
   return 1;
 }
 
-UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
+UINT ClientThreadSaveTempRTDataProc(LPVOID )
 {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 此两个工作线程互斥
@@ -108,7 +108,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID pParam)
 }
 
 
-UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
+UINT ClientThreadReadingRTDataProc(LPVOID ) {
   CInternetSession session;
   CHttpFile * pFile = nullptr;
   long iCount = 0;
@@ -173,7 +173,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID pParam) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadReadDayLineProc(LPVOID pParam) {
+UINT ClientThreadReadDayLineProc(LPVOID ) {
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;
@@ -247,7 +247,7 @@ UINT ClientThreadReadDayLineProc(LPVOID pParam) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
+UINT ClientThreadCompileTodayStocks(LPVOID ) {
 
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
@@ -284,7 +284,7 @@ UINT ClientThreadCompileTodayStocks(LPVOID pParam) {
 }
 
 
-UINT ClientThreadSaveDayLineProc(LPVOID pParam) {
+UINT ClientThreadSaveDayLineProc(LPVOID ) {
 
   gl_ChinaStockMarket.SaveDayLineData();
 
@@ -301,7 +301,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID pParam) {
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
+UINT ClientthreadLoadDayLineProc(LPVOID ) {
   CSetDayLine setDayLine;
   CDayLinePtr pDayLine;
 
@@ -372,7 +372,7 @@ UINT ClientthreadLoadDayLineProc(LPVOID pParam) {
 }
 
 
-UINT ClientThreadSavingStockCodeDataProc(LPVOID pParam) {
+UINT ClientThreadSavingStockCodeDataProc(LPVOID ) {
   
   gl_ChinaStockMarket.SaveStockCodeDataBase();
 

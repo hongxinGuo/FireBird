@@ -7,6 +7,7 @@ CDayLine::CDayLine() : CObject() {
 }
 
 CDayLine::CDayLine( CDayLine& oneDl ) {
+  m_time = oneDl.m_time;
 	m_lDay = oneDl.m_lDay;
   m_wMarket = oneDl.m_wMarket;
 	m_lLastClose = oneDl.m_lLastClose;
