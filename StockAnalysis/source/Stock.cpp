@@ -115,12 +115,6 @@ void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
   m_lOpen = pRTData->GetOpen();
   m_lVolume = pRTData->GetVolume();
   m_lAmount = pRTData->GetAmount();
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy.at(i) = pRTData->GetPBuy(i);
-    m_lPSell.at(i) = pRTData->GetPSell(i);
-    m_lVBuy.at(i) = pRTData->GetVBuy(i);
-    m_lVSell.at(i) = pRTData->GetVSell(i);
-  }
 }
 
 bool CStock::LoadDayLine(CSetDayLine * psetDayLine)

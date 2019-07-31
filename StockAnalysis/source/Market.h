@@ -160,6 +160,8 @@ public :
   clock_t                     gl_RTReadingTime;         // 每次读取新浪实时数据的时间
   clock_t                     gl_DayLineReadingTime;    // 每次读取网易日线历史数据的时间
 
+  bool                        m_fPermitResetSystem;     // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
+
 protected :
   CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据。永远打开状态，否则当同时操作数据库时速度奇慢。
 

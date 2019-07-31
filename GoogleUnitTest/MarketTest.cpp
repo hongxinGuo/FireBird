@@ -63,6 +63,9 @@ namespace StockAnalysisTest {
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
+
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fPermitResetSystem);
+
   }
 
   TEST_F(CMarketTest, TestCreateRTDataInquiringStr) {
@@ -133,13 +136,21 @@ namespace StockAnalysisTest {
     str = _T("");
     EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
     str = _T("");
-    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
-    str = _T("");
-    EXPECT_GT(900, gl_ChinaStockMarket.GetInquiringStockStr(str)); // 目前不到五千个活跃股票，故而六次即可遍历一次
-    str = _T("");
-    EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
-    CString str2 = str.Left(9);
-    EXPECT_STREQ(str2, _T(",sh600000"));
+    long l = gl_ChinaStockMarket.GetInquiringStockStr(str);
+    if (l < 900) {
+      str = _T("");
+      EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+      CString str2 = str.Left(9);
+      EXPECT_STREQ(str2, _T(",sh600000"));
+    }
+    else {
+      str = _T("");
+      EXPECT_GT(900, gl_ChinaStockMarket.GetInquiringStockStr(str)); // 目前不到五千个活跃股票，故而六次即可遍历一次
+      str = _T("");
+      EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
+      CString str2 = str.Left(9);
+      EXPECT_STREQ(str2, _T(",sh600000"));
+    }
   }
 
   TEST_F(CMarketTest, TestCreateDayLineInquiringStr) {

@@ -25,6 +25,9 @@ CMarket::CMarket ( void ) : CObject() {
     TRACE("市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
+
+  m_fPermitResetSystem = false; // 允许系统被重置标识，唯独此标识不允许系统重置。目前设置为假，不允许重置系统。
+
   Reset();
 }
 
@@ -1173,10 +1176,12 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
-    i1MinuteCounter = 60; // 重置计数器
+    i1MinuteCounter = 59; // 重置计数器
     // 重启系统
-    //gl_fResetSystem = true; 
-    //m_fSystemReady = false;
+    if (m_fPermitResetSystem) { // 如果允许重置系统
+      //gl_fResetSystem = true; 
+      //m_fSystemReady = false;
+    }
     
     // 开市时每分钟存储一次当前状态。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
@@ -1222,7 +1227,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   else i1MinuteCounter--;
 
   if (i10SecondsCounter <= 0) {
-    i10SecondsCounter = 10;
+    i10SecondsCounter = 9;
     // do something
   }
   else i10SecondsCounter--;
