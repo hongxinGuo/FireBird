@@ -1177,12 +1177,20 @@ bool CMarket::SchedulingTaskPerSecond(void)
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
+
     // 重启系统
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      //gl_fResetSystem = true; 
-      //m_fSystemReady = false;
+      if ((lTime > 90500) && (lTime < 91000)) { // 九点五分至九点十分之间重启系统
+        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由其他函数完成。
+        m_fSystemReady = false;
+        m_fPermitResetSystem = false; // 今天不再允许重启系统。
+      }
     }
     
+    // 午夜过后重置各种标识
+    if ((lTime > 0) && (lTime < 000005)) {
+      m_fPermitResetSystem = true;
+    }
     // 开市时每分钟存储一次当前状态。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       CString str = gl_systemTime.GetTimeString();
