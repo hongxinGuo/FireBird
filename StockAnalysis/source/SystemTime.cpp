@@ -19,6 +19,9 @@ CSystemTime::CSystemTime(void)
   m_ttime = 0;
   m_tm.tm_hour = m_tm.tm_mday = m_tm.tm_min = m_tm.tm_mon = m_tm.tm_sec
     = m_tm.tm_wday = m_tm.tm_yday = m_tm.tm_year = 0;
+
+  // 更新时间
+  CalculateTime();
 }
 
 CSystemTime::~CSystemTime(void) noexcept
@@ -38,6 +41,8 @@ void CSystemTime::CalculateTime(void) noexcept
   localtime_s(&m_tm, &m_ttime);
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
+
+  CalculateLastTradeDay();
 }
 
 void CSystemTime::CalculateLastTradeDay(void) noexcept
