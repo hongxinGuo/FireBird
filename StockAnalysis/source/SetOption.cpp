@@ -10,7 +10,8 @@ CSetOption::CSetOption(CDatabase* pdb)
 {
   m_RalativeStrongStartDay = 19900101;
   m_RelativeStrongEndDay = 19900101;
-  m_nFields = 2;
+  m_LastLoginDay = 19900101;
+  m_nFields = 3;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
@@ -34,6 +35,7 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX)
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[RelativeStrongStartDay]"), m_RalativeStrongStartDay);
   RFX_Long(pFX, _T("[RelativeStrongEndDay]"), m_RelativeStrongEndDay);
+  RFX_Long(pFX, _T("[LastLoginDay]"), m_LastLoginDay);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode 诊断

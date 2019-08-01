@@ -278,6 +278,7 @@ UINT ClientThreadCompileTodayStocks(LPVOID ) {
   i = gl_ChinaStockMarket.GetTotalStock();
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lCurrentTradeDay);
   gl_ChinaStockMarket.UpdateStockCodeDataBase(); // ¸üÐÂ´úÂë¡£
+  gl_ChinaStockMarket.UpdateOptionDataBase();
   gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
 
   return 7;

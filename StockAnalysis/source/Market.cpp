@@ -26,7 +26,7 @@ CMarket::CMarket ( void ) : CObject() {
     ASSERT(0);
   }
 
-  m_fPermitResetSystem = false; // 允许系统被重置标识，唯独此标识不允许系统重置。目前设置为假，不允许重置系统。
+  m_fPermitResetSystem = true; // 允许系统被重置标识，唯独此标识不允许系统重置。目前设置为假，不允许重置系统。
 
   Reset();
 }
@@ -58,7 +58,7 @@ void CMarket::Reset(void)
   }
   else m_fTodayStockCompiled = false;
 
-  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = 19900101;
+  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
   m_fResetm_ItStock = true;
 
@@ -117,6 +117,7 @@ void CMarket::Reset(void)
   if (setOption.IsEOF()) {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
     gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
+    gl_ChinaStockMarket.SetLastLoginDay(19900101);
   }
   else {
     if (setOption.m_RelativeStrongEndDay == 0) {
@@ -130,6 +131,12 @@ void CMarket::Reset(void)
     }
     else {
       gl_ChinaStockMarket.SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
+    }
+    if (setOption.m_LastLoginDay == 0) {
+      gl_ChinaStockMarket.SetLastLoginDay(19900101);
+    }
+    else {
+      gl_ChinaStockMarket.SetLastLoginDay(setOption.m_LastLoginDay);
     }
   }
   setOption.Close();
@@ -1161,8 +1168,9 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTaskPerSecond(void)
 {
-  static int i10SecondsCounter = 10; // 十秒一次的计算
-  static int i1MinuteCounter = 60;  // 一分钟一次的计算
+  static int i10SecondsCounter = 9; // 十秒一次的计数器
+  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
+  static int i5MinuteCounter = 299; // 五分钟一次的计数器
   const long lTime = gl_systemTime.GetTime();
 
   // 判断中国股票市场开市状态
@@ -1174,23 +1182,31 @@ bool CMarket::SchedulingTaskPerSecond(void)
   }
   else m_fMarketOpened = true;
 
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  if (i1MinuteCounter <= 0) {
-    i1MinuteCounter = 59; // 重置计数器
+  // 计算每五分钟一次的任务。
+  if (i5MinuteCounter <= 0) {
+    i5MinuteCounter = 299;
+
+    // 午夜过后重置各种标识
+    if ((lTime > 0) && (lTime < 000015)) {
+      m_fPermitResetSystem = true;
+    }
 
     // 重启系统
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 90500) && (lTime < 91000)) { // 九点五分至九点十分之间重启系统
+      if ((lTime > 90500) && (lTime < 91500)) { // 九点五分至九点十分之间重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由其他函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
       }
     }
+
+  }
+  else i5MinuteCounter--;
+
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  if (i1MinuteCounter <= 0) {
+    i1MinuteCounter = 59; // 重置计数器
     
-    // 午夜过后重置各种标识
-    if ((lTime > 0) && (lTime < 000005)) {
-      m_fPermitResetSystem = true;
-    }
     // 开市时每分钟存储一次当前状态。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       if (((lTime > 93000) && (lTime < 113100)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定
@@ -1208,7 +1224,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
         SetTodayStockCompiledFlag(true);
       }
     }
-
 
     // 判断是否结束下载日线历史数据
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
@@ -1981,12 +1996,14 @@ bool CMarket::UpdateOptionDataBase(void)
     setOption.AddNew();
     setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
+    setOption.m_LastLoginDay = gl_systemTime.GetDay();
     setOption.Update();
   }
   else {
     setOption.Edit();
     setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
+    setOption.m_LastLoginDay = gl_systemTime.GetDay();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();

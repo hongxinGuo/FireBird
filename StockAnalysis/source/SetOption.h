@@ -18,6 +18,7 @@ public:
   long m_ID;
   long m_RelativeStrongEndDay;
   long m_RalativeStrongStartDay;
+  long m_LastLoginDay;
 
   // 重写
     // 向导生成的虚函数重写

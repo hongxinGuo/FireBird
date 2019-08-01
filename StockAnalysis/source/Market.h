@@ -111,6 +111,8 @@ public:
   void          SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
   long          GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
   void          SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
+  long          GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
+  void          SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
 
 	INT64	        GetTotalAttackBuyAmount( void );
 	INT64         GetTotalAttackSellAmount( void );
@@ -168,8 +170,10 @@ protected :
   map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
   
+  // Option各选项
   long                        m_lRelativeStrongStartDay;
   long                        m_lRelativeStrongEndDay;
+  long                        m_lLastLoginDay;            // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
   bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
 
