@@ -1162,7 +1162,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
     
-    
+    gl_fResetSystem = true;
+
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) { 
       if (SystemReady()) {
@@ -1181,7 +1182,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
         str = gl_systemTime.GetTimeString();
         str += _T("日线历史数据更新完毕");
         gl_systemMessage.PushInformationMessage(str);
-        UpdateStockCodeDataBase();  // 更新股票池数据库
+        SaveStockCodeDataBase();  // 更新股票池数据库
         ASSERT(m_setSavingDayLineOnly.IsOpen());
         m_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
         m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
@@ -1878,18 +1879,6 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
 
   gl_systemStatus.SetCalculateRSInProcess(false);
   return(true);
-}
-
-bool CMarket::UpdateStockCodeDataBase(void)
-{
-  if (!gl_systemStatus.IsSavingStockCodeData()) {
-    gl_systemStatus.SetSavingStockCodeData(true);
-
-    AfxBeginThread(ClientThreadSavingStockCodeDataProc, nullptr);
-
-    gl_systemStatus.SetSavingStockCodeData(false);
-  }
-  return true;
 }
 
 bool CMarket::SaveStockCodeDataBase(void)

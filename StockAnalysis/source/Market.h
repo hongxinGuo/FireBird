@@ -28,7 +28,6 @@ public:
 // interface function
 public:
 	// 初始化市场
-  bool          UpdateStockCodeDataBase(void);
   bool          SaveStockCodeDataBase(void);
   void          LoadStockCodeDataBase(void);
   

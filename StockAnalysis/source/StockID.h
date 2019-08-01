@@ -49,12 +49,16 @@ public:
   void      SetNewestDayLineDay(long lDay) noexcept { m_lNewestDayLineDay = lDay; }
   long      GetIPOStatus(void) noexcept { return m_lIPOed; }
   void      SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+  
   bool      IsActive(void) noexcept { return m_fActive; }
   void      SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool      IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
   void      SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
   bool      IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
   void      SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
+
+  bool      IsNeedUpdate(void) noexcept { return m_fNeedUpdate; }
+  void      SetNeedUpdate(bool fFlag) noexcept { m_fNeedUpdate = fFlag; }
 
 protected:
   WORD			m_wMarket;				// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
@@ -68,10 +72,13 @@ protected:
   long      m_lNewestDayLineDay; // 最新的日线数据日。如果处理了实时数据，则此日期要新于m_lDayLineEndDay
   long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                               // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
+  
+  // 无需存储数据
   bool			m_fActive;				// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
   bool			m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   bool			m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
 
+  bool      m_fNeedUpdate;      // 是否需要存储标识
 };
 
 typedef shared_ptr<CStockID> StockIDPtr;

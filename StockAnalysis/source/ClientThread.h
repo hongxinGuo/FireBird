@@ -17,5 +17,3 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam);
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID pParam);
 
-UINT ClientThreadSavingStockCodeDataProc(LPVOID pParam);
-
