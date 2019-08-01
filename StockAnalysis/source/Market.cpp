@@ -84,8 +84,6 @@ void CMarket::Reset(void)
 
   LoadOptionDataBase();
 
-  if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) m_fGetDayLineData = false;
-  else m_fGetDayLineData = true;
   
 }
 
@@ -1120,7 +1118,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
   const long lTime = gl_systemTime.GetTime();
 
   // 判断中国股票市场开市状态
-  if ((lTime < 91000) || (lTime > 150130)) { //下午三点零分三十秒市场交易结束，
+  if ((lTime < 91000) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
     m_fMarketOpened = false;
   }
   else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
@@ -1140,20 +1138,13 @@ bool CMarket::SchedulingTaskPerSecond(void)
     // 重启系统
     if (m_fPermitResetSystem) { // 如果允许重置系统
       if ((lTime > 90500) && (lTime < 91500)) { // 九点五分至九点十分之间重启系统
-        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由其他函数完成。
+        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
       }
     }
 
-  }
-  else i5MinuteCounter--;
-
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  if (i1MinuteCounter <= 0) {
-    i1MinuteCounter = 59; // 重置计数器
-    
-    // 开市时每分钟存储一次当前状态。
+    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       if (((lTime > 93000) && (lTime < 113100)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定
         CString str = gl_systemTime.GetTimeString();
@@ -1162,9 +1153,18 @@ bool CMarket::SchedulingTaskPerSecond(void)
         UpdateTempRTData();
       }
     }
+
+
+  }
+  else i5MinuteCounter--;
+
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  if (i1MinuteCounter <= 0) {
+    i1MinuteCounter = 59; // 重置计数器
+    
     
     // 下午三点一分开始处理当日实时数据。
-    if ((lTime > 150100) && !IsTodayStockCompiled()) { 
+    if ((lTime >= 150100) && !IsTodayStockCompiled()) { 
       if (SystemReady()) {
         AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
         SetTodayStockCompiledFlag(true);
@@ -2020,6 +2020,11 @@ void CMarket::LoadOptionDataBase(void)
       gl_ChinaStockMarket.SetLastLoginDay(setOption.m_LastLoginDay);
     }
   }
+
+  // 判断是否需要读取日线历史数据
+  if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) m_fGetDayLineData = false;
+  else m_fGetDayLineData = true;
+
   setOption.Close();
 }
 
@@ -2028,7 +2033,6 @@ bool CMarket::UpdateTempRTData(void)
   if (!gl_systemStatus.IsSavingTempData()) {
     gl_systemStatus.SetSavingTempData(true);
     AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
-    gl_systemStatus.SetSavingTempData(false);
   }
 
   return false;

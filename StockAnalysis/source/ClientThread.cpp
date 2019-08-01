@@ -103,6 +103,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID )
   
   gl_ChinaStockMarket.SaveTodayTempData();
   
+  ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 再次确认一下
   gl_systemStatus.SetSavingTempData(false);
   return 10;
 }
