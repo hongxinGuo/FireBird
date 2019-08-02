@@ -1,7 +1,5 @@
 // SetStockCode.h : CSetStockCode 类的实现
 
-
-
 // CSetStockCode 实现
 
 // 代码生成在 2019年5月26日, 8:14
@@ -21,9 +19,8 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 	m_StockName = "";
   m_DayLineStartDay = 19900101;
 	m_DayLineEndDay = 19900101;
-  m_NewestDayLineDay = 19900101;
 	m_IPOed = 0;
-	m_nFields = 9;
+	m_nFields = 8;
 }
 
 CString CSetStockCode::GetDefaultConnect()
@@ -49,7 +46,6 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Long(pFX, _T("[DayLineStartDay]"), m_DayLineStartDay);
 	RFX_Long(pFX, _T("[DayLineEndDay]"), m_DayLineEndDay);
-  RFX_Long(pFX, _T("[NewestDayLineDay]"), m_NewestDayLineDay);
 	RFX_Long(pFX, _T("[IPOed]"), m_IPOed);
 }
 /////////////////////////////////////////////////////////////////////////////
