@@ -14,7 +14,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetIndex(), -1);
     EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
-    EXPECT_EQ(id.GetNewestDayLineDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     EXPECT_FALSE(id.IsActive());
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
@@ -36,7 +35,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetIndex(), 1);
     EXPECT_EQ(id.GetDayLineStartDay(), 20010101);
     EXPECT_EQ(id.GetDayLineEndDay(), 20020202);
-    EXPECT_EQ(id.GetNewestDayLineDay(), 20030303);
     EXPECT_EQ(id.GetIPOStatus(), 0);
     EXPECT_TRUE(id.IsActive());
     EXPECT_FALSE(id.IsDayLineNeedUpdate());
@@ -48,7 +46,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetIndex(), -1);
     EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
-    EXPECT_EQ(id.GetNewestDayLineDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     EXPECT_FALSE(id.IsActive());
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
@@ -94,13 +91,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     id.SetDayLineEndDay(19980101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19980101);
-  }
-
-  TEST(StockIDTest, TestGetNewestDayLineDay) {
-    CStockID id;
-    EXPECT_EQ(id.GetNewestDayLineDay(), 19900101);
-    id.SetNewestDayLineDay(20010102);
-    EXPECT_EQ(id.GetNewestDayLineDay(), 20010102);
   }
 
   TEST(StockIDTest, TestGetIPOStatus) {

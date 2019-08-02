@@ -1154,7 +1154,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
       }
     }
 
-
   }
   else i5MinuteCounter--;
 
@@ -1162,7 +1161,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
     
-    gl_fResetSystem = true;
+    // 测试用。
+    // gl_fResetSystem = true;
 
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) { 
@@ -1356,7 +1356,6 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(vectorDayLine.size()-1)->GetDay());
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(0)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       fSaved = true;
     }
   }
@@ -1364,7 +1363,6 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(0)->GetDay());
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(vectorDayLine.size() - 1)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       fSaved = true;
     }
   }
@@ -1378,7 +1376,6 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     psetStockCode->m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
     psetStockCode->m_DayLineStartDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineStartDay();
     psetStockCode->m_DayLineEndDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay();
-    psetStockCode->m_NewestDayLineDay = m_vChinaMarketAStock.at(lIndex)->GetNewestDayLineDay();
     psetStockCode->m_IPOed = m_vChinaMarketAStock.at(lIndex)->GetIPOStatus();
     psetStockCode->Update();
     psetStockCode->m_pDatabase->CommitTrans();
@@ -1538,7 +1535,7 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
 
   CString str = gl_systemTime.GetTimeString();
   str += _T("开始处理最新交易日的实时数据");
-  gl_systemMessage.PushDayLineInfoMessage(str);
+  gl_systemMessage.PushInformationMessage(str);
 
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
@@ -1561,11 +1558,7 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
       continue;
     }
     lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-    m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(lCurrentTradeDay); // 更新最新接收到日线数据日期。
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() == gl_systemTime.GetLastTradeDay()) { // 如果日线最新历史数据日期就是上一个交易日，则更新此日期
-      // 此判断有缺陷：当出现平常日期也是节假日时，就不会更新了。研究之。
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(lCurrentTradeDay);
-    }
+    m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(lCurrentTradeDay);
     m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     setDayKLine.AddNew();
     setDayKLine.m_Time = lCurrentTradeDay;
@@ -1666,7 +1659,7 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayLineInfo.m_pDatabase->CommitTrans();
   setDayLineInfo.Close();
 
-  gl_systemMessage.PushDayLineInfoMessage(_T("最新交易日实时数据处理完毕"));
+  gl_systemMessage.PushInformationMessage(_T("最新交易日实时数据处理完毕"));
   return true;
 }
 
@@ -1900,8 +1893,7 @@ bool CMarket::SaveStockCodeDataBase(void)
     setStockCode.m_StockCode = pStockID->GetStockCode();
     setStockCode.m_StockName = pStockID->GetStockName();
     if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
-      if ((pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100))
-        && (pStockID->GetNewestDayLineDay() < (gl_systemTime.GetDay() - 100))) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+      if (pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
         setStockCode.m_IPOed = __STOCK_DELISTED__;
       }
       else {
@@ -1913,7 +1905,6 @@ bool CMarket::SaveStockCodeDataBase(void)
     }
     setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
     setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
-    setStockCode.m_NewestDayLineDay = pStockID->GetNewestDayLineDay();
     setStockCode.Update();
   }
   setStockCode.m_pDatabase->CommitTrans();
@@ -1937,9 +1928,6 @@ void CMarket::LoadStockCodeDataBase(void)
     m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
-    }
-    if (m_vChinaMarketAStock.at(lIndex)->GetNewestDayLineDay() < setStockCode.m_NewestDayLineDay) { // 有时一个股票会有多个记录，以最后的日期为准。
-      m_vChinaMarketAStock.at(lIndex)->SetNewestDayLineDay(setStockCode.m_NewestDayLineDay);
     }
     // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
     if (gl_systemTime.GetLastTradeDay() <= m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
