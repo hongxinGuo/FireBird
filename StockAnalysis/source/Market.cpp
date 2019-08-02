@@ -1353,14 +1353,12 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
   // 更新最新日线日期和起始日线日期
   bool fSaved = false;
   if (fReversed) {
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(vectorDayLine.size()-1)->GetDay());
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(0)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       fSaved = true;
     }
   }
   else {
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(0)->GetDay());
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(vectorDayLine.size() - 1)->GetDay()) {
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
       fSaved = true;
@@ -1374,7 +1372,6 @@ bool CMarket::SaveDayLine(CSetDayLine * psetDayLine, CSetStockCode * psetStockCo
     psetStockCode->m_StockType = m_vChinaMarketAStock.at(lIndex)->GetMarket();
     psetStockCode->m_StockCode = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
     psetStockCode->m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
-    psetStockCode->m_DayLineStartDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineStartDay();
     psetStockCode->m_DayLineEndDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay();
     psetStockCode->m_IPOed = m_vChinaMarketAStock.at(lIndex)->GetIPOStatus();
     psetStockCode->Update();
@@ -1903,7 +1900,6 @@ bool CMarket::SaveStockCodeDataBase(void)
     else {
       setStockCode.m_IPOed = pStockID->GetIPOStatus();
     }
-    setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
     setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
     setStockCode.Update();
   }
@@ -1925,7 +1921,6 @@ void CMarket::LoadStockCodeDataBase(void)
     if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
       m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(setStockCode.m_IPOed);
     }
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
       m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
     }

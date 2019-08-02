@@ -25,7 +25,6 @@ public:
 	int	m_StockType;
 	CString	m_StockCode;
 	CStringW	m_StockName;
-  long m_DayLineStartDay;   //  日线的起始日
 	long m_DayLineEndDay;     // 从网易历史日线服务器上得到的最新日
 	long m_IPOed;
 // 重写

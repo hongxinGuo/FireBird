@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
     EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fGetDayLineData);
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fGetDayLineData);
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayTempRTDataLoaded());
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 3);
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 3);
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
 
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fPermitResetSystem);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fPermitResetSystem);
 
   }
 
@@ -153,43 +153,6 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CMarketTest, TestCreateDayLineInquiringStr) {
-    CString str;
-    CString strStartDay;
-    strStartDay = _T("20190101");
-    gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay);
-    EXPECT_STREQ(str, _T("0600000"));
-    EXPECT_STREQ(strStartDay, _T("19700102")); //最初日期为19700101，这是第二天
-    // 一下四个股票由于不同的原因不查日线历史数据
-    gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->SetDayLineNeedUpdate(false);
-    gl_ChinaStockMarket.m_vChinaMarketAStock.at(5)->SetDayLineNeedUpdate(false);
-    gl_ChinaStockMarket.m_vChinaMarketAStock.at(7)->SetIPOStatus(__STOCK_NULL__);
-    gl_ChinaStockMarket.m_vChinaMarketAStock.at(6)->SetDayLineEndDay(20190101);
-    for (int i = 0; i < (12 - 4); i++) { // 跨过其他的八个股票，到达随后的两个无效代码处
-      strStartDay = _T("");
-      str = _T("");
-      gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay);
-      EXPECT_STREQ(strStartDay, _T("19700102"));
-    }
-    strStartDay = _T("");
-    str = _T("");
-    EXPECT_TRUE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay)); // 找到股票代码时返回真值
-    EXPECT_STREQ(str, _T("0600015")); // 600013、600014为无效代码，故而不去提取其日线数据
-    EXPECT_STREQ(strStartDay, _T("19700102")); //最初日期为19700101，这是第二天
-
-    // 设置随后的2000个为无需查询状态
-    for (int i = 16; i < 2016; i++) {
-      gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->SetDayLineNeedUpdate(false);
-    }
-    EXPECT_FALSE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay)); // 此处跨过1000个，返回假值
-    EXPECT_FALSE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay));
-    str = _T("");
-    strStartDay = _T("");
-    EXPECT_TRUE(gl_ChinaStockMarket.CreateDayLineInquiringStr(str, strStartDay));
-    EXPECT_STREQ(str, _T("0603016"));
-    EXPECT_STREQ(strStartDay, _T("19700102"));
-
-  }
 
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
@@ -312,50 +275,5 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
   }
 
-  TEST_F(CMarketTest, TestGetDownLoadingStockCodeStr) {
-    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T("sh603016")); // 前面测试时查询到这个代码处
-    gl_ChinaStockMarket.SetDownLoadingStockCodeStr(_T("abcd"));
-    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T("abcd"));
-  }
-  TEST_F(CMarketTest, TestGetRelativeStartDay) {
-    EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongStartDay(), 19900101);
-    gl_ChinaStockMarket.SetRelativeStrongStartDay(19900103);
-    EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongStartDay(), 19900103);
-  }
-
-  TEST_F(CMarketTest, TestGetRelativeEndDay) {
-    //EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 20190727); // 此数据会不时变化，因为是从真实数据库读取的，系统会不时更新。暂时不测试初始态了
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900103);
-    EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 19900103);
-  }
-
-  TEST_F(CMarketTest, TestSchedulingTest) { // 测试这个函数，一定要小心，不能导致出现改变系统实际数据的事情
-    gl_ChinaStockMarket.SetSystemReady(false); // 禁止测试时执行实际操作
-
-    gl_systemTime.SetTime(90999);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(91000);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
-      EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-    }
-    else EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(150129);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) {
-      EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-    }
-    else EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(150130);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fMarketOpened);
-    gl_systemTime.SetTime(150131);
-    gl_ChinaStockMarket.SchedulingTaskPerSecond();
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fMarketOpened);
-
-
-
-  }
 
 }

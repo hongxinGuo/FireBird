@@ -41,8 +41,6 @@ public:
   void      SetStockName(CString str) { m_strStockName = str; }
   long      GetIndex(void) noexcept { return m_nIndex; }
   void      SetIndex(long lValue) noexcept { m_nIndex = lValue; }
-  long      GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void      SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
   long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
   void      SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
   long      GetIPOStatus(void) noexcept { return m_lIPOed; }
@@ -65,7 +63,6 @@ protected:
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString   m_strStockName;		// 股票名称
   long			m_nIndex;					// 在容器中的偏移量
-  long      m_lDayLineStartDay; // 日线起始日。应该设置后就没有变化了，可以从数据中验证：起始日的前收盘价等与其他日有些区别。
   long			m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                               // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
