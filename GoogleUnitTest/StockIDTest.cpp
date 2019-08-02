@@ -24,7 +24,6 @@ namespace StockAnalysisTest {
     id.SetIndex(1);
     id.SetDayLineStartDay(20010101);
     id.SetDayLineEndDay(20020202);
-    id.SetNewestDayLineDay(20030303);
     id.SetIPOStatus(0);
     id.SetActive(true);
     id.SetDayLineNeedUpdate(false);
