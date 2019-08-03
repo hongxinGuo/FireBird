@@ -1,6 +1,7 @@
 #include"stdafx.h"
 
 #include"pch.h"
+#include"globedef.h"
 
 #include"Stock.h"
 
@@ -8,6 +9,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(StockTest, TestInitialize) {
+    EXPECT_TRUE(gl_fTestMode);
     CStock stock;
     EXPECT_EQ(stock.m_vDayLine.size(), 0);
     EXPECT_FALSE(stock.IsActive());

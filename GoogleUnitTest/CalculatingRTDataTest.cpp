@@ -1,5 +1,6 @@
 #include"stdafx.h"
 #include"pch.h"
+#include"globedef.h"
 
 #include"Stock.h"
 
@@ -125,6 +126,7 @@ namespace StockAnalysisTest {
   {
   protected:
     void SetUp(void) override {
+      EXPECT_TRUE(gl_fTestMode);
       RTData * pData = GetParam();
       pCurrentData = make_shared<CStockRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());

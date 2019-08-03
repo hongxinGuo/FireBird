@@ -1,5 +1,6 @@
 #include"stdafx.h"
 #include"pch.h"
+#include"globedef.h"
 
 #include"RTData.h"
 
@@ -121,6 +122,7 @@ namespace StockAnalysisTest {
   class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     void SetUp(void) override {
+      EXPECT_TRUE(gl_fTestMode);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();

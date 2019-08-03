@@ -17,6 +17,7 @@ namespace StockAnalysisTest {
   {
   protected:
     virtual void SetUp(void) override {
+      EXPECT_TRUE(gl_fTestMode);
 
     }
 

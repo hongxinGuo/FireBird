@@ -10,6 +10,7 @@ using namespace testing;
 namespace StockAnalysisTest {
   
   TEST(SystemStatusTest, TestInitialize) {
+    EXPECT_TRUE(gl_fTestMode);
     EXPECT_FALSE(gl_systemStatus.IsCalculateRSInProcess());
     EXPECT_FALSE(gl_systemStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_systemStatus.IsDayLineDataReady());
