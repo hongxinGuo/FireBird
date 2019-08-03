@@ -18,4 +18,5 @@ void CStockID::Reset(void) {
   m_fActive = false;
   m_fDayLineNeedUpdate = true;
   m_fInquiringOnce = false;
+  m_fHaveReadInName = false;
 }

@@ -36,9 +36,14 @@ public:
   WORD      GetMarket(void) noexcept { return m_wMarket; }
   void      SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString   GetStockCode(void) { return m_strStockCode; }
-  void      SetStockCode(CString str) { m_strStockCode = str; }
-  CString   GetStockName(void) { return m_strStockName; }
-  void      SetStockName(CString str) { m_strStockName = str; }
+  void      SetStockCode(CString str) noexcept { m_strStockCode = str; }
+  CString   GetStockName(void) noexcept { return m_strStockName; }
+  void      SetStockName(CString str) noexcept { m_strStockName = str; }
+  
+  CStringW  GetStockNameReadIn(void) noexcept { return m_strStockNameReadIn; }
+  void      SetStockNameReadIn(CStringW str) noexcept { m_strStockNameReadIn = str; m_fHaveReadInName = true; }
+  bool      HaveReadInName(void) noexcept { return m_fHaveReadInName; }
+
   long      GetIndex(void) noexcept { return m_nIndex; }
   void      SetIndex(long lValue) noexcept { m_nIndex = lValue; }
   long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
@@ -62,6 +67,7 @@ protected:
                               // 上海市场采用单数标示，深圳市场采用双数标示。目前暂时不用，先查看涉及到哪些函数需要修改。
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString   m_strStockName;		// 股票名称
+  CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式）
   long			m_nIndex;					// 在容器中的偏移量
   long			m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
@@ -72,6 +78,7 @@ protected:
   bool			m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   bool			m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
 
+  bool      m_fHaveReadInName; // 
   bool      m_fNeedUpdate;      // 是否需要存储标识
 };
 
