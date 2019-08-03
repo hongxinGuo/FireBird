@@ -87,6 +87,7 @@ CMainFrame::CMainFrame()
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
+  gl_fTestMode = false; // 实际系统，测试状态为假。
 }
 
 void CMainFrame::Reset(void)

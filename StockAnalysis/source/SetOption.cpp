@@ -19,11 +19,12 @@ CSetOption::CSetOption(CDatabase* pdb)
 // 储为其他格式或使用其他的用户身份验证。
 CString CSetOption::GetDefaultConnect()
 {
-#ifdef __ANSI_CODESET__
-  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-#else
-  return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-#endif
+  if (gl_fTestMode) {
+    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
+}
+  else {
+    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+  }
 }
 
 CString CSetOption::GetDefaultSQL()

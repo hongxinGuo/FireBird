@@ -66,6 +66,8 @@ extern bool gl_fResetSystem; // 系统重启标识
 
 extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
 
+extern bool gl_fTestMode;               // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+
 class CMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 extern CMarket gl_ChinaStockMarket;        // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

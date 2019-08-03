@@ -24,12 +24,12 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 
 CString CSetStockCode::GetDefaultConnect()
 {
-#ifdef __ANSI_CODESET__
-  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-#else
-  return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-#endif
-
+  if (gl_fTestMode) {
+    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
+}
+  else {
+    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+  }
 }
 
 CString CSetStockCode::GetDefaultSQL()
