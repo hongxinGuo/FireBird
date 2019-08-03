@@ -42,7 +42,6 @@ void CSystemTime::CalculateTime(void) noexcept
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 
-  CalculateLastTradeDay();
 }
 
 void CSystemTime::CalculateLastTradeDay(void) noexcept

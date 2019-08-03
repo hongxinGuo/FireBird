@@ -13,7 +13,7 @@ public:
   long          GetDay(void) noexcept { return m_lToday; }
   long          GetTime(void) noexcept { return m_lTime; }
   void          SetTime(long lTime) noexcept { m_lTime = lTime; } // 此函数只用于测试
-  long          GetLastTradeDay(void) noexcept { return m_lLastTradeDay; }
+  long          GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lLastTradeDay; }
   long          GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }
 
 

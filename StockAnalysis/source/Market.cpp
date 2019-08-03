@@ -1929,7 +1929,7 @@ void CMarket::LoadStockCodeDataBase(void)
       m_vChinaMarketAStock.at(lIndex)->SetStockCode(setStockCode.m_StockCode);
     }
     if (setStockCode.m_StockName != _T("")) {
-      CString str = setStockCode.m_StockName;
+      CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
       m_vChinaMarketAStock.at(lIndex)->SetStockName(str);
     }
     if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
