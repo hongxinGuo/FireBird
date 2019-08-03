@@ -22,7 +22,11 @@ CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb)
 
 CString CSetChoicedStock::GetDefaultConnect()
 {
+#ifdef __ANSI_CODESET__
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#endif
 }
 
 CString CSetChoicedStock::GetDefaultSQL()

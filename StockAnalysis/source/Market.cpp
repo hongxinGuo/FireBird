@@ -1206,6 +1206,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+
     gl_systemStatus.SetCalculatingRTData(true);
     AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
   }
@@ -1888,7 +1889,9 @@ bool CMarket::SaveStockCodeDataBase(void)
     setStockCode.m_Counter = pStockID->GetIndex();
     setStockCode.m_StockType = pStockID->GetMarket();
     setStockCode.m_StockCode = pStockID->GetStockCode();
-    setStockCode.m_StockName = pStockID->GetStockName();
+    if (pStockID->GetStockName() != _T("")) {
+      setStockCode.m_StockName = pStockID->GetStockName();
+    }
     if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
       if (pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
         setStockCode.m_IPOed = __STOCK_DELISTED__;
@@ -1918,6 +1921,12 @@ void CMarket::LoadStockCodeDataBase(void)
   while (!setStockCode.IsEOF()) {
     long lIndex = 1;
     lIndex = m_mapChinaMarketAStock.at(setStockCode.m_StockCode);
+    if (setStockCode.m_StockCode != _T("")) {
+      m_vChinaMarketAStock.at(lIndex)->SetStockCode(setStockCode.m_StockCode);
+    }
+    if (setStockCode.m_StockName != _T("")) {
+      //m_vChinaMarketAStock.at(lIndex)->SetStockName(setStockCode.m_StockName);
+    }
     if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
       m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(setStockCode.m_IPOed);
     }

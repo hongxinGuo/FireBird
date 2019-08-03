@@ -24,12 +24,21 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 
 CString CSetStockCode::GetDefaultConnect()
 {
+#ifdef __ANSI_CODESET__
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#endif
+
 }
 
 CString CSetStockCode::GetDefaultSQL()
 {
-	return _T("[StockCode]");
+#ifdef __ANSI_CODESET__
+  return _T("[StockCodeAnsi]");
+#else
+  return _T("[StockCode]");
+#endif
 }
 
 void CSetStockCode::DoFieldExchange(CFieldExchange* pFX)

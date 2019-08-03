@@ -59,7 +59,11 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
 
 CString CSetDayLine::GetDefaultConnect()
 {
+#ifdef __ANSI_CODESET__
+  return _T("DSN=mysqlA;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#else
   return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
+#endif
 }
 
 CString CSetDayLine::GetDefaultSQL()
