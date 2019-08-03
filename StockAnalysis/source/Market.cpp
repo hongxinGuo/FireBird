@@ -1889,14 +1889,12 @@ bool CMarket::SaveStockCodeDataBase(void)
   setStockCode.m_pDatabase->BeginTrans();
   for (auto pStockID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
     setStockCode.AddNew();
+    CString str;
     setStockCode.m_Counter = pStockID->GetIndex();
     setStockCode.m_StockType = pStockID->GetMarket();
     setStockCode.m_StockCode = pStockID->GetStockCode();
-    if (pStockID->HaveReadInName()) {
-      setStockCode.m_StockName = pStockID->GetStockNameReadIn();
-    }
-    else if (pStockID->GetStockName() != _T("")) {
-      setStockCode.m_StockName = pStockID->GetStockName();
+    if (pStockID->GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
+      setStockCode.m_StockName = pStockID->GetStockName(); // 则存储新的名字
     }
     if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
       if (pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
@@ -1931,7 +1929,8 @@ void CMarket::LoadStockCodeDataBase(void)
       m_vChinaMarketAStock.at(lIndex)->SetStockCode(setStockCode.m_StockCode);
     }
     if (setStockCode.m_StockName != _T("")) {
-      m_vChinaMarketAStock.at(lIndex)->SetStockNameReadIn(setStockCode.m_StockName);
+      CString str = setStockCode.m_StockName;
+      m_vChinaMarketAStock.at(lIndex)->SetStockName(str);
     }
     if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
       m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(setStockCode.m_IPOed);

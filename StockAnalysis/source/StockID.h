@@ -40,10 +40,6 @@ public:
   CString   GetStockName(void) noexcept { return m_strStockName; }
   void      SetStockName(CString str) noexcept { m_strStockName = str; }
   
-  CStringW  GetStockNameReadIn(void) noexcept { return m_strStockNameReadIn; }
-  void      SetStockNameReadIn(CStringW str) noexcept { m_strStockNameReadIn = str; m_fHaveReadInName = true; }
-  bool      HaveReadInName(void) noexcept { return m_fHaveReadInName; }
-
   long      GetIndex(void) noexcept { return m_nIndex; }
   void      SetIndex(long lValue) noexcept { m_nIndex = lValue; }
   long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
