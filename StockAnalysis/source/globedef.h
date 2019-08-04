@@ -64,8 +64,6 @@ extern bool gl_fExiting; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRelativeStrong;// 用于通知工作线程退出的信号
 extern bool gl_fResetSystem; // 系统重启标识
 
-extern long gl_lShowGuaDanTransaction; // 显示挂单成交具体情况
-
 extern bool gl_fTestMode;               // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 
 class CMarket;

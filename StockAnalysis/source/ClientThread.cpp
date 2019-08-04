@@ -74,6 +74,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
       gl_ChinaStockMarket.CalculateOneDayRelativeStrong(dwToday);
     }
     if (gl_fExiting) return true;
+    if (gl_fExitingCalculatingRelativeStrong) return true;
     ctCurrent += oneDay;
     dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (dwToday < gl_systemTime.GetDay());

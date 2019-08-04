@@ -744,7 +744,6 @@ bool CMarket::CalculateRTData(void)
   for ( auto pStock : m_vActiveStock) {
     ASSERT(pStock != nullptr);
     pStock->CalculateRTData();
-    if (gl_fExiting) return false;
   }
   return true;
 }
@@ -1833,7 +1832,6 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   int iCount = 0;
   int iBefore = 0;
   while (iCount < vIndex.size()) { // 只计算活跃股票的相对强度
-    if (gl_fExiting) break; // 数据库有时操作很费时间，当系统退出时数据库操作要主动中断。
     for (int i = 0; i < vIndex.at(iCount) - iBefore; i++) { // 根据索引去更改数据库,跨过不是A股的股票
       setDayKLine.MoveNext();
     }
