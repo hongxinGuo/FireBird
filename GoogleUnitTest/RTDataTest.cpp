@@ -8,6 +8,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(CStockRTDataTest, TestInitialize) {
+    ASSERT_TRUE(gl_fTestMode);
     CStockRTData RTData;
     EXPECT_EQ(RTData.GetTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
@@ -122,7 +123,7 @@ namespace StockAnalysisTest {
   class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     void SetUp(void) override {
-      EXPECT_TRUE(gl_fTestMode);
+      ASSERT_TRUE(gl_fTestMode);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();

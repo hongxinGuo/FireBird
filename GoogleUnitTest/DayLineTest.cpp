@@ -8,7 +8,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(CDayLineTest, TestGetDay) {
-    EXPECT_TRUE(gl_fTestMode);
+    ASSERT_TRUE(gl_fTestMode);
     CDayLine dl;
     dl.SetDay(19900101);
     EXPECT_EQ(dl.GetDay(), 19900101);

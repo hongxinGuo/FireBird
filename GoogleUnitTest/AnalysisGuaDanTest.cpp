@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
   {
   protected:
     void SetUp(void) override {
-      EXPECT_TRUE(gl_fTestMode);
+      ASSERT_TRUE(gl_fTestMode);
       GuaDanData * pData = GetParam();
       // Ô¤Éè20¸ö¹Òµ¥
       for (int i = 0; i < 200; i+=10) {

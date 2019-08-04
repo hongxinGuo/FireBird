@@ -8,7 +8,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(StockIDTest, TestInitialize) {
-    EXPECT_TRUE(gl_fTestMode);
+    ASSERT_TRUE(gl_fTestMode);
     CStockID id;
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));

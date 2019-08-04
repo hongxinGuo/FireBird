@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
   class CalculateNetEaseDayLineDataTest : public::testing::TestWithParam<NetEaseDayLineData*> {
   protected:
     void SetUp(void) override {
-      EXPECT_TRUE(gl_fTestMode);
+      ASSERT_TRUE(gl_fTestMode);
       NetEaseDayLineData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
