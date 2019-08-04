@@ -77,11 +77,6 @@ void CMarket::Reset(void)
 
   LoadStockCodeDataBase();
   
-  // 更新日线历史数据的记录集永远处于打开状态（为了加速)
-  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-  m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  if (!m_setSavingDayLineOnly.IsOpen()) m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
-
   LoadOptionDataBase();
 
   
@@ -1443,6 +1438,13 @@ bool CMarket::SaveDayLineData(void) {
 
   setStockCode.Open();
   long lIndex = 0;
+
+  // 更新日线历史数据的记录集永远处于打开状态（为了加速)
+  if (!m_setSavingDayLineOnly.IsOpen()) {
+    CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
+    m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+    m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
+  }
 
 	for (auto pStock : m_vActiveStock) {
 		if (pStock->IsDayLineNeedSaving()) {

@@ -167,7 +167,7 @@ public :
   bool                        m_fPermitResetSystem;     // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
 
 protected :
-  CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据。永远打开状态，否则当同时操作数据库时速度奇慢。
+  CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据， 在存储日线历史数据之前就使之打开状态，否则当同时操作数据库时速度奇慢。
 
   map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
