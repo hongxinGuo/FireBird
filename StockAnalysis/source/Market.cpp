@@ -1441,7 +1441,6 @@ bool CMarket::SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SaveDayLineData(void) {
   CSetStockCode setStockCode;
-  CSetDayLine setSavingDayLine;
 
   setStockCode.Open();
   long lIndex = 0;
