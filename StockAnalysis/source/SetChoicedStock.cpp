@@ -23,6 +23,7 @@ CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb)
 CString CSetChoicedStock::GetDefaultConnect()
 {
   if (gl_fTestMode) {
+    gl_fInTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
   }
   else {

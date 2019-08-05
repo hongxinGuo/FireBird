@@ -20,6 +20,7 @@ CSetOption::CSetOption(CDatabase* pdb)
 CString CSetOption::GetDefaultConnect()
 {
   if (gl_fTestMode) {
+    gl_fInTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
 }
   else {

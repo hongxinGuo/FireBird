@@ -65,6 +65,7 @@ extern bool gl_fExitingCalculatingRelativeStrong;// 用于通知工作线程退出的信号
 extern bool gl_fResetSystem; // 系统重启标识
 
 extern bool gl_fTestMode;               // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+extern bool gl_fInTestMode;             // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
 class CMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

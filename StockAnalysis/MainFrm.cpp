@@ -81,18 +81,29 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
-  Reset();
   
   m_uIdTimer = 0;
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
   gl_fTestMode = false; // 实际系统，测试状态为假。
+
+  // 这个记录集需要在系统启动时就打开，且一直保持打开的状态。但需要使用MySQL驱动而不是MySQLTest驱动，故而在设置gl_fTestMode为假后才执行。
+  // 真实系统中，所有的记录集都要使用MySQL驱动而不是MySQLTest驱动，而测试函数都要使用MySQLTest驱动。
+  // 这两个驱动的权限不同，MySQLTest只有检索权限，无权修改数据，这样在测试时能够防止误操作数据。
+  gl_ChinaStockMarket.OpenSavingDayLineRecord();
+  
+  Reset();
+
 }
 
 void CMainFrame::Reset(void)
 {
   // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
+  
+  // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
+  gl_ChinaStockMarket.LoadStockCodeDataBase(); 
+  gl_ChinaStockMarket.LoadOptionDataBase(); 
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
@@ -109,6 +120,8 @@ void CMainFrame::Reset(void)
 
 CMainFrame::~CMainFrame()
 {
+  if (gl_fInTestMode) TRACE("使用了Test驱动\n");
+
   gl_fExiting = true;
 
   gl_ChinaStockMarket.UpdateOptionDataBase();
@@ -451,6 +464,12 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
   //更新时间
   m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_systemTime.GetTimeString());
+
+  if (gl_fInTestMode) {
+    CString str1;
+    str1 = _T("警告：使用了Test驱动");
+    gl_systemMessage.PushInformationMessage(str1);
+  }
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }

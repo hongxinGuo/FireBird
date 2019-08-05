@@ -55,8 +55,9 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
 CString CSetRealTimeData::GetDefaultConnect()
 {
   if (gl_fTestMode) {
+    gl_fInTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
-}
+  }
   else {
     return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
   }

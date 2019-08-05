@@ -63,9 +63,9 @@ void CMarket::Reset(void)
   m_fResetm_ItStock = true;
 
   m_fTodayTempDataLoaded = false;
-  
+
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。 
-  
+
   m_fUpdatedStockCodeDataBase = false;
 
   m_fGetRTStockData = true;
@@ -74,19 +74,6 @@ void CMarket::Reset(void)
 
   // 生成股票代码池
   CreateTotalStockContainer();
-
-  LoadStockCodeDataBase();
-  
-  // 更新日线历史数据的记录集永远处于打开状态（为了加速)
-  if (!m_setSavingDayLineOnly.IsOpen()) {
-    CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-    m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-    m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
-  }
-
-  LoadOptionDataBase();
-
-  
 }
 
 #ifdef _DEBUG
@@ -2021,6 +2008,18 @@ bool CMarket::UpdateTempRTData(void)
   }
 
   return false;
+}
+
+bool CMarket::OpenSavingDayLineRecord(void)
+{
+  // 更新日线历史数据的记录集永远处于打开状态（为了加速)
+  if (!m_setSavingDayLineOnly.IsOpen()) {
+    CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
+    m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+    m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
+  }
+
+  return true;
 }
 
 
