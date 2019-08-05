@@ -34,11 +34,7 @@ CString CSetStockCode::GetDefaultConnect()
 
 CString CSetStockCode::GetDefaultSQL()
 {
-#ifdef __ANSI_CODESET__
-  return _T("[StockCodeAnsi]");
-#else
   return _T("[StockCode]");
-#endif
 }
 
 void CSetStockCode::DoFieldExchange(CFieldExchange* pFX)
