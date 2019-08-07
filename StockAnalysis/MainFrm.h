@@ -51,6 +51,8 @@ protected:
 
   long                    m_lCurrentPos;
 
+  bool                    m_fCalculatingRS;
+
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;
 	CMFCToolBar       m_wndToolBar;
@@ -86,6 +88,7 @@ public:
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg void OnRebuildDaylineRs();
 };
 
 

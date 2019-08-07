@@ -62,6 +62,7 @@ ON_WM_KEYUP()
 //ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
 //ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
 //ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
+ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRs)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -83,6 +84,8 @@ CMainFrame::CMainFrame()
 	// TODO: 在此添加成员初始化代码
   
   m_uIdTimer = 0;
+
+  m_fCalculatingRS = false;
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
@@ -506,15 +509,13 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
-  static bool sfCalculating = false;
-
-  if (sfCalculating) {
+  if (m_fCalculatingRS) {
     gl_fExitingCalculatingRelativeStrong = true;
-    sfCalculating = false;
+    m_fCalculatingRS = false;
   }
   else {
-    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, GetSafeHwnd());
-    sfCalculating = true;
+    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
+    m_fCalculatingRS = true;
   }
 }
 
@@ -698,3 +699,21 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
+
+
+void CMainFrame::OnRebuildDaylineRs()
+{
+  // TODO: Add your command handler code here
+
+  if (m_fCalculatingRS) {
+    gl_fExitingCalculatingRelativeStrong = true;
+    m_fCalculatingRS = false;
+  }
+  else {
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
+    gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
+    AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
+    m_fCalculatingRS = true;
+  }
+
+}
