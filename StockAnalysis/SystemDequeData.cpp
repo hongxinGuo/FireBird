@@ -4,7 +4,7 @@
 #include "SystemMessage.h"
 
 
-CSystemDequeData::CSystemDequeData()
+CSystemQueueData::CSystemQueueData()
 {
   static int siCounter = 0;
   if (siCounter++ > 0) {
@@ -14,40 +14,49 @@ CSystemDequeData::CSystemDequeData()
 }
 
 
-CSystemDequeData::~CSystemDequeData()
+CSystemQueueData::~CSystemQueueData()
 {
-  m_dequeRTStockData.clear();
+
 }
 
-void CSystemDequeData::PushRTData(CStockRTDataPtr pData)
+void CSystemQueueData::Reset(void)
+{
+  CSingleLock singleLock(&m_RTDataLock);
+  long lTotal = m_queueRTStockData.size();
+  for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
+    m_queueRTStockData.pop(); 
+  }
+}
+
+void CSystemQueueData::PushRTData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeRTStockData.push_back(pData);
+    m_queueRTStockData.push(pData);
     singleLock.Unlock();
   }
 }
 
-CStockRTDataPtr CSystemDequeData::PopRTData(void)
+CStockRTDataPtr CSystemQueueData::PopRTData(void)
 {
   CStockRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    pData = m_dequeRTStockData.front();
-    m_dequeRTStockData.pop_front();
+    pData = m_queueRTStockData.front();
+    m_queueRTStockData.pop();
     singleLock.Unlock();
     return pData;
   }
 }
 
-long CSystemDequeData::GetRTDataDequeSize(void)
+long CSystemQueueData::GetRTDataDequeSize(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const long lCount = m_dequeRTStockData.size();
+    const long lCount = m_queueRTStockData.size();
     singleLock.Unlock();
     return lCount;
   }

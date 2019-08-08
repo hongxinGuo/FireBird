@@ -21,6 +21,7 @@ enum {
 using namespace std;
 #include<vector>
 #include<memory>
+#include<queue>
 #include<deque>
 #include<map>
 #include<array>
@@ -266,8 +267,8 @@ protected:
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
   CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
-  deque<CStockRTDataPtr>m_dequeRTData;  // 实时数据队列
-  CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁
+  deque<CStockRTDataPtr> m_dequeRTData;  // 实时数据队列
+  CCriticalSection       m_RTDataLock;   // 实时数据队列的同步锁
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
  	

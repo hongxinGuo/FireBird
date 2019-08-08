@@ -6,7 +6,7 @@
 
 CSystemMessage    gl_systemMessage;         // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime       gl_systemTime;            // 系统时间汇总。
-CSystemDequeData  gl_systemDequeData;       // 系统中的各种队列，被各个工作线程使用。
+CSystemQueueData  gl_systemDequeData;       // 系统中的各种队列，被各个工作线程使用。
 CSystemStatus     gl_systemStatus;          // 系统中的各种状态，被各个工作线程所使用。
 
 

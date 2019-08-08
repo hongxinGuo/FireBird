@@ -5,20 +5,21 @@
 #include"RTData.h"
 
 using namespace std;
-#include<deque>
+#include<queue>
 
-class CSystemDequeData
+class CSystemQueueData
 {
 public:
-  CSystemDequeData();
-  ~CSystemDequeData();
+  CSystemQueueData();
+  ~CSystemQueueData();
+  void Reset(void);
 
   void              PushRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopRTData(void);
   long              GetRTDataDequeSize(void);
 
 protected:
-  deque<CStockRTDataPtr>  m_dequeRTStockData;
+  queue<CStockRTDataPtr>  m_queueRTStockData;
   CCriticalSection        m_RTDataLock;
 };
 

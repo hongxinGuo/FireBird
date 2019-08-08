@@ -1119,8 +1119,11 @@ bool CMarket::SchedulingTaskPerSecond(void)
     i5MinuteCounter = 299;
 
     // 午夜过后重置各种标识
-    if ((lTime > 0) && (lTime < 000015)) {
+    if ((lTime >= 0) && (lTime <= 001500)) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
+      CString str = gl_systemTime.GetTimeString();
+      str += _T(" 午夜时重置系统标识");
+      gl_systemMessage.PushInformationMessage(str);
     }
 
     // 重启系统
