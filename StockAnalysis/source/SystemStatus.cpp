@@ -14,7 +14,7 @@ CSystemStatus::CSystemStatus() {
   
   m_fExitingClientThreadInProcess = false;
 
-  m_fReadingInProcess = false;
+  m_fDayLineReadingInProcess = false;
   m_fSavingDayLineInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
   m_fRTDataReadingInProcess = false;
@@ -65,20 +65,20 @@ bool CSystemStatus::IsCalculateRSInProcess(void) {
   }
 }
 
-void CSystemStatus::SetReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_ReadingInProcessLock);
+void CSystemStatus::SetDayLineReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_DayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fReadingInProcess = fFlag;
+    m_fDayLineReadingInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CSystemStatus::IsReadingInProcess(void) {
-  CSingleLock singleLock(&m_ReadingInProcessLock);
+bool CSystemStatus::IsDayLineReadingInProcess(void) {
+  CSingleLock singleLock(&m_DayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fReadingInProcess;
+    const bool fFlag = m_fDayLineReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }

@@ -12,8 +12,8 @@ public:
   void SetCalculateRSInProcess(bool fFlag);
   bool IsCalculateRSInProcess(void);
 
-  void SetReadingInProcess(bool fFlag);
-  bool IsReadingInProcess(void);
+  void SetDayLineReadingInProcess(bool fFlag);
+  bool IsDayLineReadingInProcess(void);
 
   void SetSavingDayLineInProcess(bool fFlag);
   bool IsSavingDayLineInProcess(void);
@@ -47,8 +47,8 @@ protected:
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateRSInProcessLock;
 
-  bool m_fReadingInProcess; // 是否处于提取中标识
-  CCriticalSection m_ReadingInProcessLock;
+  bool m_fDayLineReadingInProcess; // 是否处于提取日线历史数据中标识
+  CCriticalSection m_DayLineReadingInProcessLock;
 
   bool m_fSavingDayLineInProcess; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_SavingDayLineInProcessLock;

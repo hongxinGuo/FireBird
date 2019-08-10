@@ -168,7 +168,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
 // 有时fReadingInProcess == false的断言会失败，但程序中只有两处设置此变量，故估计是不同线程同时操作的原因，需要改为
 // 同步事件模式唤醒此线程为好。研究之。（在调用此线程前就设置，就不会出现故障了，可见时启动线程时会出现延时所致）。
 //
-// 此线程最终的功能，要比现在只是提取数据要多一些，应该加入解码和存储功能。
+// 此线程最终的功能，要比现在只是提取数据要多一些，应该加入解码和存储功能（研究之，功能多会涉及更多的数据同步问题，需要权衡）。
 // 亦即此线程的功能为：
 // 1.从管道处读取需要提取日线历史数据的股票代码，将该代码处理成网易日线服务器所要求的格式，然后发送给日线服务器；
 // 2.等待一段时间后（100ms）开始从服务器处接收数据。
@@ -187,9 +187,9 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
   CString str;
 
   const clock_t tt = clock();
-  
+  ASSERT(!gl_systemStatus.IsDayLineReadingInProcess());
   try {
-    gl_systemStatus.SetReadingInProcess(true);
+    gl_systemStatus.SetDayLineReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
@@ -221,7 +221,7 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
     gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
     gl_systemStatus.SetDayLineDataReady(true);
   }
-  catch (CInternetException * e) {
+  catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
     gl_stDayLineInquire.fError = true;
     gl_systemStatus.SetDayLineDataReady(false);
@@ -229,7 +229,7 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_systemStatus.SetReadingInProcess(false);
+  gl_systemStatus.SetDayLineReadingInProcess(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;

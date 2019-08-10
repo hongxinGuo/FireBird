@@ -475,7 +475,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_systemStatus.IsReadingInProcess()) {
+  if (!gl_systemStatus.IsDayLineReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
         TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_stDayLineInquire.lByteRead);
@@ -511,7 +511,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
 
       gl_stDayLineInquire.strInquire = strRead;
       gl_systemStatus.SetDayLineDataReady(false);
-      gl_systemStatus.SetReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      gl_systemStatus.SetDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
       AfxBeginThread(ClientThreadReadDayLineProc, nullptr);
       return true;
@@ -650,12 +650,14 @@ bool CMarket::ProcessRTData(void)
   CStockPtr pStock;
 	CStockRTDataPtr pRTDataCompact = nullptr;
   const long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
+  bool fUpdateRTData = false;
 
   for (int i = 0; i < lTotalNumber; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
       if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
+        fUpdateRTData = true;
         pStock = make_shared<CStock>();
 				pStock->SetActive(true);
 				pStock->SetMarket(pRTData->GetMarket());
@@ -680,12 +682,15 @@ bool CMarket::ProcessRTData(void)
         lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
+          fUpdateRTData = true;
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
       }
     }
   }
-  gl_systemStatus.SetRTDataNeedCalculate(true);
+  if (fUpdateRTData) {
+    gl_systemStatus.SetRTDataNeedCalculate(true);
+  }
 
   return true;
 }
@@ -1197,9 +1202,10 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
-
-    gl_systemStatus.SetCalculatingRTData(true);
-    AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
+    if (gl_systemStatus.IsRTDataNeedCalculate()) {
+      gl_systemStatus.SetCalculatingRTData(true);
+      AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
+    }
   }
 
   return true;
