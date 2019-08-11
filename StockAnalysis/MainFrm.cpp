@@ -277,9 +277,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 bool CMainFrame::ResetSystem(void)
 {
-  CString str = gl_systemTime.GetTimeString();
+  CString str;
   TRACE(_T("开始重置系统\n"));
-  str += _T("重置系统");
+  str = _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
   gl_ChinaStockMarket.Reset();
   Reset();

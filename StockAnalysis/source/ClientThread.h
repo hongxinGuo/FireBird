@@ -4,16 +4,19 @@
 
 
 // 各工作线程声明
-UINT ClientThreadReadingRTDataProc(LPVOID pParam);
-UINT ClientThreadReadDayLineProc(LPVOID pParam);
+UINT ClientThreadReadingRTDataProc(LPVOID pParam);    // 此工作线程返回值为1
+UINT ClientThreadReadDayLineProc(LPVOID pParam);      // 此工作线程返回值为2
 
-UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);
-UINT ClientThreadCompileTodayStocks(LPVOID pParam);
-UINT ClientThreadSaveDayLineProc(LPVOID pParam);
-UINT ClientthreadLoadDayLineProc(LPVOID pParam);
+UINT ClientThreadCalculatingRTDataProc(LPVOID pParam);  // 此工作线程返回值为3
+UINT ClientThreadSaveTempRTDataProc(LPVOID pParam);     // 此工作线程返回值为4
 
-UINT ClientThreadCalculatingRTDataProc(LPVOID pParam);
-UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam);
+UINT ClientThreadCompileTodayStocks(LPVOID pParam);     // 此工作线程返回值为5
+UINT ClientThreadSaveDayLineProc(LPVOID pParam);        // 此工作线程返回值为6
+UINT ClientthreadLoadDayLineProc(LPVOID pParam);        // 此工作线程返回值为7
 
-UINT ClientThreadSaveTempRTDataProc(LPVOID pParam);
+UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam); // 此工作线程返回值为8
+
+UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);   // 此工作线程返回值为9
+
+
 

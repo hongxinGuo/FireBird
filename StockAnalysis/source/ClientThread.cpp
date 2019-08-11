@@ -20,7 +20,7 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
+UINT ClientThreadCalculatingRTDataProc(LPVOID ) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_systemStatus.IsSavingTempData()); // 此两个工作线程互斥
 
@@ -31,7 +31,7 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
   }
   gl_systemStatus.SetCalculatingRTData(false);
  
-  return 2;
+  return 3;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +40,10 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID pParam) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam) {
+UINT ClientThreadUpdatingDataBaseProc(LPVOID ) {
   // 
 
-  return 6;
+  return 9;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -59,25 +59,25 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
 
   CTime ctCurrent(year, month, day, 12, 0, 0);
 
-  DWORD dwToday = gl_ChinaStockMarket.GetRelativeStrongEndDay();
+  long lToday = gl_ChinaStockMarket.GetRelativeStrongEndDay();
 
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (dwToday >= gl_systemTime.GetDay()) return(true);
+  if (lToday >= gl_systemTime.GetDay()) return(true);
 
   time_t tStart = 0, tEnd = 0;
   time(&tStart);
   do {
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(dwToday); // 设置最后日期。
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(lToday); // 设置最后日期。
     if ((ctCurrent.GetDayOfWeek() != 1) // sunday
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
-      gl_ChinaStockMarket.CalculateOneDayRelativeStrong(dwToday);
+      gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);
     }
     if (gl_fExiting) return true;
     if (gl_fExitingCalculatingRelativeStrong) return true;
     ctCurrent += oneDay;
-    dwToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (dwToday < gl_systemTime.GetDay());
+    lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
+  } while (lToday < gl_systemTime.GetDay());
 
   gl_ChinaStockMarket.UpdateOptionDataBase();
 
@@ -88,11 +88,11 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   const long second = tDiffer - hour * 3600 - min * 60;
   char buffer[100];
   sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
-  CString str = gl_systemTime.GetTimeString();
-  str += buffer;
+  CString str;
+  str = buffer;
   gl_systemMessage.PushDayLineInfoMessage(str);
 
-  return 1;
+  return 8;
 }
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID )
@@ -107,7 +107,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID )
   ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 再次确认一下
   gl_systemStatus.SetSavingTempData(false);
 
-  return 10;
+  return 4;
 }
 
 
@@ -156,7 +156,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
 
   gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
 
-  return 4;
+  return 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +237,7 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
 
   gl_ChinaStockMarket.gl_DayLineReadingTime = clock() - tt;
 
-  return 5;
+  return 2;
 }
 
 
@@ -284,7 +284,7 @@ UINT ClientThreadCompileTodayStocks(LPVOID ) {
   gl_ChinaStockMarket.UpdateOptionDataBase();
   gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
 
-  return 7;
+  return 5;
 }
 
 
@@ -294,7 +294,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID ) {
 
   gl_systemStatus.SetSavingDayLineInProcess(false);
 
-  return 8;
+  return 6;
 }
 
 
@@ -372,7 +372,7 @@ UINT ClientthreadLoadDayLineProc(LPVOID ) {
   gl_ChinaStockMarket.m_pCurrentStock->SetDayLineLoaded(true);
   setDayLine.Close();
 
-  return 9;
+  return 7;
 }
 
 

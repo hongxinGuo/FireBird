@@ -211,9 +211,11 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
-  CString str;
+  CString str, str2;
   long lTotal = 0;
-  
+  CString strTime = gl_systemTime.GetTimeString();
+
+
   // 如果显示列表超过10000个，则删除前面的1000个。
   if (m_wndOutputInformation.GetCount() > 10000) { 
     for (int i = 0; i < 1000; i++) {
@@ -224,7 +226,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInformationMessage();
-      m_wndOutputInformation.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputInformation.AddString(str2);
     }
     m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
   }
@@ -238,7 +241,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopDayLineInfoMessage();
-      m_wndOutputDayLineInfo.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputDayLineInfo.AddString(str2);
     }
     m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
   }
@@ -251,7 +255,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetTransactionDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopTransactionMessage();
-      m_wndOutputTransaction.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputTransaction.AddString(str2);
     }
     m_wndOutputTransaction.SetTopIndex(m_wndOutputTransaction.GetCount() - 1);
   }
@@ -264,7 +269,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetCancelSellDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopCancelSellMessage();
-      m_wndOutputCancelSell.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputCancelSell.AddString(str2);
     }
     m_wndOutputCancelSell.SetTopIndex(m_wndOutputCancelSell.GetCount() - 1);
   }
@@ -277,7 +283,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetCancelBuyDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopCancelBuyMessage();
-      m_wndOutputCancelBuy.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputCancelBuy.AddString(str2);
     }
     m_wndOutputCancelBuy.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
   }
@@ -290,7 +297,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
   if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopTrace2Message();
-      m_wndOutputTrace2.AddString(str);
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputTrace2.AddString(str2);
     }
     m_wndOutputTrace2.SetTopIndex(m_wndOutputTrace2.GetCount() - 1);
   }

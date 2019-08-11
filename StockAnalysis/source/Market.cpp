@@ -299,8 +299,8 @@ bool CMarket::GetSinaStockRTData(void)
           }
           else {
             TRACE("实时数据有误,抛掉不用\n");
-            CString str = gl_systemTime.GetTimeString();
-            str += _T("实时数据有误");
+            CString str;
+            str = _T("实时数据有误");
             gl_systemMessage.PushInformationMessage(str);
             iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
           }
@@ -486,8 +486,8 @@ bool CMarket::GetNetEaseStockDayLineData(void)
       else {
         if (gl_stDayLineInquire.lByteRead > 0) {
           TRACE("Error reading http file ：quotes.money.163.com/service/\n");
-          CString str = gl_systemTime.GetTimeString();
-          str += _T("Error reading http file ：quotes.money.163.com/service/");
+          CString str;
+          str = _T("Error reading http file ：quotes.money.163.com/service/");
           gl_systemMessage.PushInformationMessage(str);
           gl_stDayLineInquire.lByteRead = 0;
         }
@@ -657,7 +657,7 @@ bool CMarket::ProcessRTData(void)
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
       if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
-        fUpdateRTData = true;
+        fUpdateRTData = true;     // 设置接收到试试数据标识
         pStock = make_shared<CStock>();
 				pStock->SetActive(true);
 				pStock->SetMarket(pRTData->GetMarket());
@@ -682,14 +682,15 @@ bool CMarket::ProcessRTData(void)
         lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
-          fUpdateRTData = true;
+          fUpdateRTData = true; // 设置接收到实时数据标识
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
       }
     }
   }
   if (fUpdateRTData) {
-    gl_systemStatus.SetRTDataNeedCalculate(true);
+    // 采用同步机制设置标识可能容易阻塞线程，故而先使用临时变量记录是否需要，然后在最后才设置全局标识。
+    gl_systemStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   }
 
   return true;
@@ -1126,8 +1127,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
     // 午夜过后重置各种标识
     if ((lTime >= 0) && (lTime <= 001500)) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
-      CString str = gl_systemTime.GetTimeString();
-      str += _T(" 午夜时重置系统标识");
+      CString str;
+      str = _T(" 午夜时重置系统标识");
       gl_systemMessage.PushInformationMessage(str);
     }
 
@@ -1143,8 +1144,8 @@ bool CMarket::SchedulingTaskPerSecond(void)
     // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       if (((lTime > 93000) && (lTime < 113100)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定
-        CString str = gl_systemTime.GetTimeString();
-        str += _T(" 存储临时数据");
+        CString str;
+        str = _T(" 存储临时数据");
         gl_systemMessage.PushInformationMessage(str);
         UpdateTempRTData();
       }
@@ -1175,8 +1176,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
         CString str;
-        str = gl_systemTime.GetTimeString();
-        str += _T("日线历史数据更新完毕");
+        str = _T("日线历史数据更新完毕");
         gl_systemMessage.PushInformationMessage(str);
         SaveStockCodeDataBase();  // 更新股票池数据库
         ASSERT(m_setSavingDayLineOnly.IsOpen());
@@ -1527,8 +1527,8 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   CSetDayLineInfo setDayLineInfo;
   long lIndex = 0;
 
-  CString str = gl_systemTime.GetTimeString();
-  str += _T("开始处理最新交易日的实时数据");
+  CString str;
+  str = _T("开始处理最新交易日的实时数据");
   gl_systemMessage.PushInformationMessage(str);
 
   // 存储当前交易日的数据
@@ -1654,7 +1654,6 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.Close();
   }
-
 
   gl_systemMessage.PushInformationMessage(_T("最新交易日实时数据处理完毕"));
   return true;
@@ -1862,8 +1861,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
 
   sprintf_s(buffer, "%4d年%2d月%2d日的股票相对强度计算完成", lYear, lMonth, lDayOfMonth);
   CString strTemp;
-  strTemp = gl_systemTime.GetTimeString();
-  strTemp += buffer;
+  strTemp = buffer;
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   gl_systemStatus.SetCalculateRSInProcess(false);
