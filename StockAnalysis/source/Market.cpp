@@ -311,8 +311,8 @@ bool CMarket::GetSinaStockRTData(void)
       }
       else {  // 网络通信出现错误
         TRACE("Error reading http file ：hq.sinajs.cn\n");
-        CString str = gl_systemTime.GetTimeString();
-        str += _T("Error reading http file ：hq.sinajs.cn");
+        CString str;
+        str = _T("Error reading http file ：hq.sinajs.cn");
         gl_systemMessage.PushInformationMessage(str);
       }
     }
@@ -650,14 +650,12 @@ bool CMarket::ProcessRTData(void)
   CStockPtr pStock;
 	CStockRTDataPtr pRTDataCompact = nullptr;
   const long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
-  bool fUpdateRTData = false;
 
   for (int i = 0; i < lTotalNumber; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
       if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
-        fUpdateRTData = true;     // 设置接收到试试数据标识
         pStock = make_shared<CStock>();
 				pStock->SetActive(true);
 				pStock->SetMarket(pRTData->GetMarket());
@@ -682,16 +680,12 @@ bool CMarket::ProcessRTData(void)
         lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
-          fUpdateRTData = true; // 设置接收到实时数据标识
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
         }
       }
     }
   }
-  if (fUpdateRTData) {
-    // 采用同步机制设置标识可能容易阻塞线程，故而先使用临时变量记录是否需要，然后在最后才设置全局标识。
-    gl_systemStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-  }
+  gl_systemStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 
   return true;
 }
@@ -1143,7 +1137,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
 
     // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
-      if (((lTime > 93000) && (lTime < 113100)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定
+      if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定(中间休市期间要存储一次，故而到11:36才中止）
         CString str;
         str = _T(" 存储临时数据");
         gl_systemMessage.PushInformationMessage(str);
