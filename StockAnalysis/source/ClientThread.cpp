@@ -276,9 +276,15 @@ UINT ClientThreadCompileTodayStocks(LPVOID ) {
     lCurrentTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
   }
 
-  int i = gl_ChinaStockMarket.GetTotalStock();
-  gl_ChinaStockMarket.CompileCurrentTradeDayStocks(lCurrentTradeDay);
-  i = gl_ChinaStockMarket.GetTotalStock();
+  int i;
+  i = gl_ChinaStockMarket.CompileCurrentTradeDayStocks(lCurrentTradeDay);
+  char buffer[30];
+  sprintf_s(buffer, "%d", i);
+  CString str;
+  str = _T("今日处理了");
+  str += buffer;
+  str += _T("个股票");
+  gl_systemMessage.PushInformationMessage(str);
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lCurrentTradeDay);
   gl_ChinaStockMarket.SaveStockCodeDataBase(); // 更新代码。
   gl_ChinaStockMarket.UpdateOptionDataBase();

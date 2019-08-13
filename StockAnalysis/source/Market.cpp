@@ -1513,13 +1513,14 @@ bool CMarket::IsTotalStockDayLineChecked(void) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
+long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   long lClose = 0, lLastClose = 0;
   char buffer[20];
   CString strDay;
   CSetDayLine setDayKLine;
   CSetDayLineInfo setDayLineInfo;
   long lIndex = 0;
+  long iCount = 0;
 
   CString str;
   str = _T("开始处理最新交易日的实时数据");
@@ -1540,11 +1541,15 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayKLine.m_pDatabase->CommitTrans();
   setDayKLine.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock ) {
-    if (pStock == nullptr) continue; // 空置位置。应该不存在。
+    if (pStock == nullptr) {
+      gl_systemMessage.PushInformationMessage(_T("当前活跃股票中存在nullptr"));
+      continue; // 空置位置。应该不存在。
+    }
     if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
       && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
+    iCount++;
     lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
     m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(lCurrentTradeDay);
     m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
@@ -1650,7 +1655,7 @@ bool CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   }
 
   gl_systemMessage.PushInformationMessage(_T("最新交易日实时数据处理完毕"));
-  return true;
+  return iCount;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
