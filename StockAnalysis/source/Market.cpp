@@ -317,15 +317,17 @@ bool CMarket::GetSinaStockRTData(void)
       }
     }
 
-    bool fFinished = false;
+    static long slCount = 0;
     CString strTemp = _T("");
 
     // 申请下一批次股票实时数据
     if (m_fCheckTodayActiveStock) {
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
-      fFinished = CreateRTDataInquiringStr(strTemp);
+      if (CreateRTDataInquiringStr(strTemp)) {
+        slCount++;
+      }
       gl_stRTDataInquire.strInquire += strTemp;
-      if (fFinished) m_fCheckTodayActiveStock = false;
+      if (slCount > 10) m_fCheckTodayActiveStock = false; // 遍历五遍后即不再查询所有股票池
     }
     else {
       SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
@@ -669,7 +671,7 @@ bool CMarket::ProcessRTData(void)
 				pStock->PushRTData(pRTData);
 				lIndex = m_mapChinaMarketAStock[pStock->GetStockCode()];
 				m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
-				m_vChinaMarketAStock.at(lIndex)->SetActive(true); // 本日接收到了数据，
+				m_vChinaMarketAStock.at(lIndex)-> SetActive(true); // 本日接收到了数据，
         m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(true);
         // 如果此股票代码尚未使用过，则设置为已使用。
         // 停牌后的股票，也能接收到实时数据，只是其内容只有收盘价，其他都为零。考虑清除这种无效数据。
@@ -706,7 +708,8 @@ int CMarket::GetInquiringStockStr(CString& str)
     m_fResetm_ItStock = false;
   }
 
-  while ((m_itStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
+  str += (*m_itStock++)->GetStockCode();  // 得到第一个股票代码
+  while ((m_itStock != m_vActiveStock.end()) && (iCount < 899)) { // 每次最大查询量为900个股票
     iCount++;
     str += ',';
     str += (*m_itStock++)->GetStockCode();
