@@ -72,6 +72,7 @@ static UINT indicators[] =
   ID_CURRENT_SELECT_STOCK,
   ID_CURRENT_SELECT_STOCKNAME,
   ID_CURRENT_RTDATA_READING_TIME,
+  ID_CURRENT_ACTIVE_STOCK,
   ID_CURRENT_DAYLINE_READING_TIME,
   ID_CURRENT_TIME,
 };
@@ -459,14 +460,20 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   str += _T("ms");
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
 
+  // 显示活跃股票总数
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetTotalStock());
+  str = buffer;
+  m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
+
+
   // 显示日线历史数据读取时间（单位为毫秒）
   sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_DayLineReadingTime);
   str = buffer;
   str += _T("ms");
-  m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
+  m_wndStatusBar.SetPaneText(6, (LPCTSTR)str);
 
   //更新时间
-  m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_systemTime.GetTimeString());
+  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
 
   if (gl_fInTestMode) {
     CString str1;
