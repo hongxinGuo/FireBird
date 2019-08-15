@@ -251,7 +251,7 @@ protected:
   //
   INT64	    m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
 
-  deque<COneDealPtr>    m_dequeDeal;        // 具体成交信息队列
+  queue<COneDealPtr>    m_queueDeal;        // 具体成交信息队列
 
   // 挂单的具体情况。
   map<long, long>       m_mapGuaDan;        // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
@@ -267,7 +267,7 @@ protected:
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
   CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
-  deque<CStockRTDataPtr> m_dequeRTData;  // 实时数据队列
+  deque<CStockRTDataPtr> m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection       m_RTDataLock;   // 实时数据队列的同步锁
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。

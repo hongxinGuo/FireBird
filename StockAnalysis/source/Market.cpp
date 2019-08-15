@@ -642,6 +642,7 @@ INT64 CMarket::GetTotalAttackSellAmount( void ) {
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTask函数调用。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。如果遇到新的股票代码则生成相应的新股票，
 //
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
 //
@@ -655,6 +656,7 @@ bool CMarket::ProcessRTData(void)
 
   for (int i = 0; i < lTotalNumber; i++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
+    //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
       if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
@@ -1129,15 +1131,6 @@ bool CMarket::SchedulingTaskPerSecond(void)
       gl_systemMessage.PushInformationMessage(str);
     }
 
-    // 重启系统
-    if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 90500) && (lTime < 91500)) { // 九点五分至九点十分之间重启系统
-        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-        m_fSystemReady = false;
-        m_fPermitResetSystem = false; // 今天不再允许重启系统。
-      }
-    }
-
     // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
     if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
       if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定(中间休市期间要存储一次，故而到11:36才中止）
@@ -1154,9 +1147,16 @@ bool CMarket::SchedulingTaskPerSecond(void)
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-    
-    // 测试用。
-    // gl_fResetSystem = true;
+
+    // 九点二十五分至九点三十分之间重启系统
+    // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
+    if (m_fPermitResetSystem) { // 如果允许重置系统
+      if ((lTime > 92500) && (lTime < 93000)) { // 九点二十五分至九点三十分之间重启系统
+        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+        m_fSystemReady = false;
+        m_fPermitResetSystem = false; // 今天不再允许重启系统。
+      }
+    }
 
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) { 

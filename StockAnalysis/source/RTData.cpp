@@ -158,7 +158,7 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
   long lTemp = 0;
   INT64 llTemp = 0;
 
-  m_fActive = true;
+  m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
   buffer1[12] = 0x000;
   CString str1;
@@ -218,7 +218,6 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
       return false; // 确保是字符 \n
     }
     iTotalRead++;
-    m_fActive = false;// 此股票代码没有实时数据
     return true;
   }
   if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {

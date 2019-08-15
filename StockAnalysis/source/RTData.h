@@ -71,7 +71,7 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) noexcept { return m_fActive; }
-  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  //void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
 #ifdef _DEBUG
 	virtual	void AssertValid() const;
