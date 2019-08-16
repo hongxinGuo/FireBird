@@ -317,20 +317,17 @@ bool CMarket::GetSinaStockRTData(void)
       }
     }
 
-    static long slCount = 0;
     CString strTemp = _T("");
 
     // 申请下一批次股票实时数据
-    if (m_fCheckTodayActiveStock) {
+    if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       if (CreateRTDataInquiringStr(strTemp)) {
-        slCount++;
+       SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
       }
       gl_stRTDataInquire.strInquire += strTemp;
-      if (slCount > 10) m_fCheckTodayActiveStock = false; // 遍历五遍后即不再查询所有股票池
     }
-    else {
-      SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+    else { // 开市时使用今日活跃股票池
       static bool sfShow = true;
       if (sfShow) {
         gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -343,12 +340,6 @@ bool CMarket::GetSinaStockRTData(void)
     gl_systemStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ClientThreadReadingRTDataProc, nullptr);
   }
-
-  if (iCountUp == 1000) {
-    m_fCheckTodayActiveStock = true;
-    iCountUp = 0;
-  }
-  else iCountUp++;
 
   return true;
 }
@@ -1119,6 +1110,11 @@ bool CMarket::SchedulingTaskPerSecond(void)
   }
   else m_fMarketOpened = true;
 
+  if (((lTime > 91000) && (lTime < 92900)) || ((lTime > 113100) && (lTime < 125900))) {
+    m_fCheckTodayActiveStock = true;
+  }
+  else m_fCheckTodayActiveStock = false;
+
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
@@ -1151,7 +1147,7 @@ bool CMarket::SchedulingTaskPerSecond(void)
     // 九点二十五分至九点三十分之间重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 92500) && (lTime < 93000)) { // 九点二十五分至九点三十分之间重启系统
+      if ((lTime > 92500) && (lTime < 95500)) { // 九点二十五分至九点三十分之间重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
