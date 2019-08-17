@@ -109,6 +109,7 @@ void CDayLine::SetData(CSetDayLine * pDayLine)
   m_fChangeHandRate = pDayLine->m_ChangeHandRate;
   m_lTotalValue = pDayLine->m_TotalValue;
   m_lCurrentValue = pDayLine->m_CurrentValue;
+  /*
   m_lTransactionNumber = pDayLine->m_TransactionNumber;
   m_lTransactionNumberBelow5000 = pDayLine->m_TransactionNumberBelow5000;
   m_lTransactionNumberBelow50000 = pDayLine->m_TransactionNumberBelow50000;
@@ -130,6 +131,7 @@ void CDayLine::SetData(CSetDayLine * pDayLine)
   m_lAttackSellBelow50000 = pDayLine->m_AttackSellBelow50000;
   m_lAttackSellBelow200000 = pDayLine->m_AttackSellBelow200000;
   m_lAttackSellAbove200000 = pDayLine->m_AttackSellAbove200000;
+  */
 
 }
 

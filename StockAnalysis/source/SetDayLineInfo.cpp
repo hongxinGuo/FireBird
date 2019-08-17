@@ -16,11 +16,8 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   : CRecordset(pdb)
 {
   m_ID = 0;
-  m_Time = 0;
-  m_Market = 0;
+  m_Day = 0;
   m_StockCode = "";
-  m_StockName = "";
-  m_RelativeStrong = 0;	//相对于总市场的强度
   m_TransactionNumber = 0;
   m_TransactionNumberBelow5000 = 0; // 本日的盘口变化数
   m_TransactionNumberBelow50000 = 0; // 本日的盘口变化数
@@ -41,7 +38,7 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_AttackSellBelow50000 = 0;
   m_AttackSellBelow200000 = 0;
   m_AttackSellAbove200000 = 0;
-  m_nFields = 26;
+  m_nFields = 23;
 }
 
 CString CSetDayLineInfo::GetDefaultConnect()
@@ -67,11 +64,8 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Long(pFX, _T("[Time]"), m_Time);
-  RFX_Long(pFX, _T("[Market]"), m_Market);
+  RFX_Long(pFX, _T("[Time]"), m_Day);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
-  RFX_Text(pFX, _T("[StockName]"), m_StockName);
-  RFX_Double(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
   RFX_Long(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
   RFX_Long(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
   RFX_Long(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);

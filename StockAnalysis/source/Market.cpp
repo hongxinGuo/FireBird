@@ -1133,7 +1133,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 九点二十五分至九点三十分之间重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 92500) && (lTime < 95500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点二十五分至九点三十分之间重启系统
+      if ((lTime > 90000) && (lTime < 91500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点二十五分至九点三十分之间重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
@@ -1394,6 +1394,7 @@ bool CMarket::SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine) {
   
   psetDayLine->m_RelativeStrong = pDayLine->GetRelativeStrong();  
 
+  /*
   psetDayLine->m_TransactionNumber = pDayLine->GetTransactionNumber();
   psetDayLine->m_TransactionNumberBelow5000 = pDayLine->GetTransactionNumberBelow5000();
   psetDayLine->m_TransactionNumberBelow50000 = pDayLine->GetTransactionNumberBelow50000();
@@ -1416,7 +1417,7 @@ bool CMarket::SaveOneRecord(CSetDayLine * psetDayLine, CDayLinePtr pDayLine) {
   psetDayLine->m_AttackSellBelow50000 = pDayLine->GetAttackSellBelow50000();
   psetDayLine->m_AttackSellBelow200000 = pDayLine->GetAttackSellBelow200000();
   psetDayLine->m_AttackSellAbove200000 = pDayLine->GetAttackSellAbove200000();
-
+  */
   psetDayLine->Update();
 
   return true;
@@ -1578,6 +1579,7 @@ long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayKLine.m_TotalValue = 0;
     setDayKLine.m_CurrentValue = 0;
     setDayKLine.m_RelativeStrong = pStock->GetRelativeStrong();
+    /*
     setDayKLine.m_TransactionNumber = pStock->GetTransactionNumber();
     setDayKLine.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
     setDayKLine.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
@@ -1598,6 +1600,7 @@ long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
     setDayKLine.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
     setDayKLine.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
     setDayKLine.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
+    */
     setDayKLine.Update();
   }
   setDayKLine.m_pDatabase->CommitTrans();
@@ -1622,12 +1625,9 @@ long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
         continue;
       }
       setDayLineInfo.AddNew();
-      setDayLineInfo.m_Time = lCurrentTradeDay;
-      setDayLineInfo.m_Market = pStock->GetMarket();
-      setDayLineInfo.m_StockName = pStock->GetStockName();
+      setDayLineInfo.m_Day = lCurrentTradeDay;
       setDayLineInfo.m_StockCode = pStock->GetStockCode();
 
-      setDayLineInfo.m_RelativeStrong = pStock->GetRelativeStrong();
       setDayLineInfo.m_TransactionNumber = pStock->GetTransactionNumber();
       setDayLineInfo.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
       setDayLineInfo.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
