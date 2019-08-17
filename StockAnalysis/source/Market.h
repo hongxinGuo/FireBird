@@ -138,7 +138,7 @@ public:
 
   // 定时更新，完成具体调度任务。由主线程的OnTimerha函数调用
   bool          SchedulingTask(void);
-  bool          SchedulingTaskPerSecond(void);
+  bool          SchedulingTaskPerSecond(long lSecondNumber);
 
 private:
   // 初始化

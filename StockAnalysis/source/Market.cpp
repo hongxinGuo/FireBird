@@ -1055,7 +1055,7 @@ bool CMarket::SchedulingTask(void)
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (gl_systemTime.Gett_time() > s_time) {
-    SchedulingTaskPerSecond();
+    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_time);
     s_time = gl_systemTime.Gett_time();
   }
 
@@ -1094,33 +1094,19 @@ bool CMarket::SchedulingTask(void)
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SchedulingTaskPerSecond(void)
+bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 {
   static int i10SecondsCounter = 9; // 十秒一次的计数器
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
   static int i5MinuteCounter = 299; // 五分钟一次的计数器
   const long lTime = gl_systemTime.GetTime();
 
-  // 判断中国股票市场开市状态
-  if ((lTime < 91000) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
-    m_fMarketOpened = false;
-  }
-  else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
-    m_fMarketOpened = false;
-  }
-  else m_fMarketOpened = true;
-
-  if (((lTime > 91000) && (lTime < 92900)) || ((lTime > 113100) && (lTime < 125900))) {
-    m_fCheckTodayActiveStock = true;
-  }
-  else m_fCheckTodayActiveStock = false;
-
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
 
     // 午夜过后重置各种标识
-    if ((lTime >= 0) && (lTime <= 001500)) {  // 在零点到零点十五分，重置系统标识
+    if (lTime <= 1500) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
       CString str;
       str = _T(" 午夜时重置系统标识");
@@ -1138,21 +1124,36 @@ bool CMarket::SchedulingTaskPerSecond(void)
     }
 
   }
-  else i5MinuteCounter--;
+  else i5MinuteCounter -= lSecondNumber;
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-
+    
     // 九点二十五分至九点三十分之间重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 92500) && (lTime < 95500)) { // 九点二十五分至九点三十分之间重启系统
+      if ((lTime > 92500) && (lTime < 95500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点二十五分至九点三十分之间重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
       }
     }
+
+    // 判断中国股票市场开市状态
+    if ((lTime < 91000) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
+      m_fMarketOpened = false;
+    }
+    else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
+      m_fMarketOpened = false;
+    }
+    else m_fMarketOpened = true;
+
+    // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
+    if (((lTime > 91000) && (lTime < 92900)) || ((lTime > 113100) && (lTime < 125900))) {
+      m_fCheckTodayActiveStock = true;
+    }
+    else m_fCheckTodayActiveStock = false;
 
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) { 
@@ -1185,13 +1186,13 @@ bool CMarket::SchedulingTaskPerSecond(void)
     }
 
   }
-  else i1MinuteCounter--;
+  else i1MinuteCounter -= lSecondNumber;
 
   if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 9;
     // do something
   }
-  else i10SecondsCounter--;
+  else i10SecondsCounter -= lSecondNumber;
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
