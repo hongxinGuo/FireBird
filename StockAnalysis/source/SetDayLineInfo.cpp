@@ -17,7 +17,22 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
 {
   m_ID = 0;
   m_Day = 0;
+  m_Market = 0;
   m_StockCode = "";
+  m_StockName = "";
+  m_LastClose = 0;
+  m_Open = 0;
+  m_High = 0;
+  m_Low = 0;
+  m_Close = 0;
+  m_Volume = 0;
+  m_Amount = 0;
+  m_UpAndDown = 0;
+  m_UpDownRate = 0;
+  m_ChangeHandRate = 0;
+  m_TotalValue = 0.0;
+  m_CurrentValue = 0.0;
+  m_RelativeStrong = 0;	//相对于总市场的强度
   m_TransactionNumber = 0;
   m_TransactionNumberBelow5000 = 0; // 本日的盘口变化数
   m_TransactionNumberBelow50000 = 0; // 本日的盘口变化数
@@ -38,7 +53,7 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_AttackSellBelow50000 = 0;
   m_AttackSellBelow200000 = 0;
   m_AttackSellAbove200000 = 0;
-  m_nFields = 23;
+  m_nFields = 38;
 }
 
 CString CSetDayLineInfo::GetDefaultConnect()
@@ -65,7 +80,22 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Time]"), m_Day);
+  RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
+  RFX_Text(pFX, _T("[StockName]"), m_StockName);
+  RFX_Double(pFX, _T("[LastClose]"), m_LastClose);
+  RFX_Double(pFX, _T("[Open]"), m_Open);
+  RFX_Double(pFX, _T("[High]"), m_High);
+  RFX_Double(pFX, _T("[Low]"), m_Low);
+  RFX_Double(pFX, _T("[Close]"), m_Close);
+  RFX_Double(pFX, _T("[Volume]"), m_Volume);
+  RFX_Double(pFX, _T("[Amount]"), m_Amount);
+  RFX_Double(pFX, _T("[UpAndDown]"), m_UpAndDown);
+  RFX_Double(pFX, _T("[UpDownRate]"), m_UpDownRate);
+  RFX_Double(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
+  RFX_Double(pFX, _T("[TotalValue]"), m_TotalValue);
+  RFX_Double(pFX, _T("[CurrentValue]"), m_CurrentValue);
+  RFX_Double(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
   RFX_Long(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
   RFX_Long(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
   RFX_Long(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);

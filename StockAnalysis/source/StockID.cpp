@@ -13,6 +13,7 @@ void CStockID::Reset(void) {
   m_strStockCode = "";
   m_strStockName = "";
   m_nIndex = -1;
+  m_lDayLineStartDay = 19900101; // 
   m_lDayLineEndDay = 19900101; // 
   m_lIPOed = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_fActive = false;

@@ -187,7 +187,7 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
   CString str;
 
   const clock_t tt = clock();
-  ASSERT(!gl_systemStatus.IsDayLineReadingInProcess());
+  ASSERT(gl_systemStatus.IsDayLineReadingInProcess());    // 调用此线程时已经设置了此标识
   try {
     gl_systemStatus.SetDayLineReadingInProcess(true);
     gl_stDayLineInquire.fError = false;

@@ -17,9 +17,10 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 	m_StockType = 0;
 	m_StockCode = "";
 	m_StockName = "";
-	m_DayLineEndDay = 19900101;
-	m_IPOed = 0;
-	m_nFields = 7;
+  m_DayLineStartDay = 19900101;
+  m_DayLineEndDay = 19900101;
+  m_IPOed = 0;
+	m_nFields = 8;
 }
 
 CString CSetStockCode::GetDefaultConnect()
@@ -49,8 +50,9 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Int(pFX, _T("[StockType]"), m_StockType);
 	RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
 	RFX_Text(pFX, _T("[StockName]"), m_StockName);
-	RFX_Long(pFX, _T("[DayLineEndDay]"), m_DayLineEndDay);
-	RFX_Long(pFX, _T("[IPOed]"), m_IPOed);
+  RFX_Long(pFX, _T("[DayLineStartDay]"), m_DayLineStartDay);
+  RFX_Long(pFX, _T("[DayLineEndDay]"), m_DayLineEndDay);
+  RFX_Long(pFX, _T("[IPOed]"), m_IPOed);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ
