@@ -63,6 +63,7 @@ ON_WM_KEYUP()
 //ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
 //ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
 ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRs)
+ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -723,4 +724,11 @@ void CMainFrame::OnRebuildDaylineRs()
     m_fCalculatingRS = true;
   }
 
+}
+
+
+void CMainFrame::OnBuildResetSystem()
+{
+  // TODO: Add your command handler code here
+  gl_fResetSystem = true;
 }

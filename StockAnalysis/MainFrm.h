@@ -89,6 +89,7 @@ public:
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnRebuildDaylineRs();
+  afx_msg void OnBuildResetSystem();
 };
 
 
