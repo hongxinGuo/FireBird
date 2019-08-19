@@ -60,6 +60,8 @@ void CMarket::Reset(void)
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
+  m_lCountLoopRTDataInquiring = 0;
+
   m_fResetm_ItStock = true;
 
   m_fTodayTempDataLoaded = false;
@@ -323,8 +325,10 @@ bool CMarket::GetSinaStockRTData(void)
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       if (CreateRTDataInquiringStr(strTemp)) {
-       SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
-       gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
+        if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
+          SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+          gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
+        }
       }
       gl_stRTDataInquire.strInquire += strTemp;
     }

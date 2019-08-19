@@ -203,6 +203,8 @@ protected :
 
   bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
 
+  long                        m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
+
 private:
 
 
