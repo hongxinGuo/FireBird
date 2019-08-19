@@ -324,15 +324,11 @@ bool CMarket::GetSinaStockRTData(void)
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       if (CreateRTDataInquiringStr(strTemp)) {
        SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+       gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
       }
       gl_stRTDataInquire.strInquire += strTemp;
     }
     else { // 开市时使用今日活跃股票池
-      static bool sfShow = true;
-      if (sfShow) {
-        gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
-        sfShow = false;
-      }
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
@@ -1133,7 +1129,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 九点十十五分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime >= 91500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      if ((lTime >= 91500) && (lTime <= 92000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
