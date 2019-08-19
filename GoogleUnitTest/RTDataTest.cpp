@@ -855,27 +855,27 @@ namespace StockAnalysisTest {
       break;
     case 33: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 34: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 35: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 36: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 37: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 38: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
-      EXPECT_TRUE(m_RTData.IsActive()); // 此股票是活跃股票
+      EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     default:
       break;

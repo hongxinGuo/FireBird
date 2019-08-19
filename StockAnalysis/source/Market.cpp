@@ -711,7 +711,7 @@ int CMarket::GetInquiringStockStr(CString& str)
     // 退一格，这样能够覆盖住边缘
     m_itStock--;
   }
-  return iCount;
+  return iCount + 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1126,10 +1126,10 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
     
-    // 九点十十五分重启系统
+    // 九点十二分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime >= 91500) && (lTime <= 92000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      if ((lTime >= 91200) && (lTime <= 915000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。

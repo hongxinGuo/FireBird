@@ -142,7 +142,7 @@ namespace StockAnalysisTest {
       str = _T("");
       EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
       CString str2 = str.Left(9);
-      EXPECT_STREQ(str2, _T(",sh600000"));
+      EXPECT_STREQ(str2, _T("sh600000,"));
     }
     else {
       str = _T("");
@@ -150,7 +150,7 @@ namespace StockAnalysisTest {
       str = _T("");
       EXPECT_EQ(gl_ChinaStockMarket.GetInquiringStockStr(str), 900);
       CString str2 = str.Left(9);
-      EXPECT_STREQ(str2, _T(",sh600000"));
+      EXPECT_STREQ(str2, _T("sh600000,"));
     }
   }
 
