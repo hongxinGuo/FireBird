@@ -1130,10 +1130,10 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
     
-    // 九点二十五分至九点三十分之间重启系统
+    // 九点十十五分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime > 90000) && (lTime < 91500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点二十五分至九点三十分之间重启系统
+      if ((lTime >= 91500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
@@ -1141,7 +1141,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     }
 
     // 判断中国股票市场开市状态
-    if ((lTime < 91000) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
+    if ((lTime < 91500) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
       m_fMarketOpened = false;
     }
     else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
@@ -1150,7 +1150,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     else m_fMarketOpened = true;
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
-    if (((lTime > 91000) && (lTime < 92900)) || ((lTime > 113100) && (lTime < 125900))) {
+    if (((lTime >= 91500) && (lTime < 92900)) || ((lTime >= 113100) && (lTime < 125900))) {
       m_fCheckTodayActiveStock = true;
     }
     else m_fCheckTodayActiveStock = false;

@@ -90,6 +90,7 @@ public:
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnRebuildDaylineRs();
   afx_msg void OnBuildResetSystem();
+  afx_msg void OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI);
 };
 
 
