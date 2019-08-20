@@ -637,7 +637,8 @@ INT64 CMarket::GetTotalAttackSellAmount( void ) {
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTask函数调用。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。如果遇到新的股票代码则生成相应的新股票，
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。如果遇到新的股票代码则生成相应的新股票。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
 //
@@ -649,7 +650,7 @@ bool CMarket::ProcessRTData(void)
 	CStockRTDataPtr pRTDataCompact = nullptr;
   const long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
 
-  for (int i = 0; i < lTotalNumber; i++) {
+  for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
     //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
@@ -669,6 +670,8 @@ bool CMarket::ProcessRTData(void)
 				lIndex = m_mapChinaMarketAStock[pStock->GetStockCode()];
 				m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
 				m_vChinaMarketAStock.at(lIndex)-> SetActive(true); // 本日接收到了数据，
+        long lIndex2 = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
+        m_vActiveStock.at(lIndex2)->SetTime(pRTData->GetTime());  // 设置最新接受到实时数据的时间
         m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(true);
         // 如果此股票代码尚未使用过，则设置为已使用。
         // 停牌后的股票，也能接收到实时数据，只是其内容只有收盘价，其他都为零。考虑清除这种无效数据。
@@ -680,6 +683,7 @@ bool CMarket::ProcessRTData(void)
         ASSERT(lIndex <= m_lTotalActiveStock);
         if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetTime()) { // 新的数据？
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
+          m_vActiveStock.at(lIndex)->SetTime(pRTData->GetTime());   // 设置最新接受到实时数据的时间
         }
       }
     }

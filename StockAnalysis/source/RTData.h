@@ -15,6 +15,10 @@ using namespace std;
 #include<memory>
 #include<array>
 
+class CStockRTData;
+
+typedef shared_ptr<CStockRTData> CStockRTDataPtr;
+
 class CStockRTData : public CObject {
 public:
   // 初始化
@@ -26,6 +30,16 @@ public:
 
   // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
   bool CStockRTData::ReadData(char*& pCurrentPos, long& iTotalRead);
+
+  // 比较大小运算符
+  bool operator < (const CStockRTData& rtData) const {
+    return m_time < rtData.m_time;
+  }
+
+  // 比较大小运算符
+  bool operator < (const CStockRTDataPtr rtDataPtr) const {
+    return m_time < rtDataPtr->m_time;
+  }
 
 public:
   bool ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter); // 从file中读入一个浮点数据，最后字符为‘，’。
@@ -108,6 +122,4 @@ protected:
   bool      m_fActive;              // 本股票是否存在实时数据
 
 };
-
-typedef shared_ptr<CStockRTData> CStockRTDataPtr;
 
