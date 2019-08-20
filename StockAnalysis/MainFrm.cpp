@@ -517,8 +517,8 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
 void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
-  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
   gl_ChinaStockMarket.SetCalculatingRS(true);
+  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
 }
 
 void CMainFrame::OnCompileTodayStock()
@@ -571,7 +571,7 @@ void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    if (gl_ChinaStockMarket.IsCalculatingRS()) {
+    if (gl_systemStatus.IsCalculateDayLineRS()) {
       pCmdUI->Enable(false);
     }
     else {
@@ -714,9 +714,8 @@ void CMainFrame::OnRebuildDaylineRs()
 
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
-  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
   gl_ChinaStockMarket.SetCalculatingRS(true);
-
+  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
 }
 
 
@@ -730,7 +729,7 @@ void CMainFrame::OnBuildResetSystem()
 void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {
   // TODO: Add your command update UI handler code here
-  if (gl_ChinaStockMarket.IsCalculatingRS()) {
+  if (gl_systemStatus.IsCalculateDayLineRS()) {
     pCmdUI->Enable(false);
   }
   else {

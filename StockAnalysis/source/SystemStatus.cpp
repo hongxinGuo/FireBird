@@ -65,6 +65,25 @@ bool CSystemStatus::IsCalculateRSInProcess(void) {
   }
 }
 
+void CSystemStatus::SetCalculateDayLineRS(bool fFlag) {
+  CSingleLock singleLock(&m_CalculateDayLineRSLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fCalculatingDayLineRelativeStrong = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CSystemStatus::IsCalculateDayLineRS(void) {
+  CSingleLock singleLock(&m_CalculateDayLineRSLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fCalculatingDayLineRelativeStrong;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
 void CSystemStatus::SetDayLineReadingInProcess(bool fFlag) {
   CSingleLock singleLock(&m_DayLineReadingInProcessLock);
   singleLock.Lock();

@@ -10,7 +10,10 @@ public:
   bool IsExitingClientThreadInProcess(void);
 
   void SetCalculateRSInProcess(bool fFlag);
-  bool IsCalculateRSInProcess(void);
+  bool IsCalculateRSInProcess(void);  
+  
+  void SetCalculateDayLineRS(bool fFlag);
+  bool IsCalculateDayLineRS(void);
 
   void SetDayLineReadingInProcess(bool fFlag);
   bool IsDayLineReadingInProcess(void);
@@ -46,6 +49,9 @@ protected:
 
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateRSInProcessLock;
+
+  bool m_fCalculatingDayLineRelativeStrong; // 是否处于计算相对强度的过程中标识
+  CCriticalSection m_CalculateDayLineRSLock;
 
   bool m_fDayLineReadingInProcess; // 是否处于提取日线历史数据中标识
   CCriticalSection m_DayLineReadingInProcessLock;

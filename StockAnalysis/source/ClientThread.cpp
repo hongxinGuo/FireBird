@@ -53,6 +53,8 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID ) {
 // 
 ///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
+  gl_systemStatus.SetCalculateDayLineRS(true);
+
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
   const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
   const long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
@@ -92,6 +94,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   str = buffer;
   gl_systemMessage.PushDayLineInfoMessage(str);
   gl_ChinaStockMarket.SetCalculatingRS(false);
+  gl_systemStatus.SetCalculateDayLineRS(false);
 
   return 8;
 }
