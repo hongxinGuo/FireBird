@@ -108,6 +108,9 @@ public:
   bool          IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void          SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
+  bool          IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
+  void          SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
+
   CString       GetDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
   void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
 
@@ -205,7 +208,7 @@ protected :
 
   long                        m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
 
-
+  bool                        m_fCalculatingRS;
 
 private:
 

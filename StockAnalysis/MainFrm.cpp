@@ -88,8 +88,6 @@ CMainFrame::CMainFrame()
   
   m_uIdTimer = 0;
 
-  m_fCalculatingRS = false;
-
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
   gl_fTestMode = false; // 实际系统，测试状态为假。
@@ -520,7 +518,7 @@ void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
   AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
-  m_fCalculatingRS = true;
+  gl_ChinaStockMarket.SetCalculatingRS(true);
 }
 
 void CMainFrame::OnCompileTodayStock()
@@ -573,7 +571,7 @@ void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    if (m_fCalculatingRS) {
+    if (gl_ChinaStockMarket.IsCalculatingRS()) {
       pCmdUI->Enable(false);
     }
     else {
@@ -717,7 +715,7 @@ void CMainFrame::OnRebuildDaylineRs()
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
   AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
-  m_fCalculatingRS = true;
+  gl_ChinaStockMarket.SetCalculatingRS(true);
 
 }
 
@@ -732,7 +730,7 @@ void CMainFrame::OnBuildResetSystem()
 void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {
   // TODO: Add your command update UI handler code here
-  if (m_fCalculatingRS) {
+  if (gl_ChinaStockMarket.IsCalculatingRS()) {
     pCmdUI->Enable(false);
   }
   else {

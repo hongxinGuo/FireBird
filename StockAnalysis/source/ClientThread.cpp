@@ -91,6 +91,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   CString str;
   str = buffer;
   gl_systemMessage.PushDayLineInfoMessage(str);
+  gl_ChinaStockMarket.SetCalculatingRS(false);
 
   return 8;
 }

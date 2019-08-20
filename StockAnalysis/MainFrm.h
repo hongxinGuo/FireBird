@@ -51,7 +51,6 @@ protected:
 
   long                    m_lCurrentPos;
 
-  bool                    m_fCalculatingRS;
 
 protected:  // 控件条嵌入成员
 	CMFCMenuBar       m_wndMenuBar;
