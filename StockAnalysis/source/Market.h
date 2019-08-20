@@ -205,6 +205,8 @@ protected :
 
   long                        m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
 
+
+
 private:
 
 

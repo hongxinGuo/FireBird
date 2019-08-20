@@ -326,8 +326,10 @@ bool CMarket::GetSinaStockRTData(void)
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       if (CreateRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
+          if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
+            gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
+          }
           SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
-          gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
         }
       }
       gl_stRTDataInquire.strInquire += strTemp;
@@ -1130,10 +1132,18 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
     
-    // 九点十二分重启系统
+    // 九点十三分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime >= 91200) && (lTime <= 91500) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      if ((lTime >= 91300) && (lTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+        m_fSystemReady = false;
+      }
+    }
+
+    // 九点二十五分再次重启系统
+    if (m_fPermitResetSystem) { // 如果允许重置系统
+      if ((lTime >= 92500) && (lTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
@@ -1540,9 +1550,9 @@ long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   while (!setDayKLine.IsEOF()) {
     setDayKLine.Delete();
     setDayKLine.MoveNext();
-
   }
   setDayKLine.m_pDatabase->CommitTrans();
+
   setDayKLine.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock ) {
     if (pStock == nullptr) {
@@ -1609,53 +1619,52 @@ long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
   setDayKLine.m_pDatabase->CommitTrans();
   setDayKLine.Close();
 
-  if (gl_systemTime.GetTime() > 150000) {
-    // 存储今日生成的数据于DayLineInfo表中。
-    setDayLineInfo.m_strFilter = _T("[Time] =");
-    setDayLineInfo.m_strFilter += strDay;
-    setDayLineInfo.Open();
-    setDayLineInfo.m_pDatabase->BeginTrans();
-    while (!setDayLineInfo.IsEOF()) {
-      setDayLineInfo.Delete();
-      setDayLineInfo.MoveNext();
+  // 存储今日生成的数据于DayLineInfo表中。
+  setDayLineInfo.m_strFilter = _T("[Time] =");
+  setDayLineInfo.m_strFilter += strDay;
+  setDayLineInfo.Open();
+  setDayLineInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineInfo.IsEOF()) {
+    setDayLineInfo.Delete();
+    setDayLineInfo.MoveNext();
 
-    }
-    setDayLineInfo.m_pDatabase->CommitTrans();
-    setDayLineInfo.m_pDatabase->BeginTrans();
-    for (auto pStock : m_vActiveStock) {
-      if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
-        && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
-        continue;
-      }
-      setDayLineInfo.AddNew();
-      setDayLineInfo.m_Day = lCurrentTradeDay;
-      setDayLineInfo.m_StockCode = pStock->GetStockCode();
-
-      setDayLineInfo.m_TransactionNumber = pStock->GetTransactionNumber();
-      setDayLineInfo.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
-      setDayLineInfo.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
-      setDayLineInfo.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
-      setDayLineInfo.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
-      setDayLineInfo.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
-      setDayLineInfo.m_CancelSellVolume = pStock->GetCancelSellVolume();
-      setDayLineInfo.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
-      setDayLineInfo.m_AttackSellVolume = pStock->GetAttackSellVolume();
-      setDayLineInfo.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
-      setDayLineInfo.m_StrongSellVolume = pStock->GetStrongSellVolume();
-      setDayLineInfo.m_UnknownVolume = pStock->GetUnknownVolume();
-      setDayLineInfo.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
-      setDayLineInfo.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
-      setDayLineInfo.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
-      setDayLineInfo.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
-      setDayLineInfo.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
-      setDayLineInfo.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
-      setDayLineInfo.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
-      setDayLineInfo.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
-      setDayLineInfo.Update();
-    }
-    setDayLineInfo.m_pDatabase->CommitTrans();
-    setDayLineInfo.Close();
   }
+  setDayLineInfo.m_pDatabase->CommitTrans();
+
+  setDayLineInfo.m_pDatabase->BeginTrans();
+  for (auto pStock : m_vActiveStock) {
+    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
+      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+      continue;
+    }
+    setDayLineInfo.AddNew();
+    setDayLineInfo.m_Day = lCurrentTradeDay;
+    setDayLineInfo.m_StockCode = pStock->GetStockCode();
+
+    setDayLineInfo.m_TransactionNumber = pStock->GetTransactionNumber();
+    setDayLineInfo.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
+    setDayLineInfo.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
+    setDayLineInfo.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
+    setDayLineInfo.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
+    setDayLineInfo.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
+    setDayLineInfo.m_CancelSellVolume = pStock->GetCancelSellVolume();
+    setDayLineInfo.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
+    setDayLineInfo.m_AttackSellVolume = pStock->GetAttackSellVolume();
+    setDayLineInfo.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
+    setDayLineInfo.m_StrongSellVolume = pStock->GetStrongSellVolume();
+    setDayLineInfo.m_UnknownVolume = pStock->GetUnknownVolume();
+    setDayLineInfo.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
+    setDayLineInfo.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
+    setDayLineInfo.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
+    setDayLineInfo.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
+    setDayLineInfo.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
+    setDayLineInfo.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
+    setDayLineInfo.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
+    setDayLineInfo.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
+    setDayLineInfo.Update();
+  }
+  setDayLineInfo.m_pDatabase->CommitTrans();
+  setDayLineInfo.Close();
 
   gl_systemMessage.PushInformationMessage(_T("最新交易日实时数据处理完毕"));
   return iCount;
