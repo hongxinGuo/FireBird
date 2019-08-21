@@ -61,3 +61,37 @@ long CSystemQueueData::GetRTDataDequeSize(void)
     return lCount;
   }
 }
+
+void CSystemQueueData::PushPriorityRTData(CStockRTDataPtr pData)
+{
+  CSingleLock singleLock(&m_PriorityRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_priorityqueueRTStockData.push(pData);
+    singleLock.Unlock();
+  }
+}
+
+CStockRTDataPtr CSystemQueueData::PopPriorityRTData(void)
+{
+  CStockRTDataPtr pData;
+  CSingleLock singleLock(&m_PriorityRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    pData = m_priorityqueueRTStockData.top();
+    m_priorityqueueRTStockData.pop();
+    singleLock.Unlock();
+    return pData;
+  }
+}
+
+long CSystemQueueData::GetPriorityRTDataDequeSize(void)
+{
+  CSingleLock singleLock(&m_PriorityRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const long lCount = m_priorityqueueRTStockData.size();
+    singleLock.Unlock();
+    return lCount;
+  }
+}
