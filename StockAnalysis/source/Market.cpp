@@ -1114,7 +1114,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     i5MinuteCounter = 299;
 
     // 午夜过后重置各种标识
-    if (lTime <= 1500) {  // 在零点到零点十五分，重置系统标识
+    if ((lTime <= 1500) && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
       CString str;
       str = _T(" 午夜时重置系统标识");
@@ -1130,8 +1130,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
         UpdateTempRTData();
       }
     }
-
-  }
+  } // 每五分钟一次的任务
   else i5MinuteCounter -= lSecondNumber;
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
@@ -1200,14 +1199,14 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
         AfxBeginThread(ClientThreadSaveDayLineProc, nullptr);
       }
     }
-
-  }
+  } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
+  // 计算每十秒钟一次的任务
   if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 9;
     // do something
-  }
+  } // 每十秒钟一次的任务
   else i10SecondsCounter -= lSecondNumber;
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。

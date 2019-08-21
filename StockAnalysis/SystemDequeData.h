@@ -14,10 +14,12 @@ public:
   ~CSystemQueueData();
   void Reset(void);
 
+  // 采用队列的函数
   void              PushRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopRTData(void);
   long              GetRTDataDequeSize(void);
 
+  // 这是采用有优先级队列的函数
   void              PushPriorityRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopPriorityRTData(void);
   long              GetPriorityRTDataDequeSize(void);
@@ -40,9 +42,11 @@ protected:
   //   }
   // };
 
+  // 目前使用队列实现
   queue<CStockRTDataPtr>  m_queueRTStockData;
   CCriticalSection        m_RTDataLock;
   
+  // 准备使用有优先级的队列实现
   priority_queue<CStockRTDataPtr, vector<CStockRTDataPtr>, cmpRTData>  m_priorityqueueRTStockData;
   CCriticalSection        m_PriorityRTDataLock;
 };
