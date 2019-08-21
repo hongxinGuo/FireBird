@@ -710,7 +710,7 @@ int CMarket::GetInquiringStockStr(CString& str)
   }
 
   str += (*m_itStock++)->GetStockCode();  // 得到第一个股票代码
-  while ((m_itStock != m_vActiveStock.end()) && (iCount < 899)) { // 每次最大查询量为900个股票
+  while ((m_itStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
     iCount++;
     str += ',';
     str += (*m_itStock++)->GetStockCode();
@@ -723,7 +723,7 @@ int CMarket::GetInquiringStockStr(CString& str)
     // 退一格，这样能够覆盖住边缘
     m_itStock--;
   }
-  return iCount + 1;
+  return iCount;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1763,7 +1763,7 @@ bool CMarket::LoadTodayTempData(void) {
           ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
           pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume - setDayLineToday.m_Volume);  // 需要如此设置m_lUnknownVolume  
           
-          pStock->SetTransactionNumber(pStock->GetTransactionNumber());
+          pStock->SetTransactionNumber(setDayLineToday.m_TransactionNumber);
           pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
           pStock->SetTransactionNumberBelow50000(setDayLineToday.m_TransactionNumberBelow50000);
           pStock->SetTransactionNumberBelow200000(setDayLineToday.m_TransactionNumberBelow200000);
