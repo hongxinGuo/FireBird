@@ -107,7 +107,6 @@ void CStock::operator =(CStock &pStock) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
 {
-  m_Time = pRTData->GetTime();
   m_lLastClose = pRTData->GetLastClose();
   m_lNew = pRTData->GetNew();
   m_lHigh = pRTData->GetHigh();
@@ -283,7 +282,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
           m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
         }
       }
-      ASSERT(m_Time >= pRTData->GetTime());
+      ASSERT(m_NewestRTDataTransactionTime >= pRTData->GetTime());
       const INT64 I = pRTData->GetVolume();
       const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
         + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;

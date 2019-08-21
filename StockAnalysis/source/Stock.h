@@ -47,8 +47,8 @@ public:
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
-  time_t GetTime(void) noexcept { return m_Time; }
-  void SetTime(time_t time) noexcept { m_Time = time; }
+  time_t GetNewestRTDataTransactionTime(void) noexcept { return m_NewestRTDataTransactionTime; }
+  void SetNewestRTDataTransactionTime(time_t time) noexcept { m_NewestRTDataTransactionTime = time; }
   long GetLastClose(void) noexcept { return m_lLastClose; }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
@@ -201,7 +201,7 @@ protected:
 
 
   // 实时数据,需要不断更新
-  time_t    m_Time;
+  time_t    m_NewestRTDataTransactionTime;         // 实时数据交易时间
   long	    m_lLastClose;		// 以0.001元计的收盘价
   long		  m_lOpen;				// 以0.001元计的开盘价		
   long		  m_lHigh;				// 以0.001元计的最高价

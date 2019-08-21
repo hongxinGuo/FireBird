@@ -54,8 +54,14 @@ namespace StockAnalysisTest {
     CStockRTDataPtr pRTData3 = make_shared<CStockRTData>();
     pRTData3->SetTime(200200);
     gl_systemDequeData.PushPriorityRTData(pRTData3);
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
+    CStockRTDataPtr pRTData4 = make_shared<CStockRTData>();
+    pRTData4->SetTime(200);
+    gl_systemDequeData.PushPriorityRTData(pRTData4);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 4);
     CStockRTDataPtr p2 = gl_systemDequeData.PopPriorityRTData();
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
+    EXPECT_EQ(p2->GetTime(), 200);
+    p2 = gl_systemDequeData.PopPriorityRTData();
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 2);
     EXPECT_EQ(p2->GetTime(), 200200);
   }
