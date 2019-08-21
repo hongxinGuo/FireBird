@@ -44,6 +44,7 @@ void CMarket::Reset(void)
   m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
   m_fCurrentEditStockChanged = false;
+  m_fPermitResetSystem = true;     // 初始时允许重置系统
 
   m_pCurrentStock = nullptr;
 
@@ -1114,7 +1115,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     i5MinuteCounter = 299;
 
     // 午夜过后重置各种标识
-    if ((lTime <= 1500) && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
+    if (lTime <= 1500) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
       CString str;
       str = _T(" 午夜时重置系统标识");
