@@ -671,7 +671,7 @@ bool CMarket::ProcessRTData(void)
 				m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
 				m_vChinaMarketAStock.at(lIndex)-> SetActive(true); // 本日接收到了数据，
         long lIndex2 = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
-        m_vActiveStock.at(lIndex2)->SetNewestRTDataTransactionTime(pRTData->GetTime());  // 设置最新接受到实时数据的时间
+        m_vActiveStock.at(lIndex2)->SetTransactionTime(pRTData->GetTransactionTime());  // 设置最新接受到实时数据的时间
         m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(true);
         // 如果此股票代码尚未使用过，则设置为已使用。
         // 停牌后的股票，也能接收到实时数据，只是其内容只有收盘价，其他都为零。考虑清除这种无效数据。
@@ -681,9 +681,9 @@ bool CMarket::ProcessRTData(void)
       else {
         lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
         ASSERT(lIndex <= m_lTotalActiveStock);
-        if (pRTData->GetTime() > m_vActiveStock.at(lIndex)->GetNewestRTDataTransactionTime()) { // 新的数据？
+        if (pRTData->GetTransactionTime() > m_vActiveStock.at(lIndex)->GetTransactionTime()) { // 新的数据？
           m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
-          m_vActiveStock.at(lIndex)->SetNewestRTDataTransactionTime(pRTData->GetTime());   // 设置最新接受到实时数据的时间
+          m_vActiveStock.at(lIndex)->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
         }
       }
     }

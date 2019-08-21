@@ -282,7 +282,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
           m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
         }
       }
-      ASSERT(m_NewestRTDataTransactionTime >= pRTData->GetTime());
+      ASSERT(m_TransactionTime >= pRTData->GetTransactionTime());
       const INT64 I = pRTData->GetVolume();
       const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
         + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
@@ -488,7 +488,7 @@ void CStock::ReportGuaDanTransaction(void)
 {
   char buffer[100];
   CString str, str2, strTime;
-  const CTime ctime(m_pLastRTData->GetTime());
+  const CTime ctime(m_pLastRTData->GetTransactionTime());
   sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
   sprintf_s(buffer, " %s %I64d股成交于%10.3f    ", m_strStockCode.GetBuffer(),
@@ -567,7 +567,7 @@ bool CStock::SaveRealTimeData(CSetRealTimeData * psetRTData) {
   ASSERT(psetRTData->IsOpen());
   for ( auto pRTData : m_dequeRTData) {
     psetRTData->AddNew();
-    psetRTData->m_Time = pRTData->GetTime();
+    psetRTData->m_Time = pRTData->GetTransactionTime();
     psetRTData->m_lMarket = m_wMarket;
     psetRTData->m_StockCode = m_strStockCode;
     psetRTData->m_StockName = m_strStockName;

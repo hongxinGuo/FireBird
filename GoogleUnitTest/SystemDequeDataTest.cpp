@@ -31,38 +31,38 @@ namespace StockAnalysisTest {
   TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
     EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
-    pRTData->SetTime(100100100);
+    pRTData->SetTransactionTime(100100100);
     gl_systemDequeData.PushRTData(pRTData);
     CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
     gl_systemDequeData.PushRTData(pRTData2);
-    pRTData2->SetTime(200200200);
+    pRTData2->SetTransactionTime(200200200);
     EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 2);
     CStockRTDataPtr p2 = gl_systemDequeData.PopRTData();
     EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 1);
-    EXPECT_EQ(p2->GetTime(), 100100100);
+    EXPECT_EQ(p2->GetTransactionTime(), 100100100);
   }
 
   // 测试有优先级的队列存储临时实时数据。
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
-    pRTData->SetTime(100100100);
+    pRTData->SetTransactionTime(100100100);
     gl_systemDequeData.PushPriorityRTData(pRTData);
     CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
-    pRTData2->SetTime(200200200);
+    pRTData2->SetTransactionTime(200200200);
     gl_systemDequeData.PushPriorityRTData(pRTData2);
     CStockRTDataPtr pRTData3 = make_shared<CStockRTData>();
-    pRTData3->SetTime(200200);
+    pRTData3->SetTransactionTime(200200);
     gl_systemDequeData.PushPriorityRTData(pRTData3);
     CStockRTDataPtr pRTData4 = make_shared<CStockRTData>();
-    pRTData4->SetTime(200);
+    pRTData4->SetTransactionTime(200);
     gl_systemDequeData.PushPriorityRTData(pRTData4);
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 4);
     CStockRTDataPtr p2 = gl_systemDequeData.PopPriorityRTData();
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
-    EXPECT_EQ(p2->GetTime(), 200);
+    EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_systemDequeData.PopPriorityRTData();
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 2);
-    EXPECT_EQ(p2->GetTime(), 200200);
+    EXPECT_EQ(p2->GetTransactionTime(), 200200);
   }
 }

@@ -27,7 +27,7 @@ public:
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列）。
   struct cmpRTData {
     bool operator () (const CStockRTDataPtr p1, const CStockRTDataPtr p2) const {
-      return p1->GetTime() > p2->GetTime(); // 有优先级的队列默认排列顺序是从大到小，故而从小到大排列需要使用 > 符号。
+      return p1->GetTransactionTime() > p2->GetTransactionTime(); // 有优先级的队列默认排列顺序是从大到小，故而从小到大排列需要使用 > 符号。
     }
   };
 

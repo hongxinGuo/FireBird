@@ -15,7 +15,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsActive());
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
-    EXPECT_EQ(stock.GetTime(), 0);
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
     EXPECT_EQ(stock.GetLastClose(), 0);
     EXPECT_EQ(stock.GetOpen(), 0);
     EXPECT_EQ(stock.GetHigh(), 0);
@@ -116,9 +116,9 @@ namespace StockAnalysisTest {
 
   TEST(StockTest, TestGetTime) {
     CStock stock;
-    EXPECT_EQ(stock.GetTime(), 0);
-    stock.SetTime(100100100100);
-    EXPECT_EQ(stock.GetTime(), 100100100100);
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
+    stock.SetTransactionTime(100100100100);
+    EXPECT_EQ(stock.GetTransactionTime(), 100100100100);
   }
 
   TEST(StockTest, TestGetLastClose) {
@@ -433,7 +433,7 @@ namespace StockAnalysisTest {
     CStockRTDataPtr pRTData;
 
     pRTData = make_shared<CStockRTData>();
-    pRTData->SetTime(100100100100);
+    pRTData->SetTransactionTime(100100100100);
     pRTData->SetLastClose(11111);
     pRTData->SetOpen(22222);
     pRTData->SetNew(33333);
@@ -448,7 +448,7 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i + 400);
     }
     stock.UpdataCurrentStatus(pRTData);
-    EXPECT_EQ(stock.GetTime(), 100100100100);
+    EXPECT_EQ(stock.GetTransactionTime(), 0);   // UpdateCurrentStatus函数不更新交易时间
     EXPECT_EQ(stock.GetLastClose(), 11111);
     EXPECT_EQ(stock.GetOpen(), 22222);
     EXPECT_EQ(stock.GetNew(), 33333);

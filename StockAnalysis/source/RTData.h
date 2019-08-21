@@ -47,8 +47,8 @@ public:
   bool ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& lCounter);
 
 public:
-  time_t GetTime(void) noexcept { return m_time; }
-  void SetTime(time_t time) noexcept { m_time = time; }
+  time_t GetTransactionTime(void) noexcept { return m_time; }
+  void SetTransactionTime(time_t time) noexcept { m_time = time; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
   CString GetStockCode(void) { return m_strStockCode; }

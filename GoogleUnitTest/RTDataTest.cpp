@@ -10,7 +10,7 @@ namespace StockAnalysisTest {
   TEST(CStockRTDataTest, TestInitialize) {
     ASSERT_TRUE(gl_fTestMode);
     CStockRTData RTData;
-    EXPECT_EQ(RTData.GetTime(), 0);
+    EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
     EXPECT_STREQ(RTData.GetStockName(), _T(""));
@@ -215,7 +215,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(3), 11580);
       EXPECT_EQ(m_RTData.GetVSell(4), 262900);
       EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
+      EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
       break;
     case 1:
       EXPECT_TRUE(fSucceed); // 没有错误
@@ -250,7 +250,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(3), -1);
       EXPECT_EQ(m_RTData.GetVSell(4), 262900);
       EXPECT_EQ(m_RTData.GetPSell(4), -1);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
+      EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
       break;
     case 2:
       EXPECT_TRUE(fSucceed); // 没有错误
@@ -285,7 +285,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(3), 11580);
       EXPECT_EQ(m_RTData.GetVSell(4), -1);
       EXPECT_EQ(m_RTData.GetPSell(4), 11590);
-      EXPECT_EQ(m_RTData.GetTime(), ttime);
+      EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
       break;
     case 3:
       EXPECT_FALSE(fSucceed); // 有错误
