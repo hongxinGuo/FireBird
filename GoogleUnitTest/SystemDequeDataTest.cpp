@@ -42,6 +42,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(p2->GetTime(), 100100100);
   }
 
+  // 测试有优先级的队列存储临时实时数据。
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
