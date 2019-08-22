@@ -130,11 +130,11 @@ CMainFrame::~CMainFrame()
 
   gl_ChinaStockMarket.UpdateOptionDataBase();
 
-  while (gl_systemStatus.IsSavingDayLineInProcess()) {
+  while (gl_ThreadStatus.IsSavingDayLineInProcess()) {
     Sleep(10); // 等待处理日线历史数据的线程结束。
   }
 
-  while (gl_systemStatus.IsRTDataReadingInProcess()) {
+  while (gl_ThreadStatus.IsRTDataReadingInProcess()) {
     Sleep(10); // 等待实时数据读取线程结束
   }
  
@@ -432,8 +432,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   // 重启系统在此处执行，容易调用各重置函数
 
   if (gl_fResetSystem) {
-    while (gl_systemStatus.IsCalculateRSInProcess() || gl_systemStatus.IsCalculatingRTData() || gl_systemStatus.IsSavingTempData()
-      || gl_systemStatus.IsSavingDayLineInProcess()) {
+    while (gl_ThreadStatus.IsCalculateRSInProcess() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
+      || gl_ThreadStatus.IsSavingDayLineInProcess()) {
       Sleep(10);
     }
     ResetSystem();
@@ -504,8 +504,8 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
     }
 #endif      
     gl_fExiting = true; // 提示各工作线程中途退出
-    if (gl_systemStatus.IsSavingDayLineInProcess()) { // 如果正在处理日线历史数据
-      while (gl_systemStatus.IsSavingDayLineInProcess()) {
+    if (gl_ThreadStatus.IsSavingDayLineInProcess()) { // 如果正在处理日线历史数据
+      while (gl_ThreadStatus.IsSavingDayLineInProcess()) {
         Sleep(10); // 等待处理日线历史数据的线程退出
       }
     }
@@ -571,7 +571,7 @@ void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    if (gl_systemStatus.IsCalculateDayLineRS()) {
+    if (gl_ThreadStatus.IsCalculateDayLineRS()) {
       pCmdUI->Enable(false);
     }
     else {
@@ -729,7 +729,7 @@ void CMainFrame::OnBuildResetSystem()
 void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {
   // TODO: Add your command update UI handler code here
-  if (gl_systemStatus.IsCalculateDayLineRS()) {
+  if (gl_ThreadStatus.IsCalculateDayLineRS()) {
     pCmdUI->Enable(false);
   }
   else {

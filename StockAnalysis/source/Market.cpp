@@ -289,8 +289,8 @@ bool CMarket::GetSinaStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_systemStatus.IsRTDataReadingInProcess()) {
-    if (gl_systemStatus.IsRTDataReceived()) {
+  if (!gl_ThreadStatus.IsRTDataReadingInProcess()) {
+    if (gl_ThreadStatus.IsRTDataReceived()) {
       if (gl_stRTDataInquire.fError == false) { //网络通信一切顺利？
         iTotalNumber = gl_stRTDataInquire.lByteRead;
         pCurrentPos = gl_stRTDataInquire.buffer;
@@ -340,8 +340,8 @@ bool CMarket::GetSinaStockRTData(void)
       gl_stRTDataInquire.strInquire = m_strRTStockSource;
       GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
-    gl_systemStatus.SetRTDataReceived(false);
-    gl_systemStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    gl_ThreadStatus.SetRTDataReceived(false);
+    gl_ThreadStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ClientThreadReadingRTDataProc, nullptr);
   }
 
@@ -472,9 +472,9 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_systemStatus.IsDayLineReadingInProcess()) {
+  if (!gl_ThreadStatus.IsDayLineReadingInProcess()) {
     if (sfFoundStock) {
-      if ((gl_stDayLineInquire.fError == false) && gl_systemStatus.IsDayLineDataReady()) { //网络通信一切顺利？
+      if ((gl_stDayLineInquire.fError == false) && gl_ThreadStatus.IsDayLineDataReady()) { //网络通信一切顺利？
         TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_stDayLineInquire.lByteRead);
         ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
         // 处理当前股票日线数据
@@ -507,8 +507,8 @@ bool CMarket::GetNetEaseStockDayLineData(void)
       strRead += m_strDayLinePostfix;
 
       gl_stDayLineInquire.strInquire = strRead;
-      gl_systemStatus.SetDayLineDataReady(false);
-      gl_systemStatus.SetDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      gl_ThreadStatus.SetDayLineDataReady(false);
+      gl_ThreadStatus.SetDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
       AfxBeginThread(ClientThreadReadDayLineProc, nullptr);
       return true;
@@ -688,7 +688,7 @@ bool CMarket::ProcessRTData(void)
       }
     }
   }
-  gl_systemStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+  gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
 
   return true;
 }
@@ -1122,7 +1122,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     }
 
     // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-    if (m_fMarketOpened && m_fSystemReady && !gl_systemStatus.IsCalculatingRTData()) {
+    if (m_fMarketOpened && m_fSystemReady && !gl_ThreadStatus.IsCalculatingRTData()) {
       if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定(中间休市期间要存储一次，故而到11:36才中止）
         CString str;
         str = _T(" 存储临时数据");
@@ -1180,7 +1180,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 
     // 判断是否结束下载日线历史数据
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      if (!gl_systemStatus.IsSavingDayLineInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
+      if (!gl_ThreadStatus.IsSavingDayLineInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -1194,8 +1194,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       }
     }
     else {
-      if (!gl_systemStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
-        gl_systemStatus.SetSavingDayLineInProcess(true);
+      if (!gl_ThreadStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
+        gl_ThreadStatus.SetSavingDayLineInProcess(true);
         AfxBeginThread(ClientThreadSaveDayLineProc, nullptr);
       }
     }
@@ -1210,9 +1210,9 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   else i10SecondsCounter -= lSecondNumber;
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-  if (SystemReady() && !gl_systemStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
-    if (gl_systemStatus.IsRTDataNeedCalculate()) {
-      gl_systemStatus.SetCalculatingRTData(true);
+  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+    if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
+      gl_ThreadStatus.SetCalculatingRTData(true);
       AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
     }
   }
@@ -1749,7 +1749,7 @@ bool CMarket::LoadTodayTempData(void) {
   CStockRTDataPtr pRTData;
 
   ASSERT(!m_fTodayTempDataLoaded);
-  ASSERT(!gl_systemStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
+  ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   if (!setDayLineToday.IsEOF()) {
@@ -1813,7 +1813,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   const long lMonth = lDay / 100 - lYear * 100;
   const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
-  gl_systemStatus.SetCalculateRSInProcess(true);
+  gl_ThreadStatus.SetCalculateRSInProcess(true);
 
   for (j = 0; j < 30; j++) pch[j] = 0x000;
 
@@ -1880,7 +1880,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   strTemp = buffer;
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
-  gl_systemStatus.SetCalculateRSInProcess(false);
+  gl_ThreadStatus.SetCalculateRSInProcess(false);
   return(true);
 }
 
@@ -2027,8 +2027,8 @@ void CMarket::LoadOptionDataBase(void)
 
 bool CMarket::UpdateTempRTData(void)
 {
-  if (!gl_systemStatus.IsSavingTempData()) {
-    gl_systemStatus.SetSavingTempData(true);
+  if (!gl_ThreadStatus.IsSavingTempData()) {
+    gl_ThreadStatus.SetSavingTempData(true);
     AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
   }
 

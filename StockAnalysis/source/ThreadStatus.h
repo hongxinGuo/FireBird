@@ -2,9 +2,9 @@
 
 #include"afxmt.h"
 
-class CSystemStatus {    // 日线数据结构
+class CThreadStutus {    // 日线数据结构
 public:
-  CSystemStatus();
+  CThreadStutus();
 
   void SetExitingClientThreadInProcess(bool fFlag);
   bool IsExitingClientThreadInProcess(void);

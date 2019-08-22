@@ -111,8 +111,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockID.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SystemStatus.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

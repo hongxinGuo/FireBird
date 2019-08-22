@@ -22,14 +22,14 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculatingRTDataProc(LPVOID ) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
-  ASSERT(!gl_systemStatus.IsSavingTempData()); // 此两个工作线程互斥
+  ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个工作线程互斥
 
-  gl_systemStatus.SetCalculatingRTData(true);
-  if (gl_systemStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
+  gl_ThreadStatus.SetCalculatingRTData(true);
+  if (gl_ThreadStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
     gl_ChinaStockMarket.CalculateRTData();
-    gl_systemStatus.SetRTDataNeedCalculate(false); 
+    gl_ThreadStatus.SetRTDataNeedCalculate(false); 
   }
-  gl_systemStatus.SetCalculatingRTData(false);
+  gl_ThreadStatus.SetCalculatingRTData(false);
  
   return 3;
 }
@@ -53,7 +53,7 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID ) {
 // 
 ///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
-  gl_systemStatus.SetCalculateDayLineRS(true);
+  gl_ThreadStatus.SetCalculateDayLineRS(true);
 
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
   const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
@@ -94,7 +94,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   str = buffer;
   gl_systemMessage.PushDayLineInfoMessage(str);
   gl_ChinaStockMarket.SetCalculatingRS(false);
-  gl_systemStatus.SetCalculateDayLineRS(false);
+  gl_ThreadStatus.SetCalculateDayLineRS(false);
 
   return 8;
 }
@@ -102,14 +102,14 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
 UINT ClientThreadSaveTempRTDataProc(LPVOID )
 {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
-  ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 此两个工作线程互斥
+  ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 此两个工作线程互斥
 
-  gl_systemStatus.SetSavingTempData(true);
+  gl_ThreadStatus.SetSavingTempData(true);
   
   gl_ChinaStockMarket.SaveTodayTempData();
   
-  ASSERT(!gl_systemStatus.IsCalculatingRTData()); // 再次确认一下
-  gl_systemStatus.SetSavingTempData(false);
+  ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 再次确认一下
+  gl_ThreadStatus.SetSavingTempData(false);
 
   return 4;
 }
@@ -125,7 +125,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
   const clock_t tt = clock();
 
   try {
-    gl_systemStatus.SetRTDataReadingInProcess(true);
+    gl_ThreadStatus.SetRTDataReadingInProcess(true);
     gl_stRTDataInquire.fError = false;
     gl_stRTDataInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire));
@@ -147,16 +147,16 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
       else fDone = true;
     }
     gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
-    gl_systemStatus.SetRTDataReceived(true);
+    gl_ThreadStatus.SetRTDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();
     gl_stRTDataInquire.fError = true;
-    gl_systemStatus.SetRTDataReceived(false);
+    gl_ThreadStatus.SetRTDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_systemStatus.SetRTDataReadingInProcess(false);
+  gl_ThreadStatus.SetRTDataReadingInProcess(false);
 
   gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
 
@@ -191,9 +191,9 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
   CString str;
 
   const clock_t tt = clock();
-  ASSERT(gl_systemStatus.IsDayLineReadingInProcess());    // 调用此线程时已经设置了此标识
+  ASSERT(gl_ThreadStatus.IsDayLineReadingInProcess());    // 调用此线程时已经设置了此标识
   try {
-    gl_systemStatus.SetDayLineReadingInProcess(true);
+    gl_ThreadStatus.SetDayLineReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
@@ -223,17 +223,17 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
       }
     }
     gl_stDayLineInquire.buffer[gl_stDayLineInquire.lByteRead] = 0x000;
-    gl_systemStatus.SetDayLineDataReady(true);
+    gl_ThreadStatus.SetDayLineDataReady(true);
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
     gl_stDayLineInquire.fError = true;
-    gl_systemStatus.SetDayLineDataReady(false);
+    gl_ThreadStatus.SetDayLineDataReady(false);
     gl_stDayLineInquire.lByteRead = 0;
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_systemStatus.SetDayLineReadingInProcess(false);
+  gl_ThreadStatus.SetDayLineReadingInProcess(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;
@@ -304,7 +304,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID ) {
 
   gl_ChinaStockMarket.SaveDayLineData();
 
-  gl_systemStatus.SetSavingDayLineInProcess(false);
+  gl_ThreadStatus.SetSavingDayLineInProcess(false);
 
   return 6;
 }

@@ -225,7 +225,7 @@
     <ClInclude Include="source\Stock.h" />
     <ClInclude Include="source\StockID.h" />
     <ClInclude Include="source\SystemMessage.h" />
-    <ClInclude Include="source\SystemStatus.h" />
+    <ClInclude Include="source\ThreadStatus.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
@@ -258,7 +258,7 @@
     <ClCompile Include="source\Stock.cpp" />
     <ClCompile Include="source\StockID.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
-    <ClCompile Include="source\SystemStatus.cpp" />
+    <ClCompile Include="source\ThreadStatus.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
