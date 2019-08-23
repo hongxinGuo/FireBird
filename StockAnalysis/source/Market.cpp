@@ -1117,7 +1117,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     if (lTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
       m_fPermitResetSystem = true;
       CString str;
-      str = _T(" 午夜时重置系统标识");
+      str = _T(" 重置系统重置标识");
       gl_systemMessage.PushInformationMessage(str);
     }
 
@@ -1159,7 +1159,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     if ((lTime < 91500) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
       m_fMarketOpened = false;
     }
-    else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市
+    else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
       m_fMarketOpened = false;
     }
     else m_fMarketOpened = true;

@@ -17,7 +17,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(SystemMessageTest, TestInitialize) {
-    ASSERT_TRUE(gl_fTestMode);
+    ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列

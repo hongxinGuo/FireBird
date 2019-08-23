@@ -90,7 +90,7 @@ CMainFrame::CMainFrame()
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
-  gl_fTestMode = false; // 实际系统，测试状态为假。
+  gl_fNormalMode = true; // 实际系统，测试状态为假。
 
   // 这个记录集需要在系统启动时就打开，且一直保持打开的状态。但需要使用MySQL驱动而不是MySQLTest驱动，故而在设置gl_fTestMode为假后才执行。
   // 真实系统中，所有的记录集都要使用MySQL驱动而不是MySQLTest驱动，而测试函数都要使用MySQLTest驱动。

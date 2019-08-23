@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
   {
   protected:
     void SetUp(void) override {
-      ASSERT_TRUE(gl_fTestMode);
+      ASSERT_FALSE(gl_fNormalMode);
       RTData * pData = GetParam();
       pCurrentData = make_shared<CStockRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());

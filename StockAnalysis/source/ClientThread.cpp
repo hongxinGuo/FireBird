@@ -71,7 +71,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   time(&tStart);
   do {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(lToday); // 设置最后日期。
-    if ((ctCurrent.GetDayOfWeek() != 1) // sunday
+    if ((ctCurrent.GetDayOfWeek() != 1) // sunday， CTime用1--7标识星期日至星期六
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
       gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);
     }

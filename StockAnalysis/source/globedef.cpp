@@ -16,7 +16,7 @@ bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRelativeStrong = false; // 用于通知工作线程退出的信号
 bool gl_fResetSystem = false; // 系统重启标识
 
-bool gl_fTestMode = true;               // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
-bool gl_fInTestMode = false;             // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
+bool gl_fNormalMode = false;               // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
+bool gl_fInTestMode = true;             // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
 CMarket gl_ChinaStockMarket; // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

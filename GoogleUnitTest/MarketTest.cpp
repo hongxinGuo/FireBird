@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
   {
   protected:
     virtual void SetUp(void) override {
-      ASSERT_TRUE(gl_fTestMode);
+      ASSERT_FALSE(gl_fNormalMode);
 
     }
 
@@ -65,7 +65,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
 
-    EXPECT_TRUE(gl_ChinaStockMarket.m_fPermitResetSystem);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetSystem());
 
   }
 

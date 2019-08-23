@@ -60,11 +60,12 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
 
 CString CSetDayLineToday::GetDefaultConnect()
 {
-  if (gl_fTestMode) {
+  if (!gl_fNormalMode) {
     gl_fInTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
   }
   else {
+    gl_fInTestMode = false;
     return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
   }
 }

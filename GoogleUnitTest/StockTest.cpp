@@ -9,7 +9,7 @@ using namespace testing;
 
 namespace StockAnalysisTest {
   TEST(StockTest, TestInitialize) {
-    ASSERT_TRUE(gl_fTestMode);
+    ASSERT_FALSE(gl_fNormalMode);
     CStock stock;
     EXPECT_EQ(stock.m_vDayLine.size(), 0);
     EXPECT_FALSE(stock.IsActive());

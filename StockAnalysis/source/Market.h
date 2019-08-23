@@ -27,6 +27,10 @@ public:
 
 // interface function
 public:
+  // 系统状态区
+  bool          IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
+  void          SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
+
 	// 初始化市场
   bool          SaveStockCodeDataBase(void);
   void          LoadStockCodeDataBase(void);
@@ -169,7 +173,6 @@ public :
   clock_t                     gl_RTReadingTime;         // 每次读取新浪实时数据的时间
   clock_t                     gl_DayLineReadingTime;    // 每次读取网易日线历史数据的时间
 
-  bool                        m_fPermitResetSystem;     // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
 
 protected :
   CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据， 在存储日线历史数据之前就使之打开状态，否则当同时操作数据库时速度奇慢。
@@ -182,8 +185,6 @@ protected :
   long                        m_lRelativeStrongEndDay;
   long                        m_lLastLoginDay;            // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
-  bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
-
 	map<CString, long>          m_mapActiveStockToIndex;		// 将市场活跃的股票代码映射为偏移量
 	vector<CStockPtr>						m_vActiveStock;									//当天股票数据
 
@@ -194,21 +195,22 @@ protected :
 	vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
 	bool												m_fLoadedSelectedStock;
 	
-	bool												m_fSystemReady;					// 市场初始态已经设置好
-  
-  bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
-
   bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
 	INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
 	INT64										    m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额 
 	
-  bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
-
-  bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
-
   long                        m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
 
   bool                        m_fCalculatingRS;
+
+// 系统状态区
+  bool                        m_fPermitResetSystem;     // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
+	bool												m_fSystemReady;					// 市场初始态已经设置好
+  bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
+  bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
+  bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
+  bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
+
 
 private:
 
