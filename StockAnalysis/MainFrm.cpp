@@ -430,6 +430,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   // 重启系统在此处执行，容易调用各重置函数
+  CString str;
 
   if (gl_fResetSystem) {
     while (gl_ThreadStatus.IsCalculateRSInProcess() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
@@ -448,7 +449,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockCode());
     m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockName());
   }
-  CString str;
+
   if (gl_ChinaStockMarket.m_fCurrentEditStockChanged) {
     str = gl_ChinaStockMarket.m_aStockCodeTemp;
     m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
@@ -477,9 +478,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
 
   if (gl_fInTestMode) {
-    CString str1;
-    str1 = _T("警告：使用了Test驱动");
-    gl_systemMessage.PushInformationMessage(str1);
+    str = _T("警告：使用了Test驱动");
+    gl_systemMessage.PushInformationMessage(str);
   }
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
