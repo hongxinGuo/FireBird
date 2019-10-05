@@ -41,10 +41,9 @@ typedef struct stDayLine {    // 日线数据结构
   bool fError;              // 本次处理日线数据是否有误的标识
 
 protected:
-
 } DayLineInquire;
 
-extern DayLineInquire gl_stDayLineInquire; 
+extern DayLineInquire gl_stDayLineInquire;
 
 typedef struct stRTData {
   stRTData() noexcept {

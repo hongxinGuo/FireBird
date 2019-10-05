@@ -16,18 +16,17 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  
   TEST(SystemDaeuqDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     CSystemQueueData systemdeque; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
-    for (int i = 0; i < l+1; i++) {
+    for (int i = 0; i < l + 1; i++) {
       CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
     }
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
-  
+
   TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
     EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();

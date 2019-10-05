@@ -9,7 +9,6 @@ using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
-
   struct RTData { // 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
     RTData(int count, INT64 llAmount, long lVolume,
       long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
@@ -122,12 +121,12 @@ namespace StockAnalysisTest {
     10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
     10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
-  class CalculateRTDataTest : public::testing::TestWithParam<RTData *>
+  class CalculateRTDataTest : public::testing::TestWithParam<RTData*>
   {
   protected:
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      RTData * pData = GetParam();
+      RTData* pData = GetParam();
       pCurrentData = make_shared<CStockRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());
       pCurrentData->SetVolume(pData->CurrentData.GetVolume());
@@ -188,7 +187,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetTransactionNumber(), 1);
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
-      
+
       break;
     case 1: // 成交10万股@10.01，出现新的挂单位置：1025，1014， 987， 986，挂单量同时变化。
       EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_BUY__);
@@ -394,5 +393,4 @@ namespace StockAnalysisTest {
       break;
     }
   }
-
 }

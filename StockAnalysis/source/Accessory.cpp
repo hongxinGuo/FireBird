@@ -12,7 +12,3 @@
 #include"SetOption.h"
 
 #include"SetDayLine.h"
-
-
-
-

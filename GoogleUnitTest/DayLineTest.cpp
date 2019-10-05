@@ -314,6 +314,4 @@ namespace StockAnalysisTest {
     dl.Set120DayRS(10);
     EXPECT_EQ(dl.Get120DayRS(), 10);
   }
-
-
 }

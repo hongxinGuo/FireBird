@@ -1,35 +1,34 @@
-﻿
-// ChildFrm.h: CChildFrame 类的接口
+﻿// ChildFrm.h: CChildFrame 类的接口
 //
 
 #pragma once
 
 class CChildFrame : public CMDIChildWndEx
 {
-	DECLARE_DYNCREATE(CChildFrame)
+  DECLARE_DYNCREATE(CChildFrame)
 public:
-	CChildFrame() noexcept;
+  CChildFrame() noexcept;
 
-// 特性
+  // 特性
 protected:
-	CSplitterWndEx m_wndSplitter;
+  CSplitterWndEx m_wndSplitter;
 public:
 
-// 操作
+  // 操作
 public:
 
-// 重写
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+  // 重写
+  virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// 实现
+  // 实现
 public:
-	virtual ~CChildFrame();
+  virtual ~CChildFrame();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// 生成的消息映射函数
+  // 生成的消息映射函数
 protected:
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 };

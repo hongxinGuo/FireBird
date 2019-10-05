@@ -2,7 +2,6 @@
 
 #include"stdafx.h"
 
-
 // 各工作线程声明
 
 // 读取新浪实时数据线程
@@ -27,6 +26,3 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam); // 此工作线程返回值
 
 // 更新数据库线程（尚未实现）
 UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);   // 此工作线程返回值为9
-
-
-

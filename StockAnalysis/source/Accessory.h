@@ -2,7 +2,3 @@
 
 #include"stdafx.h"
 #include"globedef.h"
-
-
-
-

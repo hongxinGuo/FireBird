@@ -5,12 +5,11 @@
 CSystemMessage::CSystemMessage()
 {
   static int siCounter = 0;
-  if (siCounter++ > 0) { 
+  if (siCounter++ > 0) {
     TRACE("系统消息只允许一个实例\n");
     gl_systemMessage.PushInformationMessage(_T("错误：系统不允许生成多个CMarket实例"));
   }
 }
-
 
 CSystemMessage::~CSystemMessage()
 {
@@ -195,7 +194,6 @@ void CSystemMessage::PushTransactionMessage(CString str)
     m_dequeTransactionMessage.push_back(str);
     singleLock.Unlock();
   }
-
 }
 
 void CSystemMessage::PushCancelSellMessage(CString str)
@@ -227,4 +225,3 @@ void CSystemMessage::PushTrace2Message(CString str)
     singleLock.Unlock();
   }
 }
-

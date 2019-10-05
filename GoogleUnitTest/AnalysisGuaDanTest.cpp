@@ -10,7 +10,6 @@ using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
-
   struct GuaDanData { // 共四十三个数据，一个序列号，二十个当前实时数据（挂单价位和数量），二十个上次实时数据（挂单价位和数量），一个成交类型，一个成交价格
     GuaDanData(int count, int type, long price,
       long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
@@ -112,14 +111,14 @@ namespace StockAnalysisTest {
     10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
     10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
-  class RTDataGuaDanTest : public::testing::TestWithParam<GuaDanData *>
+  class RTDataGuaDanTest : public::testing::TestWithParam<GuaDanData*>
   {
   protected:
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      GuaDanData * pData = GetParam();
+      GuaDanData* pData = GetParam();
       // 预设20个挂单
-      for (int i = 0; i < 200; i+=10) {
+      for (int i = 0; i < 200; i += 10) {
         m_stock.TestSetGuaDanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
       pCurrentData = make_shared<CStockRTData>();
@@ -139,7 +138,6 @@ namespace StockAnalysisTest {
       for (int i = 0; i < 5; i++) {
         m_stock.SetGuaDan(pLastData->GetPBuy(i), pLastData->GetVBuy(i));
         m_stock.SetGuaDan(pLastData->GetPSell(i), pLastData->GetVSell(i));
-
       }
       lPrice = pData->lPrice;
       iType = pData->iType;
@@ -159,8 +157,8 @@ namespace StockAnalysisTest {
     CStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestGuaDanData, RTDataGuaDanTest, testing::Values(&GuaDan1,&GuaDan2, &GuaDan3, &GuaDan4, 
-        &GuaDan5, &GuaDan6, &GuaDan7, &GuaDan8, &GuaDan9, &GuaDan10));
+  INSTANTIATE_TEST_CASE_P(TestGuaDanData, RTDataGuaDanTest, testing::Values(&GuaDan1, &GuaDan2, &GuaDan3, &GuaDan4,
+    &GuaDan5, &GuaDan6, &GuaDan7, &GuaDan8, &GuaDan9, &GuaDan10));
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
@@ -169,23 +167,23 @@ namespace StockAnalysisTest {
     case 0: // 无成交，无变化
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 0);
-      for (int i = 0; i < 200; i+=10) {
+      for (int i = 0; i < 200; i += 10) {
         EXPECT_EQ(m_stock.GetGuaDan(9900 + i), 10000);
       }
       break;
     case 1: // 无成交，出现新的挂单位置：1025，1014， 987， 986，挂单量同时变化。
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 20000);
       EXPECT_EQ(m_stock.GetCancelSellVolume(), 20000);
-      for (int i = 9880; i < 9980; i+=10) {
+      for (int i = 9880; i < 9980; i += 10) {
         EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
       }
-      for (int i = 9980; i <= 10030; i+=10) {
+      for (int i = 9980; i <= 10030; i += 10) {
         EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
       }
-      for (int i = 10050; i < 10140; i+=10) {
+      for (int i = 10050; i < 10140; i += 10) {
         EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
       }
-      for (int i = 10150; i < 10250; i+=10) {
+      for (int i = 10150; i < 10250; i += 10) {
         EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
       }
       EXPECT_EQ(m_stock.GetGuaDan(10250), 10000);

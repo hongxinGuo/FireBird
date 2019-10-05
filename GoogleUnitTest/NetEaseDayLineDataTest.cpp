@@ -93,7 +93,6 @@ namespace StockAnalysisTest {
   // 0x00a出现于‘，’前。
   ReadDayLineOneValueData rdata8(8, _T("11.05000\n,"));
 
-
   class ReadDayLineOneValueTest : public::testing::TestWithParam<ReadDayLineOneValueData*> {
   protected:
     void SetUp(void) override {
@@ -168,7 +167,6 @@ namespace StockAnalysisTest {
     }
   }
 
-
   struct ReadOneDayLineValueExceptPeriodData {
     ReadOneDayLineValueExceptPeriodData(int count, CString Data) {
       m_iCount = count;
@@ -195,7 +193,6 @@ namespace StockAnalysisTest {
   ReadOneDayLineValueExceptPeriodData data7(7, _T("11.050000,"));
   // 0x00a出现于‘，’前。
   ReadOneDayLineValueExceptPeriodData data8(8, _T("11.05000\n,"));
-
 
   class ReadOneDayLineValueExceptPeriodTest : public::testing::TestWithParam<ReadOneDayLineValueExceptPeriodData*> {
   protected:

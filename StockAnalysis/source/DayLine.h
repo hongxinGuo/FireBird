@@ -6,24 +6,24 @@ using namespace std;
 #include<memory>
 
 class CDayLine : public CObject {
-public :
-	CDayLine();
-	CDayLine( CDayLine & );
-	void operator=( CDayLine& );
-  void SetData(CSetDayLine * pDayLine);
+public:
+  CDayLine();
+  CDayLine(CDayLine&);
+  void operator=(CDayLine&);
+  void SetData(CSetDayLine* pDayLine);
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 public:
   long		  GetDay(void) noexcept { return m_lDay; }
   void		  SetDay(long lDay) noexcept { m_lDay = lDay; }
-	time_t	  GetTime(void) noexcept { return m_time; }
-	void      SetTime(time_t t) noexcept { m_time = t; }
-	WORD		  GetMarket(void) noexcept { return m_wMarket; }
-	void      SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
-	CString   GetStockCode(void) { return m_strStockCode; }
-	void		  SetStockCode(CString str) noexcept { m_strStockCode = str; }
-	CString   GetStockName(void) { return m_strStockName; }
-	void		  SetStockName(CString str) { m_strStockName = str; }
+  time_t	  GetTime(void) noexcept { return m_time; }
+  void      SetTime(time_t t) noexcept { m_time = t; }
+  WORD		  GetMarket(void) noexcept { return m_wMarket; }
+  void      SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
+  CString   GetStockCode(void) { return m_strStockCode; }
+  void		  SetStockCode(CString str) noexcept { m_strStockCode = str; }
+  CString   GetStockName(void) { return m_strStockName; }
+  void		  SetStockName(CString str) { m_strStockName = str; }
 
   long		  GetLastClose(void) noexcept { return m_lLastClose; }
   void		  SetLastClose(long fValue) noexcept { m_lLastClose = fValue; }
@@ -36,20 +36,20 @@ public:
   long		  GetClose(void) noexcept { return m_lClose; }
   void		  SetClose(long fValue) noexcept { m_lClose = fValue; }
   double		GetUpDown(void) noexcept { return m_fUpDown; }
-	void		  SetUpDown(double fValue) noexcept { m_fUpDown = fValue; }
+  void		  SetUpDown(double fValue) noexcept { m_fUpDown = fValue; }
   double    GetUpDownRate(void) noexcept { return m_dUpDownRate; }
   void      SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
   double    GetChangeHandRate(void) noexcept { return m_fChangeHandRate; }
   void      SetChangeHandRate(double dValue) noexcept { m_fChangeHandRate = dValue; }
-	INT64     GetVolume(void) noexcept { return m_lVolume; }
-	void		  SetVolume(INT64 lValue) noexcept { m_lVolume = lValue; }
-	INT64	    GetAmount(void) noexcept { return m_lAmount; }
-	void		  SetAmount(INT64 lValue) noexcept { m_lAmount = lValue; }
+  INT64     GetVolume(void) noexcept { return m_lVolume; }
+  void		  SetVolume(INT64 lValue) noexcept { m_lVolume = lValue; }
+  INT64	    GetAmount(void) noexcept { return m_lAmount; }
+  void		  SetAmount(INT64 lValue) noexcept { m_lAmount = lValue; }
 
-	INT64     GetTotalValue(void) noexcept { return m_lTotalValue; }
-	void      SetTotalValue(INT64 lValue) noexcept { m_lTotalValue = lValue; }
-	INT64     GetCurrentValue(void) noexcept { return m_lCurrentValue; }
-	void      SetCurrentValue(INT64 lValue) noexcept { m_lCurrentValue = lValue; }
+  INT64     GetTotalValue(void) noexcept { return m_lTotalValue; }
+  void      SetTotalValue(INT64 lValue) noexcept { m_lTotalValue = lValue; }
+  INT64     GetCurrentValue(void) noexcept { return m_lCurrentValue; }
+  void      SetCurrentValue(INT64 lValue) noexcept { m_lCurrentValue = lValue; }
   double    GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void      SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
   long      GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
@@ -110,40 +110,40 @@ public:
   double		Get120DayRS(void) noexcept { return m_d120DayRS; }
 
 protected:
-// need to save
-	long			  m_lDay;									// 类型(YYYYMMDD)
-	time_t		  m_time;
-	WORD			  m_wMarket;
-	CString     m_strStockCode;
-	CString	  m_strStockName;
+  // need to save
+  long			  m_lDay;									// 类型(YYYYMMDD)
+  time_t		  m_time;
+  WORD			  m_wMarket;
+  CString     m_strStockCode;
+  CString	  m_strStockName;
 
   // 以下几个价格，是放大了一千倍
-	long			  m_lLastClose;					  // 前收盘。单位：0.001元
-	long			  m_lOpen;								// 开盘价
-	long			  m_lHigh;								// 最高价
-	long			  m_lLow;								  // 最低价
-	long			  m_lClose;							  // 收盘价
+  long			  m_lLastClose;					  // 前收盘。单位：0.001元
+  long			  m_lOpen;								// 开盘价
+  long			  m_lHigh;								// 最高价
+  long			  m_lLow;								  // 最低价
+  long			  m_lClose;							  // 收盘价
 
   // 以下数值是实际值
-	double			m_fUpDown;						// 涨跌额
+  double			m_fUpDown;						// 涨跌额
   double      m_dUpDownRate;
-	double			m_fChangeHandRate;			// 换手率
-	INT64	      m_lVolume;							// 成交量,单位:股
-	INT64		    m_lAmount;							// 成交金额,单位:元/万元（大盘）
-	INT64	      m_lTotalValue;					// 总市值。单位：万元
-	INT64       m_lCurrentValue;				// 流通市值。单位：万元
+  double			m_fChangeHandRate;			// 换手率
+  INT64	      m_lVolume;							// 成交量,单位:股
+  INT64		    m_lAmount;							// 成交金额,单位:元/万元（大盘）
+  INT64	      m_lTotalValue;					// 总市值。单位：万元
+  INT64       m_lCurrentValue;				// 流通市值。单位：万元
 
-	long			  m_lOrdinaryBuyVolume;     // 向上买入。成交价接近或等于卖一，但不超过。单位：股
-	long			  m_lAttackBuyVolume;		    // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
-	long			  m_lStrongBuyVolume;		    // 向上强力买入,成交价超过之前的卖二报价。
-	long			  m_lOrdinarySellVolume;
-	long			  m_lAttackSellVolume;			// 向下卖出，低于买一价但高于买二价
-	long			  m_lStrongSellVolume;		  // 向下强力卖出,成交价低于之前的买二报价
-	long			  m_lUnknownVolume;
-	long			  m_lCancelBuyVolume;		    // 买单撤单量
-	long			  m_lCancelSellVolume;			// 卖单撤单量
+  long			  m_lOrdinaryBuyVolume;     // 向上买入。成交价接近或等于卖一，但不超过。单位：股
+  long			  m_lAttackBuyVolume;		    // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
+  long			  m_lStrongBuyVolume;		    // 向上强力买入,成交价超过之前的卖二报价。
+  long			  m_lOrdinarySellVolume;
+  long			  m_lAttackSellVolume;			// 向下卖出，低于买一价但高于买二价
+  long			  m_lStrongSellVolume;		  // 向下强力卖出,成交价低于之前的买二报价
+  long			  m_lUnknownVolume;
+  long			  m_lCancelBuyVolume;		    // 买单撤单量
+  long			  m_lCancelSellVolume;			// 卖单撤单量
   double      m_dRelativeStrong;        // 相对强弱
-  
+
   long        m_lTransactionNumber;
   long        m_lTransactionNumberBelow5000;
   long        m_lTransactionNumberBelow50000;
@@ -151,22 +151,20 @@ protected:
   long        m_lTransactionNumberAbove200000;
 
   long			  m_lAttackBuyBelow50000;
-	long			  m_lAttackBuyBelow200000;
-	long			  m_lAttackBuyAbove200000;
-	long			  m_lAttackSellBelow50000;
-	long			  m_lAttackSellBelow200000;
-	long			  m_lAttackSellAbove200000;
+  long			  m_lAttackBuyBelow200000;
+  long			  m_lAttackBuyAbove200000;
+  long			  m_lAttackSellBelow50000;
+  long			  m_lAttackSellBelow200000;
+  long			  m_lAttackSellAbove200000;
 
 public:
-	// don't need to save
+  // don't need to save
   double      m_d3DayRS;
-	double			m_d5DayRS;
-	double			m_d10DayRS;
-	double			m_d30DayRS;
-	double			m_d60DayRS;
-	double			m_d120DayRS;
-
+  double			m_d5DayRS;
+  double			m_d10DayRS;
+  double			m_d30DayRS;
+  double			m_d60DayRS;
+  double			m_d120DayRS;
 };
 
 typedef shared_ptr<CDayLine> CDayLinePtr;
-

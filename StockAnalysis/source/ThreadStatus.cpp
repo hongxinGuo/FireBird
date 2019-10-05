@@ -11,7 +11,7 @@ CThreadStutus::CThreadStutus() {
     TRACE("系统状态只允许生成一个实例\n");
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
-  
+
   m_fExitingClientThreadInProcess = false;
 
   m_fDayLineReadingInProcess = false;
@@ -22,9 +22,8 @@ CThreadStutus::CThreadStutus() {
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
   m_fCalculatingRTData = false;
-  m_fSavingTempData = false; 
+  m_fSavingTempData = false;
   m_fSavingStockCodeData = false;
-
 }
 
 void CThreadStutus::SetExitingClientThreadInProcess(bool fFlag) {

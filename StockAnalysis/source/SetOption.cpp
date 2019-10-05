@@ -22,7 +22,7 @@ CString CSetOption::GetDefaultConnect()
   if (!gl_fNormalMode) {
     gl_fInTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
-}
+  }
   else {
     gl_fInTestMode = false;
     return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
@@ -58,4 +58,3 @@ void CSetOption::Dump(CDumpContext& dc) const
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG
-

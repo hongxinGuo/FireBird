@@ -11,7 +11,6 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     virtual ~TestEnvironment() {
@@ -42,8 +41,6 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) {
-
     }
-
   };
 }

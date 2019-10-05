@@ -43,18 +43,16 @@ protected:
 
   deque<CString> m_dequeDayLineInfoMessage; // 输出显示队列
   CCriticalSection     m_DayLineInfoLock;       // 使用本资源
-  
+
   deque<CString> m_dequeTransactionMessage; // 输出显示队列
   CCriticalSection     m_TransactionLock;       // 使用本资源
-  
+
   deque<CString> m_dequeCancelSellMessage; // 警告显示队列
   CCriticalSection     m_CancelSellLock;       // 使用本资源
-  
+
   deque<CString> m_dequeCancelBuyMessage; // 跟踪显示队列1
   CCriticalSection     m_CancelBuyLock;       // 使用本资源
 
   deque<CString> m_dequeTrace2Message; // 跟踪显示队列2
   CCriticalSection     m_Trace2Lock;       // 使用本资源
-
 };
-

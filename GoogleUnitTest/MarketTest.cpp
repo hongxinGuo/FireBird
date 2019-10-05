@@ -12,13 +12,11 @@ using namespace testing;
 #include<memory>
 
 namespace StockAnalysisTest {
-
   class CMarketTest : public ::testing::Test
   {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-
     }
 
     virtual void TearDown(void) override {
@@ -26,11 +24,9 @@ namespace StockAnalysisTest {
     }
 
     static void SetUpTestCase() { // 本测试类的初始化函数
-
     }
 
     static void TearDownTestCase() {
-
     }
   };
 
@@ -66,7 +62,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
 
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetSystem());
-
   }
 
   TEST_F(CMarketTest, TestCreateRTDataInquiringStr) {
@@ -154,7 +149,6 @@ namespace StockAnalysisTest {
     }
   }
 
-
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
     pstock->SetStockCode(_T("sh600000"));
@@ -208,7 +202,6 @@ namespace StockAnalysisTest {
     // 未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
     //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh600000")), _T("浦发银行"));
     //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
-
   }
 
   TEST_F(CMarketTest, TestGetStockIndex) {
@@ -236,7 +229,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetShowStock(pStock);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
-
   }
 
   TEST_F(CMarketTest, TestMarketReady) {
@@ -275,6 +267,4 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetLoadSelectedStock(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
   }
-
-
 }

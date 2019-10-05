@@ -54,8 +54,6 @@ void CStockRTData::Dump(CDumpContext& dc) const
 
 #endif //_DEBUG
 
-
-
 /////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -64,7 +62,7 @@ void CStockRTData::Dump(CDumpContext& dc) const
 //
 //
 /////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::SetData(CStockRTData & data) {
+bool CStockRTData::SetData(CStockRTData& data) {
   m_time = data.m_time;
   m_wMarket = data.m_wMarket;
   m_strStockCode = data.m_strStockCode;
@@ -100,7 +98,7 @@ bool CStockRTData::SetData(CStockRTData & data) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::SetDataAll(CStockRTData & data) {
+bool CStockRTData::SetDataAll(CStockRTData& data) {
   m_time = 0;
   m_wMarket = 0;
   m_lLastClose = 0;
@@ -149,7 +147,7 @@ bool CStockRTData::SetDataAll(CStockRTData & data) {
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
+bool CStockRTData::ReadData(char*& pCurrentPos, long& iTotalRead)
 {
   static char buffer1[200];
   char buffer2[7];
@@ -499,7 +497,7 @@ bool CStockRTData::ReadData(char *& pCurrentPos, long & iTotalRead)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadOneValue(char *& pCurrentPos, char * buffer, long & lCounter)
+bool CStockRTData::ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter)
 {
   int i = 0;
   while (*pCurrentPos != ',') {
@@ -513,15 +511,13 @@ bool CStockRTData::ReadOneValue(char *& pCurrentPos, char * buffer, long & lCoun
   return true;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, long & lCounter)
+bool CStockRTData::ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& lCounter)
 {
   int i = 0;
   bool fFoundPoint = false;
@@ -559,6 +555,3 @@ bool CStockRTData::ReadOneValueExceptperiod(char *& pCurrentPos, char * buffer, 
 
   return true;
 }
-
-
-

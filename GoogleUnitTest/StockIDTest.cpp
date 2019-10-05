@@ -47,7 +47,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(id.IsActive());
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
     EXPECT_FALSE(id.IsInquiringOnce());
-
   }
   TEST(StockIDTest, TestGetMarket) {
     CStockID id;
@@ -105,7 +104,7 @@ namespace StockAnalysisTest {
     CStockID id;
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(false);
-    EXPECT_FALSE (id.IsDayLineNeedUpdate());
+    EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
   }
@@ -118,5 +117,4 @@ namespace StockAnalysisTest {
     id.SetInquiringOnce(false);
     EXPECT_FALSE(id.IsInquiringOnce());
   }
-
 }

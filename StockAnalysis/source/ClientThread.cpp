@@ -1,4 +1,3 @@
-
 #include"globedef.h"
 
 #include"DayLine.h"
@@ -20,17 +19,17 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculatingRTDataProc(LPVOID ) {
+UINT ClientThreadCalculatingRTDataProc(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个工作线程互斥
 
   gl_ThreadStatus.SetCalculatingRTData(true);
   if (gl_ThreadStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
     gl_ChinaStockMarket.CalculateRTData();
-    gl_ThreadStatus.SetRTDataNeedCalculate(false); 
+    gl_ThreadStatus.SetRTDataNeedCalculate(false);
   }
   gl_ThreadStatus.SetCalculatingRTData(false);
- 
+
   return 3;
 }
 
@@ -40,8 +39,8 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID ) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadUpdatingDataBaseProc(LPVOID ) {
-  // 
+UINT ClientThreadUpdatingDataBaseProc(LPVOID) {
+  //
 
   return 9;
 }
@@ -50,9 +49,9 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID ) {
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
 //
-// 
+//
 ///////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
+UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
   gl_ThreadStatus.SetCalculateDayLineRS(true);
 
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
@@ -99,28 +98,27 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID ) {
   return 8;
 }
 
-UINT ClientThreadSaveTempRTDataProc(LPVOID )
+UINT ClientThreadSaveTempRTDataProc(LPVOID)
 {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 此两个工作线程互斥
 
   gl_ThreadStatus.SetSavingTempData(true);
-  
+
   gl_ChinaStockMarket.SaveTodayTempData();
-  
+
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 再次确认一下
   gl_ThreadStatus.SetSavingTempData(false);
 
   return 4;
 }
 
-
-UINT ClientThreadReadingRTDataProc(LPVOID ) {
+UINT ClientThreadReadingRTDataProc(LPVOID) {
   CInternetSession session;
-  CHttpFile * pFile = nullptr;
+  CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char * pChar = gl_stRTDataInquire.buffer;
+  char* pChar = gl_stRTDataInquire.buffer;
 
   const clock_t tt = clock();
 
@@ -128,7 +126,7 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
     gl_ThreadStatus.SetRTDataReadingInProcess(true);
     gl_stRTDataInquire.fError = false;
     gl_stRTDataInquire.lByteRead = 0;
-    pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire));
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire));
     Sleep(100); // 新浪服务器100ms延迟即可。
     while (!fDone) {
       do {
@@ -180,14 +178,14 @@ UINT ClientThreadReadingRTDataProc(LPVOID ) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadReadDayLineProc(LPVOID ) {
+UINT ClientThreadReadDayLineProc(LPVOID) {
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;
-  CHttpFile * pFile = nullptr;
+  CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char * pChar = gl_stDayLineInquire.buffer;
+  char* pChar = gl_stDayLineInquire.buffer;
   CString str;
 
   const clock_t tt = clock();
@@ -196,7 +194,7 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
     gl_ThreadStatus.SetDayLineReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
-    pFile = dynamic_cast<CHttpFile *>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
     Sleep(siDelayTime);
     while (!fDone) {
       do {
@@ -244,8 +242,6 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
   return 2;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 此线程由系统在收市后于15:05自动唤醒，每日只执行一次
@@ -254,17 +250,16 @@ UINT ClientThreadReadDayLineProc(LPVOID ) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCompileTodayStocks(LPVOID ) {
-
+UINT ClientThreadCompileTodayStocks(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   time_t time = 0;
   switch (gl_systemTime.GetDayOfWeek()) {
   case 6: // 星期六
-    time = gl_systemTime.Gett_time() - 24 * 3600; // 
+    time = gl_systemTime.Gett_time() - 24 * 3600; //
     break;
   case 0: //星期日
-    time = gl_systemTime.Gett_time() - 2 * 24 * 3600; // 
+    time = gl_systemTime.Gett_time() - 2 * 24 * 3600; //
     break;
   default: // 其他
     time = gl_systemTime.Gett_time();
@@ -292,23 +287,20 @@ UINT ClientThreadCompileTodayStocks(LPVOID ) {
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lCurrentTradeDay);
   if (gl_systemTime.GetTime() > 150000) {   // 如果中国股市闭市了
     gl_ChinaStockMarket.SaveStockCodeDataBase();  // 更新代码。
-    gl_ChinaStockMarket.UpdateOptionDataBase();   // 更新状态   
+    gl_ChinaStockMarket.UpdateOptionDataBase();   // 更新状态
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);  // 设置今日已处理标识
   }
 
   return 5;
 }
 
-
-UINT ClientThreadSaveDayLineProc(LPVOID ) {
-
+UINT ClientThreadSaveDayLineProc(LPVOID) {
   gl_ChinaStockMarket.SaveDayLineData();
 
   gl_ThreadStatus.SetSavingDayLineInProcess(false);
 
   return 6;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -317,7 +309,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID ) {
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientthreadLoadDayLineProc(LPVOID ) {
+UINT ClientthreadLoadDayLineProc(LPVOID) {
   CSetDayLine setDayLine;
   CDayLinePtr pDayLine;
 
@@ -386,5 +378,3 @@ UINT ClientthreadLoadDayLineProc(LPVOID ) {
 
   return 7;
 }
-
-

@@ -27,7 +27,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-
   TEST(SystemMessageTest, TestGetInformationDequeSize) {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
     gl_systemMessage.PushInformationMessage(_T("TEST"));
@@ -81,5 +80,4 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
-
 }

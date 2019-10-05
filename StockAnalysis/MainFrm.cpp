@@ -1,5 +1,4 @@
-﻿
-// MainFrm.cpp: CMainFrame 类的实现
+﻿// MainFrm.cpp: CMainFrame 类的实现
 //
 
 #include "stdafx.h"
@@ -36,11 +35,11 @@ const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
-	ON_WM_CREATE()
-	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
-	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
-	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
-	ON_WM_SETTINGCHANGE()
+  ON_WM_CREATE()
+  ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
+  ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
+  ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
+  ON_WM_SETTINGCHANGE()
   ON_WM_TIMER()
   ON_COMMAND(ID_SAVE_RTDATA, &CMainFrame::OnSaveRtdata)
   ON_COMMAND(ID_DownLoad_DayLine, &CMainFrame::OnDownloadDayline)
@@ -51,25 +50,25 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
   ON_WM_SYSCOMMAND()
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
-//  ON_WM_CHAR()
-//  ON_WM_KEYUP()
-ON_WM_CHAR()
-ON_WM_KEYUP()
-//ON_COMMAND(ID_SHOW_ORDINARY_BUY, &CMainFrame::OnShowOrdinaryBuy)
-//ON_COMMAND(ID_SHOW_ORDINARY_SELL, &CMainFrame::OnShowOrdinarySell)
-//ON_COMMAND(ID_SHOW_STRONG_BUY, &CMainFrame::OnShowStrongBuy)
-//ON_COMMAND(ID_SHOW_STRONG_SELL, &CMainFrame::OnShowStrongSell)
-//ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
-//ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
-//ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
-ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRs)
-ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
-ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
+  //  ON_WM_CHAR()
+  //  ON_WM_KEYUP()
+  ON_WM_CHAR()
+  ON_WM_KEYUP()
+  //ON_COMMAND(ID_SHOW_ORDINARY_BUY, &CMainFrame::OnShowOrdinaryBuy)
+  //ON_COMMAND(ID_SHOW_ORDINARY_SELL, &CMainFrame::OnShowOrdinarySell)
+  //ON_COMMAND(ID_SHOW_STRONG_BUY, &CMainFrame::OnShowStrongBuy)
+  //ON_COMMAND(ID_SHOW_STRONG_SELL, &CMainFrame::OnShowStrongSell)
+  //ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
+  //ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
+  //ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
+  ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRs)
+  ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
+  ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // 状态行指示器
+  ID_SEPARATOR,           // 状态行指示器
   ID_CURRENT_INPUT,
   ID_CURRENT_SELECT_STOCK,
   ID_CURRENT_SELECT_STOCKNAME,
@@ -79,13 +78,12 @@ static UINT indicators[] =
   ID_CURRENT_TIME,
 };
 
-
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame()
 {
-	// TODO: 在此添加成员初始化代码
-  
+  // TODO: 在此添加成员初始化代码
+
   m_uIdTimer = 0;
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
@@ -96,18 +94,17 @@ CMainFrame::CMainFrame()
   // 真实系统中，所有的记录集都要使用MySQL驱动而不是MySQLTest驱动，而测试函数都要使用MySQLTest驱动。
   // 这两个驱动的权限不同，MySQLTest只有检索权限，无权修改数据，这样在测试时能够防止误操作数据。
   gl_ChinaStockMarket.OpenSavingDayLineRecord();
-  
-  Reset();
 
+  Reset();
 }
 
 void CMainFrame::Reset(void)
 {
   // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
-  
+
   // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
-  gl_ChinaStockMarket.LoadStockCodeDataBase(); 
-  gl_ChinaStockMarket.LoadOptionDataBase(); 
+  gl_ChinaStockMarket.LoadStockCodeDataBase();
+  gl_ChinaStockMarket.LoadOptionDataBase();
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
@@ -119,7 +116,6 @@ void CMainFrame::Reset(void)
   }
 
   m_lCurrentPos = 0;
-
 }
 
 CMainFrame::~CMainFrame()
@@ -137,7 +133,7 @@ CMainFrame::~CMainFrame()
   while (gl_ThreadStatus.IsRTDataReadingInProcess()) {
     Sleep(10); // 等待实时数据读取线程结束
   }
- 
+
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
   gl_ChinaStockMarket.SaveStockCodeDataBase(); // 这里直接调用存储函数，不采用工作线程的模式。
@@ -147,76 +143,75 @@ CMainFrame::~CMainFrame()
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
-		return -1;
+  if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
+    return -1;
 
-	BOOL bNameValid;
+  BOOL bNameValid;
 
-	CMDITabInfo mdiTabParams;
-	mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...
-	mdiTabParams.m_bActiveTabCloseButton = TRUE;      // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
-	mdiTabParams.m_bTabIcons = FALSE;    // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
-	mdiTabParams.m_bAutoColor = TRUE;    // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
-	mdiTabParams.m_bDocumentMenu = TRUE; // 在选项卡区域的右边缘启用文档菜单
-	EnableMDITabbedGroups(TRUE, mdiTabParams);
+  CMDITabInfo mdiTabParams;
+  mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...
+  mdiTabParams.m_bActiveTabCloseButton = TRUE;      // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
+  mdiTabParams.m_bTabIcons = FALSE;    // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
+  mdiTabParams.m_bAutoColor = TRUE;    // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
+  mdiTabParams.m_bDocumentMenu = TRUE; // 在选项卡区域的右边缘启用文档菜单
+  EnableMDITabbedGroups(TRUE, mdiTabParams);
 
-	if (!m_wndMenuBar.Create(this))
-	{
-		TRACE0("未能创建菜单栏\n");
-		return -1;      // 未能创建
-	}
+  if (!m_wndMenuBar.Create(this))
+  {
+    TRACE0("未能创建菜单栏\n");
+    return -1;      // 未能创建
+  }
 
-	m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
+  m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-	// 防止菜单栏在激活时获得焦点
-	CMFCPopupMenu::SetForceMenuFocus(FALSE);
+  // 防止菜单栏在激活时获得焦点
+  CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
-	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-		!m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
-	{
-		TRACE0("未能创建工具栏\n");
-		return -1;      // 未能创建
-	}
+  if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
+    !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
+  {
+    TRACE0("未能创建工具栏\n");
+    return -1;      // 未能创建
+  }
 
-	CString strToolBarName;
-	bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
-	ASSERT(bNameValid);
-	m_wndToolBar.SetWindowText(strToolBarName);
+  CString strToolBarName;
+  bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
+  ASSERT(bNameValid);
+  m_wndToolBar.SetWindowText(strToolBarName);
 
-	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
-	m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
+  CString strCustomize;
+  bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
+  ASSERT(bNameValid);
+  m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
-	// 允许用户定义的工具栏操作: 
-	InitUserToolbars(nullptr, uiFirstUserToolBarId, uiLastUserToolBarId);
+  // 允许用户定义的工具栏操作:
+  InitUserToolbars(nullptr, uiFirstUserToolBarId, uiLastUserToolBarId);
 
-	if (!m_wndStatusBar.Create(this))
-	{
-		TRACE0("未能创建状态栏\n");
-		return -1;      // 未能创建
-	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+  if (!m_wndStatusBar.Create(this))
+  {
+    TRACE0("未能创建状态栏\n");
+    return -1;      // 未能创建
+  }
+  m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
-	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
-	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndMenuBar);
-	DockPane(&m_wndToolBar);
+  // TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
+  m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
+  m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
+  EnableDocking(CBRS_ALIGN_ANY);
+  DockPane(&m_wndMenuBar);
+  DockPane(&m_wndToolBar);
 
+  // 启用 Visual Studio 2005 样式停靠窗口行为
+  CDockingManager::SetDockingMode(DT_SMART);
+  // 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
+  EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
-	// 启用 Visual Studio 2005 样式停靠窗口行为
-	CDockingManager::SetDockingMode(DT_SMART);
-	// 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
-	EnableAutoHidePanes(CBRS_ALIGN_ANY);
-
-	// 创建停靠窗口
-	if (!CreateDockingWindows())
-	{
-		TRACE0("未能创建停靠窗口\n");
-		return -1;
-	}
+  // 创建停靠窗口
+  if (!CreateDockingWindows())
+  {
+    TRACE0("未能创建停靠窗口\n");
+    return -1;
+  }
 
   m_wndOutput.EnableDocking(CBRS_ALIGN_ANY);
   DockPane(&m_wndOutput);
@@ -224,56 +219,55 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
   //m_wndOutput2.EnableDocking(CBRS_ALIGN_ANY);
   //DockPane(&m_wndOutput2);
 
+  // 设置用于绘制所有用户界面元素的视觉管理器
+  CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
 
-	// 设置用于绘制所有用户界面元素的视觉管理器
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
+  // 启用增强的窗口管理对话框
+  EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 
-	// 启用增强的窗口管理对话框
-	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
+  // 启用工具栏和停靠窗口菜单替换
+  EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
-	// 启用工具栏和停靠窗口菜单替换
-	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
+  // 启用快速(按住 Alt 拖动)工具栏自定义
+  CMFCToolBar::EnableQuickCustomization();
 
-	// 启用快速(按住 Alt 拖动)工具栏自定义
-	CMFCToolBar::EnableQuickCustomization();
+  if (CMFCToolBar::GetUserImages() == nullptr)
+  {
+    // 加载用户定义的工具栏图像
+    if (m_UserImages.Load(_T(".\\UserImages.bmp")))
+    {
+      CMFCToolBar::SetUserImages(&m_UserImages);
+    }
+  }
 
-	if (CMFCToolBar::GetUserImages() == nullptr)
-	{
-		// 加载用户定义的工具栏图像
-		if (m_UserImages.Load(_T(".\\UserImages.bmp")))
-		{
-			CMFCToolBar::SetUserImages(&m_UserImages);
-		}
-	}
+  // 启用菜单个性化(最近使用的命令)
+  // TODO: 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
+  CList<UINT, UINT> lstBasicCommands;
 
-	// 启用菜单个性化(最近使用的命令)
-	// TODO: 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
-	CList<UINT, UINT> lstBasicCommands;
+  lstBasicCommands.AddTail(ID_FILE_NEW);
+  lstBasicCommands.AddTail(ID_FILE_OPEN);
+  lstBasicCommands.AddTail(ID_FILE_SAVE);
+  lstBasicCommands.AddTail(ID_FILE_PRINT);
+  lstBasicCommands.AddTail(ID_APP_EXIT);
+  lstBasicCommands.AddTail(ID_EDIT_CUT);
+  lstBasicCommands.AddTail(ID_EDIT_PASTE);
+  lstBasicCommands.AddTail(ID_EDIT_UNDO);
+  lstBasicCommands.AddTail(ID_APP_ABOUT);
+  lstBasicCommands.AddTail(ID_VIEW_STATUS_BAR);
+  lstBasicCommands.AddTail(ID_VIEW_TOOLBAR);
 
-	lstBasicCommands.AddTail(ID_FILE_NEW);
-	lstBasicCommands.AddTail(ID_FILE_OPEN);
-	lstBasicCommands.AddTail(ID_FILE_SAVE);
-	lstBasicCommands.AddTail(ID_FILE_PRINT);
-	lstBasicCommands.AddTail(ID_APP_EXIT);
-	lstBasicCommands.AddTail(ID_EDIT_CUT);
-	lstBasicCommands.AddTail(ID_EDIT_PASTE);
-	lstBasicCommands.AddTail(ID_EDIT_UNDO);
-	lstBasicCommands.AddTail(ID_APP_ABOUT);
-	lstBasicCommands.AddTail(ID_VIEW_STATUS_BAR);
-	lstBasicCommands.AddTail(ID_VIEW_TOOLBAR);
+  CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
-	CMFCToolBar::SetBasicCommands(lstBasicCommands);
-
-	// 将文档名和应用程序名称在窗口标题栏上的顺序进行交换。这
-	// 将改进任务栏的可用性，因为显示的文档名带有缩略图。
-	ModifyStyle(0, FWS_PREFIXTITLE);
+  // 将文档名和应用程序名称在窗口标题栏上的顺序进行交换。这
+  // 将改进任务栏的可用性，因为显示的文档名带有缩略图。
+  ModifyStyle(0, FWS_PREFIXTITLE);
 
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
   m_uIdTimer = SetTimer(1, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     CString str;
   }
-	return 0;
+  return 0;
 }
 
 bool CMainFrame::ResetSystem(void)
@@ -290,18 +284,18 @@ bool CMainFrame::ResetSystem(void)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CMDIFrameWndEx::PreCreateWindow(cs) )
-		return FALSE;
-	// TODO: 在此处通过修改
-	//  CREATESTRUCT cs 来修改窗口类或样式
+  if (!CMDIFrameWndEx::PreCreateWindow(cs))
+    return FALSE;
+  // TODO: 在此处通过修改
+  //  CREATESTRUCT cs 来修改窗口类或样式
 
-	return TRUE;
+  return TRUE;
 }
 
 BOOL CMainFrame::CreateDockingWindows()
 {
-	BOOL bNameValid;
-	// 创建输出窗口
+  BOOL bNameValid;
+  // 创建输出窗口
   CString strOutputWnd;
   bNameValid = strOutputWnd.LoadString(IDS_OUTPUT_WND);
   ASSERT(bNameValid);
@@ -321,8 +315,8 @@ BOOL CMainFrame::CreateDockingWindows()
   }
   */
 
-	SetDockingWindowIcons(theApp.m_bHiColorIcons);
-	return TRUE;
+  SetDockingWindowIcons(theApp.m_bHiColorIcons);
+  return TRUE;
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
@@ -330,7 +324,7 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
   HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
   m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 
-	UpdateMDITabbedBarsIcons();
+  UpdateMDITabbedBarsIcons();
 }
 
 // CMainFrame 诊断
@@ -338,84 +332,80 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
-	CMDIFrameWndEx::AssertValid();
+  CMDIFrameWndEx::AssertValid();
 }
 
 void CMainFrame::Dump(CDumpContext& dc) const
 {
-	CMDIFrameWndEx::Dump(dc);
+  CMDIFrameWndEx::Dump(dc);
 }
 #endif //_DEBUG
-
 
 // CMainFrame 消息处理程序
 
 void CMainFrame::OnWindowManager()
 {
-	ShowWindowsDialog();
+  ShowWindowsDialog();
 }
 
 void CMainFrame::OnViewCustomize()
 {
-	CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* 扫描菜单*/);
-	pDlgCust->EnableUserDefinedToolbars();
-	pDlgCust->Create();
+  CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* 扫描菜单*/);
+  pDlgCust->EnableUserDefinedToolbars();
+  pDlgCust->Create();
 }
 
-LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
+LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp)
 {
-	LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp,lp);
-	if (lres == 0)
-	{
-		return 0;
-	}
+  LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
+  if (lres == 0)
+  {
+    return 0;
+  }
 
-	CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
-	ASSERT_VALID(pUserToolbar);
+  CMFCToolBar* pUserToolbar = (CMFCToolBar*)lres;
+  ASSERT_VALID(pUserToolbar);
 
-	BOOL bNameValid;
-	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
+  BOOL bNameValid;
+  CString strCustomize;
+  bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
+  ASSERT(bNameValid);
 
-	pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
-	return lres;
+  pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
+  return lres;
 }
-
 
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
-	// 基类将执行真正的工作
+  // 基类将执行真正的工作
 
-	if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
-	{
-		return FALSE;
-	}
+  if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
+  {
+    return FALSE;
+  }
 
+  // 为所有用户工具栏启用自定义按钮
+  BOOL bNameValid;
+  CString strCustomize;
+  bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
+  ASSERT(bNameValid);
 
-	// 为所有用户工具栏启用自定义按钮
-	BOOL bNameValid;
-	CString strCustomize;
-	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-	ASSERT(bNameValid);
+  for (int i = 0; i < iMaxUserToolbars; i++)
+  {
+    CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
+    if (pUserToolbar != nullptr)
+    {
+      pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
+    }
+  }
 
-	for (int i = 0; i < iMaxUserToolbars; i ++)
-	{
-		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
-		if (pUserToolbar != nullptr)
-		{
-			pUserToolbar->EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
-		}
-	}
-
-	return TRUE;
+  return TRUE;
 }
-
 
 void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
-	CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
-	m_wndOutput.UpdateFonts();
+  CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
+  m_wndOutput.UpdateFonts();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -467,7 +457,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   str = buffer;
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
-
   // 显示日线历史数据读取时间（单位为毫秒）
   sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_DayLineReadingTime);
   str = buffer;
@@ -502,7 +491,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
     if (gl_ChinaStockMarket.m_fMarketOpened || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
       //return; // 无动作
     }
-#endif      
+#endif
     gl_fExiting = true; // 提示各工作线程中途退出
     if (gl_ThreadStatus.IsSavingDayLineInProcess()) { // 如果正在处理日线历史数据
       while (gl_ThreadStatus.IsSavingDayLineInProcess()) {
@@ -529,7 +518,6 @@ void CMainFrame::OnCompileTodayStock()
   }
 }
 
-
 void CMainFrame::OnDownloadDayline()
 {
   // TODO: 在此添加命令处理程序代码
@@ -539,11 +527,9 @@ void CMainFrame::OnDownloadDayline()
   else gl_ChinaStockMarket.m_fGetDayLineData = false;
 }
 
-
 void CMainFrame::OnSaveDaylineData()
 {
   // TODO: 在此添加命令处理程序代码
-
 }
 
 void CMainFrame::OnSaveRtdata()
@@ -552,7 +538,7 @@ void CMainFrame::OnSaveRtdata()
   gl_ChinaStockMarket.SaveRTData();
 }
 
-void CMainFrame::OnUpdateCompileTodayStock(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
@@ -561,13 +547,13 @@ void CMainFrame::OnUpdateCompileTodayStock(CCmdUI *pCmdUI)
   else pCmdUI->Enable(false);
 }
 
-void CMainFrame::OnUpdateSaveDaylineData(CCmdUI * pCmdUI)
+void CMainFrame::OnUpdateSaveDaylineData(CCmdUI* pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   //for( auto pStock : gl_sMark)
 }
 
-void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI)
 {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
@@ -662,7 +648,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
   if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
     switch (nChar) {
-    case 45: // Ins 加入自选股票 
+    case 45: // Ins 加入自选股票
       pStock = gl_ChinaStockMarket.GetShowStock();
       pStock->SetChoicedFlag(true);
       if (gl_ChinaStockMarket.GetStockIDPtr(pStock->GetStockCode(), pStockID)) {
@@ -706,8 +692,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-
-
 void CMainFrame::OnRebuildDaylineRs()
 {
   // TODO: Add your command handler code here
@@ -718,13 +702,11 @@ void CMainFrame::OnRebuildDaylineRs()
   AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
 }
 
-
 void CMainFrame::OnBuildResetSystem()
 {
   // TODO: Add your command handler code here
   gl_fResetSystem = true;
 }
-
 
 void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {

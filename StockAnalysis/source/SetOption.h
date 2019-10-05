@@ -33,5 +33,4 @@ public:
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;
 #endif
-
 };

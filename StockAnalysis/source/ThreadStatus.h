@@ -10,8 +10,8 @@ public:
   bool IsExitingClientThreadInProcess(void);
 
   void SetCalculateRSInProcess(bool fFlag);
-  bool IsCalculateRSInProcess(void);  
-  
+  bool IsCalculateRSInProcess(void);
+
   void SetCalculateDayLineRS(bool fFlag);
   bool IsCalculateDayLineRS(void);
 
@@ -26,7 +26,7 @@ public:
 
   void SetRTDataReceived(bool fFlag);
   bool IsRTDataReceived(void);
-  
+
   void SetRTDataNeedCalculate(bool fFlag);
   bool IsRTDataNeedCalculate(void);
 
@@ -35,17 +35,16 @@ public:
 
   void SetCalculatingRTData(bool fFlag);
   bool IsCalculatingRTData(void);
-  
+
   void SetSavingTempData(bool fFlag);
   bool IsSavingTempData(void);
 
   void SetSavingStockCodeData(bool fFlag);
   bool IsSavingStockCodeData(void);
 
-
 protected:
   bool m_fExitingClientThreadInProcess;                // 要求各工作线程退出
-  CCriticalSection m_ExitingClientThreadInProcessLock;   
+  CCriticalSection m_ExitingClientThreadInProcessLock;
 
   bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateRSInProcessLock;
@@ -79,5 +78,4 @@ protected:
 
   bool m_fSavingStockCodeData; // 股票代码数据存储状态标识
   CCriticalSection m_SavingStockCodeDataLock;
-
 };

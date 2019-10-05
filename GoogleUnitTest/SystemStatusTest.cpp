@@ -8,7 +8,6 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  
   TEST(SystemStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculateRSInProcess());
@@ -26,12 +25,12 @@ namespace StockAnalysisTest {
     long l = gl_systemMessage.GetInformationDequeSize();
     CThreadStutus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
-    for (int i = 0; i < l+1; i++) {
+    for (int i = 0; i < l + 1; i++) {
       CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
     }
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
-  
+
   TEST(SystemStatusTest, TestIsExitingClientThreadInProcess) {
     gl_ThreadStatus.SetExitingClientThreadInProcess(true);
     EXPECT_TRUE(gl_ThreadStatus.IsExitingClientThreadInProcess());
@@ -108,5 +107,4 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetSavingStockCodeData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
   }
-
 }

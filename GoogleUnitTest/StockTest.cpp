@@ -104,7 +104,7 @@ namespace StockAnalysisTest {
     stock.SetCode(600000);
     EXPECT_EQ(stock.GetCode(), 600000);
   }
-  
+
   TEST(StockTest, TestIsActive) {
     CStock stock;
     EXPECT_FALSE(stock.IsActive());

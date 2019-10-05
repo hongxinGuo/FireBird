@@ -17,7 +17,7 @@ using namespace std;
 
 enum {
   __TYPE_UNKNOWN__ = 0,
-  __TYPE_BUY__  = 1,
+  __TYPE_BUY__ = 1,
   __TYPE_STRONG_BUY__ = 2,
   __TYPE_ATTACK_BUY__ = 3,
   __TYPE_CANCELED_BUY__ = 4,
@@ -40,10 +40,6 @@ protected:
   long      m_lType;      // 交易类型
   long      m_lPrice;     // 成交价格。单位：0.001元。
   long      m_lVolume;    // 交易数量。单位：股。
-
 };
 
 typedef shared_ptr<COneDeal> COneDealPtr;
-
-
-

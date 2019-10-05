@@ -33,7 +33,7 @@ public:
   ~CStock(void);
   void Reset(void);
 
-  void operator=(CStock &);
+  void operator=(CStock&);
 
 public:
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -118,36 +118,36 @@ public:
   void SetCurrentUnknown(long value) noexcept { m_lCurrentUnknown = value; }
   void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
   void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
-  
-  void SetCurrentTransactionType(int value) noexcept {  m_nCurrentTransactionType = value; }
-  void SetCurrentTransationVolume(INT64 value) noexcept {  m_lCurrentGuadanTransactionVolume = value; }
 
-  void SetTransactionNumber(long value) noexcept {  m_lTransactionNumber = value; }
-  void SetTransactionNumberBelow5000(long value) noexcept {  m_lTransactionNumberBelow5000 = value; }
-  void SetTransactionNumberBelow50000(long value) noexcept {  m_lTransactionNumberBelow50000 = value; }
-  void SetTransactionNumberBelow200000(long value) noexcept {  m_lTransactionNumberBelow200000 = value; }
-  void SetTransactionNumberAbove200000(long value) noexcept {  m_lTransactionNumberAbove200000 = value; }
+  void SetCurrentTransactionType(int value) noexcept { m_nCurrentTransactionType = value; }
+  void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
 
-  void SetAttackBuyBelow50000(INT64 value) noexcept {  m_lAttackBuyBelow50000 = value; }
-  void SetAttackBuyBelow200000(INT64 value) noexcept {  m_lAttackBuyBelow200000 = value; }
-  void SetAttackBuyAbove200000(INT64 value) noexcept {  m_lAttackBuyAbove200000 = value; }
-  void SetAttackSellBelow50000(INT64 value) noexcept {  m_lAttackSellBelow50000 = value; }
-  void SetAttackSellBelow200000(INT64 value) noexcept {  m_lAttackSellBelow200000 = value; }
-  void SetAttackSellAbove200000(INT64 value) noexcept {  m_lAttackSellAbove200000 = value; }
+  void SetTransactionNumber(long value) noexcept { m_lTransactionNumber = value; }
+  void SetTransactionNumberBelow5000(long value) noexcept { m_lTransactionNumberBelow5000 = value; }
+  void SetTransactionNumberBelow50000(long value) noexcept { m_lTransactionNumberBelow50000 = value; }
+  void SetTransactionNumberBelow200000(long value) noexcept { m_lTransactionNumberBelow200000 = value; }
+  void SetTransactionNumberAbove200000(long value) noexcept { m_lTransactionNumberAbove200000 = value; }
+
+  void SetAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 = value; }
+  void SetAttackBuyBelow200000(INT64 value) noexcept { m_lAttackBuyBelow200000 = value; }
+  void SetAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 = value; }
+  void SetAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 = value; }
+  void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
+  void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
 
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
   long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
   void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
   bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
 
-	bool IsChoiced( void ) noexcept { return m_fChoiced; }
-	void SetChoicedFlag( bool fChoiced ) noexcept { m_fChoiced = fChoiced; }
+  bool IsChoiced(void) noexcept { return m_fChoiced; }
+  void SetChoicedFlag(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
 
-	bool IsMinLineUpdated( void ) noexcept { return ( m_fMinLineUpdated ); }
-	void SetMinLineUpdated( bool fUpdate ) noexcept { m_fMinLineUpdated = fUpdate; }
+  bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
+  void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
 
-	bool IsDayLineUpdated(void) noexcept { return ( m_fDayKLineUpdated ); }
-	void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayKLineUpdated = fUpdate; }
+  bool IsDayLineUpdated(void) noexcept { return (m_fDayKLineUpdated); }
+  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayKLineUpdated = fUpdate; }
 
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
@@ -155,9 +155,9 @@ public:
   bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
-	void UpdataCurrentStatus(CStockRTDataPtr pRTData);
-	bool LoadDayLine(CSetDayLine * psetDayLine);
-	
+  void UpdataCurrentStatus(CStockRTDataPtr pRTData);
+  bool LoadDayLine(CSetDayLine* psetDayLine);
+
   // 计算实时数据, 由工作线程ClientThreadCalculatingRTDataProc调用
   bool CalculateRTData(void);
   bool CalculateOneRTData(CStockRTDataPtr pData);
@@ -165,7 +165,7 @@ public:
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
 
-	bool SaveRealTimeData(CSetRealTimeData * psetRT);
+  bool SaveRealTimeData(CSetRealTimeData* psetRT);
 
   // 采用同步机制存取实时数据
   void PushRTData(CStockRTDataPtr pData);
@@ -176,10 +176,10 @@ public:
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   void SetDayLineNeedSavingFlag(bool fFlag);
   bool IsDayLineNeedSaving(void);
-		
+
 #ifdef _DEBUG
-	virtual	void AssertValid() const;
-	virtual	void Dump(CDumpContext& dc) const;
+  virtual	void AssertValid() const;
+  virtual	void Dump(CDumpContext& dc) const;
 #endif
 
 public:
@@ -188,8 +188,8 @@ public:
 
 public:
 
-	vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
- 
+  vector<CDayLinePtr>				m_vDayLine;			// 日线数据容器
+
 protected:
   // 基本信息
   WORD      m_wMarket;                // 市场索引
@@ -199,11 +199,10 @@ protected:
   int       m_iStockCode;             // 证券代码值
   short			m_nHand;									// 每手股数
 
-
   // 实时数据,需要不断更新
   time_t    m_TransactionTime;         // 实时数据交易时间
   long	    m_lLastClose;		// 以0.001元计的收盘价
-  long		  m_lOpen;				// 以0.001元计的开盘价		
+  long		  m_lOpen;				// 以0.001元计的开盘价
   long		  m_lHigh;				// 以0.001元计的最高价
   long		  m_lLow;					// 以0.001元计的最低价
   long		  m_lNew;					// 以0.001元计的最新价
@@ -222,9 +221,9 @@ protected:
   double    m_dRelativeStrong; // 单位：1%
   long      m_lTransactionNumber; // 本交易日的成交笔数
   long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
-  long      m_lTransactionNumberBelow50000; // 
-  long      m_lTransactionNumberBelow200000; // 
-  long      m_lTransactionNumberAbove200000; // 
+  long      m_lTransactionNumberBelow50000; //
+  long      m_lTransactionNumberBelow200000; //
+  long      m_lTransactionNumberAbove200000; //
 
   INT64     m_lOrdinaryBuyVolume;
   INT64     m_lOrdinarySellVolume;
@@ -261,7 +260,7 @@ protected:
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64                 m_lCurrentCanselSellVolume;
   INT64                 m_lCurrentCanselBuyVolume;
-  
+
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
@@ -271,12 +270,10 @@ protected:
   CCriticalSection       m_RTDataLock;   // 实时数据队列的同步锁
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
- 	
-	bool			            m_fChoiced;									// 此股票是否是自选股票.
-	bool			            m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
-	bool			            m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
 
+  bool			            m_fChoiced;									// 此股票是否是自选股票.
+  bool			            m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
+  bool			            m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
 };
 
 typedef shared_ptr<CStock> CStockPtr;
-

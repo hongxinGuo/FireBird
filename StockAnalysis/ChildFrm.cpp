@@ -1,5 +1,4 @@
-﻿
-// ChildFrm.cpp: CChildFrame 类的实现
+﻿// ChildFrm.cpp: CChildFrame 类的实现
 //
 
 #include "stdafx.h"
@@ -22,21 +21,20 @@ END_MESSAGE_MAP()
 
 CChildFrame::CChildFrame() noexcept
 {
-	// TODO: 在此添加成员初始化代码
+  // TODO: 在此添加成员初始化代码
 }
 
 CChildFrame::~CChildFrame()
 {
 }
 
-
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: 在此处通过修改 CREATESTRUCT cs 来修改窗口类或样式
-	if( !CMDIChildWndEx::PreCreateWindow(cs) )
-		return FALSE;
+  // TODO: 在此处通过修改 CREATESTRUCT cs 来修改窗口类或样式
+  if (!CMDIChildWndEx::PreCreateWindow(cs))
+    return FALSE;
 
-	return TRUE;
+  return TRUE;
 }
 
 // CChildFrame 诊断
@@ -44,12 +42,12 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 #ifdef _DEBUG
 void CChildFrame::AssertValid() const
 {
-	CMDIChildWndEx::AssertValid();
+  CMDIChildWndEx::AssertValid();
 }
 
 void CChildFrame::Dump(CDumpContext& dc) const
 {
-	CMDIChildWndEx::Dump(dc);
+  CMDIChildWndEx::Dump(dc);
 }
 #endif //_DEBUG
 

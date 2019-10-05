@@ -1,7 +1,5 @@
 // SetDayLineInfo.h : CSetDayLine 类的实现
 
-
-
 // CSetDayLineInfo 实现
 
 // 代码生成在 2019年6月2日, 5:10
@@ -89,7 +87,6 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
   RFX_Double(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
   RFX_Double(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
   RFX_Double(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
-
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLine 诊断
@@ -105,4 +102,3 @@ void CSetDayLineInfo::Dump(CDumpContext& dc) const
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG
-

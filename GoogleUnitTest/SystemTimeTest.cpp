@@ -7,18 +7,16 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  
   TEST(SystemTimeTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     CSystemTime systemtime; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
-    for (int i = 0; i < l+1; i++) {
+    for (int i = 0; i < l + 1; i++) {
       CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
     }
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
-  
 
   TEST(SystemTimeTest, TestGett_time) {
     EXPECT_NE(gl_systemTime.Gett_time(), 0);
@@ -50,16 +48,16 @@ namespace StockAnalysisTest {
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
-      ttime -= 3 * 24 * 3600; // 
+      ttime -= 3 * 24 * 3600; //
       break;
     case 0: //星期日
-      ttime -= 3 * 24 * 3600; // 
+      ttime -= 3 * 24 * 3600; //
       break;
     case 6: // 星期六
-      ttime -= 2 * 24 * 3600; // 
+      ttime -= 2 * 24 * 3600; //
       break;
     default: // 其他
-      ttime -= 24 * 3600; // 
+      ttime -= 24 * 3600; //
     }
     localtime_s(&tm_, &ttime);
     long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
@@ -80,20 +78,19 @@ namespace StockAnalysisTest {
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
-      ttime -= 3 * 24 * 3600; // 
+      ttime -= 3 * 24 * 3600; //
       break;
     case 0: //星期日
-      ttime -= 3 * 24 * 3600; // 
+      ttime -= 3 * 24 * 3600; //
       break;
     case 6: // 星期六
-      ttime -= 2 * 24 * 3600; // 
+      ttime -= 2 * 24 * 3600; //
       break;
     default: // 其他
-      ttime -= 24 * 3600; // 
+      ttime -= 24 * 3600; //
     }
     localtime_s(&tm_, &ttime);
     LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
     EXPECT_EQ(gl_systemTime.GetLastTradeDay(), LastTradeDay);
   }
-
 }

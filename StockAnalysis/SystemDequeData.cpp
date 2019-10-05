@@ -3,7 +3,6 @@
 #include "SystemDequeData.h"
 #include "SystemMessage.h"
 
-
 CSystemQueueData::CSystemQueueData()
 {
   static int siCounter = 0;
@@ -13,10 +12,8 @@ CSystemQueueData::CSystemQueueData()
   }
 }
 
-
 CSystemQueueData::~CSystemQueueData()
 {
-
 }
 
 void CSystemQueueData::Reset(void)
@@ -24,7 +21,7 @@ void CSystemQueueData::Reset(void)
   CSingleLock singleLock(&m_RTDataLock);
   long lTotal = m_queueRTStockData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
-    m_queueRTStockData.pop(); 
+    m_queueRTStockData.pop();
   }
 }
 

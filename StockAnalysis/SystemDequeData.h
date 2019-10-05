@@ -23,7 +23,7 @@ public:
   void              PushPriorityRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopPriorityRTData(void);
   long              GetPriorityRTDataDequeSize(void);
-  
+
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列）。
   struct cmpRTData {
     bool operator () (const CStockRTDataPtr p1, const CStockRTDataPtr p2) const {
@@ -45,9 +45,8 @@ protected:
   // 目前使用队列实现
   queue<CStockRTDataPtr>  m_queueRTStockData;
   CCriticalSection        m_RTDataLock;
-  
+
   // 准备使用有优先级的队列实现
   priority_queue<CStockRTDataPtr, vector<CStockRTDataPtr>, cmpRTData>  m_priorityqueueRTStockData;
   CCriticalSection        m_PriorityRTDataLock;
 };
-

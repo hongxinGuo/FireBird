@@ -1,15 +1,12 @@
-﻿
-// StockAnalysisView.cpp: CStockAnalysisView 类的实现
+﻿// StockAnalysisView.cpp: CStockAnalysisView 类的实现
 //
 
 #include "stdafx.h"
-
 
 #include"globedef.h"
 
 #include"Stock.h"
 #include"Market.h"
-
 
 // SHARED_HANDLERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
@@ -24,32 +21,31 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CStockAnalysisView
 
 IMPLEMENT_DYNCREATE(CStockAnalysisView, CView)
 
 BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
-	// 标准打印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
+  // 标准打印命令
+  ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+  ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+  ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CStockAnalysisView::OnFilePrintPreview)
+  ON_WM_CONTEXTMENU()
+  ON_WM_RBUTTONUP()
   ON_WM_TIMER()
   ON_WM_CREATE()
-//  ON_WM_CHAR()
-//  ON_WM_KEYUP()
+  //  ON_WM_CHAR()
+  //  ON_WM_KEYUP()
   ON_WM_SIZE()
-//  ON_WM_CHAR()
-//  ON_WM_KEYUP()
+  //  ON_WM_CHAR()
+  //  ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
 
 CStockAnalysisView::CStockAnalysisView() noexcept
 {
-	// TODO: 在此处添加构造代码
+  // TODO: 在此处添加构造代码
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;
 
@@ -70,9 +66,7 @@ CStockAnalysisView::~CStockAnalysisView()
 {
 }
 
-
-bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
-
+bool CStockAnalysisView::ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
   CSize sizeText = pDC->GetTextExtent(str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
@@ -86,7 +80,7 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
     CString strPrice;
     str = buffer;
     long lCurrentPrice = lStartPrice + i * 10;
-    
+
     if (!pStock->HaveGuaDan(lCurrentPrice)) { // 此价位没有挂单
       strPrice = _T("    ----------");
     }
@@ -103,12 +97,11 @@ bool CStockAnalysisView::ShowGuaDan(CDC * pDC, CStockPtr pStock, int iXStart, in
   return true;
 }
 
-bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock, int iXStart, int iYStart) {
+bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart) {
   if (gl_ChinaStockMarket.GetTotalStock() > 0) {
     pStock = gl_ChinaStockMarket.GetStockPtr(0); // 600000
   }
   else return false;
-
 
   CString str = _T("abcd");
   CSize sizeText = pDC->GetTextExtent(str);
@@ -122,13 +115,13 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC * pDC, CStockPtr pStock,
   return true;
 }
 
-void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
+void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   char pch[20];
   CString str;
   COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
   COLORREF crBefore;
   COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-  CPen *ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
+  CPen* ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
   CPoint ptCurrent;
 
   CStockPtr pStock;
@@ -190,17 +183,16 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC * pdc) {
   pdc->SelectObject(ppen);
 }
 
-void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
+void CStockAnalysisView::ShowStockDayLine(CDC* pDC)
 {
   const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
   const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-  CPen *ppen = nullptr, penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed1(PS_SOLID, 1, crRed);
+  CPen* ppen = nullptr, penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed1(PS_SOLID, 1, crRed);
   CPen penRed3(PS_SOLID, 3, crRed), penGreen3(PS_SOLID, 3, crGreen), penWhite3(PS_SOLID, 3, crWhite);
   CPen penRed2(PS_SOLID, 2, crRed), penGreen2(PS_SOLID, 2, crGreen);
   CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPoint ptCurrent;
-
 
   if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
   if (!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded()) return;
@@ -224,7 +216,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
     i = 1;
     it--;
     y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right -1, y);
+    pDC->MoveTo(m_rectClient.right - 1, y);
     for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
       y = m_rectClient.bottom - (*it)->GetRelativeStrong() * m_rectClient.bottom / 200;
       pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
@@ -301,7 +293,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
-  
+
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
     pDC->SelectObject(&penWhite2);
@@ -318,7 +310,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
       if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
     }
   }
-  
+
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
     pDC->SelectObject(&penYellow2);
@@ -371,27 +363,25 @@ void CStockAnalysisView::ShowStockDayLine(CDC * pDC)
   pDC->SelectObject(ppen);
 }
 
-
-
 BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: 在此处通过修改
-	//  CREATESTRUCT cs 来修改窗口类或样式
+  // TODO: 在此处通过修改
+  //  CREATESTRUCT cs 来修改窗口类或样式
 
-	return CView::PreCreateWindow(cs);
+  return CView::PreCreateWindow(cs);
 }
 
 // CStockAnalysisView 绘图
 
 void CStockAnalysisView::OnDraw(CDC* pdc)
 {
-	CStockAnalysisDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-  
+  CStockAnalysisDoc* pDoc = GetDocument();
+  ASSERT_VALID(pDoc);
+  if (!pDoc)
+    return;
+
   pdc = GetDC();
-  
+
   Show(pdc);
 
   ReleaseDC(pdc);
@@ -439,63 +429,60 @@ void CStockAnalysisView::Show(CDC* pdc) {
 void CStockAnalysisView::OnFilePrintPreview()
 {
 #ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
+  AFXPrintPreview(this);
 #endif
 }
 
 BOOL CStockAnalysisView::OnPreparePrinting(CPrintInfo* pInfo)
 {
-	// 默认准备
-	return DoPreparePrinting(pInfo);
+  // 默认准备
+  return DoPreparePrinting(pInfo);
 }
 
 void CStockAnalysisView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: 添加额外的打印前进行的初始化过程
+  // TODO: 添加额外的打印前进行的初始化过程
 }
 
 void CStockAnalysisView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: 添加打印后进行的清理过程
+  // TODO: 添加打印后进行的清理过程
 }
 
 void CStockAnalysisView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+  ClientToScreen(&point);
+  OnContextMenu(this, point);
 }
 
 void CStockAnalysisView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
 #ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+  theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
 }
-
 
 // CStockAnalysisView 诊断
 
 #ifdef _DEBUG
 void CStockAnalysisView::AssertValid() const
 {
-	CView::AssertValid();
+  CView::AssertValid();
 }
 
 void CStockAnalysisView::Dump(CDumpContext& dc) const
 {
-	CView::Dump(dc);
+  CView::Dump(dc);
 }
 
 CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是内联的
 {
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
-	return (CStockAnalysisDoc*)m_pDocument;
+  ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CStockAnalysisDoc)));
+  return (CStockAnalysisDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
-
 // CStockAnalysisView 消息处理程序
-
 
 void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
 {
@@ -503,14 +490,13 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
 
   CDC* pdc;
   pdc = GetDC();
-  
+
   Show(pdc);
 
   ReleaseDC(pdc);
 
   CView::OnTimer(nIDEvent);
 }
-
 
 int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -537,7 +523,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //   Return		 : 处理当前缓冲区内的股票代码．
 //   BackSpace : 删除缓冲区内的一个数字．
 //
-//////////////////////////////////////////////////////////////////////////////////  
+//////////////////////////////////////////////////////////////////////////////////
 
 void CStockAnalysisView::OnSize(UINT nType, int cx, int cy)
 {
@@ -547,4 +533,3 @@ void CStockAnalysisView::OnSize(UINT nType, int cx, int cy)
   m_rectClient.right = cx;
   m_rectClient.bottom = cy;
 }
-

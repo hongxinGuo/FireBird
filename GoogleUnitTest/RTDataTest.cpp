@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char * m_pData;
+    char* m_pData;
     char* m_pCurrentPos;
     long m_lCountPos = 0;
     CStockRTData m_RTData;
@@ -909,7 +909,6 @@ namespace StockAnalysisTest {
   // 0x00a出现于‘，’前。
   ReadOneValueExceptPeriodData data8(8, _T("11.05000\n,"));
 
-
   class ReadOneValueExceptPeriodTest : public::testing::TestWithParam<ReadOneValueExceptPeriodData*> {
   protected:
     void SetUp(void) override {
@@ -938,9 +937,9 @@ namespace StockAnalysisTest {
     CStockRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestReadOneValueExceptPeriod, ReadOneValueExceptPeriodTest, 
+  INSTANTIATE_TEST_CASE_P(TestReadOneValueExceptPeriod, ReadOneValueExceptPeriodTest,
     testing::Values(&data1, &data2, &data3, &data4, &data5, &data6, &data7, &data8
-  ));
+    ));
 
   TEST_P(ReadOneValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
@@ -1013,7 +1012,6 @@ namespace StockAnalysisTest {
   ReadOneValueData rdata7(7, _T("11.050000,"));
   // 0x00a出现于‘，’前。
   ReadOneValueData rdata8(8, _T("11.05000\n,"));
-
 
   class ReadOneValueTest : public::testing::TestWithParam<ReadOneValueData*> {
   protected:
@@ -1089,5 +1087,4 @@ namespace StockAnalysisTest {
       break;
     }
   }
-
 }
