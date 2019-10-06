@@ -21,8 +21,13 @@ public:
   void SetSavingDayLineInProcess(bool fFlag);
   bool IsSavingDayLineInProcess(void);
 
-  void SetRTDataReadingInProcess(bool fFlag);
-  bool IsRTDataReadingInProcess(void);
+  // 新浪实时数据标识
+  void SetSinaRTDataReadingInProcess(bool fFlag);
+  bool IsSinaRTDataReadingInProcess(void);
+
+  // 腾讯实时数据标识
+  void SetTengXunRTDataReadingInProcess(bool fFlag);
+  bool IsTengXunRTDataReadingInProcess(void);
 
   void SetRTDataReceived(bool fFlag);
   bool IsRTDataReceived(void);
@@ -58,8 +63,11 @@ protected:
   bool m_fSavingDayLineInProcess; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_SavingDayLineInProcessLock;
 
-  bool m_fRTDataReadingInProcess;  // 接收实时数据线程是否执行标识
-  CCriticalSection m_RTDataReadingInProcessLock;
+  bool m_fSinaRTDataReadingInProcess;  // 接收新浪实时数据线程是否执行标识
+  CCriticalSection m_SinaRTDataReadingInProcessLock;
+
+  bool m_fTengXunRTDataReadingInProcess;  // 接收腾讯实时数据线程是否执行标识
+  CCriticalSection m_TengXunRTDataReadingInProcessLock;
 
   bool m_fRTDataReceived;             // 实时数据已接收完成标识
   CCriticalSection m_RTDataReceivedLock;

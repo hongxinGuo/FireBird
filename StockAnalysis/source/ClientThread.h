@@ -4,8 +4,9 @@
 
 // 各工作线程声明
 
-// 读取新浪实时数据线程
-UINT ClientThreadReadingRTDataProc(LPVOID pParam);    // 此工作线程返回值为1
+// 读取新浪实时数据线程。
+UINT ClientThreadReadingSinaRTDataProc(LPVOID pParam);    // 此工作线程返回值为1
+
 // 读取网易日线历史数据线程
 UINT ClientThreadReadDayLineProc(LPVOID pParam);      // 此工作线程返回值为2
 

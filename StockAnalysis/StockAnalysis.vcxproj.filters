@@ -197,6 +197,9 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="source\ClientThreadReadingSinaRTData.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

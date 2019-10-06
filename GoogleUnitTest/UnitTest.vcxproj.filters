@@ -148,5 +148,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingSinaRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>

@@ -288,7 +288,7 @@ bool CMarket::GetSinaStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_ThreadStatus.IsRTDataReadingInProcess()) {
+  if (!gl_ThreadStatus.IsSinaRTDataReadingInProcess()) {
     if (gl_ThreadStatus.IsRTDataReceived()) {
       if (gl_stRTDataInquire.fError == false) { //网络通信一切顺利？
         iTotalNumber = gl_stRTDataInquire.lByteRead;
@@ -340,8 +340,8 @@ bool CMarket::GetSinaStockRTData(void)
       GetInquiringStockStr(gl_stRTDataInquire.strInquire);
     }
     gl_ThreadStatus.SetRTDataReceived(false);
-    gl_ThreadStatus.SetRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ClientThreadReadingRTDataProc, nullptr);
+    gl_ThreadStatus.SetSinaRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    AfxBeginThread(ClientThreadReadingSinaRTDataProc, nullptr);
   }
 
   return true;

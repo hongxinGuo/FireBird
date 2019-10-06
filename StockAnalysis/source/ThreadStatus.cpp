@@ -17,7 +17,7 @@ CThreadStutus::CThreadStutus() {
   m_fDayLineReadingInProcess = false;
   m_fSavingDayLineInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
-  m_fRTDataReadingInProcess = false;
+  m_fSinaRTDataReadingInProcess = false;
   m_fRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
@@ -121,20 +121,39 @@ bool CThreadStutus::IsSavingDayLineInProcess(void) {
   }
 }
 
-void CThreadStutus::SetRTDataReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_RTDataReadingInProcessLock);
+void CThreadStutus::SetSinaRTDataReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fRTDataReadingInProcess = fFlag;
+    m_fSinaRTDataReadingInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStutus::IsRTDataReadingInProcess(void) {
-  CSingleLock singleLock(&m_RTDataReadingInProcessLock);
+bool CThreadStutus::IsSinaRTDataReadingInProcess(void) {
+  CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fRTDataReadingInProcess;
+    const bool fFlag = m_fSinaRTDataReadingInProcess;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CThreadStutus::SetTengXunRTDataReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_TengXunRTDataReadingInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fTengXunRTDataReadingInProcess = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CThreadStutus::IsTengXunRTDataReadingInProcess(void) {
+  CSingleLock singleLock(&m_TengXunRTDataReadingInProcessLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fTengXunRTDataReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }

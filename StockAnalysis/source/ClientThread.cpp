@@ -113,54 +113,6 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID)
   return 4;
 }
 
-UINT ClientThreadReadingRTDataProc(LPVOID) {
-  CInternetSession session;
-  CHttpFile* pFile = nullptr;
-  long iCount = 0;
-  bool fDone = false;
-  char* pChar = gl_stRTDataInquire.buffer;
-
-  const clock_t tt = clock();
-
-  try {
-    gl_ThreadStatus.SetRTDataReadingInProcess(true);
-    gl_stRTDataInquire.fError = false;
-    gl_stRTDataInquire.lByteRead = 0;
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stRTDataInquire.strInquire));
-    Sleep(100); // 新浪服务器100ms延迟即可。
-    while (!fDone) {
-      do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          gl_stRTDataInquire.lByteRead += iCount;
-        }
-      } while (iCount > 0);
-      Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        gl_stRTDataInquire.lByteRead += iCount;
-      }
-      else fDone = true;
-    }
-    gl_stRTDataInquire.buffer[gl_stRTDataInquire.lByteRead] = 0x000;
-    gl_ThreadStatus.SetRTDataReceived(true);
-  }
-  catch (CInternetException * e) {
-    e->Delete();
-    gl_stRTDataInquire.fError = true;
-    gl_ThreadStatus.SetRTDataReceived(false);
-  }
-  if (pFile) pFile->Close();
-  if (pFile) delete pFile;
-  gl_ThreadStatus.SetRTDataReadingInProcess(false);
-
-  gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
-
-  return 1;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 读取网易日线历史数据的线程。

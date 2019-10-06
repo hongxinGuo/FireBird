@@ -130,7 +130,7 @@ CMainFrame::~CMainFrame()
     Sleep(10); // 等待处理日线历史数据的线程结束。
   }
 
-  while (gl_ThreadStatus.IsRTDataReadingInProcess()) {
+  while (gl_ThreadStatus.IsSinaRTDataReadingInProcess()) {
     Sleep(10); // 等待实时数据读取线程结束
   }
 
