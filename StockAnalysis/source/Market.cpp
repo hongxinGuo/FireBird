@@ -289,10 +289,10 @@ bool CMarket::GetSinaStockRTData(void)
   INT64 iTotalNumber = 0;
 
   if (!gl_ThreadStatus.IsSinaRTDataReadingInProcess()) {
-    if (gl_ThreadStatus.IsRTDataReceived()) {
-      if (gl_stRTDataInquire.fError == false) { //网络通信一切顺利？
-        iTotalNumber = gl_stRTDataInquire.lByteRead;
-        pCurrentPos = gl_stRTDataInquire.buffer;
+    if (gl_ThreadStatus.IsSinaRTDataReceived()) {
+      if (gl_stSinaRTDataInquire.fError == false) { //网络通信一切顺利？
+        iTotalNumber = gl_stSinaRTDataInquire.lByteRead;
+        pCurrentPos = gl_stSinaRTDataInquire.buffer;
         long  iCount = 0;
         while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
           pRTData = make_shared<CStockRTData>();
@@ -324,7 +324,7 @@ bool CMarket::GetSinaStockRTData(void)
 
     // 申请下一批次股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_stRTDataInquire.strInquire = m_strRTStockSource;
+      gl_stSinaRTDataInquire.strInquire = m_strRTStockSource;
       if (CreateRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
@@ -333,13 +333,13 @@ bool CMarket::GetSinaStockRTData(void)
           SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
         }
       }
-      gl_stRTDataInquire.strInquire += strTemp;
+      gl_stSinaRTDataInquire.strInquire += strTemp;
     }
     else { // 开市时使用今日活跃股票池
-      gl_stRTDataInquire.strInquire = m_strRTStockSource;
-      GetInquiringStockStr(gl_stRTDataInquire.strInquire);
+      gl_stSinaRTDataInquire.strInquire = m_strRTStockSource;
+      GetInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
     }
-    gl_ThreadStatus.SetRTDataReceived(false);
+    gl_ThreadStatus.SetSinaRTDataReceived(false);
     gl_ThreadStatus.SetSinaRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ClientThreadReadingSinaRTDataProc, nullptr);
   }

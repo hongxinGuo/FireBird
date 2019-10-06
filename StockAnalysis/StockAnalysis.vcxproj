@@ -241,6 +241,7 @@
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\ClientThread.cpp" />
     <ClCompile Include="source\ClientThreadReadingSinaRTData.cpp" />
+    <ClCompile Include="source\ClientThreadReadingTengxunRTData.cpp" />
     <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />

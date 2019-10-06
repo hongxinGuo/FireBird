@@ -27,3 +27,6 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam); // 此工作线程返回值
 
 // 更新数据库线程（尚未实现）
 UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);   // 此工作线程返回值为9
+
+// 读取腾讯实时数据线程。
+UINT ClientThreadReadingTengxunRTDataProc(LPVOID pParam);    // 此工作线程返回值为10

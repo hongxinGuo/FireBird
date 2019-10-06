@@ -9,8 +9,9 @@ CSystemTime       gl_systemTime;            // 系统时间汇总。
 CSystemQueueData  gl_systemDequeData;       // 系统中的各种队列，被各个工作线程使用。
 CThreadStutus     gl_ThreadStatus;          // 系统中的各种状态，被各个工作线程所使用
 
-DayLineInquire gl_stDayLineInquire;
-RTDataInquire gl_stRTDataInquire;
+DayLineInquire gl_stDayLineInquire;       // 网易日线历史数据缓存
+RTDataInquire gl_stSinaRTDataInquire;     // 新浪实时行情数据缓存
+RTDataInquire gl_stTengxunRTDataInquire;  // 腾讯实时行情数据缓存
 
 bool gl_fExiting = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRelativeStrong = false; // 用于通知工作线程退出的信号

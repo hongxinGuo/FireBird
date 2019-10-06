@@ -43,7 +43,7 @@ typedef struct stDayLine {    // 日线数据结构
 protected:
 } DayLineInquire;
 
-extern DayLineInquire gl_stDayLineInquire;
+extern DayLineInquire gl_stDayLineInquire;      // 网易日线历史数据缓存
 
 typedef struct stRTData {
   stRTData() noexcept {
@@ -57,7 +57,8 @@ typedef struct stRTData {
   bool fError;
 } RTDataInquire;
 
-extern RTDataInquire gl_stRTDataInquire;
+extern RTDataInquire gl_stSinaRTDataInquire;    // 新浪实时行情数据缓存
+extern RTDataInquire gl_stTengxunRTDataInquire; // 腾讯实时行情数据缓存
 
 extern bool gl_fExiting; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRelativeStrong;// 用于通知工作线程退出的信号

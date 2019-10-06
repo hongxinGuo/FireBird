@@ -18,7 +18,7 @@ CThreadStutus::CThreadStutus() {
   m_fSavingDayLineInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
   m_fSinaRTDataReadingInProcess = false;
-  m_fRTDataReceived = false;
+  m_fSinaRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
   m_fCalculatingRTData = false;
@@ -140,39 +140,58 @@ bool CThreadStutus::IsSinaRTDataReadingInProcess(void) {
   }
 }
 
-void CThreadStutus::SetTengXunRTDataReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_TengXunRTDataReadingInProcessLock);
+void CThreadStutus::SetTengxunRTDataReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fTengXunRTDataReadingInProcess = fFlag;
+    m_fTengxunRTDataReadingInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStutus::IsTengXunRTDataReadingInProcess(void) {
-  CSingleLock singleLock(&m_TengXunRTDataReadingInProcessLock);
+bool CThreadStutus::IsTengxunRTDataReadingInProcess(void) {
+  CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fTengXunRTDataReadingInProcess;
+    const bool fFlag = m_fTengxunRTDataReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }
 }
 
-void CThreadStutus::SetRTDataReceived(bool fFlag) {
-  CSingleLock singleLock(&m_RTDataReceivedLock);
+void CThreadStutus::SetSinaRTDataReceived(bool fFlag) {
+  CSingleLock singleLock(&m_SinaRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fRTDataReceived = fFlag;
+    m_fSinaRTDataReceived = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStutus::IsRTDataReceived(void) {
-  CSingleLock singleLock(&m_RTDataReceivedLock);
+bool CThreadStutus::IsSinaRTDataReceived(void) {
+  CSingleLock singleLock(&m_SinaRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fRTDataReceived;
+    const bool fFlag = m_fSinaRTDataReceived;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CThreadStutus::SetTengxunRTDataReceived(bool fFlag) {
+  CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fTengxunRTDataReceived = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CThreadStutus::IsTengxunRTDataReceived(void) {
+  CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fTengxunRTDataReceived;
     singleLock.Unlock();
     return fFlag;
   }

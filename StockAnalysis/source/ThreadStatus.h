@@ -26,11 +26,14 @@ public:
   bool IsSinaRTDataReadingInProcess(void);
 
   // 腾讯实时数据标识
-  void SetTengXunRTDataReadingInProcess(bool fFlag);
-  bool IsTengXunRTDataReadingInProcess(void);
+  void SetTengxunRTDataReadingInProcess(bool fFlag);
+  bool IsTengxunRTDataReadingInProcess(void);
 
-  void SetRTDataReceived(bool fFlag);
-  bool IsRTDataReceived(void);
+  void SetSinaRTDataReceived(bool fFlag);
+  bool IsSinaRTDataReceived(void);
+
+  void SetTengxunRTDataReceived(bool fFlag);
+  bool IsTengxunRTDataReceived(void);
 
   void SetRTDataNeedCalculate(bool fFlag);
   bool IsRTDataNeedCalculate(void);
@@ -66,11 +69,14 @@ protected:
   bool m_fSinaRTDataReadingInProcess;  // 接收新浪实时数据线程是否执行标识
   CCriticalSection m_SinaRTDataReadingInProcessLock;
 
-  bool m_fTengXunRTDataReadingInProcess;  // 接收腾讯实时数据线程是否执行标识
-  CCriticalSection m_TengXunRTDataReadingInProcessLock;
+  bool m_fTengxunRTDataReadingInProcess;  // 接收腾讯实时数据线程是否执行标识
+  CCriticalSection m_TengxunRTDataReadingInProcessLock;
 
-  bool m_fRTDataReceived;             // 实时数据已接收完成标识
-  CCriticalSection m_RTDataReceivedLock;
+  bool m_fSinaRTDataReceived;             // 新浪实时数据已接收完成标识
+  CCriticalSection m_SinaRTDataReceivedLock;
+
+  bool m_fTengxunRTDataReceived;             // 腾讯实时数据已接收完成标识
+  CCriticalSection m_TengxunRTDataReceivedLock;
 
   bool m_fRTDataNeedCalculate;                // 实时数据已预处理好，准备计算
   CCriticalSection m_RTDataNeedCalculateLock;
