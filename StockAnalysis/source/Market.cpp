@@ -383,6 +383,7 @@ bool CMarket::GetSinaStockRTData(void)
 
 bool CMarket::GetTengxunStockRTData(void)
 {
+  TRACE("目前使用了腾讯实时行情数据，必须满足股数精度为1股\n");
   static int iCountUp = 0;
   char* pCurrentPos = nullptr;
   CStockRTDataPtr pRTData = nullptr;
@@ -423,7 +424,7 @@ bool CMarket::GetTengxunStockRTData(void)
 
     CString strTemp = _T("");
 
-    // 申请下一批次新浪股票实时数据
+    // 申请下一批腾讯股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
       gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTStockSource; // 设置查询新浪实时数据的字符串头
       if (CreateTengxunRTDataInquiringStr(strTemp)) {
@@ -1167,7 +1168,7 @@ bool CMarket::SchedulingTask(void)
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 
-    // 读取腾讯实时行情数据
+    // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时弃之不用
     //GetTengxunStockRTData();  // 目前暂时不用
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
