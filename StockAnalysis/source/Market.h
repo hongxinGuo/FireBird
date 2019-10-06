@@ -43,10 +43,12 @@ public:
   bool          OpenSavingDayLineRecord(void);
 
   // 实时数据和日线历史数据读取
-  bool          CreateRTDataInquiringStr(CString& str);
+  bool          CreateSinaRTDataInquiringStr(CString& str);
+  bool          CreateTengxunRTDataInquiringStr(CString& str);
   int						GetInquiringStockStr(CString& str);
   bool          GetSinaStockRTData(void);
-  bool          CreateDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool          GetTengxunStockRTData(void);
+  bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
   bool          GetNetEaseStockDayLineData(void);
 
   bool          IsAStock(CStockPtr pStock);			// 是否为沪深A股
@@ -151,9 +153,10 @@ private:
   bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
-  const CString m_strRTStockSource = _T("http://hq.sinajs.cn/list=");
-  const CString m_strDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
-  const CString m_strDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+  const CString m_strSinaRTStockSource = _T("http://hq.sinajs.cn/list=");
+  const CString m_strTengxunRTStockSource = _T("http://qt.gtimg.cn/q=");
+  const CString m_strNeteaseDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
+  const CString m_strNeteaseDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];

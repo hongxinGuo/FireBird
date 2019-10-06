@@ -250,10 +250,44 @@ bool CMarket::CreateTotalStockContainer(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+// 新浪实时制式
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool CMarket::CreateRTDataInquiringStr(CString& str) {
+bool CMarket::CreateSinaRTDataInquiringStr(CString& str) {
+  static bool fCreateStr = false;
+  static int siCounter = 0;
+
+  const long siTotalStock = m_vChinaMarketAStock.size();
+
+  str = m_vChinaMarketAStock.at(siCounter)->GetStockCode();
+  siCounter++;
+  if (siCounter == siTotalStock) {
+    siCounter = 0;
+    return true; // 查询到头了
+  }
+
+  for (int i = 1; i < 900; i++) {  // 每次轮询900个股票.
+    if (siCounter == siTotalStock) {
+      siCounter = 0;
+      return true; // 查询到头了
+    }
+    str += _T(",");
+    str += m_vChinaMarketAStock.at(siCounter)->GetStockCode();
+    siCounter++;
+  }
+  siCounter -= 2; // 后退两格。为了防止边缘数据错误，故边缘数据查询两遍(现在这个没必要了，实时数据基本没出错过）。
+
+  return false; // 尚未遍历所有股票
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+// 腾讯实时制式
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CMarket::CreateTengxunRTDataInquiringStr(CString& str) {
   static bool fCreateStr = false;
   static int siCounter = 0;
 
@@ -296,7 +330,7 @@ bool CMarket::GetSinaStockRTData(void)
         long  iCount = 0;
         while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
           pRTData = make_shared<CStockRTData>();
-          if (pRTData->ReadData(pCurrentPos, iCount)) {
+          if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
             i++;
             gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
           }
@@ -322,10 +356,10 @@ bool CMarket::GetSinaStockRTData(void)
 
     CString strTemp = _T("");
 
-    // 申请下一批次股票实时数据
+    // 申请下一批次新浪股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_stSinaRTDataInquire.strInquire = m_strRTStockSource;
-      if (CreateRTDataInquiringStr(strTemp)) {
+      gl_stSinaRTDataInquire.strInquire = m_strSinaRTStockSource; // 设置查询新浪实时数据的字符串头
+      if (CreateSinaRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
             gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -336,7 +370,7 @@ bool CMarket::GetSinaStockRTData(void)
       gl_stSinaRTDataInquire.strInquire += strTemp;
     }
     else { // 开市时使用今日活跃股票池
-      gl_stSinaRTDataInquire.strInquire = m_strRTStockSource;
+      gl_stSinaRTDataInquire.strInquire = m_strSinaRTStockSource;
       GetInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
@@ -347,9 +381,76 @@ bool CMarket::GetSinaStockRTData(void)
   return true;
 }
 
+bool CMarket::GetTengxunStockRTData(void)
+{
+  static int iCountUp = 0;
+  char* pCurrentPos = nullptr;
+  CStockRTDataPtr pRTData = nullptr;
+  long i = 0;
+  INT64 iTotalNumber = 0;
+
+  if (!gl_ThreadStatus.IsTengxunRTDataReadingInProcess()) {
+    if (gl_ThreadStatus.IsTengxunRTDataReceived()) {
+      if (gl_stTengxunRTDataInquire.fError == false) { //网络通信一切顺利？
+        iTotalNumber = gl_stTengxunRTDataInquire.lByteRead;
+        pCurrentPos = gl_stTengxunRTDataInquire.buffer;
+        long  iCount = 0;
+        while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
+          pRTData = make_shared<CStockRTData>();
+          if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
+            i++;
+            gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          }
+          else {
+            TRACE("实时数据有误,抛掉不用\n");
+            CString str;
+            str = _T("实时数据有误");
+            gl_systemMessage.PushInformationMessage(str);
+            iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
+          }
+        }
+        TRACE("读入%d个实时数据\n", i);
+        // 处理接收到的实时数据
+        ProcessRTData();
+      }
+      else {  // 网络通信出现错误
+        TRACE("Error reading http file ：qt.gtimg.cn\n");
+        CString str;
+        str = _T("Error reading http file ：qt.gtimg.cn");
+        gl_systemMessage.PushInformationMessage(str);
+      }
+    }
+
+    CString strTemp = _T("");
+
+    // 申请下一批次新浪股票实时数据
+    if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+      gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTStockSource; // 设置查询新浪实时数据的字符串头
+      if (CreateTengxunRTDataInquiringStr(strTemp)) {
+        if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
+          if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
+            gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
+          }
+          SetSystemReady(true); // 所有的股票实时数据都轮询一遍，当日活跃股票集已经建立，故而可以接受日线数据了。
+        }
+      }
+      gl_stTengxunRTDataInquire.strInquire += strTemp;
+    }
+    else { // 开市时使用今日活跃股票池
+      gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTStockSource;
+      GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
+    }
+    gl_ThreadStatus.SetTengxunRTDataReceived(false);
+    gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    AfxBeginThread(ClientThreadReadingTengxunRTDataProc, nullptr);
+  }
+
+  return true;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
+// 生成网易日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
 //
 //  此函数是检查m_vChinaMarketAStock股票池
 //
@@ -358,7 +459,7 @@ bool CMarket::GetSinaStockRTData(void)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateDayLineInquiringStr(CString& str, CString& strStartDay) {
+bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay) {
   static int iStarted = 0;
   static int siCounter = 0;
 
@@ -493,15 +594,15 @@ bool CMarket::GetNetEaseStockDayLineData(void)
     CString strStartDay;
 
     // 准备网易日线数据申请格式
-    strRead = m_strDayLineStockSource;
-    sfFoundStock = CreateDayLineInquiringStr(strRead, strStartDay);
+    strRead = m_strNeteaseDayLineStockSource;
+    sfFoundStock = CreateNeteaseDayLineInquiringStr(strRead, strStartDay);
     if (sfFoundStock) {
       strRead += _T("&start=");
       strRead += strStartDay;
       strRead += _T("&end=");
       sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
       strRead += buffer2;
-      strRead += m_strDayLinePostfix;
+      strRead += m_strNeteaseDayLinePostfix;
 
       gl_stDayLineInquire.strInquire = strRead;
       gl_ThreadStatus.SetDayLineDataReady(false);
@@ -1062,10 +1163,14 @@ bool CMarket::SchedulingTask(void)
     s_time = gl_systemTime.Gett_time();
   }
 
-  // 抓取新浪实时数据
+  // 抓取实时数据(新浪和/或腾讯）
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    // 如果要求慢速读取新浪实时数据，则设置读取速率为每分钟一次
+
+    // 读取腾讯实时行情数据
+    //GetTengxunStockRTData();  // 目前暂时不用
+
+    // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次
   }

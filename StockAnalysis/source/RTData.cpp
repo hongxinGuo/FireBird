@@ -143,11 +143,41 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 从网络文件file中读取实时数据，返回值是所读数据是否出现格式错误。
+// 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
 //
+// var hq_str_sh601006=”大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
+//                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
+//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32”;
+//
+// 这个字符串由许多数据拼接在一起，不同含义的数据用逗号隔开了，按照程序员的思路，顺序号从0开始。
+// 0：”大秦铁路”，股票名字；
+// 1：”27.55″，今日开盘价；
+// 2：”27.25″，昨日收盘价；
+// 3：”26.91″，当前价格；
+// 4：”27.55″，今日最高价；
+// 5：”26.20″，今日最低价；
+// 6：”26.91″，竞买价，即“买一”报价；
+// 7：”26.92″，竞卖价，即“卖一”报价；
+// 8：”22114263″，成交的股票数，由于股票交易以一百股为基本单位，所以在使用时，通常把该值除以一百；
+// 9：”589824680″，成交金额，单位为“元”，为了一目了然，通常以“万元”为成交金额的单位，所以通常把该值除以一万；
+// 10：”4695″，“买一”申请4695股，即47手；
+// 11：”26.91″，“买一”报价；
+// 12：”57590″，“买二”
+// 13：”26.90″，“买二”
+// 14：”14700″，“买三”
+// 15：”26.89″，“买三”
+// 16：”14300″，“买四”
+// 17：”26.88″，“买四”
+// 18：”15100″，“买五”
+// 19：”26.87″，“买五”
+// 20：”3100″，“卖一”申报3100股，即31手；
+// 21：”26.92″，“卖一”报价
+// (22, 23), (24, 25), (26, 27), (28, 29)分别为“卖二”至“卖四的情况”
+// 30：”2008 - 01 - 11″，日期；
+// 31：”15:05 : 32″，时间；
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadData(char*& pCurrentPos, long& iTotalRead)
+bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
 {
   static char buffer1[200];
   char buffer2[7];
@@ -552,6 +582,398 @@ bool CStockRTData::ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, lo
   i++;
   if (fFoundPoint) i++;
   lCounter += i; // 多加1，是需要加上少算的逗号
+
+  return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 从网络文件file中读取腾讯制式实时数据，返回值是所读数据是否出现格式错误。
+//
+// 要获取最新行情，访问数据接口：http://qt.gtimg.cn/q=sz002818
+//
+// v_sz000001 = "51~平安银行~000001~15.59~15.90~15.75~1046363~518391~527971~
+//              15.58~2365~15.57~802~15.56~1855~15.55~2316~15.54~320~15.59~661~15.60~15381~15.61~3266~15.62~450~15.63~520~~
+//              20190930154003~-0.31~-1.95~15.89~15.57~15.59/1046363/1645828527~1046363~164583~0.54~11.27~~
+//              15.89~15.57~2.01~3025.36~3025.38~1.15~17.49~14.31~0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP - A~68.91~~0.82";
+//
+// 0: 不明
+// 1 : 名字
+// 2 : 代码
+// 3 : 现价
+// 4 : 昨收
+// 5 : 今开
+// 6 : 成交量（手）
+// 7 : 外盘
+// 8 : 内盘 （上面第一行结束）
+// 9 : 买一
+// 10 : 买一量（手）
+// 11 - 18 : 买二 - 买五
+// 19 : 卖一
+// 20 : 卖一量
+// 21 - 28 : 卖二 - 卖五
+// 29 : 最近逐笔成交 （上面第二行结束）
+// 30 : 时间
+// 31 : 涨跌
+// 32 : 涨跌 %
+// 33 : 最高
+// 34 : 最低
+// 35 : 价格 / 成交量（手） / 成交额
+// 36 : 成交量（手）
+// 37 : 成交额（万）
+// 38 : 换手率
+// 39 : 市盈率
+// 40 : /       (上面第三行结束）
+// 41 : 最高
+// 42 : 最低
+// 43 : 振幅
+// 44 : 流通市值
+// 45 : 总市值
+// 46 : 市净率
+// 47 : 涨停价
+// 48 : 跌停价
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
+{
+  static char buffer1[200];
+  char buffer2[7];
+  static char buffer3[200];
+  static CString strHeader = _T("v=s");
+  long lTemp = 0;
+  INT64 llTemp = 0;
+
+  m_fActive = false;    // 初始状态为无效数据
+  strncpy_s(buffer1, pCurrentPos, 3); // 读入“v=s"
+  buffer1[3] = 0x000;
+  CString str1;
+  str1 = buffer1;
+  if (strHeader.Compare(str1) != 0) { // 数据格式出错
+    return false;
+  }
+  pCurrentPos += 3;
+  iTotalRead += 3;
+
+  if (*pCurrentPos == 'h') { // 上海股票
+    m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
+  }
+  else if (*pCurrentPos == 'z') {
+    m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
+  }
+  else {
+    return false;
+  }
+  pCurrentPos++;
+  iTotalRead += 1;
+
+  strncpy_s(buffer2, pCurrentPos, 6);
+  buffer2[6] = 0x000;
+  m_strStockCode = buffer2;
+  switch (m_wMarket) {
+  case __SHANGHAI_MARKET__:
+    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    break;
+  case __SHENZHEN_MARKET__:
+    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    break;
+  default:
+    return false;
+  }
+  m_iStockCode = atoi(buffer2);
+  pCurrentPos += 6;
+  iTotalRead += 6;
+
+  strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
+  if (buffer1[0] != '=') {
+    return false;
+  }
+  if (buffer1[1] != '"') {
+    return false;
+  }
+  pCurrentPos += 2;
+  iTotalRead += 2;
+  strncpy_s(buffer1, pCurrentPos, 2);
+  if (buffer1[0] == '"') { // 没有数据
+    if (buffer1[1] != ';') {
+      return false;
+    }
+    iTotalRead += 2;
+    pCurrentPos += 2;
+    if (*pCurrentPos++ != 0x00a) {
+      return false; // 确保是字符 \n
+    }
+    iTotalRead++;
+    return true;
+  }
+  if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
+    return false;
+  }
+  if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
+    return false;
+  }
+  pCurrentPos += 2;
+  iTotalRead += 2;
+
+  int i = 2;
+  while (*pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+      return false;
+    }
+    buffer1[i++] = *pCurrentPos++;
+    iTotalRead++;
+  }
+  buffer1[i] = 0x000;
+  m_strStockName = buffer1; // 设置股票名称
+
+  pCurrentPos++;
+  iTotalRead++;
+
+  // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lOpen = lTemp;
+  // 读入前收盘价
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lLastClose = lTemp;
+  // 读入当前价
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lNew = lTemp;
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lHigh = lTemp;
+  // 读入最低价
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lLow = lTemp;
+  // 读入竞买价
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lBuy = lTemp;
+  // 读入竞卖价
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lSell = lTemp;
+
+  // 读入成交股数。成交股数存储实际值
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为INT64。
+  if (llTemp < 0) return false;
+  if (llTemp > 0) m_lVolume = llTemp;
+  // 读入成交金额
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  llTemp = atoll(buffer3);
+  if (llTemp < 0) return false;
+  if (llTemp > 0) m_lAmount = llTemp;
+  // 读入买一数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy.at(0) = lTemp;
+  // 读入买一价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy.at(0) = lTemp;
+  // 读入买二数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy.at(1) = lTemp;
+  // 读入买二价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy.at(1) = lTemp;
+  // 读入买三数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy.at(2) = lTemp;
+  // 读入买三价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy.at(2) = lTemp;
+  // 读入买四数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy.at(3) = lTemp;
+  // 读入买四价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy.at(3) = lTemp;
+  // 读入买五数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVBuy.at(4) = lTemp;
+  // 读入买五价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPBuy.at(4) = lTemp;
+  // 读入卖一数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell.at(0) = lTemp;
+  // 读入卖一价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell.at(0) = lTemp;
+  // 读入卖二数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell.at(1) = lTemp;
+  // 读入卖二价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell.at(1) = lTemp;
+  // 读入卖三数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell.at(2) = lTemp;
+  // 读入卖三价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell.at(2) = lTemp;
+  // 读入卖四数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell.at(3) = lTemp;
+  // 读入卖四价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell.at(3) = lTemp;
+  // 读入卖五数量
+  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lVSell.at(4) = lTemp;
+  // 读入卖五价格
+  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) m_lPSell.at(4) = lTemp;
+  // 读入成交日期和时间
+  i = 0;
+  while (*pCurrentPos != ',') {
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+      return false;
+    }
+    buffer3[i++] = *pCurrentPos++;
+    iTotalRead++;
+  }
+
+  pCurrentPos++;
+  iTotalRead++;
+
+  buffer3[i++] = ' ';
+  while (*pCurrentPos != ',') {
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+      return false;
+    }
+    buffer3[i++] = *pCurrentPos++;
+    iTotalRead++;
+  }
+  buffer3[i] = 0x000;
+
+  tm tm_;
+  int year, month, day, hour, minute, second;
+  sscanf_s(buffer3, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+  tm_.tm_year = year - 1900;
+  tm_.tm_mon = month - 1;
+  tm_.tm_mday = day;
+  tm_.tm_hour = hour;
+  tm_.tm_min = minute;
+  tm_.tm_sec = second;
+  tm_.tm_isdst = 0;
+  m_time = mktime(&tm_);
+
+  while (*pCurrentPos++ != 0x00a) {
+    if (*pCurrentPos == 0x000) {
+      return false;
+    }
+    iTotalRead++;
+  }
+  iTotalRead++;
+  m_fActive = true;
 
   return true;
 }

@@ -28,8 +28,11 @@ public:
   bool SetData(CStockRTData& data);
   bool SetDataAll(CStockRTData& data);
 
-  // 从字符指针处读入数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CStockRTData::ReadData(char*& pCurrentPos, long& iTotalRead);
+  // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
+  bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead);
+
+  // 从字符指针处读入腾讯制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
+  bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead);
 
   // 比较大小运算符
   bool operator < (const CStockRTData& rtData) const {
