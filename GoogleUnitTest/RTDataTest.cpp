@@ -171,7 +171,7 @@ namespace StockAnalysisTest {
   ));
 
   TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
-    bool fSucceed = m_RTData.ReadData(m_pCurrentPos, m_lCountPos);
+    bool fSucceed = m_RTData.ReadSinaData(m_pCurrentPos, m_lCountPos);
     time_t ttime;
     tm tm_;
     tm_.tm_year = 2019 - 1900;

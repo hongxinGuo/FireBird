@@ -151,5 +151,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingSinaRTData.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingTengxunRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>
