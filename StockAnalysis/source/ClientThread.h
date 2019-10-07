@@ -25,7 +25,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID pParam);        // 此工作线程返回值为6
 // 从数据库中读取日线历史数据线程
 UINT ClientthreadLoadDayLineProc(LPVOID pParam);        // 此工作线程返回值为7
 
-// 计算股票相对强度线程
+// 计算股票相对强度线程。此线程调用线程ClientThreadCalculateRealtiveStrongAtThisDayProc执行具体任务，最多生成8个工作线程。
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID pParam); // 此工作线程返回值为8
 
 // 更新数据库线程（尚未实现）

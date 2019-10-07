@@ -87,6 +87,8 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday < gl_systemTime.GetDay());
 
+  while (gl_ThreadStatus.IsCalculatingRSThreadRunning()); // 等待所有的工作线程结束
+
   gl_ChinaStockMarket.UpdateOptionDataBase();
 
   time(&tEnd);
@@ -105,6 +107,14 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
   return 8;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 计算给定日期的日线相对强度。
+//
+// pParam： 给定的日期（长整型）
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRealtiveStrongAtThisDayProc(LPVOID pParam) {
   long lToday = (long)pParam;
 

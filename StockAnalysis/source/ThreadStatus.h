@@ -2,9 +2,9 @@
 
 #include"afxmt.h"
 
-class CThreadStutus {    // 个线程状态
+class CThreadStatus {    // 个线程状态
 public:
-  CThreadStutus();
+  CThreadStatus();
 
   // 线程退出与否状态和设置。此标志用于系统退出，当所有必须关闭的线程关闭后方可允许系统退出，否则系统就要等待。
   void SetExitingClientThreadInProcess(bool fFlag);
@@ -65,6 +65,7 @@ public:
   void IncreaseNunberOfCalculatingRSThreads(void);
   void DecreaseNumberOfCalculatingRSThreads(void);
   bool IsCalculatingRSThreadAvailable(void);
+  bool IsCalculatingRSThreadRunning(void);
 
 protected:
   bool m_fExitingClientThreadInProcess;                // 要求各工作线程退出

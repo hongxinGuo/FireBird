@@ -23,7 +23,7 @@ using namespace std;
 extern CSystemMessage     gl_systemMessage;     // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 extern CSystemTime        gl_systemTime;        // 系统时间汇总。
 extern CSystemQueueData   gl_systemDequeData;   // 系统中的各种队列，被各个工作线程使用。
-extern CThreadStutus      gl_ThreadStatus;      // 系统中的各种状态，被各个工作线程所使用
+extern CThreadStatus      gl_ThreadStatus;      // 系统中的各种状态，被各个工作线程所使用
 
 extern deque<CString> gl_dequeRTStockInquire;   // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。

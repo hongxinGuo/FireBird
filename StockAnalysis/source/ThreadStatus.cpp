@@ -5,7 +5,7 @@
 #include"ThreadStatus.h"
 #include"SystemMessage.h"
 
-CThreadStutus::CThreadStutus() {
+CThreadStatus::CThreadStatus() {
   static int siInstance = 0;
   if (siInstance++ > 0) {
     TRACE("系统状态只允许生成一个实例\n");
@@ -28,7 +28,7 @@ CThreadStutus::CThreadStutus() {
   m_iNumberOfCalculatingRSThreads = 0;
 }
 
-void CThreadStutus::SetExitingClientThreadInProcess(bool fFlag) {
+void CThreadStatus::SetExitingClientThreadInProcess(bool fFlag) {
   CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -37,7 +37,7 @@ void CThreadStutus::SetExitingClientThreadInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsExitingClientThreadInProcess(void) {
+bool CThreadStatus::IsExitingClientThreadInProcess(void) {
   CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -47,7 +47,7 @@ bool CThreadStutus::IsExitingClientThreadInProcess(void) {
   }
 }
 
-void CThreadStutus::SetCalculateRSInProcess(bool fFlag) {
+void CThreadStatus::SetCalculateRSInProcess(bool fFlag) {
   CSingleLock singleLock(&m_CalculateRSInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -56,7 +56,7 @@ void CThreadStutus::SetCalculateRSInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsCalculateRSInProcess(void) {
+bool CThreadStatus::IsCalculateRSInProcess(void) {
   CSingleLock singleLock(&m_CalculateRSInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -66,7 +66,7 @@ bool CThreadStutus::IsCalculateRSInProcess(void) {
   }
 }
 
-void CThreadStutus::SetCalculateDayLineRS(bool fFlag) {
+void CThreadStatus::SetCalculateDayLineRS(bool fFlag) {
   CSingleLock singleLock(&m_CalculateDayLineRSLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -75,7 +75,7 @@ void CThreadStutus::SetCalculateDayLineRS(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsCalculateDayLineRS(void) {
+bool CThreadStatus::IsCalculateDayLineRS(void) {
   CSingleLock singleLock(&m_CalculateDayLineRSLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -85,7 +85,7 @@ bool CThreadStutus::IsCalculateDayLineRS(void) {
   }
 }
 
-void CThreadStutus::SetNeteaseDayLineReadingInProcess(bool fFlag) {
+void CThreadStatus::SetNeteaseDayLineReadingInProcess(bool fFlag) {
   CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -94,7 +94,7 @@ void CThreadStutus::SetNeteaseDayLineReadingInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsNeteaseDayLineReadingInProcess(void) {
+bool CThreadStatus::IsNeteaseDayLineReadingInProcess(void) {
   CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -104,7 +104,7 @@ bool CThreadStutus::IsNeteaseDayLineReadingInProcess(void) {
   }
 }
 
-void CThreadStutus::SetSavingDayLineInProcess(bool fFlag) {
+void CThreadStatus::SetSavingDayLineInProcess(bool fFlag) {
   CSingleLock singleLock(&m_SavingDayLineInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -113,7 +113,7 @@ void CThreadStutus::SetSavingDayLineInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsSavingDayLineInProcess(void) {
+bool CThreadStatus::IsSavingDayLineInProcess(void) {
   CSingleLock singleLock(&m_SavingDayLineInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -123,7 +123,7 @@ bool CThreadStutus::IsSavingDayLineInProcess(void) {
   }
 }
 
-void CThreadStutus::SetSinaRTDataReadingInProcess(bool fFlag) {
+void CThreadStatus::SetSinaRTDataReadingInProcess(bool fFlag) {
   CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -132,7 +132,7 @@ void CThreadStutus::SetSinaRTDataReadingInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsSinaRTDataReadingInProcess(void) {
+bool CThreadStatus::IsSinaRTDataReadingInProcess(void) {
   CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -142,7 +142,7 @@ bool CThreadStutus::IsSinaRTDataReadingInProcess(void) {
   }
 }
 
-void CThreadStutus::SetTengxunRTDataReadingInProcess(bool fFlag) {
+void CThreadStatus::SetTengxunRTDataReadingInProcess(bool fFlag) {
   CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -151,7 +151,7 @@ void CThreadStutus::SetTengxunRTDataReadingInProcess(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsTengxunRTDataReadingInProcess(void) {
+bool CThreadStatus::IsTengxunRTDataReadingInProcess(void) {
   CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -161,7 +161,7 @@ bool CThreadStutus::IsTengxunRTDataReadingInProcess(void) {
   }
 }
 
-void CThreadStutus::SetSinaRTDataReceived(bool fFlag) {
+void CThreadStatus::SetSinaRTDataReceived(bool fFlag) {
   CSingleLock singleLock(&m_SinaRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -170,7 +170,7 @@ void CThreadStutus::SetSinaRTDataReceived(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsSinaRTDataReceived(void) {
+bool CThreadStatus::IsSinaRTDataReceived(void) {
   CSingleLock singleLock(&m_SinaRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -180,7 +180,7 @@ bool CThreadStutus::IsSinaRTDataReceived(void) {
   }
 }
 
-void CThreadStutus::SetTengxunRTDataReceived(bool fFlag) {
+void CThreadStatus::SetTengxunRTDataReceived(bool fFlag) {
   CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -189,7 +189,7 @@ void CThreadStutus::SetTengxunRTDataReceived(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsTengxunRTDataReceived(void) {
+bool CThreadStatus::IsTengxunRTDataReceived(void) {
   CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -199,7 +199,7 @@ bool CThreadStutus::IsTengxunRTDataReceived(void) {
   }
 }
 
-void CThreadStutus::SetRTDataNeedCalculate(bool fFlag) {
+void CThreadStatus::SetRTDataNeedCalculate(bool fFlag) {
   CSingleLock singleLock(&m_RTDataNeedCalculateLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -208,7 +208,7 @@ void CThreadStutus::SetRTDataNeedCalculate(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsRTDataNeedCalculate(void) {
+bool CThreadStatus::IsRTDataNeedCalculate(void) {
   CSingleLock singleLock(&m_RTDataNeedCalculateLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -218,7 +218,7 @@ bool CThreadStutus::IsRTDataNeedCalculate(void) {
   }
 }
 
-void CThreadStutus::SetDayLineDataReady(bool fFlag) {
+void CThreadStatus::SetDayLineDataReady(bool fFlag) {
   CSingleLock singleLock(&m_DayLineDataReadyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -227,7 +227,7 @@ void CThreadStutus::SetDayLineDataReady(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsDayLineDataReady(void) {
+bool CThreadStatus::IsDayLineDataReady(void) {
   CSingleLock singleLock(&m_DayLineDataReadyLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -237,7 +237,7 @@ bool CThreadStutus::IsDayLineDataReady(void) {
   }
 }
 
-void CThreadStutus::SetCalculatingRTData(bool fFlag) {
+void CThreadStatus::SetCalculatingRTData(bool fFlag) {
   CSingleLock singleLock(&m_CalculatingRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -246,7 +246,7 @@ void CThreadStutus::SetCalculatingRTData(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsCalculatingRTData(void) {
+bool CThreadStatus::IsCalculatingRTData(void) {
   CSingleLock singleLock(&m_CalculatingRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -256,7 +256,7 @@ bool CThreadStutus::IsCalculatingRTData(void) {
   }
 }
 
-void CThreadStutus::SetSavingTempData(bool fFlag) {
+void CThreadStatus::SetSavingTempData(bool fFlag) {
   CSingleLock singleLock(&m_SavingTempDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -265,7 +265,7 @@ void CThreadStutus::SetSavingTempData(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsSavingTempData(void) {
+bool CThreadStatus::IsSavingTempData(void) {
   CSingleLock singleLock(&m_SavingTempDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -275,7 +275,7 @@ bool CThreadStutus::IsSavingTempData(void) {
   }
 }
 
-void CThreadStutus::SetSavingStockCodeData(bool fFlag) {
+void CThreadStatus::SetSavingStockCodeData(bool fFlag) {
   CSingleLock singleLock(&m_SavingStockCodeDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -284,7 +284,7 @@ void CThreadStutus::SetSavingStockCodeData(bool fFlag) {
   }
 }
 
-bool CThreadStutus::IsSavingStockCodeData(void) {
+bool CThreadStatus::IsSavingStockCodeData(void) {
   CSingleLock singleLock(&m_SavingStockCodeDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -294,7 +294,7 @@ bool CThreadStutus::IsSavingStockCodeData(void) {
   }
 }
 
-void CThreadStutus::IncreaseNunberOfCalculatingRSThreads(void) {
+void CThreadStatus::IncreaseNunberOfCalculatingRSThreads(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -303,7 +303,7 @@ void CThreadStutus::IncreaseNunberOfCalculatingRSThreads(void) {
   }
 }
 
-void CThreadStutus::DecreaseNumberOfCalculatingRSThreads(void) {
+void CThreadStatus::DecreaseNumberOfCalculatingRSThreads(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -312,7 +312,7 @@ void CThreadStutus::DecreaseNumberOfCalculatingRSThreads(void) {
   }
 }
 
-bool CThreadStutus::IsCalculatingRSThreadAvailable(void) {
+bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -322,6 +322,21 @@ bool CThreadStutus::IsCalculatingRSThreadAvailable(void) {
     }
     else fFlag = true;
     singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
+  CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag;
+    if (m_iNumberOfCalculatingRSThreads > 0) {
+      fFlag = true;
+    }
+    else fFlag = false;
+    singleLock.Unlock();
+
     return fFlag;
   }
 }
