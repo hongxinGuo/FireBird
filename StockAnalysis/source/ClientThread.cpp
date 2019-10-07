@@ -130,7 +130,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadReadDayLineProc(LPVOID) {
+UINT ClientThreadReadingNeteaseDayLineProc(LPVOID) {
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;
@@ -141,9 +141,9 @@ UINT ClientThreadReadDayLineProc(LPVOID) {
   CString str;
 
   const clock_t tt = clock();
-  ASSERT(gl_ThreadStatus.IsDayLineReadingInProcess());    // 调用此线程时已经设置了此标识
+  ASSERT(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());    // 调用此线程时已经设置了此标识
   try {
-    gl_ThreadStatus.SetDayLineReadingInProcess(true);
+    gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true);
     gl_stDayLineInquire.fError = false;
     gl_stDayLineInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stDayLineInquire.strInquire));
@@ -183,7 +183,7 @@ UINT ClientThreadReadDayLineProc(LPVOID) {
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_ThreadStatus.SetDayLineReadingInProcess(false);
+  gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;

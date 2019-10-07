@@ -26,7 +26,7 @@ UINT ClientThreadReadingTengxunRTDataProc(LPVOID) {
   const clock_t tt = clock();
 
   try {
-    gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  // 
+    gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  //
     gl_stTengxunRTDataInquire.fError = false;
     gl_stTengxunRTDataInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stTengxunRTDataInquire.strInquire));

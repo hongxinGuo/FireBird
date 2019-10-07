@@ -14,7 +14,7 @@ CThreadStutus::CThreadStutus() {
 
   m_fExitingClientThreadInProcess = false;
 
-  m_fDayLineReadingInProcess = false;
+  m_fNeteaseDayLineReadingInProcess = false;
   m_fSavingDayLineInProcess = false;
   m_fCalculatingRelativeStrongInProcess = false;
   m_fSinaRTDataReadingInProcess = false;
@@ -83,20 +83,20 @@ bool CThreadStutus::IsCalculateDayLineRS(void) {
   }
 }
 
-void CThreadStutus::SetDayLineReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_DayLineReadingInProcessLock);
+void CThreadStutus::SetNeteaseDayLineReadingInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fDayLineReadingInProcess = fFlag;
+    m_fNeteaseDayLineReadingInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStutus::IsDayLineReadingInProcess(void) {
-  CSingleLock singleLock(&m_DayLineReadingInProcessLock);
+bool CThreadStutus::IsNeteaseDayLineReadingInProcess(void) {
+  CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fDayLineReadingInProcess;
+    const bool fFlag = m_fNeteaseDayLineReadingInProcess;
     singleLock.Unlock();
     return fFlag;
   }

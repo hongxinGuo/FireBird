@@ -2,51 +2,63 @@
 
 #include"afxmt.h"
 
-class CThreadStutus {    // 日线数据结构
+class CThreadStutus {    // 个线程状态
 public:
   CThreadStutus();
 
+  // 线程退出与否状态和设置。此标志用于系统退出，当所有必须关闭的线程关闭后方可允许系统退出，否则系统就要等待。
   void SetExitingClientThreadInProcess(bool fFlag);
   bool IsExitingClientThreadInProcess(void);
 
+  // 计算某日日线相对强度与否和设置。
   void SetCalculateRSInProcess(bool fFlag);
   bool IsCalculateRSInProcess(void);
 
+  // 计算若干天日线相对强度与否和设置
   void SetCalculateDayLineRS(bool fFlag);
   bool IsCalculateDayLineRS(void);
 
-  void SetDayLineReadingInProcess(bool fFlag);
-  bool IsDayLineReadingInProcess(void);
+  // 读取日线与否和设置
+  void SetNeteaseDayLineReadingInProcess(bool fFlag);
+  bool IsNeteaseDayLineReadingInProcess(void);
 
+  // 存储日线与否和设置
   void SetSavingDayLineInProcess(bool fFlag);
   bool IsSavingDayLineInProcess(void);
 
-  // 新浪实时数据标识
+  // 接收新浪实时数据与否和设置
   void SetSinaRTDataReadingInProcess(bool fFlag);
   bool IsSinaRTDataReadingInProcess(void);
 
-  // 腾讯实时数据标识
+  // 接收腾讯实时数据与否和设置
   void SetTengxunRTDataReadingInProcess(bool fFlag);
   bool IsTengxunRTDataReadingInProcess(void);
 
+  // 新浪实时数据接收到与否和设置
   void SetSinaRTDataReceived(bool fFlag);
   bool IsSinaRTDataReceived(void);
 
+  // 腾讯实时数据接受到与否和设置
   void SetTengxunRTDataReceived(bool fFlag);
   bool IsTengxunRTDataReceived(void);
 
+  // 实时数据需要计算与否和设置
   void SetRTDataNeedCalculate(bool fFlag);
   bool IsRTDataNeedCalculate(void);
 
+  // 日线数据准备好与否和设置
   void SetDayLineDataReady(bool fFlag);
   bool IsDayLineDataReady(void);
 
+  // 实时数据计算中与否和设置
   void SetCalculatingRTData(bool fFlag);
   bool IsCalculatingRTData(void);
 
+  // 临时数据存储中与否和设置
   void SetSavingTempData(bool fFlag);
   bool IsSavingTempData(void);
 
+  // 股票代码存储中与否和设置
   void SetSavingStockCodeData(bool fFlag);
   bool IsSavingStockCodeData(void);
 
@@ -60,8 +72,8 @@ protected:
   bool m_fCalculatingDayLineRelativeStrong; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateDayLineRSLock;
 
-  bool m_fDayLineReadingInProcess; // 是否处于提取日线历史数据中标识
-  CCriticalSection m_DayLineReadingInProcessLock;
+  bool m_fNeteaseDayLineReadingInProcess; // 是否处于提取日线历史数据中标识
+  CCriticalSection m_NeteaseDayLineReadingInProcessLock;
 
   bool m_fSavingDayLineInProcess; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_SavingDayLineInProcessLock;

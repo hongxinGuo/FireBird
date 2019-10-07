@@ -571,7 +571,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_ThreadStatus.IsDayLineReadingInProcess()) {
+  if (!gl_ThreadStatus.IsNeteaseDayLineReadingInProcess()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_ThreadStatus.IsDayLineDataReady()) { //网络通信一切顺利？
         TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_stDayLineInquire.lByteRead);
@@ -607,9 +607,9 @@ bool CMarket::GetNetEaseStockDayLineData(void)
 
       gl_stDayLineInquire.strInquire = strRead;
       gl_ThreadStatus.SetDayLineDataReady(false);
-      gl_ThreadStatus.SetDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
-      AfxBeginThread(ClientThreadReadDayLineProc, nullptr);
+      AfxBeginThread(ClientThreadReadingNeteaseDayLineProc, nullptr);
       return true;
     }
     else return false;
