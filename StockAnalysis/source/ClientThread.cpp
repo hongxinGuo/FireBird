@@ -49,6 +49,8 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID) {
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
 //
+// 此线程调用ClientThreadCalculateRelativeStrongAtThisDayProc线程，最多同时生成16个线程。
+//
 //
 ///////////////////////////////////////////////////////////////////////////////////
 UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
@@ -72,7 +74,12 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(lToday); // 设置最后日期。
     if ((ctCurrent.GetDayOfWeek() != 1) // sunday， CTime用1--7标识星期日至星期六
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
-      gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);
+      while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程
+      gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 可用线程数减一 
+      // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
+      AfxBeginThread(ClientThreadCalculateRealtiveStrongAtThisDayProc, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);   
+      // 下面的调用弃之不用
+      //gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);
     }
     if (gl_fExiting) return true;
     if (gl_fExitingCalculatingRelativeStrong) return true;
@@ -97,6 +104,17 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
 
   return 8;
 }
+
+UINT ClientThreadCalculateRealtiveStrongAtThisDayProc(LPVOID pParam) {
+  long lToday = (long)pParam;
+
+  gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);
+
+  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
+
+  return 11;
+}
+
 
 UINT ClientThreadSaveTempRTDataProc(LPVOID)
 {

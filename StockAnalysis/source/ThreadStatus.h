@@ -62,6 +62,10 @@ public:
   void SetSavingStockCodeData(bool fFlag);
   bool IsSavingStockCodeData(void);
 
+  void IncreaseNunberOfCalculatingRSThreads(void);
+  void DecreaseNumberOfCalculatingRSThreads(void);
+  bool IsCalculatingRSThreadAvailable(void);
+
 protected:
   bool m_fExitingClientThreadInProcess;                // 要求各工作线程退出
   CCriticalSection m_ExitingClientThreadInProcessLock;
@@ -104,4 +108,7 @@ protected:
 
   bool m_fSavingStockCodeData; // 股票代码数据存储状态标识
   CCriticalSection m_SavingStockCodeDataLock;
+
+  int m_iNumberOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许16个线程
+  CCriticalSection m_NumberOfCalculatingRSThreads;
 };

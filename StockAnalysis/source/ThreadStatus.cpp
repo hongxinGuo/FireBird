@@ -24,6 +24,8 @@ CThreadStutus::CThreadStutus() {
   m_fCalculatingRTData = false;
   m_fSavingTempData = false;
   m_fSavingStockCodeData = false;
+
+  m_iNumberOfCalculatingRSThreads = 0;
 }
 
 void CThreadStutus::SetExitingClientThreadInProcess(bool fFlag) {
@@ -287,6 +289,38 @@ bool CThreadStutus::IsSavingStockCodeData(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fSavingStockCodeData;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CThreadStutus::IncreaseNunberOfCalculatingRSThreads(void) {
+  CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_iNumberOfCalculatingRSThreads++;
+    singleLock.Unlock();
+  }
+}
+
+void CThreadStutus::DecreaseNumberOfCalculatingRSThreads(void) {
+  CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_iNumberOfCalculatingRSThreads--;
+    singleLock.Unlock();
+  }
+}
+
+bool CThreadStutus::IsCalculatingRSThreadAvailable(void) {
+  CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    bool fFlag;
+    if (m_iNumberOfCalculatingRSThreads >= 8) { // 最多允许8个线程同时运行。更多的线程容易导致系统响应变慢
+      fFlag = false;
+    }
+    else fFlag = true;
     singleLock.Unlock();
     return fFlag;
   }

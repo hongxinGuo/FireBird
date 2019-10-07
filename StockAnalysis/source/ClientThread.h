@@ -33,3 +33,6 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID pParam);   // 此工作线程返回值为9
 
 // 读取腾讯实时数据线程。
 UINT ClientThreadReadingTengxunRTDataProc(LPVOID pParam);    // 此工作线程返回值为10
+
+// 计算给定日期股票日线相对强度线程。此线程由ClientThreadCalculateRelativeStrongProcx线程调用，用于并发计算不同日期的日线相对强度，以提高效率
+UINT ClientThreadCalculateRealtiveStrongAtThisDayProc(LPVOID pParam); // 此工作线程返回值为11
