@@ -88,10 +88,6 @@
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadCalculatingRS.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingSinaRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
@@ -115,6 +111,11 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Thread.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRS.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingNeteaseDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingSinaRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />

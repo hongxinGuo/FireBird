@@ -73,9 +73,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -148,13 +145,19 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingSinaRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingNeteaseDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingTengxunRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\Thread.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadCalculatingRS.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRS.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingSinaRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingTengxunRTData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

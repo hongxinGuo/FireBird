@@ -239,6 +239,7 @@
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Thread.cpp" />
     <ClCompile Include="source\ThreadCalculatingRS.cpp" />
+    <ClCompile Include="source\ThreadReadingNeteaseDayLine.cpp" />
     <ClCompile Include="source\ThreadReadingSinaRTData.cpp" />
     <ClCompile Include="source\ThreadReadingTengxunRTData.cpp" />
     <ClCompile Include="source\SystemTime.cpp" />

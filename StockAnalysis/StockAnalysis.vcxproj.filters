@@ -200,6 +200,9 @@
     <ClCompile Include="source\Thread.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="source\ThreadReadingNeteaseDayLine.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">
