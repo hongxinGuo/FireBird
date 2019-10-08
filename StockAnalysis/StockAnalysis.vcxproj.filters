@@ -25,6 +25,12 @@
     <Filter Include="源文件\数据库">
       <UniqueIdentifier>{fad8b004-f8ce-49d4-a1ce-8cbebe538b4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\工作线程">
+      <UniqueIdentifier>{afa4e90e-fd75-4f18-b402-d12a0f75d833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\工作线程">
+      <UniqueIdentifier>{20d5a37d-8e89-4f7b-bf66-b3260b0142ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StockAnalysis.h">
@@ -105,11 +111,11 @@
     <ClInclude Include="SetDayLineToday.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\ThreadStatus.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\Thread.h">
-      <Filter>头文件\实现类</Filter>
+      <Filter>头文件\工作线程</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ThreadStatus.h">
+      <Filter>头文件\工作线程</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,23 +191,23 @@
     <ClCompile Include="SetDayLineToday.cpp">
       <Filter>源文件\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadStatus.cpp">
-      <Filter>源文件\实现类</Filter>
+    <ClCompile Include="source\Thread.cpp">
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadCalculatingRS.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadingSinaRTData.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Thread.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadingNeteaseDayLine.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadingSinaRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadStatus.cpp">
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

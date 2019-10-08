@@ -55,8 +55,18 @@ CStockAnalysisApp theApp;
 
 // CStockAnalysisApp 初始化
 
+ATOM GlobalAtom;  // 全局原子，用于标识本程序，以防止运行多个实例
+
 BOOL CStockAnalysisApp::InitInstance()
 {
+#ifndef DEBUG
+  // 非调试状态下只允许运行一个实例
+  if (GlobalFindAtom("FireBird StockAnalysis")) {  //找原子   
+    return false;
+  }
+  GlobalAtom = GlobalAddAtom("AdBreaker"); //添加原子   
+#endif // DEBUG
+
   // 如果一个运行在 Windows XP 上的应用程序清单指定要
   // 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
   //则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
@@ -141,8 +151,12 @@ BOOL CStockAnalysisApp::InitInstance()
 int CStockAnalysisApp::ExitInstance()
 {
   //TODO: 处理可能已添加的附加资源
-  AfxOleTerm(FALSE);
+#ifndef DEBUG
+  GlobalDeleteAtom(GlobalAtom);
+#endif
 
+  AfxOleTerm(FALSE);
+  
   return CWinAppEx::ExitInstance();
 }
 
