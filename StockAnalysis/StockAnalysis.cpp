@@ -64,7 +64,7 @@ BOOL CStockAnalysisApp::InitInstance()
   if (GlobalFindAtom("FireBird StockAnalysis")) {  //找原子   
     return false;
   }
-  GlobalAtom = GlobalAddAtom("AdBreaker"); //添加原子   
+  GlobalAtom = GlobalAddAtom("FireBird StockAnalysis"); //添加原子   
 #endif // DEBUG
 
   // 如果一个运行在 Windows XP 上的应用程序清单指定要
