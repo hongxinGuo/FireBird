@@ -10,10 +10,6 @@ public:
   void SetExitingClientThreadInProcess(bool fFlag);
   bool IsExitingClientThreadInProcess(void);
 
-  // 计算某日日线相对强度与否和设置。
-  void SetCalculateRSInProcess(bool fFlag);
-  bool IsCalculateRSInProcess(void);
-
   // 计算若干天日线相对强度与否和设置
   void SetCalculateDayLineRS(bool fFlag);
   bool IsCalculateDayLineRS(void);
@@ -62,17 +58,15 @@ public:
   void SetSavingStockCodeData(bool fFlag);
   bool IsSavingStockCodeData(void);
 
-  void IncreaseNunberOfCalculatingRSThreads(void);
-  void DecreaseNumberOfCalculatingRSThreads(void);
-  bool IsCalculatingRSThreadAvailable(void);
-  bool IsCalculatingRSThreadRunning(void);
+  // 并发执行计算日线相对强度的计数器，最多允许16个线程同时执行
+  void IncreaseNunberOfCalculatingRSThreads(void);  // 同时运行线程数加一
+  void DecreaseNumberOfCalculatingRSThreads(void);  // 同时运行线程数减一
+  bool IsCalculatingRSThreadAvailable(void);        // 是否允许生成新的工作线程
+  bool IsCalculatingRSThreadRunning(void);          // 计算日线的线程是否处于运行中
 
 protected:
   bool m_fExitingClientThreadInProcess;                // 要求各工作线程退出
   CCriticalSection m_ExitingClientThreadInProcessLock;
-
-  bool m_fCalculatingRelativeStrongInProcess; // 是否处于计算相对强度的过程中标识
-  CCriticalSection m_CalculateRSInProcessLock;
 
   bool m_fCalculatingDayLineRelativeStrong; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateDayLineRSLock;

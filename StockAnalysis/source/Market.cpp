@@ -1902,7 +1902,6 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   const long lMonth = lDay / 100 - lYear * 100;
   const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
-  gl_ThreadStatus.SetCalculateRSInProcess(true);
 
   for (j = 0; j < 30; j++) pch[j] = 0x000;
 
@@ -1969,7 +1968,6 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   strTemp = buffer;
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
-  gl_ThreadStatus.SetCalculateRSInProcess(false);
   return(true);
 }
 

@@ -16,7 +16,6 @@ CThreadStatus::CThreadStatus() {
 
   m_fNeteaseDayLineReadingInProcess = false;
   m_fSavingDayLineInProcess = false;
-  m_fCalculatingRelativeStrongInProcess = false;
   m_fSinaRTDataReadingInProcess = false;
   m_fSinaRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
@@ -42,25 +41,6 @@ bool CThreadStatus::IsExitingClientThreadInProcess(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fExitingClientThreadInProcess;
-    singleLock.Unlock();
-    return fFlag;
-  }
-}
-
-void CThreadStatus::SetCalculateRSInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_CalculateRSInProcessLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fCalculatingRelativeStrongInProcess = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsCalculateRSInProcess(void) {
-  CSingleLock singleLock(&m_CalculateRSInProcessLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fCalculatingRelativeStrongInProcess;
     singleLock.Unlock();
     return fFlag;
   }

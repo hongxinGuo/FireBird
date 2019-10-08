@@ -10,7 +10,6 @@ using namespace testing;
 namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculateRSInProcess());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsDayLineDataReady());
     EXPECT_FALSE(gl_ThreadStatus.IsExitingClientThreadInProcess());
@@ -21,6 +20,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineInProcess());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
+    EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
 
     long l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -36,13 +37,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsExitingClientThreadInProcess());
     gl_ThreadStatus.SetExitingClientThreadInProcess(false);
     EXPECT_FALSE(gl_ThreadStatus.IsExitingClientThreadInProcess());
-  }
-
-  TEST(SystemStatusTest, TestIsCalculateRSInProcess) {
-    gl_ThreadStatus.SetCalculateRSInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsCalculateRSInProcess());
-    gl_ThreadStatus.SetCalculateRSInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculateRSInProcess());
   }
 
   TEST(SystemStatusTest, TestReadingInProcess) {
