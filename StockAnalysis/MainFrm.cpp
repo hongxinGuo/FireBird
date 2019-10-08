@@ -711,7 +711,11 @@ void CMainFrame::OnBuildResetSystem()
 void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {
   // TODO: Add your command update UI handler code here
-  if (gl_ThreadStatus.IsCalculateDayLineRS()) {
+  // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
+  if ((gl_systemTime.GetTime() > 83000) && (gl_systemTime.GetTime() < 93000) ) {
+    pCmdUI->Enable(false);
+  }
+  else if (gl_ThreadStatus.IsCalculateDayLineRS()) {
     pCmdUI->Enable(false);
   }
   else {

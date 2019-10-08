@@ -14,7 +14,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsDayLineDataReady());
     EXPECT_FALSE(gl_ThreadStatus.IsExitingClientThreadInProcess());
-    EXPECT_FALSE(gl_ThreadStatus.IsDayLineReadingInProcess());
+    EXPECT_FALSE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReadingInProcess());
     EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReceived());
@@ -46,10 +46,10 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestReadingInProcess) {
-    gl_ThreadStatus.SetDayLineReadingInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsDayLineReadingInProcess());
-    gl_ThreadStatus.SetDayLineReadingInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsDayLineReadingInProcess());
+    gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
+    gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
   }
 
   TEST(SystemStatusTest, TestIsDataBaseInProcess) {

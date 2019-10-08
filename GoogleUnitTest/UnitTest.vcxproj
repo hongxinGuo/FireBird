@@ -89,6 +89,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ClientThread.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ClientThreadCalculatingRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ClientThreadReadingTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />

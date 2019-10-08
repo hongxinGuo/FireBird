@@ -317,7 +317,7 @@ bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     bool fFlag;
-    if (m_iNumberOfCalculatingRSThreads >= 8) { // 最多允许8个线程同时运行。更多的线程容易导致系统响应变慢
+    if (m_iNumberOfCalculatingRSThreads >= 32) { // 最多允许16个线程同时运行。更多的线程容易导致系统响应变慢
       fFlag = false;
     }
     else fFlag = true;
