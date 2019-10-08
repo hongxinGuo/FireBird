@@ -72,9 +72,6 @@
     <ClInclude Include="source\SetStockCode.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\Accessory.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\DayLine.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
     <ClInclude Include="SystemDequeData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\ClientThread.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -112,6 +106,9 @@
       <Filter>头文件\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\ThreadStatus.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Thread.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,9 +152,6 @@
     <ClCompile Include="source\SetStockCode.cpp">
       <Filter>源文件\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\Accessory.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\DayLine.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
@@ -185,9 +179,6 @@
     <ClCompile Include="SystemDequeData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ClientThread.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
@@ -197,13 +188,16 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ClientThreadReadingSinaRTData.cpp">
+    <ClCompile Include="source\ThreadCalculatingRS.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ClientThreadReadingTengxunRTData.cpp">
+    <ClCompile Include="source\ThreadReadingSinaRTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ClientThreadCalculatingRS.cpp">
+    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Thread.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

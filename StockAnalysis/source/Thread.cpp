@@ -5,7 +5,7 @@
 
 #include"Accessory.h"
 
-#include"ClientThread.h"
+#include"Thread.h"
 
 using namespace std;
 #include<memory>
@@ -19,7 +19,7 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculatingRTDataProc(LPVOID) {
+UINT ThreadCalculatingRTDataProc(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个工作线程互斥
 
@@ -39,7 +39,7 @@ UINT ClientThreadCalculatingRTDataProc(LPVOID) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadUpdatingDataBaseProc(LPVOID) {
+UINT ThreadUpdatingDataBaseProc(LPVOID) {
   //
 
   return 9;
@@ -48,7 +48,7 @@ UINT ClientThreadUpdatingDataBaseProc(LPVOID) {
 
 
 
-UINT ClientThreadSaveTempRTDataProc(LPVOID)
+UINT ThreadSaveTempRTDataProc(LPVOID)
 {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 此两个工作线程互斥
@@ -80,7 +80,7 @@ UINT ClientThreadSaveTempRTDataProc(LPVOID)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadReadingNeteaseDayLineProc(LPVOID) {
+UINT ThreadReadingNeteaseDayLineProc(LPVOID) {
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;
@@ -152,7 +152,7 @@ UINT ClientThreadReadingNeteaseDayLineProc(LPVOID) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCompileTodayStocks(LPVOID) {
+UINT ThreadCompileTodayStocks(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   time_t time = 0;
@@ -196,7 +196,7 @@ UINT ClientThreadCompileTodayStocks(LPVOID) {
   return 5;
 }
 
-UINT ClientThreadSaveDayLineProc(LPVOID) {
+UINT ThreadSaveDayLineProc(LPVOID) {
   gl_ChinaStockMarket.SaveDayLineData();
 
   gl_ThreadStatus.SetSavingDayLineInProcess(false);
@@ -211,7 +211,7 @@ UINT ClientThreadSaveDayLineProc(LPVOID) {
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientthreadLoadDayLineProc(LPVOID) {
+UINT ThreadLoadDayLineProc(LPVOID) {
   CSetDayLine setDayLine;
   CDayLinePtr pDayLine;
 

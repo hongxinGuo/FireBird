@@ -7,8 +7,8 @@ public:
   CThreadStatus();
 
   // 线程退出与否状态和设置。此标志用于系统退出，当所有必须关闭的线程关闭后方可允许系统退出，否则系统就要等待。
-  void SetExitingClientThreadInProcess(bool fFlag);
-  bool IsExitingClientThreadInProcess(void);
+  void SetExitingThreadInProcess(bool fFlag);
+  bool IsExitingThreadInProcess(void);
 
   // 计算若干天日线相对强度与否和设置
   void SetCalculateDayLineRS(bool fFlag);
@@ -65,8 +65,8 @@ public:
   bool IsCalculatingRSThreadRunning(void);          // 计算日线的线程是否处于运行中
 
 protected:
-  bool m_fExitingClientThreadInProcess;                // 要求各工作线程退出
-  CCriticalSection m_ExitingClientThreadInProcessLock;
+  bool m_fExitingThreadInProcess;                // 要求各工作线程退出
+  CCriticalSection m_ExitingThreadInProcessLock;
 
   bool m_fCalculatingDayLineRelativeStrong; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculateDayLineRSLock;

@@ -208,8 +208,7 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="source\Accessory.h" />
-    <ClInclude Include="source\ClientThread.h" />
+    <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
     <ClInclude Include="source\globedef.h" />
@@ -238,11 +237,10 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
-    <ClCompile Include="source\Accessory.cpp" />
-    <ClCompile Include="source\ClientThread.cpp" />
-    <ClCompile Include="source\ClientThreadCalculatingRS.cpp" />
-    <ClCompile Include="source\ClientThreadReadingSinaRTData.cpp" />
-    <ClCompile Include="source\ClientThreadReadingTengxunRTData.cpp" />
+    <ClCompile Include="source\Thread.cpp" />
+    <ClCompile Include="source\ThreadCalculatingRS.cpp" />
+    <ClCompile Include="source\ThreadReadingSinaRTData.cpp" />
+    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp" />
     <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />

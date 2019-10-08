@@ -5,7 +5,7 @@
 
 #include"Accessory.h"
 
-#include"ClientThread.h"
+#include"Thread.h"
 
 using namespace std;
 #include<memory>
@@ -14,11 +14,11 @@ using namespace std;
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
 //
-// 此线程调用ClientThreadCalculateRelativeStrongAtThisDayProc线程，最多同时生成16个线程。
+// 此线程调用ThreadCalculateRelativeStrongAtThisDayProc线程，最多同时生成16个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
+UINT ThreadCalculateRelativeStrongProc(LPVOID) {
   gl_ThreadStatus.SetCalculateDayLineRS(true);
 
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
@@ -41,7 +41,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
       && (ctCurrent.GetDayOfWeek() != 7)) { // saturday，sunday and saturday no data, so skiped.
       while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程（最多同时生成16个工作线程，再要生成线程就要等待已生成的结束才行）
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      AfxBeginThread(ClientThreadCalculateRealtiveStrongAtThisDayProc, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
+      AfxBeginThread(ThreadCalculateRealtiveStrongAtThisDayProc, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     if (gl_fExiting) return true;
     if (gl_fExitingCalculatingRelativeStrong) return true;
@@ -79,7 +79,7 @@ UINT ClientThreadCalculateRelativeStrongProc(LPVOID) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ClientThreadCalculateRealtiveStrongAtThisDayProc(LPVOID pParam) {
+UINT ThreadCalculateRealtiveStrongAtThisDayProc(LPVOID pParam) {
   long lToday = (long)pParam;
 
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一 

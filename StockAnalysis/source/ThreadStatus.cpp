@@ -12,7 +12,7 @@ CThreadStatus::CThreadStatus() {
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
 
-  m_fExitingClientThreadInProcess = false;
+  m_fExitingThreadInProcess = false;
 
   m_fNeteaseDayLineReadingInProcess = false;
   m_fSavingDayLineInProcess = false;
@@ -27,20 +27,20 @@ CThreadStatus::CThreadStatus() {
   m_iNumberOfCalculatingRSThreads = 0;
 }
 
-void CThreadStatus::SetExitingClientThreadInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
+void CThreadStatus::SetExitingThreadInProcess(bool fFlag) {
+  CSingleLock singleLock(&m_ExitingThreadInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fExitingClientThreadInProcess = fFlag;
+    m_fExitingThreadInProcess = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStatus::IsExitingClientThreadInProcess(void) {
-  CSingleLock singleLock(&m_ExitingClientThreadInProcessLock);
+bool CThreadStatus::IsExitingThreadInProcess(void) {
+  CSingleLock singleLock(&m_ExitingThreadInProcessLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fExitingClientThreadInProcess;
+    const bool fFlag = m_fExitingThreadInProcess;
     singleLock.Unlock();
     return fFlag;
   }
@@ -278,6 +278,7 @@ void CThreadStatus::IncreaseNunberOfCalculatingRSThreads(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
+    ASSERT(m_iNumberOfCalculatingRSThreads < 16);
     m_iNumberOfCalculatingRSThreads++;
     singleLock.Unlock();
   }
@@ -287,17 +288,27 @@ void CThreadStatus::DecreaseNumberOfCalculatingRSThreads(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
+    ASSERT(m_iNumberOfCalculatingRSThreads > 0);
     m_iNumberOfCalculatingRSThreads--;
     singleLock.Unlock();
   }
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+// 判断是否还有空余的线程可供使用。
+//
+// 目前采用16线程制，允许最多生成16个工作线程。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
 bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
   CSingleLock singleLock(&m_NumberOfCalculatingRSThreads);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     bool fFlag;
-    if (m_iNumberOfCalculatingRSThreads >= 32) { // 最多允许16个线程同时运行。更多的线程容易导致系统响应变慢
+    if (m_iNumberOfCalculatingRSThreads >= 16) { // 最多允许16个线程同时运行。更多的线程容易导致系统响应变慢，且没必要。
       fFlag = false;
     }
     else fFlag = true;

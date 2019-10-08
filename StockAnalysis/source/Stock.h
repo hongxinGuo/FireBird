@@ -158,7 +158,7 @@ public:
   void UpdataCurrentStatus(CStockRTDataPtr pRTData);
   bool LoadDayLine(CSetDayLine* psetDayLine);
 
-  // 计算实时数据, 由工作线程ClientThreadCalculatingRTDataProc调用
+  // 计算实时数据, 由工作线程ThreadCalculatingRTDataProc调用
   bool CalculateRTData(void);
   bool CalculateOneRTData(CStockRTDataPtr pData);
   bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);

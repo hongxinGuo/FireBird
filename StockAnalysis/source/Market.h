@@ -132,7 +132,7 @@ public:
   size_t        GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long          GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  //处理个股票的实时数据，计算挂单变化等。由工作线程ClientThreadCalculatingRTDataProc调用。
+  //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool          CalculateRTData(void);
 
   //处理实时股票变化等

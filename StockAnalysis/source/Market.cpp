@@ -3,8 +3,8 @@
 //#include"stdafx.h"
 
 #include"globedef.h"
-#include"accessory.h"
-#include"ClientThread.h"
+//#include"accessory.h"
+#include"Thread.h"
 
 #include"Market.h"
 
@@ -375,7 +375,7 @@ bool CMarket::GetSinaStockRTData(void)
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
     gl_ThreadStatus.SetSinaRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ClientThreadReadingSinaRTDataProc, nullptr);
+    AfxBeginThread(ThreadReadingSinaRTDataProc, nullptr);
   }
 
   return true;
@@ -443,7 +443,7 @@ bool CMarket::GetTengxunStockRTData(void)
     }
     gl_ThreadStatus.SetTengxunRTDataReceived(false);
     gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ClientThreadReadingTengxunRTDataProc, nullptr);
+    AfxBeginThread(ThreadReadingTengxunRTDataProc, nullptr);
   }
 
   return true;
@@ -609,7 +609,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
       gl_ThreadStatus.SetDayLineDataReady(false);
       gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
-      AfxBeginThread(ClientThreadReadingNeteaseDayLineProc, nullptr);
+      AfxBeginThread(ThreadReadingNeteaseDayLineProc, nullptr);
       return true;
     }
     else return false;
@@ -825,7 +825,7 @@ int CMarket::GetInquiringStockStr(CString& str)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 //
-// 由工作线程ClientThreadCalculatingRTDataProc调用，注意全局变量的使用
+// 由工作线程ThreadCalculatingRTDataProc调用，注意全局变量的使用
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -1274,7 +1274,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) {
       if (SystemReady()) {
-        AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+        AfxBeginThread(ThreadCompileTodayStocks, nullptr);
         SetTodayStockCompiledFlag(true);
       }
     }
@@ -1297,7 +1297,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     else {
       if (!gl_ThreadStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
         gl_ThreadStatus.SetSavingDayLineInProcess(true);
-        AfxBeginThread(ClientThreadSaveDayLineProc, nullptr);
+        AfxBeginThread(ThreadSaveDayLineProc, nullptr);
       }
     }
   } // 每一分钟一次的任务
@@ -1314,7 +1314,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
-      AfxBeginThread(ClientThreadCalculatingRTDataProc, nullptr);
+      AfxBeginThread(ThreadCalculatingRTDataProc, nullptr);
     }
   }
 
@@ -1402,7 +1402,7 @@ void CMarket::SetShowStock(CStockPtr pStock)
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
     m_pCurrentStock->SetDayLineLoaded(false);
-    AfxBeginThread(ClientthreadLoadDayLineProc, 0);
+    AfxBeginThread(ThreadLoadDayLineProc, 0);
   }
 }
 
@@ -1538,7 +1538,7 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将日线数据存入数据库．
-//  此函数由工作线程ClientThreadDayLineSaveProc调用，尽量不要使用全局变量。
+//  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SaveDayLineData(void) {
@@ -2123,7 +2123,7 @@ bool CMarket::UpdateTempRTData(void)
 {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
-    AfxBeginThread(ClientThreadSaveTempRTDataProc, nullptr);
+    AfxBeginThread(ThreadSaveTempRTDataProc, nullptr);
   }
 
   return false;

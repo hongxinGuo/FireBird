@@ -16,8 +16,8 @@
 #include"Market.h"
 #include"StockID.h"
 
-#include"accessory.h"
-#include"ClientThread.h"
+//#include"accessory.h"
+#include"Thread.h"
 
 using namespace std;
 #include<string>
@@ -507,14 +507,14 @@ void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
   gl_ChinaStockMarket.SetCalculatingRS(true);
-  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
+  AfxBeginThread(ThreadCalculateRelativeStrongProc, nullptr);
 }
 
 void CMainFrame::OnCompileTodayStock()
 {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    AfxBeginThread(ClientThreadCompileTodayStocks, nullptr);
+    AfxBeginThread(ThreadCompileTodayStocks, nullptr);
   }
 }
 
@@ -699,7 +699,7 @@ void CMainFrame::OnRebuildDaylineRs()
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
   gl_ChinaStockMarket.SetCalculatingRS(true);
-  AfxBeginThread(ClientThreadCalculateRelativeStrongProc, nullptr);
+  AfxBeginThread(ThreadCalculateRelativeStrongProc, nullptr);
 }
 
 void CMainFrame::OnBuildResetSystem()

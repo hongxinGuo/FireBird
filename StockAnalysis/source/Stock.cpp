@@ -125,7 +125,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
-// 此函数被工作线程ClientThreadCalculatingRTDataProc调用，尽量减少对全局变量的操作。
+// 此函数被工作线程ThreadCalculatingRTDataProc调用，尽量减少对全局变量的操作。
 //
 // 交易情况和挂单情况似乎分开计算比较好，思路容易清晰。目前来看计算能力尚够，但要考虑旧机器的速度了。
 //
