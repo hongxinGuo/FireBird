@@ -3,7 +3,6 @@
 //#include"stdafx.h"
 
 #include"globedef.h"
-//#include"accessory.h"
 #include"Thread.h"
 
 #include"Market.h"

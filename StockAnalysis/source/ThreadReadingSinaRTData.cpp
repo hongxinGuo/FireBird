@@ -12,8 +12,6 @@
 
 #include"Market.h"
 
-#include"Accessory.h"
-
 #include"Thread.h"
 
 UINT ThreadReadingSinaRTDataProc(LPVOID) {

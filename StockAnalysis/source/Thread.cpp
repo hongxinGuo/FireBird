@@ -3,8 +3,6 @@
 #include"DayLine.h"
 #include"Market.h"
 
-#include"Accessory.h"
-
 #include"Thread.h"
 
 using namespace std;

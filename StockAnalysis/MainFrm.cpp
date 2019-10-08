@@ -16,7 +16,6 @@
 #include"Market.h"
 #include"StockID.h"
 
-//#include"accessory.h"
 #include"Thread.h"
 
 using namespace std;
