@@ -23,6 +23,9 @@ public:
   time_t				ChangeDayToMarketCloseTime(long lDay) noexcept;// 将整型(YYYYMMDD)转变为time_t形式
   CString       GetTimeString(void) noexcept;
 
+  bool          IsWorkingDay(void);
+  bool          IsWorkingDay(CTime timeCurrent);
+
 protected:
   long    m_lToday;         // 今日日期。格式为：19990102
   long    m_lTime;				  // 今日时间。格式为：hhmmss

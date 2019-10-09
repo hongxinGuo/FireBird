@@ -209,6 +209,21 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="source\ThreadCalculatingRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSavingTempRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadCompilCurrentDayStock.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadLoadingDayLine.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSavingDayLine.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

@@ -1359,7 +1359,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     else {
       if (!gl_ThreadStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
         gl_ThreadStatus.SetSavingDayLineInProcess(true);
-        AfxBeginThread(ThreadSaveDayLineProc, nullptr);
+        AfxBeginThread(ThreadSavingDayLineProc, nullptr);
       }
     }
   } // 每一分钟一次的任务
@@ -2185,7 +2185,7 @@ bool CMarket::UpdateTempRTData(void)
 {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
-    AfxBeginThread(ThreadSaveTempRTDataProc, nullptr);
+    AfxBeginThread(ThreadSavingTempRTDataProc, nullptr);
   }
 
   return false;

@@ -88,3 +88,19 @@ CString CSystemTime::GetTimeString(void) noexcept {
   str = buffer;
   return(str);
 }
+
+bool CSystemTime::IsWorkingDay(void)
+{
+  if ((m_tm.tm_wday == 0) || (m_tm.tm_wday == 6)) {
+    return false;
+  }
+  else return true;
+}
+
+bool CSystemTime::IsWorkingDay(CTime timeCurrent)
+{
+  if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
+    return false;
+  }
+  else return true;
+}
