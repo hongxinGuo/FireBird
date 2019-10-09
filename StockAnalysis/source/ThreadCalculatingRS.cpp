@@ -1,13 +1,3 @@
-#include"globedef.h"
-
-#include"DayLine.h"
-#include"Market.h"
-
-#include"Thread.h"
-
-using namespace std;
-#include<memory>
-
 ///////////////////////////////////////////////////////////////////////////////////
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
@@ -16,6 +6,9 @@ using namespace std;
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
+#include"Market.h"
+#include"Thread.h"
+
 UINT ThreadCalculateRelativeStrongProc(LPVOID) {
   gl_ThreadStatus.SetCalculateDayLineRS(true);
 

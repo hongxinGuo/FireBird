@@ -444,9 +444,9 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
     m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
     gl_ChinaStockMarket.m_fCurrentEditStockChanged = false;
   }
-  // 显示实时数据读取时间（单位为毫秒）
+  // 显示新浪实时数据读取时间（单位为毫秒）
   char buffer[30];
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_RTReadingTime);
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingSinaRTDataTime());
   str = buffer;
   str += _T("ms");
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
@@ -456,8 +456,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   str = buffer;
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
-  // 显示日线历史数据读取时间（单位为毫秒）
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.gl_DayLineReadingTime);
+  // 显示网易日线历史数据读取时间（单位为毫秒）
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingNeteaseDayDataTime());
   str = buffer;
   str += _T("ms");
   m_wndStatusBar.SetPaneText(6, (LPCTSTR)str);

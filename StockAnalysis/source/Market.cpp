@@ -726,6 +726,70 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
   return(lAmount);
 }
 
+void CMarket::SetReadingSinaRTDataTime(clock_t tt)
+{
+  CSingleLock singleLock(&m_ReadingSinaRTDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_ReadingSinaRTDataTime = tt;
+    singleLock.Unlock();
+  }
+}
+
+clock_t CMarket::GetReadingSinaRTDataTime(void)
+{
+  CSingleLock singleLock(&m_ReadingSinaRTDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    clock_t tt = m_ReadingSinaRTDataTime;
+    singleLock.Unlock();
+    return tt;
+  }
+}
+
+void CMarket::SetReadingTengxunRTDataTime(clock_t tt)
+{
+  CSingleLock singleLock(&m_ReadingTengxunRTDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_ReadingTengxunRTDataTime = tt;
+    singleLock.Unlock();
+  }
+
+}
+
+clock_t CMarket::GetReadingTengxunRTDataTime(void)
+{
+  CSingleLock singleLock(&m_ReadingTengxunRTDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    clock_t tt = m_ReadingTengxunRTDataTime;
+    singleLock.Unlock();
+    return tt;
+  }
+}
+
+void CMarket::SetReadingNeteaseDayDataTime(clock_t tt)
+{
+  CSingleLock singleLock(&m_ReadingNeteaseDayDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_ReadingNeteaseDayDataTime = tt;
+    singleLock.Unlock();
+  }
+}
+
+clock_t CMarket::GetReadingNeteaseDayDataTime(void)
+{
+  CSingleLock singleLock(&m_ReadingNeteaseDayDataTimeLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    clock_t tt = m_ReadingNeteaseDayDataTime;
+    singleLock.Unlock();
+    return tt;
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTask函数调用。

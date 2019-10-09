@@ -8,11 +8,7 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"globedef.h"
-
 #include"Market.h"
-
-#include"Thread.h"
 
 UINT ThreadReadingTengxunRTDataProc(LPVOID) {
   CInternetSession session;
@@ -57,7 +53,7 @@ UINT ThreadReadingTengxunRTDataProc(LPVOID) {
   if (pFile) delete pFile;
   gl_ThreadStatus.SetTengxunRTDataReadingInProcess(false);
 
-  gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
+  gl_ChinaStockMarket.SetReadingTengxunRTDataTime(clock() - tt);
 
   return 10;
 }

@@ -132,6 +132,13 @@ public:
   size_t        GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long          GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
+  void          SetReadingSinaRTDataTime(clock_t tt);
+  clock_t       GetReadingSinaRTDataTime(void);
+  void          SetReadingTengxunRTDataTime(clock_t tt);
+  clock_t       GetReadingTengxunRTDataTime(void);
+  void          SetReadingNeteaseDayDataTime(clock_t tt);
+  clock_t       GetReadingNeteaseDayDataTime(void);
+
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool          CalculateRTData(void);
 
@@ -172,9 +179,6 @@ public:
 
   vector<StockIDPtr>          gl_vStockChoice;      // 自选股票池
 
-  clock_t                     gl_RTReadingTime;         // 每次读取新浪实时数据的时间
-  clock_t                     gl_DayLineReadingTime;    // 每次读取网易日线历史数据的时间
-
 protected:
   CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据， 在存储日线历史数据之前就使之打开状态，否则当同时操作数据库时速度奇慢。
 
@@ -211,6 +215,13 @@ protected:
   bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
   bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
   bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
+
+  clock_t                     m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
+  CCriticalSection            m_ReadingSinaRTDataTimeLock;
+  clock_t                     m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
+  CCriticalSection            m_ReadingTengxunRTDataTimeLock;
+  clock_t                     m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
+  CCriticalSection            m_ReadingNeteaseDayDataTimeLock;
 
 private:
 };

@@ -1,12 +1,3 @@
-#include"globedef.h"
-
-#include"DayLine.h"
-#include"Market.h"
-
-#include"Thread.h"
-
-using namespace std;
-#include<memory>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -23,8 +14,11 @@ using namespace std;
 // 2.等待一段时间后（100ms）开始从服务器处接收数据。
 // 3.将接收到的数据解码，成功的话存入相应股票的日线容器中，最后设置相应的标识。
 //
+// 此线程的正常返回值为2
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+#include"Market.h"
+
 UINT ThreadReadingNeteaseDayLineProc(LPVOID) {
   static int siDelayTime = 600;
   static bool fStarted = false;
@@ -51,14 +45,14 @@ UINT ThreadReadingNeteaseDayLineProc(LPVOID) {
           gl_stDayLineInquire.lByteRead += iCount;
         }
       } while (iCount > 0);
-      Sleep(30); // 等待50毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
+      Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
         gl_stDayLineInquire.lByteRead += iCount;
       }
       else {
-        Sleep(30); // 等待50毫秒后读第三次，确认没有新数据后才返回，否则继续读。
+        Sleep(30); // 等待30毫秒后读第三次，确认没有新数据后才返回，否则继续读。
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
@@ -84,7 +78,7 @@ UINT ThreadReadingNeteaseDayLineProc(LPVOID) {
     siDelayTime = 50;
   }
 
-  gl_ChinaStockMarket.gl_DayLineReadingTime = clock() - tt;
+  gl_ChinaStockMarket.SetReadingNeteaseDayDataTime(clock() - tt);
 
-  return 2;
+  return 2; // 此线程正常返回值为2
 }

@@ -4,15 +4,11 @@
 //
 // 新浪的服务器延迟不超过100ms，故而在等待100ms后即可开始读取接收到的数据。
 //
-//
+// 
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"globedef.h"
-
 #include"Market.h"
-
-#include"Thread.h"
 
 UINT ThreadReadingSinaRTDataProc(LPVOID) {
   CInternetSession session;
@@ -57,7 +53,7 @@ UINT ThreadReadingSinaRTDataProc(LPVOID) {
   if (pFile) delete pFile;
   gl_ThreadStatus.SetSinaRTDataReadingInProcess(false);
 
-  gl_ChinaStockMarket.gl_RTReadingTime = clock() - tt;
+  gl_ChinaStockMarket.SetReadingSinaRTDataTime(clock() - tt);
 
   return 1;
 }
