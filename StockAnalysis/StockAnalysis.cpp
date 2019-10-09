@@ -59,10 +59,9 @@ BOOL CStockAnalysisApp::InitInstance()
 {
 #ifndef DEBUG
   // 非调试状态下只允许运行一个实例
-  if (GlobalFindAtom("FireBird StockAnalysis")) {  //找原子   
+  if (GlobalFindAtom("FireBird StockAnalysis")) {  //找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误   
     return false;
   }
-  GlobalAtom = GlobalAddAtom("AdBreaker"); //添加原子   
 #endif // DEBUG
 
 
