@@ -71,6 +71,7 @@ void CMarket::Reset(void)
   m_fCalculatingRS = false;
 
   m_fGetRTStockData = true;
+  m_fReadingTengxunRTData = false; // 默认状态下不读取腾讯实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
@@ -1148,31 +1149,29 @@ bool CMarket::ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& l
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTask(void)
 {
-  static time_t s_time = 0;
+  static time_t s_timeLast = 0;
 
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > s_time) {
-    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_time);
-    s_time = gl_systemTime.Gett_time();
+  if (gl_systemTime.Gett_time() > s_timeLast) {
+    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_timeLast);
+    s_timeLast = gl_systemTime.Gett_time();
   }
 
   // 抓取实时数据(新浪和/或腾讯）
   if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 
-    // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时弃之不用
-    //GetTengxunStockRTData();  // 目前暂时不用
-
-    // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 3; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-    else m_iCountDownSlowReadingRTData = 3;  // 计数4次
-
-    // 读取腾讯实时数据
-    if (SystemReady()) {
+    // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
+    if (m_fReadingTengxunRTData && SystemReady()) {
       GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
     }
+
+    // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    else m_iCountDownSlowReadingRTData = 3;  // 计数4次
+
   }
   m_iCountDownSlowReadingRTData--;
 

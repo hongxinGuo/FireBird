@@ -163,6 +163,7 @@ public:
   bool                        m_fCurrentEditStockChanged;
   bool                        m_fMarketOpened;          // 是否开市
   bool										    m_fGetRTStockData;        // 读取实时数据标识
+  bool                        m_fReadingTengxunRTData; // 读取腾讯实时行情
   bool										    m_fGetDayLineData;        // 读取日线历史数据标识
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
   int                         m_iCountDownSlowReadingRTData;  // 慢速读取实时数据计数器
