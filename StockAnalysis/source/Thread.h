@@ -17,7 +17,7 @@ UINT ThreadCalculatingRTDataProc(LPVOID pParam);  // 此工作线程返回值为3
 UINT ThreadSavingTempRTDataProc(LPVOID pParam);     // 此工作线程返回值为4
 
 // 计算和存储当日数据线程
-UINT ThreadCompileTodayStocks(LPVOID pParam);     // 此工作线程返回值为5
+UINT ThreadCompilingTodayStockProc(LPVOID pParam);     // 此工作线程返回值为5
 
 // 存储日线历史数据线程
 UINT ThreadSavingDayLineProc(LPVOID pParam);        // 此工作线程返回值为6

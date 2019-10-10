@@ -513,7 +513,7 @@ void CMainFrame::OnCompileTodayStock()
 {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    AfxBeginThread(ThreadCompileTodayStocks, nullptr);
+    AfxBeginThread(ThreadCompilingTodayStockProc, nullptr);
   }
 }
 

@@ -2,6 +2,8 @@
 
 #include"afxmt.h"
 
+const int gl_cMaxCalculatingRSThreads = 8;
+
 class CThreadStatus {    // 个线程状态
 public:
   CThreadStatus();
@@ -58,7 +60,7 @@ public:
   void SetSavingStockCodeData(bool fFlag);
   bool IsSavingStockCodeData(void);
 
-  // 并发执行计算日线相对强度的计数器，最多允许16个线程同时执行
+  // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
   void IncreaseNunberOfCalculatingRSThreads(void);  // 同时运行线程数加一
   void DecreaseNumberOfCalculatingRSThreads(void);  // 同时运行线程数减一
   bool IsCalculatingRSThreadAvailable(void);        // 是否允许生成新的工作线程
@@ -104,6 +106,6 @@ protected:
   bool m_fSavingStockCodeData; // 股票代码数据存储状态标识
   CCriticalSection m_SavingStockCodeDataLock;
 
-  int m_iNumberOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许16个线程
+  int m_iNumberOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
   CCriticalSection m_NumberOfCalculatingRSThreads;
 };

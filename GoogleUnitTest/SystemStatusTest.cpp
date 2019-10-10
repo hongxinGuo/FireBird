@@ -104,12 +104,12 @@ namespace StockAnalysisTest {
 
   TEST(SystemStatusTest, TestIsCalculatingRS) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
-    for (int i = 0; i < 8; i++) {  // 目前采用最多8个线程
+    for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
      gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
     }
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < gl_cMaxCalculatingRSThreads - 1; i++) {
       gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadRunning());

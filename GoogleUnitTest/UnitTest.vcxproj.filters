@@ -163,9 +163,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilCurrentDayStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadingDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -173,6 +170,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavingTempRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilingToayStock.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

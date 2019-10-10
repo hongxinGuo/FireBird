@@ -1336,7 +1336,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) {
       if (SystemReady()) {
-        AfxBeginThread(ThreadCompileTodayStocks, nullptr);
+        AfxBeginThread(ThreadCompilingTodayStockProc, nullptr);
         SetTodayStockCompiledFlag(true);
       }
     }

@@ -114,7 +114,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\Thread.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilCurrentDayStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilingToayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadingDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingNeteaseDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingSinaRTData.obj" />

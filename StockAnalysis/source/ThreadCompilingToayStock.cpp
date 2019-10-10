@@ -17,7 +17,7 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCompileTodayStocks(LPVOID) {
+UINT ThreadCompilingTodayStockProc(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   time_t time = 0;
