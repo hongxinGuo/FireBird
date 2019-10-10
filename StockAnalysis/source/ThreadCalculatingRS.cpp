@@ -10,7 +10,7 @@
 #include"Thread.h"
 
 UINT ThreadCalculatingRelativeStrongProc(LPVOID) {
-  gl_ThreadStatus.SetCalculateDayLineRS(true);
+  gl_ThreadStatus.SetCalculatingDayLineRS(true);
 
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
   const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
@@ -56,7 +56,7 @@ UINT ThreadCalculatingRelativeStrongProc(LPVOID) {
   gl_systemMessage.PushDayLineInfoMessage(str);
 
   gl_ChinaStockMarket.SetCalculatingRS(false);  // 计算相对强度的状态为假
-  gl_ThreadStatus.SetCalculateDayLineRS(false); // 本线程顺利退出，处于非运行状态
+  gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
 
   return 8;
 }

@@ -12,11 +12,11 @@ CThreadStatus::CThreadStatus() {
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
 
-  m_fExitingThreadInProcess = false;
+  m_fExitingThread = false;
 
-  m_fNeteaseDayLineReadingInProcess = false;
-  m_fSavingDayLineInProcess = false;
-  m_fSinaRTDataReadingInProcess = false;
+  m_fReadingNeteaseDayLine = false;
+  m_fSavingDayLine = false;
+  m_fReadingSinaRTData = false;
   m_fSinaRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
@@ -27,27 +27,27 @@ CThreadStatus::CThreadStatus() {
   m_iNumberOfCalculatingRSThreads = 0;
 }
 
-void CThreadStatus::SetExitingThreadInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_ExitingThreadInProcessLock);
+void CThreadStatus::SetExitingThread(bool fFlag) {
+  CSingleLock singleLock(&m_ExitingThreadLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fExitingThreadInProcess = fFlag;
+    m_fExitingThread = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStatus::IsExitingThreadInProcess(void) {
-  CSingleLock singleLock(&m_ExitingThreadInProcessLock);
+bool CThreadStatus::IsExitingThread(void) {
+  CSingleLock singleLock(&m_ExitingThreadLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fExitingThreadInProcess;
+    const bool fFlag = m_fExitingThread;
     singleLock.Unlock();
     return fFlag;
   }
 }
 
-void CThreadStatus::SetCalculateDayLineRS(bool fFlag) {
-  CSingleLock singleLock(&m_CalculateDayLineRSLock);
+void CThreadStatus::SetCalculatingDayLineRS(bool fFlag) {
+  CSingleLock singleLock(&m_CalculatingDayLineRSLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     m_fCalculatingDayLineRelativeStrong = fFlag;
@@ -55,8 +55,8 @@ void CThreadStatus::SetCalculateDayLineRS(bool fFlag) {
   }
 }
 
-bool CThreadStatus::IsCalculateDayLineRS(void) {
-  CSingleLock singleLock(&m_CalculateDayLineRSLock);
+bool CThreadStatus::IsCalculatingDayLineRS(void) {
+  CSingleLock singleLock(&m_CalculatingDayLineRSLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fCalculatingDayLineRelativeStrong;
@@ -65,77 +65,77 @@ bool CThreadStatus::IsCalculateDayLineRS(void) {
   }
 }
 
-void CThreadStatus::SetNeteaseDayLineReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
+void CThreadStatus::SetReadingNeteaseDayLine(bool fFlag) {
+  CSingleLock singleLock(&m_ReadingNeteaseDayLineLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fNeteaseDayLineReadingInProcess = fFlag;
+    m_fReadingNeteaseDayLine = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStatus::IsNeteaseDayLineReadingInProcess(void) {
-  CSingleLock singleLock(&m_NeteaseDayLineReadingInProcessLock);
+bool CThreadStatus::IsReadingNeteaseDayLine(void) {
+  CSingleLock singleLock(&m_ReadingNeteaseDayLineLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fNeteaseDayLineReadingInProcess;
-    singleLock.Unlock();
-    return fFlag;
-  }
-}
-
-void CThreadStatus::SetSavingDayLineInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_SavingDayLineInProcessLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fSavingDayLineInProcess = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsSavingDayLineInProcess(void) {
-  CSingleLock singleLock(&m_SavingDayLineInProcessLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSavingDayLineInProcess;
+    const bool fFlag = m_fReadingNeteaseDayLine;
     singleLock.Unlock();
     return fFlag;
   }
 }
 
-void CThreadStatus::SetSinaRTDataReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
+void CThreadStatus::SetSavingDayLine(bool fFlag) {
+  CSingleLock singleLock(&m_SavingDayLineLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fSinaRTDataReadingInProcess = fFlag;
+    m_fSavingDayLine = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStatus::IsSinaRTDataReadingInProcess(void) {
-  CSingleLock singleLock(&m_SinaRTDataReadingInProcessLock);
+bool CThreadStatus::IsSavingDayLine(void) {
+  CSingleLock singleLock(&m_SavingDayLineLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSinaRTDataReadingInProcess;
+    const bool fFlag = m_fSavingDayLine;
     singleLock.Unlock();
     return fFlag;
   }
 }
 
-void CThreadStatus::SetTengxunRTDataReadingInProcess(bool fFlag) {
-  CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
+void CThreadStatus::SetReadingSinaRTData(bool fFlag) {
+  CSingleLock singleLock(&m_ReadingSinaRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_fTengxunRTDataReadingInProcess = fFlag;
+    m_fReadingSinaRTData = fFlag;
     singleLock.Unlock();
   }
 }
 
-bool CThreadStatus::IsTengxunRTDataReadingInProcess(void) {
-  CSingleLock singleLock(&m_TengxunRTDataReadingInProcessLock);
+bool CThreadStatus::IsReadingSinaRTData(void) {
+  CSingleLock singleLock(&m_ReadingSinaRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    const bool fFlag = m_fTengxunRTDataReadingInProcess;
+    const bool fFlag = m_fReadingSinaRTData;
+    singleLock.Unlock();
+    return fFlag;
+  }
+}
+
+void CThreadStatus::SetReadingTengxunRTData(bool fFlag) {
+  CSingleLock singleLock(&m_ReadingTengxunRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fReadingTengxunRTData = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CThreadStatus::IsReadingTengxunRTData(void) {
+  CSingleLock singleLock(&m_ReadingTengxunRTDataLock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fReadingTengxunRTData;
     singleLock.Unlock();
     return fFlag;
   }

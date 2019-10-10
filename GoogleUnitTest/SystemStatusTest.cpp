@@ -12,12 +12,12 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsDayLineDataReady());
-    EXPECT_FALSE(gl_ThreadStatus.IsExitingThreadInProcess());
-    EXPECT_FALSE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
+    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
+    EXPECT_FALSE(gl_ThreadStatus.IsReadingNeteaseDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-    EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReadingInProcess());
+    EXPECT_FALSE(gl_ThreadStatus.IsReadingSinaRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReceived());
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineInProcess());
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
@@ -32,32 +32,32 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST(SystemStatusTest, TestIsExitingThreadInProcess) {
-    gl_ThreadStatus.SetExitingThreadInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsExitingThreadInProcess());
-    gl_ThreadStatus.SetExitingThreadInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsExitingThreadInProcess());
+  TEST(SystemStatusTest, TestIsExitingThread) {
+    gl_ThreadStatus.SetExitingThread(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsExitingThread());
+    gl_ThreadStatus.SetExitingThread(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
   }
 
-  TEST(SystemStatusTest, TestReadingInProcess) {
-    gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
-    gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsNeteaseDayLineReadingInProcess());
+  TEST(SystemStatusTest, TestReading) {
+    gl_ThreadStatus.SetReadingNeteaseDayLine(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsReadingNeteaseDayLine());
+    gl_ThreadStatus.SetReadingNeteaseDayLine(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsReadingNeteaseDayLine());
   }
 
-  TEST(SystemStatusTest, TestIsDataBaseInProcess) {
-    gl_ThreadStatus.SetSavingDayLineInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineInProcess());
-    gl_ThreadStatus.SetSavingDayLineInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineInProcess());
+  TEST(SystemStatusTest, TestIsDataBase) {
+    gl_ThreadStatus.SetSavingDayLine(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
+    gl_ThreadStatus.SetSavingDayLine(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
   }
 
-  TEST(SystemStatusTest, TestIsRTDataReadInProcess) {
-    gl_ThreadStatus.SetSinaRTDataReadingInProcess(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsSinaRTDataReadingInProcess());
-    gl_ThreadStatus.SetSinaRTDataReadingInProcess(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReadingInProcess());
+  TEST(SystemStatusTest, TestIsReadingRTData) {
+    gl_ThreadStatus.SetReadingSinaRTData(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsReadingSinaRTData());
+    gl_ThreadStatus.SetReadingSinaRTData(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsReadingSinaRTData());
   }
 
   TEST(SystemStatusTest, TestIsSinaRTDataReceived) {

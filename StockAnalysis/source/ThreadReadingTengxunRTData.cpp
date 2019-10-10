@@ -20,7 +20,7 @@ UINT ThreadReadingTengxunRTDataProc(LPVOID) {
   const clock_t tt = clock();
 
   try {
-    gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  //
+    gl_ThreadStatus.SetReadingTengxunRTData(true);  //
     gl_stTengxunRTDataInquire.fError = false;
     gl_stTengxunRTDataInquire.lByteRead = 0;
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_stTengxunRTDataInquire.strInquire));
@@ -51,7 +51,7 @@ UINT ThreadReadingTengxunRTDataProc(LPVOID) {
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_ThreadStatus.SetTengxunRTDataReadingInProcess(false);
+  gl_ThreadStatus.SetReadingTengxunRTData(false);
 
   gl_ChinaStockMarket.SetReadingTengxunRTDataTime(clock() - tt);
 

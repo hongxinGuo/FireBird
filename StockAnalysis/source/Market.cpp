@@ -322,7 +322,7 @@ bool CMarket::GetSinaStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_ThreadStatus.IsSinaRTDataReadingInProcess()) {
+  if (!gl_ThreadStatus.IsReadingSinaRTData()) {
     if (gl_ThreadStatus.IsSinaRTDataReceived()) {
       if (gl_stSinaRTDataInquire.fError == false) { //网络通信一切顺利？
         iTotalNumber = gl_stSinaRTDataInquire.lByteRead;
@@ -374,7 +374,7 @@ bool CMarket::GetSinaStockRTData(void)
       GetInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
-    gl_ThreadStatus.SetSinaRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    gl_ThreadStatus.SetReadingSinaRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ThreadReadingSinaRTDataProc, nullptr);
   }
 
@@ -397,7 +397,7 @@ bool CMarket::GetTengxunStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_ThreadStatus.IsTengxunRTDataReadingInProcess()) {
+  if (!gl_ThreadStatus.IsReadingTengxunRTData()) {
     if (gl_ThreadStatus.IsTengxunRTDataReceived()) {
       if (gl_stTengxunRTDataInquire.fError == false) { //网络通信一切顺利？
         iTotalNumber = gl_stTengxunRTDataInquire.lByteRead;
@@ -437,7 +437,7 @@ bool CMarket::GetTengxunStockRTData(void)
     gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTStockSource;
     GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
     gl_ThreadStatus.SetTengxunRTDataReceived(false);
-    gl_ThreadStatus.SetTengxunRTDataReadingInProcess(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    gl_ThreadStatus.SetReadingTengxunRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ThreadReadingTengxunRTDataProc, nullptr);
   }
 
@@ -566,7 +566,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_ThreadStatus.IsNeteaseDayLineReadingInProcess()) {
+  if (!gl_ThreadStatus.IsReadingNeteaseDayLine()) {
     if (sfFoundStock) {
       if ((gl_stDayLineInquire.fError == false) && gl_ThreadStatus.IsDayLineDataReady()) { //网络通信一切顺利？
         TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_stDayLineInquire.lByteRead);
@@ -602,7 +602,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
 
       gl_stDayLineInquire.strInquire = strRead;
       gl_ThreadStatus.SetDayLineDataReady(false);
-      gl_ThreadStatus.SetNeteaseDayLineReadingInProcess(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      gl_ThreadStatus.SetReadingNeteaseDayLine(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
       AfxBeginThread(ThreadReadingNeteaseDayLineProc, nullptr);
       return true;
@@ -1343,7 +1343,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 
     // 判断是否结束下载日线历史数据
     if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      if (!gl_ThreadStatus.IsSavingDayLineInProcess()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
+      if (!gl_ThreadStatus.IsSavingDayLine()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
         // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -1357,8 +1357,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       }
     }
     else {
-      if (!gl_ThreadStatus.IsSavingDayLineInProcess() && m_fGetDayLineData) {
-        gl_ThreadStatus.SetSavingDayLineInProcess(true);
+      if (!gl_ThreadStatus.IsSavingDayLine() && m_fGetDayLineData) {
+        gl_ThreadStatus.SetSavingDayLine(true);
         AfxBeginThread(ThreadSavingDayLineProc, nullptr);
       }
     }
