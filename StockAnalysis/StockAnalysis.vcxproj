@@ -238,13 +238,13 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Thread.cpp" />
-    <ClCompile Include="source\ThreadCalculatingRS.cpp" />
-    <ClCompile Include="source\ThreadCalculatingRTData.cpp" />
-    <ClCompile Include="source\ThreadCompilingToayStock.cpp" />
-    <ClCompile Include="source\ThreadLoadingDayLine.cpp" />
-    <ClCompile Include="source\ThreadReadingNeteaseDayLine.cpp" />
-    <ClCompile Include="source\ThreadReadingSinaRTData.cpp" />
-    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp" />
+    <ClCompile Include="source\ThreadCalculateRS.cpp" />
+    <ClCompile Include="source\ThreadCalculateRTData.cpp" />
+    <ClCompile Include="source\ThreadCompileToayStock.cpp" />
+    <ClCompile Include="source\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />
+    <ClCompile Include="source\ThreadReadSinaRTData.cpp" />
+    <ClCompile Include="source\ThreadReadTengxunRTData.cpp" />
     <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />
@@ -263,8 +263,8 @@
     <ClCompile Include="source\Stock.cpp" />
     <ClCompile Include="source\StockID.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
-    <ClCompile Include="source\ThreadSavingDayLine.cpp" />
-    <ClCompile Include="source\ThreadSavingTempRTData.cpp" />
+    <ClCompile Include="source\ThreadSavDayLine.cpp" />
+    <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

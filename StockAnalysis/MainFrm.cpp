@@ -506,14 +506,14 @@ void CMainFrame::OnCalculateRelativeStrong()
 {
   // TODO: 在此添加命令处理程序代码
   gl_ChinaStockMarket.SetCalculatingRS(true);
-  AfxBeginThread(ThreadCalculatingRelativeStrongProc, nullptr);
+  AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
 void CMainFrame::OnCompileTodayStock()
 {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    AfxBeginThread(ThreadCompilingTodayStockProc, nullptr);
+    AfxBeginThread(ThreadCompileTodayStock, nullptr);
   }
 }
 
@@ -698,7 +698,7 @@ void CMainFrame::OnRebuildDaylineRs()
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
   gl_ChinaStockMarket.SetCalculatingRS(true);
-  AfxBeginThread(ThreadCalculatingRelativeStrongProc, nullptr);
+  AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
 void CMainFrame::OnBuildResetSystem()

@@ -15,7 +15,7 @@ using namespace std;
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadLoadDayLineProc(LPVOID) {
+UINT ThreadLoadDayLine(LPVOID) {
   CSetDayLine setDayLine;
   CDayLinePtr pDayLine;
 

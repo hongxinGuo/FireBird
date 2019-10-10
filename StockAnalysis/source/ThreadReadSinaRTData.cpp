@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 
-UINT ThreadReadingSinaRTDataProc(LPVOID) {
+UINT ThreadReadSinaRTData(LPVOID) {
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;

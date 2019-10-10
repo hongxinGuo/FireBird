@@ -112,15 +112,15 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Thread.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRS.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilingToayStock.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadingDayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingNeteaseDayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingSinaRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingTengxunRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavingDayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavingTempRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileToayStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />

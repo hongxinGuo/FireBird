@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 
-UINT ThreadCalculatingRTDataProc(LPVOID) {
+UINT ThreadCalculateRTData(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个工作线程互斥
 

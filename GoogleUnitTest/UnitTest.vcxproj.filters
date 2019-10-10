@@ -145,34 +145,34 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingNeteaseDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\Thread.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRS.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingSinaRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadingTengxunRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileToayStock.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculatingRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadingDayLine.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavingDayLine.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavingTempRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompilingToayStock.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

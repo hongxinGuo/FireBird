@@ -19,7 +19,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 
-UINT ThreadReadingNeteaseDayLineProc(LPVOID) {
+UINT ThreadReadNeteaseDayLine(LPVOID) {
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;

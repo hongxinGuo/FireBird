@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 
-UINT ThreadReadingTengxunRTDataProc(LPVOID) {
+UINT ThreadReadTengxunRTData(LPVOID) {
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;

@@ -375,7 +375,7 @@ bool CMarket::GetSinaStockRTData(void)
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
     gl_ThreadStatus.SetReadingSinaRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ThreadReadingSinaRTDataProc, nullptr);
+    AfxBeginThread(ThreadReadSinaRTData, nullptr);
   }
 
   return true;
@@ -438,7 +438,7 @@ bool CMarket::GetTengxunStockRTData(void)
     GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
     gl_ThreadStatus.SetTengxunRTDataReceived(false);
     gl_ThreadStatus.SetReadingTengxunRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ThreadReadingTengxunRTDataProc, nullptr);
+    AfxBeginThread(ThreadReadTengxunRTData, nullptr);
   }
 
   return true;
@@ -604,7 +604,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
       gl_ThreadStatus.SetDayLineDataReady(false);
       gl_ThreadStatus.SetReadingNeteaseDayLine(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
-      AfxBeginThread(ThreadReadingNeteaseDayLineProc, nullptr);
+      AfxBeginThread(ThreadReadNeteaseDayLine, nullptr);
       return true;
     }
     else return false;
@@ -1336,7 +1336,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) {
       if (SystemReady()) {
-        AfxBeginThread(ThreadCompilingTodayStockProc, nullptr);
+        AfxBeginThread(ThreadCompileTodayStock, nullptr);
         SetTodayStockCompiledFlag(true);
       }
     }
@@ -1359,7 +1359,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     else {
       if (!gl_ThreadStatus.IsSavingDayLine() && m_fGetDayLineData) {
         gl_ThreadStatus.SetSavingDayLine(true);
-        AfxBeginThread(ThreadSavingDayLineProc, nullptr);
+        AfxBeginThread(ThreadSaveDayLine, nullptr);
       }
     }
   } // 每一分钟一次的任务
@@ -1376,7 +1376,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
-      AfxBeginThread(ThreadCalculatingRTDataProc, nullptr);
+      AfxBeginThread(ThreadCalculateRTData, nullptr);
     }
   }
 
@@ -1464,7 +1464,7 @@ void CMarket::SetShowStock(CStockPtr pStock)
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
     m_pCurrentStock->SetDayLineLoaded(false);
-    AfxBeginThread(ThreadLoadDayLineProc, 0);
+    AfxBeginThread(ThreadLoadDayLine, 0);
   }
 }
 
@@ -2185,7 +2185,7 @@ bool CMarket::UpdateTempRTData(void)
 {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
-    AfxBeginThread(ThreadSavingTempRTDataProc, nullptr);
+    AfxBeginThread(ThreadSaveTempRTData, nullptr);
   }
 
   return false;

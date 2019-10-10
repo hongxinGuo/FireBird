@@ -194,34 +194,34 @@
     <ClCompile Include="source\Thread.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadCalculatingRS.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadingNeteaseDayLine.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadingSinaRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadingTengxunRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadCalculatingRTData.cpp">
+    <ClCompile Include="source\ThreadCalculateRS.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadSavingTempRTData.cpp">
+    <ClCompile Include="source\ThreadCalculateRTData.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadLoadingDayLine.cpp">
+    <ClCompile Include="source\ThreadCompileToayStock.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadSavingDayLine.cpp">
+    <ClCompile Include="source\ThreadLoadDayLine.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadCompilingToayStock.cpp">
+    <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadTengxunRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadSinaRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSaveTempRTData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSavDayLine.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>

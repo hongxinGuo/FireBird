@@ -9,7 +9,7 @@
 #include"Market.h"
 #include"Thread.h"
 
-UINT ThreadCalculatingRelativeStrongProc(LPVOID) {
+UINT ThreadCalculateRS(LPVOID) {
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
 
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
@@ -31,7 +31,7 @@ UINT ThreadCalculatingRelativeStrongProc(LPVOID) {
     if (gl_systemTime.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程（最多同时生成16个工作线程，再要生成线程就要等待已生成的结束才行）
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      AfxBeginThread(ThreadCalculatingRealtiveStrongAtThisDayProc, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
+      AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     if (gl_fExiting) return true;
     if (gl_fExitingCalculatingRelativeStrong) return true;
@@ -69,7 +69,7 @@ UINT ThreadCalculatingRelativeStrongProc(LPVOID) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCalculatingRealtiveStrongAtThisDayProc(LPVOID pParam) {
+UINT ThreadCalculateThisDayRS(LPVOID pParam) {
   long lToday = (long)pParam;
 
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一 

@@ -1,6 +1,6 @@
 #include"Market.h"
 
-UINT ThreadSavingDayLineProc(LPVOID) {
+UINT ThreadSaveDayLine(LPVOID) {
   gl_ThreadStatus.SetSavingDayLine(true);
   gl_ChinaStockMarket.SaveDayLineData();
   gl_ThreadStatus.SetSavingDayLine(false);
