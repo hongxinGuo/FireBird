@@ -29,10 +29,10 @@ public:
   bool SetDataAll(CStockRTData& data);
 
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead);
+  bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
 
-  // 从字符指针处读入腾讯制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead);
+  // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
+  bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
   // 比较大小运算符
   bool operator < (const CStockRTData& rtData) const {
@@ -45,9 +45,12 @@ public:
   }
 
 public:
-  bool ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter); // 从file中读入一个浮点数据，最后字符为‘，’。
+  bool ReadOneValueInSinaData(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadOneValueInSinaData(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadOneValueInSinaData(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
-  bool ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& lCounter);
+  bool ReadOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
+  bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
 public:
   time_t GetTransactionTime(void) noexcept { return m_time; }
@@ -70,10 +73,10 @@ public:
   void SetLow(long lValue) noexcept { m_lLow = lValue; }
   long GetNew(void) noexcept { return m_lNew; }
   void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_lAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_lAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_lVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_lVolume = llValue; }
+  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
   long GetBuy(void) noexcept { return m_lBuy; }
   void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
   long GetSell(void) { return m_lSell; }
@@ -112,8 +115,8 @@ protected:
   long  	  m_lLow;									// 今日最低。单位：元
   long      m_lBuy;                // 竞买价。单位：元
   long      m_lSell;               // 竞卖价。单位：元
-  INT64	    m_lVolume;							// 总成交量。单位：股
-  INT64     m_lAmount;							// 总成交金额。单位：元
+  INT64	    m_llVolume;							// 总成交量。单位：股
+  INT64     m_llAmount;							// 总成交金额。单位：元
   array<long, 5>  	  m_lPBuy;							// 买盘价1 -- 5。单位：元
   array<long, 5> 		  m_lVBuy;							// 买盘量1 -- 5。单位：股
   array<long, 5>  	  m_lPSell;						// 卖盘价1 -- 5。单位：元

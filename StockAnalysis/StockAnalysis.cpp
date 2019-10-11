@@ -59,7 +59,8 @@ BOOL CStockAnalysisApp::InitInstance()
 {
 #ifndef DEBUG
   // 非调试状态下只允许运行一个实例
-  if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {  //找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误   
+  if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
+    //找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
     return false;
   }
 #endif // DEBUG

@@ -21,8 +21,8 @@ void CStockRTData::Reset(void) {
   m_lHigh = 0;
   m_lLow = 0;
   m_lNew = 0;
-  m_lVolume = 0;
-  m_lAmount = 0;
+  m_llVolume = 0;
+  m_llAmount = 0;
   m_lBuy = 0;
   m_lSell = 0;
   for (int i = 0; i < 5; i++) {
@@ -75,9 +75,9 @@ bool CStockRTData::SetData(CStockRTData& data) {
   m_lBuy = data.m_lBuy;
   m_lSell = data.m_lSell;
 
-  if (data.m_lVolume != 0) {
-    m_lVolume = data.m_lVolume;
-    m_lAmount = data.m_lAmount;
+  if (data.m_llVolume != 0) {
+    m_llVolume = data.m_llVolume;
+    m_llAmount = data.m_llAmount;
   }
 
   for (int i = 0; i < 5; i++) {
@@ -106,8 +106,8 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
   m_lHigh = 0;
   m_lLow = 0;
   m_lNew = 0;
-  m_lVolume = 0;
-  m_lAmount = 0;
+  m_llVolume = 0;
+  m_llAmount = 0;
   m_lBuy = 0;
   m_lSell = 0;
 
@@ -127,8 +127,8 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
   m_lHigh = data.m_lHigh;
   m_lLow = data.m_lLow;
   m_lNew = data.m_lNew;
-  m_lVolume = data.m_lVolume;
-  m_lAmount = data.m_lAmount;
+  m_llVolume = data.m_llVolume;
+  m_llAmount = data.m_llAmount;
   m_lBuy = data.m_lBuy;
   m_lSell = data.m_lSell;
 
@@ -177,13 +177,12 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 // 31：”15:05 : 32″，时间；
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
+bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 {
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
   static CString strHeader = _T("var hq_str_s");
-  long lTemp = 0;
   INT64 llTemp = 0;
 
   m_fActive = false;    // 初始状态为无效数据
@@ -195,7 +194,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 12;
-  iTotalRead += 12;
+  lTotalRead += 12;
 
   if (*pCurrentPos == 'h') { // 上海股票
     m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
@@ -207,7 +206,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos++;
-  iTotalRead += 1;
+  lTotalRead += 1;
 
   strncpy_s(buffer2, pCurrentPos, 6);
   buffer2[6] = 0x000;
@@ -224,7 +223,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
   }
   m_iStockCode = atoi(buffer2);
   pCurrentPos += 6;
-  iTotalRead += 6;
+  lTotalRead += 6;
 
   strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
   if (buffer1[0] != '=') {
@@ -234,18 +233,18 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 2;
-  iTotalRead += 2;
+  lTotalRead += 2;
   strncpy_s(buffer1, pCurrentPos, 2);
   if (buffer1[0] == '"') { // 没有数据
     if (buffer1[1] != ';') {
       return false;
     }
-    iTotalRead += 2;
+    lTotalRead += 2;
     pCurrentPos += 2;
     if (*pCurrentPos++ != 0x00a) {
       return false; // 确保是字符 \n
     }
-    iTotalRead++;
+    lTotalRead++;
     return true;
   }
   if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
@@ -255,7 +254,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 2;
-  iTotalRead += 2;
+  lTotalRead += 2;
 
   int i = 2;
   while (*pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
@@ -263,217 +262,130 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer1[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
   buffer1[i] = 0x000;
   m_strStockName = buffer1; // 设置股票名称
 
   pCurrentPos++;
-  iTotalRead++;
+  lTotalRead++;
 
   // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lOpen, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lOpen = lTemp;
   // 读入前收盘价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lLastClose, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lLastClose = lTemp;
   // 读入当前价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lNew, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lNew = lTemp;
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  // 读入最高价
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lHigh, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lHigh = lTemp;
   // 读入最低价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lLow, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lLow = lTemp;
   // 读入竞买价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lBuy, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lBuy = lTemp;
   // 读入竞卖价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lSell, lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lSell = lTemp;
-
   // 读入成交股数。成交股数存储实际值
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_llVolume, lTotalRead)) {
     return false;
   }
-  llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为INT64。
-  if (llTemp < 0) return false;
-  if (llTemp > 0) m_lVolume = llTemp;
   // 读入成交金额
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_llAmount, lTotalRead)) {
     return false;
   }
-  llTemp = atoll(buffer3);
-  if (llTemp < 0) return false;
-  if (llTemp > 0) m_lAmount = llTemp;
   // 读入买一数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVBuy.at(0), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVBuy.at(0) = lTemp;
   // 读入买一价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(0), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPBuy.at(0) = lTemp;
   // 读入买二数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVBuy.at(1), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVBuy.at(1) = lTemp;
   // 读入买二价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(1), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPBuy.at(1) = lTemp;
   // 读入买三数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVBuy.at(2), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVBuy.at(2) = lTemp;
   // 读入买三价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(2), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPBuy.at(2) = lTemp;
   // 读入买四数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVBuy.at(3), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVBuy.at(3) = lTemp;
   // 读入买四价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(3), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPBuy.at(3) = lTemp;
   // 读入买五数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVBuy.at(4), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVBuy.at(4) = lTemp;
   // 读入买五价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(4), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPBuy.at(4) = lTemp;
   // 读入卖一数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVSell.at(0), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVSell.at(0) = lTemp;
   // 读入卖一价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPSell.at(0), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPSell.at(0) = lTemp;
   // 读入卖二数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVSell.at(1), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVSell.at(1) = lTemp;
   // 读入卖二价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPSell.at(1), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPSell.at(1) = lTemp;
   // 读入卖三数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVSell.at(2), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVSell.at(2) = lTemp;
   // 读入卖三价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPSell.at(2), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPSell.at(2) = lTemp;
   // 读入卖四数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVSell.at(3), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVSell.at(3) = lTemp;
   // 读入卖四价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPSell.at(3), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPSell.at(3) = lTemp;
   // 读入卖五数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, m_lVSell.at(4), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lVSell.at(4) = lTemp;
   // 读入卖五价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, m_lPSell.at(4), lTotalRead)) {
     return false;
   }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) m_lPSell.at(4) = lTemp;
   // 读入成交日期和时间
   i = 0;
   while (*pCurrentPos != ',') {
@@ -481,11 +393,11 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer3[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
 
   pCurrentPos++;
-  iTotalRead++;
+  lTotalRead++;
 
   buffer3[i++] = ' ';
   while (*pCurrentPos != ',') {
@@ -493,7 +405,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer3[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
   buffer3[i] = 0x000;
 
@@ -513,11 +425,49 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
     if (*pCurrentPos == 0x000) {
       return false;
     }
-    iTotalRead++;
+    lTotalRead++;
   }
-  iTotalRead++;
+  lTotalRead++;
   m_fActive = true;
 
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 读入一个值，遇到逗号结束。返回值在lReturnValue中
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool CStockRTData::ReadOneValueInSinaData(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
+  INT64 llTemp;
+  static char buffer3[200];
+
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
+    return false;
+  }
+  llTemp = atoll(buffer3);
+  if (llTemp < 0) return false;
+  if (llTemp > 0) llReturnValue = llTemp;
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 读入一个值，遇到逗号结束。返回值在lReturnValue中
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool CStockRTData::ReadOneValueInSinaData(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+  long lTemp;
+  static char buffer3[200];
+
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) lReturnValue = lTemp;
   return true;
 }
 
@@ -527,7 +477,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& iTotalRead)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter)
+bool CStockRTData::ReadOneValueInSinaData(char*& pCurrentPos, char* buffer, long& lTotalRead)
 {
   int i = 0;
   while (*pCurrentPos != ',') {
@@ -537,7 +487,7 @@ bool CStockRTData::ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter
   buffer[i] = 0x000;
   pCurrentPos++;
   i++;
-  lCounter += i;
+  lTotalRead += i;
   return true;
 }
 
@@ -547,7 +497,25 @@ bool CStockRTData::ReadOneValue(char*& pCurrentPos, char* buffer, long& lCounter
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, long& lCounter)
+bool CStockRTData::ReadOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+  long lTemp;
+  static char buffer3[200];
+
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+    return false;
+  }
+  lTemp = atol(buffer3);
+  if (lTemp < 0) return false;
+  if (lTemp > 0) lReturnValue = lTemp;
+  return true;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CStockRTData::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
 {
   int i = 0;
   bool fFoundPoint = false;
@@ -634,7 +602,7 @@ bool CStockRTData::ReadOneValueExceptperiod(char*& pCurrentPos, char* buffer, lo
 // 48 : 跌停价
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
+bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 {
   static char buffer1[200];
   char buffer2[7];
@@ -652,7 +620,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 3;
-  iTotalRead += 3;
+  lTotalRead += 3;
 
   if (*pCurrentPos == 'h') { // 上海股票
     m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
@@ -664,7 +632,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos++;
-  iTotalRead += 1;
+  lTotalRead += 1;
 
   strncpy_s(buffer2, pCurrentPos, 6);
   buffer2[6] = 0x000;
@@ -681,7 +649,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
   }
   m_iStockCode = atoi(buffer2);
   pCurrentPos += 6;
-  iTotalRead += 6;
+  lTotalRead += 6;
 
   strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
   if (buffer1[0] != '=') {
@@ -691,18 +659,18 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 2;
-  iTotalRead += 2;
+  lTotalRead += 2;
   strncpy_s(buffer1, pCurrentPos, 2);
   if (buffer1[0] == '"') { // 没有数据
     if (buffer1[1] != ';') {
       return false;
     }
-    iTotalRead += 2;
+    lTotalRead += 2;
     pCurrentPos += 2;
     if (*pCurrentPos++ != 0x00a) {
       return false; // 确保是字符 \n
     }
-    iTotalRead++;
+    lTotalRead++;
     return true;
   }
   if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
@@ -712,7 +680,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
     return false;
   }
   pCurrentPos += 2;
-  iTotalRead += 2;
+  lTotalRead += 2;
 
   int i = 2;
   while (*pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
@@ -720,57 +688,57 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer1[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
   buffer1[i] = 0x000;
   m_strStockName = buffer1; // 设置股票名称
 
   pCurrentPos++;
-  iTotalRead++;
+  lTotalRead++;
 
   // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lOpen = lTemp;
   // 读入前收盘价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lLastClose = lTemp;
   // 读入当前价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lNew = lTemp;
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lHigh = lTemp;
   // 读入最低价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lLow = lTemp;
   // 读入竞买价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lBuy = lTemp;
   // 读入竞卖价
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -778,154 +746,154 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
   if (lTemp > 0) m_lSell = lTemp;
 
   // 读入成交股数。成交股数存储实际值
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   llTemp = atoll(buffer3); // 读入的是股数，存储也使用股，故而需要将此变量设为INT64。
   if (llTemp < 0) return false;
-  if (llTemp > 0) m_lVolume = llTemp;
+  if (llTemp > 0) m_llVolume = llTemp;
   // 读入成交金额
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   llTemp = atoll(buffer3);
   if (llTemp < 0) return false;
-  if (llTemp > 0) m_lAmount = llTemp;
+  if (llTemp > 0) m_llAmount = llTemp;
   // 读入买一数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(0) = lTemp;
   // 读入买一价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPBuy.at(0) = lTemp;
   // 读入买二数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(1) = lTemp;
   // 读入买二价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPBuy.at(1) = lTemp;
   // 读入买三数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(2) = lTemp;
   // 读入买三价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPBuy.at(2) = lTemp;
   // 读入买四数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(3) = lTemp;
   // 读入买四价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPBuy.at(3) = lTemp;
   // 读入买五数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(4) = lTemp;
   // 读入买五价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPBuy.at(4) = lTemp;
   // 读入卖一数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(0) = lTemp;
   // 读入卖一价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPSell.at(0) = lTemp;
   // 读入卖二数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(1) = lTemp;
   // 读入卖二价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPSell.at(1) = lTemp;
   // 读入卖三数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(2) = lTemp;
   // 读入卖三价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPSell.at(2) = lTemp;
   // 读入卖四数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(3) = lTemp;
   // 读入卖四价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lPSell.at(3) = lTemp;
   // 读入卖五数量
-  if (!ReadOneValue(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueInSinaData(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(4) = lTemp;
   // 读入卖五价格
-  if (!ReadOneValueExceptperiod(pCurrentPos, buffer3, iTotalRead)) {
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -938,11 +906,11 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer3[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
 
   pCurrentPos++;
-  iTotalRead++;
+  lTotalRead++;
 
   buffer3[i++] = ' ';
   while (*pCurrentPos != ',') {
@@ -950,7 +918,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
       return false;
     }
     buffer3[i++] = *pCurrentPos++;
-    iTotalRead++;
+    lTotalRead++;
   }
   buffer3[i] = 0x000;
 
@@ -970,9 +938,9 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& iTotalRead)
     if (*pCurrentPos == 0x000) {
       return false;
     }
-    iTotalRead++;
+    lTotalRead++;
   }
-  iTotalRead++;
+  lTotalRead++;
   m_fActive = true;
 
   return true;
