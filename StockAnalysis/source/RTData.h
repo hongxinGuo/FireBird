@@ -120,12 +120,19 @@ public:
   }
 
 public:
-  bool ReadOneValueInSinaData(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadOneValueInSinaData(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadOneValueInSinaData(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
+  bool ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
-  bool ReadOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
-  bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
+  bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
+  bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
+  
+  bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
+  // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
+  bool ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
+  bool ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
 public:
   time_t GetTransactionTime(void) noexcept { return m_time; }

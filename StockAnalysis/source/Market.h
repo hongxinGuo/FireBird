@@ -148,8 +148,8 @@ public:
   bool					ProcessDayLineData(char* buffer, long lLength);
   bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
-  bool					ReadOneValueInSinaData(char*& pCurrentPos, char* buffer, long& iReadNumber);
-  bool          ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
+  bool					ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
+  bool          ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
   // 定时更新，完成具体调度任务。由主线程的OnTimerha函数调用
   bool          SchedulingTask(void);

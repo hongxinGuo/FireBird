@@ -151,6 +151,7 @@ long CSystemMessage::GetCancelSellDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  return false; // 此分支不可能执行到，只是为了减少编译器的警告而存在。
 }
 
 long CSystemMessage::GetCancelBuyDequeSize(void)

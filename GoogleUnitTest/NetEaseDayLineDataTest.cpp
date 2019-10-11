@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = gl_ChinaStockMarket.ReadOneValueInSinaData(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = gl_ChinaStockMarket.ReadTengxunOneValue(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {
@@ -228,7 +228,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadOneDayLineValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
-    bool fSucceed = m_RTData.ReadOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = m_RTData.ReadTengxunOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {
