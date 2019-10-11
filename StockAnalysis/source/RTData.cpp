@@ -145,6 +145,7 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
 //
+//  新浪实时行情站点：http://hq.sinajs.cn/
 // var hq_str_sh601006=”大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32”;
@@ -183,7 +184,6 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   char buffer2[7];
   static char buffer3[200];
   static CString strHeader = _T("var hq_str_s");
-  INT64 llTemp = 0;
 
   m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
@@ -435,7 +435,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 读入一个值，遇到逗号结束。返回值在lReturnValue中
+// 读入一个INT64值，遇到逗号结束。返回值在llReturnValue中
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////

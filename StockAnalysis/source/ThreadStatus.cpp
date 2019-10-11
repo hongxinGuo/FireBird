@@ -44,6 +44,7 @@ bool CThreadStatus::IsExitingThread(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetCalculatingDayLineRS(bool fFlag) {
@@ -63,6 +64,7 @@ bool CThreadStatus::IsCalculatingDayLineRS(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetReadingNeteaseDayLine(bool fFlag) {
@@ -82,6 +84,7 @@ bool CThreadStatus::IsReadingNeteaseDayLine(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetSavingDayLine(bool fFlag) {
@@ -101,6 +104,7 @@ bool CThreadStatus::IsSavingDayLine(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetReadingSinaRTData(bool fFlag) {
@@ -120,6 +124,7 @@ bool CThreadStatus::IsReadingSinaRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetReadingTengxunRTData(bool fFlag) {
@@ -139,6 +144,7 @@ bool CThreadStatus::IsReadingTengxunRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetSinaRTDataReceived(bool fFlag) {
@@ -158,6 +164,7 @@ bool CThreadStatus::IsSinaRTDataReceived(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetTengxunRTDataReceived(bool fFlag) {
@@ -177,6 +184,7 @@ bool CThreadStatus::IsTengxunRTDataReceived(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetRTDataNeedCalculate(bool fFlag) {
@@ -196,6 +204,8 @@ bool CThreadStatus::IsRTDataNeedCalculate(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
+
 }
 
 void CThreadStatus::SetDayLineDataReady(bool fFlag) {
@@ -215,6 +225,7 @@ bool CThreadStatus::IsDayLineDataReady(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetCalculatingRTData(bool fFlag) {
@@ -234,6 +245,7 @@ bool CThreadStatus::IsCalculatingRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetSavingTempData(bool fFlag) {
@@ -253,6 +265,7 @@ bool CThreadStatus::IsSavingTempData(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::SetSavingStockCodeData(bool fFlag) {
@@ -272,6 +285,7 @@ bool CThreadStatus::IsSavingStockCodeData(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 void CThreadStatus::IncreaseNunberOfCalculatingRSThreads(void) {
@@ -315,6 +329,7 @@ bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
     singleLock.Unlock();
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
 
 bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
@@ -330,4 +345,5 @@ bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
 
     return fFlag;
   }
+  return false; // 此分支不可能执行到
 }
