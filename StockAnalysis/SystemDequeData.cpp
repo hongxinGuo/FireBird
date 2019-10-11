@@ -46,6 +46,8 @@ CStockRTDataPtr CSystemQueueData::PopRTData(void)
     singleLock.Unlock();
     return pData;
   }
+  ASSERT(0);
+  return nullptr; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemQueueData::GetRTDataDequeSize(void)
@@ -57,6 +59,8 @@ long CSystemQueueData::GetRTDataDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CSystemQueueData::PushPriorityRTData(CStockRTDataPtr pData)
@@ -80,6 +84,8 @@ CStockRTDataPtr CSystemQueueData::PopPriorityRTData(void)
     singleLock.Unlock();
     return pData;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemQueueData::GetPriorityRTDataDequeSize(void)
@@ -91,4 +97,6 @@ long CSystemQueueData::GetPriorityRTDataDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }

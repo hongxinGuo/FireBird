@@ -42,6 +42,8 @@ CString CSystemMessage::PopInformationMessage(void)
     singleLock.Unlock();
     return str;     // 只能从这里返回
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 CString CSystemMessage::PopDayLineInfoMessage(void)
@@ -55,6 +57,8 @@ CString CSystemMessage::PopDayLineInfoMessage(void)
     singleLock.Unlock();
     return str;
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 CString CSystemMessage::PopTransactionMessage(void)
@@ -68,6 +72,8 @@ CString CSystemMessage::PopTransactionMessage(void)
     singleLock.Unlock();
     return str;
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 CString CSystemMessage::PopCancelSellMessage(void)
@@ -81,6 +87,8 @@ CString CSystemMessage::PopCancelSellMessage(void)
     singleLock.Unlock();
     return str;
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 CString CSystemMessage::PopCancelBuyMessage(void)
@@ -94,6 +102,8 @@ CString CSystemMessage::PopCancelBuyMessage(void)
     singleLock.Unlock();
     return str;
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 CString CSystemMessage::PopTrace2Message(void)
@@ -107,6 +117,8 @@ CString CSystemMessage::PopTrace2Message(void)
     singleLock.Unlock();
     return str;
   }
+  ASSERT(0);
+  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetInformationDequeSize(void)
@@ -118,6 +130,8 @@ long CSystemMessage::GetInformationDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetDayLineInfoDequeSize(void)
@@ -129,6 +143,8 @@ long CSystemMessage::GetDayLineInfoDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetTransactionDequeSize(void)
@@ -140,6 +156,8 @@ long CSystemMessage::GetTransactionDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetCancelSellDequeSize(void)
@@ -151,7 +169,8 @@ long CSystemMessage::GetCancelSellDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
-  return false; // 此分支不可能执行到，只是为了减少编译器的警告而存在。
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetCancelBuyDequeSize(void)
@@ -163,6 +182,8 @@ long CSystemMessage::GetCancelBuyDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 long CSystemMessage::GetTrace2DequeSize(void)
@@ -174,7 +195,8 @@ long CSystemMessage::GetTrace2DequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
-  return 0;
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CSystemMessage::PushDayLineInfoMessage(CString str)

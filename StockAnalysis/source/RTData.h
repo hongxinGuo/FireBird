@@ -120,6 +120,7 @@ public:
   }
 
 public:
+  // 读取新浪实时数据函数
   bool ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
   bool ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
   bool ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
@@ -127,10 +128,11 @@ public:
   bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
   bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
   
+  // 读取腾讯实时数据函数
   bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
   bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
-  // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
+  bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘~’。
+  // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘~’。
   bool ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
   bool ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
@@ -195,14 +197,14 @@ protected:
   long  	  m_lNew;									// 今日最新。单位：0.001元
   long  	  m_lHigh;								// 今日最高。单位：0.001元
   long  	  m_lLow;									// 今日最低。单位：0.001元
-  long      m_lBuy;                // 竞买价。单位：0.001元
-  long      m_lSell;               // 竞卖价。单位：0.001元
+  long      m_lBuy;                 // 竞买价。单位：0.001元
+  long      m_lSell;                // 竞卖价。单位：0.001元
   INT64	    m_llVolume;							// 总成交量。单位：股
   INT64     m_llAmount;							// 总成交金额。单位：元
-  array<long, 5>  	  m_lPBuy;							// 买盘价1 -- 5。单位：0.001元
-  array<long, 5> 		  m_lVBuy;							// 买盘量1 -- 5。单位：股
-  array<long, 5>  	  m_lPSell;						// 卖盘价1 -- 5。单位：0.001元
-  array<long, 5>  		m_lVSell;						// 卖盘量1 -- 5。单位: 股
+  array<long, 5>  	  m_lPBuy;			// 买盘价1--5。单位：0.001元
+  array<long, 5> 		  m_lVBuy;			// 买盘量1--5。单位：股
+  array<long, 5>  	  m_lPSell;			// 卖盘价1--5。单位：0.001元
+  array<long, 5>  		m_lVSell;			// 卖盘量1--5。单位: 股
 
 // 非存储数据
   bool      m_fActive;              // 本股票是否存在实时数据

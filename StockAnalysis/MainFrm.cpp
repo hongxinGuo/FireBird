@@ -60,7 +60,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   //ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
   //ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
   //ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
-  ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRs)
+  ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
 END_MESSAGE_MAP()
@@ -691,7 +691,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::OnRebuildDaylineRs()
+void CMainFrame::OnRebuildDaylineRS()
 {
   // TODO: Add your command handler code here
 

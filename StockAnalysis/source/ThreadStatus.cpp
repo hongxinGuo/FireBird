@@ -17,12 +17,15 @@ CThreadStatus::CThreadStatus() {
   m_fReadingNeteaseDayLine = false;
   m_fSavingDayLine = false;
   m_fReadingSinaRTData = false;
+  m_fReadingTengxunRTData = false;
   m_fSinaRTDataReceived = false;
+  m_fTengxunRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
   m_fCalculatingRTData = false;
   m_fSavingTempData = false;
   m_fSavingStockCodeData = false;
+  m_fCalculatingDayLineRelativeStrong = false;
 
   m_iNumberOfCalculatingRSThreads = 0;
 }
@@ -44,7 +47,8 @@ bool CThreadStatus::IsExitingThread(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetCalculatingDayLineRS(bool fFlag) {
@@ -64,7 +68,8 @@ bool CThreadStatus::IsCalculatingDayLineRS(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetReadingNeteaseDayLine(bool fFlag) {
@@ -84,7 +89,8 @@ bool CThreadStatus::IsReadingNeteaseDayLine(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetSavingDayLine(bool fFlag) {
@@ -104,7 +110,8 @@ bool CThreadStatus::IsSavingDayLine(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetReadingSinaRTData(bool fFlag) {
@@ -124,7 +131,8 @@ bool CThreadStatus::IsReadingSinaRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetReadingTengxunRTData(bool fFlag) {
@@ -144,7 +152,8 @@ bool CThreadStatus::IsReadingTengxunRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetSinaRTDataReceived(bool fFlag) {
@@ -164,7 +173,8 @@ bool CThreadStatus::IsSinaRTDataReceived(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetTengxunRTDataReceived(bool fFlag) {
@@ -184,7 +194,8 @@ bool CThreadStatus::IsTengxunRTDataReceived(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetRTDataNeedCalculate(bool fFlag) {
@@ -204,8 +215,8 @@ bool CThreadStatus::IsRTDataNeedCalculate(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
-
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetDayLineDataReady(bool fFlag) {
@@ -225,7 +236,8 @@ bool CThreadStatus::IsDayLineDataReady(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetCalculatingRTData(bool fFlag) {
@@ -245,7 +257,8 @@ bool CThreadStatus::IsCalculatingRTData(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetSavingTempData(bool fFlag) {
@@ -265,7 +278,8 @@ bool CThreadStatus::IsSavingTempData(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::SetSavingStockCodeData(bool fFlag) {
@@ -285,7 +299,8 @@ bool CThreadStatus::IsSavingStockCodeData(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::IncreaseNunberOfCalculatingRSThreads(void) {
@@ -329,7 +344,8 @@ bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
@@ -345,5 +361,6 @@ bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
 
     return fFlag;
   }
-  return false; // 此分支不可能执行到
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
