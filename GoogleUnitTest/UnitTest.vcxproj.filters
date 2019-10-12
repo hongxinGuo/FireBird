@@ -27,9 +27,6 @@
     <ClCompile Include="MarketTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="RTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="StockIDTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
@@ -55,6 +52,12 @@
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaRTDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

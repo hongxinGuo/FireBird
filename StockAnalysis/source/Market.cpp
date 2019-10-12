@@ -71,7 +71,7 @@ void CMarket::Reset(void)
   m_fCalculatingRS = false;
 
   m_fGetRTStockData = true;
-  m_fReadingTengxunRTData = false; // 默认状态下不读取腾讯实时行情
+  m_fReadingTengxunRTData = true; // 默认状态下不读取腾讯实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
@@ -402,7 +402,7 @@ bool CMarket::GetTengxunStockRTData(void)
       if (gl_stTengxunRTDataInquire.fError == false) { //网络通信一切顺利？
         iTotalNumber = gl_stTengxunRTDataInquire.lByteRead;
         pCurrentPos = gl_stTengxunRTDataInquire.buffer;
-        long  iCount = 0;
+        long iCount = 0;
         /*
         while (iCount < iTotalNumber) { // 腾讯实时数据基本没有错误，不需要抛掉最后一组数据了。
           pRTData = make_shared<CStockRTData>();
@@ -1233,7 +1233,7 @@ bool CMarket::SchedulingTask(void)
     }
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 3; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次
 
   }
