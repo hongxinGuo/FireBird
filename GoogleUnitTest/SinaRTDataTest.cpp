@@ -943,7 +943,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadOneValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
-    bool fSucceed = m_RTData.ReadTengxunOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = m_RTData.ReadSinaOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {
@@ -1047,7 +1047,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadOneValueTest, TestReadSinaOneValue2) {
     char buffer[30];
-    bool fSucceed = m_RTData.ReadTengxunOneValue(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = m_RTData.ReadSinaOneValue(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

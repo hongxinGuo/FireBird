@@ -884,8 +884,8 @@ namespace StockAnalysisTest {
     }
   }
 
-  struct ReadTengxunOneValueExceptPeriodData {
-    ReadTengxunOneValueExceptPeriodData(int count, CString Data) {
+  struct ReadTengxunOneValueData {
+    ReadTengxunOneValueData(int count, CString Data) {
       m_iCount = count;
       m_strData = Data;
     }
@@ -895,130 +895,26 @@ namespace StockAnalysisTest {
   };
 
   // 成功
-  ReadTengxunOneValueExceptPeriodData data1(1, _T("11.050,"));
+  ReadTengxunOneValueData rdata1(1, _T("11.050~"));
   // 小数点后两位
-  ReadTengxunOneValueExceptPeriodData data2(2, _T("11.05,"));
+  ReadTengxunOneValueData rdata2(2, _T("11.05~"));
   // 小数点后一位
-  ReadTengxunOneValueExceptPeriodData data3(3, _T("11.0,"));
+  ReadTengxunOneValueData rdata3(3, _T("11.0~"));
   // 小数点前出现0x00a
-  ReadTengxunOneValueExceptPeriodData data4(4, _T("1\n1.050,"));
+  ReadTengxunOneValueData rdata4(4, _T("1\n1.050~"));
   // 小数点后出现0x00a
-  ReadTengxunOneValueExceptPeriodData data5(5, _T("11.0\n50,"));
+  ReadTengxunOneValueData rdata5(5, _T("11.0\n50~"));
   // 缺少','
-  ReadTengxunOneValueExceptPeriodData data6(6, _T("11.050"));
-  // 读取小数点后三位后，放弃气候多余的数值
-  ReadTengxunOneValueExceptPeriodData data7(7, _T("11.050000,"));
+  ReadTengxunOneValueData rdata6(6, _T("11.050"));
+  // 读取小数点所有的数值
+  ReadTengxunOneValueData rdata7(7, _T("11.050001~"));
   // 0x00a出现于‘，’前。
-  ReadTengxunOneValueExceptPeriodData data8(8, _T("11.05000\n,"));
+  ReadTengxunOneValueData rdata8(8, _T("11.05000\n~"));
 
-  class ReadTengxunOneValueExceptPeriodTest : public::testing::TestWithParam<ReadTengxunOneValueExceptPeriodData*> {
+  class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
   protected:
     void SetUp(void) override {
-      ReadTengxunOneValueExceptPeriodData* pData = GetParam();
-      m_iCount = pData->m_iCount;
-      long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
-      for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
-      }
-      m_pData[lLength] = 0x000;
-      m_pCurrentPos = m_pData;
-      m_lCountPos = 0;
-    }
-
-    void TearDown(void) override {
-      // clearup
-      delete m_pData;
-    }
-
-  public:
-    int m_iCount;
-    char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos = 0;
-    CStockRTData m_RTData;
-  };
-
-  INSTANTIATE_TEST_CASE_P(TestReadTengxunOneValueExceptPeriod, ReadTengxunOneValueExceptPeriodTest,
-    testing::Values(&data1, &data2, &data3, &data4, &data5, &data6, &data7, &data8
-    ));
-
-  TEST_P(ReadTengxunOneValueExceptPeriodTest, TestReadTengxunOneValue) {
-    char buffer[30];
-    bool fSucceed = m_RTData.ReadTengxunOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
-    CString str;
-    str = buffer;
-    switch (m_iCount) {
-    case 1:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 7);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
-    case 2:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 6);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
-    case 3:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 5);
-      EXPECT_STREQ(str, _T("11000"));
-      break;
-    case 4:
-      EXPECT_FALSE(fSucceed);
-      break;
-    case 5:
-      EXPECT_FALSE(fSucceed);
-      break;
-    case 6:
-      EXPECT_FALSE(fSucceed);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
-    case 7:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 10);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
-    case 8:
-      EXPECT_FALSE(fSucceed);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
-    default:
-      break;
-    }
-  }
-
-  struct ReadTengxunOneCalueData {
-    ReadTengxunOneCalueData(int count, CString Data) {
-      m_iCount = count;
-      m_strData = Data;
-    }
-  public:
-    int m_iCount;
-    CString m_strData;
-  };
-
-  // 成功
-  ReadTengxunOneCalueData rdata1(1, _T("11.050,"));
-  // 小数点后两位
-  ReadTengxunOneCalueData rdata2(2, _T("11.05,"));
-  // 小数点后一位
-  ReadTengxunOneCalueData rdata3(3, _T("11.0,"));
-  // 小数点前出现0x00a
-  ReadTengxunOneCalueData rdata4(4, _T("1\n1.050,"));
-  // 小数点后出现0x00a
-  ReadTengxunOneCalueData rdata5(5, _T("11.0\n50,"));
-  // 缺少','
-  ReadTengxunOneCalueData rdata6(6, _T("11.050"));
-  // 读取小数点后三位后，放弃气候多余的数值
-  ReadTengxunOneCalueData rdata7(7, _T("11.050000,"));
-  // 0x00a出现于‘，’前。
-  ReadTengxunOneCalueData rdata8(8, _T("11.05000\n,"));
-
-  class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneCalueData*> {
-  protected:
-    void SetUp(void) override {
-      ReadTengxunOneCalueData* pData = GetParam();
+      ReadTengxunOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pData = new char[lLength + 1];
@@ -1080,7 +976,7 @@ namespace StockAnalysisTest {
     case 7:
       EXPECT_TRUE(fSucceed);
       EXPECT_EQ(m_lCountPos, 10);
-      EXPECT_STREQ(str, _T("11.050000"));
+      EXPECT_STREQ(str, _T("11.050001"));
       break;
     case 8:
       EXPECT_FALSE(fSucceed);

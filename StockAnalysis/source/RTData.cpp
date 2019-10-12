@@ -697,48 +697,48 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   lTotalRead++;
 
   // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lOpen = lTemp;
   // 读入前收盘价
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lLastClose = lTemp;
   // 读入当前价
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lNew = lTemp;
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lHigh = lTemp;
   // 读入最低价
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lLow = lTemp;
   // 读入竞买价
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lBuy = lTemp;
   // 读入竞卖价
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -767,7 +767,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(0) = lTemp;
   // 读入买一价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -781,7 +781,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(1) = lTemp;
   // 读入买二价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -795,7 +795,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(2) = lTemp;
   // 读入买三价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -809,7 +809,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(3) = lTemp;
   // 读入买四价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -823,7 +823,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVBuy.at(4) = lTemp;
   // 读入买五价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -837,7 +837,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(0) = lTemp;
   // 读入卖一价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -851,7 +851,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(1) = lTemp;
   // 读入卖二价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -865,7 +865,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(2) = lTemp;
   // 读入卖三价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -879,7 +879,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(3) = lTemp;
   // 读入卖四价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -893,7 +893,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp < 0) return false;
   if (lTemp > 0) m_lVSell.at(4) = lTemp;
   // 读入卖五价格
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -1002,68 +1002,5 @@ bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& l
   pCurrentPos++;
   i++;
   lTotalRead += i;
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
-  long lTemp;
-  static char buffer3[200];
-
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
-    return false;
-  }
-  lTemp = atol(buffer3);
-  if (lTemp < 0) return false;
-  if (lTemp > 0) lReturnValue = lTemp;
-  return true;
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
-{
-  int i = 0;
-  bool fFoundPoint = false;
-  int iCount = 0;
-  while ((*pCurrentPos != ',') && (iCount < 3)) {
-    if (fFoundPoint) iCount++;
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
-    if (*pCurrentPos == '.') {
-      fFoundPoint = true;
-      pCurrentPos++;
-    }
-    else buffer[i++] = *pCurrentPos++;
-  }
-
-  if (fFoundPoint && (iCount < 3)) {
-    int jCount = i;
-    for (int j = iCount; j < 3; j++) {
-      buffer[jCount++] = '0';
-    }
-    buffer[jCount] = 0x000;
-  }
-  else {
-    buffer[i] = 0x000;
-  }
-
-  while (*pCurrentPos != ',') {
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
-    i++;
-    pCurrentPos++;
-  }
-  pCurrentPos++;
-  i++;
-  if (fFoundPoint) i++;
-  lCounter += i; // 多加1，是需要加上少算的逗号
-
   return true;
 }

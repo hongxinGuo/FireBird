@@ -745,6 +745,8 @@ clock_t CMarket::GetReadingSinaRTDataTime(void)
     singleLock.Unlock();
     return tt;
   }
+  ASSERT(0);
+  return 0; // 此分支不可能执行到
 }
 
 void CMarket::SetReadingTengxunRTDataTime(clock_t tt)
@@ -767,6 +769,8 @@ clock_t CMarket::GetReadingTengxunRTDataTime(void)
     singleLock.Unlock();
     return tt;
   }
+  ASSERT(0);
+  return 0; // 此分支不可能执行到
 }
 
 void CMarket::SetReadingNeteaseDayDataTime(clock_t tt)
@@ -788,6 +792,8 @@ clock_t CMarket::GetReadingNeteaseDayDataTime(void)
     singleLock.Unlock();
     return tt;
   }
+  ASSERT(0);
+  return 0; // 此分支不可能执行到
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
