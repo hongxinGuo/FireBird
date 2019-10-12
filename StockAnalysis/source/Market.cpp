@@ -1070,7 +1070,7 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
   pCurrentPos++;
   iCount++;
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   pDayLine->SetStockCode(m_strCurrentStockDownLoading);
   str = m_strCurrentStockDownLoading.Left(2);
@@ -1084,26 +1084,26 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
     ASSERT(0); // 股票代码制式出错
     return false;
   }
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   pDayLine->SetStockName(str);
 
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetClose(atol(buffer2));
 
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetHigh(atol(buffer2));
 
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetLow(atol(buffer2));
 
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetOpen(atol(buffer2));
 
-  if (!ReadTengxunOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetLastClose(atol(buffer2));
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   if (pDayLine->GetOpen() == 0) {
     //ASSERT(strcmp(buffer2, "None") == 0);
     pDayLine->SetUpDown(0);
@@ -1118,16 +1118,16 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
     pDayLine->SetUpDownRate(((double)(pDayLine->GetUpDown() * 100000.0)) / pDayLine->GetLastClose());
   }
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetChangeHandRate(atof(buffer2));
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetVolume(atoll(buffer2)); // 读入的是股数
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetAmount(atoll(buffer2));
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetTotalValue(atoll(buffer2)); // 总市值的单位为：元
 
   i = 0;
@@ -1148,7 +1148,7 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
   return true;
 }
 
-bool CMarket::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber)
+bool CMarket::ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber)
 {
   int i = 0;
 
@@ -1171,7 +1171,7 @@ bool CMarket::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& iReadN
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ReadTengxunOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
+bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
 {
   int i = 0;
   bool fFoundPoint = false;

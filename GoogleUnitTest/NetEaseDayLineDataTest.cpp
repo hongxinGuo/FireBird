@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = gl_ChinaStockMarket.ReadTengxunOneValue(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = gl_ChinaStockMarket.ReadOneValue(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {
