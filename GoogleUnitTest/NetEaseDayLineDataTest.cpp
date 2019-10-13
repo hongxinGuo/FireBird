@@ -18,16 +18,16 @@ namespace StockAnalysisTest {
     CString m_strData;
   };
 
-  NetEaseDayLineData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data2(2, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data3(3, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data4(4, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data5(5, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data6(6, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data7(7, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
-  NetEaseDayLineData Data8(8, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11"));
+  NetEaseDayLineData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data2(2, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data3(3, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data4(4, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data5(5, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data6(6, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data7(7, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data8(8, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
 
-  class CalculateNetEaseDayLineDataTest : public::testing::TestWithParam<NetEaseDayLineData*> {
+  class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
   protected:
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
       long lLength = pData->m_strData.GetLength();
       m_pData = new char[lLength + 1];
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pData[i] = pData->m_strData.GetAt(i);
       }
       m_pCurrentPos = m_pData;
       m_lCountPos = 0;
@@ -47,6 +47,10 @@ namespace StockAnalysisTest {
       m_DayLine.SetLastClose(-1);
       m_DayLine.SetHigh(-1);
       m_DayLine.SetLow(-1);
+
+      m_DayLinePtr = make_shared<CDayLine>();
+
+      gl_ChinaStockMarket.SetDownLoadingStockCodeStr(_T("sh600000")); // Data1--8中全部使用此股票代码
     }
 
     void TearDown(void) override {
@@ -60,12 +64,44 @@ namespace StockAnalysisTest {
     char* m_pCurrentPos;
     long m_lCountPos = 0;
     CDayLine m_DayLine;
+    CDayLinePtr m_DayLinePtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, CalculateNetEaseDayLineDataTest, testing::Values(&Data1, &Data2, &Data3,
+  INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest, testing::Values(&Data1, &Data2, &Data3,
     &Data4, &Data5, &Data6, &Data7, &Data8
   ));
-
+  
+  TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
+    long lCount = 0;
+    bool fSucceed = gl_ChinaStockMarket.ProcessOneItemDayLineData(m_DayLinePtr, m_pCurrentPos, lCount);
+    switch (m_iCount) {
+    case 1:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 2:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 3:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 4:
+    case 5:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 6:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 7:
+      EXPECT_TRUE(fSucceed);
+      break;
+    case 8:
+      EXPECT_TRUE(fSucceed);
+      break;
+    default :
+      break;
+    }
+  }
+  
   struct ReadDayLineOneValueData {
     ReadDayLineOneValueData(int count, CString Data) {
       m_iCount = count;
@@ -219,7 +255,6 @@ namespace StockAnalysisTest {
     char* m_pData;
     char* m_pCurrentPos;
     long m_lCountPos = 0;
-    CStockRTData m_RTData;
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadOneValueExceptPeriod, ReadOneDayLineValueExceptPeriodTest,
@@ -228,7 +263,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadOneDayLineValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
-    bool fSucceed = m_RTData.ReadSinaOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = gl_ChinaStockMarket.ReadOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

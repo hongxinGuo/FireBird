@@ -1012,6 +1012,8 @@ namespace StockAnalysisTest {
   ReadSinaOneCalueData rdata7(7, _T("11.050000,"));
   // 0x00a出现于‘，’前。
   ReadSinaOneCalueData rdata8(8, _T("11.05000\n,"));
+  // 只有,
+  ReadSinaOneCalueData rdata9(9, _T(","));
 
   class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
   protected:
@@ -1042,10 +1044,102 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadOneValue, ReadOneValueTest,
-    testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
+    testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
     ));
 
+  TEST_P(ReadOneValueTest, TestReadSinaOneValue1) {
+    INT64 llTemp = 0;
+    bool fSucceed = m_RTData.ReadSinaOneValue(m_pCurrentPos, llTemp, m_lCountPos);
+    switch (m_iCount) {
+    case 1:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 7);
+      EXPECT_EQ(llTemp, 11);
+      break;
+    case 2:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 6);
+      EXPECT_EQ(llTemp, 11);
+      break;
+    case 3:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 5);
+      EXPECT_EQ(llTemp, 11);
+      break;
+    case 4:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 5:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 6:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 7:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 10);
+      EXPECT_EQ(llTemp, 11);
+      break;
+    case 8:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 9:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 1);      
+      EXPECT_EQ(llTemp, 0);
+      break;
+    default:
+      break;
+    }
+  }
+
   TEST_P(ReadOneValueTest, TestReadSinaOneValue2) {
+    long lTemp = 0;
+    bool fSucceed = m_RTData.ReadSinaOneValue(m_pCurrentPos, lTemp, m_lCountPos);
+    switch (m_iCount) {
+    case 1:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 7);
+      EXPECT_EQ(lTemp, 11);
+      break;
+    case 2:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 6);
+      EXPECT_EQ(lTemp, 11);
+      break;
+    case 3:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 5);
+      EXPECT_EQ(lTemp, 11);
+      break;
+    case 4:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 5:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 6:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 7:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 10);
+      EXPECT_EQ(lTemp, 11);
+      break;
+    case 8:
+      EXPECT_FALSE(fSucceed);
+      break;
+    case 9:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 1);
+      EXPECT_EQ(lTemp, 0);
+      break;
+    default:
+      break;
+    }
+  }
+
+  TEST_P(ReadOneValueTest, TestReadSinaOneValue3) {
     char buffer[30];
     bool fSucceed = m_RTData.ReadSinaOneValue(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
@@ -1082,6 +1176,11 @@ namespace StockAnalysisTest {
       break;
     case 8:
       EXPECT_FALSE(fSucceed);
+      break;
+    case 9:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(m_lCountPos, 1);
+      EXPECT_STREQ(str, _T(""));
       break;
     default:
       break;

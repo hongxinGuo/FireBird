@@ -109,6 +109,7 @@ void CDayLine::SetData(CSetDayLine* pDayLine)
   m_fChangeHandRate = pDayLine->m_ChangeHandRate;
   m_lTotalValue = pDayLine->m_TotalValue;
   m_lCurrentValue = pDayLine->m_CurrentValue;
+  m_dRelativeStrong = pDayLine->m_RelativeStrong;
   /*
   m_lTransactionNumber = pDayLine->m_TransactionNumber;
   m_lTransactionNumberBelow5000 = pDayLine->m_TransactionNumberBelow5000;
@@ -122,7 +123,6 @@ void CDayLine::SetData(CSetDayLine* pDayLine)
   m_lUnknownVolume = pDayLine->m_UnknownVolume;
   m_lCancelBuyVolume = pDayLine->m_CancelBuyVolume;
   m_lCancelSellVolume = pDayLine->m_CancelSellVolume;
-  m_dRelativeStrong = pDayLine->m_RelativeStrong;
   m_lOrdinaryBuyVolume = pDayLine->m_OrdinaryBuyVolume;
   m_lAttackBuyBelow50000 = pDayLine->m_AttackBuyBelow50000;
   m_lAttackBuyBelow200000 = pDayLine->m_AttackBuyBelow200000;

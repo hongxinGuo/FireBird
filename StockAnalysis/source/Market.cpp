@@ -1033,6 +1033,9 @@ bool CMarket::ProcessDayLineData(char* buffer, long lLength) {
 //
 // 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
 //
+// 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,涨跌比率,换手率,成交股数,成交金额,总市值,流通市值\r\n
+//
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength) {
   long iCount = 0;
@@ -1066,7 +1069,7 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
   pDayLine->SetDay(lDay);
   //TRACE("%d %d %d\n", year, month, day);
 
-  if (*pCurrentPos != 0x27) return(false); // 数据出错，放弃载入
+  if (*pCurrentPos != 0x27) return(false); // 不是逗号，数据出错，放弃载入
   pCurrentPos++;
   iCount++;
 
@@ -1130,8 +1133,9 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetTotalValue(atoll(buffer2)); // 总市值的单位为：元
 
+  // 流通市值不是用逗号结束，故而不能使用ReadOneValue函数
   i = 0;
-  while (*pCurrentPos != 0x0d) {
+  while (*pCurrentPos != 0x00d) {
     if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false; // 数据出错，放弃载入
     buffer2[i++] = *pCurrentPos++;
     iCount++;
@@ -1140,6 +1144,7 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
   iCount++;
   buffer2[i] = 0x000;
   pDayLine->SetCurrentValue(atoll(buffer2)); // 流通市值的单位为：元。
+  // \r后面紧跟着应该是\n
   if (*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
   iCount++;
 
