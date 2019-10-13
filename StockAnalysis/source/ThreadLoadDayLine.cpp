@@ -1,6 +1,7 @@
 #include"globedef.h"
 
 #include"DayLine.h"
+#include"SetDayLineInfo.h"
 #include"Market.h"
 
 #include"Thread.h"
@@ -18,7 +19,9 @@ using namespace std;
 UINT ThreadLoadDayLine(LPVOID) {
   CSetDayLine setDayLine;
   CDayLinePtr pDayLine;
+  CSetDayLineInfo setDayLineInfo;
 
+  // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
   setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
   setDayLine.m_strFilter += _T("'");
@@ -31,6 +34,29 @@ UINT ThreadLoadDayLine(LPVOID) {
     gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.push_back(pDayLine);
     setDayLine.MoveNext();
   }
+  setDayLine.Close();
+
+  // 装入DayLineInfo数据
+  setDayLineInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineInfo.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLineInfo.m_strFilter += _T("'");
+  setDayLineInfo.m_strSort = _T("[Time]");
+  setDayLineInfo.Open();
+  int iPosition = 0;
+  while (!setDayLineInfo.IsEOF()) {
+    pDayLine = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[iPosition];
+    while ((pDayLine->GetDay() < setDayLineInfo.m_Day)
+      && (gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size() > (iPosition + 1))) {
+      iPosition++;
+      pDayLine = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine[iPosition];
+    }
+    if (pDayLine->GetDay() == setDayLineInfo.m_Day) {
+      pDayLine->SetData(&setDayLineInfo);
+    }
+    if (gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size() <= (iPosition + 1)) break;
+    setDayLineInfo.MoveNext();
+  }
+  setDayLineInfo.Close();
 
   // 计算各相对强度
   double dTempRS = 0;
@@ -85,7 +111,6 @@ UINT ThreadLoadDayLine(LPVOID) {
   }
 
   gl_ChinaStockMarket.m_pCurrentStock->SetDayLineLoaded(true);
-  setDayLine.Close();
 
   return 7;
 }
