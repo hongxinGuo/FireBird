@@ -157,6 +157,7 @@ public:
 
   void UpdataCurrentStatus(CStockRTDataPtr pRTData);
 
+  // 日线装载函数
   bool LoadDayLine(void);
   bool LoadDayLine(CSetDayLine* psetDayLine);
   bool LoadDayLine(CSetDayLineInfo* psetDayLine);

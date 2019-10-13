@@ -1,13 +1,7 @@
 #include"globedef.h"
 
-#include"DayLine.h"
-#include"SetDayLineInfo.h"
 #include"Market.h"
-
 #include"Thread.h"
-
-using namespace std;
-#include<memory>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -22,7 +16,6 @@ UINT ThreadLoadDayLine(LPVOID) {
 
   // 装入日线数据
   gl_ChinaStockMarket.m_pCurrentStock->LoadDayLine();
-
   // 计算各相对强度
   gl_ChinaStockMarket.m_pCurrentStock->CalculateDayLineRS();
 

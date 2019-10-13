@@ -211,7 +211,7 @@ bool CStock::CalculateDayLine5RS(void)
   for (int i = 5; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 5; j < i; j++) {
-      m_vDayLine.at(j)->GetRelativeStrong();
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
     m_vDayLine.at(i)->m_d5DayRS = dTempRS / 5;
   }
@@ -225,7 +225,7 @@ bool CStock::CalculateDayLine10RS(void)
   for (int i = 10; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (int j = i - 10; j < i; j++) {
-      m_vDayLine.at(j)->GetRelativeStrong();
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
     m_vDayLine.at(i)->m_d10DayRS = dTempRS / 10;
   }
