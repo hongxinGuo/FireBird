@@ -156,7 +156,17 @@ public:
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
   void UpdataCurrentStatus(CStockRTDataPtr pRTData);
+
+  bool LoadDayLine(void);
   bool LoadDayLine(CSetDayLine* psetDayLine);
+  bool LoadDayLine(CSetDayLineInfo* psetDayLine);
+  bool CalculateDayLineRS(void);
+  bool CalculateDayLine3RS(void);
+  bool CalculateDayLine5RS(void);
+  bool CalculateDayLine10RS(void);
+  bool CalculateDayLine30RS(void);
+  bool CalculateDayLine60RS(void);
+  bool CalculateDayLine120RS(void);
 
   // 计算实时数据, 由工作线程ThreadCalculatingRTDataProc调用
   bool CalculateRTData(void);

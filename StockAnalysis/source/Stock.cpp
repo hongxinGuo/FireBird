@@ -118,8 +118,159 @@ void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
   }
 }
 
+bool CStock::LoadDayLine(void) {
+  CSetDayLine setDayLine;
+  CSetDayLineInfo setDayLineInfo;
+  
+  // 装入DayLine数据
+  setDayLine.m_strFilter = _T("[StockCode] = '");
+  setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLine.m_strFilter += _T("'");
+  setDayLine.m_strSort = _T("[Time]");
+  setDayLine.Open();
+  LoadDayLine(&setDayLine);
+  setDayLine.Close();
+
+  // 装入DayLineInfo数据
+  setDayLineInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineInfo.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLineInfo.m_strFilter += _T("'");
+  setDayLineInfo.m_strSort = _T("[Time]");
+  setDayLineInfo.Open();
+  LoadDayLine(&setDayLineInfo);
+  setDayLineInfo.Close();
+
+  return true;
+}
+
 bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 {
+  CDayLinePtr pDayLine;
+
+  // 装入DayLine数据
+  gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.clear();
+  while (!psetDayLine->IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetData(psetDayLine);
+    m_vDayLine.push_back(pDayLine);
+    psetDayLine->MoveNext();
+  }
+  return true;
+}
+
+bool CStock::LoadDayLine(CSetDayLineInfo* psetDayLineInfo) {
+  CDayLinePtr pDayLine;
+  
+  int iPosition = 0;
+  while (!psetDayLineInfo->IsEOF()) {
+    pDayLine = m_vDayLine[iPosition];
+    while ((pDayLine->GetDay() < psetDayLineInfo->m_Day)
+      && (m_vDayLine.size() > (iPosition + 1))) {
+      iPosition++;
+      pDayLine = m_vDayLine[iPosition];
+    }
+    if (pDayLine->GetDay() == psetDayLineInfo->m_Day) {
+      pDayLine->SetData(psetDayLineInfo);
+    }
+    if (m_vDayLine.size() <= (iPosition + 1)) break;
+    psetDayLineInfo->MoveNext();
+  }
+
+  return true;
+}
+
+bool CStock::CalculateDayLineRS(void)
+{
+  CalculateDayLine3RS();
+  CalculateDayLine5RS();
+  CalculateDayLine10RS();
+  CalculateDayLine30RS();
+  CalculateDayLine60RS();
+  CalculateDayLine120RS();
+  return true;
+}
+
+bool CStock::CalculateDayLine3RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 3; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 3; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d3DayRS = dTempRS / 3;
+  }
+  return true;
+}
+
+bool CStock::CalculateDayLine5RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 5; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 5; j < i; j++) {
+      m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d5DayRS = dTempRS / 5;
+  }
+  return true;
+}
+
+bool CStock::CalculateDayLine10RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 10; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 10; j < i; j++) {
+      m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d10DayRS = dTempRS / 10;
+  }
+  return true;
+}
+
+bool CStock::CalculateDayLine30RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 30; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 30; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d30DayRS = dTempRS / 30;
+  }
+  return false;
+}
+
+bool CStock::CalculateDayLine60RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 60; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 60; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d60DayRS = dTempRS / 60;
+  }
+  return false;
+}
+
+bool CStock::CalculateDayLine120RS(void)
+{
+  double dTempRS = 0;
+  const long lTotalNumber = m_vDayLine.size();
+  for (int i = 120; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (int j = i - 120; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    m_vDayLine.at(i)->m_d120DayRS = dTempRS / 120;
+  }
   return false;
 }
 
