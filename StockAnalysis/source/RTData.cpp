@@ -145,7 +145,7 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
 //
-//  新浪实时行情站点：http://hq.sinajs.cn/
+//  新浪实时行情站点：http://hq.sinajs.cn/list=sh601006
 // var hq_str_sh601006=”大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32”;
@@ -362,6 +362,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   tm_.tm_isdst = 0;
   m_time = mktime(&tm_);
 
+  // 后面的数据皆为无效数据，读至此数据的结尾处即可。
   while (*pCurrentPos++ != 0x00a) {
     if (*pCurrentPos == 0x000) {
       return false;
