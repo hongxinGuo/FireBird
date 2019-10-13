@@ -306,101 +306,42 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   if (!ReadSinaOneValue(pCurrentPos, m_llAmount, lTotalRead)) {
     return false;
   }
-  // 读入买一数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(0), lTotalRead)) {
-    return false;
+  // 读入买一--买五的股数和价格
+  for (int j = 0; j < 5; j++) {
+    // 读入数量
+    if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(j), lTotalRead)) {
+      return false;
+    }
+    // 读入价格
+    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(j), lTotalRead)) {
+      return false;
+    }
   }
-  // 读入买一价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(0), lTotalRead)) {
-    return false;
-  }
-  // 读入买二数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(1), lTotalRead)) {
-    return false;
-  }
-  // 读入买二价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(1), lTotalRead)) {
-    return false;
-  }
-  // 读入买三数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(2), lTotalRead)) {
-    return false;
-  }
-  // 读入买三价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(2), lTotalRead)) {
-    return false;
-  }
-  // 读入买四数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(3), lTotalRead)) {
-    return false;
-  }
-  // 读入买四价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(3), lTotalRead)) {
-    return false;
-  }
-  // 读入买五数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(4), lTotalRead)) {
-    return false;
-  }
-  // 读入买五价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(4), lTotalRead)) {
-    return false;
-  }
-  // 读入卖一数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(0), lTotalRead)) {
-    return false;
-  }
-  // 读入卖一价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(0), lTotalRead)) {
-    return false;
-  }
-  // 读入卖二数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(1), lTotalRead)) {
-    return false;
-  }
-  // 读入卖二价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(1), lTotalRead)) {
-    return false;
-  }
-  // 读入卖三数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(2), lTotalRead)) {
-    return false;
-  }
-  // 读入卖三价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(2), lTotalRead)) {
-    return false;
-  }
-  // 读入卖四数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(3), lTotalRead)) {
-    return false;
-  }
-  // 读入卖四价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(3), lTotalRead)) {
-    return false;
-  }
-  // 读入卖五数量
-  if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(4), lTotalRead)) {
-    return false;
-  }
-  // 读入卖五价格
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(4), lTotalRead)) {
-    return false;
+  // 读入卖一--卖五的股数和价格
+  for (int j = 0; j < 5; j++) {
+    // 读入数量
+    if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(j), lTotalRead)) {
+      return false;
+    }
+    // 读入价格
+    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(j), lTotalRead)) {
+      return false;
+    }
   }
   // 读入成交日期和时间
   i = 0;
-  while (*pCurrentPos != ',') {
+  while (*pCurrentPos != ',') { // 读入日期。格式为:yyyy-mm-dd
     if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
       return false;
     }
     buffer3[i++] = *pCurrentPos++;
     lTotalRead++;
   }
-
   pCurrentPos++;
   lTotalRead++;
 
-  buffer3[i++] = ' ';
-  while (*pCurrentPos != ',') {
+  buffer3[i++] = ' '; // 添加一个空格，分隔日期和时间
+  while (*pCurrentPos != ',') { // 读入时间，格式为hh:mm:ss
     if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
       return false;
     }

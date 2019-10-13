@@ -1012,7 +1012,7 @@ namespace StockAnalysisTest {
   ReadSinaOneCalueData rdata7(7, _T("11.050000,"));
   // 0x00a出现于‘，’前。
   ReadSinaOneCalueData rdata8(8, _T("11.05000\n,"));
-  // 只有,
+  // 只有','
   ReadSinaOneCalueData rdata9(9, _T(","));
 
   class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
