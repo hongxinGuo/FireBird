@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "globedef.h"
 
-#include "RTData.h"
+#include"RTData.h"
+#include"Accessory.h"
 
 using namespace std;
 
@@ -362,6 +363,9 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   tm_.tm_isdst = 0;
   m_time = mktime(&tm_);
 
+  time_t tt = ConvertBufferToTime("%d-%d-%d %d:%d:%d", buffer3);
+  ASSERT(tt == m_time);
+
   // 后面的数据皆为无效数据，读至此数据的结尾处即可。
   while (*pCurrentPos++ != 0x00a) {
     if (*pCurrentPos == 0x000) {
@@ -551,12 +555,12 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
-  static CString strHeader = _T("v=s");
+  static CString strHeader = _T("v_s");
   long lTemp = 0;
   INT64 llTemp = 0;
 
   m_fActive = false;    // 初始状态为无效数据
-  strncpy_s(buffer1, pCurrentPos, 3); // 读入“v=s"
+  strncpy_s(buffer1, pCurrentPos, 3); // 读入“v_s"
   buffer1[3] = 0x000;
   CString str1;
   str1 = buffer1;
@@ -611,18 +615,10 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     return false;
   }
 
-  int i = 0;
-  while (*pCurrentPos != '~') { // 读入股票的中文名字
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
-      return false;
-    }
-    buffer1[i++] = *pCurrentPos++;
-    lTotalRead++;
+  if (!ReadTengxunOneValue(pCurrentPos, buffer1, lTotalRead)) {
+    return false;
   }
-  buffer1[i] = 0x000;
   m_strStockName = buffer1; // 设置股票名称
-  pCurrentPos++;
-  lTotalRead++;
 
   // 读入六位股票代码
   if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
@@ -685,22 +681,11 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     return false;
   }
 
-  // 读入成交日期和时间
+  // 读入成交日期和时间.格式为：yyyymmddhhmmss
   if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
-
-  tm tm_;
-  int year, month, day, hour, minute, second;
-  sscanf_s(buffer3, "%4d%2d%2d%2d%2d%2d", &year, &month, &day, &hour, &minute, &second);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = hour;
-  tm_.tm_min = minute;
-  tm_.tm_sec = second;
-  tm_.tm_isdst = 0;
-  m_time = mktime(&tm_);
+  m_time = ConvertBufferToTime("%4d%2d%2d%2d%2d%2d", buffer3);
 
   while (*pCurrentPos++ != 0x00a) {
     if (*pCurrentPos == 0x000) {

@@ -151,7 +151,7 @@ public:
   bool					ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
   bool          ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
-  // 定时更新，完成具体调度任务。由主线程的OnTimerha函数调用
+  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用
   bool          SchedulingTask(void);
   bool          SchedulingTaskPerSecond(long lSecondNumber);
 
@@ -160,9 +160,9 @@ private:
   bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
-  const CString m_strSinaRTStockSource = _T("http://hq.sinajs.cn/list=");
-  const CString m_strTengxunRTStockSource = _T("http://qt.gtimg.cn/q=");
-  const CString m_strNeteaseDayLineStockSource = _T("http://quotes.money.163.com/service/chddata.html?code=");
+  const CString m_strSinaRTDataInquire = _T("http://hq.sinajs.cn/list=");
+  const CString m_strTengxunRTDataInquire = _T("http://qt.gtimg.cn/q=");
+  const CString m_strNeteaseDayLineInquire = _T("http://quotes.money.163.com/service/chddata.html?code=");
   const CString m_strNeteaseDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
@@ -216,6 +216,7 @@ protected:
   bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
   bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
 
+  // 多线程读取之变量，需要设置同步机制
   clock_t                     m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   CCriticalSection            m_ReadingSinaRTDataTimeLock;
   clock_t                     m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间

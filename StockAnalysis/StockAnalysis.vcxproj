@@ -208,6 +208,7 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="source\Accessory.h" />
     <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
+    <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\Thread.cpp" />
     <ClCompile Include="source\ThreadCalculateRS.cpp" />
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />

@@ -156,7 +156,7 @@ public:
   bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
-  void UpdateStatus(CStockRTDataPtr pRTData);
+  void UpdateStatus(CStockRTDataPtr pRTData); // 更新当前个变量状态
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLine(void);
@@ -170,7 +170,7 @@ public:
   bool CalculateDayLine60RS(void);
   bool CalculateDayLine120RS(void);
 
-  // 计算实时数据, 由工作线程ThreadCalculatingRTDataProc调用
+  // 计算实时数据, 由工作线程ThreadCalculateRTData调用
   bool CalculateRTData(void);
   bool CalculateOneRTData(CStockRTDataPtr pData);
   bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);

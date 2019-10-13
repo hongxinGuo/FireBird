@@ -358,7 +358,7 @@ bool CMarket::GetSinaStockRTData(void)
 
     // 申请下一批次新浪股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_stSinaRTDataInquire.strInquire = m_strSinaRTStockSource; // 设置查询新浪实时数据的字符串头
+      gl_stSinaRTDataInquire.strInquire = m_strSinaRTDataInquire; // 设置查询新浪实时数据的字符串头
       if (CreateSinaRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
@@ -370,7 +370,7 @@ bool CMarket::GetSinaStockRTData(void)
       gl_stSinaRTDataInquire.strInquire += strTemp;
     }
     else { // 开市时使用今日活跃股票池
-      gl_stSinaRTDataInquire.strInquire = m_strSinaRTStockSource;
+      gl_stSinaRTDataInquire.strInquire = m_strSinaRTDataInquire;
       GetInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
@@ -434,7 +434,7 @@ bool CMarket::GetTengxunStockRTData(void)
     CString strTemp = _T("");
 
     // 申请下一批腾讯股票实时数据
-    gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTStockSource;
+    gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTDataInquire;
     GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
     gl_ThreadStatus.SetTengxunRTDataReceived(false);
     gl_ThreadStatus.SetReadingTengxunRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
@@ -590,7 +590,7 @@ bool CMarket::GetNetEaseStockDayLineData(void)
     CString strStartDay;
 
     // 准备网易日线数据申请格式
-    strRead = m_strNeteaseDayLineStockSource;
+    strRead = m_strNeteaseDayLineInquire;
     sfFoundStock = CreateNeteaseDayLineInquiringStr(strRead, strStartDay);
     if (sfFoundStock) {
       strRead += _T("&start=");
