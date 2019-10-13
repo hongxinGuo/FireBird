@@ -71,7 +71,7 @@ void CMarket::Reset(void)
   m_fCalculatingRS = false;
 
   m_fGetRTStockData = true;
-  m_fReadingTengxunRTData = true; // 默认状态下不读取腾讯实时行情
+  m_fReadingTengxunRTData = false; // 默认状态下不读取腾讯实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
