@@ -66,8 +66,6 @@ void CStock::Reset(void) {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_lCurrentCanselSellVolume = m_lCurrentCanselBuyVolume = m_lCurrentGuadanTransactionVolume = 0;
 
-  m_lFirstDataVolume = 0;
-
   m_dCurrentGuaDanTransactionPrice = 0;
   m_nCurrentTransactionType = 0;
 
@@ -101,7 +99,7 @@ void CStock::operator =(CStock& pStock) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CStock::UpdataCurrentStatus(CStockRTDataPtr pRTData)
+void CStock::UpdateStatus(CStockRTDataPtr pRTData)
 {
   m_lLastClose = pRTData->GetLastClose();
   m_lNew = pRTData->GetNew();
@@ -148,7 +146,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
   CDayLinePtr pDayLine;
 
   // 装入DayLine数据
-  gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.clear();
+  m_vDayLine.clear();
   while (!psetDayLine->IsEOF()) {
     pDayLine = make_shared<CDayLine>();
     pDayLine->SetData(psetDayLine);
@@ -158,6 +156,12 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
   return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// 装载DayLineInfo表必须在装载DayLine表之后。
+//
+//
+////////////////////////////////////////////////////////////////////////////
 bool CStock::LoadDayLine(CSetDayLineInfo* psetDayLineInfo) {
   CDayLinePtr pDayLine;
   
@@ -290,7 +294,7 @@ bool CStock::CalculateRTData(void) {
   for (long i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if ((pRTData->GetNew() != 0) && (pRTData->GetOpen() != 0)) { // 数据有效
-      UpdataCurrentStatus(pRTData);   // 更新股票现时状态。
+      UpdateStatus(pRTData);   // 更新股票现时状态。
       CalculateOneRTData(pRTData);
       if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
         || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
@@ -335,7 +339,7 @@ bool CStock::CalculateRTData(void) {
 bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
   long lCurrentGuaDanTransactionPrice = 0;
 
-  if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后
+  if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后）
     m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
     if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
       // 检查挂单情况
@@ -441,7 +445,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
     // 更新前交易状态
     m_pLastRTData = pRTData;
   }
-  else { // 第一个数据，初始化系统
+  else { // 第一次收到实时数据，则只初始化系统而不计算
     m_pLastRTData = pRTData;
     SetStartCalculating(true);
     // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
@@ -783,6 +787,7 @@ CStockRTDataPtr CStock::PopRTData(void)
     singleLock.Unlock();
     return pData;
   }
+  ASSERT(0);
   return nullptr;
 }
 
@@ -796,6 +801,7 @@ CStockRTDataPtr CStock::GetRTDataAtHead(void)
     singleLock.Unlock();
     return pData;
   }
+  ASSERT(0);
   return nullptr;
 }
 
@@ -814,6 +820,7 @@ long CStock::GetRTDataDequeSize(void)
     singleLock.Unlock();
     return lCount;
   }
+  ASSERT(0);
   return 0;
 }
 
@@ -849,6 +856,7 @@ bool CStock::IsDayLineNeedSaving(void)
     singleLock.Unlock();
     return fFlag;
   }
+  ASSERT(0);
   return false;
 }
 

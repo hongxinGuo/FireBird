@@ -447,7 +447,7 @@ namespace StockAnalysisTest {
       pRTData->SetPSell(i, i + 300);
       pRTData->SetVSell(i, i + 400);
     }
-    stock.UpdataCurrentStatus(pRTData);
+    stock.UpdateStatus(pRTData);
     EXPECT_EQ(stock.GetTransactionTime(), 0);   // UpdateCurrentStatus函数不更新交易时间
     EXPECT_EQ(stock.GetLastClose(), 11111);
     EXPECT_EQ(stock.GetOpen(), 22222);

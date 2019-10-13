@@ -240,7 +240,7 @@
     <ClCompile Include="source\Thread.cpp" />
     <ClCompile Include="source\ThreadCalculateRS.cpp" />
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />
-    <ClCompile Include="source\ThreadCompileToayStock.cpp" />
+    <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
     <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="source\ThreadReadSinaRTData.cpp" />

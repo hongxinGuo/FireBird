@@ -135,6 +135,7 @@ public:
   void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
   void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
 
+  // 挂单情况
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
   long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
   void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
@@ -155,9 +156,9 @@ public:
   bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
-  void UpdataCurrentStatus(CStockRTDataPtr pRTData);
+  void UpdateStatus(CStockRTDataPtr pRTData);
 
-  // 日线装载函数
+  // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLine(void);
   bool LoadDayLine(CSetDayLine* psetDayLine);
   bool LoadDayLine(CSetDayLineInfo* psetDayLine);
@@ -176,6 +177,7 @@ public:
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
 
+  // 存储实时行情数据进数据库。（目前弃之不用）
   bool SaveRealTimeData(CSetRealTimeData* psetRT);
 
   // 采用同步机制存取实时数据
@@ -257,9 +259,6 @@ protected:
   INT64	    m_lAttackSellBelow50000;
   INT64	    m_lAttackSellBelow200000;
   INT64	    m_lAttackSellAbove200000;
-
-  //
-  INT64	    m_lFirstDataVolume;			  // 用于存储第一次实时数据的成交量
 
   queue<COneDealPtr>    m_queueDeal;        // 具体成交信息队列
 

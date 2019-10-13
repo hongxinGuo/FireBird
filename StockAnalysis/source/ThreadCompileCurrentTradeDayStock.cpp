@@ -14,10 +14,11 @@ using namespace std;
 // 此线程由系统在收市后于15:05自动唤醒，每日只执行一次
 //
 //
+//由于存在周六和周日，故而当前交易日并不一定就是当前日期，而可能时周五
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCompileTodayStock(LPVOID) {
+UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   time_t time = 0;
@@ -43,7 +44,7 @@ UINT ThreadCompileTodayStock(LPVOID) {
   }
 
   int i;
-  i = gl_ChinaStockMarket.CompileCurrentTradeDayStocks(lCurrentTradeDay);
+  i = gl_ChinaStockMarket.CompileCurrentTradeDayStock(lCurrentTradeDay);
   char buffer[30];
   sprintf_s(buffer, "%d", i);
   CString str;

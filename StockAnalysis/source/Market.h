@@ -100,7 +100,7 @@ public:
   // 是否所有股票的历史日线数据都检查过了。
   bool          IsTotalStockDayLineChecked(void);
 
-  long          CompileCurrentTradeDayStocks(long lCurrentTradeDay);
+  long          CompileCurrentTradeDayStock(long lCurrentTradeDay);
 
   bool          SaveTodayTempData(void);
   bool          LoadTodayTempData(void);

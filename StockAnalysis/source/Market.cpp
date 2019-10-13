@@ -1351,7 +1351,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 下午三点一分开始处理当日实时数据。
     if ((lTime >= 150100) && !IsTodayStockCompiled()) {
       if (SystemReady()) {
-        AfxBeginThread(ThreadCompileTodayStock, nullptr);
+        AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
         SetTodayStockCompiledFlag(true);
       }
     }
@@ -1694,13 +1694,14 @@ bool CMarket::IsTotalStockDayLineChecked(void) {
 
 //////////////////////////////////////////////////////////////////////////////////
 //
-// 处理今日接收到的实时数据，生成日线各基本数据（相对强度、进攻性买卖盘）。
+// 处理当前交易日的实时数据，生成日线各基本数据（相对强度、进攻性买卖盘）。
 //
 // 只有下载完日线历史数据后，方可执行处理实时数据，否则可能误判股票代码存在与否。
 //
+// long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CMarket::CompileCurrentTradeDayStocks(long lCurrentTradeDay) {
+long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   long lClose = 0, lLastClose = 0;
   char buffer[20];
   CString strDay;
