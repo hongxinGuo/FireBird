@@ -1248,7 +1248,7 @@ bool CMarket::SchedulingTask(void)
     }
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 3; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次
 
   }
