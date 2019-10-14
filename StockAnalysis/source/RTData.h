@@ -132,6 +132,7 @@ public:
   // 读取腾讯实时数据函数
   bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
   bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
+  bool ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead); // 从file中读入一个浮点数
   bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘~’。
 
 public:

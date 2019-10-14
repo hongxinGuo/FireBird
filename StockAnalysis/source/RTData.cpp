@@ -149,7 +149,7 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 //  新浪实时行情站点：http://hq.sinajs.cn/list=sh601006
 // var hq_str_sh601006=”大秦铁路,27.55,27.25,26.91,27.55,26.20,26.91,26.92,
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
-//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32”;
+//                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00”;
 //
 // 这个字符串由许多数据拼接在一起，不同含义的数据用逗号隔开了，按照程序员的思路，顺序号从0开始。
 // 0：”大秦铁路”，股票名字；
@@ -176,8 +176,8 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 // 21：”26.92″，“卖一”报价
 // (22, 23), (24, 25), (26, 27), (28, 29)分别为“卖二”至“卖四的情况”
 // 30：”2008 - 01 - 11″，日期；
-// 31：”15:05 : 32″，时间；
-//
+// 31：”15:05:32″，时间；
+// 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 {
@@ -558,6 +558,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   static CString strHeader = _T("v_s");
   long lTemp = 0;
   INT64 llTemp = 0;
+  double dTemp = 0.0;
 
   m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 3); // 读入“v_s"
@@ -627,18 +628,20 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (lTemp != m_iStockCode) return false;
 
   // 读入现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-  if (!ReadTengxunOneValue(pCurrentPos, m_lNew, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
     return false;
   }
+  m_lNew = dTemp * 1000;
   // 读入前收盘价
-  if (!ReadTengxunOneValue(pCurrentPos, m_lLastClose, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
     return false;
   }
+  m_lLastClose = dTemp * 1000;
   // 读入开盘价
-  if (!ReadTengxunOneValue(pCurrentPos, m_lOpen, lTotalRead)) {
+  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
     return false;
   }
-
+  m_lOpen = dTemp * 1000;
   // 读入成交手数。成交股数存储实际值
   if (!ReadTengxunOneValue(pCurrentPos, llTemp, lTotalRead)) {
     return false;
@@ -654,27 +657,29 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   }
   // 读入买一至买五的价格和手数
   for (int j = 0; j < 5; j++) {
-    // 读入买一价
-    if (!ReadTengxunOneValue(pCurrentPos, m_lPBuy.at(j), lTotalRead)) {
+    // 读入买盘价格
+    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
       return false;
     }
-    // 读入买一数量（手）
+    m_lPBuy.at(j) = dTemp * 1000;
+    // 读入买盘数量（手）
     if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
       return false;
     }
-    if (lTemp > 0) m_lVBuy.at(j) = lTemp * 100;
+    m_lVBuy.at(j) = lTemp * 100;
   }
   // 读入卖一至卖五的价格和手数
   for (int j = 0; j < 5; j++) {
-    // 读入买一价
-    if (!ReadTengxunOneValue(pCurrentPos, m_lPSell.at(j), lTotalRead)) {
+    // 读入卖盘价格
+    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
       return false;
     }
-    // 读入买一数量（手）
+    m_lPSell.at(j) = dTemp * 1000;
+    // 读入卖盘数量（手）
     if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
       return false;
     }
-    if (lTemp > 0) m_lVSell.at(j) = lTemp * 100;
+    m_lVSell.at(j) = lTemp * 100;
   }
   // 最近逐笔成交
   if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
@@ -716,6 +721,20 @@ bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue,
   llTemp = atoll(buffer3);
   if (llTemp < 0) return false;
   if (llTemp > 0) llReturnValue = llTemp;
+  return true;
+}
+
+bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead)
+{
+  double dTemp;
+  static char buffer3[200];
+
+  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
+    return false;
+  }
+  dTemp = atof(buffer3);
+  if (dTemp < 0) return false;
+  dReturnValue = dTemp;
   return true;
 }
 
