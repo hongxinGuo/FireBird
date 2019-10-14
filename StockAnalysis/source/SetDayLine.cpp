@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include"afxdb.h"
 #include"globedef.h"
+#include"accessory.h"
 
 #include "SetDayLine.h"
 IMPLEMENT_DYNAMIC(CSetDayLine, CRecordset)
@@ -37,14 +38,7 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
 
 CString CSetDayLine::GetDefaultConnect()
 {
-  if (!gl_fNormalMode) {
-    gl_fInTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8");
-  }
-  else {
-    gl_fInTestMode = false;
-    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8");
-  }
+  return GetDefaultSchemaConnect();
 }
 
 CString CSetDayLine::GetDefaultSQL()

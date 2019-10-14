@@ -16,3 +16,15 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
 
   return tt;
 }
+
+CString GetDefaultSchemaConnect()
+{
+  if (!gl_fNormalMode) {
+    gl_fInTestMode = true;
+    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"); // mysqlTest操作的是TestStock Schema
+  }
+  else {
+    gl_fInTestMode = false;
+    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8"); // mysql操作的是SmartStockData Schema
+  }
+}
