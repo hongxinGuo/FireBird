@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemTime.Gett_time(), 100100100100);
   }
   TEST(SystemTimeTest, TestCalculateTime) {
+    ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;
     tm tm_;
     time(&ttime);

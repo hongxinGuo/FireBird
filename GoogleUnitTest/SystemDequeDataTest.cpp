@@ -43,6 +43,7 @@ namespace StockAnalysisTest {
 
   // 测试有优先级的队列存储临时实时数据。
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
+    ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
     pRTData->SetTransactionTime(100100100);

@@ -61,6 +61,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestIsSinaRTDataReceived) {
+    ASSERT_FALSE(gl_fNormalMode);
     gl_ThreadStatus.SetSinaRTDataReceived(true);
     EXPECT_TRUE(gl_ThreadStatus.IsSinaRTDataReceived());
     gl_ThreadStatus.SetSinaRTDataReceived(false);

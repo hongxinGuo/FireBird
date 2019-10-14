@@ -50,6 +50,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CDayLineTest, TestGetOpen) {
+    ASSERT_FALSE(gl_fNormalMode);
     CDayLine dl;
     EXPECT_EQ(dl.GetOpen(), 0);
     dl.SetOpen(11100);
@@ -92,6 +93,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CDayLineTest, TestGetChangeHandRate) {
+    ASSERT_FALSE(gl_fNormalMode);
     CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
     dl.SetChangeHandRate(30.30);

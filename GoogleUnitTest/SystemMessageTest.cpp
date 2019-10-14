@@ -46,6 +46,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemMessageTest, TestGetFindDequeSize) {
+    ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 0);
     gl_systemMessage.PushTransactionMessage(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 1);
