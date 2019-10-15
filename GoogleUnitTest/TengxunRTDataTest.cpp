@@ -106,7 +106,7 @@ namespace StockAnalysisTest {
   // 出现负值
   TengxunRTData Data32(31, _T("v_sh600601=\"1~方正科技~600601~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
   // 没有实时数据
-  TengxunRTData Data33(32, _T("v_sh600002=\"1~齐鲁退市~600002~0.00~0.00~0.00~0~0~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~~20191011091000~0.00~0.00~0.00~0.00~0.00 / 0 / 0~0~0~0.00~0.00~D~0.00~0.00~0.00~0.00~0.00~0.00~-1~-1~0.00~0~0.00~0.00~0.00~~~~0.00~0.00~0~~GP-A~~~0.00\";"));
+  TengxunRTData Data33(32, _T("v_sh600002=\"1~齐鲁退市~600002~0.00~0.00~0.00~0~0~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~0.00~0~~20191011091000~0.00~0.00~0.00~0.00~0.00 / 0 / 0~0~0~0.00~0.00~D~0.00~0.00~0.00~0.00~0.00~0.00~-1~-1~0.00~0~0.00~0.00~0.00~~~~0.00~0.00~0~~GP-A~~~0.00\";\n"));
   // 格式出错（前缀）
   TengxunRTData Data34(33, _T("a_sh600601=\"1~方正科技~600601~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
   // 格式出错（）
@@ -128,9 +128,9 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       TengxunRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
-      for (int i = 0; i < lLength; i++) {
+      m_lStringLength = pData->m_strData.GetLength();
+      m_pData = new char[m_lStringLength + 1];
+      for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
       m_pCurrentPos = m_pData;
@@ -161,7 +161,8 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     char* m_pCurrentPos;
-    long m_lCountPos = 0;
+    long m_lCountPos;
+    long m_lStringLength;
     CStockRTData m_RTData;
   };
 
@@ -186,6 +187,7 @@ namespace StockAnalysisTest {
     switch (m_iCount) {
     case 0:
       EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
       EXPECT_EQ(m_RTData.GetOpen(), 12050);
@@ -216,6 +218,7 @@ namespace StockAnalysisTest {
       break;
     case 1:
       EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -246,29 +249,34 @@ namespace StockAnalysisTest {
       break;
     case 2:
       EXPECT_TRUE(fSucceed); // 没有错误，皆为零
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       break;
     case 3:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       break;
     case 4:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetNew(), 3500);
       break;
     case 5:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetLastClose(), 3460);
       EXPECT_EQ(m_RTData.GetNew(), 3500);
       break;
     case 6:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -276,7 +284,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetNew(), 3500);
       break;
     case 7:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -285,7 +294,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVolume(), 8334600);
       break;
     case 8:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -295,7 +305,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
       break;
     case 9:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -306,7 +317,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
       break;
     case 12:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -319,7 +331,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(1), 3490);
       break;
     case 13:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -333,7 +345,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVBuy(2), 209300);
       break;
     case 14:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -348,7 +361,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(2), 3480);
       break;
     case 16:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -363,7 +377,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(2), 3480);
       break;
     case 17:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -380,7 +395,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(3), 3470);
       break;
     case 19:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -396,7 +412,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVBuy(3), 76000);
       break;
     case 20:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -413,7 +430,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPBuy(3), 3470);
       break;
     case 21:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -434,7 +452,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(0), 3510);
       break;
     case 22:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -457,7 +476,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(1), 3520);
       break;
     case 23:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -481,7 +501,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetVSell(2), 141100);
       break;
     case 24:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -507,7 +528,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(3), 3540);
       break;
     case 25:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -534,7 +556,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_RTData.GetPSell(3), 3540);
       break;
     case 26:
-      EXPECT_FALSE(fSucceed); // 没有错误
+      EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
       EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
       EXPECT_EQ(m_RTData.GetOpen(), 3470);
@@ -563,53 +586,63 @@ namespace StockAnalysisTest {
       break;
     case 27:
       EXPECT_TRUE(fSucceed); // 没有错误
-
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 28:
-      EXPECT_TRUE(fSucceed); // 有错误
-
+      EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 29:
-      EXPECT_TRUE(fSucceed); // 有错误
-
+      EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 30:
-      EXPECT_TRUE(fSucceed); // 有错误
+      EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 31:
-      EXPECT_TRUE(fSucceed); // 有错误
+      EXPECT_TRUE(fSucceed); // 没有错误
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 32: // 没有实时数据
-      EXPECT_FALSE(fSucceed); // 
+      EXPECT_TRUE(fSucceed); 
+      EXPECT_EQ(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600002"));
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
       break;
     case 33: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 34: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 35: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 36: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 37: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 38: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     case 39: // 有错误，前缀出错
       EXPECT_FALSE(fSucceed); // 有错误
+      EXPECT_GT(m_lStringLength, m_lCountPos);
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票是活跃股票
       break;
     default:

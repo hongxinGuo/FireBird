@@ -6,6 +6,7 @@
 
 #include "stdafx.h"
 #include"globedef.h"
+#include"Accessory.h"
 
 #include "SetDayLineInfo.h"
 IMPLEMENT_DYNAMIC(CSetDayLineInfo, CRecordset)
@@ -42,14 +43,7 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
 
 CString CSetDayLineInfo::GetDefaultConnect()
 {
-  if (!gl_fNormalMode) {
-    gl_fInTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"); // mysqlTest操作的是TestStock Schema
-  }
-  else {
-    gl_fInTestMode = false;
-    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8"); // mysql操作的是SmartStockData Schema
-  }
+  return GetDefaultSchemaConnect();
 }
 
 CString CSetDayLineInfo::GetDefaultSQL()

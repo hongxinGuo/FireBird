@@ -90,9 +90,7 @@ CMainFrame::CMainFrame()
   ASSERT(gl_fNormalMode);
   gl_fNormalMode = true; // 实际系统，测试状态为假。
 
-  // 这个记录集需要在系统启动时就打开，且一直保持打开的状态。但需要使用MySQL驱动而不是MySQLTest驱动，故而在设置gl_fTestMode为假后才执行。
-  // 真实系统中，所有的记录集都要使用MySQL驱动而不是MySQLTest驱动，而测试函数都要使用MySQLTest驱动。
-  // 这两个驱动的权限不同，MySQLTest只有检索权限，无权修改数据，这样在测试时能够防止误操作数据。
+  // 这个记录集需要在系统启动时就打开，且一直保持打开的状态。但需要使用MySQL驱动而不是MySQLTest驱动，故而在设置gl_fNormalMode为真后才执行。
   gl_ChinaStockMarket.OpenSavingDayLineRecord();
 
   Reset();
@@ -120,7 +118,7 @@ void CMainFrame::Reset(void)
 
 CMainFrame::~CMainFrame()
 {
-  if (gl_fInTestMode) TRACE("使用了Test驱动\n");
+  if (gl_fTestMode) TRACE("使用了Test驱动\n");
 
   gl_fExiting = true;
 
@@ -466,7 +464,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   //更新时间
   m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
 
-  if (gl_fInTestMode) {
+  if (gl_fTestMode) {
     str = _T("警告：使用了Test驱动");
     gl_systemMessage.PushInformationMessage(str);
   }

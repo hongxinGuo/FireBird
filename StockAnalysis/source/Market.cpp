@@ -2209,6 +2209,7 @@ bool CMarket::UpdateTempRTData(void)
 
 bool CMarket::OpenSavingDayLineRecord(void)
 {
+  ASSERT(gl_fNormalMode);
   // 更新日线历史数据的记录集永远处于打开状态（为了加速)
   if (!m_setSavingDayLineOnly.IsOpen()) {
     CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。

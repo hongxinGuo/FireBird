@@ -181,9 +181,9 @@ bool CStockRTData::SetDataAll(CStockRTData& data) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 {
-  static char buffer1[200];
+  static char buffer1[100];
   char buffer2[7];
-  static char buffer3[200];
+  static char buffer3[100];
   static CString strHeader = _T("var hq_str_s");
 
   m_fActive = false;    // 初始状态为无效数据
@@ -246,7 +246,8 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
       return false; // 确保是字符 \n
     }
     lTotalRead++;
-    return true;
+    m_fActive = false;
+    return true;  // 非活跃股票没有实时数据，在此返回。
   }
   if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
     return false;
@@ -330,41 +331,17 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     }
   }
   // 读入成交日期和时间
-  i = 0;
-  while (*pCurrentPos != ',') { // 读入日期。格式为:yyyy-mm-dd
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
-      return false;
-    }
-    buffer3[i++] = *pCurrentPos++;
-    lTotalRead++;
+  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, buffer1, lTotalRead)) {
+    return false;
   }
-  pCurrentPos++;
-  lTotalRead++;
-
-  buffer3[i++] = ' '; // 添加一个空格，分隔日期和时间
-  while (*pCurrentPos != ',') { // 读入时间，格式为hh:mm:ss
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
-      return false;
-    }
-    buffer3[i++] = *pCurrentPos++;
-    lTotalRead++;
+  CString strTime;
+  strTime = buffer1;
+  strTime += ' '; //添加一个空格，以利于下面的转换
+  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+    return false;
   }
-  buffer3[i] = 0x000;
-
-  tm tm_;
-  int year, month, day, hour, minute, second;
-  sscanf_s(buffer3, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = hour;
-  tm_.tm_min = minute;
-  tm_.tm_sec = second;
-  tm_.tm_isdst = 0;
-  m_time = mktime(&tm_);
-
-  time_t tt = ConvertBufferToTime("%d-%d-%d %d:%d:%d", buffer3);
-  ASSERT(tt == m_time);
+  strTime += buffer3;
+  m_time = ConvertBufferToTime("%d-%d-%d %d:%d:%d", strTime.GetBuffer());
 
   // 后面的数据皆为无效数据，读至此数据的结尾处即可。
   while (*pCurrentPos++ != 0x00a) {
@@ -431,8 +408,10 @@ bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTot
     buffer[i++] = *pCurrentPos++;
   }
   buffer[i] = 0x000;
+  // 跨过','号。
   pCurrentPos++;
   i++;
+
   lTotalRead += i;
   return true;
 }
@@ -611,11 +590,15 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   pCurrentPos += 2;
   lTotalRead += 2;
 
-  // 读入不明代码（51或者1）
+  // 读入市场标识代码（51为深市，1为沪市）
   if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
     return false;
   }
-
+#ifdef DEBUG
+  if (lTemp == 1) ASSERT(m_wMarket == __SHANGHAI_MARKET__);
+  else if (lTemp == 51) ASSERT(m_wMarket == __SHENZHEN_MARKET__);
+  else ASSERT(0); // 报错
+#endif
   if (!ReadTengxunOneValue(pCurrentPos, buffer1, lTotalRead)) {
     return false;
   }
@@ -699,7 +682,11 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     lTotalRead++;
   }
   lTotalRead++;
-  m_fActive = true;
+
+  if ((m_lNew == 0) && (m_llVolume == 0)) {
+    m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+  }
+  else m_fActive = true;
 
   return true;
 }

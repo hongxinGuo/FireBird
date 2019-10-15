@@ -34,7 +34,7 @@ UINT ThreadCalculateRS(LPVOID) {
       AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     if (gl_fExiting) return true;
-    if (gl_fExitingCalculatingRelativeStrong) return true;
+    if (gl_fExitingCalculatingRS) return true;
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday < gl_systemTime.GetDay());
