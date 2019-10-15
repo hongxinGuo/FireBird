@@ -17,6 +17,13 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
   return tt;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
+// 
+// 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
+//
+/////////////////////////////////////////////////////////////////////////////////
 CString GetDefaultSchemaConnect()
 {
   if (!gl_fNormalMode) {
