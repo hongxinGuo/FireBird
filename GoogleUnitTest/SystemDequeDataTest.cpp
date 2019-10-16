@@ -50,6 +50,7 @@ namespace StockAnalysisTest {
     gl_systemDequeData.PushPriorityRTData(pRTData);
     CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
     pRTData2->SetTransactionTime(200200200);
+    pRTData2->SetBuy(1);
     gl_systemDequeData.PushPriorityRTData(pRTData2);
     CStockRTDataPtr pRTData3 = make_shared<CStockRTData>();
     pRTData3->SetTransactionTime(200200);
@@ -57,12 +58,27 @@ namespace StockAnalysisTest {
     CStockRTDataPtr pRTData4 = make_shared<CStockRTData>();
     pRTData4->SetTransactionTime(200);
     gl_systemDequeData.PushPriorityRTData(pRTData4);
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 4);
+    CStockRTDataPtr pRTData5 = make_shared<CStockRTData>();
+    pRTData5->SetTransactionTime(200200200);
+    pRTData5->SetBuy(2);
+    gl_systemDequeData.PushPriorityRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 5);
     CStockRTDataPtr p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 2);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
     EXPECT_EQ(p2->GetTransactionTime(), 200200);
+    p2 = gl_systemDequeData.PopPriorityRTData();
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 2);
+    EXPECT_EQ(p2->GetTransactionTime(), 100100100);
+    p2 = gl_systemDequeData.PopPriorityRTData();
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 1);
+    EXPECT_EQ(p2->GetTransactionTime(), 200200200);
+    EXPECT_EQ(p2->GetBuy(), 1);
+    p2 = gl_systemDequeData.PopPriorityRTData();
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
+    EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
+    EXPECT_EQ(p2->GetTransactionTime(), 200200200);
   }
 }
