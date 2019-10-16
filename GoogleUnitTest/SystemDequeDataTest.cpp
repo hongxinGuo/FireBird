@@ -27,17 +27,17 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
-    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 0);
+  TEST(SystemDequeDataTest, TestGetDuqueRTDataSize) {
+    EXPECT_EQ(gl_systemDequeData.GetDequeRTDataSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
     pRTData->SetTransactionTime(100100100);
-    gl_systemDequeData.PushRTData(pRTData);
+    gl_systemDequeData.PushDequeRTData(pRTData);
     CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
-    gl_systemDequeData.PushRTData(pRTData2);
+    gl_systemDequeData.PushDequeRTData(pRTData2);
     pRTData2->SetTransactionTime(200200200);
-    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 2);
-    CStockRTDataPtr p2 = gl_systemDequeData.PopRTData();
-    EXPECT_EQ(gl_systemDequeData.GetRTDataDequeSize(), 1);
+    EXPECT_EQ(gl_systemDequeData.GetDequeRTDataSize(), 2);
+    CStockRTDataPtr p2 = gl_systemDequeData.PopDequeRTData();
+    EXPECT_EQ(gl_systemDequeData.GetDequeRTDataSize(), 1);
     EXPECT_EQ(p2->GetTransactionTime(), 100100100);
   }
 

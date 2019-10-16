@@ -810,7 +810,7 @@ bool CMarket::ProcessRTData(void)
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
   CStockRTDataPtr pRTDataCompact = nullptr;
-  const long lTotalNumber = gl_systemDequeData.GetRTDataDequeSize();
+  const long lTotalNumber = gl_systemDequeData.GetRTDataSize();
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();

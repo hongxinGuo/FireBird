@@ -19,13 +19,51 @@ CSystemQueueData::~CSystemQueueData()
 void CSystemQueueData::Reset(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
-  long lTotal = m_queueRTStockData.size();
-  for (int i = 0; i < lTotal; i++) { // 清空队列
-    m_queueRTStockData.pop();
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    long lTotal = m_queueRTStockData.size();
+    for (int i = 0; i < lTotal; i++) { // 清空队列
+      m_queueRTStockData.pop();
+    }
+    singleLock.Unlock();
+  }
+
+  CSingleLock singleLock2(&m_PriorityRTDataLock);
+  singleLock2.Lock();
+  if (singleLock2.IsLocked()) {
+    long lTotal = m_priorityqueueRTStockData.size();
+    for (int i = 0; i < lTotal; i++) { // 清空队列
+      m_priorityqueueRTStockData.pop();
+    }
+    singleLock2.Unlock();
   }
 }
 
-void CSystemQueueData::PushRTData(CStockRTDataPtr pData)
+void CSystemQueueData::PushRTData(CStockRTDataPtr pData) {
+#ifdef __USING_PRIORITY_QUEUE__
+  PushPriorityRTData(pData);
+#else
+  PushDequeRTData(pData);
+#endif
+}
+
+CStockRTDataPtr CSystemQueueData::PopRTData(void) {
+#ifdef __USING_PRIORITY_QUEUE__
+  return(PopPriorityRTData());
+#else
+  return(PopDequeRTData());
+#endif
+}
+
+long CSystemQueueData::GetRTDataSize(void) {
+#ifdef __USING_PRIORITY_QUEUE__
+  return(GetPriorityRTDataSize());
+#else
+  return(GetDequeRTDataSize());
+#endif
+}
+
+void CSystemQueueData::PushDequeRTData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -35,7 +73,7 @@ void CSystemQueueData::PushRTData(CStockRTDataPtr pData)
   }
 }
 
-CStockRTDataPtr CSystemQueueData::PopRTData(void)
+CStockRTDataPtr CSystemQueueData::PopDequeRTData(void)
 {
   CStockRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
@@ -50,7 +88,7 @@ CStockRTDataPtr CSystemQueueData::PopRTData(void)
   return nullptr; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-long CSystemQueueData::GetRTDataDequeSize(void)
+long CSystemQueueData::GetDequeRTDataSize(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();

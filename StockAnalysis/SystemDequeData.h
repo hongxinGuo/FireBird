@@ -7,6 +7,8 @@
 using namespace std;
 #include<queue>
 
+//#define __USING_PRIORITY_QUEUE__
+
 class CSystemQueueData
 {
 public:
@@ -14,10 +16,15 @@ public:
   ~CSystemQueueData();
   void Reset(void);
 
-  // 采用队列的函数
+  // 通用接口函数
   void              PushRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopRTData(void);
-  long              GetRTDataDequeSize(void);
+  long              GetRTDataSize(void);
+
+  // 采用队列的函数
+  void              PushDequeRTData(CStockRTDataPtr pData);
+  CStockRTDataPtr   PopDequeRTData(void);
+  long              GetDequeRTDataSize(void);
 
   // 这是采用有优先级队列的函数
   void              PushPriorityRTData(CStockRTDataPtr pData);

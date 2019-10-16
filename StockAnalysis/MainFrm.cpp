@@ -108,10 +108,8 @@ void CMainFrame::Reset(void)
   gl_systemTime.CalculateTime();
   gl_systemTime.CalculateLastTradeDay();
 
-  const long lTemp = gl_systemDequeData.GetRTDataDequeSize();
-  for (int i = 0; i < lTemp; i++) {
-    CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
-  }
+  // 重置系统实时队列
+  gl_systemDequeData.Reset();
 
   m_lCurrentPos = 0;
 }
