@@ -3,6 +3,7 @@
 #include "SystemDequeData.h"
 #include "SystemMessage.h"
 
+// 目前使用deque队列存储实时数据，故此变量初始值设置为假
 bool gl_fUsingPriorityQueue = false;
 
 CSystemQueueData::CSystemQueueData()
