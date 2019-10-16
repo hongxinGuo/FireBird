@@ -3,6 +3,8 @@
 #include "SystemDequeData.h"
 #include "SystemMessage.h"
 
+bool gl_fUsingPriorityQueue = false;
+
 CSystemQueueData::CSystemQueueData()
 {
   static int siCounter = 0;
@@ -28,39 +30,30 @@ void CSystemQueueData::Reset(void)
     singleLock.Unlock();
   }
 
-  CSingleLock singleLock2(&m_PriorityRTDataLock);
-  singleLock2.Lock();
-  if (singleLock2.IsLocked()) {
+  CSingleLock singleLockPriorityQueue(&m_PriorityRTDataLock);
+  singleLockPriorityQueue.Lock();
+  if (singleLockPriorityQueue.IsLocked()) {
     long lTotal = m_priorityqueueRTStockData.size();
     for (int i = 0; i < lTotal; i++) { // 清空队列
       m_priorityqueueRTStockData.pop();
     }
-    singleLock2.Unlock();
+    singleLockPriorityQueue.Unlock();
   }
 }
 
 void CSystemQueueData::PushRTData(CStockRTDataPtr pData) {
-#ifdef __USING_PRIORITY_QUEUE__
-  PushPriorityRTData(pData);
-#else
-  PushDequeRTData(pData);
-#endif
+  if( gl_fUsingPriorityQueue)  PushPriorityRTData(pData);
+  else PushDequeRTData(pData);
 }
 
 CStockRTDataPtr CSystemQueueData::PopRTData(void) {
-#ifdef __USING_PRIORITY_QUEUE__
-  return(PopPriorityRTData());
-#else
-  return(PopDequeRTData());
-#endif
+  if( gl_fUsingPriorityQueue) return(PopPriorityRTData());
+  else return(PopDequeRTData());
 }
 
 long CSystemQueueData::GetRTDataSize(void) {
-#ifdef __USING_PRIORITY_QUEUE__
-  return(GetPriorityRTDataSize());
-#else
-  return(GetDequeRTDataSize());
-#endif
+  if(gl_fUsingPriorityQueue) return(GetPriorityRTDataSize());
+  else return(GetDequeRTDataSize());
 }
 
 void CSystemQueueData::PushDequeRTData(CStockRTDataPtr pData)
@@ -126,7 +119,7 @@ CStockRTDataPtr CSystemQueueData::PopPriorityRTData(void)
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-long CSystemQueueData::GetPriorityRTDataDequeSize(void)
+long CSystemQueueData::GetPriorityRTDataSize(void)
 {
   CSingleLock singleLock(&m_PriorityRTDataLock);
   singleLock.Lock();

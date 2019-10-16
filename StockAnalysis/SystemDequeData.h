@@ -7,7 +7,7 @@
 using namespace std;
 #include<queue>
 
-//#define __USING_PRIORITY_QUEUE__
+extern bool gl_fUsingPriorityQueue;
 
 class CSystemQueueData
 {
@@ -26,10 +26,10 @@ public:
   CStockRTDataPtr   PopDequeRTData(void);
   long              GetDequeRTDataSize(void);
 
-  // 这是采用有优先级队列的函数
+  // 采用有优先级队列的函数
   void              PushPriorityRTData(CStockRTDataPtr pData);
   CStockRTDataPtr   PopPriorityRTData(void);
-  long              GetPriorityRTDataDequeSize(void);
+  long              GetPriorityRTDataSize(void);
 
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。
   struct cmpRTData {

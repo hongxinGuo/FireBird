@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
   // 测试有优先级的队列存储临时实时数据。
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 0);
     CStockRTDataPtr pRTData = make_shared<CStockRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_systemDequeData.PushPriorityRTData(pRTData);
@@ -62,22 +62,22 @@ namespace StockAnalysisTest {
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_systemDequeData.PushPriorityRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 5);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 5);
     CStockRTDataPtr p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 4);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 3);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 3);
     EXPECT_EQ(p2->GetTransactionTime(), 200200);
     p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 2);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 2);
     EXPECT_EQ(p2->GetTransactionTime(), 100100100);
     p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 1);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 1);
     EXPECT_EQ(p2->GetTransactionTime(), 200200200);
     EXPECT_EQ(p2->GetBuy(), 1);
     p2 = gl_systemDequeData.PopPriorityRTData();
-    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataDequeSize(), 0);
+    EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 0);
     EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
     EXPECT_EQ(p2->GetTransactionTime(), 200200200);
   }
