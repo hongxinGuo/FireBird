@@ -1301,7 +1301,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 
     // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
     if (m_fMarketOpened && m_fSystemReady && !gl_ThreadStatus.IsCalculatingRTData()) {
-      if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150000))) { // 存储临时数据严格按照交易时间来确定(中间休市期间要存储一次，故而到11:36才中止）
+      if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
         CString str;
         str = _T(" 存储临时数据");
         gl_systemMessage.PushInformationMessage(str);
