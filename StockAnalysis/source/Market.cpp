@@ -316,14 +316,12 @@ bool CMarket::CreateTengxunRTDataInquiringStr(CString& str) {
   return false; // 尚未遍历所有股票
 }
 
-void CMarket::ResetSinaIT(void) { 
+void CMarket::ResetIT(void) { 
+  ASSERT(gl_ChinaStockMarket.SystemReady());
+
   m_itSinaStock = m_vActiveStock.begin();
-}  
-
-void CMarket::ResetTengxunIT(void) { 
   m_itTengxunStock = m_vActiveStock.begin(); 
-}
-
+}  
 
 bool CMarket::GetSinaStockRTData(void)
 {

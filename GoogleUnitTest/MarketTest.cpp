@@ -126,7 +126,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMarketTest, TestGetInquiringStockStr) {
     gl_ChinaStockMarket.SetSystemReady(true);
-    gl_ChinaStockMarket.ResetSinaIT();
+    gl_ChinaStockMarket.ResetIT();
     CString str;
     EXPECT_EQ(gl_ChinaStockMarket.GetSinaInquiringStockStr(str), 900);
     str = _T("");

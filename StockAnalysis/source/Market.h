@@ -49,9 +49,7 @@ public:
   bool          GetSinaStockRTData(void);
   int						GetTengxunInquiringStockStr(CString& str);
   bool          GetTengxunStockRTData(void);
-  void          ResetIT(void) { ASSERT(SystemReady()); ResetSinaIT(); ResetTengxunIT(); }
-  void          ResetSinaIT(void);    // 重置新浪实时股票代码查询迭代器
-  void          ResetTengxunIT(void); // 重置腾讯实时股票代码查询迭代器
+  void          ResetIT(void);    //重置各迭代器
 
   //日线历史数据读取
   bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
