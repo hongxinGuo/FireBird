@@ -329,7 +329,7 @@ bool CMarket::GetSinaStockRTData(void)
         pCurrentPos = gl_stSinaRTDataInquire.buffer;
         long  iCount = 0;
         while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
-          pRTData = make_shared<CStockRTData>();
+          pRTData = make_shared<CRTData>();
           if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
             i++;
             gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -405,7 +405,7 @@ bool CMarket::GetTengxunStockRTData(void)
         long iCount = 0;
         /*
         while (iCount < iTotalNumber) { // 腾讯实时数据基本没有错误，不需要抛掉最后一组数据了。
-          pRTData = make_shared<CStockRTData>();
+          pRTData = make_shared<CRTData>();
           if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
             i++;
             gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列

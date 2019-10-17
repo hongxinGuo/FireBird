@@ -29,10 +29,10 @@ namespace StockAnalysisTest {
 
   TEST(SystemDequeDataTest, TestGetDuqueRTDataSize) {
     EXPECT_EQ(gl_systemDequeData.GetDequeRTDataSize(), 0);
-    CStockRTDataPtr pRTData = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_systemDequeData.PushDequeRTData(pRTData);
-    CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData2 = make_shared<CRTData>();
     gl_systemDequeData.PushDequeRTData(pRTData2);
     pRTData2->SetTransactionTime(200200200);
     EXPECT_EQ(gl_systemDequeData.GetDequeRTDataSize(), 2);
@@ -45,20 +45,20 @@ namespace StockAnalysisTest {
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_systemDequeData.GetPriorityRTDataSize(), 0);
-    CStockRTDataPtr pRTData = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_systemDequeData.PushPriorityRTData(pRTData);
-    CStockRTDataPtr pRTData2 = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData2 = make_shared<CRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
     gl_systemDequeData.PushPriorityRTData(pRTData2);
-    CStockRTDataPtr pRTData3 = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData3 = make_shared<CRTData>();
     pRTData3->SetTransactionTime(200200);
     gl_systemDequeData.PushPriorityRTData(pRTData3);
-    CStockRTDataPtr pRTData4 = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData4 = make_shared<CRTData>();
     pRTData4->SetTransactionTime(200);
     gl_systemDequeData.PushPriorityRTData(pRTData4);
-    CStockRTDataPtr pRTData5 = make_shared<CStockRTData>();
+    CStockRTDataPtr pRTData5 = make_shared<CRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_systemDequeData.PushPriorityRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后

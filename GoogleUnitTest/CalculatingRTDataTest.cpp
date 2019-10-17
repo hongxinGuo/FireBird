@@ -46,8 +46,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount; // 每次输入的数据都不一样，结果也相应的不同，故而需要进行不同的验证。使用此序列号来区分。
-    CStockRTData CurrentData;
-    CStockRTData LastData;
+    CRTData CurrentData;
+    CRTData LastData;
   };
 
   // 成交1万股@10.00
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       RTData* pData = GetParam();
-      pCurrentData = make_shared<CStockRTData>();
+      pCurrentData = make_shared<CRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());
       pCurrentData->SetVolume(pData->CurrentData.GetVolume());
       for (int i = 0; i < 5; i++) {
@@ -136,7 +136,7 @@ namespace StockAnalysisTest {
         pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
         pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
-      pLastData = make_shared<CStockRTData>();
+      pLastData = make_shared<CRTData>();
       pLastData->SetAmount(pData->LastData.GetAmount());
       pLastData->SetVolume(pData->LastData.GetVolume());
       for (int i = 0; i < 5; i++) {

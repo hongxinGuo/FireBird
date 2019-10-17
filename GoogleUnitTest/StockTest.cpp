@@ -432,7 +432,7 @@ namespace StockAnalysisTest {
     CStock stock;
     CStockRTDataPtr pRTData;
 
-    pRTData = make_shared<CStockRTData>();
+    pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100100);
     pRTData->SetLastClose(11111);
     pRTData->SetOpen(22222);
@@ -465,7 +465,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(StockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
-    CStockRTDataPtr pData = make_shared<CStockRTData>();
+    CStockRTDataPtr pData = make_shared<CRTData>();
     pData->SetCode(600000);
     CStock stock;
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);

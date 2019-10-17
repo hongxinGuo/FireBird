@@ -9,7 +9,7 @@ using namespace testing;
 namespace StockAnalysisTest {
   TEST(CStockRTDataTest, TestTengxunInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    CStockRTData RTData;
+    CRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
     char* m_pCurrentPos;
     long m_lCountPos;
     long m_lStringLength;
-    CStockRTData m_RTData;
+    CRTData m_RTData;
   };
 
   INSTANTIATE_TEST_CASE_P(TestTengxunRTData, CalculateTengxunRTDataTest, testing::Values(&Data1, &Data2, &Data3,
@@ -714,7 +714,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     char* m_pCurrentPos;
     long m_lCountPos = 0;
-    CStockRTData m_RTData;
+    CRTData m_RTData;
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,

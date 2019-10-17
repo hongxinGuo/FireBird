@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount; // 每次输入的数据都不一样，结果也相应的不同，故而需要进行不同的验证。使用此序列号来区分。
-    CStockRTData CurrentData;
-    CStockRTData LastData;
+    CRTData CurrentData;
+    CRTData LastData;
     int iType;
     long lPrice;
   };
@@ -121,14 +121,14 @@ namespace StockAnalysisTest {
       for (int i = 0; i < 200; i += 10) {
         m_stock.TestSetGuaDanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
-      pCurrentData = make_shared<CStockRTData>();
+      pCurrentData = make_shared<CRTData>();
       for (int i = 0; i < 5; i++) {
         pCurrentData->SetVBuy(i, pData->CurrentData.GetVBuy(i));
         pCurrentData->SetPBuy(i, pData->CurrentData.GetPBuy(i));
         pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
         pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
-      pLastData = make_shared<CStockRTData>();
+      pLastData = make_shared<CRTData>();
       for (int i = 0; i < 5; i++) {
         pLastData->SetVBuy(i, pData->LastData.GetVBuy(i));
         pLastData->SetPBuy(i, pData->LastData.GetPBuy(i));

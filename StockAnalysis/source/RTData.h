@@ -99,26 +99,26 @@ using namespace std;
 #include<memory>
 #include<array>
 
-class CStockRTData;
+class CRTData;
 
-typedef shared_ptr<CStockRTData> CStockRTDataPtr;
+typedef shared_ptr<CRTData> CStockRTDataPtr;
 
-class CStockRTData : public CObject {
+class CRTData : public CObject {
 public:
   // 初始化
-  CStockRTData(void);
+  CRTData(void);
 
   void Reset(void);
-  bool SetData(CStockRTData& data);
+  bool SetData(CRTData& data);
 
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
+  bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
 
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
+  bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
   // 比较大小运算符
-  bool operator < (const CStockRTData& rtData) const {
+  bool operator < (const CRTData& rtData) const {
     return m_time < rtData.m_time;
   }
 

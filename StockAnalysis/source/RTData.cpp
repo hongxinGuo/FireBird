@@ -12,7 +12,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CStockRTData::Reset(void) {
+void CRTData::Reset(void) {
   m_time = 0;
   // 必须初始化m_strStockCode的长度为6.
   m_strStockCode = "";
@@ -36,20 +36,20 @@ void CStockRTData::Reset(void) {
   m_fActive = false;
 }
 
-CStockRTData::CStockRTData(void) : CObject() {
+CRTData::CRTData(void) : CObject() {
   Reset();
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CStockRTData diagnostics
+// CRTData diagnostics
 
 #ifdef _DEBUG
-void CStockRTData::AssertValid() const
+void CRTData::AssertValid() const
 {
   CObject::AssertValid();
 }
 
-void CStockRTData::Dump(CDumpContext& dc) const
+void CRTData::Dump(CDumpContext& dc) const
 {
   CObject::Dump(dc);
 }
@@ -64,7 +64,7 @@ void CStockRTData::Dump(CDumpContext& dc) const
 //
 //
 /////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::SetData(CStockRTData& data) {
+bool CRTData::SetData(CRTData& data) {
   m_time = data.m_time;
   m_wMarket = data.m_wMarket;
   m_strStockCode = data.m_strStockCode;
@@ -131,7 +131,7 @@ bool CStockRTData::SetData(CStockRTData& data) {
 // 31：”15:05:32″，时间；
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
+bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 {
   static char buffer1[100];
   char buffer2[7];
@@ -314,7 +314,7 @@ bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -333,7 +333,7 @@ bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, lo
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
   long lTemp;
   static char buffer3[200];
 
@@ -352,7 +352,7 @@ bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
+bool CRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
 {
   int i = 0;
   while (*pCurrentPos != ',') {
@@ -374,7 +374,7 @@ bool CStockRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTot
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
   long lTemp;
   static char buffer3[200];
 
@@ -392,7 +392,7 @@ bool CStockRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lRetur
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
+bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
 {
   int i = 0;
   bool fFoundPoint = false;
@@ -481,7 +481,7 @@ bool CStockRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer
 // 49 ：        之后的这些数字不清楚其含义
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
+bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 {
   static char buffer1[200];
   char buffer2[7];
@@ -650,7 +650,7 @@ bool CStockRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
+bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -669,7 +669,7 @@ bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue,
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead)
+bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead)
 {
   double dTemp;
   static char buffer3[200];
@@ -689,7 +689,7 @@ bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue,
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
   long lTemp;
   static char buffer3[200];
 
@@ -708,7 +708,7 @@ bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, l
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
+bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
 {
   int i = 0;
   while (*pCurrentPos != '~') {
