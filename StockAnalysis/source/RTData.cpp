@@ -24,6 +24,7 @@ void CStockRTData::Reset(void) {
   m_lNew = 0;
   m_llVolume = 0;
   m_llAmount = 0;
+  m_llCurrentValue = m_llTotalValue = 0;
   m_lBuy = 0;
   m_lSell = 0;
   for (int i = 0; i < 5; i++) {
@@ -80,6 +81,8 @@ bool CStockRTData::SetData(CStockRTData& data) {
     m_llVolume = data.m_llVolume;
     m_llAmount = data.m_llAmount;
   }
+  m_llCurrentValue = data.m_llCurrentValue;
+  m_llTotalValue = data.m_llTotalValue;
 
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = data.m_lPBuy.at(i);
@@ -88,57 +91,6 @@ bool CStockRTData::SetData(CStockRTData& data) {
     m_lVSell.at(i) = data.m_lVSell.at(i);
   }
 
-  return(true);
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 参数:
-//		data : 另一个实时数据单位.
-//
-//
-/////////////////////////////////////////////////////////////////////////////////
-bool CStockRTData::SetDataAll(CStockRTData& data) {
-  m_time = 0;
-  m_wMarket = 0;
-  m_lLastClose = 0;
-  m_lOpen = 0;
-  m_lHigh = 0;
-  m_lLow = 0;
-  m_lNew = 0;
-  m_llVolume = 0;
-  m_llAmount = 0;
-  m_lBuy = 0;
-  m_lSell = 0;
-
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy.at(i) = 0;
-    m_lVBuy.at(i) = 0;
-    m_lPSell.at(i) = 0;
-    m_lVSell.at(i) = 0;
-  }
-
-  m_time = data.m_time;
-  m_wMarket = data.m_wMarket;
-  m_strStockCode = data.m_strStockCode;
-  m_strStockName = data.m_strStockName;
-  m_lLastClose = data.m_lLastClose;
-  m_lOpen = data.m_lOpen;
-  m_lHigh = data.m_lHigh;
-  m_lLow = data.m_lLow;
-  m_lNew = data.m_lNew;
-  m_llVolume = data.m_llVolume;
-  m_llAmount = data.m_llAmount;
-  m_lBuy = data.m_lBuy;
-  m_lSell = data.m_lSell;
-
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy.at(i) = data.m_lPBuy.at(i);
-    m_lVBuy.at(i) = data.m_lVBuy.at(i);
-    m_lPSell.at(i) = data.m_lPSell.at(i);
-    m_lVSell.at(i) = data.m_lVSell.at(i);
-  }
   return(true);
 }
 
@@ -521,8 +473,8 @@ bool CStockRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer
 // 41 : 最高
 // 42 : 最低
 // 43 : 振幅
-// 44 : 流通市值
-// 45 : 总市值
+// 44 : 流通市值(单位为：亿）
+// 45 : 总市值（单位为：亿）
 // 46 : 市净率
 // 47 : 涨停价
 // 48 : 跌停价   （第四行结束）

@@ -110,7 +110,6 @@ public:
 
   void Reset(void);
   bool SetData(CStockRTData& data);
-  bool SetDataAll(CStockRTData& data);
 
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
   bool CStockRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
@@ -168,6 +167,10 @@ public:
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
   long GetBuy(void) noexcept { return m_lBuy; }
   void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
   long GetSell(void) { return m_lSell; }
@@ -208,6 +211,8 @@ protected:
   long      m_lSell;                // 竞卖价。单位：0.001元
   INT64	    m_llVolume;							// 总成交量。单位：股
   INT64     m_llAmount;							// 总成交金额。单位：元
+  INT64	    m_llTotalValue;					// 总市值。单位：万元
+  INT64     m_llCurrentValue;				// 流通市值。单位：万元
   array<long, 5>  	  m_lPBuy;			// 买盘价1--5。单位：0.001元
   array<long, 5> 		  m_lVBuy;			// 买盘量1--5。单位：股
   array<long, 5>  	  m_lPSell;			// 卖盘价1--5。单位：0.001元

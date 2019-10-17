@@ -59,10 +59,14 @@ public:
   void SetLow(long lValue) noexcept { m_lLow = lValue; }
   long GetNew(void) noexcept { return m_lNew; }
   void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_lAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_lAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_lVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_lVolume = llValue; }
+  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
@@ -219,8 +223,10 @@ protected:
   long		  m_lHigh;				// 以0.001元计的最高价
   long		  m_lLow;					// 以0.001元计的最低价
   long		  m_lNew;					// 以0.001元计的最新价
-  INT64	    m_lVolume;			// 以1股计的成交量
-  INT64     m_lAmount;			// 以元计的成交金额
+  INT64	    m_llVolume;			// 以1股计的成交量
+  INT64     m_llAmount;			// 以元计的成交金额
+  INT64	    m_llTotalValue;					// 总市值。单位：万元
+  INT64     m_llCurrentValue;				// 流通市值。单位：万元
   array<long, 5>      m_lPBuy;			// 买盘价。单位：0.001元
   array<long, 5>			m_lVBuy;			// 买盘量。单位：股
   array<long, 5>		  m_lPSell;		// 卖盘价。单位：0.001元
