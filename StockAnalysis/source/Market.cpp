@@ -60,7 +60,8 @@ void CMarket::Reset(void)
 
   m_lCountLoopRTDataInquiring = 0;
 
-  m_fResetm_ItStock = true;
+  m_fResetm_ItSinaStock = true;
+  m_fResetm_ItTengxunStock = true;
 
   m_fTodayTempDataLoaded = false;
 
@@ -371,7 +372,7 @@ bool CMarket::GetSinaStockRTData(void)
     }
     else { // 开市时使用今日活跃股票池
       gl_stSinaRTDataInquire.strInquire = m_strSinaRTDataInquire;
-      GetInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
+      GetSinaInquiringStockStr(gl_stSinaRTDataInquire.strInquire);
     }
     gl_ThreadStatus.SetSinaRTDataReceived(false);
     gl_ThreadStatus.SetReadingSinaRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
@@ -435,7 +436,7 @@ bool CMarket::GetTengxunStockRTData(void)
 
     // 申请下一批腾讯股票实时数据
     gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTDataInquire;
-    GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
+    GetTengxunInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
     gl_ThreadStatus.SetTengxunRTDataReceived(false);
     gl_ThreadStatus.SetReadingTengxunRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ThreadReadTengxunRTData, nullptr);
@@ -856,33 +857,66 @@ bool CMarket::ProcessRTData(void)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 生成每次查询实时股票数据的字符串
+// 生成每次查询新浪实时股票数据的字符串
 //
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-int CMarket::GetInquiringStockStr(CString& str)
+int CMarket::GetSinaInquiringStockStr(CString& str)
 {
   int iCount = 1;
 
-  if (m_fResetm_ItStock) {
-    m_itStock = m_vActiveStock.begin();
-    m_fResetm_ItStock = false;
+  if (m_fResetm_ItSinaStock) {
+    m_itSinaStock = m_vActiveStock.begin();
+    m_fResetm_ItSinaStock = false;
   }
 
-  str += (*m_itStock++)->GetStockCode();  // 得到第一个股票代码
-  while ((m_itStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
+  str += (*m_itSinaStock++)->GetStockCode();  // 得到第一个股票代码
+  while ((m_itSinaStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
     iCount++;
     str += ',';
-    str += (*m_itStock++)->GetStockCode();
+    str += (*m_itSinaStock++)->GetStockCode();
   }
 
-  if (m_itStock == m_vActiveStock.end()) {
-    m_itStock = m_vActiveStock.begin();
+  if (m_itSinaStock == m_vActiveStock.end()) {
+    m_itSinaStock = m_vActiveStock.begin();
   }
   else {
     // 退一格，这样能够覆盖住边缘
-    m_itStock--;
+    m_itSinaStock--;
+  }
+  return iCount;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 生成每次查询腾讯实时股票数据的字符串
+//
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+int CMarket::GetTengxunInquiringStockStr(CString& str)
+{
+  int iCount = 1;
+
+  if (m_fResetm_ItTengxunStock) {
+    m_itTengxunStock = m_vActiveStock.begin();
+    m_fResetm_ItTengxunStock = false;
+  }
+
+  str += (*m_itTengxunStock++)->GetStockCode();  // 得到第一个股票代码
+  while ((m_itTengxunStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
+    iCount++;
+    str += ',';
+    str += (*m_itTengxunStock++)->GetStockCode();
+  }
+
+  if (m_itTengxunStock == m_vActiveStock.end()) {
+    m_itTengxunStock = m_vActiveStock.begin();
+  }
+  else {
+    // 退一格，这样能够覆盖住边缘
+    m_itTengxunStock--;
   }
   return iCount;
 }

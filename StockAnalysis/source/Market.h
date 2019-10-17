@@ -45,8 +45,9 @@ public:
   // 实时数据和日线历史数据读取
   bool          CreateSinaRTDataInquiringStr(CString& str);
   bool          CreateTengxunRTDataInquiringStr(CString& str);
-  int						GetInquiringStockStr(CString& str);
+  int						GetSinaInquiringStockStr(CString& str);
   bool          GetSinaStockRTData(void);
+  int						GetTengxunInquiringStockStr(CString& str);
   bool          GetTengxunStockRTData(void);
   bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
   bool          GetNetEaseStockDayLineData(void);
@@ -194,8 +195,11 @@ protected:
   vector<CStockPtr>						m_vActiveStock;									//当天股票数据
 
   long												m_lTotalActiveStock;						// 当天股票总数
-  vector<CStockPtr>::iterator m_itStock;
-  bool                        m_fResetm_ItStock;    // 重置m_itStock标识
+
+  vector<CStockPtr>::iterator m_itSinaStock;
+  bool                        m_fResetm_ItSinaStock;    // 重置m_itSinaStock标识
+  vector<CStockPtr>::iterator m_itTengxunStock;
+  bool                        m_fResetm_ItTengxunStock;    // 重置m_itTengxunStock标识
 
   vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
   bool												m_fLoadedSelectedStock;
