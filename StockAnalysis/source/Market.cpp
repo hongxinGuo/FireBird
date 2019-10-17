@@ -332,7 +332,7 @@ bool CMarket::GetSinaStockRTData(void)
           pRTData = make_shared<CRTData>();
           if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
             i++;
-            gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+            gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
           }
           else {
             TRACE("新浪实时数据有误,抛掉不用\n");
@@ -408,7 +408,7 @@ bool CMarket::GetTengxunStockRTData(void)
           pRTData = make_shared<CRTData>();
           if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
             i++;
-            gl_systemDequeData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+            gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
           }
           else {
             TRACE("腾讯实时数据有误,抛掉不用\n");
@@ -810,10 +810,10 @@ bool CMarket::ProcessRTData(void)
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
   CStockRTDataPtr pRTDataCompact = nullptr;
-  const long lTotalNumber = gl_systemDequeData.GetRTDataSize();
+  const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CStockRTDataPtr pRTData = gl_systemDequeData.PopRTData();
+    CStockRTDataPtr pRTData = gl_QueueRTData.PopRTData();
     //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;

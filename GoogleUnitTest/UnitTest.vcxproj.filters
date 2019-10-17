@@ -136,9 +136,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockID.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SystemDequeData.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -176,6 +173,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

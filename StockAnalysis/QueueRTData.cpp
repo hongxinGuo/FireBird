@@ -1,12 +1,12 @@
 #include"globedef.h"
 
-#include "SystemDequeData.h"
+#include "QueueRTData.h"
 #include "SystemMessage.h"
 
 // 目前使用deque队列存储实时数据，故此变量初始值设置为假
 bool gl_fUsingPriorityQueue = true;
 
-CSystemQueueData::CSystemQueueData()
+CQueueRTData::CQueueRTData()
 {
   static int siCounter = 0;
   if (siCounter++ > 0) {
@@ -15,11 +15,11 @@ CSystemQueueData::CSystemQueueData()
   }
 }
 
-CSystemQueueData::~CSystemQueueData()
+CQueueRTData::~CQueueRTData()
 {
 }
 
-void CSystemQueueData::Reset(void)
+void CQueueRTData::Reset(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -42,22 +42,22 @@ void CSystemQueueData::Reset(void)
   }
 }
 
-void CSystemQueueData::PushRTData(CStockRTDataPtr pData) {
+void CQueueRTData::PushRTData(CStockRTDataPtr pData) {
   if( gl_fUsingPriorityQueue)  PushPriorityRTData(pData);
   else PushDequeRTData(pData);
 }
 
-CStockRTDataPtr CSystemQueueData::PopRTData(void) {
+CStockRTDataPtr CQueueRTData::PopRTData(void) {
   if( gl_fUsingPriorityQueue) return(PopPriorityRTData());
   else return(PopDequeRTData());
 }
 
-long CSystemQueueData::GetRTDataSize(void) {
+long CQueueRTData::GetRTDataSize(void) {
   if(gl_fUsingPriorityQueue) return(GetPriorityRTDataSize());
   else return(GetDequeRTDataSize());
 }
 
-void CSystemQueueData::PushDequeRTData(CStockRTDataPtr pData)
+void CQueueRTData::PushDequeRTData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -67,7 +67,7 @@ void CSystemQueueData::PushDequeRTData(CStockRTDataPtr pData)
   }
 }
 
-CStockRTDataPtr CSystemQueueData::PopDequeRTData(void)
+CStockRTDataPtr CQueueRTData::PopDequeRTData(void)
 {
   CStockRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
@@ -82,7 +82,7 @@ CStockRTDataPtr CSystemQueueData::PopDequeRTData(void)
   return nullptr; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-long CSystemQueueData::GetDequeRTDataSize(void)
+long CQueueRTData::GetDequeRTDataSize(void)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -95,7 +95,7 @@ long CSystemQueueData::GetDequeRTDataSize(void)
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CSystemQueueData::PushPriorityRTData(CStockRTDataPtr pData)
+void CQueueRTData::PushPriorityRTData(CStockRTDataPtr pData)
 {
   CSingleLock singleLock(&m_PriorityRTDataLock);
   singleLock.Lock();
@@ -105,7 +105,7 @@ void CSystemQueueData::PushPriorityRTData(CStockRTDataPtr pData)
   }
 }
 
-CStockRTDataPtr CSystemQueueData::PopPriorityRTData(void)
+CStockRTDataPtr CQueueRTData::PopPriorityRTData(void)
 {
   CStockRTDataPtr pData;
   CSingleLock singleLock(&m_PriorityRTDataLock);
@@ -120,7 +120,7 @@ CStockRTDataPtr CSystemQueueData::PopPriorityRTData(void)
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-long CSystemQueueData::GetPriorityRTDataSize(void)
+long CQueueRTData::GetPriorityRTDataSize(void)
 {
   CSingleLock singleLock(&m_PriorityRTDataLock);
   singleLock.Lock();

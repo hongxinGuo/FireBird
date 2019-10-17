@@ -102,9 +102,6 @@
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SystemDequeData.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -118,6 +115,9 @@
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
     <ClInclude Include="source\Accessory.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueRTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -185,9 +185,6 @@
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SystemDequeData.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
@@ -228,6 +225,9 @@
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\Accessory.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

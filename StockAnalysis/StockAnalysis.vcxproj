@@ -230,7 +230,7 @@
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
     <ClInclude Include="StockAnalysisView.h" />
-    <ClInclude Include="SystemDequeData.h" />
+    <ClInclude Include="QueueRTData.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -277,7 +277,7 @@
     <ClCompile Include="StockAnalysis.cpp" />
     <ClCompile Include="StockAnalysisDoc.cpp" />
     <ClCompile Include="StockAnalysisView.cpp" />
-    <ClCompile Include="SystemDequeData.cpp" />
+    <ClCompile Include="QueueRTData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc" />
