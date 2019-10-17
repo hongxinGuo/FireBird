@@ -3,7 +3,7 @@
 #include "QueueRTData.h"
 #include "SystemMessage.h"
 
-// 目前使用deque队列存储实时数据，故此变量初始值设置为假
+// 目前使用deque队列存储实时数据，故此变量初始值设置为假。在测试使用priority_queue成功后，即弃用deque(此标识永远为真）。
 bool gl_fUsingPriorityQueue = true;
 
 CQueueRTData::CQueueRTData()
@@ -42,12 +42,12 @@ void CQueueRTData::Reset(void)
   }
 }
 
-void CQueueRTData::PushRTData(CStockRTDataPtr pData) {
+void CQueueRTData::PushRTData(CRTDataPtr pData) {
   if( gl_fUsingPriorityQueue)  PushPriorityRTData(pData);
   else PushDequeRTData(pData);
 }
 
-CStockRTDataPtr CQueueRTData::PopRTData(void) {
+CRTDataPtr CQueueRTData::PopRTData(void) {
   if( gl_fUsingPriorityQueue) return(PopPriorityRTData());
   else return(PopDequeRTData());
 }
@@ -57,7 +57,7 @@ long CQueueRTData::GetRTDataSize(void) {
   else return(GetDequeRTDataSize());
 }
 
-void CQueueRTData::PushDequeRTData(CStockRTDataPtr pData)
+void CQueueRTData::PushDequeRTData(CRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -67,9 +67,9 @@ void CQueueRTData::PushDequeRTData(CStockRTDataPtr pData)
   }
 }
 
-CStockRTDataPtr CQueueRTData::PopDequeRTData(void)
+CRTDataPtr CQueueRTData::PopDequeRTData(void)
 {
-  CStockRTDataPtr pData;
+  CRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -95,7 +95,7 @@ long CQueueRTData::GetDequeRTDataSize(void)
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CQueueRTData::PushPriorityRTData(CStockRTDataPtr pData)
+void CQueueRTData::PushPriorityRTData(CRTDataPtr pData)
 {
   CSingleLock singleLock(&m_PriorityRTDataLock);
   singleLock.Lock();
@@ -105,9 +105,10 @@ void CQueueRTData::PushPriorityRTData(CStockRTDataPtr pData)
   }
 }
 
-CStockRTDataPtr CQueueRTData::PopPriorityRTData(void)
+CRTDataPtr CQueueRTData::PopPriorityRTData(void)
 {
-  CStockRTDataPtr pData;
+  static CRTDataPtr pLastData = nullptr;
+  CRTDataPtr pData;
   CSingleLock singleLock(&m_PriorityRTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {

@@ -101,7 +101,7 @@ using namespace std;
 
 class CRTData;
 
-typedef shared_ptr<CRTData> CStockRTDataPtr;
+typedef shared_ptr<CRTData> CRTDataPtr;
 
 class CRTData : public CObject {
 public:
@@ -123,7 +123,7 @@ public:
   }
 
   // 比较大小运算符
-  bool operator < (const CStockRTDataPtr rtDataPtr) const {
+  bool operator < (const CRTDataPtr rtDataPtr) const {
     return m_time < rtDataPtr->m_time;
   }
 

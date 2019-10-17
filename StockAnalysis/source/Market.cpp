@@ -318,7 +318,7 @@ bool CMarket::GetSinaStockRTData(void)
 {
   static int iCountUp = 0;
   char* pCurrentPos = nullptr;
-  CStockRTDataPtr pRTData = nullptr;
+  CRTDataPtr pRTData = nullptr;
   long i = 0;
   INT64 iTotalNumber = 0;
 
@@ -393,7 +393,7 @@ bool CMarket::GetTengxunStockRTData(void)
 {
   static int iCountUp = 0;
   char* pCurrentPos = nullptr;
-  CStockRTDataPtr pRTData = nullptr;
+  CRTDataPtr pRTData = nullptr;
   long i = 0;
   INT64 iTotalNumber = 0;
 
@@ -809,11 +809,10 @@ bool CMarket::ProcessRTData(void)
 {
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
-  CStockRTDataPtr pRTDataCompact = nullptr;
   const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CStockRTDataPtr pRTData = gl_QueueRTData.PopRTData();
+    CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
     //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = 0;
@@ -1914,7 +1913,7 @@ bool CMarket::SaveTodayTempData(void) {
 bool CMarket::LoadTodayTempData(void) {
   CStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
-  CStockRTDataPtr pRTData;
+  CRTDataPtr pRTData;
 
   ASSERT(!m_fTodayTempDataLoaded);
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData());    // 执行此初始化工作时，计算实时数据的工作线程必须没有运行。

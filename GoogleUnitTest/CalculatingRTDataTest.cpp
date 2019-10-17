@@ -154,8 +154,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount;
-    CStockRTDataPtr pCurrentData;
-    CStockRTDataPtr pLastData;
+    CRTDataPtr pCurrentData;
+    CRTDataPtr pLastData;
     CStock m_stock;
   };
 

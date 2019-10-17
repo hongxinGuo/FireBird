@@ -160,7 +160,7 @@ public:
   bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
-  void UpdateStatus(CStockRTDataPtr pRTData); // 更新当前个变量状态
+  void UpdateStatus(CRTDataPtr pRTData); // 更新当前个变量状态
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLine(void);
@@ -176,8 +176,8 @@ public:
 
   // 计算实时数据, 由工作线程ThreadCalculateRTData调用
   bool CalculateRTData(void);
-  bool CalculateOneRTData(CStockRTDataPtr pData);
-  bool AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
+  bool CalculateOneRTData(CRTDataPtr pData);
+  bool AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
 
@@ -185,9 +185,9 @@ public:
   bool SaveRealTimeData(CSetRealTimeData* psetRT);
 
   // 采用同步机制存取实时数据
-  void PushRTData(CStockRTDataPtr pData);
-  CStockRTDataPtr PopRTData(void);
-  CStockRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
+  void PushRTData(CRTDataPtr pData);
+  CRTDataPtr PopRTData(void);
+  CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
   long GetRTDataDequeSize(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
@@ -270,7 +270,7 @@ protected:
 
   // 挂单的具体情况。
   map<long, long>       m_mapGuaDan;        // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CStockRTDataPtr       m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
+  CRTDataPtr       m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
   INT64                 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double                m_dCurrentGuaDanTransactionPrice; // 当前成交价格
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
@@ -282,7 +282,7 @@ protected:
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
   CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
-  deque<CStockRTDataPtr> m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  deque<CRTDataPtr> m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection       m_RTDataLock;   // 实时数据队列的同步锁
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。

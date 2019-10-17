@@ -29,14 +29,14 @@ namespace StockAnalysisTest {
 
   TEST(SystemDequeDataTest, TestGetDuqueRTDataSize) {
     EXPECT_EQ(gl_QueueRTData.GetDequeRTDataSize(), 0);
-    CStockRTDataPtr pRTData = make_shared<CRTData>();
+    CRTDataPtr pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_QueueRTData.PushDequeRTData(pRTData);
-    CStockRTDataPtr pRTData2 = make_shared<CRTData>();
+    CRTDataPtr pRTData2 = make_shared<CRTData>();
     gl_QueueRTData.PushDequeRTData(pRTData2);
     pRTData2->SetTransactionTime(200200200);
     EXPECT_EQ(gl_QueueRTData.GetDequeRTDataSize(), 2);
-    CStockRTDataPtr p2 = gl_QueueRTData.PopDequeRTData();
+    CRTDataPtr p2 = gl_QueueRTData.PopDequeRTData();
     EXPECT_EQ(gl_QueueRTData.GetDequeRTDataSize(), 1);
     EXPECT_EQ(p2->GetTransactionTime(), 100100100);
   }
@@ -45,25 +45,25 @@ namespace StockAnalysisTest {
   TEST(SystemDequeDataTest, TestGetPriorityRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_QueueRTData.GetPriorityRTDataSize(), 0);
-    CStockRTDataPtr pRTData = make_shared<CRTData>();
+    CRTDataPtr pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_QueueRTData.PushPriorityRTData(pRTData);
-    CStockRTDataPtr pRTData2 = make_shared<CRTData>();
+    CRTDataPtr pRTData2 = make_shared<CRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
     gl_QueueRTData.PushPriorityRTData(pRTData2);
-    CStockRTDataPtr pRTData3 = make_shared<CRTData>();
+    CRTDataPtr pRTData3 = make_shared<CRTData>();
     pRTData3->SetTransactionTime(200200);
     gl_QueueRTData.PushPriorityRTData(pRTData3);
-    CStockRTDataPtr pRTData4 = make_shared<CRTData>();
+    CRTDataPtr pRTData4 = make_shared<CRTData>();
     pRTData4->SetTransactionTime(200);
     gl_QueueRTData.PushPriorityRTData(pRTData4);
-    CStockRTDataPtr pRTData5 = make_shared<CRTData>();
+    CRTDataPtr pRTData5 = make_shared<CRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_QueueRTData.PushPriorityRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
     EXPECT_EQ(gl_QueueRTData.GetPriorityRTDataSize(), 5);
-    CStockRTDataPtr p2 = gl_QueueRTData.PopPriorityRTData();
+    CRTDataPtr p2 = gl_QueueRTData.PopPriorityRTData();
     EXPECT_EQ(gl_QueueRTData.GetPriorityRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_QueueRTData.PopPriorityRTData();

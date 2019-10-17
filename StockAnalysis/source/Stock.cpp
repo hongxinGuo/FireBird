@@ -82,7 +82,7 @@ void CStock::Reset(void) {
 
   long lTotalNumber = GetRTDataDequeSize();
   for (int i = 0; i < lTotalNumber; i++) {
-    CStockRTDataPtr pRTData = PopRTData();
+    CRTDataPtr pRTData = PopRTData();
   }
 }
 
@@ -99,7 +99,7 @@ void CStock::operator =(CStock& pStock) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CStock::UpdateStatus(CStockRTDataPtr pRTData)
+void CStock::UpdateStatus(CRTDataPtr pRTData)
 {
   m_lLastClose = pRTData->GetLastClose();
   m_lNew = pRTData->GetNew();
@@ -287,7 +287,7 @@ bool CStock::CalculateDayLine120RS(void)
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CStock::CalculateRTData(void) {
-  CStockRTDataPtr pRTData;
+  CRTDataPtr pRTData;
 
   const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
@@ -336,7 +336,7 @@ bool CStock::CalculateRTData(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
+bool CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   long lCurrentGuaDanTransactionPrice = 0;
 
   if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后）
@@ -470,7 +470,7 @@ bool CStock::CalculateOneRTData(CStockRTDataPtr pRTData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::AnalysisingGuaDan(CStockRTDataPtr pCurrentRTData, CStockRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
+bool CStock::AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true }; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
   m_lCurrentCanselSellVolume = 0;
   m_lCurrentCanselBuyVolume = 0;
@@ -760,7 +760,7 @@ bool CStock::SaveRealTimeData(CSetRealTimeData* psetRTData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CStock::PushRTData(CStockRTDataPtr pData)
+void CStock::PushRTData(CRTDataPtr pData)
 {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -776,9 +776,9 @@ void CStock::PushRTData(CStockRTDataPtr pData)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CStockRTDataPtr CStock::PopRTData(void)
+CRTDataPtr CStock::PopRTData(void)
 {
-  CStockRTDataPtr pData;
+  CRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -791,9 +791,9 @@ CStockRTDataPtr CStock::PopRTData(void)
   return nullptr;
 }
 
-CStockRTDataPtr CStock::GetRTDataAtHead(void)
+CRTDataPtr CStock::GetRTDataAtHead(void)
 {
-  CStockRTDataPtr pData;
+  CRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
