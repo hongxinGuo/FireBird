@@ -42,13 +42,18 @@ public:
 
   bool          OpenSavingDayLineRecord(void);
 
-  // 实时数据和日线历史数据读取
+  // 实时数据读取
   bool          CreateSinaRTDataInquiringStr(CString& str);
   bool          CreateTengxunRTDataInquiringStr(CString& str);
   int						GetSinaInquiringStockStr(CString& str);
   bool          GetSinaStockRTData(void);
   int						GetTengxunInquiringStockStr(CString& str);
   bool          GetTengxunStockRTData(void);
+  void          ResetIT(void) { ASSERT(SystemReady()); ResetSinaIT(); ResetTengxunIT(); }
+  void          ResetSinaIT(void);    // 重置新浪实时股票代码查询迭代器
+  void          ResetTengxunIT(void); // 重置腾讯实时股票代码查询迭代器
+
+  //日线历史数据读取
   bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
   bool          GetNetEaseStockDayLineData(void);
 
@@ -196,10 +201,8 @@ protected:
 
   long												m_lTotalActiveStock;						// 当天股票总数
 
-  vector<CStockPtr>::iterator m_itSinaStock;
-  bool                        m_fResetm_ItSinaStock;    // 重置m_itSinaStock标识
-  vector<CStockPtr>::iterator m_itTengxunStock;
-  bool                        m_fResetm_ItTengxunStock;    // 重置m_itTengxunStock标识
+  vector<CStockPtr>::iterator m_itSinaStock;        // 新浪实时股票代码查询迭代器
+  vector<CStockPtr>::iterator m_itTengxunStock;     // 腾讯实时股票代码迭代器
 
   vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
   bool												m_fLoadedSelectedStock;
