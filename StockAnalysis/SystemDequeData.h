@@ -7,6 +7,7 @@
 using namespace std;
 #include<queue>
 
+// 此变量用于决定使用deque还是priority_ueue来实现存储实时数据的队列。以后应该采用priority_queue来实现，这样可以实现多数据来源。
 extern bool gl_fUsingPriorityQueue;
 
 class CSystemQueueData
