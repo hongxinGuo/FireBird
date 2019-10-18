@@ -13,7 +13,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
-    EXPECT_EQ(id.GetIndex(), -1);
+    EXPECT_EQ(id.GetOffset(), -1);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     EXPECT_FALSE(id.IsActive());
@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
     id.SetMarket(1);
     id.SetStockCode(_T("abcde"));
     id.SetStockName(_T("dcba"));
-    id.SetIndex(1);
+    id.SetOffset(1);
     id.SetDayLineEndDay(20020202);
     id.SetIPOStatus(0);
     id.SetActive(true);
@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetMarket(), 1);
     EXPECT_STREQ(id.GetStockCode(), _T("abcde"));
     EXPECT_STREQ(id.GetStockName(), _T("dcba"));
-    EXPECT_EQ(id.GetIndex(), 1);
+    EXPECT_EQ(id.GetOffset(), 1);
     EXPECT_EQ(id.GetDayLineEndDay(), 20020202);
     EXPECT_EQ(id.GetIPOStatus(), 0);
     EXPECT_TRUE(id.IsActive());
@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
-    EXPECT_EQ(id.GetIndex(), -1);
+    EXPECT_EQ(id.GetOffset(), -1);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     EXPECT_FALSE(id.IsActive());
@@ -72,9 +72,9 @@ namespace StockAnalysisTest {
   }
   TEST(StockIDTest, TestGetIndex) {
     CStockID id;
-    EXPECT_EQ(id.GetIndex(), -1);
-    id.SetIndex(10101);
-    EXPECT_EQ(id.GetIndex(), 10101);
+    EXPECT_EQ(id.GetOffset(), -1);
+    id.SetOffset(10101);
+    EXPECT_EQ(id.GetOffset(), 10101);
   }
 
   TEST(StockIDTest, TestGetDayLineEndDay) {

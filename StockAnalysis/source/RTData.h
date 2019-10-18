@@ -117,16 +117,6 @@ public:
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
   bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
-  // 比较大小运算符
-  bool operator < (const CRTData& rtData) const {
-    return m_time < rtData.m_time;
-  }
-
-  // 比较大小运算符
-  bool operator < (const CRTDataPtr rtDataPtr) const {
-    return m_time < rtDataPtr->m_time;
-  }
-
 public:
   // 读取新浪实时数据函数
   bool ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型

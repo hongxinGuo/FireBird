@@ -40,8 +40,8 @@ public:
   CString   GetStockName(void) noexcept { return m_strStockName; }
   void      SetStockName(CString str) noexcept { m_strStockName = str; }
 
-  long      GetIndex(void) noexcept { return m_nIndex; }
-  void      SetIndex(long lValue) noexcept { m_nIndex = lValue; }
+  long      GetOffset(void) noexcept { return m_nOffsetInContainer; }
+  void      SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
   long      GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
   void      SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
   long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
@@ -66,7 +66,7 @@ protected:
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString   m_strStockName;		// 股票名称
   CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式）
-  long			m_nIndex;					// 在容器中的偏移量
+  long			m_nOffsetInContainer;					// 在容器中的偏移量
   long			m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long			m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市

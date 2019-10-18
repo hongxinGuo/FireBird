@@ -115,11 +115,10 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海主板
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
@@ -129,11 +128,10 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海三板
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
@@ -143,11 +141,10 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
@@ -157,11 +154,10 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海B股
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
@@ -171,11 +167,10 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sh");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海指数
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStockID);
     m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
@@ -186,7 +181,7 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
@@ -199,7 +194,7 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
@@ -212,7 +207,7 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
@@ -225,7 +220,7 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
@@ -238,7 +233,7 @@ bool CMarket::CreateTotalStockContainer(void)
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
     pStockID = make_shared<CStockID>();
-    pStockID->SetIndex(iCount);
+    pStockID->SetOffset(iCount);
     str += buffer;
     pStockID->SetStockCode(str);
     pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
@@ -1578,7 +1573,7 @@ bool CMarket::SaveDayLine(CSetDayLine* psetDayLine, CSetStockCode* psetStockCode
   if (fSaved) {
     psetStockCode->m_pDatabase->BeginTrans();
     psetStockCode->AddNew();
-    psetStockCode->m_Counter = m_vChinaMarketAStock.at(lIndex)->GetIndex();
+    psetStockCode->m_Counter = m_vChinaMarketAStock.at(lIndex)->GetOffset();
     psetStockCode->m_StockType = m_vChinaMarketAStock.at(lIndex)->GetMarket();
     psetStockCode->m_StockCode = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
     psetStockCode->m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
@@ -2094,7 +2089,7 @@ bool CMarket::SaveStockCodeDataBase(void)
   for (auto pStockID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
     setStockCode.AddNew();
     CString str;
-    setStockCode.m_Counter = pStockID->GetIndex();
+    setStockCode.m_Counter = pStockID->GetOffset();
     setStockCode.m_StockType = pStockID->GetMarket();
     setStockCode.m_StockCode = pStockID->GetStockCode();
     if (pStockID->GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，

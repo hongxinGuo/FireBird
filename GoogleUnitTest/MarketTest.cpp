@@ -58,7 +58,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetStockCode(), _T("sz000000"));
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetMarket(), __SHENZHEN_MARKET__);
     for (int i = 0; i < 12000; i++) {
-      EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->GetIndex(), i);
+      EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->GetOffset(), i);
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
