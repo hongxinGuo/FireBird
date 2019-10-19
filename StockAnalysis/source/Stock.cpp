@@ -217,7 +217,7 @@ bool CStock::CalculateDayLineRS(long lNumber) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////
-bool CStock::CalculateRTData(void) {
+bool CStock::ProcessRTData(void) {
   CRTDataPtr pRTData;
 
   const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
@@ -227,7 +227,7 @@ bool CStock::CalculateRTData(void) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if (pRTData->IsActive()) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
-      CalculateOneRTData(pRTData);
+      ProcessOneRTData(pRTData);
       CheckCurrentRTData();
       ShowCurrentTransaction();
       ShowCurrentInformationofCancelingGuaDan();
@@ -244,130 +244,158 @@ bool CStock::CalculateRTData(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::CalculateOneRTData(CRTDataPtr pRTData) {
-  long lCurrentGuaDanTransactionPrice = 0;
-
+bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
   if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后）
-    m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
-    if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
-      // 检查挂单情况
-      m_nCurrentTransactionType = __NO_TRANSACTION__;
-    }
-    else { // 有成交？
-      m_lTransactionNumber++; // 成交数加一。
-      if (m_lCurrentGuadanTransactionVolume < 5000) {
-        m_lTransactionNumberBelow5000++;
-      }
-      else if (m_lCurrentGuadanTransactionVolume < 50000) {
-        m_lTransactionNumberBelow50000++;
-      }
-      else if (m_lCurrentGuadanTransactionVolume < 200000) {
-        m_lTransactionNumberBelow200000++;
-      }
-      else {
-        m_lTransactionNumberAbove200000++;
-      }
-      ASSERT(m_lTransactionNumber == (m_lTransactionNumberAbove200000 + m_lTransactionNumberBelow200000
-        + m_lTransactionNumberBelow50000 + m_lTransactionNumberBelow5000));
-      lCurrentGuaDanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
-      m_dCurrentGuaDanTransactionPrice = static_cast<double>(lCurrentGuaDanTransactionPrice) / 1000; // 变换成实际价格
-      if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->GetPBuy(0)) { // 高于前买盘1
-        if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->GetPSell(0)) { // 低于前卖盘1
-          if ((m_pLastRTData->GetPSell(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
-            m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
-            m_nCurrentTransactionType = __ORDINARY_BUY__;
-          }
-          else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
-            m_nCurrentTransactionType = __ORDINARY_SELL__;
-            m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
-          }
-          else { // 买卖混杂，不分析。
-            m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-            m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
-          }
-        }
-        else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->GetPSell(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
-          m_nCurrentTransactionType = __ATTACK_BUY__;
-          m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
-          if (m_lCurrentGuadanTransactionVolume < 50000) {
-            m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
-          }
-          else if (m_lCurrentGuadanTransactionVolume < 200000) {
-            m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
-          }
-          else {
-            m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
-          }
-        }
-        else { // 高于卖盘二。强力买入。StrongBuy。
-          m_nCurrentTransactionType = __STRONG_BUY__;
-          m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
-          if (m_lCurrentGuadanTransactionVolume < 50000) {
-            m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
-          }
-          else if (m_lCurrentGuadanTransactionVolume < 200000) {
-            m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
-          }
-          else {
-            m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
-          }
-        }
-      } // 高于前买一
-      else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->GetPBuy(1)) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
-        m_nCurrentTransactionType = __ATTACK_SELL__;
-        m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
-        if (m_lCurrentGuadanTransactionVolume < 50000) {
-          m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
-        }
-        else if (m_lCurrentGuadanTransactionVolume < 200000) {
-          m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
-        }
-        else {
-          m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-        }
-      }
-      else { // 低于买盘二。强力卖出。StrongSell
-        m_nCurrentTransactionType = __STRONG_SELL__;
-        m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
-        if (m_lCurrentGuadanTransactionVolume < 50000) {
-          m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
-        }
-        else if (m_lCurrentGuadanTransactionVolume < 200000) {
-          m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
-        }
-        else {
-          m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-        }
-      }
-      ASSERT(m_TransactionTime >= pRTData->GetTransactionTime());
-      const INT64 I = pRTData->GetVolume();
-      const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-        + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
-      ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-        + m_lAttackBuyVolume + m_lAttackSellVolume + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
-    }
-
-    // 下面开始分析挂单情况
-    AnalysisGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
-
-    // 更新前交易状态
-    m_pLastRTData = pRTData;
+    CalculateOneRTData(pRTData);
   }
   else { // 第一次收到实时数据，则只初始化系统而不计算
-    m_pLastRTData = pRTData;
-    SetStartCalculating(true);
-    // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
-    // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
-    // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
-    // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
-    m_lUnknownVolume += m_pLastRTData->GetVolume();
-    // 设置第一次的挂单映射。
-    for (int j = 0; j < 5; j++) {
-      SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
-      SetGuaDan(pRTData->GetPSell(j), pRTData->GetVSell(j));
-    }
+    InitializeCalculateRTDataEnvionment(pRTData);
   }
   return true;
+}
+
+void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
+  long lCurrentGuaDanTransactionPrice = 0;
+  
+  m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
+  if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
+    // 检查挂单情况
+    m_nCurrentTransactionType = __NO_TRANSACTION__;
+  }
+  else { // 有成交？
+    m_lTransactionNumber++; // 成交数加一。
+    if (m_lCurrentGuadanTransactionVolume < 5000) {
+      m_lTransactionNumberBelow5000++;
+    }
+    else if (m_lCurrentGuadanTransactionVolume < 50000) {
+      m_lTransactionNumberBelow50000++;
+    }
+    else if (m_lCurrentGuadanTransactionVolume < 200000) {
+      m_lTransactionNumberBelow200000++;
+    }
+    else {
+      m_lTransactionNumberAbove200000++;
+    }
+    ASSERT(m_lTransactionNumber == (m_lTransactionNumberAbove200000 + m_lTransactionNumberBelow200000
+      + m_lTransactionNumberBelow50000 + m_lTransactionNumberBelow5000));
+    lCurrentGuaDanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
+    m_dCurrentGuaDanTransactionPrice = static_cast<double>(lCurrentGuaDanTransactionPrice) / 1000; // 变换成实际价格
+    if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->GetPBuy(0)) { // 高于前买盘1
+      if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->GetPSell(0)) { // 低于前卖盘1
+        if ((m_pLastRTData->GetPSell(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
+          m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
+          m_nCurrentTransactionType = __ORDINARY_BUY__;
+        }
+        else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
+          m_nCurrentTransactionType = __ORDINARY_SELL__;
+          m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+        }
+        else { // 买卖混杂，不分析。
+          m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+          m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+        }
+      }
+      else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->GetPSell(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
+        CalculateAttackBuy();
+      }
+      else { // 高于卖盘二。强力买入。StrongBuy。
+        CalculateStrongBuy();
+      }
+    } // 高于前买一
+    else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->GetPBuy(1)) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
+      CalculateAttackSell();
+    }
+    else { // 低于买盘二。强力卖出。StrongSell
+      CalculateStrongSell();
+    }
+    ASSERT(m_TransactionTime >= pRTData->GetTransactionTime());
+    const INT64 I = pRTData->GetVolume();
+    const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
+      + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
+    ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
+      + m_lAttackBuyVolume + m_lAttackSellVolume + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
+  }
+
+  // 下面开始分析挂单情况
+  AnalysisGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
+
+  // 更新前交易状态
+  m_pLastRTData = pRTData;
+}
+
+void CStock::CalculateAttackBuy(void) {
+  m_nCurrentTransactionType = __ATTACK_BUY__;
+  m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
+  if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else {
+    m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+  }
+}
+
+void CStock::CalculateStrongBuy(void) {
+  m_nCurrentTransactionType = __STRONG_BUY__;
+  m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
+  if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else {
+    m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+  }
+}
+void CStock::CalculateAttackSell(void) {
+  m_nCurrentTransactionType = __ATTACK_SELL__;
+  m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+  if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else {
+    m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+  }
+}
+
+void CStock::CalculateStrongSell(void) {
+  m_nCurrentTransactionType = __STRONG_SELL__;
+  m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
+  if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else {
+    m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//
+// 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void CStock::InitializeCalculateRTDataEnvionment(CRTDataPtr pRTData) {
+  m_pLastRTData = pRTData;
+  SetStartCalculating(true);
+  // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
+  // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
+  // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
+  // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
+  m_lUnknownVolume += m_pLastRTData->GetVolume();
+  // 设置第一次的挂单映射。
+  for (int j = 0; j < 5; j++) {
+    SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
+    SetGuaDan(pRTData->GetPSell(j), pRTData->GetVSell(j));
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

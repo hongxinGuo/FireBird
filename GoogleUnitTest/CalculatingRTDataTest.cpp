@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
 
   TEST_P(CalculateRTDataTest, TestRTData) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
-    m_stock.CalculateOneRTData(pLastData);
+    m_stock.ProcessOneRTData(pLastData);
     long lFirstVolume = m_stock.GetUnknownVolume();
     for (int i = 9960; i < 10050; i += 10) {
       EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
@@ -172,7 +172,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_stock.IsStartCalculating());
     EXPECT_EQ(m_stock.GetTransactionNumberBelow50000(), 0);
     EXPECT_EQ(m_stock.GetTransactionNumber(), 0);
-    m_stock.CalculateOneRTData(pCurrentData);
+    m_stock.ProcessOneRTData(pCurrentData);
     long lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
       + m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.GetStrongSellVolume();
     EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);

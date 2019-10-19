@@ -171,8 +171,14 @@ public:
   bool CalculateDayLineRS(long lNumber);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
-  bool CalculateRTData(void);
-  bool CalculateOneRTData(CRTDataPtr pData);
+  bool ProcessRTData(void);
+  bool ProcessOneRTData(CRTDataPtr pRTData);
+  void CalculateOneRTData(CRTDataPtr pRTData);
+  void CalculateAttackBuy(void);
+  void CalculateStrongBuy(void);
+  void CalculateAttackSell(void);
+  void CalculateStrongSell(void);
+  void InitializeCalculateRTDataEnvionment(CRTDataPtr pRTData);
   bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);

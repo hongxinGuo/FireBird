@@ -348,7 +348,7 @@ bool CMarket::GetSinaStockRTData(void)
         }
         TRACE("读入%d个新浪实时数据\n", i);
         // 处理接收到的实时数据
-        ProcessRTData();
+        ProcessRTDataReceivedFromWeb();
       }
       else {  // 网络通信出现错误
         TRACE("Error reading http file ：hq.sinajs.cn\n");
@@ -426,7 +426,7 @@ bool CMarket::GetTengxunStockRTData(void)
         */
         TRACE("读入%i字节腾讯实时数据\n", iTotalNumber);
         // 处理接收到的实时数据
-        //ProcessRTData();
+        //ProcessRTDataReceivedFromWeb();
       }
       else {  // 网络通信出现错误
         TRACE("Error reading http file ：qt.gtimg.cn\n");
@@ -810,7 +810,7 @@ clock_t CMarket::GetReadingNeteaseDayDataTime(void)
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessRTData(void)
+bool CMarket::ProcessRTDataReceivedFromWeb(void)
 {
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
@@ -904,11 +904,11 @@ int CMarket::GetInquiringStockStr(CString& str, vector<CStockPtr>::iterator& itS
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CalculateRTData(void)
+bool CMarket::ProcessRTData(void)
 {
   for (auto pStock : m_vActiveStock) {
     ASSERT(pStock != nullptr);
-    pStock->CalculateRTData();
+    pStock->ProcessRTData();
   }
   return true;
 }

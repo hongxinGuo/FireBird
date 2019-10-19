@@ -18,7 +18,7 @@ UINT ThreadCalculateRTData(LPVOID) {
 
   gl_ThreadStatus.SetCalculatingRTData(true);
   if (gl_ThreadStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
-    gl_ChinaStockMarket.CalculateRTData();
+    gl_ChinaStockMarket.ProcessRTData();
     gl_ThreadStatus.SetRTDataNeedCalculate(false);
   }
   gl_ThreadStatus.SetCalculatingRTData(false);

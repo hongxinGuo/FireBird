@@ -145,10 +145,10 @@ public:
   clock_t       GetReadingNeteaseDayDataTime(void);
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
-  bool          CalculateRTData(void);
+  bool          ProcessRTData(void);
 
   //处理实时股票变化等
-  bool          ProcessRTData(void);
+  bool          ProcessRTDataReceivedFromWeb(void);
   // 处理日线历史数据
   bool					ProcessDayLineData(char* buffer, long lLength);
   bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
