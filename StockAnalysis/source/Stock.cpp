@@ -241,8 +241,6 @@ bool CStock::ProcessRTData(void) {
 // 计算一个挂单。
 // 如果是第一次计算，则只设置初始状态。
 //
-//
-//
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
   if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后）
@@ -268,18 +266,7 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
     m_dCurrentGuaDanTransactionPrice = static_cast<double>(lCurrentGuaDanTransactionPrice) / 1000; // 变换成实际价格
     if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->GetPBuy(0)) { // 高于前买盘1
       if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->GetPSell(0)) { // 低于前卖盘1
-        if ((m_pLastRTData->GetPSell(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
-          m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
-          m_nCurrentTransactionType = __ORDINARY_BUY__;
-        }
-        else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
-          m_nCurrentTransactionType = __ORDINARY_SELL__;
-          m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
-        }
-        else { // 买卖混杂，不分析。
-          m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-          m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
-        }
+        CalculateOrdinaryBuySell(lCurrentGuaDanTransactionPrice);
       }
       else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->GetPSell(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
         CalculateAttackBuy();
@@ -325,6 +312,22 @@ void CStock::IncreaseTransactionNumber(void) {
   }
   ASSERT(m_lTransactionNumber == (m_lTransactionNumberAbove200000 + m_lTransactionNumberBelow200000
     + m_lTransactionNumberBelow50000 + m_lTransactionNumberBelow5000));
+}
+
+void CStock::CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice) {
+  if ((m_pLastRTData->GetPSell(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
+    m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
+    m_nCurrentTransactionType = __ORDINARY_BUY__;
+  }
+  else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
+    m_nCurrentTransactionType = __ORDINARY_SELL__;
+    m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+  }
+  else { // 买卖混杂，不分析。
+    m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+    m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+  }
+
 }
 
 void CStock::CalculateAttackBuy(void) {

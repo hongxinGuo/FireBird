@@ -175,6 +175,7 @@ public:
   bool ProcessOneRTData(CRTDataPtr pRTData);
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
+  void CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice);
   void CalculateAttackBuy(void);
   void CalculateStrongBuy(void);
   void CalculateAttackBuyVolume(void);
