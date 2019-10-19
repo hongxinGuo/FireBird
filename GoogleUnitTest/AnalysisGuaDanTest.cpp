@@ -162,6 +162,8 @@ namespace StockAnalysisTest {
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
+    m_stock.SetLastRTDataPtr(pLastData);
+    m_stock.SetCurrentTransactionType(iType);
     m_stock.AnalysisGuaDan(pCurrentData, pLastData, iType, lPrice);
     switch (iCount) {
     case 0: // 无成交，无变化

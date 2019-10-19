@@ -89,6 +89,7 @@ public:
   INT64 GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
 
   int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
+  void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
   INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
 
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
@@ -122,7 +123,6 @@ public:
   void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
   void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
 
-  void SetCurrentTransactionType(int value) noexcept { m_nCurrentTransactionType = value; }
   void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
 
   void SetTransactionNumber(long value) noexcept { m_lTransactionNumber = value; }
@@ -173,18 +173,22 @@ public:
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CRTDataPtr pRTData);
+  void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
   void CalculateAttackBuy(void);
   void CalculateStrongBuy(void);
+  void CalculateAttackBuyVolume(void);
   void CalculateAttackSell(void);
   void CalculateStrongSell(void);
+  void CalculateAttackSellVolume(void);
   void InitializeCalculateRTDataEnvionment(CRTDataPtr pRTData);
-  bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
+  bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuaDan(void);
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
+  void SetLastRTDataPtr(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
 
   // 存储实时行情数据进数据库。（目前弃之不用）
   bool SaveRealTimeData(CSetRealTimeData* psetRT);
