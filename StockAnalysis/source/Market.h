@@ -115,6 +115,8 @@ public:
   bool					IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void					SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
 
+  bool          IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
+
   bool          IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void          SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
