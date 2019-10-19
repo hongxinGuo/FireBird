@@ -247,9 +247,29 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
     CalculateOneRTData(pRTData);
   }
   else { // 第一次收到实时数据，则只初始化系统而不计算
-    InitializeCalculateRTDataEnvionment(pRTData);
+    InitializeCalculatingRTDataEnvionment(pRTData);
   }
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//
+// 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
+//
+////////////////////////////////////////////////////////////////////////////////////////
+void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
+  SetLastRTDataPtr(pRTData);
+  SetStartCalculating(true);
+  // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
+  // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
+  // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
+  // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
+  m_lUnknownVolume += m_pLastRTData->GetVolume();
+  // 设置第一次的挂单映射。
+  for (int j = 0; j < 5; j++) {
+    SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
+    SetGuaDan(pRTData->GetPSell(j), pRTData->GetVSell(j));
+  }
 }
 
 void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
@@ -353,6 +373,7 @@ void CStock::CalculateAttackBuyVolume(void) {
     m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
   }
 }
+
 void CStock::CalculateAttackSell(void) {
   m_nCurrentTransactionType = __ATTACK_SELL__;
   m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
@@ -374,26 +395,6 @@ void CStock::CalculateAttackSellVolume(void) {
   }
   else {
     m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-//
-// 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
-//
-////////////////////////////////////////////////////////////////////////////////////////
-void CStock::InitializeCalculateRTDataEnvionment(CRTDataPtr pRTData) {
-  m_pLastRTData = pRTData;
-  SetStartCalculating(true);
-  // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
-  // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
-  // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
-  // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
-  m_lUnknownVolume += m_pLastRTData->GetVolume();
-  // 设置第一次的挂单映射。
-  for (int j = 0; j < 5; j++) {
-    SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
-    SetGuaDan(pRTData->GetPSell(j), pRTData->GetVSell(j));
   }
 }
 

@@ -182,7 +182,7 @@ public:
   void CalculateAttackSell(void);
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
-  void InitializeCalculateRTDataEnvionment(CRTDataPtr pRTData);
+  void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
   bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
