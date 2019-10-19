@@ -221,10 +221,11 @@ bool CStock::CalculateRTData(void) {
   CRTDataPtr pRTData;
 
   const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  if (lTotalNumber == 0) return false;
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (long i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
-    if ((pRTData->GetNew() != 0) && (pRTData->GetOpen() != 0)) { // 数据有效
+    if (pRTData->IsActive()) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
       CalculateOneRTData(pRTData);
       CheckCurrentRTData();
@@ -232,8 +233,7 @@ bool CStock::CalculateRTData(void) {
       ShowCurrentInformationofCancelingGuaDan();
     }
   }
-  if (lTotalNumber == 0) return false;
-  else return true;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ bool CStock::CalculateOneRTData(CRTDataPtr pRTData) {
     }
 
     // 下面开始分析挂单情况
-    AnalysisingGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
+    AnalysisGuaDan(pRTData, m_pLastRTData, m_nCurrentTransactionType, lCurrentGuaDanTransactionPrice);
 
     // 更新前交易状态
     m_pLastRTData = pRTData;
@@ -378,7 +378,7 @@ bool CStock::CalculateOneRTData(CRTDataPtr pRTData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
+bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTRanscationType, long lCurrentTransactionPrice) {
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true }; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
   m_lCurrentCanselSellVolume = 0;
   m_lCurrentCanselBuyVolume = 0;

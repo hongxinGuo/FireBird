@@ -303,8 +303,8 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     lTotalRead++;
   }
   lTotalRead++;
-  m_fActive = true;
-
+  if ((m_lNew != 0) && (m_llVolume != 0)) m_fActive = true; // 在读取实时数据时即确定此数据是否为有效数据
+  else m_fActive = false;
   return true;
 }
 

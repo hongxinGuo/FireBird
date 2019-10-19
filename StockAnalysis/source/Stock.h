@@ -170,10 +170,10 @@ public:
   bool CalculateDayLineRS(void);
   bool CalculateDayLineRS(long lNumber);
 
-  // 计算实时数据, 由工作线程ThreadCalculateRTData调用
+  // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool CalculateRTData(void);
   bool CalculateOneRTData(CRTDataPtr pData);
-  bool AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
+  bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuaDan(void);

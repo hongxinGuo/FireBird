@@ -162,7 +162,7 @@ namespace StockAnalysisTest {
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
     EXPECT_FALSE(m_stock.IsStartCalculating());
-    m_stock.AnalysisingGuaDan(pCurrentData, pLastData, iType, lPrice);
+    m_stock.AnalysisGuaDan(pCurrentData, pLastData, iType, lPrice);
     switch (iCount) {
     case 0: // 无成交，无变化
       EXPECT_EQ(m_stock.GetCancelBuyVolume(), 0);
