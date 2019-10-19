@@ -76,10 +76,13 @@ void CStock::Reset(void) {
   m_fMinLineUpdated = false;
   m_fDayKLineUpdated = false;
 
-  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始话系统，不能用于计算。从第二个数据开始计算才有效。
-
+  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_pLastRTData = nullptr;
 
+  ClearRTDataDeque();
+}
+
+void CStock::ClearRTDataDeque(void) {
   long lTotalNumber = GetRTDataDequeSize();
   for (int i = 0; i < lTotalNumber; i++) {
     CRTDataPtr pRTData = PopRTData();
@@ -135,7 +138,7 @@ bool CStock::LoadDayLine(void) {
   setDayLineInfo.m_strFilter += _T("'");
   setDayLineInfo.m_strSort = _T("[Time]");
   setDayLineInfo.Open();
-  LoadDayLine(&setDayLineInfo);
+  LoadDayLineInfo(&setDayLineInfo);
   setDayLineInfo.Close();
 
   return true;
@@ -162,7 +165,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CStock::LoadDayLine(CSetDayLineInfo* psetDayLineInfo) {
+bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
   CDayLinePtr pDayLine;
   
   int iPosition = 0;
@@ -179,101 +182,29 @@ bool CStock::LoadDayLine(CSetDayLineInfo* psetDayLineInfo) {
     if (m_vDayLine.size() <= (iPosition + 1)) break;
     psetDayLineInfo->MoveNext();
   }
-
   return true;
 }
 
 bool CStock::CalculateDayLineRS(void)
 {
-  CalculateDayLine3RS();
-  CalculateDayLine5RS();
-  CalculateDayLine10RS();
-  CalculateDayLine30RS();
-  CalculateDayLine60RS();
-  CalculateDayLine120RS();
+  CalculateDayLineRS(3);
+  CalculateDayLineRS(5);
+  CalculateDayLineRS(10);
+  CalculateDayLineRS(30);
+  CalculateDayLineRS(60);
+  CalculateDayLineRS(120);
   return true;
 }
 
-bool CStock::CalculateDayLine3RS(void)
-{
+bool CStock::CalculateDayLineRS(long lNumber) {
   double dTempRS = 0;
   const long lTotalNumber = m_vDayLine.size();
-  for (int i = 3; i < lTotalNumber; i++) {
+  for (int i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
-    for (int j = i - 3; j < i; j++) {
+    for (int j = i - lNumber; j < i; j++) {
       dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
-    m_vDayLine.at(i)->m_d3DayRS = dTempRS / 3;
-  }
-  return true;
-}
-
-bool CStock::CalculateDayLine5RS(void)
-{
-  double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = 5; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 5; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    m_vDayLine.at(i)->m_d5DayRS = dTempRS / 5;
-  }
-  return true;
-}
-
-bool CStock::CalculateDayLine10RS(void)
-{
-  double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = 10; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 10; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    m_vDayLine.at(i)->m_d10DayRS = dTempRS / 10;
-  }
-  return true;
-}
-
-bool CStock::CalculateDayLine30RS(void)
-{
-  double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = 30; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 30; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    m_vDayLine.at(i)->m_d30DayRS = dTempRS / 30;
-  }
-  return false;
-}
-
-bool CStock::CalculateDayLine60RS(void)
-{
-  double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = 60; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 60; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    m_vDayLine.at(i)->m_d60DayRS = dTempRS / 60;
-  }
-  return false;
-}
-
-bool CStock::CalculateDayLine120RS(void)
-{
-  double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = 120; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (int j = i - 120; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    m_vDayLine.at(i)->m_d120DayRS = dTempRS / 120;
+    m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
   }
   return false;
 }
@@ -296,34 +227,11 @@ bool CStock::CalculateRTData(void) {
     if ((pRTData->GetNew() != 0) && (pRTData->GetOpen() != 0)) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
       CalculateOneRTData(pRTData);
-      if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
-        || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
-        int j = 0;
-        if (m_lOrdinaryBuyVolume < 0) j = 1;
-        if (m_lOrdinarySellVolume < 0) j += 2;
-        if (m_lAttackBuyVolume < 0) j += 4;
-        if (m_lAttackSellVolume < 0) j += 8;
-        if (m_lStrongBuyVolume < 0) j += 16;
-        if (m_lStrongSellVolume < 0) j += 32;
-        TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(), m_strStockCode, j);
-      }
-      // 显示当前交易情况
-      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
-          if (gl_ChinaStockMarket.m_pCurrentStock->GetCurrentTransationVolume() > 0) {
-            gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDanTransaction();
-          }
-        }
-      }
-      // 显示当前取消挂单的情况
-      if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-        if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
-          gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDan();
-        }
-      }
+      CheckCurrentRTData();
+      ShowCurrentTransaction();
+      ShowCurrentInformationofCancelingGuaDan();
     }
   }
-
   if (lTotalNumber == 0) return false;
   else return true;
 }
@@ -631,6 +539,42 @@ bool CStock::AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData
   }
 
   return(true);
+}
+
+bool CStock::CheckCurrentRTData() {
+  if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
+    || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
+    int j = 0;
+    if (m_lOrdinaryBuyVolume < 0) j = 1;
+    if (m_lOrdinarySellVolume < 0) j += 2;
+    if (m_lAttackBuyVolume < 0) j += 4;
+    if (m_lAttackSellVolume < 0) j += 8;
+    if (m_lStrongBuyVolume < 0) j += 16;
+    if (m_lStrongSellVolume < 0) j += 32;
+    TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(), m_strStockCode, j);
+    return false;
+  }
+  return true;
+}
+
+void CStock::ShowCurrentTransaction() {
+  // 显示当前交易情况
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
+      if (gl_ChinaStockMarket.m_pCurrentStock->GetCurrentTransationVolume() > 0) {
+        gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDanTransaction();
+      }
+    }
+  }
+}
+
+void CStock::ShowCurrentInformationofCancelingGuaDan(void) {
+  // 显示当前取消挂单的情况
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_strStockCode) == 0) {
+      gl_ChinaStockMarket.m_pCurrentStock->ReportGuaDan();
+    }
+  }
 }
 
 void CStock::ReportGuaDanTransaction(void)

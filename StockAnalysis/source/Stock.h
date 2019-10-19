@@ -12,7 +12,6 @@ enum {
 };
 
 #include"SetDayLine.h"
-
 #include"SetRealTimeData.h"
 #include"RTData.h"
 #include"DayLine.h"
@@ -139,6 +138,8 @@ public:
   void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
   void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
 
+  void ClearRTDataDeque(void);  // 清空存储实时数据的队列
+
   // 挂单情况
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
   long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
@@ -160,24 +161,22 @@ public:
   bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
   bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
 
-  void UpdateStatus(CRTDataPtr pRTData); // 更新当前个变量状态
+  void UpdateStatus(CRTDataPtr pRTData); // 更新当前各变量状态
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLine(void);
   bool LoadDayLine(CSetDayLine* psetDayLine);
-  bool LoadDayLine(CSetDayLineInfo* psetDayLine);
+  bool LoadDayLineInfo(CSetDayLineInfo* psetDayLine);
   bool CalculateDayLineRS(void);
-  bool CalculateDayLine3RS(void);
-  bool CalculateDayLine5RS(void);
-  bool CalculateDayLine10RS(void);
-  bool CalculateDayLine30RS(void);
-  bool CalculateDayLine60RS(void);
-  bool CalculateDayLine120RS(void);
+  bool CalculateDayLineRS(long lNumber);
 
   // 计算实时数据, 由工作线程ThreadCalculateRTData调用
   bool CalculateRTData(void);
   bool CalculateOneRTData(CRTDataPtr pData);
   bool AnalysisingGuaDan(CRTDataPtr pCurrentRTData, CRTDataPtr pLastRTData, int nTransactionType, long lCurrentTransactionPrice);
+  bool CheckCurrentRTData();
+  void ShowCurrentTransaction(void);
+  void ShowCurrentInformationofCancelingGuaDan(void);
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
 
@@ -266,11 +265,11 @@ protected:
   INT64	    m_lAttackSellBelow200000;
   INT64	    m_lAttackSellAbove200000;
 
-  queue<COneDealPtr>    m_queueDeal;        // 具体成交信息队列
+  queue<COneDealPtr>    m_queueDeal;        // 具体成交信息队列（目前尚未使用）。
 
   // 挂单的具体情况。
   map<long, long>       m_mapGuaDan;        // 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CRTDataPtr       m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
+  CRTDataPtr            m_pLastRTData;        // 从m_dequeRTData读出的上一个实时数据。
   INT64                 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double                m_dCurrentGuaDanTransactionPrice; // 当前成交价格
   int                   m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
@@ -282,8 +281,8 @@ protected:
   bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
   CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
 
-  deque<CRTDataPtr> m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
-  CCriticalSection       m_RTDataLock;   // 实时数据队列的同步锁
+  deque<CRTDataPtr>     m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁
 
   bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
 

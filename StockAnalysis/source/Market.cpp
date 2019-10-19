@@ -867,23 +867,7 @@ bool CMarket::ProcessRTData(void)
 int CMarket::GetSinaInquiringStockStr(CString& str)
 {
   ASSERT(SystemReady());
-
-  int iCount = 1;
-  str += (*m_itSinaStock++)->GetStockCode();  // 得到第一个股票代码
-  while ((m_itSinaStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
-    iCount++;
-    str += ',';
-    str += (*m_itSinaStock++)->GetStockCode();
-  }
-
-  if (m_itSinaStock == m_vActiveStock.end()) {
-    m_itSinaStock = m_vActiveStock.begin();
-  }
-  else {
-    // 退一格，这样能够覆盖住边缘
-    m_itSinaStock--;
-  }
-  return iCount;
+  return GetInquiringStockStr(str, m_itSinaStock, _T(","), 900);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -894,21 +878,22 @@ int CMarket::GetSinaInquiringStockStr(CString& str)
 int CMarket::GetTengxunInquiringStockStr(CString& str)
 {
   ASSERT(SystemReady());
-  
-  int iCount = 1;
-  str += (*m_itTengxunStock++)->GetStockCode();  // 得到第一个股票代码
-  while ((m_itTengxunStock != m_vActiveStock.end()) && (iCount < 900)) { // 每次最大查询量为900个股票
-    iCount++;
-    str += ',';
-    str += (*m_itTengxunStock++)->GetStockCode();
-  }
+  return GetInquiringStockStr(str, m_itTengxunStock, _T(","), 900);
+}
 
-  if (m_itTengxunStock == m_vActiveStock.end()) {
-    m_itTengxunStock = m_vActiveStock.begin();
+int CMarket::GetInquiringStockStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
+  str += (*itStock++)->GetStockCode();  // 得到第一个股票代码
+  int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
+  while ((itStock != m_vActiveStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+    iCount++;
+    str += strPostfix;
+    str += (*itStock++)->GetStockCode();
+  }
+  if (itStock == m_vActiveStock.end()) {
+    itStock = m_vActiveStock.begin();
   }
   else {
-    // 退一格，这样能够覆盖住边缘
-    m_itTengxunStock--;
+    itStock--;    // 退一格，这样能够覆盖住边缘
   }
   return iCount;
 }
