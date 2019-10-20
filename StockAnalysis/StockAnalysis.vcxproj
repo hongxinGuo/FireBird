@@ -204,12 +204,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="CWebRTData.h" />
     <ClInclude Include="SetDayLineToday.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\CSinaRTWebData.h" />
+    <ClInclude Include="source\CTengxunRTWebData.h" />
     <ClInclude Include="source\CWebData.h" />
     <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\SystemTime.h" />
@@ -241,8 +242,9 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\CSinaRTWebData.cpp" />
+    <ClCompile Include="source\CTengxunRTWebData.cpp" />
     <ClCompile Include="source\CWebData.cpp" />
-    <ClCompile Include="source\CWebRTData.cpp" />
     <ClCompile Include="source\Thread.cpp" />
     <ClCompile Include="source\ThreadCalculateRS.cpp" />
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />
