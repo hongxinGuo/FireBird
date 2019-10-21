@@ -3,38 +3,45 @@
 #include"globedef.h"
 #include"Market.h"
 
-#include"CWebData.h"
+#include"WebData.h"
 
+/////////////////////////////////////////////////////////////////////////
+//
+// 这是此类唯一的接口函数
+//
+//////////////////////////////////////////////////////////////////////////
 bool CWebData::GetWebData(void)
 {
   if (!IsReadingWebData()) {
-    ProcessWebData();
+    ProcessCurrentWebData();
     InquireNextWebData();
   }
   return true;
 }
 
-void CWebData::ProcessWebData(void) {
-  CRTDataPtr pRTData = nullptr;
-  char* pCurrentPos = nullptr;
-
+void CWebData::ProcessCurrentWebData(void) {
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？
-      pCurrentPos = m_buffer;
-      long  iCount = 0;
-      while (iCount < m_lByteRead) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
-        if (!ReadAndSaveWebData(pCurrentPos, iCount)) {
-          ReportDataError();
-          iCount = m_lByteRead; // 后面的数据可能出问题，抛掉不用。
-        }
+      if (SucceedReadingAndStoringWebData()) {
+        ProcessWebDataStored();
       }
-      // 处理接收到的实时数据
-      gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
     }
     else {  // 网络通信出现错误
       ReportCommunicationError();
     }
   }
+}
+
+bool CWebData::SucceedReadingAndStoringWebData(void) {
+  char* pCurrentPos = m_buffer;
+  long  iCount = 0;
+  while (iCount < m_lByteRead) {
+    if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
+      ReportDataError();
+      return false;  // 后面的数据出问题，抛掉不用。
+    }
+  }
+  return true;
 }
 
 void CWebData::SetWebDataReceived(bool fFlag) {

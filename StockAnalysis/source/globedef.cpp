@@ -4,6 +4,9 @@
 #include "Market.h"
 #include "SystemTime.h"
 
+CSinaRTWebData     gl_SinaRTWebData;      // 新浪实时数据采集
+//CTengxunRTWebData  gl_TengxunRTWebData;   // 腾讯实时数据采集
+
 CSystemMessage    gl_systemMessage;       // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime       gl_systemTime;          // 系统时间汇总。
 CQueueRTData      gl_QueueRTData;         // 系统实时数据队列。

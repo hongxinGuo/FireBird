@@ -120,13 +120,13 @@
     <ClInclude Include="QueueRTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\CWebData.h">
+    <ClInclude Include="source\WebData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\CSinaRTWebData.h">
+    <ClInclude Include="source\TengxunRTWebData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\CTengxunRTWebData.h">
+    <ClInclude Include="source\SinaRTWebData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -239,13 +239,13 @@
     <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\CWebData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CSinaRTWebData.cpp">
+    <ClCompile Include="source\SinaRTWebData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\CTengxunRTWebData.cpp">
+    <ClCompile Include="source\TengxunRTWebData.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

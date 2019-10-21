@@ -104,6 +104,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Stock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
@@ -112,6 +113,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockID.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Thread.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj" />
@@ -123,6 +125,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

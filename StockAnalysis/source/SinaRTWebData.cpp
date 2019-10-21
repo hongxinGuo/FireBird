@@ -2,9 +2,19 @@
 #include"globedef.h"
 #include"market.h"
 
-#include "CSinaRTWebData.h"
+#include "SinaRTWebData.h"
 
-bool CSinaRTWebData::ReadAndSaveWebData(char*& pCurrentPos, long& iCount)
+bool CSinaRTWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
+
+CSinaRTWebData::CSinaRTWebData() : CWebData() {
+  if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
+  else sm_fCreatedOnce = true;
+}
+
+CSinaRTWebData::~CSinaRTWebData() {
+}
+
+bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
@@ -12,6 +22,10 @@ bool CSinaRTWebData::ReadAndSaveWebData(char*& pCurrentPos, long& iCount)
     return true;
   }
   return false;
+}
+
+void CSinaRTWebData::ProcessWebDataStored(void) {
+  gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
 }
 
 void CSinaRTWebData::ReportDataError(void)
@@ -34,7 +48,6 @@ void CSinaRTWebData::InquireNextWebData(void)
 {
   static int iCountUp = 0;
   CRTDataPtr pRTData = nullptr;
-  long i = 0;
 
   CString strTemp = _T("");
 
@@ -59,4 +72,12 @@ void CSinaRTWebData::InquireNextWebData(void)
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();
+}
+
+int CSinaRTWebData::GetInquiringStockStr(CString& strInquire) {
+  return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire);
+}
+
+void CSinaRTWebData::StartReadingThread(void) {
+  AfxBeginThread(ThreadReadSinaRTData, nullptr);
 }

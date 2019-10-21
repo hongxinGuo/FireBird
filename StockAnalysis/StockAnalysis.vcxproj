@@ -209,9 +209,9 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
-    <ClInclude Include="source\CSinaRTWebData.h" />
-    <ClInclude Include="source\CTengxunRTWebData.h" />
-    <ClInclude Include="source\CWebData.h" />
+    <ClInclude Include="source\SinaRTWebData.h" />
+    <ClInclude Include="source\TengxunRTWebData.h" />
+    <ClInclude Include="source\WebData.h" />
     <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
@@ -242,9 +242,8 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
-    <ClCompile Include="source\CSinaRTWebData.cpp" />
-    <ClCompile Include="source\CTengxunRTWebData.cpp" />
-    <ClCompile Include="source\CWebData.cpp" />
+    <ClCompile Include="source\SinaRTWebData.cpp" />
+    <ClCompile Include="source\TengxunRTWebData.cpp" />
     <ClCompile Include="source\Thread.cpp" />
     <ClCompile Include="source\ThreadCalculateRS.cpp" />
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />
@@ -274,6 +273,7 @@
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
+    <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
