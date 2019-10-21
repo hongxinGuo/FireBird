@@ -16,9 +16,7 @@ CThreadStatus::CThreadStatus() {
 
   m_fReadingNeteaseDayLine = false;
   m_fSavingDayLine = false;
-  m_fReadingSinaRTData = false;
   m_fReadingTengxunRTData = false;
-  m_fSinaRTDataReceived = false;
   m_fTengxunRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
   m_fDayLineDataReady = false;
@@ -114,27 +112,6 @@ bool CThreadStatus::IsSavingDayLine(void) {
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CThreadStatus::SetReadingSinaRTData(bool fFlag) {
-  CSingleLock singleLock(&m_ReadingSinaRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fReadingSinaRTData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsReadingSinaRTData(void) {
-  CSingleLock singleLock(&m_ReadingSinaRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fReadingSinaRTData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
 void CThreadStatus::SetReadingTengxunRTData(bool fFlag) {
   CSingleLock singleLock(&m_ReadingTengxunRTDataLock);
   singleLock.Lock();
@@ -149,27 +126,6 @@ bool CThreadStatus::IsReadingTengxunRTData(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fReadingTengxunRTData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetSinaRTDataReceived(bool fFlag) {
-  CSingleLock singleLock(&m_SinaRTDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fSinaRTDataReceived = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsSinaRTDataReceived(void) {
-  CSingleLock singleLock(&m_SinaRTDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSinaRTDataReceived;
     singleLock.Unlock();
     return fFlag;
   }
@@ -322,7 +278,6 @@ void CThreadStatus::DecreaseNumberOfCalculatingRSThreads(void) {
     singleLock.Unlock();
   }
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //

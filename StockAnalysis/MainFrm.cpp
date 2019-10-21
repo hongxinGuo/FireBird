@@ -16,6 +16,8 @@
 #include"Market.h"
 #include"StockID.h"
 
+#include"SinaRTWebData.h"
+
 #include"Thread.h"
 
 using namespace std;
@@ -126,7 +128,7 @@ CMainFrame::~CMainFrame()
     Sleep(10); // 等待处理日线历史数据的线程结束。
   }
 
-  while (gl_ThreadStatus.IsReadingSinaRTData()) {
+  while (gl_SinaRTWebData.IsReadingWebData()) {
     Sleep(10); // 等待实时数据读取线程结束
   }
 
@@ -708,7 +710,7 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
 {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-  if ((gl_systemTime.GetTime() > 83000) && (gl_systemTime.GetTime() < 93000) ) {
+  if ((gl_systemTime.GetTime() > 83000) && (gl_systemTime.GetTime() < 93000)) {
     pCmdUI->Enable(false);
   }
   else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {

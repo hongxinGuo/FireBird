@@ -15,8 +15,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
     EXPECT_FALSE(gl_ThreadStatus.IsReadingNeteaseDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-    EXPECT_FALSE(gl_ThreadStatus.IsReadingSinaRTData());
-    EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReceived());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
@@ -51,21 +49,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
     gl_ThreadStatus.SetSavingDayLine(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-  }
-
-  TEST(SystemStatusTest, TestIsReadingRTData) {
-    gl_ThreadStatus.SetReadingSinaRTData(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsReadingSinaRTData());
-    gl_ThreadStatus.SetReadingSinaRTData(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsReadingSinaRTData());
-  }
-
-  TEST(SystemStatusTest, TestIsSinaRTDataReceived) {
-    ASSERT_FALSE(gl_fNormalMode);
-    gl_ThreadStatus.SetSinaRTDataReceived(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsSinaRTDataReceived());
-    gl_ThreadStatus.SetSinaRTDataReceived(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsSinaRTDataReceived());
   }
 
   TEST(SystemStatusTest, TestIsRTDataNeedCalculate) {
@@ -106,8 +89,8 @@ namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestIsCalculatingRS) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
-     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
-     gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
+      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
+      gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
     }
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads - 1; i++) {

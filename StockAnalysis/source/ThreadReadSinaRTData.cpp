@@ -20,41 +20,36 @@ UINT ThreadReadSinaRTData(LPVOID) {
   const clock_t tt = clock();
 
   try {
-    gl_SinaRTWebData.SetReadingWebData(true);
-    gl_ThreadStatus.SetReadingSinaRTData(true);  //
-    gl_SinaRTWebData.m_fError = false;
-    gl_SinaRTWebData.m_lByteRead = 0;
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_SinaRTWebData.m_strInquire));
+    gl_SinaRTWebData.SetReadingSucceed(true);
+    gl_SinaRTWebData.SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_SinaRTWebData.GetInquiringString()));
     Sleep(100); // 新浪服务器100ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          gl_SinaRTWebData.m_lByteRead += iCount;
+          gl_SinaRTWebData.AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        gl_SinaRTWebData.m_lByteRead += iCount;
+        gl_SinaRTWebData.AddByteReaded(iCount);
       }
       else fDone = true;
     }
-    gl_SinaRTWebData.m_buffer[gl_SinaRTWebData.m_lByteRead] = 0x000;
-    gl_ThreadStatus.SetSinaRTDataReceived(true);
+    *pChar = 0x000; // 最后以0x000结尾
     gl_SinaRTWebData.SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();
-    gl_SinaRTWebData.m_fError = true;
-    gl_ThreadStatus.SetSinaRTDataReceived(false);
+    gl_SinaRTWebData.SetReadingSucceed(false);
     gl_SinaRTWebData.SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_ThreadStatus.SetReadingSinaRTData(false);
   gl_SinaRTWebData.SetReadingWebData(false);
 
   gl_ChinaStockMarket.SetReadingSinaRTDataTime(clock() - tt);

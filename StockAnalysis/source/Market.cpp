@@ -326,10 +326,10 @@ bool CMarket::GetSinaStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_ThreadStatus.IsReadingSinaRTData()) {
-    if (gl_ThreadStatus.IsSinaRTDataReceived()) {
-      if (gl_SinaRTWebData.m_fError == false) { //网络通信一切顺利？
-        iTotalNumber = gl_SinaRTWebData.m_lByteRead;
+  if (!gl_SinaRTWebData.IsReadingWebData()) {
+    if (gl_SinaRTWebData.IsWebDataReceived()) {
+      if (gl_SinaRTWebData.IsReadingSucceed()) { //网络通信一切顺利？
+        iTotalNumber = gl_SinaRTWebData.GetByteReaded();
         pCurrentPos = gl_SinaRTWebData.m_buffer;
         long  iCount = 0;
         while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
@@ -362,7 +362,7 @@ bool CMarket::GetSinaStockRTData(void)
 
     // 申请下一批次新浪股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_SinaRTWebData.m_strInquire = m_strSinaRTDataInquire; // 设置查询新浪实时数据的字符串头
+      gl_SinaRTWebData.SetInquiringString(m_strSinaRTDataInquire); // 设置查询新浪实时数据的字符串头
       if (CreateSinaRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
@@ -372,14 +372,14 @@ bool CMarket::GetSinaStockRTData(void)
           ResetIT();
         }
       }
-      gl_SinaRTWebData.m_strInquire += strTemp;
+      gl_SinaRTWebData.AppendInquiringString(strTemp);
     }
     else { // 开市时使用今日活跃股票池
-      gl_SinaRTWebData.m_strInquire = m_strSinaRTDataInquire;
-      GetSinaInquiringStockStr(gl_SinaRTWebData.m_strInquire);
+      gl_SinaRTWebData.SetInquiringString(m_strSinaRTDataInquire);
+      GetSinaInquiringStockStr(gl_SinaRTWebData.GetInquiringString());
     }
-    gl_ThreadStatus.SetSinaRTDataReceived(false);
-    gl_ThreadStatus.SetReadingSinaRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    gl_SinaRTWebData.SetWebDataReceived(false);
+    gl_SinaRTWebData.SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ThreadReadSinaRTData, nullptr);
   }
   return true;

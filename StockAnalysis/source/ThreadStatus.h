@@ -24,17 +24,9 @@ public:
   void SetSavingDayLine(bool fFlag);
   bool IsSavingDayLine(void);
 
-  // 接收新浪实时数据与否和设置
-  void SetReadingSinaRTData(bool fFlag);
-  bool IsReadingSinaRTData(void);
-
   // 接收腾讯实时数据与否和设置
   void SetReadingTengxunRTData(bool fFlag);
   bool IsReadingTengxunRTData(void);
-
-  // 新浪实时数据接收到与否和设置
-  void SetSinaRTDataReceived(bool fFlag);
-  bool IsSinaRTDataReceived(void);
 
   // 腾讯实时数据接受到与否和设置
   void SetTengxunRTDataReceived(bool fFlag);
@@ -79,14 +71,8 @@ protected:
   bool m_fSavingDayLine; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_SavingDayLineLock;
 
-  bool m_fReadingSinaRTData;  // 接收新浪实时数据线程是否执行标识
-  CCriticalSection m_ReadingSinaRTDataLock;
-
   bool m_fReadingTengxunRTData;  // 接收腾讯实时数据线程是否执行标识
   CCriticalSection m_ReadingTengxunRTDataLock;
-
-  bool m_fSinaRTDataReceived;             // 新浪实时数据已接收完成标识
-  CCriticalSection m_SinaRTDataReceivedLock;
 
   bool m_fTengxunRTDataReceived;             // 腾讯实时数据已接收完成标识
   CCriticalSection m_TengxunRTDataReceivedLock;
