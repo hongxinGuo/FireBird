@@ -303,7 +303,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     lTotalRead++;
   }
   lTotalRead++;
-  if ((m_lNew != 0) && (m_llVolume != 0)) m_fActive = true; // 在读取实时数据时即确定此数据是否为有效数据
+  if ((m_lNew != 0)) m_fActive = true; // 在读取实时数据时即确定此数据是否为有效数据
   else m_fActive = false;
   return true;
 }
@@ -581,7 +581,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (!ReadTengxunOneValue(pCurrentPos, llTemp, lTotalRead)) {
     return false;
   }
-  m_llVolume = llTemp * 100; 
+  m_llVolume = llTemp * 100;
   // 读入外盘
   if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
     return false;
@@ -642,7 +642,6 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 
   return true;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
