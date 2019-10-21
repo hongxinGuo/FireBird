@@ -63,7 +63,7 @@ typedef struct stRTData {
   bool fError;
 } RTDataInquire;
 
-extern RTDataInquire gl_stSinaRTDataInquire;    // 新浪实时行情数据缓存
+//extern RTDataInquire gl_stSinaRTDataInquire;    // 新浪实时行情数据缓存
 extern RTDataInquire gl_stTengxunRTDataInquire; // 腾讯实时行情数据缓存
 
 extern bool gl_fExiting;                        //  系统退出标识，用于终止其他线程。

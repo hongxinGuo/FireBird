@@ -33,13 +33,14 @@ public:
   bool IsReadingWebData(void);
   void SetReadingWebData(bool fFlag);
 
-protected:
+public:
   CString m_strInquire;         // 查询所需的字符串
-  char* m_buffer;               // 接收到数据的缓冲区
+  char m_buffer[2048 * 1024];   // 接收到数据的缓冲区
   long m_lByteRead;             // 接收到的字符数
   bool m_fError;                // 网络是否异常
 
-  CString m_strSinaRTDataInquire; // 查询字符串前缀
+  CString m_strWebDataInquirePrefix; // 查询字符串前缀
+  CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
   bool m_fReadingWebData;     // 接收实时数据线程是否执行标识
   CCriticalSection m_ReadingWebDataLock;  //是否接收实时数据的同步锁

@@ -13,7 +13,7 @@ CQueueRTData      gl_QueueRTData;         // 系统实时数据队列。
 CThreadStatus     gl_ThreadStatus;        // 系统中的各种状态，被各个工作线程所使用
 
 DayLineInquire gl_stDayLineInquire;       // 网易日线历史数据缓存
-RTDataInquire gl_stSinaRTDataInquire;     // 新浪实时行情数据缓存
+//RTDataInquire gl_stSinaRTDataInquire;     // 新浪实时行情数据缓存
 RTDataInquire gl_stTengxunRTDataInquire;  // 腾讯实时行情数据缓存
 
 bool gl_fExiting = false;                 //  系统退出标识，用于终止其他线程。
