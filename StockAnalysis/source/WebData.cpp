@@ -32,6 +32,11 @@ void CWebData::ProcessCurrentWebData(void) {
   }
 }
 
+///////////////////////////////////////////////////////////////////////
+//
+// 此为默认的读取存储函数，如有必要，继承类也可以覆盖此函数
+//
+///////////////////////////////////////////////////////////////////////
 bool CWebData::SucceedReadingAndStoringWebData(void) {
   char* pCurrentPos = m_buffer;
   long  iCount = 0;

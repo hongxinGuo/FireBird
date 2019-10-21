@@ -3,6 +3,7 @@
 #include"stdafx.h"
 
 // 各工作线程声明
+// 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。
 
 // 读取新浪实时数据线程。
 UINT ThreadReadSinaRTData(LPVOID pParam);    // 此工作线程返回值为1

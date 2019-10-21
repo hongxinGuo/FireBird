@@ -1,6 +1,5 @@
 #pragma once
 #include "WebData.h"
-#include"thread.h"
 
 class CSinaRTWebData final : public CWebData {
 public:

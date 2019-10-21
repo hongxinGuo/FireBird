@@ -1,5 +1,6 @@
 #include"stdafx.h"
 #include"globedef.h"
+#include"thread.h"
 #include"market.h"
 
 #include "SinaRTWebData.h"
