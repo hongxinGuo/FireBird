@@ -31,6 +31,12 @@
     <Filter Include="头文件\工作线程">
       <UniqueIdentifier>{20d5a37d-8e89-4f7b-bf66-b3260b0142ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\网络通信">
+      <UniqueIdentifier>{046a774c-ac48-4cf0-96f1-c2a7f01315a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\网络通信">
+      <UniqueIdentifier>{0203b3b7-62eb-4f8a-8e1d-fd4d450d6bc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StockAnalysis.h">
@@ -120,17 +126,17 @@
     <ClInclude Include="QueueRTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebData.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TengxunRTWebData.h">
-      <Filter>头文件\实现类</Filter>
+    <ClInclude Include="source\NeteaseDayLineWebData.h">
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\SinaRTWebData.h">
-      <Filter>头文件\实现类</Filter>
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\NeteaseDayLineWebData.h">
-      <Filter>头文件\实现类</Filter>
+    <ClInclude Include="source\TengxunRTWebData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebDataBase.h">
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,17 +248,17 @@
     <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="source\NeteaseDayLineWebData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
     <ClCompile Include="source\SinaRTWebData.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="source\TengxunRTWebData.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="source\WebData.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseDayLineWebData.cpp">
-      <Filter>源文件\实现类</Filter>
+    <ClCompile Include="source\WebDataBase.cpp">
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

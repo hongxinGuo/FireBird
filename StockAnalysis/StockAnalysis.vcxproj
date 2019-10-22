@@ -212,7 +212,7 @@
     <ClInclude Include="source\NeteaseDayLineWebData.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
     <ClInclude Include="source\TengxunRTWebData.h" />
-    <ClInclude Include="source\WebData.h" />
+    <ClInclude Include="source\WebDataBase.h" />
     <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
@@ -275,7 +275,7 @@
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
-    <ClCompile Include="source\WebData.cpp" />
+    <ClCompile Include="source\WebDataBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

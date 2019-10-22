@@ -3,10 +3,10 @@
 #include"stdafx.h"
 #include"globedef.h"
 
-class CWebData {
+class CWebDataBase {
 public:
-  CWebData() noexcept;
-  ~CWebData() {}
+  CWebDataBase() noexcept;
+  ~CWebDataBase() {}
 
   // 公共接口函数
   bool GetWebData(void);

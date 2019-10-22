@@ -1,7 +1,7 @@
 #pragma once
-#include "WebData.h"
+#include "WebDataBase.h"
 
-class CSinaRTWebData final : public CWebData {
+class CSinaRTWebData final : public CWebDataBase {
 public:
   CSinaRTWebData();
   ~CSinaRTWebData();
