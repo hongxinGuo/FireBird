@@ -54,7 +54,7 @@ void CNeteaseDayLineWebData::ReportCommunicationError(void)
 {
   TRACE("Error reading http file £ºhq.sinajs.cn\n");
   CString str;
-  str = _T("Error reading http file £ºhq.sinajs.cn");
+  str = _T("Error reading http file £ºhttp://quotes.money.163.com");
   gl_systemMessage.PushInformationMessage(str);
 }
 

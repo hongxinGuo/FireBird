@@ -7,7 +7,7 @@ public:
   CNeteaseDayLineWebData();
   ~CNeteaseDayLineWebData();
 
-  virtual bool IsNeedProcessingCurrentWebData(void);
+  virtual bool IsNeedProcessingCurrentWebData(void) override;
   virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;
@@ -15,6 +15,8 @@ public:
   virtual void InquireNextWebData(void) override;
   virtual int GetInquiringStockStr(CString& strInquire) override;
   virtual void StartReadingThread(void) override;
+
+  bool IsCreateOnce(void) { return sm_fCreatedOnce; }
 
 private:
   static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例

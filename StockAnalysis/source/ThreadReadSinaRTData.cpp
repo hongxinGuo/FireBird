@@ -20,6 +20,7 @@ UINT ThreadReadSinaRTData(LPVOID) {
   const clock_t tt = clock();
 
   try {
+    gl_SinaRTWebData.SetReadingWebData(true);
     gl_SinaRTWebData.SetReadingSucceed(true);
     gl_SinaRTWebData.SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_SinaRTWebData.GetInquiringString()));

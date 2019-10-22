@@ -65,6 +65,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
+    <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SinaRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebDataTest.cpp" />
@@ -75,6 +76,7 @@
     <ClCompile Include="SystemStatusTest.cpp" />
     <ClCompile Include="SystemTimeTest.cpp" />
     <ClCompile Include="TengxunRTDataTest.cpp" />
+    <ClCompile Include="TengxunRTWebDataTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
