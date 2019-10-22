@@ -53,12 +53,11 @@ void CSinaRTWebData::InquireNextWebData(void)
   static int iCountUp = 0;
   CRTDataPtr pRTData = nullptr;
 
-  CString strTemp = _T("");
+  CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckTodayActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-    gl_SinaRTWebData.SetInquiringString(m_strWebDataInquirePrefix); // 设置查询新浪实时数据的字符串头
-    if (gl_ChinaStockMarket.CreateSinaRTDataInquiringStr(strTemp)) {
+    if (gl_ChinaStockMarket.CreateSinaRTDataInquiringStr(strMiddle)) {
       if (gl_ChinaStockMarket.CountLoopRTDataInquiring()) {  // 遍历三遍全体股票池
         if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
           gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -67,12 +66,11 @@ void CSinaRTWebData::InquireNextWebData(void)
         gl_ChinaStockMarket.ResetIT();
       }
     }
-    gl_SinaRTWebData.AppendInquiringString(strTemp);
+    gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
   }
   else { // 开市时使用今日活跃股票池
-    gl_SinaRTWebData.SetInquiringString(m_strWebDataInquirePrefix);
-    GetInquiringStockStr(gl_SinaRTWebData.GetInquiringString());
-    gl_SinaRTWebData.AppendInquiringString(m_strWebDataInquireSuffix);
+    strMiddle = gl_SinaRTWebData.GetInquiringString();
+    gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
   }
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

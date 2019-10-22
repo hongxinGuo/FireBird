@@ -94,6 +94,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />

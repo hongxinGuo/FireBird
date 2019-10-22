@@ -9,7 +9,8 @@
 #include"StockID.h"
 
 #include"SinaRTWebData.h"
-//#include"TengxunRTWebData.h"
+#include"TengxunRTWebData.h"
+#include"NeteaseDayLineWebData.h"
 
 #include"SystemMessage.h"
 #include"QueueRTData.h"
@@ -24,7 +25,8 @@ using namespace std;
 #include<memory>
 
 extern CSinaRTWebData     gl_SinaRTWebData;     // ĞÂÀËÊµÊ±Êı¾İ²É¼¯
-//extern CTengxunRTWebData  gl_TengxunRTWebData;  // ÌÚÑ¶ÊµÊ±Êı¾İ²É¼¯
+extern CTengxunRTWebData  gl_TengxunRTWebData;  // ÌÚÑ¶ÊµÊ±Êı¾İ²É¼¯
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 
 extern CSystemMessage     gl_systemMessage;     // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 extern CSystemTime        gl_systemTime;        // ÏµÍ³Ê±¼ä»ã×Ü¡£
@@ -33,38 +35,6 @@ extern CThreadStatus      gl_ThreadStatus;      // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ï
 
 extern deque<CString> gl_dequeRTStockInquire;   // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ
 extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ¡£
-
-typedef struct stDayLine {    // ÈÕÏßÊı¾İ½á¹¹
-  stDayLine() noexcept {
-    lByteRead = 0;
-    fError = false;
-    strInquire = "";
-  }
-
-  CString strInquire;       // ÉêÇëÌáÈ¡Êı¾İµÄ×Ö·û´®
-  char buffer[2048 * 1024]; // ÌáÈ¡µ½µÄÈÕÏßÀúÊ·Êı¾İ»º´æÆ÷
-  long lByteRead;           // ±¾´Î¶Áµ½µÄ×Ö½ÚÊı
-  bool fError;              // ±¾´Î´¦ÀíÈÕÏßÊı¾İÊÇ·ñÓĞÎóµÄ±êÊ¶
-
-protected:
-} DayLineInquire;
-
-extern DayLineInquire gl_stDayLineInquire;      // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ»º´æ
-
-typedef struct stRTData {
-  stRTData() noexcept {
-    lByteRead = 0;
-    fError = false;
-    strInquire = "";
-  }
-  CString strInquire;
-  char buffer[2048 * 1024];
-  long lByteRead;
-  bool fError;
-} RTDataInquire;
-
-//extern RTDataInquire gl_stSinaRTDataInquire;    // ĞÂÀËÊµÊ±ĞĞÇéÊı¾İ»º´æ
-extern RTDataInquire gl_stTengxunRTDataInquire; // ÌÚÑ¶ÊµÊ±ĞĞÇéÊı¾İ»º´æ
 
 extern bool gl_fExiting;                        //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
 extern bool gl_fExitingCalculatingRS;           // ÓÃÓÚÍ¨Öª¹¤×÷Ïß³ÌÍË³öµÄĞÅºÅ

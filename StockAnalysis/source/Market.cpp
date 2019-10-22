@@ -401,11 +401,11 @@ bool CMarket::GetTengxunStockRTData(void)
   long i = 0;
   INT64 iTotalNumber = 0;
 
-  if (!gl_ThreadStatus.IsReadingTengxunRTData()) {
-    if (gl_ThreadStatus.IsTengxunRTDataReceived()) {
-      if (gl_stTengxunRTDataInquire.fError == false) { //网络通信一切顺利？
-        iTotalNumber = gl_stTengxunRTDataInquire.lByteRead;
-        pCurrentPos = gl_stTengxunRTDataInquire.buffer;
+  if (!gl_TengxunRTWebData.IsReadingWebData()) {
+    if (gl_TengxunRTWebData.IsWebDataReceived()) {
+      if (gl_TengxunRTWebData.IsReadingSucceed()) { //网络通信一切顺利？
+        iTotalNumber = gl_TengxunRTWebData.GetByteReaded();
+        pCurrentPos = gl_TengxunRTWebData.GetBufferAddr();
         long iCount = 0;
         /*
         while (iCount < iTotalNumber) { // 腾讯实时数据基本没有错误，不需要抛掉最后一组数据了。
@@ -435,13 +435,13 @@ bool CMarket::GetTengxunStockRTData(void)
       }
     }
 
-    CString strTemp = _T("");
+    CString strMiddle = _T("");
 
     // 申请下一批腾讯股票实时数据。此时
-    gl_stTengxunRTDataInquire.strInquire = m_strTengxunRTDataInquire;
-    GetTengxunInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
-    gl_ThreadStatus.SetTengxunRTDataReceived(false);
-    gl_ThreadStatus.SetReadingTengxunRTData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    GetTengxunInquiringStockStr(strMiddle);
+    gl_TengxunRTWebData.CreateTotalInquiringString(strMiddle);
+    gl_TengxunRTWebData.SetWebDataReceived(false);
+    gl_TengxunRTWebData.SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     AfxBeginThread(ThreadReadTengxunRTData, nullptr);
   }
 
@@ -570,43 +570,40 @@ bool CMarket::GetNetEaseStockDayLineData(void)
   static bool sfFoundStock = true;
   CDayLinePtr pDayLine = nullptr;
 
-  if (!gl_ThreadStatus.IsReadingNeteaseDayLine()) {
+  if (!gl_NeteaseDayLineWebData.IsReadingWebData()) {
     if (sfFoundStock) {
-      if ((gl_stDayLineInquire.fError == false) && gl_ThreadStatus.IsDayLineDataReady()) { //网络通信一切顺利？
-        TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_stDayLineInquire.lByteRead);
-        ASSERT(gl_stDayLineInquire.lByteRead < 2048 * 1024);
+      if ((gl_NeteaseDayLineWebData.IsReadingSucceed()) && gl_NeteaseDayLineWebData.IsWebDataReceived()) { //网络通信一切顺利？
+        TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_NeteaseDayLineWebData.GetByteReaded());
+        ASSERT(gl_NeteaseDayLineWebData.GetByteReaded() < 2048 * 1024);
         // 处理当前股票日线数据
-        ProcessDayLineData(gl_stDayLineInquire.buffer, gl_stDayLineInquire.lByteRead);
+        ProcessDayLineData(gl_NeteaseDayLineWebData.GetBufferAddr(), gl_NeteaseDayLineWebData.GetByteReaded());
       }
       else {
-        if (gl_stDayLineInquire.lByteRead > 0) {
+        if (gl_NeteaseDayLineWebData.GetByteReaded() > 0) {
           TRACE("Error reading http file ：quotes.money.163.com/service/\n");
           CString str;
           str = _T("Error reading http file ：quotes.money.163.com/service/");
           gl_systemMessage.PushInformationMessage(str);
-          gl_stDayLineInquire.lByteRead = 0;
+          gl_NeteaseDayLineWebData.SetByteReaded(0);
         }
       }
     }
 
-    CString strTemp;
+    CString strMiddle = _T("");
     char buffer2[200];
     CString strStartDay;
 
     // 准备网易日线数据申请格式
-    strRead = m_strNeteaseDayLineInquire;
-    sfFoundStock = CreateNeteaseDayLineInquiringStr(strRead, strStartDay);
+    sfFoundStock = CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
     if (sfFoundStock) {
-      strRead += _T("&start=");
-      strRead += strStartDay;
-      strRead += _T("&end=");
+      strMiddle += _T("&start=");
+      strMiddle += strStartDay;
+      strMiddle += _T("&end=");
       sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
-      strRead += buffer2;
-      strRead += m_strNeteaseDayLinePostfix;
-
-      gl_stDayLineInquire.strInquire = strRead;
-      gl_ThreadStatus.SetDayLineDataReady(false);
-      gl_ThreadStatus.SetReadingNeteaseDayLine(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
+      strMiddle += buffer2;
+      gl_NeteaseDayLineWebData.CreateTotalInquiringString(strMiddle);
+      gl_NeteaseDayLineWebData.SetWebDataReceived(false);
+      gl_NeteaseDayLineWebData.SetReadingWebData(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
       // 这个线程的启动可以采用唤醒模式而不是这样直接调用
       AfxBeginThread(ThreadReadNeteaseDayLine, nullptr);
       return true;
@@ -1274,6 +1271,9 @@ bool CMarket::SchedulingTask(void)
     // 抓取日线数据
     if (!gl_fExiting && m_fGetDayLineData) {
       GetNetEaseStockDayLineData();
+
+      // 采用新的制式
+      //gl_NeteaseDayLineWebData.GetWebData();
     }
   }
 

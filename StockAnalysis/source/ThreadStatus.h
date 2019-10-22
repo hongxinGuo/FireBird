@@ -16,29 +16,13 @@ public:
   void SetCalculatingDayLineRS(bool fFlag);
   bool IsCalculatingDayLineRS(void);
 
-  // 读取日线与否和设置
-  void SetReadingNeteaseDayLine(bool fFlag);
-  bool IsReadingNeteaseDayLine(void);
-
   // 存储日线与否和设置
   void SetSavingDayLine(bool fFlag);
   bool IsSavingDayLine(void);
 
-  // 接收腾讯实时数据与否和设置
-  void SetReadingTengxunRTData(bool fFlag);
-  bool IsReadingTengxunRTData(void);
-
-  // 腾讯实时数据接受到与否和设置
-  void SetTengxunRTDataReceived(bool fFlag);
-  bool IsTengxunRTDataReceived(void);
-
   // 实时数据需要计算与否和设置
   void SetRTDataNeedCalculate(bool fFlag);
   bool IsRTDataNeedCalculate(void);
-
-  // 日线数据准备好与否和设置
-  void SetDayLineDataReady(bool fFlag);
-  bool IsDayLineDataReady(void);
 
   // 实时数据计算中与否和设置
   void SetCalculatingRTData(bool fFlag);
@@ -65,23 +49,11 @@ protected:
   bool m_fCalculatingDayLineRelativeStrong; // 是否处于计算相对强度的过程中标识
   CCriticalSection m_CalculatingDayLineRSLock;
 
-  bool m_fReadingNeteaseDayLine; // 是否处于提取日线历史数据中标识
-  CCriticalSection m_ReadingNeteaseDayLineLock;
-
   bool m_fSavingDayLine; // 是否处于存储日线历史数据的数据库操作中。
   CCriticalSection m_SavingDayLineLock;
 
-  bool m_fReadingTengxunRTData;  // 接收腾讯实时数据线程是否执行标识
-  CCriticalSection m_ReadingTengxunRTDataLock;
-
-  bool m_fTengxunRTDataReceived;             // 腾讯实时数据已接收完成标识
-  CCriticalSection m_TengxunRTDataReceivedLock;
-
   bool m_fRTDataNeedCalculate;                // 实时数据已预处理好，准备计算
   CCriticalSection m_RTDataNeedCalculateLock;
-
-  bool m_fDayLineDataReady;      // 日线数据已提取完成标识
-  CCriticalSection m_DayLineDataReadyLock;
 
   bool m_fCalculatingRTData; // 实时数据计算线程工作状态标识
   CCriticalSection m_CalculatingRTDataLock;

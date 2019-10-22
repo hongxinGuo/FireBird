@@ -14,12 +14,8 @@ CThreadStatus::CThreadStatus() {
 
   m_fExitingThread = false;
 
-  m_fReadingNeteaseDayLine = false;
   m_fSavingDayLine = false;
-  m_fReadingTengxunRTData = false;
-  m_fTengxunRTDataReceived = false;
   m_fRTDataNeedCalculate = false;
-  m_fDayLineDataReady = false;
   m_fCalculatingRTData = false;
   m_fSavingTempData = false;
   m_fSavingStockCodeData = false;
@@ -70,27 +66,6 @@ bool CThreadStatus::IsCalculatingDayLineRS(void) {
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CThreadStatus::SetReadingNeteaseDayLine(bool fFlag) {
-  CSingleLock singleLock(&m_ReadingNeteaseDayLineLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fReadingNeteaseDayLine = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsReadingNeteaseDayLine(void) {
-  CSingleLock singleLock(&m_ReadingNeteaseDayLineLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fReadingNeteaseDayLine;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
 void CThreadStatus::SetSavingDayLine(bool fFlag) {
   CSingleLock singleLock(&m_SavingDayLineLock);
   singleLock.Lock();
@@ -112,48 +87,6 @@ bool CThreadStatus::IsSavingDayLine(void) {
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CThreadStatus::SetReadingTengxunRTData(bool fFlag) {
-  CSingleLock singleLock(&m_ReadingTengxunRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fReadingTengxunRTData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsReadingTengxunRTData(void) {
-  CSingleLock singleLock(&m_ReadingTengxunRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fReadingTengxunRTData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetTengxunRTDataReceived(bool fFlag) {
-  CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fTengxunRTDataReceived = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsTengxunRTDataReceived(void) {
-  CSingleLock singleLock(&m_TengxunRTDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fTengxunRTDataReceived;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
 void CThreadStatus::SetRTDataNeedCalculate(bool fFlag) {
   CSingleLock singleLock(&m_RTDataNeedCalculateLock);
   singleLock.Lock();
@@ -168,27 +101,6 @@ bool CThreadStatus::IsRTDataNeedCalculate(void) {
   singleLock.Lock();
   if (singleLock.IsLocked()) {
     const bool fFlag = m_fRTDataNeedCalculate;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetDayLineDataReady(bool fFlag) {
-  CSingleLock singleLock(&m_DayLineDataReadyLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fDayLineDataReady = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsDayLineDataReady(void) {
-  CSingleLock singleLock(&m_DayLineDataReadyLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fDayLineDataReady;
     singleLock.Unlock();
     return fFlag;
   }

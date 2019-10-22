@@ -23,7 +23,7 @@ CWebData::CWebData() noexcept {
 bool CWebData::GetWebData(void)
 {
   if (!IsReadingWebData()) {
-    ProcessCurrentWebData();
+    if (IsNeedProcessingCurrentWebData()) ProcessCurrentWebData();
     InquireNextWebData();
   }
   return true;
@@ -58,7 +58,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
     }
     i++;
   }
-  TRACE("读入%d个新浪实时数据\n", i);
+  TRACE("读入%d个实时数据\n", i);
   return true;
 }
 
@@ -102,4 +102,9 @@ bool CWebData::IsReadingWebData(void) {
   }
   ASSERT(0);
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
+}
+
+void CWebData::CreateTotalInquiringString(CString strMiddle)
+{
+  m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }

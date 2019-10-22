@@ -6,6 +6,7 @@
 #include "NeteaseDayLineWebData.h"
 
 bool CNeteaseDayLineWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
+bool CNeteaseDayLineWebData::sm_fNeedProcessingCurrentWebData = true; // 初始时允许处理当前网络数据
 
 CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
   if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
@@ -18,25 +19,34 @@ CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
 CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 }
 
-bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
+bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void)
 {
-  CRTDataPtr pRTData = make_shared<CRTData>();
-  if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
-    gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-    return true;
-  }
-  return false;
+  if (sm_fNeedProcessingCurrentWebData) return true;
+  else return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 网易的日线历史数据不需要前期处理，直接使用ProcessWebDataStored函数即可。故而此处只是将iCount增至m_lByteRead即可。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(char*&, long& iCount)
+{
+  iCount = m_lByteRead; //
+  return true;
 }
 
 void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
-  gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
+  TRACE("股票%s日线数据为%d字节\n", gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), m_lByteRead);
+  ASSERT(m_lByteRead < 2048 * 1024);
+  gl_ChinaStockMarket.ProcessDayLineData(m_buffer, m_lByteRead);
 }
 
 void CNeteaseDayLineWebData::ReportDataError(void)
 {
-  TRACE("数据有误,抛掉不用\n");
+  TRACE("网易日线历史数据有误,抛掉不用\n");
   CString str;
-  str = _T("数据有误");
+  str = _T("网易日线历史数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
@@ -50,23 +60,19 @@ void CNeteaseDayLineWebData::ReportCommunicationError(void)
 
 void CNeteaseDayLineWebData::InquireNextWebData(void)
 {
-  CString strTemp;
+  CString strMiddle = _T("");
   char buffer2[200];
-  CString strStartDay, strRead;
-  static bool sfFoundStock = false;
+  CString strStartDay;
 
   // 准备网易日线数据申请格式
-  strRead = m_strWebDataInquirePrefix;
-  sfFoundStock = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strRead, strStartDay);
-  if (sfFoundStock) {
-    strRead += _T("&start=");
-    strRead += strStartDay;
-    strRead += _T("&end=");
+  sm_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
+  if (sm_fNeedProcessingCurrentWebData) {
+    strMiddle += _T("&start=");
+    strMiddle += strStartDay;
+    strMiddle += _T("&end=");
     sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
-    strRead += buffer2;
-    strRead += m_strWebDataInquireSuffix;
-
-    m_strInquire = strRead;
+    strMiddle += buffer2;
+    CreateTotalInquiringString(strMiddle);
   }
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

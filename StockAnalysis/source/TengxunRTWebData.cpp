@@ -22,42 +22,40 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
-    gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+    //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }
   return false;
 }
 
 void CTengxunRTWebData::ProcessWebDataStored(void) {
-  gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
+  //gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
 }
 
 void CTengxunRTWebData::ReportDataError(void)
 {
-  TRACE("数据有误,抛掉不用\n");
+  TRACE("腾讯实时数据有误,抛掉不用\n");
   CString str;
-  str = _T("数据有误");
+  str = _T("腾讯实时数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
 void CTengxunRTWebData::ReportCommunicationError(void)
 {
-  TRACE("Error reading http file ：hq.sinajs.cn\n");
+  TRACE("Error reading http file ：http://qt.gtimg.cn\n");
   CString str;
-  str = _T("Error reading http file ：hq.sinajs.cn");
+  str = _T("Error reading http file ：http://qt.gtimg.cn");
   gl_systemMessage.PushInformationMessage(str);
-  m_strWebDataInquireSuffix = _T("");
 }
 
 void CTengxunRTWebData::InquireNextWebData(void)
 {
-  CString strTemp = _T("");
+  CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
   // 申请下一批次股票实时数据
-  gl_stTengxunRTDataInquire.strInquire = m_strWebDataInquirePrefix;
-  GetInquiringStockStr(gl_stTengxunRTDataInquire.strInquire);
-  gl_stTengxunRTDataInquire.strInquire += m_strWebDataInquireSuffix;
+  GetInquiringStockStr(strMiddle);
+  CreateTotalInquiringString(strMiddle);
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();

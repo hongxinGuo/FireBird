@@ -204,12 +204,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="NeteaseDayLineWebData.h" />
     <ClInclude Include="SetDayLineToday.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\NeteaseDayLineWebData.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
     <ClInclude Include="source\TengxunRTWebData.h" />
     <ClInclude Include="source\WebData.h" />

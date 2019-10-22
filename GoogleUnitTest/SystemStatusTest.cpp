@@ -11,9 +11,7 @@ namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
-    EXPECT_FALSE(gl_ThreadStatus.IsDayLineDataReady());
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
-    EXPECT_FALSE(gl_ThreadStatus.IsReadingNeteaseDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
@@ -37,13 +35,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
   }
 
-  TEST(SystemStatusTest, TestReading) {
-    gl_ThreadStatus.SetReadingNeteaseDayLine(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsReadingNeteaseDayLine());
-    gl_ThreadStatus.SetReadingNeteaseDayLine(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsReadingNeteaseDayLine());
-  }
-
   TEST(SystemStatusTest, TestIsDataBase) {
     gl_ThreadStatus.SetSavingDayLine(true);
     EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
@@ -56,13 +47,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     gl_ThreadStatus.SetRTDataNeedCalculate(false);
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-  }
-
-  TEST(SystemStatusTest, TestIsDayLineDataReady) {
-    gl_ThreadStatus.SetDayLineDataReady(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsDayLineDataReady());
-    gl_ThreadStatus.SetDayLineDataReady(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsDayLineDataReady());
   }
 
   TEST(SystemStatusTest, TestIsCalculatingRTData) {

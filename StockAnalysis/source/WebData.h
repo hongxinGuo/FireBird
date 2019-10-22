@@ -11,6 +11,7 @@ public:
   // 公共接口函数
   bool GetWebData(void);
 
+  virtual bool IsNeedProcessingCurrentWebData(void) { return true; }
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
 
@@ -23,6 +24,7 @@ public:
   virtual int  GetInquiringStockStr(CString& strInquire) = 0;// 申请下一个查询用字符串
   virtual void StartReadingThread(void) = 0;    // 调用网络读取线程。
 
+  void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) { m_strInquire = str; }
   char* GetBufferAddr(void) { return m_buffer; }
