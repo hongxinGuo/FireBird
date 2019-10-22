@@ -2,7 +2,7 @@
 
 #include"afxmt.h"
 
-class CSystemTime {
+class CSystemTime final {
 public:
   CSystemTime(void);
   ~CSystemTime(void);

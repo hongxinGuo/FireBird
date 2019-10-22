@@ -6,7 +6,7 @@
 using namespace std;
 #include<memory>
 
-class CDayLine : public CObject {
+class CDayLine final : public CObject {
 public:
   CDayLine();
   CDayLine(CDayLine&);

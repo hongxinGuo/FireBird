@@ -26,7 +26,7 @@ using namespace std;
 #include<array>
 
 // 证券名称数据包
-class CStock : public CObject {
+class CStock final : public CObject {
 public:
   CStock(void);
   ~CStock(void);

@@ -103,7 +103,7 @@ class CRTData;
 
 typedef shared_ptr<CRTData> CRTDataPtr;
 
-class CRTData : public CObject {
+class CRTData final : public CObject {
 public:
   // 初始化
   CRTData(void);
@@ -125,7 +125,7 @@ public:
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
   bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
   bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
-  
+
   // 读取腾讯实时数据函数
   bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
   bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个INT64整型

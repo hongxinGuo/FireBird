@@ -27,7 +27,7 @@ enum {
   __SHENZHEN_CHUANGYE__ = 12, // 深圳创业板
 };
 
-class CStockID {					//证券标识
+class CStockID final {					//证券标识
 public:
   CStockID();
   ~CStockID();

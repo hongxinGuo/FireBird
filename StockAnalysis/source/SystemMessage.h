@@ -6,7 +6,7 @@
 using namespace std;
 #include<deque>
 
-class CSystemMessage
+class CSystemMessage final
 {
 public:
   CSystemMessage();

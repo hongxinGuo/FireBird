@@ -12,7 +12,7 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CMarket : public CObject
+class CMarket final : public CObject
 {
 public:
   // 只能有一个实例
