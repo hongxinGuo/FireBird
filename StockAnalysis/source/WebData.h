@@ -29,6 +29,7 @@ public:
 
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) { m_strInquire = str; }
+  char* GetBufferAddr(void) { return m_buffer; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
   long GetByteReaded(void) { return m_lByteRead; }
   void SetByteReaded(long lValue) { m_lByteRead = lValue; }
@@ -42,10 +43,10 @@ public:
   void SetReadingWebData(bool fFlag);
 
 public:
-  char m_buffer[2048 * 1024];   // 接收到数据的缓冲区
 
 protected:
   CString m_strInquire;         // 查询所需的字符串
+  char m_buffer[2048 * 1024];   // 接收到数据的缓冲区
   long m_lByteRead;             // 接收到的字符数
   bool m_fSucceed;                // 网络是否异常
 

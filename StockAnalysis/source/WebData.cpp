@@ -40,12 +40,15 @@ void CWebData::ProcessCurrentWebData(void) {
 bool CWebData::SucceedReadingAndStoringWebData(void) {
   char* pCurrentPos = m_buffer;
   long  iCount = 0;
+  int i = 0;
   while (iCount < m_lByteRead) {
     if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
       ReportDataError();
       return false;  // 后面的数据出问题，抛掉不用。
     }
+    i++;
   }
+  TRACE("读入%d个新浪实时数据\n", i);
   return true;
 }
 

@@ -330,7 +330,7 @@ bool CMarket::GetSinaStockRTData(void)
     if (gl_SinaRTWebData.IsWebDataReceived()) {
       if (gl_SinaRTWebData.IsReadingSucceed()) { //网络通信一切顺利？
         iTotalNumber = gl_SinaRTWebData.GetByteReaded();
-        pCurrentPos = gl_SinaRTWebData.m_buffer;
+        pCurrentPos = gl_SinaRTWebData.GetBufferAddr();
         long  iCount = 0;
         while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
           pRTData = make_shared<CRTData>();

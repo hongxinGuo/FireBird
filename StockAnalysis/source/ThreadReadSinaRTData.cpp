@@ -15,7 +15,7 @@ UINT ThreadReadSinaRTData(LPVOID) {
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = gl_SinaRTWebData.m_buffer;
+  char* pChar = gl_SinaRTWebData.GetBufferAddr();
 
   const clock_t tt = clock();
 
