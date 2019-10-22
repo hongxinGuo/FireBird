@@ -362,7 +362,7 @@ bool CMarket::GetSinaStockRTData(void)
 
     // 申请下一批次新浪股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_SinaRTWebData.SetInquiringString(m_strSinaRTDataInquire); // 设置查询新浪实时数据的字符串头
+      gl_SinaRTWebData.SetInquiringString(gl_SinaRTWebData.GetInquiringStringPrefix()); // 设置查询新浪实时数据的字符串头
       if (CreateSinaRTDataInquiringStr(strTemp)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
@@ -375,7 +375,7 @@ bool CMarket::GetSinaStockRTData(void)
       gl_SinaRTWebData.AppendInquiringString(strTemp);
     }
     else { // 开市时使用今日活跃股票池
-      gl_SinaRTWebData.SetInquiringString(m_strSinaRTDataInquire);
+      gl_SinaRTWebData.SetInquiringString(gl_SinaRTWebData.GetInquiringStringPrefix());
       GetSinaInquiringStockStr(gl_SinaRTWebData.GetInquiringString());
     }
     gl_SinaRTWebData.SetWebDataReceived(false);
@@ -1343,7 +1343,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     }
 
     // 判断中国股票市场开市状态
-    if ((lTime < 91500) || (lTime > 150130) || ((lTime > 113500) && (lTime < 125500))) { //下午三点零分三十秒市场交易结束，
+    if ((lTime < 91500) || (lTime > 150630) || ((lTime > 113500) && (lTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
       m_fMarketOpened = false;
     }
     else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六

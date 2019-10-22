@@ -36,7 +36,7 @@ void CSinaRTWebData::ReportDataError(void)
 {
   TRACE("数据有误,抛掉不用\n");
   CString str;
-  str = _T("数据有误");
+  str = _T("新浪实时数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
@@ -57,7 +57,7 @@ void CSinaRTWebData::InquireNextWebData(void)
 
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckTodayActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-    gl_SinaRTWebData.m_strInquire = m_strWebDataInquirePrefix; // 设置查询新浪实时数据的字符串头
+    gl_SinaRTWebData.SetInquiringString(m_strWebDataInquirePrefix); // 设置查询新浪实时数据的字符串头
     if (gl_ChinaStockMarket.CreateSinaRTDataInquiringStr(strTemp)) {
       if (gl_ChinaStockMarket.CountLoopRTDataInquiring()) {  // 遍历三遍全体股票池
         if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
@@ -67,12 +67,12 @@ void CSinaRTWebData::InquireNextWebData(void)
         gl_ChinaStockMarket.ResetIT();
       }
     }
-    gl_SinaRTWebData.m_strInquire += strTemp;
+    gl_SinaRTWebData.AppendInquiringString(strTemp);
   }
   else { // 开市时使用今日活跃股票池
-    gl_SinaRTWebData.m_strInquire = m_strWebDataInquirePrefix;
-    GetInquiringStockStr(gl_SinaRTWebData.m_strInquire);
-    gl_SinaRTWebData.m_strInquire += m_strWebDataInquireSuffix;
+    gl_SinaRTWebData.SetInquiringString(m_strWebDataInquirePrefix);
+    GetInquiringStockStr(gl_SinaRTWebData.GetInquiringString());
+    gl_SinaRTWebData.AppendInquiringString(m_strWebDataInquireSuffix);
   }
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

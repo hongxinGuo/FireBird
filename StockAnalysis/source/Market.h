@@ -170,7 +170,6 @@ private:
   bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
-  const CString m_strSinaRTDataInquire = _T("http://hq.sinajs.cn/list=");
   const CString m_strTengxunRTDataInquire = _T("http://qt.gtimg.cn/q=");
   const CString m_strNeteaseDayLineInquire = _T("http://quotes.money.163.com/service/chddata.html?code=");
   const CString m_strNeteaseDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");

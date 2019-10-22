@@ -32,7 +32,6 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMarketTest, TestInitialize) {
-    EXPECT_EQ(gl_ChinaStockMarket.m_strSinaRTDataInquire.Compare(_T("http://hq.sinajs.cn/list=")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.m_strTengxunRTDataInquire.Compare(_T("http://qt.gtimg.cn/q=")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.m_strNeteaseDayLineInquire.Compare(_T("http://quotes.money.163.com/service/chddata.html?code=")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.m_strNeteaseDayLinePostfix.Compare(_T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP")), 0);

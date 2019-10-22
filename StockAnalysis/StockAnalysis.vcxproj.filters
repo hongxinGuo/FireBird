@@ -129,6 +129,9 @@
     <ClInclude Include="source\SinaRTWebData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
+    <ClInclude Include="NeteaseDayLineWebData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StockAnalysis.cpp">
@@ -247,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseDayLineWebData.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

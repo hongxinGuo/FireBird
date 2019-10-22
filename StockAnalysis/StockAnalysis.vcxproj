@@ -204,6 +204,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="NeteaseDayLineWebData.h" />
     <ClInclude Include="SetDayLineToday.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\NeteaseDayLineWebData.cpp" />
     <ClCompile Include="source\SinaRTWebData.cpp" />
     <ClCompile Include="source\TengxunRTWebData.cpp" />
     <ClCompile Include="source\Thread.cpp" />

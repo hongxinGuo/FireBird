@@ -60,6 +60,9 @@
     <ClCompile Include="TengxunRTDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="SinaRTWebDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

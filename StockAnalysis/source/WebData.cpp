@@ -5,6 +5,16 @@
 
 #include"WebData.h"
 
+CWebData::CWebData() noexcept {
+  m_lByteRead = 0;
+  m_fSucceed = true;
+  m_strInquire = _T("");
+  m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+
+  m_fReadingWebData = false;
+  m_fWebDataReceived = false;
+}
+
 /////////////////////////////////////////////////////////////////////////
 //
 // 这是此类唯一的接口函数
