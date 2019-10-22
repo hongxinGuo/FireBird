@@ -1,10 +1,12 @@
 #pragma once
-#include "WebData.h"
 
-class CSinaRTWebData final : public CWebData {
+#include"WebData.h"
+
+class CCrweberOilTransferIndexWebData final : public CWebData
+{
 public:
-  CSinaRTWebData();
-  ~CSinaRTWebData();
+  CCrweberOilTransferIndexWebData();
+  ~CCrweberOilTransferIndexWebData();
 
   virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
   virtual void ProcessWebDataStored(void) override;

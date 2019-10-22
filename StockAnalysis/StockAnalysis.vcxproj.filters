@@ -135,7 +135,10 @@
     <ClInclude Include="source\TengxunRTWebData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebDataBase.h">
+    <ClInclude Include="source\WebData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberOilTransferIndexWebData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
@@ -257,7 +260,10 @@
     <ClCompile Include="source\TengxunRTWebData.cpp">
       <Filter>源文件\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="source\WebDataBase.cpp">
+    <ClCompile Include="source\WebData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberOilTransferIndexWebData.cpp">
       <Filter>源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>

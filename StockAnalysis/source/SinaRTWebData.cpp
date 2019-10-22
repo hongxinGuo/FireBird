@@ -7,7 +7,7 @@
 
 bool CSinaRTWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
 
-CSinaRTWebData::CSinaRTWebData() : CWebDataBase() {
+CSinaRTWebData::CSinaRTWebData() : CWebData() {
   if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
   else sm_fCreatedOnce = true;
 

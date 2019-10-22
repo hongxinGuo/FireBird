@@ -8,7 +8,7 @@
 bool CNeteaseDayLineWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
 bool CNeteaseDayLineWebData::sm_fNeedProcessingCurrentWebData = true; // 初始时允许处理当前网络数据
 
-CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebDataBase() {
+CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
   if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
   else sm_fCreatedOnce = true;
 

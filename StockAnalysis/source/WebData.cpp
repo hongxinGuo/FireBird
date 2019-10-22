@@ -3,9 +3,9 @@
 #include"globedef.h"
 #include"Market.h"
 
-#include"WebDataBase.h"
+#include"WebData.h"
 
-CWebDataBase::CWebDataBase() noexcept {
+CWebData::CWebData() noexcept {
   m_lByteRead = 0;
   m_fSucceed = true;
   m_strInquire = _T("");
@@ -20,7 +20,7 @@ CWebDataBase::CWebDataBase() noexcept {
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CWebDataBase::GetWebData(void)
+bool CWebData::GetWebData(void)
 {
   if (!IsReadingWebData()) {
     if (IsNeedProcessingCurrentWebData()) ProcessCurrentWebData();
@@ -29,7 +29,7 @@ bool CWebDataBase::GetWebData(void)
   return true;
 }
 
-void CWebDataBase::ProcessCurrentWebData(void) {
+void CWebData::ProcessCurrentWebData(void) {
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？
       if (SucceedReadingAndStoringWebData()) {
@@ -47,7 +47,7 @@ void CWebDataBase::ProcessCurrentWebData(void) {
 // 此为默认的读取存储函数，如有必要，继承类也可以覆盖此函数
 //
 ///////////////////////////////////////////////////////////////////////
-bool CWebDataBase::SucceedReadingAndStoringWebData(void) {
+bool CWebData::SucceedReadingAndStoringWebData(void) {
   char* pCurrentPos = m_buffer;
   long  iCount = 0;
   int i = 0;
@@ -62,7 +62,7 @@ bool CWebDataBase::SucceedReadingAndStoringWebData(void) {
   return true;
 }
 
-void CWebDataBase::SetWebDataReceived(bool fFlag) {
+void CWebData::SetWebDataReceived(bool fFlag) {
   CSingleLock singleLock(&m_WebDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -71,7 +71,7 @@ void CWebDataBase::SetWebDataReceived(bool fFlag) {
   }
 }
 
-bool CWebDataBase::IsWebDataReceived(void) {
+bool CWebData::IsWebDataReceived(void) {
   CSingleLock singleLock(&m_WebDataReceivedLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -83,7 +83,7 @@ bool CWebDataBase::IsWebDataReceived(void) {
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CWebDataBase::SetReadingWebData(bool fFlag) {
+void CWebData::SetReadingWebData(bool fFlag) {
   CSingleLock singleLock(&m_ReadingWebDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -92,7 +92,7 @@ void CWebDataBase::SetReadingWebData(bool fFlag) {
   }
 }
 
-bool CWebDataBase::IsReadingWebData(void) {
+bool CWebData::IsReadingWebData(void) {
   CSingleLock singleLock(&m_ReadingWebDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -104,7 +104,7 @@ bool CWebDataBase::IsReadingWebData(void) {
   return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
-void CWebDataBase::CreateTotalInquiringString(CString strMiddle)
+void CWebData::CreateTotalInquiringString(CString strMiddle)
 {
   m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }

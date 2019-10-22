@@ -2228,6 +2228,5 @@ bool CMarket::OpenSavingDayLineRecord(void)
     m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
     m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
   }
-
   return true;
 }

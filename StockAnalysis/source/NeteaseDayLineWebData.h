@@ -1,8 +1,8 @@
 #pragma once
 
-#include "WebDataBase.h"
+#include "WebData.h"
 
-class CNeteaseDayLineWebData final : public CWebDataBase {
+class CNeteaseDayLineWebData final : public CWebData {
 public:
   CNeteaseDayLineWebData();
   ~CNeteaseDayLineWebData();
