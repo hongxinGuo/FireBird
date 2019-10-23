@@ -559,9 +559,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
 // 采用网易日线申请接口，读取日线数据。
 // 每次读取一个股票。
 //
-//
-//
-//
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetNetEaseStockDayLineData(void)
 {
@@ -1248,7 +1245,7 @@ bool CMarket::SchedulingTask(void)
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (m_fReadingTengxunRTData && SystemReady()) {
       if (siCountDownTengxunNumber <= 0) {
-        //GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
+        GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
 
         // 新的标准制式
         //gl_TengxunRTWebData.GetWebData();
