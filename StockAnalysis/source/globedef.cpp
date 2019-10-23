@@ -7,6 +7,7 @@
 CSinaRTWebData     gl_SinaRTWebData;      // 新浪实时数据采集
 CTengxunRTWebData  gl_TengxunRTWebData;   // 腾讯实时数据采集
 CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
+CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
 
 CSystemMessage    gl_systemMessage;       // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime       gl_systemTime;          // 系统时间汇总。

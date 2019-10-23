@@ -47,7 +47,7 @@ public:
   bool          CreateTengxunRTDataInquiringStr(CString& str);
   int						GetSinaInquiringStockStr(CString& str);
   int						GetTengxunInquiringStockStr(CString& str);
-  int           GetInquiringStockStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
+  int           GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
   bool          GetSinaStockRTData(void);
   bool          GetTengxunStockRTData(void);
   void          ResetIT(void);    //ÖØÖÃ¸÷µü´úÆ÷

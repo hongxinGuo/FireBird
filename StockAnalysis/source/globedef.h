@@ -11,6 +11,7 @@
 #include"SinaRTWebData.h"
 #include"TengxunRTWebData.h"
 #include"NeteaseDayLineWebData.h"
+#include"CrweberIndexWebData.h"
 
 #include"SystemMessage.h"
 #include"QueueRTData.h"
@@ -27,6 +28,7 @@ using namespace std;
 extern CSinaRTWebData     gl_SinaRTWebData;     // 新浪实时数据采集
 extern CTengxunRTWebData  gl_TengxunRTWebData;  // 腾讯实时数据采集
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
+extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
 
 extern CSystemMessage     gl_systemMessage;     // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 extern CSystemTime        gl_systemTime;        // 系统时间汇总。

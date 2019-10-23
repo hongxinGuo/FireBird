@@ -77,7 +77,7 @@ void CSinaRTWebData::InquireNextWebData(void)
   StartReadingThread();
 }
 
-int CSinaRTWebData::GetInquiringStockStr(CString& strInquire) {
+int CSinaRTWebData::GetInquiringStr(CString& strInquire) {
   return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire);
 }
 

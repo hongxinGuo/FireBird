@@ -61,6 +61,7 @@
   <ItemGroup>
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
+    <ClCompile Include="CrweberIndexWebDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
@@ -92,6 +93,7 @@
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
@@ -123,13 +125,14 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndxe.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\WebDataBase.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

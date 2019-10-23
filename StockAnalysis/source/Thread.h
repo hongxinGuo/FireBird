@@ -37,3 +37,6 @@ UINT ThreadReadTengxunRTData(LPVOID pParam);    // 此工作线程返回值为10
 
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrongProcx线程调用，用于并发计算不同日期的日线相对强度，以提高效率
 UINT ThreadCalculateThisDayRS(LPVOID pParam); // 此工作线程返回值为11
+
+// 读取crweber.com网站上的油运指数线程
+UINT ThreadReadCrweberIndex(LPVOID pParam); // 此工作线程返回值为12

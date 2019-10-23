@@ -862,7 +862,7 @@ bool CMarket::ProcessRTDataReceivedFromWeb(void)
 int CMarket::GetSinaInquiringStockStr(CString& str)
 {
   ASSERT(SystemReady());
-  return GetInquiringStockStr(str, m_itSinaStock, _T(","), 900);
+  return GetInquiringStr(str, m_itSinaStock, _T(","), 900);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -873,10 +873,10 @@ int CMarket::GetSinaInquiringStockStr(CString& str)
 int CMarket::GetTengxunInquiringStockStr(CString& str)
 {
   ASSERT(SystemReady());
-  return GetInquiringStockStr(str, m_itTengxunStock, _T(","), 900);
+  return GetInquiringStr(str, m_itTengxunStock, _T(","), 900);
 }
 
-int CMarket::GetInquiringStockStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
+int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
   str += (*itStock++)->GetStockCode();  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((itStock != m_vActiveStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
@@ -1297,7 +1297,19 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   static int i10SecondsCounter = 9; // 十秒一次的计数器
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
   static int i5MinuteCounter = 299; // 五分钟一次的计数器
+  static int i1HourCounter = 3599; // 一小时一次的计数器
   const long lTime = gl_systemTime.GetTime();
+
+  // 计算每一小时一次的任务
+  if (i1HourCounter <= 0) {
+    i1HourCounter = 3599;
+
+    // 中午12时和午夜零时读取crweber.com
+    if ((lTime <= 10000) || ((lTime >= 12000) && (lTime <= 13000))) {
+      gl_CrweberIndexWebData.GetWebData();
+    }
+  }
+  else i1HourCounter -= lSecondNumber;
 
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {

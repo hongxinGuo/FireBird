@@ -209,7 +209,7 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
-    <ClInclude Include="source\CrweberOilTransferIndexWebData.h" />
+    <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\NeteaseDayLineWebData.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
     <ClInclude Include="source\TengxunRTWebData.h" />
@@ -244,7 +244,7 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
-    <ClCompile Include="source\CrweberOilTransferIndexWebData.cpp" />
+    <ClCompile Include="source\CrweberIndexWebData.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebData.cpp" />
     <ClCompile Include="source\SinaRTWebData.cpp" />
     <ClCompile Include="source\TengxunRTWebData.cpp" />
@@ -253,6 +253,7 @@
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="source\ThreadReadCrweberIndxe.cpp" />
     <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="source\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="source\ThreadReadTengxunRTData.cpp" />

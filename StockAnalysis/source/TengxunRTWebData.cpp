@@ -54,14 +54,14 @@ void CTengxunRTWebData::InquireNextWebData(void)
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
   // 申请下一批次股票实时数据
-  GetInquiringStockStr(strMiddle);
+  GetInquiringStr(strMiddle);
   CreateTotalInquiringString(strMiddle);
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();
 }
 
-int CTengxunRTWebData::GetInquiringStockStr(CString& strInquire) {
+int CTengxunRTWebData::GetInquiringStr(CString& strInquire) {
   return gl_ChinaStockMarket.GetTengxunInquiringStockStr(strInquire);
 }
 

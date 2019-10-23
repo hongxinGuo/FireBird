@@ -13,7 +13,7 @@ public:
   virtual void ReportDataError(void) override;
   virtual void ReportCommunicationError(void) override;
   virtual void InquireNextWebData(void) override;
-  virtual int GetInquiringStockStr(CString& strInquire) override;
+  virtual int GetInquiringStr(CString& strInquire) override;
   virtual void StartReadingThread(void) override;
 
   bool IsCreateOnce(void) { return sm_fCreatedOnce; }
