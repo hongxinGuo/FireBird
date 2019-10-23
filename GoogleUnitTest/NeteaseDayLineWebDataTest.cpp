@@ -26,4 +26,10 @@ namespace StockAnalysisTest {
     gl_NeteaseDayLineWebData.ReportCommunicationError();
     EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file £ºhttp://quotes.money.163.com"));
   }
+
+  TEST(NeteaseDayLineWebDataTest, TestGetInquiringStr) {
+    CString str = _T("abc");
+    EXPECT_EQ(gl_NeteaseDayLineWebData.GetInquiringStr(str), 0);
+    EXPECT_STREQ(str, _T(""));
+  }
 }

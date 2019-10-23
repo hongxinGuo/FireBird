@@ -69,7 +69,7 @@ void CSinaRTWebData::InquireNextWebData(void)
     gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
   }
   else { // 开市时使用今日活跃股票池
-    strMiddle = gl_SinaRTWebData.GetInquiringString();
+    gl_SinaRTWebData.GetInquiringStr(strMiddle);
     gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
   }
   SetWebDataReceived(false);

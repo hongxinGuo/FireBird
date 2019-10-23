@@ -81,7 +81,8 @@ void CNeteaseDayLineWebData::InquireNextWebData(void)
 }
 
 int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire) {
-  return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire);
+  strInquire = _T("");
+  return 0;
 }
 
 void CNeteaseDayLineWebData::StartReadingThread(void) {

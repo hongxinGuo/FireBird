@@ -358,12 +358,11 @@ bool CMarket::GetSinaStockRTData(void)
       }
     }
 
-    CString strTemp = _T("");
+    CString strMiddle = _T("");
 
     // 申请下一批次新浪股票实时数据
     if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      gl_SinaRTWebData.SetInquiringString(gl_SinaRTWebData.GetInquiringStringPrefix()); // 设置查询新浪实时数据的字符串头
-      if (CreateSinaRTDataInquiringStr(strTemp)) {
+      if (CreateSinaRTDataInquiringStr(strMiddle)) {
         if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
           if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
             gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -372,11 +371,11 @@ bool CMarket::GetSinaStockRTData(void)
           ResetIT();
         }
       }
-      gl_SinaRTWebData.AppendInquiringString(strTemp);
+      gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
     }
     else { // 开市时使用今日活跃股票池
-      gl_SinaRTWebData.SetInquiringString(gl_SinaRTWebData.GetInquiringStringPrefix());
-      GetSinaInquiringStockStr(gl_SinaRTWebData.GetInquiringString());
+      GetSinaInquiringStockStr(strMiddle);
+      gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
     }
     gl_SinaRTWebData.SetWebDataReceived(false);
     gl_SinaRTWebData.SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
@@ -1249,7 +1248,7 @@ bool CMarket::SchedulingTask(void)
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (m_fReadingTengxunRTData && SystemReady()) {
       if (siCountDownTengxunNumber <= 0) {
-        GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
+        //GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
 
         // 新的标准制式
         //gl_TengxunRTWebData.GetWebData();
@@ -1304,9 +1303,9 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
 
-    // 中午12时和午夜零时读取crweber.com
-    if ((lTime <= 10000) || ((lTime >= 12000) && (lTime <= 13000))) {
-      gl_CrweberIndexWebData.GetWebData();
+    // 下午八点读取crweber.com（每日10am EST更新）
+    if ((lTime >= 200000) && (lTime <= 210000)) {
+      //gl_CrweberIndexWebData.GetWebData();
     }
   }
   else i1HourCounter -= lSecondNumber;
