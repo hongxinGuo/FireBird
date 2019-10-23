@@ -1269,10 +1269,10 @@ bool CMarket::SchedulingTask(void)
 
     // 抓取日线数据
     if (!gl_fExiting && m_fGetDayLineData) {
-      GetNetEaseStockDayLineData();
+      //GetNetEaseStockDayLineData();
 
       // 采用新的制式
-      //gl_NeteaseDayLineWebData.GetWebData();
+      gl_NeteaseDayLineWebData.GetWebData();
     }
   }
 
@@ -1754,7 +1754,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
       continue; // 空置位置。应该不存在。
     }
     if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
-      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+      && (pStock->GetVolume() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     iCount++;
