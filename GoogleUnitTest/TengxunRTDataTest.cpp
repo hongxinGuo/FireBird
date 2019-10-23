@@ -607,7 +607,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_lStringLength, m_lCountPos);
       break;
     case 32: // 没有实时数据
-      EXPECT_TRUE(fSucceed); 
+      EXPECT_TRUE(fSucceed);
       EXPECT_EQ(m_lStringLength, m_lCountPos);
       EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600002"));
       EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
@@ -768,7 +768,6 @@ namespace StockAnalysisTest {
     }
   }
 
-
   // 将字符串转换为长整型
   TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue2) {
     long lTemp = 0;
@@ -863,5 +862,4 @@ namespace StockAnalysisTest {
       break;
     }
   }
-
-}  
+}

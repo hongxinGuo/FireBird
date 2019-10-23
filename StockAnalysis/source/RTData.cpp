@@ -304,9 +304,9 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   }
   lTotalRead++;
   // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
-  // 0.03版本和其之前的都没有做判断，0.04版本以后都如此判断了。
-  if ((m_lNew != 0)) m_fActive = true; // 在读取实时数据时即确定此数据是否为有效数据
-  else m_fActive = false;
+  // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
+  m_fActive = true;
+
   return true;
 }
 
