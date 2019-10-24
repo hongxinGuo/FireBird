@@ -2,13 +2,12 @@
 #define __MERKET_H__
 
 #include"stdafx.h"
+#include"globedef.h"
 
 #include "Stock.h"
 #include"SetStockCode.h"
 
 #include"CrweberIndex.h"
-
-#include"globedef.h"
 
 using namespace std;
 #include<vector>
@@ -104,6 +103,9 @@ public:
 
   // 日线数据处理函数，将读取到的日线数据存入数据库中
   bool          SaveDayLineData(void);
+
+  // crweber.com油运指数存储函数
+  bool          SaveCrweberIndexData(void);
 
   bool          ClearAllDayLineVector(void);
 

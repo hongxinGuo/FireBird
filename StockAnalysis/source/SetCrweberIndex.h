@@ -38,6 +38,7 @@ public:
   long m_TC4;
   long m_TC5;
   long m_TC14;
+  long m_CPP_USGCBS;
   // 重写
     // 向导生成的虚函数重写
 public:

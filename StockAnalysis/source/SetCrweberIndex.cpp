@@ -13,8 +13,8 @@ CSetCrweberIndex::CSetCrweberIndex(CDatabase* pdb)
   m_Day = 0;
   m_TD1 = m_TD2 = m_TD3C = m_TD5 = m_TD6 = m_TD7 = m_TD8 = m_TD9 = m_TD12 = m_TD15
     = m_TD19 = m_TD20 = m_TD21 = m_VLCC_USGSPORE = m_SUEZMAX_CBSUSG = 0;
-  m_TC1 = m_TC2 = m_TC3 = m_TC4 = m_TC5 = m_TC14 = 0;
-  m_nFields = 23;
+  m_TC1 = m_TC2 = m_TC3 = m_TC4 = m_TC5 = m_TC14 = m_CPP_USGCBS = 0;
+  m_nFields = 24;
 }
 
 CString CSetCrweberIndex::GetDefaultConnect()
@@ -38,17 +38,17 @@ void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[VLCC_TD1]"), m_TD1);
   RFX_Long(pFX, _T("[VLCC_TD2]"), m_TD2);
   RFX_Long(pFX, _T("[VLCC_TD3C]"), m_TD3C);
-  RFX_Long(pFX, _T("[VLCC_TD5]"), m_TD5);
-  RFX_Long(pFX, _T("[VLCC_TD6]"), m_TD6);
-  RFX_Long(pFX, _T("[VLCC_TD7]"), m_TD7);
-  RFX_Long(pFX, _T("[VLCC_TD8]"), m_TD8);
-  RFX_Long(pFX, _T("[VLCC_TD9]"), m_TD9);
-  RFX_Long(pFX, _T("[VLCC_TD12]"), m_TD12);
+  RFX_Long(pFX, _T("[SUEZMAX_TD5]"), m_TD5);
+  RFX_Long(pFX, _T("[SUEZMAX_TD6]"), m_TD6);
+  RFX_Long(pFX, _T("[AFRAMAX_TD7]"), m_TD7);
+  RFX_Long(pFX, _T("[AFRAMAX_TD8]"), m_TD8);
+  RFX_Long(pFX, _T("[AFRAMAX_TD9]"), m_TD9);
+  RFX_Long(pFX, _T("[PANAMAX_TD12]"), m_TD12);
   RFX_Long(pFX, _T("[VLCC_TD15]"), m_TD15);
-  RFX_Long(pFX, _T("[VLCC_TD19]"), m_TD19);
-  RFX_Long(pFX, _T("[VLCC_TD20]"), m_TD20);
-  RFX_Long(pFX, _T("[VLCC_TD21]"), m_TD21);
-  RFX_Long(pFX, _T("[VLCC_USGSPORT]"), m_VLCC_USGSPORE);
+  RFX_Long(pFX, _T("[AFRAMAX_TD19]"), m_TD19);
+  RFX_Long(pFX, _T("[SUEZMAX_TD20]"), m_TD20);
+  RFX_Long(pFX, _T("[PANAMAX_TD21]"), m_TD21);
+  RFX_Long(pFX, _T("[VLCC_USGSPORE]"), m_VLCC_USGSPORE);
   RFX_Long(pFX, _T("[SUEZMAX_CBSUSG]"), m_SUEZMAX_CBSUSG);
   RFX_Long(pFX, _T("[CPP_TC1]"), m_TC1);
   RFX_Long(pFX, _T("[CPP_TC2]"), m_TC2);
@@ -56,6 +56,7 @@ void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[CPP_TC4]"), m_TC4);
   RFX_Long(pFX, _T("[CPP_TC5]"), m_TC5);
   RFX_Long(pFX, _T("[CPP_TC14]"), m_TC14);
+  RFX_Long(pFX, _T("[CPP_USGCBS]"), m_CPP_USGCBS);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ

@@ -10,6 +10,7 @@
 #include"SetDayLineInfo.h"
 #include"SetDayLineToday.h"
 #include"SetOption.h"
+#include"SetCrweberIndex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -79,6 +80,9 @@ void CMarket::Reset(void)
 
   // 生成股票代码池
   CreateTotalStockContainer();
+
+  // 重置此全局变量
+  gl_CrweberIndex.Reset();
 }
 
 #ifdef _DEBUG
@@ -1302,9 +1306,9 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
 
-    // 下午八点读取crweber.com（每日10am EST更新）
-    if ((lTime >= 200000) && (lTime <= 210000)) {
-      //gl_CrweberIndexWebData.GetWebData();
+    // 每日自动更新
+    if (!gl_CrweberIndex.IsTodayUpdated()) {
+      gl_CrweberIndexWebData.GetWebData();
     }
   }
   else i1HourCounter -= lSecondNumber;
@@ -1704,6 +1708,27 @@ bool CMarket::SaveRTData(void) {
   }
   setRTData.m_pDatabase->CommitTrans();
   setRTData.Close();
+  return(true);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将crweber.com油运指数数据存入数据库。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CMarket::SaveCrweberIndexData(void) {
+  CSetCrweberIndex setIndex;
+  setIndex.m_strFilter = _T("[ID] = 1");
+
+  // 存储今日生成的数据于CrweberIndex表中。
+  setIndex.Open();
+  setIndex.m_pDatabase->BeginTrans();
+  setIndex.AddNew();
+  gl_CrweberIndex.SaveData(&setIndex);
+  setIndex.Update();
+  setIndex.m_pDatabase->CommitTrans();
+  setIndex.Close();
   return(true);
 }
 
