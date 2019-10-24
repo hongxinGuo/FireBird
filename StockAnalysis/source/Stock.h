@@ -152,8 +152,8 @@ public:
   bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
   void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
 
-  bool IsDayLineUpdated(void) noexcept { return (m_fDayKLineUpdated); }
-  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayKLineUpdated = fUpdate; }
+  bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
+  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
 
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
@@ -299,7 +299,7 @@ protected:
 
   bool			            m_fChoiced;									// 此股票是否是自选股票.
   bool			            m_fMinLineUpdated;					// 今天的分钟资料是否更新过.
-  bool			            m_fDayKLineUpdated;					// 今天的日线资料是否更新过.
+  bool			            m_fDayLineUpdated;					// 今天的日线资料是否更新过.
 };
 
 typedef shared_ptr<CStock> CStockPtr;

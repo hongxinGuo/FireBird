@@ -74,7 +74,7 @@ void CStock::Reset(void) {
 
   m_fChoiced = false;
   m_fMinLineUpdated = false;
-  m_fDayKLineUpdated = false;
+  m_fDayLineUpdated = false;
 
   m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_pLastRTData = nullptr;
@@ -122,7 +122,7 @@ void CStock::UpdateStatus(CRTDataPtr pRTData)
 bool CStock::LoadDayLine(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
-  
+
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
   setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
@@ -167,7 +167,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 ////////////////////////////////////////////////////////////////////////////
 bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
   CDayLinePtr pDayLine;
-  
+
   int iPosition = 0;
   while (!psetDayLineInfo->IsEOF()) {
     pDayLine = m_vDayLine[iPosition];
@@ -274,7 +274,7 @@ void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
 
 void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   long lCurrentGuaDanTransactionPrice = 0;
-  
+
   m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
   if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
     // 检查挂单情况
@@ -347,7 +347,6 @@ void CStock::CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice) {
     m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
     m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
   }
-
 }
 
 void CStock::CalculateAttackBuy(void) {
@@ -384,7 +383,7 @@ void CStock::CalculateStrongSell(void) {
   m_nCurrentTransactionType = __STRONG_SELL__;
   m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
   CalculateAttackSellVolume();
-  }
+}
 
 void CStock::CalculateAttackSellVolume(void) {
   if (m_lCurrentGuadanTransactionVolume < 50000) {

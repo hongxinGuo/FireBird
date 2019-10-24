@@ -69,8 +69,8 @@ void CSinaRTWebData::InquireNextWebData(void)
     gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
   }
   else { // 开市时使用今日活跃股票池
-    gl_SinaRTWebData.GetInquiringStr(strMiddle);
-    gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
+    GetInquiringStr(strMiddle);
+    CreateTotalInquiringString(strMiddle);
   }
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

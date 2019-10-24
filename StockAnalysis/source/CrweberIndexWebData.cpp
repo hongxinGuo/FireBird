@@ -3,6 +3,12 @@
 #include"thread.h"
 #include"market.h"
 
+#include"boost/property_tree/xml_parser.hpp"
+
+using namespace boost;
+using namespace property_tree;
+using namespace xml_parser;
+
 #include "CrweberIndexWebData.h"
 
 bool CCrweberIndexWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
@@ -22,11 +28,22 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
 {
   iCount = m_lByteRead; //
   pCurrentPos += m_lByteRead;
+  CFile file;
+  file.Open(_T("C:\\StockAnalysis\\crweberIndex.html"), CFile::modeCreate | CFile::modeReadWrite);
+  file.Write(m_buffer, m_lByteRead);
+  file.Close();
+  // 然后使用tidyxml将此html转换为xml文件制式存储
   return true;
 }
 
 void CCrweberIndexWebData::ProcessWebDataStored(void) {
-  //gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
+  using boost::property_tree::ptree;
+
+  // 读取xml文件。
+  ptree pt;
+  string str = _T("C:\\StockAnalysis\\crweberIndex.xml");
+  //read_xml(str, pt);
+  TRACE("crweber.com的字节数为%d\n", m_lByteRead);
 }
 
 void CCrweberIndexWebData::ReportDataError(void)
@@ -48,7 +65,7 @@ void CCrweberIndexWebData::InquireNextWebData(void)
 {
   CString strMiddle = _T("");
 
-  gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
+  CreateTotalInquiringString(strMiddle);
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();

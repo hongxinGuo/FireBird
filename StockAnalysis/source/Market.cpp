@@ -811,7 +811,7 @@ bool CMarket::ProcessRTDataReceivedFromWeb(void)
     CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
     //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
-      long lIndex = 0;
+      long lIndex = 0, lIndexActive = 0;
       if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
         pStock = make_shared<CStock>();
         pStock->SetActive(true);
@@ -827,8 +827,8 @@ bool CMarket::ProcessRTDataReceivedFromWeb(void)
         lIndex = m_mapChinaMarketAStock[pStock->GetStockCode()];
         m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
         m_vChinaMarketAStock.at(lIndex)->SetActive(true); // 本日接收到了数据，
-        long lIndex2 = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
-        m_vActiveStock.at(lIndex2)->SetTransactionTime(pRTData->GetTransactionTime());  // 设置最新接受到实时数据的时间
+        lIndexActive = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
+        m_vActiveStock.at(lIndexActive)->SetTransactionTime(pRTData->GetTransactionTime());  // 设置最新接受到实时数据的时间
         m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(true);
         // 如果此股票代码尚未使用过，则设置为已使用。
         // 停牌后的股票，也能接收到实时数据，只是其内容只有收盘价，其他都为零。考虑清除这种无效数据。
@@ -836,11 +836,11 @@ bool CMarket::ProcessRTDataReceivedFromWeb(void)
         ASSERT(m_vChinaMarketAStock.at(lIndex)->GetStockCode().Compare(pStock->GetStockCode()) == 0);
       }
       else {
-        lIndex = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
-        ASSERT(lIndex <= m_lTotalActiveStock);
-        if (pRTData->GetTransactionTime() > m_vActiveStock.at(lIndex)->GetTransactionTime()) { // 新的数据？
-          m_vActiveStock.at(lIndex)->PushRTData(pRTData); // 存储新的数据至数据池
-          m_vActiveStock.at(lIndex)->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
+        lIndexActive = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
+        ASSERT(lIndexActive <= m_lTotalActiveStock);
+        if (pRTData->GetTransactionTime() > m_vActiveStock.at(lIndexActive)->GetTransactionTime()) { // 新的数据？
+          m_vActiveStock.at(lIndexActive)->PushRTData(pRTData); // 存储新的数据至数据池
+          m_vActiveStock.at(lIndexActive)->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
         }
       }
     }
@@ -1274,6 +1274,8 @@ bool CMarket::SchedulingTask(void)
       // 采用新的制式
       gl_NeteaseDayLineWebData.GetWebData();
     }
+    // 抓取crweber.com网站数据
+    gl_CrweberIndexWebData.GetWebData();
   }
 
   return true;

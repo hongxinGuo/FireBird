@@ -22,7 +22,7 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     gl_CrweberIndexWebData.SetReadingSucceed(true);
     gl_CrweberIndexWebData.SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_CrweberIndexWebData.GetInquiringString()));
-    Sleep(500); // 服务器500ms延迟即可。
+    Sleep(1000); // 服务器500ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
