@@ -1278,8 +1278,6 @@ bool CMarket::SchedulingTask(void)
       // 采用新的制式
       gl_NeteaseDayLineWebData.GetWebData();
     }
-    // 抓取crweber.com网站数据
-    gl_CrweberIndexWebData.GetWebData();
   }
 
   return true;

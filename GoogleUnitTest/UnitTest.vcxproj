@@ -93,6 +93,7 @@
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
@@ -104,6 +105,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineToday.obj" />
