@@ -1304,10 +1304,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
 
-    // 每日自动更新
-    if (!gl_CrweberIndex.IsTodayUpdated()) {
-      gl_CrweberIndexWebData.GetWebData();
-    }
+    // 每小时自动查询crweber.com
+    gl_CrweberIndexWebData.GetWebData();
   }
   else i1HourCounter -= lSecondNumber;
 
