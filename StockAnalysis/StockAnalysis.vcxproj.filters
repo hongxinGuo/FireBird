@@ -111,9 +111,6 @@
     <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="SetDayLineToday.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\Thread.h">
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
@@ -140,6 +137,15 @@
     </ClInclude>
     <ClInclude Include="source\CrweberIndexWebData.h">
       <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetCrweberIndex.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLineToday.h">
+      <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndex.h">
+      <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,9 +215,6 @@
     <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="SetDayLineToday.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\Thread.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
@@ -268,6 +271,15 @@
     </ClCompile>
     <ClCompile Include="source\ThreadReadCrweberIndxe.cpp">
       <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetCrweberIndex.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLineToday.cpp">
+      <Filter>源文件\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberIndex.cpp">
+      <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

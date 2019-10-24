@@ -26,14 +26,55 @@ CCrweberIndexWebData::~CCrweberIndexWebData() {
 
 bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
-  iCount = m_lByteRead; //
-  pCurrentPos += m_lByteRead;
   CFile file;
   file.Open(_T("C:\\StockAnalysis\\crweberIndex.html"), CFile::modeCreate | CFile::modeReadWrite);
   file.Write(m_buffer, m_lByteRead);
   file.Close();
   // 然后使用tidyxml将此html转换为xml文件制式存储
+
+  iCount = 0;
+  CString str;
+  while (iCount < m_lByteRead) {
+    str = GetNextString(pCurrentPos, iCount);
+  }
+
+  iCount = m_lByteRead; //
+  pCurrentPos += m_lByteRead;
   return true;
+}
+
+CString CCrweberIndexWebData::GetNextString(char*& pCurrentPos, long& iCount) {
+  bool fFound = false;
+  char buffer[10000];
+  long iBufferCount = 0;
+
+  while ((*pCurrentPos != 0x000) && !fFound) {
+    if (*pCurrentPos == '<') { // 无用配置字符
+      while (*pCurrentPos != '>') {
+        pCurrentPos++;
+        iCount++;
+      }
+      pCurrentPos++;
+      iCount++;
+      while ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x00d) || (*pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+        pCurrentPos++;
+        iCount++;
+      }
+    }
+    else fFound = true;
+  }
+  if (*pCurrentPos == 0x000) { // 读到结尾处了
+    ASSERT(iCount >= m_lByteRead);
+    return _T("");
+  }
+  while (*pCurrentPos != '<') {
+    buffer[iBufferCount++] = *pCurrentPos++;
+    iCount++;
+  }
+  buffer[iBufferCount] = 0x000;
+  CString str;
+  str = buffer;
+  return str;
 }
 
 void CCrweberIndexWebData::ProcessWebDataStored(void) {
@@ -41,7 +82,7 @@ void CCrweberIndexWebData::ProcessWebDataStored(void) {
 
   // 读取xml文件。
   ptree pt;
-  string str = _T("C:\\StockAnalysis\\crweberIndex.xml");
+  string str = _T("C:\\StockAnalysis\\a.xml");
   //read_xml(str, pt);
   TRACE("crweber.com的字节数为%d\n", m_lByteRead);
 }

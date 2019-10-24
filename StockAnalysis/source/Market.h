@@ -6,6 +6,8 @@
 #include "Stock.h"
 #include"SetStockCode.h"
 
+#include"CrweberIndex.h"
+
 #include"globedef.h"
 
 using namespace std;
@@ -170,9 +172,6 @@ private:
   bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
-  //const CString m_strTengxunRTDataInquire = _T("http://qt.gtimg.cn/q=");
-  //const CString m_strNeteaseDayLineInquire = _T("http://quotes.money.163.com/service/chddata.html?code=");
-  //const CString m_strNeteaseDayLinePostfix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 
   CStockPtr                   m_pCurrentStock;          // 当前显示的股票
   char                        m_aStockCodeTemp[30];
@@ -187,6 +186,8 @@ public:
   vector<StockIDPtr>	        m_vChinaMarketAStock;             // 本系统允许的所有股票池（无论代码是否存在）
 
   vector<StockIDPtr>          gl_vStockChoice;      // 自选股票池
+
+  vector<CrweberIndexPtr>    gl_vCrweberIndex;     // crweber.com网站上的油运指数
 
 protected:
   CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据， 在存储日线历史数据之前就使之打开状态，否则当同时操作数据库时速度奇慢。

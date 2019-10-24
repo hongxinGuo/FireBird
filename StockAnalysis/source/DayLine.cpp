@@ -134,28 +134,28 @@ void CDayLine::SetData(CSetDayLine* pDayLine)
   */
 }
 
-void CDayLine::SetData(CSetDayLineInfo* pDayLine)
+void CDayLine::SetData(CSetDayLineInfo* pDayLineInfo)
 {
-  m_lTransactionNumber = pDayLine->m_TransactionNumber;
-  m_lTransactionNumberBelow5000 = pDayLine->m_TransactionNumberBelow5000;
-  m_lTransactionNumberBelow50000 = pDayLine->m_TransactionNumberBelow50000;
-  m_lTransactionNumberBelow200000 = pDayLine->m_TransactionNumberBelow200000;
-  m_lTransactionNumberAbove200000 = pDayLine->m_TransactionNumberAbove200000;
-  m_lAttackBuyVolume = pDayLine->m_AttackBuyVolume;
-  m_lStrongBuyVolume = pDayLine->m_StrongBuyVolume;
-  m_lAttackSellVolume = pDayLine->m_AttackSellVolume;
-  m_lStrongSellVolume = pDayLine->m_StrongSellVolume;
-  m_lUnknownVolume = pDayLine->m_UnknownVolume;
-  m_lCancelBuyVolume = pDayLine->m_CancelBuyVolume;
-  m_lCancelSellVolume = pDayLine->m_CancelSellVolume;
-  m_lOrdinaryBuyVolume = pDayLine->m_OrdinaryBuyVolume;
-  m_lAttackBuyBelow50000 = pDayLine->m_AttackBuyBelow50000;
-  m_lAttackBuyBelow200000 = pDayLine->m_AttackBuyBelow200000;
-  m_lAttackBuyAbove200000 = pDayLine->m_AttackBuyAbove200000;
-  m_lOrdinarySellVolume = pDayLine->m_OrdinarySellVolume;
-  m_lAttackSellBelow50000 = pDayLine->m_AttackSellBelow50000;
-  m_lAttackSellBelow200000 = pDayLine->m_AttackSellBelow200000;
-  m_lAttackSellAbove200000 = pDayLine->m_AttackSellAbove200000;
+  m_lTransactionNumber = pDayLineInfo->m_TransactionNumber;
+  m_lTransactionNumberBelow5000 = pDayLineInfo->m_TransactionNumberBelow5000;
+  m_lTransactionNumberBelow50000 = pDayLineInfo->m_TransactionNumberBelow50000;
+  m_lTransactionNumberBelow200000 = pDayLineInfo->m_TransactionNumberBelow200000;
+  m_lTransactionNumberAbove200000 = pDayLineInfo->m_TransactionNumberAbove200000;
+  m_lAttackBuyVolume = pDayLineInfo->m_AttackBuyVolume;
+  m_lStrongBuyVolume = pDayLineInfo->m_StrongBuyVolume;
+  m_lAttackSellVolume = pDayLineInfo->m_AttackSellVolume;
+  m_lStrongSellVolume = pDayLineInfo->m_StrongSellVolume;
+  m_lUnknownVolume = pDayLineInfo->m_UnknownVolume;
+  m_lCancelBuyVolume = pDayLineInfo->m_CancelBuyVolume;
+  m_lCancelSellVolume = pDayLineInfo->m_CancelSellVolume;
+  m_lOrdinaryBuyVolume = pDayLineInfo->m_OrdinaryBuyVolume;
+  m_lAttackBuyBelow50000 = pDayLineInfo->m_AttackBuyBelow50000;
+  m_lAttackBuyBelow200000 = pDayLineInfo->m_AttackBuyBelow200000;
+  m_lAttackBuyAbove200000 = pDayLineInfo->m_AttackBuyAbove200000;
+  m_lOrdinarySellVolume = pDayLineInfo->m_OrdinarySellVolume;
+  m_lAttackSellBelow50000 = pDayLineInfo->m_AttackSellBelow50000;
+  m_lAttackSellBelow200000 = pDayLineInfo->m_AttackSellBelow200000;
+  m_lAttackSellAbove200000 = pDayLineInfo->m_AttackSellAbove200000;
 }
 
 void CDayLine::Reset(void) {

@@ -204,13 +204,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="SetDayLineToday.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\NeteaseDayLineWebData.h" />
+    <ClInclude Include="source\SetCrweberIndex.h" />
+    <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
     <ClInclude Include="source\TengxunRTWebData.h" />
     <ClInclude Include="source\WebData.h" />
@@ -242,10 +244,12 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
-    <ClCompile Include="SetDayLineToday.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexWebData.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebData.cpp" />
+    <ClCompile Include="source\SetCrweberIndex.cpp" />
+    <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SinaRTWebData.cpp" />
     <ClCompile Include="source\TengxunRTWebData.cpp" />
     <ClCompile Include="source\Thread.cpp" />
