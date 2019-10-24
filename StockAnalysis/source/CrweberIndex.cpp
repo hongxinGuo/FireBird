@@ -17,7 +17,6 @@ CCrweberIndex::~CCrweberIndex() {
 
 void CCrweberIndex::Reset(void) {
   m_fTodayUpdated = false;
-  m_lDay = 0;
 }
 
 void CCrweberIndex::SetData(CSetCrweberIndex* pSetCrweberIndex) {
