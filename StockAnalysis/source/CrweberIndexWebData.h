@@ -19,6 +19,7 @@ public:
   bool IsCreateOnce(void) { return sm_fCreatedOnce; }
 
 private:
+  long ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
   double GetOneValue(char*& pCurrentPos, long& iCount);
   CString GetNextString(char*& pCurrentPos, long& iCount);
