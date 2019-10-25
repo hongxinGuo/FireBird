@@ -27,19 +27,19 @@ public:
   long	      m_Market;	//市场（上海，深圳）
   CString 	  m_StockCode;	//八位股票代码
   CStringW 	  m_StockName;	//六位股票名称   这里必须采用CStringW(Unicode)制式，否则有些中文无法显示，导致数据库无法存储
-  double  	  m_LastClose;	//昨天收盘价。单位：0.001元
-  double  	  m_Open;	//今天开盘价
-  double  	  m_High;	//今天最高价
-  double  	  m_Low;	//今天最低价
-  double  	  m_Close;	//今日收盘价
-  double      m_Volume;	//今日总成交数量。单位：股。
-  double      m_Amount;	//今日总成交金额。单位：元
-  double      m_UpAndDown;	//今日涨跌
-  double      m_UpDownRate; // 今日涨跌幅度，单位1%。
-  double      m_ChangeHandRate; // 今日换手率
-  double      m_TotalValue;	//总市值。单位：元
-  double      m_CurrentValue;	//流通市值。单位：元
-  double	    m_RelativeStrong;	//相对于总市场的强度
+  CString  	  m_LastClose;	//昨天收盘价。单位：0.001元
+  CString  	  m_Open;	//今天开盘价
+  CString  	  m_High;	//今天最高价
+  CString  	  m_Low;	//今天最低价
+  CString  	  m_Close;	//今日收盘价
+  CString      m_Volume;	//今日总成交数量。单位：股。
+  CString      m_Amount;	//今日总成交金额。单位：元
+  CString      m_UpAndDown;	//今日涨跌
+  CString      m_UpDownRate; // 今日涨跌幅度，单位1%。
+  CString      m_ChangeHandRate; // 今日换手率
+  CString      m_TotalValue;	//总市值。单位：元
+  CString      m_CurrentValue;	//流通市值。单位：元
+  CString	    m_RelativeStrong;	//相对于总市场的强度
 
 // 重写
   // 向导生成的虚函数重写

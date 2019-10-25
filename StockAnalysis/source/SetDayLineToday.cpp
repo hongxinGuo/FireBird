@@ -34,11 +34,11 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
   m_TotalValue = _T("");
   m_CurrentValue = _T("");
   m_RelativeStrong = _T("");	//相对于总市场的强度
-  m_TransactionNumber = 0;
-  m_TransactionNumberBelow5000 = 0;
-  m_TransactionNumberBelow50000 = 0;
-  m_TransactionNumberBelow200000 = 0;
-  m_TransactionNumberAbove200000 = 0;
+  m_TransactionNumber = _T("");
+  m_TransactionNumberBelow5000 = _T("");
+  m_TransactionNumberBelow50000 = _T("");
+  m_TransactionNumberBelow200000 = _T("");
+  m_TransactionNumberAbove200000 = _T("");
   m_AttackBuyVolume = _T("");	//攻击性买盘数量
   m_AttackSellVolume = _T("");	//攻击性买盘数量
   m_StrongBuyVolume = _T("");	//强攻击性买盘数量
@@ -91,11 +91,11 @@ void CSetDayLineToday::DoFieldExchange(CFieldExchange* pFX)
   RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
   RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
   RFX_Text(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
-  RFX_Long(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
-  RFX_Long(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
-  RFX_Long(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);
-  RFX_Long(pFX, _T("[TransactionNumberBelow200000]"), m_TransactionNumberBelow200000);
-  RFX_Long(pFX, _T("[TransactionNumberAbove200000]"), m_TransactionNumberAbove200000);
+  RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
+  RFX_Text(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
+  RFX_Text(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);
+  RFX_Text(pFX, _T("[TransactionNumberBelow200000]"), m_TransactionNumberBelow200000);
+  RFX_Text(pFX, _T("[TransactionNumberAbove200000]"), m_TransactionNumberAbove200000);
   RFX_Text(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);
   RFX_Text(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);
   RFX_Text(pFX, _T("[AttackBuyVolume]"), m_AttackBuyVolume);	//攻击性买盘数量

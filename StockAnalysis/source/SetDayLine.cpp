@@ -20,19 +20,19 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
   m_Market = 0;
   m_StockCode = "";
   m_StockName = "";
-  m_LastClose = 0;
-  m_Open = 0;
-  m_High = 0;
-  m_Low = 0;
-  m_Close = 0;
-  m_Volume = 0;
-  m_Amount = 0;
-  m_UpAndDown = 0;
-  m_UpDownRate = 0;
-  m_ChangeHandRate = 0;
-  m_TotalValue = 0.0;
-  m_CurrentValue = 0.0;
-  m_RelativeStrong = 0;	//相对于总市场的强度
+  m_LastClose = _T("0");
+  m_Open = _T("0");
+  m_High = _T("0");
+  m_Low = _T("0");
+  m_Close = _T("0");
+  m_Volume = _T("0");
+  m_Amount = _T("0");
+  m_UpAndDown = _T("0");
+  m_UpDownRate = _T("0");
+  m_ChangeHandRate = _T("0");
+  m_TotalValue = _T("0");
+  m_CurrentValue = _T("0");
+  m_RelativeStrong = _T("");	//相对于总市场的强度
   m_nFields = 18;
 }
 
@@ -57,19 +57,19 @@ void CSetDayLine::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
-  RFX_Double(pFX, _T("[LastClose]"), m_LastClose);
-  RFX_Double(pFX, _T("[Open]"), m_Open);
-  RFX_Double(pFX, _T("[High]"), m_High);
-  RFX_Double(pFX, _T("[Low]"), m_Low);
-  RFX_Double(pFX, _T("[Close]"), m_Close);
-  RFX_Double(pFX, _T("[Volume]"), m_Volume);
-  RFX_Double(pFX, _T("[Amount]"), m_Amount);
-  RFX_Double(pFX, _T("[UpAndDown]"), m_UpAndDown);
-  RFX_Double(pFX, _T("[UpDownRate]"), m_UpDownRate);
-  RFX_Double(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
-  RFX_Double(pFX, _T("[TotalValue]"), m_TotalValue);
-  RFX_Double(pFX, _T("[CurrentValue]"), m_CurrentValue);
-  RFX_Double(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
+  RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
+  RFX_Text(pFX, _T("[Open]"), m_Open);
+  RFX_Text(pFX, _T("[High]"), m_High);
+  RFX_Text(pFX, _T("[Low]"), m_Low);
+  RFX_Text(pFX, _T("[Close]"), m_Close);
+  RFX_Text(pFX, _T("[Volume]"), m_Volume);
+  RFX_Text(pFX, _T("[Amount]"), m_Amount);
+  RFX_Text(pFX, _T("[UpAndDown]"), m_UpAndDown);
+  RFX_Text(pFX, _T("[UpDownRate]"), m_UpDownRate);
+  RFX_Text(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
+  RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
+  RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
+  RFX_Text(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLine 诊断

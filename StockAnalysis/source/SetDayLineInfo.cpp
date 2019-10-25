@@ -18,26 +18,26 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_Day = 0;
   m_Market = 0;
   m_StockCode = "";
-  m_TransactionNumber = 0;
-  m_TransactionNumberBelow5000 = 0; // 本日的盘口变化数
-  m_TransactionNumberBelow50000 = 0; // 本日的盘口变化数
-  m_TransactionNumberBelow200000 = 0; // 本日的盘口变化数
-  m_TransactionNumberAbove200000 = 0; // 本日的盘口变化数
-  m_AttackBuyVolume = 0;	//攻击性买盘数量
-  m_AttackSellVolume = 0;	//攻击性买盘数量
-  m_StrongBuyVolume = 0;	//强攻击性买盘数量
-  m_StrongSellVolume = 0;	//强攻击性买盘数量
-  m_OrdinaryBuyVolume = 0;
-  m_OrdinarySellVolume = 0;
-  m_UnknownVolume = 0;	//未知买卖盘数量
-  m_CancelBuyVolume = 0;	//买单撤单数量
-  m_CancelSellVolume = 0;	//卖单撤单数量
-  m_AttackBuyBelow50000 = 0;
-  m_AttackBuyBelow200000 = 0;
-  m_AttackBuyAbove200000 = 0;
-  m_AttackSellBelow50000 = 0;
-  m_AttackSellBelow200000 = 0;
-  m_AttackSellAbove200000 = 0;
+  m_TransactionNumber = _T("0");
+  m_TransactionNumberBelow5000 = _T("0"); // 本日的盘口变化数
+  m_TransactionNumberBelow50000 = _T("0"); // 本日的盘口变化数
+  m_TransactionNumberBelow200000 = _T("0"); // 本日的盘口变化数
+  m_TransactionNumberAbove200000 = _T("0"); // 本日的盘口变化数
+  m_AttackBuyVolume = _T("0");	//攻击性买盘数量
+  m_AttackSellVolume = _T("0");	//攻击性买盘数量
+  m_StrongBuyVolume = _T("0");	//强攻击性买盘数量
+  m_StrongSellVolume = _T("0");	//强攻击性买盘数量
+  m_OrdinaryBuyVolume = _T("0");
+  m_OrdinarySellVolume = _T("0");
+  m_UnknownVolume = _T("0");	//未知买卖盘数量
+  m_CancelBuyVolume = _T("0");	//买单撤单数量
+  m_CancelSellVolume = _T("0");	//卖单撤单数量
+  m_AttackBuyBelow50000 = _T("0");
+  m_AttackBuyBelow200000 = _T("0");
+  m_AttackBuyAbove200000 = _T("0");
+  m_AttackSellBelow50000 = _T("0");
+  m_AttackSellBelow200000 = _T("0");
+  m_AttackSellAbove200000 = _T("0");
   m_nFields = 24;
 }
 
@@ -61,26 +61,26 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[Time]"), m_Day);
   RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
-  RFX_Long(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
-  RFX_Long(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
-  RFX_Long(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);
-  RFX_Long(pFX, _T("[TransactionNumberBelow200000]"), m_TransactionNumberBelow200000);
-  RFX_Long(pFX, _T("[TransactionNumberAbove200000]"), m_TransactionNumberAbove200000);
-  RFX_Double(pFX, _T("[AttackBuyVolume]"), m_AttackBuyVolume);	//攻击性买盘数量
-  RFX_Double(pFX, _T("[AttackSellVolume]"), m_AttackSellVolume);	//攻击性买盘数量
-  RFX_Double(pFX, _T("[StrongBuyVolume]"), m_StrongBuyVolume);	//强攻击性买盘数量
-  RFX_Double(pFX, _T("[StrongSellVolume]"), m_StrongSellVolume);	//强攻击性买盘数量
-  RFX_Double(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);	//强攻击性买盘数量
-  RFX_Double(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);	//强攻击性买盘数量
-  RFX_Double(pFX, _T("[UnknownVolume]"), m_UnknownVolume);
-  RFX_Double(pFX, _T("[CancelBuyVolume]"), m_CancelBuyVolume);
-  RFX_Double(pFX, _T("[CancelSellVolume]"), m_CancelSellVolume);
-  RFX_Double(pFX, _T("[AttackBuyBelow50000]"), m_AttackBuyBelow50000);
-  RFX_Double(pFX, _T("[AttackBuyBelow200000]"), m_AttackBuyBelow200000);
-  RFX_Double(pFX, _T("[AttackBuyAbove200000]"), m_AttackBuyAbove200000);
-  RFX_Double(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
-  RFX_Double(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
-  RFX_Double(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
+  RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
+  RFX_Text(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
+  RFX_Text(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);
+  RFX_Text(pFX, _T("[TransactionNumberBelow200000]"), m_TransactionNumberBelow200000);
+  RFX_Text(pFX, _T("[TransactionNumberAbove200000]"), m_TransactionNumberAbove200000);
+  RFX_Text(pFX, _T("[AttackBuyVolume]"), m_AttackBuyVolume);	//攻击性买盘数量
+  RFX_Text(pFX, _T("[AttackSellVolume]"), m_AttackSellVolume);	//攻击性买盘数量
+  RFX_Text(pFX, _T("[StrongBuyVolume]"), m_StrongBuyVolume);	//强攻击性买盘数量
+  RFX_Text(pFX, _T("[StrongSellVolume]"), m_StrongSellVolume);	//强攻击性买盘数量
+  RFX_Text(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);	//强攻击性买盘数量
+  RFX_Text(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);	//强攻击性买盘数量
+  RFX_Text(pFX, _T("[UnknownVolume]"), m_UnknownVolume);
+  RFX_Text(pFX, _T("[CancelBuyVolume]"), m_CancelBuyVolume);
+  RFX_Text(pFX, _T("[CancelSellVolume]"), m_CancelSellVolume);
+  RFX_Text(pFX, _T("[AttackBuyBelow50000]"), m_AttackBuyBelow50000);
+  RFX_Text(pFX, _T("[AttackBuyBelow200000]"), m_AttackBuyBelow200000);
+  RFX_Text(pFX, _T("[AttackBuyAbove200000]"), m_AttackBuyAbove200000);
+  RFX_Text(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
+  RFX_Text(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
+  RFX_Text(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLine 诊断

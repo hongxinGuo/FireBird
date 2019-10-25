@@ -61,7 +61,9 @@ public:
   INT64 GetAmount(void) noexcept { return m_llAmount; }
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  void SetVolume(INT64 llValue) noexcept {
+    m_llVolume = llValue;
+  }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }

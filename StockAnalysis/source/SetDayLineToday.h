@@ -32,7 +32,7 @@ public:
   CString  	  m_High;	//今天最高价
   CString  	  m_Low;	//今天最低价
   CString  	  m_Close;	//今日收盘价
-  CString      m_Volume;	//今日总成交数量。单位：股。
+  CString     m_Volume;	//今日总成交数量。单位：股。
   CString      m_Amount;	//今日总成交金额。单位：元
   CString      m_UpAndDown;	//今日涨跌
   CString      m_UpDownRate; // 今日涨跌幅度，单位1%。
@@ -40,11 +40,11 @@ public:
   CString      m_TotalValue;	//总市值。单位：元
   CString      m_CurrentValue;	//流通市值。单位：元
   CString	    m_RelativeStrong;	//相对于总市场的强度
-  long        m_TransactionNumber; // 本日的盘口变化数
-  long        m_TransactionNumberBelow5000;
-  long        m_TransactionNumberBelow50000;
-  long        m_TransactionNumberBelow200000;
-  long        m_TransactionNumberAbove200000;
+  CString     m_TransactionNumber; // 本日的盘口变化数
+  CString     m_TransactionNumberBelow5000;
+  CString     m_TransactionNumberBelow50000;
+  CString     m_TransactionNumberBelow200000;
+  CString     m_TransactionNumberAbove200000;
   CString      m_OrdinaryBuyVolume; // 一般性买入股数。单位：股
   CString      m_OrdinarySellVolume; // 一般性卖出股数
   CString      m_AttackBuyVolume;	//攻击性买盘数量

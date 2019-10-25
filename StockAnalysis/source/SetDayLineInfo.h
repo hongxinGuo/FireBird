@@ -22,26 +22,26 @@ public:
   long	m_Day;	//成交时间，以日期表示，如20090222即2009年2月22日
   long	      m_Market;	//市场（上海，深圳）
   CString 	  m_StockCode;	//八位股票代码
-  long  m_TransactionNumber; // 本日的盘口变化数
-  long  m_TransactionNumberBelow5000; // 本日的盘口变化数
-  long  m_TransactionNumberBelow50000; // 本日的盘口变化数
-  long  m_TransactionNumberBelow200000; // 本日的盘口变化数
-  long  m_TransactionNumberAbove200000; // 本日的盘口变化数
-  double	m_AttackBuyVolume;	//攻击性买盘数量
-  double	m_AttackSellVolume;	//攻击性买盘数量
-  double	m_StrongBuyVolume;	//强攻击性买盘数量
-  double	m_StrongSellVolume;	//强攻击性买盘数量
-  double  m_OrdinaryBuyVolume;
-  double  m_OrdinarySellVolume;
-  double	m_UnknownVolume;	//未知买卖盘数量
-  double	m_CancelBuyVolume;	//买单撤单数量
-  double	m_CancelSellVolume;	//卖单撤单数量
-  double	m_AttackBuyBelow50000;
-  double	m_AttackBuyBelow200000;
-  double	m_AttackBuyAbove200000;
-  double	m_AttackSellBelow50000;
-  double	m_AttackSellBelow200000;
-  double	m_AttackSellAbove200000;
+  CString  m_TransactionNumber; // 本日的盘口变化数
+  CString  m_TransactionNumberBelow5000; // 本日的盘口变化数
+  CString  m_TransactionNumberBelow50000; // 本日的盘口变化数
+  CString  m_TransactionNumberBelow200000; // 本日的盘口变化数
+  CString  m_TransactionNumberAbove200000; // 本日的盘口变化数
+  CString	m_AttackBuyVolume;	//攻击性买盘数量
+  CString	m_AttackSellVolume;	//攻击性买盘数量
+  CString	m_StrongBuyVolume;	//强攻击性买盘数量
+  CString	m_StrongSellVolume;	//强攻击性买盘数量
+  CString  m_OrdinaryBuyVolume;
+  CString  m_OrdinarySellVolume;
+  CString	m_UnknownVolume;	//未知买卖盘数量
+  CString	m_CancelBuyVolume;	//买单撤单数量
+  CString	m_CancelSellVolume;	//卖单撤单数量
+  CString	m_AttackBuyBelow50000;
+  CString	m_AttackBuyBelow200000;
+  CString	m_AttackBuyAbove200000;
+  CString	m_AttackSellBelow50000;
+  CString	m_AttackSellBelow200000;
+  CString	m_AttackSellAbove200000;
 
   // 重写
     // 向导生成的虚函数重写

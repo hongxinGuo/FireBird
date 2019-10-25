@@ -3,6 +3,8 @@
 #include "globedef.h"
 //#include "timer.h"
 
+#include"Accessory.h"
+
 #include "Stock.h"
 #include"Market.h"
 
@@ -687,38 +689,38 @@ bool CStock::SaveRealTimeData(CSetRealTimeData* psetRTData) {
     psetRTData->m_lMarket = m_wMarket;
     psetRTData->m_StockCode = m_strStockCode;
     psetRTData->m_StockName = m_strStockName;
-    psetRTData->m_CurrentPrice = static_cast<double>(pRTData->GetNew()) / 1000;
-    psetRTData->m_High = static_cast<double>(pRTData->GetHigh()) / 1000;
-    psetRTData->m_Low = static_cast<double>(pRTData->GetLow()) / 1000;
-    psetRTData->m_LastClose = static_cast<double>(pRTData->GetLastClose()) / 1000;
-    psetRTData->m_Open = static_cast<double>(pRTData->GetOpen()) / 1000;
-    psetRTData->m_Volume = pRTData->GetVolume();
-    psetRTData->m_Amount = static_cast<double>(pRTData->GetAmount());
-    psetRTData->m_Stroke = 0;
-    psetRTData->m_PBuy1 = static_cast<double>(pRTData->GetPBuy(0)) / 1000;
-    psetRTData->m_VBuy1 = pRTData->GetVBuy(0);
-    psetRTData->m_PSell1 = static_cast<double>(pRTData->GetPSell(0)) / 1000;
-    psetRTData->m_VSell1 = pRTData->GetVSell(0);
+    psetRTData->m_CurrentPrice = ConvertValueToString(pRTData->GetNew(), 1000);
+    psetRTData->m_High = ConvertValueToString(pRTData->GetHigh(), 1000);
+    psetRTData->m_Low = ConvertValueToString(pRTData->GetLow(), 1000);
+    psetRTData->m_LastClose = ConvertValueToString(pRTData->GetLastClose(), 1000);
+    psetRTData->m_Open = ConvertValueToString(pRTData->GetOpen(), 1000);
+    psetRTData->m_Volume = ConvertValueToString(pRTData->GetVolume());
+    psetRTData->m_Amount = ConvertValueToString(pRTData->GetAmount());
+    psetRTData->m_Stroke = _T("0");
+    psetRTData->m_PBuy1 = ConvertValueToString(pRTData->GetPBuy(0), 1000);
+    psetRTData->m_VBuy1 = ConvertValueToString(pRTData->GetVBuy(0));
+    psetRTData->m_PSell1 = ConvertValueToString(pRTData->GetPSell(0), 1000);
+    psetRTData->m_VSell1 = ConvertValueToString(pRTData->GetVSell(0));
 
-    psetRTData->m_PBuy2 = static_cast<double>(pRTData->GetPBuy(1)) / 1000;
-    psetRTData->m_VBuy2 = pRTData->GetVBuy(1);
-    psetRTData->m_PSell2 = static_cast<double>(pRTData->GetPSell(1)) / 1000;
-    psetRTData->m_VSell2 = pRTData->GetVSell(1);
+    psetRTData->m_PBuy2 = ConvertValueToString(pRTData->GetPBuy(1), 1000);
+    psetRTData->m_VBuy2 = ConvertValueToString(pRTData->GetVBuy(1));
+    psetRTData->m_PSell2 = ConvertValueToString(pRTData->GetPSell(1), 1000);
+    psetRTData->m_VSell2 = ConvertValueToString(pRTData->GetVSell(1));
 
-    psetRTData->m_PBuy3 = static_cast<double>(pRTData->GetPBuy(2)) / 1000;
-    psetRTData->m_VBuy3 = pRTData->GetVBuy(2);
-    psetRTData->m_PSell3 = static_cast<double>(pRTData->GetPSell(2)) / 1000;
-    psetRTData->m_VSell3 = pRTData->GetVSell(2);
+    psetRTData->m_PBuy3 = ConvertValueToString(pRTData->GetPBuy(2), 1000);
+    psetRTData->m_VBuy3 = ConvertValueToString(pRTData->GetVBuy(2));
+    psetRTData->m_PSell3 = ConvertValueToString(pRTData->GetPSell(2), 1000);
+    psetRTData->m_VSell3 = ConvertValueToString(pRTData->GetVSell(2));
 
-    psetRTData->m_PBuy4 = static_cast<double>(pRTData->GetPBuy(3)) / 1000;
-    psetRTData->m_VBuy4 = pRTData->GetVBuy(3);
-    psetRTData->m_PSell4 = static_cast<double>(pRTData->GetPSell(3)) / 1000;
-    psetRTData->m_VSell4 = pRTData->GetVSell(3);
+    psetRTData->m_PBuy4 = ConvertValueToString(pRTData->GetPBuy(3), 1000);
+    psetRTData->m_VBuy4 = ConvertValueToString(pRTData->GetVBuy(3));
+    psetRTData->m_PSell4 = ConvertValueToString(pRTData->GetPSell(3), 1000);
+    psetRTData->m_VSell4 = ConvertValueToString(pRTData->GetVSell(3));
 
-    psetRTData->m_PBuy5 = static_cast<double>(pRTData->GetPBuy(4)) / 1000;
-    psetRTData->m_VBuy5 = pRTData->GetVBuy(4);
-    psetRTData->m_PSell5 = static_cast<double>(pRTData->GetPSell(4)) / 1000;
-    psetRTData->m_VSell5 = pRTData->GetVSell(4);
+    psetRTData->m_PBuy5 = ConvertValueToString(pRTData->GetPBuy(4), 1000);
+    psetRTData->m_VBuy5 = ConvertValueToString(pRTData->GetVBuy(4));
+    psetRTData->m_PSell5 = ConvertValueToString(pRTData->GetPSell(4), 1000);
+    psetRTData->m_VSell5 = ConvertValueToString(pRTData->GetVSell(4));
     psetRTData->Update();
   }
 

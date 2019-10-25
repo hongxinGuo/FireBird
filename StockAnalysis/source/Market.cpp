@@ -1331,18 +1331,21 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-    if (m_fMarketOpened && m_fSystemReady && !gl_ThreadStatus.IsCalculatingRTData()) {
-      if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
-        CString str;
-        str = _T(" 存储临时数据");
-        gl_systemMessage.PushInformationMessage(str);
-        UpdateTempRTData();
-      }
-    }
 
-    // 九点十三分重启系统
-    // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
+    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
+    if (m_fSystemReady) {
+      //if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+        //if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
+      CString str;
+      str = _T(" 存储临时数据");
+      gl_systemMessage.PushInformationMessage(str);
+      UpdateTempRTData();
+    }
+    //}
+  //}
+
+  // 九点十三分重启系统
+  // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
       if ((lTime >= 91300) && (lTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
@@ -1594,20 +1597,20 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
   psetDayLine->m_Market = pDayLine->GetMarket();
   psetDayLine->m_StockCode = pDayLine->GetStockCode();
   psetDayLine->m_StockName = pDayLine->GetStockName();
-  psetDayLine->m_LastClose = (double)pDayLine->GetLastClose() / 1000;
-  psetDayLine->m_High = (double)pDayLine->GetHigh() / 1000;
-  psetDayLine->m_Low = (double)pDayLine->GetLow() / 1000;
-  psetDayLine->m_Open = (double)pDayLine->GetOpen() / 1000;
-  psetDayLine->m_Close = (double)pDayLine->GetClose() / 1000;
-  psetDayLine->m_Volume = pDayLine->GetVolume();
-  psetDayLine->m_Amount = pDayLine->GetAmount();
-  psetDayLine->m_UpAndDown = pDayLine->GetUpDown();
-  psetDayLine->m_UpDownRate = pDayLine->GetUpDownRate();
-  psetDayLine->m_ChangeHandRate = pDayLine->GetChangeHandRate();
-  psetDayLine->m_TotalValue = pDayLine->GetTotalValue();
-  psetDayLine->m_CurrentValue = pDayLine->GetCurrentValue();
+  psetDayLine->m_LastClose = ConvertValueToString(pDayLine->GetLastClose(), 1000);
+  psetDayLine->m_High = ConvertValueToString(pDayLine->GetHigh(), 1000);
+  psetDayLine->m_Low = ConvertValueToString(pDayLine->GetLow(), 1000);
+  psetDayLine->m_Open = ConvertValueToString(pDayLine->GetOpen(), 1000);
+  psetDayLine->m_Close = ConvertValueToString(pDayLine->GetClose(), 1000);
+  psetDayLine->m_Volume = ConvertValueToString(pDayLine->GetVolume());
+  psetDayLine->m_Amount = ConvertValueToString(pDayLine->GetAmount());
+  psetDayLine->m_UpAndDown = ConvertValueToString(pDayLine->GetUpDown());
+  psetDayLine->m_UpDownRate = ConvertValueToString(pDayLine->GetUpDownRate());
+  psetDayLine->m_ChangeHandRate = ConvertValueToString(pDayLine->GetChangeHandRate());
+  psetDayLine->m_TotalValue = ConvertValueToString(pDayLine->GetTotalValue());
+  psetDayLine->m_CurrentValue = ConvertValueToString(pDayLine->GetCurrentValue());
 
-  psetDayLine->m_RelativeStrong = pDayLine->GetRelativeStrong();
+  psetDayLine->m_RelativeStrong = ConvertValueToString(pDayLine->GetRelativeStrong());
 
   /*
   psetDayLine->m_TransactionNumber = pDayLine->GetTransactionNumber();
@@ -1794,25 +1797,25 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
     setDayKLine.m_StockName = pStock->GetStockName();
     setDayKLine.m_StockCode = pStock->GetStockCode();
     lLastClose = pStock->GetLastClose();
-    setDayKLine.m_LastClose = static_cast<double>(pStock->GetLastClose()) / 1000;
-    setDayKLine.m_Open = static_cast<double>(pStock->GetOpen()) / 1000;
-    setDayKLine.m_High = static_cast<double>(pStock->GetHigh()) / 1000;
-    setDayKLine.m_Low = static_cast<double>(pStock->GetLow()) / 1000;
+    setDayKLine.m_LastClose = ConvertValueToString(pStock->GetLastClose(), 1000);
+    setDayKLine.m_Open = ConvertValueToString(pStock->GetOpen(), 1000);
+    setDayKLine.m_High = ConvertValueToString(pStock->GetHigh(), 1000);
+    setDayKLine.m_Low = ConvertValueToString(pStock->GetLow(), 1000);
     lClose = pStock->GetNew();
-    setDayKLine.m_Close = static_cast<double>(pStock->GetNew()) / 1000;
-    setDayKLine.m_UpAndDown = static_cast<double>(lClose - lLastClose) / 1000;
+    setDayKLine.m_Close = ConvertValueToString(pStock->GetNew(), 1000);
+    setDayKLine.m_UpAndDown = ConvertValueToString((lClose - lLastClose), 1000);
     if (lLastClose == 0) { // 新上市第一天的股票
-      setDayKLine.m_UpDownRate = 0;
+      setDayKLine.m_UpDownRate = ConvertValueToString(0);
     }
     else {
-      setDayKLine.m_UpDownRate = (static_cast<double>(lClose - lLastClose)) * 100.0 / lLastClose;
+      setDayKLine.m_UpDownRate = ConvertValueToString((lClose - lLastClose) * 100.0 / lLastClose);
     }
 
-    setDayKLine.m_Volume = pStock->GetVolume();
-    setDayKLine.m_Amount = pStock->GetAmount();
-    setDayKLine.m_TotalValue = 0;
-    setDayKLine.m_CurrentValue = 0;
-    setDayKLine.m_RelativeStrong = pStock->GetRelativeStrong();
+    setDayKLine.m_Volume = ConvertValueToString(pStock->GetVolume());
+    setDayKLine.m_Amount = ConvertValueToString(pStock->GetAmount());
+    setDayKLine.m_TotalValue = _T("0");
+    setDayKLine.m_CurrentValue = _T("0");
+    setDayKLine.m_RelativeStrong = ConvertValueToString(pStock->GetRelativeStrong());
     /*
     setDayKLine.m_TransactionNumber = pStock->GetTransactionNumber();
     setDayKLine.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
@@ -1861,26 +1864,26 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
     setDayLineInfo.m_Day = lCurrentTradeDay;
     setDayLineInfo.m_StockCode = pStock->GetStockCode();
 
-    setDayLineInfo.m_TransactionNumber = pStock->GetTransactionNumber();
-    setDayLineInfo.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
-    setDayLineInfo.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
-    setDayLineInfo.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
-    setDayLineInfo.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
-    setDayLineInfo.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
-    setDayLineInfo.m_CancelSellVolume = pStock->GetCancelSellVolume();
-    setDayLineInfo.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
-    setDayLineInfo.m_AttackSellVolume = pStock->GetAttackSellVolume();
-    setDayLineInfo.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
-    setDayLineInfo.m_StrongSellVolume = pStock->GetStrongSellVolume();
-    setDayLineInfo.m_UnknownVolume = pStock->GetUnknownVolume();
-    setDayLineInfo.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
-    setDayLineInfo.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
-    setDayLineInfo.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
-    setDayLineInfo.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
-    setDayLineInfo.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
-    setDayLineInfo.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
-    setDayLineInfo.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
-    setDayLineInfo.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
+    setDayLineInfo.m_TransactionNumber = ConvertValueToString(pStock->GetTransactionNumber());
+    setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(pStock->GetTransactionNumberBelow5000());
+    setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(pStock->GetTransactionNumberBelow50000());
+    setDayLineInfo.m_TransactionNumberBelow200000 = ConvertValueToString(pStock->GetTransactionNumberBelow200000());
+    setDayLineInfo.m_TransactionNumberAbove200000 = ConvertValueToString(pStock->GetTransactionNumberAbove200000());
+    setDayLineInfo.m_CancelBuyVolume = ConvertValueToString(pStock->GetCancelBuyVolume());
+    setDayLineInfo.m_CancelSellVolume = ConvertValueToString(pStock->GetCancelSellVolume());
+    setDayLineInfo.m_AttackBuyVolume = ConvertValueToString(pStock->GetAttackBuyVolume());
+    setDayLineInfo.m_AttackSellVolume = ConvertValueToString(pStock->GetAttackSellVolume());
+    setDayLineInfo.m_StrongBuyVolume = ConvertValueToString(pStock->GetStrongBuyVolume());
+    setDayLineInfo.m_StrongSellVolume = ConvertValueToString(pStock->GetStrongSellVolume());
+    setDayLineInfo.m_UnknownVolume = ConvertValueToString(pStock->GetUnknownVolume());
+    setDayLineInfo.m_OrdinaryBuyVolume = ConvertValueToString(pStock->GetOrdinaryBuyVolume());
+    setDayLineInfo.m_OrdinarySellVolume = ConvertValueToString(pStock->GetOrdinarySellVolume());
+    setDayLineInfo.m_AttackBuyBelow50000 = ConvertValueToString(pStock->GetAttackBuyBelow50000());
+    setDayLineInfo.m_AttackBuyBelow200000 = ConvertValueToString(pStock->GetAttackBuyBelow200000());
+    setDayLineInfo.m_AttackBuyAbove200000 = ConvertValueToString(pStock->GetAttackBuyAbove200000());
+    setDayLineInfo.m_AttackSellBelow50000 = ConvertValueToString(pStock->GetAttackSellBelow50000());
+    setDayLineInfo.m_AttackSellBelow200000 = ConvertValueToString(pStock->GetAttackSellBelow200000());
+    setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(pStock->GetAttackSellAbove200000());
     setDayLineInfo.Update();
   }
   setDayLineInfo.m_pDatabase->CommitTrans();
@@ -1925,11 +1928,11 @@ bool CMarket::SaveTodayTempData(void) {
 
     setDayLineToday.m_Open = ConvertValueToString(pStock->GetOpen(), 1000);
     setDayLineToday.m_Volume = ConvertValueToString(pStock->GetVolume());
-    setDayLineToday.m_TransactionNumber = pStock->GetTransactionNumber();
-    setDayLineToday.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
-    setDayLineToday.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
-    setDayLineToday.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
-    setDayLineToday.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
+    setDayLineToday.m_TransactionNumber = ConvertValueToString(pStock->GetTransactionNumber());
+    setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(pStock->GetTransactionNumberBelow5000());
+    setDayLineToday.m_TransactionNumberBelow50000 = ConvertValueToString(pStock->GetTransactionNumberBelow50000());
+    setDayLineToday.m_TransactionNumberBelow200000 = ConvertValueToString(pStock->GetTransactionNumberBelow200000());
+    setDayLineToday.m_TransactionNumberAbove200000 = ConvertValueToString(pStock->GetTransactionNumberAbove200000());
     setDayLineToday.m_CancelBuyVolume = ConvertValueToString(pStock->GetCancelBuyVolume());
     setDayLineToday.m_CancelSellVolume = ConvertValueToString(pStock->GetCancelSellVolume());
     setDayLineToday.m_AttackBuyVolume = ConvertValueToString(pStock->GetAttackBuyVolume());
@@ -1976,13 +1979,13 @@ bool CMarket::LoadTodayTempData(void) {
           // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
           // 故而此处这样计算。
           ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
-          pStock->SetUnknownVolume(setDayLineToday.m_UnknownVolume - setDayLineToday.m_Volume);  // 需要如此设置m_lUnknownVolume
+          pStock->SetUnknownVolume(atoll(setDayLineToday.m_UnknownVolume) - atoll(setDayLineToday.m_Volume));  // 需要如此设置m_lUnknownVolume
 
-          pStock->SetTransactionNumber(setDayLineToday.m_TransactionNumber);
-          pStock->SetTransactionNumberBelow5000(setDayLineToday.m_TransactionNumberBelow5000);
-          pStock->SetTransactionNumberBelow50000(setDayLineToday.m_TransactionNumberBelow50000);
-          pStock->SetTransactionNumberBelow200000(setDayLineToday.m_TransactionNumberBelow200000);
-          pStock->SetTransactionNumberAbove200000(setDayLineToday.m_TransactionNumberAbove200000);
+          pStock->SetTransactionNumber(atol(setDayLineToday.m_TransactionNumber));
+          pStock->SetTransactionNumberBelow5000(atol(setDayLineToday.m_TransactionNumberBelow5000));
+          pStock->SetTransactionNumberBelow50000(atol(setDayLineToday.m_TransactionNumberBelow50000));
+          pStock->SetTransactionNumberBelow200000(atol(setDayLineToday.m_TransactionNumberBelow200000));
+          pStock->SetTransactionNumberAbove200000(atol(setDayLineToday.m_TransactionNumberAbove200000));
           pStock->SetCancelBuyVolume(atoll(setDayLineToday.m_CancelBuyVolume));
           pStock->SetCancelSellVolume(atoll(setDayLineToday.m_CancelSellVolume));
           pStock->SetAttackBuyVolume(atoll(setDayLineToday.m_AttackBuyVolume));
@@ -2062,20 +2065,21 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
       setDayKLine.MoveNext();
     }
     setDayKLine.Edit();
-    if (((static_cast<double>(setDayKLine.m_Low) / setDayKLine.m_LastClose) < 0.88)
-      || ((static_cast<double>(setDayKLine.m_High) / setDayKLine.m_LastClose) > 1.12)) { // 除权、新股上市等
-      setDayKLine.m_RelativeStrong = 50; // 新股上市或者除权除息，不计算此股
+    double dLastClose = atof(setDayKLine.m_LastClose);
+    if (((atof(setDayKLine.m_Low) / dLastClose) < 0.88)
+      || ((atof(setDayKLine.m_High) / dLastClose) > 1.12)) { // 除权、新股上市等
+      setDayKLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
-    else if ((fabs(setDayKLine.m_High - setDayKLine.m_Close) < 0.0001)
-      && ((static_cast<double>(setDayKLine.m_Close) / setDayKLine.m_LastClose) > 1.095)) { // 涨停板
-      setDayKLine.m_RelativeStrong = 100;
+    else if ((fabs(atof(setDayKLine.m_High) - atof(setDayKLine.m_Close)) < 0.0001)
+      && (((atof(setDayKLine.m_Close) / dLastClose)) > 1.095)) { // 涨停板
+      setDayKLine.m_RelativeStrong = ConvertValueToString(100);
     }
-    else if ((fabs(setDayKLine.m_Close - setDayKLine.m_Low) < 0.0001)
-      && ((static_cast<double>(setDayKLine.m_Close) / setDayKLine.m_LastClose) < 0.905)) { // 跌停板
-      setDayKLine.m_RelativeStrong = 0;
+    else if ((fabs(atof(setDayKLine.m_Close) - atof(setDayKLine.m_Low)) < 0.0001)
+      && ((atof(setDayKLine.m_Close) / dLastClose) < 0.905)) { // 跌停板
+      setDayKLine.m_RelativeStrong = ConvertValueToString(0);
     }
     else {
-      setDayKLine.m_RelativeStrong = (static_cast<double>(iCount) * 100) / iTotalAShare;
+      setDayKLine.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
     }
     setDayKLine.Update();
     iBefore = vIndex.at(iCount++);
