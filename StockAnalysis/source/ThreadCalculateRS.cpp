@@ -30,6 +30,7 @@ UINT ThreadCalculateRS(LPVOID) {
     gl_ChinaStockMarket.SetRelativeStrongEndDay(lToday); // 设置最后日期。
     if (gl_systemTime.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程（最多同时生成16个工作线程，再要生成线程就要等待已生成的结束才行）
+      gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
@@ -71,8 +72,6 @@ UINT ThreadCalculateRS(LPVOID) {
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadCalculateThisDayRS(LPVOID pParam) {
   long lToday = (long)pParam;
-
-  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一 
 
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
 

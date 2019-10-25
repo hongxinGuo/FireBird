@@ -1325,24 +1325,24 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       str = _T(" 重置系统重置标识");
       gl_systemMessage.PushInformationMessage(str);
     }
+
+    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
+    if (m_fSystemReady) {
+      if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+        if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
+          CString str;
+          str = _T(" 存储临时数据");
+          gl_systemMessage.PushInformationMessage(str);
+          UpdateTempRTData();
+        }
+      }
+    }
   } // 每五分钟一次的任务
   else i5MinuteCounter -= lSecondNumber;
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-
-    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-    if (m_fSystemReady) {
-      //if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
-        //if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
-      CString str;
-      str = _T(" 存储临时数据");
-      gl_systemMessage.PushInformationMessage(str);
-      UpdateTempRTData();
-    }
-    //}
-  //}
 
   // 九点十三分重启系统
   // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
