@@ -14,7 +14,9 @@ CSetCrweberIndex::CSetCrweberIndex(CDatabase* pdb)
   m_TD1 = m_TD2 = m_TD3C = m_TD5 = m_TD6 = m_TD7 = m_TD8 = m_TD9 = m_TD12 = m_TD15
     = m_TD19 = m_TD20 = m_TD21 = m_VLCC_USGSPORE = m_SUEZMAX_CBSUSG = 0;
   m_TC1 = m_TC2 = m_TC3 = m_TC4 = m_TC5 = m_TC14 = m_CPP_USGCBS = 0;
-  m_nFields = 24;
+  m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_PANAMAX_TC_1YEAR = m_MR_TC_1YEAR = m_HANDY_TC_1YEAR = 0;
+  m_VLCC_TC_3YEAR = m_SUEZMAX_TC_3YEAR = m_AFRAMAX_TC_3YEAR = m_PANAMAX_TC_3YEAR = m_MR_TC_3YEAR = m_HANDY_TC_3YEAR = 0;
+  m_nFields = 36;
 }
 
 CString CSetCrweberIndex::GetDefaultConnect()
@@ -57,6 +59,18 @@ void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX)
   RFX_Long(pFX, _T("[CPP_TC5]"), m_TC5);
   RFX_Long(pFX, _T("[CPP_TC14]"), m_TC14);
   RFX_Long(pFX, _T("[CPP_USGCBS]"), m_CPP_USGCBS);
+  RFX_Long(pFX, _T("[VLCC_TC_1YEAR]"), m_VLCC_TC_1YEAR);
+  RFX_Long(pFX, _T("[SUEZMAX_TC_1YEAR]"), m_SUEZMAX_TC_1YEAR);
+  RFX_Long(pFX, _T("[AFRAMAX_TC_1YEAR]"), m_AFRAMAX_TC_1YEAR);
+  RFX_Long(pFX, _T("[PANAMAX_TC_1YEAR]"), m_PANAMAX_TC_1YEAR);
+  RFX_Long(pFX, _T("[MR_TC_1YEAR]"), m_MR_TC_1YEAR);
+  RFX_Long(pFX, _T("[HANDY_TC_1YEAR]"), m_HANDY_TC_1YEAR);
+  RFX_Long(pFX, _T("[VLCC_TC_3YEAR]"), m_VLCC_TC_3YEAR);
+  RFX_Long(pFX, _T("[SUEZMAX_TC_3YEAR]"), m_SUEZMAX_TC_3YEAR);
+  RFX_Long(pFX, _T("[AFRAMAX_TC_3YEAR]"), m_AFRAMAX_TC_3YEAR);
+  RFX_Long(pFX, _T("[PANAMAX_TC_3YEAR]"), m_PANAMAX_TC_3YEAR);
+  RFX_Long(pFX, _T("[MR_TC_3YEAR]"), m_MR_TC_3YEAR);
+  RFX_Long(pFX, _T("[HANDY_TC_3YEAR]"), m_HANDY_TC_3YEAR);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ

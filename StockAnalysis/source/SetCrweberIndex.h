@@ -39,6 +39,19 @@ public:
   long m_TC5;
   long m_TC14;
   long m_CPP_USGCBS;
+  long m_VLCC_TC_1YEAR;
+  long m_SUEZMAX_TC_1YEAR;
+  long m_AFRAMAX_TC_1YEAR;
+  long m_PANAMAX_TC_1YEAR;
+  long m_MR_TC_1YEAR;
+  long m_HANDY_TC_1YEAR;
+  long m_VLCC_TC_3YEAR;
+  long m_SUEZMAX_TC_3YEAR;
+  long m_AFRAMAX_TC_3YEAR;
+  long m_PANAMAX_TC_3YEAR;
+  long m_MR_TC_3YEAR;
+  long m_HANDY_TC_3YEAR;
+
   // 重写
     // 向导生成的虚函数重写
 public:

@@ -27,13 +27,13 @@ CCrweberIndexWebData::~CCrweberIndexWebData() {
 bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   iCount = 0;
-  CString str1, strHead = _T(""), str[100];
+  CString str, str1, strHead = _T("");
   CString strValue, strTime;
   long lUpdateDay = 0;
 
   while (iCount < m_lByteRead) {
-    str1 = GetNextString(pCurrentPos, iCount);
-    strHead = str1.Left(10);
+    str = GetNextString(pCurrentPos, iCount);
+    strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
       strTime = GetNextString(pCurrentPos, iCount); // 当前时间
       lUpdateDay = ConvertStringToTime(strTime);
@@ -76,6 +76,51 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
         gl_CrweberIndex.m_lDay = lUpdateDay;
         gl_CrweberIndex.m_fTodayUpdated = true;
       }
+    }
+
+    strHead = str.Left(6);
+    if (strHead.Compare(_T("Tanker")) == 0) {
+      for (int i = 0; i < 7; i++) GetNextString(pCurrentPos, iCount); // "CPP"
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lVLCC_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lVLCC_TC_3YEAR = atol(str1) * 1000;
+
+      GetNextString(pCurrentPos, iCount);
+      GetNextString(pCurrentPos, iCount);
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lSUEZMAX_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lSUEZMAX_TC_3YEAR = atol(str1) * 1000;
+
+      GetNextString(pCurrentPos, iCount);
+      GetNextString(pCurrentPos, iCount);
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lAFRAMAX_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lAFRAMAX_TC_3YEAR = atol(str1) * 1000;
+
+      GetNextString(pCurrentPos, iCount);
+      GetNextString(pCurrentPos, iCount);
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lPANAMAX_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lPANAMAX_TC_3YEAR = atol(str1) * 1000;
+
+      GetNextString(pCurrentPos, iCount);
+      GetNextString(pCurrentPos, iCount);
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lMR_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lMR_TC_3YEAR = atol(str1) * 1000;
+
+      GetNextString(pCurrentPos, iCount);
+      GetNextString(pCurrentPos, iCount);
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lHANDY_TC_1YEAR = atol(str1) * 1000;
+      str1 = GetNextString(pCurrentPos, iCount);
+      gl_CrweberIndex.m_lHANDY_TC_3YEAR = atol(str1) * 1000;
+
       iCount = m_lByteRead; //
     }
   }

@@ -1278,6 +1278,9 @@ bool CMarket::SchedulingTask(void)
       // 采用新的制式
       gl_NeteaseDayLineWebData.GetWebData();
     }
+
+    // 测试用
+    //gl_CrweberIndexWebData.GetWebData();
   }
 
   return true;

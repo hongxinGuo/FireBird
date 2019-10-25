@@ -70,6 +70,18 @@ public:
   long m_lTC5;
   long m_lTC14;
   long m_lCPP_USGCBS;
+  long m_lVLCC_TC_1YEAR;
+  long m_lSUEZMAX_TC_1YEAR;
+  long m_lAFRAMAX_TC_1YEAR;
+  long m_lPANAMAX_TC_1YEAR;
+  long m_lMR_TC_1YEAR;
+  long m_lHANDY_TC_1YEAR;
+  long m_lVLCC_TC_3YEAR;
+  long m_lSUEZMAX_TC_3YEAR;
+  long m_lAFRAMAX_TC_3YEAR;
+  long m_lPANAMAX_TC_3YEAR;
+  long m_lMR_TC_3YEAR;
+  long m_lHANDY_TC_3YEAR;
 
   bool m_fTodayUpdated;
 };

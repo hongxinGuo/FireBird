@@ -8,6 +8,8 @@ CCrweberIndex::CCrweberIndex() {
   m_lTD1 = m_lTD2 = m_lTD3C = m_lTD5 = m_lTD6 = m_lTD7 = m_lTD8 = m_lTD9 = m_lTD12 = m_lTD15 = m_lTD19 = m_lTD20
     = m_lTD21 = m_lVLCC_USGSPORE = m_lSUEZMAX_CBSUSG = 0;
   m_lTC1 = m_lTC2 = m_lTC3 = m_lTC4 = m_lTC5 = m_lTC14 = m_lCPP_USGCBS = 0;
+  m_lVLCC_TC_1YEAR = m_lSUEZMAX_TC_1YEAR = m_lAFRAMAX_TC_1YEAR = m_lPANAMAX_TC_1YEAR = m_lMR_TC_1YEAR = m_lHANDY_TC_1YEAR = 0;
+  m_lVLCC_TC_3YEAR = m_lSUEZMAX_TC_3YEAR = m_lAFRAMAX_TC_3YEAR = m_lPANAMAX_TC_3YEAR = m_lMR_TC_3YEAR = m_lHANDY_TC_3YEAR = 0;
 
   m_fTodayUpdated = false;
 }
@@ -43,6 +45,18 @@ void CCrweberIndex::SetData(CSetCrweberIndex* pSetCrweberIndex) {
   m_lTC5 = pSetCrweberIndex->m_TC5;
   m_lTC14 = pSetCrweberIndex->m_TC14;
   m_lCPP_USGCBS = pSetCrweberIndex->m_CPP_USGCBS;
+  m_lVLCC_TC_1YEAR == pSetCrweberIndex->m_VLCC_TC_1YEAR;
+  m_lSUEZMAX_TC_1YEAR == pSetCrweberIndex->m_SUEZMAX_TC_1YEAR;
+  m_lAFRAMAX_TC_1YEAR == pSetCrweberIndex->m_AFRAMAX_TC_1YEAR;
+  m_lPANAMAX_TC_1YEAR == pSetCrweberIndex->m_PANAMAX_TC_1YEAR;
+  m_lMR_TC_1YEAR == pSetCrweberIndex->m_MR_TC_1YEAR;
+  m_lHANDY_TC_1YEAR == pSetCrweberIndex->m_HANDY_TC_1YEAR;
+  m_lVLCC_TC_3YEAR == pSetCrweberIndex->m_VLCC_TC_3YEAR;
+  m_lSUEZMAX_TC_3YEAR == pSetCrweberIndex->m_SUEZMAX_TC_3YEAR;
+  m_lAFRAMAX_TC_3YEAR == pSetCrweberIndex->m_AFRAMAX_TC_3YEAR;
+  m_lPANAMAX_TC_3YEAR == pSetCrweberIndex->m_PANAMAX_TC_3YEAR;
+  m_lMR_TC_3YEAR == pSetCrweberIndex->m_MR_TC_3YEAR;
+  m_lHANDY_TC_3YEAR == pSetCrweberIndex->m_HANDY_TC_3YEAR;
 }
 
 void CCrweberIndex::SaveData(CSetCrweberIndex* pSetCrweberIndex) {
@@ -69,4 +83,17 @@ void CCrweberIndex::SaveData(CSetCrweberIndex* pSetCrweberIndex) {
   pSetCrweberIndex->m_TC5 = m_lTC5;
   pSetCrweberIndex->m_TC14 = m_lTC14;
   pSetCrweberIndex->m_CPP_USGCBS = m_lCPP_USGCBS;
+
+  pSetCrweberIndex->m_VLCC_TC_1YEAR = m_lVLCC_TC_1YEAR;
+  pSetCrweberIndex->m_SUEZMAX_TC_1YEAR = m_lSUEZMAX_TC_1YEAR;
+  pSetCrweberIndex->m_AFRAMAX_TC_1YEAR = m_lAFRAMAX_TC_1YEAR;
+  pSetCrweberIndex->m_PANAMAX_TC_1YEAR = m_lPANAMAX_TC_1YEAR;
+  pSetCrweberIndex->m_MR_TC_1YEAR = m_lMR_TC_1YEAR;
+  pSetCrweberIndex->m_HANDY_TC_1YEAR = m_lHANDY_TC_1YEAR;
+  pSetCrweberIndex->m_VLCC_TC_3YEAR = m_lVLCC_TC_3YEAR;
+  pSetCrweberIndex->m_SUEZMAX_TC_3YEAR = m_lSUEZMAX_TC_3YEAR;
+  pSetCrweberIndex->m_AFRAMAX_TC_3YEAR = m_lAFRAMAX_TC_3YEAR;
+  pSetCrweberIndex->m_PANAMAX_TC_3YEAR = m_lPANAMAX_TC_3YEAR;
+  pSetCrweberIndex->m_MR_TC_3YEAR = m_lMR_TC_3YEAR;
+  pSetCrweberIndex->m_HANDY_TC_3YEAR = m_lHANDY_TC_3YEAR;
 }
