@@ -1280,7 +1280,7 @@ bool CMarket::SchedulingTask(void)
     }
 
     // ≤‚ ‘”√
-    gl_CrweberIndexWebData.GetWebData();
+    //gl_CrweberIndexWebData.GetWebData();
   }
 
   return true;
