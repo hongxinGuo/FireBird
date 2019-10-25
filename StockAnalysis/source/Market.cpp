@@ -1612,30 +1612,6 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
 
   psetDayLine->m_RelativeStrong = ConvertValueToString(pDayLine->GetRelativeStrong());
 
-  /*
-  psetDayLine->m_TransactionNumber = pDayLine->GetTransactionNumber();
-  psetDayLine->m_TransactionNumberBelow5000 = pDayLine->GetTransactionNumberBelow5000();
-  psetDayLine->m_TransactionNumberBelow50000 = pDayLine->GetTransactionNumberBelow50000();
-  psetDayLine->m_TransactionNumberBelow200000 = pDayLine->GetTransactionNumberBelow200000();
-  psetDayLine->m_TransactionNumberAbove200000 = pDayLine->GetTransactionNumberAbove200000();
-
-  psetDayLine->m_OrdinaryBuyVolume = pDayLine->GetOrdinaryBuyVolume();
-  psetDayLine->m_OrdinarySellVolume = pDayLine->GetOrdinarySellVolume();
-  psetDayLine->m_AttackBuyVolume = pDayLine->GetAttackBuyVolume();
-  psetDayLine->m_AttackSellVolume = pDayLine->GetAttackSellVolume();
-  psetDayLine->m_StrongBuyVolume = pDayLine->GetStrongBuyVolume();
-  psetDayLine->m_StrongSellVolume = pDayLine->GetStrongSellVolume();
-  psetDayLine->m_UnknownVolume = pDayLine->GetUnknownVolume();
-  psetDayLine->m_CancelBuyVolume = pDayLine->GetCancelBuyVolume();
-  psetDayLine->m_CancelSellVolume = pDayLine->GetCancelSellVolume();
-
-  psetDayLine->m_AttackBuyBelow50000 = pDayLine->GetAttackBuyBelow50000();
-  psetDayLine->m_AttackBuyBelow200000 = pDayLine->GetAttackBuyBelow200000();
-  psetDayLine->m_AttackBuyAbove200000 = pDayLine->GetAttackBuyAbove200000();
-  psetDayLine->m_AttackSellBelow50000 = pDayLine->GetAttackSellBelow50000();
-  psetDayLine->m_AttackSellBelow200000 = pDayLine->GetAttackSellBelow200000();
-  psetDayLine->m_AttackSellAbove200000 = pDayLine->GetAttackSellAbove200000();
-  */
   psetDayLine->Update();
 
   return true;

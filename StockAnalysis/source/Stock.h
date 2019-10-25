@@ -203,8 +203,8 @@ public:
   long GetRTDataDequeSize(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  void SetDayLineNeedSavingFlag(bool fFlag);
-  bool IsDayLineNeedSaving(void);
+  void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }
+  bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsDoing(); }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -291,8 +291,7 @@ protected:
 
   bool			            m_fDayLineLoaded;					// 是否装入了日线数据
 
-  bool                  m_fDayLineNeededSaving;   // 日线数据是否需要存储
-  CCriticalSection      m_DayLineNeedSavingLock;  // 上述标识的同步锁
+  CCriticalBool         m_DayLineNeedSaving;
 
   deque<CRTDataPtr>     m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁

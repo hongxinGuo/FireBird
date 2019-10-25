@@ -72,7 +72,6 @@ void CStock::Reset(void) {
   m_nCurrentTransactionType = 0;
 
   m_fDayLineLoaded = false;
-  m_fDayLineNeededSaving = false;
 
   m_fChoiced = false;
   m_fMinLineUpdated = false;
@@ -795,42 +794,6 @@ long CStock::GetRTDataDequeSize(void)
   }
   ASSERT(0);
   return 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用同步机制设置日线是否需要存储标识。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-void CStock::SetDayLineNeedSavingFlag(bool fFlag)
-{
-  CSingleLock singleLock(&m_DayLineNeedSavingLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fDayLineNeededSaving = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用同步机制提取日线是否需要存储标识。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::IsDayLineNeedSaving(void)
-{
-  CSingleLock singleLock(&m_DayLineNeedSavingLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    bool fFlag = m_fDayLineNeededSaving;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false;
 }
 
 #ifdef _DEBUG

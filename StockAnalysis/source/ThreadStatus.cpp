@@ -5,6 +5,27 @@
 #include"ThreadStatus.h"
 #include"SystemMessage.h"
 
+void CCriticalBool::SetFlag(bool fFlag) {
+  CSingleLock singleLock(&m_Lock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_fDoing = fFlag;
+    singleLock.Unlock();
+  }
+}
+
+bool CCriticalBool::IsDoing(void) {
+  CSingleLock singleLock(&m_Lock);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    const bool fFlag = m_fDoing;
+    singleLock.Unlock();
+    return fFlag;
+  }
+  ASSERT(0);
+  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
+}
+
 CThreadStatus::CThreadStatus() {
   static int siInstance = 0;
   if (siInstance++ > 0) {
@@ -12,163 +33,7 @@ CThreadStatus::CThreadStatus() {
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
 
-  m_fExitingThread = false;
-
-  m_fSavingDayLine = false;
-  m_fRTDataNeedCalculate = false;
-  m_fCalculatingRTData = false;
-  m_fSavingTempData = false;
-  m_fSavingStockCodeData = false;
-  m_fCalculatingDayLineRelativeStrong = false;
-
   m_iNumberOfCalculatingRSThreads = 0;
-}
-
-void CThreadStatus::SetExitingThread(bool fFlag) {
-  CSingleLock singleLock(&m_ExitingThreadLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fExitingThread = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsExitingThread(void) {
-  CSingleLock singleLock(&m_ExitingThreadLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fExitingThread;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetCalculatingDayLineRS(bool fFlag) {
-  CSingleLock singleLock(&m_CalculatingDayLineRSLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fCalculatingDayLineRelativeStrong = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsCalculatingDayLineRS(void) {
-  CSingleLock singleLock(&m_CalculatingDayLineRSLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fCalculatingDayLineRelativeStrong;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetSavingDayLine(bool fFlag) {
-  CSingleLock singleLock(&m_SavingDayLineLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fSavingDayLine = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsSavingDayLine(void) {
-  CSingleLock singleLock(&m_SavingDayLineLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSavingDayLine;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetRTDataNeedCalculate(bool fFlag) {
-  CSingleLock singleLock(&m_RTDataNeedCalculateLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fRTDataNeedCalculate = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsRTDataNeedCalculate(void) {
-  CSingleLock singleLock(&m_RTDataNeedCalculateLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fRTDataNeedCalculate;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetCalculatingRTData(bool fFlag) {
-  CSingleLock singleLock(&m_CalculatingRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fCalculatingRTData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsCalculatingRTData(void) {
-  CSingleLock singleLock(&m_CalculatingRTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fCalculatingRTData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetSavingTempData(bool fFlag) {
-  CSingleLock singleLock(&m_SavingTempDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fSavingTempData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsSavingTempData(void) {
-  CSingleLock singleLock(&m_SavingTempDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSavingTempData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CThreadStatus::SetSavingStockCodeData(bool fFlag) {
-  CSingleLock singleLock(&m_SavingStockCodeDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fSavingStockCodeData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CThreadStatus::IsSavingStockCodeData(void) {
-  CSingleLock singleLock(&m_SavingStockCodeDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fSavingStockCodeData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CThreadStatus::IncreaseNunberOfCalculatingRSThreads(void) {

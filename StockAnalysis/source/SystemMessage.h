@@ -6,53 +6,56 @@
 using namespace std;
 #include<deque>
 
+class CSystemDeque {
+public:
+  CSystemDeque();
+  ~CSystemDeque();
+
+  void PushMessage(CString str);
+  CString PopMessage(void);
+  long GetDequeSize(void);
+
+protected:
+  deque<CString> m_dequeMessage;
+  CCriticalSection m_Lock;
+};
+
 class CSystemMessage final
 {
 public:
   CSystemMessage();
   ~CSystemMessage();
 
-  void PushInformationMessage(CString str);
-  CString PopInformationMessage(void);
-  long    GetInformationDequeSize(void);
+  void PushInformationMessage(CString str) { m_InformationDeque.PushMessage(str); }
+  CString PopInformationMessage(void) { return m_InformationDeque.PopMessage(); }
+  long    GetInformationDequeSize(void) { return m_InformationDeque.GetDequeSize(); }
 
-  void PushDayLineInfoMessage(CString str);
-  CString PopDayLineInfoMessage(void);
-  long    GetDayLineInfoDequeSize(void);
+  void PushDayLineInfoMessage(CString str) { m_DayLineInfoMessage.PushMessage(str); }
+  CString PopDayLineInfoMessage(void) { return m_DayLineInfoMessage.PopMessage(); }
+  long    GetDayLineInfoDequeSize(void) { return m_DayLineInfoMessage.GetDequeSize(); }
 
-  void PushTransactionMessage(CString str);
-  CString PopTransactionMessage(void);
-  long    GetTransactionDequeSize(void);
+  void PushTransactionMessage(CString str) { m_TransactionMessage.PushMessage(str); }
+  CString PopTransactionMessage(void) { return m_TransactionMessage.PopMessage(); }
+  long    GetTransactionDequeSize(void) { return m_TransactionMessage.GetDequeSize(); }
 
-  void PushCancelSellMessage(CString str);
-  CString PopCancelSellMessage(void);
-  long    GetCancelSellDequeSize(void);
+  void PushCancelSellMessage(CString str) { m_CancelSellMessage.PushMessage(str); }
+  CString PopCancelSellMessage(void) { return m_CancelSellMessage.PopMessage(); }
+  long    GetCancelSellDequeSize(void) { return m_CancelSellMessage.GetDequeSize(); }
 
-  void PushCancelBuyMessage(CString str);
-  CString PopCancelBuyMessage(void);
-  long    GetCancelBuyDequeSize(void);
+  void PushCancelBuyMessage(CString str) { m_CancelBuyMessage.PushMessage(str); }
+  CString PopCancelBuyMessage(void) { return m_CancelBuyMessage.PopMessage(); }
+  long    GetCancelBuyDequeSize(void) { return m_CancelBuyMessage.GetDequeSize(); }
 
-  void PushTrace2Message(CString str);
-  CString PopTrace2Message(void);
-  long    GetTrace2DequeSize(void);
+  void PushTrace2Message(CString str) { m_Trace2Message.PushMessage(str); }
+  CString PopTrace2Message(void) { return m_Trace2Message.PopMessage(); }
+  long    GetTrace2DequeSize(void) { return m_Trace2Message.GetDequeSize(); }
 
 protected:
   // 信息输出队列群
-  deque<CString> m_dequeInformationMessage; // 输出显示队列
-  CCriticalSection     m_InformationLock;       // 使用本资源
-
-  deque<CString> m_dequeDayLineInfoMessage; // 输出显示队列
-  CCriticalSection     m_DayLineInfoLock;       // 使用本资源
-
-  deque<CString> m_dequeTransactionMessage; // 输出显示队列
-  CCriticalSection     m_TransactionLock;       // 使用本资源
-
-  deque<CString> m_dequeCancelSellMessage; // 警告显示队列
-  CCriticalSection     m_CancelSellLock;       // 使用本资源
-
-  deque<CString> m_dequeCancelBuyMessage; // 跟踪显示队列1
-  CCriticalSection     m_CancelBuyLock;       // 使用本资源
-
-  deque<CString> m_dequeTrace2Message; // 跟踪显示队列2
-  CCriticalSection     m_Trace2Lock;       // 使用本资源
+  CSystemDeque m_InformationDeque;
+  CSystemDeque m_DayLineInfoMessage;
+  CSystemDeque m_TransactionMessage;
+  CSystemDeque m_CancelSellMessage;
+  CSystemDeque m_CancelBuyMessage;
+  CSystemDeque m_Trace2Message;
 };
