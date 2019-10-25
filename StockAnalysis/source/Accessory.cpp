@@ -20,7 +20,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
-// 
+//
 // 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
@@ -34,4 +34,44 @@ CString GetDefaultSchemaConnect()
     gl_fTestMode = false;
     return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8"); // mysql操作的是SmartStockData Schema
   }
+}
+
+CString ConvertValueToString(long lValue, int iDividend)
+{
+  char buffer[30];
+  double d = ((double)lValue) / iDividend;
+
+  sprintf_s(buffer, "%.3f", d);
+  CString str = buffer;
+  return str;
+}
+
+CString ConvertValueToString(int iValue, int iDividend)
+{
+  char buffer[30];
+  double d = ((double)iValue) / iDividend;
+
+  sprintf_s(buffer, "%.3f", d);
+  CString str = buffer;
+  return str;
+}
+
+CString ConvertValueToString(INT64 iValue, int iDividend)
+{
+  char buffer[30];
+  double d = ((double)iValue) / iDividend;
+
+  sprintf_s(buffer, "%.3f", d);
+  CString str = buffer;
+  return str;
+}
+
+CString ConvertValueToString(double dValue, int iDividend)
+{
+  char buffer[30];
+  double d = dValue / iDividend;
+
+  sprintf_s(buffer, "%.3f", d);
+  CString str = buffer;
+  return str;
 }
