@@ -1784,7 +1784,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
       setDayKLine.m_UpDownRate = ConvertValueToString(0);
     }
     else {
-      setDayKLine.m_UpDownRate = ConvertValueToString((lClose - lLastClose) * 100.0 / lLastClose);
+      setDayKLine.m_UpDownRate = ConvertValueToString(((double)(lClose - lLastClose)) * 100.0 / lLastClose);
     }
 
     setDayKLine.m_Volume = ConvertValueToString(pStock->GetVolume());
@@ -1792,28 +1792,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
     setDayKLine.m_TotalValue = _T("0");
     setDayKLine.m_CurrentValue = _T("0");
     setDayKLine.m_RelativeStrong = ConvertValueToString(pStock->GetRelativeStrong());
-    /*
-    setDayKLine.m_TransactionNumber = pStock->GetTransactionNumber();
-    setDayKLine.m_TransactionNumberBelow5000 = pStock->GetTransactionNumberBelow5000();
-    setDayKLine.m_TransactionNumberBelow50000 = pStock->GetTransactionNumberBelow50000();
-    setDayKLine.m_TransactionNumberBelow200000 = pStock->GetTransactionNumberBelow200000();
-    setDayKLine.m_TransactionNumberAbove200000 = pStock->GetTransactionNumberAbove200000();
-    setDayKLine.m_CancelBuyVolume = pStock->GetCancelBuyVolume();
-    setDayKLine.m_CancelSellVolume = pStock->GetCancelSellVolume();
-    setDayKLine.m_AttackBuyVolume = pStock->GetAttackBuyVolume();
-    setDayKLine.m_AttackSellVolume = pStock->GetAttackSellVolume();
-    setDayKLine.m_StrongBuyVolume = pStock->GetStrongBuyVolume();
-    setDayKLine.m_StrongSellVolume = pStock->GetStrongSellVolume();
-    setDayKLine.m_UnknownVolume = pStock->GetUnknownVolume();
-    setDayKLine.m_OrdinaryBuyVolume = pStock->GetOrdinaryBuyVolume();
-    setDayKLine.m_OrdinarySellVolume = pStock->GetOrdinarySellVolume();
-    setDayKLine.m_AttackBuyBelow50000 = pStock->GetAttackBuyBelow50000();
-    setDayKLine.m_AttackBuyBelow200000 = pStock->GetAttackBuyBelow200000();
-    setDayKLine.m_AttackBuyAbove200000 = pStock->GetAttackBuyAbove200000();
-    setDayKLine.m_AttackSellBelow50000 = pStock->GetAttackSellBelow50000();
-    setDayKLine.m_AttackSellBelow200000 = pStock->GetAttackSellBelow200000();
-    setDayKLine.m_AttackSellAbove200000 = pStock->GetAttackSellAbove200000();
-    */
+
     setDayKLine.Update();
   }
   setDayKLine.m_pDatabase->CommitTrans();
@@ -1840,26 +1819,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
     setDayLineInfo.m_Day = lCurrentTradeDay;
     setDayLineInfo.m_StockCode = pStock->GetStockCode();
 
-    setDayLineInfo.m_TransactionNumber = ConvertValueToString(pStock->GetTransactionNumber());
-    setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(pStock->GetTransactionNumberBelow5000());
-    setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(pStock->GetTransactionNumberBelow50000());
-    setDayLineInfo.m_TransactionNumberBelow200000 = ConvertValueToString(pStock->GetTransactionNumberBelow200000());
-    setDayLineInfo.m_TransactionNumberAbove200000 = ConvertValueToString(pStock->GetTransactionNumberAbove200000());
-    setDayLineInfo.m_CancelBuyVolume = ConvertValueToString(pStock->GetCancelBuyVolume());
-    setDayLineInfo.m_CancelSellVolume = ConvertValueToString(pStock->GetCancelSellVolume());
-    setDayLineInfo.m_AttackBuyVolume = ConvertValueToString(pStock->GetAttackBuyVolume());
-    setDayLineInfo.m_AttackSellVolume = ConvertValueToString(pStock->GetAttackSellVolume());
-    setDayLineInfo.m_StrongBuyVolume = ConvertValueToString(pStock->GetStrongBuyVolume());
-    setDayLineInfo.m_StrongSellVolume = ConvertValueToString(pStock->GetStrongSellVolume());
-    setDayLineInfo.m_UnknownVolume = ConvertValueToString(pStock->GetUnknownVolume());
-    setDayLineInfo.m_OrdinaryBuyVolume = ConvertValueToString(pStock->GetOrdinaryBuyVolume());
-    setDayLineInfo.m_OrdinarySellVolume = ConvertValueToString(pStock->GetOrdinarySellVolume());
-    setDayLineInfo.m_AttackBuyBelow50000 = ConvertValueToString(pStock->GetAttackBuyBelow50000());
-    setDayLineInfo.m_AttackBuyBelow200000 = ConvertValueToString(pStock->GetAttackBuyBelow200000());
-    setDayLineInfo.m_AttackBuyAbove200000 = ConvertValueToString(pStock->GetAttackBuyAbove200000());
-    setDayLineInfo.m_AttackSellBelow50000 = ConvertValueToString(pStock->GetAttackSellBelow50000());
-    setDayLineInfo.m_AttackSellBelow200000 = ConvertValueToString(pStock->GetAttackSellBelow200000());
-    setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(pStock->GetAttackSellAbove200000());
+    pStock->StoreCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
   }
   setDayLineInfo.m_pDatabase->CommitTrans();
@@ -1904,26 +1864,7 @@ bool CMarket::SaveTodayTempData(void) {
 
     setDayLineToday.m_Open = ConvertValueToString(pStock->GetOpen(), 1000);
     setDayLineToday.m_Volume = ConvertValueToString(pStock->GetVolume());
-    setDayLineToday.m_TransactionNumber = ConvertValueToString(pStock->GetTransactionNumber());
-    setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(pStock->GetTransactionNumberBelow5000());
-    setDayLineToday.m_TransactionNumberBelow50000 = ConvertValueToString(pStock->GetTransactionNumberBelow50000());
-    setDayLineToday.m_TransactionNumberBelow200000 = ConvertValueToString(pStock->GetTransactionNumberBelow200000());
-    setDayLineToday.m_TransactionNumberAbove200000 = ConvertValueToString(pStock->GetTransactionNumberAbove200000());
-    setDayLineToday.m_CancelBuyVolume = ConvertValueToString(pStock->GetCancelBuyVolume());
-    setDayLineToday.m_CancelSellVolume = ConvertValueToString(pStock->GetCancelSellVolume());
-    setDayLineToday.m_AttackBuyVolume = ConvertValueToString(pStock->GetAttackBuyVolume());
-    setDayLineToday.m_AttackSellVolume = ConvertValueToString(pStock->GetAttackSellVolume());
-    setDayLineToday.m_StrongBuyVolume = ConvertValueToString(pStock->GetStrongBuyVolume());
-    setDayLineToday.m_StrongSellVolume = ConvertValueToString(pStock->GetStrongSellVolume());
-    setDayLineToday.m_UnknownVolume = ConvertValueToString(pStock->GetUnknownVolume());
-    setDayLineToday.m_OrdinaryBuyVolume = ConvertValueToString(pStock->GetOrdinaryBuyVolume());
-    setDayLineToday.m_OrdinarySellVolume = ConvertValueToString(pStock->GetOrdinarySellVolume());
-    setDayLineToday.m_AttackBuyBelow50000 = ConvertValueToString(pStock->GetAttackBuyBelow50000());
-    setDayLineToday.m_AttackBuyBelow200000 = ConvertValueToString(pStock->GetAttackBuyBelow200000());
-    setDayLineToday.m_AttackBuyAbove200000 = ConvertValueToString(pStock->GetAttackBuyAbove200000());
-    setDayLineToday.m_AttackSellBelow50000 = ConvertValueToString(pStock->GetAttackSellBelow50000());
-    setDayLineToday.m_AttackSellBelow200000 = ConvertValueToString(pStock->GetAttackSellBelow200000());
-    setDayLineToday.m_AttackSellAbove200000 = ConvertValueToString(pStock->GetAttackSellAbove200000());
+    pStock->StoreTempInfo(setDayLineToday);
     setDayLineToday.Update();
   }
   setDayLineToday.m_pDatabase->CommitTrans();
@@ -1936,7 +1877,10 @@ bool CMarket::SaveTodayTempData(void) {
 //
 // 读入暂存的今日当前数据状态，重置分析的初始态。这样当在开市时系统退出时，不至于损失掉所有已分析的数据
 //
-//
+// 在设置m_lUnknownVolume为记录集中的m_UnknownVolume - m_Volume，这是因为第一次计算时只是初始化系统。
+// 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
+// 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
+// 故而此处这样计算。
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::LoadTodayTempData(void) {
   CStockPtr pStock = nullptr;
@@ -1951,31 +1895,11 @@ bool CMarket::LoadTodayTempData(void) {
     if (setDayLineToday.m_Time == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
+          ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
           // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
           // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
-          // 故而此处这样计算。
-          ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
-          pStock->SetUnknownVolume(atoll(setDayLineToday.m_UnknownVolume) - atoll(setDayLineToday.m_Volume));  // 需要如此设置m_lUnknownVolume
-
-          pStock->SetTransactionNumber(atol(setDayLineToday.m_TransactionNumber));
-          pStock->SetTransactionNumberBelow5000(atol(setDayLineToday.m_TransactionNumberBelow5000));
-          pStock->SetTransactionNumberBelow50000(atol(setDayLineToday.m_TransactionNumberBelow50000));
-          pStock->SetTransactionNumberBelow200000(atol(setDayLineToday.m_TransactionNumberBelow200000));
-          pStock->SetTransactionNumberAbove200000(atol(setDayLineToday.m_TransactionNumberAbove200000));
-          pStock->SetCancelBuyVolume(atoll(setDayLineToday.m_CancelBuyVolume));
-          pStock->SetCancelSellVolume(atoll(setDayLineToday.m_CancelSellVolume));
-          pStock->SetAttackBuyVolume(atoll(setDayLineToday.m_AttackBuyVolume));
-          pStock->SetAttackSellVolume(atoll(setDayLineToday.m_AttackSellVolume));
-          pStock->SetStrongBuyVolume(atoll(setDayLineToday.m_StrongBuyVolume));
-          pStock->SetStrongSellVolume(atoll(setDayLineToday.m_StrongSellVolume));
-          pStock->SetOrdinaryBuyVolume(atoll(setDayLineToday.m_OrdinaryBuyVolume));
-          pStock->SetOrdinarySellVolume(atoll(setDayLineToday.m_OrdinarySellVolume));
-          pStock->SetAttackBuyBelow50000(atoll(setDayLineToday.m_AttackBuyBelow50000));
-          pStock->SetAttackBuyBelow200000(atoll(setDayLineToday.m_AttackBuyBelow200000));
-          pStock->SetAttackBuyAbove200000(atoll(setDayLineToday.m_AttackBuyAbove200000));
-          pStock->SetAttackSellBelow50000(atoll(setDayLineToday.m_AttackSellBelow50000));
-          pStock->SetAttackSellBelow200000(atoll(setDayLineToday.m_AttackSellBelow200000));
-          pStock->SetAttackBuyAbove200000(atoll(setDayLineToday.m_AttackSellAbove200000));
+          // 故而LoadTempInfo需要特别处理。
+          pStock->LoadAndCalculateTempInfo(setDayLineToday);
         }
         setDayLineToday.MoveNext();
       }

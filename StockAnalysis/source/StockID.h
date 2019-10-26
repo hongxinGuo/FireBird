@@ -37,6 +37,8 @@ public:
   void      SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString   GetStockCode(void) { return m_strStockCode; }
   void      SetStockCode(CString str) noexcept { m_strStockCode = str; }
+  long      GetCode(void) { return m_iStockCode; }
+  void SetCode(long lStockCode) { m_iStockCode = lStockCode; }
   CString   GetStockName(void) noexcept { return m_strStockName; }
   void      SetStockName(CString str) noexcept { m_strStockName = str; }
 
@@ -64,6 +66,7 @@ protected:
                               // 7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；
                               // 上海市场采用单数标示，深圳市场采用双数标示。目前暂时不用，先查看涉及到哪些函数需要修改。
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
+  long      m_iStockCode;  // 证券代码值
   CString   m_strStockName;		// 股票名称
   CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式）
   long			m_nOffsetInContainer;	// 在容器中的偏移量

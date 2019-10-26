@@ -12,10 +12,14 @@ enum {
 };
 
 #include"SetDayLine.h"
+#include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
 #include"RTData.h"
 #include"DayLine.h"
 #include"OneDeal.h"
+
+#include"StockID.h"
+#include"StockCalculatedInfo.h"
 
 using namespace std;
 #include<vector>
@@ -61,9 +65,7 @@ public:
   INT64 GetAmount(void) noexcept { return m_llAmount; }
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept {
-    m_llVolume = llValue;
-  }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
@@ -93,54 +95,15 @@ public:
   int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
   void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
   INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
-
-  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
-  long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
-  long GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
-  long GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
-  long GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
-  long GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
-
-  INT64 GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
-  INT64 GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
-  INT64 GetAttackBuyAbove200000(void) noexcept { return m_lAttackBuyAbove200000; }
-  INT64 GetAttackSellBelow50000(void) noexcept { return m_lAttackSellBelow50000; }
-  INT64 GetAttackSellBelow200000(void) noexcept { return m_lAttackSellBelow200000; }
-  INT64 GetAttackSellAbove200000(void) noexcept { return m_lAttackSellAbove200000; }
-
-  void SetAttackBuyAmount(INT64 value) noexcept { m_lAttackBuyAmount = value; }
-  void SetAttackSellAmount(INT64 value) noexcept { m_lAttackSellAmount = value; }
-  void SetOrdinaryBuyVolume(INT64 value) noexcept { m_lOrdinaryBuyVolume = value; }
-  void SetOrdinarySellVolume(INT64 value) noexcept { m_lOrdinarySellVolume = value; }
-  void SetAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume = value; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; }		// 向上强力买入,成交价超过之前的卖二报价
-  void SetCurrentAttackBuy(long value) noexcept { m_lCurrentAttackBuy = value; }
-  void SetCurrentStrongBuy(long value) noexcept { m_lCurrentStrongBuy = value; }
-  void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; }			// 向下卖出。成交价低于买一价但高于买二价。
-  void SetStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume = value; }
-  void SetCurrentAttackSell(long value) noexcept { m_lCurrentAttackSell = value; }
-  void SetCurrentStrongSell(long value) noexcept { m_lCurrentStrongSell = value; }
-  void SetUnknownVolume(INT64 value) noexcept { m_lUnknownVolume = value; }
-  void SetCurrentUnknown(long value) noexcept { m_lCurrentUnknown = value; }
-  void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
-  void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
-
   void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
 
-  void SetTransactionNumber(long value) noexcept { m_lTransactionNumber = value; }
-  void SetTransactionNumberBelow5000(long value) noexcept { m_lTransactionNumberBelow5000 = value; }
-  void SetTransactionNumberBelow50000(long value) noexcept { m_lTransactionNumberBelow50000 = value; }
-  void SetTransactionNumberBelow200000(long value) noexcept { m_lTransactionNumberBelow200000 = value; }
-  void SetTransactionNumberAbove200000(long value) noexcept { m_lTransactionNumberAbove200000 = value; }
-
-  void SetAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 = value; }
-  void SetAttackBuyBelow200000(INT64 value) noexcept { m_lAttackBuyBelow200000 = value; }
-  void SetAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 = value; }
-  void SetAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 = value; }
-  void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
-  void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
+  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
 
   void ClearRTDataDeque(void);  // 清空存储实时数据的队列
+
+  void StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
+  void StoreTempInfo(CSetDayLineToday& setDayLineToday);
+  void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
 
   // 挂单情况
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
@@ -250,6 +213,8 @@ protected:
   INT64	    m_lCurrentVolume;
 
   double    m_dRelativeStrong; // 单位：1%
+
+  // 以下变量为计算出的信息
   long      m_lTransactionNumber; // 本交易日的成交笔数
   long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
   long      m_lTransactionNumberBelow50000; //
