@@ -8,7 +8,7 @@
 // 读取新浪实时数据线程。
 UINT ThreadReadSinaRTData(LPVOID pParam);    // 此工作线程返回值为1
 
-// 读取网易日线历史数据线程
+// 读取网易日线历史数据线程, pParam为调用此线程的变量的指针
 UINT ThreadReadNeteaseDayLine(LPVOID pParam);      // 此工作线程返回值为2
 
 // 计算实时数据线程

@@ -18,60 +18,61 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 
-UINT ThreadReadNeteaseDayLine(LPVOID) {
+UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
+  CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;
   static int siDelayTime = 600;
   static bool fStarted = false;
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = gl_NeteaseDayLineWebData.GetBufferAddr();
+  char* pChar = pNeteaseDayLineWebData->GetBufferAddr();
   CString str;
 
   const clock_t tt = clock();
-  ASSERT(gl_NeteaseDayLineWebData.IsReadingWebData());    // 调用此线程时已经设置了此标识
+  ASSERT(pNeteaseDayLineWebData->IsReadingWebData());    // 调用此线程时已经设置了此标识
   try {
-    gl_NeteaseDayLineWebData.SetReadingWebData(true);
-    gl_NeteaseDayLineWebData.SetReadingSucceed(true);
-    gl_NeteaseDayLineWebData.SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_NeteaseDayLineWebData.GetInquiringString()));
+    pNeteaseDayLineWebData->SetReadingWebData(true);
+    pNeteaseDayLineWebData->SetReadingSucceed(true);
+    pNeteaseDayLineWebData->SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseDayLineWebData->GetInquiringString()));
     Sleep(siDelayTime);
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          gl_NeteaseDayLineWebData.AddByteReaded(iCount);
+          pNeteaseDayLineWebData->AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        gl_NeteaseDayLineWebData.AddByteReaded(iCount);
+        pNeteaseDayLineWebData->AddByteReaded(iCount);
       }
       else {
         Sleep(30); // 等待30毫秒后读第三次，确认没有新数据后才返回，否则继续读。
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          gl_NeteaseDayLineWebData.AddByteReaded(iCount);
+          pNeteaseDayLineWebData->AddByteReaded(iCount);
         }
         else fDone = true;
       }
     }
     *pChar = 0x000;
-    gl_NeteaseDayLineWebData.SetWebDataReceived(true);
+    pNeteaseDayLineWebData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
-    gl_NeteaseDayLineWebData.SetReadingSucceed(false);
-    gl_NeteaseDayLineWebData.SetWebDataReceived(false);
-    gl_NeteaseDayLineWebData.SetByteReaded(0);
+    pNeteaseDayLineWebData->SetReadingSucceed(false);
+    pNeteaseDayLineWebData->SetWebDataReceived(false);
+    pNeteaseDayLineWebData->SetByteReaded(0);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;
-  gl_NeteaseDayLineWebData.SetReadingWebData(false);
+  pNeteaseDayLineWebData->SetReadingWebData(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;

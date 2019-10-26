@@ -1574,13 +1574,13 @@ bool CMarket::SaveDayLineData(void) {
         SaveDayLine(&m_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
       }
       else {
-        CString str1 = pStock->GetStockName();
+        CString str1 = pStock->GetStockCode();
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
       pStock->m_vDayLine.clear();
       pStock->SetDayLineLoaded(false);
-      CString str = pStock->GetStockName();
+      CString str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
       pStock->SetDayLineNeedSavingFlag(false);

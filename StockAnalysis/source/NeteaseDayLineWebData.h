@@ -21,5 +21,5 @@ public:
 private:
   static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例
 
-  static bool sm_fNeedProcessingCurrentWebData;
+  bool m_fNeedProcessingCurrentWebData;
 };

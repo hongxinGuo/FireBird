@@ -6,11 +6,12 @@
 #include "NeteaseDayLineWebData.h"
 
 bool CNeteaseDayLineWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
-bool CNeteaseDayLineWebData::sm_fNeedProcessingCurrentWebData = true; // 初始时允许处理当前网络数据
 
 CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
   if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
   else sm_fCreatedOnce = true;
+
+  m_fNeedProcessingCurrentWebData = true;
 
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
@@ -21,7 +22,7 @@ CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 
 bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void)
 {
-  if (sm_fNeedProcessingCurrentWebData) return true;
+  if (m_fNeedProcessingCurrentWebData) return true;
   else return false;
 }
 
@@ -66,8 +67,8 @@ void CNeteaseDayLineWebData::InquireNextWebData(void)
   CString strStartDay;
 
   // 准备网易日线数据申请格式
-  sm_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
-  if (sm_fNeedProcessingCurrentWebData) {
+  m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
+  if (m_fNeedProcessingCurrentWebData) {
     strMiddle += _T("&start=");
     strMiddle += strStartDay;
     strMiddle += _T("&end=");
@@ -86,5 +87,5 @@ int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire) {
 }
 
 void CNeteaseDayLineWebData::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadNeteaseDayLine, nullptr);
+  AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
