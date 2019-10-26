@@ -48,6 +48,7 @@ UINT ThreadReadSinaRTData(LPVOID) {
     e->Delete();
     gl_SinaRTWebData.SetReadingSucceed(false);
     gl_SinaRTWebData.SetWebDataReceived(false);
+    gl_SinaRTWebData.SetReadingWebData(false);
   }
   if (pFile) pFile->Close();
   if (pFile) delete pFile;

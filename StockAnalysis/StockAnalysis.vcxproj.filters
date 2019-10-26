@@ -147,10 +147,10 @@
     <ClInclude Include="source\CrweberIndex.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\StockBasicInfo.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="source\StockCalculatedInfo.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockBasicInfo.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -287,10 +287,10 @@
     <ClCompile Include="source\CrweberIndex.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\StockBasicInfo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="source\StockCalculatedInfo.cpp">
+      <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockBasicInfo.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

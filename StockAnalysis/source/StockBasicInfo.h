@@ -8,9 +8,9 @@ using namespace std;
 class CStockBasicInfo
 {
 public:
-  CStockBasicInfo() {}
-  ~CStockBasicInfo() {}
-  void ReSet(void);
+  CStockBasicInfo();
+  ~CStockBasicInfo();
+  void Reset(void);
 
   WORD      GetMarket(void) noexcept { return m_ID.GetMarket(); }
   void      SetMarket(WORD wValue) noexcept { m_ID.SetMarket(wValue); }
@@ -69,6 +69,8 @@ public:
 protected:
   CStockID m_ID;
 
+  short			m_nHand;									// 每手股数
+
   // 实时数据,需要不断更新
   time_t    m_TransactionTime;         // 实时数据交易时间
   long	    m_lLastClose;		// 以0.001元计的收盘价
@@ -84,4 +86,5 @@ protected:
   array<long, 5>			m_lVBuy;			// 买盘量。单位：股
   array<long, 5>		  m_lPSell;		// 卖盘价。单位：0.001元
   array<long, 5>			m_lVSell;		// 卖盘量。单位：股
+  double    m_dRelativeStrong; // 单位：1%
 };

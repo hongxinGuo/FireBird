@@ -9,8 +9,8 @@ CStockID::~CStockID() {
 
 void CStockID::Reset(void) {
   m_wMarket = 0;
-  m_strStockCode = "";
-  m_strStockName = "";
+  m_strStockCode = _T("");
+  m_strStockName = _T("");
   m_nOffsetInContainer = -1;
   m_lDayLineStartDay = 19900101; //
   m_lDayLineEndDay = 19900101; //

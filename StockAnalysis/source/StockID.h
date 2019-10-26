@@ -68,7 +68,7 @@ protected:
   CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   long      m_iStockCode;  // 证券代码值
   CString   m_strStockName;		// 股票名称
-  CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式）
+  CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
   long			m_nOffsetInContainer;	// 在容器中的偏移量
   long			m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long			m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
