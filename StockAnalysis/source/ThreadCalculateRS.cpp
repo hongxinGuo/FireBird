@@ -34,7 +34,7 @@ UINT ThreadCalculateRS(LPVOID) {
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
-    if (gl_fExiting) return true;
+    if (gl_ExitingSystem.IsTrue()) return true;
     if (gl_fExitingCalculatingRS) return true;
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();

@@ -20,6 +20,8 @@
 #include"ThreadStatus.h"
 #include"SystemTime.h"
 
+#include"CriticalSectionBool.h"
+
 using namespace std;
 #include<deque>
 #include<vector>
@@ -42,7 +44,7 @@ extern CThreadStatus      gl_ThreadStatus;      // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ï
 extern deque<CString> gl_dequeRTStockInquire;   // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ
 extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ¡£
 
-extern bool gl_fExiting;                        //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
+extern CCriticalSectionBool gl_ExitingSystem; //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
 extern bool gl_fExitingCalculatingRS;           // ÓÃÓÚÍ¨Öª¹¤×÷Ïß³ÌÍË³öµÄĞÅºÅ
 extern bool gl_fResetSystem;                    // ÏµÍ³ÖØÆô±êÊ¶
 

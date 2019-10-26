@@ -560,61 +560,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   return true;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 采用网易日线申请接口，读取日线数据。
-// 每次读取一个股票。
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::GetNetEaseStockDayLineData(void)
-{
-  CString strRead;
-  static bool sfFoundStock = true;
-  CDayLinePtr pDayLine = nullptr;
-
-  if (!gl_NeteaseDayLineWebData.IsReadingWebData()) {
-    if (sfFoundStock) {
-      if ((gl_NeteaseDayLineWebData.IsReadingSucceed()) && gl_NeteaseDayLineWebData.IsWebDataReceived()) { //网络通信一切顺利？
-        TRACE("股票%s日线数据为%d字节\n", GetDownLoadingStockCodeStr(), gl_NeteaseDayLineWebData.GetByteReaded());
-        ASSERT(gl_NeteaseDayLineWebData.GetByteReaded() < 2048 * 1024);
-        // 处理当前股票日线数据
-        ProcessDayLineData(gl_NeteaseDayLineWebData.GetBufferAddr(), gl_NeteaseDayLineWebData.GetByteReaded());
-      }
-      else {
-        if (gl_NeteaseDayLineWebData.GetByteReaded() > 0) {
-          TRACE("Error reading http file ：quotes.money.163.com/service/\n");
-          CString str;
-          str = _T("Error reading http file ：quotes.money.163.com/service/");
-          gl_systemMessage.PushInformationMessage(str);
-          gl_NeteaseDayLineWebData.SetByteReaded(0);
-        }
-      }
-    }
-
-    CString strMiddle = _T("");
-    char buffer2[200];
-    CString strStartDay;
-
-    // 准备网易日线数据申请格式
-    sfFoundStock = CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
-    if (sfFoundStock) {
-      strMiddle += _T("&start=");
-      strMiddle += strStartDay;
-      strMiddle += _T("&end=");
-      sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
-      strMiddle += buffer2;
-      gl_NeteaseDayLineWebData.CreateTotalInquiringString(strMiddle);
-      gl_NeteaseDayLineWebData.SetWebDataReceived(false);
-      gl_NeteaseDayLineWebData.SetReadingWebData(true); // 这里多设置一次(线程内也设置），以防线程由于唤醒延迟导致再次进入（线程退出时会清除此标识）
-      // 这个线程的启动可以采用唤醒模式而不是这样直接调用
-      AfxBeginThread(ThreadReadNeteaseDayLine, nullptr);
-      return true;
-    }
-    else return false;
-  }
-  return false;
-}
-
 /////////////////////////////////////////////////////////////////////////
 //
 //	得到分时线偏移量。09:30为0，15:00为240,步长为1分钟
@@ -1243,7 +1188,7 @@ bool CMarket::SchedulingTask(void)
   }
 
   // 抓取实时数据(新浪和腾讯）
-  if (!gl_fExiting && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
+  if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     //GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
     // 采用统一制式调用网络采集函数
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -1274,15 +1219,9 @@ bool CMarket::SchedulingTask(void)
     }
 
     // 抓取日线数据
-    if (!gl_fExiting && m_fGetDayLineData) {
-      //GetNetEaseStockDayLineData();
-
-      // 采用新的制式
+    if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       gl_NeteaseDayLineWebData.GetWebData();
     }
-
-    // 测试用
-    //gl_CrweberIndexWebData.GetWebData();
   }
 
   return true;
@@ -1344,8 +1283,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
 
-  // 九点十三分重启系统
-  // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
+    // 九点十三分重启系统
+    // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
       if ((lTime >= 91300) && (lTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
@@ -1631,23 +1570,22 @@ bool CMarket::SaveDayLineData(void) {
 
   for (auto pStock : m_vActiveStock) {
     if (pStock->IsDayLineNeedSaving()) {
-      lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
         SaveDayLine(&m_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
       }
       else {
-        CString str1 = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
+        CString str1 = pStock->GetStockName();
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
       pStock->m_vDayLine.clear();
       pStock->SetDayLineLoaded(false);
-      CString str = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
+      CString str = pStock->GetStockName();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
       pStock->SetDayLineNeedSavingFlag(false);
     }
-    if (gl_fExiting) {
+    if (gl_ExitingSystem.IsTrue()) {
       break; // 如果程序正在退出，则停止存储。
     }
   }

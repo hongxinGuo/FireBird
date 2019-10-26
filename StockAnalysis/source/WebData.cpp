@@ -10,9 +10,6 @@ CWebData::CWebData() noexcept {
   m_fSucceed = true;
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
-
-  m_fReadingWebData = false;
-  m_fWebDataReceived = false;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -60,48 +57,6 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   }
   TRACE("读入%d个实时数据\n", i);
   return true;
-}
-
-void CWebData::SetWebDataReceived(bool fFlag) {
-  CSingleLock singleLock(&m_WebDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fWebDataReceived = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CWebData::IsWebDataReceived(void) {
-  CSingleLock singleLock(&m_WebDataReceivedLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fWebDataReceived;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
-}
-
-void CWebData::SetReadingWebData(bool fFlag) {
-  CSingleLock singleLock(&m_ReadingWebDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_fReadingWebData = fFlag;
-    singleLock.Unlock();
-  }
-}
-
-bool CWebData::IsReadingWebData(void) {
-  CSingleLock singleLock(&m_ReadingWebDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const bool fFlag = m_fReadingWebData;
-    singleLock.Unlock();
-    return fFlag;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 void CWebData::CreateTotalInquiringString(CString strMiddle)

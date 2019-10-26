@@ -3,6 +3,8 @@
 #include"stdafx.h"
 #include"globedef.h"
 
+#include"CriticalSectionBool.h"
+
 class CWebData {
 public:
   CWebData() noexcept;
@@ -38,10 +40,10 @@ public:
 
   bool IsReadingSucceed(void) { if (m_fSucceed) return true; else return false; }
   void SetReadingSucceed(bool fFlag) { m_fSucceed = fFlag; }
-  bool IsWebDataReceived(void);
-  void SetWebDataReceived(bool fFlag);
-  bool IsReadingWebData(void);
-  void SetReadingWebData(bool fFlag);
+  bool IsWebDataReceived(void) { return m_WebDataReceived.IsTrue(); }
+  void SetWebDataReceived(bool fFlag) { m_WebDataReceived.SetFlag(fFlag); }
+  bool IsReadingWebData(void) { return m_ReadingWebData.IsTrue(); }
+  void SetReadingWebData(bool fFlag) { m_ReadingWebData.SetFlag(fFlag); }
 
 public:
 
@@ -54,8 +56,6 @@ protected:
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
-  bool m_fReadingWebData;     // 接收实时数据线程是否执行标识
-  CCriticalSection m_ReadingWebDataLock;  //是否接收实时数据的同步锁
-  bool m_fWebDataReceived; // 实时数据已接收完毕标识
-  CCriticalSection m_WebDataReceivedLock;  // 实时数据接收完毕标识的同步锁
+  CCriticalSectionBool m_ReadingWebData; // 接收实时数据线程是否执行标识
+  CCriticalSectionBool m_WebDataReceived;// 实时数据已接收完毕标识
 };

@@ -37,6 +37,12 @@
     <Filter Include="头文件\网络通信">
       <UniqueIdentifier>{0203b3b7-62eb-4f8a-8e1d-fd4d450d6bc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\辅助类和函数">
+      <UniqueIdentifier>{e9fe89bd-789b-4bbc-8d76-2b466f9f63b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\辅助类和函数">
+      <UniqueIdentifier>{c15f47f1-9278-47e2-8f5d-465ca7ccf999}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StockAnalysis.h">
@@ -117,9 +123,6 @@
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
-    <ClInclude Include="source\Accessory.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="QueueRTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
@@ -152,6 +155,12 @@
     </ClInclude>
     <ClInclude Include="source\StockBasicInfo.h">
       <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Accessory.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CriticalSectionBool.h">
+      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +263,6 @@
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\Accessory.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
@@ -292,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="source\StockBasicInfo.cpp">
       <Filter>源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Accessory.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CriticalSectionBool.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

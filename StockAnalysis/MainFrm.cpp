@@ -120,7 +120,7 @@ CMainFrame::~CMainFrame()
 {
   if (gl_fTestMode) TRACE("使用了Test驱动\n");
 
-  gl_fExiting = true;
+  gl_ExitingSystem.SetFlag(true);
 
   gl_ChinaStockMarket.UpdateOptionDataBase();
 
@@ -490,7 +490,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
       //return; // 无动作
     }
 #endif
-    gl_fExiting = true; // 提示各工作线程中途退出
+    gl_ExitingSystem.SetFlag(true); // 提示各工作线程中途退出
     if (gl_ThreadStatus.IsSavingDayLine()) { // 如果正在处理日线历史数据
       while (gl_ThreadStatus.IsSavingDayLine()) {
         Sleep(10); // 等待处理日线历史数据的线程退出
