@@ -41,8 +41,6 @@ public:
 
   bool          UpdateTempRTData(void);
 
-  bool          OpenSavingDayLineRecord(void);
-
   // 实时数据读取
   bool          CreateSinaRTDataInquiringStr(CString& str);
   bool          CreateTengxunRTDataInquiringStr(CString& str);
@@ -94,8 +92,7 @@ public:
   bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
   void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
 
-  bool					SaveDayLine(CSetDayLine* psetDayLine, CSetStockCode* psetStockCode,
-    CStockPtr pStock, vector<CDayLinePtr>& vectorDayLine, bool fReversed = true);
+  bool					SaveDayLine(CStockPtr pStock);
   bool          SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine);
 
   // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -192,7 +189,6 @@ public:
   vector<CrweberIndexPtr>    gl_vCrweberIndex;     // crweber.com网站上的油运指数
 
 protected:
-  CSetDayLine                 m_setSavingDayLineOnly;     // 此变量专用于存储接收到的日线历史数据， 在存储日线历史数据之前就使之打开状态，否则当同时操作数据库时速度奇慢。
 
   map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码

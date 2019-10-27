@@ -168,6 +168,7 @@ public:
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }
   bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
+  bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

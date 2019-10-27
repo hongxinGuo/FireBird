@@ -6,6 +6,7 @@
 #include"Thread.h"
 
 #include"accessory.h"
+#include"TransferSharedPtr.h"
 
 #include"Market.h"
 
@@ -1334,8 +1335,6 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
         str = _T("日线历史数据更新完毕");
         gl_systemMessage.PushInformationMessage(str);
         SaveStockCodeDataBase();  // 更新股票池数据库
-        ASSERT(m_setSavingDayLineOnly.IsOpen());
-        m_setSavingDayLineOnly.Close(); // 关闭日线历史数据存储记录集
         m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
       }
     }
@@ -1475,57 +1474,45 @@ void CMarket::SetShowStock(CString strStockCode) {
 //  此函数被工作线程调用，需要注意数据同步问题。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SaveDayLine(CSetDayLine* psetDayLine, CSetStockCode* psetStockCode, CStockPtr pStock, vector<CDayLinePtr>& vectorDayLine, bool fReversed) {
-  long lIndex = 0;
-  psetDayLine->m_pDatabase->BeginTrans();
-  if (fReversed) {
-    for (int i = vectorDayLine.size() - 1; i >= 0; i--) { // 数据是倒序存储的，需要从尾部开始存储
-      auto pDayLine = vectorDayLine.at(i);
-      lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-      if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-      SaveOneRecord(psetDayLine, pDayLine);
-    }
+bool CMarket::SaveDayLine(CStockPtr pStock) {
+  CSetStockCode setStockCode;
+  CSetDayLine setDayLine;
+
+  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
+  setDayLine.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+  setDayLine.Open();
+
+  setStockCode.Open();
+
+  long lIndex = lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
+
+  setDayLine.m_pDatabase->BeginTrans();
+  for (int i = 0; i < pStock->m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
+    auto pDayLine = pStock->m_vDayLine.at(i);
+    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
+    SaveOneRecord(&setDayLine, pDayLine);
   }
-  else {
-    for (int i = 0; i < vectorDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
-      auto pDayLine = vectorDayLine.at(i);
-      lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-      if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-      SaveOneRecord(psetDayLine, pDayLine);
-    }
-  }
-  psetDayLine->m_pDatabase->CommitTrans();
+  setDayLine.m_pDatabase->CommitTrans();
+  setDayLine.Close();
 
   // 更新最新日线日期和起始日线日期
-  bool fSaved = false;
-  if (fReversed) {
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(0)->GetDay()) {
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(0)->GetDay());
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      fSaved = true;
-    }
-  }
-  else {
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < vectorDayLine.at(vectorDayLine.size() - 1)->GetDay()) {
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(vectorDayLine.at(0)->GetDay());
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(vectorDayLine.at(vectorDayLine.size() - 1)->GetDay());
-      fSaved = true;
-    }
+  if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
+    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
+    m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
   }
 
-  if (fSaved) {
-    psetStockCode->m_pDatabase->BeginTrans();
-    psetStockCode->AddNew();
-    psetStockCode->m_Counter = m_vChinaMarketAStock.at(lIndex)->GetOffset();
-    psetStockCode->m_StockType = m_vChinaMarketAStock.at(lIndex)->GetMarket();
-    psetStockCode->m_StockCode = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
-    psetStockCode->m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
-    psetStockCode->m_DayLineStartDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineStartDay();
-    psetStockCode->m_DayLineEndDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay();
-    psetStockCode->m_IPOed = m_vChinaMarketAStock.at(lIndex)->GetIPOStatus();
-    psetStockCode->Update();
-    psetStockCode->m_pDatabase->CommitTrans();
-  }
+  setStockCode.m_pDatabase->BeginTrans();
+  setStockCode.AddNew();
+  setStockCode.m_Counter = m_vChinaMarketAStock.at(lIndex)->GetOffset();
+  setStockCode.m_StockType = m_vChinaMarketAStock.at(lIndex)->GetMarket();
+  setStockCode.m_StockCode = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
+  setStockCode.m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
+  setStockCode.m_DayLineStartDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineStartDay();
+  setStockCode.m_DayLineEndDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay();
+  setStockCode.m_IPOed = m_vChinaMarketAStock.at(lIndex)->GetIPOStatus();
+  setStockCode.Update();
+  setStockCode.m_pDatabase->CommitTrans();
+  setStockCode.Close();
 
   return true;
 }
@@ -1562,16 +1549,18 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
 //  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SaveDayLineData(void) {
-  CSetStockCode setStockCode;
 
-  setStockCode.Open();
-  long lIndex = 0;
+bool CMarket::SaveDayLineData(void) {
+  strTransferSharedPtr* pTransfer;
 
   for (auto pStock : m_vActiveStock) {
-    if (pStock->IsDayLineNeedSaving()) {
+    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
-        SaveDayLine(&m_setSavingDayLineOnly, &setStockCode, pStock, pStock->m_vDayLine, false);
+        pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
+        pTransfer->m_pStock = pStock;
+        //AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer);
+
+        SaveDayLine(pStock);
       }
       else {
         CString str1 = pStock->GetStockCode();
@@ -1583,14 +1572,11 @@ bool CMarket::SaveDayLineData(void) {
       CString str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
-      pStock->SetDayLineNeedSavingFlag(false);
     }
     if (gl_ExitingSystem.IsTrue()) {
       break; // 如果程序正在退出，则停止存储。
     }
   }
-
-  setStockCode.Close();
 
   return(true);
 }
@@ -2095,16 +2081,4 @@ bool CMarket::UpdateTempRTData(void)
   }
 
   return false;
-}
-
-bool CMarket::OpenSavingDayLineRecord(void)
-{
-  ASSERT(gl_fNormalMode);
-  // 更新日线历史数据的记录集永远处于打开状态（为了加速)
-  if (!m_setSavingDayLineOnly.IsOpen()) {
-    CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-    m_setSavingDayLineOnly.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-    m_setSavingDayLineOnly.Open(); // 永远打开，用于存储接收到的日线历史数据。
-  }
-  return true;
 }

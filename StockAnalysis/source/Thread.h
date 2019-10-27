@@ -40,3 +40,6 @@ UINT ThreadCalculateThisDayRS(LPVOID pParam); // 此工作线程返回值为11
 
 // 读取crweber.com网站上的油运指数线程
 UINT ThreadReadCrweberIndex(LPVOID pParam); // 此工作线程返回值为12
+
+// 存储一个股票的日线历史数据。此线程被ThreadSaveDayLine线程间接调用.尚未实现
+UINT ThreadSaveDayLineOfOneStock(LPVOID pParam); // 此工作线程返回值为13

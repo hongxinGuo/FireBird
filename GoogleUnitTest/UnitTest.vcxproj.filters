@@ -214,5 +214,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionBool.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>

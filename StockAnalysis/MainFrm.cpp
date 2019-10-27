@@ -92,9 +92,6 @@ CMainFrame::CMainFrame()
   ASSERT(gl_fNormalMode);
   gl_fNormalMode = true; // 实际系统，测试状态为假。
 
-  // 这个记录集需要在系统启动时就打开，且一直保持打开的状态。但需要使用MySQL驱动而不是MySQLTest驱动，故而在设置gl_fNormalMode为真后才执行。
-  gl_ChinaStockMarket.OpenSavingDayLineRecord();
-
   Reset();
 }
 

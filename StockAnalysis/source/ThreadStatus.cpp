@@ -55,8 +55,6 @@ bool CThreadStatus::IsCalculatingRSThreadAvailable(void) {
     singleLock.Unlock();
     return fFlag;
   }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
 
 bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
@@ -72,6 +70,4 @@ bool CThreadStatus::IsCalculatingRSThreadRunning(void) {
 
     return fFlag;
   }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
 }
