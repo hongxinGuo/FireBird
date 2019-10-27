@@ -5,12 +5,7 @@
 
 #include "NeteaseDayLineWebData.h"
 
-bool CNeteaseDayLineWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
-
 CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
-  if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
-  else sm_fCreatedOnce = true;
-
   m_fNeedProcessingCurrentWebData = true;
 
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
@@ -39,9 +34,9 @@ bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentP
 }
 
 void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
-  TRACE("股票%s日线数据为%d字节\n", gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), m_lByteRead);
+  TRACE("股票%s日线数据为%d字节\n", m_strDownLoadingStockCode, m_lByteRead);
   ASSERT(m_lByteRead < 2048 * 1024);
-  gl_ChinaStockMarket.ProcessDayLineData(m_buffer, m_lByteRead);
+  gl_ChinaStockMarket.ProcessDayLineData(this);
 }
 
 void CNeteaseDayLineWebData::ReportDataError(void)
@@ -69,6 +64,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void)
   // 准备网易日线数据申请格式
   m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
   if (m_fNeedProcessingCurrentWebData) {
+    m_strDownLoadingStockCode = strMiddle;
     strMiddle += _T("&start=");
     strMiddle += strStartDay;
     strMiddle += _T("&end=");

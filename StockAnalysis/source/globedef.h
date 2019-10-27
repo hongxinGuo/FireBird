@@ -32,6 +32,8 @@ using namespace std;
 extern CSinaRTWebData     gl_SinaRTWebData;     // 新浪实时数据采集
 extern CTengxunRTWebData  gl_TengxunRTWebData;  // 腾讯实时数据采集
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
 extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
 
 extern CCrweberIndex gl_CrweberIndex;
@@ -50,6 +52,10 @@ extern bool gl_fResetSystem;                    // 系统重启标识
 
 extern bool gl_fNormalMode;                     // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 extern bool gl_fTestMode;                       // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
+
+// 信号量必须声明为全局变量（为了初始化）
+extern CSemaphore gl_SaveOneStockDayLine;
+extern CSemaphore gl_SaveHistoryDayLineData;
 
 class CMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

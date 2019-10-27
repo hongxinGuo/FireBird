@@ -8,6 +8,7 @@
 #include"accessory.h"
 #include"TransferSharedPtr.h"
 
+#include"StockID.h"
 #include"Market.h"
 
 #include"SetDayLineInfo.h"
@@ -517,6 +518,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
   StockIDPtr pID = m_vChinaMarketAStock.at(siCounter);
+  pID->SetInquiringOnce(true);
   switch (pID->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
   case __SHANGHAI_MAIN__: // 上海主板？
@@ -862,11 +864,12 @@ bool CMarket::ProcessRTData(void)
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessDayLineData(char* buffer, long lLength) {
+bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
   long iCount = 0;
-  char* pCurrentPos = buffer;
-  char* pTestPos = buffer;
+  char* pCurrentPos = pWebData->GetBufferAddr();
+  char* pTestPos = pWebData->GetBufferAddr();
   vector<CDayLinePtr> vTempDayLine;
+  long lLength = pWebData->GetByteReaded();
 
   if (lLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
@@ -887,7 +890,7 @@ bool CMarket::ProcessDayLineData(char* buffer, long lLength) {
   shared_ptr<CDayLine> pDayLine;
   long lIndex = -1;
 
-  pTestPos = buffer;
+  pTestPos = pWebData->GetBufferAddr();
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
   if (iCount == lLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
@@ -911,7 +914,7 @@ bool CMarket::ProcessDayLineData(char* buffer, long lLength) {
   lIndex = 0;
   long iTemp = 0;
   CString strTemp;
-  pTestPos = buffer;
+  pTestPos = pWebData->GetBufferAddr();
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
   while (iCount < lLength) {
@@ -923,7 +926,7 @@ bool CMarket::ProcessDayLineData(char* buffer, long lLength) {
       return false; // 数据出错，放弃载入
     }
     iCount += iTemp;
-    pTestPos = buffer;
+    pTestPos = pWebData->GetBufferAddr();
     pTestPos += iCount;
     ASSERT(*pTestPos == *pCurrentPos);
     if (m_mapActiveStockToIndex.find(pDayLine->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
@@ -1222,6 +1225,9 @@ bool CMarket::SchedulingTask(void)
     // 抓取日线数据
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       gl_NeteaseDayLineWebData.GetWebData();
+      // 需要删除一些全局变量方可使用
+      //gl_NeteaseDayLineWebDataSecond.GetWebData();
+      //gl_NeteaseDayLineWebDataThird.GetWebData();
     }
   }
 
@@ -1325,24 +1331,22 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       }
     }
 
-    // 判断是否结束下载日线历史数据
-    if (IsTotalStockDayLineChecked() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      if (!gl_ThreadStatus.IsSavingDayLine()) { // 如果更新日线数据库线程不是活跃状态，则停止日线数据查询。
-        // 更新日线数据库线程处于活跃中时，尚有数据没有存储，不能停止查询过程（查询过程能够激活更新线程）
-        m_fUpdatedStockCodeDataBase = true;
-        TRACE("日线历史数据更新完毕\n");
-        CString str;
-        str = _T("日线历史数据更新完毕");
-        gl_systemMessage.PushInformationMessage(str);
-        SaveStockCodeDataBase();  // 更新股票池数据库
-        m_fGetDayLineData = false; // 所有需要更新的日线资料都更新过了，不再执行更新日线资料任务
-      }
+    // 判断是否存储股票代码库
+    if (!IsDayLineNeedUpdate() && IsDayLineDataInquiringOnce() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+      m_fUpdatedStockCodeDataBase = true;
+      TRACE("日线历史数据更新完毕\n");
+      CString str;
+      str = _T("日线历史数据更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
+      SaveStockCodeDataBase();  // 更新股票池数据库
     }
-    else {
-      if (!gl_ThreadStatus.IsSavingDayLine() && m_fGetDayLineData) {
-        gl_ThreadStatus.SetSavingDayLine(true);
-        AfxBeginThread(ThreadSaveDayLine, nullptr);
-      }
+
+    if (IsDayLineNeedUpdate()) {
+      AfxBeginThread(ThreadSaveDayLine, nullptr);
+    }
+
+    if (IsDayLineDataInquiringOnce()) {
+      m_fGetDayLineData = false;
     }
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
@@ -1482,34 +1486,76 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   setDayLine.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
   setDayLine.Open();
 
-  setStockCode.Open();
+  long lIndex = 0;
+  long lSize = 0;
+  StockIDPtr pStockID;
+  CDayLinePtr pDayLine;
 
-  long lIndex = lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
+  CCriticalSection cs;
+  CSingleLock s(&cs);
+  s.Lock();
+  if (s.IsLocked()) {
+    lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
+    pStockID = m_vChinaMarketAStock.at(lIndex);
+    lSize = pStock->m_vDayLine.size();
+    s.Unlock();
+  }
 
   setDayLine.m_pDatabase->BeginTrans();
-  for (int i = 0; i < pStock->m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
-    auto pDayLine = pStock->m_vDayLine.at(i);
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-    SaveOneRecord(&setDayLine, pDayLine);
+  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+    s.Lock();
+    if (s.IsLocked()) {
+      pDayLine = pStock->m_vDayLine.at(i);
+      s.Unlock();
+    }
+    if (pStockID->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
+    setDayLine.AddNew();
+    setDayLine.m_Time = pDayLine->GetDay();
+    setDayLine.m_Market = pDayLine->GetMarket();
+    setDayLine.m_StockCode = pDayLine->GetStockCode();
+    setDayLine.m_StockName = pDayLine->GetStockName();
+    setDayLine.m_LastClose = ConvertValueToString(pDayLine->GetLastClose(), 1000);
+    setDayLine.m_High = ConvertValueToString(pDayLine->GetHigh(), 1000);
+    setDayLine.m_Low = ConvertValueToString(pDayLine->GetLow(), 1000);
+    setDayLine.m_Open = ConvertValueToString(pDayLine->GetOpen(), 1000);
+    setDayLine.m_Close = ConvertValueToString(pDayLine->GetClose(), 1000);
+    setDayLine.m_Volume = ConvertValueToString(pDayLine->GetVolume());
+    setDayLine.m_Amount = ConvertValueToString(pDayLine->GetAmount());
+    setDayLine.m_UpAndDown = ConvertValueToString(pDayLine->GetUpDown());
+    setDayLine.m_UpDownRate = ConvertValueToString(pDayLine->GetUpDownRate());
+    setDayLine.m_ChangeHandRate = ConvertValueToString(pDayLine->GetChangeHandRate());
+    setDayLine.m_TotalValue = ConvertValueToString(pDayLine->GetTotalValue());
+    setDayLine.m_CurrentValue = ConvertValueToString(pDayLine->GetCurrentValue());
+
+    setDayLine.m_RelativeStrong = ConvertValueToString(pDayLine->GetRelativeStrong());
+
+    setDayLine.Update();
   }
   setDayLine.m_pDatabase->CommitTrans();
   setDayLine.Close();
 
-  // 更新最新日线日期和起始日线日期
-  if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
+  s.Lock();
+  if (s.IsLocked()) {
+    // 更新最新日线日期和起始日线日期
+    if (pStockID->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
+      pStockID->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
+      pStockID->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
+    }
+    s.Unlock();
   }
+
+  setStockCode.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
+  setStockCode.Open();
 
   setStockCode.m_pDatabase->BeginTrans();
   setStockCode.AddNew();
-  setStockCode.m_Counter = m_vChinaMarketAStock.at(lIndex)->GetOffset();
-  setStockCode.m_StockType = m_vChinaMarketAStock.at(lIndex)->GetMarket();
-  setStockCode.m_StockCode = m_vChinaMarketAStock.at(lIndex)->GetStockCode();
-  setStockCode.m_StockName = m_vChinaMarketAStock.at(lIndex)->GetStockName();
-  setStockCode.m_DayLineStartDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineStartDay();
-  setStockCode.m_DayLineEndDay = m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay();
-  setStockCode.m_IPOed = m_vChinaMarketAStock.at(lIndex)->GetIPOStatus();
+  setStockCode.m_Counter = pStockID->GetOffset();
+  setStockCode.m_StockType = pStockID->GetMarket();
+  setStockCode.m_StockCode = pStockID->GetStockCode();
+  setStockCode.m_StockName = pStockID->GetStockName();
+  setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
+  setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
+  setStockCode.m_IPOed = pStockID->GetIPOStatus();
   setStockCode.Update();
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.Close();
@@ -1551,23 +1597,23 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool CMarket::SaveDayLineData(void) {
-  strTransferSharedPtr* pTransfer;
+  strTransferSharedPtr* pTransfer = nullptr;
 
   for (auto pStock : m_vActiveStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
         pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
         pTransfer->m_pStock = pStock;
-        //AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer);
+        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
 
-        SaveDayLine(pStock);
+        //SaveDayLine(pStock);
+        //pStock->m_vDayLine.clear();
       }
       else {
         CString str1 = pStock->GetStockCode();
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
-      pStock->m_vDayLine.clear();
       pStock->SetDayLineLoaded(false);
       CString str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
@@ -1635,9 +1681,16 @@ bool CMarket::SaveCrweberIndexData(void) {
   return(true);
 }
 
-bool CMarket::IsTotalStockDayLineChecked(void) {
+bool CMarket::IsDayLineNeedUpdate(void) {
   for (auto pStockID : m_vChinaMarketAStock) {
-    if (pStockID->IsDayLineNeedUpdate()) return false;
+    if (pStockID->IsDayLineNeedUpdate()) return true;
+  }
+  return false;
+}
+
+bool CMarket::IsDayLineDataInquiringOnce(void) {
+  for (auto pStockID : m_vChinaMarketAStock) {
+    if (!pStockID->IsInquiringOnce()) return false;
   }
   return true;
 }

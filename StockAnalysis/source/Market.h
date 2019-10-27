@@ -106,8 +106,11 @@ public:
 
   bool          ClearAllDayLineVector(void);
 
-  // 是否所有股票的历史日线数据都检查过了。
-  bool          IsTotalStockDayLineChecked(void);
+  // 是否所有股票的历史日线数据都更新过了。
+  bool          IsDayLineNeedUpdate(void);
+
+  // 是否所有股票的历史日线数据都查询过了
+  bool          IsDayLineDataInquiringOnce(void);
 
   long          CompileCurrentTradeDayStock(long lCurrentTradeDay);
 
@@ -127,7 +130,6 @@ public:
   bool          IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
   void          SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
-  CString       GetDownLoadingStockCodeStr(void) { return m_strCurrentStockDownLoading; }
   void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
 
   long          GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
@@ -156,7 +158,7 @@ public:
   //处理实时股票变化等
   bool          ProcessRTDataReceivedFromWeb(void);
   // 处理日线历史数据
-  bool					ProcessDayLineData(char* buffer, long lLength);
+  bool					ProcessDayLineData(CNeteaseDayLineWebData* pWebData);
   bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
   bool					ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);

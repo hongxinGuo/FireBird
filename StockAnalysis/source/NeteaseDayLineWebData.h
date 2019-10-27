@@ -16,10 +16,10 @@ public:
   virtual int GetInquiringStr(CString& strInquire) override;
   virtual void StartReadingThread(void) override;
 
-  bool IsCreateOnce(void) { return sm_fCreatedOnce; }
+  void SetDownLoadingStockCode(CString strStockCode);
+  CString GetDownLoadingStockCode(void);
 
 private:
-  static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例
-
+  CString m_strDownLoadingStockCode;
   bool m_fNeedProcessingCurrentWebData;
 };

@@ -61,11 +61,30 @@ UINT ThreadReadCrweberIndex(LPVOID) {
 UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
 {
   // 传递过来的为携带智能指针的结构。
-  strTransferSharedPtr* pTransfer = (strTransferSharedPtr*)pParam;
+  CStockPtr pStock;
+  strTransferSharedPtr* pTransfer = nullptr;
 
-  CStockPtr pStock = pTransfer->m_pStock;
+  CSingleLock singleLock(&gl_SaveOneStockDayLine);
+  singleLock.Lock();
+
+  CCriticalSection cs;
+  CSingleLock s(&cs);
+  s.Lock();
+  if (s.IsLocked()) {
+    pTransfer = (strTransferSharedPtr*)pParam;
+    pStock = pTransfer->m_pStock;
+    s.Unlock();
+  }
+
   gl_ChinaStockMarket.SaveDayLine(pStock);
-  delete pTransfer;
+
+  s.Lock();
+  if (s.IsLocked()) {
+    pStock->m_vDayLine.clear();
+    delete pTransfer;
+    s.Unlock();
+  }
+  singleLock.Unlock();
 
   return 13;
 }

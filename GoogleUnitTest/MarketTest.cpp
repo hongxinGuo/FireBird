@@ -41,7 +41,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
-    EXPECT_STREQ(gl_ChinaStockMarket.GetDownLoadingStockCodeStr(), _T(""));
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
     EXPECT_FALSE(gl_ChinaStockMarket.m_fGetDayLineData);
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayTempRTDataLoaded());
@@ -252,12 +251,12 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
   }
 
-  TEST_F(CMarketTest, TestIsTotalStockDayLineChecked) {
-    EXPECT_FALSE(gl_ChinaStockMarket.IsTotalStockDayLineChecked());
+  TEST_F(CMarketTest, TestIsDayLineNeedUpdate) {
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
     for (auto pID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
       pID->SetDayLineNeedUpdate(false);
     }
-    EXPECT_TRUE(gl_ChinaStockMarket.IsTotalStockDayLineChecked());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
   }
   TEST_F(CMarketTest, TestIsLoadSelectedStock) {
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
