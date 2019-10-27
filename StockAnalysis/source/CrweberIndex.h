@@ -22,66 +22,66 @@ public:
   void SetNewestDataTime(long lDay) { m_lDay = lDay; }
   long GetCurrentDataTime(void) { return m_lDay; }
 
-  long GetTD1(void) { return m_lTD1; }
-  long GetTD2(void) { return m_lTD2; }
-  long GetTD3C(void) { return m_lTD3C; }
-  long GetTD5(void) { return m_lTD5; }
-  long GetTD6(void) { return m_lTD6; }
-  long GetTD7(void) { return m_lTD7; }
-  long GetTD8(void) { return m_lTD8; }
-  long GetTD9(void) { return m_lTD9; }
-  long GetTD12(void) { return m_lTD12; }
-  long GetTD15(void) { return m_lTD15; }
-  long GetTD19(void) { return m_lTD19; }
-  long GetTD20(void) { return m_lTD20; }
-  long GetTD21(void) { return m_lTD21; }
-  long GetVLCC_USGSPORT(void) { return m_lVLCC_USGSPORE; }
-  long GetSUEZMAX_CBSUSG(void) { return m_lSUEZMAX_CBSUSG; }
-  long GetTC1(void) { return m_lTC1; }
-  long GetTC2(void) { return m_lTC2; }
-  long GetTC3(void) { return m_lTC3; }
-  long GetTC4(void) { return m_lTC4; }
-  long GetTC5(void) { return m_lTC5; }
-  long GetTC14(void) { return m_lTC14; }
-  long GetCPP_USGCBS(void) { return m_lCPP_USGCBS; }
+  double GetTD1(void) { return m_dTD1; }
+  double GetTD2(void) { return m_dTD2; }
+  double GetTD3C(void) { return m_dTD3C; }
+  double GetTD5(void) { return m_dTD5; }
+  double GetTD6(void) { return m_dTD6; }
+  double GetTD7(void) { return m_dTD7; }
+  double GetTD8(void) { return m_dTD8; }
+  double GetTD9(void) { return m_dTD9; }
+  double GetTD12(void) { return m_dTD12; }
+  double GetTD15(void) { return m_dTD15; }
+  double GetTD19(void) { return m_dTD19; }
+  double GetTD20(void) { return m_dTD20; }
+  double GetTD21(void) { return m_dTD21; }
+  double GetVLCC_USGSPORT(void) { return m_dVLCC_USGSPORE; }
+  double GetSUEZMAX_CBSUSG(void) { return m_dSUEZMAX_CBSUSG; }
+  double GetTC1(void) { return m_dTC1; }
+  double GetTC2(void) { return m_dTC2; }
+  double GetTC3(void) { return m_dTC3; }
+  double GetTC4(void) { return m_dTC4; }
+  double GetTC5(void) { return m_dTC5; }
+  double GetTC14(void) { return m_dTC14; }
+  double GetCPP_USGCBS(void) { return m_dCPP_USGCBS; }
 
 public:
-  long m_lID;
-  long m_lDay;
-  long m_lTD1;
-  long m_lTD2;
-  long m_lTD3C;
-  long m_lTD5;
-  long m_lTD6;
-  long m_lTD7;
-  long m_lTD8;
-  long m_lTD9;
-  long m_lTD12;
-  long m_lTD15;
-  long m_lTD19;
-  long m_lTD20;
-  long m_lTD21;
-  long m_lVLCC_USGSPORE;
-  long m_lSUEZMAX_CBSUSG;
-  long m_lTC1;
-  long m_lTC2;
-  long m_lTC3;
-  long m_lTC4;
-  long m_lTC5;
-  long m_lTC14;
-  long m_lCPP_USGCBS;
-  long m_lVLCC_TC_1YEAR;
-  long m_lSUEZMAX_TC_1YEAR;
-  long m_lAFRAMAX_TC_1YEAR;
-  long m_lPANAMAX_TC_1YEAR;
-  long m_lMR_TC_1YEAR;
-  long m_lHANDY_TC_1YEAR;
-  long m_lVLCC_TC_3YEAR;
-  long m_lSUEZMAX_TC_3YEAR;
-  long m_lAFRAMAX_TC_3YEAR;
-  long m_lPANAMAX_TC_3YEAR;
-  long m_lMR_TC_3YEAR;
-  long m_lHANDY_TC_3YEAR;
+  double m_lID;
+  double m_lDay;
+  double m_dTD1;
+  double m_dTD2;
+  double m_dTD3C;
+  double m_dTD5;
+  double m_dTD6;
+  double m_dTD7;
+  double m_dTD8;
+  double m_dTD9;
+  double m_dTD12;
+  double m_dTD15;
+  double m_dTD19;
+  double m_dTD20;
+  double m_dTD21;
+  double m_dVLCC_USGSPORE;
+  double m_dSUEZMAX_CBSUSG;
+  double m_dTC1;
+  double m_dTC2;
+  double m_dTC3;
+  double m_dTC4;
+  double m_dTC5;
+  double m_dTC14;
+  double m_dCPP_USGCBS;
+  double m_dVLCC_TC_1YEAR;
+  double m_dSUEZMAX_TC_1YEAR;
+  double m_dAFRAMAX_TC_1YEAR;
+  double m_dPANAMAX_TC_1YEAR;
+  double m_dMR_TC_1YEAR;
+  double m_dHANDY_TC_1YEAR;
+  double m_dVLCC_TC_3YEAR;
+  double m_dSUEZMAX_TC_3YEAR;
+  double m_dAFRAMAX_TC_3YEAR;
+  double m_dPANAMAX_TC_3YEAR;
+  double m_dMR_TC_3YEAR;
+  double m_dHANDY_TC_3YEAR;
 
   bool m_fTodayUpdated;
 };

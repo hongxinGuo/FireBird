@@ -47,7 +47,7 @@ CString ConvertValueToString(long lValue, int iDividend)
   s.Lock();
   if (s.IsLocked()) {
     sprintf_s(buffer, "%.3f", d);
-    CString str = buffer;
+    str = buffer;
     s.Unlock();
   }
   return str;
@@ -64,7 +64,7 @@ CString ConvertValueToString(int iValue, int iDividend)
   s.Lock();
   if (s.IsLocked()) {
     sprintf_s(buffer, "%.3f", d);
-    CString str = buffer;
+    str = buffer;
     s.Unlock();
   }
   return str;
@@ -81,7 +81,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
   s.Lock();
   if (s.IsLocked()) {
     sprintf_s(buffer, "%.3f", d);
-    CString str = buffer;
+    str = buffer;
     s.Unlock();
   }
   return str;
@@ -98,7 +98,7 @@ CString ConvertValueToString(double dValue, int iDividend)
   s.Lock();
   if (s.IsLocked()) {
     sprintf_s(buffer, "%.3f", d);
-    CString str = buffer;
+    str = buffer;
     s.Unlock();
   }
   return str;

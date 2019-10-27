@@ -49,8 +49,6 @@ namespace StockAnalysisTest {
       m_DayLine.SetLow(-1);
 
       m_DayLinePtr = make_shared<CDayLine>();
-
-      gl_ChinaStockMarket.SetDownLoadingStockCodeStr(_T("sh600000")); // Data1--8中全部使用此股票代码
     }
 
     void TearDown(void) override {
@@ -70,10 +68,10 @@ namespace StockAnalysisTest {
   INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest, testing::Values(&Data1, &Data2, &Data3,
     &Data4, &Data5, &Data6, &Data7, &Data8
   ));
-  
+
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
     long lCount = 0;
-    bool fSucceed = gl_ChinaStockMarket.ProcessOneItemDayLineData(m_DayLinePtr, m_pCurrentPos, lCount);
+    bool fSucceed = gl_ChinaStockMarket.ProcessOneItemDayLineData(_T("sh600000"), m_DayLinePtr, m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
       EXPECT_TRUE(fSucceed);
@@ -97,11 +95,11 @@ namespace StockAnalysisTest {
     case 8:
       EXPECT_TRUE(fSucceed);
       break;
-    default :
+    default:
       break;
     }
   }
-  
+
   struct ReadDayLineOneValueData {
     ReadDayLineOneValueData(int count, CString Data) {
       m_iCount = count;
