@@ -540,7 +540,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
     ASSERT(0);
   }
   char buffer[30];
-  SetDownLoadingStockCodeStr(pID->GetStockCode());
   str += pID->GetStockCode().Right(6); // 取股票代码的右边六位数字。
   tm tm_;
   tm_.tm_year = pID->GetDayLineEndDay() / 10000 - 1900;
@@ -894,18 +893,18 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
   if (iCount == lLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    lIndex = m_mapChinaMarketAStock.at(m_strCurrentStockDownLoading);
+    lIndex = m_mapChinaMarketAStock.at(pWebData->GetDownLoadingStockCode());
     // ASSERT(!m_vChinaMarketAStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
     // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
     if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
-      //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_strCurrentStockDownLoading));
+      //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
     else { // 已经退市的股票
       if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
         m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
-      //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(gl_strCurrentStockDownLoading));
+      //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
     m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
@@ -919,7 +918,7 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
   ASSERT(*pTestPos == *pCurrentPos);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!ProcessOneItemDayLineData(pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
+    if (!ProcessOneItemDayLineData(pWebData->GetDownLoadingStockCode(), pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
       TRACE("%s 日线数据出错\n", pDayLine->GetStockCode());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
@@ -993,7 +992,7 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength) {
+bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength) {
   long iCount = 0;
   static char buffer2[200], buffer3[100];
   long i = 0;
@@ -1031,8 +1030,8 @@ bool CMarket::ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos
 
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
-  pDayLine->SetStockCode(m_strCurrentStockDownLoading);
-  str = m_strCurrentStockDownLoading.Left(2);
+  pDayLine->SetStockCode(strStockCode);
+  str = strStockCode.Left(2);
   if (str == _T("sh")) {
     pDayLine->SetMarket(__SHANGHAI_MARKET__);
   }
@@ -1226,8 +1225,8 @@ bool CMarket::SchedulingTask(void)
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       gl_NeteaseDayLineWebData.GetWebData();
       // 需要删除一些全局变量方可使用
-      //gl_NeteaseDayLineWebDataSecond.GetWebData();
-      //gl_NeteaseDayLineWebDataThird.GetWebData();
+      gl_NeteaseDayLineWebDataSecond.GetWebData();
+      gl_NeteaseDayLineWebDataThird.GetWebData();
     }
   }
 
@@ -1332,7 +1331,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     }
 
     // 判断是否存储股票代码库
-    if (!IsDayLineNeedUpdate() && IsDayLineDataInquiringOnce() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+    if (!IsDayLineNeedUpdate() && IsDayLineDataInquiringOnce() && !gl_ThreadStatus.IsSavingDayLine() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
       m_fUpdatedStockCodeDataBase = true;
       TRACE("日线历史数据更新完毕\n");
       CString str;

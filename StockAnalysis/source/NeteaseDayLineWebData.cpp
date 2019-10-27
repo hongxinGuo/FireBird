@@ -64,7 +64,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void)
   // 准备网易日线数据申请格式
   m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
   if (m_fNeedProcessingCurrentWebData) {
-    m_strDownLoadingStockCode = strMiddle;
+    SetDownLoadingStockCode(strMiddle);
     strMiddle += _T("&start=");
     strMiddle += strStartDay;
     strMiddle += _T("&end=");
@@ -84,4 +84,21 @@ int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire) {
 
 void CNeteaseDayLineWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
+}
+
+void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode)
+{
+  CString str = strStockCode.Left(1);
+  CString strRight = strStockCode.Right(6);
+  if (str.Compare(_T("0")) == 0) {
+    m_strDownLoadingStockCode = _T("sh");
+    m_strDownLoadingStockCode += strRight;
+  }
+  else if (str.Compare(_T("1")) == 0) {
+    m_strDownLoadingStockCode = _T("sz");
+    m_strDownLoadingStockCode += strRight;
+  }
+  else {
+    m_strDownLoadingStockCode = strStockCode;
+  }
 }

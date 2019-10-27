@@ -26,7 +26,7 @@ bool gl_fNormalMode = false;              // ²âÊÔÄ£Ê½±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ĞèÒªÔÚÆ
 bool gl_fTestMode = true;                 // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³ÖĞÊ¹ÓÃÁËMySQLTestÇı¶¯£©¡£
 
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
-CSemaphore gl_SaveOneStockDayLine(3, 3);
-extern CSemaphore gl_SaveHistoryDayLineData(1, 1); // Ö»ÔÊĞíÔËĞĞÒ»¸öÖ´ĞĞ´æ´¢ÈÕÏßÀúÊ·Êı¾İµÄÏß³Ì£¬ÆäËû¶¼¹ÒÆğ
+CSemaphore gl_SaveOneStockDayLine(8, 8);
+CSemaphore gl_SaveHistoryDayLineData(1, 1); // Ö»ÔÊĞíÔËĞĞÒ»¸öÖ´ĞĞ´æ´¢ÈÕÏßÀúÊ·Êı¾İµÄÏß³Ì£¬ÆäËû¶¼¹ÒÆğ
 
 CMarket gl_ChinaStockMarket;              // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

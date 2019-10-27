@@ -130,8 +130,6 @@ public:
   bool          IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
   void          SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
-  void          SetDownLoadingStockCodeStr(CString str) { m_strCurrentStockDownLoading = str; }
-
   long          GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
   void          SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
   long          GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
@@ -159,7 +157,7 @@ public:
   bool          ProcessRTDataReceivedFromWeb(void);
   // 处理日线历史数据
   bool					ProcessDayLineData(CNeteaseDayLineWebData* pWebData);
-  bool					ProcessOneItemDayLineData(CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
+  bool					ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
   bool					ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
   bool          ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
@@ -193,7 +191,6 @@ public:
 protected:
 
   map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
-  CString                     m_strCurrentStockDownLoading; // 目前正在下载日线历史数据的股票代码
 
   // Option各选项
   long                        m_lRelativeStrongStartDay;
