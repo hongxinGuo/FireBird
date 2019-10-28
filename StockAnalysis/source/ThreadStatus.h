@@ -3,8 +3,10 @@
 #include"afxmt.h"
 
 #include"CriticalSectionBool.h"
+#include"CriticalSectionCounter.h"
 
 const int gl_cMaxCalculatingRSThreads = 8;
+const int gl_cMaxSavingDayLineThreads = 16;
 
 class CThreadStatus {    // 个线程状态
 public:
@@ -17,10 +19,6 @@ public:
   // 计算若干天日线相对强度与否和设置
   void SetCalculatingDayLineRS(bool fFlag) { m_CalculateDayLineRelativeStrong.SetFlag(fFlag); }
   bool IsCalculatingDayLineRS(void) { return m_CalculateDayLineRelativeStrong.IsTrue(); }
-
-  // 存储日线与否和设置
-  void SetSavingDayLine(bool fFlag) { m_SavingDayLine.SetFlag(fFlag); }
-  bool IsSavingDayLine(void) { return m_SavingDayLine.IsTrue(); }
 
   // 实时数据需要计算与否和设置
   void SetRTDataNeedCalculate(bool fFlag) { m_RTDataNeedCalculate.SetFlag(fFlag); }
@@ -39,20 +37,24 @@ public:
   bool IsSavingStockCodeData(void) { return m_SavingStockCodeData.IsTrue(); }
 
   // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculatingRSThreads(void);  // 同时运行线程数加一
-  void DecreaseNumberOfCalculatingRSThreads(void);  // 同时运行线程数减一
-  bool IsCalculatingRSThreadAvailable(void);        // 是否允许生成新的工作线程
-  bool IsCalculatingRSThreadRunning(void);          // 计算日线的线程是否处于运行中
+  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.IncreaseCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.DecreaseCounter(); } // 同时运行线程数减一
+  bool IsCalculatingRSThreadAvailable(void) { return m_CounterOfCalculatingRSThreads.IsCounterAvailable(); }  // 是否允许生成新的工作线程
+  bool IsCalculatingRS(void) { return m_CounterOfCalculatingRSThreads.IsActive(); }  // 计算日线的线程是否处于运行中
+
+  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.IncreaseCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.DecreaseCounter(); } // 同时运行线程数减一
+  bool IsSavingDayLineThreadAvailable(void) { return m_SavingDayLine.IsCounterAvailable(); }  // 是否允许生成新的工作线程
+  bool IsSavingDayLine(void) { return m_SavingDayLine.IsActive(); }  // 计算日线的线程是否处于运行中
 
 protected:
   CCriticalSectionBool m_ExitingThread;
   CCriticalSectionBool m_CalculateDayLineRelativeStrong;
-  CCriticalSectionBool m_SavingDayLine;
   CCriticalSectionBool m_RTDataNeedCalculate;
   CCriticalSectionBool m_CalculatingRTData;
   CCriticalSectionBool m_SavingTempData;
   CCriticalSectionBool m_SavingStockCodeData;
 
-  int m_iNumberOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
-  CCriticalSection m_NumberOfCalculatingRSThreads;
+  CCriticalSectionCounter m_SavingDayLine; // 这个要改为整型，最多允许8个，与RSthreads相似。
+  CCriticalSectionCounter m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
 };

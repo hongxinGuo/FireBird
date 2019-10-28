@@ -61,16 +61,21 @@ UINT ThreadReadCrweberIndex(LPVOID) {
 UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
 {
   // 传递过来的为携带智能指针的结构。
+  static int counter = 0;
   CStockPtr pStock;
   strTransferSharedPtr* pTransfer = nullptr;
 
+  gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
   CSingleLock singleLock(&gl_SaveOneStockDayLine);
   singleLock.Lock();
-
   CCriticalSection cs;
   CSingleLock s(&cs);
   s.Lock();
   if (s.IsLocked()) {
+    counter++;
+    if (counter > 16) {
+      int a = 0; // 测试用，counter不应该大于16
+    }
     pTransfer = (strTransferSharedPtr*)pParam;
     pStock = pTransfer->m_pStock;
     s.Unlock();
@@ -80,11 +85,13 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
 
   s.Lock();
   if (s.IsLocked()) {
+    counter--;
     pStock->m_vDayLine.clear();
     delete pTransfer;
     s.Unlock();
   }
   singleLock.Unlock();
+  gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
 
   return 13;
 }

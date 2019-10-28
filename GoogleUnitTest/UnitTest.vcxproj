@@ -94,6 +94,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionBool.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionClock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionCounter.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />

@@ -418,7 +418,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   CString str;
 
   if (gl_fResetSystem) {
-    while (gl_ThreadStatus.IsCalculatingRSThreadRunning() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
+    while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
       || gl_ThreadStatus.IsSavingDayLine()) {
       Sleep(10);
     }

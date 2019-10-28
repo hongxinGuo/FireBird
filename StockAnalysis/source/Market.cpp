@@ -830,8 +830,6 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
     m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(pDayLine->GetStockCode()))->SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
   ASSERT(lIndex >= 0);
-  m_vActiveStock.at(lIndex)->SetDayLineLoaded(true);
-  m_vActiveStock.at(lIndex)->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
   m_vActiveStock.at(lIndex)->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
@@ -843,6 +841,8 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
     }
   }
   vTempDayLine.clear();
+  m_vActiveStock.at(lIndex)->SetDayLineLoaded(true);
+  m_vActiveStock.at(lIndex)->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
 
   return true;
 }
@@ -1089,7 +1089,6 @@ bool CMarket::SchedulingTask(void)
       gl_NeteaseDayLineWebData.GetWebData();
       gl_NeteaseDayLineWebDataSecond.GetWebData();
       gl_NeteaseDayLineWebDataThird.GetWebData();
-      gl_NeteaseDayLineWebDataFourth.GetWebData();
     }
   }
 
@@ -1203,7 +1202,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       UpdateStockCodeDB();  // 更新股票池数据库
     }
 
-    if (IsDayLineNeedUpdate()) {
+    if (IsDayLineNeedUpdate() || gl_ThreadStatus.IsSavingDayLine()) {
       AfxBeginThread(ThreadSaveDayLine, nullptr);
     }
 
