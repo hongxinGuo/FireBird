@@ -54,8 +54,8 @@ UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
   gl_systemMessage.PushInformationMessage(str);
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lCurrentTradeDay);
   if (gl_systemTime.GetTime() > 150000) {   // 如果中国股市闭市了
-    gl_ChinaStockMarket.SaveStockCodeDataBase();  // 更新代码。
-    gl_ChinaStockMarket.UpdateOptionDataBase();   // 更新状态
+    gl_ChinaStockMarket.UpdateStockCodeDB();  // 更新代码。
+    gl_ChinaStockMarket.UpdateOptionDB();   // 更新状态
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);  // 设置今日已处理标识
   }
 

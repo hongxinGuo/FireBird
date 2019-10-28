@@ -3,6 +3,7 @@
 
 #include"stdafx.h"
 #include"globedef.h"
+#include"CriticalSectionclock.h"
 
 #include "Stock.h"
 #include"SetStockCode.h"
@@ -33,13 +34,6 @@ public:
   void          SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
 
   // 初始化市场
-  bool          SaveStockCodeDataBase(void);
-  void          LoadStockCodeDataBase(void);
-
-  bool          UpdateOptionDataBase(void);
-  void          LoadOptionDataBase(void);
-
-  bool          UpdateTempRTData(void);
 
   // 实时数据读取
   bool          CreateSinaRTDataInquiringStr(CString& str);
@@ -47,13 +41,11 @@ public:
   int						GetSinaInquiringStockStr(CString& str);
   int						GetTengxunInquiringStockStr(CString& str);
   int           GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
-  bool          GetSinaStockRTData(void);
   bool          GetTengxunStockRTData(void);
   void          ResetIT(void);    //重置各迭代器
 
   //日线历史数据读取
   bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
-  bool          GetNetEaseStockDayLineData(void);
 
   bool          IsAStock(CStockPtr pStock);			// 是否为沪深A股
   bool          IsAStock(CString strStockCode);			// 是否为沪深A股
@@ -82,7 +74,7 @@ public:
   void					SetShowStock(CStockPtr pStock);
   bool          IsCurrentStockChanged(void);
 
-  long					GetTotalStock(void) noexcept { return m_lTotalActiveStock; }
+  long					GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
 
   long					GetMinLineOffset(CStockID sID, time_t Time);
 
@@ -95,29 +87,29 @@ public:
   bool					SaveDayLine(CStockPtr pStock);
   bool          SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine);
 
-  // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool          SaveRTData(void);
+  // 数据库读取存储操作
+  bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
+  bool SaveDayLineData(void);  // 日线数据处理函数，将读取到的日线数据存入数据库中
+  bool SaveCrweberIndexData(void);  // crweber.com油运指数存储函数
+  bool UpdateStockCodeDB(void);
+  void LoadStockCodeDB(void);
+  bool UpdateOptionDB(void);
+  void LoadOptionDB(void);
+  bool UpdateTempRTData(void);
+  bool UpdateTodayTempDB(void);
+  bool LoadTodayTempDB(void);
 
-  // 日线数据处理函数，将读取到的日线数据存入数据库中
-  bool          SaveDayLineData(void);
+  bool ClearAllDayLineVector(void);
 
-  // crweber.com油运指数存储函数
-  bool          SaveCrweberIndexData(void);
+  // 是否有股票的历史日线数据需要更新。
+  bool IsDayLineNeedUpdate(void);
 
-  bool          ClearAllDayLineVector(void);
+  // 是否所有股票的历史日线数据都查询过一遍了
+  bool IsDayLineDataInquiringOnce(void);
 
-  // 是否所有股票的历史日线数据都更新过了。
-  bool          IsDayLineNeedUpdate(void);
+  long CompileCurrentTradeDayStock(long lCurrentTradeDay);
 
-  // 是否所有股票的历史日线数据都查询过了
-  bool          IsDayLineDataInquiringOnce(void);
-
-  long          CompileCurrentTradeDayStock(long lCurrentTradeDay);
-
-  bool          SaveTodayTempData(void);
-  bool          LoadTodayTempData(void);
-
-  bool          CalculateOneDayRelativeStrong(long lDay);
+  bool CalculateOneDayRelativeStrong(long lDay);
 
   bool					IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void					SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
@@ -143,12 +135,12 @@ public:
   size_t        GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long          GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  void          SetReadingSinaRTDataTime(clock_t tt);
-  clock_t       GetReadingSinaRTDataTime(void);
-  void          SetReadingTengxunRTDataTime(clock_t tt);
-  clock_t       GetReadingTengxunRTDataTime(void);
-  void          SetReadingNeteaseDayDataTime(clock_t tt);
-  clock_t       GetReadingNeteaseDayDataTime(void);
+  void SetReadingSinaRTDataTime(clock_t tt) { m_ReadingSinaRTDataTime.SetTime(tt); }
+  clock_t GetReadingSinaRTDataTime(void) { return m_ReadingSinaRTDataTime.GetTime(); }
+  void SetReadingTengxunRTDataTime(clock_t tt) { m_ReadingTengxunRTDataTime.SetTime(tt); }
+  clock_t GetReadingTengxunRTDataTime(void) { return m_ReadingTengxunRTDataTime.GetTime(); }
+  void SetReadingNeteaseDayDataTime(clock_t tt) { m_ReadingNeteaseDayDataTime.SetTime(tt); }
+  clock_t GetReadingNeteaseDayDataTime(void) { return m_ReadingNeteaseDayDataTime.GetTime(); }
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool          ProcessRTData(void);
@@ -225,12 +217,9 @@ protected:
   bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量，需要设置同步机制
-  clock_t                     m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
-  CCriticalSection            m_ReadingSinaRTDataTimeLock;
-  clock_t                     m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  CCriticalSection            m_ReadingTengxunRTDataTimeLock;
-  clock_t                     m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
-  CCriticalSection            m_ReadingNeteaseDayDataTimeLock;
+  CCriticalSectionClock m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
+  CCriticalSectionClock m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
+  CCriticalSectionClock m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
 
 private:
 };

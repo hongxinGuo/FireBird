@@ -16,7 +16,7 @@ UINT ThreadSaveTempRTData(LPVOID)
 
   gl_ThreadStatus.SetSavingTempData(true);
 
-  gl_ChinaStockMarket.SaveTodayTempData();
+  gl_ChinaStockMarket.UpdateTodayTempDB();
 
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 再次确认一下
   gl_ThreadStatus.SetSavingTempData(false);

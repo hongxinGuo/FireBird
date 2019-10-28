@@ -42,7 +42,7 @@ UINT ThreadCalculateRS(LPVOID) {
 
   while (gl_ThreadStatus.IsCalculatingRSThreadRunning()); // 等待所有的工作线程结束
 
-  gl_ChinaStockMarket.UpdateOptionDataBase(); // 更新选项数据库
+  gl_ChinaStockMarket.UpdateOptionDB(); // 更新选项数据库
 
   // 显示花费的时间
   time(&tEnd);

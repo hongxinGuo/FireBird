@@ -326,72 +326,6 @@ void CMarket::ResetIT(void) {
   m_itTengxunStock = m_vActiveStock.begin();
 }
 
-bool CMarket::GetSinaStockRTData(void)
-{
-  static int iCountUp = 0;
-  char* pCurrentPos = nullptr;
-  CRTDataPtr pRTData = nullptr;
-  long i = 0;
-  INT64 iTotalNumber = 0;
-
-  if (!gl_SinaRTWebData.IsReadingWebData()) {
-    if (gl_SinaRTWebData.IsWebDataReceived()) {
-      if (gl_SinaRTWebData.IsReadingSucceed()) { //网络通信一切顺利？
-        iTotalNumber = gl_SinaRTWebData.GetByteReaded();
-        pCurrentPos = gl_SinaRTWebData.GetBufferAddr();
-        long  iCount = 0;
-        while (iCount < iTotalNumber) { // 新浪实时数据基本没有错误，不需要抛掉最后一组数据了。
-          pRTData = make_shared<CRTData>();
-          if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
-            i++;
-            gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-          }
-          else {
-            TRACE("新浪实时数据有误,抛掉不用\n");
-            CString str;
-            str = _T("新浪实时数据有误");
-            gl_systemMessage.PushInformationMessage(str);
-            iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
-          }
-        }
-        TRACE("读入%d个新浪实时数据\n", i);
-        // 处理接收到的实时数据
-        ProcessRTDataReceivedFromWeb();
-      }
-      else {  // 网络通信出现错误
-        TRACE("Error reading http file ：hq.sinajs.cn\n");
-        CString str;
-        str = _T("Error reading http file ：hq.sinajs.cn");
-        gl_systemMessage.PushInformationMessage(str);
-      }
-    }
-
-    CString strMiddle = _T("");
-
-    // 申请下一批次新浪股票实时数据
-    if (m_fCheckTodayActiveStock || !SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-      if (CreateSinaRTDataInquiringStr(strMiddle)) {
-        if (++m_lCountLoopRTDataInquiring >= 3) {  // 遍历三遍全体股票池
-          if (!SystemReady()) { // 如果系统尚未设置好，则显示系统准备
-            gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
-          }
-          SetSystemReady(true); // 所有的股票实时数据都轮询三遍，当日活跃股票集已经建立，故而可以接受日线数据了。
-          ResetIT();
-        }
-      }
-      gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
-    }
-    else { // 开市时使用今日活跃股票池
-      GetSinaInquiringStockStr(strMiddle);
-      gl_SinaRTWebData.CreateTotalInquiringString(strMiddle);
-    }
-    gl_SinaRTWebData.SetWebDataReceived(false);
-    gl_SinaRTWebData.SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ThreadReadSinaRTData, nullptr);
-  }
-  return true;
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 腾讯实时行情读取函数。只有当系统准备完毕后，方可执行此函数。
@@ -674,75 +608,6 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
     }
   }
   return(lAmount);
-}
-
-void CMarket::SetReadingSinaRTDataTime(clock_t tt)
-{
-  CSingleLock singleLock(&m_ReadingSinaRTDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_ReadingSinaRTDataTime = tt;
-    singleLock.Unlock();
-  }
-}
-
-clock_t CMarket::GetReadingSinaRTDataTime(void)
-{
-  CSingleLock singleLock(&m_ReadingSinaRTDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    clock_t tt = m_ReadingSinaRTDataTime;
-    singleLock.Unlock();
-    return tt;
-  }
-  ASSERT(0);
-  return 0; // 此分支不可能执行到
-}
-
-void CMarket::SetReadingTengxunRTDataTime(clock_t tt)
-{
-  CSingleLock singleLock(&m_ReadingTengxunRTDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_ReadingTengxunRTDataTime = tt;
-    singleLock.Unlock();
-  }
-}
-
-clock_t CMarket::GetReadingTengxunRTDataTime(void)
-{
-  CSingleLock singleLock(&m_ReadingTengxunRTDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    clock_t tt = m_ReadingTengxunRTDataTime;
-    singleLock.Unlock();
-    return tt;
-  }
-  ASSERT(0);
-  return 0; // 此分支不可能执行到
-}
-
-void CMarket::SetReadingNeteaseDayDataTime(clock_t tt)
-{
-  CSingleLock singleLock(&m_ReadingNeteaseDayDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_ReadingNeteaseDayDataTime = tt;
-    singleLock.Unlock();
-  }
-}
-
-clock_t CMarket::GetReadingNeteaseDayDataTime(void)
-{
-  CSingleLock singleLock(&m_ReadingNeteaseDayDataTimeLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    clock_t tt = m_ReadingNeteaseDayDataTime;
-    singleLock.Unlock();
-    return tt;
-  }
-  ASSERT(0);
-  return 0; // 此分支不可能执行到
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1192,8 +1057,6 @@ bool CMarket::SchedulingTask(void)
 
   // 抓取实时数据(新浪和腾讯）
   if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
-    //GetSinaStockRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
-    // 采用统一制式调用网络采集函数
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
@@ -1217,14 +1080,13 @@ bool CMarket::SchedulingTask(void)
   if (SystemReady()) {
     // 装入之前存储的系统今日数据（如果有的话）
     if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
-      LoadTodayTempData();
+      LoadTodayTempDB();
       m_fTodayTempDataLoaded = true;
     }
 
     // 抓取日线数据
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       gl_NeteaseDayLineWebData.GetWebData();
-      // 需要删除一些全局变量方可使用
       gl_NeteaseDayLineWebDataSecond.GetWebData();
       gl_NeteaseDayLineWebDataThird.GetWebData();
     }
@@ -1337,7 +1199,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       CString str;
       str = _T("日线历史数据更新完毕");
       gl_systemMessage.PushInformationMessage(str);
-      SaveStockCodeDataBase();  // 更新股票池数据库
+      UpdateStockCodeDB();  // 更新股票池数据库
     }
 
     if (IsDayLineNeedUpdate()) {
@@ -1813,7 +1675,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 // 研究之。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SaveTodayTempData(void) {
+bool CMarket::UpdateTodayTempDB(void) {
   CSetDayLineToday setDayLineToday;
 
   // 存储今日生成的数据于DayLineToday表中。
@@ -1858,7 +1720,7 @@ bool CMarket::SaveTodayTempData(void) {
 // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
 // 故而此处这样计算。
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::LoadTodayTempData(void) {
+bool CMarket::LoadTodayTempDB(void) {
   CStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
   CRTDataPtr pRTData;
@@ -1871,7 +1733,7 @@ bool CMarket::LoadTodayTempData(void) {
     if (setDayLineToday.m_Time == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
-          ASSERT(!pStock->IsStartCalculating()); // 确保没有开始计算实时数据
+          ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
           // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
           // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
           // 故而LoadTempInfo需要特别处理。
@@ -1977,7 +1839,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   return(true);
 }
 
-bool CMarket::SaveStockCodeDataBase(void)
+bool CMarket::UpdateStockCodeDB(void)
 {
   CSetStockCode setStockCode;
 
@@ -2019,7 +1881,7 @@ bool CMarket::SaveStockCodeDataBase(void)
   return true;
 }
 
-void CMarket::LoadStockCodeDataBase(void)
+void CMarket::LoadStockCodeDB(void)
 {
   CSetStockCode setStockCode;
 
@@ -2064,7 +1926,7 @@ void CMarket::LoadStockCodeDataBase(void)
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CMarket::UpdateOptionDataBase(void)
+bool CMarket::UpdateOptionDB(void)
 {
   CSetOption setOption;
   setOption.Open();
@@ -2088,7 +1950,7 @@ bool CMarket::UpdateOptionDataBase(void)
   return false;
 }
 
-void CMarket::LoadOptionDataBase(void)
+void CMarket::LoadOptionDB(void)
 {
   CSetOption setOption;
   setOption.Open();

@@ -192,13 +192,13 @@ namespace StockAnalysisTest {
 
   TEST(StockTest, TestIsStartCalculating) {
     CStock stock;
-    EXPECT_FALSE(stock.IsStartCalculating());
-    EXPECT_FALSE(stock.SetStartCalculating(false)); // 不允许外部设置停止计算标识（内部可以）
-    EXPECT_FALSE(stock.IsStartCalculating());
-    EXPECT_TRUE(stock.SetStartCalculating(true));
-    EXPECT_TRUE(stock.IsStartCalculating());
-    EXPECT_FALSE(stock.SetStartCalculating(true));  // 不允许再次设置开始计算标识
-    EXPECT_TRUE(stock.IsStartCalculating());
+    EXPECT_FALSE(stock.HaveFirstRTData());
+    EXPECT_FALSE(stock.SetHavingFirstRTData(false)); // 不允许外部设置停止计算标识（内部可以）
+    EXPECT_FALSE(stock.HaveFirstRTData());
+    EXPECT_TRUE(stock.SetHavingFirstRTData(true));
+    EXPECT_TRUE(stock.HaveFirstRTData());
+    EXPECT_FALSE(stock.SetHavingFirstRTData(true));  // 不允许再次设置开始计算标识
+    EXPECT_TRUE(stock.HaveFirstRTData());
   }
 
   TEST(StockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试

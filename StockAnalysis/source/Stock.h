@@ -123,8 +123,8 @@ public:
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
 
-  bool IsStartCalculating(void) noexcept { return m_fStartCalculating; }
-  bool SetStartCalculating(bool fFlag) noexcept { if (m_fStartCalculating || !fFlag) return false; m_fStartCalculating = fFlag; return true; }
+  bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
+  bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
 
   void UpdateStatus(CRTDataPtr pRTData); // 更新当前各变量状态
 
@@ -261,7 +261,7 @@ protected:
   deque<CRTDataPtr>     m_dequeRTData;  // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection      m_RTDataLock;   // 实时数据队列的同步锁
 
-  bool                  m_fStartCalculating;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+  bool                  m_fHaveFirstRTData;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
 
   bool			            m_fChoiced;									// 此股票是否是自选股票.
   bool			            m_fMinLineUpdated;					// 今天的分钟资料是否更新过.

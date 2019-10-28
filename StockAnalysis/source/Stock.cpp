@@ -77,7 +77,7 @@ void CStock::Reset(void) {
   m_fMinLineUpdated = false;
   m_fDayLineUpdated = false;
 
-  m_fStartCalculating = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+  m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_pLastRTData = nullptr;
 
   ClearRTDataDeque();
@@ -326,7 +326,7 @@ bool CStock::ProcessRTData(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
-  if (IsStartCalculating()) { // 如果开始计算（第二次收到实时数据及以后）
+  if (HaveFirstRTData()) { // 如果开始计算（第二次收到实时数据及以后）
     CalculateOneRTData(pRTData);
   }
   else { // 第一次收到实时数据，则只初始化系统而不计算
@@ -342,7 +342,7 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
 ////////////////////////////////////////////////////////////////////////////////////////
 void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   SetLastRTDataPtr(pRTData);
-  SetStartCalculating(true);
+  SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
   // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
   // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
@@ -661,7 +661,7 @@ bool CStock::CheckCurrentRTData() {
     if (m_lAttackSellVolume < 0) j += 8;
     if (m_lStrongBuyVolume < 0) j += 16;
     if (m_lStrongSellVolume < 0) j += 32;
-    TRACE("%06d %s Error in volume. Error  code = %d\n", gl_systemTime.GetTime(), m_strStockCode, j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_systemTime.GetTime(), m_strStockCode, j);
     return false;
   }
   return true;

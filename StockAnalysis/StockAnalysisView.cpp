@@ -98,7 +98,7 @@ bool CStockAnalysisView::ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int
 }
 
 bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart) {
-  if (gl_ChinaStockMarket.GetTotalStock() > 0) {
+  if (gl_ChinaStockMarket.GetTotalActiveStock() > 0) {
     pStock = gl_ChinaStockMarket.GetStockPtr(0); // 600000
   }
   else return false;

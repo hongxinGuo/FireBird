@@ -161,7 +161,7 @@ namespace StockAnalysisTest {
     &GuaDan5, &GuaDan6, &GuaDan7, &GuaDan8, &GuaDan9, &GuaDan10));
 
   TEST_P(RTDataGuaDanTest, TestGuaDan) {
-    EXPECT_FALSE(m_stock.IsStartCalculating());
+    EXPECT_FALSE(m_stock.HaveFirstRTData());
     m_stock.SetLastRTDataPtr(pLastData);
     m_stock.SetCurrentTransactionType(iType);
     m_stock.AnalysisGuaDan(pCurrentData, lPrice);

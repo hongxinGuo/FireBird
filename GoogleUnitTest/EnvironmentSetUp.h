@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
         setStockCode.MoveNext();
       }
       setStockCode.Close();
-      EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 0);
+      EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     }
 
     virtual void TearDown(void) {

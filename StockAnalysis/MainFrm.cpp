@@ -100,8 +100,8 @@ void CMainFrame::Reset(void)
   // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
 
   // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
-  gl_ChinaStockMarket.LoadStockCodeDataBase();
-  gl_ChinaStockMarket.LoadOptionDataBase();
+  gl_ChinaStockMarket.LoadStockCodeDB();
+  gl_ChinaStockMarket.LoadOptionDB();
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
@@ -119,7 +119,7 @@ CMainFrame::~CMainFrame()
 
   gl_ExitingSystem.SetFlag(true);
 
-  gl_ChinaStockMarket.UpdateOptionDataBase();
+  gl_ChinaStockMarket.UpdateOptionDB();
 
   while (gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(10); // 等待处理日线历史数据的线程结束。
@@ -131,7 +131,7 @@ CMainFrame::~CMainFrame()
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-  gl_ChinaStockMarket.SaveStockCodeDataBase(); // 这里直接调用存储函数，不采用工作线程的模式。
+  gl_ChinaStockMarket.UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
 
   TRACE("finally exited\n");
 }
@@ -448,7 +448,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
 
   // 显示活跃股票总数
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetTotalStock());
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetTotalActiveStock());
   str = buffer;
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
@@ -663,7 +663,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
       // next stock
       pStock = gl_ChinaStockMarket.GetShowStock();
       gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-      if (lIndex < gl_ChinaStockMarket.GetTotalStock()) lIndex++;
+      if (lIndex < gl_ChinaStockMarket.GetTotalActiveStock()) lIndex++;
       pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
       gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;

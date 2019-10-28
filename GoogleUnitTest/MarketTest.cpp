@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMarketTest, TestInitialize) {
-    EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 0);
+    EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_EQ(gl_ChinaStockMarket.m_pCurrentStock, nullptr);
@@ -190,7 +190,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMarketTest, TestIsStock) {
     CStockPtr pstock;
-    EXPECT_GT(gl_ChinaStockMarket.GetTotalStock(), 1);
+    EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 1);
     EXPECT_TRUE(gl_ChinaStockMarket.IsStock(_T("sh600000"), pstock));
     EXPECT_NE(pstock, nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsStock(_T("sh60000"), pstock));

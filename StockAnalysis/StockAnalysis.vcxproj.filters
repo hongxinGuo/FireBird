@@ -159,10 +159,13 @@
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="source\TransferSharedPtr.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
     <ClInclude Include="source\CriticalSectionBool.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\TransferSharedPtr.h">
+    <ClInclude Include="source\CriticalSectionClock.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
@@ -306,6 +309,9 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CriticalSectionBool.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CriticalSectionClock.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
