@@ -878,6 +878,14 @@ long CStock::GetRTDataDequeSize(void)
   return 0;
 }
 
+bool CStock::IsHavingTodayData(void)
+{
+  if ((GetHigh() == 0) && (GetLow() == 0) && (GetAmount() == 0) && (GetVolume() == 0)) {
+    return false;
+  }
+  else return true;
+}
+
 #ifdef _DEBUG
 void CStock::AssertValid() const
 {

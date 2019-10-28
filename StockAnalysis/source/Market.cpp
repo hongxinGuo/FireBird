@@ -1089,6 +1089,7 @@ bool CMarket::SchedulingTask(void)
       gl_NeteaseDayLineWebData.GetWebData();
       gl_NeteaseDayLineWebDataSecond.GetWebData();
       gl_NeteaseDayLineWebDataThird.GetWebData();
+      gl_NeteaseDayLineWebDataFourth.GetWebData();
     }
   }
 
@@ -1405,9 +1406,10 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
     s.Unlock();
   }
 
+  // 不再即时更新代码库了
+  /*
   setStockCode.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
   setStockCode.Open();
-
   setStockCode.m_pDatabase->BeginTrans();
   setStockCode.AddNew();
   setStockCode.m_Counter = pStockID->GetOffset();
@@ -1420,7 +1422,7 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   setStockCode.Update();
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.Close();
-
+  */
   return true;
 }
 
@@ -1597,8 +1599,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
       gl_systemMessage.PushInformationMessage(_T("当前活跃股票中存在nullptr"));
       continue; // 空置位置。应该不存在。
     }
-    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
-      && (pStock->GetVolume() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (!pStock->IsHavingTodayData()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     iCount++;
@@ -1649,8 +1650,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 
   setDayLineInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
-      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (!pStock->IsHavingTodayData()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     setDayLineInfo.AddNew();

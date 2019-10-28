@@ -170,6 +170,8 @@ public:
   bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
   bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
 
+  bool IsHavingTodayData(void);
+
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
