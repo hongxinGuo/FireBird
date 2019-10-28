@@ -2,6 +2,36 @@
 
 #include"Accessory.h"
 
+CStockCalculatedInfo::CStockCalculatedInfo() {
+  m_dRelativeStrong = 0;
+  m_lAttackBuyAmount = 0;
+  m_lAttackSellAmount = 0;
+  m_lCurrentVolume = 0;
+  m_lAttackBuyVolume = 0;
+  m_lCurrentAttackBuy = 0;
+  m_lAttackSellVolume = 0;
+  m_lCurrentAttackSell = 0;
+  m_lStrongBuyVolume = 0;
+  m_lCurrentStrongBuy = 0;
+  m_lStrongSellVolume = 0;
+  m_lCurrentStrongSell = 0;
+  m_lUnknownVolume = 0;
+  m_lCurrentUnknown = 0;
+  m_lCancelBuyVolume = 0;
+  m_lCancelSellVolume = 0;
+  m_lTransactionNumber = 0;
+  m_lTransactionNumberBelow5000 = 0;
+  m_lTransactionNumberBelow50000 = 0;
+  m_lTransactionNumberBelow200000 = 0;
+  m_lTransactionNumberAbove200000 = 0;
+
+  m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
+  m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
+}
+
+CStockCalculatedInfo::~CStockCalculatedInfo() {
+}
+
 void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)
 {
   setDayLineInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);

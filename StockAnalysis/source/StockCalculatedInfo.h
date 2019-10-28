@@ -6,8 +6,8 @@
 
 class CStockCalculatedInfo {
 public:
-  CStockCalculatedInfo() {}
-  ~CStockCalculatedInfo() {}
+  CStockCalculatedInfo();
+  ~CStockCalculatedInfo();
   void Reset(void) {}
 
   void StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo);

@@ -46,8 +46,8 @@ public:
   double GetCPP_USGCBS(void) { return m_dCPP_USGCBS; }
 
 public:
-  double m_lID;
-  double m_lDay;
+  long m_lID;
+  long m_lDay;
   double m_dTD1;
   double m_dTD2;
   double m_dTD3C;

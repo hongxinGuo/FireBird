@@ -1,8 +1,7 @@
 #include"stdafx.h"
 
-#include "CrweberIndex.h"
-
 #include"Accessory.h"
+#include "CrweberIndex.h"
 
 CCrweberIndex::CCrweberIndex() {
   m_lID = 0;
@@ -46,19 +45,19 @@ void CCrweberIndex::SetData(CSetCrweberIndex* pSetCrweberIndex) {
   m_dTC4 = atof(pSetCrweberIndex->m_TC4);
   m_dTC5 = atof(pSetCrweberIndex->m_TC5);
   m_dTC14 = atof(pSetCrweberIndex->m_TC14);
+  m_dVLCC_TC_1YEAR = atof(pSetCrweberIndex->m_VLCC_TC_1YEAR);
   m_dCPP_USGCBS = atof(pSetCrweberIndex->m_CPP_USGCBS);
-  m_dVLCC_TC_1YEAR == atof(pSetCrweberIndex->m_VLCC_TC_1YEAR);
-  m_dSUEZMAX_TC_1YEAR == atof(pSetCrweberIndex->m_SUEZMAX_TC_1YEAR);
-  m_dAFRAMAX_TC_1YEAR == atof(pSetCrweberIndex->m_AFRAMAX_TC_1YEAR);
-  m_dPANAMAX_TC_1YEAR == atof(pSetCrweberIndex->m_PANAMAX_TC_1YEAR);
-  m_dMR_TC_1YEAR == atof(pSetCrweberIndex->m_MR_TC_1YEAR);
-  m_dHANDY_TC_1YEAR == atof(pSetCrweberIndex->m_HANDY_TC_1YEAR);
-  m_dVLCC_TC_3YEAR == atof(pSetCrweberIndex->m_VLCC_TC_3YEAR);
-  m_dSUEZMAX_TC_3YEAR == atof(pSetCrweberIndex->m_SUEZMAX_TC_3YEAR);
-  m_dAFRAMAX_TC_3YEAR == atof(pSetCrweberIndex->m_AFRAMAX_TC_3YEAR);
-  m_dPANAMAX_TC_3YEAR == atof(pSetCrweberIndex->m_PANAMAX_TC_3YEAR);
-  m_dMR_TC_3YEAR == atof(pSetCrweberIndex->m_MR_TC_3YEAR);
-  m_dHANDY_TC_3YEAR == atof(pSetCrweberIndex->m_HANDY_TC_3YEAR);
+  m_dSUEZMAX_TC_1YEAR = atof(pSetCrweberIndex->m_SUEZMAX_TC_1YEAR);
+  m_dAFRAMAX_TC_1YEAR = atof(pSetCrweberIndex->m_AFRAMAX_TC_1YEAR);
+  m_dPANAMAX_TC_1YEAR = atof(pSetCrweberIndex->m_PANAMAX_TC_1YEAR);
+  m_dMR_TC_1YEAR = atof(pSetCrweberIndex->m_MR_TC_1YEAR);
+  m_dHANDY_TC_1YEAR = atof(pSetCrweberIndex->m_HANDY_TC_1YEAR);
+  m_dVLCC_TC_3YEAR = atof(pSetCrweberIndex->m_VLCC_TC_3YEAR);
+  m_dSUEZMAX_TC_3YEAR = atof(pSetCrweberIndex->m_SUEZMAX_TC_3YEAR);
+  m_dAFRAMAX_TC_3YEAR = atof(pSetCrweberIndex->m_AFRAMAX_TC_3YEAR);
+  m_dPANAMAX_TC_3YEAR = atof(pSetCrweberIndex->m_PANAMAX_TC_3YEAR);
+  m_dMR_TC_3YEAR = atof(pSetCrweberIndex->m_MR_TC_3YEAR);
+  m_dHANDY_TC_3YEAR = atof(pSetCrweberIndex->m_HANDY_TC_3YEAR);
 }
 
 void CCrweberIndex::SaveData(CSetCrweberIndex* pSetCrweberIndex) {

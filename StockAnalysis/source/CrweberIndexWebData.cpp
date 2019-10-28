@@ -3,12 +3,6 @@
 #include"thread.h"
 #include"market.h"
 
-#include"boost/property_tree/xml_parser.hpp"
-
-using namespace boost;
-using namespace property_tree;
-using namespace xml_parser;
-
 #include "CrweberIndexWebData.h"
 
 bool CCrweberIndexWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
@@ -155,8 +149,11 @@ long CCrweberIndexWebData::ConvertStringToTime(CString str) {
   pChar++;
   buffer1[i] = 0x000;
   CString strTime = buffer1;
-  int month, day, year;
+  int month = 1, day, year;
   if (strTime.Compare(_T("October")) == 0) month = 10;
+  else if (strTime.Compare(_T("November")) == 0) month = 11;
+  else if (strTime.Compare(_T("December")) == 0) month = 12;
+
   i = 0;
   while (*pChar != ' ') buffer1[i++] = *pChar++;
   pChar++;

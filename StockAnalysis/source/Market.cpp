@@ -1347,10 +1347,6 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     if (IsDayLineDataInquiringOnce()) {
       m_fGetDayLineData = false;
     }
-
-    // 测试用
-        // 每小时自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
