@@ -16,8 +16,10 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
+    EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
 
     long l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -33,13 +35,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsExitingThread());
     gl_ThreadStatus.SetExitingThread(false);
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
-  }
-
-  TEST(SystemStatusTest, TestIsDataBase) {
-    gl_ThreadStatus.SetSavingDayLine(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
-    gl_ThreadStatus.SetSavingDayLine(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
   }
 
   TEST(SystemStatusTest, TestIsRTDataNeedCalculate) {
@@ -71,7 +66,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestIsCalculatingRS) {
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
       gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
@@ -80,9 +75,25 @@ namespace StockAnalysisTest {
     for (int i = 0; i < gl_cMaxCalculatingRSThreads - 1; i++) {
       gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
-      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
+      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRS());
     }
     gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+  }
+
+  TEST(SystemStatusTest, TestIsSavingDayLine) {
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
+    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多3个线程
+      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
+      gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
+    }
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
+    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
+      gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
+      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
+      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
+    }
+    gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
   }
 }

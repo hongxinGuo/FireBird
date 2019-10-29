@@ -131,6 +131,7 @@ void COutputWnd::UpdateFonts()
   m_wndOutputCancelSell.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputTrace2.SetFont(&afxGlobalData.fontRegular);
+  m_wndOutputInnerSystemInformation.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -298,6 +299,20 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
       m_wndOutputTrace2.AddString(str2);
     }
     m_wndOutputTrace2.SetTopIndex(m_wndOutputTrace2.GetCount() - 1);
+  }
+
+  if (m_wndOutputInnerSystemInformation.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
+    for (int i = 0; i < 1000; i++) {
+      m_wndOutputInnerSystemInformation.DeleteString(0);
+    }
+  }
+  if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
+    for (int i = 0; i < lTotal; i++) {
+      str = gl_systemMessage.PopInnerSystemInformationMessage();
+      str2 = strTime + _T(": ") + str;
+      m_wndOutputInnerSystemInformation.AddString(str2);
+    }
+    m_wndOutputInnerSystemInformation.SetTopIndex(m_wndOutputInnerSystemInformation.GetCount() - 1);
   }
 
   // 调用基类的OnTimer函数

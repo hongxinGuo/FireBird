@@ -50,8 +50,8 @@ public:
   CString PopTrace2Message(void) { return m_Trace2.PopMessage(); }
   long GetTrace2DequeSize(void) { return m_Trace2.GetDequeSize(); }
 
-  void PushInnerSystemInformation(CString str) { m_InnerSystemInformation.PushMessage(str); }
-  CString PopInnerSystemInformation(void) { return m_InnerSystemInformation.PopMessage(); }
+  void PushInnerSystemInformationMessage(CString str) { m_InnerSystemInformation.PushMessage(str); }
+  CString PopInnerSystemInformationMessage(void) { return m_InnerSystemInformation.PopMessage(); }
   long GetInnerSystemInformationDequeSize(void) { return m_InnerSystemInformation.GetDequeSize(); }
 
 protected:
