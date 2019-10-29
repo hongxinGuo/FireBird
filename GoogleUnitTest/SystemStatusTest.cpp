@@ -37,12 +37,12 @@ namespace StockAnalysisTest {
 
   TEST(SystemStatusTest, TestIsDataBase) {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    for (int i = 0; i < gl_cMaxSavingDayLineThreads; i++) {  // 目前采用最多8个线程
+    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多8个线程
       EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
       gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
     }
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
-    for (int i = 0; i < gl_cMaxSavingDayLineThreads - 1; i++) {
+    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
       gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
       EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
       EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());

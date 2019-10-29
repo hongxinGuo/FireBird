@@ -2,11 +2,12 @@
 
 #include"afxmt.h"
 
+#include"globedef.h"
+
 #include"CriticalSectionBool.h"
 #include"CriticalSectionCounter.h"
 
 const int gl_cMaxCalculatingRSThreads = 8;
-const int gl_cMaxSavingDayLineThreads = 4;
 
 class CThreadStatus {    // ¸öÏß³Ì×´Ì¬
 public:

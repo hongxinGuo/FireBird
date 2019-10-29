@@ -13,7 +13,7 @@ CThreadStatus::CThreadStatus() {
   }
 
   m_CounterOfCalculatingRSThreads.SetMaxCounter(gl_cMaxCalculatingRSThreads);
-  m_SavingDayLine.SetMaxCounter(gl_cMaxSavingDayLineThreads);
+  m_SavingDayLine.SetMaxCounter(gl_cMaxSavingOneDayLineThreads);
 }
 
 CThreadStatus::~CThreadStatus()

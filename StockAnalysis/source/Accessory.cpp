@@ -42,14 +42,9 @@ CString ConvertValueToString(long lValue, int iDividend)
   double d = ((double)lValue) / iDividend;
   CString str;
 
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    s.Unlock();
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+
   return str;
 }
 
@@ -59,14 +54,9 @@ CString ConvertValueToString(int iValue, int iDividend)
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    s.Unlock();
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+
   return str;
 }
 
@@ -76,14 +66,9 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    s.Unlock();
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+
   return str;
 }
 
@@ -93,13 +78,8 @@ CString ConvertValueToString(double dValue, int iDividend)
   double d = dValue / iDividend;
   CString str;
 
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    s.Unlock();
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+
   return str;
 }
