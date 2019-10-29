@@ -3,7 +3,7 @@
 
 UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
 {
-  // 传递过来的为携带智能指针的结构。
+  // 传递过来的为携带智能指针的结构（只能指针无法经由pParam直接传递过来
   CStockPtr pStock;
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
