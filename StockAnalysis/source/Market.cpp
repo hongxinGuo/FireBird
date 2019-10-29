@@ -1352,10 +1352,16 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   StockIDPtr pStockID;
   CDayLinePtr pDayLine;
 
-  lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-  pStockID = m_vChinaMarketAStock.at(lIndex);
-  lSize = pStock->m_vDayLine.size();
-  setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
+  CCriticalSection cs;
+  CSingleLock s(&cs);
+  s.Lock();
+  if (s.IsLocked()) {
+    lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
+    pStockID = m_vChinaMarketAStock.at(lIndex);
+    lSize = pStock->m_vDayLine.size();
+    setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
+    s.Unlock();
+  }
 
   setDayLine.Open();
   setDayLine.m_pDatabase->BeginTrans();
@@ -1388,9 +1394,13 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   setDayLine.Close();
 
   // 更新最新日线日期和起始日线日期
-  if (pStockID->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
-    pStockID->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
-    pStockID->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
+  s.Lock();
+  if (s.IsLocked()) {
+    if (pStockID->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
+      pStockID->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
+      pStockID->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
+    }
+    s.Unlock();
   }
 
   return true;

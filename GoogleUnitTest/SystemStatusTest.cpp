@@ -16,7 +16,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
 
     long l = gl_systemMessage.GetInformationDequeSize();
@@ -36,18 +36,9 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestIsDataBase) {
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多8个线程
-      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
-      gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
-    }
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
-      gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
-      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());
-      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
-    }
-    gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
+    gl_ThreadStatus.SetSavingDayLine(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
+    gl_ThreadStatus.SetSavingDayLine(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
   }
 
@@ -80,7 +71,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(SystemStatusTest, TestIsCalculatingRS) {
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
       gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
@@ -89,9 +80,9 @@ namespace StockAnalysisTest {
     for (int i = 0; i < gl_cMaxCalculatingRSThreads - 1; i++) {
       gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
-      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRS());
+      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
     }
     gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRSThreadRunning());
   }
 }

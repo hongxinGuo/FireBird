@@ -18,8 +18,6 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
     return 13;
   }
   gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
-  //CCriticalSection cs;
-  //CSingleLock s(&cs);
   pTransfer = (strTransferSharedPtr*)pParam;
   pStock = pTransfer->m_pStock;
 
