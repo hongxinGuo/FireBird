@@ -104,6 +104,8 @@ public:
   // 是否有股票的历史日线数据需要更新。
   bool IsDayLineNeedUpdate(void);
 
+  bool IsDayLineNeedSaving(void);
+
   // 是否所有股票的历史日线数据都查询过一遍了
   bool IsDayLineDataInquiringOnce(void);
 
@@ -171,6 +173,7 @@ public:
   bool										    m_fGetRTStockData;        // 读取实时数据标识
   bool                        m_fReadingTengxunRTData; // 读取腾讯实时行情
   bool										    m_fGetDayLineData;        // 读取日线历史数据标识
+  bool   m_fSaveDayLine; // 将读取的日线存入数据库标识
   int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
   int                         m_iCountDownSlowReadingRTData;  // 慢速读取实时数据计数器
 

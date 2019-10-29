@@ -69,6 +69,8 @@ void CMarket::Reset(void)
     ResetIT();  // 重置实时股票代码查询迭代器
   }
 
+  m_fGetDayLineData = m_fSaveDayLine = false;
+
   m_fTodayTempDataLoaded = false;
 
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。
@@ -814,10 +816,6 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
     else lIndex = m_mapActiveStockToIndex.at(pDayLine->GetStockCode());
     //if ((pDayLine->m_lClose != 0) && (pDayLine->m_lOpen != 0)) { // 如果数据有效，则存储此日线数据（退市后的日线数据是无效的）。
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
-  /*}
-  else {
-    int i111 = 0;
-  }*/
   }
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
@@ -1084,11 +1082,12 @@ bool CMarket::SchedulingTask(void)
       m_fTodayTempDataLoaded = true;
     }
 
-    // 抓取日线数据
+    // 抓取日线数据.
+    // 最多使用三个引擎，否则容易被网易服务器拒绝服务
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       gl_NeteaseDayLineWebData.GetWebData();
       gl_NeteaseDayLineWebDataSecond.GetWebData();
-      gl_NeteaseDayLineWebDataThird.GetWebData();
+      //gl_NeteaseDayLineWebDataThird.GetWebData();
     }
   }
 
@@ -1192,22 +1191,29 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
       }
     }
 
-    // 判断是否存储股票代码库
-    if (!IsDayLineNeedUpdate() && IsDayLineDataInquiringOnce() && !gl_ThreadStatus.IsSavingDayLine() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
-      m_fUpdatedStockCodeDataBase = true;
-      TRACE("日线历史数据更新完毕\n");
-      CString str;
-      str = _T("日线历史数据更新完毕");
-      gl_systemMessage.PushInformationMessage(str);
-      UpdateStockCodeDB();  // 更新股票池数据库
+    if (m_fGetDayLineData) {
+      m_fSaveDayLine = true;
+      if (IsDayLineDataInquiringOnce()) {
+        m_fGetDayLineData = false;
+      }
     }
 
-    if (IsDayLineNeedUpdate() || gl_ThreadStatus.IsSavingDayLine()) {
-      AfxBeginThread(ThreadSaveDayLine, nullptr);
-    }
-
-    if (IsDayLineDataInquiringOnce()) {
-      m_fGetDayLineData = false;
+    // 判断是否存储日线库和股票代码库
+    if (m_fSaveDayLine) {
+      gl_ChinaStockMarket.SaveDayLineData();
+      if (!m_fGetDayLineData) {
+        if (!IsDayLineNeedUpdate() && IsDayLineDataInquiringOnce() && !gl_ThreadStatus.IsSavingDayLine() && !m_fUpdatedStockCodeDataBase) { // 如果所有股票都检查过且存储日线进数据库的线程已经运行结束
+          m_fUpdatedStockCodeDataBase = true;
+          TRACE("日线历史数据更新完毕\n");
+          CString str;
+          str = _T("日线历史数据更新完毕");
+          gl_systemMessage.PushInformationMessage(str);
+          UpdateStockCodeDB();  // 更新股票池数据库
+        }
+        if (!IsDayLineNeedSaving() && !gl_ThreadStatus.IsSavingDayLine()) {
+          m_fSaveDayLine = false;
+        }
+      }
     }
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
@@ -1343,10 +1349,6 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   CSetStockCode setStockCode;
   CSetDayLine setDayLine;
 
-  CString str = _T("[ID] = 1"); // 采用主键作为搜索Index。
-  setDayLine.m_strFilter = str; // 必须设置，否则会把所有的数据读入，浪费时间
-  setDayLine.Open();
-
   long lIndex = 0;
   long lSize = 0;
   StockIDPtr pStockID;
@@ -1359,16 +1361,14 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
     lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
     pStockID = m_vChinaMarketAStock.at(lIndex);
     lSize = pStock->m_vDayLine.size();
+    setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
     s.Unlock();
   }
 
+  setDayLine.Open();
   setDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    s.Lock();
-    if (s.IsLocked()) {
-      pDayLine = pStock->m_vDayLine.at(i);
-      s.Unlock();
-    }
+    pDayLine = pStock->m_vDayLine.at(i);
     if (pStockID->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
     setDayLine.AddNew();
     setDayLine.m_Time = pDayLine->GetDay();
@@ -1459,6 +1459,7 @@ bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool CMarket::SaveDayLineData(void) {
+  CString str;
   strTransferSharedPtr* pTransfer = nullptr;
 
   for (auto pStock : m_vActiveStock) {
@@ -1467,17 +1468,13 @@ bool CMarket::SaveDayLineData(void) {
         pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
         pTransfer->m_pStock = pStock;
         AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
-
-        //SaveDayLine(pStock);
-        //pStock->m_vDayLine.clear();
       }
       else {
         CString str1 = pStock->GetStockCode();
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
-      pStock->SetDayLineLoaded(false);
-      CString str = pStock->GetStockCode();
+      str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
@@ -1546,6 +1543,14 @@ bool CMarket::SaveCrweberIndexData(void) {
 bool CMarket::IsDayLineNeedUpdate(void) {
   for (auto pStockID : m_vChinaMarketAStock) {
     if (pStockID->IsDayLineNeedUpdate()) return true;
+  }
+  return false;
+}
+
+bool CMarket::IsDayLineNeedSaving(void)
+{
+  for (auto pStock : m_vActiveStock) {
+    if (pStock->IsDayLineNeedSaving()) return true;
   }
   return false;
 }
@@ -1980,8 +1985,14 @@ void CMarket::LoadOptionDB(void)
   }
 
   // 判断是否需要读取日线历史数据
-  if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) m_fGetDayLineData = false;
-  else m_fGetDayLineData = true;
+  if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) {
+    m_fGetDayLineData = false;
+    m_fSaveDayLine = false;
+  }
+  else {
+    m_fGetDayLineData = true;
+    m_fSaveDayLine = true;
+  }
 
   setOption.Close();
 }

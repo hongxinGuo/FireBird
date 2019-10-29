@@ -6,11 +6,12 @@
 #include"CriticalSectionCounter.h"
 
 const int gl_cMaxCalculatingRSThreads = 8;
-const int gl_cMaxSavingDayLineThreads = 16;
+const int gl_cMaxSavingDayLineThreads = 4;
 
 class CThreadStatus {    // 个线程状态
 public:
   CThreadStatus();
+  ~CThreadStatus();
 
   // 线程退出与否状态和设置。此标志用于系统退出，当所有必须关闭的线程关闭后方可允许系统退出，否则系统就要等待。
   void SetExitingThread(bool fFlag) { m_ExitingThread.SetFlag(fFlag); }

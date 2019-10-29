@@ -1,19 +1,35 @@
 #include"Market.h"
+#include"TransferSharedPtr.h"
 
-UINT ThreadSaveDayLine(LPVOID) {
-  static int counter = 0;
-  CSingleLock singleLock(&gl_SaveHistoryDayLineData);
+UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
+{
+  // 传递过来的为携带智能指针的结构。
+  CStockPtr pStock;
+  CString str;
+  strTransferSharedPtr* pTransfer = nullptr;
 
+  CSingleLock singleLock(&gl_SaveOneStockDayLine);
   singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    counter++;
-    if (counter > 1) {
-      int a = 0;
-    }
-    gl_ChinaStockMarket.SaveDayLineData();
-    counter--;
+
+  if (gl_ExitingSystem.IsTrue()) {
+    pTransfer = (strTransferSharedPtr*)pParam;
+    delete pTransfer;
     singleLock.Unlock();
+    return 13;
   }
+  gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
+  //CCriticalSection cs;
+  //CSingleLock s(&cs);
+  pTransfer = (strTransferSharedPtr*)pParam;
+  pStock = pTransfer->m_pStock;
+
+  gl_ChinaStockMarket.SaveDayLine(pStock);
+
+  pStock->SetDayLineLoaded(false);
+  pStock->m_vDayLine.clear();
+  delete pTransfer;
+  gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
+  singleLock.Unlock();
 
   return 6;
 }

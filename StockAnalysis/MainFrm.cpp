@@ -518,8 +518,12 @@ void CMainFrame::OnDownloadDayline()
   // TODO: 在此添加命令处理程序代码
   if (!gl_ChinaStockMarket.m_fGetDayLineData) {
     gl_ChinaStockMarket.m_fGetDayLineData = true;
+    gl_ChinaStockMarket.m_fSaveDayLine = true;
   }
-  else gl_ChinaStockMarket.m_fGetDayLineData = false;
+  else {
+    gl_ChinaStockMarket.m_fGetDayLineData = false;
+    gl_ChinaStockMarket.m_fSaveDayLine = false;
+  }
 }
 
 void CMainFrame::OnSaveDaylineData()

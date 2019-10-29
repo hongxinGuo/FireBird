@@ -8,11 +8,8 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//#include"Stock.h"
 #include"Market.h"
 #include "Thread.h"
-
-#include"TransferSharedPtr.h"
 
 UINT ThreadReadCrweberIndex(LPVOID) {
   CInternetSession session;
@@ -56,42 +53,4 @@ UINT ThreadReadCrweberIndex(LPVOID) {
   gl_CrweberIndexWebData.SetReadingWebData(false);
 
   return 12;
-}
-
-UINT ThreadSaveDayLineOfOneStock(LPVOID pParam)
-{
-  // 传递过来的为携带智能指针的结构。
-  static int counter = 0;
-  CStockPtr pStock;
-  strTransferSharedPtr* pTransfer = nullptr;
-
-  gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
-  CSingleLock singleLock(&gl_SaveOneStockDayLine);
-  singleLock.Lock();
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    counter++;
-    if (counter > 16) {
-      int a = 0; // 测试用，counter不应该大于16
-    }
-    pTransfer = (strTransferSharedPtr*)pParam;
-    pStock = pTransfer->m_pStock;
-    s.Unlock();
-  }
-
-  gl_ChinaStockMarket.SaveDayLine(pStock);
-
-  s.Lock();
-  if (s.IsLocked()) {
-    counter--;
-    pStock->m_vDayLine.clear();
-    delete pTransfer;
-    s.Unlock();
-  }
-  singleLock.Unlock();
-  gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
-
-  return 13;
 }

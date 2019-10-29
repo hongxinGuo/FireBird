@@ -34,7 +34,6 @@ extern CTengxunRTWebData  gl_TengxunRTWebData;  // ÌÚÑ¶ÊµÊ±Êı¾İ²É¼¯
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.comÉÏµÄÃ¿ÈÕÓÍÔËÖ¸Êı
 
 extern CCrweberIndex gl_CrweberIndex;
@@ -56,7 +55,6 @@ extern bool gl_fTestMode;                       // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨Ó
 
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
 extern CSemaphore gl_SaveOneStockDayLine;
-extern CSemaphore gl_SaveHistoryDayLineData;
 
 class CMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
