@@ -19,19 +19,19 @@ public:
   void Reset(void);
 
   // 通用接口函数
-  void              PushRTData(CRTDataPtr pData);
-  CRTDataPtr   PopRTData(void);
-  long              GetRTDataSize(void);
+  void PushRTData(CRTDataPtr pData);
+  CRTDataPtr PopRTData(void);
+  long GetRTDataSize(void);
 
   // 采用队列的函数
-  void              PushDequeRTData(CRTDataPtr pData);
-  CRTDataPtr   PopDequeRTData(void);
-  long              GetDequeRTDataSize(void);
+  void PushDequeRTData(CRTDataPtr pData);
+  CRTDataPtr PopDequeRTData(void);
+  long GetDequeRTDataSize(void);
 
   // 采用有优先级队列的函数
-  void              PushPriorityRTData(CRTDataPtr pData);
-  CRTDataPtr   PopPriorityRTData(void);
-  long              GetPriorityRTDataSize(void);
+  void PushPriorityRTData(CRTDataPtr pData);
+  CRTDataPtr PopPriorityRTData(void);
+  long GetPriorityRTDataSize(void);
 
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。
   struct cmpRTData {
@@ -53,11 +53,11 @@ protected:
   //   }
   // };
 
-  // 目前使用队列实现
-  queue<CRTDataPtr>  m_queueRTStockData;
-  CCriticalSection        m_RTDataLock;
+  // 目前使用队列实现（停用
+  queue<CRTDataPtr> m_queueRTStockData;
+  CCriticalSection  m_RTDataLock;
 
-  // 准备使用有优先级的队列实现
+  // 准备使用有优先级的队列实现(已实现）
   priority_queue<CRTDataPtr, vector<CRTDataPtr>, cmpRTData>  m_priorityqueueRTStockData;
-  CCriticalSection        m_PriorityRTDataLock;
+  CCriticalSection  m_PriorityRTDataLock;
 };

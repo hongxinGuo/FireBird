@@ -40,6 +40,7 @@ protected:
   COutputList m_wndOutputCancelSell;
   COutputList m_wndOutputCancelBuy;
   COutputList m_wndOutputTrace2;
+  COutputList m_wndOutputInnerSystemInformation;
 
   UINT        m_uIdTimer;
 

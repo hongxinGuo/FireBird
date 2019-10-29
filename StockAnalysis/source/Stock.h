@@ -129,7 +129,7 @@ public:
   void UpdateStatus(CRTDataPtr pRTData); // 更新当前各变量状态
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  bool LoadDayLine(void);
+  bool LoadDayLineAndDayLineInfo(void); // 此函数加载
   bool LoadDayLine(CSetDayLine* psetDayLine);
   bool LoadDayLineInfo(CSetDayLineInfo* psetDayLine);
   bool CalculateDayLineRS(void);
@@ -170,7 +170,7 @@ public:
   bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
   bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
 
-  bool IsHavingTodayData(void);
+  bool TodayDataIsActive(void);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

@@ -9,6 +9,10 @@ CSystemDeque::~CSystemDeque() {
   m_dequeMessage.clear();
 }
 
+CSystemMessage::~CSystemMessage()
+{
+}
+
 void CSystemDeque::PushMessage(CString str)
 {
   CSingleLock singleLock(&m_Lock);
@@ -54,8 +58,4 @@ CSystemMessage::CSystemMessage()
     TRACE("系统消息只允许一个实例\n");
     gl_systemMessage.PushInformationMessage(_T("错误：系统不允许生成多个CMarket实例"));
   }
-}
-
-CSystemMessage::~CSystemMessage()
-{
 }

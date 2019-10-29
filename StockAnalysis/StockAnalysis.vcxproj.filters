@@ -43,6 +43,18 @@
     <Filter Include="源文件\辅助类和函数">
       <UniqueIdentifier>{c15f47f1-9278-47e2-8f5d-465ca7ccf999}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Market">
+      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Market">
+      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Crweber.com">
+      <UniqueIdentifier>{0046b2db-442f-404f-85e7-0fd6b6512cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Crweber.com">
+      <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StockAnalysis.h">
@@ -93,38 +105,20 @@
     <ClInclude Include="source\DayLine.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\Market.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\OneDeal.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\RTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\Stock.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StockID.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SystemMessage.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SystemTime.h">
-      <Filter>头文件\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\Thread.h">
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\工作线程</Filter>
-    </ClInclude>
-    <ClInclude Include="QueueRTData.h">
-      <Filter>头文件\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\NeteaseDayLineWebData.h">
       <Filter>头文件\网络通信</Filter>
@@ -147,15 +141,6 @@
     <ClInclude Include="source\SetDayLineToday.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\CrweberIndex.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StockCalculatedInfo.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StockBasicInfo.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -169,6 +154,33 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\CriticalSectionCounter.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Market.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Stock.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockBasicInfo.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockCalculatedInfo.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockID.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndex.h">
+      <Filter>头文件\Crweber.com</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SystemMessage.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SystemTime.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,29 +227,14 @@
     <ClCompile Include="source\DayLine.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\Market.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\OneDeal.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\RTData.cpp">
       <Filter>源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="source\Stock.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockID.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SystemMessage.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SystemTime.cpp">
-      <Filter>源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\Thread.cpp">
       <Filter>源文件\工作线程</Filter>
@@ -272,9 +269,6 @@
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="QueueRTData.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\NeteaseDayLineWebData.cpp">
       <Filter>源文件\网络通信</Filter>
     </ClCompile>
@@ -299,15 +293,6 @@
     <ClCompile Include="source\SetDayLineToday.cpp">
       <Filter>源文件\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\CrweberIndex.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockCalculatedInfo.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockBasicInfo.cpp">
-      <Filter>源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -318,6 +303,33 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CriticalSectionCounter.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Market.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Stock.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockBasicInfo.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockCalculatedInfo.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockID.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberIndex.cpp">
+      <Filter>源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SystemMessage.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SystemTime.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>

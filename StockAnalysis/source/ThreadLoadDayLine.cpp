@@ -15,7 +15,7 @@ UINT ThreadLoadDayLine(LPVOID) {
   ASSERT(!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded());
 
   // 装入日线数据
-  gl_ChinaStockMarket.m_pCurrentStock->LoadDayLine();
+  gl_ChinaStockMarket.m_pCurrentStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度
   gl_ChinaStockMarket.m_pCurrentStock->CalculateDayLineRS();
 

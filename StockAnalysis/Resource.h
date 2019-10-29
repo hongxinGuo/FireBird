@@ -35,6 +35,8 @@
 #define IDS_CANCEL_BUY_TAB              304
 #define IDS_TRACE2_TAB                  305
 #define IDS_EDIT_MENU                   306
+#define IDS_TRACE2_TAB2                 307
+#define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
 #define ID_COMPILE_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_RELATIVE_STRONG    32773
@@ -69,7 +71,7 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310

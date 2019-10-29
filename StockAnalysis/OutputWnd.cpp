@@ -52,7 +52,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
     !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
     !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
     !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
-    !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7))
+    !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
+    !m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8))
   {
     TRACE0("未能创建输出窗口\n");
     return -1;      // 未能创建
@@ -82,6 +83,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   bNameValid = strTabName.LoadString(IDS_TRACE2_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)5);
+  bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2);
+  ASSERT(bNameValid);
+  m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)6);
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据
   m_uIdTimer = SetTimer(3, 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。

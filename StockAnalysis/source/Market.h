@@ -157,8 +157,14 @@ public:
   bool          ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
   // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用
-  bool          SchedulingTask(void);
-  bool          SchedulingTaskPerSecond(long lSecondNumber);
+  bool SchedulingTask(void);
+  bool SchedulingTaskPerSecond(long lSecondNumber);
+  bool SchedulingTaskPerHour(long lSecondNumber);
+  bool SchedulingTaskPer5Minutes(long lSecondNumber);
+  bool SchedulingTaskPer1Minute(long lSecondNumber);
+  bool SchedulingTaskPer10Seconds(long lSecondNumber);
+  void ResetSystemFlagAtMidnight(long lCurrentTime);
+  void SaveTempDataIntoDB(long lCurrentTime);
 
 private:
   // 初始化

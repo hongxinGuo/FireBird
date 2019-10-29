@@ -202,7 +202,7 @@ void CStock::UpdateStatus(CRTDataPtr pRTData)
   }
 }
 
-bool CStock::LoadDayLine(void) {
+bool CStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
 
@@ -878,7 +878,7 @@ long CStock::GetRTDataDequeSize(void)
   return 0;
 }
 
-bool CStock::IsHavingTodayData(void)
+bool CStock::TodayDataIsActive(void)
 {
   if ((GetHigh() == 0) && (GetLow() == 0) && (GetAmount() == 0) && (GetVolume() == 0)) {
     return false;

@@ -1109,41 +1109,16 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   static int i10SecondsCounter = 9; // 十秒一次的计数器
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
   static int i5MinuteCounter = 299; // 五分钟一次的计数器
-  static int i1HourCounter = 3599; // 一小时一次的计数器
-  const long lTime = gl_systemTime.GetTime();
+  const long lCurrentTime = gl_systemTime.GetTime();
 
-  // 计算每一小时一次的任务
-  if (i1HourCounter <= 0) {
-    i1HourCounter = 3599;
-
-    // 每小时自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
-  }
-  else i1HourCounter -= lSecondNumber;
+  SchedulingTaskPerHour(lSecondNumber);
 
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
 
-    // 午夜过后重置各种标识
-    if (lTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
-      m_fPermitResetSystem = true;
-      CString str;
-      str = _T(" 重置系统重置标识");
-      gl_systemMessage.PushInformationMessage(str);
-    }
-
-    // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-    if (m_fSystemReady) {
-      if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
-        if (((lTime > 93000) && (lTime < 113600)) || ((lTime > 130000) && (lTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
-          CString str;
-          str = _T(" 存储临时数据");
-          gl_systemMessage.PushInformationMessage(str);
-          UpdateTempRTData();
-        }
-      }
-    }
+    ResetSystemFlagAtMidnight(lCurrentTime);
+    SaveTempDataIntoDB(lCurrentTime);
   } // 每五分钟一次的任务
   else i5MinuteCounter -= lSecondNumber;
 
@@ -1154,7 +1129,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 九点十三分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime >= 91300) && (lTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
       }
@@ -1162,7 +1137,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 
     // 九点二十五分再次重启系统
     if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lTime >= 92500) && (lTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
         gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
         m_fPermitResetSystem = false; // 今天不再允许重启系统。
@@ -1170,7 +1145,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     }
 
     // 判断中国股票市场开市状态
-    if ((lTime < 91500) || (lTime > 150630) || ((lTime > 113500) && (lTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+    if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
       m_fMarketOpened = false;
     }
     else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
@@ -1179,13 +1154,13 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     else m_fMarketOpened = true;
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
-    if (((lTime >= 91500) && (lTime < 92900)) || ((lTime >= 113100) && (lTime < 125900))) {
+    if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
       m_fCheckTodayActiveStock = true;
     }
     else m_fCheckTodayActiveStock = false;
 
     // 下午三点一分开始处理当日实时数据。
-    if ((lTime >= 150100) && !IsTodayStockCompiled()) {
+    if ((lCurrentTime >= 150100) && !IsTodayStockCompiled()) {
       if (SystemReady()) {
         AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
         SetTodayStockCompiledFlag(true);
@@ -1232,6 +1207,46 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   }
 
   return true;
+}
+
+bool CMarket::SchedulingTaskPerHour(long lSecondNumber) {
+  static int i1HourCounter = 3599; // 一小时一次的计数器
+
+                                   // 计算每一小时一次的任务
+  if (i1HourCounter <= 0) {
+    i1HourCounter = 3599;
+
+    // 每小时自动查询crweber.com
+    gl_CrweberIndexWebData.GetWebData();
+  }
+  else i1HourCounter -= lSecondNumber;
+
+  return true;
+}
+
+void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
+  // 午夜过后重置各种标识
+  if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
+    m_fPermitResetSystem = true;
+    CString str;
+    str = _T(" 重置系统重置标识");
+    gl_systemMessage.PushInformationMessage(str);
+  }
+}
+
+void CMarket::SaveTempDataIntoDB(long lCurrentTime)
+{
+  // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
+  if (m_fSystemReady) {
+    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+      if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
+        CString str;
+        str = _T(" 存储临时数据");
+        gl_systemMessage.PushInformationMessage(str);
+        UpdateTempRTData();
+      }
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1584,7 +1599,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
       gl_systemMessage.PushInformationMessage(_T("当前活跃股票中存在nullptr"));
       continue; // 空置位置。应该不存在。
     }
-    if (!pStock->IsHavingTodayData()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     iCount++;
@@ -1635,7 +1650,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 
   setDayLineInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if (!pStock->IsHavingTodayData()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     setDayLineInfo.AddNew();

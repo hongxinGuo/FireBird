@@ -4,7 +4,7 @@
 #include "SystemMessage.h"
 
 // 目前使用deque队列存储实时数据，故此变量初始值设置为假。在测试使用priority_queue成功后，即弃用deque(此标识永远为真）。
-bool gl_fUsingPriorityQueue = true;
+#define __fUsingPriorityQueue__
 
 CQueueRTData::CQueueRTData()
 {
@@ -43,18 +43,27 @@ void CQueueRTData::Reset(void)
 }
 
 void CQueueRTData::PushRTData(CRTDataPtr pData) {
-  if( gl_fUsingPriorityQueue)  PushPriorityRTData(pData);
-  else PushDequeRTData(pData);
+#ifdef __fUsingPriorityQueue__
+  PushPriorityRTData(pData);
+#else
+  PushDequeRTData(pData);
+#endif
 }
 
 CRTDataPtr CQueueRTData::PopRTData(void) {
-  if( gl_fUsingPriorityQueue) return(PopPriorityRTData());
-  else return(PopDequeRTData());
+#ifdef __fUsingPriorityQueue__
+  return(PopPriorityRTData());
+#else
+  return(PopDequeRTData());
+#endif
 }
 
 long CQueueRTData::GetRTDataSize(void) {
-  if(gl_fUsingPriorityQueue) return(GetPriorityRTDataSize());
-  else return(GetDequeRTDataSize());
+#ifdef __fUsingPriorityQueue__
+  return(GetPriorityRTDataSize());
+#else
+  return(GetDequeRTDataSize());
+#endif
 }
 
 void CQueueRTData::PushDequeRTData(CRTDataPtr pData)
