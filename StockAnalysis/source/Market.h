@@ -30,62 +30,62 @@ public:
   // interface function
 public:
   // 系统状态区
-  bool          IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
-  void          SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
+  bool IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
+  void SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
 
   // 初始化市场
 
   // 实时数据读取
-  bool          CreateSinaRTDataInquiringStr(CString& str);
-  bool          CreateTengxunRTDataInquiringStr(CString& str);
-  int						GetSinaInquiringStockStr(CString& str);
-  int						GetTengxunInquiringStockStr(CString& str);
-  int           GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
-  bool          GetTengxunStockRTData(void);
-  void          ResetIT(void);    //重置各迭代器
+  bool CreateSinaRTDataInquiringStr(CString& str);
+  bool CreateTengxunRTDataInquiringStr(CString& str);
+  int GetSinaInquiringStockStr(CString& str);
+  int	GetTengxunInquiringStockStr(CString& str);
+  int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
+  bool GetTengxunStockRTData(void);
+  void ResetIT(void); //重置各迭代器
 
   //日线历史数据读取
-  bool          CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
 
-  bool          IsAStock(CStockPtr pStock);			// 是否为沪深A股
-  bool          IsAStock(CString strStockCode);			// 是否为沪深A股
-  bool          IsStock(CString  strStockCode, CStockPtr& pStock);	// 是否为正确的股票代码
+  bool IsAStock(CStockPtr pStock); // 是否为沪深A股
+  bool IsAStock(CString strStockCode); // 是否为沪深A股
+  bool IsStock(CString  strStockCode, CStockPtr& pStock);	// 是否为正确的股票代码
 
-  CString			  GetStockName(CString strStockCode);
+  CString GetStockName(CString strStockCode);
 
   // 得到股票索引
-  bool			    GetStockIndex(CString strStockCode, long& lIndex);
+  bool GetStockIndex(CString strStockCode, long& lIndex);
   // 得到股票指针
-  CStockPtr			GetStockPtr(CString strStockCode);
-  CStockPtr     GetStockPtr(long lIndex);
+  CStockPtr GetStockPtr(CString strStockCode);
+  CStockPtr GetStockPtr(long lIndex);
 
   // 存储新股票指针入活跃股票池
-  void          AddStockToMarket(CStockPtr pStock);
+  void AddStockToMarket(CStockPtr pStock);
 
   // 初始化实时数据计数器
-  bool          CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
+  bool CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
 
   // 得到股票ID指针
-  bool          GetStockIDPtr(CString strStockCode, StockIDPtr& pStockIDPtr);
+  bool GetStockIDPtr(CString strStockCode, StockIDPtr& pStockIDPtr);
 
   // 得到当前显示股票
-  CStockPtr     GetShowStock(void) noexcept { return m_pCurrentStock; }
-  void					SetShowStock(CString strStockCode);
-  void					SetShowStock(CStockPtr pStock);
-  bool          IsCurrentStockChanged(void);
+  CStockPtr GetShowStock(void) noexcept { return m_pCurrentStock; }
+  void SetShowStock(CString strStockCode);
+  void SetShowStock(CStockPtr pStock);
+  bool IsCurrentStockChanged(void);
 
-  long					GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
+  long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
 
-  long					GetMinLineOffset(CStockID sID, time_t Time);
+  long GetMinLineOffset(CStockID sID, time_t Time);
 
-  bool					SystemReady(void) noexcept { return m_fSystemReady; }
-  void          SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
+  bool SystemReady(void) noexcept { return m_fSystemReady; }
+  void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-  bool          IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
-  void          SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
+  bool IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
+  void SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
 
-  bool					SaveDayLine(CStockPtr pStock);
-  bool          SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine);
+  bool SaveDayLine(CStockPtr pStock);
+  bool SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine);
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -113,29 +113,29 @@ public:
 
   bool CalculateOneDayRelativeStrong(long lDay);
 
-  bool					IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
-  void					SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
+  bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
+  void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
 
-  bool          IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
+  bool IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
 
-  bool          IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
-  void          SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
+  bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
+  void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool          IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
-  void          SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
+  bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
+  void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
-  long          GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
-  void          SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
-  long          GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
-  void          SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
-  long          GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
-  void          SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
+  long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
+  void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
+  long GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
+  void SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
+  long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
+  void SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
 
-  INT64	        GetTotalAttackBuyAmount(void);
-  INT64         GetTotalAttackSellAmount(void);
+  INT64 GetTotalAttackBuyAmount(void);
+  INT64 GetTotalAttackSellAmount(void);
 
-  size_t        GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
-  long          GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
+  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
+  long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
   void SetReadingSinaRTDataTime(clock_t tt) { m_ReadingSinaRTDataTime.SetTime(tt); }
   clock_t GetReadingSinaRTDataTime(void) { return m_ReadingSinaRTDataTime.GetTime(); }
@@ -145,85 +145,85 @@ public:
   clock_t GetReadingNeteaseDayDataTime(void) { return m_ReadingNeteaseDayDataTime.GetTime(); }
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
-  bool          ProcessRTData(void);
+  bool ProcessRTData(void);
 
   //处理实时股票变化等
-  bool          ProcessRTDataReceivedFromWeb(void);
+  bool ProcessRTDataReceivedFromWeb(void);
   // 处理日线历史数据
-  bool					ProcessDayLineData(CNeteaseDayLineWebData* pWebData);
-  bool					ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
+  bool ProcessDayLineData(CNeteaseDayLineWebData* pWebData);
+  bool ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
-  bool					ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
-  bool          ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
+  bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
+  bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
   // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用
   bool SchedulingTask(void);
   bool SchedulingTaskPerSecond(long lSecondNumber);
-  bool SchedulingTaskPerHour(long lSecondNumber);
-  bool SchedulingTaskPer5Minutes(long lSecondNumber);
-  bool SchedulingTaskPer1Minute(long lSecondNumber);
-  bool SchedulingTaskPer10Seconds(long lSecondNumber);
+  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime);
+  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime);
+  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime);
+  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime);
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
 
 private:
   // 初始化
-  bool            CreateTotalStockContainer(void);    // 此函数是构造函数的一部分，不允许单独调用。
+  bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
 
-  CStockPtr                   m_pCurrentStock;          // 当前显示的股票
-  char                        m_aStockCodeTemp[30];
-  bool                        m_fCurrentEditStockChanged;
-  bool                        m_fMarketOpened;          // 是否开市
-  bool										    m_fGetRTStockData;        // 读取实时数据标识
-  bool                        m_fReadingTengxunRTData; // 读取腾讯实时行情
-  bool										    m_fGetDayLineData;        // 读取日线历史数据标识
-  bool   m_fSaveDayLine; // 将读取的日线存入数据库标识
-  int                         m_iCountDownDayLine;        // 日线数据读取延时计数。
-  int                         m_iCountDownSlowReadingRTData;  // 慢速读取实时数据计数器
+  CStockPtr m_pCurrentStock; // 当前显示的股票
+  char m_aStockCodeTemp[30];
+  bool m_fCurrentEditStockChanged;
+  bool m_fMarketOpened; // 是否开市
+  bool m_fGetRTStockData; // 读取实时数据标识
+  bool m_fReadingTengxunRTData; // 读取腾讯实时行情
+  bool m_fGetDayLineData;  // 读取日线历史数据标识
+  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
+  int m_iCountDownDayLine; // 日线数据读取延时计数。
+  int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
 
-  vector<StockIDPtr>	        m_vChinaMarketAStock;             // 本系统允许的所有股票池（无论代码是否存在）
+  vector<StockIDPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
 
-  vector<StockIDPtr>          gl_vStockChoice;      // 自选股票池
+  vector<StockIDPtr> gl_vStockChoice; // 自选股票池
 
-  vector<CrweberIndexPtr>    gl_vCrweberIndex;     // crweber.com网站上的油运指数
+  vector<CrweberIndexPtr> gl_vCrweberIndex; // crweber.com网站上的油运指数
 
 protected:
 
-  map<CString, long>	        m_mapChinaMarketAStock;		// 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+  map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 
   // Option各选项
-  long                        m_lRelativeStrongStartDay;
-  long                        m_lRelativeStrongEndDay;
-  long                        m_lLastLoginDay;            // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+  long m_lRelativeStrongStartDay;
+  long m_lRelativeStrongEndDay;
+  long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
-  map<CString, long>          m_mapActiveStockToIndex;		// 将市场活跃的股票代码映射为偏移量
-  vector<CStockPtr>						m_vActiveStock;									//当天股票数据
+  map<CString, long> m_mapActiveStockToIndex;	// 将市场活跃的股票代码映射为偏移量
+  vector<CStockPtr> m_vActiveStock;	//当天股票数据
 
-  long												m_lTotalActiveStock;						// 当天股票总数
+  long m_lTotalActiveStock;	// 当天股票总数
 
-  vector<CStockPtr>::iterator m_itSinaStock;        // 新浪实时股票代码查询迭代器
-  vector<CStockPtr>::iterator m_itTengxunStock;     // 腾讯实时股票代码迭代器
+  vector<CStockPtr>::iterator m_itSinaStock; // 新浪实时股票代码查询迭代器
+  vector<CStockPtr>::iterator m_itTengxunStock; // 腾讯实时股票代码迭代器
 
-  vector<CStockPtr>           m_vpSelectedStock;		// 当前选择的股票
-  bool												m_fLoadedSelectedStock;
+  vector<CStockPtr> m_vpSelectedStock; // 当前选择的股票
+  bool m_fLoadedSelectedStock;
 
-  bool                        m_fCurrentStockChanged;   // 当前选择的股票改变了
-  INT64										    m_lTotalMarketBuy;				// 沪深市场中的A股向上买入金额
-  INT64										    m_lTotalMarketSell;					// 沪深市场中的A股向下卖出金额
+  bool m_fCurrentStockChanged; // 当前选择的股票改变了
+  INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
+  INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
-  long                        m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
+  long m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
 
-  bool                        m_fCalculatingRS;
+  bool m_fCalculatingRS;
 
   // 系统状态区
-  bool                        m_fPermitResetSystem;     // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
-  bool												m_fSystemReady;					// 市场初始态已经设置好
-  bool                        m_fTodayStockCompiled;        // 今日是否执行了股票收盘
-  bool                        m_fUpdatedStockCodeDataBase;  //是否更新了日线历史数据库标识
-  bool                        m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
-  bool                        m_fTodayTempDataLoaded;      //今日暂存的临时数据是否加载标识。
+  bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
+  bool m_fSystemReady; // 市场初始态已经设置好
+  bool m_fTodayStockCompiled; // 今日是否执行了股票收盘
+  bool m_fUpdatedStockCodeDataBase; //是否更新了日线历史数据库标识
+  bool m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
+  bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量，需要设置同步机制
   CCriticalSectionClock m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间

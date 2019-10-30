@@ -786,7 +786,7 @@ bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
     if (!ProcessOneItemDayLineData(pWebData->GetDownLoadingStockCode(), pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
-      TRACE("%s 日线数据出错\n", pDayLine->GetStockCode());
+      TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
@@ -1106,12 +1106,42 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 {
-  static int i10SecondsCounter = 9; // 十秒一次的计数器
-  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
-  static int i5MinuteCounter = 299; // 五分钟一次的计数器
   const long lCurrentTime = gl_systemTime.GetTime();
 
-  SchedulingTaskPerHour(lSecondNumber);
+  // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
+  SchedulingTaskPerHour(lSecondNumber, lCurrentTime);
+  SchedulingTaskPer5Minutes(lSecondNumber, lCurrentTime);
+  SchedulingTaskPer1Minute(lSecondNumber, lCurrentTime);
+  SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
+
+  // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
+  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+    if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
+      gl_ThreadStatus.SetCalculatingRTData(true);
+      AfxBeginThread(ThreadCalculateRTData, nullptr);
+    }
+  }
+
+  return true;
+}
+
+bool CMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) {
+  static int i1HourCounter = 3599; // 一小时一次的计数器
+
+                                   // 计算每一小时一次的任务
+  if (i1HourCounter <= 0) {
+    i1HourCounter = 3599;
+
+    // 每小时自动查询crweber.com
+    gl_CrweberIndexWebData.GetWebData();
+  }
+  else i1HourCounter -= lSecondNumber;
+
+  return true;
+}
+
+bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
+  static int i5MinuteCounter = 299; // 五分钟一次的计数器
 
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {
@@ -1121,6 +1151,37 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     SaveTempDataIntoDB(lCurrentTime);
   } // 每五分钟一次的任务
   else i5MinuteCounter -= lSecondNumber;
+
+  return true;
+}
+
+void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
+  // 午夜过后重置各种标识
+  if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
+    m_fPermitResetSystem = true;
+    CString str;
+    str = _T(" 重置系统重置标识");
+    gl_systemMessage.PushInformationMessage(str);
+  }
+}
+
+void CMarket::SaveTempDataIntoDB(long lCurrentTime)
+{
+  // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
+  if (m_fSystemReady) {
+    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+      if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
+        CString str;
+        str = _T(" 存储临时数据");
+        gl_systemMessage.PushInformationMessage(str);
+        UpdateTempRTData();
+      }
+    }
+  }
+}
+
+bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
+  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
@@ -1191,6 +1252,12 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
+  return true;
+}
+
+bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) {
+  static int i10SecondsCounter = 9; // 十秒一次的计数器
+
   // 计算每十秒钟一次的任务
   if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 9;
@@ -1198,55 +1265,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   } // 每十秒钟一次的任务
   else i10SecondsCounter -= lSecondNumber;
 
-  // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
-    if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
-      gl_ThreadStatus.SetCalculatingRTData(true);
-      AfxBeginThread(ThreadCalculateRTData, nullptr);
-    }
-  }
-
   return true;
-}
-
-bool CMarket::SchedulingTaskPerHour(long lSecondNumber) {
-  static int i1HourCounter = 3599; // 一小时一次的计数器
-
-                                   // 计算每一小时一次的任务
-  if (i1HourCounter <= 0) {
-    i1HourCounter = 3599;
-
-    // 每小时自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
-  }
-  else i1HourCounter -= lSecondNumber;
-
-  return true;
-}
-
-void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
-  // 午夜过后重置各种标识
-  if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
-    m_fPermitResetSystem = true;
-    CString str;
-    str = _T(" 重置系统重置标识");
-    gl_systemMessage.PushInformationMessage(str);
-  }
-}
-
-void CMarket::SaveTempDataIntoDB(long lCurrentTime)
-{
-  // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-  if (m_fSystemReady) {
-    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
-      if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
-        CString str;
-        str = _T(" 存储临时数据");
-        gl_systemMessage.PushInformationMessage(str);
-        UpdateTempRTData();
-      }
-    }
-  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

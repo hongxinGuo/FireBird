@@ -55,33 +55,18 @@
     <Filter Include="头文件\Crweber.com">
       <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Windows界面">
+      <UniqueIdentifier>{ff91081d-aab4-4a5b-8015-494761ebc4f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\windows界面">
+      <UniqueIdentifier>{7f374a32-c51a-484f-9711-e3e79cc75b9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StockAnalysis.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ChildFrm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StockAnalysisDoc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StockAnalysisView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputWnd.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="source\SetChoicedStock.h">
@@ -183,27 +168,30 @@
     <ClInclude Include="QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="StockAnalysis.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="StockAnalysisDoc.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="StockAnalysisView.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StockAnalysis.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StockAnalysisDoc.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StockAnalysisView.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputWnd.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\SetChoicedStock.cpp">
@@ -331,6 +319,24 @@
     </ClCompile>
     <ClCompile Include="QueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="StockAnalysis.cpp">
+      <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="StockAnalysisDoc.cpp">
+      <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="StockAnalysisView.cpp">
+      <Filter>源文件\windows界面</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

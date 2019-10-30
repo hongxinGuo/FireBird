@@ -57,6 +57,6 @@ protected:
   CCriticalSectionBool m_SavingTempData;
   CCriticalSectionBool m_SavingStockCodeData;
 
-  CCriticalSectionCounter m_SavingDayLine; // 这个要改为整型，最多允许8个，与RSthreads相似。
+  CCriticalSectionCounter m_SavingDayLine; // 存储日线历史数据的计数器
   CCriticalSectionCounter m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
 };
