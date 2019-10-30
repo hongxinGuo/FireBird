@@ -76,36 +76,36 @@ public:
 
 protected:
   // 以下变量用于分析买入卖出具体情况
-  INT64	    m_lAttackBuyAmount;		// 向上买入金额
-  INT64     m_lAttackSellAmount;	// 向下卖出金额
-  INT64	    m_lCurrentVolume;
+  INT64 m_lAttackBuyAmount;		// 向上买入金额
+  INT64 m_lAttackSellAmount;	// 向下卖出金额
+  INT64 m_lCurrentVolume;
 
-  double    m_dRelativeStrong; // 单位：1%
-  long      m_lTransactionNumber; // 本交易日的成交笔数
-  long      m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
-  long      m_lTransactionNumberBelow50000; //
-  long      m_lTransactionNumberBelow200000; //
-  long      m_lTransactionNumberAbove200000; //
+  double m_dRelativeStrong; // 单位：1%
+  long m_lTransactionNumber; // 本交易日的成交笔数
+  long m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
+  long m_lTransactionNumberBelow50000; //
+  long m_lTransactionNumberBelow200000; //
+  long m_lTransactionNumberAbove200000; //
 
-  INT64     m_lOrdinaryBuyVolume;
-  INT64     m_lOrdinarySellVolume;
-  INT64     m_lAttackBuyVolume;		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  INT64	    m_lStrongBuyVolume;		// 向上强力买入,成交价超过之前的卖二报价
-  long    	m_lCurrentAttackBuy;
-  long    	m_lCurrentStrongBuy;
-  INT64     m_lAttackSellVolume;			// 向下卖出。成交价低于买一价但高于买二价。
-  INT64     m_lStrongSellVolume;		// 向下强力卖出,成交价低于之前的买二报价
-  long      m_lCurrentAttackSell;
-  long      m_lCurrentStrongSell;
-  INT64	    m_lUnknownVolume;
-  long      m_lCurrentUnknown;
-  INT64	    m_lCancelBuyVolume;		// 买单撤单量
-  INT64     m_lCancelSellVolume;			// 卖单撤单量
+  INT64 m_lOrdinaryBuyVolume;
+  INT64 m_lOrdinarySellVolume;
+  INT64 m_lAttackBuyVolume;	// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  INT64 m_lStrongBuyVolume;	// 向上强力买入,成交价超过之前的卖二报价
+  long m_lCurrentAttackBuy;
+  long m_lCurrentStrongBuy;
+  INT64 m_lAttackSellVolume; // 向下卖出。成交价低于买一价但高于买二价。
+  INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
+  long m_lCurrentAttackSell;
+  long m_lCurrentStrongSell;
+  INT64 m_lUnknownVolume;
+  long m_lCurrentUnknown;
+  INT64 m_lCancelBuyVolume;	// 买单撤单量
+  INT64 m_lCancelSellVolume; // 卖单撤单量
 
-  INT64	    m_lAttackBuyBelow50000;
-  INT64	    m_lAttackBuyBelow200000;
-  INT64	    m_lAttackBuyAbove200000;
-  INT64	    m_lAttackSellBelow50000;
-  INT64	    m_lAttackSellBelow200000;
-  INT64	    m_lAttackSellAbove200000;
+  INT64 m_lAttackBuyBelow50000;
+  INT64 m_lAttackBuyBelow200000;
+  INT64 m_lAttackBuyAbove200000;
+  INT64 m_lAttackSellBelow50000;
+  INT64 m_lAttackSellBelow200000;
+  INT64 m_lAttackSellAbove200000;
 };

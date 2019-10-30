@@ -187,27 +187,27 @@ public:
 
 protected:
   // Serialized data
-  time_t		m_time;									// 交易发生时的时间
-  WORD	    m_wMarket;				      // 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
-  CString		m_strStockCode;					// 证券代码, sh600001，sz002389，
-  int       m_iStockCode;           // 证券代码（数字）。600001, 002389
-  CString   m_strStockName;         // 证券名称
-  long  	  m_lOpen;								// 今日开盘。单位：0.001元
-  long  	  m_lLastClose;				    // 昨日收盘。单位：0.001元
-  long  	  m_lNew;									// 今日最新。单位：0.001元
-  long  	  m_lHigh;								// 今日最高。单位：0.001元
-  long  	  m_lLow;									// 今日最低。单位：0.001元
-  long      m_lBuy;                 // 竞买价。单位：0.001元
-  long      m_lSell;                // 竞卖价。单位：0.001元
-  INT64	    m_llVolume;							// 总成交量。单位：股
-  INT64     m_llAmount;							// 总成交金额。单位：元
-  INT64	    m_llTotalValue;					// 总市值。单位：万元
-  INT64     m_llCurrentValue;				// 流通市值。单位：万元
-  array<long, 5>  	  m_lPBuy;			// 买盘价1--5。单位：0.001元
-  array<long, 5> 		  m_lVBuy;			// 买盘量1--5。单位：股
-  array<long, 5>  	  m_lPSell;			// 卖盘价1--5。单位：0.001元
-  array<long, 5>  		m_lVSell;			// 卖盘量1--5。单位: 股
+  time_t		m_time;	// 交易发生时的时间
+  WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
+  CString m_strStockCode;// 证券代码, sh600001，sz002389，
+  int m_iStockCode; // 证券代码（数字）。600001, 002389
+  CString m_strStockName; // 证券名称
+  long m_lOpen;	// 今日开盘。单位：0.001元
+  long m_lLastClose;// 昨日收盘。单位：0.001元
+  long m_lNew; // 今日最新。单位：0.001元
+  long m_lHigh;	// 今日最高。单位：0.001元
+  long m_lLow;	// 今日最低。单位：0.001元
+  long m_lBuy;  // 竞买价。单位：0.001元
+  long m_lSell; // 竞卖价。单位：0.001元
+  INT64 m_llVolume; // 总成交量。单位：股
+  INT64 m_llAmount; // 总成交金额。单位：元
+  INT64 m_llTotalValue;	// 总市值。单位：万元
+  INT64 m_llCurrentValue;	// 流通市值。单位：万元
+  array<long, 5> m_lPBuy; // 买盘价1--5。单位：0.001元
+  array<long, 5> m_lVBuy;	// 买盘量1--5。单位：股
+  array<long, 5> m_lPSell;// 卖盘价1--5。单位：0.001元
+  array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
 // 非存储数据
-  bool      m_fActive;              // 本股票是否存在实时数据
+  bool m_fActive;// 本股票是否存在实时数据
 };

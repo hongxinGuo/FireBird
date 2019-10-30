@@ -21,10 +21,10 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  long	m_Counter;
+  long m_Counter;
   int	m_StockType;
   CString	m_StockCode;
-  CStringW	m_StockName;
+  CStringW m_StockName;
   long m_DayLineStartDay;     // 从网易历史日线服务器上得到的初始交易日
   long m_DayLineEndDay;     // 从网易历史日线服务器上得到的最新日
   long m_IPOed;

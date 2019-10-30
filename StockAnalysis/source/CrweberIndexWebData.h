@@ -16,7 +16,7 @@ public:
   virtual int GetInquiringStr(CString& strInquire) override;
   virtual void StartReadingThread(void) override;
 
-  bool IsCreateOnce(void) { return sm_fCreatedOnce; }
+  bool IsCreateOnce(void) noexcept { return sm_fCreatedOnce; }
 
 private:
   double ConvertStringToTC(CString str);

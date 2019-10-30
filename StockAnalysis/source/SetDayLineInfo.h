@@ -19,20 +19,20 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;  // 索引用，自动生成。
-  long	m_Day;	//成交时间，以日期表示，如20090222即2009年2月22日
-  long	      m_Market;	//市场（上海，深圳）
-  CString 	  m_StockCode;	//八位股票代码
-  CString  m_TransactionNumber; // 本日的盘口变化数
-  CString  m_TransactionNumberBelow5000; // 本日的盘口变化数
-  CString  m_TransactionNumberBelow50000; // 本日的盘口变化数
-  CString  m_TransactionNumberBelow200000; // 本日的盘口变化数
-  CString  m_TransactionNumberAbove200000; // 本日的盘口变化数
+  long m_Day;	//成交时间，以日期表示，如20090222即2009年2月22日
+  long m_Market;	//市场（上海，深圳）
+  CString m_StockCode;	//八位股票代码
+  CString m_TransactionNumber; // 本日的盘口变化数
+  CString m_TransactionNumberBelow5000; // 本日的盘口变化数
+  CString m_TransactionNumberBelow50000; // 本日的盘口变化数
+  CString m_TransactionNumberBelow200000; // 本日的盘口变化数
+  CString m_TransactionNumberAbove200000; // 本日的盘口变化数
   CString	m_AttackBuyVolume;	//攻击性买盘数量
   CString	m_AttackSellVolume;	//攻击性买盘数量
   CString	m_StrongBuyVolume;	//强攻击性买盘数量
   CString	m_StrongSellVolume;	//强攻击性买盘数量
-  CString  m_OrdinaryBuyVolume;
-  CString  m_OrdinarySellVolume;
+  CString m_OrdinaryBuyVolume;
+  CString m_OrdinarySellVolume;
   CString	m_UnknownVolume;	//未知买卖盘数量
   CString	m_CancelBuyVolume;	//买单撤单数量
   CString	m_CancelSellVolume;	//卖单撤单数量

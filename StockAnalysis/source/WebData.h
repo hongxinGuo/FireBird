@@ -48,10 +48,10 @@ public:
 public:
 
 protected:
-  CString m_strInquire;         // 查询所需的字符串
-  char m_buffer[2048 * 1024];   // 接收到数据的缓冲区
-  long m_lByteRead;             // 接收到的字符数
-  bool m_fSucceed;                // 网络是否异常
+  CString m_strInquire;// 查询所需的字符串
+  char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
+  long m_lByteRead; // 接收到的字符数
+  bool m_fSucceed; // 网络是否异常
 
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀

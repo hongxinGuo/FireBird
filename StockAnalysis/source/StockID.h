@@ -33,55 +33,55 @@ public:
   ~CStockID();
   void Reset(void);
 
-  WORD      GetMarket(void) noexcept { return m_wMarket; }
-  void      SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
-  CString   GetStockCode(void) { return m_strStockCode; }
-  void      SetStockCode(CString str) noexcept { m_strStockCode = str; }
-  long      GetCode(void) { return m_iStockCode; }
+  WORD GetMarket(void) noexcept { return m_wMarket; }
+  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
+  CString GetStockCode(void) { return m_strStockCode; }
+  void SetStockCode(CString str) noexcept { m_strStockCode = str; }
+  long GetCode(void) { return m_iStockCode; }
   void SetCode(long lStockCode) { m_iStockCode = lStockCode; }
-  CString   GetStockName(void) noexcept { return m_strStockName; }
-  void      SetStockName(CString str) noexcept { m_strStockName = str; }
+  CString GetStockName(void) noexcept { return m_strStockName; }
+  void SetStockName(CString str) noexcept { m_strStockName = str; }
 
-  long      GetOffset(void) noexcept { return m_nOffsetInContainer; }
-  void      SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
-  long      GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void      SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
-  long      GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
-  void      SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
-  long      GetIPOStatus(void) noexcept { return m_lIPOed; }
-  void      SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+  long GetOffset(void) noexcept { return m_nOffsetInContainer; }
+  void SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
+  long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
+  void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
+  long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
+  void SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
+  long GetIPOStatus(void) noexcept { return m_lIPOed; }
+  void SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
 
-  bool      IsActive(void) noexcept { return m_fActive; }
-  void      SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
-  bool      IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void      SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-  bool      IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
-  void      SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
+  bool IsActive(void) noexcept { return m_fActive; }
+  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
+  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
+  bool IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
+  void SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
 
-  bool      IsNeedUpdate(void) noexcept { return m_fNeedUpdate; }
-  void      SetNeedUpdate(bool fFlag) noexcept { m_fNeedUpdate = fFlag; }
+  bool IsNeedUpdate(void) noexcept { return m_fNeedUpdate; }
+  void SetNeedUpdate(bool fFlag) noexcept { m_fNeedUpdate = fFlag; }
 
 protected:
-  WORD			m_wMarket;				// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
+  WORD m_wMarket;				// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
                               // 7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；
                               // 上海市场采用单数标示，深圳市场采用双数标示。目前暂时不用，先查看涉及到哪些函数需要修改。
-  CString		m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
-  long      m_iStockCode;  // 证券代码值
-  CString   m_strStockName;		// 股票名称
-  CStringW  m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
-  long			m_nOffsetInContainer;	// 在容器中的偏移量
-  long			m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-  long			m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
-  long			m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
+  CString m_strStockCode;		// 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
+  long m_iStockCode;  // 证券代码值
+  CString m_strStockName;		// 股票名称
+  CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
+  long m_nOffsetInContainer;	// 在容器中的偏移量
+  long m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
+  long m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
+  long m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                               // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
 
   // 无需存储数据
-  bool			m_fActive;				// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
-  bool			m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  bool			m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
+  bool m_fActive;				// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
+  bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
+  bool m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
 
-  bool      m_fHaveReadInName; //
-  bool      m_fNeedUpdate;      // 是否需要存储标识
+  bool m_fHaveReadInName; //
+  bool m_fNeedUpdate;      // 是否需要存储标识
 };
 
 typedef shared_ptr<CStockID> StockIDPtr;

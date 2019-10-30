@@ -12,33 +12,33 @@ public:
   ~CStockBasicInfo();
   void Reset(void);
 
-  WORD      GetMarket(void) noexcept { return m_ID.GetMarket(); }
-  void      SetMarket(WORD wValue) noexcept { m_ID.SetMarket(wValue); }
-  CString   GetStockCode(void) { return m_ID.GetStockCode(); }
-  void      SetStockCode(CString str) noexcept { m_ID.SetStockCode(str); }
-  long      GetCode(void) { return m_ID.GetCode(); }
+  WORD GetMarket(void) noexcept { return m_ID.GetMarket(); }
+  void SetMarket(WORD wValue) noexcept { m_ID.SetMarket(wValue); }
+  CString GetStockCode(void) { return m_ID.GetStockCode(); }
+  void SetStockCode(CString str) noexcept { m_ID.SetStockCode(str); }
+  long GetCode(void) { return m_ID.GetCode(); }
   void SetCode(long lStockCode) { m_ID.SetCode(lStockCode); }
-  CString   GetStockName(void) noexcept { return m_ID.GetStockName(); }
-  void      SetStockName(CString str) noexcept { m_ID.SetStockName(str); }
+  CString GetStockName(void) noexcept { return m_ID.GetStockName(); }
+  void SetStockName(CString str) noexcept { m_ID.SetStockName(str); }
 
-  long      GetOffset(void) noexcept { return m_ID.GetOffset(); }
-  void      SetOffset(long lValue) noexcept { m_ID.SetOffset(lValue); }
-  long      GetDayLineStartDay(void) noexcept { return m_ID.GetDayLineStartDay(); }
-  void      SetDayLineStartDay(long lDay) noexcept { m_ID.SetDayLineStartDay(lDay); }
-  long      GetDayLineEndDay(void) noexcept { return m_ID.GetDayLineEndDay(); }
-  void      SetDayLineEndDay(long lDay) noexcept { m_ID.SetDayLineEndDay(lDay); }
-  long      GetIPOStatus(void) noexcept { return m_ID.GetIPOStatus(); }
-  void      SetIPOStatus(long lValue) noexcept { m_ID.SetIPOStatus(lValue); }
+  long GetOffset(void) noexcept { return m_ID.GetOffset(); }
+  void SetOffset(long lValue) noexcept { m_ID.SetOffset(lValue); }
+  long GetDayLineStartDay(void) noexcept { return m_ID.GetDayLineStartDay(); }
+  void SetDayLineStartDay(long lDay) noexcept { m_ID.SetDayLineStartDay(lDay); }
+  long GetDayLineEndDay(void) noexcept { return m_ID.GetDayLineEndDay(); }
+  void SetDayLineEndDay(long lDay) noexcept { m_ID.SetDayLineEndDay(lDay); }
+  long GetIPOStatus(void) noexcept { return m_ID.GetIPOStatus(); }
+  void SetIPOStatus(long lValue) noexcept { m_ID.SetIPOStatus(lValue); }
 
-  bool      IsActive(void) noexcept { return m_ID.IsActive(); }
-  void      SetActive(bool fFlag) noexcept { m_ID.SetActive(fFlag); }
-  bool      IsDayLineNeedUpdate(void) noexcept { return m_ID.IsDayLineNeedUpdate(); }
-  void      SetDayLineNeedUpdate(bool fFlag) noexcept { m_ID.SetDayLineNeedUpdate(fFlag); }
-  bool      IsInquiringOnce(void) noexcept { return m_ID.IsInquiringOnce(); }
-  void      SetInquiringOnce(bool fFlag) noexcept { m_ID.SetInquiringOnce(fFlag); }
+  bool IsActive(void) noexcept { return m_ID.IsActive(); }
+  void SetActive(bool fFlag) noexcept { m_ID.SetActive(fFlag); }
+  bool IsDayLineNeedUpdate(void) noexcept { return m_ID.IsDayLineNeedUpdate(); }
+  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_ID.SetDayLineNeedUpdate(fFlag); }
+  bool IsInquiringOnce(void) noexcept { return m_ID.IsInquiringOnce(); }
+  void SetInquiringOnce(bool fFlag) noexcept { m_ID.SetInquiringOnce(fFlag); }
 
-  bool      IsNeedUpdate(void) noexcept { return m_ID.IsNeedUpdate(); }
-  void      SetNeedUpdate(bool fFlag) noexcept { m_ID.SetNeedUpdate(fFlag); }
+  bool IsNeedUpdate(void) noexcept { return m_ID.IsNeedUpdate(); }
+  void SetNeedUpdate(bool fFlag) noexcept { m_ID.SetNeedUpdate(fFlag); }
 
   // 基本实时数据，需要更新
   time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
@@ -72,19 +72,19 @@ protected:
   short			m_nHand;									// 每手股数
 
   // 实时数据,需要不断更新
-  time_t    m_TransactionTime;         // 实时数据交易时间
-  long	    m_lLastClose;		// 以0.001元计的收盘价
-  long		  m_lOpen;				// 以0.001元计的开盘价
-  long		  m_lHigh;				// 以0.001元计的最高价
-  long		  m_lLow;					// 以0.001元计的最低价
-  long		  m_lNew;					// 以0.001元计的最新价
-  INT64	    m_llVolume;			// 以1股计的成交量
-  INT64     m_llAmount;			// 以元计的成交金额
-  INT64	    m_llTotalValue;					// 总市值。单位：万元
-  INT64     m_llCurrentValue;				// 流通市值。单位：万元
-  array<long, 5>      m_lPBuy;			// 买盘价。单位：0.001元
-  array<long, 5>			m_lVBuy;			// 买盘量。单位：股
-  array<long, 5>		  m_lPSell;		// 卖盘价。单位：0.001元
-  array<long, 5>			m_lVSell;		// 卖盘量。单位：股
-  double    m_dRelativeStrong; // 单位：1%
+  time_t m_TransactionTime; // 实时数据交易时间
+  long m_lLastClose; // 以0.001元计的收盘价
+  long m_lOpen; // 以0.001元计的开盘价
+  long m_lHigh; // 以0.001元计的最高价
+  long m_lLow; // 以0.001元计的最低价
+  long m_lNew; // 以0.001元计的最新价
+  INT64 m_llVolume;	// 以1股计的成交量
+  INT64 m_llAmount; // 以元计的成交金额
+  INT64 m_llTotalValue;	// 总市值。单位：万元
+  INT64 m_llCurrentValue;	// 流通市值。单位：万元
+  array<long, 5> m_lPBuy;	// 买盘价。单位：0.001元
+  array<long, 5> m_lVBuy;	// 买盘量。单位：股
+  array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
+  array<long, 5> m_lVSell; // 卖盘量。单位：股
+  double m_dRelativeStrong; // 单位：1%
 };

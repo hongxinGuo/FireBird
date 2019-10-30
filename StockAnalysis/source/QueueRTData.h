@@ -55,9 +55,9 @@ protected:
 
   // 目前使用队列实现（停用
   queue<CRTDataPtr> m_queueRTStockData;
-  CCriticalSection  m_RTDataLock;
+  CCriticalSection m_RTDataLock;
 
   // 准备使用有优先级的队列实现(已实现）
-  priority_queue<CRTDataPtr, vector<CRTDataPtr>, cmpRTData>  m_priorityqueueRTStockData;
-  CCriticalSection  m_PriorityRTDataLock;
+  priority_queue<CRTDataPtr, vector<CRTDataPtr>, cmpRTData> m_priorityqueueRTStockData;
+  CCriticalSection m_PriorityRTDataLock;
 };

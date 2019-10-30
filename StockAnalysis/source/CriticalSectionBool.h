@@ -13,6 +13,6 @@ public:
   bool CheckFalseAndThenSetIt(void);
 
 protected:
-  bool m_fFlag;                // 实时数据已预处理好，准备计算
+  bool m_fFlag; // 实时数据已预处理好，准备计算
   CCriticalSection m_Lock;
 };
