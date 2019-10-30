@@ -108,6 +108,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineToday.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />

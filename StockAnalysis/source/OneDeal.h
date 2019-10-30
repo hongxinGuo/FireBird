@@ -27,8 +27,6 @@ enum {
   __TYPE_CANCELED_SELL = 14,
 };
 
-#include"stdafx.h"
-
 class COneDeal
 {
 public:

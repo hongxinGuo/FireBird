@@ -217,5 +217,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionClock.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>

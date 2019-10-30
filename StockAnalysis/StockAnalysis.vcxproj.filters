@@ -165,9 +165,6 @@
     <ClInclude Include="source\SystemTime.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="QueueRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="ChildFrm.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
@@ -188,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>头文件\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +317,6 @@
     <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="QueueRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="ChildFrm.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
@@ -337,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="StockAnalysisView.cpp">
       <Filter>源文件\windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

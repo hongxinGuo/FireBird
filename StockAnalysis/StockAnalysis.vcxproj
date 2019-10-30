@@ -214,6 +214,7 @@
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\NeteaseDayLineWebData.h" />
+    <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
@@ -243,7 +244,6 @@
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
     <ClInclude Include="StockAnalysisView.h" />
-    <ClInclude Include="QueueRTData.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +257,7 @@
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexWebData.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebData.cpp" />
+    <ClCompile Include="source\QueueRTData.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SinaRTWebData.cpp" />
@@ -303,7 +304,6 @@
     <ClCompile Include="StockAnalysis.cpp" />
     <ClCompile Include="StockAnalysisDoc.cpp" />
     <ClCompile Include="StockAnalysisView.cpp" />
-    <ClCompile Include="QueueRTData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc" />
