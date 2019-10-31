@@ -1,5 +1,7 @@
 #pragma once
 
+// 成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
+// 强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 enum {
   __ATTACK_BUY__ = 1,
   __STRONG_BUY__ = 2,
@@ -268,6 +270,9 @@ protected:
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
+
+private:
+  bool m_fDebugLoadDayLineFirst;
 };
 
 typedef shared_ptr<CStock> CStockPtr;

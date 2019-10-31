@@ -13,6 +13,7 @@ CCrweberIndex::CCrweberIndex() {
   m_dVLCC_TC_3YEAR = m_dSUEZMAX_TC_3YEAR = m_dAFRAMAX_TC_3YEAR = m_dPANAMAX_TC_3YEAR = m_dMR_TC_3YEAR = m_dHANDY_TC_3YEAR = 0;
 
   m_fTodayUpdated = false;
+  m_lLastUpdateDay = 0;
 }
 
 CCrweberIndex::~CCrweberIndex() {

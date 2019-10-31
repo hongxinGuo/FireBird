@@ -16,7 +16,6 @@ public:
   void SetData(CSetCrweberIndex* pSetCrweberIndex);
   void SaveData(CSetCrweberIndex* pSetCewwberIndex);
 
-  bool IsTodayUpdated(long lDay) { if (lDay == m_lDay) { m_fTodayUpdated = true; return true; } else { return false; } }
   bool IsTodayUpdated(void) { return m_fTodayUpdated; }
 
   void SetNewestDataTime(long lDay) { m_lDay = lDay; }
@@ -84,6 +83,7 @@ public:
   double m_dHANDY_TC_3YEAR;
 
   bool m_fTodayUpdated;
+  long m_lLastUpdateDay;
 };
 
 typedef shared_ptr<CCrweberIndex> CrweberIndexPtr;

@@ -81,6 +81,8 @@ void CStock::Reset(void) {
   m_pLastRTData = nullptr;
 
   ClearRTDataDeque();
+
+  m_fDebugLoadDayLineFirst = false;
 }
 
 void CStock::ClearRTDataDeque(void) {
@@ -231,6 +233,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 {
   CDayLinePtr pDayLine;
 
+  ASSERT(m_fDebugLoadDayLineFirst == false);
   // 装入DayLine数据
   m_vDayLine.clear();
   while (!psetDayLine->IsEOF()) {
@@ -239,6 +242,7 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
     m_vDayLine.push_back(pDayLine);
     psetDayLine->MoveNext();
   }
+  m_fDebugLoadDayLineFirst = true;
   return true;
 }
 
@@ -250,8 +254,10 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
 ////////////////////////////////////////////////////////////////////////////
 bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
   CDayLinePtr pDayLine;
-
   int iPosition = 0;
+
+  ASSERT(m_fDebugLoadDayLineFirst);
+
   while (!psetDayLineInfo->IsEOF()) {
     pDayLine = m_vDayLine[iPosition];
     while ((pDayLine->GetDay() < psetDayLineInfo->m_Day)
@@ -265,6 +271,7 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
     if (m_vDayLine.size() <= (iPosition + 1)) break;
     psetDayLineInfo->MoveNext();
   }
+  m_fDebugLoadDayLineFirst = false;
   return true;
 }
 

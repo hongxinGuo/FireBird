@@ -13,6 +13,9 @@
     <Filter Include="Test源文件\数据库">
       <UniqueIdentifier>{4de35834-a737-4d99-87e9-8b8bceb44dc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\辅助类和函数">
+      <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="CrweberIndexWebDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="accessoryTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

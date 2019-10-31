@@ -2,8 +2,8 @@
 //
 // 成交量变化一次后,计算挂单和成交的具体情况。
 //
-// 成交的具体情况，分为三种：买，强买，进攻性买。买是价位为卖一位置；强买价位是至少卖二，且成交价位高于卖一低于卖二；
-// 进攻性买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
+// 成交的具体情况，分为三种：买，进攻性买，强买，。买是价位为卖一位置；进攻性买价位是至少卖二，且成交价位高于卖一低于卖二；
+// 强买价位至少卖三，且成交价位至少高于卖二。判断卖与之相类似。
 //
 // 挂单的变化，以类型__TYPE_CANCELED_BUY__和__TYPE_CANCELED_SELL__标识。撤掉的买单为canceled sell；撤掉的买单为canceled buy。
 //
@@ -18,8 +18,8 @@ using namespace std;
 enum {
   __TYPE_UNKNOWN__ = 0,
   __TYPE_BUY__ = 1,
-  __TYPE_STRONG_BUY__ = 2,
-  __TYPE_ATTACK_BUY__ = 3,
+  __TYPE_ATTACK_BUY__ = 2,
+  __TYPE_STRONG_BUY__ = 3,
   __TYPE_CANCELED_BUY__ = 4,
   __TYPE_SELL__ = 11,
   __TYPE_STRONG_SELL__ = 12,

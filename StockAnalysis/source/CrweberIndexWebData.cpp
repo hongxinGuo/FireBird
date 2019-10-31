@@ -66,8 +66,9 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
       gl_CrweberIndex.m_dTC5 = GetOneValue(pCurrentPos, iCount);
       gl_CrweberIndex.m_dTC4 = GetOneValue(pCurrentPos, iCount);
 
-      if (lUpdateDay > gl_CrweberIndex.m_lDay) {
+      if (lUpdateDay > gl_CrweberIndex.m_lLastUpdateDay) {
         gl_CrweberIndex.m_lDay = lUpdateDay;
+        gl_CrweberIndex.m_lLastUpdateDay = lUpdateDay;
         gl_CrweberIndex.m_fTodayUpdated = true;
       }
     }
