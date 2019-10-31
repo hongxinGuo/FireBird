@@ -306,7 +306,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
       m_wndOutputInnerSystemInformation.DeleteString(0);
     }
   }
-  if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
+  if ((lTotal = gl_systemMessage.GetInnerSystemInformationDequeSize()) > 0) {
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInnerSystemInformationMessage();
       str2 = strTime + _T(": ") + str;

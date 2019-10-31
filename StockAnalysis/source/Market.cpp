@@ -1324,18 +1324,6 @@ void CMarket::AddStockToMarket(CStockPtr pStock) {
   m_vActiveStock.push_back(pStock);
 }
 
-bool CMarket::GetStockIDPtr(CString strStockCode, StockIDPtr& pStockIDPtr)
-{
-  long lIndex = 0;
-  if (m_mapChinaMarketAStock.find(strStockCode) == m_mapChinaMarketAStock.end()) { // 未找到
-    pStockIDPtr = nullptr;
-    return false;
-  }
-  lIndex = m_mapChinaMarketAStock.at(strStockCode);
-  pStockIDPtr = m_vChinaMarketAStock.at(lIndex);
-  return true;
-}
-
 //////////////////////////////////////////////////////////////////////////
 //
 // 设置当前操作的股票

@@ -65,9 +65,6 @@ public:
   // 初始化实时数据计数器
   bool CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
 
-  // 得到股票ID指针
-  bool GetStockIDPtr(CString strStockCode, StockIDPtr& pStockIDPtr);
-
   // 得到当前显示股票
   CStockPtr GetShowStock(void) noexcept { return m_pCurrentStock; }
   void SetShowStock(CString strStockCode);
@@ -185,7 +182,7 @@ public:
 
   vector<StockIDPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
 
-  vector<StockIDPtr> gl_vStockChoice; // 自选股票池
+  vector<CStockPtr> gl_vStockChoice; // 自选股票池
 
   vector<CrweberIndexPtr> gl_vCrweberIndex; // crweber.com网站上的油运指数
 

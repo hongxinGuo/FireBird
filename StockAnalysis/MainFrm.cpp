@@ -122,11 +122,11 @@ CMainFrame::~CMainFrame()
   gl_ChinaStockMarket.UpdateOptionDB();
 
   while (gl_ThreadStatus.IsSavingDayLine()) {
-    Sleep(10); // 等待处理日线历史数据的线程结束。
+    Sleep(1); // 等待处理日线历史数据的线程结束。
   }
 
   while (gl_SinaRTWebData.IsReadingWebData()) {
-    Sleep(10); // 等待实时数据读取线程结束
+    Sleep(1); // 等待实时数据读取线程结束
   }
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
@@ -643,16 +643,13 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
   CStockPtr pStock;
   long lIndex = 0;
   CString strTemp;
-  StockIDPtr pStockID;
 
   if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
     switch (nChar) {
     case 45: // Ins 加入自选股票
       pStock = gl_ChinaStockMarket.GetShowStock();
       pStock->SetChoicedFlag(true);
-      if (gl_ChinaStockMarket.GetStockIDPtr(pStock->GetStockCode(), pStockID)) {
-        gl_ChinaStockMarket.gl_vStockChoice.push_back(pStockID);
-      }
+      gl_ChinaStockMarket.gl_vStockChoice.push_back(pStock);
       break;
     case 33: // PAGE UP
       // last stock

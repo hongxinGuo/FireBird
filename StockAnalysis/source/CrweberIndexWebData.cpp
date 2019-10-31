@@ -3,6 +3,8 @@
 #include"thread.h"
 #include"market.h"
 
+#include"Accessory.h"
+
 #include "CrweberIndexWebData.h"
 
 bool CCrweberIndexWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
@@ -65,6 +67,9 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
       gl_CrweberIndex.m_dTC1 = GetOneValue(pCurrentPos, iCount);
       gl_CrweberIndex.m_dTC5 = GetOneValue(pCurrentPos, iCount);
       gl_CrweberIndex.m_dTC4 = GetOneValue(pCurrentPos, iCount);
+
+      CString strDay = ConvertValueToString(lUpdateDay, 1);
+      gl_systemMessage.PushInnerSystemInformationMessage(strDay);
 
       if (lUpdateDay > gl_CrweberIndex.m_lLastUpdateDay) {
         gl_CrweberIndex.m_lDay = lUpdateDay;
