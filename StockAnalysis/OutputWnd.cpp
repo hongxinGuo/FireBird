@@ -85,7 +85,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)5);
   bNameValid = strTabName.LoadString(IDS_INNER_SYSTEM_INFORMATION_TAB2);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputTrace2, strTabName, (UINT)6);
+  m_wndTabs.AddTab(&m_wndOutputInnerSystemInformation, strTabName, (UINT)6);
 
   // 设置1000毫秒每次的软调度，用于接受处理实时网络数据
   m_uIdTimer = SetTimer(3, 1000, nullptr);     // 500毫秒每次调度，用于从股票数据提供网站读取数据。

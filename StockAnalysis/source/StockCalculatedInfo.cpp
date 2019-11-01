@@ -3,6 +3,13 @@
 #include"Accessory.h"
 
 CStockCalculatedInfo::CStockCalculatedInfo() {
+  Reset();
+}
+
+CStockCalculatedInfo::~CStockCalculatedInfo() {
+}
+
+void CStockCalculatedInfo::Reset() {
   m_dRelativeStrong = 0;
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
@@ -27,9 +34,6 @@ CStockCalculatedInfo::CStockCalculatedInfo() {
 
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
-}
-
-CStockCalculatedInfo::~CStockCalculatedInfo() {
 }
 
 void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)

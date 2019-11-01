@@ -589,7 +589,7 @@ bool CMarket::IsStock(CString strStockCode, CStockPtr& pStock) {
 INT64 CMarket::GetTotalAttackBuyAmount(void) {
   INT64 lAmount = 0;
   for (auto pStock : m_vActiveStock) {
-    if (IsAStock(pStock)) {
+    if (pStock->IsActive() && IsAStock(pStock)) {
       lAmount += pStock->GetAttackBuyAmount();
     }
   }
@@ -605,7 +605,7 @@ INT64 CMarket::GetTotalAttackBuyAmount(void) {
 INT64 CMarket::GetTotalAttackSellAmount(void) {
   INT64 lAmount = 0;
   for (auto pStock : m_vActiveStock) {
-    if (IsAStock(pStock)) {
+    if (pStock->IsActive() && IsAStock(pStock)) {
       lAmount += pStock->GetAttackSellAmount();
     }
   }

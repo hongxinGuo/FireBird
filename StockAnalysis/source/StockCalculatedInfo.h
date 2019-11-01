@@ -8,7 +8,7 @@ class CStockCalculatedInfo {
 public:
   CStockCalculatedInfo();
   ~CStockCalculatedInfo();
-  void Reset(void) {}
+  void Reset(void);
 
   void StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
