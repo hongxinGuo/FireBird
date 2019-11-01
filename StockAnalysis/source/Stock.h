@@ -21,6 +21,7 @@ enum {
 #include"OneDeal.h"
 
 #include"StockID.h"
+#include"StockBasicInfo.h"
 #include"StockCalculatedInfo.h"
 
 using namespace std;
@@ -93,30 +94,43 @@ public:
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
   long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
+  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
 
-  INT64 GetAttackBuyAmount(void) noexcept { return m_lAttackBuyAmount; }
-  INT64 GetAttackSellAmount(void) noexcept { return m_lAttackSellAmount; }
-  INT64 GetOrdinaryBuyVolume(void) noexcept { return m_lOrdinaryBuyVolume; }
-  INT64 GetOrdinarySellVolume(void) noexcept { return m_lOrdinarySellVolume; }
-  INT64 GetAttackBuyVolume(void) noexcept { return m_lAttackBuyVolume; }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  INT64 GetStrongBuyVolume(void) noexcept { return m_lStrongBuyVolume; }		// 向上强力买入,成交价超过之前的卖二报价
-  INT64 GetCurrentAttackBuy(void) noexcept { return m_lCurrentAttackBuy; }
-  long GetCurrentStrongBuy(void) noexcept { return m_lCurrentStrongBuy; }
-  INT64 GetAttackSellVolume(void) noexcept { return m_lAttackSellVolume; }			// 向下卖出。成交价低于买一价但高于买二价。
-  INT64 GetStrongSellVolume(void) noexcept { return m_lStrongSellVolume; }
-  long GetCurrentAttackSell(void) noexcept { return m_lCurrentAttackSell; }
-  long GetCurrentStrongSell(void) noexcept { return m_lCurrentStrongSell; }
-  INT64 GetUnknownVolume(void) noexcept { return m_lUnknownVolume; }
-  long GetCurrentUnknown(void) noexcept { return m_lCurrentUnknown; }
-  INT64 GetCancelBuyVolume(void) noexcept { return m_lCancelBuyVolume; }
-  INT64 GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
+  INT64 GetAttackBuyAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyAmount(); }
+  INT64 GetAttackSellAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackSellAmount(); }
+  INT64 GetOrdinaryBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetOrdinaryBuyVolume(); }
+  void IncreaseOrdinaryBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseOrdinaryBuyVolume(value); }
+  INT64 GetOrdinarySellVolume(void) noexcept { return m_stockCalculatedInfo.GetOrdinarySellVolume(); }
+  void IncreaseOrdinarySellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseOrdinarySellVolume(value); }
+  INT64 GetAttackBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyVolume(); }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  void IncreaseAttackBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyVolume(value); }
+  INT64 GetStrongBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetStrongBuyVolume(); }		// 向上强力买入,成交价超过之前的卖二报价
+  void IncreaseStrongBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongBuyVolume(value); }
+  INT64 GetCurrentAttackBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentAttackBuy(); }
+  long GetCurrentStrongBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongBuy(); }
+  INT64 GetAttackSellVolume(void) noexcept { return m_stockCalculatedInfo.GetAttackSellVolume(); }			// 向下卖出。成交价低于买一价但高于买二价。
+  void IncreaseAttackSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackSellVolume(value); }
+  INT64 GetStrongSellVolume(void) noexcept { return m_stockCalculatedInfo.GetStrongSellVolume(); }
+  void IncreaseStrongSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongSellVolume(value); }
+  long GetCurrentAttackSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentAttackSell(); }
+  long GetCurrentStrongSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongSell(); }
+  INT64 GetUnknownVolume(void) noexcept { return m_stockCalculatedInfo.GetUnknownVolume(); }
+  void IncreaseUnknownVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseUnknownVolume(value); }
+  long GetCurrentUnknown(void) noexcept { return m_stockCalculatedInfo.GetCurrentUnknown(); }
+  INT64 GetCancelBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelBuyVolume(); }
+  INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
+
+  void IncreaseAttackBuyBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow50000(value); }
+  void IncreaseAttackBuyBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow200000(value); }
+  void IncreaseAttackBuyAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyAbove200000(value); }
+  void IncreaseAttackSellBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackSellBelow50000(value); }
+  void IncreaseAttackSellBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackSellBelow200000(value); }
+  void IncreaseAttackSellAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackSellAbove200000(value); }
 
   int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
   void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
   INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
   void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
-
-  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
 
   void ClearRTDataDeque(void);  // 清空存储实时数据的队列
 
@@ -243,39 +257,7 @@ protected:
   array<long, 5> m_lVSell; // 卖盘量。单位：股
   double m_dRelativeStrong; // 单位：1%
 
-    // 以下变量用于分析买入卖出具体情况
-  INT64 m_lAttackBuyAmount; // 向上买入金额
-  INT64 m_lAttackSellAmount; // 向下卖出金额
-  INT64 m_lCurrentVolume;
-
-  // 以下变量为计算出的信息
-  long m_lTransactionNumber; // 本交易日的成交笔数
-  long m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
-  long m_lTransactionNumberBelow50000; //
-  long m_lTransactionNumberBelow200000; //
-  long m_lTransactionNumberAbove200000; //
-
-  INT64 m_lOrdinaryBuyVolume;
-  INT64 m_lOrdinarySellVolume;
-  INT64 m_lAttackBuyVolume;	// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  INT64 m_lStrongBuyVolume;	// 向上强力买入,成交价超过之前的卖二报价
-  long m_lCurrentAttackBuy;
-  long m_lCurrentStrongBuy;
-  INT64 m_lAttackSellVolume; // 向下卖出。成交价低于买一价但高于买二价。
-  INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
-  long m_lCurrentAttackSell;
-  long m_lCurrentStrongSell;
-  INT64 m_lUnknownVolume;
-  long m_lCurrentUnknown;
-  INT64 m_lCancelBuyVolume;	// 买单撤单量
-  INT64 m_lCancelSellVolume; // 卖单撤单量
-
-  INT64 m_lAttackBuyBelow50000;
-  INT64 m_lAttackBuyBelow200000;
-  INT64 m_lAttackBuyAbove200000;
-  INT64 m_lAttackSellBelow50000;
-  INT64 m_lAttackSellBelow200000;
-  INT64 m_lAttackSellAbove200000;
+  CStockCalculatedInfo m_stockCalculatedInfo;
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
 

@@ -121,6 +121,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockID.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />

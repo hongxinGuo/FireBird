@@ -10,7 +10,6 @@ CStockCalculatedInfo::~CStockCalculatedInfo() {
 }
 
 void CStockCalculatedInfo::Reset() {
-  m_dRelativeStrong = 0;
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;

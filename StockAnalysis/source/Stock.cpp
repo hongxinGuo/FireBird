@@ -43,29 +43,8 @@ void CStock::Reset(void) {
 
   m_lHigh = m_lNew = m_lLow = 0;
 
-  m_lAttackBuyAmount = 0;
-  m_lAttackSellAmount = 0;
-  m_lCurrentVolume = 0;
-  m_lAttackBuyVolume = 0;
-  m_lCurrentAttackBuy = 0;
-  m_lAttackSellVolume = 0;
-  m_lCurrentAttackSell = 0;
-  m_lStrongBuyVolume = 0;
-  m_lCurrentStrongBuy = 0;
-  m_lStrongSellVolume = 0;
-  m_lCurrentStrongSell = 0;
-  m_lUnknownVolume = 0;
-  m_lCurrentUnknown = 0;
-  m_lCancelBuyVolume = 0;
-  m_lCancelSellVolume = 0;
-  m_lTransactionNumber = 0;
-  m_lTransactionNumberBelow5000 = 0;
-  m_lTransactionNumberBelow50000 = 0;
-  m_lTransactionNumberBelow200000 = 0;
-  m_lTransactionNumberAbove200000 = 0;
+  m_stockCalculatedInfo.Reset();
 
-  m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
-  m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_lCurrentCanselSellVolume = m_lCurrentCanselBuyVolume = m_lCurrentGuadanTransactionVolume = 0;
 
   m_dCurrentGuaDanTransactionPrice = 0;
@@ -94,50 +73,12 @@ void CStock::ClearRTDataDeque(void) {
 
 void CStock::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)
 {
-  setDayLineInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  setDayLineInfo.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  setDayLineInfo.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
-  setDayLineInfo.m_CancelBuyVolume = ConvertValueToString(m_lCancelBuyVolume);
-  setDayLineInfo.m_CancelSellVolume = ConvertValueToString(m_lCancelSellVolume);
-  setDayLineInfo.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  setDayLineInfo.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  setDayLineInfo.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  setDayLineInfo.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  setDayLineInfo.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  setDayLineInfo.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  setDayLineInfo.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  setDayLineInfo.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  setDayLineInfo.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  setDayLineInfo.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  setDayLineInfo.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  setDayLineInfo.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  m_stockCalculatedInfo.StoreCalculatedInfo(setDayLineInfo);
 }
 
 void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday)
 {
-  setDayLineToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  setDayLineToday.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  setDayLineToday.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  setDayLineToday.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
-  setDayLineToday.m_CancelBuyVolume = ConvertValueToString(m_lCancelBuyVolume);
-  setDayLineToday.m_CancelSellVolume = ConvertValueToString(m_lCancelSellVolume);
-  setDayLineToday.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  setDayLineToday.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  setDayLineToday.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  setDayLineToday.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  setDayLineToday.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  setDayLineToday.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  setDayLineToday.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  setDayLineToday.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  setDayLineToday.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  setDayLineToday.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  setDayLineToday.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  setDayLineToday.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  setDayLineToday.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  m_stockCalculatedInfo.StoreTempInfo(setDayLineToday);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -147,31 +88,7 @@ void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday)
 ////////////////////////////////////////////////////////////////////////////
 void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday)
 {
-  // 要设置m_lUnknownVolume为记录集中的m_UnknownVolume - m_Volume，这是因为第一次计算时只是初始化系统。
-  // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
-  // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
-  // 故而此处这样计算。
-  m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume) - atoll(setDayLineToday.m_Volume);  // 需要如此设置m_lUnknownVolume
-
-  m_lTransactionNumber = atol(setDayLineToday.m_TransactionNumber);
-  m_lTransactionNumberBelow5000 = atol(setDayLineToday.m_TransactionNumberBelow5000);
-  m_lTransactionNumberBelow50000 = atol(setDayLineToday.m_TransactionNumberBelow50000);
-  m_lTransactionNumberBelow200000 = atol(setDayLineToday.m_TransactionNumberBelow200000);
-  m_lTransactionNumberAbove200000 = atol(setDayLineToday.m_TransactionNumberAbove200000);
-  m_lCancelBuyVolume = atoll(setDayLineToday.m_CancelBuyVolume);
-  m_lCancelSellVolume = atoll(setDayLineToday.m_CancelSellVolume);
-  m_lAttackBuyVolume = atoll(setDayLineToday.m_AttackBuyVolume);
-  m_lAttackSellVolume = atoll(setDayLineToday.m_AttackSellVolume);
-  m_lStrongBuyVolume = atoll(setDayLineToday.m_StrongBuyVolume);
-  m_lStrongSellVolume = atoll(setDayLineToday.m_StrongSellVolume);
-  m_lOrdinaryBuyVolume = atoll(setDayLineToday.m_OrdinaryBuyVolume);
-  m_lOrdinarySellVolume = atoll(setDayLineToday.m_OrdinarySellVolume);
-  m_lAttackBuyBelow50000 = atoll(setDayLineToday.m_AttackBuyBelow50000);
-  m_lAttackBuyBelow200000 = atoll(setDayLineToday.m_AttackBuyBelow200000);
-  m_lAttackBuyAbove200000 = atoll(setDayLineToday.m_AttackBuyAbove200000);
-  m_lAttackSellBelow50000 = atoll(setDayLineToday.m_AttackSellBelow50000);
-  m_lAttackSellBelow200000 = atoll(setDayLineToday.m_AttackSellBelow200000);
-  m_lAttackBuyAbove200000 = atoll(setDayLineToday.m_AttackSellAbove200000);
+  m_stockCalculatedInfo.LoadAndCalculateTempInfo(setDayLineToday);
 }
 
 void CStock::operator =(CStock& pStock) {
@@ -354,7 +271,7 @@ void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
   // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
   // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
-  m_lUnknownVolume += m_pLastRTData->GetVolume();
+  m_stockCalculatedInfo.SetUnknownVolume(m_stockCalculatedInfo.GetUnknownVolume() + m_pLastRTData->GetVolume());
   // 设置第一次的挂单映射。
   for (int j = 0; j < 5; j++) {
     SetGuaDan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
@@ -393,10 +310,12 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
     }
     ASSERT(m_TransactionTime >= pRTData->GetTransactionTime());
     const INT64 I = pRTData->GetVolume();
-    const INT64 j = m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-      + m_lAttackBuyVolume + m_lAttackSellVolume + +m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume;
-    ASSERT(pRTData->GetVolume() == m_lOrdinaryBuyVolume + m_lOrdinarySellVolume
-      + m_lAttackBuyVolume + m_lAttackSellVolume + m_lStrongBuyVolume + m_lStrongSellVolume + m_lUnknownVolume);
+    const INT64 j = m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
+      + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
+      + +m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume();
+    ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
+      + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
+      + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
   }
 
   // 下面开始分析挂单情况
@@ -407,83 +326,84 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
 }
 
 void CStock::IncreaseTransactionNumber(void) {
-  m_lTransactionNumber++; // 成交数加一。
+  m_stockCalculatedInfo.IncreaseTransactionNumber(); // 成交数加一。
   if (m_lCurrentGuadanTransactionVolume < 5000) {
-    m_lTransactionNumberBelow5000++;
+    m_stockCalculatedInfo.IncreaseTransactionNumberBelow5000();
   }
   else if (m_lCurrentGuadanTransactionVolume < 50000) {
-    m_lTransactionNumberBelow50000++;
+    m_stockCalculatedInfo.IncreaseTransactionNumberBelow50000();
   }
   else if (m_lCurrentGuadanTransactionVolume < 200000) {
-    m_lTransactionNumberBelow200000++;
+    m_stockCalculatedInfo.IncreaseTransactionNumberBelow200000();
   }
   else {
-    m_lTransactionNumberAbove200000++;
+    m_stockCalculatedInfo.IncreaseTransactionNumberAbove200000();
   }
-  ASSERT(m_lTransactionNumber == (m_lTransactionNumberAbove200000 + m_lTransactionNumberBelow200000
-    + m_lTransactionNumberBelow50000 + m_lTransactionNumberBelow5000));
+  ASSERT(m_stockCalculatedInfo.GetTransactionNumber() == (m_stockCalculatedInfo.GetTransactionNumberAbove200000()
+    + m_stockCalculatedInfo.GetTransactionNumberBelow200000()
+    + m_stockCalculatedInfo.GetTransactionNumberBelow50000() + m_stockCalculatedInfo.GetTransactionNumberBelow5000()));
 }
 
 void CStock::CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice) {
   if ((m_pLastRTData->GetPSell(0) - lCurrentGuaDanTransactionPrice) <= 2) { //一般性买入
-    m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
+    IncreaseOrdinaryBuyVolume(m_lCurrentGuadanTransactionVolume);
     m_nCurrentTransactionType = __ORDINARY_BUY__;
   }
   else if ((lCurrentGuaDanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
     m_nCurrentTransactionType = __ORDINARY_SELL__;
-    m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+    IncreaseOrdinarySellVolume(m_lCurrentGuadanTransactionVolume);
   }
   else { // 买卖混杂，不分析。
     m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
-    m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+    IncreaseUnknownVolume(m_lCurrentGuadanTransactionVolume);
   }
 }
 
 void CStock::CalculateAttackBuy(void) {
   m_nCurrentTransactionType = __ATTACK_BUY__;
-  m_lAttackBuyVolume += m_lCurrentGuadanTransactionVolume;
+  IncreaseAttackBuyVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackBuyVolume();
 }
 
 void CStock::CalculateStrongBuy(void) {
   m_nCurrentTransactionType = __STRONG_BUY__;
-  m_lStrongBuyVolume += m_lCurrentGuadanTransactionVolume;
+  IncreaseStrongBuyVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackBuyVolume();
 }
 
 void CStock::CalculateAttackBuyVolume(void) {
   if (m_lCurrentGuadanTransactionVolume < 50000) {
-    m_lAttackBuyBelow50000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackBuyBelow50000(m_lCurrentGuadanTransactionVolume);
   }
   else if (m_lCurrentGuadanTransactionVolume < 200000) {
-    m_lAttackBuyBelow200000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackBuyBelow200000(m_lCurrentGuadanTransactionVolume);
   }
   else {
-    m_lAttackBuyAbove200000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackBuyAbove200000(m_lCurrentGuadanTransactionVolume);
   }
 }
 
 void CStock::CalculateAttackSell(void) {
   m_nCurrentTransactionType = __ATTACK_SELL__;
-  m_lAttackSellVolume += m_lCurrentGuadanTransactionVolume;
+  IncreaseAttackSellVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackSellVolume();
 }
 
 void CStock::CalculateStrongSell(void) {
   m_nCurrentTransactionType = __STRONG_SELL__;
-  m_lStrongSellVolume += m_lCurrentGuadanTransactionVolume;
+  IncreaseStrongSellVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackSellVolume();
 }
 
 void CStock::CalculateAttackSellVolume(void) {
   if (m_lCurrentGuadanTransactionVolume < 50000) {
-    m_lAttackSellBelow50000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackSellBelow50000(m_lCurrentGuadanTransactionVolume);
   }
   else if (m_lCurrentGuadanTransactionVolume < 200000) {
-    m_lAttackSellBelow200000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackSellBelow200000(m_lCurrentGuadanTransactionVolume);
   }
   else {
-    m_lAttackSellAbove200000 += m_lCurrentGuadanTransactionVolume;
+    IncreaseAttackSellAbove200000(m_lCurrentGuadanTransactionVolume);
   }
 }
 
@@ -574,7 +494,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(0)) {
         if (GetGuaDan(m_pLastRTData->GetPSell(4)) < m_pLastRTData->GetVSell(4)) { // 撤单了的话
           m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4));
-          m_lCancelSellVolume += m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4));
+          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4)));
         }
       }
       break;
@@ -582,7 +502,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(1)) {
         if (GetGuaDan(m_pLastRTData->GetPSell(3)) < m_pLastRTData->GetVSell(3)) { // 撤单了的话
           m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3));
-          m_lCancelSellVolume += m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3));
+          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3)));
         }
       }
       break;
@@ -590,7 +510,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(2)) {
         if (GetGuaDan(m_pLastRTData->GetPSell(2)) < m_pLastRTData->GetVSell(2)) { // 撤单了的话
           m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2));
-          m_lCancelSellVolume += m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2));
+          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2)));
         }
       }
       break;
@@ -598,7 +518,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(3)) {
         if (GetGuaDan(m_pLastRTData->GetPSell(1)) < m_pLastRTData->GetVSell(1)) { // 撤单了的话
           m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1));
-          m_lCancelSellVolume += m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1));
+          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1)));
         }
       }
       break;
@@ -606,7 +526,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(4)) {
         if (GetGuaDan(m_pLastRTData->GetPSell(0)) < m_pLastRTData->GetVSell(0)) { // 撤单了的话
           m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0));
-          m_lCancelSellVolume += m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0));
+          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0)));
         }
       }
       break;
@@ -614,7 +534,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(5)) {
         if (GetGuaDan(m_pLastRTData->GetPBuy(0)) < m_pLastRTData->GetVBuy(0)) { // 撤单了的话
           m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0));
-          m_lCancelBuyVolume += m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0));
+          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0)));
         }
       }
       break;
@@ -622,7 +542,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(6)) {
         if (GetGuaDan(m_pLastRTData->GetPBuy(1)) < m_pLastRTData->GetVBuy(1)) { // 撤单了的话
           m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1));
-          m_lCancelBuyVolume += m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1));
+          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1)));
         }
       }
       break;
@@ -630,7 +550,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(7)) {
         if (GetGuaDan(m_pLastRTData->GetPBuy(2)) < m_pLastRTData->GetVBuy(2)) { // 撤单了的话
           m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2));
-          m_lCancelBuyVolume += m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2));
+          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2)));
         }
       }
       break;
@@ -638,7 +558,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(8)) {
         if (GetGuaDan(m_pLastRTData->GetPBuy(3)) < m_pLastRTData->GetVBuy(3)) { // 撤单了的话
           m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3));
-          m_lCancelBuyVolume += m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3));
+          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3)));
         }
       }
       break;
@@ -646,7 +566,7 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
       if (fNeedCheck.at(9)) {
         if (GetGuaDan(m_pLastRTData->GetPBuy(4)) < m_pLastRTData->GetVBuy(4)) { // 撤单了的话
           m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4));
-          m_lCancelBuyVolume += m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4));
+          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4)));
         }
       }
       break;
@@ -659,15 +579,16 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
 }
 
 bool CStock::CheckCurrentRTData() {
-  if ((m_lOrdinaryBuyVolume < 0) || (m_lOrdinarySellVolume < 0) || (m_lAttackBuyVolume < 0)
-    || (m_lAttackSellVolume < 0) || (m_lStrongBuyVolume < 0) || (m_lStrongSellVolume < 0)) {
+  if ((m_stockCalculatedInfo.GetOrdinaryBuyVolume() < 0) || (m_stockCalculatedInfo.GetOrdinarySellVolume() < 0)
+    || (m_stockCalculatedInfo.GetAttackBuyVolume() < 0) || (m_stockCalculatedInfo.GetAttackSellVolume() < 0)
+    || (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) || (m_stockCalculatedInfo.GetStrongSellVolume() < 0)) {
     int j = 0;
-    if (m_lOrdinaryBuyVolume < 0) j = 1;
-    if (m_lOrdinarySellVolume < 0) j += 2;
-    if (m_lAttackBuyVolume < 0) j += 4;
-    if (m_lAttackSellVolume < 0) j += 8;
-    if (m_lStrongBuyVolume < 0) j += 16;
-    if (m_lStrongSellVolume < 0) j += 32;
+    if (m_stockCalculatedInfo.GetOrdinaryBuyVolume() < 0) j = 1;
+    if (m_stockCalculatedInfo.GetOrdinarySellVolume() < 0) j += 2;
+    if (m_stockCalculatedInfo.GetAttackBuyVolume() < 0) j += 4;
+    if (m_stockCalculatedInfo.GetAttackSellVolume() < 0) j += 8;
+    if (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) j += 16;
+    if (m_stockCalculatedInfo.GetStrongSellVolume() < 0) j += 32;
     TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_systemTime.GetTime(), m_strStockCode, j);
     return false;
   }
@@ -709,31 +630,31 @@ void CStock::ReportGuaDanTransaction(void)
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
     str1 = _T(" STRONG BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lStrongBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongBuyVolume());
     break;
   case __STRONG_SELL__:
     str1 = _T(" STRONG SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lStrongSellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongSellVolume());
     break;
   case __ATTACK_BUY__:
     str1 = _T(" ATTACK BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lAttackBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackBuyVolume());
     break;
   case __ATTACK_SELL__:
     str1 = _T(" ATTACK SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lAttackSellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackSellVolume());
     break;
   case __ORDINARY_BUY__:
     str1 = _T(" ORDINARY BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lOrdinaryBuyVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinaryBuyVolume());
     break;
   case __ORDINARY_SELL__:
     str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lOrdinarySellVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinarySellVolume());
     break;
   case __UNKNOWN_BUYSELL__:
     str1 = _T(" UNKNOWN BUYSELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_lUnknownVolume);
+    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetUnknownVolume());
     break;
   default:
     break;
@@ -755,14 +676,14 @@ void CStock::ReportGuaDan(void)
   if (m_lCurrentCanselSellVolume > 0) {
     sprintf_s(buffer, "当前取消卖单量：%I64d", m_lCurrentCanselSellVolume);
     str1 = buffer;
-    sprintf_s(buffer, "  总取消卖单量：%I64d", m_lCancelSellVolume);
+    sprintf_s(buffer, "  总取消卖单量：%I64d", m_stockCalculatedInfo.GetCancelSellVolume());
     str1 += buffer;
     gl_systemMessage.PushCancelSellMessage(str1);   // 采用同步机制传递消息
   }
   if (m_lCurrentCanselBuyVolume > 0) {
     sprintf_s(buffer, "当前取消买单量：%I64d", m_lCurrentCanselBuyVolume);
     str1 = buffer;
-    sprintf_s(buffer, "  总取消买单量：%I64d", m_lCancelBuyVolume);
+    sprintf_s(buffer, "  总取消买单量：%I64d", m_stockCalculatedInfo.GetCancelBuyVolume());
     str1 += buffer;
     gl_systemMessage.PushCancelSellMessage(str1); // 采用同步机制传递消息
   }
