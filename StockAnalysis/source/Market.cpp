@@ -1704,7 +1704,7 @@ bool CMarket::UpdateTodayTempDB(void) {
   setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if (pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
