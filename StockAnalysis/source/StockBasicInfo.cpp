@@ -26,3 +26,19 @@ void CStockBasicInfo::Reset(void)
 
   m_lHigh = m_lNew = m_lLow = 0;
 }
+
+void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {
+  SetLastClose(pRTData->GetLastClose());
+  SetNew(pRTData->GetNew());
+  SetHigh(pRTData->GetHigh());
+  SetLow(pRTData->GetLow());
+  SetOpen(pRTData->GetOpen());
+  SetVolume(pRTData->GetVolume());
+  SetAmount(pRTData->GetAmount());
+  for (int i = 0; i < 5; i++) {
+    SetPBuy(i, pRTData->GetPBuy(i));
+    SetVBuy(i, pRTData->GetVBuy(i));
+    SetPSell(i, pRTData->GetPSell(i));
+    SetVSell(i, pRTData->GetVSell(i));
+  }
+}

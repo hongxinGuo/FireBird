@@ -1,6 +1,7 @@
 #pragma once
 
 #include"StockID.h"
+#include"RTData.h"
 
 using namespace std;
 #include<array>
@@ -65,6 +66,14 @@ public:
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
   long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
+  void SetPBuy(int iIndex, long value) { m_lPBuy.at(iIndex) = value; }
+  void SetVBuy(int iIndex, long value) { m_lVBuy.at(iIndex) = value; }
+  void SetPSell(int iIndex, long value) { m_lPSell.at(iIndex) = value; }
+  void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
+  double GetRelativeStrong(void) { return m_dRelativeStrong; }
+  void SetRelativeStrong(double value) { m_dRelativeStrong = value; }
+
+  void UpdateStatus(CRTDataPtr pRTData);
 
 protected:
   CStockID m_ID;

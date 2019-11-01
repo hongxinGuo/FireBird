@@ -39,62 +39,65 @@ public:
   ~CStock(void);
   void Reset(void);
 
-  void operator=(CStock&);
-
 public:
-  WORD GetMarket(void) noexcept { return m_wMarket; }
-  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
-  CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) { m_strStockCode = str; }
-  long GetCode(void) noexcept { return m_iStockCode; }
-  void SetCode(long lValue) { m_iStockCode = lValue; }
-  CString GetStockName(void) { return m_strStockName; }
-  void SetStockName(CString str) { m_strStockName = str; }
+  WORD GetMarket(void) noexcept { return m_stockBasicInfo.GetMarket(); }
+  void SetMarket(WORD wValue) noexcept { m_stockBasicInfo.SetMarket(wValue); }
+  CString GetStockCode(void) { return m_stockBasicInfo.GetStockCode(); }
+  void SetStockCode(CString str) { m_stockBasicInfo.SetStockCode(str); }
+  long GetCode(void) noexcept { return m_stockBasicInfo.GetCode(); }
+  void SetCode(long lValue) { m_stockBasicInfo.SetCode(lValue); }
+  CString GetStockName(void) { return m_stockBasicInfo.GetStockName(); }
+  void SetStockName(CString str) { m_stockBasicInfo.SetStockName(str); }
 
-  long GetOffset(void) noexcept { return m_nOffsetInContainer; }
-  void SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
-  long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
-  long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
-  void SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
-  long GetIPOStatus(void) noexcept { return m_lIPOed; }
-  void SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+  long GetOffset(void) noexcept { return m_stockBasicInfo.GetOffset(); }
+  void SetOffset(long lValue) noexcept { m_stockBasicInfo.SetOffset(lValue); }
+  long GetDayLineStartDay(void) noexcept { return m_stockBasicInfo.GetDayLineStartDay(); }
+  void SetDayLineStartDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineStartDay(lDay); }
+  long GetDayLineEndDay(void) noexcept { return m_stockBasicInfo.GetDayLineEndDay(); }
+  void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }
+  long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
+  void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
 
-  bool IsActive(void) noexcept { return m_fActive; }
-  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-  bool IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
-  void SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
+  bool IsActive(void) noexcept { return m_stockBasicInfo.IsActive(); }
+  void SetActive(bool fFlag) noexcept { m_stockBasicInfo.SetActive(fFlag); }
+  bool IsDayLineNeedUpdate(void) noexcept { return m_stockBasicInfo.IsDayLineNeedUpdate(); }
+  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_stockBasicInfo.SetDayLineNeedUpdate(fFlag); }
+  bool IsInquiringOnce(void) noexcept { return m_stockBasicInfo.IsInquiringOnce(); }
+  void SetInquiringOnce(bool fFlag) noexcept { m_stockBasicInfo.SetInquiringOnce(fFlag); }
 
-  bool IsNeedUpdate(void) noexcept { return m_fNeedUpdate; }
-  void SetNeedUpdate(bool fFlag) noexcept { m_fNeedUpdate = fFlag; }
+  bool IsNeedUpdate(void) noexcept { return m_stockBasicInfo.IsNeedUpdate(); }
+  void SetNeedUpdate(bool fFlag) noexcept { m_stockBasicInfo.SetNeedUpdate(fFlag); }
 
-  time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
-  void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
-  long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) noexcept { return m_lNew; }
-  void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
-  long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
-  long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
-  long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
-  long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
-  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
+  time_t GetTransactionTime(void) noexcept { return m_stockBasicInfo.GetTransactionTime(); }
+  void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); }
+  long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
+  void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
+  long GetOpen(void) noexcept { return m_stockBasicInfo.GetOpen(); }
+  void SetOpen(long lValue) noexcept { m_stockBasicInfo.SetOpen(lValue); }
+  long GetHigh(void) noexcept { return m_stockBasicInfo.GetHigh(); }
+  void SetHigh(long lValue) noexcept { m_stockBasicInfo.SetHigh(lValue); }
+  long GetLow(void) noexcept { return m_stockBasicInfo.GetLow(); }
+  void SetLow(long lValue) noexcept { m_stockBasicInfo.SetLow(lValue); }
+  long GetNew(void) noexcept { return m_stockBasicInfo.GetNew(); }
+  void SetNew(long lValue) noexcept { m_stockBasicInfo.SetNew(lValue); }
+  INT64 GetAmount(void) noexcept { return m_stockBasicInfo.GetAmount(); }
+  void SetAmount(INT64 llValue) noexcept { m_stockBasicInfo.SetAmount(llValue); }
+  INT64 GetVolume(void) noexcept { return m_stockBasicInfo.GetVolume(); }
+  void SetVolume(INT64 llValue) noexcept { m_stockBasicInfo.SetVolume(llValue); }
+  void SetTotalValue(INT64 llValue) noexcept { m_stockBasicInfo.SetTotalValue(llValue); }
+  INT64 GetTotalValue(void) noexcept { return m_stockBasicInfo.GetTotalValue(); }
+  void SetCurrentValue(INT64 llValue) noexcept { m_stockBasicInfo.SetCurrentValue(llValue); }
+  INT64 GetCurrentValue(void) noexcept { return m_stockBasicInfo.GetCurrentValue(); }
+  long GetPBuy(int iIndex) { return m_stockBasicInfo.GetPBuy(iIndex); }
+  long GetVBuy(int iIndex) { return m_stockBasicInfo.GetVBuy(iIndex); }
+  long GetPSell(int iIndex) { return m_stockBasicInfo.GetPSell(iIndex); }
+  long GetVSell(int iIndex) { return m_stockBasicInfo.GetVSell(iIndex); }
+  void SetPBuy(int iIndex, long value) { m_stockBasicInfo.SetPBuy(iIndex, value); }
+  void SetVBuy(int iIndex, long value) { m_stockBasicInfo.SetVBuy(iIndex, value); }
+  void SetPSell(int iIndex, long value) { m_stockBasicInfo.SetPSell(iIndex, value); }
+  void SetVSell(int iIndex, long value) { m_stockBasicInfo.SetVSell(iIndex, value); }
+  double GetRelativeStrong(void) noexcept { return m_stockBasicInfo.GetRelativeStrong(); }
+  void SetRelativeStrong(double value) noexcept { m_stockBasicInfo.SetRelativeStrong(value); }
 
   INT64 GetAttackBuyAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyAmount(); }
   INT64 GetAttackSellAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackSellAmount(); }
@@ -219,6 +222,7 @@ public:
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
 
 protected:
+  /*
   // 基本信息
   WORD m_wMarket; // 市场索引
   CString m_strStockCode; // 证券代码，
@@ -256,7 +260,8 @@ protected:
   array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
   array<long, 5> m_lVSell; // 卖盘量。单位：股
   double m_dRelativeStrong; // 单位：1%
-
+  */
+  CStockBasicInfo m_stockBasicInfo;
   CStockCalculatedInfo m_stockCalculatedInfo;
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
