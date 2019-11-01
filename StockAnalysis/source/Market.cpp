@@ -1085,10 +1085,19 @@ bool CMarket::SchedulingTask(void)
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
-      gl_NeteaseDayLineWebData.GetWebData();
-      gl_NeteaseDayLineWebDataSecond.GetWebData();
-      //gl_NeteaseDayLineWebDataThird.GetWebData();
-      //gl_NeteaseDayLineWebDataFourth.GetWebData();
+      int MaxThreads = (gl_cMaxCalculatingRSThreads + 1) / 2;
+      switch (MaxThreads) {
+      case 4:
+        gl_NeteaseDayLineWebDataFourth.GetWebData();
+      case 3:
+        gl_NeteaseDayLineWebDataThird.GetWebData();
+      case 2:
+        gl_NeteaseDayLineWebDataSecond.GetWebData();
+      case 1:
+        gl_NeteaseDayLineWebData.GetWebData();
+      default:
+        TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+      }
     }
   }
 
@@ -1695,8 +1704,7 @@ bool CMarket::UpdateTodayTempDB(void) {
   setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if ((pStock->GetHigh() == 0) && (pStock->GetLow() == 0) && (pStock->GetAmount() == 0)
-      && (pStock->GetVolume() == 0) && (pStock->GetNew() == 0)) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
+    if (pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
