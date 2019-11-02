@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "globedef.h"
 
-#include"RTData.h"
 #include"Accessory.h"
+#include"RTData.h"
+#include"StockID.h"
 
 using namespace std;
 

@@ -20,7 +20,6 @@ enum {
 #include"DayLine.h"
 #include"OneDeal.h"
 
-#include"StockID.h"
 #include"StockBasicInfo.h"
 #include"StockCalculatedInfo.h"
 

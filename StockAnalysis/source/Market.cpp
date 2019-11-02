@@ -8,7 +8,7 @@
 #include"accessory.h"
 #include"TransferSharedPtr.h"
 
-#include"StockID.h"
+#include"stock.h"
 #include"Market.h"
 
 #include"SetDayLineInfo.h"
@@ -113,7 +113,7 @@ bool CMarket::CreateTotalStockContainer(void)
 {
   char buffer[10]{};
 
-  StockIDPtr pStockID = nullptr;
+  CStockPtr pStock = nullptr;
   int iCount = 0;
 
   // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
@@ -124,65 +124,65 @@ bool CMarket::CreateTotalStockContainer(void)
   for (int i = 600000; i < 602000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStockID = make_shared<CStockID>();
+    pStock = make_shared<CStock>();
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海主板
-    pStockID->SetOffset(iCount);
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHANGHAI_MARKET__); // 上海主板
+    pStock->SetOffset(iCount);
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   // 生成三版股票代码
   for (int i = 603000; i < 604000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStockID = make_shared<CStockID>();
+    pStock = make_shared<CStock>();
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海三板
-    pStockID->SetOffset(iCount);
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHANGHAI_MARKET__); // 上海三板
+    pStock->SetOffset(iCount);
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   // 生成科创版股票代码
   for (int i = 688000; i < 689000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStockID = make_shared<CStockID>();
+    pStock = make_shared<CStock>();
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
-    pStockID->SetOffset(iCount);
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
+    pStock->SetOffset(iCount);
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   // 生成B股股票代码
   for (int i = 900000; i < 901000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStockID = make_shared<CStockID>();
+    pStock = make_shared<CStock>();
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海B股
-    pStockID->SetOffset(iCount);
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHANGHAI_MARKET__); // 上海B股
+    pStock->SetOffset(iCount);
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   // 生成上海指数代码
   for (int i = 0; i < 1000; i++) {
     CString str = _T("sh");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
+    pStock = make_shared<CStock>();
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHANGHAI_MARKET__); // 上海指数
-    pStockID->SetOffset(iCount);
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHANGHAI_MARKET__); // 上海指数
+    pStock->SetOffset(iCount);
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
   }
 
   ///////////////////////////////////////////////
@@ -190,65 +190,65 @@ bool CMarket::CreateTotalStockContainer(void)
   for (int i = 0; i < 2000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
-    pStockID->SetOffset(iCount);
+    pStock = make_shared<CStock>();
+    pStock->SetOffset(iCount);
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   // 生成深圳中小板股票代码
   for (int i = 2000; i < 3000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
-    pStockID->SetOffset(iCount);
+    pStock = make_shared<CStock>();
+    pStock->SetOffset(iCount);
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   // 生成B股股票代码
   for (int i = 200000; i < 201000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
-    pStockID->SetOffset(iCount);
+    pStock = make_shared<CStock>();
+    pStock->SetOffset(iCount);
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   // 生成创业板股票代码
   for (int i = 300000; i < 301000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
-    pStockID->SetOffset(iCount);
+    pStock = make_shared<CStock>();
+    pStock->SetOffset(iCount);
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   // 生成深圳指数
   for (int i = 399000; i < 400000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStockID = make_shared<CStockID>();
-    pStockID->SetOffset(iCount);
+    pStock = make_shared<CStock>();
+    pStock->SetOffset(iCount);
     str += buffer;
-    pStockID->SetStockCode(str);
-    pStockID->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
-    m_vChinaMarketAStock.push_back(pStockID);
-    m_mapChinaMarketAStock[pStockID->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    pStock->SetStockCode(str);
+    pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
+    m_vChinaMarketAStock.push_back(pStock);
+    m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
   }
 
   return true;
@@ -408,8 +408,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
 
   long lTotalStock;
 
-  StockIDPtr pStockID;
-
   lTotalStock = m_vChinaMarketAStock.size();
 
   bool fFound = false;
@@ -453,7 +451,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   }
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
-  StockIDPtr pID = m_vChinaMarketAStock.at(siCounter);
+  CStockPtr pID = m_vChinaMarketAStock.at(siCounter);
   pID->SetInquiringOnce(true);
   switch (pID->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
@@ -504,7 +502,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
 //
 //
 ////////////////////////////////////////////////////////////////////////
-long CMarket::GetMinLineOffset(CStockID sID, time_t Time) {
+long CMarket::GetMinLineOffset(CStock sID, time_t Time) {
   ASSERT(Time >= 0);
   tm tmTemp{};
   time_t t = 0;
@@ -1085,8 +1083,7 @@ bool CMarket::SchedulingTask(void)
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
-      int MaxThreads = gl_cMaxSavingOneDayLineThreads;
-      switch (MaxThreads) {
+      switch (gl_cMaxSavingOneDayLineThreads) {
       case 8:
       case 7:
       case 6:
@@ -1098,9 +1095,11 @@ bool CMarket::SchedulingTask(void)
       case 2:
         gl_NeteaseDayLineWebDataSecond.GetWebData();
       case 1:
+      case 0:
         gl_NeteaseDayLineWebData.GetWebData();
         break;
       default:
+        gl_NeteaseDayLineWebData.GetWebData();
         TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
         break;
       }
@@ -1386,7 +1385,7 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
 
   long lIndex = 0;
   long lSize = 0;
-  StockIDPtr pStockID;
+  CStockPtr pStockID;
   CDayLinePtr pDayLine;
 
   CCriticalSection cs;
@@ -1559,8 +1558,8 @@ bool CMarket::SaveCrweberIndexData(void) {
 }
 
 bool CMarket::IsDayLineNeedUpdate(void) {
-  for (auto pStockID : m_vChinaMarketAStock) {
-    if (pStockID->IsDayLineNeedUpdate()) return true;
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (pStock->IsDayLineNeedUpdate()) return true;
   }
   return false;
 }
@@ -1574,8 +1573,8 @@ bool CMarket::IsDayLineNeedSaving(void)
 }
 
 bool CMarket::IsDayLineDataInquiringOnce(void) {
-  for (auto pStockID : m_vChinaMarketAStock) {
-    if (!pStockID->IsInquiringOnce()) return false;
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (!pStock->IsInquiringOnce()) return false;
   }
   return true;
 }
@@ -1776,7 +1775,7 @@ bool CMarket::LoadTodayTempDB(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
-  vector<StockIDPtr> vStockID;
+  vector<CStockPtr> vStockID;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
   int iTotalAShare = 0;
@@ -1872,28 +1871,28 @@ bool CMarket::UpdateStockCodeDB(void)
   }
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.m_pDatabase->BeginTrans();
-  for (auto pStockID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
+  for (auto pStock : gl_ChinaStockMarket.m_vChinaMarketAStock) {
     setStockCode.AddNew();
     CString str;
-    setStockCode.m_Counter = pStockID->GetOffset();
-    setStockCode.m_StockType = pStockID->GetMarket();
-    setStockCode.m_StockCode = pStockID->GetStockCode();
-    if (pStockID->GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
-      setStockCode.m_StockName = pStockID->GetStockName(); // 则存储新的名字
+    setStockCode.m_Counter = pStock->GetOffset();
+    setStockCode.m_StockType = pStock->GetMarket();
+    setStockCode.m_StockCode = pStock->GetStockCode();
+    if (pStock->GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
+      setStockCode.m_StockName = pStock->GetStockName(); // 则存储新的名字
     }
-    if (pStockID->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
-      if (pStockID->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+    if (pStock->GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
+      if (pStock->GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
         setStockCode.m_IPOed = __STOCK_DELISTED__;
       }
       else {
-        setStockCode.m_IPOed = pStockID->GetIPOStatus();
+        setStockCode.m_IPOed = pStock->GetIPOStatus();
       }
     }
     else {
-      setStockCode.m_IPOed = pStockID->GetIPOStatus();
+      setStockCode.m_IPOed = pStock->GetIPOStatus();
     }
-    setStockCode.m_DayLineStartDay = pStockID->GetDayLineStartDay();
-    setStockCode.m_DayLineEndDay = pStockID->GetDayLineEndDay();
+    setStockCode.m_DayLineStartDay = pStock->GetDayLineStartDay();
+    setStockCode.m_DayLineEndDay = pStock->GetDayLineEndDay();
     setStockCode.Update();
   }
   setStockCode.m_pDatabase->CommitTrans();

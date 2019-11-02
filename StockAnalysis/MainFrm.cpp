@@ -14,7 +14,6 @@
 #include"DayLine.h"
 #include"Stock.h"
 #include"Market.h"
-#include"StockID.h"
 
 #include"SinaRTWebData.h"
 
@@ -587,7 +586,6 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  StockIDPtr pStockID;
   CStockPtr pStock;
   CString strTemp;
 

@@ -73,7 +73,7 @@ public:
 
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
 
-  long GetMinLineOffset(CStockID sID, time_t Time);
+  long GetMinLineOffset(CStock sID, time_t Time);
 
   bool SystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
@@ -180,7 +180,7 @@ public:
   int m_iCountDownDayLine; // 日线数据读取延时计数。
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
 
-  vector<StockIDPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
 
   vector<CStockPtr> gl_vStockChoice; // 自选股票池
 

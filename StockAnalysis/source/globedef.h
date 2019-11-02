@@ -6,7 +6,6 @@
 #include"RTData.h"
 
 #include"SetDayLine.h"
-#include"StockID.h"
 
 #include"SinaRTWebData.h"
 #include"TengxunRTWebData.h"
