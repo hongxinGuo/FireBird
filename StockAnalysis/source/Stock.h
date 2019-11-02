@@ -99,28 +99,44 @@ public:
   void SetRelativeStrong(double value) noexcept { m_stockBasicInfo.SetRelativeStrong(value); }
 
   INT64 GetAttackBuyAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyAmount(); }
+  void SetAttackBuyAmount(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyAmount(value); }
   INT64 GetAttackSellAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackSellAmount(); }
+  void SetAttackSellAmount(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackSellAmount(value); }
   INT64 GetOrdinaryBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetOrdinaryBuyVolume(); }
+  void SetOrdinaryBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetOrdinaryBuyVolume(value); }
   void IncreaseOrdinaryBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseOrdinaryBuyVolume(value); }
   INT64 GetOrdinarySellVolume(void) noexcept { return m_stockCalculatedInfo.GetOrdinarySellVolume(); }
+  void SetOrdinarySellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetOrdinarySellVolume(value); }
   void IncreaseOrdinarySellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseOrdinarySellVolume(value); }
   INT64 GetAttackBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyVolume(); }		// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  void SetAttackBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyVolume(value); }
   void IncreaseAttackBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyVolume(value); }
   INT64 GetStrongBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetStrongBuyVolume(); }		// 向上强力买入,成交价超过之前的卖二报价
+  void SetStrongBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetStrongBuyVolume(value); }
   void IncreaseStrongBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongBuyVolume(value); }
   INT64 GetCurrentAttackBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentAttackBuy(); }
+  void SetCurrentAttackBuy(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentAttackBuy(value); }
   long GetCurrentStrongBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongBuy(); }
+  void SetCurrentStrongBuy(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentStrongBuy(value); }
   INT64 GetAttackSellVolume(void) noexcept { return m_stockCalculatedInfo.GetAttackSellVolume(); }			// 向下卖出。成交价低于买一价但高于买二价。
+  void SetAttackSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackSellVolume(value); }
   void IncreaseAttackSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackSellVolume(value); }
   INT64 GetStrongSellVolume(void) noexcept { return m_stockCalculatedInfo.GetStrongSellVolume(); }
+  void SetStrongSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetStrongSellVolume(value); }
   void IncreaseStrongSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongSellVolume(value); }
   long GetCurrentAttackSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentAttackSell(); }
+  void SetCurrentAttackSell(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentAttackSell(value); }
   long GetCurrentStrongSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongSell(); }
+  void SetCurrentStrongSell(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentStrongSell(value); }
   INT64 GetUnknownVolume(void) noexcept { return m_stockCalculatedInfo.GetUnknownVolume(); }
+  void SetUnknownVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetUnknownVolume(value); }
   void IncreaseUnknownVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseUnknownVolume(value); }
   long GetCurrentUnknown(void) noexcept { return m_stockCalculatedInfo.GetCurrentUnknown(); }
+  void SetCurrentUnknown(long value) noexcept { m_stockCalculatedInfo.SetCurrentUnknown(value); }
   INT64 GetCancelBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelBuyVolume(); }
+  void SetCancelBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelBuyVolume(value); }
   INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
+  void SetCancelSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelSellVolume(value); }
 
   void IncreaseAttackBuyBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow50000(value); }
   void IncreaseAttackBuyBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow200000(value); }

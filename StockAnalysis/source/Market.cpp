@@ -717,7 +717,10 @@ bool CMarket::ProcessRTData(void)
 {
   for (auto pStock : m_vActiveStock) {
     ASSERT(pStock != nullptr);
-    pStock->ProcessRTData();
+    ASSERT(pStock->IsActive());
+    if (pStock->IsActive()) {
+      pStock->ProcessRTData();
+    }
   }
   return true;
 }
@@ -1525,10 +1528,10 @@ bool CMarket::SaveRTData(void) {
   setRTData.Open();
   setRTData.m_pDatabase->BeginTrans();
   for (auto pStock : m_vActiveStock) {
-    if (pStock != nullptr) {
-      if (pStock->IsActive()) {
-        pStock->SaveRealTimeData(&setRTData);
-      }
+    ASSERT(pStock != nullptr);
+    ASSERT(pStock->IsActive());
+    if (pStock->IsActive()) {
+      pStock->SaveRealTimeData(&setRTData);
     }
   }
   setRTData.m_pDatabase->CommitTrans();
@@ -1567,7 +1570,10 @@ bool CMarket::IsDayLineNeedUpdate(void) {
 bool CMarket::IsDayLineNeedSaving(void)
 {
   for (auto pStock : m_vActiveStock) {
-    if (pStock->IsDayLineNeedSaving()) return true;
+    if (pStock->IsActive()) {
+      if (pStock->IsDayLineNeedSaving()) return true;
+    }
+    else return false;
   }
   return false;
 }

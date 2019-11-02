@@ -23,6 +23,8 @@ namespace StockAnalysisTest {
         pStock->SetDayLineNeedUpdate(true);
       }
       // ≥ı ºªØπ…∆±≥ÿ
+      EXPECT_TRUE(gl_fTestMode);
+      EXPECT_FALSE(gl_fNormalMode);
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
