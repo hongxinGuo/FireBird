@@ -41,6 +41,7 @@ public:
   int GetSinaInquiringStockStr(CString& str);
   int	GetTengxunInquiringStockStr(CString& str);
   int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
+  void StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
   bool GetTengxunStockRTData(void);
   void ResetIT(void); //重置各迭代器
 
@@ -58,9 +59,6 @@ public:
   // 得到股票指针
   CStockPtr GetStockPtr(CString strStockCode);
   CStockPtr GetStockPtr(long lIndex);
-
-  // 存储新股票指针入活跃股票池
-  void AddStockToMarket(CStockPtr pStock);
 
   // 初始化实时数据计数器
   bool CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
@@ -196,7 +194,6 @@ protected:
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
   map<CString, long> m_mapActiveStockToIndex;	// 将市场活跃的股票代码映射为偏移量
-  vector<CStockPtr> m_vActiveStock;	//当天股票数据
 
   long m_lTotalActiveStock;	// 当天股票总数
 

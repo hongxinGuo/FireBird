@@ -40,7 +40,6 @@ CMarket::~CMarket() {
 void CMarket::Reset(void)
 {
   m_mapActiveStockToIndex.clear();
-  m_vActiveStock.clear();
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fLoadedSelectedStock = false;
@@ -324,8 +323,8 @@ bool CMarket::CreateTengxunRTDataInquiringStr(CString& str) {
 void CMarket::ResetIT(void) {
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
-  m_itSinaStock = m_vActiveStock.begin();
-  m_itTengxunStock = m_vActiveStock.begin();
+  m_itSinaStock = m_vChinaMarketAStock.begin();
+  m_itTengxunStock = m_vChinaMarketAStock.begin();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -586,7 +585,7 @@ bool CMarket::IsStock(CString strStockCode, CStockPtr& pStock) {
 /////////////////////////////////////////////////////////////////////////
 INT64 CMarket::GetTotalAttackBuyAmount(void) {
   INT64 lAmount = 0;
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive() && IsAStock(pStock)) {
       lAmount += pStock->GetAttackBuyAmount();
     }
@@ -602,7 +601,7 @@ INT64 CMarket::GetTotalAttackBuyAmount(void) {
 /////////////////////////////////////////////////////////////////////////////
 INT64 CMarket::GetTotalAttackSellAmount(void) {
   INT64 lAmount = 0;
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive() && IsAStock(pStock)) {
       lAmount += pStock->GetAttackSellAmount();
     }
@@ -627,39 +626,24 @@ bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
-    //ASSERT(pRTData->IsActive());  // 此数据应该是永远有效的。
     if (pRTData->IsActive()) { // 此实时数据有效？
-      long lIndex = 0, lIndexActive = 0;
-      if (m_mapActiveStockToIndex.find(pRTData->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
-        pStock = make_shared<CStock>();
+      long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
+      pStock = m_vChinaMarketAStock.at(lIndex);
+      if (!pStock->IsActive()) {
         pStock->SetActive(true);
-        pStock->SetMarket(pRTData->GetMarket());
-        pStock->SetStockCode(pRTData->GetStockCode());
         pStock->SetStockName(pRTData->GetStockName());
-        pStock->SetCode(pRTData->GetCode());
+        pStock->SetStockCode(pRTData->GetStockCode());
         pStock->SetLastClose(pRTData->GetLastClose());
         pStock->SetOpen(pRTData->GetOpen());
-        AddStockToMarket(pStock); // 添加此股入容器，其索引就是目前的m_lTotalActiveStaock的值。
-        ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);
-        pStock->PushRTData(pRTData);
-        lIndex = m_mapChinaMarketAStock[pStock->GetStockCode()];
-        m_vChinaMarketAStock.at(lIndex)->SetStockName(pStock->GetStockName());
-        m_vChinaMarketAStock.at(lIndex)->SetActive(true); // 本日接收到了数据，
-        lIndexActive = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
-        m_vActiveStock.at(lIndexActive)->SetTransactionTime(pRTData->GetTransactionTime());  // 设置最新接受到实时数据的时间
-        m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(true);
-        // 如果此股票代码尚未使用过，则设置为已使用。
-        // 停牌后的股票，也能接收到实时数据，只是其内容只有收盘价，其他都为零。考虑清除这种无效数据。
-        m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_IPOED__);
-        ASSERT(m_vChinaMarketAStock.at(lIndex)->GetStockCode().Compare(pStock->GetStockCode()) == 0);
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());
+        pStock->SetDayLineNeedUpdate(true);
+        pStock->SetIPOStatus(__STOCK_IPOED__);
+        m_mapActiveStockToIndex[pRTData->GetStockCode()] = lIndex;
+        m_lTotalActiveStock++;
       }
-      else {
-        lIndexActive = m_mapActiveStockToIndex.at(pRTData->GetStockCode());
-        ASSERT(lIndexActive <= m_lTotalActiveStock);
-        if (pRTData->GetTransactionTime() > m_vActiveStock.at(lIndexActive)->GetTransactionTime()) { // 新的数据？
-          m_vActiveStock.at(lIndexActive)->PushRTData(pRTData); // 存储新的数据至数据池
-          m_vActiveStock.at(lIndexActive)->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
-        }
+      if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+        pStock->PushRTData(pRTData); // 存储新的数据至数据池
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
       }
     }
   }
@@ -691,20 +675,29 @@ int CMarket::GetTengxunInquiringStockStr(CString& str)
 }
 
 int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
+  StepToNextActiveStockIT(itStock);
   str += (*itStock++)->GetStockCode();  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((itStock != m_vActiveStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+  while ((itStock != m_vChinaMarketAStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+    StepToNextActiveStockIT(itStock);
     iCount++;
     str += strPostfix;
     str += (*itStock++)->GetStockCode();
   }
-  if (itStock == m_vActiveStock.end()) {
-    itStock = m_vActiveStock.begin();
+  if (itStock == m_vChinaMarketAStock.end()) {
+    itStock = m_vChinaMarketAStock.begin();
   }
   else {
     itStock--;    // 退一格，这样能够覆盖住边缘
   }
   return iCount;
+}
+
+void CMarket::StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock) {
+  while (!(*itStock)->IsActive()) {
+    itStock++;
+    if (itStock == m_vChinaMarketAStock.end()) itStock = m_vChinaMarketAStock.begin();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -715,9 +708,7 @@ int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock,
 /////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::ProcessRTData(void)
 {
-  for (auto pStock : m_vActiveStock) {
-    ASSERT(pStock != nullptr);
-    ASSERT(pStock->IsActive());
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
       pStock->ProcessRTData();
     }
@@ -781,9 +772,12 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
   lIndex = 0;
   long iTemp = 0;
   CString strTemp;
+  CStockPtr pStock = nullptr;
   pTestPos = pWebData->GetBufferAddr();
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
+  lIndex = m_mapChinaMarketAStock.at(pDayLine->GetStockCode());
+  pStock = m_vChinaMarketAStock.at(lIndex);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
     if (!ProcessOneItemDayLineData(pWebData->GetDownLoadingStockCode(), pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
@@ -798,50 +792,42 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
     ASSERT(*pTestPos == *pCurrentPos);
     if (m_mapActiveStockToIndex.find(pDayLine->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
       // 生成新股票
-      auto pStock = make_shared<CStock>();
       pStock->SetActive(true);
       pStock->SetDayLineLoaded(false);
       pStock->SetMarket(pDayLine->GetMarket());
-      pStock->SetStockCode(pDayLine->GetStockCode());
-      pStock->SetStockName(pDayLine->GetStockName());
+      pStock->SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+      pStock->SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
       strTemp = pStock->GetStockCode().Right(6); // 截取股票代码右边的六个数字
       pStock->SetCode(atoi(strTemp.GetBuffer()));
-      AddStockToMarket(pStock);
-      lIndex = m_lTotalActiveStock - 1;
-      ASSERT(m_vActiveStock.size() == m_lTotalActiveStock);
-      // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      long lIndexTemp = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-      m_vChinaMarketAStock.at(lIndexTemp)->SetStockCode(pStock->GetStockCode());
-      m_vChinaMarketAStock.at(lIndexTemp)->SetStockName(pStock->GetStockName());
+      m_mapActiveStockToIndex[pStock->GetStockCode()] = lIndex;
+      m_lTotalActiveStock++;
     }
-    else lIndex = m_mapActiveStockToIndex.at(pDayLine->GetStockCode());
-    //if ((pDayLine->m_lClose != 0) && (pDayLine->m_lOpen != 0)) { // 如果数据有效，则存储此日线数据（退市后的日线数据是无效的）。
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
-  m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(pDayLine->GetStockCode()))->SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
+  pStock->SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
-    m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(pDayLine->GetStockCode()))->SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
+    pStock->SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
-    m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(pDayLine->GetStockCode()))->SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
+    pStock->SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
   ASSERT(lIndex >= 0);
-  m_vActiveStock.at(lIndex)->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
+  pStock->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
     if (pDayLine->GetDay() < gl_systemTime.GetDay()) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
       // 当新股第一天上市时，其日线只有一天，而且在这里扔掉了，导致其日线容器为空。处理时注意。
       // 由于是调取gl_lLastTradeDay及之前的日线数据，故而新股的日线容器肯定为空。
-      m_vActiveStock.at(lIndex)->m_vDayLine.push_back(pDayLine);
+      pStock->m_vDayLine.push_back(pDayLine);
     }
   }
   vTempDayLine.clear();
-  m_vActiveStock.at(lIndex)->SetDayLineLoaded(true);
-  m_vActiveStock.at(lIndex)->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
+  pStock->SetDayLineLoaded(true);
+  pStock->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
 
   return true;
 }
@@ -1291,9 +1277,9 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetStockName(CString strStockCode) {
-  if (m_mapActiveStockToIndex.find(strStockCode) != m_mapActiveStockToIndex.end()) {
-    long lIndex = m_mapActiveStockToIndex.at(strStockCode);
-    return (m_vActiveStock.at(lIndex)->GetStockName());
+  long lIndex = m_mapActiveStockToIndex.at(strStockCode);
+  if (lIndex >= 0) {
+    return (m_vChinaMarketAStock.at(lIndex)->GetStockName());
   }
   else return _T("");
 }
@@ -1325,20 +1311,14 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
   long lIndex = -1;
 
   if (m_mapActiveStockToIndex.find(strStockCode) != m_mapActiveStockToIndex.end()) {
-    lIndex = m_mapActiveStockToIndex[strStockCode];
-    return (m_vActiveStock.at(lIndex));
+    lIndex = m_mapChinaMarketAStock.at(strStockCode);
+    return (m_vChinaMarketAStock.at(lIndex));
   }
   else return nullptr;
 }
 
 CStockPtr CMarket::GetStockPtr(long lIndex) {
-  ASSERT((lIndex >= 0) && (lIndex < m_lTotalActiveStock));
-  return m_vActiveStock.at(lIndex);
-}
-
-void CMarket::AddStockToMarket(CStockPtr pStock) {
-  m_mapActiveStockToIndex[pStock->GetStockCode()] = m_lTotalActiveStock++;
-  m_vActiveStock.push_back(pStock);
+  return m_vChinaMarketAStock.at(lIndex);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1482,7 +1462,7 @@ bool CMarket::SaveDayLineData(void) {
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
 
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
         pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
@@ -1508,7 +1488,7 @@ bool CMarket::SaveDayLineData(void) {
 
 bool CMarket::ClearAllDayLineVector(void)
 {
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     pStock->m_vDayLine.clear();
   }
 
@@ -1527,9 +1507,7 @@ bool CMarket::SaveRTData(void) {
 
   setRTData.Open();
   setRTData.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vActiveStock) {
-    ASSERT(pStock != nullptr);
-    ASSERT(pStock->IsActive());
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
       pStock->SaveRealTimeData(&setRTData);
     }
@@ -1569,11 +1547,11 @@ bool CMarket::IsDayLineNeedUpdate(void) {
 
 bool CMarket::IsDayLineNeedSaving(void)
 {
-  for (auto pStock : m_vActiveStock) {
-    if (pStock->IsActive()) {
-      if (pStock->IsDayLineNeedSaving()) return true;
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (pStock->IsDayLineNeedSaving()) {
+      ASSERT(pStock->IsActive());
+      return true;
     }
-    else return false;
   }
   return false;
 }
@@ -1621,7 +1599,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayKLine.m_pDatabase->CommitTrans();
 
   setDayKLine.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (pStock == nullptr) {
       gl_systemMessage.PushInformationMessage(_T("当前活跃股票中存在nullptr"));
       continue; // 空置位置。应该不存在。
@@ -1676,7 +1654,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayLineInfo.m_pDatabase->CommitTrans();
 
   setDayLineInfo.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
@@ -1714,7 +1692,7 @@ bool CMarket::UpdateTodayTempDB(void) {
   }
   setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vActiveStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
