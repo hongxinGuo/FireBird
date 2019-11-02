@@ -621,7 +621,7 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessRTDataReceivedFromWeb(void)
+bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
 {
   // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
@@ -730,7 +730,7 @@ bool CMarket::ProcessRTData(void)
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessDayLineData(CNeteaseDayLineWebData* pWebData) {
+bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
   long iCount = 0;
   char* pCurrentPos = pWebData->GetBufferAddr();
   char* pTestPos = pWebData->GetBufferAddr();

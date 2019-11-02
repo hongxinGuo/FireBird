@@ -140,6 +140,117 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetVolume(), 100100100);
   }
 
+  TEST(StockBasicInfoTest, TestGetAttackBuyAmount) {
+    CStock id;
+    EXPECT_EQ(id.GetAttackBuyAmount(), 0);
+    id.SetAttackBuyAmount(10101010);
+    EXPECT_EQ(id.GetAttackBuyAmount(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetAttackSellAmount) {
+    CStock id;
+    EXPECT_EQ(id.GetAttackSellAmount(), 0);
+    id.SetAttackSellAmount(10101010);
+    EXPECT_EQ(id.GetAttackSellAmount(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetOrdinaryBuyVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetOrdinaryBuyVolume(), 0);
+    id.SetOrdinaryBuyVolume(10101010);
+    EXPECT_EQ(id.GetOrdinaryBuyVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetOrdinarySellVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetOrdinarySellVolume(), 0);
+    id.SetOrdinarySellVolume(10101010);
+    EXPECT_EQ(id.GetOrdinarySellVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetAttackBuyVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+    id.SetAttackBuyVolume(10101010);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetStrongBuyVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetStrongBuyVolume(), 0);
+    id.SetStrongBuyVolume(10101010);
+    EXPECT_EQ(id.GetStrongBuyVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCurrentAttackBuy) {
+    CStock id;
+    EXPECT_EQ(id.GetCurrentAttackBuy(), 0);
+    id.SetCurrentAttackBuy(10101010);
+    EXPECT_EQ(id.GetCurrentAttackBuy(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCurrentStrongBuy) {
+    CStock id;
+    EXPECT_EQ(id.GetCurrentStrongBuy(), 0);
+    id.SetCurrentStrongBuy(10101010);
+    EXPECT_EQ(id.GetCurrentStrongBuy(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetAttackSellVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetAttackSellVolume(), 0);
+    id.SetAttackSellVolume(10101010);
+    EXPECT_EQ(id.GetAttackSellVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetStrongSellVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetStrongSellVolume(), 0);
+    id.SetStrongSellVolume(10101010);
+    EXPECT_EQ(id.GetStrongSellVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCurrentAttackSell) {
+    CStock id;
+    EXPECT_EQ(id.GetCurrentAttackSell(), 0);
+    id.SetCurrentAttackSell(10101010);
+    EXPECT_EQ(id.GetCurrentAttackSell(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCurrentStrongSell) {
+    CStock id;
+    EXPECT_EQ(id.GetCurrentStrongSell(), 0);
+    id.SetCurrentStrongSell(10101010);
+    EXPECT_EQ(id.GetCurrentStrongSell(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetUnknownVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetUnknownVolume(), 0);
+    id.SetUnknownVolume(10101010);
+    EXPECT_EQ(id.GetUnknownVolume(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCurrentUnknown) {
+    CStock id;
+    EXPECT_EQ(id.GetCurrentUnknown(), 0);
+    id.SetCurrentUnknown(10101010);
+    EXPECT_EQ(id.GetCurrentUnknown(), 10101010);
+  }
+
+  TEST(StockBasicInfoTest, TestGetCancelBuyVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetCancelBuyVolume(), 0);
+    id.SetCancelBuyVolume(10101010);
+    EXPECT_EQ(id.GetCancelBuyVolume(), 10101010);
+  }
+  TEST(StockBasicInfoTest, TestGetCancelSellVolume) {
+    CStock id;
+    EXPECT_EQ(id.GetCancelSellVolume(), 0);
+    id.SetCancelSellVolume(10101010);
+    EXPECT_EQ(id.GetCancelSellVolume(), 10101010);
+  }
+
   TEST(StockTest, TestReadOnlyFunctions) {
     CStock stock;
 

@@ -36,7 +36,7 @@ bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentP
 void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
   TRACE(_T("股票%s日线数据为%d字节\n"), m_strDownLoadingStockCode, m_lByteRead);
   ASSERT(m_lByteRead < 2048 * 1024);
-  gl_ChinaStockMarket.ProcessDayLineData(this);
+  gl_ChinaStockMarket.ProcessNeteaseDayLineData(this);
 }
 
 void CNeteaseDayLineWebData::ReportDataError(void)

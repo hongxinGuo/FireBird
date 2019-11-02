@@ -222,45 +222,6 @@ public:
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
 
 protected:
-  /*
-  // 基本信息
-  WORD m_wMarket; // 市场索引
-  CString m_strStockCode; // 证券代码，
-  CString	m_strStockName; // 证券名称
-  int m_iStockCode; // 证券代码值
-  short m_nHand; // 每手股数
-
-  long m_nOffsetInContainer;	// 在容器中的偏移量
-  long m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-  long m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
-  long m_lIPOed;					// 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
-                              // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
-
-  // 无需存储数据
-  bool m_fActive;				// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
-  bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  bool m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
-
-  bool m_fHaveReadInName; //
-  bool m_fNeedUpdate;      // 是否需要存储标识
-
-  // 实时数据,需要不断更新
-  time_t m_TransactionTime; // 实时数据交易时间
-  long m_lLastClose; // 以0.001元计的收盘价
-  long m_lOpen; // 以0.001元计的开盘价
-  long m_lHigh; // 以0.001元计的最高价
-  long m_lLow; // 以0.001元计的最低价
-  long m_lNew; // 以0.001元计的最新价
-  INT64 m_llVolume;	// 以1股计的成交量
-  INT64 m_llAmount; // 以元计的成交金额
-  INT64 m_llTotalValue;	// 总市值。单位：万元
-  INT64 m_llCurrentValue;	// 流通市值。单位：万元
-  array<long, 5> m_lPBuy;	// 买盘价。单位：0.001元
-  array<long, 5> m_lVBuy;	// 买盘量。单位：股
-  array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
-  array<long, 5> m_lVSell; // 卖盘量。单位：股
-  double m_dRelativeStrong; // 单位：1%
-  */
   CStockBasicInfo m_stockBasicInfo;
   CStockCalculatedInfo m_stockCalculatedInfo;
 

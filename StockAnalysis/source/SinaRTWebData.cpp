@@ -29,7 +29,7 @@ bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long
 }
 
 void CSinaRTWebData::ProcessWebDataStored(void) {
-  gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
+  gl_ChinaStockMarket.ProcessSinaRTDataReceivedFromWeb();
 }
 
 void CSinaRTWebData::ReportDataError(void)

@@ -145,9 +145,9 @@ public:
   bool ProcessRTData(void);
 
   //处理实时股票变化等
-  bool ProcessRTDataReceivedFromWeb(void);
+  bool ProcessSinaRTDataReceivedFromWeb(void);
   // 处理日线历史数据
-  bool ProcessDayLineData(CNeteaseDayLineWebData* pWebData);
+  bool ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData);
   bool ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
   bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
