@@ -1085,8 +1085,12 @@ bool CMarket::SchedulingTask(void)
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
-      int MaxThreads = (gl_cMaxCalculatingRSThreads + 1) / 2;
+      int MaxThreads = gl_cMaxSavingOneDayLineThreads;
       switch (MaxThreads) {
+      case 8:
+      case 7:
+      case 6:
+      case 5:
       case 4:
         gl_NeteaseDayLineWebDataFourth.GetWebData();
       case 3:
@@ -1095,8 +1099,10 @@ bool CMarket::SchedulingTask(void)
         gl_NeteaseDayLineWebDataSecond.GetWebData();
       case 1:
         gl_NeteaseDayLineWebData.GetWebData();
+        break;
       default:
         TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+        break;
       }
     }
   }

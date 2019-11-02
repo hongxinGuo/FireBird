@@ -70,7 +70,7 @@ namespace StockAnalysisTest {
     id.SetStockName(_T("sh600000"));
     EXPECT_STREQ(id.GetStockName(), _T("sh600000"));
   }
-  TEST(StockIDTest, TestGetIndex) {
+  TEST(StockIDTest, TestGetOffset) {
     CStockID id;
     EXPECT_EQ(id.GetOffset(), -1);
     id.SetOffset(10101);
@@ -82,6 +82,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     id.SetDayLineEndDay(19980101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19980101);
+  }
+
+  TEST(StockIDTest, TestGetDayLineStartDay) {
+    CStockID id;
+    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
+    id.SetDayLineStartDay(19980101);
+    EXPECT_EQ(id.GetDayLineStartDay(), 19980101);
   }
 
   TEST(StockIDTest, TestGetIPOStatus) {
@@ -116,5 +123,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(id.IsInquiringOnce());
     id.SetInquiringOnce(false);
     EXPECT_FALSE(id.IsInquiringOnce());
+  }
+
+  TEST(StockIDTest, TestIsNeedUpdate) {
+    CStockID id;
+    EXPECT_TRUE(id.IsNeedUpdate());
+    id.SetNeedUpdate(false);
+    EXPECT_FALSE(id.IsNeedUpdate());
+    id.SetNeedUpdate(true);
+    EXPECT_TRUE(id.IsNeedUpdate());
   }
 }

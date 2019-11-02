@@ -71,6 +71,8 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="SinaRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebDataTest.cpp" />
+    <ClCompile Include="StockBasicInfoTest.cpp" />
+    <ClCompile Include="StockCalculatedInfoTest.cpp" />
     <ClCompile Include="StockIDTest.cpp" />
     <ClCompile Include="StockTest.cpp" />
     <ClCompile Include="SystemDequeDataTest.cpp" />

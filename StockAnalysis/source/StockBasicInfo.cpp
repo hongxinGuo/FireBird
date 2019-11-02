@@ -13,6 +13,7 @@ void CStockBasicInfo::Reset(void)
 {
   m_ID.Reset();
 
+  m_TransactionTime = 0;
   m_lLastClose = m_lOpen = 0;
   m_lHigh = m_lLow = m_lNew = 0;
   for (int i = 0; i < 5; i++) {
@@ -25,6 +26,7 @@ void CStockBasicInfo::Reset(void)
   m_nHand = 100;
 
   m_lHigh = m_lNew = m_lLow = 0;
+  m_llTotalValue = m_llCurrentValue = 0;
 }
 
 void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {

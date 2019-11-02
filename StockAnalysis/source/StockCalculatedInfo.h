@@ -88,11 +88,11 @@ public:
   void SetAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 = value; }
   void IncreaseAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 += value; }
   void SetAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 = value; }
-  void IncreaseAttackSellBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 += value; }
+  void IncreaseAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 += value; }
   void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
-  void IncreaseAttackSellBelow200000(INT64 value) noexcept { m_lAttackBuyBelow200000 += value; }
+  void IncreaseAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 += value; }
   void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
-  void IncreaseAttackSellAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 += value; }
+  void IncreaseAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 += value; }
 
 protected:
   // 以下变量用于分析买入卖出具体情况

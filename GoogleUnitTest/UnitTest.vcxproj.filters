@@ -16,21 +16,15 @@
     <Filter Include="Test源文件\辅助类和函数">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Market">
+      <UniqueIdentifier>{fb29c2c6-610d-402f-96f6-c35bc477ffc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
-    <ClCompile Include="StockTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="DayLineTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="MarketTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="StockIDTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="SystemDequeDataTest.cpp">
@@ -77,6 +71,21 @@
     </ClCompile>
     <ClCompile Include="accessoryTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="StockIDTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="StockTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="StockBasicInfoTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="StockCalculatedInfoTest.cpp">
+      <Filter>Test源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
