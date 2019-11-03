@@ -57,15 +57,36 @@ public:
   long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
   void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
 
-  bool IsActive(void) noexcept { return m_stockBasicInfo.IsActive(); }
-  void SetActive(bool fFlag) noexcept { m_stockBasicInfo.SetActive(fFlag); }
-  bool IsDayLineNeedUpdate(void) noexcept { return m_stockBasicInfo.IsDayLineNeedUpdate(); }
-  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_stockBasicInfo.SetDayLineNeedUpdate(fFlag); }
-  bool IsInquiringOnce(void) noexcept { return m_stockBasicInfo.IsInquiringOnce(); }
-  void SetInquiringOnce(bool fFlag) noexcept { m_stockBasicInfo.SetInquiringOnce(fFlag); }
+  bool IsActive(void) noexcept { return m_fActive; }
+  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
+  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
+  bool IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
+  void SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
+  bool IsNeedUpdate(void) noexcept { return m_fNeedUpdate; }
+  void SetNeedUpdate(bool fFlag) noexcept { m_fNeedUpdate = fFlag; }
 
-  bool IsNeedUpdate(void) noexcept { return m_stockBasicInfo.IsNeedUpdate(); }
-  void SetNeedUpdate(bool fFlag) noexcept { m_stockBasicInfo.SetNeedUpdate(fFlag); }
+  bool IsChoiced(void) noexcept { return m_fChoiced; }
+  void SetChoicedFlag(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
+
+  bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
+  void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
+
+  bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
+  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
+
+  bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
+  void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
+
+  bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
+  bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
+
+  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
+  void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }
+  bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
+  bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
+
+  bool TodayDataIsActive(void);
 
   time_t GetTransactionTime(void) noexcept { return m_stockBasicInfo.GetTransactionTime(); }
   void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); }
@@ -162,21 +183,6 @@ public:
   void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
   bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
 
-  bool IsChoiced(void) noexcept { return m_fChoiced; }
-  void SetChoicedFlag(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
-
-  bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
-  void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
-
-  bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
-  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
-
-  bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
-  void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
-
-  bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
-  bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
-
   void UpdateStatus(CRTDataPtr pRTData); // 更新当前各变量状态
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
@@ -216,13 +222,6 @@ public:
   CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
   long GetRTDataDequeSize(void);
 
-  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }
-  bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
-  bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
-
-  bool TodayDataIsActive(void);
-
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
@@ -242,6 +241,10 @@ protected:
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
 
+  deque<CRTDataPtr> m_dequeRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
+  bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+
   // 挂单的具体情况。
   map<long, long> m_mapGuaDan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CRTDataPtr m_pLastRTData; // 从m_dequeRTData读出的上一个实时数据。
@@ -252,20 +255,19 @@ protected:
   INT64 m_lCurrentCanselBuyVolume;
 
   bool m_fDayLineLoaded; // 是否装入了日线数据
-
   CCriticalSectionBool m_DayLineNeedSaving;
 
-  deque<CRTDataPtr> m_dequeRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
-  CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
-
-  bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+  bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数来设置。
+  bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
+  bool m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况，自然是留待最后再查）。
+  bool m_fNeedUpdate; // 是否需要存储标识
 
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
 
 private:
-  bool m_fDebugLoadDayLineFirst;
+  bool m_fDebugLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错
 };
 
 typedef shared_ptr<CStock> CStockPtr;

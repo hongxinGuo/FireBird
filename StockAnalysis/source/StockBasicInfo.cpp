@@ -11,7 +11,14 @@ CStockBasicInfo::~CStockBasicInfo()
 
 void CStockBasicInfo::Reset(void)
 {
-  m_ID.Reset();
+  m_wMarket = 0;
+  m_strStockCode = _T("");
+  m_strStockName = _T("");
+  m_nOffsetInContainer = -1;
+  m_lDayLineStartDay = 19900101; //
+  m_lDayLineEndDay = 19900101; //
+  m_lIPOed = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
+  m_fHaveReadInName = false;
 
   m_TransactionTime = 0;
   m_lLastClose = m_lOpen = 0;

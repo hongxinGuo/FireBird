@@ -28,8 +28,9 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
+        CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(setStockCode.m_StockCode);
+        EXPECT_FALSE(pStock->IsActive());
         if (setStockCode.m_IPOed == __STOCK_IPOED__) {
-          CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(setStockCode.m_StockCode);
           pStock->SetActive(true);
           pStock->SetStockCode(setStockCode.m_StockCode);
           //pStock->SetStockName(setStockCode.m_StockName); // 字符串制式不相符

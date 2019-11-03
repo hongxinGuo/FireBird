@@ -34,6 +34,9 @@ void CStock::Reset(void) {
   m_nCurrentTransactionType = 0;
 
   m_fDayLineLoaded = false;
+  m_fActive = false;
+  m_fDayLineNeedUpdate = true;
+  m_fInquiringOnce = false;
 
   m_fChoiced = false;
   m_fMinLineUpdated = false;

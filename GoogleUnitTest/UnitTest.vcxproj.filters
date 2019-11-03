@@ -75,9 +75,6 @@
     <ClCompile Include="MarketTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="StockIDTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
     <ClCompile Include="StockTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
@@ -152,9 +149,6 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockID.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">

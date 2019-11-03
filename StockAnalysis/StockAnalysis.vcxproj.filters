@@ -153,9 +153,6 @@
     <ClInclude Include="source\StockCalculatedInfo.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\StockID.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\CrweberIndex.h">
       <Filter>头文件\Crweber.com</Filter>
     </ClInclude>
@@ -300,9 +297,6 @@
       <Filter>源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="source\StockCalculatedInfo.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockID.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndex.cpp">
