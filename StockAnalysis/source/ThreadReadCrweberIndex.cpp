@@ -22,7 +22,8 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     gl_CrweberIndexWebData.SetReadingWebData(true);
     gl_CrweberIndexWebData.SetReadingSucceed(true);
     gl_CrweberIndexWebData.SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_CrweberIndexWebData.GetInquiringString()));
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_CrweberIndexWebData.GetInquiringString(), 1,
+      INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
     Sleep(1000); // ·þÎñÆ÷500msÑÓ³Ù¼´¿É¡£
     while (!fDone) {
       do {

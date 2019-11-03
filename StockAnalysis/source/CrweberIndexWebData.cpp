@@ -70,7 +70,7 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
 
       CString strDay = ConvertValueToString(lUpdateDay, 1);
       gl_systemMessage.PushInnerSystemInformationMessage(strDay);
-
+      TRACE("m_lastUpdateDay = %d,  m_lDay = %d, m_UpdateDay = %d\n", gl_CrweberIndex.m_lLastUpdateDay, gl_CrweberIndex.m_lDay, lUpdateDay);
       if (lUpdateDay > gl_CrweberIndex.m_lLastUpdateDay) {
         gl_CrweberIndex.m_lDay = lUpdateDay;
         gl_CrweberIndex.m_lLastUpdateDay = lUpdateDay;
@@ -124,7 +124,9 @@ bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos
       iCount = m_lByteRead; //
     }
   }
-
+  for (int i = 0; i < 1024 * 1024; i++) {
+    m_buffer[i] = 0x000;
+  }
   iCount = m_lByteRead; //
 
   return true;

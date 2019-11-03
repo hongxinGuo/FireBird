@@ -1194,6 +1194,9 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
 
+    // 每小时自动查询crweber.com
+    gl_CrweberIndexWebData.GetWebData();
+
     // 九点十三分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
     if (m_fPermitResetSystem) { // 如果允许重置系统
@@ -1748,7 +1751,7 @@ bool CMarket::LoadTodayTempDB(void) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
           // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
           // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
-          // 故而LoadTempInfo需要特别处理。
+          // 故而LoadAndCalculateTempInfo需要特别处理。
           pStock->LoadAndCalculateTempInfo(setDayLineToday);
         }
         setDayLineToday.MoveNext();

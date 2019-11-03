@@ -134,7 +134,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndxe.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />

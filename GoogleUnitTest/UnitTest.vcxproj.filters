@@ -208,9 +208,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndxe.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -239,6 +236,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

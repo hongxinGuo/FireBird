@@ -269,7 +269,7 @@
     <ClCompile Include="source\ThreadCalculateRTData.cpp" />
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
-    <ClCompile Include="source\ThreadReadCrweberIndxe.cpp" />
+    <ClCompile Include="source\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="source\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="source\ThreadReadTengxunRTData.cpp" />
