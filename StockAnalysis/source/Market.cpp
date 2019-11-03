@@ -39,7 +39,6 @@ CMarket::~CMarket() {
 
 void CMarket::Reset(void)
 {
-  m_mapActiveStockToIndex.clear();
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fLoadedSelectedStock = false;
@@ -638,7 +637,6 @@ bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
         pStock->SetTransactionTime(pRTData->GetTransactionTime());
         pStock->SetDayLineNeedUpdate(true);
         pStock->SetIPOStatus(__STOCK_IPOED__);
-        m_mapActiveStockToIndex[pRTData->GetStockCode()] = lIndex;
         m_lTotalActiveStock++;
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -798,7 +796,7 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
     pTestPos = pWebData->GetBufferAddr();
     pTestPos += iCount;
     ASSERT(*pTestPos == *pCurrentPos);
-    if (m_mapActiveStockToIndex.find(pDayLine->GetStockCode()) == m_mapActiveStockToIndex.end()) { // 新的股票代码？
+    if (!pStock->IsActive()) { // 新的股票代码？
       // 生成新股票
       pStock->SetActive(true);
       pStock->SetDayLineLoaded(false);
@@ -807,7 +805,6 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
       pStock->SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
       strTemp = pStock->GetStockCode().Right(6); // 截取股票代码右边的六个数字
       pStock->SetCode(atoi(strTemp.GetBuffer()));
-      m_mapActiveStockToIndex[pStock->GetStockCode()] = lIndex;
       m_lTotalActiveStock++;
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
@@ -1330,7 +1327,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
 }
 
 void CMarket::AddStockToMarket(CStockPtr pStock) {
-  m_mapActiveStockToIndex[pStock->GetStockCode()] = m_lTotalActiveStock++;
+  m_lTotalActiveStock++;
 }
 
 //////////////////////////////////////////////////////////////////////////

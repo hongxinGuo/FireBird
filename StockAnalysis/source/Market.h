@@ -196,8 +196,6 @@ protected:
   long m_lRelativeStrongEndDay;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
-  map<CString, long> m_mapActiveStockToIndex;	// 将市场活跃的股票代码映射为偏移量
-
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CStockPtr>::iterator m_itSinaStock; // 新浪实时股票代码查询迭代器
