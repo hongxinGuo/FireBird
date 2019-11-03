@@ -676,13 +676,18 @@ int CMarket::GetTengxunInquiringStockStr(CString& str)
 
 int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
   StepToNextActiveStockIT(itStock);
+  if (itStock == m_vChinaMarketAStock.end()) {
+    itStock = m_vChinaMarketAStock.begin();
+  }
   str += (*itStock++)->GetStockCode();  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((itStock != m_vChinaMarketAStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     StepToNextActiveStockIT(itStock);
-    iCount++;
-    str += strPostfix;
-    str += (*itStock++)->GetStockCode();
+    if (itStock != m_vChinaMarketAStock.end()) {
+      iCount++;
+      str += strPostfix;
+      str += (*itStock++)->GetStockCode();
+    }
   }
   if (itStock == m_vChinaMarketAStock.end()) {
     itStock = m_vChinaMarketAStock.begin();
@@ -693,11 +698,14 @@ int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock,
   return iCount;
 }
 
-void CMarket::StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock) {
+bool CMarket::StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock) {
   while (!(*itStock)->IsActive()) {
     itStock++;
-    if (itStock == m_vChinaMarketAStock.end()) itStock = m_vChinaMarketAStock.begin();
+    if (itStock == m_vChinaMarketAStock.end()) {
+      return true;
+    }
   }
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -1277,7 +1285,7 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetStockName(CString strStockCode) {
-  long lIndex = m_mapActiveStockToIndex.at(strStockCode);
+  long lIndex = m_mapChinaMarketAStock.at(strStockCode);
   if (lIndex >= 0) {
     return (m_vChinaMarketAStock.at(lIndex)->GetStockName());
   }
@@ -1292,11 +1300,11 @@ CString CMarket::GetStockName(CString strStockCode) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
-  if (m_mapActiveStockToIndex.find(strStockCode) == m_mapActiveStockToIndex.end()) {
+  if (m_mapChinaMarketAStock.find(strStockCode) == m_mapChinaMarketAStock.end()) {
     lIndex = -1;
     return false;
   }
-  else lIndex = m_mapActiveStockToIndex.at(strStockCode);
+  else lIndex = m_mapChinaMarketAStock.at(strStockCode);
   return true;
 }
 
@@ -1310,7 +1318,7 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
 CStockPtr CMarket::GetStockPtr(CString strStockCode) {
   long lIndex = -1;
 
-  if (m_mapActiveStockToIndex.find(strStockCode) != m_mapActiveStockToIndex.end()) {
+  if (m_mapChinaMarketAStock.find(strStockCode) != m_mapChinaMarketAStock.end()) {
     lIndex = m_mapChinaMarketAStock.at(strStockCode);
     return (m_vChinaMarketAStock.at(lIndex));
   }
@@ -1319,6 +1327,10 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
 
 CStockPtr CMarket::GetStockPtr(long lIndex) {
   return m_vChinaMarketAStock.at(lIndex);
+}
+
+void CMarket::AddStockToMarket(CStockPtr pStock) {
+  m_mapActiveStockToIndex[pStock->GetStockCode()] = m_lTotalActiveStock++;
 }
 
 //////////////////////////////////////////////////////////////////////////
