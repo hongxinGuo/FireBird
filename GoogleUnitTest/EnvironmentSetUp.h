@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
         pStock->SetDayLineEndDay(-1);
         pStock->SetDayLineNeedUpdate(true);
       }
-      // 初始化股票池
+      // 初始话活跃股票标识
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_fNormalMode);
       CSetStockCode setStockCode;
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
           pStock->SetStockCode(setStockCode.m_StockCode);
           //pStock->SetStockName(setStockCode.m_StockName); // 字符串制式不相符
           pStock->SetMarket(setStockCode.m_StockType);
-          gl_ChinaStockMarket.AddStockToMarket(pStock);
+          gl_ChinaStockMarket.IncreaseActiveStockNumber();
         }
         setStockCode.MoveNext();
       }

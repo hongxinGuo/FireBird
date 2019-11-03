@@ -611,7 +611,7 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTask函数调用。
-// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。如果遇到新的股票代码则生成相应的新股票。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
@@ -619,7 +619,6 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
 {
-  // 处理读入的实时数据，生成当日的活跃股票市场
   CStockPtr pStock;
   const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
 
@@ -1326,7 +1325,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
   return m_vChinaMarketAStock.at(lIndex);
 }
 
-void CMarket::AddStockToMarket(CStockPtr pStock) {
+void CMarket::IncreaseActiveStockNumber(void) {
   m_lTotalActiveStock++;
 }
 
@@ -1768,7 +1767,7 @@ bool CMarket::LoadTodayTempDB(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
-  vector<CStockPtr> vStockID;
+  vector<CStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
   int iTotalAShare = 0;
@@ -1800,7 +1799,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   while (!setDayKLine.IsEOF()) {
     if (gl_ChinaStockMarket.IsAStock(setDayKLine.m_StockCode)) {
       long lIndex = m_mapChinaMarketAStock.at(setDayKLine.m_StockCode);
-      vStockID.push_back(m_vChinaMarketAStock.at(lIndex));
+      vStock.push_back(m_vChinaMarketAStock.at(lIndex));
       vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
       iTotalAShare++;
     }
@@ -1817,16 +1816,19 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
     }
     setDayKLine.Edit();
     double dLastClose = atof(setDayKLine.m_LastClose);
-    if (((atof(setDayKLine.m_Low) / dLastClose) < 0.88)
-      || ((atof(setDayKLine.m_High) / dLastClose) > 1.12)) { // 除权、新股上市等
+    double dLow = atof(setDayKLine.m_Low);
+    double dHigh = atof(setDayKLine.m_High);
+    double dClose = atof(setDayKLine.m_Close);
+    if (((dLow / dLastClose) < 0.88)
+      || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
       setDayKLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
-    else if ((fabs(atof(setDayKLine.m_High) - atof(setDayKLine.m_Close)) < 0.0001)
-      && (((atof(setDayKLine.m_Close) / dLastClose)) > 1.095)) { // 涨停板
+    else if ((fabs(dHigh - dClose) < 0.0001)
+      && (((dClose / dLastClose)) > 1.095)) { // 涨停板
       setDayKLine.m_RelativeStrong = ConvertValueToString(100);
     }
-    else if ((fabs(atof(setDayKLine.m_Close) - atof(setDayKLine.m_Low)) < 0.0001)
-      && ((atof(setDayKLine.m_Close) / dLastClose) < 0.905)) { // 跌停板
+    else if ((fabs(dClose - dLow) < 0.0001)
+      && ((dClose / dLastClose) < 0.905)) { // 跌停板
       setDayKLine.m_RelativeStrong = ConvertValueToString(0);
     }
     else {
@@ -1840,7 +1842,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   setDayKLine.m_pDatabase->CommitTrans();
   setDayKLine.Close();
 
-  vStockID.clear();
+  vStock.clear();
   vIndex.clear();
   vRelativeStrong.clear();
 
@@ -1864,7 +1866,7 @@ bool CMarket::UpdateStockCodeDB(void)
   }
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.m_pDatabase->BeginTrans();
-  for (auto pStock : gl_ChinaStockMarket.m_vChinaMarketAStock) {
+  for (auto pStock : m_vChinaMarketAStock) {
     setStockCode.AddNew();
     CString str;
     setStockCode.m_Counter = pStock->GetOffset();
@@ -1903,29 +1905,30 @@ void CMarket::LoadStockCodeDB(void)
   while (!setStockCode.IsEOF()) {
     long lIndex = 1;
     lIndex = m_mapChinaMarketAStock.at(setStockCode.m_StockCode);
+    CStockPtr pStock = m_vChinaMarketAStock.at(lIndex);
     if (setStockCode.m_StockCode != _T("")) {
-      m_vChinaMarketAStock.at(lIndex)->SetStockCode(setStockCode.m_StockCode);
+      pStock->SetStockCode(setStockCode.m_StockCode);
     }
     if (setStockCode.m_StockName != _T("")) {
       CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-      m_vChinaMarketAStock.at(lIndex)->SetStockName(str);
+      pStock->SetStockName(str);
     }
     if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
-      m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(setStockCode.m_IPOed);
+      pStock->SetIPOStatus(setStockCode.m_IPOed);
     }
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
+    pStock->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
+    if (pStock->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
+      pStock->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
     }
     // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-    if (gl_systemTime.GetLastTradeDay() <= m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(false); // 日线数据不需要更新
+    if (gl_systemTime.GetLastTradeDay() <= pStock->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
+      pStock->SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
     if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(false);
+      pStock->SetDayLineNeedUpdate(false);
     }
     if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票不需更新日线数据
-      m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(false);
+      pStock->SetDayLineNeedUpdate(false);
     }
     setStockCode.MoveNext();
   }
