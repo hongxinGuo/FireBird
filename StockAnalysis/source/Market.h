@@ -60,6 +60,9 @@ public:
   CStockPtr GetStockPtr(CString strStockCode);
   CStockPtr GetStockPtr(long lIndex);
 
+  // 存储新股票指针入活跃股票池
+  void AddStockToMarket(CStockPtr pStock);
+
   // 初始化实时数据计数器
   bool CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
 

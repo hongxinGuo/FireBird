@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMarketTest, TestInitialize) {
-    EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_EQ(gl_ChinaStockMarket.m_pCurrentStock, nullptr);
