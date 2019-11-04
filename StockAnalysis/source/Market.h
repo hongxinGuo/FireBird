@@ -40,6 +40,7 @@ public:
   bool CreateTengxunRTDataInquiringStr(CString& str);
   int GetSinaInquiringStockStr(CString& str);
   int	GetTengxunInquiringStockStr(CString& str);
+  int	GetNeteaseInquiringStockStr(CString& str);
   int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
   bool StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
   bool GetTengxunStockRTData(void);
@@ -175,6 +176,7 @@ public:
   bool m_fMarketOpened; // 是否开市
   bool m_fGetRTStockData; // 读取实时数据标识
   bool m_fReadingTengxunRTData; // 读取腾讯实时行情
+  bool m_fReadingNeteaseRTData; // 读取腾讯实时行情
   bool m_fGetDayLineData;  // 读取日线历史数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   int m_iCountDownDayLine; // 日线数据读取延时计数。
@@ -199,6 +201,7 @@ protected:
 
   vector<CStockPtr>::iterator m_itSinaStock; // 新浪实时股票代码查询迭代器
   vector<CStockPtr>::iterator m_itTengxunStock; // 腾讯实时股票代码迭代器
+  vector<CStockPtr>::iterator m_itNeteaseStock; // 网易实时股票代码迭代器
 
   vector<CStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;

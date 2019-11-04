@@ -10,6 +10,7 @@
 #include"SinaRTWebData.h"
 #include"TengxunRTWebData.h"
 #include"NeteaseDayLineWebData.h"
+#include"NeteaseRTWebData.h"
 #include"CrweberIndexWebData.h"
 
 #include"CrweberIndex.h"
@@ -30,6 +31,7 @@ using namespace std;
 
 extern CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
 extern CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
+extern CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据

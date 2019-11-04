@@ -79,6 +79,7 @@ void CMarket::Reset(void)
 
   m_fGetRTStockData = true;
   m_fReadingTengxunRTData = false; // 默认状态下不读取腾讯实时行情
+  m_fReadingNeteaseRTData = false; // 默认状态下不读取网易实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
@@ -324,6 +325,7 @@ void CMarket::ResetIT(void) {
 
   m_itSinaStock = m_vChinaMarketAStock.begin();
   m_itTengxunStock = m_vChinaMarketAStock.begin();
+  m_itNeteaseStock = m_vChinaMarketAStock.begin();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -631,8 +633,7 @@ bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
         pStock->SetActive(true);
         pStock->SetStockName(pRTData->GetStockName());
         pStock->SetStockCode(pRTData->GetStockCode());
-        pStock->SetLastClose(pRTData->GetLastClose());
-        pStock->SetOpen(pRTData->GetOpen());
+        pStock->UpdateStatus(pRTData);
         pStock->SetTransactionTime(pRTData->GetTransactionTime());
         pStock->SetDayLineNeedUpdate(true);
         pStock->SetIPOStatus(__STOCK_IPOED__);
@@ -669,6 +670,46 @@ int CMarket::GetTengxunInquiringStockStr(CString& str)
 {
   ASSERT(SystemReady());
   return GetInquiringStr(str, m_itTengxunStock, _T(","), 900);
+}
+
+int CMarket::GetNeteaseInquiringStockStr(CString& str)
+{
+  CString strStockCode, strRight6, strLeft2, strPrefix;
+  StepToNextActiveStockIT(m_itNeteaseStock);
+  if (m_itNeteaseStock == m_vChinaMarketAStock.end()) {
+    m_itNeteaseStock = m_vChinaMarketAStock.begin();
+  }
+  strStockCode = (*m_itNeteaseStock++)->GetStockCode();
+  strRight6 = strStockCode.Right(6);
+  strLeft2 = strStockCode.Left(2);
+  if (strLeft2.Compare(_T("sh")) == 0) {
+    strPrefix = _T("0");
+  }
+  else strPrefix = _T("1");
+  str += strPrefix + strRight6;  // 得到第一个股票代码
+  int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
+  while ((m_itNeteaseStock != m_vChinaMarketAStock.end()) && (iCount < 900)) { // 每次最大查询量为lTotalNumber个股票
+    StepToNextActiveStockIT(m_itNeteaseStock);
+    if (m_itNeteaseStock != m_vChinaMarketAStock.end()) {
+      iCount++;
+      str += _T(",");
+      strStockCode = (*m_itNeteaseStock++)->GetStockCode();
+      strRight6 = strStockCode.Right(6);
+      strLeft2 = strStockCode.Left(2);
+      if (strLeft2.Compare(_T("sh")) == 0) {
+        strPrefix = _T("0");
+      }
+      else strPrefix = _T("1");
+      str += strPrefix + strRight6;  // 得到第一个股票代码
+    }
+  }
+  if (m_itNeteaseStock == m_vChinaMarketAStock.end()) {
+    m_itNeteaseStock = m_vChinaMarketAStock.begin();
+  }
+  else {
+    m_itNeteaseStock--;    // 退一格，这样能够覆盖住边缘
+  }
+  return iCount;
 }
 
 int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
@@ -1035,6 +1076,7 @@ bool CMarket::SchedulingTask(void)
 {
   static time_t s_timeLast = 0;
   static int siCountDownTengxunNumber = 2;
+  static int siCountDownNeteaseNumber = 2;
 
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
@@ -1055,6 +1097,15 @@ bool CMarket::SchedulingTask(void)
 
         // 新的标准制式
         //gl_TengxunRTWebData.GetWebData();
+      }
+      else siCountDownTengxunNumber = 2; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
+    }
+
+    // 读取网易实时行情数据。
+    if (m_fReadingNeteaseRTData && SystemReady()) {
+      if (siCountDownNeteaseNumber <= 0) {
+        // 新的标准制式
+        gl_NeteaseRTWebData.GetWebData();
       }
       else siCountDownTengxunNumber = 2; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
@@ -1611,10 +1662,6 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 
   setDayKLine.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketAStock) {
-    if (pStock == nullptr) {
-      gl_systemMessage.PushInformationMessage(_T("当前活跃股票中存在nullptr"));
-      continue; // 空置位置。应该不存在。
-    }
     if (!pStock->TodayDataIsActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }

@@ -205,6 +205,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="NeteaseRTWebData.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
@@ -248,6 +249,7 @@
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="NeteaseRTWebData.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\CriticalSectionBool.cpp" />
@@ -270,6 +272,7 @@
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />
+    <ClCompile Include="source\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="source\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="source\ThreadReadTengxunRTData.cpp" />
     <ClCompile Include="source\SystemTime.cpp" />

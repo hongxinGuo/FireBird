@@ -186,6 +186,9 @@
     <ClInclude Include="source\QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="NeteaseRTWebData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -330,6 +333,12 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseRTWebData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>

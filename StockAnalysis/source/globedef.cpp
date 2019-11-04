@@ -5,6 +5,7 @@
 
 CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
 CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
+CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
 CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
 CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
 CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
