@@ -116,8 +116,8 @@ protected:
   INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
   long m_lCurrentAttackSell;
   long m_lCurrentStrongSell;
-  INT64 m_lUnknownVolume;
-  long m_lCurrentUnknown;
+  INT64 m_lUnknownVolume; // 不明状态的成交量
+  long m_lCurrentUnknown; // 当前成交量中的不明状态成交量
   INT64 m_lCancelBuyVolume;	// 买单撤单量
   INT64 m_lCancelSellVolume; // 卖单撤单量
 

@@ -773,12 +773,21 @@ long CStock::GetRTDataDequeSize(void)
   return 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// 判断股票数据是否有效。采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据
+// 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
+//
+////////////////////////////////////////////////////////////////////////////////
 bool CStock::TodayDataIsActive(void)
 {
-  if ((GetHigh() == 0) && (GetLow() == 0) && (GetAmount() == 0) && (GetVolume() == 0)) {
-    return false;
+  if (!m_fActive) return false;
+  else {
+    if ((GetHigh() == 0) && (GetLow() == 0) && (GetAmount() == 0) && (GetVolume() == 0)) {
+      return false;
+    }
+    else return true;
   }
-  else return true;
 }
 
 #ifdef _DEBUG

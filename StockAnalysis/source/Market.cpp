@@ -781,8 +781,6 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
   pTestPos = pWebData->GetBufferAddr();
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
-  lIndex = m_mapChinaMarketAStock.at(pDayLine->GetStockCode());
-  pStock = m_vChinaMarketAStock.at(lIndex);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
     if (!ProcessOneItemDayLineData(pWebData->GetDownLoadingStockCode(), pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
@@ -791,6 +789,8 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
+    lIndex = m_mapChinaMarketAStock.at(pDayLine->GetStockCode());
+    pStock = m_vChinaMarketAStock.at(lIndex);
     iCount += iTemp;
     pTestPos = pWebData->GetBufferAddr();
     pTestPos += iCount;
@@ -1194,8 +1194,8 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
 
-    // 每小时自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
+    // 测试用。每小时自动查询crweber.com
+    //gl_CrweberIndexWebData.GetWebData();
 
     // 九点十三分重启系统
     // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
