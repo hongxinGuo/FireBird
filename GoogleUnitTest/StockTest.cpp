@@ -15,6 +15,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsActive());
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
+    EXPECT_EQ(stock.GetOffset(), -1);
     EXPECT_EQ(stock.GetTransactionTime(), 0);
     EXPECT_EQ(stock.GetLastClose(), 0);
     EXPECT_EQ(stock.GetOpen(), 0);
@@ -46,6 +47,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetAttackBuyAmount(), 0);
     EXPECT_EQ(stock.GetAttackSellAmount(), 0);
     EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0);
+    EXPECT_FALSE(stock.IsDayLineLoaded());
+    EXPECT_FALSE(stock.IsActive());
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    EXPECT_FALSE(stock.IsInquiringOnce());
+    EXPECT_FALSE(stock.IsChoiced());
+    EXPECT_FALSE(stock.IsMinLineUpdated());
+    EXPECT_FALSE(stock.IsDayLineUpdated());
+    EXPECT_FALSE(stock.HaveFirstRTData());
   }
   TEST(StockTest, TestGetMarket) {
     CStock stock;
@@ -68,23 +77,35 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockName(), _T("浦东银行"));
   }
 
-  TEST(StockTest, TestGetCode) {
+  TEST(StockTest, TestGetOffset) {
     CStock stock;
-    EXPECT_EQ(stock.GetCode(), 0);
-    stock.SetCode(600000);
-    EXPECT_EQ(stock.GetCode(), 600000);
+    EXPECT_EQ(stock.GetOffset(), -1);
+    stock.SetOffset(_T(101010));
+    EXPECT_EQ(stock.GetOffset(), 101010);
   }
 
-  TEST(StockTest, TestIsActive) {
+  TEST(StockTest, TestGetDayLineStartDay) {
     CStock stock;
-    EXPECT_FALSE(stock.IsActive());
-    stock.SetActive(true);
-    EXPECT_TRUE(stock.IsActive());
-    stock.SetActive(false);
-    EXPECT_FALSE(stock.IsActive());
+    EXPECT_EQ(stock.GetDayLineStartDay(), 19900101);
+    stock.SetDayLineStartDay(100100100);
+    EXPECT_EQ(stock.GetDayLineStartDay(), 100100100);
   }
 
-  TEST(StockTest, TestGetTime) {
+  TEST(StockTest, TestGetDayLineEndDay) {
+    CStock stock;
+    EXPECT_EQ(stock.GetDayLineEndDay(), 19900101);
+    stock.SetDayLineEndDay(100100100);
+    EXPECT_EQ(stock.GetDayLineEndDay(), 100100100);
+  }
+
+  TEST(StockTest, TestGetIPOStatus) {
+    CStock stock;
+    EXPECT_EQ(stock.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    stock.SetIPOStatus(100100100);
+    EXPECT_EQ(stock.GetIPOStatus(), 100100100);
+  }
+
+  TEST(StockTest, TestGetTransactionTime) {
     CStock stock;
     EXPECT_EQ(stock.GetTransactionTime(), 0);
     stock.SetTransactionTime(100100100100);
@@ -138,6 +159,42 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetVolume(), 0);
     stock.SetVolume(100100100);
     EXPECT_EQ(stock.GetVolume(), 100100100);
+  }
+
+  TEST(StockTest, TestUpdateCurrentStatus) {
+    CStock stock;
+    CRTDataPtr pRTData;
+
+    pRTData = make_shared<CRTData>();
+    pRTData->SetTransactionTime(100100100100);
+    pRTData->SetLastClose(11111);
+    pRTData->SetOpen(22222);
+    pRTData->SetNew(33333);
+    pRTData->SetHigh(66666);
+    pRTData->SetLow(10000);
+    pRTData->SetVolume(1001001001001);
+    pRTData->SetAmount(2002002002002);
+    for (int i = 0; i < 5; i++) {
+      pRTData->SetPBuy(i, i + 100);
+      pRTData->SetVBuy(i, i + 200);
+      pRTData->SetPSell(i, i + 300);
+      pRTData->SetVSell(i, i + 400);
+    }
+    stock.UpdateStatus(pRTData);
+    EXPECT_EQ(stock.GetTransactionTime(), 0);   // UpdateCurrentStatus函数不更新交易时间
+    EXPECT_EQ(stock.GetLastClose(), 11111);
+    EXPECT_EQ(stock.GetOpen(), 22222);
+    EXPECT_EQ(stock.GetNew(), 33333);
+    EXPECT_EQ(stock.GetHigh(), 66666);
+    EXPECT_EQ(stock.GetLow(), 10000);
+    EXPECT_EQ(stock.GetVolume(), 1001001001001);
+    EXPECT_EQ(stock.GetAmount(), 2002002002002);
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(stock.GetPBuy(i), i + 100);
+      EXPECT_EQ(stock.GetVBuy(i), i + 200);
+      EXPECT_EQ(stock.GetPSell(i), i + 300);
+      EXPECT_EQ(stock.GetVSell(i), i + 400);
+    }
   }
 
   TEST(StockBasicInfoTest, TestGetAttackBuyAmount) {
@@ -257,20 +314,39 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0);
   }
 
-  TEST(StockTest, TestGetGuaDan) {
+  TEST(StockTest, TestIsActive) {
     CStock stock;
-    EXPECT_FALSE(stock.HaveGuaDan(10000));
-    stock.SetGuaDan(10000, 10000);
-    EXPECT_TRUE(stock.HaveGuaDan(10000));
-    EXPECT_EQ(stock.GetGuaDan(10000), 10000);
+    EXPECT_FALSE(stock.IsActive());
+    stock.SetActive(true);
+    EXPECT_TRUE(stock.IsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.IsActive());
+  }
+
+  TEST(StockTest, TestIsDayLineNeedUpdate) {
+    CStock stock;
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(false);
+    EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(true);
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+  }
+
+  TEST(StockTest, TestIsInquiringOnce) {
+    CStock stock;
+    EXPECT_FALSE(stock.IsInquiringOnce());
+    stock.SetInquiringOnce(true);
+    EXPECT_TRUE(stock.IsInquiringOnce());
+    stock.SetInquiringOnce(false);
+    EXPECT_FALSE(stock.IsInquiringOnce());
   }
 
   TEST(StockTest, TestIsChoiced) {
     CStock stock;
     EXPECT_FALSE(stock.IsChoiced());
-    stock.SetChoicedFlag(true);
+    stock.SetChoiced(true);
     EXPECT_TRUE(stock.IsChoiced());
-    stock.SetChoicedFlag(false);
+    stock.SetChoiced(false);
     EXPECT_FALSE(stock.IsChoiced());
   }
 
@@ -299,6 +375,15 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsDayLineLoaded());
     stock.SetDayLineLoaded(false);
     EXPECT_FALSE(stock.IsDayLineLoaded());
+  }
+
+  TEST(StockTest, TestHaveFirstRTData) {
+    CStock stock;
+    EXPECT_FALSE(stock.HaveFirstRTData());
+    stock.SetHavingFirstRTData(true);
+    EXPECT_TRUE(stock.HaveFirstRTData());
+    stock.SetHavingFirstRTData(false);
+    EXPECT_TRUE(stock.HaveFirstRTData());
   }
 
   TEST(StockTest, TestIsStartCalculating) {
@@ -340,42 +425,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.TodayDataIsActive());
   }
 
-  TEST(StockTest, TestUpdateCurrentStatus) {
-    CStock stock;
-    CRTDataPtr pRTData;
-
-    pRTData = make_shared<CRTData>();
-    pRTData->SetTransactionTime(100100100100);
-    pRTData->SetLastClose(11111);
-    pRTData->SetOpen(22222);
-    pRTData->SetNew(33333);
-    pRTData->SetHigh(66666);
-    pRTData->SetLow(10000);
-    pRTData->SetVolume(1001001001001);
-    pRTData->SetAmount(2002002002002);
-    for (int i = 0; i < 5; i++) {
-      pRTData->SetPBuy(i, i + 100);
-      pRTData->SetVBuy(i, i + 200);
-      pRTData->SetPSell(i, i + 300);
-      pRTData->SetVSell(i, i + 400);
-    }
-    stock.UpdateStatus(pRTData);
-    EXPECT_EQ(stock.GetTransactionTime(), 0);   // UpdateCurrentStatus函数不更新交易时间
-    EXPECT_EQ(stock.GetLastClose(), 11111);
-    EXPECT_EQ(stock.GetOpen(), 22222);
-    EXPECT_EQ(stock.GetNew(), 33333);
-    EXPECT_EQ(stock.GetHigh(), 66666);
-    EXPECT_EQ(stock.GetLow(), 10000);
-    EXPECT_EQ(stock.GetVolume(), 1001001001001);
-    EXPECT_EQ(stock.GetAmount(), 2002002002002);
-    for (int i = 0; i < 5; i++) {
-      EXPECT_EQ(stock.GetPBuy(i), i + 100);
-      EXPECT_EQ(stock.GetVBuy(i), i + 200);
-      EXPECT_EQ(stock.GetPSell(i), i + 300);
-      EXPECT_EQ(stock.GetVSell(i), i + 400);
-    }
-  }
-
   TEST(StockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CRTDataPtr pData = make_shared<CRTData>();
     pData->SetCode(600000);
@@ -385,6 +434,27 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetRTDataDequeSize(), 1);
     CRTDataPtr pData2 = stock.PopRTData();
     EXPECT_EQ(pData2->GetCode(), 600000);
+    EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
+  }
+
+  TEST(StockTest, TestGetGuaDan) {
+    CStock stock;
+    EXPECT_FALSE(stock.HaveGuaDan(10000));
+    stock.SetGuaDan(10000, 10000);
+    EXPECT_TRUE(stock.HaveGuaDan(10000));
+    EXPECT_EQ(stock.GetGuaDan(10000), 10000);
+  }
+
+  TEST(StockTest, TestClearRTDataDeque) {
+    CStock stock;
+    CRTDataPtr pRTData;
+    for (int i = 0; i < 10; i++) {
+      pRTData = make_shared<CRTData>();
+      pRTData->SetLastClose(i);
+      stock.PushRTData(pRTData);
+    }
+    EXPECT_EQ(stock.GetRTDataDequeSize(), 10);
+    stock.ClearRTDataDeque();
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
   }
 }

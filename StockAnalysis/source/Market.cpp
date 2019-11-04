@@ -844,7 +844,6 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
       pStock->SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
       pStock->SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
       strTemp = pStock->GetStockCode().Right(6); // 截取股票代码右边的六个数字
-      pStock->SetCode(atoi(strTemp.GetBuffer()));
       m_lTotalActiveStock++;
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面

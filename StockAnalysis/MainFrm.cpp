@@ -646,7 +646,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
     switch (nChar) {
     case 45: // Ins 加入自选股票
       pStock = gl_ChinaStockMarket.GetShowStock();
-      pStock->SetChoicedFlag(true);
+      pStock->SetChoiced(true);
       gl_ChinaStockMarket.gl_vStockChoice.push_back(pStock);
       break;
     case 33: // PAGE UP

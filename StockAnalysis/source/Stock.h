@@ -44,8 +44,6 @@ public:
   void SetMarket(WORD wValue) noexcept { m_stockBasicInfo.SetMarket(wValue); }
   CString GetStockCode(void) { return m_stockBasicInfo.GetStockCode(); }
   void SetStockCode(CString str) { m_stockBasicInfo.SetStockCode(str); }
-  long GetCode(void) noexcept { return m_stockBasicInfo.GetCode(); }
-  void SetCode(long lValue) { m_stockBasicInfo.SetCode(lValue); }
   CString GetStockName(void) { return m_stockBasicInfo.GetStockName(); }
   void SetStockName(CString str) { m_stockBasicInfo.SetStockName(str); }
   long GetOffset(void) noexcept { return m_stockBasicInfo.GetOffset(); }
@@ -150,7 +148,7 @@ public:
   bool IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
   void SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
-  void SetChoicedFlag(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
+  void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
   void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
   bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
