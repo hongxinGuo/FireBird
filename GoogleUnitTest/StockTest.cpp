@@ -320,6 +320,26 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
   }
 
+  TEST(StockTest, TestTodayDataIsActive) {
+    CStock stock;
+    EXPECT_FALSE(stock.TodayDataIsActive());
+    stock.SetActive(true);
+    EXPECT_FALSE(stock.TodayDataIsActive());
+    stock.SetHigh(1010);
+    EXPECT_TRUE(stock.TodayDataIsActive());
+    stock.SetHigh(0);
+    stock.SetLow(1);
+    EXPECT_TRUE(stock.TodayDataIsActive());
+    stock.SetLow(0);
+    stock.SetAmount(10000);
+    EXPECT_TRUE(stock.TodayDataIsActive());
+    stock.SetAmount(0);
+    stock.SetVolume(100);
+    EXPECT_TRUE(stock.TodayDataIsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.TodayDataIsActive());
+  }
+
   TEST(StockTest, TestUpdateCurrentStatus) {
     CStock stock;
     CRTDataPtr pRTData;

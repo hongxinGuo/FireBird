@@ -105,6 +105,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
@@ -134,6 +135,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
