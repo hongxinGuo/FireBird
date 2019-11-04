@@ -43,7 +43,6 @@ public:
   int	GetNeteaseInquiringStockStr(CString& str);
   int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
   bool StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
-  bool GetTengxunStockRTData(void);
   void ResetIT(void); //重置各迭代器
 
   //日线历史数据读取

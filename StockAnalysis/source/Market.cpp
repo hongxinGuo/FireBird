@@ -328,69 +328,6 @@ void CMarket::ResetIT(void) {
   m_itNeteaseStock = m_vChinaMarketAStock.begin();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 腾讯实时行情读取函数。只有当系统准备完毕后，方可执行此函数。
-//
-// 目前腾讯实时行情数据中的成交股数精度为每手，无法达到新浪实时数据的每股精度，故而只使用其他合适的数据。
-//
-//
-////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::GetTengxunStockRTData(void)
-{
-  static int iCountUp = 0;
-  char* pCurrentPos = nullptr;
-  CRTDataPtr pRTData = nullptr;
-  long i = 0;
-  INT64 iTotalNumber = 0;
-
-  if (!gl_TengxunRTWebData.IsReadingWebData()) {
-    if (gl_TengxunRTWebData.IsWebDataReceived()) {
-      if (gl_TengxunRTWebData.IsReadingSucceed()) { //网络通信一切顺利？
-        iTotalNumber = gl_TengxunRTWebData.GetByteReaded();
-        pCurrentPos = gl_TengxunRTWebData.GetBufferAddr();
-        long iCount = 0;
-        /*
-        while (iCount < iTotalNumber) { // 腾讯实时数据基本没有错误，不需要抛掉最后一组数据了。
-          pRTData = make_shared<CRTData>();
-          if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
-            i++;
-            gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-          }
-          else {
-            TRACE("腾讯实时数据有误,抛掉不用\n");
-            CString str;
-            str = _T("腾讯实时数据有误");
-            gl_systemMessage.PushInformationMessage(str);
-            iCount = iTotalNumber; // 后面的数据可能出问题，抛掉不用。
-          }
-        }
-        */
-        TRACE("读入%i字节腾讯实时数据\n", iTotalNumber);
-        // 处理接收到的实时数据
-        //ProcessRTDataReceivedFromWeb();
-      }
-      else {  // 网络通信出现错误
-        TRACE("Error reading http file ：qt.gtimg.cn\n");
-        CString str;
-        str = _T("腾讯实时数据通信错误");
-        gl_systemMessage.PushInformationMessage(str);
-      }
-    }
-
-    CString strMiddle = _T("");
-
-    // 申请下一批腾讯股票实时数据。此时
-    GetTengxunInquiringStockStr(strMiddle);
-    gl_TengxunRTWebData.CreateTotalInquiringString(strMiddle);
-    gl_TengxunRTWebData.SetWebDataReceived(false);
-    gl_TengxunRTWebData.SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    AfxBeginThread(ThreadReadTengxunRTData, nullptr);
-  }
-
-  return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 生成网易日线股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
@@ -1075,7 +1012,6 @@ bool CMarket::SchedulingTask(void)
 {
   static time_t s_timeLast = 0;
   static int siCountDownTengxunNumber = 2;
-  static int siCountDownNeteaseNumber = 2;
 
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
@@ -1089,22 +1025,15 @@ bool CMarket::SchedulingTask(void)
   if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
 
+    // 读取网易实时行情数据。
+    if (m_fReadingNeteaseRTData && SystemReady()) {
+      //gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
+    }
+
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (m_fReadingTengxunRTData && SystemReady()) {
       if (siCountDownTengxunNumber <= 0) {
-        GetTengxunStockRTData();  // 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作
-
-        // 新的标准制式
-        //gl_TengxunRTWebData.GetWebData();
-      }
-      else siCountDownTengxunNumber = 2; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
-    }
-
-    // 读取网易实时行情数据。
-    if (m_fReadingNeteaseRTData && SystemReady()) {
-      if (siCountDownNeteaseNumber <= 0) {
-        // 新的标准制式
-        gl_NeteaseRTWebData.GetWebData();
+        //gl_TengxunRTWebData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
       }
       else siCountDownTengxunNumber = 2; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
@@ -1127,18 +1056,13 @@ bool CMarket::SchedulingTask(void)
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
       switch (gl_cMaxSavingOneDayLineThreads) {
-      case 8:
-      case 7:
-      case 6:
-      case 5:
-      case 4:
+      case 8: case 7: case 6:case 5: case 4:
         gl_NeteaseDayLineWebDataFourth.GetWebData();
       case 3:
         gl_NeteaseDayLineWebDataThird.GetWebData();
       case 2:
         gl_NeteaseDayLineWebDataSecond.GetWebData();
-      case 1:
-      case 0:
+      case 1: case 0:
         gl_NeteaseDayLineWebData.GetWebData();
         break;
       default:
