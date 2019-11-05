@@ -18,6 +18,24 @@ CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
 CNeteaseRTWebData::~CNeteaseRTWebData() {
 }
 
+bool CNeteaseRTWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
+{
+  static char buffer1[200];
+  static CString strHeader = _T("_ntes_quote_callback({");
+
+  strncpy_s(buffer1, pCurrentPos, 22); // 读入"_ntes_quote_callback"
+  buffer1[22] = 0x000;
+  CString str1;
+  str1 = buffer1;
+  if (strHeader.Compare(str1) != 0) { // 数据格式出错
+    return false;
+  }
+  pCurrentPos += 22;
+  iCount += 22;
+
+  return true;
+}
+
 bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
@@ -28,8 +46,14 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
       pCurrentPos += 4;
       iCount += 4;
       ASSERT(iCount == m_lByteRead);
+      return true;
     }
-    return true;
+    else {
+      ASSERT(*pCurrentPos == ',');
+      pCurrentPos++;
+      iCount++;
+      return true;
+    }
   }
   return false;
 }

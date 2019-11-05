@@ -1022,7 +1022,7 @@ bool CMarket::SchedulingTask(void)
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1125,7 +1125,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   else s_iCountDownProcessRTWebData--;
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
-  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
       AfxBeginThread(ThreadCalculateRTData, nullptr);

@@ -742,32 +742,20 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
-  static CString strHeader = _T("_ntes_quote_callback");
   long lTemp = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
   long lIndex = 0;
   CString strValue = _T("");
+  CString str1;
 
   m_fActive = false;    // 初始状态为无效数据
-  strncpy_s(buffer1, pCurrentPos, 20); // 读入"_ntes_quote_callback"
-  buffer1[20] = 0x000;
-  CString str1;
-  str1 = buffer1;
-  if (strHeader.Compare(str1) != 0) { // 数据格式出错
-    return false;
-  }
-  pCurrentPos += 20;
-  lTotalRead += 20;
 
-  strncpy_s(buffer1, pCurrentPos, 3); // 读入"({\""
-  buffer1[3] = 0x000;
-  str1 = buffer1;
-  if (str1.Compare(_T("({\"")) != 0) { // 数据格式出错
+  if (*pCurrentPos != '"') { // 数据格式出错
     return false;
   }
-  pCurrentPos += 3;
-  lTotalRead += 3;
+  pCurrentPos++;
+  lTotalRead++;
 
   if (*pCurrentPos == '0') { // 上海股票
     m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
@@ -935,6 +923,8 @@ bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long
     }
     buffer[i] = 0x000;
     strValue = buffer;
+    pCurrentPos++;
+    lTotalRead++;
   }
   else {
     while ((*pCurrentPos != ',') && (*pCurrentPos != '}')) {
@@ -972,6 +962,7 @@ bool CRTData::SetValue(long lIndex, CString strValue)
     break;
   case 7: // update
     m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+    break;
   case 10: // open
     m_lOpen = atof(strValue) * 1000;
     break;

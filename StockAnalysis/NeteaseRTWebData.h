@@ -6,6 +6,8 @@ public:
   CNeteaseRTWebData();
   ~CNeteaseRTWebData();
 
+  virtual bool ReadPrefix(char*& pCurrentPos, long& iCount) override; // ∂¡»Î«∞◊∫
+
   virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;

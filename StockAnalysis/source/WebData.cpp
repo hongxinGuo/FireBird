@@ -49,6 +49,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   long  iCount = 0;
   int i = 0;
   while (iCount < m_lByteRead) {
+    ReadPrefix(pCurrentPos, iCount);
     if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
       ReportDataError();
       return false;  // 后面的数据出问题，抛掉不用。
@@ -56,6 +57,16 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
     i++;
   }
   TRACE("读入%d个实时数据\n", i);
+  return true;
+}
+
+bool CWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
+{
+  return true;
+}
+
+bool CWebData::ReadSuffix(char*& pCurrentPos, long& iCount)
+{
   return true;
 }
 
