@@ -89,6 +89,18 @@
 //
 // 随后的字段含义不明，未找到官方说明。
 //
+//
+// 网易实时行情，访问端口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+//
 /////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -105,6 +117,7 @@ enum {
 using namespace std;
 #include<memory>
 #include<array>
+#include<map>
 
 class CRTData;
 
@@ -141,6 +154,11 @@ public:
   bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个INT64整型
   bool ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead); // 从file中读入一个浮点数
   bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘~’。
+
+  // 读取网易实时数据函数
+  long GetNeteaseSymbolIndex(CString strSymbol);
+  bool GetNeteaseIndexAndValue(char& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
+  bool SetValue(long lIndex, CString strValue);
 
 public:
   void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
@@ -224,4 +242,5 @@ protected:
 
 // 非存储数据
   bool m_fActive; // 本股票是否存在实时数据
+  map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
 };

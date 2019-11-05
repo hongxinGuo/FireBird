@@ -31,6 +31,291 @@ namespace StockAnalysisTest {
     }
     EXPECT_FALSE(RTData.IsActive());
   }
+
+  TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {
+    CRTData rtData;
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("time")), 1);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("code")), 2);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("name")), 3);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("type")), 4);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("symbol")), 5);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("status")), 6);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("update")), 7);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("open")), 10);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("yestclose")), 11);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("high")), 12);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("low")), 13);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("price")), 14);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("volume")), 15);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid1")), 20);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid2")), 21);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid3")), 22);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid4")), 23);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid5")), 24);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bidvol1")), 30);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bidvol2")), 31);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bidvol3")), 32);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bidvol4")), 33);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bidvol5")), 34);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("ask1")), 40);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("ask2")), 41);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("ask3")), 42);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("ask4")), 43);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("ask5")), 44);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("askvol1")), 50);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("askvol2")), 51);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("askvol3")), 52);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("askvol4")), 53);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("askvol5")), 54);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("percent")), 60);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("updown")), 61);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("arrow")), 62);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turnover")), 63);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turnvoer")), 0); // ´íÎóµÄ·ûºÅ·µ»ØÖµ½ÔÎªÁã
+  }
+
+  struct NeteaseRTData {
+    NeteaseRTData(long lCount, CString strIndex, long lIndex, CString strValue) {
+      m_lCount = lCount;
+      m_lIndex = lIndex;
+      m_strIndex = strIndex;
+      m_strValue = strValue;
+    }
+  public:
+    long m_lCount;
+    long m_lIndex;
+    CString m_strIndex;
+    CString m_strValue;
+  };
+
+  NeteaseRTData neteaseData1(1, _T("time"), 1, _T("2019/01/01 12:20:30"));
+  NeteaseRTData neteaseData2(2, _T("code"), 2, _T("0601872"));
+  NeteaseRTData neteaseData3(3, _T("name"), 3, _T("ÕÐÉÌÂÖ´¬"));
+  NeteaseRTData neteaseData4(4, _T("type"), 4, _T("SH"));
+  NeteaseRTData neteaseData5(5, _T("symbol"), 5, _T("601872"));
+  NeteaseRTData neteaseData6(6, _T("status"), 6, _T("0"));
+  NeteaseRTData neteaseData7(7, _T("update"), 7, _T("2019/10/11 01:10:02"));
+  NeteaseRTData neteaseData10(10, _T("open"), 10, _T("5.7"));
+  NeteaseRTData neteaseData11(11, _T("yestclose"), 11, _T("5.86"));
+  NeteaseRTData neteaseData12(12, _T("high"), 12, _T("5.90"));
+  NeteaseRTData neteaseData13(13, _T("low"), 13, _T("5.45"));
+  NeteaseRTData neteaseData14(14, _T("price"), 14, _T("5.55"));
+  NeteaseRTData neteaseData15(15, _T("volume"), 15, _T("10101010"));
+  NeteaseRTData neteaseData20(20, _T("bid1"), 20, _T("5.54"));
+  NeteaseRTData neteaseData21(21, _T("bid2"), 21, _T("5.53"));
+  NeteaseRTData neteaseData22(22, _T("bid3"), 22, _T("5.52"));
+  NeteaseRTData neteaseData23(23, _T("bid4"), 23, _T("5.51"));
+  NeteaseRTData neteaseData24(24, _T("bid5"), 24, _T("5.50"));
+  NeteaseRTData neteaseData30(30, _T("bidvol1"), 30, _T("10101"));
+  NeteaseRTData neteaseData31(31, _T("bidvol2"), 31, _T("20202"));
+  NeteaseRTData neteaseData32(32, _T("bidvol3"), 32, _T("30303"));
+  NeteaseRTData neteaseData33(33, _T("bidvol4"), 33, _T("40404"));
+  NeteaseRTData neteaseData34(34, _T("bidvol5"), 34, _T("50505"));
+  NeteaseRTData neteaseData40(40, _T("ask1"), 40, _T("5.55"));
+  NeteaseRTData neteaseData41(41, _T("ask2"), 41, _T("5.56"));
+  NeteaseRTData neteaseData42(42, _T("ask3"), 42, _T("5.57"));
+  NeteaseRTData neteaseData43(43, _T("ask4"), 43, _T("5.58"));
+  NeteaseRTData neteaseData44(44, _T("ask5"), 44, _T("5.59"));
+  NeteaseRTData neteaseData50(50, _T("askvol1"), 50, _T("101010"));
+  NeteaseRTData neteaseData51(51, _T("askvol2"), 51, _T("202020"));
+  NeteaseRTData neteaseData52(52, _T("askvol3"), 52, _T("303030"));
+  NeteaseRTData neteaseData53(53, _T("askvol4"), 53, _T("404040"));
+  NeteaseRTData neteaseData54(54, _T("askvol5"), 54, _T("505050"));
+  NeteaseRTData neteaseData60(60, _T("percent"), 60, _T("0.02345"));
+  NeteaseRTData neteaseData61(61, _T("updown"), 61, _T("0.21"));
+  NeteaseRTData neteaseData62(62, _T("arrow"), 62, _T("2191"));
+  NeteaseRTData neteaseData63(63, _T("turnover"), 63, _T("4433221100"));
+
+  class NeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
+  protected:
+    void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      NeteaseRTData* pData = GetParam();
+      m_iCount = pData->m_lCount;
+      m_strSymbol = pData->m_strIndex;
+      m_lIndex = pData->m_lIndex;
+      m_strValue = pData->m_strValue;
+    }
+
+    void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    int m_iCount;
+    CString m_strSymbol;
+    long m_lIndex;
+    CString m_strValue;
+    CRTData m_RTData;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, NeteaseRTDataTest, testing::Values(&neteaseData1, &neteaseData2, &neteaseData3,
+    &neteaseData4, &neteaseData5, &neteaseData6, &neteaseData7,
+    &neteaseData10, &neteaseData11, &neteaseData12, &neteaseData13, &neteaseData14, &neteaseData15,
+    &neteaseData20, &neteaseData21, &neteaseData22, &neteaseData23, &neteaseData24,
+    &neteaseData30, &neteaseData31, &neteaseData32, &neteaseData33, &neteaseData34,
+    &neteaseData40, &neteaseData41, &neteaseData42, &neteaseData43, &neteaseData44,
+    &neteaseData50, &neteaseData51, &neteaseData52, &neteaseData53, &neteaseData54,
+    &neteaseData60, &neteaseData61, &neteaseData62, &neteaseData63));
+
+  TEST_P(NeteaseRTDataTest, TestNeteaseRTData) {
+    CString strFormat;
+    time_t tt2;
+    long lIndex = m_RTData.GetNeteaseSymbolIndex(m_strSymbol);
+    EXPECT_EQ(lIndex, m_lIndex);
+    m_RTData.SetValue(lIndex, m_strValue);
+    switch (m_iCount) {
+    case 0: // ³ö´í
+      break;
+    case 1: // time
+      EXPECT_STREQ(m_strSymbol, _T("time"));
+      break;
+    case 2: // code
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh601872"));
+      break;
+    case 3: // name
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_STREQ(m_RTData.GetStockName(), _T("ÕÐÉÌÂÖ´¬"));
+      break;
+    case 4: // name
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    case 7:
+      time_t tt;
+      tm tm_;
+      int year, month, day, hour, minute, second;
+      strFormat = _T("%04d/%02d/%02d %02d:%02d:%02d");
+      sscanf_s(m_strValue.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+      tm_.tm_year = year - 1900;
+      tm_.tm_mon = month - 1;
+      tm_.tm_mday = day;
+      tm_.tm_hour = hour;
+      tm_.tm_min = minute;
+      tm_.tm_sec = second;
+      tm_.tm_isdst = 0;
+      tt = mktime(&tm_);
+      m_RTData.SetValue(lIndex, m_strValue);
+      tt2 = m_RTData.GetTransactionTime();
+      EXPECT_EQ(tt, tt2);
+      break;
+    case 10: // open
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetOpen(), 5700);
+      break;
+    case 11: // yestclose
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetLastClose(), 5860);
+      break;
+    case 12: // high
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetHigh(), 5900);
+      break;
+    case 13: // low
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetLow(), 5450);
+      break;
+    case 14: // price
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetNew(), 5550);
+      break;
+    case 15: // volume
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVolume(), 10101010);
+      break;
+    case 20: // bid1
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPBuy(0), 5540);
+      break;
+    case 21: // bid2
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPBuy(1), 5530);
+      break;
+    case 22: // bid3
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPBuy(2), 5520);
+      break;
+    case 23: // bid4
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPBuy(3), 5510);
+      break;
+    case 24: // bid5
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPBuy(4), 5500);
+      break;
+    case 30: // bidvol1
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVBuy(0), 10101);
+      break;
+    case 31: // bidvol2
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVBuy(1), 20202);
+      break;
+    case 32: // bidvol3
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVBuy(2), 30303);
+      break;
+    case 33: // bidvol4
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVBuy(3), 40404);
+      break;
+    case 34: // bidvol5
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVBuy(4), 50505);
+      break;
+    case 40: // ask1
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPSell(0), 5550);
+      break;
+    case 41: // ask2
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPSell(1), 5560);
+      break;
+    case 42: // ask3
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPSell(2), 5570);
+      break;
+    case 43: // ask4
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPSell(3), 5580);
+      break;
+    case 44: // ask5
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetPSell(4), 5590);
+      break;
+    case 50: // askvol1
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVSell(0), 101010);
+      break;
+    case 51: // askvol2
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVSell(1), 202020);
+      break;
+    case 52: // askvol3
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVSell(2), 303030);
+      break;
+    case 53: // askvol4
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVSell(3), 404040);
+      break;
+    case 54: // askvol5
+      m_RTData.SetValue(lIndex, m_strValue);
+      EXPECT_EQ(m_RTData.GetVSell(4), 505050);
+      break;
+    case 60: // percent
+    case 61: // updown
+    case 62: // arrow
+    case 63: // turnover
+      break;
+    default:
+      break;
+    }
+  }
+
   struct SinaRTData {
     SinaRTData(int count, CString Data) {
       m_iCount = count;
@@ -1126,7 +1411,7 @@ namespace StockAnalysisTest {
       break;
     case 9:
       EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 1);      
+      EXPECT_EQ(m_lCountPos, 1);
       EXPECT_EQ(llTemp, 0);
       break;
     default:

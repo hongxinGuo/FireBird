@@ -17,6 +17,23 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
   return tt;
 }
 
+time_t ConvertStringToTime(CString strFormat, CString strTime) {
+  time_t tt;
+  tm tm_;
+  int year, month, day, hour, minute, second;
+  sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+  tm_.tm_year = year - 1900;
+  tm_.tm_mon = month - 1;
+  tm_.tm_mday = day;
+  tm_.tm_hour = hour;
+  tm_.tm_min = minute;
+  tm_.tm_sec = second;
+  tm_.tm_isdst = 0;
+  tt = mktime(&tm_);
+
+  return tt;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。

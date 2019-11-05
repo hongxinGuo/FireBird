@@ -36,6 +36,44 @@ void CRTData::Reset(void) {
     m_lVSell.at(i) = 0;
   }
   m_fActive = false;
+
+  m_mapNeteaseSymbolToIndex[_T("time")] = 1;
+  m_mapNeteaseSymbolToIndex[_T("code")] = 2;
+  m_mapNeteaseSymbolToIndex[_T("name")] = 3;
+  m_mapNeteaseSymbolToIndex[_T("type")] = 4;
+  m_mapNeteaseSymbolToIndex[_T("symbol")] = 5;
+  m_mapNeteaseSymbolToIndex[_T("status")] = 6;
+  m_mapNeteaseSymbolToIndex[_T("update")] = 7;
+  m_mapNeteaseSymbolToIndex[_T("open")] = 10;
+  m_mapNeteaseSymbolToIndex[_T("yestclose")] = 11;
+  m_mapNeteaseSymbolToIndex[_T("high")] = 12;
+  m_mapNeteaseSymbolToIndex[_T("low")] = 13;
+  m_mapNeteaseSymbolToIndex[_T("price")] = 14;
+  m_mapNeteaseSymbolToIndex[_T("volume")] = 15;
+  m_mapNeteaseSymbolToIndex[_T("bid1")] = 20;
+  m_mapNeteaseSymbolToIndex[_T("bid2")] = 21;
+  m_mapNeteaseSymbolToIndex[_T("bid3")] = 22;
+  m_mapNeteaseSymbolToIndex[_T("bid4")] = 23;
+  m_mapNeteaseSymbolToIndex[_T("bid5")] = 24;
+  m_mapNeteaseSymbolToIndex[_T("bidvol1")] = 30;
+  m_mapNeteaseSymbolToIndex[_T("bidvol2")] = 31;
+  m_mapNeteaseSymbolToIndex[_T("bidvol3")] = 32;
+  m_mapNeteaseSymbolToIndex[_T("bidvol4")] = 33;
+  m_mapNeteaseSymbolToIndex[_T("bidvol5")] = 34;
+  m_mapNeteaseSymbolToIndex[_T("ask1")] = 40;
+  m_mapNeteaseSymbolToIndex[_T("ask2")] = 41;
+  m_mapNeteaseSymbolToIndex[_T("ask3")] = 42;
+  m_mapNeteaseSymbolToIndex[_T("ask4")] = 43;
+  m_mapNeteaseSymbolToIndex[_T("ask5")] = 44;
+  m_mapNeteaseSymbolToIndex[_T("askvol1")] = 50;
+  m_mapNeteaseSymbolToIndex[_T("askvol2")] = 51;
+  m_mapNeteaseSymbolToIndex[_T("askvol3")] = 52;
+  m_mapNeteaseSymbolToIndex[_T("askvol4")] = 53;
+  m_mapNeteaseSymbolToIndex[_T("askvol5")] = 54;
+  m_mapNeteaseSymbolToIndex[_T("percent")] = 60;
+  m_mapNeteaseSymbolToIndex[_T("updown")] = 61;
+  m_mapNeteaseSymbolToIndex[_T("arrow")] = 62;
+  m_mapNeteaseSymbolToIndex[_T("turnover")] = 63;
 }
 
 CRTData::CRTData(void) : CObject() {
@@ -295,7 +333,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     return false;
   }
   strTime += buffer3;
-  m_time = ConvertBufferToTime("%d-%d-%d %d:%d:%d", strTime.GetBuffer());
+  m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 
   // 后面的数据皆为无效数据，读至此数据的结尾处即可。
   while (*pCurrentPos++ != 0x00a) {
@@ -629,7 +667,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
     return false;
   }
-  m_time = ConvertBufferToTime("%4d%2d%2d%2d%2d%2d", buffer3);
+  m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3);
 
   while (*pCurrentPos++ != 0x00a) {
     if (*pCurrentPos == 0x000) {
@@ -704,33 +742,42 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
-  static CString strHeader = _T("v_s");
+  static CString strHeader = _T("_ntes_quote_callback");
   long lTemp = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
 
   m_fActive = false;    // 初始状态为无效数据
-  strncpy_s(buffer1, pCurrentPos, 3); // 读入“v_s"
+  strncpy_s(buffer1, pCurrentPos, 20); // 读入"_ntes_quote_callback"
   buffer1[3] = 0x000;
   CString str1;
   str1 = buffer1;
   if (strHeader.Compare(str1) != 0) { // 数据格式出错
     return false;
   }
-  pCurrentPos += 3;
-  lTotalRead += 3;
+  pCurrentPos += 20;
+  lTotalRead += 20;
 
-  if (*pCurrentPos == 'h') { // 上海股票
+  strncpy_s(buffer1, pCurrentPos, 2); // 读入"({"
+  buffer1[2] = 0x000;
+  str1 = buffer1;
+  if (str1.Compare(_T("({")) != 0) { // 数据格式出错
+    return false;
+  }
+  pCurrentPos += 2;
+  lTotalRead += 2;
+
+  if (*pCurrentPos == '0') { // 上海股票
     m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
   }
-  else if (*pCurrentPos == 'z') {
+  else if (*pCurrentPos == '0') {
     m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
   }
   else {
     return false;
   }
   pCurrentPos++;
-  lTotalRead += 1;
+  lTotalRead++;
 
   // 读入六位股票代码
   strncpy_s(buffer2, pCurrentPos, 6);
@@ -937,4 +984,135 @@ bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotal
   i++;
   lTotalRead += i;
   return true;
+}
+
+long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
+  long lIndex = 0;
+  try {
+    lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
+  }
+  catch (exception e) {
+    lIndex = 0;
+  }
+  return lIndex;
+}
+
+bool CRTData::GetNeteaseIndexAndValue(char& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue)
+{
+  return false;
+}
+
+bool CRTData::SetValue(long lIndex, CString strValue)
+{
+  CString str1, str;
+  switch (lIndex) {
+  case 1: // time
+    break;
+  case 2: // code
+    str = strValue.Left(1);
+    if (str.Compare(_T("0")) == 0) {
+      str1 = _T("sh");
+    }
+    else str1 = _T("sz");
+    m_strStockCode = str1 + strValue.Right(6);
+    break;
+  case 3: // name
+    m_strStockName = strValue;
+    break;
+  case 4: // type
+    break;
+  case 5: // symbol
+    break;
+  case 6: // status
+    break;
+  case 7: // update
+    m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  case 10: // open
+    m_lOpen = atof(strValue) * 1000;
+    break;
+  case 11: // yestclose
+    m_lLastClose = atof(strValue) * 1000;
+    break;
+  case 12: // high
+    m_lHigh = atof(strValue) * 1000;
+    break;
+  case 13: // low
+    m_lLow = atof(strValue) * 1000;
+    break;
+  case 14: // price
+    m_lNew = atof(strValue) * 1000;
+    break;
+  case 15: // volume
+    m_llVolume = atol(strValue);
+    break;
+  case 20: // bid1
+    m_lPBuy[0] = atof(strValue) * 1000;
+    break;
+  case 21: // bid2
+    m_lPBuy[1] = atof(strValue) * 1000;
+    break;
+  case 22: // bid3
+    m_lPBuy[2] = atof(strValue) * 1000;
+    break;
+  case 23: // bid4
+    m_lPBuy[3] = atof(strValue) * 1000;
+    break;
+  case 24: // bid5
+    m_lPBuy[4] = atof(strValue) * 1000;
+    break;
+  case 30: // bidvol1
+    m_lVBuy[0] = atol(strValue);
+    break;
+  case 31: // bidvol2
+    m_lVBuy[1] = atol(strValue);
+    break;
+  case 32: // bidvol3
+    m_lVBuy[2] = atol(strValue);
+    break;
+  case 33: // bidvol4
+    m_lVBuy[3] = atol(strValue);
+    break;
+  case 34: // bidvol5
+    m_lVBuy[4] = atol(strValue);
+    break;
+  case 40: // ask1
+    m_lPSell[0] = atof(strValue) * 1000;
+    break;
+  case 41: // ask2
+    m_lPSell[1] = atof(strValue) * 1000;
+    break;
+  case 42: // ask3
+    m_lPSell[2] = atof(strValue) * 1000;
+    break;
+  case 43: // ask4
+    m_lPSell[3] = atof(strValue) * 1000;
+    break;
+  case 44: // ask5
+    m_lPSell[4] = atof(strValue) * 1000;
+    break;
+  case 50: // askvol1
+    m_lVSell[0] = atol(strValue);
+    break;
+  case 51: // askvol2
+    m_lVSell[1] = atol(strValue);
+    break;
+  case 52: // askvol3
+    m_lVSell[2] = atol(strValue);
+    break;
+  case 53: // askvol4
+    m_lVSell[3] = atol(strValue);
+    break;
+  case 54: // askvol5
+    m_lVSell[4] = atol(strValue);
+    break;
+  case 60: // percent
+  case 61: // updown
+  case 62: // arrow
+  case 63: // turnover
+    break;
+  default:
+    // 出错了
+    break;
+  }
+  return false;
 }
