@@ -79,7 +79,7 @@ void CMarket::Reset(void)
 
   m_fGetRTStockData = true;
   m_fReadingTengxunRTData = false; // 默认状态下不读取腾讯实时行情
-  m_fReadingNeteaseRTData = false; // 默认状态下不读取网易实时行情
+  m_fReadingNeteaseRTData = true; // 默认状态下不读取网易实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
@@ -1022,7 +1022,7 @@ bool CMarket::SchedulingTask(void)
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1049,7 +1049,7 @@ bool CMarket::GetRTDataFromWeb(void) {
   if (SystemReady()) {
     // 读取网易实时行情数据。
     if (m_fReadingNeteaseRTData) {
-      //gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
+      gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
     }
 
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用

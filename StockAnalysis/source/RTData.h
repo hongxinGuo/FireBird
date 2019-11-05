@@ -157,7 +157,7 @@ public:
 
   // 读取网易实时数据函数
   long GetNeteaseSymbolIndex(CString strSymbol);
-  bool GetNeteaseIndexAndValue(char& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
+  bool GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
   bool SetValue(long lIndex, CString strValue);
 
 public:

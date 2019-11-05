@@ -746,10 +746,12 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   long lTemp = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
+  long lIndex = 0;
+  CString strValue = _T("");
 
   m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 20); // 读入"_ntes_quote_callback"
-  buffer1[3] = 0x000;
+  buffer1[20] = 0x000;
   CString str1;
   str1 = buffer1;
   if (strHeader.Compare(str1) != 0) { // 数据格式出错
@@ -758,19 +760,19 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   pCurrentPos += 20;
   lTotalRead += 20;
 
-  strncpy_s(buffer1, pCurrentPos, 2); // 读入"({"
-  buffer1[2] = 0x000;
+  strncpy_s(buffer1, pCurrentPos, 3); // 读入"({\""
+  buffer1[3] = 0x000;
   str1 = buffer1;
-  if (str1.Compare(_T("({")) != 0) { // 数据格式出错
+  if (str1.Compare(_T("({\"")) != 0) { // 数据格式出错
     return false;
   }
-  pCurrentPos += 2;
-  lTotalRead += 2;
+  pCurrentPos += 3;
+  lTotalRead += 3;
 
   if (*pCurrentPos == '0') { // 上海股票
     m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
   }
-  else if (*pCurrentPos == '0') {
+  else if (*pCurrentPos == '1') {
     m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
   }
   else {
@@ -779,125 +781,22 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   pCurrentPos++;
   lTotalRead++;
 
-  // 读入六位股票代码
-  strncpy_s(buffer2, pCurrentPos, 6);
-  buffer2[6] = 0x000;
-  m_strStockCode = buffer2;
-  switch (m_wMarket) {
-  case __SHANGHAI_MARKET__:
-    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
-    break;
-  case __SHENZHEN_MARKET__:
-    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
-    break;
-  default:
-    return false;
-  }
-  m_iStockCode = atoi(buffer2);
+  strncpy_s(buffer1, pCurrentPos, 6);
+  buffer1[6] = 0x000;
+  str1 = buffer1;
   pCurrentPos += 6;
   lTotalRead += 6;
-
-  strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
-  if (buffer1[0] != '=') {
-    return false;
-  }
-  if (buffer1[1] != '"') {
-    return false;
-  }
-  pCurrentPos += 2;
-  lTotalRead += 2;
-
-  // 读入市场标识代码（51为深市，1为沪市）
-  if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-    return false;
-  }
-#ifdef DEBUG
-  if (lTemp == 1) ASSERT(m_wMarket == __SHANGHAI_MARKET__);
-  else if (lTemp == 51) ASSERT(m_wMarket == __SHENZHEN_MARKET__);
-  else ASSERT(0); // 报错
-#endif
-  if (!ReadTengxunOneValue(pCurrentPos, buffer1, lTotalRead)) {
-    return false;
-  }
-  m_strStockName = buffer1; // 设置股票名称
-
-  // 读入六位股票代码
-  if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-    return false;
-  }
-  if (lTemp != m_iStockCode) return false;
-
-  // 读入现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
-    return false;
-  }
-  m_lNew = dTemp * 1000;
-  // 读入前收盘价
-  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
-    return false;
-  }
-  m_lLastClose = dTemp * 1000;
-  // 读入开盘价
-  if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
-    return false;
-  }
-  m_lOpen = dTemp * 1000;
-  // 读入成交手数。成交股数存储实际值
-  if (!ReadTengxunOneValue(pCurrentPos, llTemp, lTotalRead)) {
-    return false;
-  }
-  m_llVolume = llTemp * 100;
-  // 读入外盘
-  if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-    return false;
-  }
-  // 读入内盘
-  if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-    return false;
-  }
-  // 读入买一至买五的价格和手数
-  for (int j = 0; j < 5; j++) {
-    // 读入买盘价格
-    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
-      return false;
-    }
-    m_lPBuy.at(j) = dTemp * 1000;
-    // 读入买盘数量（手）
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-      return false;
-    }
-    m_lVBuy.at(j) = lTemp * 100;
-  }
-  // 读入卖一至卖五的价格和手数
-  for (int j = 0; j < 5; j++) {
-    // 读入卖盘价格
-    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
-      return false;
-    }
-    m_lPSell.at(j) = dTemp * 1000;
-    // 读入卖盘数量（手）
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-      return false;
-    }
-    m_lVSell.at(j) = lTemp * 100;
-  }
-  // 最近逐笔成交
-  if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
-    return false;
-  }
-
-  // 读入成交日期和时间.格式为：yyyymmddhhmmss
-  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
-    return false;
-  }
-  m_time = ConvertBufferToTime("%4d%2d%2d%2d%2d%2d", buffer3);
-
-  while (*pCurrentPos++ != 0x00a) {
-    if (*pCurrentPos == 0x000) {
-      return false;
-    }
+  while (*pCurrentPos != '{') {
+    pCurrentPos++;
     lTotalRead++;
   }
+  pCurrentPos++;
+  lTotalRead++;
+  do {
+    GetNeteaseIndexAndValue(pCurrentPos, lTotalRead, lIndex, strValue);
+    SetValue(lIndex, strValue);
+  } while (*pCurrentPos != '}');
+  pCurrentPos++;
   lTotalRead++;
 
   if ((m_lNew == 0) && (m_llVolume == 0)) {
@@ -997,9 +896,55 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   return lIndex;
 }
 
-bool CRTData::GetNeteaseIndexAndValue(char& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue)
+bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue)
 {
-  return false;
+  char buffer[50];
+  int i = 0;
+  CString strIndex;
+  bool fFind = false;
+
+  while (*pCurrentPos != '"') {
+    pCurrentPos++;
+    lTotalRead++;
+  }
+  pCurrentPos++;
+  lTotalRead++;
+
+  i = 0;
+  while (*pCurrentPos != '"') {
+    buffer[i++] = *pCurrentPos++;
+    lTotalRead++;
+  }
+  buffer[i] = 0x000;
+  strIndex = buffer;
+  lIndex = GetNeteaseSymbolIndex(strIndex);
+  pCurrentPos += 3;
+  lTotalRead += 3;
+
+  if (*pCurrentPos == '"') {
+    fFind = true;
+    pCurrentPos++;
+    lTotalRead++;
+  }
+
+  i = 0;
+  if (fFind) {
+    while (*pCurrentPos != '"') {
+      buffer[i++] = *pCurrentPos++;
+      lTotalRead++;
+    }
+    buffer[i] = 0x000;
+    strValue = buffer;
+  }
+  else {
+    while ((*pCurrentPos != ',') && (*pCurrentPos != '}')) {
+      buffer[i++] = *pCurrentPos++;
+      lTotalRead++;
+    }
+    buffer[i] = 0x000;
+    strValue = buffer;
+  }
+  return true;
 }
 
 bool CRTData::SetValue(long lIndex, CString strValue)

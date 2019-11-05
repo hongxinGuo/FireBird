@@ -24,6 +24,11 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
   if (pRTData->ReadNeteaseData(pCurrentPos, iCount)) {
     pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
     //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+    if (*pCurrentPos == ' ') { // 到结尾处了
+      pCurrentPos += 4;
+      iCount += 4;
+      ASSERT(iCount == m_lByteRead);
+    }
     return true;
   }
   return false;
