@@ -145,7 +145,7 @@ public:
   bool ProcessRTData(void);
 
   //处理实时股票变化等
-  bool ProcessSinaRTDataReceivedFromWeb(void);
+  bool DistributeRTDataReceivedFromWebToProperStock(void);
   // 处理日线历史数据
   bool ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData);
   bool ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
@@ -153,15 +153,23 @@ public:
   bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
   bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
-  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用
-  bool SchedulingTask(void);
-  bool SchedulingTaskPerSecond(long lSecondNumber);
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime);
-  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime);
-  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime);
-  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime);
+  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
+  bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
+  bool GetRTDataFromWeb(void);
+  bool LoadTodayTempDataSaved(void);
+  bool GetNeteaseDayLineWebData(void);
+
+  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
+
+  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
+
+  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
+
+  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+
+  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
 
 private:
   // 初始化

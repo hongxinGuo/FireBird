@@ -92,6 +92,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+enum {
+  __INVALID_RT_WEB_DATA__ = 0,
+  __SINA_RT_WEB_DATA__ = 1,
+  __TENGXUN_RT_WEB_DATA__ = 2,
+  __NETEASE_RT_WEB_DATA__ = 3,
+};
+
 #include"stdafx.h"
 #include"afxinet.h"
 
@@ -117,6 +124,9 @@ public:
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
   bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
+  // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
+  bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead);
+
 public:
   // 读取新浪实时数据函数
   bool ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
@@ -133,6 +143,8 @@ public:
   bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘~’。
 
 public:
+  void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
+  long GetDataSource(void) noexcept { return m_lDataSource; }
   time_t GetTransactionTime(void) noexcept { return m_time; }
   void SetTransactionTime(time_t time) noexcept { m_time = time; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -176,6 +188,7 @@ public:
 
   bool IsActive(void) noexcept { return m_fActive; }
   //void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -186,8 +199,9 @@ public:
 public:
 
 protected:
+  long m_lDataSource; // 实时数据来源标识。1：新浪网站；2：腾讯网站；3：网易网站；。。。
   // Serialized data
-  time_t		m_time;	// 交易发生时的时间
+  time_t m_time;	// 交易发生时的时间
   WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
   CString m_strStockCode;// 证券代码, sh600001，sz002389，
   int m_iStockCode; // 证券代码（数字）。600001, 002389
@@ -196,8 +210,8 @@ protected:
   long m_lLastClose;// 昨日收盘。单位：0.001元
   long m_lNew; // 今日最新。单位：0.001元
   long m_lHigh;	// 今日最高。单位：0.001元
-  long m_lLow;	// 今日最低。单位：0.001元
-  long m_lBuy;  // 竞买价。单位：0.001元
+  long m_lLow; // 今日最低。单位：0.001元
+  long m_lBuy; // 竞买价。单位：0.001元
   long m_lSell; // 竞卖价。单位：0.001元
   INT64 m_llVolume; // 总成交量。单位：股
   INT64 m_llAmount; // 总成交金额。单位：元
@@ -209,5 +223,5 @@ protected:
   array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
 // 非存储数据
-  bool m_fActive;// 本股票是否存在实时数据
+  bool m_fActive; // 本股票是否存在实时数据
 };

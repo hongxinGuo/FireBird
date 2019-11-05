@@ -22,6 +22,7 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
+    pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
     //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }
@@ -29,7 +30,8 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
 }
 
 void CTengxunRTWebData::ProcessWebDataStored(void) {
-  //gl_ChinaStockMarket.ProcessRTDataReceivedFromWeb();
+  //将下面的函数移入定时调度处，每3秒执行一次即可。本函数无需做任何事情，
+  //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
 }
 
 void CTengxunRTWebData::ReportDataError(void)

@@ -549,20 +549,23 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 处理实时数据等，由SchedulingTask函数调用。
+// 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
 // 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
 // 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
 //
-// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股票的挂单情况。
+// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessSinaRTDataReceivedFromWeb(void)
+bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
 {
   CStockPtr pStock;
   const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
+    if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
+      gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
+    }
     if (pRTData->IsActive()) { // 此实时数据有效？
       long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
       pStock = m_vChinaMarketAStock.at(lIndex);
@@ -1011,9 +1014,18 @@ bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& l
 bool CMarket::SchedulingTask(void)
 {
   static time_t s_timeLast = 0;
-  static int siCountDownTengxunNumber = 2;
 
   gl_systemTime.CalculateTime();      // 计算系统各种时间
+
+  // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
+  if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
+    GetRTDataFromWeb();
+
+    // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
+  }
+  m_iCountDownSlowReadingRTData--;
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (gl_systemTime.Gett_time() > s_timeLast) {
@@ -1021,58 +1033,66 @@ bool CMarket::SchedulingTask(void)
     s_timeLast = gl_systemTime.Gett_time();
   }
 
-  // 抓取实时数据(新浪和腾讯）
-  if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
-    gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+  // 系统准备好了之后需要完成的各项工作
+  if (SystemReady()) {
+    LoadTodayTempDataSaved();
+    GetNeteaseDayLineWebData();
+  }
+  return true;
+}
 
+bool CMarket::GetRTDataFromWeb(void) {
+  static int siCountDownTengxunNumber = 2;
+
+  gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+
+  if (SystemReady()) {
     // 读取网易实时行情数据。
-    if (m_fReadingNeteaseRTData && SystemReady()) {
+    if (m_fReadingNeteaseRTData) {
       //gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
     }
 
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
-    if (m_fReadingTengxunRTData && SystemReady()) {
+    if (m_fReadingTengxunRTData) {
       if (siCountDownTengxunNumber <= 0) {
         //gl_TengxunRTWebData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
       }
       else siCountDownTengxunNumber = 2; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
-
-    // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
-    else m_iCountDownSlowReadingRTData = 3;  // 计数4次
   }
-  m_iCountDownSlowReadingRTData--;
+  return true;
+}
 
-  // 系统准备好了之后需要完成的各项工作
-  if (SystemReady()) {
-    // 装入之前存储的系统今日数据（如果有的话）
-    if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
-      LoadTodayTempDB();
-      m_fTodayTempDataLoaded = true;
-    }
+bool CMarket::LoadTodayTempDataSaved(void) {
+  // 装入之前存储的系统今日数据（如果有的话）
+  if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
+    LoadTodayTempDB();
+    m_fTodayTempDataLoaded = true;
+    return true;
+  }
+  return false;
+}
 
-    // 抓取日线数据.
-    // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-    if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
-      switch (gl_cMaxSavingOneDayLineThreads) {
-      case 8: case 7: case 6:case 5: case 4:
-        gl_NeteaseDayLineWebDataFourth.GetWebData();
-      case 3:
-        gl_NeteaseDayLineWebDataThird.GetWebData();
-      case 2:
-        gl_NeteaseDayLineWebDataSecond.GetWebData();
-      case 1: case 0:
-        gl_NeteaseDayLineWebData.GetWebData();
-        break;
-      default:
-        gl_NeteaseDayLineWebData.GetWebData();
-        TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
-        break;
-      }
+bool CMarket::GetNeteaseDayLineWebData(void) {
+  // 抓取日线数据.
+  // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+  if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
+    switch (gl_cMaxSavingOneDayLineThreads) {
+    case 8: case 7: case 6:case 5: case 4:
+      gl_NeteaseDayLineWebDataFourth.GetWebData();
+    case 3:
+      gl_NeteaseDayLineWebDataThird.GetWebData();
+    case 2:
+      gl_NeteaseDayLineWebDataSecond.GetWebData();
+    case 1: case 0:
+      gl_NeteaseDayLineWebData.GetWebData();
+      break;
+    default:
+      gl_NeteaseDayLineWebData.GetWebData();
+      TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+      break;
     }
   }
-
   return true;
 }
 
@@ -1087,6 +1107,7 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 {
+  static int s_iCountDownProcessRTWebData = 2;
   const long lCurrentTime = gl_systemTime.GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
@@ -1094,6 +1115,14 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   SchedulingTaskPer5Minutes(lSecondNumber, lCurrentTime);
   SchedulingTaskPer1Minute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
+
+  if (s_iCountDownProcessRTWebData <= 0) {
+    // 将接收到的实时数据分发至各相关股票的实时数据队列中。
+    // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
+    DistributeRTDataReceivedFromWebToProperStock();
+    s_iCountDownProcessRTWebData = 2;
+  }
+  else s_iCountDownProcessRTWebData--;
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。

@@ -53,7 +53,7 @@ protected:
   //   }
   // };
 
-  // 目前使用队列实现（停用
+  // 目前使用队列实现（停用）
   queue<CRTDataPtr> m_queueRTStockData;
   CCriticalSection m_RTDataLock;
 

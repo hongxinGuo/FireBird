@@ -21,7 +21,8 @@ CNeteaseRTWebData::~CNeteaseRTWebData() {
 bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
-  if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
+  if (pRTData->ReadNeteaseData(pCurrentPos, iCount)) {
+    pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
     //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }
@@ -29,7 +30,8 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
 }
 
 void CNeteaseRTWebData::ProcessWebDataStored(void) {
-  //gl_ChinaStockMarket.ProcessNeteaseRTDataReceivedFromWeb();
+  //将下面的函数移入定时调度处，每3秒执行一次即可。本函数无需做任何事情，
+  //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
 }
 
 void CNeteaseRTWebData::ReportDataError(void)

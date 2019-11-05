@@ -22,6 +22,7 @@ bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
+    pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
     gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }
@@ -29,7 +30,8 @@ bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long
 }
 
 void CSinaRTWebData::ProcessWebDataStored(void) {
-  gl_ChinaStockMarket.ProcessSinaRTDataReceivedFromWeb();
+  //将下面的函数移入定时调度处，每3秒执行一次即可。本函数无需做任何事情，
+  //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
 }
 
 void CSinaRTWebData::ReportDataError(void)
