@@ -131,6 +131,8 @@ public:
   void Reset(void);
   bool SetData(CRTData& data);
 
+  bool Compare(CRTDataPtr pRTData);
+
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
   bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
 
@@ -171,8 +173,6 @@ public:
   void SetStockCode(CString str) { m_strStockCode = str; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
-  int GetCode(void) noexcept { return m_iStockCode; }
-  void SetCode(int iStockCode) noexcept { m_iStockCode = iStockCode; }
   long GetLastClose(void) noexcept { return m_lLastClose; }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
@@ -222,7 +222,6 @@ protected:
   time_t m_time;	// 交易发生时的时间
   WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
   CString m_strStockCode;// 证券代码, sh600001，sz002389，
-  int m_iStockCode; // 证券代码（数字）。600001, 002389
   CString m_strStockName; // 证券名称
   long m_lOpen;	// 今日开盘。单位：0.001元
   long m_lLastClose;// 昨日收盘。单位：0.001元

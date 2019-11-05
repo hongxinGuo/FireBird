@@ -134,6 +134,26 @@ bool CRTData::SetData(CRTData& data) {
   return(true);
 }
 
+bool CRTData::Compare(CRTDataPtr pRTData)
+{
+  if (m_time != pRTData->GetTransactionTime()) { TRACE("交易时间不匹配\n"); }
+  if (m_wMarket != pRTData->GetMarket()) { TRACE("市场不匹配\n"); }
+  if (m_strStockCode.Compare(pRTData->GetStockCode()) != 0) { TRACE("股票代码不匹配\n"); }
+  if (m_lHigh != pRTData->GetHigh()) { TRACE("最高价不匹配\n"); }
+  if (m_lLow != pRTData->GetLow()) { TRACE("最低价不匹配\n"); }
+  if (m_lOpen != pRTData->GetOpen()) { TRACE("今开价不匹配\n"); }
+  if (m_lLastClose != pRTData->GetLastClose()) { TRACE("昨收价不匹配\n"); }
+  if (m_lNew != pRTData->GetNew()) { TRACE("成交价格不匹配\n"); }
+  if (m_llVolume != pRTData->GetVolume()) { TRACE("成交股数不匹配\n"); }
+  for (int i = 0; i < 5; i++) {
+    if (m_lPBuy[i] != pRTData->GetPBuy(i)) { TRACE("%d  %d不匹配\n", m_lPBuy[i], pRTData->GetPBuy(i)); }
+    if (m_lVBuy[i] != pRTData->GetVBuy(i)) { TRACE("2不匹配\n"); }
+    if (m_lPSell[i] != pRTData->GetPSell(i)) { TRACE("3不匹配\n"); }
+    if (m_lVSell[i] != pRTData->GetVSell(i)) { TRACE("4不匹配\n"); }
+  }
+  return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。
@@ -177,6 +197,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   char buffer2[7];
   static char buffer3[100];
   static CString strHeader = _T("var hq_str_s");
+  long lStockCode = 0;
 
   m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
@@ -214,7 +235,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
   default:
     return false;
   }
-  m_iStockCode = atoi(buffer2);
+  lStockCode = atoi(buffer2);
   pCurrentPos += 6;
   lTotalRead += 6;
 
@@ -532,6 +553,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   long lTemp = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
+  long lStockCode = 0;
 
   m_fActive = false;    // 初始状态为无效数据
   strncpy_s(buffer1, pCurrentPos, 3); // 读入“v_s"
@@ -570,7 +592,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   default:
     return false;
   }
-  m_iStockCode = atoi(buffer2);
+  lStockCode = atoi(buffer2);
   pCurrentPos += 6;
   lTotalRead += 6;
 
@@ -602,7 +624,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
   if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
     return false;
   }
-  if (lTemp != m_iStockCode) return false;
+  if (lTemp != lStockCode) return false;
 
   // 读入现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
   if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {

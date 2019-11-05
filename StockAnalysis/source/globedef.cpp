@@ -3,6 +3,9 @@
 #include "Market.h"
 #include "SystemTime.h"
 
+// 测试用变量
+CRTDataPtr gl_TESTpRTData = nullptr;
+
 CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
 CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
 CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集

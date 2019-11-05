@@ -51,6 +51,9 @@ using namespace std;
 #include<deque>
 #include<memory>
 
+// 测试用变量
+extern CRTDataPtr gl_TESTpRTData;
+
 extern CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
 extern CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
 extern CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集

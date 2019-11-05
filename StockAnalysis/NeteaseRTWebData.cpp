@@ -41,6 +41,14 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadNeteaseData(pCurrentPos, iCount)) {
     pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+#ifdef DEBUG
+    // 测试网易实时数据与新浪实时数据的同一性。
+    if (gl_TESTpRTData != nullptr) {
+      if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
+        pRTData->Compare(gl_TESTpRTData);
+      }
+    }
+#endif // DEBUG
     //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     if (*pCurrentPos == ' ') { // 到结尾处了
       pCurrentPos += 4;

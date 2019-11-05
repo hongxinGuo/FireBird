@@ -563,6 +563,12 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
+#ifdef DEBUG
+    // 测试用
+    if (pRTData->GetStockCode().Compare(_T("sh600000")) == 0) {
+      gl_TESTpRTData = pRTData;
+    }
+#endif
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
     }
@@ -1022,7 +1028,7 @@ bool CMarket::SchedulingTask(void)
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
