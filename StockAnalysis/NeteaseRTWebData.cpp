@@ -56,7 +56,7 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
       }
     }
 #endif // DEBUG
-    //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+    //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列.网易实时数据缺少总成交金额一项，只能作为辅助数据，故而暂时不使用。
     if (*pCurrentPos == ' ') { // 到结尾处了
       pCurrentPos += 4;
       iCount += 4;
@@ -98,22 +98,11 @@ void CNeteaseRTWebData::ReportCommunicationError(void)
 
 void CNeteaseRTWebData::InquireNextWebData(void)
 {
-  static int iCountUp = 0;
-  CRTDataPtr pRTData = nullptr;
-
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (gl_ChinaStockMarket.IsCheckTodayActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-    if (gl_ChinaStockMarket.CreateNeteaseRTDataInquiringStr(strMiddle)) {
-      if (gl_ChinaStockMarket.CountLoopRTDataInquiring()) {  // 遍历三遍全体股票池
-        if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
-          gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
-        }
-        gl_ChinaStockMarket.SetSystemReady(true); // 所有的股票实时数据都轮询三遍，当日活跃股票集已经建立，故而可以接受日线数据了。
-        gl_ChinaStockMarket.ResetIT();
-      }
-    }
+  if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未准备好，则使用全局股票池
+    gl_ChinaStockMarket.CreateNeteaseRTDataInquiringStr(strMiddle);
   }
   else { // 开市时使用今日活跃股票池
     GetInquiringStr(strMiddle);
