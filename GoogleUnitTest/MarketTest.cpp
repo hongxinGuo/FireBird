@@ -198,9 +198,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMarketTest, TestGetStockName) {
-    // 未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
+    //未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
     //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh600000")), _T("浦发银行"));
-    //EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
+    EXPECT_STREQ(gl_ChinaStockMarket.GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
   }
 
   TEST_F(CMarketTest, TestGetStockIndex) {
@@ -214,6 +214,11 @@ namespace StockAnalysisTest {
   TEST_F(CMarketTest, TestGetStockCode) {
     EXPECT_EQ(gl_ChinaStockMarket.GetStockPtr(_T("sh66000")), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.GetStockPtr(_T("sh600001")) == nullptr);
+
+    EXPECT_EQ(gl_ChinaStockMarket.GetStockPtr(-1), nullptr);
+    EXPECT_EQ(gl_ChinaStockMarket.GetStockPtr(12000), nullptr);
+    EXPECT_FALSE(gl_ChinaStockMarket.GetStockPtr(0) == nullptr);
+    EXPECT_FALSE(gl_ChinaStockMarket.GetStockPtr(11999) == nullptr);
   }
 
   TEST_F(CMarketTest, TestGetShowStock) {

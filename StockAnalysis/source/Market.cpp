@@ -1364,11 +1364,12 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetStockName(CString strStockCode) {
-  long lIndex = m_mapChinaMarketAStock.at(strStockCode);
-  if (lIndex >= 0) {
-    return (m_vChinaMarketAStock.at(lIndex)->GetStockName());
+  try {
+    return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode))->GetStockName());
   }
-  else return _T("");
+  catch (exception e) {
+    return _T("");
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1379,12 +1380,14 @@ CString CMarket::GetStockName(CString strStockCode) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
-  if (m_mapChinaMarketAStock.find(strStockCode) == m_mapChinaMarketAStock.end()) {
+  try {
+    lIndex = m_mapChinaMarketAStock.at(strStockCode);
+    return true;
+  }
+  catch (exception e) {
     lIndex = -1;
     return false;
   }
-  else lIndex = m_mapChinaMarketAStock.at(strStockCode);
-  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1395,14 +1398,6 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 CStockPtr CMarket::GetStockPtr(CString strStockCode) {
-  long lIndex;
-  /*
-    if (m_mapChinaMarketAStock.find(strStockCode) != m_mapChinaMarketAStock.end()) {
-      lIndex = m_mapChinaMarketAStock.at(strStockCode);
-      return (m_vChinaMarketAStock.at(lIndex));
-    }
-    else return nullptr;
-    */
   try {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
@@ -1412,7 +1407,12 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
 }
 
 CStockPtr CMarket::GetStockPtr(long lIndex) {
-  return m_vChinaMarketAStock.at(lIndex);
+  try {
+    return m_vChinaMarketAStock.at(lIndex);
+  }
+  catch (exception e) {
+    return nullptr;
+  }
 }
 
 void CMarket::IncreaseActiveStockNumber(void) {
