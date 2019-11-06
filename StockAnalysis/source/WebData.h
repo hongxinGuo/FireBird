@@ -17,6 +17,7 @@ public:
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
   virtual bool ReadPrefix(char*& pCurrentPos, long& iCount); // 读入前缀
+  virtual bool IsReadingFinished(const char* const pCurrentPos, const long iCount); // 读完了所有的数据
 
   // 下列为继承类必须实现的几个功能函数，完成具体任务。
   virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) = 0; // 读取并存储一个数据进数据队列

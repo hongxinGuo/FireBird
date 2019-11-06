@@ -84,6 +84,7 @@ void CMarket::Reset(void)
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiverAsTester = true;
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -1394,13 +1395,20 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 CStockPtr CMarket::GetStockPtr(CString strStockCode) {
-  long lIndex = -1;
-
-  if (m_mapChinaMarketAStock.find(strStockCode) != m_mapChinaMarketAStock.end()) {
-    lIndex = m_mapChinaMarketAStock.at(strStockCode);
-    return (m_vChinaMarketAStock.at(lIndex));
+  long lIndex;
+  /*
+    if (m_mapChinaMarketAStock.find(strStockCode) != m_mapChinaMarketAStock.end()) {
+      lIndex = m_mapChinaMarketAStock.at(strStockCode);
+      return (m_vChinaMarketAStock.at(lIndex));
+    }
+    else return nullptr;
+    */
+  try {
+    return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
-  else return nullptr;
+  catch (exception e) {
+    return nullptr;
+  }
 }
 
 CStockPtr CMarket::GetStockPtr(long lIndex) {

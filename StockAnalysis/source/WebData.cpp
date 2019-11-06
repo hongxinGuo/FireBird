@@ -49,7 +49,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   long  iCount = 0;
   int i = 0;
   ReadPrefix(pCurrentPos, iCount);
-  while (iCount < m_lByteRead) {
+  while (!IsReadingFinished(pCurrentPos, iCount)) {
     if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
       ReportDataError();
       return false;  // 后面的数据出问题，抛掉不用。
@@ -63,6 +63,12 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
 bool CWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
 {
   return true;
+}
+
+bool CWebData::IsReadingFinished(const char* const pCurrentPos, const long iCount)
+{
+  if (iCount < m_lByteRead) return false;
+  else return true;
 }
 
 void CWebData::CreateTotalInquiringString(CString strMiddle)

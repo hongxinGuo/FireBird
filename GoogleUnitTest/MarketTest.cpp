@@ -211,6 +211,11 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lIndex, -1);
   }
 
+  TEST_F(CMarketTest, TestGetStockCode) {
+    EXPECT_EQ(gl_ChinaStockMarket.GetStockPtr(_T("sh66000")), nullptr);
+    EXPECT_FALSE(gl_ChinaStockMarket.GetStockPtr(_T("sh600001")) == nullptr);
+  }
+
   TEST_F(CMarketTest, TestGetShowStock) {
     CStockPtr pStock = make_shared<CStock>();
     EXPECT_EQ(gl_ChinaStockMarket.GetShowStock(), nullptr);

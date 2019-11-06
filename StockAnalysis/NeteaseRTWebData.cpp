@@ -36,6 +36,16 @@ bool CNeteaseRTWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
   return true;
 }
 
+bool CNeteaseRTWebData::IsReadingFinished(const char* const pCurrentPos, const long iCount)
+{
+  if ((*pCurrentPos == ' ') || (iCount >= (m_lByteRead - 4))) { // 到结尾处了
+    return true;
+  }
+  else {
+    return true;
+  }
+}
+
 bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
@@ -55,22 +65,27 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
         gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
       }
     }
+    if (gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) {
+      CString str;
+      if (pRTData->IsActive()) {
+        CStockPtr pStock = nullptr;
+        if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+          if (!pStock->IsActive()) {
+            str = pStock->GetStockCode();
+            str += _T(" 网易实时检测到不处于活跃状态");
+            gl_systemMessage.PushInnerSystemInformationMessage(str);
+          }
+        }
+        else {
+          str = pRTData->GetStockCode();
+          str += _T(" 无效股票代码（网易实时数据）");
+          gl_systemMessage.PushInnerSystemInformationMessage(str);
+        }
+      }
+    }
 #endif // DEBUG
     //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列.网易实时数据缺少总成交金额一项，只能作为辅助数据，故而暂时不使用。
-    if (*pCurrentPos == ' ') { // 到结尾处了
-      pCurrentPos += 4;
-      iCount += 4;
-      ASSERT(iCount == m_lByteRead);
-      return true;
-    }
-    else {
-      //ASSERT(*pCurrentPos == ',');
-      while (*pCurrentPos != '"') {
-        pCurrentPos++;
-        iCount++;
-      }
-      return true;
-    }
+    return true;
   }
   return false;
 }
@@ -101,7 +116,7 @@ void CNeteaseRTWebData::InquireNextWebData(void)
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未准备好，则使用全局股票池
+  if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
     gl_ChinaStockMarket.CreateNeteaseRTDataInquiringStr(strMiddle);
   }
   else { // 开市时使用今日活跃股票池
