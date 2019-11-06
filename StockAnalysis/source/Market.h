@@ -38,6 +38,7 @@ public:
   // 实时数据读取
   bool CreateSinaRTDataInquiringStr(CString& str);
   bool CreateTengxunRTDataInquiringStr(CString& str);
+  bool CreateNeteaseRTDataInquiringStr(CString& str);
   int GetSinaInquiringStockStr(CString& str);
   int	GetTengxunInquiringStockStr(CString& str);
   int	GetNeteaseInquiringStockStr(CString& str);
@@ -183,11 +184,13 @@ public:
   bool m_fMarketOpened; // 是否开市
   bool m_fGetRTStockData; // 读取实时数据标识
   bool m_fReadingTengxunRTData; // 读取腾讯实时行情
-  bool m_fReadingNeteaseRTData; // 读取腾讯实时行情
   bool m_fGetDayLineData;  // 读取日线历史数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   int m_iCountDownDayLine; // 日线数据读取延时计数。
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
+
+  bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取
+  bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
 
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
 
