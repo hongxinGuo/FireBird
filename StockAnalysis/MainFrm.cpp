@@ -22,6 +22,8 @@
 using namespace std;
 #include<string>
 
+const int __STOCK_ANALYSIS_TIMER__ = 1;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -257,7 +259,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
   ModifyStyle(0, FWS_PREFIXTITLE);
 
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
-  m_uIdTimer = SetTimer(1, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
+  m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     CString str;
   }
@@ -416,6 +418,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   // 重启系统在此处执行，容易调用各重置函数
   CString str;
 
+  ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   if (gl_fResetSystem) {
     while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
       || gl_ThreadStatus.IsSavingDayLine()) {

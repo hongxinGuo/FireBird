@@ -136,20 +136,12 @@ bool CRTData::SetData(CRTData& data) {
 
 bool CRTData::Compare(CRTDataPtr pRTData)
 {
-  if (m_time != pRTData->GetTransactionTime()) { TRACE("交易时间不匹配\n"); }
-  if (m_wMarket != pRTData->GetMarket()) { TRACE("市场不匹配\n"); }
-  if (m_strStockCode.Compare(pRTData->GetStockCode()) != 0) { TRACE("股票代码不匹配\n"); }
-  if (m_lHigh != pRTData->GetHigh()) { TRACE("最高价不匹配\n"); }
-  if (m_lLow != pRTData->GetLow()) { TRACE("最低价不匹配\n"); }
-  if (m_lOpen != pRTData->GetOpen()) { TRACE("今开价不匹配\n"); }
-  if (m_lLastClose != pRTData->GetLastClose()) { TRACE("昨收价不匹配\n"); }
-  if (m_lNew != pRTData->GetNew()) { TRACE("成交价格不匹配\n"); }
-  if (m_llVolume != pRTData->GetVolume()) { TRACE("成交股数不匹配\n"); }
-  for (int i = 0; i < 5; i++) {
-    if (m_lPBuy[i] != pRTData->GetPBuy(i)) { TRACE("%d  %d不匹配\n", m_lPBuy[i], pRTData->GetPBuy(i)); }
-    if (m_lVBuy[i] != pRTData->GetVBuy(i)) { TRACE("2不匹配\n"); }
-    if (m_lPSell[i] != pRTData->GetPSell(i)) { TRACE("3不匹配\n"); }
-    if (m_lVSell[i] != pRTData->GetVSell(i)) { TRACE("4不匹配\n"); }
+  time_t ttDiff = m_time - pRTData->GetTransactionTime();
+  if (ttDiff != 0) { TRACE("交易时间不匹配: %d\n", ttDiff); }
+  if (ttDiff != 0) {
+    if (m_llVolume != pRTData->GetVolume()) {
+      TRACE("成交股数不匹配: %d\n", m_llVolume - pRTData->GetVolume());
+    }
   }
   return false;
 }
@@ -809,10 +801,15 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   pCurrentPos++;
   lTotalRead++;
 
-  if ((m_lNew == 0) && (m_llVolume == 0)) {
-    m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+  if (m_time == -1) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    m_fActive = false;
   }
-  else m_fActive = true;
+  else {
+    if ((m_lNew == 0) && (m_llVolume == 0)) {
+      m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+    }
+    else m_fActive = true;
+  }
 
   return true;
 }
@@ -1072,5 +1069,5 @@ bool CRTData::SetValue(long lIndex, CString strValue)
     // 出错了
     break;
   }
-  return false;
+  return true;
 }

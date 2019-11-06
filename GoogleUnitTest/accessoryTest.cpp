@@ -35,10 +35,10 @@ namespace StockAnalysisTest {
 
   strConvertBufferToTime Data101(_T("%4d%2d%2d%2d%2d%2d"), _T("20191030102030"), 20191030102030);
   strConvertBufferToTime Data102(_T("%d-%d-%d %d:%d:%d"), _T("2019-10-30 10:12:30"), 20191030101230);
-  /*strConvertBufferToTime Data105(_T("%4d%2d%2d%2d%2d%2d", _T("-11023.000"));
-  strConvertBufferToTime Data103(_T("%4d%2d%2d%2d%2d%2d", _T("12102346.000"));
-  strConvertBufferToTime Data104(_T("%d-%d-%d %d:%d:%d"), _T("-10.234"), 1000);
-  strConvertBufferToTime Data106(_T("%d-%d-%d %d:%d:%d"), _T("-1210.235"));*/
+  strConvertBufferToTime Data105(_T("%4d/%2d/%2d %2d:%2d:%2d"), _T("2019/11/05 12:11:15"), 20191105121115);
+  strConvertBufferToTime Data103(_T("%4d/%2d/%2d %2d:%2d:%2d"), _T("0"), -1);
+  strConvertBufferToTime Data104(_T("%4d/%4d/%4d %2d:%2d:%2d"), _T("1900/01/01"), -1);
+  strConvertBufferToTime Data106(_T("%4d/%4d%4d %2d:%2d:%2d"), _T(" 12:12:12"), -1);
 
   class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*>
   {
@@ -61,9 +61,10 @@ namespace StockAnalysisTest {
     INT64 iTime;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102));
+  INSTANTIATE_TEST_CASE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
+    &Data104, &Data105, &Data106));
 
-  TEST_P(ConvertBufferToTimeTest, TestINT64) {
+  TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
     time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
     time_t tt2;
     tm tm_;
@@ -81,6 +82,7 @@ namespace StockAnalysisTest {
     tm_.tm_sec = second;
     tm_.tm_isdst = 0;
     tt2 = mktime(&tm_);
+    if (iTime < 19000101000000) tt2 = iTime;
     EXPECT_EQ(tt, tt2);
   }
 

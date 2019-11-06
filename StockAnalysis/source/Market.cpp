@@ -560,6 +560,8 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
 {
   CStockPtr pStock;
   const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
+  CString strVolume;
+  char buffer[200];
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
@@ -567,6 +569,11 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
     // 测试用
     if (pRTData->GetStockCode().Compare(_T("sh600000")) == 0) {
       gl_TESTpRTData = pRTData;
+      sprintf_s(buffer, "volume: %d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
+        pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
+      strVolume = _T("1  ");
+      strVolume += buffer;
+      gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
     }
 #endif
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
@@ -1028,7 +1035,7 @@ bool CMarket::SchedulingTask(void)
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;

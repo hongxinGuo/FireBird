@@ -39,13 +39,20 @@ bool CNeteaseRTWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
 bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
+  CString strVolume;
+  char buffer[200];
+
   if (pRTData->ReadNeteaseData(pCurrentPos, iCount)) {
     pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 #ifdef DEBUG
     // 测试网易实时数据与新浪实时数据的同一性。
     if (gl_TESTpRTData != nullptr) {
       if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
-        pRTData->Compare(gl_TESTpRTData);
+        sprintf_s(buffer, "volume: %d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
+          pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
+        strVolume = _T("2  ");
+        strVolume += buffer;
+        gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
       }
     }
 #endif // DEBUG
@@ -57,9 +64,11 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, l
       return true;
     }
     else {
-      ASSERT(*pCurrentPos == ',');
-      pCurrentPos++;
-      iCount++;
+      //ASSERT(*pCurrentPos == ',');
+      while (*pCurrentPos != '"') {
+        pCurrentPos++;
+        iCount++;
+      }
       return true;
     }
   }
