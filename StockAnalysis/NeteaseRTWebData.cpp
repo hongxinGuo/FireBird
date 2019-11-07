@@ -42,7 +42,7 @@ bool CNeteaseRTWebData::IsReadingFinished(const char* const pCurrentPos, const l
     return true;
   }
   else {
-    return true;
+    return false;
   }
 }
 

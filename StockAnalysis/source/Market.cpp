@@ -83,7 +83,7 @@ void CMarket::Reset(void)
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = true;
 
   // 生成股票代码池
