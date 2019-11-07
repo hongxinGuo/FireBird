@@ -1116,14 +1116,19 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetRTDataFromWeb(void) {
   static int siCountDownTengxunNumber = 2;
+  static int siCountDownNeteaseNumber = 3;
 
   if (m_fUsingSinaRTDataReceiver) {
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
 
   if (m_fUsingNeteaseRTDataReceiver) {
-    // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-    gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
+    if (siCountDownNeteaseNumber <= 0) {
+      // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
+      gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
+      siCountDownNeteaseNumber = 3;
+    }
+    else siCountDownNeteaseNumber--;
   }
 
   if (SystemReady()) {

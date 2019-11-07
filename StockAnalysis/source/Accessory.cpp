@@ -4,34 +4,44 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
   time_t tt;
   tm tm_;
   int year, month, day, hour, minute, second;
-  sscanf_s(buffer, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = hour;
-  tm_.tm_min = minute;
-  tm_.tm_sec = second;
-  tm_.tm_isdst = 0;
-  tt = mktime(&tm_);
+  try {
+    sscanf_s(buffer, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+    tm_.tm_year = year - 1900;
+    tm_.tm_mon = month - 1;
+    tm_.tm_mday = day;
+    tm_.tm_hour = hour;
+    tm_.tm_min = minute;
+    tm_.tm_sec = second;
+    tm_.tm_isdst = 0;
+    tt = mktime(&tm_);
 
-  return tt;
+    return tt;
+  }
+  catch (exception e) {
+    return 0;
+  }
 }
 
 time_t ConvertStringToTime(CString strFormat, CString strTime) {
   time_t tt;
   tm tm_;
   int year, month, day, hour, minute, second;
-  sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = hour;
-  tm_.tm_min = minute;
-  tm_.tm_sec = second;
-  tm_.tm_isdst = 0;
-  tt = mktime(&tm_);
+  try {
+    sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+    tm_.tm_year = year - 1900;
+    tm_.tm_mon = month - 1;
+    tm_.tm_mday = day;
+    tm_.tm_hour = hour;
+    tm_.tm_min = minute;
+    tm_.tm_sec = second;
+    tm_.tm_isdst = 0;
+    tt = mktime(&tm_);
 
-  return tt;
+    return tt;
+  }
+  catch (exception e) {
+    return 0;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +65,7 @@ CString GetDefaultSchemaConnect()
 
 CString ConvertValueToString(long lValue, int iDividend)
 {
-  char buffer[30];
+  char buffer[50];
   double d = ((double)lValue) / iDividend;
   CString str;
 
@@ -67,7 +77,7 @@ CString ConvertValueToString(long lValue, int iDividend)
 
 CString ConvertValueToString(int iValue, int iDividend)
 {
-  char buffer[30];
+  char buffer[50];
   double d = ((double)iValue) / iDividend;
   CString str;
 
@@ -79,7 +89,7 @@ CString ConvertValueToString(int iValue, int iDividend)
 
 CString ConvertValueToString(INT64 iValue, int iDividend)
 {
-  char buffer[30];
+  char buffer[50];
   double d = ((double)iValue) / iDividend;
   CString str;
 
@@ -91,7 +101,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
 
 CString ConvertValueToString(double dValue, int iDividend)
 {
-  char buffer[30];
+  char buffer[50];
   double d = dValue / iDividend;
   CString str;
 
