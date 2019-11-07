@@ -18,6 +18,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
     return tt;
   }
   catch (exception e) {
+    TRACE("ConvertBufferToTime函数异常\n");
     return 0;
   }
 }
@@ -40,6 +41,7 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
     return tt;
   }
   catch (exception e) {
+    TRACE("ConvertStringToTime函数异常\n");
     return 0;
   }
 }

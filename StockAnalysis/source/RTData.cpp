@@ -365,7 +365,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     return true;
   }
   catch (exception e) {
-    TRACE("新浪实时数据有误\n");
+    TRACE("ReadSinaData函数异常\n");
     return false;
   }
 }
@@ -710,7 +710,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     return true;
   }
   catch (exception e) {
-    TRACE("腾讯实时数据有误\n");
+    TRACE("ReadTengxunData函数异常\n");
     return false;
   }
 }
@@ -798,7 +798,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     return true;
   }
   catch (exception e) {
-    TRACE("网易实时数据有误\n");
+    TRACE("ReadNeteaseData函数异常\n");
     return false;
   }
 }
@@ -887,6 +887,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
   }
   catch (exception e) {
+    TRACE("GetNeteaseSymbolIndex函数异常\n");
     lIndex = 0;
   }
   return lIndex;
@@ -894,55 +895,61 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
 
 bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue)
 {
-  char buffer[50];
+  char buffer[100];
   int i = 0;
   CString strIndex;
   bool fFind = false;
 
-  while (*pCurrentPos != '"') {
+  try {
+    while (*pCurrentPos != '"') {
+      pCurrentPos++;
+      lTotalRead++;
+    }
     pCurrentPos++;
     lTotalRead++;
-  }
-  pCurrentPos++;
-  lTotalRead++;
 
-  i = 0;
-  while (*pCurrentPos != '"') {
-    buffer[i++] = *pCurrentPos++;
-    lTotalRead++;
-  }
-  buffer[i] = 0x000;
-  strIndex = buffer;
-  lIndex = GetNeteaseSymbolIndex(strIndex);
-  pCurrentPos += 3;
-  lTotalRead += 3;
-
-  if (*pCurrentPos == '"') {
-    fFind = true;
-    pCurrentPos++;
-    lTotalRead++;
-  }
-
-  i = 0;
-  if (fFind) {
+    i = 0;
     while (*pCurrentPos != '"') {
       buffer[i++] = *pCurrentPos++;
       lTotalRead++;
     }
     buffer[i] = 0x000;
-    strValue = buffer;
-    pCurrentPos++;
-    lTotalRead++;
-  }
-  else {
-    while ((*pCurrentPos != ',') && (*pCurrentPos != '}')) {
-      buffer[i++] = *pCurrentPos++;
+    strIndex = buffer;
+    lIndex = GetNeteaseSymbolIndex(strIndex);
+    pCurrentPos += 3;
+    lTotalRead += 3;
+
+    if (*pCurrentPos == '"') {
+      fFind = true;
+      pCurrentPos++;
       lTotalRead++;
     }
-    buffer[i] = 0x000;
-    strValue = buffer;
+
+    i = 0;
+    if (fFind) {
+      while (*pCurrentPos != '"') {
+        buffer[i++] = *pCurrentPos++;
+        lTotalRead++;
+      }
+      buffer[i] = 0x000;
+      strValue = buffer;
+      pCurrentPos++;
+      lTotalRead++;
+    }
+    else {
+      while ((*pCurrentPos != ',') && (*pCurrentPos != '}')) {
+        buffer[i++] = *pCurrentPos++;
+        lTotalRead++;
+      }
+      buffer[i] = 0x000;
+      strValue = buffer;
+    }
+    return true;
   }
-  return true;
+  catch (exception e) {
+    TRACE("GetNeteaseIndexAndValue函数异常\n");
+    return false;
+  }
 }
 
 bool CRTData::SetValue(long lIndex, CString strValue)

@@ -1375,6 +1375,7 @@ CString CMarket::GetStockName(CString strStockCode) {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode))->GetStockName());
   }
   catch (exception e) {
+    TRACE("GetStockName函数异常\n");
     return _T("");
   }
 }
@@ -1392,6 +1393,7 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
     return true;
   }
   catch (exception e) {
+    TRACE("GetStockIndex函数异常\n");
     lIndex = -1;
     return false;
   }
@@ -1409,6 +1411,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
   catch (exception e) {
+    TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }
 }
@@ -1418,6 +1421,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
     return m_vChinaMarketAStock.at(lIndex);
   }
   catch (exception e) {
+    TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }
 }
