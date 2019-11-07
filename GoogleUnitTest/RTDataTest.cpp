@@ -32,6 +32,21 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(RTData.IsActive());
   }
 
+  TEST(CRTDataTest, TestIsDataTimeAtCurrentDay) {
+    gl_systemTime.Sett_time(10101010);
+    CRTData data;
+    data.SetTransactionTime(10101010);
+    EXPECT_TRUE(data.IsDataTimeAtCurrentDay());
+    data.SetTransactionTime(10101010 - 3600 * 24);
+    EXPECT_TRUE(data.IsDataTimeAtCurrentDay());
+    data.SetTransactionTime(10101010 - 3600 * 24 - 1);
+    EXPECT_FALSE(data.IsDataTimeAtCurrentDay());
+    data.SetTransactionTime(10101010 + 3600 * 24);
+    EXPECT_TRUE(data.IsDataTimeAtCurrentDay());
+    data.SetTransactionTime(10101010 + 3600 * 24 + 1);
+    EXPECT_TRUE(data.IsDataTimeAtCurrentDay());
+  }
+
   TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {
     CRTData rtData;
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("time")), 1);

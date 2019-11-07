@@ -359,11 +359,13 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     lTotalRead++;
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
-    m_fActive = true;
+    if (IsDataTimeAtCurrentDay()) m_fActive = true;
+    else m_fActive = false;
 
     return true;
   }
   catch (exception e) {
+    TRACE("新浪实时数据有误\n");
     return false;
   }
 }
@@ -708,6 +710,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     return true;
   }
   catch (exception e) {
+    TRACE("腾讯实时数据有误\n");
     return false;
   }
 }
@@ -783,7 +786,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     pCurrentPos++;
     lTotalRead++;
 
-    if (m_time == -1) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    if (!IsDataTimeAtCurrentDay()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;
     }
     else {
@@ -795,6 +798,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     return true;
   }
   catch (exception e) {
+    TRACE("网易实时数据有误\n");
     return false;
   }
 }
@@ -1055,4 +1059,13 @@ bool CRTData::SetValue(long lIndex, CString strValue)
     break;
   }
   return true;
+}
+
+bool CRTData::IsDataTimeAtCurrentDay(void) {
+  if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) {
+    return false;
+  }
+  else {
+    return true;
+  }
 }

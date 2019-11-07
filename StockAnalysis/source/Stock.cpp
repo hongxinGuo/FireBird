@@ -783,12 +783,17 @@ bool CStock::TodayDataIsActive(void)
 {
   if (!m_fActive) return false;
   else {
-    if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return TodayDataIsValid();
+  }
+}
+
+bool CStock::TodayDataIsValid(void)
+{
+  if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
 

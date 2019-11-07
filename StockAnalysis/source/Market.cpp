@@ -83,7 +83,7 @@ void CMarket::Reset(void)
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = true;
 
   // 生成股票代码池
@@ -352,7 +352,7 @@ bool CMarket::CreateNeteaseRTDataInquiringStr(CString& str) {
     return true; // 查询到头了
   }
 
-  for (int i = 1; i < 900; i++) {  // 每次轮询900个股票.
+  for (int i = 1; i < 700; i++) {  // 每次轮询700个股票.
     if (siCounter == siTotalStock) {
       siCounter = 0;
       return true; // 查询到头了
@@ -638,14 +638,16 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
       long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
       pStock = m_vChinaMarketAStock.at(lIndex);
       if (!pStock->IsActive()) {
-        pStock->SetActive(true);
-        pStock->SetStockName(pRTData->GetStockName());
-        pStock->SetStockCode(pRTData->GetStockCode());
-        pStock->UpdateStatus(pRTData);
-        pStock->SetTransactionTime(pRTData->GetTransactionTime());
-        pStock->SetDayLineNeedUpdate(true);
-        pStock->SetIPOStatus(__STOCK_IPOED__);
-        m_lTotalActiveStock++;
+        if (pRTData->IsDataTimeAtCurrentDay()) {
+          pStock->SetActive(true);
+          pStock->SetStockName(pRTData->GetStockName());
+          pStock->SetStockCode(pRTData->GetStockCode());
+          pStock->UpdateStatus(pRTData);
+          pStock->SetTransactionTime(pRTData->GetTransactionTime());
+          pStock->SetDayLineNeedUpdate(true);
+          pStock->SetIPOStatus(__STOCK_IPOED__);
+          m_lTotalActiveStock++;
+        }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
         pStock->PushRTData(pRTData); // 存储新的数据至数据池
@@ -1188,7 +1190,7 @@ bool CMarket::GetNeteaseDayLineWebData(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
 {
-  static int s_iCountDownProcessRTWebData = 2;
+  static int s_iCountDownProcessRTWebData = 0;
   const long lCurrentTime = gl_systemTime.GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
@@ -1201,7 +1203,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
     DistributeRTDataReceivedFromWebToProperStock();
-    s_iCountDownProcessRTWebData = 2;
+    s_iCountDownProcessRTWebData = 0;
   }
   else s_iCountDownProcessRTWebData--;
 
