@@ -134,13 +134,13 @@ public:
   bool Compare(CRTDataPtr pRTData);
 
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadSinaData(char*& pCurrentPos, long& lTotalRead);
 
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
   // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-  bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadNeteaseData(char*& pCurrentPos, long& lTotalRead);
 
 public:
   // 读取新浪实时数据函数

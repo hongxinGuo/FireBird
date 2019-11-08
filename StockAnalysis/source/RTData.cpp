@@ -755,7 +755,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
   double dTemp = 0.0;
   long lIndex = 0;
   CString strValue = _T("");
-  CString str1;
+  CString strStockCode;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -767,23 +767,11 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     pCurrentPos++;
     lTotalRead++;
 
-    if (*pCurrentPos == '0') { // 上海股票
-      m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
-    }
-    else if (*pCurrentPos == '1') {
-      m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
-    }
-    else {
-      return false;
-    }
-    pCurrentPos++;
-    lTotalRead++;
-
-    strncpy_s(buffer1, pCurrentPos, 6);
-    buffer1[6] = 0x000;
-    str1 = buffer1;
-    pCurrentPos += 6;
-    lTotalRead += 6;
+    strncpy_s(buffer1, pCurrentPos, 7);
+    buffer1[7] = 0x000;
+    strStockCode = buffer1;
+    pCurrentPos += 7;
+    lTotalRead += 7;
     while (*pCurrentPos != '{') {
       pCurrentPos++;
       lTotalRead++;
@@ -966,6 +954,8 @@ bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long
   }
   catch (exception e) {
     TRACE("GetNeteaseIndexAndValue函数异常\n");
+    lIndex = 0;
+    strValue = _T("");
     return false;
   }
 }
@@ -978,6 +968,7 @@ bool CRTData::SetValue(long lIndex, CString strValue)
     case 1: // time
       break;
     case 2: // code
+      ASSERT(strValue.GetLength() == 7);
       str = strValue.Left(1);
       if (str.Compare(_T("0")) == 0) {
         str1 = _T("sh");

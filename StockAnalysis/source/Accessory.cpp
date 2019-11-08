@@ -71,10 +71,15 @@ CString ConvertValueToString(long lValue, int iDividend)
   double d = ((double)lValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
-  str = buffer;
-
-  return str;
+  try {
+    sprintf_s(buffer, "%.3f", d);
+    str = buffer;
+    return str;
+  }
+  catch (exception e) {
+    TRACE("ConvertValuetoString函数异常\n");
+    return _T("");
+  }
 }
 
 CString ConvertValueToString(int iValue, int iDividend)
@@ -83,10 +88,16 @@ CString ConvertValueToString(int iValue, int iDividend)
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
-  str = buffer;
+  try {
+    sprintf_s(buffer, "%.3f", d);
+    str = buffer;
 
-  return str;
+    return str;
+  }
+  catch (exception e) {
+    TRACE("ConvertValuetoString函数异常\n");
+    return _T("");
+  }
 }
 
 CString ConvertValueToString(INT64 iValue, int iDividend)
@@ -95,10 +106,15 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
-  str = buffer;
-
-  return str;
+  try {
+    sprintf_s(buffer, "%.3f", d);
+    str = buffer;
+    return str;
+  }
+  catch (exception e) {
+    TRACE("ConvertValuetoString函数异常\n");
+    return _T("");
+  }
 }
 
 CString ConvertValueToString(double dValue, int iDividend)
@@ -107,8 +123,13 @@ CString ConvertValueToString(double dValue, int iDividend)
   double d = dValue / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
-  str = buffer;
-
-  return str;
+  try {
+    sprintf_s(buffer, "%.3f", d);
+    str = buffer;
+    return str;
+  }
+  catch (exception e) {
+    TRACE("ConvertValuetoString函数异常\n");
+    return _T("");
+  }
 }

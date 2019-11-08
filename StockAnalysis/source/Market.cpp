@@ -2,6 +2,9 @@
 
 //#include"stdafx.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 #include"globedef.h"
 #include"Thread.h"
 
@@ -352,7 +355,7 @@ bool CMarket::CreateNeteaseRTDataInquiringStr(CString& str) {
     return true; // 查询到头了
   }
 
-  for (int i = 1; i < 700; i++) {  // 每次轮询700个股票.
+  for (int i = 1; i < 900; i++) {  // 每次轮询500个股票.
     if (siCounter == siTotalStock) {
       siCounter = 0;
       return true; // 查询到头了
@@ -1074,6 +1077,17 @@ bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& l
   return true;
 }
 
+using namespace boost;
+using namespace property_tree;
+
+bool CMarket::ReadNeteaseRTDataUsingPropertyTree(CNetEaseRTWebDataForBoost* pNeteaseRTWebData)
+{
+  char* pBuffer = pNeteaseRTWebData->GetBufferAddr();
+  CString strRead = pBuffer;
+
+  return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -1092,7 +1106,7 @@ bool CMarket::SchedulingTask(void)
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 1000; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 4; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1118,7 +1132,7 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetRTDataFromWeb(void) {
   static int siCountDownTengxunNumber = 2;
-  static int siCountDownNeteaseNumber = 3;
+  static int siCountDownNeteaseNumber = 0;
 
   if (m_fUsingSinaRTDataReceiver) {
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -1128,7 +1142,7 @@ bool CMarket::GetRTDataFromWeb(void) {
     if (siCountDownNeteaseNumber <= 0) {
       // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
       gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
-      siCountDownNeteaseNumber = 3;
+      siCountDownNeteaseNumber = 0;
     }
     else siCountDownNeteaseNumber--;
   }
