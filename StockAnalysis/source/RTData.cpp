@@ -779,8 +779,12 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     pCurrentPos++;
     lTotalRead++;
     do {
-      GetNeteaseIndexAndValue(pCurrentPos, lTotalRead, lIndex, strValue);
-      SetValue(lIndex, strValue);
+      if (GetNeteaseIndexAndValue(pCurrentPos, lTotalRead, lIndex, strValue)) {
+        SetValue(lIndex, strValue);
+      }
+      else {
+        return false;
+      }
     } while (*pCurrentPos != '}');  // 读至下一个'}'
     // 读过此'}'就结束了
     pCurrentPos++;
@@ -791,10 +795,11 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     }
     else {
       if ((m_lNew == 0) && (m_llVolume == 0)) {
-        m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+        m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
       }
       else m_fActive = true;
     }
+    ASSERT((*pCurrentPos == ',') || (*pCurrentPos == ' '));
     return true;
   }
   catch (exception e) {
@@ -922,6 +927,7 @@ bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long
     buffer[i] = 0x000;
     strIndex = buffer;
     lIndex = GetNeteaseSymbolIndex(strIndex);
+    // 跨过"\": "三个字符
     pCurrentPos += 3;
     lTotalRead += 3;
 

@@ -2,9 +2,6 @@
 
 //#include"stdafx.h"
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-
 #include"globedef.h"
 #include"Thread.h"
 
@@ -1076,9 +1073,6 @@ bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& l
 
   return true;
 }
-
-using namespace boost;
-using namespace property_tree;
 
 bool CMarket::ReadNeteaseRTDataUsingPropertyTree(CNetEaseRTWebDataForBoost* pNeteaseRTWebData)
 {
