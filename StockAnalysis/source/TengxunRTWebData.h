@@ -13,6 +13,7 @@ public:
   virtual void InquireNextWebData(void) override;
   virtual int GetInquiringStr(CString& strInquire) override;
   virtual void StartReadingThread(void) override;
+  virtual bool ReportStatus(long lNumberOfData) override;
 
   bool IsCreateOnce(void) noexcept { return sm_fCreatedOnce; }
 

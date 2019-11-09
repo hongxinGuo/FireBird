@@ -244,5 +244,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\NetEaseRTWebDataForBoost.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>

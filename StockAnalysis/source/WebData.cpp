@@ -56,7 +56,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
     }
     i++;
   }
-  TRACE("读入%d个实时数据\n", i);
+  ReportStatus(i);
   return true;
 }
 
@@ -69,6 +69,12 @@ bool CWebData::IsReadingFinished(const char* const pCurrentPos, const long iCoun
 {
   if (iCount < m_lByteRead) return false;
   else return true;
+}
+
+bool CWebData::ReportStatus(long lNumberOfData)
+{
+  TRACE("读入%d个实时数据\n", lNumberOfData);
+  return true;
 }
 
 void CWebData::CreateTotalInquiringString(CString strMiddle)

@@ -206,7 +206,6 @@
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="NeteaseRTWebData.h" />
-    <ClInclude Include="NetEaseRTWebDataForBoost.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
@@ -251,7 +250,6 @@
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="NeteaseRTWebData.cpp" />
-    <ClCompile Include="NetEaseRTWebDataForBoost.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\CriticalSectionBool.cpp" />

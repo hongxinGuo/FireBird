@@ -86,3 +86,9 @@ int CSinaRTWebData::GetInquiringStr(CString& strInquire) {
 void CSinaRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadSinaRTData, nullptr);
 }
+
+bool CSinaRTWebData::ReportStatus(long lNumberOfData)
+{
+  TRACE("读入%d个新浪实时数据\n", lNumberOfData);
+  return true;
+}

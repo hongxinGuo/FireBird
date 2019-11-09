@@ -64,6 +64,12 @@ bool CNeteaseRTWebData::IsReadingFinished(const char* const pCurrentPos, const l
   }
 }
 
+bool CNeteaseRTWebData::ReportStatus(long lNumberOfData)
+{
+  TRACE("读入%d个网易实时数据\n", lNumberOfData);
+  return true;
+}
+
 bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();

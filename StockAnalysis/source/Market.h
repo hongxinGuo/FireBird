@@ -9,7 +9,6 @@
 #include"SetStockCode.h"
 
 #include"CrweberIndex.h"
-#include"NeteaseRTWebDataForBoost.h"
 
 using namespace std;
 #include<vector>
@@ -156,9 +155,6 @@ public:
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
   bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
   bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
-
-  // 解析网易实时数据
-  bool ReadNeteaseRTDataUsingPropertyTree(CNetEaseRTWebDataForBoost* pNeteaseRTWebData);
 
   // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
   bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次

@@ -70,3 +70,9 @@ int CTengxunRTWebData::GetInquiringStr(CString& strInquire) {
 void CTengxunRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadTengxunRTData, nullptr);
 }
+
+bool CTengxunRTWebData::ReportStatus(long lNumberOfData)
+{
+  TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
+  return true;
+}
