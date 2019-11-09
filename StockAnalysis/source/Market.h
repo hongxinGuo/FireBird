@@ -123,6 +123,7 @@ public:
   void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
   bool IsUsingNeteaseRTDataReceiverAsTester(void) { return m_fUsingNeteaseRTDataReceiverAsTester; }
+  bool IsUsingTengxunRTDataReceiverAsTester(void) { return m_fUsingTengxunRTDataReceiverAsTester; }
 
   long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
   void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
@@ -194,6 +195,7 @@ public:
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingNeteaseRTDataReceiverAsTester;
+  bool m_fUsingTengxunRTDataReceiverAsTester;
 
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
 

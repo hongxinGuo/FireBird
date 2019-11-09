@@ -713,8 +713,10 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
       lTotalRead++;
     }
     lTotalRead++;
-
-    if ((m_lNew == 0) && (m_llVolume == 0)) {
+    if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) { // 如果交易时间在一天前
+      m_fActive = false;
+    }
+    else if ((m_lNew == 0) && (m_llVolume == 0)) {
       m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
     }
     else m_fActive = true;
