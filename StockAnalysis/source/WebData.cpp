@@ -6,6 +6,8 @@
 #include"WebData.h"
 
 CWebData::CWebData() noexcept {
+  m_pCurrentPos = m_buffer;
+  m_lCurrentPos = 0;
   m_lByteRead = 0;
   m_fSucceed = true;
   m_strInquire = _T("");
@@ -49,9 +51,9 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   char* pCurrentPos = m_buffer;
   long  iCount = 0;
   int i = 0;
-  ReadPrefix(m_pCurrentPos, m_lCurrentPos);
-  while (!IsReadingFinished(pCurrentPos, iCount)) {
-    if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
+  ReadPrefix();
+  while (!IsReadingFinished()) {
+    if (!SucceedReadingAndStoringOneWebData()) {
       ReportDataError();
       return false;  // 后面的数据出问题，抛掉不用。
     }
@@ -61,14 +63,14 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   return true;
 }
 
-bool CWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
+bool CWebData::ReadPrefix(void)
 {
   return true;
 }
 
-bool CWebData::IsReadingFinished(const char* const pCurrentPos, const long iCount)
+bool CWebData::IsReadingFinished(void)
 {
-  if (iCount < m_lByteRead) return false;
+  if (m_lCurrentPos < m_lByteRead) return false;
   else return true;
 }
 

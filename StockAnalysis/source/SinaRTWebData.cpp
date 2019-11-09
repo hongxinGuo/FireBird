@@ -18,10 +18,10 @@ CSinaRTWebData::CSinaRTWebData() : CWebData() {
 CSinaRTWebData::~CSinaRTWebData() {
 }
 
-bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
+bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(void)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
-  if (pRTData->ReadSinaData(pCurrentPos, iCount)) {
+  if (pRTData->ReadSinaData(m_pCurrentPos, m_lCurrentPos)) {
     pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
     gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;

@@ -26,10 +26,9 @@ bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void)
 // 网易的日线历史数据不需要前期处理，直接使用ProcessWebDataStored函数即可。故而此处只是将iCount增至m_lByteRead即可。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
+bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(void)
 {
-  iCount = m_lByteRead; //
-  pCurrentPos += m_lByteRead;
+  IncreaseCurrentPos(m_lByteRead);
   return true;
 }
 

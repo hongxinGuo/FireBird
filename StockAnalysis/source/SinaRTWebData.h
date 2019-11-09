@@ -6,7 +6,7 @@ public:
   CSinaRTWebData();
   ~CSinaRTWebData();
 
-  virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
+  virtual bool SucceedReadingAndStoringOneWebData(void) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;
   virtual void ReportCommunicationError(void) override;

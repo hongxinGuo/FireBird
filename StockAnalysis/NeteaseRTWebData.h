@@ -6,11 +6,11 @@ public:
   CNeteaseRTWebData();
   ~CNeteaseRTWebData();
 
-  virtual bool ReadPrefix(char*& pCurrentPos, long& iCount) override; // 读入前缀
-  virtual bool IsReadingFinished(const char* const pCurrentPos, const long iCount) override; // 读完了所有的数据
+  virtual bool ReadPrefix(void) override; // 读入前缀
+  virtual bool IsReadingFinished(void) override; // 读完了所有的数据
   virtual bool ReportStatus(long lNumberOfData) override;
 
-  virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
+  virtual bool SucceedReadingAndStoringOneWebData(void) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;
   virtual void ReportCommunicationError(void) override;

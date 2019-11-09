@@ -106,7 +106,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\NetEaseRTWebDataForBoost.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />

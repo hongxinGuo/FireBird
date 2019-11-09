@@ -18,13 +18,13 @@ CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
 CTengxunRTWebData::~CTengxunRTWebData() {
 }
 
-bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
+bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadTengxunData(pCurrentPos, iCount)) {
+  if (pRTData->ReadTengxunData(m_pCurrentPos, m_lCurrentPos)) {
     pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
 #ifdef DEBUG
     // 测试网易实时数据与新浪实时数据的同一性。

@@ -36,27 +36,26 @@ CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
 CNeteaseRTWebData::~CNeteaseRTWebData() {
 }
 
-bool CNeteaseRTWebData::ReadPrefix(char*& pCurrentPos, long& iCount)
+bool CNeteaseRTWebData::ReadPrefix(void)
 {
   static char buffer1[200];
   static CString strHeader = _T("_ntes_quote_callback({");
 
-  strncpy_s(buffer1, pCurrentPos, 22); // 读入"_ntes_quote_callback({"
+  strncpy_s(buffer1, m_pCurrentPos, 22); // 读入"_ntes_quote_callback({"
   buffer1[22] = 0x000;
   CString str1;
   str1 = buffer1;
   if (strHeader.Compare(str1) != 0) { // 数据格式出错
     return false;
   }
-  pCurrentPos += 22;
-  iCount += 22;
+  IncreaseCurrentPos(22);
 
   return true;
 }
 
-bool CNeteaseRTWebData::IsReadingFinished(const char* const pCurrentPos, const long iCount)
+bool CNeteaseRTWebData::IsReadingFinished(void)
 {
-  if ((*pCurrentPos == ' ') || (iCount >= (m_lByteRead - 4))) { // 到结尾处了
+  if ((*m_pCurrentPos == ' ') || (m_lCurrentPos >= (m_lByteRead - 4))) { // 到结尾处了
     return true;
   }
   else {
@@ -70,13 +69,13 @@ bool CNeteaseRTWebData::ReportStatus(long lNumberOfData)
   return true;
 }
 
-bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount)
+bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadNeteaseData(pCurrentPos, iCount)) {
+  if (pRTData->ReadNeteaseData(m_pCurrentPos, m_lCurrentPos)) {
     pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 #ifdef DEBUG
     // 测试网易实时数据与新浪实时数据的同一性。

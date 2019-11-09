@@ -8,7 +8,7 @@ public:
   CCrweberIndexWebData();
   ~CCrweberIndexWebData();
 
-  virtual bool SucceedReadingAndStoringOneWebData(char*& pCurrentPos, long& iCount) override;
+  virtual bool SucceedReadingAndStoringOneWebData(void) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;
   virtual void ReportCommunicationError(void) override;
@@ -21,8 +21,8 @@ public:
 private:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
-  double GetOneValue(char*& pCurrentPos, long& iCount);
-  CString GetNextString(char*& pCurrentPos, long& iCount);
+  double GetOneValue(void);
+  CString GetNextString(void);
 
   static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例
 };
