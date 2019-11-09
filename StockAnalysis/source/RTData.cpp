@@ -359,7 +359,7 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     lTotalRead++;
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
-    if (IsDataTimeAtCurrentDay()) m_fActive = true;
+    if (IsDataTimeAtCurrentTradingDay()) m_fActive = true;
     else m_fActive = false;
 
     return true;
@@ -713,7 +713,7 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
       lTotalRead++;
     }
     lTotalRead++;
-    if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) { // 如果交易时间在一天前
+    if (!IsDataTimeAtCurrentTradingDay()) { // 如果交易时间在一天前
       m_fActive = false;
     }
     else if ((m_lNew == 0) && (m_llVolume == 0)) {
@@ -792,7 +792,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
     pCurrentPos++;
     lTotalRead++;
 
-    if (!IsDataTimeAtCurrentDay()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    if (!IsDataTimeAtCurrentTradingDay()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;
     }
     else {
@@ -1091,8 +1091,17 @@ bool CRTData::SetValue(long lIndex, CString strValue)
   }
 }
 
-bool CRTData::IsDataTimeAtCurrentDay(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) {
+bool CRTData::IsDataTimeAtCurrentTradingDay(void) {
+  int i;
+  if (gl_systemTime.IsWorkingDay()) {
+    i = 1;
+  }
+  else if (gl_systemTime.GetDayOfWeek() == 6) {
+    i = 2;
+  }
+  else i = 3;
+
+  if (m_time < (gl_systemTime.Gett_time() - i * 3600 * 24)) {
     return false;
   }
   else {

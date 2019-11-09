@@ -16,7 +16,7 @@ public:
   virtual bool IsNeedProcessingCurrentWebData(void) { return true; }
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
-  virtual bool ReadPrefix(char*& pCurrentPos, long& iCount); // 读入前缀
+  virtual bool ReadPrefix(char*& pCurrentPos, long& lCurrentPos); // 读入前缀
   virtual bool IsReadingFinished(const char* const pCurrentPos, const long iCount); // 读完了所有的数据
   virtual bool ReportStatus(long lNumberOfData);
 
@@ -48,6 +48,8 @@ public:
   bool IsReadingWebData(void) { return m_ReadingWebData.IsTrue(); }
   void SetReadingWebData(bool fFlag) { m_ReadingWebData.SetFlag(fFlag); }
 
+  void IncreaseCurrentPos(long lNumberOfChars = 1) { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
 public:
 
 protected:
@@ -55,6 +57,9 @@ protected:
   char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
   bool m_fSucceed; // 网络是否异常
+
+  char* m_pCurrentPos; // 当前处理的位置
+  long m_lCurrentPos;
 
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀

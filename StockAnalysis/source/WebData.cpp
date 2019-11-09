@@ -29,6 +29,7 @@ bool CWebData::GetWebData(void)
 void CWebData::ProcessCurrentWebData(void) {
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？
+      ResetCurrentPos();
       if (SucceedReadingAndStoringWebData()) {
         ProcessWebDataStored();
       }
@@ -48,7 +49,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
   char* pCurrentPos = m_buffer;
   long  iCount = 0;
   int i = 0;
-  ReadPrefix(pCurrentPos, iCount);
+  ReadPrefix(m_pCurrentPos, m_lCurrentPos);
   while (!IsReadingFinished(pCurrentPos, iCount)) {
     if (!SucceedReadingAndStoringOneWebData(pCurrentPos, iCount)) {
       ReportDataError();

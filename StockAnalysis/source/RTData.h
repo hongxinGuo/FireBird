@@ -205,7 +205,7 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) noexcept { return m_fActive; }
-  bool IsDataTimeAtCurrentDay(void);
+  bool IsDataTimeAtCurrentTradingDay(void);
   //void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
