@@ -666,10 +666,10 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-int CMarket::GetSinaInquiringStockStr(CString& str)
+int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
 {
   ASSERT(SystemReady());
-  return GetInquiringStr(str, m_itSinaStock, _T(","), 900);
+  return GetInquiringStr(str, m_itSinaStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -677,10 +677,10 @@ int CMarket::GetSinaInquiringStockStr(CString& str)
 // 生成每次查询腾讯实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-int CMarket::GetTengxunInquiringStockStr(CString& str)
+int CMarket::GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
 {
   ASSERT(SystemReady());
-  return GetInquiringStr(str, m_itTengxunStock, _T(","), 900);
+  return GetInquiringStr(str, m_itTengxunStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 int CMarket::GetNeteaseInquiringStockStr(CString& str)
@@ -723,15 +723,15 @@ int CMarket::GetNeteaseInquiringStockStr(CString& str)
   return iCount;
 }
 
-int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber) {
-  StepToNextActiveStockIT(itStock);
+int CMarket::GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock) {
+  if (fSkipUnactiveStock) StepToNextActiveStockIT(itStock);
   if (itStock == m_vChinaMarketAStock.end()) {
     itStock = m_vChinaMarketAStock.begin();
   }
   str += (*itStock++)->GetStockCode();  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((itStock != m_vChinaMarketAStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-    StepToNextActiveStockIT(itStock);
+    if (fSkipUnactiveStock) StepToNextActiveStockIT(itStock);
     if (itStock != m_vChinaMarketAStock.end()) {
       iCount++;
       str += strPostfix;

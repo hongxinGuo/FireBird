@@ -102,7 +102,7 @@ void CTengxunRTWebData::InquireNextWebData(void)
 }
 
 int CTengxunRTWebData::GetInquiringStr(CString& strInquire) {
-  return gl_ChinaStockMarket.GetTengxunInquiringStockStr(strInquire);
+  return gl_ChinaStockMarket.GetTengxunInquiringStockStr(strInquire, 800);
 }
 
 void CTengxunRTWebData::StartReadingThread(void) {

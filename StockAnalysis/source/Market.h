@@ -39,10 +39,10 @@ public:
   bool CreateSinaRTDataInquiringStr(CString& str);
   bool CreateTengxunRTDataInquiringStr(CString& str);
   bool CreateNeteaseRTDataInquiringStr(CString& str);
-  int GetSinaInquiringStockStr(CString& str);
-  int	GetTengxunInquiringStockStr(CString& str);
+  int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
+  int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int	GetNeteaseInquiringStockStr(CString& str);
-  int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber);
+  int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
   bool StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
   void ResetIT(void); //ÖØÖÃ¸÷µü´úÆ÷
 
