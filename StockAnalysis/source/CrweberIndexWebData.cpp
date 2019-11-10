@@ -254,7 +254,7 @@ void CCrweberIndexWebData::InquireNextWebData(void)
   StartReadingThread();
 }
 
-int CCrweberIndexWebData::GetInquiringStr(CString& strInquire) {
+int CCrweberIndexWebData::GetInquiringStr(CString& strInquire, long, bool) {
   strInquire = _T("");
   return 0;
 }

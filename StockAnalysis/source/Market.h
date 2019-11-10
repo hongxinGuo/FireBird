@@ -36,12 +36,9 @@ public:
   // 初始化市场
 
   // 实时数据读取
-  bool CreateSinaRTDataInquiringStr(CString& str);
-  bool CreateTengxunRTDataInquiringStr(CString& str);
-  bool CreateNeteaseRTDataInquiringStr(CString& str);
   int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int	GetNeteaseInquiringStockStr(CString& str);
+  int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
   int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
   bool StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
   void ResetIT(void); //重置各迭代器
@@ -62,9 +59,6 @@ public:
   CStockPtr GetStockPtr(long lIndex);
 
   void IncreaseActiveStockNumber(void);
-
-  // 初始化实时数据计数器
-  bool CountLoopRTDataInquiring(void) { if (++m_lCountLoopRTDataInquiring >= 3) return true; else return false; }
 
   // 得到当前显示股票
   CStockPtr GetShowStock(void) noexcept { return m_pCurrentStock; }
@@ -224,8 +218,6 @@ protected:
   bool m_fCurrentStockChanged; // 当前选择的股票改变了
   INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
   INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
-
-  long m_lCountLoopRTDataInquiring; // 全体股票池遍历计数器，用于初始化时
 
   bool m_fCalculatingRS;
 

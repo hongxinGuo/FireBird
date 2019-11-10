@@ -61,12 +61,6 @@ void CMarket::Reset(void)
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
-  m_lCountLoopRTDataInquiring = 0;
-
-  if (SystemReady()) {
-    ResetIT();  // 重置实时股票代码查询迭代器
-  }
-
   m_fGetDayLineData = m_fSaveDayLine = false;
 
   m_fTodayTempDataLoaded = false;
@@ -92,6 +86,7 @@ void CMarket::Reset(void)
 
   // 重置此全局变量
   gl_CrweberIndex.Reset();
+  ResetIT(); // 重置实时股票代码查询迭代器
 }
 
 #ifdef _DEBUG
@@ -257,128 +252,7 @@ bool CMarket::CreateTotalStockContainer(void)
   return true;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
-// 新浪实时制式
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool CMarket::CreateSinaRTDataInquiringStr(CString& str) {
-  static bool fCreateStr = false;
-  static int siCounter = 0;
-
-  const long siTotalStock = m_vChinaMarketAStock.size();
-
-  str = m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-  siCounter++;
-  if (siCounter == siTotalStock) {
-    siCounter = 0;
-    return true; // 查询到头了
-  }
-
-  for (int i = 1; i < 900; i++) {  // 每次轮询900个股票.
-    if (siCounter == siTotalStock) {
-      siCounter = 0;
-      return true; // 查询到头了
-    }
-    str += _T(",");
-    str += m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-    siCounter++;
-  }
-  siCounter -= 2; // 后退两格。为了防止边缘数据错误，故边缘数据查询两遍(现在这个没必要了，实时数据基本没出错过）。
-
-  return false; // 尚未遍历所有股票
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
-// 腾讯实时制式
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateTengxunRTDataInquiringStr(CString& str) {
-  static bool fCreateStr = false;
-  static int siCounter = 0;
-
-  const long siTotalStock = m_vChinaMarketAStock.size();
-
-  str = m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-  siCounter++;
-  if (siCounter == siTotalStock) {
-    siCounter = 0;
-    return true; // 查询到头了
-  }
-
-  for (int i = 1; i < 900; i++) {  // 每次轮询900个股票.
-    if (siCounter == siTotalStock) {
-      siCounter = 0;
-      return true; // 查询到头了
-    }
-    str += _T(",");
-    str += m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-    siCounter++;
-  }
-  siCounter -= 2; // 后退两格。为了防止边缘数据错误，故边缘数据查询两遍(现在这个没必要了，实时数据基本没出错过）。
-
-  return false; // 尚未遍历所有股票
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 生成股票代码的字符串，用于查询此股票在当前市场是否处于活跃状态（或者是否存在此股票号码）
-// 腾讯实时制式
-//
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateNeteaseRTDataInquiringStr(CString& str) {
-  static bool fCreateStr = false;
-  static int siCounter = 0;
-  CString strLeft, strRight, strStockCode;
-
-  const long siTotalStock = m_vChinaMarketAStock.size();
-
-  strStockCode = m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-  strLeft = strStockCode.Left(2);
-  strRight = strStockCode.Right(6);
-  if (strLeft.Compare(_T("sh")) == 0) {
-    str += _T("0");
-  }
-  else {
-    str += _T("1");
-  }
-  str += strRight;
-  siCounter++;
-  if (siCounter == siTotalStock) {
-    siCounter = 0;
-    return true; // 查询到头了
-  }
-
-  for (int i = 1; i < 900; i++) {  // 每次轮询500个股票.
-    if (siCounter == siTotalStock) {
-      siCounter = 0;
-      return true; // 查询到头了
-    }
-    str += _T(",");
-    strStockCode = m_vChinaMarketAStock.at(siCounter)->GetStockCode();
-    strLeft = strStockCode.Left(2);
-    strRight = strStockCode.Right(6);
-    if (strLeft.Compare(_T("sh")) == 0) {
-      str += _T("0");
-    }
-    else {
-      str += _T("1");
-    }
-    str += strRight;
-    siCounter++;
-  }
-  siCounter -= 2; // 后退两格。为了防止边缘数据错误，故边缘数据查询两遍(现在这个没必要了，实时数据基本没出错过）。
-
-  return false; // 尚未遍历所有股票
-}
-
 void CMarket::ResetIT(void) {
-  ASSERT(gl_ChinaStockMarket.SystemReady());
-
   m_itSinaStock = m_vChinaMarketAStock.begin();
   m_itTengxunStock = m_vChinaMarketAStock.begin();
   m_itNeteaseStock = m_vChinaMarketAStock.begin();
@@ -668,7 +542,7 @@ bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
 //////////////////////////////////////////////////////////////////////////////////////////
 int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
 {
-  ASSERT(SystemReady());
+  //ASSERT(SystemReady());
   return GetInquiringStr(str, m_itSinaStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
@@ -683,10 +557,10 @@ int CMarket::GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool f
   return GetInquiringStr(str, m_itTengxunStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
-int CMarket::GetNeteaseInquiringStockStr(CString& str)
+int CMarket::GetNeteaseInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
 {
   CString strStockCode, strRight6, strLeft2, strPrefix;
-  StepToNextActiveStockIT(m_itNeteaseStock);
+  if (fSkipUnactiveStock) StepToNextActiveStockIT(m_itNeteaseStock);
   if (m_itNeteaseStock == m_vChinaMarketAStock.end()) {
     m_itNeteaseStock = m_vChinaMarketAStock.begin();
   }
@@ -699,8 +573,8 @@ int CMarket::GetNeteaseInquiringStockStr(CString& str)
   else strPrefix = _T("1");
   str += strPrefix + strRight6;  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((m_itNeteaseStock != m_vChinaMarketAStock.end()) && (iCount < 900)) { // 每次最大查询量为lTotalNumber个股票
-    StepToNextActiveStockIT(m_itNeteaseStock);
+  while ((m_itNeteaseStock != m_vChinaMarketAStock.end()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+    if (fSkipUnactiveStock) StepToNextActiveStockIT(m_itNeteaseStock);
     if (m_itNeteaseStock != m_vChinaMarketAStock.end()) {
       iCount++;
       str += _T(",");

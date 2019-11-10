@@ -76,7 +76,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void)
   StartReadingThread();
 }
 
-int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire) {
+int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire, long lTotalNumer, bool fSkipUnactiveStock) {
   strInquire = _T("");
   return 0;
 }

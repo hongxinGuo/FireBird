@@ -54,23 +54,22 @@ void CSinaRTWebData::InquireNextWebData(void)
 {
   static int iCountUp = 0;
   CRTDataPtr pRTData = nullptr;
+  static int iTotalInquiringStocks = 0;
 
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckTodayActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-    if (gl_ChinaStockMarket.CreateSinaRTDataInquiringStr(strMiddle)) {
-      if (gl_ChinaStockMarket.CountLoopRTDataInquiring()) {  // 遍历三遍全体股票池
-        if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
-          gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
-        }
-        gl_ChinaStockMarket.SetSystemReady(true); // 所有的股票实时数据都轮询三遍，当日活跃股票集已经建立，故而可以接受日线数据了。
-        gl_ChinaStockMarket.ResetIT();
+    iTotalInquiringStocks += GetInquiringStr(strMiddle, 900, false);
+    if (iTotalInquiringStocks > 36000) {
+      if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
+        gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
       }
+      gl_ChinaStockMarket.SetSystemReady(true); // 所有的股票实时数据都轮询三遍，当日活跃股票集已经建立，故而可以接受日线数据了。
     }
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle);
+    GetInquiringStr(strMiddle, 900, true);
   }
   CreateTotalInquiringString(strMiddle);
 
@@ -79,8 +78,8 @@ void CSinaRTWebData::InquireNextWebData(void)
   StartReadingThread();
 }
 
-int CSinaRTWebData::GetInquiringStr(CString& strInquire) {
-  return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire, 900);
+int CSinaRTWebData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
+  return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire, lTotalNumber, fSkipUnactiveStock);
 }
 
 void CSinaRTWebData::StartReadingThread(void) {

@@ -26,7 +26,7 @@ public:
   virtual void ReportDataError(void) = 0;       // 读取数据中报错
   virtual void ReportCommunicationError(void) = 0;  // 网络出现问题时报错
   virtual void InquireNextWebData(void) = 0;        // 申请下一个网络数据
-  virtual int  GetInquiringStr(CString& strInquire) = 0;// 申请下一个查询用字符串
+  virtual int  GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) = 0;// 申请下一个查询用字符串
   virtual void StartReadingThread(void) = 0;    // 调用网络读取线程。
 
   void CreateTotalInquiringString(CString strMIddle);

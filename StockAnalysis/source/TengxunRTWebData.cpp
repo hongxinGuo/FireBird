@@ -90,10 +90,10 @@ void CTengxunRTWebData::InquireNextWebData(void)
 
   // 申请下一批次股票实时数据
   if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
-    gl_ChinaStockMarket.CreateSinaRTDataInquiringStr(strMiddle); // 腾讯也使用新浪制式
+    GetInquiringStr(strMiddle, 900, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle);
+    GetInquiringStr(strMiddle, 900, true);
   }
   CreateTotalInquiringString(strMiddle);
   SetWebDataReceived(false);
@@ -101,8 +101,8 @@ void CTengxunRTWebData::InquireNextWebData(void)
   StartReadingThread();
 }
 
-int CTengxunRTWebData::GetInquiringStr(CString& strInquire) {
-  return gl_ChinaStockMarket.GetTengxunInquiringStockStr(strInquire, 800);
+int CTengxunRTWebData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
+  return gl_ChinaStockMarket.GetTengxunInquiringStockStr(strInquire, lTotalNumber, fSkipUnactiveStock);
 }
 
 void CTengxunRTWebData::StartReadingThread(void) {
