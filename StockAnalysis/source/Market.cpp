@@ -1106,9 +1106,6 @@ bool CMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) {
                                    // 计算每一小时一次的任务
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
-
-    // 每小时自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
   }
   else i1HourCounter -= lSecondNumber;
 
@@ -1121,6 +1118,9 @@ bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
   // 计算每五分钟一次的任务。
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
+
+    // 自动查询crweber.com
+    gl_CrweberIndexWebData.GetWebData();
 
     ResetSystemFlagAtMidnight(lCurrentTime);
     SaveTempDataIntoDB(lCurrentTime);

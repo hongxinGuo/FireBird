@@ -6,6 +6,7 @@ public:
   CTengxunRTWebData();
   ~CTengxunRTWebData();
 
+  virtual bool ReadPrefix(void) override; // 此处用于判断是否为无效股票代码产生的数据
   virtual bool SucceedReadingAndStoringOneWebData(void) override;
   virtual void ProcessWebDataStored(void) override;
   virtual void ReportDataError(void) override;
