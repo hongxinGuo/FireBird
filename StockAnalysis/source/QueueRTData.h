@@ -23,6 +23,7 @@ public:
   CRTDataPtr PopRTData(void);
   long GetRTDataSize(void);
 
+protected:
   // 采用队列的函数
   void PushDequeRTData(CRTDataPtr pData);
   CRTDataPtr PopDequeRTData(void);

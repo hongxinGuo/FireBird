@@ -107,7 +107,7 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
       }
     }
 #endif // DEBUG
-    //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列.网易实时数据缺少总成交金额一项，只能作为辅助数据，故而暂时不使用。
+    //gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列.网易实时数据缺少总成交金额一项，只能作为辅助数据，故而暂时不使用。
     return true;
   }
   return false;

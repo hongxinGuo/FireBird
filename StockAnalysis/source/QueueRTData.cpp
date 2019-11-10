@@ -8,11 +8,6 @@
 
 CQueueRTData::CQueueRTData()
 {
-  static int siCounter = 0;
-  if (siCounter++ > 0) {
-    TRACE("系统数据队列只允许一个实例\n");
-    gl_systemMessage.PushInformationMessage(_T("错误：系统数据队列只允许生成一个实例"));
-  }
 }
 
 CQueueRTData::~CQueueRTData()

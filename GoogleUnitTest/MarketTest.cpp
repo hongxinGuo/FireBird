@@ -131,6 +131,11 @@ namespace StockAnalysisTest {
     strCompare = gl_ChinaStockMarket.m_vChinaMarketAStock.at(11687)->GetStockCode();
     str2 = str.Left(8);
     EXPECT_EQ(str2.Compare(strCompare), 0);
+    str = _T("");
+    gl_ChinaStockMarket.GetSinaInquiringStockStr(str, 900, false);
+    strCompare = gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode();
+    str2 = str.Left(8);
+    EXPECT_EQ(str2.Compare(strCompare), 0);
   }
 
   TEST_F(CMarketTest, TestGetInquiringStockStr) {

@@ -56,15 +56,24 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
       }
     }
 #endif // DEBUG
-    //gl_QueueRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+    gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }
   return false;
 }
 
 void CTengxunRTWebData::ProcessWebDataStored(void) {
-  //将下面的函数移入定时调度处，每3秒执行一次即可。本函数无需做任何事情，
-  //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
+  gl_ChinaStockMarket.ProcessTengxunRTData();
+
+  CRTDataPtr pRTData = nullptr;
+  long lTotalData = gl_QueueTengxunRTData.GetRTDataSize();
+
+  for (long i = 0; i < lTotalData; i++) {
+    pRTData = gl_QueueTengxunRTData.PopRTData();
+    auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
+    pStock->SetTotalValue(pRTData->GetTotalValue());
+    pStock->SetCurrentValue(pRTData->GetCurrentValue());
+  }
 }
 
 void CTengxunRTWebData::ReportDataError(void)
@@ -88,13 +97,11 @@ void CTengxunRTWebData::InquireNextWebData(void)
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
-  // 申请下一批次股票实时数据
-  if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
-    GetInquiringStr(strMiddle, 900, false);
-  }
-  else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle, 900, true);
-  }
+  // 申请下一批次股票实时数据。
+  // 申请腾讯实时数据时，如果遇到不存在的股票代码，服务器会返回v_pv_none_match="1";，导致系统故障，
+  // 故而现在只使用有效股票代码。
+  GetInquiringStr(strMiddle, 700, true);
+
   CreateTotalInquiringString(strMiddle);
   SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

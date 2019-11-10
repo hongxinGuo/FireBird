@@ -486,15 +486,15 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::DistributeRTDataReceivedFromWebToProperStock(void)
+bool CMarket::DistributeSinaRTDataToProperStock(void)
 {
   CStockPtr pStock;
-  const long lTotalNumber = gl_QueueRTData.GetRTDataSize();
+  const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
   CString strVolume;
   char buffer[200];
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CRTDataPtr pRTData = gl_QueueRTData.PopRTData();
+    CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();
 #ifdef DEBUG
     // 测试用
     if (pRTData->GetStockCode().Compare(_T("sh600000")) == 0) {
@@ -645,6 +645,11 @@ bool CMarket::ProcessRTData(void)
     }
   }
   return true;
+}
+
+bool CMarket::ProcessTengxunRTData(void)
+{
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1078,7 +1083,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
   if (s_iCountDownProcessRTWebData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-    DistributeRTDataReceivedFromWebToProperStock();
+    DistributeSinaRTDataToProperStock();
     s_iCountDownProcessRTWebData = 0;
   }
   else s_iCountDownProcessRTWebData--;

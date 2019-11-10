@@ -19,7 +19,8 @@ CCrweberIndex gl_CrweberIndex;
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime gl_systemTime; // 系统时间汇总。
-CQueueRTData gl_QueueRTData; // 系统实时数据队列。
+CQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
+CQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
 CCriticalSectionBool gl_ExitingSystem; //  系统退出标识，用于终止其他线程。
