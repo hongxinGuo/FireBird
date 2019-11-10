@@ -50,7 +50,13 @@ public:
 
   void IncreaseCurrentPos(long lNumberOfChars = 1) { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
+
+  long GetCurrentPos(void) { return m_lCurrentPos; }
+  char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
+
 public:
+  // 以下为测试用函数
+  void TESTSetBuffer(char* buffer, long lTotalNumber);
 
 protected:
   CString m_strInquire;// 查询所需的字符串

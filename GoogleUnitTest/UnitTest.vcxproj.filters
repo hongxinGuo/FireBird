@@ -54,21 +54,6 @@
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="TengxunRTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="SinaRTWebDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunRTWebDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="CrweberIndexWebDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="accessoryTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -85,6 +70,21 @@
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="RTDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaRTWebDataTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTWebDataTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="CrweberIndexWebDataTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
   </ItemGroup>

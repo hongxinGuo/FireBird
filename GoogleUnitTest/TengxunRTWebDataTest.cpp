@@ -17,6 +17,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_TengxunRTWebData.IsReadingSucceed());
   }
 
+  TEST(TengxunRTWebDataTest, TestReadPrefix) {
+    CString str = _T("v_pv_none_match=\"1\";\n");
+    gl_TengxunRTWebData.ResetCurrentPos();
+    gl_TengxunRTWebData.TESTSetBuffer(str.GetBuffer(), 21);
+    gl_TengxunRTWebData.ReadPrefix();
+    EXPECT_EQ(gl_TengxunRTWebData.GetCurrentPosPtr(), gl_TengxunRTWebData.GetBufferAddr() + 21);
+  }
+
   TEST(TengxunRTWebDataTest, TestReportDataError) {
     gl_TengxunRTWebData.ReportDataError();
     EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("腾讯实时数据有误"));

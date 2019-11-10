@@ -21,7 +21,7 @@ CTengxunRTWebData::~CTengxunRTWebData() {
 bool CTengxunRTWebData::ReadPrefix(void)
 {
   char buffer[50];
-  CString str = _T("v_pv_none_match=\"1\";\n");
+  CString str = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
   strncpy_s(buffer, m_pCurrentPos, 21);
   buffer[21] = 0x000;
