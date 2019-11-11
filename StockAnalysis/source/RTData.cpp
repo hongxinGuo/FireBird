@@ -183,7 +183,7 @@ bool CRTData::Compare(CRTDataPtr pRTData)
 // 31：”15:05:32″，时间；
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
+bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
 {
   static char buffer1[100];
   char buffer2[7];
@@ -193,29 +193,27 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pCurrentPos, 12); // 读入“var hq_str_s"
+    strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 12); // 读入“var hq_str_s"
     buffer1[12] = 0x000;
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
       return false;
     }
-    pCurrentPos += 12;
-    lTotalRead += 12;
+    pSinaRTWebData->IncreaseCurrentPos(12);
 
-    if (*pCurrentPos == 'h') { // 上海股票
+    if (*pSinaRTWebData->m_pCurrentPos == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pCurrentPos == 'z') {
+    else if (*pSinaRTWebData->m_pCurrentPos == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
       return false;
     }
-    pCurrentPos++;
-    lTotalRead += 1;
+    pSinaRTWebData->IncreaseCurrentPos();
 
-    strncpy_s(buffer2, pCurrentPos, 6);
+    strncpy_s(buffer2, pSinaRTWebData->m_pCurrentPos, 6);
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -229,29 +227,26 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
       return false;
     }
     lStockCode = atoi(buffer2);
-    pCurrentPos += 6;
-    lTotalRead += 6;
+    pSinaRTWebData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
+    strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2); // 读入'="'
     if (buffer1[0] != '=') {
       return false;
     }
     if (buffer1[1] != '"') {
       return false;
     }
-    pCurrentPos += 2;
-    lTotalRead += 2;
-    strncpy_s(buffer1, pCurrentPos, 2);
+    pSinaRTWebData->IncreaseCurrentPos(2);
+    strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2);
     if (buffer1[0] == '"') { // 没有数据
       if (buffer1[1] != ';') {
         return false;
       }
-      lTotalRead += 2;
-      pCurrentPos += 2;
-      if (*pCurrentPos++ != 0x00a) {
+      pSinaRTWebData->IncreaseCurrentPos(2);
+      if (*pSinaRTWebData->m_pCurrentPos != 0x00a) {
         return false; // 确保是字符 \n
       }
-      lTotalRead++;
+      pSinaRTWebData->IncreaseCurrentPos();
       m_fActive = false;
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
@@ -261,102 +256,100 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
     if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
       return false;
     }
-    pCurrentPos += 2;
-    lTotalRead += 2;
+    pSinaRTWebData->IncreaseCurrentPos(2);
 
     int i = 2;
-    while (*pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
-      if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+    while (*pSinaRTWebData->m_pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
+      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) {
         return false;
       }
-      buffer1[i++] = *pCurrentPos++;
-      lTotalRead++;
+      buffer1[i++] = *pSinaRTWebData->m_pCurrentPos;
+      pSinaRTWebData->IncreaseCurrentPos();
     }
     buffer1[i] = 0x000;
     m_strStockName = buffer1; // 设置股票名称
 
-    pCurrentPos++;
-    lTotalRead++;
+    pSinaRTWebData->IncreaseCurrentPos();
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lOpen, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lOpen)) {
       return false;
     }
     // 读入前收盘价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lLastClose, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLastClose)) {
       return false;
     }
     // 读入当前价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lNew, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lNew)) {
       return false;
     }
     // 读入最高价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lHigh, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lHigh)) {
       return false;
     }
     // 读入最低价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lLow, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLow)) {
       return false;
     }
     // 读入竞买价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lBuy, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lBuy)) {
       return false;
     }
     // 读入竞卖价
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lSell, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lSell)) {
       return false;
     }
     // 读入成交股数。成交股数存储实际值
-    if (!ReadSinaOneValue(pCurrentPos, m_llVolume, lTotalRead)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, m_llVolume)) {
       return false;
     }
     // 读入成交金额
-    if (!ReadSinaOneValue(pCurrentPos, m_llAmount, lTotalRead)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, m_llAmount)) {
       return false;
     }
     // 读入买一--买五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
-      if (!ReadSinaOneValue(pCurrentPos, m_lVBuy.at(j), lTotalRead)) {
+      if (!ReadSinaOneValue(pSinaRTWebData, m_lVBuy.at(j))) {
         return false;
       }
       // 读入价格
-      if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPBuy.at(j), lTotalRead)) {
+      if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPBuy.at(j))) {
         return false;
       }
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
-      if (!ReadSinaOneValue(pCurrentPos, m_lVSell.at(j), lTotalRead)) {
+      if (!ReadSinaOneValue(pSinaRTWebData, m_lVSell.at(j))) {
         return false;
       }
       // 读入价格
-      if (!ReadSinaOneValueExceptPeriod(pCurrentPos, m_lPSell.at(j), lTotalRead)) {
+      if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPSell.at(j))) {
         return false;
       }
     }
     // 读入成交日期和时间
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, buffer1, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer1)) {
       return false;
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
-    if (!ReadSinaOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
       return false;
     }
     strTime += buffer3;
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 
     // 后面的数据皆为无效数据，读至此数据的结尾处即可。
-    while (*pCurrentPos++ != 0x00a) {
-      if (*pCurrentPos == 0x000) {
+    while (*pSinaRTWebData->m_pCurrentPos++ != 0x00a) {
+      if (*pSinaRTWebData->m_pCurrentPos == 0x000) {
         return false;
       }
-      lTotalRead++;
+      pSinaRTWebData->m_lCurrentPos++;
     }
-    lTotalRead++;
+    pSinaRTWebData->m_lCurrentPos++;
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     if (IsDataTimeAtCurrentTradingDay()) m_fActive = true;
@@ -376,11 +369,11 @@ bool CRTData::ReadSinaData(char*& pCurrentPos, long& lTotalRead)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
-  if (!ReadSinaOneValue(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
     return false;
   }
   llTemp = atoll(buffer3);
@@ -395,11 +388,11 @@ bool CRTData::ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& l
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
-  if (!ReadSinaOneValue(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -414,20 +407,20 @@ bool CRTData::ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTo
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
+bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer)
 {
   int i = 0;
   try {
-    while (*pCurrentPos != ',') {
-      if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pCurrentPos++;
+    while (*pSinaRTWebData->m_pCurrentPos != ',') {
+      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
+      buffer[i++] = *pSinaRTWebData->m_pCurrentPos++;
     }
     buffer[i] = 0x000;
     // 跨过','号。
-    pCurrentPos++;
+    pSinaRTWebData->m_pCurrentPos++;
     i++;
 
-    lTotalRead += i;
+    pSinaRTWebData->m_lCurrentPos += i;
     return true;
   }
   catch (exception e) {
@@ -442,11 +435,11 @@ bool CRTData::ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRea
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
-  if (!ReadSinaOneValueExceptPeriod(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -460,20 +453,20 @@ bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValu
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
+bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer)
 {
   int i = 0;
   bool fFoundPoint = false;
   int iCount = 0;
   try {
-    while ((*pCurrentPos != ',') && (iCount < 3)) {
+    while ((*pSinaRTWebData->m_pCurrentPos != ',') && (iCount < 3)) {
       if (fFoundPoint) iCount++;
-      if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
-      if (*pCurrentPos == '.') {
+      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
+      if (*pSinaRTWebData->m_pCurrentPos == '.') {
         fFoundPoint = true;
-        pCurrentPos++;
+        pSinaRTWebData->m_pCurrentPos++;
       }
-      else buffer[i++] = *pCurrentPos++;
+      else buffer[i++] = *pSinaRTWebData->m_pCurrentPos++;
     }
 
     if (fFoundPoint && (iCount < 3)) {
@@ -487,15 +480,15 @@ bool CRTData::ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, lon
       buffer[i] = 0x000;
     }
 
-    while (*pCurrentPos != ',') {
-      if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
+    while (*pSinaRTWebData->m_pCurrentPos != ',') {
+      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
       i++;
-      pCurrentPos++;
+      pSinaRTWebData->m_pCurrentPos++;
     }
-    pCurrentPos++;
+    pSinaRTWebData->m_pCurrentPos++;
     i++;
-    if (fFoundPoint) i++;
-    lCounter += i; // 多加1，是需要加上少算的逗号
+    if (fFoundPoint) i++;// 多加1，是需要加上少算的逗号
+    pSinaRTWebData->m_lCurrentPos += i;
 
     return true;
   }
@@ -747,31 +740,28 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
+bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
 {
   long lIndex = 0;
   CString strValue = _T("");
-  char* pTestCurrentPos = pCurrentPos;
+  char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
     // 跨过前缀字符（"0601872")，直接使用其后的数据
-    while (*pCurrentPos != '{') {
-      pCurrentPos++;
-      lTotalRead++;
+    while (*pNeteaseRTWebData->m_pCurrentPos != '{') {
+      pNeteaseRTWebData->IncreaseCurrentPos();
     }
-    ASSERT(*pCurrentPos == '{');
-    pCurrentPos++;
-    lTotalRead++;
+    ASSERT(*pNeteaseRTWebData->m_pCurrentPos == '{');
+    pNeteaseRTWebData->IncreaseCurrentPos();
     do {
-      if (GetNeteaseIndexAndValue(pCurrentPos, lTotalRead, lIndex, strValue)) {
+      if (GetNeteaseIndexAndValue(pNeteaseRTWebData, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
       else throw;
-    } while (*pCurrentPos != '}');  // 读至下一个'}'
+    } while (*pNeteaseRTWebData->m_pCurrentPos != '}');  // 读至下一个'}'
     // 读过此'}'就结束了
-    pCurrentPos++;
-    lTotalRead++;
+    pNeteaseRTWebData->IncreaseCurrentPos();
 
     if (!IsDataTimeAtCurrentTradingDay()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;
@@ -886,62 +876,56 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   return lIndex;
 }
 
-bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue)
+bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue)
 {
   char buffer[100];
   int i = 0;
   CString strIndex;
   bool fFind = false;
-  char* pTestCurrentPos = pCurrentPos;
-  char* p = pCurrentPos - 1;
+  char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
+  char* p = pNeteaseRTWebData->m_pCurrentPos - 1;
 
   try {
-    while (*pCurrentPos != '"') {
-      pCurrentPos++;
-      lTotalRead++;
+    while (*pNeteaseRTWebData->m_pCurrentPos != '"') {
+      pNeteaseRTWebData->IncreaseCurrentPos();
     }
-    pCurrentPos++;
-    lTotalRead++;
+    pNeteaseRTWebData->IncreaseCurrentPos();
 
     i = 0;
-    while ((*pCurrentPos != '"') && (i < 50)) {
-      buffer[i++] = *pCurrentPos++;
-      lTotalRead++;
+    while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (i < 50)) {
+      buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
+      pNeteaseRTWebData->IncreaseCurrentPos();
     }
     if (i >= 50) return false;
     buffer[i] = 0x000;
     strIndex = buffer;
     lIndex = GetNeteaseSymbolIndex(strIndex);
     // 跨过"\": "三个字符
-    pCurrentPos += 2;
-    lTotalRead += 2;
-    ASSERT(*pCurrentPos == ' ');
-    pCurrentPos++;
-    lTotalRead++;
+    pNeteaseRTWebData->IncreaseCurrentPos(2);
+    ASSERT(*pNeteaseRTWebData->m_pCurrentPos == ' ');
+    pNeteaseRTWebData->IncreaseCurrentPos();
 
-    if (*pCurrentPos == '"') {
+    if (*pNeteaseRTWebData->m_pCurrentPos == '"') {
       fFind = true;
-      pCurrentPos++;
-      lTotalRead++;
+      pNeteaseRTWebData->IncreaseCurrentPos();
     }
     else fFind = false;
 
     i = 0;
     if (fFind) {
-      while ((*pCurrentPos != '"') && (i < 50)) {
-        buffer[i++] = *pCurrentPos++;
-        lTotalRead++;
+      while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (i < 50)) {
+        buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
+        pNeteaseRTWebData->IncreaseCurrentPos();
       }
       if (i >= 50) return false;
       buffer[i] = 0x000;
       strValue = buffer;
-      pCurrentPos++;
-      lTotalRead++;
+      pNeteaseRTWebData->IncreaseCurrentPos();
     }
     else {
-      while ((*pCurrentPos != ',') && (*pCurrentPos != '}') && (i < 50)) {
-        buffer[i++] = *pCurrentPos++;
-        lTotalRead++;
+      while ((*pNeteaseRTWebData->m_pCurrentPos != ',') && (*pNeteaseRTWebData->m_pCurrentPos != '}') && (i < 50)) {
+        buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
+        pNeteaseRTWebData->IncreaseCurrentPos();
       }
       if (i >= 50) return false;
       buffer[i] = 0x000;

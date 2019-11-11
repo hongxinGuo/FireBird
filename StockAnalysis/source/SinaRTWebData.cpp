@@ -5,12 +5,7 @@
 
 #include "SinaRTWebData.h"
 
-bool CSinaRTWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
-
 CSinaRTWebData::CSinaRTWebData() : CWebData() {
-  if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
-  else sm_fCreatedOnce = true;
-
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
 }
@@ -21,7 +16,7 @@ CSinaRTWebData::~CSinaRTWebData() {
 bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(void)
 {
   CRTDataPtr pRTData = make_shared<CRTData>();
-  if (pRTData->ReadSinaData(m_pCurrentPos, m_lCurrentPos)) {
+  if (pRTData->ReadSinaData(this)) {
     pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
     gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;

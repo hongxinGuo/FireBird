@@ -1,7 +1,9 @@
 #pragma once
 #include "WebData.h"
+#include"RTData.h"
 
 class CSinaRTWebData final : public CWebData {
+  friend class CRTData;
 public:
   CSinaRTWebData();
   ~CSinaRTWebData();
@@ -15,8 +17,5 @@ public:
   virtual void StartReadingThread(void) override;
   virtual bool ReportStatus(long lNumberOfData) override;
 
-  bool IsCreateOnce(void) noexcept { return sm_fCreatedOnce; }
-
 private:
-  static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例
 };

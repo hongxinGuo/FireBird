@@ -23,12 +23,7 @@
 #include"thread.h"
 #include "NeteaseRTWebData.h"
 
-bool CNeteaseRTWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
-
 CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
-  if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
-  else sm_fCreatedOnce = true;
-
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
 }
@@ -75,7 +70,7 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadNeteaseData(m_pCurrentPos, m_lCurrentPos)) {
+  if (pRTData->ReadNeteaseData(this)) {
     pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 #ifdef DEBUG
     // 测试网易实时数据与新浪实时数据的同一性。

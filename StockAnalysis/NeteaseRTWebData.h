@@ -1,7 +1,11 @@
 #pragma once
 #include "WebData.h"
 
+#include"RTData.h"
+
 class CNeteaseRTWebData final : public CWebData {
+  friend class CRTData;
+
 public:
   CNeteaseRTWebData();
   ~CNeteaseRTWebData();
@@ -18,8 +22,5 @@ public:
   virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
 
-  bool IsCreateOnce(void) noexcept { return sm_fCreatedOnce; }
-
 private:
-  static bool sm_fCreatedOnce;  // 此种类只允许生成一个实例
 };

@@ -114,6 +114,10 @@ enum {
 #include"stdafx.h"
 #include"afxinet.h"
 
+#include"NeteaseRTWebData.h"
+#include"SinaRTWebData.h"
+#include"TengxunRTWebData.h"
+
 using namespace std;
 #include<memory>
 #include<array>
@@ -134,22 +138,22 @@ public:
   bool Compare(CRTDataPtr pRTData);
 
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool ReadSinaData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
 
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
   bool ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
 
   // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-  bool ReadNeteaseData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData);
 
 public:
   // 读取新浪实时数据函数
-  bool ReadSinaOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadSinaOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadSinaOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘，’。
+  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
+  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个长整型
+  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
   // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
-  bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, long& lReturnValue, long& lCounter);
-  bool ReadSinaOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
+  bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long& lReturnValue);
+  bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer);
 
   // 读取腾讯实时数据函数
   bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
@@ -159,7 +163,7 @@ public:
 
   // 读取网易实时数据函数
   long GetNeteaseSymbolIndex(CString strSymbol);
-  bool GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
+  bool GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
   bool SetValue(long lIndex, CString strValue);
 
 public:
