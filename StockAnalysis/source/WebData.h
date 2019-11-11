@@ -72,4 +72,6 @@ protected:
 
   CCriticalSectionBool m_ReadingWebData; // 接收实时数据线程是否执行标识
   CCriticalSectionBool m_WebDataReceived;// 实时数据已接收完毕标识
+
+  bool m_fReportStatus; //
 };

@@ -12,6 +12,8 @@ CWebData::CWebData() noexcept {
   m_fSucceed = true;
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+
+  m_fReportStatus = false;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -59,7 +61,7 @@ bool CWebData::SucceedReadingAndStoringWebData(void) {
     }
     i++;
   }
-  ReportStatus(i);
+  if (m_fReportStatus) ReportStatus(i);
   return true;
 }
 

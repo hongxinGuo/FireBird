@@ -39,13 +39,13 @@ public:
   bool IsSavingStockCodeData(void) { return m_SavingStockCodeData.IsTrue(); }
 
   // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.IncreaseCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.DecreaseCounter(); } // 同时运行线程数减一
+  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.SecceedIncreasingCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.SecceedDecreasingCounter(); } // 同时运行线程数减一
   bool IsCalculatingRSThreadAvailable(void) { return m_CounterOfCalculatingRSThreads.IsCounterAvailable(); }  // 是否允许生成新的工作线程
   bool IsCalculatingRS(void) { return m_CounterOfCalculatingRSThreads.IsActive(); }  // 计算日线的线程是否处于运行中
 
-  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.IncreaseCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.DecreaseCounter(); } // 同时运行线程数减一
+  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.SecceedIncreasingCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.SecceedDecreasingCounter(); } // 同时运行线程数减一
   bool IsSavingDayLineThreadAvailable(void) { return m_SavingDayLine.IsCounterAvailable(); }  // 是否允许生成新的工作线程
   bool IsSavingDayLine(void) { return m_SavingDayLine.IsActive(); }  // 计算日线的线程是否处于运行中
 

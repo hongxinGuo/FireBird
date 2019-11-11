@@ -62,6 +62,8 @@
     <ClCompile Include="accessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
+    <ClCompile Include="CriticalSectionBoolTest.cpp" />
+    <ClCompile Include="CriticalSectionCounterTest.cpp" />
     <ClCompile Include="CrweberIndexWebDataTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />

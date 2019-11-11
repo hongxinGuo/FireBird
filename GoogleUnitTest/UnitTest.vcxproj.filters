@@ -22,6 +22,12 @@
     <Filter Include="Test源文件\网络通信">
       <UniqueIdentifier>{9ad59fd7-ab56-494b-8c6a-b7f5b4e8014a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Windows界面">
+      <UniqueIdentifier>{a4a49057-7948-4a2b-b695-24e24be21424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\工作线程">
+      <UniqueIdentifier>{226f4191-deca-4101-8419-583cc71eb53b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -30,22 +36,10 @@
     <ClCompile Include="DayLineTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="SystemDequeDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemMessageTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemStatusTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="CalculatingRTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemTimeTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -86,6 +80,24 @@
     </ClCompile>
     <ClCompile Include="TengxunRTDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="CriticalSectionBoolTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemDequeDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemMessageTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemStatusTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemTimeTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="CriticalSectionCounterTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

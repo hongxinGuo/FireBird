@@ -3,31 +3,42 @@
 CCriticalSectionCounter::CCriticalSectionCounter()
 {
   m_MaxNumber = 1; // 默认计数器最大为1，即与CCriticalSectionBool行为模式相似。
+  m_iCounter = 0;
 }
 
 CCriticalSectionCounter::~CCriticalSectionCounter() {
 }
 
-void CCriticalSectionCounter::IncreaseCounter(void)
+bool CCriticalSectionCounter::SecceedIncreasingCounter(void)
 {
+  bool fSecceed = false;
+
   CSingleLock singleLock(&m_Lock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    ASSERT(m_iCounter < m_MaxNumber);
-    m_iCounter++;
+    if (m_iCounter < m_MaxNumber) {
+      m_iCounter++;
+      fSecceed = true;
+    }
     singleLock.Unlock();
   }
+  return fSecceed;
 }
 
-void CCriticalSectionCounter::DecreaseCounter(void)
+bool CCriticalSectionCounter::SecceedDecreasingCounter(void)
 {
+  bool fSecceed = false;
+
   CSingleLock singleLock(&m_Lock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    ASSERT(m_iCounter > 0);
-    m_iCounter--;
+    if (m_iCounter > 0) {
+      m_iCounter--;
+      fSecceed = true;
+    }
     singleLock.Unlock();
   }
+  return fSecceed;
 }
 
 bool CCriticalSectionCounter::IsCounterAvailable(void)

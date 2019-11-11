@@ -749,32 +749,12 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
 {
-  static char buffer1[200];
-  char buffer2[7];
-  static char buffer3[200];
-  long lTemp = 0;
-  INT64 llTemp = 0;
-  double dTemp = 0.0;
   long lIndex = 0;
   CString strValue = _T("");
-  CString strStockCode;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    while (*pCurrentPos != '"') { // 跨过无用字符（其实正确的话，就是一个字符',')
-      pCurrentPos++;
-      lTotalRead++;
-    }
-    // 从'{'开始读起
-    pCurrentPos++;
-    lTotalRead++;
-
-    strncpy_s(buffer1, pCurrentPos, 7);
-    buffer1[7] = 0x000;
-    strStockCode = buffer1;
-    pCurrentPos += 7;
-    lTotalRead += 7;
-    while (*pCurrentPos != '{') {
+    while (*pCurrentPos != '{') {// 跨过前缀字符（"0601872":)，直接使用'{'后的数据
       pCurrentPos++;
       lTotalRead++;
     }
@@ -784,9 +764,7 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
       if (GetNeteaseIndexAndValue(pCurrentPos, lTotalRead, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
-      else {
-        return false;
-      }
+      else throw;
     } while (*pCurrentPos != '}');  // 读至下一个'}'
     // 读过此'}'就结束了
     pCurrentPos++;
@@ -801,7 +779,6 @@ bool CRTData::ReadNeteaseData(char*& pCurrentPos, long& lTotalRead)
       }
       else m_fActive = true;
     }
-    ASSERT((*pCurrentPos == ',') || (*pCurrentPos == ' '));
     return true;
   }
   catch (exception e) {
@@ -900,7 +877,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
   }
   catch (exception e) {
-    TRACE("GetNeteaseSymbolIndex函数异常\n");
+    TRACE("GetNeteaseSymbolIndex函数异常 %s\n", strSymbol);
     lIndex = 0;
   }
   return lIndex;
@@ -922,10 +899,11 @@ bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long
     lTotalRead++;
 
     i = 0;
-    while (*pCurrentPos != '"') {
+    while ((*pCurrentPos != '"') && (i < 50)) {
       buffer[i++] = *pCurrentPos++;
       lTotalRead++;
     }
+    if (i >= 50) throw;
     buffer[i] = 0x000;
     strIndex = buffer;
     lIndex = GetNeteaseSymbolIndex(strIndex);
@@ -941,20 +919,22 @@ bool CRTData::GetNeteaseIndexAndValue(char*& pCurrentPos, long& lTotalRead, long
 
     i = 0;
     if (fFind) {
-      while (*pCurrentPos != '"') {
+      while ((*pCurrentPos != '"') && (i < 50)) {
         buffer[i++] = *pCurrentPos++;
         lTotalRead++;
       }
+      if (i >= 50) throw;
       buffer[i] = 0x000;
       strValue = buffer;
       pCurrentPos++;
       lTotalRead++;
     }
     else {
-      while ((*pCurrentPos != ',') && (*pCurrentPos != '}')) {
+      while ((*pCurrentPos != ',') && (*pCurrentPos != '}') && (i < 50)) {
         buffer[i++] = *pCurrentPos++;
         lTotalRead++;
       }
+      if (i >= 50) throw;
       buffer[i] = 0x000;
       strValue = buffer;
     }
