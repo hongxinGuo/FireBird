@@ -204,7 +204,7 @@ namespace StockAnalysisTest {
     &neteaseData50, &neteaseData51, &neteaseData52, &neteaseData53, &neteaseData54,
     &neteaseData60, &neteaseData61, &neteaseData62, &neteaseData63));
 
-  TEST_P(NeteaseRTDataTest, TestNeteaseRTData) {
+  TEST_P(NeteaseRTDataTest, TestGetNeteaseSymbolIndex) {
     CString strFormat;
     time_t tt2;
     long lIndex = m_RTData.GetNeteaseSymbolIndex(m_strSymbol);

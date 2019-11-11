@@ -99,6 +99,9 @@
     <ClCompile Include="CriticalSectionCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="NeteaseRTDataTest.cpp">
+      <Filter>Test源文件\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
