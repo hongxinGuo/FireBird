@@ -47,7 +47,7 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
         gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
       }
     }
-    if (gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) {
+    if (gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) {
       CString str;
       if (pRTData->IsActive()) {
         CStockPtr pStock = nullptr;

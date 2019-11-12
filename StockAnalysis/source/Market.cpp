@@ -77,7 +77,7 @@ void CMarket::Reset(void)
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -998,7 +998,7 @@ bool CMarket::SchedulingTask(void)
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::GetRTDataFromWeb(void) {
   static int siCountDownTengxunNumber = 3;
-  static int siCountDownNeteaseNumber = 3;
+  static int siCountDownNeteaseNumber = 300;
 
   if (m_fUsingSinaRTDataReceiver) {
     gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -1006,6 +1006,7 @@ bool CMarket::GetRTDataFromWeb(void) {
 
   if (SystemReady()) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
+    ASSERT(m_fUsingNeteaseRTDataReceiver == false);
     if (m_fUsingNeteaseRTDataReceiver) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
@@ -1620,8 +1621,8 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 
     setDayKLine.m_Volume = ConvertValueToString(pStock->GetVolume());
     setDayKLine.m_Amount = ConvertValueToString(pStock->GetAmount());
-    setDayKLine.m_TotalValue = _T("0");
-    setDayKLine.m_CurrentValue = _T("0");
+    setDayKLine.m_TotalValue = ConvertValueToString(pStock->GetTotalValue());
+    setDayKLine.m_CurrentValue = ConvertValueToString(pStock->GetCurrentValue());
     setDayKLine.m_RelativeStrong = ConvertValueToString(pStock->GetRelativeStrong());
 
     setDayKLine.Update();

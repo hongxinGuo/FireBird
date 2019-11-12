@@ -583,7 +583,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     }
     pTengxunRTWebData->IncreaseCurrentPos();
 
-    // 读入六位股票代码
+    // 六位股票代码
     strncpy_s(buffer2, pTengxunRTWebData->m_pCurrentPos, 6);
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
@@ -609,7 +609,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     }
     pTengxunRTWebData->IncreaseCurrentPos(2);
 
-    // 读入市场标识代码（51为深市，1为沪市）
+    // 市场标识代码（51为深市，1为沪市）
     if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
@@ -622,49 +622,49 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
       return false;
     }
     m_strStockName = buffer1; // 设置股票名称
-
-    // 读入六位股票代码
+    // 六位股票代码
     if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
     if (lTemp != lStockCode) return false;
 
-    // 读入现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
+    // 现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
     if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lNew = dTemp * 1000;
-    // 读入前收盘价
+    // 前收盘价
     if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lLastClose = dTemp * 1000;
-    // 读入开盘价
+    // 开盘价
     if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lOpen = dTemp * 1000;
-    // 读入成交手数。成交股数存储实际值
+    // 成交手数。成交股数存储实际值
     if (!ReadTengxunOneValue(pTengxunRTWebData, llTemp)) {
       return false;
     }
     m_llVolume = llTemp * 100;
-    // 读入外盘
+    // 外盘
     if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
-    // 读入内盘
+    // 内盘
     if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
     // 读入买一至买五的价格和手数
     for (int j = 0; j < 5; j++) {
-      // 读入买盘价格
+      // 买盘价格
       if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
         return false;
       }
       m_lPBuy.at(j) = dTemp * 1000;
-      // 读入买盘数量（手）
+
+      // 买盘数量（手）
       if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
         return false;
       }
@@ -672,12 +672,12 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     }
     // 读入卖一至卖五的价格和手数
     for (int j = 0; j < 5; j++) {
-      // 读入卖盘价格
+      //读入卖盘价格
       if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
         return false;
       }
       m_lPSell.at(j) = dTemp * 1000;
-      // 读入卖盘数量（手）
+      // 卖盘数量（手）
       if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
         return false;
       }
@@ -687,12 +687,85 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
-
-    // 读入成交日期和时间.格式为：yyyymmddhhmmss
+    // 成交日期和时间.格式为：yyyymmddhhmmss
     if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
       return false;
     }
     m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3);
+    // 涨跌
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 涨跌率
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 最高价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 最低价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 成交价/成交量/成交金额
+    if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
+      return false;
+    }
+    // 成交手数
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
+      return false;
+    }
+    // 成交金额（万元）
+    if (!ReadTengxunOneValue(pTengxunRTWebData, llTemp)) {
+      return false;
+    }
+    // 换手率
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 市盈率
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 无名
+    if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
+      return false;
+    }
+    // 最高价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 最低价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 振幅
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 流通市值（单位为：亿元）
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    m_llCurrentValue = dTemp * 100000000;
+    // 总市值（单位为：亿元）
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    m_llTotalValue = dTemp * 100000000;
+    // 市净率
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 涨停价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
+    // 跌停价
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
+      return false;
+    }
 
     while (*pTengxunRTWebData->m_pCurrentPos++ != 0x00a) {
       if (*pTengxunRTWebData->m_pCurrentPos == 0x000) {
@@ -772,6 +845,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
   catch (exception e) {
     TRACE("ReadNeteaseData函数异常\n");
     m_fActive = false;
+    // 跨过此错误数据，寻找下一个数据的起始处。
     while ((*pNeteaseRTWebData->m_pCurrentPos != '{') && (pNeteaseRTWebData->m_lCurrentPos < pNeteaseRTWebData->m_lByteRead)) {
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
@@ -813,7 +887,6 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& 
     return false;
   }
   dTemp = atof(buffer3);
-  if (dTemp < 0) return false;
   dReturnValue = dTemp;
   return true;
 }
@@ -1066,14 +1139,14 @@ bool CRTData::SetValue(long lIndex, CString strValue)
 }
 
 bool CRTData::IsDataTimeAtCurrentTradingDay(void) {
-  int i;
+  INT64 i;
   if (gl_systemTime.IsWorkingDay()) {
     i = 1;
   }
-  else if (gl_systemTime.GetDayOfWeek() == 6) {
+  else if (gl_systemTime.GetDayOfWeek() == 6) { // 星期六
     i = 2;
   }
-  else i = 3;
+  else i = 3; // 星期日
 
   if (m_time < (gl_systemTime.Gett_time() - i * 3600 * 24)) {
     return false;
