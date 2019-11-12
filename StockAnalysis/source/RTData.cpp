@@ -753,7 +753,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
       if (GetNeteaseIndexAndValue(pNeteaseRTWebData, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
-      else throw;
+      else return false;
     } while (*pNeteaseRTWebData->m_pCurrentPos != '}');  // 读至下一个'}'
     // 读过此'}'就结束了
     pNeteaseRTWebData->IncreaseCurrentPos();
@@ -771,7 +771,11 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
   }
   catch (exception e) {
     TRACE("ReadNeteaseData函数异常\n");
-    return false;
+    m_fActive = false;
+    while ((*pNeteaseRTWebData->m_pCurrentPos != '{') && (pNeteaseRTWebData->m_lCurrentPos < pNeteaseRTWebData->m_lByteRead)) {
+      pNeteaseRTWebData->IncreaseCurrentPos();
+    }
+    return true; // 返回真，则跨过此错误数据，继续处理。
   }
 }
 
@@ -895,9 +899,11 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     buffer[i] = 0x000;
     strIndex = buffer;
     lIndex = GetNeteaseSymbolIndex(strIndex);
-    // 跨过"\": "三个字符
-    pNeteaseRTWebData->IncreaseCurrentPos(2);
-    ASSERT(*pNeteaseRTWebData->m_pCurrentPos == ' ');
+    // 跨过"\""字符
+    pNeteaseRTWebData->IncreaseCurrentPos();
+    if (*pNeteaseRTWebData->m_pCurrentPos != ':') return false;
+    pNeteaseRTWebData->IncreaseCurrentPos();
+    if (*pNeteaseRTWebData->m_pCurrentPos != ' ') return false;
     pNeteaseRTWebData->IncreaseCurrentPos();
 
     if (*pNeteaseRTWebData->m_pCurrentPos == '"') {

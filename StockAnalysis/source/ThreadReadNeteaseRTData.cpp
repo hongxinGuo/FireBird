@@ -42,6 +42,7 @@ UINT ThreadReadNeteaseRTData(LPVOID) {
     }
     *pChar = 0x000;
     gl_NeteaseRTWebData.SetWebDataReceived(true);
+    gl_NeteaseRTWebData.ResetCurrentPos();
   }
   catch (CInternetException * e) {
     e->Delete();

@@ -192,6 +192,7 @@ public:
 
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
+  bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
   bool m_fUsingNeteaseRTDataReceiverAsTester;
   bool m_fUsingTengxunRTDataReceiverAsTester;
 
