@@ -98,6 +98,7 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
           str = pRTData->GetStockCode();
           str += _T(" 无效股票代码（网易实时数据）");
           gl_systemMessage.PushInnerSystemInformationMessage(str);
+          return false;
         }
       }
     }
@@ -135,10 +136,10 @@ void CNeteaseRTWebData::InquireNextWebData(void)
 
   // 申请下一批次股票实时数据
   if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
-    GetInquiringStr(strMiddle, 900, false);
+    GetInquiringStr(strMiddle, 700, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle);
+    GetInquiringStr(strMiddle, 700, true);
   }
   CreateTotalInquiringString(strMiddle);
 

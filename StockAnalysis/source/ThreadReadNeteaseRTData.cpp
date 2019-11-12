@@ -23,7 +23,7 @@ UINT ThreadReadNeteaseRTData(LPVOID) {
     gl_NeteaseRTWebData.SetReadingSucceed(true);
     gl_NeteaseRTWebData.SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_NeteaseRTWebData.GetInquiringString()));
-    Sleep(100); // 腾讯服务器100ms延迟即可。
+    Sleep(200); // 腾讯服务器100ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
@@ -32,7 +32,7 @@ UINT ThreadReadNeteaseRTData(LPVOID) {
           gl_NeteaseRTWebData.AddByteReaded(iCount);
         }
       } while (iCount > 0);
-      Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
+      Sleep(50); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
