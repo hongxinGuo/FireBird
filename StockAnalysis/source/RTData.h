@@ -141,7 +141,7 @@ public:
   bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
 
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool ReadTengxunData(char*& pCurrentPos, long& lTotalRead);
+  bool ReadTengxunData(CTengxunRTWebData* pSinaRTWebData);
 
   // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
   bool ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData);
@@ -156,10 +156,10 @@ public:
   bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer);
 
   // 读取腾讯实时数据函数
-  bool ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead); // 从file中读入一个长整型
-  bool ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead); // 从file中读入一个INT64整型
-  bool ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead); // 从file中读入一个浮点数
-  bool ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead); // 从file中读入一个浮点数据，最后字符为‘~’。
+  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
+  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个INT64整型
+  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
+  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
 
   // 读取网易实时数据函数
   long GetNeteaseSymbolIndex(CString strSymbol);

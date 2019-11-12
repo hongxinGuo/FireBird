@@ -551,7 +551,7 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char*
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
+bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
 {
   static char buffer1[200];
   char buffer2[7];
@@ -564,30 +564,27 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pCurrentPos, 3); // 读入“v_s"
+    strncpy_s(buffer1, pTengxunRTWebData->m_pCurrentPos, 3); // 读入“v_s"
     buffer1[3] = 0x000;
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
       return false;
     }
-    pCurrentPos += 3;
-    lTotalRead += 3;
-
-    if (*pCurrentPos == 'h') { // 上海股票
+    pTengxunRTWebData->IncreaseCurrentPos(3);
+    if (*pTengxunRTWebData->m_pCurrentPos == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pCurrentPos == 'z') {
+    else if (*pTengxunRTWebData->m_pCurrentPos == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
       return false;
     }
-    pCurrentPos++;
-    lTotalRead += 1;
+    pTengxunRTWebData->IncreaseCurrentPos();
 
     // 读入六位股票代码
-    strncpy_s(buffer2, pCurrentPos, 6);
+    strncpy_s(buffer2, pTengxunRTWebData->m_pCurrentPos, 6);
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -601,21 +598,19 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
       return false;
     }
     lStockCode = atoi(buffer2);
-    pCurrentPos += 6;
-    lTotalRead += 6;
+    pTengxunRTWebData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pCurrentPos, 2); // 读入'="'
+    strncpy_s(buffer1, pTengxunRTWebData->m_pCurrentPos, 2); // 读入'="'
     if (buffer1[0] != '=') {
       return false;
     }
     if (buffer1[1] != '"') {
       return false;
     }
-    pCurrentPos += 2;
-    lTotalRead += 2;
+    pTengxunRTWebData->IncreaseCurrentPos(2);
 
     // 读入市场标识代码（51为深市，1为沪市）
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
 #ifdef DEBUG
@@ -623,54 +618,54 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     else if (lTemp == 51) ASSERT(m_wMarket == __SHENZHEN_MARKET__);
     else ASSERT(0); // 报错
 #endif
-    if (!ReadTengxunOneValue(pCurrentPos, buffer1, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, buffer1)) {
       return false;
     }
     m_strStockName = buffer1; // 设置股票名称
 
     // 读入六位股票代码
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
     if (lTemp != lStockCode) return false;
 
     // 读入现在成交价。放大一千倍后存储为长整型。其他价格亦如此。
-    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lNew = dTemp * 1000;
     // 读入前收盘价
-    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lLastClose = dTemp * 1000;
     // 读入开盘价
-    if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
       return false;
     }
     m_lOpen = dTemp * 1000;
     // 读入成交手数。成交股数存储实际值
-    if (!ReadTengxunOneValue(pCurrentPos, llTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, llTemp)) {
       return false;
     }
     m_llVolume = llTemp * 100;
     // 读入外盘
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
     // 读入内盘
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
     // 读入买一至买五的价格和手数
     for (int j = 0; j < 5; j++) {
       // 读入买盘价格
-      if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
+      if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
         return false;
       }
       m_lPBuy.at(j) = dTemp * 1000;
       // 读入买盘数量（手）
-      if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+      if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
         return false;
       }
       m_lVBuy.at(j) = lTemp * 100;
@@ -678,34 +673,34 @@ bool CRTData::ReadTengxunData(char*& pCurrentPos, long& lTotalRead)
     // 读入卖一至卖五的价格和手数
     for (int j = 0; j < 5; j++) {
       // 读入卖盘价格
-      if (!ReadTengxunOneValue(pCurrentPos, dTemp, lTotalRead)) {
+      if (!ReadTengxunOneValue(pTengxunRTWebData, dTemp)) {
         return false;
       }
       m_lPSell.at(j) = dTemp * 1000;
       // 读入卖盘数量（手）
-      if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+      if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
         return false;
       }
       m_lVSell.at(j) = lTemp * 100;
     }
     // 最近逐笔成交
-    if (!ReadTengxunOneValue(pCurrentPos, lTemp, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, lTemp)) {
       return false;
     }
 
     // 读入成交日期和时间.格式为：yyyymmddhhmmss
-    if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
+    if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
       return false;
     }
     m_time = ConvertBufferToTime("%04d%02d%02d%02d%02d%02d", buffer3);
 
-    while (*pCurrentPos++ != 0x00a) {
-      if (*pCurrentPos == 0x000) {
+    while (*pTengxunRTWebData->m_pCurrentPos++ != 0x00a) {
+      if (*pTengxunRTWebData->m_pCurrentPos == 0x000) {
         return false;
       }
-      lTotalRead++;
+      pTengxunRTWebData->m_lCurrentPos++;
     }
-    lTotalRead++;
+    pTengxunRTWebData->m_lCurrentPos++;
     if (!IsDataTimeAtCurrentTradingDay()) { // 如果交易时间在一天前
       m_fActive = false;
     }
@@ -786,11 +781,11 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long& lTotalRead) {
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
     return false;
   }
   llTemp = atoll(buffer3);
@@ -805,12 +800,12 @@ bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, INT64& llReturnValue, long
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long& lTotalRead)
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& dReturnValue)
 {
   double dTemp;
   static char buffer3[200];
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
     return false;
   }
   dTemp = atof(buffer3);
@@ -825,11 +820,11 @@ bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, double& dReturnValue, long
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& lTotalRead) {
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
-  if (!ReadTengxunOneValue(pCurrentPos, buffer3, lTotalRead)) {
+  if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -844,18 +839,18 @@ bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, long& lReturnValue, long& 
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(char*& pCurrentPos, char* buffer, long& lTotalRead)
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, char* buffer)
 {
   int i = 0;
   try {
-    while (*pCurrentPos != '~') {
-      if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pCurrentPos++;
+    while (*pTengxunRTWebData->m_pCurrentPos != '~') {
+      if ((*pTengxunRTWebData->m_pCurrentPos == 0x00a) || (*pTengxunRTWebData->m_pCurrentPos == 0x000)) return false;
+      buffer[i++] = *pTengxunRTWebData->m_pCurrentPos++;
     }
     buffer[i] = 0x000;
-    pCurrentPos++;
+    pTengxunRTWebData->m_pCurrentPos++;
     i++;
-    lTotalRead += i;
+    pTengxunRTWebData->m_lCurrentPos += i;
     return true;
   }
   catch (exception e) {

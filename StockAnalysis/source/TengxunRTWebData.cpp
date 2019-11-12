@@ -5,12 +5,7 @@
 #include"thread.h"
 #include "TengxunRTWebData.h"
 
-bool CTengxunRTWebData::sm_fCreatedOnce = false; // 初始时没有生成过实例
-
 CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
-  if (sm_fCreatedOnce) ASSERT(0); // 如果已经生成过一个实例了，则报错
-  else sm_fCreatedOnce = true;
-
   m_strWebDataInquirePrefix = _T("http://qt.gtimg.cn/q=");
   m_strWebDataInquireSuffix = _T("");
 }
@@ -39,7 +34,7 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadTengxunData(m_pCurrentPos, m_lCurrentPos)) {
+  if (pRTData->ReadTengxunData(this)) {
     pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
 #ifdef DEBUG
     // 测试网易实时数据与新浪实时数据的同一性。
