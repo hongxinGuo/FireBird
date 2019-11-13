@@ -77,7 +77,7 @@ void CMarket::Reset(void)
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -1257,7 +1257,7 @@ CString CMarket::GetStockName(CString strStockCode) {
   try {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode))->GetStockName());
   }
-  catch (exception e) {
+  catch (exception & e) {
     TRACE("GetStockName函数异常\n");
     return _T("");
   }
@@ -1275,7 +1275,7 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
     lIndex = m_mapChinaMarketAStock.at(strStockCode);
     return true;
   }
-  catch (exception e) {
+  catch (exception & e) {
     TRACE("GetStockIndex函数异常\n");
     lIndex = -1;
     return false;
@@ -1293,7 +1293,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
   try {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
-  catch (exception e) {
+  catch (exception & e) {
     TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }
@@ -1303,7 +1303,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
   try {
     return m_vChinaMarketAStock.at(lIndex);
   }
-  catch (exception e) {
+  catch (exception & e) {
     TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }

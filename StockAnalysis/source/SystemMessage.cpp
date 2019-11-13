@@ -56,6 +56,6 @@ CSystemMessage::CSystemMessage()
   static int siCounter = 0;
   if (siCounter++ > 0) {
     TRACE("系统消息只允许一个实例\n");
-    gl_systemMessage.PushInformationMessage(_T("错误：系统不允许生成多个CMarket实例"));
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("错误：系统不允许生成多个CSystemMessage实例"));
   }
 }

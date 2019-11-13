@@ -10,7 +10,7 @@ CSystemTime::CSystemTime(void)
   static int siInstance = 0;
   if (siInstance++ > 0) {
     TRACE("系统时间只允许生成一个实例\n");
-    gl_systemMessage.PushInformationMessage(_T("系统时间只允许生成一个实例"));
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("系统时间只允许生成一个实例"));
   }
 
   m_lLastTradeDay = 0;
