@@ -961,7 +961,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     pNeteaseRTWebData->IncreaseCurrentPos();
 
     i = 0;
-    while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ':') && (*pNeteaseRTWebData->m_pCurrentPos != ' ')) {
+    while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ':')) {
       buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
@@ -993,7 +993,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
 
     i = 0;
     if (fFind) {
-      while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ',') && (*pNeteaseRTWebData->m_pCurrentPos != ' ')) {
+      while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ',')) {
         buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
         pNeteaseRTWebData->IncreaseCurrentPos();
       }
@@ -1006,13 +1006,9 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
     else {
-      while ((*pNeteaseRTWebData->m_pCurrentPos != ',') && (*pNeteaseRTWebData->m_pCurrentPos != '}') && (*pNeteaseRTWebData->m_pCurrentPos != ' ')) {
+      while ((*pNeteaseRTWebData->m_pCurrentPos != ',') && (*pNeteaseRTWebData->m_pCurrentPos != '}')) {
         buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
         pNeteaseRTWebData->IncreaseCurrentPos();
-      }
-      if (*pNeteaseRTWebData->m_pCurrentPos != ',') {
-        TRACE(_T("Î´Óöµ½ÕýÈ·×Ö·û','"));
-        throw exception();
       }
       buffer[i] = 0x000;
       strValue = buffer;
