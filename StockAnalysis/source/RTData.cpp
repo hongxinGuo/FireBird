@@ -195,7 +195,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
-      throw exception(_T("strHeader Error"));
+      throw exception();
     }
     pSinaRTWebData->IncreaseCurrentPos(12);
 
@@ -206,7 +206,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
-      throw exception(_T("Market Sign Error"));
+      throw exception();
     }
     pSinaRTWebData->IncreaseCurrentPos();
 
@@ -221,44 +221,44 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
       m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
       break;
     default:
-      throw exception(_T("Market Sign Error"));
+      throw exception();
     }
     lStockCode = atoi(buffer2);
     pSinaRTWebData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2); // 读入'="'
     if (buffer1[0] != '=') {
-      throw exception(_T("should be ="));
+      throw exception();
     }
     if (buffer1[1] != '"') {
-      throw exception(_T("should be \""));
+      throw exception();
     }
     pSinaRTWebData->IncreaseCurrentPos(2);
     strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2);
     if (buffer1[0] == '"') { // 没有数据
       if (buffer1[1] != ';') {
-        throw exception(_T("should be ;"));
+        throw exception();
       }
       pSinaRTWebData->IncreaseCurrentPos(2);
       if (*pSinaRTWebData->m_pCurrentPos != 0x00a) {
-        throw exception(_T("should be \n"));
+        throw exception();
       }
       pSinaRTWebData->IncreaseCurrentPos();
       m_fActive = false;
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
-      throw exception(_T("非活跃股票"));
+      throw exception();
     }
     if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
-      throw exception(_T("非活跃股票"));
+      throw exception();
     }
     pSinaRTWebData->IncreaseCurrentPos(2);
 
     int i = 2;
     while (*pSinaRTWebData->m_pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
       if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) {
-        throw exception(_T("非法字符"));
+        throw exception();
       }
       buffer1[i++] = *pSinaRTWebData->m_pCurrentPos;
       pSinaRTWebData->IncreaseCurrentPos();
@@ -270,71 +270,71 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lOpen)) {
-      throw exception(_T("Error reading Open"));
+      throw exception();
     }
     // 读入前收盘价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLastClose)) {
-      throw exception(_T("Error reading LastClose"));
+      throw exception();
     }
     // 读入当前价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lNew)) {
-      throw exception(_T("Error reading New"));
+      throw exception();
     }
     // 读入最高价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lHigh)) {
-      throw exception(_T("Error reading High"));
+      throw exception();
     }
     // 读入最低价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLow)) {
-      throw exception(_T("Error reading Low"));
+      throw exception();
     }
     // 读入竞买价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lBuy)) {
-      throw exception(_T("Error reading Buy"));
+      throw exception();
     }
     // 读入竞卖价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lSell)) {
-      throw exception(_T("Error reading Sell"));
+      throw exception();
     }
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaRTWebData, m_llVolume)) {
-      throw exception(_T("Error reading Volume"));
+      throw exception();
     }
     // 读入成交金额
     if (!ReadSinaOneValue(pSinaRTWebData, m_llAmount)) {
-      throw exception(_T("Error reading Amount"));
+      throw exception();
     }
     // 读入买一--买五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaRTWebData, m_lVBuy.at(j))) {
-        throw exception(_T("Error reading VBuy"));
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPBuy.at(j))) {
-        throw exception(_T("Error reading PBuy"));
+        throw exception();
       }
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaRTWebData, m_lVSell.at(j))) {
-        throw exception(_T("Error reading VSell"));
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPSell.at(j))) {
-        throw exception(_T("Error reading PSell"));
+        throw exception();
       }
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer1)) {
-      throw exception(_T("Error reading TransactionTime"));
+      throw exception();
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
-      throw exception(_T("Error reading TransactionTime"));
+      throw exception();
     }
     strTime += buffer3;
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
@@ -823,7 +823,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
       if (GetNeteaseIndexAndValue(pNeteaseRTWebData, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
-      else throw exception(_T("Error in GetNeteaseIndexAndValue"));
+      else throw exception();
     } while (*pNeteaseRTWebData->m_pCurrentPos != '}');  // 读至下一个'}'
     // 读过此'}'就结束了
     pNeteaseRTWebData->IncreaseCurrentPos();
