@@ -1,8 +1,5 @@
 #include "accessory.h"
 
-using namespace std;
-#include<iostream>
-
 time_t ConvertBufferToTime(CString strFormat, char* buffer) {
   time_t tt;
   tm tm_;
@@ -21,7 +18,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
     return tt;
   }
   catch (exception & e) {
-    cerr << "ConvertBufferToTime异常：" << e.what() << endl;
+    TRACE(_T("ConvertBufferToTime异常\n"));
     return 0;
   }
 }
@@ -44,7 +41,7 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
     return tt;
   }
   catch (exception & e) {
-    cerr << "ConvertStringToTime异常：" << e.what() << endl;
+    TRACE(_T("ConvertBufferToTime异常\n"));
     return 0;
   }
 }
@@ -80,7 +77,7 @@ CString ConvertValueToString(long lValue, int iDividend)
     return str;
   }
   catch (exception & e) {
-    cerr << "ConvertValuetoString异常：" << e.what() << endl;
+    TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
 }
@@ -98,7 +95,7 @@ CString ConvertValueToString(int iValue, int iDividend)
     return str;
   }
   catch (exception & e) {
-    cerr << "ConvertValuetoString异常：" << e.what() << endl;
+    TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
 }
@@ -115,7 +112,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
     return str;
   }
   catch (exception & e) {
-    cerr << "ConvertValuetoString异常：" << e.what() << endl;
+    TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
 }
@@ -132,7 +129,7 @@ CString ConvertValueToString(double dValue, int iDividend)
     return str;
   }
   catch (exception & e) {
-    cerr << "ConvertValuetoString异常：" << e.what() << endl;
+    TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
 }

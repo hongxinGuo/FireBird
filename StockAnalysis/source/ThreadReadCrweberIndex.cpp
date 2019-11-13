@@ -11,9 +11,6 @@
 #include"Market.h"
 #include "Thread.h"
 
-using namespace std;
-#include<iostream>
-
 UINT ThreadReadCrweberIndex(LPVOID) {
   CInternetSession session;
   CHttpFile* pFile = nullptr;
@@ -48,7 +45,7 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     gl_CrweberIndexWebData.SetWebDataReceived(true);
   }
   catch (exception & e) {
-    cerr << "net error" << e.what() << endl;
+    TRACE(_T("net error\n"));
     gl_CrweberIndexWebData.SetReadingSucceed(false);
     gl_CrweberIndexWebData.SetWebDataReceived(false);
   }

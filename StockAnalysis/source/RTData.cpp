@@ -4,9 +4,6 @@
 #include"RTData.h"
 #include"StockID.h"
 
-using namespace std;
-#include <iostream>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -358,7 +355,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     return true;
   }
   catch (exception & e) {
-    cerr << "ReadSinaData函数异常: " << e.what() << endl;
+    TRACE(_T("ReadSinaData异常\n"));
     return false;
   }
 }
@@ -424,7 +421,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer)
     return true;
   }
   catch (exception & e) {
-    cerr << "ReadSinaOneValue函数异常:" << e.what() << endl;
+    TRACE(_T("ReadSinaOneValue异常\n"));
     return false;
   }
 }
@@ -493,7 +490,7 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char*
     return true;
   }
   catch (exception & e) {
-    cerr << "ReadSinaOneValueExceptPeriod函数异常: " << e.what() << endl;
+    TRACE(_T("ReadSinaOneValueExceptPeriod异常\n"));
     return false;
   }
 }
@@ -785,7 +782,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     return true;
   }
   catch (exception & e) {
-    cerr << "ReadTengxunData函数异常:" << e.what() << endl;
+    TRACE(_T("ReadTengxunData异常\n"));
     return false;
   }
 }
@@ -843,16 +840,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
     return true;
   }
   catch (exception & e) {
-    char buffer2[400];
-    int i = 0;
-    while ((*pTestCurrentPos != '}') && (*pTestCurrentPos != '{') && (i < 399)) {
-      buffer2[i++] = *pTestCurrentPos++;
-    }
-    buffer2[i] = 0x000;
-    CString str;
-    str = buffer2;
-    cerr << "ReadNeteaseData函数异常: " << e.what() << endl;
-    cerr << str << endl;
+    TRACE(_T("ReadNeteaseData异常\n"));
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
     while ((*pNeteaseRTWebData->m_pCurrentPos != '{') && (pNeteaseRTWebData->m_lCurrentPos < pNeteaseRTWebData->m_lByteRead)) {
@@ -951,7 +939,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
   }
   catch (exception & e) {
-    cerr << "GetNeteaseSymbolIndex函数异常: " << e.what() << "参数：" << strSymbol << endl;
+    TRACE(_T("GetNeteaseSymbolIndex异常: %s\n"), strSymbol);
     lIndex = 0;
   }
   return lIndex;
@@ -977,15 +965,24 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
       buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
-    if (*pNeteaseRTWebData->m_pCurrentPos != '"') throw exception(_T("未遇到正确字符'\"'"));
+    if (*pNeteaseRTWebData->m_pCurrentPos != '"') {
+      TRACE(_T("未遇到正确字符'\"'"));
+      throw exception();
+    }
     buffer[i] = 0x000;
     strIndex = buffer;
     lIndex = GetNeteaseSymbolIndex(strIndex);
     // 跨过"\""字符
     pNeteaseRTWebData->IncreaseCurrentPos();
-    if (*pNeteaseRTWebData->m_pCurrentPos != ':') throw exception(_T("未遇到正确字符':'"));
+    if (*pNeteaseRTWebData->m_pCurrentPos != ':') {
+      TRACE(_T("未遇到正确字符':'"));
+      throw exception();
+    }
     pNeteaseRTWebData->IncreaseCurrentPos();
-    if (*pNeteaseRTWebData->m_pCurrentPos != ' ') throw exception(_T("未遇到正确字符' '"));
+    if (*pNeteaseRTWebData->m_pCurrentPos != ' ') {
+      TRACE(_T("未遇到正确字符' '"));
+      throw exception();
+    }
     pNeteaseRTWebData->IncreaseCurrentPos();
 
     if (*pNeteaseRTWebData->m_pCurrentPos == '"') {
@@ -1000,7 +997,10 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
         buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
         pNeteaseRTWebData->IncreaseCurrentPos();
       }
-      if (*pNeteaseRTWebData->m_pCurrentPos != '"') throw exception(_T("未遇到正确字符'\"'"));
+      if (*pNeteaseRTWebData->m_pCurrentPos != '"') {
+        TRACE(_T("未遇到正确字符'\"'"));
+        throw exception();
+      }
       buffer[i] = 0x000;
       strValue = buffer;
       pNeteaseRTWebData->IncreaseCurrentPos();
@@ -1010,23 +1010,17 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
         buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
         pNeteaseRTWebData->IncreaseCurrentPos();
       }
-      if (*pNeteaseRTWebData->m_pCurrentPos != ',') throw exception(_T("未遇到正确字符','"));
+      if (*pNeteaseRTWebData->m_pCurrentPos != ',') {
+        TRACE(_T("未遇到正确字符','"));
+        throw exception();
+      }
       buffer[i] = 0x000;
       strValue = buffer;
     }
     return true;
   }
   catch (exception & e) {
-    char buffer2[50];
-    int i = 0;
-    while ((pTestCurrentPos < pNeteaseRTWebData->m_pCurrentPos + 10) && (i < 45)) {
-      buffer2[i++] = *pTestCurrentPos++;
-    }
-    buffer2[i] = 0x000;
-    CString str;
-    str = buffer2;
-    cerr << "GetNeteaseIndexAndValue Exception: " << e.what() << endl;
-    cerr << str << endl;
+    TRACE(_T("GetNeteaseIndexAndValue Exception\n"));
     lIndex = 0;
     strValue = _T("");
     return false;
@@ -1151,7 +1145,7 @@ bool CRTData::SetValue(long lIndex, CString strValue)
     return true;
   }
   catch (exception & e) {
-    cerr << "SetValue: " << e.what() << endl;
+    TRACE(_T("SetValue异常\n"));
     return false;
   }
 }
