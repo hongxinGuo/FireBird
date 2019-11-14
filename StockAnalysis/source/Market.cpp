@@ -495,17 +495,6 @@ bool CMarket::DistributeSinaRTDataToProperStock(void)
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();
-#ifdef DEBUG
-    // 测试用
-    if (pRTData->GetStockCode().Compare(_T("sh600000")) == 0) {
-      gl_TESTpRTData = pRTData;
-      sprintf_s(buffer, "volume: %I64d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
-        pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
-      strVolume = _T("1  ");
-      strVolume += buffer;
-      gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
-    }
-#endif
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
     }
@@ -1006,7 +995,7 @@ bool CMarket::GetRTDataFromWeb(void) {
 
   if (SystemReady()) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
-    ASSERT(m_fUsingNeteaseRTDataReceiver == false);
+    //ASSERT(m_fUsingNeteaseRTDataReceiver == false);
     if (m_fUsingNeteaseRTDataReceiver) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。

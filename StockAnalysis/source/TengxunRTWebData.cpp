@@ -36,17 +36,6 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
 
   if (pRTData->ReadTengxunData(this)) {
     pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
-#ifdef DEBUG
-    // 测试网易实时数据与新浪实时数据的同一性。
-    if (gl_TESTpRTData != nullptr) {
-      if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
-        sprintf_s(buffer, "volume: %I64d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
-          pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
-        strVolume = _T("2  ");
-        strVolume += buffer;
-        gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
-      }
-    }
     if (gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) {
       CString str;
       if (pRTData->IsActive()) {
@@ -55,7 +44,7 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
           if (!pStock->IsActive()) {
             str = pStock->GetStockCode();
             str += _T(" 腾讯实时检测到不处于活跃状态");
-            gl_systemMessage.PushInnerSystemInformationMessage(str);
+            //gl_systemMessage.PushInnerSystemInformationMessage(str);
           }
         }
         else {
@@ -65,7 +54,6 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
         }
       }
     }
-#endif // DEBUG
     gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
     return true;
   }

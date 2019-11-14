@@ -195,7 +195,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
-      throw exception();
+      return false;
     }
     pSinaRTWebData->IncreaseCurrentPos(12);
 
@@ -206,7 +206,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
-      throw exception();
+      return false;
     }
     pSinaRTWebData->IncreaseCurrentPos();
 
@@ -221,44 +221,44 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
       m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
       break;
     default:
-      throw exception();
+      return false;
     }
     lStockCode = atoi(buffer2);
     pSinaRTWebData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2); // 读入'="'
     if (buffer1[0] != '=') {
-      throw exception();
+      return false;
     }
     if (buffer1[1] != '"') {
-      throw exception();
+      return false;
     }
     pSinaRTWebData->IncreaseCurrentPos(2);
     strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2);
     if (buffer1[0] == '"') { // 没有数据
       if (buffer1[1] != ';') {
-        throw exception();
+        return false;
       }
       pSinaRTWebData->IncreaseCurrentPos(2);
       if (*pSinaRTWebData->m_pCurrentPos != 0x00a) {
-        throw exception();
+        return false;
       }
       pSinaRTWebData->IncreaseCurrentPos();
       m_fActive = false;
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
-      throw exception();
+      return false;
     }
     if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
-      throw exception();
+      return false;
     }
     pSinaRTWebData->IncreaseCurrentPos(2);
 
     int i = 2;
     while (*pSinaRTWebData->m_pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
       if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) {
-        throw exception();
+        return false;
       }
       buffer1[i++] = *pSinaRTWebData->m_pCurrentPos;
       pSinaRTWebData->IncreaseCurrentPos();
@@ -270,71 +270,71 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lOpen)) {
-      throw exception();
+      return false;
     }
     // 读入前收盘价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLastClose)) {
-      throw exception();
+      return false;
     }
     // 读入当前价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lNew)) {
-      throw exception();
+      return false;
     }
     // 读入最高价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lHigh)) {
-      throw exception();
+      return false;
     }
     // 读入最低价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLow)) {
-      throw exception();
+      return false;
     }
     // 读入竞买价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lBuy)) {
-      throw exception();
+      return false;
     }
     // 读入竞卖价
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lSell)) {
-      throw exception();
+      return false;
     }
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaRTWebData, m_llVolume)) {
-      throw exception();
+      return false;
     }
     // 读入成交金额
     if (!ReadSinaOneValue(pSinaRTWebData, m_llAmount)) {
-      throw exception();
+      return false;
     }
     // 读入买一--买五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaRTWebData, m_lVBuy.at(j))) {
-        throw exception();
+        return false;
       }
       // 读入价格
       if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPBuy.at(j))) {
-        throw exception();
+        return false;
       }
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaRTWebData, m_lVSell.at(j))) {
-        throw exception();
+        return false;
       }
       // 读入价格
       if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPSell.at(j))) {
-        throw exception();
+        return false;
       }
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer1)) {
-      throw exception();
+      return false;
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
     if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
-      throw exception();
+      return false;
     }
     strTime += buffer3;
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
@@ -349,6 +349,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     pSinaRTWebData->m_lCurrentPos++;
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
+    // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
     if (IsDataTimeAtCurrentTradingDay()) m_fActive = true;
     else m_fActive = false;
 
@@ -774,7 +775,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     if (!IsDataTimeAtCurrentTradingDay()) { // 如果交易时间在一天前
       m_fActive = false;
     }
-    else if ((m_lNew == 0) && (m_llVolume == 0)) {
+    else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
       m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
     }
     else m_fActive = true;
@@ -810,6 +811,14 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
+  char bufferTest[2000];
+  char* pTestCurrentPos1 = pNeteaseRTWebData->m_pCurrentPos - 1;
+
+  int i = 0;
+  while ((*pTestCurrentPos != '}') && (i < 1900)) {
+    bufferTest[i++] = *pTestCurrentPos++;
+  }
+  bufferTest[i] = 0x000;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -832,7 +841,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
       m_fActive = false;
     }
     else {
-      if ((m_lNew == 0) && (m_llVolume == 0)) {
+      if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
         m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
       }
       else m_fActive = true;
@@ -951,14 +960,21 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
   int i = 0;
   CString strIndex;
   bool fFind = false;
-  char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
+  char* pTestCurrentPos;
   char* p = pNeteaseRTWebData->m_pCurrentPos - 1;
+  char bufferTest[100];
 
   try {
     while (*pNeteaseRTWebData->m_pCurrentPos != '"') {
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
     pNeteaseRTWebData->IncreaseCurrentPos();
+
+    pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
+    while ((*pTestCurrentPos != '}') && (*pTestCurrentPos != ',') && (i < 99)) {
+      bufferTest[i++] = *pTestCurrentPos++;
+    }
+    bufferTest[i] = 0x000;
 
     i = 0;
     while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ':')) {
@@ -967,7 +983,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     }
     if (*pNeteaseRTWebData->m_pCurrentPos != '"') {
       TRACE(_T("未遇到正确字符'\"'"));
-      throw exception();
+      return false;
     }
     buffer[i] = 0x000;
     strIndex = buffer;
@@ -976,12 +992,12 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     pNeteaseRTWebData->IncreaseCurrentPos();
     if (*pNeteaseRTWebData->m_pCurrentPos != ':') {
       TRACE(_T("未遇到正确字符':'"));
-      throw exception();
+      return false;
     }
     pNeteaseRTWebData->IncreaseCurrentPos();
     if (*pNeteaseRTWebData->m_pCurrentPos != ' ') {
       TRACE(_T("未遇到正确字符' '"));
-      throw exception();
+      return false;
     }
     pNeteaseRTWebData->IncreaseCurrentPos();
 
@@ -999,7 +1015,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
       }
       if (*pNeteaseRTWebData->m_pCurrentPos != '"') {
         TRACE(_T("未遇到正确字符'\"'"));
-        throw exception();
+        return false;
       }
       buffer[i] = 0x000;
       strValue = buffer;

@@ -275,25 +275,22 @@ namespace StockAnalysisTest {
       ReadNeteaseOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
+      m_pData = m_NeteaseRTWebData.GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
       m_pData[lLength] = 0x000;
-      m_pCurrentPos = m_pData;
-      m_lCountPos = 0;
+      m_NeteaseRTWebData.ResetCurrentPos();
     }
 
     void TearDown(void) override {
       // clearup
-      delete m_pData;
     }
 
   public:
     int m_iCount;
     char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos = 0;
+    CNeteaseRTWebData m_NeteaseRTWebData;
     CRTData m_RTData;
   };
 
@@ -323,12 +320,11 @@ namespace StockAnalysisTest {
       NeteaseRTDataIndexValue* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pData = new char[m_lStringLength + 1];
+      m_pData = m_NeteaseRTWebData.GetBufferAddr();
       for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
-      m_pCurrentPos = m_pData;
-      m_lCountPos = 0;
+      m_NeteaseRTWebData.ResetCurrentPos();
       m_lIndex = m_RTData.GetNeteaseSymbolIndex(pData->m_strIndex);
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -349,18 +345,16 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
-      delete m_pData;
     }
 
   public:
     int m_iCount;
     char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos;
     long m_lStringLength;
     long m_lIndex;
     long m_lValue;
     CString m_strValue;
+    CNeteaseRTWebData m_NeteaseRTWebData;
     CRTData m_RTData;
   };
 
