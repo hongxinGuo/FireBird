@@ -813,6 +813,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
   char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
   char bufferTest[2000];
   char* pTestCurrentPos1 = pNeteaseRTWebData->m_pCurrentPos - 1;
+  bool fFind = false;
 
   int i = 0;
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
@@ -823,19 +824,25 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
   try {
     m_fActive = false;    // 初始状态为无效数据
     // 跨过前缀字符（"0601872")，直接使用其后的数据
-    while (*pNeteaseRTWebData->m_pCurrentPos != '{') {
-      pNeteaseRTWebData->IncreaseCurrentPos();
+    while (!fFind) {
+      if ((*pNeteaseRTWebData->m_pCurrentPos == '\"')
+        && (*(pNeteaseRTWebData->m_pCurrentPos + 1) == ':')
+        && ((*pNeteaseRTWebData->m_pCurrentPos + 2) == '{')) {
+        fFind = true;
+        pNeteaseRTWebData->IncreaseCurrentPos(3);
+      }
+      else pNeteaseRTWebData->IncreaseCurrentPos();
     }
-    ASSERT(*pNeteaseRTWebData->m_pCurrentPos == '{');
-    pNeteaseRTWebData->IncreaseCurrentPos();
     do {
       if (GetNeteaseIndexAndValue(pNeteaseRTWebData, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
       else throw exception();
-    } while (*pNeteaseRTWebData->m_pCurrentPos != '}');  // 读至下一个'}'
+    } while ((lIndex != 63) || (*pNeteaseRTWebData->m_pCurrentPos == '}'));  // 读至turnover(63)或者遇到字符'}'
     // 读过此'}'就结束了
-    pNeteaseRTWebData->IncreaseCurrentPos();
+    if (*pNeteaseRTWebData->m_pCurrentPos == '}') {
+      pNeteaseRTWebData->IncreaseCurrentPos();
+    }
 
     if (!IsDataTimeAtCurrentTradingDay()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;

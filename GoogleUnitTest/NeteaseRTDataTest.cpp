@@ -266,8 +266,11 @@ namespace StockAnalysisTest {
     CString m_strData;
   };
 
-  // 成功
-  ReadNeteaseOneValueData rdata1(1, _T("11.050~"));
+  ReadNeteaseOneValueData neteasedata1(1, _T("\"code\": \"浦发银行\","));
+  ReadNeteaseOneValueData neteasedata2(2, _T("\"turnover\": 12345}"));
+  ReadNeteaseOneValueData neteasedata3(3, _T("\"turnover\","));
+  ReadNeteaseOneValueData neteasedata4(4, _T("11.050~"));
+  ReadNeteaseOneValueData neteasedata5(1, _T("11.050~"));
 
   class ReadNeteaseOneValueTest : public::testing::TestWithParam<ReadNeteaseOneValueData*> {
   protected:
@@ -295,8 +298,32 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
-    testing::Values(&rdata1
+    testing::Values(&neteasedata1, &neteasedata2, &neteasedata3
     ));
+
+  TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
+    CString strValue;
+    long lIndex = 0;
+    bool fSucceed = m_RTData.GetNeteaseIndexAndValue(&m_NeteaseRTWebData, lIndex, strValue);
+    switch (m_iCount) {
+    case 1:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_STREQ("浦发银行", strValue);
+      break;
+    case 2:
+      EXPECT_TRUE(fSucceed);
+      EXPECT_EQ(lIndex, 63);
+      EXPECT_STREQ(strValue, "12345");
+      break;
+    case 3:
+      EXPECT_FALSE(fSucceed);
+      EXPECT_EQ(lIndex, 63);
+      EXPECT_STREQ(strValue, _T(""));
+      break;
+    default:
+      break;
+    }
+  }
 
   struct NeteaseRTDataIndexValue {
     NeteaseRTDataIndexValue(int count, CString Data, CString strIndex, long lValue) {
