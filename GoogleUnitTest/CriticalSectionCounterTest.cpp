@@ -2,7 +2,7 @@
 
 #include"CriticalSectionCounter.h"
 
-namespace StockAanlysisTest {
+namespace StockAnalysisTest {
   TEST(CriticalSectionCounter, TestInitinialize) {
     CCriticalSectionCounter CCCounter;
     EXPECT_FALSE(CCCounter.SecceedDecreasingCounter());

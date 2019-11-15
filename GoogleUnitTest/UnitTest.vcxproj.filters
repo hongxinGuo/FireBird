@@ -28,18 +28,15 @@
     <Filter Include="Test源文件\工作线程">
       <UniqueIdentifier>{226f4191-deca-4101-8419-583cc71eb53b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\实现类\RTData">
+      <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="DayLineTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalysisGuaDanTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="CalculatingRTDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -63,9 +60,6 @@
     <ClCompile Include="StockCalculatedInfoTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="RTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
-    </ClCompile>
     <ClCompile Include="SinaRTWebDataTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
     </ClCompile>
@@ -77,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="CrweberIndexWebDataTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunRTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="CriticalSectionBoolTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
@@ -99,8 +90,20 @@
     <ClCompile Include="CriticalSectionCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="RTDataTest.cpp">
+      <Filter>Test源文件\实现类\RTData</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTDataTest.cpp">
+      <Filter>Test源文件\实现类\RTData</Filter>
+    </ClCompile>
     <ClCompile Include="NeteaseRTDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
+      <Filter>Test源文件\实现类\RTData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculatingRTDataTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="AnalysisGuaDanTest.cpp">
+      <Filter>Test源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

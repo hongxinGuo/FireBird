@@ -5,7 +5,7 @@
 
 #include"accessory.h"
 
-namespace StockAnalysicTest {
+namespace StockAnalysisTest {
   TEST(TestGetDefaultSchemaConnection, GetDefaultSchemaAnalysisTest) {
     EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
     EXPECT_STREQ(GetDefaultSchemaConnect(), _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"));

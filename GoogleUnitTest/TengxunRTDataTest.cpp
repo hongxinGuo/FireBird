@@ -7,7 +7,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  TEST(CStockRTDataTest, TestTengxunInitialize) {
+  TEST(CRTDataTest, TestTengxunInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     CRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
@@ -165,14 +165,14 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestTengxunRTData, CalculateTengxunRTDataTest, testing::Values(&Data1, &Data2, &Data3,
+  INSTANTIATE_TEST_CASE_P(CRTDataTest, CalculateTengxunRTDataTest, testing::Values(&Data1, &Data2, &Data3,
     &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
     &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
     &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
     &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
   ));
 
-  TEST_P(CalculateTengxunRTDataTest, TestTengxunRTData) {
+  TEST_P(CalculateTengxunRTDataTest, TestReadTengxunData) {
     bool fSucceed = m_RTData.ReadTengxunData(&m_TengxunRTWebData);
     time_t ttime;
     tm tm_;

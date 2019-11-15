@@ -8,11 +8,9 @@ public:
   ~CSystemTime(void);
 
   time_t Gett_time(void) { return m_ttime; }
-  void Sett_time(time_t Time) noexcept;
 
   long GetDay(void) noexcept { return m_lToday; }
   long GetTime(void) noexcept { return m_lTime; }
-  void SetTime(long lTime) noexcept { m_lTime = lTime; } // 此函数只用于测试
   long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lLastTradeDay; }
   long GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }
 
@@ -25,6 +23,11 @@ public:
 
   bool IsWorkingDay(void);
   bool IsWorkingDay(CTime timeCurrent);
+
+public:
+  // 测试用函数
+  void Sett_time(time_t Time) noexcept;
+  void SetTime(long lTime); // 此函数只用于测试
 
 protected:
   long m_lToday; // 今日日期。格式为：19990102

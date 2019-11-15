@@ -35,6 +35,10 @@ void CSystemTime::Sett_time(time_t ttime) noexcept {
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
+void CSystemTime::SetTime(long lTime)
+{
+}
+
 void CSystemTime::CalculateTime(void) noexcept
 {
   time(&m_ttime);

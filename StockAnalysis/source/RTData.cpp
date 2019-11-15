@@ -1175,7 +1175,6 @@ bool CRTData::IsDataTimeAtCurrentTradingDay(void) {
   if (m_time < (gl_systemTime.Gett_time() - i * 3600 * 24)) {
     return false;
   }
-  else {
-    return true;
-  }
+  else if (m_time > gl_systemTime.Gett_time() + 3600) return false;
+  else return true;
 }

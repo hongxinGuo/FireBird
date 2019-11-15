@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  TEST(CStockRTDataTest, TestNeteaseInitialize) {
+  TEST(CRTDataTest, TestNeteaseInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     CRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
