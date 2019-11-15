@@ -77,7 +77,7 @@ void CMarket::Reset(void)
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -995,7 +995,8 @@ bool CMarket::GetRTDataFromWeb(void) {
 
   if (SystemReady()) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
-    //ASSERT(m_fUsingNeteaseRTDataReceiver == false);
+    // 网易实时数据有时还发送没有要求过的股票，不知为何。
+    ASSERT(m_fUsingNeteaseRTDataReceiver == false);
     if (m_fUsingNeteaseRTDataReceiver) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。

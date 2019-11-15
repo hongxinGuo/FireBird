@@ -47,6 +47,7 @@ void CRTData::Reset(void) {
   m_mapNeteaseSymbolToIndex[_T("low")] = 13;
   m_mapNeteaseSymbolToIndex[_T("price")] = 14;
   m_mapNeteaseSymbolToIndex[_T("volume")] = 15;
+  m_mapNeteaseSymbolToIndex[_T("precloseioev")] = 16;
   m_mapNeteaseSymbolToIndex[_T("bid1")] = 20;
   m_mapNeteaseSymbolToIndex[_T("bid2")] = 21;
   m_mapNeteaseSymbolToIndex[_T("bid3")] = 22;
@@ -825,9 +826,9 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
     m_fActive = false;    // 初始状态为无效数据
     // 跨过前缀字符（"0601872")，直接使用其后的数据
     while (!fFind) {
-      if ((*pNeteaseRTWebData->m_pCurrentPos == '\"')
+      if ((*pNeteaseRTWebData->m_pCurrentPos == '"')
         && (*(pNeteaseRTWebData->m_pCurrentPos + 1) == ':')
-        && ((*pNeteaseRTWebData->m_pCurrentPos + 2) == '{')) {
+        && (*(pNeteaseRTWebData->m_pCurrentPos + 2) == '{')) {
         fFind = true;
         pNeteaseRTWebData->IncreaseCurrentPos(3);
       }
@@ -838,7 +839,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
         SetValue(lIndex, strValue);
       }
       else throw exception();
-    } while ((lIndex != 63) || (*pNeteaseRTWebData->m_pCurrentPos == '}'));  // 读至turnover(63)或者遇到字符'}'
+    } while ((lIndex != 63) && (*pNeteaseRTWebData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
     // 读过此'}'就结束了
     if (*pNeteaseRTWebData->m_pCurrentPos == '}') {
       pNeteaseRTWebData->IncreaseCurrentPos();
@@ -984,7 +985,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     bufferTest[i] = 0x000;
 
     i = 0;
-    while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ':')) {
+    while ((*pNeteaseRTWebData->m_pCurrentPos != '"') && (*pNeteaseRTWebData->m_pCurrentPos != ':') && (*pNeteaseRTWebData->m_pCurrentPos != ',')) {
       buffer[i++] = *pNeteaseRTWebData->m_pCurrentPos;
       pNeteaseRTWebData->IncreaseCurrentPos();
     }

@@ -113,6 +113,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("low")), 13);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("price")), 14);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("volume")), 15);
+    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("precloseioev")), 16);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid1")), 20);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid2")), 21);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("bid3")), 22);
@@ -167,6 +168,7 @@ namespace StockAnalysisTest {
   NeteaseRTData neteaseData13(13, _T("low"), 13, _T("5.45"));
   NeteaseRTData neteaseData14(14, _T("price"), 14, _T("5.55"));
   NeteaseRTData neteaseData15(15, _T("volume"), 15, _T("10101010"));
+  NeteaseRTData neteaseData16(16, _T("precloseioev"), 16, _T("10.123"));
   NeteaseRTData neteaseData20(20, _T("bid1"), 20, _T("5.54"));
   NeteaseRTData neteaseData21(21, _T("bid2"), 21, _T("5.53"));
   NeteaseRTData neteaseData22(22, _T("bid3"), 22, _T("5.52"));
@@ -291,6 +293,8 @@ namespace StockAnalysisTest {
     case 15: // volume
       m_RTData.SetValue(lIndex, m_strValue);
       EXPECT_EQ(m_RTData.GetVolume(), 10101010);
+      break;
+    case 16: // precloseioev
       break;
     case 20: // bid1
       m_RTData.SetValue(lIndex, m_strValue);
