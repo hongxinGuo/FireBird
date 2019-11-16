@@ -858,10 +858,12 @@ bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLi
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   pDayLine->SetAmount(atoll(buffer2));
 
+  // 总市值的数据有两种形式，需要程序判定
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetTotalValue(atoll(buffer2)); // 总市值的单位为：元
+  pDayLine->SetTotalValue(buffer2); // 总市值的单位为：元
 
   // 流通市值不是用逗号结束，故而不能使用ReadOneValue函数
+  // 流通市值的数据形式有两种，故而需要程序判定。
   i = 0;
   while (*pCurrentPos != 0x00d) {
     if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false; // 数据出错，放弃载入
@@ -871,7 +873,7 @@ bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLi
   pCurrentPos++;
   iCount++;
   buffer2[i] = 0x000;
-  pDayLine->SetCurrentValue(atoll(buffer2)); // 流通市值的单位为：元。
+  pDayLine->SetCurrentValue(buffer2); // 流通市值的单位为：元。
   // \r后面紧跟着应该是\n
   if (*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
   iCount++;

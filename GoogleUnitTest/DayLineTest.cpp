@@ -119,6 +119,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetTotalValue(), 0);
     dl.SetTotalValue(300300300300300300);
     EXPECT_EQ(dl.GetTotalValue(), 300300300300300300);
+    CString str = _T("3.13e+11");
+    dl.SetTotalValue(str.GetBuffer());
+    EXPECT_DOUBLE_EQ(dl.GetTotalValue(), 3.13e+11);
   }
 
   TEST(CDayLineTest, TestGetCurrentValue) {
@@ -126,6 +129,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetCurrentValue(), 0);
     dl.SetCurrentValue(400400400400400400);
     EXPECT_EQ(dl.GetCurrentValue(), 400400400400400400);
+    CString str = _T("3.15e+11");
+    dl.SetCurrentValue(str.GetBuffer());
+    EXPECT_DOUBLE_EQ(dl.GetCurrentValue(), 3.15e+11);
   }
 
   TEST(CDayLineTest, TestGetRelativeStrong) {

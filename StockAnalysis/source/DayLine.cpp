@@ -160,3 +160,36 @@ void CDayLine::Reset(void) {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
 }
+
+//
+void CDayLine::SetTotalValue(char* buffer)
+{
+  bool fFoundPoint = false;
+  int i = 0;
+
+  while ((!fFoundPoint) && (buffer[i] != 0x000)) {
+    if (buffer[i] == '.') fFoundPoint = true;
+    else i++;
+  }
+
+  if (fFoundPoint) { // 此字符串为浮点类型
+    m_lTotalValue = atof(buffer);
+  }
+  else m_lTotalValue = atoll(buffer);
+}
+
+void CDayLine::SetCurrentValue(char* buffer)
+{
+  bool fFoundPoint = false;
+  int i = 0;
+
+  while ((!fFoundPoint) && (buffer[i] != 0x000)) {
+    if (buffer[i] == '.') fFoundPoint = true;
+    else i++;
+  }
+
+  if (fFoundPoint) { // 此字符串为浮点类型
+    m_lTotalValue = atof(buffer);
+  }
+  else m_lTotalValue = atoll(buffer);
+}
