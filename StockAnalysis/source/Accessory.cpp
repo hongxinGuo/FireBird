@@ -53,8 +53,7 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
 // 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
-CString GetDefaultSchemaConnect()
-{
+CString GetDefaultSchemaConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"); // mysqlTest操作的是TestStock Schema
@@ -65,8 +64,7 @@ CString GetDefaultSchemaConnect()
   }
 }
 
-CString ConvertValueToString(long lValue, int iDividend)
-{
+CString ConvertValueToString(long lValue, int iDividend) {
   char buffer[50];
   double d = ((double)lValue) / iDividend;
   CString str;
@@ -82,8 +80,7 @@ CString ConvertValueToString(long lValue, int iDividend)
   }
 }
 
-CString ConvertValueToString(int iValue, int iDividend)
-{
+CString ConvertValueToString(int iValue, int iDividend) {
   char buffer[50];
   double d = ((double)iValue) / iDividend;
   CString str;
@@ -100,8 +97,7 @@ CString ConvertValueToString(int iValue, int iDividend)
   }
 }
 
-CString ConvertValueToString(INT64 iValue, int iDividend)
-{
+CString ConvertValueToString(INT64 iValue, int iDividend) {
   char buffer[50];
   double d = ((double)iValue) / iDividend;
   CString str;
@@ -117,8 +113,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend)
   }
 }
 
-CString ConvertValueToString(double dValue, int iDividend)
-{
+CString ConvertValueToString(double dValue, int iDividend) {
   char buffer[50];
   double d = dValue / iDividend;
   CString str;
@@ -131,5 +126,25 @@ CString ConvertValueToString(double dValue, int iDividend)
   catch (exception & e) {
     TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
+  }
+}
+
+double GetValue(char* buffer) {
+  try {
+    return atof(buffer);
+  }
+  catch (exception & e) {
+    TRACE(_T("CDayline::SetValue exception\n"));
+    return(0.0);
+  }
+}
+
+double GetValue(CString strBuffer) {
+  try {
+    return atof(strBuffer);
+  }
+  catch (exception & e) {
+    TRACE(_T("CDayline::SetValue exception\n"));
+    return(0.0);
   }
 }

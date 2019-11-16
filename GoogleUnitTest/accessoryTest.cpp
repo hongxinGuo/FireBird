@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
-    &Data104, &Data105, &Data106));
+                                                                                            &Data104, &Data105, &Data106));
 
   TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
     time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
@@ -128,7 +128,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1,
-    &Data2, &Data3, &Data4, &Data5));
+                                                                                                &Data2, &Data3, &Data4, &Data5));
 
   TEST_P(ConvertDoubleToStringTest, TestDouble) {
     CString str = ConvertValueToString(dValue, lDividend);
@@ -186,7 +186,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestConvertLongToString, ConvertLongToStringTest, testing::Values(&Data10, &Data11,
-    &Data12, &Data13, &Data14, &Data15));
+                                                                                            &Data12, &Data13, &Data14, &Data15));
 
   TEST_P(ConvertLongToStringTest, TestLong) {
     CString str = ConvertValueToString(lValue, lDividend);
@@ -244,7 +244,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestConvertIntegerToString, ConvertIntegerToStringTest, testing::Values(&Data20, &Data21,
-    &Data22, &Data23, &Data24, &Data25));
+                                                                                                  &Data22, &Data23, &Data24, &Data25));
 
   TEST_P(ConvertIntegerToStringTest, TestInteger) {
     CString str = ConvertValueToString(iValue, lDividend);
@@ -302,10 +302,70 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestConvertINT64ToString, ConvertINT64ToStringTest, testing::Values(&Data40, &Data41,
-    &Data42, &Data43, &Data44, &Data45));
+                                                                                              &Data42, &Data43, &Data44, &Data45));
 
   TEST_P(ConvertINT64ToStringTest, TestINT64) {
     CString str = ConvertValueToString(iValue, lDividend);
     EXPECT_STREQ(str, strValue);
+  }
+
+  struct StructGetValue {
+    StructGetValue(int iCount, double dValue, CString strValue) {
+      m_iCount = iCount;
+      m_dValue = dValue;
+      m_strValue = strValue;
+    }
+
+  public:
+    int m_iCount;
+    double m_dValue;
+    CString m_strValue;
+  };
+
+  StructGetValue GetValueData40(1, 10234, _T("10234.000"));
+  StructGetValue GetValueData41(2, -11023, _T("-11023.000"));
+  StructGetValue GetValueData42(3, 12102346, _T("12102346.000"));
+  StructGetValue GetValueData43(4, -10.234, _T("-10.234"));
+  StructGetValue GetValueData44(5, 110.234, _T("110.234"));
+  StructGetValue GetValueData45(6, -1210.235e+11, _T("-1210.235e+11"));
+  // 下面是错误输入，输出为0.0
+  StructGetValue GetValueData46(101, -121, _T("-121f0.235e+11"));
+  StructGetValue GetValueData47(102, -1210.23, _T("-1210.23.5e+11"));
+  StructGetValue GetValueData48(103, 0.0, _T("abcde"));
+
+  class GetValueTest : public::testing::TestWithParam<StructGetValue*>
+  {
+  protected:
+    void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      StructGetValue* pData = GetParam();
+      iCount = pData->m_iCount;
+      dValue = pData->m_dValue;
+      strValue = pData->m_strValue;
+    }
+
+    void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    int iCount;
+    double dValue;
+    CString strValue;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestGetValue1, GetValueTest, testing::Values(&GetValueData40, &GetValueData41,
+                                                                       &GetValueData42, &GetValueData43,
+                                                                       &GetValueData44, &GetValueData45,
+                                                                       &GetValueData46, &GetValueData47));
+
+  TEST_P(GetValueTest, TestGetValue) {
+    double d = GetValue(strValue);
+    if (iCount < 100) {
+      EXPECT_DOUBLE_EQ(d, dValue);
+    }
+    else {
+      EXPECT_DOUBLE_EQ(dValue, d);
+    }
   }
 }

@@ -15,13 +15,13 @@ CDayLine::CDayLine(CDayLine& oneDl) {
   m_lHigh = oneDl.m_lHigh;
   m_lLow = oneDl.m_lLow;
   m_lClose = oneDl.m_lClose;
-  m_lVolume = oneDl.m_lVolume;
-  m_lAmount = oneDl.m_lAmount;
+  m_llVolume = oneDl.m_llVolume;
+  m_llAmount = oneDl.m_llAmount;
   m_fUpDown = oneDl.m_fUpDown;
   m_dUpDownRate = oneDl.m_dUpDownRate;
   m_fChangeHandRate = oneDl.m_fChangeHandRate;
-  m_lTotalValue = oneDl.m_lTotalValue;
-  m_lCurrentValue = oneDl.m_lCurrentValue;
+  m_llTotalValue = oneDl.m_llTotalValue;
+  m_llCurrentValue = oneDl.m_llCurrentValue;
   m_lTransactionNumber = oneDl.m_lTransactionNumber;
   m_lTransactionNumberBelow5000 = oneDl.m_lTransactionNumberBelow5000;
   m_lTransactionNumberBelow50000 = oneDl.m_lTransactionNumberBelow50000;
@@ -58,12 +58,12 @@ void CDayLine::operator =(CDayLine& oneDl) {
   m_lHigh = oneDl.m_lHigh;
   m_lLow = oneDl.m_lLow;
   m_lClose = oneDl.m_lClose;
-  m_lVolume = oneDl.m_lVolume;
-  m_lAmount = oneDl.m_lAmount;
+  m_llVolume = oneDl.m_llVolume;
+  m_llAmount = oneDl.m_llAmount;
   m_dUpDownRate = oneDl.m_dUpDownRate;
   m_fChangeHandRate = oneDl.m_fChangeHandRate;
-  m_lTotalValue = oneDl.m_lTotalValue;
-  m_lCurrentValue = oneDl.m_lCurrentValue;
+  m_llTotalValue = oneDl.m_llTotalValue;
+  m_llCurrentValue = oneDl.m_llCurrentValue;
   m_lTransactionNumber = oneDl.m_lTransactionNumber;
   m_lTransactionNumberBelow5000 = oneDl.m_lTransactionNumberBelow5000;
   m_lTransactionNumberBelow50000 = oneDl.m_lTransactionNumberBelow50000;
@@ -93,8 +93,7 @@ void CDayLine::operator =(CDayLine& oneDl) {
   m_d120DayRS = oneDl.m_d120DayRS;
 }
 
-void CDayLine::SetData(CSetDayLine* pDayLine)
-{
+void CDayLine::SetData(CSetDayLine* pDayLine) {
   m_lDay = pDayLine->m_Time;
   m_wMarket = pDayLine->m_Market;
   m_lLastClose = atof(pDayLine->m_LastClose) * 1000;
@@ -102,18 +101,17 @@ void CDayLine::SetData(CSetDayLine* pDayLine)
   m_lHigh = atof(pDayLine->m_High) * 1000;
   m_lLow = atof(pDayLine->m_Low) * 1000;
   m_lClose = atof(pDayLine->m_Close) * 1000;
-  m_lVolume = atoll(pDayLine->m_Volume);
-  m_lAmount = atoll(pDayLine->m_Amount);
+  m_llVolume = atoll(pDayLine->m_Volume);
+  m_llAmount = atoll(pDayLine->m_Amount);
   m_fUpDown = atof(pDayLine->m_UpAndDown);
   m_dUpDownRate = atof(pDayLine->m_UpDownRate);
   m_fChangeHandRate = atof(pDayLine->m_ChangeHandRate);
-  m_lTotalValue = atoll(pDayLine->m_TotalValue);
-  m_lCurrentValue = atoll(pDayLine->m_CurrentValue);
+  m_llTotalValue = atoll(pDayLine->m_TotalValue);
+  m_llCurrentValue = atoll(pDayLine->m_CurrentValue);
   m_dRelativeStrong = atof(pDayLine->m_RelativeStrong);
 }
 
-void CDayLine::SetData(CSetDayLineInfo* pDayLineInfo)
-{
+void CDayLine::SetData(CSetDayLineInfo* pDayLineInfo) {
   m_lTransactionNumber = atol(pDayLineInfo->m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(pDayLineInfo->m_TransactionNumberBelow5000);
   m_lTransactionNumberBelow50000 = atol(pDayLineInfo->m_TransactionNumberBelow50000);
@@ -141,11 +139,11 @@ void CDayLine::Reset(void) {
   m_time = 0;
   m_wMarket = 0;
   m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0;							// 收盘价
-  m_lVolume = 0;
-  m_lAmount = 0;
+  m_llVolume = 0;
+  m_llAmount = 0;
   m_fUpDown = 0;
   m_dUpDownRate = 0;
-  m_lCurrentValue = m_lTotalValue = 0;
+  m_llCurrentValue = m_llTotalValue = 0;
   m_fChangeHandRate = 0;
 
   m_lTransactionNumber = 0; //
@@ -159,37 +157,4 @@ void CDayLine::Reset(void) {
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
-}
-
-//
-void CDayLine::SetTotalValue(char* buffer)
-{
-  bool fFoundPoint = false;
-  int i = 0;
-
-  while ((!fFoundPoint) && (buffer[i] != 0x000)) {
-    if (buffer[i] == '.') fFoundPoint = true;
-    else i++;
-  }
-
-  if (fFoundPoint) { // 此字符串为浮点类型
-    m_lTotalValue = atof(buffer);
-  }
-  else m_lTotalValue = atoll(buffer);
-}
-
-void CDayLine::SetCurrentValue(char* buffer)
-{
-  bool fFoundPoint = false;
-  int i = 0;
-
-  while ((!fFoundPoint) && (buffer[i] != 0x000)) {
-    if (buffer[i] == '.') fFoundPoint = true;
-    else i++;
-  }
-
-  if (fFoundPoint) { // 此字符串为浮点类型
-    m_lCurrentValue = atof(buffer);
-  }
-  else m_lTotalValue = atoll(buffer);
 }

@@ -37,8 +37,7 @@ CMarket::CMarket(void) : CObject() {
 CMarket::~CMarket() {
 }
 
-void CMarket::Reset(void)
-{
+void CMarket::Reset(void) {
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fLoadedSelectedStock = false;
@@ -90,13 +89,11 @@ void CMarket::Reset(void)
 }
 
 #ifdef _DEBUG
-void CMarket::AssertValid() const
-{
+void CMarket::AssertValid() const {
   CObject::AssertValid();
 }
 
-void CMarket::Dump(CDumpContext& dc) const
-{
+void CMarket::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 #endif //_DEBUG
@@ -107,8 +104,7 @@ void CMarket::Dump(CDumpContext& dc) const
 // 这个函数需要其他全局变量初始化的支持，故而gl_ChinaStockMarket实例需要放在所有全局变量的最后。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateTotalStockContainer(void)
-{
+bool CMarket::CreateTotalStockContainer(void) {
   char buffer[10]{};
 
   CStockPtr pStock = nullptr;
@@ -327,18 +323,18 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   case __SHANGHAI_3BAN__: // 上海3板
   case __SHANGHAI_KECHUANG__: // 上海科创板
   case __SHANGHAI_B_SHARE__: // 上海B股
-    str += '0'; // 上海市场标识
-    break;
+  str += '0'; // 上海市场标识
+  break;
   case __SHENZHEN_MARKET__: // 深圳市场？
   case __SHENZHEN_INDEX__: // 深圳指数
   case __SHENZHEN_3BAN__: // 山镇中小板
   case __SHENZHEN_B_SHARE__: // 深圳B股
   case __SHENZHEN_CHUANGYE__: // 深圳创业板
   case __SHENZHEN_MAIN__: // 深圳主板
-    str += '1'; // 深圳市场标识
-    break;
+  str += '1'; // 深圳市场标识
+  break;
   default: // 越界
-    ASSERT(0);
+  ASSERT(0);
   }
   char buffer[30];
   str += pID->GetStockCode().Right(6); // 取股票代码的右边六位数字。
@@ -486,8 +482,7 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::DistributeSinaRTDataToProperStock(void)
-{
+bool CMarket::DistributeSinaRTDataToProperStock(void) {
   CStockPtr pStock;
   const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
   CString strVolume;
@@ -529,8 +524,7 @@ bool CMarket::DistributeSinaRTDataToProperStock(void)
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
-{
+int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock) {
   //ASSERT(SystemReady());
   return GetInquiringStr(str, m_itSinaStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
@@ -540,14 +534,12 @@ int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSki
 // 生成每次查询腾讯实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-int CMarket::GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
-{
+int CMarket::GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock) {
   ASSERT(SystemReady());
   return GetInquiringStr(str, m_itTengxunStock, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
-int CMarket::GetNeteaseInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock)
-{
+int CMarket::GetNeteaseInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock) {
   CString strStockCode, strRight6, strLeft2, strPrefix;
   if (fSkipUnactiveStock) StepToNextActiveStockIT(m_itNeteaseStock);
   if (m_itNeteaseStock == m_vChinaMarketAStock.end()) {
@@ -626,8 +618,7 @@ bool CMarket::StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessRTData(void)
-{
+bool CMarket::ProcessRTData(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
       pStock->ProcessRTData();
@@ -636,8 +627,7 @@ bool CMarket::ProcessRTData(void)
   return true;
 }
 
-bool CMarket::ProcessTengxunRTData(void)
-{
+bool CMarket::ProcessTengxunRTData(void) {
   return false;
 }
 
@@ -820,29 +810,29 @@ bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLi
   pDayLine->SetStockName(str);
 
   if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetClose(atol(buffer2));
+  pDayLine->SetClose(buffer2);
 
   if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetHigh(atol(buffer2));
+  pDayLine->SetHigh(buffer2);
 
   if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetLow(atol(buffer2));
+  pDayLine->SetLow(buffer2);
 
   if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetOpen(atol(buffer2));
+  pDayLine->SetOpen(buffer2);
 
   if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetLastClose(atol(buffer2));
+  pDayLine->SetLastClose(buffer2);
 
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
   if (pDayLine->GetOpen() == 0) {
     //ASSERT(strcmp(buffer2, "None") == 0);
-    pDayLine->SetUpDown(0);
+    pDayLine->SetUpDown(0.0);
   }
-  else pDayLine->SetUpDown(atof(buffer2));
+  else pDayLine->SetUpDown(buffer2);
 
   if (pDayLine->GetLastClose() == 0) { // 设置涨跌幅。
-    pDayLine->SetUpDownRate(0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
+    pDayLine->SetUpDownRate(0.0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
   }
   else {
     // 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，也要增大100倍。
@@ -850,13 +840,13 @@ bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLi
   }
 
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetChangeHandRate(atof(buffer2));
+  pDayLine->SetChangeHandRate(buffer2);
 
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetVolume(atoll(buffer2)); // 读入的是股数
+  pDayLine->SetVolume(buffer2); // 读入的是股数
 
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetAmount(atoll(buffer2));
+  pDayLine->SetAmount(buffer2);
 
   // 总市值的数据有两种形式，需要程序判定
   if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
@@ -883,8 +873,7 @@ bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLi
   return true;
 }
 
-bool CMarket::ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber)
-{
+bool CMarket::ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber) {
   int i = 0;
 
   while (*pCurrentPos != 0x2c) { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
@@ -906,8 +895,7 @@ bool CMarket::ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber)
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter)
-{
+bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter) {
   int i = 0;
   bool fFoundPoint = false;
   int iCount = 0;
@@ -952,8 +940,7 @@ bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& l
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SchedulingTask(void)
-{
+bool CMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
 
   gl_systemTime.CalculateTime();      // 计算系统各种时间
@@ -1037,18 +1024,18 @@ bool CMarket::GetNeteaseDayLineWebData(void) {
   if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
     switch (gl_cMaxSavingOneDayLineThreads) {
     case 8: case 7: case 6:case 5: case 4:
-      gl_NeteaseDayLineWebDataFourth.GetWebData();
+    gl_NeteaseDayLineWebDataFourth.GetWebData();
     case 3:
-      gl_NeteaseDayLineWebDataThird.GetWebData();
+    gl_NeteaseDayLineWebDataThird.GetWebData();
     case 2:
-      gl_NeteaseDayLineWebDataSecond.GetWebData();
+    gl_NeteaseDayLineWebDataSecond.GetWebData();
     case 1: case 0:
-      gl_NeteaseDayLineWebData.GetWebData();
-      break;
+    gl_NeteaseDayLineWebData.GetWebData();
+    break;
     default:
-      gl_NeteaseDayLineWebData.GetWebData();
-      TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
-      break;
+    gl_NeteaseDayLineWebData.GetWebData();
+    TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+    break;
     }
   }
   return true;
@@ -1063,8 +1050,7 @@ bool CMarket::GetNeteaseDayLineWebData(void) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SchedulingTaskPerSecond(long lSecondNumber)
-{
+bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   static int s_iCountDownProcessRTWebData = 0;
   const long lCurrentTime = gl_systemTime.GetTime();
 
@@ -1134,8 +1120,7 @@ void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
   }
 }
 
-void CMarket::SaveTempDataIntoDB(long lCurrentTime)
-{
+void CMarket::SaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
   if (m_fSystemReady) {
     if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
@@ -1312,8 +1297,7 @@ void CMarket::IncreaseActiveStockNumber(void) {
 // 设置相应的股票指针，装载其日线数据。
 //
 /////////////////////////////////////////////////////////////////////////
-void CMarket::SetShowStock(CStockPtr pStock)
-{
+void CMarket::SetShowStock(CStockPtr pStock) {
   if (m_pCurrentStock != pStock) {
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
@@ -1470,8 +1454,7 @@ bool CMarket::SaveDayLineData(void) {
   return(true);
 }
 
-bool CMarket::ClearAllDayLineVector(void)
-{
+bool CMarket::ClearAllDayLineVector(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     pStock->m_vDayLine.clear();
   }
@@ -1529,8 +1512,7 @@ bool CMarket::IsDayLineNeedUpdate(void) {
   return false;
 }
 
-bool CMarket::IsDayLineNeedSaving(void)
-{
+bool CMarket::IsDayLineNeedSaving(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSaving()) {
       ASSERT(pStock->IsActive());
@@ -1677,7 +1659,7 @@ bool CMarket::UpdateTodayTempDB(void) {
       continue;
     }
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
-      + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
+           + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
     setDayLineToday.AddNew();
     setDayLineToday.m_Time = gl_systemTime.GetDay();
     setDayLineToday.m_Market = pStock->GetMarket();
@@ -1792,15 +1774,15 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
     double dHigh = atof(setDayKLine.m_High);
     double dClose = atof(setDayKLine.m_Close);
     if (((dLow / dLastClose) < 0.88)
-      || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
+        || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
       setDayKLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if ((fabs(dHigh - dClose) < 0.0001)
-      && (((dClose / dLastClose)) > 1.095)) { // 涨停板
+             && (((dClose / dLastClose)) > 1.095)) { // 涨停板
       setDayKLine.m_RelativeStrong = ConvertValueToString(100);
     }
     else if ((fabs(dClose - dLow) < 0.0001)
-      && ((dClose / dLastClose) < 0.905)) { // 跌停板
+             && ((dClose / dLastClose) < 0.905)) { // 跌停板
       setDayKLine.m_RelativeStrong = ConvertValueToString(0);
     }
     else {
@@ -1826,8 +1808,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   return(true);
 }
 
-bool CMarket::UpdateStockCodeDB(void)
-{
+bool CMarket::UpdateStockCodeDB(void) {
   CSetStockCode setStockCode;
 
   setStockCode.Open();
@@ -1868,8 +1849,7 @@ bool CMarket::UpdateStockCodeDB(void)
   return true;
 }
 
-void CMarket::LoadStockCodeDB(void)
-{
+void CMarket::LoadStockCodeDB(void) {
   CSetStockCode setStockCode;
 
   setStockCode.Open();
@@ -1914,8 +1894,7 @@ void CMarket::LoadStockCodeDB(void)
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CMarket::UpdateOptionDB(void)
-{
+bool CMarket::UpdateOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   setOption.m_pDatabase->BeginTrans();
@@ -1938,8 +1917,7 @@ bool CMarket::UpdateOptionDB(void)
   return false;
 }
 
-void CMarket::LoadOptionDB(void)
-{
+void CMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
@@ -1981,8 +1959,7 @@ void CMarket::LoadOptionDB(void)
   setOption.Close();
 }
 
-bool CMarket::UpdateTempRTData(void)
-{
+bool CMarket::UpdateTempRTData(void) {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
     AfxBeginThread(ThreadSaveTempRTData, nullptr);

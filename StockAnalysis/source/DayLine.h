@@ -1,5 +1,7 @@
 #pragma once
 
+#include"Accessory.h"
+
 #include"SetDayLine.h"
 #include"SetDayLineInfo.h"
 
@@ -28,30 +30,40 @@ public:
   void SetStockName(CString str) { m_strStockName = str; }
 
   long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(long fValue) noexcept { m_lLastClose = fValue; }
+  void SetLastClose(char* buffer) { m_lLastClose = GetValue(buffer); }
+  void SetLastClose(long lValue) { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(long fValue) noexcept { m_lOpen = fValue; }
+  void SetOpen(char* buffer) { m_lOpen = GetValue(buffer); }
+  void SetOpen(long lValue) { m_lOpen = lValue; }
   long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(long fValue) noexcept { m_lHigh = fValue; }
+  void SetHigh(char* buffer) noexcept { m_lHigh = GetValue(buffer); }
+  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
   long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(long fValue) noexcept { m_lLow = fValue; }
+  void SetLow(char* buffer) noexcept { m_lLow = GetValue(buffer); }
+  void SetLow(long lValue) noexcept { m_lLow = lValue; }
   long GetClose(void) noexcept { return m_lClose; }
-  void SetClose(long fValue) noexcept { m_lClose = fValue; }
+  void SetClose(char* buffer) noexcept { m_lClose = GetValue(buffer); }
+  void SetClose(long lValue) noexcept { m_lClose = lValue; }
   double GetUpDown(void) noexcept { return m_fUpDown; }
-  void SetUpDown(double fValue) noexcept { m_fUpDown = fValue; }
+  void SetUpDown(char* buffer) { m_fUpDown = GetValue(buffer); }
+  void SetUpDown(double dValue) noexcept { m_fUpDown = dValue; }
   double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
-  void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
+  void SetUpDownRate(char* buffer) { m_dUpDownRate = GetValue(buffer); }
+  void SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
   double GetChangeHandRate(void) noexcept { return m_fChangeHandRate; }
+  void SetChangeHandRate(char* buffer) { m_fChangeHandRate = GetValue(buffer); }
   void SetChangeHandRate(double dValue) noexcept { m_fChangeHandRate = dValue; }
-  INT64 GetVolume(void) noexcept { return m_lVolume; }
-  void SetVolume(INT64 lValue) noexcept { m_lVolume = lValue; }
-  INT64 GetAmount(void) noexcept { return m_lAmount; }
-  void SetAmount(INT64 lValue) noexcept { m_lAmount = lValue; }
+  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  void SetVolume(char* buffer) noexcept { m_llVolume = GetValue(buffer); }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  void SetAmount(char* buffer) noexcept { m_llAmount = GetValue(buffer); }
+  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
 
-  INT64 GetTotalValue(void) noexcept { return m_lTotalValue; }
-  void SetTotalValue(char* buffer);
-  INT64 GetCurrentValue(void) noexcept { return m_lCurrentValue; }
-  void SetCurrentValue(char* buffer);
+  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  void SetTotalValue(char* buffer) { m_llTotalValue = GetValue(buffer); }
+  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
+  void SetCurrentValue(char* buffer) { m_llCurrentValue = GetValue(buffer); }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
@@ -111,6 +123,8 @@ public:
   void Set120DayRS(double fValue) noexcept { m_d120DayRS = fValue; }
   double Get120DayRS(void) noexcept { return m_d120DayRS; }
 
+private:
+
 protected:
   // need to save
   long m_lDay; // 类型(YYYYMMDD)
@@ -130,10 +144,10 @@ protected:
   double			m_fUpDown;						// 涨跌额
   double      m_dUpDownRate;
   double			m_fChangeHandRate;			// 换手率
-  INT64	      m_lVolume;							// 成交量,单位:股
-  INT64		    m_lAmount;							// 成交金额,单位:元/万元（大盘）
-  INT64	      m_lTotalValue;					// 总市值。单位：万元
-  INT64       m_lCurrentValue;				// 流通市值。单位：万元
+  INT64	      m_llVolume;							// 成交量,单位:股
+  INT64		    m_llAmount;							// 成交金额,单位:元/万元（大盘）
+  INT64	      m_llTotalValue;					// 总市值。单位：万元
+  INT64       m_llCurrentValue;				// 流通市值。单位：万元
 
   long			  m_lOrdinaryBuyVolume;     // 向上买入。成交价接近或等于卖一，但不超过。单位：股
   long			  m_lAttackBuyVolume;		    // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。

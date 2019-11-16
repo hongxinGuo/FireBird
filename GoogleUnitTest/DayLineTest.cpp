@@ -69,6 +69,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetLow(), 0);
     dl.SetLow(22222);
     EXPECT_EQ(dl.GetLow(), 22222);
+    dl.SetLow(_T("12345"));
+    EXPECT_EQ(dl.GetLow(), 12345);
   }
 
   TEST(CDayLineTest, TestGetClose) {
@@ -76,6 +78,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetClose(), 0);
     dl.SetClose(33333);
     EXPECT_EQ(dl.GetClose(), 33333);
+    dl.SetClose(_T("12345"));
+    EXPECT_EQ(dl.GetClose(), 12345);
   }
 
   TEST(CDayLineTest, TestGetUpDown) {
@@ -83,6 +87,8 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(dl.GetUpDown(), 0);
     dl.SetUpDown(10.020);
     EXPECT_DOUBLE_EQ(dl.GetUpDown(), 10.020);
+    dl.SetUpDown(_T("12.345"));
+    EXPECT_DOUBLE_EQ(dl.GetUpDown(), 12.345);
   }
 
   TEST(CDayLineTest, TestGetUpDownRate) {
@@ -90,6 +96,8 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 0);
     dl.SetUpDownRate(40.40);
     EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 40.40);
+    dl.SetUpDownRate(_T("12.345"));
+    EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 12.345);
   }
 
   TEST(CDayLineTest, TestGetChangeHandRate) {
