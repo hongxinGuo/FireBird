@@ -189,7 +189,7 @@ void CDayLine::SetCurrentValue(char* buffer)
   }
 
   if (fFoundPoint) { // 此字符串为浮点类型
-    m_lTotalValue = atof(buffer);
+    m_lCurrentValue = atof(buffer);
   }
   else m_lTotalValue = atoll(buffer);
 }

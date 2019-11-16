@@ -49,10 +49,8 @@ public:
   void SetAmount(INT64 lValue) noexcept { m_lAmount = lValue; }
 
   INT64 GetTotalValue(void) noexcept { return m_lTotalValue; }
-  void SetTotalValue(INT64 lValue) noexcept { m_lTotalValue = lValue; }
   void SetTotalValue(char* buffer);
   INT64 GetCurrentValue(void) noexcept { return m_lCurrentValue; }
-  void SetCurrentValue(INT64 lValue) noexcept { m_lCurrentValue = lValue; }
   void SetCurrentValue(char* buffer);
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
