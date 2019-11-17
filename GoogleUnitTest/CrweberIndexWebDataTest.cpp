@@ -4,8 +4,6 @@
 
 #include"RTData.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(CrweberIndexWebDataTest, TestInitialize) {
     EXPECT_STREQ(gl_CrweberIndexWebData.GetInquiringStringPrefix(), _T("http://www.crweber.com"));

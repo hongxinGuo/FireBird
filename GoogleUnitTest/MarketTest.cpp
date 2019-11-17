@@ -7,7 +7,6 @@
 #include"SetStockCode.h"
 
 using namespace std;
-using namespace testing;
 
 #include<memory>
 

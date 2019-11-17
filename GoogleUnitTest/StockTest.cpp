@@ -5,8 +5,6 @@
 
 #include"Stock.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(StockTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

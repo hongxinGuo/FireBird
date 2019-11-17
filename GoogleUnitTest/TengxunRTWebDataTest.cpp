@@ -5,7 +5,6 @@
 
 #include"TengxunRTWebData.h"
 
-using namespace testing;
 using namespace std;
 
 namespace StockAnalysisTest {

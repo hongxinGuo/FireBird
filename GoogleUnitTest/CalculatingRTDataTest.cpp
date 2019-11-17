@@ -4,18 +4,17 @@
 
 #include"Stock.h"
 
-using namespace testing;
 using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
   struct RTData { // 共四十五个数据，一个序列号，二十二个当前实时数据（成交金额、成交量、挂单价位和数量），二十二个上次实时数据（成交金额、成交量、挂单价位和数量），
     RTData(int count, INT64 llAmount, long lVolume,
-      long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
-      long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
-      INT64 llAmountLast, long lVolumeLast,
-      long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
-      long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
+           long dS5, long lS5, long dS4, long lS4, long dS3, long lS3, long dS2, long lS2, long dS1, long lS1,
+           long dB1, long lB1, long dB2, long lB2, long dB3, long lB3, long dB4, long lB4, long dB5, long lB5,
+           INT64 llAmountLast, long lVolumeLast,
+           long dS5l, long lS5l, long dS4l, long lS4l, long dS3l, long lS3l, long dS2l, long lS2l, long dS1l, long lS1l,
+           long dB1l, long lB1l, long dB2l, long lB2l, long dB3l, long lB3l, long dB4l, long lB4l, long dB5l, long lB5l) {
       iCount = count;
       CurrentData.SetAmount(llAmount);
       CurrentData.SetVolume(lVolume);
@@ -52,74 +51,74 @@ namespace StockAnalysisTest {
 
   // 成交1万股@10.00
   RTData RT1(0, 200000, 20000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 成交1万股@10.01，出现新的挂单位置
   RTData RT2(1, 1101000, 110000,
-    10250, 10000, 10140, 20000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9870, 20000, 9860, 10000,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10250, 10000, 10140, 20000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9870, 20000, 9860, 10000,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 成交1万股@10.02，出现新的挂单量
   RTData RT3(2, 2103800, 210000,
-    10050, 10100, 10040, 10200, 10030, 10400, 10020, 10800, 10010, 11600,
-    10000, 10100, 9990, 10200, 9980, 10400, 9970, 10800, 9960, 11600,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 10100, 10040, 10200, 10030, 10400, 10020, 10800, 10010, 11600,
+             10000, 10100, 9990, 10200, 9980, 10400, 9970, 10800, 9960, 11600,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 无成交，出现撤单
   RTData RT4(3, 200290, 20000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 有成交，一般型买入（比卖一价低），买卖单出现撤单。
   RTData RT5(4, 199910, 20000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 有成交，进攻型买入（比卖二价低），卖单出现撤单，买单增单。
   RTData RT6(5, 199710, 20000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 无成交，卖单出现撤单，买单也出现撤单。
   RTData RT7(6, 100000, 10000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 成交4000股@10.005，买入卖出无法确定，买卖单出现撤单。
   RTData RT8(7, 140020, 14000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 有成交，进攻型买入（比买二价高），买卖单出现撤单，。
   RTData RT9(8, 200000, 20000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+             10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+             10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+             100000, 10000,
+             10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+             10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
   // 有成交，强买入（比买二价低，此例低于买三），买卖单出现撤单。
   RTData RT10(9, 200000, 20000,
-    10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
-    10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
-    100000, 10000,
-    10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
-    10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
+              10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
+              10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
+              100000, 10000,
+              10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
+              10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
   class CalculateRTDataTest : public::testing::TestWithParam<RTData*>
   {
@@ -160,7 +159,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestRTData, CalculateRTDataTest, testing::Values(&RT1, &RT2, &RT3,
-    &RT4, &RT5, &RT6, &RT7, &RT8));
+                                                                           &RT4, &RT5, &RT6, &RT7, &RT8));
 
   TEST_P(CalculateRTDataTest, TestRTData) {
     EXPECT_FALSE(m_stock.HaveFirstRTData());
@@ -176,137 +175,137 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);
     switch (iCount) {
     case 0: // 成交1万股@10.00
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_SELL__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10);
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_SELL__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10);
 
-      break;
+    break;
     case 1: // 成交10万股@10.01，出现新的挂单位置：1025，1014， 987， 986，挂单量同时变化。
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_BUY__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.01);
-      for (int i = 9980; i <= 10030; i += 10) {
-        EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
-      }
-      for (int i = 10050; i < 10140; i += 10) {
-        EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
-      }
-      for (int i = 10150; i < 10250; i += 10) {
-        EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
-      }
-      EXPECT_EQ(m_stock.GetGuaDan(10250), 10000);
-      EXPECT_EQ(m_stock.GetGuaDan(10140), 20000);
-      EXPECT_EQ(m_stock.GetGuaDan(9870), 20000);
-      EXPECT_EQ(m_stock.GetGuaDan(9860), 10000);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ORDINARY_BUY__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.01);
+    for (int i = 9980; i <= 10030; i += 10) {
+      EXPECT_EQ(m_stock.GetGuaDan(i), 10000);
+    }
+    for (int i = 10050; i < 10140; i += 10) {
+      EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
+    }
+    for (int i = 10150; i < 10250; i += 10) {
+      EXPECT_EQ(m_stock.GetGuaDan(i), 0); // 这几个的挂单被清空了
+    }
+    EXPECT_EQ(m_stock.GetGuaDan(10250), 10000);
+    EXPECT_EQ(m_stock.GetGuaDan(10140), 20000);
+    EXPECT_EQ(m_stock.GetGuaDan(9870), 20000);
+    EXPECT_EQ(m_stock.GetGuaDan(9860), 10000);
+    break;
     case 2: // 成交1万股@10.02，出现新的挂单量
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_BUY__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.019);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 11600);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 10800);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 10400);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 10200);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 10100);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 11600);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 10800);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 10400);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 10200);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 10100);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_BUY__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.019);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 11600);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 10800);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 10400);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 10200);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 10100);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 11600);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 10800);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 10400);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 10200);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 10100);
+    break;
     case 3: // 无成交，出现撤单。
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_BUY__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.029);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_BUY__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.029);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 4:
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_SELL__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 9.991);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __ATTACK_SELL__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 9.991);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 5:
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_SELL__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 9.971);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __STRONG_SELL__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 9.971);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 6:
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __NO_TRANSACTION__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 0);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __NO_TRANSACTION__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 0);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 7:
-      EXPECT_EQ(m_stock.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
-      EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.005);
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+    EXPECT_DOUBLE_EQ(m_stock.GetCurrentGuaDanTransactionPrice(), 10.005);
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 8:
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     case 9:
-      EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
-      EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
-      EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
-      EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
-      EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
-      EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
-      break;
+    EXPECT_EQ(m_stock.GetGuaDan(9960), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(9970), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(9980), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(9990), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10000), 9900);
+    EXPECT_EQ(m_stock.GetGuaDan(10010), 8400);
+    EXPECT_EQ(m_stock.GetGuaDan(10020), 9200);
+    EXPECT_EQ(m_stock.GetGuaDan(10030), 9600);
+    EXPECT_EQ(m_stock.GetGuaDan(10040), 9800);
+    EXPECT_EQ(m_stock.GetGuaDan(10050), 9900);
+    break;
     default:
-      break;
+    break;
     }
   }
 }

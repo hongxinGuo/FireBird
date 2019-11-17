@@ -13,8 +13,6 @@
 
 #include"SystemMessage.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(SystemMessageTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

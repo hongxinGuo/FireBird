@@ -65,6 +65,7 @@
     <ClCompile Include="CriticalSectionBoolTest.cpp" />
     <ClCompile Include="CriticalSectionCounterTest.cpp" />
     <ClCompile Include="CrweberIndexWebDataTest.cpp" />
+    <ClCompile Include="CrweberTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />

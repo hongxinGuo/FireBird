@@ -4,8 +4,6 @@
 
 #include"StockCalculatedInfo.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(StockCalculatedInfoTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

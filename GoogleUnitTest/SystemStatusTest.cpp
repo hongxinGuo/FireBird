@@ -5,8 +5,6 @@
 
 #include"ThreadStatus.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(SystemStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

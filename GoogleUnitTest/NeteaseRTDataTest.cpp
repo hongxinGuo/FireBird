@@ -5,8 +5,6 @@
 #include"RTData.h"
 #include"NeteaseRTWebData.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestNeteaseInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
@@ -168,10 +166,10 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102
-    /*, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-    &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-    &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-    &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
+                                                                                         /*, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                         &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                         &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
   ));
 
   TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
@@ -187,72 +185,72 @@ namespace StockAnalysisTest {
     ttime = mktime(&tm_);
     switch (m_iCount) {
     case 0:
-      EXPECT_TRUE(fSucceed); // 没有错误
-      EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
-      EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
-      EXPECT_EQ(m_RTData.GetOpen(), 12480);
-      EXPECT_EQ(m_RTData.GetLastClose(), 12570);
-      EXPECT_EQ(m_RTData.GetNew(), 12290);
-      EXPECT_EQ(m_RTData.GetVolume(), 38594267);
-      EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
-      EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
-      EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
-      EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
-      EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
-      EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
-      EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
-      EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
-      EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
-      EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
-      EXPECT_EQ(m_RTData.GetVSell(0), 51100);
-      EXPECT_EQ(m_RTData.GetPSell(0), 12300);
-      EXPECT_EQ(m_RTData.GetVSell(1), 106387);
-      EXPECT_EQ(m_RTData.GetPSell(1), 12310);
-      EXPECT_EQ(m_RTData.GetVSell(2), 162290);
-      EXPECT_EQ(m_RTData.GetPSell(2), 12320);
-      EXPECT_EQ(m_RTData.GetVSell(3), 237059);
-      EXPECT_EQ(m_RTData.GetPSell(3), 12330);
-      EXPECT_EQ(m_RTData.GetVSell(4), 609700);
-      EXPECT_EQ(m_RTData.GetPSell(4), 12340);
-      EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
-      break;
+    EXPECT_TRUE(fSucceed); // 没有错误
+    EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+    EXPECT_EQ(m_RTData.GetOpen(), 12480);
+    EXPECT_EQ(m_RTData.GetLastClose(), 12570);
+    EXPECT_EQ(m_RTData.GetNew(), 12290);
+    EXPECT_EQ(m_RTData.GetVolume(), 38594267);
+    EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
+    EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
+    EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
+    EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
+    EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
+    EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
+    EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
+    EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
+    EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
+    EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
+    EXPECT_EQ(m_RTData.GetVSell(0), 51100);
+    EXPECT_EQ(m_RTData.GetPSell(0), 12300);
+    EXPECT_EQ(m_RTData.GetVSell(1), 106387);
+    EXPECT_EQ(m_RTData.GetPSell(1), 12310);
+    EXPECT_EQ(m_RTData.GetVSell(2), 162290);
+    EXPECT_EQ(m_RTData.GetPSell(2), 12320);
+    EXPECT_EQ(m_RTData.GetVSell(3), 237059);
+    EXPECT_EQ(m_RTData.GetPSell(3), 12330);
+    EXPECT_EQ(m_RTData.GetVSell(4), 609700);
+    EXPECT_EQ(m_RTData.GetPSell(4), 12340);
+    EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+    break;
     case 1:
-      EXPECT_TRUE(fSucceed); // 第一个数据没有错误
-      fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseRTWebData);
-      EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-      EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-      EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
-      EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
-      EXPECT_EQ(m_RTData.GetOpen(), 12480);
-      EXPECT_EQ(m_RTData.GetLastClose(), 12570);
-      EXPECT_EQ(m_RTData.GetNew(), 12290);
-      EXPECT_EQ(m_RTData.GetVolume(), 38594267);
-      EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
-      EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
-      EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
-      EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
-      EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
-      EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
-      EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
-      EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
-      EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
-      EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
-      EXPECT_EQ(m_RTData.GetVSell(0), 51100);
-      EXPECT_EQ(m_RTData.GetPSell(0), 12300);
-      EXPECT_EQ(m_RTData.GetVSell(1), 106387);
-      EXPECT_EQ(m_RTData.GetPSell(1), 12310);
-      EXPECT_EQ(m_RTData.GetVSell(2), 162290);
-      EXPECT_EQ(m_RTData.GetPSell(2), 12320);
-      EXPECT_EQ(m_RTData.GetVSell(3), 237059);
-      EXPECT_EQ(m_RTData.GetPSell(3), 12330);
-      EXPECT_EQ(m_RTData.GetVSell(4), 609700);
-      EXPECT_EQ(m_RTData.GetPSell(4), 12340);
-      EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
-      break;
+    EXPECT_TRUE(fSucceed); // 第一个数据没有错误
+    fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseRTWebData);
+    EXPECT_TRUE(fSucceed); // 第二个数据没有错误
+    EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+    EXPECT_EQ(m_RTData.GetOpen(), 12480);
+    EXPECT_EQ(m_RTData.GetLastClose(), 12570);
+    EXPECT_EQ(m_RTData.GetNew(), 12290);
+    EXPECT_EQ(m_RTData.GetVolume(), 38594267);
+    EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
+    EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
+    EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
+    EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
+    EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
+    EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
+    EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
+    EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
+    EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
+    EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
+    EXPECT_EQ(m_RTData.GetVSell(0), 51100);
+    EXPECT_EQ(m_RTData.GetPSell(0), 12300);
+    EXPECT_EQ(m_RTData.GetVSell(1), 106387);
+    EXPECT_EQ(m_RTData.GetPSell(1), 12310);
+    EXPECT_EQ(m_RTData.GetVSell(2), 162290);
+    EXPECT_EQ(m_RTData.GetPSell(2), 12320);
+    EXPECT_EQ(m_RTData.GetVSell(3), 237059);
+    EXPECT_EQ(m_RTData.GetPSell(3), 12330);
+    EXPECT_EQ(m_RTData.GetVSell(4), 609700);
+    EXPECT_EQ(m_RTData.GetPSell(4), 12340);
+    EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+    break;
 
     default:
-      break;
+    break;
     }
   }
 
@@ -298,8 +296,8 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
-    testing::Values(&neteasedata1, &neteasedata2, &neteasedata3
-    ));
+                          testing::Values(&neteasedata1, &neteasedata2, &neteasedata3
+                          ));
 
   TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
     CString strValue;
@@ -307,21 +305,21 @@ namespace StockAnalysisTest {
     bool fSucceed = m_RTData.GetNeteaseIndexAndValue(&m_NeteaseRTWebData, lIndex, strValue);
     switch (m_iCount) {
     case 1:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_STREQ("浦发银行", strValue);
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ("浦发银行", strValue);
+    break;
     case 2:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(lIndex, 63);
-      EXPECT_STREQ(strValue, "12345");
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(lIndex, 63);
+    EXPECT_STREQ(strValue, "12345");
+    break;
     case 3:
-      EXPECT_FALSE(fSucceed);
-      EXPECT_EQ(lIndex, 63);
-      EXPECT_STREQ(strValue, _T(""));
-      break;
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(lIndex, 63);
+    EXPECT_STREQ(strValue, _T(""));
+    break;
     default:
-      break;
+    break;
     }
   }
 
@@ -386,10 +384,10 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, GetNeteaseIndexValueRTDataTest, testing::Values(&NeteaseData101
-    /*, &Data2, &Data3,
-    &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-    &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-    &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-    &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38*/
+                                                                                             /*, &Data2, &Data3,
+                                                                                             &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                             &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                             &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                             &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38*/
   ));
 }

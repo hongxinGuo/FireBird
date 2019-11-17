@@ -13,8 +13,6 @@
 
 #include"QueueRTData.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(SystemDaeuqDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

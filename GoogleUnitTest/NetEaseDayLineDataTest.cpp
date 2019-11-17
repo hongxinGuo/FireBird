@@ -5,8 +5,6 @@
 
 #include"DayLine.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   struct NetEaseDayLineData {
     NetEaseDayLineData(int count, CString Data) {
@@ -66,7 +64,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest, testing::Values(&Data1, &Data2, &Data3,
-    &Data4, &Data5, &Data6, &Data7, &Data8
+                                                                                             &Data4, &Data5, &Data6, &Data7, &Data8
   ));
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
@@ -74,29 +72,29 @@ namespace StockAnalysisTest {
     bool fSucceed = gl_ChinaStockMarket.ProcessOneItemDayLineData(_T("sh600000"), m_DayLinePtr, m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 2:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 3:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 4:
     case 5:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 6:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 7:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     case 8:
-      EXPECT_TRUE(fSucceed);
-      break;
+    EXPECT_TRUE(fSucceed);
+    break;
     default:
-      break;
+    break;
     }
   }
 
@@ -155,8 +153,8 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
-    testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
-    ));
+                          testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
+                          ));
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];
@@ -165,39 +163,39 @@ namespace StockAnalysisTest {
     str = buffer;
     switch (m_iCount) {
     case 1:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 7);
-      EXPECT_STREQ(str, _T("11.050"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 7);
+    EXPECT_STREQ(str, _T("11.050"));
+    break;
     case 2:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 6);
-      EXPECT_STREQ(str, _T("11.05"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 6);
+    EXPECT_STREQ(str, _T("11.05"));
+    break;
     case 3:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 5);
-      EXPECT_STREQ(str, _T("11.0"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 5);
+    EXPECT_STREQ(str, _T("11.0"));
+    break;
     case 4:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     case 5:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     case 6:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     case 7:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 10);
-      EXPECT_STREQ(str, _T("11.050000"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 10);
+    EXPECT_STREQ(str, _T("11.050000"));
+    break;
     case 8:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     default:
-      break;
+    break;
     }
   }
 
@@ -256,8 +254,8 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadOneValueExceptPeriod, ReadOneDayLineValueExceptPeriodTest,
-    testing::Values(&data1, &data2, &data3, &data4, &data5, &data6, &data7, &data8
-    ));
+                          testing::Values(&data1, &data2, &data3, &data4, &data5, &data6, &data7, &data8
+                          ));
 
   TEST_P(ReadOneDayLineValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
@@ -266,41 +264,41 @@ namespace StockAnalysisTest {
     str = buffer;
     switch (m_iCount) {
     case 1:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 7);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 7);
+    EXPECT_STREQ(str, _T("11050"));
+    break;
     case 2:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 6);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 6);
+    EXPECT_STREQ(str, _T("11050"));
+    break;
     case 3:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 5);
-      EXPECT_STREQ(str, _T("11000"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 5);
+    EXPECT_STREQ(str, _T("11000"));
+    break;
     case 4:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     case 5:
-      EXPECT_FALSE(fSucceed);
-      break;
+    EXPECT_FALSE(fSucceed);
+    break;
     case 6:
-      EXPECT_FALSE(fSucceed);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
+    EXPECT_FALSE(fSucceed);
+    EXPECT_STREQ(str, _T("11050"));
+    break;
     case 7:
-      EXPECT_TRUE(fSucceed);
-      EXPECT_EQ(m_lCountPos, 10);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_lCountPos, 10);
+    EXPECT_STREQ(str, _T("11050"));
+    break;
     case 8:
-      EXPECT_FALSE(fSucceed);
-      EXPECT_STREQ(str, _T("11050"));
-      break;
+    EXPECT_FALSE(fSucceed);
+    EXPECT_STREQ(str, _T("11050"));
+    break;
     default:
-      break;
+    break;
     }
   }
 }

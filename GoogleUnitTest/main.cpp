@@ -10,8 +10,6 @@
 
 #include"EnvironmentSetUp.h"
 
-using namespace testing;
-
 using namespace StockAnalysisTest;
 
 int main(int argc, char* argv[]) {

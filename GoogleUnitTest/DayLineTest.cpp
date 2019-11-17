@@ -4,8 +4,6 @@
 
 #include"DayLine.h"
 
-using namespace testing;
-
 namespace StockAnalysisTest {
   TEST(CDayLineTest, TestGetDay) {
     ASSERT_FALSE(gl_fNormalMode);
