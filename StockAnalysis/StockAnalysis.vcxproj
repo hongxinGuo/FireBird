@@ -133,12 +133,15 @@
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateMapFile>false</GenerateMapFile>
+      <AssemblyDebug>false</AssemblyDebug>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

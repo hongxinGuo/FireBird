@@ -486,7 +486,6 @@ bool CMarket::DistributeSinaRTDataToProperStock(void) {
   CStockPtr pStock;
   const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
   CString strVolume;
-  char buffer[200];
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();

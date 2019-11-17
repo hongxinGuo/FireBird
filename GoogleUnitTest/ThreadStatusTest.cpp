@@ -6,7 +6,7 @@
 #include"ThreadStatus.h"
 
 namespace StockAnalysisTest {
-  TEST(SystemStatusTest, TestInitialize) {
+  TEST(ThreadStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
@@ -28,42 +28,55 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST(SystemStatusTest, TestIsExitingThread) {
+  TEST(ThreadStatusTest, TestIsExitingThread) {
+    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
     gl_ThreadStatus.SetExitingThread(true);
     EXPECT_TRUE(gl_ThreadStatus.IsExitingThread());
     gl_ThreadStatus.SetExitingThread(false);
     EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
   }
 
-  TEST(SystemStatusTest, TestIsRTDataNeedCalculate) {
+  TEST(ThereadStatusTest, TestIsCalculatingDayLineRS) {
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+  }
+
+  TEST(ThreadStatusTest, TestIsRTDataNeedCalculate) {
+    EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     gl_ThreadStatus.SetRTDataNeedCalculate(true);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     gl_ThreadStatus.SetRTDataNeedCalculate(false);
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
   }
 
-  TEST(SystemStatusTest, TestIsCalculatingRTData) {
+  TEST(ThreadStatusTest, TestIsCalculatingRTData) {
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     gl_ThreadStatus.SetCalculatingRTData(true);
     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRTData());
     gl_ThreadStatus.SetCalculatingRTData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
   }
 
-  TEST(SystemStatusTest, TestIsSavingTempData) {
+  TEST(ThreadStatusTest, TestIsSavingTempData) {
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     gl_ThreadStatus.SetSavingTempData(true);
     EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
     gl_ThreadStatus.SetSavingTempData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
   }
 
-  TEST(SystemStatusTest, TestIsSavingStockCodeData) {
+  TEST(ThreadStatusTest, TestIsSavingStockCodeData) {
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     gl_ThreadStatus.SetSavingStockCodeData(true);
     EXPECT_TRUE(gl_ThreadStatus.IsSavingStockCodeData());
     gl_ThreadStatus.SetSavingStockCodeData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
   }
 
-  TEST(SystemStatusTest, TestIsCalculatingRS) {
+  TEST(ThreadStatusTest, TestIsCalculatingRS) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
       EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRSThreadAvailable());
@@ -79,7 +92,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
   }
 
-  TEST(SystemStatusTest, TestIsSavingDayLine) {
+  TEST(ThreadStatusTest, TestIsSavingDayLine) {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多3个线程
       EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLineThreadAvailable());

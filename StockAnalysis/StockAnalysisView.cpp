@@ -43,8 +43,7 @@ END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
 
-CStockAnalysisView::CStockAnalysisView() noexcept
-{
+CStockAnalysisView::CStockAnalysisView() noexcept {
   // TODO: 在此处添加构造代码
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;
@@ -62,8 +61,7 @@ CStockAnalysisView::CStockAnalysisView() noexcept
   m_fCreateMemoryDC = false;
 }
 
-CStockAnalysisView::~CStockAnalysisView()
-{
+CStockAnalysisView::~CStockAnalysisView() {
 }
 
 bool CStockAnalysisView::ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
@@ -116,7 +114,6 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, 
 }
 
 void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
-  char pch[20];
   CString str;
   COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
   COLORREF crBefore;
@@ -183,8 +180,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   pdc->SelectObject(ppen);
 }
 
-void CStockAnalysisView::ShowStockDayLine(CDC* pDC)
-{
+void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
   const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
   CPen* ppen = nullptr, penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed1(PS_SOLID, 1, crRed);
@@ -363,8 +359,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC)
   pDC->SelectObject(ppen);
 }
 
-BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs)
-{
+BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {
   // TODO: 在此处通过修改
   //  CREATESTRUCT cs 来修改窗口类或样式
 
@@ -373,8 +368,7 @@ BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CStockAnalysisView 绘图
 
-void CStockAnalysisView::OnDraw(CDC* pdc)
-{
+void CStockAnalysisView::OnDraw(CDC* pdc) {
   CStockAnalysisDoc* pDoc = GetDocument();
   ASSERT_VALID(pDoc);
   if (!pDoc)
@@ -404,59 +398,53 @@ void CStockAnalysisView::Show(CDC* pdc) {
 
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data
-    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
-    ShowStockDayLine(&m_MemoryDC);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
-    break;
+  if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
+  pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+  m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  ShowStockDayLine(&m_MemoryDC);
+  pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+  m_MemoryDC.SelectObject(pOldBitmap);
+  break;
   case 2:	// show realtime stock data
-    if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
-    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
-    ShowRealtimeStockData(&m_MemoryDC);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
-    break;
+  if (gl_ChinaStockMarket.GetShowStock() == nullptr) return;
+  pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+  m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  ShowRealtimeStockData(&m_MemoryDC);
+  pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+  m_MemoryDC.SelectObject(pOldBitmap);
+  break;
   default:
-    break;
+  break;
   } // switch
 }
 
 // CStockAnalysisView 打印
 
-void CStockAnalysisView::OnFilePrintPreview()
-{
+void CStockAnalysisView::OnFilePrintPreview() {
 #ifndef SHARED_HANDLERS
   AFXPrintPreview(this);
 #endif
 }
 
-BOOL CStockAnalysisView::OnPreparePrinting(CPrintInfo* pInfo)
-{
+BOOL CStockAnalysisView::OnPreparePrinting(CPrintInfo* pInfo) {
   // 默认准备
   return DoPreparePrinting(pInfo);
 }
 
-void CStockAnalysisView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
+void CStockAnalysisView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
   // TODO: 添加额外的打印前进行的初始化过程
 }
 
-void CStockAnalysisView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
+void CStockAnalysisView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/) {
   // TODO: 添加打印后进行的清理过程
 }
 
-void CStockAnalysisView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
+void CStockAnalysisView::OnRButtonUp(UINT /* nFlags */, CPoint point) {
   ClientToScreen(&point);
   OnContextMenu(this, point);
 }
 
-void CStockAnalysisView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
-{
+void CStockAnalysisView::OnContextMenu(CWnd* /* pWnd */, CPoint point) {
 #ifndef SHARED_HANDLERS
   theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
@@ -465,13 +453,11 @@ void CStockAnalysisView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 // CStockAnalysisView 诊断
 
 #ifdef _DEBUG
-void CStockAnalysisView::AssertValid() const
-{
+void CStockAnalysisView::AssertValid() const {
   CView::AssertValid();
 }
 
-void CStockAnalysisView::Dump(CDumpContext& dc) const
-{
+void CStockAnalysisView::Dump(CDumpContext& dc) const {
   CView::Dump(dc);
 }
 
@@ -484,8 +470,7 @@ CStockAnalysisDoc* CStockAnalysisView::GetDocument() const // 非调试版本是
 
 // CStockAnalysisView 消息处理程序
 
-void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
-{
+void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   CDC* pdc;
@@ -498,8 +483,7 @@ void CStockAnalysisView::OnTimer(UINT_PTR nIDEvent)
   CView::OnTimer(nIDEvent);
 }
 
-int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CView::OnCreate(lpCreateStruct) == -1)
     return -1;
 
@@ -525,8 +509,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-void CStockAnalysisView::OnSize(UINT nType, int cx, int cy)
-{
+void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
   CView::OnSize(nType, cx, cy);
 
   // TODO: 在此处添加消息处理程序代码

@@ -80,7 +80,7 @@
     <ClCompile Include="StockTest.cpp" />
     <ClCompile Include="SystemDequeDataTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
-    <ClCompile Include="SystemStatusTest.cpp" />
+    <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="SystemTimeTest.cpp" />
     <ClCompile Include="TengxunRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebDataTest.cpp" />
@@ -183,7 +183,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformation>true</BrowseInformation>
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -200,12 +200,13 @@
       <SubSystem>Console</SubSystem>
       <Profile>false</Profile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <GenerateMapFile>true</GenerateMapFile>
+      <GenerateMapFile>false</GenerateMapFile>
       <MapExports>true</MapExports>
       <ShowProgress>NotSet</ShowProgress>
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>false</AssemblyDebug>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

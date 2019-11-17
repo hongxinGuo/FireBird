@@ -84,9 +84,6 @@
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="SystemStatusTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="SystemTimeTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="CrweberTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadStatusTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

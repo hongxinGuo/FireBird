@@ -21,8 +21,7 @@ CWebData::CWebData() noexcept {
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CWebData::GetWebData(void)
-{
+bool CWebData::GetWebData(void) {
   if (!IsReadingWebData()) {
     if (IsNeedProcessingCurrentWebData()) ProcessCurrentWebData();
     InquireNextWebData();
@@ -50,45 +49,38 @@ void CWebData::ProcessCurrentWebData(void) {
 //
 ///////////////////////////////////////////////////////////////////////
 bool CWebData::SucceedReadingAndStoringWebData(void) {
-  char* pCurrentPos = m_buffer;
-  long  iCount = 0;
-  int i = 0;
+  int iNumberOfDataReadAndStored = 0;
   ReadPrefix();
   while (!IsReadingFinished()) {
     if (!SucceedReadingAndStoringOneWebData()) {
       ReportDataError();
       return false;  // 后面的数据出问题，抛掉不用。
     }
-    i++;
+    iNumberOfDataReadAndStored++;
   }
-  if (m_fReportStatus) ReportStatus(i);
+  if (m_fReportStatus) ReportStatus(iNumberOfDataReadAndStored);
   return true;
 }
 
-bool CWebData::ReadPrefix(void)
-{
+bool CWebData::ReadPrefix(void) {
   return true;
 }
 
-bool CWebData::IsReadingFinished(void)
-{
+bool CWebData::IsReadingFinished(void) {
   if (m_lCurrentPos < m_lByteRead) return false;
   else return true;
 }
 
-bool CWebData::ReportStatus(long lNumberOfData)
-{
+bool CWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个实时数据\n", lNumberOfData);
   return true;
 }
 
-void CWebData::CreateTotalInquiringString(CString strMiddle)
-{
+void CWebData::CreateTotalInquiringString(CString strMiddle) {
   m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
-void CWebData::TESTSetBuffer(char* buffer, long lTotalNumber)
-{
+void CWebData::TESTSetBuffer(char* buffer, long lTotalNumber) {
   long i;
   for (i = 0; i < lTotalNumber; i++) {
     m_buffer[i] = buffer[i];
