@@ -361,11 +361,8 @@ namespace StockAnalysisTest {
 
   TEST_P(GetValueTest, TestGetValue) {
     double d = GetValue(strValue);
-    if (iCount < 100) {
-      EXPECT_DOUBLE_EQ(d, dValue);
-    }
-    else {
-      EXPECT_DOUBLE_EQ(dValue, d);
-    }
+    double d2 = GetValue(strValue.GetBuffer());
+
+    EXPECT_DOUBLE_EQ(d, dValue);
   }
 }

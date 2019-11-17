@@ -4,6 +4,8 @@
 #include"RTData.h"
 #include"StockID.h"
 
+#include"Accessory.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -82,13 +84,11 @@ CRTData::CRTData(void) : CObject() {
 // CRTData diagnostics
 
 #ifdef _DEBUG
-void CRTData::AssertValid() const
-{
+void CRTData::AssertValid() const {
   CObject::AssertValid();
 }
 
-void CRTData::Dump(CDumpContext& dc) const
-{
+void CRTData::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 
@@ -132,8 +132,7 @@ bool CRTData::SetData(CRTData& data) {
   return(true);
 }
 
-bool CRTData::Compare(CRTDataPtr pRTData)
-{
+bool CRTData::Compare(CRTDataPtr pRTData) {
   time_t ttDiff = m_time - pRTData->GetTransactionTime();
   if (ttDiff != 0) { TRACE("交易时间不匹配: %d\n", ttDiff); }
   if (ttDiff != 0) {
@@ -181,8 +180,7 @@ bool CRTData::Compare(CRTDataPtr pRTData)
 // 31：”15:05:32″，时间；
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
-{
+bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
   static char buffer1[100];
   char buffer2[7];
   static char buffer3[100];
@@ -216,15 +214,15 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     m_strStockCode = buffer2;
     switch (m_wMarket) {
     case __SHANGHAI_MARKET__:
-      m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
-      break;
+    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    break;
     case __SHENZHEN_MARKET__:
-      m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
-      break;
+    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    break;
     default:
-      return false;
+    return false;
     }
-    lStockCode = atoi(buffer2);
+    lStockCode = GetValue(buffer2);
     pSinaRTWebData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaRTWebData->m_pCurrentPos, 2); // 读入'="'
@@ -341,13 +339,13 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData)
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 
     // 后面的数据皆为无效数据，读至此数据的结尾处即可。
-    while (*pSinaRTWebData->m_pCurrentPos++ != 0x00a) {
+    while (*pSinaRTWebData->m_pCurrentPos != 0x00a) { // 寻找字符'\n'（回车符）
+      pSinaRTWebData->IncreaseCurrentPos();
       if (*pSinaRTWebData->m_pCurrentPos == 0x000) {
         return false;
       }
-      pSinaRTWebData->m_lCurrentPos++;
     }
-    pSinaRTWebData->m_lCurrentPos++;
+    pSinaRTWebData->IncreaseCurrentPos(); // 读过字符'\n'
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
@@ -375,7 +373,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnVa
   if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
     return false;
   }
-  llTemp = atoll(buffer3);
+  llTemp = GetValue(buffer3);
   if (llTemp < 0) return false;
   if (llTemp > 0) llReturnValue = llTemp;
   return true;
@@ -394,7 +392,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValu
   if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
     return false;
   }
-  lTemp = atol(buffer3);
+  lTemp = GetValue(buffer3);
   if (lTemp < 0) return false;
   if (lTemp > 0) lReturnValue = lTemp;
   return true;
@@ -406,20 +404,18 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValu
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer)
-{
+bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer) {
   int i = 0;
   try {
     while (*pSinaRTWebData->m_pCurrentPos != ',') {
       if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pSinaRTWebData->m_pCurrentPos++;
+      buffer[i++] = *pSinaRTWebData->m_pCurrentPos;
+      pSinaRTWebData->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
     // 跨过','号。
-    pSinaRTWebData->m_pCurrentPos++;
-    i++;
+    pSinaRTWebData->IncreaseCurrentPos();
 
-    pSinaRTWebData->m_lCurrentPos += i;
     return true;
   }
   catch (exception & e) {
@@ -438,10 +434,10 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long&
   long lTemp;
   static char buffer3[200];
 
-  if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
+  if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
     return false;
   }
-  lTemp = atol(buffer3);
+  lTemp = GetValue(buffer3) * 1000;
   if (lTemp < 0) return false;
   if (lTemp > 0) lReturnValue = lTemp;
   return true;
@@ -452,8 +448,7 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long&
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer)
-{
+bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer) {
   int i = 0;
   bool fFoundPoint = false;
   int iCount = 0;
@@ -463,9 +458,9 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char*
       if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
       if (*pSinaRTWebData->m_pCurrentPos == '.') {
         fFoundPoint = true;
-        pSinaRTWebData->m_pCurrentPos++;
       }
-      else buffer[i++] = *pSinaRTWebData->m_pCurrentPos++;
+      else buffer[i++] = *pSinaRTWebData->m_pCurrentPos;
+      pSinaRTWebData->IncreaseCurrentPos();
     }
 
     if (fFoundPoint && (iCount < 3)) {
@@ -482,12 +477,9 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char*
     while (*pSinaRTWebData->m_pCurrentPos != ',') {
       if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
       i++;
-      pSinaRTWebData->m_pCurrentPos++;
+      pSinaRTWebData->IncreaseCurrentPos();
     }
-    pSinaRTWebData->m_pCurrentPos++;
-    i++;
-    if (fFoundPoint) i++;// 多加1，是需要加上少算的逗号
-    pSinaRTWebData->m_lCurrentPos += i;
+    pSinaRTWebData->IncreaseCurrentPos();
 
     return true;
   }
@@ -550,8 +542,7 @@ bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char*
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
-{
+bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData) {
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
@@ -588,13 +579,13 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
     m_strStockCode = buffer2;
     switch (m_wMarket) {
     case __SHANGHAI_MARKET__:
-      m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
-      break;
+    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    break;
     case __SHENZHEN_MARKET__:
-      m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
-      break;
+    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    break;
     default:
-      return false;
+    return false;
     }
     lStockCode = atoi(buffer2);
     pTengxunRTWebData->IncreaseCurrentPos(6);
@@ -766,13 +757,13 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
       return false;
     }
 
-    while (*pTengxunRTWebData->m_pCurrentPos++ != 0x00a) {
+    while (*pTengxunRTWebData->m_pCurrentPos != 0x00a) {
+      pTengxunRTWebData->IncreaseCurrentPos();
       if (*pTengxunRTWebData->m_pCurrentPos == 0x000) {
         return false;
       }
-      pTengxunRTWebData->m_lCurrentPos++;
     }
-    pTengxunRTWebData->m_lCurrentPos++;
+    pTengxunRTWebData->IncreaseCurrentPos();
     if (!IsDataTimeAtCurrentTradingDay()) { // 如果交易时间在一天前
       m_fActive = false;
     }
@@ -807,8 +798,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData)
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
-{
+bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
@@ -827,8 +817,8 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData)
     // 跨过前缀字符（"0601872")，直接使用其后的数据
     while (!fFind) {
       if ((*pNeteaseRTWebData->m_pCurrentPos == '"')
-        && (*(pNeteaseRTWebData->m_pCurrentPos + 1) == ':')
-        && (*(pNeteaseRTWebData->m_pCurrentPos + 2) == '{')) {
+          && (*(pNeteaseRTWebData->m_pCurrentPos + 1) == ':')
+          && (*(pNeteaseRTWebData->m_pCurrentPos + 2) == '{')) {
         fFind = true;
         pNeteaseRTWebData->IncreaseCurrentPos(3);
       }
@@ -892,8 +882,7 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, INT64& l
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& dReturnValue)
-{
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& dReturnValue) {
   double dTemp;
   static char buffer3[200];
 
@@ -930,18 +919,16 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, long& lR
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, char* buffer)
-{
+bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, char* buffer) {
   int i = 0;
   try {
     while (*pTengxunRTWebData->m_pCurrentPos != '~') {
       if ((*pTengxunRTWebData->m_pCurrentPos == 0x00a) || (*pTengxunRTWebData->m_pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pTengxunRTWebData->m_pCurrentPos++;
+      buffer[i++] = *pTengxunRTWebData->m_pCurrentPos;
+      pTengxunRTWebData->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
-    pTengxunRTWebData->m_pCurrentPos++;
-    i++;
-    pTengxunRTWebData->m_lCurrentPos += i;
+    pTengxunRTWebData->IncreaseCurrentPos();
     return true;
   }
   catch (exception & e) {
@@ -962,8 +949,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   return lIndex;
 }
 
-bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue)
-{
+bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue) {
   char buffer[100];
   int i = 0;
   CString strIndex;
@@ -1047,120 +1033,119 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
   }
 }
 
-bool CRTData::SetValue(long lIndex, CString strValue)
-{
+bool CRTData::SetValue(long lIndex, CString strValue) {
   CString str1, str;
   try {
     switch (lIndex) {
     case 1: // time
-      break;
+    break;
     case 2: // code
-      ASSERT(strValue.GetLength() == 7);
-      str = strValue.Left(1);
-      if (str.Compare(_T("0")) == 0) {
-        str1 = _T("sh");
-      }
-      else str1 = _T("sz");
-      m_strStockCode = str1 + strValue.Right(6);
-      break;
+    ASSERT(strValue.GetLength() == 7);
+    str = strValue.Left(1);
+    if (str.Compare(_T("0")) == 0) {
+      str1 = _T("sh");
+    }
+    else str1 = _T("sz");
+    m_strStockCode = str1 + strValue.Right(6);
+    break;
     case 3: // name
-      m_strStockName = strValue;
-      break;
+    m_strStockName = strValue;
+    break;
     case 4: // type
-      break;
+    break;
     case 5: // symbol
-      break;
+    break;
     case 6: // status
-      break;
+    break;
     case 7: // update
-      m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-      break;
+    m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+    break;
     case 10: // open
-      m_lOpen = atof(strValue) * 1000;
-      break;
+    m_lOpen = atof(strValue) * 1000;
+    break;
     case 11: // yestclose
-      m_lLastClose = atof(strValue) * 1000;
-      break;
+    m_lLastClose = atof(strValue) * 1000;
+    break;
     case 12: // high
-      m_lHigh = atof(strValue) * 1000;
-      break;
+    m_lHigh = atof(strValue) * 1000;
+    break;
     case 13: // low
-      m_lLow = atof(strValue) * 1000;
-      break;
+    m_lLow = atof(strValue) * 1000;
+    break;
     case 14: // price
-      m_lNew = atof(strValue) * 1000;
-      break;
+    m_lNew = atof(strValue) * 1000;
+    break;
     case 15: // volume
-      m_llVolume = atol(strValue);
-      break;
+    m_llVolume = atol(strValue);
+    break;
     case 20: // bid1
-      m_lPBuy[0] = atof(strValue) * 1000;
-      break;
+    m_lPBuy[0] = atof(strValue) * 1000;
+    break;
     case 21: // bid2
-      m_lPBuy[1] = atof(strValue) * 1000;
-      break;
+    m_lPBuy[1] = atof(strValue) * 1000;
+    break;
     case 22: // bid3
-      m_lPBuy[2] = atof(strValue) * 1000;
-      break;
+    m_lPBuy[2] = atof(strValue) * 1000;
+    break;
     case 23: // bid4
-      m_lPBuy[3] = atof(strValue) * 1000;
-      break;
+    m_lPBuy[3] = atof(strValue) * 1000;
+    break;
     case 24: // bid5
-      m_lPBuy[4] = atof(strValue) * 1000;
-      break;
+    m_lPBuy[4] = atof(strValue) * 1000;
+    break;
     case 30: // bidvol1
-      m_lVBuy[0] = atol(strValue);
-      break;
+    m_lVBuy[0] = atol(strValue);
+    break;
     case 31: // bidvol2
-      m_lVBuy[1] = atol(strValue);
-      break;
+    m_lVBuy[1] = atol(strValue);
+    break;
     case 32: // bidvol3
-      m_lVBuy[2] = atol(strValue);
-      break;
+    m_lVBuy[2] = atol(strValue);
+    break;
     case 33: // bidvol4
-      m_lVBuy[3] = atol(strValue);
-      break;
+    m_lVBuy[3] = atol(strValue);
+    break;
     case 34: // bidvol5
-      m_lVBuy[4] = atol(strValue);
-      break;
+    m_lVBuy[4] = atol(strValue);
+    break;
     case 40: // ask1
-      m_lPSell[0] = atof(strValue) * 1000;
-      break;
+    m_lPSell[0] = atof(strValue) * 1000;
+    break;
     case 41: // ask2
-      m_lPSell[1] = atof(strValue) * 1000;
-      break;
+    m_lPSell[1] = atof(strValue) * 1000;
+    break;
     case 42: // ask3
-      m_lPSell[2] = atof(strValue) * 1000;
-      break;
+    m_lPSell[2] = atof(strValue) * 1000;
+    break;
     case 43: // ask4
-      m_lPSell[3] = atof(strValue) * 1000;
-      break;
+    m_lPSell[3] = atof(strValue) * 1000;
+    break;
     case 44: // ask5
-      m_lPSell[4] = atof(strValue) * 1000;
-      break;
+    m_lPSell[4] = atof(strValue) * 1000;
+    break;
     case 50: // askvol1
-      m_lVSell[0] = atol(strValue);
-      break;
+    m_lVSell[0] = atol(strValue);
+    break;
     case 51: // askvol2
-      m_lVSell[1] = atol(strValue);
-      break;
+    m_lVSell[1] = atol(strValue);
+    break;
     case 52: // askvol3
-      m_lVSell[2] = atol(strValue);
-      break;
+    m_lVSell[2] = atol(strValue);
+    break;
     case 53: // askvol4
-      m_lVSell[3] = atol(strValue);
-      break;
+    m_lVSell[3] = atol(strValue);
+    break;
     case 54: // askvol5
-      m_lVSell[4] = atol(strValue);
-      break;
+    m_lVSell[4] = atol(strValue);
+    break;
     case 60: // percent
     case 61: // updown
     case 62: // arrow
     case 63: // turnover
-      break;
+    break;
     default:
-      // 出错了
-      break;
+    // 出错了
+    break;
     }
     return true;
   }
