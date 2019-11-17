@@ -9,7 +9,7 @@ CWebData::CWebData() noexcept {
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
   m_lByteRead = 0;
-  m_fSucceed = true;
+  m_fSucceed = false;
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
 

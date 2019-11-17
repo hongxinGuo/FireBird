@@ -11,7 +11,7 @@ namespace StockAnalysisTest {
   TEST(SinaRTWebDataTest, TestInitialize) {
     EXPECT_STREQ(gl_SinaRTWebData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
     EXPECT_STREQ(gl_SinaRTWebData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_TRUE(gl_SinaRTWebData.IsNeedProcessingCurrentWebData());
+    EXPECT_FALSE(gl_SinaRTWebData.IsNeedProcessingCurrentWebData());
     EXPECT_TRUE(gl_SinaRTWebData.IsReadingSucceed());
   }
 

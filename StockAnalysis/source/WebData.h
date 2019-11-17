@@ -13,7 +13,7 @@ public:
   // 公共接口函数
   bool GetWebData(void);
 
-  virtual bool IsNeedProcessingCurrentWebData(void) { return true; }
+  virtual bool IsNeedProcessingCurrentWebData(void) { return m_fSucceed; }
 
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
@@ -42,7 +42,7 @@ public:
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
 
-  bool IsReadingSucceed(void) { if (m_fSucceed) return true; else return false; }
+  bool IsReadingSucceed(void) { return m_fSucceed; }
   void SetReadingSucceed(bool fFlag) { m_fSucceed = fFlag; }
   bool IsWebDataReceived(void) { return m_WebDataReceived.IsTrue(); }
   void SetWebDataReceived(bool fFlag) { m_WebDataReceived.SetFlag(fFlag); }

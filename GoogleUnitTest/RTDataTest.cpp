@@ -43,57 +43,17 @@ namespace StockAnalysisTest {
     gl_systemTime.Sett_time(tt);
     CRTData data;
     data.SetTransactionTime(tt);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 3600 * 24);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 3600 * 24 - 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
+    EXPECT_TRUE(data.IsDataTimeIn2Weeks());
+    data.SetTransactionTime(tt - 14 * 3600 * 24);
+    EXPECT_TRUE(data.IsDataTimeIn2Weeks());
+    data.SetTransactionTime(tt - 14 * 3600 * 24 - 1);
+    EXPECT_FALSE(data.IsDataTimeIn2Weeks());
     data.SetTransactionTime(tt + 3600);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
+    EXPECT_TRUE(data.IsDataTimeIn2Weeks());
     data.SetTransactionTime(tt + 3600 + 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
+    EXPECT_FALSE(data.IsDataTimeIn2Weeks());
     data.SetTransactionTime(tt + 2 * 3600 * 24 + 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
-
-    tm_.tm_year = 2019 - 1900;
-    tm_.tm_mon = 10;
-    tm_.tm_mday = 9; // 2019年11月9日是星期六。
-    tm_.tm_hour = 12;
-    tm_.tm_min = 0;
-    tm_.tm_sec = 0;
-    tt = mktime(&tm_);
-    gl_systemTime.Sett_time(tt);
-    data.SetTransactionTime(tt);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 2 * 3600 * 24);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 2 * 3600 * 24 - 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt + 3600);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt + 3600 + 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
-
-    tm_.tm_year = 2019 - 1900;
-    tm_.tm_mon = 10;
-    tm_.tm_mday = 10; // 2019年11月10日是星期日。
-    tm_.tm_hour = 12;
-    tm_.tm_min = 0;
-    tm_.tm_sec = 0;
-    tt = mktime(&tm_);
-    gl_systemTime.Sett_time(tt);
-    data.SetTransactionTime(tt);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 3 * 3600 * 24);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt - 3 * 3600 * 24 - 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt + 3600);
-    EXPECT_TRUE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt + 3600 + 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
-    data.SetTransactionTime(tt + 2 * 3600 * 24 + 1);
-    EXPECT_FALSE(data.IsDataTimeAtCurrentTradingDay());
+    EXPECT_FALSE(data.IsDataTimeIn2Weeks());
   }
 
   TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {

@@ -484,6 +484,7 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::DistributeSinaRTDataToProperStock(void) {
   CSingleLock sl(&gl_ProcessSinaRTDataQueue);
+  sl.Lock();
   if (sl.IsLocked()) {
     CStockPtr pStock;
     const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
@@ -498,7 +499,7 @@ bool CMarket::DistributeSinaRTDataToProperStock(void) {
         long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
         pStock = m_vChinaMarketAStock.at(lIndex);
         if (!pStock->IsActive()) {
-          if (pRTData->IsDataTimeAtCurrentTradingDay()) {
+          if (pRTData->IsDataTimeIn2Weeks()) {
             pStock->SetActive(true);
             pStock->SetStockName(pRTData->GetStockName());
             pStock->SetStockCode(pRTData->GetStockCode());
