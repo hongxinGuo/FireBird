@@ -14,6 +14,7 @@ public:
   bool GetWebData(void);
 
   virtual bool IsNeedProcessingCurrentWebData(void) { return true; }
+
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
   virtual bool ReadPrefix(void); // 读入前缀

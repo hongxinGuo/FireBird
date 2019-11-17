@@ -13,8 +13,7 @@ CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
 CTengxunRTWebData::~CTengxunRTWebData() {
 }
 
-bool CTengxunRTWebData::ReadPrefix(void)
-{
+bool CTengxunRTWebData::ReadPrefix(void) {
   char buffer[50];
   CString str = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
@@ -28,8 +27,7 @@ bool CTengxunRTWebData::ReadPrefix(void)
   return true;
 }
 
-bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void)
-{
+bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CRTDataPtr pRTData = make_shared<CRTData>();
   CString strVolume;
   char buffer[200];
@@ -74,24 +72,21 @@ void CTengxunRTWebData::ProcessWebDataStored(void) {
   }
 }
 
-void CTengxunRTWebData::ReportDataError(void)
-{
+void CTengxunRTWebData::ReportDataError(void) {
   TRACE("腾讯实时数据有误,抛掉不用\n");
   CString str;
   str = _T("腾讯实时数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CTengxunRTWebData::ReportCommunicationError(void)
-{
+void CTengxunRTWebData::ReportCommunicationError(void) {
   TRACE("Error reading http file ：http://qt.gtimg.cn\n");
   CString str;
   str = _T("Error reading http file ：http://qt.gtimg.cn");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CTengxunRTWebData::InquireNextWebData(void)
-{
+void CTengxunRTWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
@@ -119,8 +114,7 @@ void CTengxunRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadTengxunRTData, nullptr);
 }
 
-bool CTengxunRTWebData::ReportStatus(long lNumberOfData)
-{
+bool CTengxunRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
   return true;
 }

@@ -33,5 +33,8 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 const int gl_cMaxSavingOneDayLineThreads = 3;
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
 CSemaphore gl_SaveOneStockDayLine(gl_cMaxSavingOneDayLineThreads, gl_cMaxSavingOneDayLineThreads);
+CSemaphore gl_ProcessSinaRTDataQueue(1, 1);
+CSemaphore gl_ProcessTengxunRTDataQueue(1, 1);
+CSemaphore gl_ProcessNeteaseRTDataQueue(1, 1);
 
 CMarket gl_ChinaStockMarket;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

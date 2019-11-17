@@ -23,7 +23,9 @@ CWebData::CWebData() noexcept {
 //////////////////////////////////////////////////////////////////////////
 bool CWebData::GetWebData(void) {
   if (!IsReadingWebData()) {
-    if (IsNeedProcessingCurrentWebData()) ProcessCurrentWebData();
+    if (IsNeedProcessingCurrentWebData()) {
+      ProcessCurrentWebData();
+    }
     InquireNextWebData();
   }
   return true;
@@ -37,9 +39,9 @@ void CWebData::ProcessCurrentWebData(void) {
         ProcessWebDataStored();
       }
     }
-    else {  // 网络通信出现错误
-      ReportCommunicationError();
-    }
+  }
+  else {  // 网络通信出现错误
+    ReportCommunicationError();
   }
 }
 

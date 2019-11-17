@@ -13,8 +13,27 @@ CSinaRTWebData::CSinaRTWebData() : CWebData() {
 CSinaRTWebData::~CSinaRTWebData() {
 }
 
-bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(void)
-{
+void CSinaRTWebData::ProcessCurrentWebData(void) {
+  CSingleLock sl(&gl_ProcessNeteaseRTDataQueue);
+
+  if (IsWebDataReceived()) {
+    if (IsReadingSucceed()) { //网络通信一切顺利？
+      //sl.Lock();
+      //if (sl.IsLocked()) {
+      ResetCurrentPos();
+      if (SucceedReadingAndStoringWebData()) {
+        ProcessWebDataStored();
+      }
+      //}
+      //sl.Unlock();
+    }
+  }
+  else {  // 网络通信出现错误
+    ReportCommunicationError();
+  }
+}
+
+bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CRTDataPtr pRTData = make_shared<CRTData>();
   if (pRTData->ReadSinaData(this)) {
     pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
@@ -29,24 +48,21 @@ void CSinaRTWebData::ProcessWebDataStored(void) {
   //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
 }
 
-void CSinaRTWebData::ReportDataError(void)
-{
+void CSinaRTWebData::ReportDataError(void) {
   TRACE("数据有误,抛掉不用\n");
   CString str;
   str = _T("新浪实时数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CSinaRTWebData::ReportCommunicationError(void)
-{
+void CSinaRTWebData::ReportCommunicationError(void) {
   TRACE("Error reading http file ：hq.sinajs.cn\n");
   CString str;
   str = _T("Error reading http file ：hq.sinajs.cn");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CSinaRTWebData::InquireNextWebData(void)
-{
+void CSinaRTWebData::InquireNextWebData(void) {
   static int iCountUp = 0;
   CRTDataPtr pRTData = nullptr;
   static int iTotalInquiringStocks = 0;
@@ -81,8 +97,7 @@ void CSinaRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadSinaRTData, nullptr);
 }
 
-bool CSinaRTWebData::ReportStatus(long lNumberOfData)
-{
+bool CSinaRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }
