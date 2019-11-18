@@ -518,6 +518,7 @@ bool CMarket::DistributeSinaRTDataToProperStock(void) {
     }
     gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   }
+  ASSERT(gl_QueueSinaRTData.GetRTDataSize() == 0); // 必须一次处理全体数据。
   sl.Unlock();
 
   return true;
