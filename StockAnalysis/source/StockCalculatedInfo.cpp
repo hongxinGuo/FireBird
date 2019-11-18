@@ -35,8 +35,7 @@ void CStockCalculatedInfo::Reset() {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
 }
 
-void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)
-{
+void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
   setDayLineInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
@@ -59,8 +58,7 @@ void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)
   setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 }
 
-void CStockCalculatedInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday)
-{
+void CStockCalculatedInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
   setDayLineToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   setDayLineToday.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
@@ -88,8 +86,7 @@ void CStockCalculatedInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday)
 // 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话），故而未知成交数量这项需要特殊处理
 //
 ////////////////////////////////////////////////////////////////////////////
-void CStockCalculatedInfo::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday)
-{
+void CStockCalculatedInfo::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
   // 要设置m_lUnknownVolume为记录集中的m_UnknownVolume - m_Volume，这是因为第一次计算时只是初始化系统。
   // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
   // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
@@ -114,5 +111,5 @@ void CStockCalculatedInfo::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLine
   m_lAttackBuyAbove200000 = atoll(setDayLineToday.m_AttackBuyAbove200000);
   m_lAttackSellBelow50000 = atoll(setDayLineToday.m_AttackSellBelow50000);
   m_lAttackSellBelow200000 = atoll(setDayLineToday.m_AttackSellBelow200000);
-  m_lAttackBuyAbove200000 = atoll(setDayLineToday.m_AttackSellAbove200000);
+  m_lAttackSellAbove200000 = atoll(setDayLineToday.m_AttackSellAbove200000);
 }
