@@ -190,4 +190,70 @@ namespace StockAnalysisTest {
     id.SetRelativeStrong(10101010.0);
     EXPECT_DOUBLE_EQ(id.GetRelativeStrong(), 10101010.0);
   }
+
+  TEST(StockBasicInfoTest, TestUpdateStatus) {
+    ASSERT_FALSE(gl_fNormalMode);
+    CStockBasicInfo id;
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_STREQ(id.GetStockName(), _T(""));
+    EXPECT_EQ(id.GetOffset(), -1);
+    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    id.SetMarket(1);
+    id.SetStockCode(_T("abcde"));
+    id.SetStockName(_T("dcba"));
+    id.SetOffset(1);
+    id.SetDayLineEndDay(20020202);
+    id.SetIPOStatus(0);
+    EXPECT_EQ(id.GetMarket(), 1);
+    EXPECT_STREQ(id.GetStockCode(), _T("abcde"));
+    EXPECT_STREQ(id.GetStockName(), _T("dcba"));
+    EXPECT_EQ(id.GetOffset(), 1);
+    EXPECT_EQ(id.GetDayLineEndDay(), 20020202);
+    EXPECT_EQ(id.GetIPOStatus(), 0);
+    id.Reset();
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_STREQ(id.GetStockName(), _T(""));
+    EXPECT_EQ(id.GetOffset(), -1);
+    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+
+    CRTDataPtr  pRTData = make_shared<CRTData>();
+    pRTData->SetLastClose(10101010);
+    pRTData->SetOpen(20202020);
+    pRTData->SetHigh(30303030);
+    pRTData->SetLow(40404040);
+    pRTData->SetNew(50505050);
+    pRTData->SetVolume(6060606060606060);
+    pRTData->SetAmount(7070707070707070);
+    for (int i = 0; i < 5; i++) {
+      pRTData->SetPBuy(i, i * 12345);
+      pRTData->SetVBuy(i, i * 23456);
+      pRTData->SetPSell(i, i * 34567);
+      pRTData->SetVSell(i, i * 45678);
+    }
+    id.UpdateStatus(pRTData);
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_STREQ(id.GetStockName(), _T(""));
+    EXPECT_EQ(id.GetOffset(), -1);
+    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+
+    EXPECT_EQ(id.GetLastClose(), 10101010);
+    EXPECT_EQ(id.GetOpen(), 20202020);
+    EXPECT_EQ(id.GetHigh(), 30303030);
+    EXPECT_EQ(id.GetLow(), 40404040);
+    EXPECT_EQ(id.GetNew(), 50505050);
+    EXPECT_EQ(id.GetVolume(), 6060606060606060);
+    EXPECT_EQ(id.GetAmount(), 7070707070707070);
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(id.GetPBuy(i), i * 12345);
+      EXPECT_EQ(id.GetVBuy(i), i * 23456);
+      EXPECT_EQ(id.GetPSell(i), i * 34567);
+      EXPECT_EQ(id.GetVSell(i), i * 45678);
+    }
+  }
 }

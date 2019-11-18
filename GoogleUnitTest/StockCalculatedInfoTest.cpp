@@ -3,6 +3,7 @@
 #include"globedef.h"
 
 #include"StockCalculatedInfo.h"
+#include"Stock.h"
 
 namespace StockAnalysisTest {
   TEST(StockCalculatedInfoTest, TestInitialize) {
@@ -218,5 +219,63 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackSellAbove200000(), 10101010);
     id.IncreaseAttackSellAbove200000(101);
     EXPECT_EQ(id.GetAttackSellAbove200000(), 10101010 + 101);
+  }
+
+  TEST(StockCaluculatedInfoTest, TestStoreCalculatedInfo) {
+    CSetDayLineToday setDayLineToday;
+    CStockPtr pStock = make_shared<CStock>();
+
+    ASSERT(!gl_fNormalMode);
+    ASSERT(gl_fTestMode);
+    setDayLineToday.Open();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    while (!setDayLineToday.IsEOF()) {
+      setDayLineToday.Delete();
+      setDayLineToday.MoveNext();
+    }
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    setDayLineToday.AddNew();
+    setDayLineToday.m_Time = 20191101;
+    setDayLineToday.m_Market = pStock->GetMarket();
+    setDayLineToday.m_StockName = pStock->GetStockName();
+    setDayLineToday.m_StockCode = pStock->GetStockCode();
+
+    setDayLineToday.m_LastClose = ConvertValueToString(101010, 1000);
+    setDayLineToday.m_Open = ConvertValueToString(202020, 1000);
+    setDayLineToday.m_High = ConvertValueToString(303030, 1000);
+    setDayLineToday.m_Low = ConvertValueToString(404040, 1000);
+    setDayLineToday.m_Close = ConvertValueToString(505050, 1000);
+    setDayLineToday.m_Volume = ConvertValueToString(606060606060);
+    setDayLineToday.m_Amount = ConvertValueToString(707070707070);
+    setDayLineToday.m_CurrentValue = ConvertValueToString(80808080808080);
+    setDayLineToday.m_TotalValue = ConvertValueToString(90909090909090);
+
+    pStock->SetAttackBuyAmount(1234566);
+    pStock->SetAttackBuyVolume(23423534);
+    pStock->SetAttackSellAmount(4353454);
+    pStock->SetAttackSellVolume(94589489);
+    pStock->SetCancelBuyVolume(435245);
+    pStock->SetCancelSellVolume(45648698);
+    pStock->SetCurrentAttackBuy(45234);
+    pStock->SetCurrentAttackSell(345);
+    pStock->SetCurrentStrongBuy(3452);
+    pStock->SetCurrentStrongSell(43524);
+    pStock->SetCurrentTransactionType(3);
+    pStock->SetCurrentTransationVolume(2345);
+    pStock->SetCurrentUnknown(454567);
+    pStock->SetUnknownVolume(4895747);
+    pStock->SetStrongBuyVolume(453456);
+    pStock->SetStrongSellVolume(98976);
+
+    pStock->StoreTempInfo(setDayLineToday);
+    setDayLineToday.Update();
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.Close();
+
+    setDayLineToday.Open();
+    EXPECT_EQ(setDayLineToday.m_Time, 20191101);
+
+    setDayLineToday.Close();
   }
 }
