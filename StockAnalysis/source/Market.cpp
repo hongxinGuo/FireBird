@@ -499,7 +499,7 @@ bool CMarket::DistributeSinaRTDataToProperStock(void) {
         long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
         pStock = m_vChinaMarketAStock.at(lIndex);
         if (!pStock->IsActive()) {
-          if (pRTData->IsDataTimeIn2Weeks()) {
+          if (pRTData->IsDataHavingValidTime()) {
             pStock->SetActive(true);
             pStock->SetStockName(pRTData->GetStockName());
             pStock->SetStockCode(pRTData->GetStockCode());

@@ -13,7 +13,11 @@ CWebData::CWebData() noexcept {
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
 
+#ifdef DEBUG
+  m_fReportStatus = true;
+#else
   m_fReportStatus = false;
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////
