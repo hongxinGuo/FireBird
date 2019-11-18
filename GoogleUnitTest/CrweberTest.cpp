@@ -2,7 +2,7 @@
 
 #include"crweberIndex.h"
 
-namespace StockAnalysis {
+namespace StockAnalysisTest {
   TEST(CrweberTest, TestInitialize) {
     CCrweberIndex Index;
     EXPECT_FALSE(Index.IsTodayUpdated());
