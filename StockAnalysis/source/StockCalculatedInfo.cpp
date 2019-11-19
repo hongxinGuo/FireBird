@@ -41,6 +41,7 @@ void CStockCalculatedInfo::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo) 
   setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
   setDayLineInfo.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
   setDayLineInfo.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
+
   setDayLineInfo.m_CancelBuyVolume = ConvertValueToString(m_lCancelBuyVolume);
   setDayLineInfo.m_CancelSellVolume = ConvertValueToString(m_lCancelSellVolume);
   setDayLineInfo.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);

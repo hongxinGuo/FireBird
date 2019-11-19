@@ -1666,21 +1666,6 @@ bool CMarket::UpdateTodayTempDB(void) {
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
            + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
     setDayLineToday.AddNew();
-    setDayLineToday.m_Day = gl_systemTime.GetDay();
-    setDayLineToday.m_Market = pStock->GetMarket();
-    setDayLineToday.m_StockName = pStock->GetStockName();
-    setDayLineToday.m_StockCode = pStock->GetStockCode();
-
-    setDayLineToday.m_LastClose = ConvertValueToString(pStock->GetLastClose(), 1000);
-    setDayLineToday.m_Open = ConvertValueToString(pStock->GetOpen(), 1000);
-    setDayLineToday.m_High = ConvertValueToString(pStock->GetHigh(), 1000);
-    setDayLineToday.m_Low = ConvertValueToString(pStock->GetLow(), 1000);
-    setDayLineToday.m_Close = ConvertValueToString(pStock->GetNew(), 1000);
-    setDayLineToday.m_Volume = ConvertValueToString(pStock->GetVolume());
-    setDayLineToday.m_Amount = ConvertValueToString(pStock->GetAmount());
-    setDayLineToday.m_CurrentValue = ConvertValueToString(pStock->GetCurrentValue());
-    setDayLineToday.m_TotalValue = ConvertValueToString(pStock->GetTotalValue());
-
     pStock->StoreTempInfo(setDayLineToday);
     setDayLineToday.Update();
   }

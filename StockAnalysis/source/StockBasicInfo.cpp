@@ -48,10 +48,10 @@ void CStockBasicInfo::StoreTempInfo(CSetDayLine& setDayLine) {
 
 void CStockBasicInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
+  setDayLineToday.m_Day = gl_systemTime.GetDay();
   setDayLineToday.m_Market = m_wMarket;
   setDayLineToday.m_StockCode = m_strStockCode;
   setDayLineToday.m_StockName = m_strStockName;
-  setDayLineToday.m_Day = m_TransactionTime;
   setDayLineToday.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
   setDayLineToday.m_Open = ConvertValueToString(m_lOpen, 1000);
   setDayLineToday.m_High = ConvertValueToString(m_lHigh, 1000);
