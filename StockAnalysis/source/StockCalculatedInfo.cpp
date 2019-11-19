@@ -35,29 +35,29 @@ void CStockCalculatedInfo::Reset() {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
 }
 
-void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo& setDayLineInfo) {
-  ASSERT(setDayLineInfo.IsOpen());
-  setDayLineInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  setDayLineInfo.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  setDayLineInfo.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
+void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo* psetDayLineInfo) {
+  ASSERT(psetDayLineInfo->IsOpen());
+  psetDayLineInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
+  psetDayLineInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
+  psetDayLineInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
+  psetDayLineInfo->m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
+  psetDayLineInfo->m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
 
-  setDayLineInfo.m_CancelBuyVolume = ConvertValueToString(m_lCancelBuyVolume);
-  setDayLineInfo.m_CancelSellVolume = ConvertValueToString(m_lCancelSellVolume);
-  setDayLineInfo.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  setDayLineInfo.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  setDayLineInfo.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  setDayLineInfo.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  setDayLineInfo.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  setDayLineInfo.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  setDayLineInfo.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  setDayLineInfo.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  setDayLineInfo.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  setDayLineInfo.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  setDayLineInfo.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  setDayLineInfo.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  psetDayLineInfo->m_CancelBuyVolume = ConvertValueToString(m_lCancelBuyVolume);
+  psetDayLineInfo->m_CancelSellVolume = ConvertValueToString(m_lCancelSellVolume);
+  psetDayLineInfo->m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
+  psetDayLineInfo->m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
+  psetDayLineInfo->m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
+  psetDayLineInfo->m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
+  psetDayLineInfo->m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
+  psetDayLineInfo->m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
+  psetDayLineInfo->m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
+  psetDayLineInfo->m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
+  psetDayLineInfo->m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
+  psetDayLineInfo->m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
+  psetDayLineInfo->m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
+  psetDayLineInfo->m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
+  psetDayLineInfo->m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 }
 
 void CStockCalculatedInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {

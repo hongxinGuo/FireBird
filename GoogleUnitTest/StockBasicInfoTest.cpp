@@ -329,4 +329,51 @@ namespace StockAnalysisTest {
       EXPECT_EQ(id.GetVSell(i), i * 45678);
     }
   }
+
+  TEST(StockBasicInfoTest, TestStoreTodayInfo2) {
+    CSetDayLine setDayLine;
+    CStockBasicInfo id;
+    long lDay = 21091101;
+    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(lDay);
+    CString strDay = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
+
+    id.SetMarket(__SHANGHAI_MARKET__);
+    id.SetStockCode(_T("sh600000"));
+    id.SetStockName("浦东发展");
+    id.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    id.SetLastClose(101010);
+    id.SetOpen(202020);
+    id.SetHigh(303030);
+    id.SetLow(404040);
+    id.SetNew(505050);
+    id.SetVolume(6060606060);
+    id.SetAmount(70707070707);
+    id.SetUpDown(id.GetOpen() - id.GetNew());
+    id.SetUpDownRate((double)id.GetUpDown() / id.GetLastClose() * 100);
+    id.SetCurrentValue(8080808080808);
+    id.SetTotalValue(9090909090909);
+
+    ASSERT(!gl_fNormalMode);
+    ASSERT(gl_fTestMode);
+
+    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter += strDay;
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    while (!setDayLine.IsEOF()) {
+      setDayLine.Delete();
+      setDayLine.MoveNext();
+    }
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter += strDay;
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    setDayLine.AddNew();
+    id.StoreBasicInfo(&setDayLine);
+    setDayLine.Update();
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+  }
 }

@@ -554,7 +554,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Close();
   }
 
-  TEST(StockTest, TestStoreTodayInfo) {
+  TEST(StockTest, TestStoreTodayInfo2) {
     CSetDayLine setDayLine;
     CSetDayLineInfo setDayLineInfo;
     CStockPtr pStock = make_shared<CStock>();
@@ -570,12 +570,12 @@ namespace StockAnalysisTest {
     pStock->SetHigh(303030);
     pStock->SetLow(404040);
     pStock->SetNew(505050);
-    pStock->SetVolume(60606060606060);
+    pStock->SetVolume(606060606060);
     pStock->SetAmount(707070707070707);
     pStock->SetUpDown(pStock->GetOpen() - pStock->GetNew());
     pStock->SetUpDownRate((double)pStock->GetUpDown() / pStock->GetLastClose() * 100);
-    pStock->SetCurrentValue(808080808080808);
-    pStock->SetTotalValue(909090909090909);
+    pStock->SetCurrentValue(8080808080808);
+    pStock->SetTotalValue(9090909090909);
 
     pStock->SetTransactionNumber(123435);
     pStock->SetTransactionNumberBelow5000(45346456);
@@ -618,7 +618,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
-    pStock->StoreBasicInfo(setDayLine);
+    pStock->StoreBasicInfo(&setDayLine);
     setDayLine.Update();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
@@ -634,7 +634,8 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.m_pDatabase->BeginTrans();
     setDayLineInfo.AddNew();
-    pStock->StoreCalculatedInfo(setDayLineInfo);
+    setDayLineInfo.m_Day = lDay;
+    pStock->StoreCalculatedInfo(&setDayLineInfo);
     setDayLineInfo.Update();
     setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.Close();
