@@ -55,7 +55,7 @@ public:
   long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
   void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
   time_t GetTransactionTime(void) noexcept { return m_stockBasicInfo.GetTransactionTime(); }
-  void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); }
+  void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); m_stockCalculatedInfo.SetTransactionTime(time); }
   long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
   void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
   long GetOpen(void) noexcept { return m_stockBasicInfo.GetOpen(); }

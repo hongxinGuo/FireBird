@@ -14,6 +14,9 @@ public:
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
 
+  time_t GetTransactionTime(void) { return m_time; }
+  void SetTransactionTime(time_t tt) { m_time = tt; }
+
   INT64 GetAttackBuyAmount(void) noexcept { return m_lAttackBuyAmount; }
   INT64 GetAttackSellAmount(void) noexcept { return m_lAttackSellAmount; }
   INT64 GetOrdinaryBuyVolume(void) noexcept { return m_lOrdinaryBuyVolume; }
@@ -95,6 +98,7 @@ public:
   void IncreaseAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 += value; }
 
 protected:
+  time_t m_time; // 交易时间
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额
   INT64 m_lAttackSellAmount; // 向下卖出金额

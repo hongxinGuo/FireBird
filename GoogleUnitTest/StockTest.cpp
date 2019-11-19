@@ -195,111 +195,111 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(StockBasicInfoTest, TestGetAttackBuyAmount) {
+  TEST(StockTest, TestGetAttackBuyAmount) {
     CStock id;
     EXPECT_EQ(id.GetAttackBuyAmount(), 0);
     id.SetAttackBuyAmount(10101010);
     EXPECT_EQ(id.GetAttackBuyAmount(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetAttackSellAmount) {
+  TEST(StockTest, TestGetAttackSellAmount) {
     CStock id;
     EXPECT_EQ(id.GetAttackSellAmount(), 0);
     id.SetAttackSellAmount(10101010);
     EXPECT_EQ(id.GetAttackSellAmount(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetOrdinaryBuyVolume) {
+  TEST(StockTest, TestGetOrdinaryBuyVolume) {
     CStock id;
     EXPECT_EQ(id.GetOrdinaryBuyVolume(), 0);
     id.SetOrdinaryBuyVolume(10101010);
     EXPECT_EQ(id.GetOrdinaryBuyVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetOrdinarySellVolume) {
+  TEST(StockTest, TestGetOrdinarySellVolume) {
     CStock id;
     EXPECT_EQ(id.GetOrdinarySellVolume(), 0);
     id.SetOrdinarySellVolume(10101010);
     EXPECT_EQ(id.GetOrdinarySellVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetAttackBuyVolume) {
+  TEST(StockTest, TestGetAttackBuyVolume) {
     CStock id;
     EXPECT_EQ(id.GetAttackBuyVolume(), 0);
     id.SetAttackBuyVolume(10101010);
     EXPECT_EQ(id.GetAttackBuyVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetStrongBuyVolume) {
+  TEST(StockTest, TestGetStrongBuyVolume) {
     CStock id;
     EXPECT_EQ(id.GetStrongBuyVolume(), 0);
     id.SetStrongBuyVolume(10101010);
     EXPECT_EQ(id.GetStrongBuyVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCurrentAttackBuy) {
+  TEST(StockTest, TestGetCurrentAttackBuy) {
     CStock id;
     EXPECT_EQ(id.GetCurrentAttackBuy(), 0);
     id.SetCurrentAttackBuy(10101010);
     EXPECT_EQ(id.GetCurrentAttackBuy(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCurrentStrongBuy) {
+  TEST(StockTest, TestGetCurrentStrongBuy) {
     CStock id;
     EXPECT_EQ(id.GetCurrentStrongBuy(), 0);
     id.SetCurrentStrongBuy(10101010);
     EXPECT_EQ(id.GetCurrentStrongBuy(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetAttackSellVolume) {
+  TEST(StockTest, TestGetAttackSellVolume) {
     CStock id;
     EXPECT_EQ(id.GetAttackSellVolume(), 0);
     id.SetAttackSellVolume(10101010);
     EXPECT_EQ(id.GetAttackSellVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetStrongSellVolume) {
+  TEST(StockTest, TestGetStrongSellVolume) {
     CStock id;
     EXPECT_EQ(id.GetStrongSellVolume(), 0);
     id.SetStrongSellVolume(10101010);
     EXPECT_EQ(id.GetStrongSellVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCurrentAttackSell) {
+  TEST(StockTest, TestGetCurrentAttackSell) {
     CStock id;
     EXPECT_EQ(id.GetCurrentAttackSell(), 0);
     id.SetCurrentAttackSell(10101010);
     EXPECT_EQ(id.GetCurrentAttackSell(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCurrentStrongSell) {
+  TEST(StockTest, TestGetCurrentStrongSell) {
     CStock id;
     EXPECT_EQ(id.GetCurrentStrongSell(), 0);
     id.SetCurrentStrongSell(10101010);
     EXPECT_EQ(id.GetCurrentStrongSell(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetUnknownVolume) {
+  TEST(StockTest, TestGetUnknownVolume) {
     CStock id;
     EXPECT_EQ(id.GetUnknownVolume(), 0);
     id.SetUnknownVolume(10101010);
     EXPECT_EQ(id.GetUnknownVolume(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCurrentUnknown) {
+  TEST(StockTest, TestGetCurrentUnknown) {
     CStock id;
     EXPECT_EQ(id.GetCurrentUnknown(), 0);
     id.SetCurrentUnknown(10101010);
     EXPECT_EQ(id.GetCurrentUnknown(), 10101010);
   }
 
-  TEST(StockBasicInfoTest, TestGetCancelBuyVolume) {
+  TEST(StockTest, TestGetCancelBuyVolume) {
     CStock id;
     EXPECT_EQ(id.GetCancelBuyVolume(), 0);
     id.SetCancelBuyVolume(10101010);
     EXPECT_EQ(id.GetCancelBuyVolume(), 10101010);
   }
-  TEST(StockBasicInfoTest, TestGetCancelSellVolume) {
+  TEST(StockTest, TestGetCancelSellVolume) {
     CStock id;
     EXPECT_EQ(id.GetCancelSellVolume(), 0);
     id.SetCancelSellVolume(10101010);
@@ -554,13 +554,13 @@ namespace StockAnalysisTest {
     setDayLineToday.Close();
   }
 
-  TEST(StockTest, TestStoreTodayInfo2) {
+  TEST(StockTest, TestStoreTodayInfo) {
     CSetDayLine setDayLine;
     CSetDayLineInfo setDayLineInfo;
     CStockPtr pStock = make_shared<CStock>();
-    long lDay = 21091101;
+    long lDay = 21090101;
     time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(lDay);
-    CString strDay = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
+    CString strDay = _T("21090101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     pStock->SetMarket(__SHANGHAI_MARKET__);
     pStock->SetStockCode(_T("sh600000"));
@@ -602,17 +602,6 @@ namespace StockAnalysisTest {
 
     ASSERT(!gl_fNormalMode);
     ASSERT(gl_fTestMode);
-
-    setDayLine.m_strFilter = _T("[Day] =");
-    setDayLine.m_strFilter += strDay;
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    while (!setDayLine.IsEOF()) {
-      setDayLine.Delete();
-      setDayLine.MoveNext();
-    }
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
     setDayLine.m_strFilter = _T("[Day] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
@@ -626,12 +615,6 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_strFilter = _T("[Day] =");
     setDayLineInfo.m_strFilter += strDay;
     setDayLineInfo.Open();
-    setDayLineInfo.m_pDatabase->BeginTrans();
-    while (!setDayLineInfo.IsEOF()) {
-      setDayLineInfo.Delete();
-      setDayLineInfo.MoveNext();
-    }
-    setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.m_pDatabase->BeginTrans();
     setDayLineInfo.AddNew();
     setDayLineInfo.m_Day = lDay;
@@ -657,6 +640,16 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), pStock->GetUpDownRate());
     EXPECT_EQ(atoll(setDayLine.m_CurrentValue), pStock->GetCurrentValue());
     EXPECT_EQ(atoll(setDayLine.m_TotalValue), pStock->GetTotalValue());
+    setDayLine.Close();
+    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter += strDay;
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    while (!setDayLine.IsEOF()) {
+      setDayLine.Delete();
+      setDayLine.MoveNext();
+    }
+    setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 
     setDayLineInfo.m_strFilter = _T("[Day] =");
@@ -684,6 +677,16 @@ namespace StockAnalysisTest {
     EXPECT_EQ(atol(setDayLineInfo.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
     EXPECT_EQ(atol(setDayLineInfo.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
     EXPECT_EQ(atol(setDayLineInfo.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
+    setDayLineInfo.Close();
+    setDayLineInfo.m_strFilter = _T("[Day] =");
+    setDayLineInfo.m_strFilter += strDay;
+    setDayLineInfo.Open();
+    setDayLineInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineInfo.IsEOF()) {
+      setDayLineInfo.Delete();
+      setDayLineInfo.MoveNext();
+    }
+    setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.Close();
   }
 }

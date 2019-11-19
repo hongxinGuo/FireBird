@@ -129,7 +129,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>

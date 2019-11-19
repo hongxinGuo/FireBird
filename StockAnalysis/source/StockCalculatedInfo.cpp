@@ -10,6 +10,7 @@ CStockCalculatedInfo::~CStockCalculatedInfo() {
 }
 
 void CStockCalculatedInfo::Reset() {
+  m_time = 0;
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
   m_lCurrentVolume = 0;
@@ -37,6 +38,7 @@ void CStockCalculatedInfo::Reset() {
 
 void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo* psetDayLineInfo) {
   ASSERT(psetDayLineInfo->IsOpen());
+  psetDayLineInfo->m_Day = gl_systemTime.GetDay(m_time);
   psetDayLineInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   psetDayLineInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   psetDayLineInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
