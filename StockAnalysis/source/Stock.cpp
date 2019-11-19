@@ -58,7 +58,7 @@ void CStock::ClearRTDataDeque(void) {
 }
 
 void CStock::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
-  m_stockCalculatedInfo.StoreCalculatedInfo(setDayLineInfo);
+  m_stockCalculatedInfo.StoreTodayInfo(setDayLineInfo);
 }
 
 void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday) {

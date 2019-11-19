@@ -30,8 +30,9 @@ void CStockBasicInfo::Reset(void) {
   m_dRelativeStrong = 0;
 }
 
-void CStockBasicInfo::StoreTempInfo(CSetDayLine& setDayLine) {
+void CStockBasicInfo::StoreTodayInfo(CSetDayLine& setDayLine) {
   ASSERT(setDayLine.IsOpen());
+  setDayLine.m_Day = gl_systemTime.GetDay();
   setDayLine.m_Market = m_wMarket;
   setDayLine.m_StockCode = m_strStockCode;
   setDayLine.m_StockName = m_strStockName;
@@ -42,6 +43,8 @@ void CStockBasicInfo::StoreTempInfo(CSetDayLine& setDayLine) {
   setDayLine.m_Close = ConvertValueToString(m_lNew, 1000);
   setDayLine.m_Volume = ConvertValueToString(m_llVolume);
   setDayLine.m_Amount = ConvertValueToString(m_llAmount);
+  setDayLine.m_UpAndDown = ConvertValueToString(m_lUpDown);
+  setDayLine.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
   setDayLine.m_TotalValue = ConvertValueToString(m_llTotalValue);
   setDayLine.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
@@ -59,6 +62,8 @@ void CStockBasicInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
   setDayLineToday.m_Close = ConvertValueToString(m_lNew, 1000);
   setDayLineToday.m_Volume = ConvertValueToString(m_llVolume);
   setDayLineToday.m_Amount = ConvertValueToString(m_llAmount);
+  setDayLineToday.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
+  setDayLineToday.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
   setDayLineToday.m_TotalValue = ConvertValueToString(m_llTotalValue);
   setDayLineToday.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
@@ -71,6 +76,8 @@ void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {
   SetOpen(pRTData->GetOpen());
   SetVolume(pRTData->GetVolume());
   SetAmount(pRTData->GetAmount());
+  SetUpDown(m_lOpen - m_lNew);
+  if (m_lOpen != 0) SetUpDownRate((double)m_lUpDown * 100 / m_lOpen);
   for (int i = 0; i < 5; i++) {
     SetPBuy(i, pRTData->GetPBuy(i));
     SetVBuy(i, pRTData->GetVBuy(i));

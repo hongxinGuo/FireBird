@@ -70,6 +70,10 @@ public:
   void SetAmount(INT64 llValue) noexcept { m_stockBasicInfo.SetAmount(llValue); }
   INT64 GetVolume(void) noexcept { return m_stockBasicInfo.GetVolume(); }
   void SetVolume(INT64 llValue) noexcept { m_stockBasicInfo.SetVolume(llValue); }
+  long GetUpDown(void) noexcept { return m_stockBasicInfo.GetUpDown(); }
+  void SetUpDown(long lValue) noexcept { m_stockBasicInfo.SetUpDown(lValue); }
+  double GetUpDownRate(void) noexcept { return m_stockBasicInfo.GetUpDownRate(); }
+  void SetUpDownRate(double dValue) { m_stockBasicInfo.SetUpDownRate(dValue); }
   void SetTotalValue(INT64 llValue) noexcept { m_stockBasicInfo.SetTotalValue(llValue); }
   INT64 GetTotalValue(void) noexcept { return m_stockBasicInfo.GetTotalValue(); }
   void SetCurrentValue(INT64 llValue) noexcept { m_stockBasicInfo.SetCurrentValue(llValue); }

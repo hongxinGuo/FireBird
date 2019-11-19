@@ -15,7 +15,7 @@ public:
   void Reset(void);
 
   // 数据库操作
-  void StoreTempInfo(CSetDayLine& setDayLine);
+  void StoreTodayInfo(CSetDayLine& setDayLine);
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -51,6 +51,10 @@ public:
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  long GetUpDown(void) noexcept { return m_lUpDown; }
+  void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
+  double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
+  void SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
@@ -89,6 +93,8 @@ protected:
   long m_lHigh; // 以0.001元计的最高价
   long m_lLow; // 以0.001元计的最低价
   long m_lNew; // 以0.001元计的最新价
+  long m_lUpDown; // 涨跌值
+  double m_dUpDownRate; // 涨跌率
   INT64 m_llVolume;	// 以1股计的成交量
   INT64 m_llAmount; // 以元计的成交金额
   INT64 m_llTotalValue;	// 总市值。单位：万元
