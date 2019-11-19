@@ -94,7 +94,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   setDayLine.m_strFilter = _T("[StockCode] = '");
   setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
   setDayLine.m_strFilter += _T("'");
-  setDayLine.m_strSort = _T("[Time]");
+  setDayLine.m_strSort = _T("[Day]");
   setDayLine.Open();
   LoadDayLine(&setDayLine);
   setDayLine.Close();
@@ -103,7 +103,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   setDayLineInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineInfo.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
   setDayLineInfo.m_strFilter += _T("'");
-  setDayLineInfo.m_strSort = _T("[Time]");
+  setDayLineInfo.m_strSort = _T("[Day]");
   setDayLineInfo.Open();
   LoadDayLineInfo(&setDayLineInfo);
   setDayLineInfo.Close();

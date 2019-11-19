@@ -1559,7 +1559,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
   strDay = buffer;
-  setDayKLine.m_strFilter = _T("[Time] =");
+  setDayKLine.m_strFilter = _T("[Day] =");
   setDayKLine.m_strFilter += strDay;
   setDayKLine.Open();
   setDayKLine.m_pDatabase->BeginTrans();
@@ -1610,7 +1610,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayKLine.Close();
 
   // 存储今日生成的数据于DayLineInfo表中。
-  setDayLineInfo.m_strFilter = _T("[Time] =");
+  setDayLineInfo.m_strFilter = _T("[Day] =");
   setDayLineInfo.m_strFilter += strDay;
   setDayLineInfo.Open();
   setDayLineInfo.m_pDatabase->BeginTrans();
@@ -1754,7 +1754,7 @@ bool CMarket::CalculateOneDayRelativeStrong(long lDay) {
   _ltoa_s(lDay, pch, 10);
   strDay = pch;
   setDayKLine.m_strSort = _T("[UpDownRate]");
-  setDayKLine.m_strFilter = _T("[Time] =");
+  setDayKLine.m_strFilter = _T("[Day] =");
   setDayKLine.m_strFilter += strDay;
   setDayKLine.Open();
   if (setDayKLine.IsEOF()) { // 数据集为空，表明此日没有交易
