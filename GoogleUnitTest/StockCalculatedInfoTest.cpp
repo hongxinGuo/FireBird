@@ -222,4 +222,43 @@ namespace StockAnalysisTest {
     id.IncreaseAttackSellAbove200000(101);
     EXPECT_EQ(id.GetAttackSellAbove200000(), 10101010 + 101);
   }
+
+  TEST(StockCalculatedInfoTest, TestReset) {
+    CStockCalculatedInfo id;
+
+    id.SetAttackBuyAbove200000(3452345);
+    id.SetAttackBuyAmount(45345);
+    id.SetAttackBuyBelow200000(435345);
+    id.SetAttackBuyBelow50000(435345);
+    id.SetAttackBuyVolume(345345);
+    id.SetAttackSellAbove200000(34598);
+    id.SetAttackSellAmount(45345);
+    id.SetAttackSellBelow200000(60596);
+    id.SetAttackSellBelow50000(435);
+    id.SetAttackSellVolume(3452);
+    id.SetCancelBuyVolume(5560);
+    id.SetCancelSellVolume(546);
+    id.SetCurrentAttackBuy(45654);
+    id.SetCurrentAttackSell(3455);
+    id.SetCurrentStrongBuy(56);
+    id.SetCurrentStrongSell(88686);
+    id.SetCurrentUnknown(3454);
+    id.SetOrdinaryBuyVolume(45);
+    id.SetOrdinarySellVolume(3454);
+    id.SetStrongBuyVolume(4654656);
+    id.SetStrongSellVolume(4543);
+    id.SetTransactionNumber(3454);
+    id.SetTransactionNumberAbove200000(345345);
+    id.SetTransactionNumberBelow200000(345);
+    id.SetTransactionNumberBelow5000(4352);
+    id.SetTransactionNumberBelow50000(354);
+    id.Reset();
+    EXPECT_EQ(id.GetAttackBuyAbove200000(), 0);
+    EXPECT_EQ(id.GetAttackBuyAmount(), 0);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 0);
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 0);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+    EXPECT_EQ(id.GetAttackSellAbove200000(), 0);
+    EXPECT_EQ(id.GetAttackSellAmount(), 0);
+  }
 }

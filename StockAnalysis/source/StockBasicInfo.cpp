@@ -22,6 +22,8 @@ void CStockBasicInfo::Reset(void) {
   m_lHigh = m_lLow = m_lNew = 0;
   m_llVolume = 0;
   m_llAmount = 0;
+  m_lUpDown = 0;
+  m_dUpDownRate = 0;
   m_llTotalValue = m_llCurrentValue = 0;
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = m_lPSell.at(i) = 0;
