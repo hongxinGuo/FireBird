@@ -24,6 +24,10 @@ public:
   bool IsWorkingDay(void);
   bool IsWorkingDay(CTime timeCurrent);
 
+  // 时间转换辅助函数
+  long GetDay(time_t tt);
+  long GetDay(tm* ptm);
+
 public:
   // 测试用函数
   void Sett_time(time_t Time) noexcept;

@@ -5,8 +5,7 @@
 #include "SystemTime.h"
 #include"SystemMessage.h"
 
-CSystemTime::CSystemTime(void)
-{
+CSystemTime::CSystemTime(void) {
   static int siInstance = 0;
   if (siInstance++ > 0) {
     TRACE("系统时间只允许生成一个实例\n");
@@ -24,8 +23,7 @@ CSystemTime::CSystemTime(void)
   CalculateTime();
 }
 
-CSystemTime::~CSystemTime(void) noexcept
-{
+CSystemTime::~CSystemTime(void) noexcept {
 }
 
 void CSystemTime::Sett_time(time_t ttime) noexcept {
@@ -35,34 +33,31 @@ void CSystemTime::Sett_time(time_t ttime) noexcept {
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
-void CSystemTime::SetTime(long lTime)
-{
+void CSystemTime::SetTime(long lTime) {
 }
 
-void CSystemTime::CalculateTime(void) noexcept
-{
+void CSystemTime::CalculateTime(void) noexcept {
   time(&m_ttime);
   localtime_s(&m_tm, &m_ttime);
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
-void CSystemTime::CalculateLastTradeDay(void) noexcept
-{
+void CSystemTime::CalculateLastTradeDay(void) noexcept {
   time_t ttime = 0;
 
   switch (m_tm.tm_wday) {
   case 1: // 星期一
-    ttime = m_ttime - 3 * 24 * 3600; //
-    break;
+  ttime = m_ttime - 3 * 24 * 3600; //
+  break;
   case 0: //星期日
-    ttime = m_ttime - 3 * 24 * 3600; //
-    break;
+  ttime = m_ttime - 3 * 24 * 3600; //
+  break;
   case 6: // 星期六
-    ttime = m_ttime - 2 * 24 * 3600; //
-    break;
+  ttime = m_ttime - 2 * 24 * 3600; //
+  break;
   default: // 其他
-    ttime = m_ttime - 24 * 3600; //
+  ttime = m_ttime - 24 * 3600; //
   }
   tm tm_;
   localtime_s(&tm_, &ttime);
@@ -93,18 +88,26 @@ CString CSystemTime::GetTimeString(void) noexcept {
   return(str);
 }
 
-bool CSystemTime::IsWorkingDay(void)
-{
+bool CSystemTime::IsWorkingDay(void) {
   if ((m_tm.tm_wday == 0) || (m_tm.tm_wday == 6)) {
     return false;
   }
   else return true;
 }
 
-bool CSystemTime::IsWorkingDay(CTime timeCurrent)
-{
+bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
   if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
     return false;
   }
   else return true;
+}
+
+long CSystemTime::GetDay(time_t const tt) {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
+}
+
+long CSystemTime::GetDay(tm* ptm) {
+  return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }

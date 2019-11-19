@@ -179,7 +179,7 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i + 400);
     }
     stock.UpdateStatus(pRTData);
-    EXPECT_EQ(stock.GetTransactionTime(), 0);   // UpdateCurrentStatus函数不更新交易时间
+    EXPECT_EQ(stock.GetTransactionTime(), 100100100100);   // UpdateCurrentStatus函数不更新交易时间
     EXPECT_EQ(stock.GetLastClose(), 11111);
     EXPECT_EQ(stock.GetOpen(), 22222);
     EXPECT_EQ(stock.GetNew(), 33333);

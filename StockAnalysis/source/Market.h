@@ -101,7 +101,7 @@ public:
   // 是否所有股票的历史日线数据都查询过一遍了
   bool IsDayLineDataInquiringOnce(void);
 
-  long CompileCurrentTradeDayStock(long lCurrentTradeDay);
+  long CompileCurrentTradeDayStock(void);
 
   bool CalculateOneDayRelativeStrong(long lDay);
 
@@ -201,6 +201,8 @@ public:
   vector<CStockPtr> gl_vStockChoice; // 自选股票池
 
   vector<CrweberIndexPtr> gl_vCrweberIndex; // crweber.com网站上的油运指数
+
+  time_t m_ttNewestTransactionTime;
 
 protected:
 

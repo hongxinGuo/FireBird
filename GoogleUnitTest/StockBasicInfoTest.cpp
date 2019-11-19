@@ -221,6 +221,11 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
 
     CRTDataPtr  pRTData = make_shared<CRTData>();
+    time_t tt;
+    time(&tt);
+    long lDaySource = gl_systemTime.GetDay(tt);
+
+    pRTData->SetTransactionTime(tt);
     pRTData->SetLastClose(10101010);
     pRTData->SetOpen(20202020);
     pRTData->SetHigh(30303030);
@@ -235,6 +240,8 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i * 45678);
     }
     id.UpdateStatus(pRTData);
+    long lDayDest = gl_systemTime.GetDay(id.GetTransactionTime());
+    EXPECT_EQ(lDaySource, lDayDest);
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
