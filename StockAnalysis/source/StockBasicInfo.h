@@ -15,7 +15,7 @@ public:
   void Reset(void);
 
   // Êý¾Ý¿â²Ù×÷
-  void StoreBasicInfo(CSetDayLine* psetDayLine);
+  void StoreBasicInfo(CSetDayLine& psetDayLine);
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }

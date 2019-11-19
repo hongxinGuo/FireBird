@@ -371,7 +371,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
-    id.StoreBasicInfo(&setDayLine);
+    id.StoreBasicInfo(setDayLine);
     setDayLine.Update();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();

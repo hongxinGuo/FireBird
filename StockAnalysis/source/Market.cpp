@@ -1582,7 +1582,7 @@ long CMarket::CompileCurrentTradeDayStock(void) {
     pStock->SetDayLineEndDay(lCurrentTradeDay);
     pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     setDayLine.AddNew();
-    pStock->StoreBasicInfo(&setDayLine);
+    pStock->StoreBasicInfo(setDayLine);
     setDayLine.Update();
   }
   setDayLine.m_pDatabase->CommitTrans();
@@ -1608,7 +1608,7 @@ long CMarket::CompileCurrentTradeDayStock(void) {
     setDayLineInfo.m_Day = lCurrentTradeDay;
     setDayLineInfo.m_StockCode = pStock->GetStockCode();
 
-    pStock->StoreCalculatedInfo(&setDayLineInfo);
+    pStock->StoreCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
   }
   setDayLineInfo.m_pDatabase->CommitTrans();

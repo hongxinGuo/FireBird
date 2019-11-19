@@ -10,7 +10,7 @@ public:
   ~CStockCalculatedInfo();
   void Reset(void);
 
-  void StoreTodayInfo(CSetDayLineInfo* setDayLineInfo);
+  void StoreTodayInfo(CSetDayLineInfo& setDayLineInfo);
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
 
