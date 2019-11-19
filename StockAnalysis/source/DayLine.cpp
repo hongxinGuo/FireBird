@@ -94,7 +94,7 @@ void CDayLine::operator =(CDayLine& oneDl) {
 }
 
 void CDayLine::SetData(CSetDayLine* pDayLine) {
-  m_lDay = pDayLine->m_Time;
+  m_lDay = pDayLine->m_Day;
   m_wMarket = pDayLine->m_Market;
   m_lLastClose = atof(pDayLine->m_LastClose) * 1000;
   m_lOpen = atof(pDayLine->m_Open) * 1000;

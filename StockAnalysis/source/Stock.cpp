@@ -57,13 +57,13 @@ void CStock::ClearRTDataDeque(void) {
   }
 }
 
-void CStock::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo)
-{
+void CStock::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
   m_stockCalculatedInfo.StoreCalculatedInfo(setDayLineInfo);
 }
 
-void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday)
-{
+void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
+  ASSERT(setDayLineToday.IsOpen());
+  m_stockBasicInfo.StoreTempInfo(setDayLineToday);
   m_stockCalculatedInfo.StoreTempInfo(setDayLineToday);
 }
 
@@ -72,8 +72,7 @@ void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday)
 // 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话），故而未知成交数量这项需要特殊处理
 //
 ////////////////////////////////////////////////////////////////////////////
-void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday)
-{
+void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
   m_stockCalculatedInfo.LoadAndCalculateTempInfo(setDayLineToday);
 }
 
@@ -83,8 +82,7 @@ void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CStock::UpdateStatus(CRTDataPtr pRTData)
-{
+void CStock::UpdateStatus(CRTDataPtr pRTData) {
   m_stockBasicInfo.UpdateStatus(pRTData);
 }
 
@@ -113,8 +111,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   return true;
 }
 
-bool CStock::LoadDayLine(CSetDayLine* psetDayLine)
-{
+bool CStock::LoadDayLine(CSetDayLine* psetDayLine) {
   CDayLinePtr pDayLine;
 
   ASSERT(m_fDebugLoadDayLineFirst == false);
@@ -145,7 +142,7 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
   while (!psetDayLineInfo->IsEOF()) {
     pDayLine = m_vDayLine[iPosition];
     while ((pDayLine->GetDay() < psetDayLineInfo->m_Day)
-      && (m_vDayLine.size() > (iPosition + 1))) {
+           && (m_vDayLine.size() > (iPosition + 1))) {
       iPosition++;
       pDayLine = m_vDayLine[iPosition];
     }
@@ -159,8 +156,7 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
   return true;
 }
 
-bool CStock::CalculateDayLineRS(void)
-{
+bool CStock::CalculateDayLineRS(void) {
   CalculateDayLineRS(3);
   CalculateDayLineRS(5);
   CalculateDayLineRS(10);
@@ -281,8 +277,8 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
       + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
       + +m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume();
     ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
-      + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
-      + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
+           + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
+           + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
   }
 
   // 下面开始分析挂单情况
@@ -307,8 +303,8 @@ void CStock::IncreaseTransactionNumber(void) {
     m_stockCalculatedInfo.IncreaseTransactionNumberAbove200000();
   }
   ASSERT(m_stockCalculatedInfo.GetTransactionNumber() == (m_stockCalculatedInfo.GetTransactionNumberAbove200000()
-    + m_stockCalculatedInfo.GetTransactionNumberBelow200000()
-    + m_stockCalculatedInfo.GetTransactionNumberBelow50000() + m_stockCalculatedInfo.GetTransactionNumberBelow5000()));
+                                                          + m_stockCalculatedInfo.GetTransactionNumberBelow200000()
+                                                          + m_stockCalculatedInfo.GetTransactionNumberBelow50000() + m_stockCalculatedInfo.GetTransactionNumberBelow5000()));
 }
 
 void CStock::CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice) {
@@ -392,54 +388,54 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
-    break;
+  break;
   case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
-    fNeedCheck.at(3) = false;
-    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-    break;
+  fNeedCheck.at(3) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
   case __STRONG_BUY__: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
-    if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) { // 卖单4和卖单5尚存
-      fNeedCheck.at(2) = false;
-    }
-    else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) { // 卖单5尚存
-      fNeedCheck.at(1) = false;
-      fNeedCheck.at(2) = false;
-    }
-    else { // 所有的卖单都受影响
-      fNeedCheck.at(0) = false;
-      fNeedCheck.at(2) = false;
-      fNeedCheck.at(1) = false;
-    }
-    fNeedCheck.at(3) = false;
-    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-    break;
+  if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) { // 卖单4和卖单5尚存
+    fNeedCheck.at(2) = false;
+  }
+  else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) { // 卖单5尚存
+    fNeedCheck.at(1) = false;
+    fNeedCheck.at(2) = false;
+  }
+  else { // 所有的卖单都受影响
+    fNeedCheck.at(0) = false;
+    fNeedCheck.at(2) = false;
+    fNeedCheck.at(1) = false;
+  }
+  fNeedCheck.at(3) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
   case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
   case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
   case __ORDINARY_SELL__: // 买单一被影响。计算其他八个挂单。
-    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-    break;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
   case __ATTACK_SELL__: // 买单一消失，买单二被影响。计算其他七个挂单。
-    fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
-    break;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
+  break;
   case __STRONG_SELL__: // 买单一和买单二消失，其他买单需要计算。
-    if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) { // 所有买单都受影响
-      fNeedCheck.at(7) = false;
-      fNeedCheck.at(8) = false;
-      fNeedCheck.at(9) = false;
-    }
-    else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) { // 买单5尚存
-      fNeedCheck.at(7) = false;
-      fNeedCheck.at(8) = false;
-    }
-    else { // 买单4和买单5没变化
-      fNeedCheck.at(7) = false;
-    }
-    fNeedCheck.at(6) = false;
-    fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-    break;
+  if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) { // 所有买单都受影响
+    fNeedCheck.at(7) = false;
+    fNeedCheck.at(8) = false;
+    fNeedCheck.at(9) = false;
+  }
+  else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) { // 买单5尚存
+    fNeedCheck.at(7) = false;
+    fNeedCheck.at(8) = false;
+  }
+  else { // 买单4和买单5没变化
+    fNeedCheck.at(7) = false;
+  }
+  fNeedCheck.at(6) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
   default:
-    ASSERT(0); // 不可能执行到此分支。
-    break;
+  ASSERT(0); // 不可能执行到此分支。
+  break;
   }
 
   if ((pCurrentRTData->GetPSell(4) - pCurrentRTData->GetPBuy(4)) > 90) { // 十个价位之间有空位
@@ -458,87 +454,87 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   for (int i = 0; i < 10; i++) {
     switch (i) {
     case 0: // 卖单五
-      if (fNeedCheck.at(0)) {
-        if (GetGuaDan(m_pLastRTData->GetPSell(4)) < m_pLastRTData->GetVSell(4)) { // 撤单了的话
-          m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4));
-          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4)));
-        }
+    if (fNeedCheck.at(0)) {
+      if (GetGuaDan(m_pLastRTData->GetPSell(4)) < m_pLastRTData->GetVSell(4)) { // 撤单了的话
+        m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4));
+        m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(4) - GetGuaDan(m_pLastRTData->GetPSell(4)));
       }
-      break;
+    }
+    break;
     case 1: // 卖单四
-      if (fNeedCheck.at(1)) {
-        if (GetGuaDan(m_pLastRTData->GetPSell(3)) < m_pLastRTData->GetVSell(3)) { // 撤单了的话
-          m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3));
-          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3)));
-        }
+    if (fNeedCheck.at(1)) {
+      if (GetGuaDan(m_pLastRTData->GetPSell(3)) < m_pLastRTData->GetVSell(3)) { // 撤单了的话
+        m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3));
+        m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(3) - GetGuaDan(m_pLastRTData->GetPSell(3)));
       }
-      break;
+    }
+    break;
     case 2: // 卖单三
-      if (fNeedCheck.at(2)) {
-        if (GetGuaDan(m_pLastRTData->GetPSell(2)) < m_pLastRTData->GetVSell(2)) { // 撤单了的话
-          m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2));
-          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2)));
-        }
+    if (fNeedCheck.at(2)) {
+      if (GetGuaDan(m_pLastRTData->GetPSell(2)) < m_pLastRTData->GetVSell(2)) { // 撤单了的话
+        m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2));
+        m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(2) - GetGuaDan(m_pLastRTData->GetPSell(2)));
       }
-      break;
+    }
+    break;
     case 3: // 卖单二
-      if (fNeedCheck.at(3)) {
-        if (GetGuaDan(m_pLastRTData->GetPSell(1)) < m_pLastRTData->GetVSell(1)) { // 撤单了的话
-          m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1));
-          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1)));
-        }
+    if (fNeedCheck.at(3)) {
+      if (GetGuaDan(m_pLastRTData->GetPSell(1)) < m_pLastRTData->GetVSell(1)) { // 撤单了的话
+        m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1));
+        m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(1) - GetGuaDan(m_pLastRTData->GetPSell(1)));
       }
-      break;
+    }
+    break;
     case 4: // 卖单一
-      if (fNeedCheck.at(4)) {
-        if (GetGuaDan(m_pLastRTData->GetPSell(0)) < m_pLastRTData->GetVSell(0)) { // 撤单了的话
-          m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0));
-          m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0)));
-        }
+    if (fNeedCheck.at(4)) {
+      if (GetGuaDan(m_pLastRTData->GetPSell(0)) < m_pLastRTData->GetVSell(0)) { // 撤单了的话
+        m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0));
+        m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(0) - GetGuaDan(m_pLastRTData->GetPSell(0)));
       }
-      break;
+    }
+    break;
     case 5:   // 以下为买单变化情况，买单一
-      if (fNeedCheck.at(5)) {
-        if (GetGuaDan(m_pLastRTData->GetPBuy(0)) < m_pLastRTData->GetVBuy(0)) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0));
-          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0)));
-        }
+    if (fNeedCheck.at(5)) {
+      if (GetGuaDan(m_pLastRTData->GetPBuy(0)) < m_pLastRTData->GetVBuy(0)) { // 撤单了的话
+        m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0));
+        m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(0) - GetGuaDan(m_pLastRTData->GetPBuy(0)));
       }
-      break;
+    }
+    break;
     case 6: // 买单二
-      if (fNeedCheck.at(6)) {
-        if (GetGuaDan(m_pLastRTData->GetPBuy(1)) < m_pLastRTData->GetVBuy(1)) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1));
-          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1)));
-        }
+    if (fNeedCheck.at(6)) {
+      if (GetGuaDan(m_pLastRTData->GetPBuy(1)) < m_pLastRTData->GetVBuy(1)) { // 撤单了的话
+        m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1));
+        m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(1) - GetGuaDan(m_pLastRTData->GetPBuy(1)));
       }
-      break;
+    }
+    break;
     case 7: // 买单三
-      if (fNeedCheck.at(7)) {
-        if (GetGuaDan(m_pLastRTData->GetPBuy(2)) < m_pLastRTData->GetVBuy(2)) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2));
-          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2)));
-        }
+    if (fNeedCheck.at(7)) {
+      if (GetGuaDan(m_pLastRTData->GetPBuy(2)) < m_pLastRTData->GetVBuy(2)) { // 撤单了的话
+        m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2));
+        m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(2) - GetGuaDan(m_pLastRTData->GetPBuy(2)));
       }
-      break;
+    }
+    break;
     case 8: // 买单四
-      if (fNeedCheck.at(8)) {
-        if (GetGuaDan(m_pLastRTData->GetPBuy(3)) < m_pLastRTData->GetVBuy(3)) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3));
-          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3)));
-        }
+    if (fNeedCheck.at(8)) {
+      if (GetGuaDan(m_pLastRTData->GetPBuy(3)) < m_pLastRTData->GetVBuy(3)) { // 撤单了的话
+        m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3));
+        m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(3) - GetGuaDan(m_pLastRTData->GetPBuy(3)));
       }
-      break;
+    }
+    break;
     case 9: // 买单五
-      if (fNeedCheck.at(9)) {
-        if (GetGuaDan(m_pLastRTData->GetPBuy(4)) < m_pLastRTData->GetVBuy(4)) { // 撤单了的话
-          m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4));
-          m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4)));
-        }
+    if (fNeedCheck.at(9)) {
+      if (GetGuaDan(m_pLastRTData->GetPBuy(4)) < m_pLastRTData->GetVBuy(4)) { // 撤单了的话
+        m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4));
+        m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(4) - GetGuaDan(m_pLastRTData->GetPBuy(4)));
       }
-      break;
+    }
+    break;
     default: // 没有这个选项
-      ASSERT(0);
+    ASSERT(0);
     }
   }
 
@@ -547,8 +543,8 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
 
 bool CStock::CheckCurrentRTData() {
   if ((m_stockCalculatedInfo.GetOrdinaryBuyVolume() < 0) || (m_stockCalculatedInfo.GetOrdinarySellVolume() < 0)
-    || (m_stockCalculatedInfo.GetAttackBuyVolume() < 0) || (m_stockCalculatedInfo.GetAttackSellVolume() < 0)
-    || (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) || (m_stockCalculatedInfo.GetStrongSellVolume() < 0)) {
+      || (m_stockCalculatedInfo.GetAttackBuyVolume() < 0) || (m_stockCalculatedInfo.GetAttackSellVolume() < 0)
+      || (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) || (m_stockCalculatedInfo.GetStrongSellVolume() < 0)) {
     int j = 0;
     if (m_stockCalculatedInfo.GetOrdinaryBuyVolume() < 0) j = 1;
     if (m_stockCalculatedInfo.GetOrdinarySellVolume() < 0) j += 2;
@@ -582,49 +578,48 @@ void CStock::ShowCurrentInformationofCancelingGuaDan(void) {
   }
 }
 
-void CStock::ReportGuaDanTransaction(void)
-{
+void CStock::ReportGuaDanTransaction(void) {
   char buffer[100];
   CString str, str2, strTime;
   const CTime ctime(m_pLastRTData->GetTransactionTime());
   sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
   sprintf_s(buffer, " %s %I64d股成交于%10.3f    ", m_stockBasicInfo.GetStockCode().GetBuffer(),
-    m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
+            m_lCurrentGuadanTransactionVolume, m_dCurrentGuaDanTransactionPrice);
   str = strTime;
   str += buffer;
   CString str1;
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
-    str1 = _T(" STRONG BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongBuyVolume());
-    break;
+  str1 = _T(" STRONG BUY");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongBuyVolume());
+  break;
   case __STRONG_SELL__:
-    str1 = _T(" STRONG SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongSellVolume());
-    break;
+  str1 = _T(" STRONG SELL");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongSellVolume());
+  break;
   case __ATTACK_BUY__:
-    str1 = _T(" ATTACK BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackBuyVolume());
-    break;
+  str1 = _T(" ATTACK BUY");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackBuyVolume());
+  break;
   case __ATTACK_SELL__:
-    str1 = _T(" ATTACK SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackSellVolume());
-    break;
+  str1 = _T(" ATTACK SELL");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackSellVolume());
+  break;
   case __ORDINARY_BUY__:
-    str1 = _T(" ORDINARY BUY");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinaryBuyVolume());
-    break;
+  str1 = _T(" ORDINARY BUY");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinaryBuyVolume());
+  break;
   case __ORDINARY_SELL__:
-    str1 = _T(" ORDINARY SELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinarySellVolume());
-    break;
+  str1 = _T(" ORDINARY SELL");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinarySellVolume());
+  break;
   case __UNKNOWN_BUYSELL__:
-    str1 = _T(" UNKNOWN BUYSELL");
-    sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetUnknownVolume());
-    break;
+  str1 = _T(" UNKNOWN BUYSELL");
+  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetUnknownVolume());
+  break;
   default:
-    break;
+  break;
   }
   str += str1;
   // 显示当前成交情况
@@ -636,8 +631,7 @@ void CStock::ReportGuaDanTransaction(void)
   gl_systemMessage.PushTrace2Message(str2);
 }
 
-void CStock::ReportGuaDan(void)
-{
+void CStock::ReportGuaDan(void) {
   CString str1;
   char buffer[30];
   if (m_lCurrentCanselSellVolume > 0) {
@@ -709,8 +703,7 @@ bool CStock::SaveRealTimeData(CSetRealTimeData* psetRTData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CStock::PushRTData(CRTDataPtr pData)
-{
+void CStock::PushRTData(CRTDataPtr pData) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -725,8 +718,7 @@ void CStock::PushRTData(CRTDataPtr pData)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CRTDataPtr CStock::PopRTData(void)
-{
+CRTDataPtr CStock::PopRTData(void) {
   CRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -740,8 +732,7 @@ CRTDataPtr CStock::PopRTData(void)
   return nullptr;
 }
 
-CRTDataPtr CStock::GetRTDataAtHead(void)
-{
+CRTDataPtr CStock::GetRTDataAtHead(void) {
   CRTDataPtr pData;
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
@@ -760,8 +751,7 @@ CRTDataPtr CStock::GetRTDataAtHead(void)
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-long CStock::GetRTDataDequeSize(void)
-{
+long CStock::GetRTDataDequeSize(void) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
@@ -779,16 +769,14 @@ long CStock::GetRTDataDequeSize(void)
 // 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CStock::TodayDataIsActive(void)
-{
+bool CStock::TodayDataIsActive(void) {
   if (!m_fActive) return false;
   else {
     return TodayDataIsValid();
   }
 }
 
-bool CStock::TodayDataIsValid(void)
-{
+bool CStock::TodayDataIsValid(void) {
   if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
     return true;
   }
@@ -798,13 +786,11 @@ bool CStock::TodayDataIsValid(void)
 }
 
 #ifdef _DEBUG
-void CStock::AssertValid() const
-{
+void CStock::AssertValid() const {
   CObject::AssertValid();
 }
 
-void CStock::Dump(CDumpContext& dc) const
-{
+void CStock::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 

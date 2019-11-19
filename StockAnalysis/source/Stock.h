@@ -128,6 +128,19 @@ public:
   INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
   void SetCancelSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelSellVolume(value); }
 
+  long GetTransactionNumber(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumber(); }
+  long GetTransactionNumberBelow5000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow5000(); }
+  long GetTransactionNumberBelow50000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow50000(); }
+  long GetTransactionNumberBelow200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow200000(); }
+  long GetTransactionNumberAbove200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberAbove200000(); }
+
+  INT64 GetAttackBuyBelow50000(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyBelow50000(); }
+  INT64 GetAttackBuyBelow200000(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyBelow200000(); }
+  INT64 GetAttackBuyAbove200000(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyAbove200000(); }
+  INT64 GetAttackSellBelow50000(void) noexcept { return m_stockCalculatedInfo.GetAttackSellBelow50000(); }
+  INT64 GetAttackSellBelow200000(void) noexcept { return m_stockCalculatedInfo.GetAttackSellBelow200000(); }
+  INT64 GetAttackSellAbove200000(void) noexcept { return m_stockCalculatedInfo.GetAttackSellAbove200000(); }
+
   void IncreaseAttackBuyBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow50000(value); }
   void IncreaseAttackBuyBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyBelow200000(value); }
   void IncreaseAttackBuyAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseAttackBuyAbove200000(value); }

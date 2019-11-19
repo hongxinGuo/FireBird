@@ -99,7 +99,12 @@ protected:
   INT64 m_lAttackBuyAmount; // 向上买入金额
   INT64 m_lAttackSellAmount; // 向下卖出金额
   INT64 m_lCurrentVolume;
+  long m_lCurrentAttackBuy;
+  long m_lCurrentStrongBuy;
+  long m_lCurrentAttackSell;
+  long m_lCurrentStrongSell;
 
+  // 以下为需存储项
   long m_lTransactionNumber; // 本交易日的成交笔数
   long m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
   long m_lTransactionNumberBelow50000; //
@@ -110,12 +115,8 @@ protected:
   INT64 m_lOrdinarySellVolume;
   INT64 m_lAttackBuyVolume;	// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
   INT64 m_lStrongBuyVolume;	// 向上强力买入,成交价超过之前的卖二报价
-  long m_lCurrentAttackBuy;
-  long m_lCurrentStrongBuy;
   INT64 m_lAttackSellVolume; // 向下卖出。成交价低于买一价但高于买二价。
   INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
-  long m_lCurrentAttackSell;
-  long m_lCurrentStrongSell;
   INT64 m_lUnknownVolume; // 不明状态的成交量
   long m_lCurrentUnknown; // 当前成交量中的不明状态成交量
   INT64 m_lCancelBuyVolume;	// 买单撤单量

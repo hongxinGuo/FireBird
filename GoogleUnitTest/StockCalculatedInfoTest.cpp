@@ -1,6 +1,8 @@
+#include"stdafx.h"
 #include "pch.h"
 
 #include"globedef.h"
+#include"accessory.h"
 
 #include"StockCalculatedInfo.h"
 #include"Stock.h"
@@ -225,32 +227,7 @@ namespace StockAnalysisTest {
     CSetDayLineToday setDayLineToday;
     CStockPtr pStock = make_shared<CStock>();
 
-    ASSERT(!gl_fNormalMode);
-    ASSERT(gl_fTestMode);
-    setDayLineToday.Open();
-    setDayLineToday.m_pDatabase->BeginTrans();
-    while (!setDayLineToday.IsEOF()) {
-      setDayLineToday.Delete();
-      setDayLineToday.MoveNext();
-    }
-    setDayLineToday.m_pDatabase->CommitTrans();
-    setDayLineToday.m_pDatabase->BeginTrans();
-    setDayLineToday.AddNew();
-    setDayLineToday.m_Time = 20191101;
-    setDayLineToday.m_Market = pStock->GetMarket();
-    setDayLineToday.m_StockName = pStock->GetStockName();
-    setDayLineToday.m_StockCode = pStock->GetStockCode();
-
-    setDayLineToday.m_LastClose = ConvertValueToString(101010, 1000);
-    setDayLineToday.m_Open = ConvertValueToString(202020, 1000);
-    setDayLineToday.m_High = ConvertValueToString(303030, 1000);
-    setDayLineToday.m_Low = ConvertValueToString(404040, 1000);
-    setDayLineToday.m_Close = ConvertValueToString(505050, 1000);
-    setDayLineToday.m_Volume = ConvertValueToString(606060606060);
-    setDayLineToday.m_Amount = ConvertValueToString(707070707070);
-    setDayLineToday.m_CurrentValue = ConvertValueToString(80808080808080);
-    setDayLineToday.m_TotalValue = ConvertValueToString(90909090909090);
-
+    pStock->SetStockCode(_T("sh600000"));
     pStock->SetAttackBuyAmount(1234566);
     pStock->SetAttackBuyVolume(23423534);
     pStock->SetAttackSellAmount(4353454);
@@ -268,14 +245,68 @@ namespace StockAnalysisTest {
     pStock->SetStrongBuyVolume(453456);
     pStock->SetStrongSellVolume(98976);
 
+    ASSERT(!gl_fNormalMode);
+    ASSERT(gl_fTestMode);
+    setDayLineToday.Open();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    while (!setDayLineToday.IsEOF()) {
+      setDayLineToday.Delete();
+      setDayLineToday.MoveNext();
+    }
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    setDayLineToday.AddNew();
+    pStock->SetTransactionTime(20191101);
+
+    pStock->SetLastClose(101010);
+    pStock->SetOpen(202020);
+    pStock->SetHigh(303030);
+    pStock->SetLow(404040);
+    pStock->SetNew(505050);
+    pStock->SetVolume(60606060606060);
+    pStock->SetAmount(707070707070707);
+    pStock->SetCurrentValue(808080808080808);
+    pStock->SetTotalValue(909090909090909);
+
     pStock->StoreTempInfo(setDayLineToday);
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();
 
     setDayLineToday.Open();
-    EXPECT_EQ(setDayLineToday.m_Time, 20191101);
 
+    EXPECT_EQ(setDayLineToday.m_Time, 20191101);
+    EXPECT_EQ(setDayLineToday.m_Market, pStock->GetMarket());
+    EXPECT_STREQ(setDayLineToday.m_StockCode, pStock->GetStockCode());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStock->GetOpen() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStock->GetHigh() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Low), (double)pStock->GetLow() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Close), (double)pStock->GetNew() / 1000);
+    EXPECT_EQ(atoll(setDayLineToday.m_Volume), pStock->GetVolume());
+    EXPECT_EQ(atoll(setDayLineToday.m_Amount), pStock->GetAmount());
+    EXPECT_EQ(atoll(setDayLineToday.m_CurrentValue), pStock->GetCurrentValue());
+    EXPECT_EQ(atoll(setDayLineToday.m_TotalValue), pStock->GetTotalValue());
+
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow200000), pStock->GetAttackBuyBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow50000), pStock->GetAttackBuyBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyVolume), pStock->GetAttackBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellAbove200000), pStock->GetAttackSellAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow200000), pStock->GetAttackSellBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow50000), pStock->GetAttackSellBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellVolume), pStock->GetAttackSellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_OrdinaryBuyVolume), pStock->GetOrdinaryBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_OrdinarySellVolume), pStock->GetOrdinaryBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_CancelBuyVolume), pStock->GetCancelBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_CancelSellVolume), pStock->GetCancelSellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumber), pStock->GetTransactionNumber());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberAbove200000), pStock->GetTransactionNumberAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
+    EXPECT_EQ(atol(setDayLineToday.m_StrongBuyVolume), pStock->GetStrongBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_StrongSellVolume), pStock->GetStrongSellVolume());
     setDayLineToday.Close();
   }
 }

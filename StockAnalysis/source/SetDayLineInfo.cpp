@@ -12,8 +12,7 @@
 IMPLEMENT_DYNAMIC(CSetDayLineInfo, CRecordset)
 
 CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
-  : CRecordset(pdb)
-{
+  : CRecordset(pdb) {
   m_ID = 0;
   m_Day = 0;
   m_Market = 0;
@@ -41,24 +40,21 @@ CSetDayLineInfo::CSetDayLineInfo(CDatabase* pdb)
   m_nFields = 24;
 }
 
-CString CSetDayLineInfo::GetDefaultConnect()
-{
+CString CSetDayLineInfo::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetDayLineInfo::GetDefaultSQL()
-{
+CString CSetDayLineInfo::GetDefaultSQL() {
   return _T("[DayLineInfo]");
 }
 
-void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
-{
+void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Long(pFX, _T("[Time]"), m_Day);
+  RFX_Long(pFX, _T("[Day]"), m_Day);
   RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
@@ -86,13 +82,11 @@ void CSetDayLineInfo::DoFieldExchange(CFieldExchange* pFX)
 // CSetDayLine 诊断
 
 #ifdef _DEBUG
-void CSetDayLineInfo::AssertValid() const
-{
+void CSetDayLineInfo::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetDayLineInfo::Dump(CDumpContext& dc) const
-{
+void CSetDayLineInfo::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -1361,7 +1361,7 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
     pDayLine = pStock->m_vDayLine.at(i);
     if (pStockID->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
     setDayLine.AddNew();
-    setDayLine.m_Time = pDayLine->GetDay();
+    setDayLine.m_Day = pDayLine->GetDay();
     setDayLine.m_Market = pDayLine->GetMarket();
     setDayLine.m_StockCode = pDayLine->GetStockCode();
     setDayLine.m_StockName = pDayLine->GetStockName();
@@ -1400,7 +1400,7 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
 
 bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
   psetDayLine->AddNew();
-  psetDayLine->m_Time = pDayLine->GetDay();
+  psetDayLine->m_Day = pDayLine->GetDay();
   psetDayLine->m_Market = pDayLine->GetMarket();
   psetDayLine->m_StockCode = pDayLine->GetStockCode();
   psetDayLine->m_StockName = pDayLine->GetStockName();
@@ -1579,7 +1579,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
     m_vChinaMarketAStock.at(lIndex)->SetDayLineEndDay(lCurrentTradeDay);
     m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     setDayKLine.AddNew();
-    setDayKLine.m_Time = lCurrentTradeDay;
+    setDayKLine.m_Day = lCurrentTradeDay;
     setDayKLine.m_Market = pStock->GetMarket();
     setDayKLine.m_StockName = pStock->GetStockName();
     setDayKLine.m_StockCode = pStock->GetStockCode();
@@ -1666,7 +1666,7 @@ bool CMarket::UpdateTodayTempDB(void) {
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
            + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
     setDayLineToday.AddNew();
-    setDayLineToday.m_Time = gl_systemTime.GetDay();
+    setDayLineToday.m_Day = gl_systemTime.GetDay();
     setDayLineToday.m_Market = pStock->GetMarket();
     setDayLineToday.m_StockName = pStock->GetStockName();
     setDayLineToday.m_StockCode = pStock->GetStockCode();
@@ -1709,7 +1709,7 @@ bool CMarket::LoadTodayTempDB(void) {
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   if (!setDayLineToday.IsEOF()) {
-    if (setDayLineToday.m_Time == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
+    if (setDayLineToday.m_Day == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据

@@ -1,16 +1,13 @@
 #include "StockBasicInfo.h"
 
-CStockBasicInfo::CStockBasicInfo()
-{
+CStockBasicInfo::CStockBasicInfo() {
   Reset();
 }
 
-CStockBasicInfo::~CStockBasicInfo()
-{
+CStockBasicInfo::~CStockBasicInfo() {
 }
 
-void CStockBasicInfo::Reset(void)
-{
+void CStockBasicInfo::Reset(void) {
   m_wMarket = 0;
   m_strStockCode = _T("");
   m_strStockName = _T("");
@@ -31,6 +28,39 @@ void CStockBasicInfo::Reset(void)
     m_lVBuy.at(i) = m_lVSell.at(i) = 0;
   }
   m_dRelativeStrong = 0;
+}
+
+void CStockBasicInfo::StoreTempInfo(CSetDayLine& setDayLine) {
+  ASSERT(setDayLine.IsOpen());
+  setDayLine.m_Market = m_wMarket;
+  setDayLine.m_StockCode = m_strStockCode;
+  setDayLine.m_StockName = m_strStockName;
+  setDayLine.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
+  setDayLine.m_Open = ConvertValueToString(m_lOpen, 1000);
+  setDayLine.m_High = ConvertValueToString(m_lHigh, 1000);
+  setDayLine.m_Low = ConvertValueToString(m_lLow, 1000);
+  setDayLine.m_Close = ConvertValueToString(m_lNew, 1000);
+  setDayLine.m_Volume = ConvertValueToString(m_llVolume);
+  setDayLine.m_Amount = ConvertValueToString(m_llAmount);
+  setDayLine.m_TotalValue = ConvertValueToString(m_llTotalValue);
+  setDayLine.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
+}
+
+void CStockBasicInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
+  ASSERT(setDayLineToday.IsOpen());
+  setDayLineToday.m_Market = m_wMarket;
+  setDayLineToday.m_StockCode = m_strStockCode;
+  setDayLineToday.m_StockName = m_strStockName;
+  setDayLineToday.m_Day = m_TransactionTime;
+  setDayLineToday.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
+  setDayLineToday.m_Open = ConvertValueToString(m_lOpen, 1000);
+  setDayLineToday.m_High = ConvertValueToString(m_lHigh, 1000);
+  setDayLineToday.m_Low = ConvertValueToString(m_lLow, 1000);
+  setDayLineToday.m_Close = ConvertValueToString(m_lNew, 1000);
+  setDayLineToday.m_Volume = ConvertValueToString(m_llVolume);
+  setDayLineToday.m_Amount = ConvertValueToString(m_llAmount);
+  setDayLineToday.m_TotalValue = ConvertValueToString(m_llTotalValue);
+  setDayLineToday.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
 
 void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {

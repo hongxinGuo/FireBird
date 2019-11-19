@@ -2,6 +2,7 @@
 
 #include"Accessory.h"
 #include"RTData.h"
+#include"SetDayLineToday.h"
 
 using namespace std;
 #include<array>
@@ -12,6 +13,10 @@ public:
   CStockBasicInfo();
   ~CStockBasicInfo();
   void Reset(void);
+
+  // Êý¾Ý¿â²Ù×÷
+  void StoreTempInfo(CSetDayLine& setDayLine);
+  void StoreTempInfo(CSetDayLineToday& setDayLineToday);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
