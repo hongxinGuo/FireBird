@@ -17,9 +17,9 @@ CDayLine::CDayLine(CDayLine& oneDl) {
   m_lClose = oneDl.m_lClose;
   m_llVolume = oneDl.m_llVolume;
   m_llAmount = oneDl.m_llAmount;
-  m_fUpDown = oneDl.m_fUpDown;
+  m_dUpDown = oneDl.m_dUpDown;
   m_dUpDownRate = oneDl.m_dUpDownRate;
-  m_fChangeHandRate = oneDl.m_fChangeHandRate;
+  m_dChangeHandRate = oneDl.m_dChangeHandRate;
   m_llTotalValue = oneDl.m_llTotalValue;
   m_llCurrentValue = oneDl.m_llCurrentValue;
   m_lTransactionNumber = oneDl.m_lTransactionNumber;
@@ -60,8 +60,9 @@ void CDayLine::operator =(CDayLine& oneDl) {
   m_lClose = oneDl.m_lClose;
   m_llVolume = oneDl.m_llVolume;
   m_llAmount = oneDl.m_llAmount;
+  m_dUpDown = oneDl.m_dUpDown;
   m_dUpDownRate = oneDl.m_dUpDownRate;
-  m_fChangeHandRate = oneDl.m_fChangeHandRate;
+  m_dChangeHandRate = oneDl.m_dChangeHandRate;
   m_llTotalValue = oneDl.m_llTotalValue;
   m_llCurrentValue = oneDl.m_llCurrentValue;
   m_lTransactionNumber = oneDl.m_lTransactionNumber;
@@ -103,9 +104,9 @@ void CDayLine::SetData(CSetDayLine& setDayLine) {
   m_lClose = atof(setDayLine.m_Close) * 1000;
   m_llVolume = atoll(setDayLine.m_Volume);
   m_llAmount = atoll(setDayLine.m_Amount);
-  m_fUpDown = atof(setDayLine.m_UpAndDown);
+  m_dUpDown = atof(setDayLine.m_UpAndDown);
   m_dUpDownRate = atof(setDayLine.m_UpDownRate);
-  m_fChangeHandRate = atof(setDayLine.m_ChangeHandRate);
+  m_dChangeHandRate = atof(setDayLine.m_ChangeHandRate);
   m_llTotalValue = atoll(setDayLine.m_TotalValue);
   m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
   m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
@@ -141,10 +142,10 @@ void CDayLine::Reset(void) {
   m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0;							//  ’≈Ãº€
   m_llVolume = 0;
   m_llAmount = 0;
-  m_fUpDown = 0;
+  m_dUpDown = 0;
   m_dUpDownRate = 0;
   m_llCurrentValue = m_llTotalValue = 0;
-  m_fChangeHandRate = 0;
+  m_dChangeHandRate = 0;
 
   m_lTransactionNumber = 0; //
   m_lTransactionNumberBelow5000 = 0; //
@@ -173,7 +174,7 @@ bool CDayLine::SaveData(CSetDayLine& setDayLine) {
   setDayLine.m_Close = ConvertValueToString(GetClose(), 1000);
   setDayLine.m_Volume = ConvertValueToString(GetVolume());
   setDayLine.m_Amount = ConvertValueToString(GetAmount());
-  setDayLine.m_UpAndDown = ConvertValueToString(GetUpDown(), 1000);
+  setDayLine.m_UpAndDown = ConvertValueToString(GetUpDown());
   setDayLine.m_UpDownRate = ConvertValueToString(GetUpDownRate());
   setDayLine.m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
   setDayLine.m_TotalValue = ConvertValueToString(GetTotalValue());
@@ -182,4 +183,24 @@ bool CDayLine::SaveData(CSetDayLine& setDayLine) {
   setDayLine.Update();
 
   return true;
+}
+
+bool CDayLine::LoadData(CSetDayLine& setDayLine) {
+  m_lDay = setDayLine.m_Day;
+  m_wMarket = setDayLine.m_Market;
+  m_strStockCode = setDayLine.m_StockCode;
+  m_lLastClose = atof(setDayLine.m_LastClose) * 1000;
+  m_lOpen = atof(setDayLine.m_Open) * 1000;
+  m_lHigh = atof(setDayLine.m_High) * 1000;
+  m_lLow = atof(setDayLine.m_Low) * 1000;
+  m_lClose = atof(setDayLine.m_Close) * 1000;
+  m_dUpDown = atof(setDayLine.m_UpAndDown);
+  m_llVolume = atoll(setDayLine.m_Volume);
+  m_llAmount = atoll(setDayLine.m_Amount);
+  m_dUpDownRate = atof(setDayLine.m_UpDownRate);
+  m_dChangeHandRate = atof(setDayLine.m_ChangeHandRate);
+  m_llTotalValue = atoll(setDayLine.m_TotalValue);
+  m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
+  m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
+  return false;
 }

@@ -18,6 +18,7 @@ public:
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
   bool SaveData(CSetDayLine& setDayLine);
+  bool LoadData(CSetDayLine& setDayLine);
 
 public:
   long GetDay(void) noexcept { return m_lDay; }
@@ -46,15 +47,15 @@ public:
   long GetClose(void) noexcept { return m_lClose; }
   void SetClose(char* buffer) noexcept { m_lClose = GetValue(buffer); }
   void SetClose(long lValue) noexcept { m_lClose = lValue; }
-  double GetUpDown(void) noexcept { return m_fUpDown; }
-  void SetUpDown(char* buffer) { m_fUpDown = GetValue(buffer); }
-  void SetUpDown(double dValue) noexcept { m_fUpDown = dValue; }
+  double GetUpDown(void) noexcept { return m_dUpDown; }
+  void SetUpDown(char* buffer) { m_dUpDown = GetValue(buffer); }
+  void SetUpDown(double dValue) noexcept { m_dUpDown = dValue; }
   double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
   void SetUpDownRate(char* buffer) { m_dUpDownRate = GetValue(buffer); }
   void SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
-  double GetChangeHandRate(void) noexcept { return m_fChangeHandRate; }
-  void SetChangeHandRate(char* buffer) { m_fChangeHandRate = GetValue(buffer); }
-  void SetChangeHandRate(double dValue) noexcept { m_fChangeHandRate = dValue; }
+  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
+  void SetChangeHandRate(char* buffer) { m_dChangeHandRate = GetValue(buffer); }
+  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
   void SetVolume(char* buffer) noexcept { m_llVolume = GetValue(buffer); }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
@@ -145,9 +146,9 @@ protected:
   long m_lClose; // 收盘价
 
   // 以下数值是实际值
-  double			m_fUpDown;						// 涨跌额
+  double			m_dUpDown;						// 涨跌额
   double      m_dUpDownRate;
-  double			m_fChangeHandRate;			// 换手率
+  double			m_dChangeHandRate;			// 换手率
   INT64	      m_llVolume;							// 成交量,单位:股
   INT64		    m_llAmount;							// 成交金额,单位:元/万元（大盘）
   INT64	      m_llTotalValue;					// 总市值。单位：万元

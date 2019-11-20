@@ -325,7 +325,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.Get120DayRS(), 10);
   }
 
-  TEST(CDayLineTest, TestSaveDayLineRecord) {
+  TEST(CDayLineTest, TestSaveData) {
     CSetDayLine setDayLine;
     CDayLine id;
 
@@ -368,12 +368,74 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_Close) * 1000, id.GetClose());
     EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Volume), id.GetVolume());
     EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Amount), id.GetAmount());
-    EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown) * 1000, id.GetUpDown());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown), id.GetUpDown());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), id.GetUpDownRate());
     EXPECT_DOUBLE_EQ(atoll(setDayLine.m_TotalValue), id.GetTotalValue());
     EXPECT_DOUBLE_EQ(atoll(setDayLine.m_CurrentValue), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), id.GetRelativeStrong());
+    setDayLine.Close();
+
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    while (!setDayLine.IsEOF()) {
+      setDayLine.Delete();
+      setDayLine.MoveNext();
+    }
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+  }
+
+  TEST(CDayLineTest, TestLoadData) {
+    CSetDayLine setDayLine;
+    CDayLine id, idLoaded;
+
+    id.SetDay(21101101);
+    id.SetMarket(__SHANGHAI_MARKET__);
+    id.SetStockCode(_T("sh600008"));
+    id.SetStockName(_T("首创股份"));
+    id.SetLastClose(34235345);
+    id.SetOpen(343452435);
+    id.SetHigh(45234543);
+    id.SetLow(3452345);
+    id.SetClose(452435);
+    id.SetVolume(34523454);
+    id.SetAmount(3245235345);
+    id.SetUpDown(((double)id.GetClose() - id.GetLastClose()) / 1000);
+    id.SetUpDownRate(123.45);
+    id.SetTotalValue(234523452345);
+    id.SetCurrentValue(234145345245);
+    id.SetChangeHandRate(54.321);
+    id.SetRelativeStrong(14.5);
+
+    ASSERT(!gl_fNormalMode);
+    setDayLine.m_strFilter = _T("[Day] = 21101101");
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    id.SaveData(setDayLine);
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+
+    setDayLine.m_strFilter = _T("[Day] = 21101101");
+    setDayLine.Open();
+    idLoaded.LoadData(setDayLine);
+    EXPECT_EQ(idLoaded.GetDay(), id.GetDay());
+    EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
+    EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
+    //EXPECT_STREQ(setDayLine.m_StockName, id.GetStockName());
+    EXPECT_DOUBLE_EQ(idLoaded.GetLastClose(), id.GetLastClose());
+    EXPECT_DOUBLE_EQ(idLoaded.GetOpen(), id.GetOpen());
+    EXPECT_DOUBLE_EQ(idLoaded.GetHigh(), id.GetHigh());
+    EXPECT_DOUBLE_EQ(idLoaded.GetLow(), id.GetLow());
+    EXPECT_DOUBLE_EQ(idLoaded.GetClose(), id.GetClose());
+    EXPECT_DOUBLE_EQ(idLoaded.GetVolume(), id.GetVolume());
+    EXPECT_DOUBLE_EQ(idLoaded.GetAmount(), id.GetAmount());
+    EXPECT_DOUBLE_EQ(idLoaded.GetUpDown(), id.GetUpDown());
+    EXPECT_DOUBLE_EQ(idLoaded.GetUpDownRate(), id.GetUpDownRate());
+    EXPECT_DOUBLE_EQ(idLoaded.GetTotalValue(), id.GetTotalValue());
+    EXPECT_DOUBLE_EQ(idLoaded.GetCurrentValue(), id.GetCurrentValue());
+    EXPECT_DOUBLE_EQ(idLoaded.GetChangeHandRate(), id.GetChangeHandRate());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrong(), id.GetRelativeStrong());
     setDayLine.Close();
 
     setDayLine.Open();
