@@ -319,8 +319,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Open();
     id.LoadAndCalculateTempInfo(setDayLineToday);
     setDayLineToday.Close();
-    //EXPECT_EQ(id.GetTransactionTime(), gl_systemTime.GetDay()); //存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
-
+    EXPECT_EQ(id.GetTransactionTime(), 0); //StoreTempInfo不存储交易时间
     EXPECT_EQ(id2.GetAttackBuyAbove200000(), id.GetAttackBuyAbove200000());
     EXPECT_EQ(id2.GetAttackBuyBelow200000(), id.GetAttackBuyBelow200000());
     EXPECT_EQ(id2.GetAttackBuyBelow50000(), id.GetAttackBuyBelow50000());
@@ -343,7 +342,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetTransactionNumberBelow50000(), id.GetTransactionNumberBelow50000());
     EXPECT_EQ(id.GetTransactionNumberBelow5000(), id.GetTransactionNumberBelow5000());
 
-    EXPECT_EQ(id2.GetUnknownVolume() - lVolumeBegin, id.GetUnknownVolume()); //
+    EXPECT_EQ(id2.GetUnknownVolume() - lVolumeBegin, id.GetUnknownVolume()); //装入数据后要预设UnkownVolume，故而与存入数值相差一总股数
   }
 
   TEST(StockCalculatedInfoTest, TestStoreTodayInfo) {
@@ -354,6 +353,8 @@ namespace StockAnalysisTest {
     CString strDay = _T("21090201"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     id.SetTransactionTime(tt);
+    id.SetStockCode(_T("sh600008"));
+    id.SetMarket(__SHANGHAI_MARKET__);
     id.SetTransactionNumber(123213);
     id.SetTransactionNumberBelow5000(453466456);
     id.SetTransactionNumberBelow50000(56698);
@@ -391,6 +392,9 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_strFilter = _T("[Day] =");
     setDayLineInfo.m_strFilter += strDay;
     setDayLineInfo.Open();
+    EXPECT_EQ(setDayLineInfo.m_Day, lDay);
+    EXPECT_STREQ(setDayLineInfo.m_StockCode, id.GetStockCode());
+    EXPECT_EQ(setDayLineInfo.m_Market, id.GetMarket());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyAbove200000), id.GetAttackBuyAbove200000());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyBelow200000), id.GetAttackBuyBelow200000());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyBelow50000), id.GetAttackBuyBelow50000());

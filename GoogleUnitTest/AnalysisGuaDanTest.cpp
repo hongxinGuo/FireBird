@@ -118,7 +118,7 @@ namespace StockAnalysisTest {
       GuaDanData* pData = GetParam();
       // 预设20个挂单
       for (int i = 0; i < 200; i += 10) {
-        m_stock.TestSetGuaDanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
+        m_stock.__TestSetGuaDanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
       pCurrentData = make_shared<CRTData>();
       for (int i = 0; i < 5; i++) {

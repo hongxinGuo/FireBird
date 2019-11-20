@@ -460,7 +460,7 @@ namespace StockAnalysisTest {
 
     pStock->SetMarket(__SHANGHAI_MARKET__);
     pStock->SetStockCode(_T("sh600000"));
-    pStock->SetTransactionTime(20191101); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    pStock->SetTransactionTime(gl_systemTime.ChangeDayToMarketCloseTime(20191101));
     pStock->SetLastClose(101010);
     pStock->SetOpen(202020);
     pStock->SetHigh(303030);
@@ -514,7 +514,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Close();
 
     setDayLineToday.Open();
-    EXPECT_EQ(setDayLineToday.m_Day, gl_systemTime.GetDay()); //存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    EXPECT_EQ(setDayLineToday.m_Day, 20191101);
     EXPECT_EQ(setDayLineToday.m_Market, pStock->GetMarket());
     EXPECT_STREQ(setDayLineToday.m_StockCode, pStock->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / 1000);
@@ -617,7 +617,6 @@ namespace StockAnalysisTest {
     setDayLineInfo.Open();
     setDayLineInfo.m_pDatabase->BeginTrans();
     setDayLineInfo.AddNew();
-    setDayLineInfo.m_Day = lDay;
     pStock->StoreCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
     setDayLineInfo.m_pDatabase->CommitTrans();
@@ -626,7 +625,7 @@ namespace StockAnalysisTest {
     setDayLine.m_strFilter = _T("[Day] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
-    EXPECT_EQ(setDayLine.m_Day, lDay); //存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    EXPECT_EQ(setDayLine.m_Day, gl_systemTime.GetDay(pStock->GetTransactionTime()));
     EXPECT_EQ(setDayLine.m_Market, pStock->GetMarket());
     EXPECT_STREQ(setDayLine.m_StockCode, pStock->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_LastClose), (double)pStock->GetLastClose() / 1000);
@@ -655,6 +654,9 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_strFilter = _T("[Day] =");
     setDayLineInfo.m_strFilter += strDay;
     setDayLineInfo.Open();
+    EXPECT_EQ(setDayLineInfo.m_Day, gl_systemTime.GetDay(pStock->GetTransactionTime()));
+    EXPECT_EQ(setDayLineInfo.m_Market, pStock->GetMarket());
+    EXPECT_STREQ(setDayLineInfo.m_StockCode, pStock->GetStockCode());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyBelow200000), pStock->GetAttackBuyBelow200000());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyBelow50000), pStock->GetAttackBuyBelow50000());

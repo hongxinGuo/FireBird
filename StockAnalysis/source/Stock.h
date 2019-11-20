@@ -40,10 +40,12 @@ public:
 
 public:
   // 基本信息提取和设置
+  time_t GetTransactionTime(void) noexcept { return m_stockBasicInfo.GetTransactionTime(); }
+  void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); m_stockCalculatedInfo.SetTransactionTime(time); }
   WORD GetMarket(void) noexcept { return m_stockBasicInfo.GetMarket(); }
-  void SetMarket(WORD wValue) noexcept { m_stockBasicInfo.SetMarket(wValue); }
+  void SetMarket(WORD wValue) noexcept { m_stockBasicInfo.SetMarket(wValue); m_stockCalculatedInfo.SetMarket(wValue); }
   CString GetStockCode(void) { return m_stockBasicInfo.GetStockCode(); }
-  void SetStockCode(CString str) { m_stockBasicInfo.SetStockCode(str); }
+  void SetStockCode(CString str) { m_stockBasicInfo.SetStockCode(str); m_stockCalculatedInfo.SetStockCode(str); }
   CString GetStockName(void) { return m_stockBasicInfo.GetStockName(); }
   void SetStockName(CString str) { m_stockBasicInfo.SetStockName(str); }
   long GetOffset(void) noexcept { return m_stockBasicInfo.GetOffset(); }
@@ -54,10 +56,8 @@ public:
   void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }
   long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
   void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
-  time_t GetTransactionTime(void) noexcept { return m_stockBasicInfo.GetTransactionTime(); }
-  void SetTransactionTime(time_t time) noexcept { m_stockBasicInfo.SetTransactionTime(time); m_stockCalculatedInfo.SetTransactionTime(time); }
-  long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
   void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
+  long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
   long GetOpen(void) noexcept { return m_stockBasicInfo.GetOpen(); }
   void SetOpen(long lValue) noexcept { m_stockBasicInfo.SetOpen(lValue); }
   long GetHigh(void) noexcept { return m_stockBasicInfo.GetHigh(); }
@@ -254,7 +254,7 @@ public:
 
 public:
   // 测试专用函数
-  void TestSetGuaDanDeque(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; } // 预先设置挂单。
+  void __TestSetGuaDanDeque(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; } // 预先设置挂单。
 
 public:
 

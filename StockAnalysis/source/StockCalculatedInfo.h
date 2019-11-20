@@ -16,6 +16,10 @@ public:
 
   time_t GetTransactionTime(void) { return m_time; }
   void SetTransactionTime(time_t tt) { m_time = tt; }
+  WORD GetMarket(void) noexcept { return m_wMarket; }
+  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
+  CString GetStockCode(void) { return m_strStockCode; }
+  void SetStockCode(CString str) noexcept { m_strStockCode = str; }
 
   INT64 GetAttackBuyAmount(void) noexcept { return m_lAttackBuyAmount; }
   INT64 GetAttackSellAmount(void) noexcept { return m_lAttackSellAmount; }
@@ -99,6 +103,8 @@ public:
 
 protected:
   time_t m_time; // 交易时间
+  WORD m_wMarket;
+  CString m_strStockCode;
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额
   INT64 m_lAttackSellAmount; // 向下卖出金额

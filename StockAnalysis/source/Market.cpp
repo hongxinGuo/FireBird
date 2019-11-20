@@ -1605,9 +1605,6 @@ long CMarket::CompileCurrentTradeDayStock(void) {
       continue;
     }
     setDayLineInfo.AddNew();
-    setDayLineInfo.m_Day = lCurrentTradeDay;
-    setDayLineInfo.m_StockCode = pStock->GetStockCode();
-
     pStock->StoreCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
   }

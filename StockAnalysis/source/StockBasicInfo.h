@@ -18,6 +18,8 @@ public:
   void StoreBasicInfo(CSetDayLine& psetDayLine);
   void StoreTempInfo(CSetDayLineToday& setDayLineToday);
 
+  void UpdateStatus(CRTDataPtr pRTData);
+
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString GetStockCode(void) { return m_strStockCode; }
@@ -55,6 +57,8 @@ public:
   void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
   double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
   void SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
+  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
+  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
@@ -69,8 +73,6 @@ public:
   void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
   double GetRelativeStrong(void) { return m_dRelativeStrong; }
   void SetRelativeStrong(double value) { m_dRelativeStrong = value; }
-
-  void UpdateStatus(CRTDataPtr pRTData);
 
 protected:
   WORD m_wMarket;	// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
@@ -97,6 +99,7 @@ protected:
   double m_dUpDownRate; // 涨跌率
   INT64 m_llVolume;	// 以1股计的成交量
   INT64 m_llAmount; // 以元计的成交金额
+  double m_dChangeHandRate; // 换手率
   INT64 m_llTotalValue;	// 总市值。单位：万元
   INT64 m_llCurrentValue;	// 流通市值。单位：万元
   array<long, 5> m_lPBuy;	// 买盘价。单位：0.001元

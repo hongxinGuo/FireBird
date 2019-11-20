@@ -13,6 +13,22 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetOffset(), -1);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    EXPECT_EQ(id.GetLastClose(), 0);
+    EXPECT_EQ(id.GetOpen(), 0);
+    EXPECT_EQ(id.GetHigh(), 0);
+    EXPECT_EQ(id.GetLow(), 0);
+    EXPECT_EQ(id.GetNew(), 0);
+    EXPECT_EQ(id.GetVolume(), 0);
+    EXPECT_EQ(id.GetAmount(), 0);
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(id.GetVBuy(i), 0);
+      EXPECT_EQ(id.GetPBuy(i), 0);
+      EXPECT_EQ(id.GetVSell(i), 0);
+      EXPECT_EQ(id.GetPSell(i), 0);
+    }
+    EXPECT_EQ(id.GetTotalValue(), 0);
+    EXPECT_EQ(id.GetCurrentValue(), 0);
+    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0);
     id.SetMarket(1);
     id.SetStockCode(_T("abcde"));
     id.SetStockName(_T("dcba"));
@@ -247,6 +263,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAmount(), 0);
     EXPECT_EQ(id.GetUpDown(), 0);
     EXPECT_DOUBLE_EQ(id.GetUpDownRate(), 0.0);
+    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0.0);
+    EXPECT_EQ(id.GetTotalValue(), 0);
+    EXPECT_EQ(id.GetCurrentValue(), 0);
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(id.GetPBuy(i), 0);
       EXPECT_EQ(id.GetVBuy(i), 0);
@@ -297,6 +316,8 @@ namespace StockAnalysisTest {
     pRTData->SetNew(50505050);
     pRTData->SetVolume(6060606060606060);
     pRTData->SetAmount(7070707070707070);
+    pRTData->SetTotalValue(1324325345655656);
+    pRTData->SetCurrentValue(453454563456345);
     for (int i = 0; i < 5; i++) {
       pRTData->SetPBuy(i, i * 12345);
       pRTData->SetVBuy(i, i * 23456);
@@ -322,6 +343,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAmount(), 7070707070707070);
     EXPECT_EQ(id.GetUpDown(), pRTData->GetNew() - pRTData->GetLastClose());
     EXPECT_DOUBLE_EQ(id.GetUpDownRate(), (double)(pRTData->GetNew() - pRTData->GetLastClose()) * 100 / pRTData->GetLastClose());
+    if (pRTData->GetTotalValue() != 0) {
+      EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), (double)(pRTData->GetAmount()) * 100 / pRTData->GetTotalValue());
+    }
+    else {
+      EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0.0);
+    }
+    EXPECT_EQ(id.GetTotalValue(), pRTData->GetTotalValue());
+    EXPECT_EQ(id.GetCurrentValue(), pRTData->GetCurrentValue());
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(id.GetPBuy(i), i * 12345);
       EXPECT_EQ(id.GetVBuy(i), i * 23456);

@@ -24,6 +24,7 @@ void CStockBasicInfo::Reset(void) {
   m_llAmount = 0;
   m_lUpDown = 0;
   m_dUpDownRate = 0;
+  m_dChangeHandRate = 0;
   m_llTotalValue = m_llCurrentValue = 0;
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = m_lPSell.at(i) = 0;
@@ -34,10 +35,8 @@ void CStockBasicInfo::Reset(void) {
 
 void CStockBasicInfo::StoreBasicInfo(CSetDayLine& setDayLine) {
   ASSERT(setDayLine.IsOpen());
-  tm tm_;
-  localtime_s(&tm_, &m_TransactionTime);
 
-  setDayLine.m_Day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+  setDayLine.m_Day = gl_systemTime.GetDay(m_TransactionTime);
   setDayLine.m_Market = m_wMarket;
   setDayLine.m_StockCode = m_strStockCode;
   setDayLine.m_StockName = m_strStockName;
@@ -50,13 +49,15 @@ void CStockBasicInfo::StoreBasicInfo(CSetDayLine& setDayLine) {
   setDayLine.m_Amount = ConvertValueToString(m_llAmount);
   setDayLine.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
   setDayLine.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
+  if (m_llTotalValue != 0) setDayLine.m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
+  else setDayLine.m_ChangeHandRate = ConvertValueToString(0);
   setDayLine.m_TotalValue = ConvertValueToString(m_llTotalValue);
   setDayLine.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
 
 void CStockBasicInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
-  setDayLineToday.m_Day = gl_systemTime.GetDay();
+  setDayLineToday.m_Day = gl_systemTime.GetDay(m_TransactionTime);
   setDayLineToday.m_Market = m_wMarket;
   setDayLineToday.m_StockCode = m_strStockCode;
   setDayLineToday.m_StockName = m_strStockName;
@@ -85,6 +86,10 @@ void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {
   SetUpDown(m_lNew - m_lLastClose);
   if (m_lLastClose != 0) SetUpDownRate((double)m_lUpDown * 100 / m_lLastClose);
   else SetUpDownRate(0);
+  SetTotalValue(pRTData->GetTotalValue());
+  SetCurrentValue(pRTData->GetCurrentValue());
+  if (m_llTotalValue != 0) m_dChangeHandRate = (double)m_llAmount * 100 / m_llTotalValue;
+  else m_dChangeHandRate = 0;
   for (int i = 0; i < 5; i++) {
     SetPBuy(i, pRTData->GetPBuy(i));
     SetVBuy(i, pRTData->GetVBuy(i));

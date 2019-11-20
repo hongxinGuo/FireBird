@@ -39,6 +39,8 @@ void CStockCalculatedInfo::Reset() {
 void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo& setDayLineInfo) {
   ASSERT(setDayLineInfo.IsOpen());
   setDayLineInfo.m_Day = gl_systemTime.GetDay(m_time);
+  setDayLineInfo.m_Market = m_wMarket;
+  setDayLineInfo.m_StockCode = m_strStockCode;
   setDayLineInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   setDayLineInfo.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   setDayLineInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
