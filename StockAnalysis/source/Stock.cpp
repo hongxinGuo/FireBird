@@ -123,7 +123,7 @@ bool CStock::LoadDayLine(CSetDayLine& setDayLine) {
   m_vDayLine.clear();
   while (!setDayLine.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetData(setDayLine);
+    pDayLine->LoadData(setDayLine);
     m_vDayLine.push_back(pDayLine);
     setDayLine.MoveNext();
   }
@@ -151,7 +151,7 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
       pDayLine = m_vDayLine[iPosition];
     }
     if (pDayLine->GetDay() == setDayLineInfo.m_Day) {
-      pDayLine->SetData(setDayLineInfo);
+      pDayLine->LoadData(setDayLineInfo);
     }
     if (m_vDayLine.size() <= (iPosition + 1)) break;
     setDayLineInfo.MoveNext();
