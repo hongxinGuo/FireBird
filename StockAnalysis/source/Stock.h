@@ -189,7 +189,7 @@ public:
   bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
 
   bool TodayDataIsActive(void); //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
-  bool TodayDataIsValid(void);
+  bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }

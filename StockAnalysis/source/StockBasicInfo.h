@@ -7,8 +7,7 @@
 using namespace std;
 #include<array>
 
-class CStockBasicInfo
-{
+class CStockBasicInfo final : public CObject {
 public:
   CStockBasicInfo();
   ~CStockBasicInfo();
@@ -73,6 +72,11 @@ public:
   void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
   double GetRelativeStrong(void) { return m_dRelativeStrong; }
   void SetRelativeStrong(double value) { m_dRelativeStrong = value; }
+
+#ifdef _DEBUG
+  virtual	void AssertValid() const;
+  virtual	void Dump(CDumpContext& dc) const;
+#endif
 
 protected:
   WORD m_wMarket;	// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；

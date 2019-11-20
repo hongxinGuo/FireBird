@@ -324,4 +324,65 @@ namespace StockAnalysisTest {
     dl.Set120DayRS(10);
     EXPECT_EQ(dl.Get120DayRS(), 10);
   }
+
+  TEST(CDayLineTest, TestSaveDayLineRecord) {
+    CSetDayLine setDayLine;
+    CDayLine id;
+
+    id.SetDay(21101101);
+    id.SetMarket(__SHANGHAI_MARKET__);
+    id.SetStockCode(_T("sh600008"));
+    id.SetStockName(_T("首创股份"));
+    id.SetLastClose(34235345);
+    id.SetOpen(343452435);
+    id.SetHigh(45234543);
+    id.SetLow(3452345);
+    id.SetClose(452435);
+    id.SetVolume(34523454);
+    id.SetAmount(3245235345);
+    id.SetUpDown(12345);
+    id.SetUpDownRate(123.45);
+    id.SetTotalValue(234523452345);
+    id.SetCurrentValue(234145345245);
+    id.SetChangeHandRate(54.321);
+    id.SetRelativeStrong(14.5);
+
+    ASSERT(!gl_fNormalMode);
+    setDayLine.m_strFilter = _T("[Day] = 21101101");
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    id.SaveData(setDayLine);
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+
+    setDayLine.m_strFilter = _T("[Day] = 21101101");
+    setDayLine.Open();
+    EXPECT_EQ(setDayLine.m_Day, id.GetDay());
+    EXPECT_EQ(setDayLine.m_Market, id.GetMarket());
+    EXPECT_STREQ(setDayLine.m_StockCode, id.GetStockCode());
+    //EXPECT_STREQ(setDayLine.m_StockName, id.GetStockName());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_LastClose) * 1000, id.GetLastClose());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_Open) * 1000, id.GetOpen());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_High) * 1000, id.GetHigh());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_Low) * 1000, id.GetLow());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_Close) * 1000, id.GetClose());
+    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Volume), id.GetVolume());
+    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Amount), id.GetAmount());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown) * 1000, id.GetUpDown());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), id.GetUpDownRate());
+    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_TotalValue), id.GetTotalValue());
+    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_CurrentValue), id.GetCurrentValue());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), id.GetChangeHandRate());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), id.GetRelativeStrong());
+    setDayLine.Close();
+
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    while (!setDayLine.IsEOF()) {
+      setDayLine.Delete();
+      setDayLine.MoveNext();
+    }
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+  }
 }

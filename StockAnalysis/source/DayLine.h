@@ -17,6 +17,8 @@ public:
   void SetData(CSetDayLineInfo& pDayLineInfo);
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
+  bool SaveData(CSetDayLine& setDayLine);
+
 public:
   long GetDay(void) noexcept { return m_lDay; }
   void SetDay(long lDay) noexcept { m_lDay = lDay; }
@@ -62,8 +64,10 @@ public:
 
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetTotalValue(char* buffer) { m_llTotalValue = GetValue(buffer); }
+  void SetTotalValue(INT64 llValue) { m_llTotalValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
   void SetCurrentValue(char* buffer) { m_llCurrentValue = GetValue(buffer); }
+  void SetCurrentValue(INT64 llValue) { m_llCurrentValue = llValue; }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }

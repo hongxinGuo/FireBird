@@ -158,3 +158,28 @@ void CDayLine::Reset(void) {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
 }
+
+bool CDayLine::SaveData(CSetDayLine& setDayLine) {
+  ASSERT(setDayLine.IsOpen());
+  setDayLine.AddNew();
+  setDayLine.m_Day = GetDay();
+  setDayLine.m_Market = GetMarket();
+  setDayLine.m_StockCode = GetStockCode();
+  setDayLine.m_StockName = GetStockName();
+  setDayLine.m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  setDayLine.m_High = ConvertValueToString(GetHigh(), 1000);
+  setDayLine.m_Low = ConvertValueToString(GetLow(), 1000);
+  setDayLine.m_Open = ConvertValueToString(GetOpen(), 1000);
+  setDayLine.m_Close = ConvertValueToString(GetClose(), 1000);
+  setDayLine.m_Volume = ConvertValueToString(GetVolume());
+  setDayLine.m_Amount = ConvertValueToString(GetAmount());
+  setDayLine.m_UpAndDown = ConvertValueToString(GetUpDown(), 1000);
+  setDayLine.m_UpDownRate = ConvertValueToString(GetUpDownRate());
+  setDayLine.m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
+  setDayLine.m_TotalValue = ConvertValueToString(GetTotalValue());
+  setDayLine.m_CurrentValue = ConvertValueToString(GetCurrentValue());
+  setDayLine.m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
+  setDayLine.Update();
+
+  return true;
+}

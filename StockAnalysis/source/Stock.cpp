@@ -775,11 +775,11 @@ long CStock::GetRTDataDequeSize(void) {
 bool CStock::TodayDataIsActive(void) {
   if (!m_fActive) return false;
   else {
-    return TodayDataIsValid();
+    return IsTodayDataChanged();
   }
 }
 
-bool CStock::TodayDataIsValid(void) {
+bool CStock::IsTodayDataChanged(void) {
   if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
     return true;
   }

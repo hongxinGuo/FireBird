@@ -96,3 +96,20 @@ void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {
     SetVSell(i, pRTData->GetVSell(i));
   }
 }
+
+#ifdef _DEBUG
+void CStockBasicInfo::AssertValid() const {
+  CObject::AssertValid();
+  ASSERT(m_lHigh >= 0);
+  ASSERT(m_lLow >= 0);
+  ASSERT(m_llCurrentValue >= 0);
+  ASSERT(m_llTotalValue >= 0);
+  ASSERT(m_llAmount >= 0);
+  ASSERT(m_lLastClose >= 0);
+  ASSERT(m_llVolume >= 0);
+}
+
+void CStockBasicInfo::Dump(CDumpContext& dc) const {
+  CObject::Dump(dc);
+}
+#endif //_DEBUG

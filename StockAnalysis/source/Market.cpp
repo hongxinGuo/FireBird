@@ -1346,15 +1346,12 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
 
   long lIndex = 0;
   long lSize = 0;
-  CStockPtr pStockID;
   CDayLinePtr pDayLine;
 
   CCriticalSection cs;
   CSingleLock s(&cs);
   s.Lock();
   if (s.IsLocked()) {
-    lIndex = m_mapChinaMarketAStock.at(pStock->GetStockCode());
-    pStockID = m_vChinaMarketAStock.at(lIndex);
     lSize = pStock->m_vDayLine.size();
     setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
     s.Unlock();
@@ -1364,28 +1361,8 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   setDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = pStock->m_vDayLine.at(i);
-    if (pStockID->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-    setDayLine.AddNew();
-    setDayLine.m_Day = pDayLine->GetDay();
-    setDayLine.m_Market = pDayLine->GetMarket();
-    setDayLine.m_StockCode = pDayLine->GetStockCode();
-    setDayLine.m_StockName = pDayLine->GetStockName();
-    setDayLine.m_LastClose = ConvertValueToString(pDayLine->GetLastClose(), 1000);
-    setDayLine.m_High = ConvertValueToString(pDayLine->GetHigh(), 1000);
-    setDayLine.m_Low = ConvertValueToString(pDayLine->GetLow(), 1000);
-    setDayLine.m_Open = ConvertValueToString(pDayLine->GetOpen(), 1000);
-    setDayLine.m_Close = ConvertValueToString(pDayLine->GetClose(), 1000);
-    setDayLine.m_Volume = ConvertValueToString(pDayLine->GetVolume());
-    setDayLine.m_Amount = ConvertValueToString(pDayLine->GetAmount());
-    setDayLine.m_UpAndDown = ConvertValueToString(pDayLine->GetUpDown());
-    setDayLine.m_UpDownRate = ConvertValueToString(pDayLine->GetUpDownRate());
-    setDayLine.m_ChangeHandRate = ConvertValueToString(pDayLine->GetChangeHandRate());
-    setDayLine.m_TotalValue = ConvertValueToString(pDayLine->GetTotalValue());
-    setDayLine.m_CurrentValue = ConvertValueToString(pDayLine->GetCurrentValue());
-
-    setDayLine.m_RelativeStrong = ConvertValueToString(pDayLine->GetRelativeStrong());
-
-    setDayLine.Update();
+    if (pStock->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
+    pDayLine->SaveData(setDayLine);
   }
   setDayLine.m_pDatabase->CommitTrans();
   setDayLine.Close();
@@ -1393,38 +1370,12 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
   // 更新最新日线日期和起始日线日期
   s.Lock();
   if (s.IsLocked()) {
-    if (pStockID->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
-      pStockID->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
-      pStockID->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
+    if (pStock->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
+      pStock->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
+      pStock->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
     }
     s.Unlock();
   }
-
-  return true;
-}
-
-bool CMarket::SaveOneRecord(CSetDayLine* psetDayLine, CDayLinePtr pDayLine) {
-  psetDayLine->AddNew();
-  psetDayLine->m_Day = pDayLine->GetDay();
-  psetDayLine->m_Market = pDayLine->GetMarket();
-  psetDayLine->m_StockCode = pDayLine->GetStockCode();
-  psetDayLine->m_StockName = pDayLine->GetStockName();
-  psetDayLine->m_LastClose = ConvertValueToString(pDayLine->GetLastClose(), 1000);
-  psetDayLine->m_High = ConvertValueToString(pDayLine->GetHigh(), 1000);
-  psetDayLine->m_Low = ConvertValueToString(pDayLine->GetLow(), 1000);
-  psetDayLine->m_Open = ConvertValueToString(pDayLine->GetOpen(), 1000);
-  psetDayLine->m_Close = ConvertValueToString(pDayLine->GetClose(), 1000);
-  psetDayLine->m_Volume = ConvertValueToString(pDayLine->GetVolume());
-  psetDayLine->m_Amount = ConvertValueToString(pDayLine->GetAmount());
-  psetDayLine->m_UpAndDown = ConvertValueToString(pDayLine->GetUpDown());
-  psetDayLine->m_UpDownRate = ConvertValueToString(pDayLine->GetUpDownRate());
-  psetDayLine->m_ChangeHandRate = ConvertValueToString(pDayLine->GetChangeHandRate());
-  psetDayLine->m_TotalValue = ConvertValueToString(pDayLine->GetTotalValue());
-  psetDayLine->m_CurrentValue = ConvertValueToString(pDayLine->GetCurrentValue());
-
-  psetDayLine->m_RelativeStrong = ConvertValueToString(pDayLine->GetRelativeStrong());
-
-  psetDayLine->Update();
 
   return true;
 }
