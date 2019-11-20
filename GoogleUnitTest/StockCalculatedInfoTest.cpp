@@ -270,6 +270,82 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackSellAmount(), 0);
   }
 
+  TEST(StockCalculatedInfoTest, TestStoreTempInfo) {
+    CSetDayLineToday setDayLineToday;
+    CStockCalculatedInfo id, id2;
+    long lVolumeBegin = 10000000; //预设成交量为一亿股
+
+    id.SetTransactionNumber(123435);
+    id.SetTransactionNumberBelow5000(45346456);
+    id.SetTransactionNumberBelow50000(5698);
+    id.SetTransactionNumberBelow200000(67687);
+    id.SetTransactionNumberAbove200000(6876);
+    id.SetOrdinaryBuyVolume(435);
+    id.SetOrdinarySellVolume(560985);
+    id.SetAttackBuyBelow50000(54509);
+    id.SetAttackBuyBelow200000(45049);
+    id.SetAttackBuyAbove200000(34508);
+    id.SetAttackSellBelow50000(45896);
+    id.SetAttackSellBelow200000(56457);
+    id.SetAttackSellAbove200000(8767);
+    id.SetAttackBuyAmount(1234566);
+    id.SetAttackBuyVolume(23423534);
+    id.SetAttackSellAmount(4353454);
+    id.SetAttackSellVolume(94589489);
+    id.SetCancelBuyVolume(435245);
+    id.SetCancelSellVolume(45648698);
+    id.SetUnknownVolume(4895747);
+    id.SetStrongBuyVolume(453456);
+    id.SetStrongSellVolume(98976);
+    id2 = id;
+
+    ASSERT(!gl_fNormalMode);
+    ASSERT(gl_fTestMode);
+    setDayLineToday.Open();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    while (!setDayLineToday.IsEOF()) {
+      setDayLineToday.Delete();
+      setDayLineToday.MoveNext();
+    }
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    setDayLineToday.AddNew();
+    setDayLineToday.m_Volume = ConvertValueToString(lVolumeBegin);
+    id.StoreTempInfo(setDayLineToday);
+    setDayLineToday.Update();
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.Close();
+
+    setDayLineToday.Open();
+    id.LoadAndCalculateTempInfo(setDayLineToday);
+    setDayLineToday.Close();
+    //EXPECT_EQ(id.GetTransactionTime(), gl_systemTime.GetDay()); //存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+
+    EXPECT_EQ(id2.GetAttackBuyAbove200000(), id.GetAttackBuyAbove200000());
+    EXPECT_EQ(id2.GetAttackBuyBelow200000(), id.GetAttackBuyBelow200000());
+    EXPECT_EQ(id2.GetAttackBuyBelow50000(), id.GetAttackBuyBelow50000());
+    EXPECT_EQ(id2.GetAttackBuyVolume(), id.GetAttackBuyVolume());
+    EXPECT_EQ(id2.GetAttackSellAbove200000(), id.GetAttackSellAbove200000());
+    EXPECT_EQ(id2.GetAttackSellBelow200000(), id.GetAttackSellBelow200000());
+    EXPECT_EQ(id2.GetAttackSellBelow50000(), id.GetAttackSellBelow50000());
+    EXPECT_EQ(id2.GetAttackSellVolume(), id.GetAttackSellVolume());
+
+    EXPECT_EQ(id2.GetOrdinaryBuyVolume(), id.GetOrdinaryBuyVolume());
+    EXPECT_EQ(id2.GetOrdinarySellVolume(), id.GetOrdinarySellVolume());
+    EXPECT_EQ(id2.GetCancelBuyVolume(), id.GetCancelBuyVolume());
+    EXPECT_EQ(id2.GetCancelSellVolume(), id.GetCancelSellVolume());
+    EXPECT_EQ(id2.GetStrongBuyVolume(), id.GetStrongBuyVolume());
+    EXPECT_EQ(id2.GetStrongSellVolume(), id.GetStrongSellVolume());
+
+    EXPECT_EQ(id2.GetTransactionNumber(), id.GetTransactionNumber());
+    EXPECT_EQ(id2.GetTransactionNumberAbove200000(), id.GetTransactionNumberAbove200000());
+    EXPECT_EQ(id.GetTransactionNumberBelow200000(), id.GetTransactionNumberBelow200000());
+    EXPECT_EQ(id.GetTransactionNumberBelow50000(), id.GetTransactionNumberBelow50000());
+    EXPECT_EQ(id.GetTransactionNumberBelow5000(), id.GetTransactionNumberBelow5000());
+
+    EXPECT_EQ(id2.GetUnknownVolume() - lVolumeBegin, id.GetUnknownVolume()); //
+  }
+
   TEST(StockCalculatedInfoTest, TestStoreTodayInfo) {
     CSetDayLineInfo setDayLineInfo;
     CStockCalculatedInfo id;

@@ -127,6 +127,21 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionBool.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionClock.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionCounter.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -139,13 +154,31 @@
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj">
@@ -163,6 +196,9 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -178,13 +214,19 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\Thread.obj">
@@ -196,10 +238,19 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj">
@@ -208,64 +259,16 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionBool.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionCounter.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionClock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

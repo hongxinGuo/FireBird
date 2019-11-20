@@ -330,7 +330,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(StockBasicInfoTest, TestStoreTodayInfo2) {
+  TEST(StockBasicInfoTest, TestStoreTodayInfo) {
     CSetDayLine setDayLine;
     CStockBasicInfo id;
     long lDay = 21091101;

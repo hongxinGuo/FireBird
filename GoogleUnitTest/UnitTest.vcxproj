@@ -88,6 +88,7 @@
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
       <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +111,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
