@@ -64,13 +64,6 @@ void CSystemTime::CalculateLastTradeDay(void) noexcept {
   m_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-long CSystemTime::ChangeTimeToDay(time_t time) noexcept {
-  ASSERT(time >= 0);
-  CTime ct(time);
-  const long lDay = ct.GetYear() * 10000 + ct.GetMonth() * 100 + ct.GetDay();
-  return (lDay);
-}
-
 time_t CSystemTime::ChangeDayToMarketCloseTime(long lDay) noexcept {
   ASSERT(lDay > 19700000);
   const long lYear = lDay / 10000;
@@ -88,26 +81,27 @@ CString CSystemTime::GetTimeString(void) noexcept {
   return(str);
 }
 
-bool CSystemTime::IsWorkingDay(void) {
+bool CSystemTime::IsWorkingDay(void)  noexcept {
   if ((m_tm.tm_wday == 0) || (m_tm.tm_wday == 6)) {
     return false;
   }
   else return true;
 }
 
-bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
+bool CSystemTime::IsWorkingDay(CTime timeCurrent) noexcept {
   if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
     return false;
   }
   else return true;
 }
 
-long CSystemTime::GetDay(time_t const tt) {
+long CSystemTime::FormatToDay(time_t const tt) noexcept {
+  ASSERT(time >= 0);
   tm tm_;
   localtime_s(&tm_, &tt);
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long CSystemTime::GetDay(tm* ptm) {
+long CSystemTime::FormatToDay(tm* ptm) noexcept {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }

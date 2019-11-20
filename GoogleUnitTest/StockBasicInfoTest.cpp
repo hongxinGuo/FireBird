@@ -306,7 +306,7 @@ namespace StockAnalysisTest {
     CRTDataPtr  pRTData = make_shared<CRTData>();
     time_t tt;
     time(&tt);
-    long lDaySource = gl_systemTime.GetDay(tt);
+    long lDaySource = gl_systemTime.FormatToDay(tt);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetLastClose(10101010);
@@ -325,7 +325,7 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i * 45678);
     }
     id.UpdateStatus(pRTData);
-    long lDayDest = gl_systemTime.GetDay(id.GetTransactionTime());
+    long lDayDest = gl_systemTime.FormatToDay(id.GetTransactionTime());
     EXPECT_EQ(lDaySource, lDayDest);
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));
@@ -369,7 +369,7 @@ namespace StockAnalysisTest {
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600000"));
     id.SetStockName("浦东发展");
-    id.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    id.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDay()作比较
     id.SetLastClose(101010);
     id.SetOpen(202020);
     id.SetHigh(303030);

@@ -564,7 +564,7 @@ namespace StockAnalysisTest {
 
     pStock->SetMarket(__SHANGHAI_MARKET__);
     pStock->SetStockCode(_T("sh600000"));
-    pStock->SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.GetDay()作比较
+    pStock->SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDay()作比较
     pStock->SetLastClose(101010);
     pStock->SetOpen(202020);
     pStock->SetHigh(303030);
@@ -625,7 +625,7 @@ namespace StockAnalysisTest {
     setDayLine.m_strFilter = _T("[Day] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
-    EXPECT_EQ(setDayLine.m_Day, gl_systemTime.GetDay(pStock->GetTransactionTime()));
+    EXPECT_EQ(setDayLine.m_Day, gl_systemTime.FormatToDay(pStock->GetTransactionTime()));
     EXPECT_EQ(setDayLine.m_Market, pStock->GetMarket());
     EXPECT_STREQ(setDayLine.m_StockCode, pStock->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_LastClose), (double)pStock->GetLastClose() / 1000);
@@ -654,7 +654,7 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_strFilter = _T("[Day] =");
     setDayLineInfo.m_strFilter += strDay;
     setDayLineInfo.Open();
-    EXPECT_EQ(setDayLineInfo.m_Day, gl_systemTime.GetDay(pStock->GetTransactionTime()));
+    EXPECT_EQ(setDayLineInfo.m_Day, gl_systemTime.FormatToDay(pStock->GetTransactionTime()));
     EXPECT_EQ(setDayLineInfo.m_Market, pStock->GetMarket());
     EXPECT_STREQ(setDayLineInfo.m_StockCode, pStock->GetStockCode());
     EXPECT_EQ(atol(setDayLineInfo.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());

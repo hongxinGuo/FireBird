@@ -21,7 +21,7 @@ UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   int i;
-  long lDay = gl_systemTime.GetDay(gl_ChinaStockMarket.m_ttNewestTransactionTime);
+  long lDay = gl_systemTime.FormatToDay(gl_ChinaStockMarket.m_ttNewestTransactionTime);
   i = gl_ChinaStockMarket.CompileCurrentTradeDayStock();
   char buffer[30];
   sprintf_s(buffer, "%d", i);

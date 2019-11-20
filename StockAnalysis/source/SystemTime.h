@@ -17,16 +17,15 @@ public:
   void CalculateTime(void) noexcept;
   void CalculateLastTradeDay(void) noexcept;
 
-  long ChangeTimeToDay(time_t time) noexcept; // 将时间转变为整型(YYYYMMDD)形式
-  time_t ChangeDayToMarketCloseTime(long lDay) noexcept; // 将整型(YYYYMMDD)转变为time_t形式
   CString GetTimeString(void) noexcept;
 
-  bool IsWorkingDay(void);
-  bool IsWorkingDay(CTime timeCurrent);
+  bool IsWorkingDay(void) noexcept;
+  bool IsWorkingDay(CTime timeCurrent) noexcept;
 
   // 时间转换辅助函数
-  long GetDay(time_t tt);
-  long GetDay(tm* ptm);
+  time_t ChangeDayToMarketCloseTime(long lDay) noexcept; // 将整型(YYYYMMDD)转变为time_t形式
+  long FormatToDay(time_t tt) noexcept;// 将时间转变为整型(YYYYMMDD)形式
+  long FormatToDay(tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 
 public:
   // 测试用函数

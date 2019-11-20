@@ -1554,7 +1554,7 @@ long CMarket::CompileCurrentTradeDayStock(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
   long iCount = 0;
-  long lCurrentTradeDay = gl_systemTime.GetDay(m_ttNewestTransactionTime);
+  long lCurrentTradeDay = gl_systemTime.FormatToDay(m_ttNewestTransactionTime);
 
   CString str;
   str = _T("开始处理最新交易日的实时数据");
