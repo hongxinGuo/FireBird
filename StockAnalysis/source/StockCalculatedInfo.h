@@ -10,8 +10,8 @@ public:
   ~CStockCalculatedInfo();
   void Reset(void);
 
-  void StoreTodayInfo(CSetDayLineInfo& setDayLineInfo);
-  void StoreTempInfo(CSetDayLineToday& setDayLineToday);
+  void SaveTodayInfo(CSetDayLineInfo& setDayLineInfo);
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
 
   time_t GetTransactionTime(void) { return m_time; }

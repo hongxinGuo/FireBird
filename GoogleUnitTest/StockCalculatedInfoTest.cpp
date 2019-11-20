@@ -270,7 +270,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackSellAmount(), 0);
   }
 
-  TEST(StockCalculatedInfoTest, TestStoreTempInfo) {
+  TEST(StockCalculatedInfoTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
     CStockCalculatedInfo id, id2;
     long lVolumeBegin = 10000000; //预设成交量为一亿股
@@ -311,7 +311,7 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
     setDayLineToday.m_Volume = ConvertValueToString(lVolumeBegin);
-    id.StoreTempInfo(setDayLineToday);
+    id.SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();
@@ -319,7 +319,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Open();
     id.LoadAndCalculateTempInfo(setDayLineToday);
     setDayLineToday.Close();
-    EXPECT_EQ(id.GetTransactionTime(), 0); //StoreTempInfo不存储交易时间
+    EXPECT_EQ(id.GetTransactionTime(), 0); //SaveTempInfo不存储交易时间
     EXPECT_EQ(id2.GetAttackBuyAbove200000(), id.GetAttackBuyAbove200000());
     EXPECT_EQ(id2.GetAttackBuyBelow200000(), id.GetAttackBuyBelow200000());
     EXPECT_EQ(id2.GetAttackBuyBelow50000(), id.GetAttackBuyBelow50000());
@@ -345,7 +345,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id2.GetUnknownVolume() - lVolumeBegin, id.GetUnknownVolume()); //装入数据后要预设UnkownVolume，故而与存入数值相差一总股数
   }
 
-  TEST(StockCalculatedInfoTest, TestStoreTodayInfo) {
+  TEST(StockCalculatedInfoTest, TestSaveTodayInfo) {
     CSetDayLineInfo setDayLineInfo;
     CStockCalculatedInfo id;
     long lDay = 21090201;
@@ -384,7 +384,7 @@ namespace StockAnalysisTest {
     setDayLineInfo.m_pDatabase->BeginTrans();
     setDayLineInfo.AddNew();
     setDayLineInfo.m_Day = lDay;
-    id.StoreTodayInfo(setDayLineInfo);
+    id.SaveTodayInfo(setDayLineInfo);
     setDayLineInfo.Update();
     setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.Close();

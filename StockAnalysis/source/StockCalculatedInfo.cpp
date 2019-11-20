@@ -36,7 +36,7 @@ void CStockCalculatedInfo::Reset() {
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
 }
 
-void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo& setDayLineInfo) {
+void CStockCalculatedInfo::SaveTodayInfo(CSetDayLineInfo& setDayLineInfo) {
   ASSERT(setDayLineInfo.IsOpen());
   setDayLineInfo.m_Day = gl_systemTime.FormatToDay(m_time);
   setDayLineInfo.m_Market = m_wMarket;
@@ -64,7 +64,7 @@ void CStockCalculatedInfo::StoreTodayInfo(CSetDayLineInfo& setDayLineInfo) {
   setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 }
 
-void CStockCalculatedInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
+void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   setDayLineToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);

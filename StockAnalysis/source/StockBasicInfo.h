@@ -14,8 +14,8 @@ public:
   void Reset(void);
 
   // Êý¾Ý¿â²Ù×÷
-  void StoreBasicInfo(CSetDayLine& psetDayLine);
-  void StoreTempInfo(CSetDayLineToday& setDayLineToday);
+  void SaveBasicInfo(CSetDayLine& psetDayLine);
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday);
 
   void UpdateStatus(CRTDataPtr pRTData);
 

@@ -33,7 +33,7 @@ void CStockBasicInfo::Reset(void) {
   m_dRelativeStrong = 0;
 }
 
-void CStockBasicInfo::StoreBasicInfo(CSetDayLine& setDayLine) {
+void CStockBasicInfo::SaveBasicInfo(CSetDayLine& setDayLine) {
   ASSERT(setDayLine.IsOpen());
   setDayLine.m_Day = gl_systemTime.FormatToDay(m_TransactionTime);
   setDayLine.m_Market = m_wMarket;
@@ -54,7 +54,7 @@ void CStockBasicInfo::StoreBasicInfo(CSetDayLine& setDayLine) {
   setDayLine.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
 
-void CStockBasicInfo::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
+void CStockBasicInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   setDayLineToday.m_Day = gl_systemTime.FormatToDay(m_TransactionTime);
   setDayLineToday.m_Market = m_wMarket;

@@ -1533,7 +1533,7 @@ long CMarket::CompileCurrentTradeDayStock(void) {
     pStock->SetDayLineEndDay(lCurrentTradeDay);
     pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     setDayLine.AddNew();
-    pStock->StoreBasicInfo(setDayLine);
+    pStock->SaveBasicInfo(setDayLine);
     setDayLine.Update();
   }
   setDayLine.m_pDatabase->CommitTrans();
@@ -1556,7 +1556,7 @@ long CMarket::CompileCurrentTradeDayStock(void) {
       continue;
     }
     setDayLineInfo.AddNew();
-    pStock->StoreCalculatedInfo(setDayLineInfo);
+    pStock->SaveCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
   }
   setDayLineInfo.m_pDatabase->CommitTrans();
@@ -1593,7 +1593,7 @@ bool CMarket::UpdateTodayTempDB(void) {
     ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
            + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
     setDayLineToday.AddNew();
-    pStock->StoreTempInfo(setDayLineToday);
+    pStock->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
   }
   setDayLineToday.m_pDatabase->CommitTrans();

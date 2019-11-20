@@ -454,7 +454,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
   }
 
-  TEST(StockTest, TestStoreTempInfo) {
+  TEST(StockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
     CStockPtr pStock = make_shared<CStock>();
 
@@ -508,7 +508,7 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
 
-    pStock->StoreTempInfo(setDayLineToday);
+    pStock->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();
@@ -554,7 +554,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Close();
   }
 
-  TEST(StockTest, TestStoreTodayInfo) {
+  TEST(StockTest, TestSaveTodayInfo) {
     CSetDayLine setDayLine;
     CSetDayLineInfo setDayLineInfo;
     CStockPtr pStock = make_shared<CStock>();
@@ -607,7 +607,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
-    pStock->StoreBasicInfo(setDayLine);
+    pStock->SaveBasicInfo(setDayLine);
     setDayLine.Update();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
@@ -617,7 +617,7 @@ namespace StockAnalysisTest {
     setDayLineInfo.Open();
     setDayLineInfo.m_pDatabase->BeginTrans();
     setDayLineInfo.AddNew();
-    pStock->StoreCalculatedInfo(setDayLineInfo);
+    pStock->SaveCalculatedInfo(setDayLineInfo);
     setDayLineInfo.Update();
     setDayLineInfo.m_pDatabase->CommitTrans();
     setDayLineInfo.Close();

@@ -359,7 +359,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(StockBasicInfoTest, TestStoreTodayInfo) {
+  TEST(StockBasicInfoTest, TestSaveTodayInfo) {
     CSetDayLine setDayLine;
     CStockBasicInfo id;
     long lDay = 21091101;
@@ -400,7 +400,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
-    id.StoreBasicInfo(setDayLine);
+    id.SaveBasicInfo(setDayLine);
     setDayLine.Update();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();

@@ -57,18 +57,18 @@ void CStock::ClearRTDataDeque(void) {
   }
 }
 
-void CStock::StoreBasicInfo(CSetDayLine& setDayLine) {
-  m_stockBasicInfo.StoreBasicInfo(setDayLine);
+void CStock::SaveBasicInfo(CSetDayLine& setDayLine) {
+  m_stockBasicInfo.SaveBasicInfo(setDayLine);
 }
 
-void CStock::StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
-  m_stockCalculatedInfo.StoreTodayInfo(setDayLineInfo);
+void CStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
+  m_stockCalculatedInfo.SaveTodayInfo(setDayLineInfo);
 }
 
-void CStock::StoreTempInfo(CSetDayLineToday& setDayLineToday) {
+void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
-  m_stockBasicInfo.StoreTempInfo(setDayLineToday);
-  m_stockCalculatedInfo.StoreTempInfo(setDayLineToday);
+  m_stockBasicInfo.SaveTempInfo(setDayLineToday);
+  m_stockCalculatedInfo.SaveTempInfo(setDayLineToday);
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -197,9 +197,9 @@ public:
   bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
 
   // 数据库的提取和存储
-  void StoreBasicInfo(CSetDayLine& psetDayLine);
-  void StoreCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
-  void StoreTempInfo(CSetDayLineToday& setDayLineToday);
+  void SaveBasicInfo(CSetDayLine& psetDayLine);
+  void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLineAndDayLineInfo(void); // 此函数加载
