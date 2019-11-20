@@ -203,10 +203,10 @@ public:
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLineAndDayLineInfo(void); // 此函数加载
-  bool LoadDayLine(CSetDayLine* psetDayLine);
-  bool LoadDayLineInfo(CSetDayLineInfo* psetDayLine);
+  bool LoadDayLine(CSetDayLine& setDayLine);
+  bool LoadDayLineInfo(CSetDayLineInfo& setDayLine);
   // 存储实时行情数据进数据库。（目前弃之不用）
-  bool SaveRealTimeData(CSetRealTimeData* psetRT);
+  bool SaveRealTimeData(CSetRealTimeData& setRT);
 
   // 挂单情况
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }

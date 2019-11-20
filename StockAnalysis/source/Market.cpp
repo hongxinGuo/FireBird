@@ -1486,7 +1486,7 @@ bool CMarket::SaveRTData(void) {
   setRTData.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
-      pStock->SaveRealTimeData(&setRTData);
+      pStock->SaveRealTimeData(setRTData);
     }
   }
   setRTData.m_pDatabase->CommitTrans();

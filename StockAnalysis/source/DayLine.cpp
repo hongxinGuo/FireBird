@@ -93,45 +93,45 @@ void CDayLine::operator =(CDayLine& oneDl) {
   m_d120DayRS = oneDl.m_d120DayRS;
 }
 
-void CDayLine::SetData(CSetDayLine* pDayLine) {
-  m_lDay = pDayLine->m_Day;
-  m_wMarket = pDayLine->m_Market;
-  m_lLastClose = atof(pDayLine->m_LastClose) * 1000;
-  m_lOpen = atof(pDayLine->m_Open) * 1000;
-  m_lHigh = atof(pDayLine->m_High) * 1000;
-  m_lLow = atof(pDayLine->m_Low) * 1000;
-  m_lClose = atof(pDayLine->m_Close) * 1000;
-  m_llVolume = atoll(pDayLine->m_Volume);
-  m_llAmount = atoll(pDayLine->m_Amount);
-  m_fUpDown = atof(pDayLine->m_UpAndDown);
-  m_dUpDownRate = atof(pDayLine->m_UpDownRate);
-  m_fChangeHandRate = atof(pDayLine->m_ChangeHandRate);
-  m_llTotalValue = atoll(pDayLine->m_TotalValue);
-  m_llCurrentValue = atoll(pDayLine->m_CurrentValue);
-  m_dRelativeStrong = atof(pDayLine->m_RelativeStrong);
+void CDayLine::SetData(CSetDayLine& setDayLine) {
+  m_lDay = setDayLine.m_Day;
+  m_wMarket = setDayLine.m_Market;
+  m_lLastClose = atof(setDayLine.m_LastClose) * 1000;
+  m_lOpen = atof(setDayLine.m_Open) * 1000;
+  m_lHigh = atof(setDayLine.m_High) * 1000;
+  m_lLow = atof(setDayLine.m_Low) * 1000;
+  m_lClose = atof(setDayLine.m_Close) * 1000;
+  m_llVolume = atoll(setDayLine.m_Volume);
+  m_llAmount = atoll(setDayLine.m_Amount);
+  m_fUpDown = atof(setDayLine.m_UpAndDown);
+  m_dUpDownRate = atof(setDayLine.m_UpDownRate);
+  m_fChangeHandRate = atof(setDayLine.m_ChangeHandRate);
+  m_llTotalValue = atoll(setDayLine.m_TotalValue);
+  m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
+  m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
 }
 
-void CDayLine::SetData(CSetDayLineInfo* pDayLineInfo) {
-  m_lTransactionNumber = atol(pDayLineInfo->m_TransactionNumber);
-  m_lTransactionNumberBelow5000 = atol(pDayLineInfo->m_TransactionNumberBelow5000);
-  m_lTransactionNumberBelow50000 = atol(pDayLineInfo->m_TransactionNumberBelow50000);
-  m_lTransactionNumberBelow200000 = atol(pDayLineInfo->m_TransactionNumberBelow200000);
-  m_lTransactionNumberAbove200000 = atol(pDayLineInfo->m_TransactionNumberAbove200000);
-  m_lAttackBuyVolume = atol(pDayLineInfo->m_AttackBuyVolume);
-  m_lStrongBuyVolume = atol(pDayLineInfo->m_StrongBuyVolume);
-  m_lAttackSellVolume = atol(pDayLineInfo->m_AttackSellVolume);
-  m_lStrongSellVolume = atol(pDayLineInfo->m_StrongSellVolume);
-  m_lUnknownVolume = atol(pDayLineInfo->m_UnknownVolume);
-  m_lCancelBuyVolume = atol(pDayLineInfo->m_CancelBuyVolume);
-  m_lCancelSellVolume = atol(pDayLineInfo->m_CancelSellVolume);
-  m_lOrdinaryBuyVolume = atol(pDayLineInfo->m_OrdinaryBuyVolume);
-  m_lAttackBuyBelow50000 = atol(pDayLineInfo->m_AttackBuyBelow50000);
-  m_lAttackBuyBelow200000 = atol(pDayLineInfo->m_AttackBuyBelow200000);
-  m_lAttackBuyAbove200000 = atol(pDayLineInfo->m_AttackBuyAbove200000);
-  m_lOrdinarySellVolume = atol(pDayLineInfo->m_OrdinarySellVolume);
-  m_lAttackSellBelow50000 = atol(pDayLineInfo->m_AttackSellBelow50000);
-  m_lAttackSellBelow200000 = atol(pDayLineInfo->m_AttackSellBelow200000);
-  m_lAttackSellAbove200000 = atol(pDayLineInfo->m_AttackSellAbove200000);
+void CDayLine::SetData(CSetDayLineInfo& setDayLineInfo) {
+  m_lTransactionNumber = atol(setDayLineInfo.m_TransactionNumber);
+  m_lTransactionNumberBelow5000 = atol(setDayLineInfo.m_TransactionNumberBelow5000);
+  m_lTransactionNumberBelow50000 = atol(setDayLineInfo.m_TransactionNumberBelow50000);
+  m_lTransactionNumberBelow200000 = atol(setDayLineInfo.m_TransactionNumberBelow200000);
+  m_lTransactionNumberAbove200000 = atol(setDayLineInfo.m_TransactionNumberAbove200000);
+  m_lAttackBuyVolume = atol(setDayLineInfo.m_AttackBuyVolume);
+  m_lStrongBuyVolume = atol(setDayLineInfo.m_StrongBuyVolume);
+  m_lAttackSellVolume = atol(setDayLineInfo.m_AttackSellVolume);
+  m_lStrongSellVolume = atol(setDayLineInfo.m_StrongSellVolume);
+  m_lUnknownVolume = atol(setDayLineInfo.m_UnknownVolume);
+  m_lCancelBuyVolume = atol(setDayLineInfo.m_CancelBuyVolume);
+  m_lCancelSellVolume = atol(setDayLineInfo.m_CancelSellVolume);
+  m_lOrdinaryBuyVolume = atol(setDayLineInfo.m_OrdinaryBuyVolume);
+  m_lAttackBuyBelow50000 = atol(setDayLineInfo.m_AttackBuyBelow50000);
+  m_lAttackBuyBelow200000 = atol(setDayLineInfo.m_AttackBuyBelow200000);
+  m_lAttackBuyAbove200000 = atol(setDayLineInfo.m_AttackBuyAbove200000);
+  m_lOrdinarySellVolume = atol(setDayLineInfo.m_OrdinarySellVolume);
+  m_lAttackSellBelow50000 = atol(setDayLineInfo.m_AttackSellBelow50000);
+  m_lAttackSellBelow200000 = atol(setDayLineInfo.m_AttackSellBelow200000);
+  m_lAttackSellAbove200000 = atol(setDayLineInfo.m_AttackSellAbove200000);
 }
 
 void CDayLine::Reset(void) {

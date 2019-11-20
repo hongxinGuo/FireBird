@@ -13,8 +13,8 @@ public:
   CDayLine();
   CDayLine(CDayLine&);
   void operator=(CDayLine&);
-  void SetData(CSetDayLine* pDayLine);
-  void SetData(CSetDayLineInfo* pDayLineInfo);
+  void SetData(CSetDayLine& pDayLine);
+  void SetData(CSetDayLineInfo& pDayLineInfo);
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
 public:

@@ -100,7 +100,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   setDayLine.m_strFilter += _T("'");
   setDayLine.m_strSort = _T("[Day]");
   setDayLine.Open();
-  LoadDayLine(&setDayLine);
+  LoadDayLine(setDayLine);
   setDayLine.Close();
 
   // 装入DayLineInfo数据
@@ -109,23 +109,23 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   setDayLineInfo.m_strFilter += _T("'");
   setDayLineInfo.m_strSort = _T("[Day]");
   setDayLineInfo.Open();
-  LoadDayLineInfo(&setDayLineInfo);
+  LoadDayLineInfo(setDayLineInfo);
   setDayLineInfo.Close();
 
   return true;
 }
 
-bool CStock::LoadDayLine(CSetDayLine* psetDayLine) {
+bool CStock::LoadDayLine(CSetDayLine& setDayLine) {
   CDayLinePtr pDayLine;
 
   ASSERT(m_fDebugLoadDayLineFirst == false);
   // 装入DayLine数据
   m_vDayLine.clear();
-  while (!psetDayLine->IsEOF()) {
+  while (!setDayLine.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetData(psetDayLine);
+    pDayLine->SetData(setDayLine);
     m_vDayLine.push_back(pDayLine);
-    psetDayLine->MoveNext();
+    setDayLine.MoveNext();
   }
   m_fDebugLoadDayLineFirst = true;
   return true;
@@ -137,24 +137,24 @@ bool CStock::LoadDayLine(CSetDayLine* psetDayLine) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CStock::LoadDayLineInfo(CSetDayLineInfo* psetDayLineInfo) {
+bool CStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 
   ASSERT(m_fDebugLoadDayLineFirst);
 
-  while (!psetDayLineInfo->IsEOF()) {
+  while (!setDayLineInfo.IsEOF()) {
     pDayLine = m_vDayLine[iPosition];
-    while ((pDayLine->GetDay() < psetDayLineInfo->m_Day)
+    while ((pDayLine->GetDay() < setDayLineInfo.m_Day)
            && (m_vDayLine.size() > (iPosition + 1))) {
       iPosition++;
       pDayLine = m_vDayLine[iPosition];
     }
-    if (pDayLine->GetDay() == psetDayLineInfo->m_Day) {
-      pDayLine->SetData(psetDayLineInfo);
+    if (pDayLine->GetDay() == setDayLineInfo.m_Day) {
+      pDayLine->SetData(setDayLineInfo);
     }
     if (m_vDayLine.size() <= (iPosition + 1)) break;
-    psetDayLineInfo->MoveNext();
+    setDayLineInfo.MoveNext();
   }
   m_fDebugLoadDayLineFirst = false;
   return true;
@@ -654,48 +654,47 @@ void CStock::ReportGuaDan(void) {
   }
 }
 
-bool CStock::SaveRealTimeData(CSetRealTimeData* psetRTData) {
-  ASSERT(psetRTData != nullptr);
-  ASSERT(psetRTData->IsOpen());
+bool CStock::SaveRealTimeData(CSetRealTimeData& setRTData) {
+  ASSERT(setRTData.IsOpen());
   for (auto pRTData : m_dequeRTData) {
-    psetRTData->AddNew();
-    psetRTData->m_Time = pRTData->GetTransactionTime();
-    psetRTData->m_lMarket = m_stockBasicInfo.GetMarket();
-    psetRTData->m_StockCode = m_stockBasicInfo.GetStockCode();
-    psetRTData->m_StockName = m_stockBasicInfo.GetStockName();
-    psetRTData->m_CurrentPrice = ConvertValueToString(pRTData->GetNew(), 1000);
-    psetRTData->m_High = ConvertValueToString(pRTData->GetHigh(), 1000);
-    psetRTData->m_Low = ConvertValueToString(pRTData->GetLow(), 1000);
-    psetRTData->m_LastClose = ConvertValueToString(pRTData->GetLastClose(), 1000);
-    psetRTData->m_Open = ConvertValueToString(pRTData->GetOpen(), 1000);
-    psetRTData->m_Volume = ConvertValueToString(pRTData->GetVolume());
-    psetRTData->m_Amount = ConvertValueToString(pRTData->GetAmount());
-    psetRTData->m_Stroke = _T("0");
-    psetRTData->m_PBuy1 = ConvertValueToString(pRTData->GetPBuy(0), 1000);
-    psetRTData->m_VBuy1 = ConvertValueToString(pRTData->GetVBuy(0));
-    psetRTData->m_PSell1 = ConvertValueToString(pRTData->GetPSell(0), 1000);
-    psetRTData->m_VSell1 = ConvertValueToString(pRTData->GetVSell(0));
+    setRTData.AddNew();
+    setRTData.m_Time = pRTData->GetTransactionTime();
+    setRTData.m_lMarket = m_stockBasicInfo.GetMarket();
+    setRTData.m_StockCode = m_stockBasicInfo.GetStockCode();
+    setRTData.m_StockName = m_stockBasicInfo.GetStockName();
+    setRTData.m_CurrentPrice = ConvertValueToString(pRTData->GetNew(), 1000);
+    setRTData.m_High = ConvertValueToString(pRTData->GetHigh(), 1000);
+    setRTData.m_Low = ConvertValueToString(pRTData->GetLow(), 1000);
+    setRTData.m_LastClose = ConvertValueToString(pRTData->GetLastClose(), 1000);
+    setRTData.m_Open = ConvertValueToString(pRTData->GetOpen(), 1000);
+    setRTData.m_Volume = ConvertValueToString(pRTData->GetVolume());
+    setRTData.m_Amount = ConvertValueToString(pRTData->GetAmount());
+    setRTData.m_Stroke = _T("0");
+    setRTData.m_PBuy1 = ConvertValueToString(pRTData->GetPBuy(0), 1000);
+    setRTData.m_VBuy1 = ConvertValueToString(pRTData->GetVBuy(0));
+    setRTData.m_PSell1 = ConvertValueToString(pRTData->GetPSell(0), 1000);
+    setRTData.m_VSell1 = ConvertValueToString(pRTData->GetVSell(0));
 
-    psetRTData->m_PBuy2 = ConvertValueToString(pRTData->GetPBuy(1), 1000);
-    psetRTData->m_VBuy2 = ConvertValueToString(pRTData->GetVBuy(1));
-    psetRTData->m_PSell2 = ConvertValueToString(pRTData->GetPSell(1), 1000);
-    psetRTData->m_VSell2 = ConvertValueToString(pRTData->GetVSell(1));
+    setRTData.m_PBuy2 = ConvertValueToString(pRTData->GetPBuy(1), 1000);
+    setRTData.m_VBuy2 = ConvertValueToString(pRTData->GetVBuy(1));
+    setRTData.m_PSell2 = ConvertValueToString(pRTData->GetPSell(1), 1000);
+    setRTData.m_VSell2 = ConvertValueToString(pRTData->GetVSell(1));
 
-    psetRTData->m_PBuy3 = ConvertValueToString(pRTData->GetPBuy(2), 1000);
-    psetRTData->m_VBuy3 = ConvertValueToString(pRTData->GetVBuy(2));
-    psetRTData->m_PSell3 = ConvertValueToString(pRTData->GetPSell(2), 1000);
-    psetRTData->m_VSell3 = ConvertValueToString(pRTData->GetVSell(2));
+    setRTData.m_PBuy3 = ConvertValueToString(pRTData->GetPBuy(2), 1000);
+    setRTData.m_VBuy3 = ConvertValueToString(pRTData->GetVBuy(2));
+    setRTData.m_PSell3 = ConvertValueToString(pRTData->GetPSell(2), 1000);
+    setRTData.m_VSell3 = ConvertValueToString(pRTData->GetVSell(2));
 
-    psetRTData->m_PBuy4 = ConvertValueToString(pRTData->GetPBuy(3), 1000);
-    psetRTData->m_VBuy4 = ConvertValueToString(pRTData->GetVBuy(3));
-    psetRTData->m_PSell4 = ConvertValueToString(pRTData->GetPSell(3), 1000);
-    psetRTData->m_VSell4 = ConvertValueToString(pRTData->GetVSell(3));
+    setRTData.m_PBuy4 = ConvertValueToString(pRTData->GetPBuy(3), 1000);
+    setRTData.m_VBuy4 = ConvertValueToString(pRTData->GetVBuy(3));
+    setRTData.m_PSell4 = ConvertValueToString(pRTData->GetPSell(3), 1000);
+    setRTData.m_VSell4 = ConvertValueToString(pRTData->GetVSell(3));
 
-    psetRTData->m_PBuy5 = ConvertValueToString(pRTData->GetPBuy(4), 1000);
-    psetRTData->m_VBuy5 = ConvertValueToString(pRTData->GetVBuy(4));
-    psetRTData->m_PSell5 = ConvertValueToString(pRTData->GetPSell(4), 1000);
-    psetRTData->m_VSell5 = ConvertValueToString(pRTData->GetVSell(4));
-    psetRTData->Update();
+    setRTData.m_PBuy5 = ConvertValueToString(pRTData->GetPBuy(4), 1000);
+    setRTData.m_VBuy5 = ConvertValueToString(pRTData->GetVBuy(4));
+    setRTData.m_PSell5 = ConvertValueToString(pRTData->GetPSell(4), 1000);
+    setRTData.m_VSell5 = ConvertValueToString(pRTData->GetVSell(4));
+    setRTData.Update();
   }
 
   return true;
