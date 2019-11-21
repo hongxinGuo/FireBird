@@ -6,7 +6,6 @@
 #include"Thread.h"
 
 #include"accessory.h"
-#include"TransferSharedPtr.h"
 
 #include"stock.h"
 #include"Market.h"
@@ -1336,52 +1335,6 @@ void CMarket::SetShowStock(CString strStockCode) {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
-//	将日线存入数据库．默认数据库为空。
-//  此函数被工作线程调用，需要注意数据同步问题。
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SaveDayLine(CStockPtr pStock) {
-  CSetStockCode setStockCode;
-  CSetDayLine setDayLine;
-
-  long lIndex = 0;
-  long lSize = 0;
-  CDayLinePtr pDayLine;
-
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    lSize = pStock->m_vDayLine.size();
-    setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
-    s.Unlock();
-  }
-
-  setDayLine.Open();
-  setDayLine.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    pDayLine = pStock->m_vDayLine.at(i);
-    if (pStock->GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-    pDayLine->SaveData(setDayLine);
-  }
-  setDayLine.m_pDatabase->CommitTrans();
-  setDayLine.Close();
-
-  // 更新最新日线日期和起始日线日期
-  s.Lock();
-  if (s.IsLocked()) {
-    if (pStock->GetDayLineEndDay() < pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay()) {
-      pStock->SetDayLineStartDay(pStock->m_vDayLine.at(0)->GetDay());
-      pStock->SetDayLineEndDay(pStock->m_vDayLine.at(pStock->m_vDayLine.size() - 1)->GetDay());
-    }
-    s.Unlock();
-  }
-
-  return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
 //	将日线数据存入数据库．
 //  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
@@ -1389,14 +1342,14 @@ bool CMarket::SaveDayLine(CStockPtr pStock) {
 
 bool CMarket::SaveDayLineData(void) {
   CString str;
-  strTransferSharedPtr* pTransfer = nullptr;
+  CStock* pStockptr = nullptr;
 
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
-        pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
-        pTransfer->m_pStock = pStock;
-        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+        //也可采用提取原始指针的方式，传递原始指针。此时要注意不要使用此原始指针生成智能指针。
+        pStockptr = pStock.get();
+        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pStockptr, THREAD_PRIORITY_LOWEST);
       }
       else {
         CString str1 = pStock->GetStockCode();

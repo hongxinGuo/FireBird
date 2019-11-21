@@ -57,6 +57,49 @@ void CStock::ClearRTDataDeque(void) {
   }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将日线存入数据库．默认数据库为空。
+//  此函数被工作线程调用，需要注意数据同步问题。
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CStock::SaveDayLine(void) {
+  CSetDayLine setDayLine;
+  long lIndex = 0;
+  long lSize = 0;
+  CDayLinePtr pDayLine;
+
+  CCriticalSection cs;
+  CSingleLock s(&cs);
+  s.Lock();
+  if (s.IsLocked()) {
+    lSize = m_vDayLine.size();
+    setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
+    s.Unlock();
+  }
+  setDayLine.Open();
+  setDayLine.m_pDatabase->BeginTrans();
+  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+    pDayLine = m_vDayLine.at(i);
+    if (GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
+    pDayLine->SaveData(setDayLine);
+  }
+  setDayLine.m_pDatabase->CommitTrans();
+  setDayLine.Close();
+
+  // 更新最新日线日期和起始日线日期
+  s.Lock();
+  if (s.IsLocked()) {
+    if (GetDayLineEndDay() < m_vDayLine.at(m_vDayLine.size() - 1)->GetDay()) {
+      SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
+      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
+    }
+    s.Unlock();
+  }
+
+  return true;
+}
+
 void CStock::SaveBasicInfo(CSetDayLine& setDayLine) {
   m_stockBasicInfo.SaveBasicInfo(setDayLine);
 }

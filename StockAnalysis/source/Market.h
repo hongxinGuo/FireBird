@@ -76,8 +76,6 @@ public:
   bool IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
   void SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
 
-  bool SaveDayLine(CStockPtr pStock);
-
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool SaveDayLineData(void);  // 日线数据处理函数，将读取到的日线数据存入数据库中
