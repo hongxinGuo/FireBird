@@ -6,6 +6,7 @@
 #include"Thread.h"
 
 #include"accessory.h"
+#include"TransferSharedPtr.h"
 
 #include"stock.h"
 #include"Market.h"
@@ -1342,14 +1343,14 @@ void CMarket::SetShowStock(CString strStockCode) {
 
 bool CMarket::SaveDayLineData(void) {
   CString str;
-  CStock* pStockptr = nullptr;
+  strTransferSharedPtr* pTransfer = nullptr;
 
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
-        //也可采用提取原始指针的方式，传递原始指针。此时要注意不要使用此原始指针生成智能指针。
-        pStockptr = pStock.get();
-        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pStockptr, THREAD_PRIORITY_LOWEST);
+        pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
+        pTransfer->m_pStock = pStock;
+        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
       }
       else {
         CString str1 = pStock->GetStockCode();
