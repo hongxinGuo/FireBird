@@ -17,7 +17,7 @@ public:
 
   // 操作
 public:
-  bool ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd);
+  bool ShowGuadan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd);
   bool ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart);
 
   void    ShowRealtimeStockData(CDC* pdc);

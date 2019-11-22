@@ -64,12 +64,12 @@ CStockAnalysisView::CStockAnalysisView() noexcept {
 CStockAnalysisView::~CStockAnalysisView() {
 }
 
-bool CStockAnalysisView::ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
+bool CStockAnalysisView::ShowGuadan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
   CSize sizeText = pDC->GetTextExtent(str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
-  long lStartPrice = ((long)(pStock->GetCurrentGuaDanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
+  long lStartPrice = ((long)(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
   char buffer[20];
   int j = 0;
 
@@ -79,11 +79,11 @@ bool CStockAnalysisView::ShowGuaDan(CDC* pDC, CStockPtr pStock, int iXStart, int
     str = buffer;
     long lCurrentPrice = lStartPrice + i * 10;
 
-    if (!pStock->HaveGuaDan(lCurrentPrice)) { // 此价位没有挂单
+    if (!pStock->HaveGuadan(lCurrentPrice)) { // 此价位没有挂单
       strPrice = _T("    ----------");
     }
     else {
-      sprintf_s(buffer, "    %10d", pStock->GetGuaDan(lCurrentPrice));
+      sprintf_s(buffer, "    %10d", pStock->GetGuadan(lCurrentPrice));
       strPrice = buffer;
     }
 
@@ -105,7 +105,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, 
   CSize sizeText = pDC->GetTextExtent(str);
   char buffer[30];
 
-  sprintf_s(buffer, "%8.3f", pStock->GetCurrentGuaDanTransactionPrice());
+  sprintf_s(buffer, "%8.3f", pStock->GetCurrentGuadanTransactionPrice());
   str = _T("当前挂单成交价格： ");
   str += buffer;
   pDC->TextOut(iXStart, iYStart + 10, str);
@@ -172,7 +172,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   pdc->SelectObject(ppen);
 
   if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    ShowGuaDan(pdc, gl_ChinaStockMarket.m_pCurrentStock, 10, 10, 500);
+    ShowGuadan(pdc, gl_ChinaStockMarket.m_pCurrentStock, 10, 10, 500);
 
     //ShowCurrentTransactionInfo(pdc, gl_sMarketm_pCurrentStock, 200, 10);
   }

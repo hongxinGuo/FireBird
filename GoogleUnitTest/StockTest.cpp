@@ -426,9 +426,9 @@ namespace StockAnalysisTest {
   TEST(CStockTest, TestGetCurrentGuadanTransactionPrice) {
     CStock id;
 
-    EXPECT_DOUBLE_EQ(id.GetCurrentGuaDanTransactionPrice(), 0);
-    id.SetCurrentGuaDanTransactionPrice(10.01);
-    EXPECT_DOUBLE_EQ(id.GetCurrentGuaDanTransactionPrice(), 10.01);
+    EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 0);
+    id.SetCurrentGuadanTransactionPrice(10.01);
+    EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 10.01);
   }
 
   TEST(CStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
@@ -441,12 +441,12 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
   }
 
-  TEST(CStockTest, TestGetGuaDan) {
+  TEST(CStockTest, TestGetGuadan) {
     CStock stock;
-    EXPECT_FALSE(stock.HaveGuaDan(10000));
-    stock.SetGuaDan(10000, 10000);
-    EXPECT_TRUE(stock.HaveGuaDan(10000));
-    EXPECT_EQ(stock.GetGuaDan(10000), 10000);
+    EXPECT_FALSE(stock.HaveGuadan(10000));
+    stock.SetGuadan(10000, 10000);
+    EXPECT_TRUE(stock.HaveGuadan(10000));
+    EXPECT_EQ(stock.GetGuadan(10000), 10000);
   }
 
   TEST(CStockTest, TestClearRTDataDeque) {

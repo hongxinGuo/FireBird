@@ -211,11 +211,11 @@ public:
   bool SaveRealTimeData(CSetRealTimeData& setRT);
 
   // 挂单情况
-  double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
-  void SetCurrentGuaDanTransactionPrice(double dValue) noexcept { m_dCurrentGuaDanTransactionPrice = dValue; }
-  long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
-  void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
-  bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
+  double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
+  void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
+  long GetGuadan(long lPrice) { return m_mapGuadan.at(lPrice); }
+  void SetGuadan(long lPrice, long lVolume) { m_mapGuadan[lPrice] = lVolume; }
+  bool HaveGuadan(long lPrice) { if (m_mapGuadan.find(lPrice) == m_mapGuadan.end()) return false; return true; }
 
   // 日线相对强度计算
   bool CalculateDayLineRS(void);
@@ -224,10 +224,10 @@ public:
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CRTDataPtr pRTData);
-  void CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuaDanTransactionPrice);
+  void CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuadanTransactionPrice);
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
-  void CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice);
+  void CalculateOrdinaryBuySell(long lCurrentGuadanTransactionPrice);
   void CalculateAttackBuy(void);
   void CalculateStrongBuy(void);
   void CalculateAttackBuyVolume(void);
@@ -236,16 +236,16 @@ public:
   void CalculateAttackSellVolume(void);
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
 
-  bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
-  void SetCurrentGuaDan(CRTDataPtr pCurrentRTData);
-  void CheckGuaDan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
-  void CheckSellGuaDan(array<bool, 10>& fNeedCheck, int i);
+  bool AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
+  void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
+  void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
+  void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
   void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
-  void ShowCurrentInformationofCancelingGuaDan(void);
-  void ReportGuaDanTransaction(void);
-  void ReportGuaDan(void);
+  void ShowCurrentInformationofCancelingGuadan(void);
+  void ReportGuadanTransaction(void);
+  void ReportGuadan(void);
   void SetLastRTDataPtr(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
   CRTDataPtr GetLastRTDataPtr(void) noexcept { return m_pLastRTData; }
 
@@ -264,7 +264,7 @@ public:
 
 public:
   // 测试专用函数
-  void __TestSetGuaDanDeque(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; } // 预先设置挂单。
+  void __TestSetGuadanDeque(long lPrice, long lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 
 public:
 
@@ -288,10 +288,10 @@ protected:
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
 
   // 挂单的具体情况。
-  map<long, long> m_mapGuaDan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
+  map<long, long> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CRTDataPtr m_pLastRTData; // 从m_dequeRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
-  double m_dCurrentGuaDanTransactionPrice; // 当前成交价格
+  double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64 m_lCurrentCanselSellVolume;
   INT64 m_lCurrentCanselBuyVolume;
