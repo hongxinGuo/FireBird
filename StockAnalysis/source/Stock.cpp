@@ -295,37 +295,12 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
   if (m_lCurrentGuadanTransactionVolume == 0) { // 无成交？
     // 检查挂单情况
+    lCurrentGuaDanTransactionPrice = 0;
     m_nCurrentTransactionType = __NO_TRANSACTION__;
   }
-  else { // 有成交？
-    IncreaseTransactionNumber();
+  else {
     lCurrentGuaDanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
-    m_dCurrentGuaDanTransactionPrice = static_cast<double>(lCurrentGuaDanTransactionPrice) / 1000; // 变换成实际价格
-    if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->GetPBuy(0)) { // 高于前买盘1
-      if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->GetPSell(0)) { // 低于前卖盘1
-        CalculateOrdinaryBuySell(lCurrentGuaDanTransactionPrice);
-      }
-      else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->GetPSell(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
-        CalculateAttackBuy();
-      }
-      else { // 高于卖盘二。强力买入。StrongBuy。
-        CalculateStrongBuy();
-      }
-    } // 高于前买一
-    else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->GetPBuy(1)) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
-      CalculateAttackSell();
-    }
-    else { // 低于买盘二。强力卖出。StrongSell
-      CalculateStrongSell();
-    }
-    ASSERT(m_stockBasicInfo.GetTransactionTime() >= pRTData->GetTransactionTime());
-    const INT64 I = pRTData->GetVolume();
-    const INT64 j = m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
-      + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
-      + +m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume();
-    ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
-           + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
-           + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
+    CalculateOneDeal(pRTData, lCurrentGuaDanTransactionPrice);
   }
 
   // 下面开始分析挂单情况
@@ -333,6 +308,37 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
 
   // 更新前交易状态
   SetLastRTDataPtr(pRTData);
+}
+
+void CStock::CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuaDanTransactionPrice) {
+  IncreaseTransactionNumber();
+  lCurrentGuaDanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
+  m_dCurrentGuaDanTransactionPrice = static_cast<double>(lCurrentGuaDanTransactionPrice) / 1000; // 变换成实际价格
+  if (lCurrentGuaDanTransactionPrice >= m_pLastRTData->GetPBuy(0)) { // 高于前买盘1
+    if (lCurrentGuaDanTransactionPrice <= m_pLastRTData->GetPSell(0)) { // 低于前卖盘1
+      CalculateOrdinaryBuySell(lCurrentGuaDanTransactionPrice);
+    }
+    else if (lCurrentGuaDanTransactionPrice < m_pLastRTData->GetPSell(1)) { // 高于卖盘一，低于卖盘二。进攻型买入。AttackBuy
+      CalculateAttackBuy();
+    }
+    else { // 高于卖盘二。强力买入。StrongBuy。
+      CalculateStrongBuy();
+    }
+  } // 高于前买一
+  else if (lCurrentGuaDanTransactionPrice > m_pLastRTData->GetPBuy(1)) { // 低于买盘一，高于买盘二。进攻型卖出，AttackSell
+    CalculateAttackSell();
+  }
+  else { // 低于买盘二。强力卖出。StrongSell
+    CalculateStrongSell();
+  }
+  ASSERT(m_stockBasicInfo.GetTransactionTime() >= pRTData->GetTransactionTime());
+  const INT64 I = pRTData->GetVolume();
+  const INT64 j = m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
+    + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
+    + +m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume();
+  ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
+         + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
+         + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
 }
 
 void CStock::IncreaseTransactionNumber(void) {
@@ -427,14 +433,13 @@ void CStock::CalculateAttackSellVolume(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice) {
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true }; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
-  m_lCurrentCanselSellVolume = 0;
-  m_lCurrentCanselBuyVolume = 0;
 
   for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
 
   // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
+  ASSERT(lCurrentTransactionPrice == 0);
   break;
   case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
   fNeedCheck.at(3) = false;
@@ -485,19 +490,10 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   break;
   }
 
-  if ((pCurrentRTData->GetPSell(4) - pCurrentRTData->GetPBuy(4)) > 90) { // 十个价位之间有空位
-    // 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
-    // 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
-    for (int i2 = pCurrentRTData->GetPBuy(4); i2 <= pCurrentRTData->GetPSell(4); i2 += 10) {
-      m_mapGuaDan[i2] = 0; // 此处需要设置值，有可能之前为空，故而不能使用at操作符，而是用[]下标操作。
-    }
-  }
-  for (int i = 0; i < 5; i++) { // 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
-    SetGuaDan(pCurrentRTData->GetPSell(i), pCurrentRTData->GetVSell(i));
-    SetGuaDan(pCurrentRTData->GetPBuy(i), pCurrentRTData->GetVBuy(i));
-  }
+  SetCurrentGuaDan(pCurrentRTData);
 
   // 检查这十个挂单价位上股数的变化情况.将目前挂单状态与之前的十个价位（m_pLastRTData包含的）相比，查看变化
+  /*
   for (int i = 0; i < 10; i++) {
     switch (i) {
     case 0: // 卖单五
@@ -584,8 +580,48 @@ bool CStock::AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
     ASSERT(0);
     }
   }
+  */
+
+  CheckGuaDan(pCurrentRTData, fNeedCheck);
 
   return(true);
+}
+
+void CStock::SetCurrentGuaDan(CRTDataPtr pCurrentRTData) {
+  // 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
+  // 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
+  for (int i = pCurrentRTData->GetPBuy(4); i <= pCurrentRTData->GetPSell(4); i += 10) {
+    m_mapGuaDan[i] = 0; // 此处需要设置值，有可能之前为空，故而不能使用at操作符，而是用[]下标操作。
+  }
+  for (int i = 0; i < 5; i++) { // 将目前的十个挂单状态存入映射中，挂单状态更新为最新态
+    SetGuaDan(pCurrentRTData->GetPSell(i), pCurrentRTData->GetVSell(i));
+    SetGuaDan(pCurrentRTData->GetPBuy(i), pCurrentRTData->GetVBuy(i));
+  }
+}
+
+void CStock::CheckGuaDan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
+  for (int i = 0; i < 5; i++) {
+    CheckSellGuaDan(fNeedCheck, i);
+    CheckBuyGuadan(fNeedCheck, i);
+  }
+}
+
+void CStock::CheckSellGuaDan(array<bool, 10>& fNeedCheck, int i) {
+  if (fNeedCheck.at(4 - i)) {
+    if (GetGuaDan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) { // 撤单了的话
+      m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(i) - GetGuaDan(m_pLastRTData->GetPSell(i));
+      m_stockCalculatedInfo.IncreaseCancelSellVolume(m_pLastRTData->GetVSell(i) - GetGuaDan(m_pLastRTData->GetPSell(i)));
+    }
+  }
+}
+
+void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
+  if (fNeedCheck.at(5 + i)) {
+    if (GetGuaDan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) { // 撤单了的话
+      m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuaDan(m_pLastRTData->GetPBuy(i));
+      m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(i) - GetGuaDan(m_pLastRTData->GetPBuy(i)));
+    }
+  }
 }
 
 bool CStock::CheckCurrentRTData() {

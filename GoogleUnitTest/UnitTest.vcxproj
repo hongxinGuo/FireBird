@@ -209,7 +209,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AssemblyDebug>true</AssemblyDebug>
+      <AssemblyDebug>false</AssemblyDebug>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

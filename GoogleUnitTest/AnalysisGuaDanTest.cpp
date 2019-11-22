@@ -308,4 +308,27 @@ namespace StockAnalysisTest {
     break;
     }
   }
+
+  TEST(CStockTest, TestSetCurrentGuaDan) {
+    CStock id;
+    CRTDataPtr pCurrentRTData = make_shared<CRTData>();
+
+    for (int i = 0; i < 5; i++) {
+      pCurrentRTData->SetPBuy(i, 10080 - i * 20);
+      pCurrentRTData->SetVBuy(i, i + 200);
+      pCurrentRTData->SetPSell(i, 10100 + i * 20);
+      pCurrentRTData->SetVSell(i, i + 400);
+    }
+    for (int i = 0; i < 100; i += 20) {
+      EXPECT_FALSE(id.HaveGuaDan(10010 + i));
+    }
+    id.SetCurrentGuaDan(pCurrentRTData);
+    for (int i = 0; i < 190; i += 10) {
+      EXPECT_TRUE(id.HaveGuaDan(10000 + i));
+    }
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(id.GetGuaDan(10080 - i * 20), pCurrentRTData->GetVBuy(i));
+      EXPECT_EQ(id.GetGuaDan(10100 + i * 20), pCurrentRTData->GetVSell(i));
+    }
+  }
 }

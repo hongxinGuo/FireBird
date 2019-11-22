@@ -89,8 +89,6 @@ public:
   double GetRelativeStrong(void) noexcept { return m_stockBasicInfo.GetRelativeStrong(); }
   void SetRelativeStrong(double value) noexcept { m_stockBasicInfo.SetRelativeStrong(value); }
 
-  void UpdateStatus(CRTDataPtr pRTData); // 更新当前各变量状态
-
   // 计算出的信息提取和设置
   INT64 GetAttackBuyAmount(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyAmount(); }
   void SetAttackBuyAmount(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyAmount(value); }
@@ -169,6 +167,9 @@ public:
   INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
   void SetCurrentTransationVolume(INT64 value) noexcept { m_lCurrentGuadanTransactionVolume = value; }
 
+  // 更新当前各变量状态
+  void UpdateStatus(CRTDataPtr pRTData);
+
   // 各种状态标识提取和设置
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
@@ -223,6 +224,7 @@ public:
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CRTDataPtr pRTData);
+  void CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuaDanTransactionPrice);
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
   void CalculateOrdinaryBuySell(long lCurrentGuaDanTransactionPrice);
@@ -233,7 +235,12 @@ public:
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
+
   bool AnalysisGuaDan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
+  void SetCurrentGuaDan(CRTDataPtr pCurrentRTData);
+  void CheckGuaDan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
+  void CheckSellGuaDan(array<bool, 10>& fNeedCheck, int i);
+  void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuaDan(void);

@@ -309,9 +309,8 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(TestCStockCalculateRTData, IncreaseTransactionNumberTest) {
+  TEST(CStockTest, TestIncreaseTransactionNumber) {
     CStock id;
-
     id.SetCurrentTransationVolume(4999);
     id.IncreaseTransactionNumber();
     EXPECT_EQ(id.GetTransactionNumber(), 1);
@@ -365,7 +364,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CalculateRTDataTest, TestCalculateOrdinaryBuySell) {
+  TEST(CStockTest, TestCalculateOrdinaryBuySell) {
     CStock id;
     CRTDataPtr pLastRTData = make_shared<CRTData>();
 
@@ -387,7 +386,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetUnknownVolume(), 20000); // 加了两次10000
   }
 
-  TEST(CalculateRTDataTest, TEStCalculateAttackBuy) {
+  TEST(CStockTest, TEStCalculateAttackBuy) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuy();
@@ -407,7 +406,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackBuyVolume(), 1110000);
   }
 
-  TEST(CalculateRTDataTest, TestCalculateStrongBuy) {
+  TEST(CStockTest, TestCalculateStrongBuy) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongBuy();
@@ -427,7 +426,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetStrongBuyVolume(), 1110000);
   }
 
-  TEST(CalculateRTDataTest, TestCalculateAttackBuyVolume) {
+  TEST(CStockTest, TestCalculateAttackBuyVolume) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuyVolume();
@@ -446,7 +445,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackBuyVolume(), 0);
   }
 
-  TEST(CalculateRTDataTest, TEStCalculateAttackSell) {
+  TEST(CStockTest, TEStCalculateAttackSell) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSell();
@@ -466,7 +465,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackSellVolume(), 1110000);
   }
 
-  TEST(CalculateRTDataTest, TestCalculateStrongSell) {
+  TEST(CStockTest, TestCalculateStrongSell) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongSell();
@@ -486,7 +485,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetStrongSellVolume(), 1110000);
   }
 
-  TEST(CalculateRTDataTest, TestCalculateAttackSellVolume) {
+  TEST(CStockTest, TestCalculateAttackSellVolume) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSellVolume();
