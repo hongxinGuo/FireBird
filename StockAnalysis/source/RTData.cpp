@@ -1162,3 +1162,43 @@ bool CRTData::IsDataHavingValidTime(void) {
   else if (m_time > (gl_systemTime.Gett_time() + 3600)) return false;
   else return true;
 }
+
+void CRTData::SaveData(CSetRealTimeData& setRTData) {
+  ASSERT(setRTData.IsOpen());
+  setRTData.m_Time = GetTransactionTime();
+  setRTData.m_lMarket = GetMarket();
+  setRTData.m_StockCode = GetStockCode();
+  setRTData.m_StockName = GetStockName();
+  setRTData.m_CurrentPrice = ConvertValueToString(GetNew(), 1000);
+  setRTData.m_High = ConvertValueToString(GetHigh(), 1000);
+  setRTData.m_Low = ConvertValueToString(GetLow(), 1000);
+  setRTData.m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  setRTData.m_Open = ConvertValueToString(GetOpen(), 1000);
+  setRTData.m_Volume = ConvertValueToString(GetVolume());
+  setRTData.m_Amount = ConvertValueToString(GetAmount());
+  setRTData.m_Stroke = _T("0");
+  setRTData.m_PBuy1 = ConvertValueToString(GetPBuy(0), 1000);
+  setRTData.m_VBuy1 = ConvertValueToString(GetVBuy(0));
+  setRTData.m_PSell1 = ConvertValueToString(GetPSell(0), 1000);
+  setRTData.m_VSell1 = ConvertValueToString(GetVSell(0));
+
+  setRTData.m_PBuy2 = ConvertValueToString(GetPBuy(1), 1000);
+  setRTData.m_VBuy2 = ConvertValueToString(GetVBuy(1));
+  setRTData.m_PSell2 = ConvertValueToString(GetPSell(1), 1000);
+  setRTData.m_VSell2 = ConvertValueToString(GetVSell(1));
+
+  setRTData.m_PBuy3 = ConvertValueToString(GetPBuy(2), 1000);
+  setRTData.m_VBuy3 = ConvertValueToString(GetVBuy(2));
+  setRTData.m_PSell3 = ConvertValueToString(GetPSell(2), 1000);
+  setRTData.m_VSell3 = ConvertValueToString(GetVSell(2));
+
+  setRTData.m_PBuy4 = ConvertValueToString(GetPBuy(3), 1000);
+  setRTData.m_VBuy4 = ConvertValueToString(GetVBuy(3));
+  setRTData.m_PSell4 = ConvertValueToString(GetPSell(3), 1000);
+  setRTData.m_VSell4 = ConvertValueToString(GetVSell(3));
+
+  setRTData.m_PBuy5 = ConvertValueToString(GetPBuy(4), 1000);
+  setRTData.m_VBuy5 = ConvertValueToString(GetVBuy(4));
+  setRTData.m_PSell5 = ConvertValueToString(GetPSell(4), 1000);
+  setRTData.m_VSell5 = ConvertValueToString(GetVSell(4));
+}

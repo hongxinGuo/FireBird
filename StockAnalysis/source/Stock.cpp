@@ -435,64 +435,11 @@ bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true }; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
 
   for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
-
-  // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
-  switch (m_nCurrentTransactionType) {
-  case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
-  ASSERT(lCurrentTransactionPrice == 0);
-  break;
-  case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
-  fNeedCheck.at(3) = false;
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-  break;
-  case __STRONG_BUY__: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
-  if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) { // 卖单4和卖单5尚存
-    fNeedCheck.at(2) = false;
-  }
-  else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) { // 卖单5尚存
-    fNeedCheck.at(1) = false;
-    fNeedCheck.at(2) = false;
-  }
-  else { // 所有的卖单都受影响
-    fNeedCheck.at(0) = false;
-    fNeedCheck.at(2) = false;
-    fNeedCheck.at(1) = false;
-  }
-  fNeedCheck.at(3) = false;
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-  break;
-  case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
-  case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
-  case __ORDINARY_SELL__: // 买单一被影响。计算其他八个挂单。
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-  break;
-  case __ATTACK_SELL__: // 买单一消失，买单二被影响。计算其他七个挂单。
-  fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
-  break;
-  case __STRONG_SELL__: // 买单一和买单二消失，其他买单需要计算。
-  if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) { // 所有买单都受影响
-    fNeedCheck.at(7) = false;
-    fNeedCheck.at(8) = false;
-    fNeedCheck.at(9) = false;
-  }
-  else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) { // 买单5尚存
-    fNeedCheck.at(7) = false;
-    fNeedCheck.at(8) = false;
-  }
-  else { // 买单4和买单5没变化
-    fNeedCheck.at(7) = false;
-  }
-  fNeedCheck.at(6) = false;
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
-  break;
-  default:
-  ASSERT(0); // 不可能执行到此分支。
-  break;
-  }
-
+  SelectGuadanThatNeedToCalculate(pCurrentRTData, lCurrentTransactionPrice, fNeedCheck);
   SetCurrentGuadan(pCurrentRTData);
-
   // 检查这十个挂单价位上股数的变化情况.将目前挂单状态与之前的十个价位（m_pLastRTData包含的）相比，查看变化
+  CheckGuadan(pCurrentRTData, fNeedCheck);
+
   /*
   for (int i = 0; i < 10; i++) {
     switch (i) {
@@ -582,9 +529,63 @@ bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   }
   */
 
-  CheckGuadan(pCurrentRTData, fNeedCheck);
-
   return(true);
+}
+
+void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
+  // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
+  switch (m_nCurrentTransactionType) {
+  case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
+  ASSERT(lCurrentTransactionPrice == 0);
+  break;
+  case __ATTACK_BUY__: // 卖单一已经消失，卖单二被影响。计算其他七个挂单。
+  fNeedCheck.at(3) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
+  case __STRONG_BUY__: // 卖单一和卖单二消失，卖单三以上未定，需要计算。
+  if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(2)) { // 卖单4和卖单5尚存
+    fNeedCheck.at(2) = false;
+  }
+  else if (lCurrentTransactionPrice < m_pLastRTData->GetPSell(3)) { // 卖单5尚存
+    fNeedCheck.at(1) = false;
+    fNeedCheck.at(2) = false;
+  }
+  else { // 所有的卖单都受影响
+    fNeedCheck.at(0) = false;
+    fNeedCheck.at(2) = false;
+    fNeedCheck.at(1) = false;
+  }
+  fNeedCheck.at(3) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
+  case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
+  case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
+  case __ORDINARY_SELL__: // 买单一被影响。计算其他八个挂单。
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
+  case __ATTACK_SELL__: // 买单一消失，买单二被影响。计算其他七个挂单。
+  fNeedCheck.at(4) = fNeedCheck.at(5) = fNeedCheck.at(6) = false;
+  break;
+  case __STRONG_SELL__: // 买单一和买单二消失，其他买单需要计算。
+  if (m_pLastRTData->GetPBuy(3) > lCurrentTransactionPrice) { // 所有买单都受影响
+    fNeedCheck.at(7) = false;
+    fNeedCheck.at(8) = false;
+    fNeedCheck.at(9) = false;
+  }
+  else if (m_pLastRTData->GetPBuy(2) > lCurrentTransactionPrice) { // 买单5尚存
+    fNeedCheck.at(7) = false;
+    fNeedCheck.at(8) = false;
+  }
+  else { // 买单4和买单5没变化
+    fNeedCheck.at(7) = false;
+  }
+  fNeedCheck.at(6) = false;
+  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  break;
+  default:
+  ASSERT(0); // 不可能执行到此分支。
+  break;
+  }
 }
 
 void CStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
@@ -607,6 +608,7 @@ void CStock::CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck)
 }
 
 void CStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
+  ASSERT((i < 5) && (i >= 0));
   if (fNeedCheck.at(4 - i)) {
     if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) { // 撤单了的话
       m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
@@ -616,6 +618,7 @@ void CStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
 }
 
 void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
+  ASSERT((i < 5) && (i >= 0));
   if (fNeedCheck.at(5 + i)) {
     if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) { // 撤单了的话
       m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
@@ -737,42 +740,10 @@ bool CStock::SaveRealTimeData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
   for (auto pRTData : m_dequeRTData) {
     setRTData.AddNew();
-    setRTData.m_Time = pRTData->GetTransactionTime();
-    setRTData.m_lMarket = m_stockBasicInfo.GetMarket();
-    setRTData.m_StockCode = m_stockBasicInfo.GetStockCode();
-    setRTData.m_StockName = m_stockBasicInfo.GetStockName();
-    setRTData.m_CurrentPrice = ConvertValueToString(pRTData->GetNew(), 1000);
-    setRTData.m_High = ConvertValueToString(pRTData->GetHigh(), 1000);
-    setRTData.m_Low = ConvertValueToString(pRTData->GetLow(), 1000);
-    setRTData.m_LastClose = ConvertValueToString(pRTData->GetLastClose(), 1000);
-    setRTData.m_Open = ConvertValueToString(pRTData->GetOpen(), 1000);
-    setRTData.m_Volume = ConvertValueToString(pRTData->GetVolume());
-    setRTData.m_Amount = ConvertValueToString(pRTData->GetAmount());
-    setRTData.m_Stroke = _T("0");
-    setRTData.m_PBuy1 = ConvertValueToString(pRTData->GetPBuy(0), 1000);
-    setRTData.m_VBuy1 = ConvertValueToString(pRTData->GetVBuy(0));
-    setRTData.m_PSell1 = ConvertValueToString(pRTData->GetPSell(0), 1000);
-    setRTData.m_VSell1 = ConvertValueToString(pRTData->GetVSell(0));
-
-    setRTData.m_PBuy2 = ConvertValueToString(pRTData->GetPBuy(1), 1000);
-    setRTData.m_VBuy2 = ConvertValueToString(pRTData->GetVBuy(1));
-    setRTData.m_PSell2 = ConvertValueToString(pRTData->GetPSell(1), 1000);
-    setRTData.m_VSell2 = ConvertValueToString(pRTData->GetVSell(1));
-
-    setRTData.m_PBuy3 = ConvertValueToString(pRTData->GetPBuy(2), 1000);
-    setRTData.m_VBuy3 = ConvertValueToString(pRTData->GetVBuy(2));
-    setRTData.m_PSell3 = ConvertValueToString(pRTData->GetPSell(2), 1000);
-    setRTData.m_VSell3 = ConvertValueToString(pRTData->GetVSell(2));
-
-    setRTData.m_PBuy4 = ConvertValueToString(pRTData->GetPBuy(3), 1000);
-    setRTData.m_VBuy4 = ConvertValueToString(pRTData->GetVBuy(3));
-    setRTData.m_PSell4 = ConvertValueToString(pRTData->GetPSell(3), 1000);
-    setRTData.m_VSell4 = ConvertValueToString(pRTData->GetVSell(3));
-
-    setRTData.m_PBuy5 = ConvertValueToString(pRTData->GetPBuy(4), 1000);
-    setRTData.m_VBuy5 = ConvertValueToString(pRTData->GetVBuy(4));
-    setRTData.m_PSell5 = ConvertValueToString(pRTData->GetPSell(4), 1000);
-    setRTData.m_VSell5 = ConvertValueToString(pRTData->GetVSell(4));
+    pRTData->SetMarket(GetMarket());
+    pRTData->SetStockCode(GetStockCode());
+    pRTData->SetStockName(GetStockName());
+    pRTData->SaveData(setRTData);
     setRTData.Update();
   }
 

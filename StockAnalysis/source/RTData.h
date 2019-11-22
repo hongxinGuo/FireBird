@@ -118,6 +118,8 @@ enum {
 #include"SinaRTWebData.h"
 #include"TengxunRTWebData.h"
 
+#include"SetRealTimeData.h"
+
 using namespace std;
 #include<memory>
 #include<array>
@@ -137,17 +139,10 @@ public:
 
   bool Compare(CRTDataPtr pRTData);
 
-  // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
-
-  // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool ReadTengxunData(CTengxunRTWebData* pSinaRTWebData);
-
-  // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-  bool ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData);
-
 public:
   // 读取新浪实时数据函数
+  // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
+  bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个长整型
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
@@ -156,12 +151,16 @@ public:
   bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer);
 
   // 读取腾讯实时数据函数
+  // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
+  bool ReadTengxunData(CTengxunRTWebData* pSinaRTWebData);
   bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
   bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个INT64整型
   bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
   bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
 
   // 读取网易实时数据函数
+  // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
+  bool ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData);
   long GetNeteaseSymbolIndex(CString strSymbol);
   bool GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
   bool SetValue(long lIndex, CString strValue);
@@ -212,6 +211,9 @@ public:
   bool IsDataHavingValidTime(void);
   //void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
+
+  // 数据库存储和读取
+  void SaveData(CSetRealTimeData& setRTData);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

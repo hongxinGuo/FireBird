@@ -237,6 +237,7 @@ public:
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
 
   bool AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
+  void SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
   void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
   void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
