@@ -1412,9 +1412,7 @@ bool CMarket::SaveCrweberIndexData(void) {
   // 存储今日生成的数据于CrweberIndex表中。
   setIndex.Open();
   setIndex.m_pDatabase->BeginTrans();
-  setIndex.AddNew();
-  gl_CrweberIndex.SaveData(&setIndex);
-  setIndex.Update();
+  gl_CrweberIndex.AppendData(setIndex);
   setIndex.m_pDatabase->CommitTrans();
   setIndex.Close();
   return(true);

@@ -1165,8 +1165,9 @@ bool CRTData::IsDataHavingValidTime(void) {
 
 void CRTData::SaveData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
-  setRTData.m_Time = GetTransactionTime();
-  setRTData.m_lMarket = GetMarket();
+
+  setRTData.m_Time = m_time;
+  setRTData.m_Market = GetMarket();
   setRTData.m_StockCode = GetStockCode();
   setRTData.m_StockName = GetStockName();
   setRTData.m_CurrentPrice = ConvertValueToString(GetNew(), 1000);
@@ -1201,4 +1202,15 @@ void CRTData::SaveData(CSetRealTimeData& setRTData) {
   setRTData.m_VBuy5 = ConvertValueToString(GetVBuy(4));
   setRTData.m_PSell5 = ConvertValueToString(GetPSell(4), 1000);
   setRTData.m_VSell5 = ConvertValueToString(GetVSell(4));
+}
+
+void CRTData::AppendData(CSetRealTimeData& setRTData) {
+  ASSERT(setRTData.IsOpen());
+  setRTData.AddNew();
+  SaveData(setRTData);
+  setRTData.Update();
+}
+
+void CRTData::LoadData(CSetRealTimeData& setRTData) {
+  ASSERT(setRTData.IsOpen());
 }

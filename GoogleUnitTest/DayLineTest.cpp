@@ -351,7 +351,7 @@ namespace StockAnalysisTest {
     setDayLine.m_strFilter = _T("[Day] = 21101101");
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
-    id.SaveData(setDayLine);
+    id.AppendData(setDayLine);
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 
@@ -412,7 +412,7 @@ namespace StockAnalysisTest {
     setDayLine.m_strFilter = _T("[Day] = 21101101");
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
-    id.SaveData(setDayLine);
+    id.AppendData(setDayLine);
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 

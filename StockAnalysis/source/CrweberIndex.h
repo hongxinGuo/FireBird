@@ -13,8 +13,9 @@ public:
   CCrweberIndex();
   ~CCrweberIndex();
   void Reset(void);
-  void SetData(CSetCrweberIndex* pSetCrweberIndex);
-  void SaveData(CSetCrweberIndex* pSetCewwberIndex);
+  void LoadData(CSetCrweberIndex& setCrweberIndex);
+  void SaveData(CSetCrweberIndex& setCewwberIndex);
+  void AppendData(CSetCrweberIndex& setCrweberIndex);
 
   bool IsTodayUpdated(void) { return m_fTodayUpdated; }
 

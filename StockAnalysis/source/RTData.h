@@ -214,6 +214,8 @@ public:
 
   // 数据库存储和读取
   void SaveData(CSetRealTimeData& setRTData);
+  void AppendData(CSetRealTimeData& setRTData);
+  void LoadData(CSetRealTimeData& setRTData);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

@@ -146,7 +146,7 @@ void CDayLine::Reset(void) {
 
 bool CDayLine::SaveData(CSetDayLine& setDayLine) {
   ASSERT(setDayLine.IsOpen());
-  setDayLine.AddNew();
+
   setDayLine.m_Day = GetDay();
   setDayLine.m_Market = GetMarket();
   setDayLine.m_StockCode = GetStockCode();
@@ -164,6 +164,14 @@ bool CDayLine::SaveData(CSetDayLine& setDayLine) {
   setDayLine.m_TotalValue = ConvertValueToString(GetTotalValue());
   setDayLine.m_CurrentValue = ConvertValueToString(GetCurrentValue());
   setDayLine.m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
+
+  return true;
+}
+
+bool CDayLine::AppendData(CSetDayLine& setDayLine) {
+  ASSERT(setDayLine.IsOpen());
+  setDayLine.AddNew();
+  SaveData(setDayLine);
   setDayLine.Update();
 
   return true;

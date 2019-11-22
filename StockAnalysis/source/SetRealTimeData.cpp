@@ -11,10 +11,10 @@
 IMPLEMENT_DYNAMIC(CSetRealTimeData, CRecordset)
 
 CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
-  : CRecordset(pdb)
-{
+  : CRecordset(pdb) {
+  m_ID = 0;
   m_Time = 0;
-  m_lMarket = 0;
+  m_Market = 0;
   m_StockCode = "";
   m_LastClose = _T("0");
   m_Open = _T("0");
@@ -44,30 +44,28 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
   m_VSell4 = _T("0");
   m_PSell5 = _T("0");
   m_VSell5 = _T("0");
-  m_nFields = 31;
+  m_nFields = 32;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
 // 有关的问题后移除 #error。可能需要将此密码存
 // 储为其他格式或使用其他的用户身份验证。
-CString CSetRealTimeData::GetDefaultConnect()
-{
+CString CSetRealTimeData::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetRealTimeData::GetDefaultSQL()
-{
+CString CSetRealTimeData::GetDefaultSQL() {
   return _T("[RealTimeData]");
 }
 
-void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX)
-{
+void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
+  RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Time]"), m_Time);
-  RFX_Long(pFX, _T("[Market]"), m_lMarket);
+  RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);
@@ -102,13 +100,11 @@ void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX)
 // CSetRealTimeData 诊断
 
 #ifdef _DEBUG
-void CSetRealTimeData::AssertValid() const
-{
+void CSetRealTimeData::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetRealTimeData::Dump(CDumpContext& dc) const
-{
+void CSetRealTimeData::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG
