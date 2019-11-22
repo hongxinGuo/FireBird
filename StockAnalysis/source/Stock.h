@@ -211,6 +211,7 @@ public:
 
   // ¹Òµ¥Çé¿ö
   double GetCurrentGuaDanTransactionPrice(void) noexcept { return m_dCurrentGuaDanTransactionPrice; }
+  void SetCurrentGuaDanTransactionPrice(double dValue) noexcept { m_dCurrentGuaDanTransactionPrice = dValue; }
   long GetGuaDan(long lPrice) { return m_mapGuaDan.at(lPrice); }
   void SetGuaDan(long lPrice, long lVolume) { m_mapGuaDan[lPrice] = lVolume; }
   bool HaveGuaDan(long lPrice) { if (m_mapGuaDan.find(lPrice) == m_mapGuaDan.end()) return false; return true; }
