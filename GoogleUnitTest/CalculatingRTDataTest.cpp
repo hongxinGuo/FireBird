@@ -308,4 +308,200 @@ namespace StockAnalysisTest {
     break;
     }
   }
+
+  TEST(TestCStockCalculateRTData, IncreaseTransactionNumberTest) {
+    CStock id;
+
+    id.SetCurrentTransationVolume(4999);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 1);
+    EXPECT_EQ(id.GetTransactionNumberBelow5000(), 1);
+    id.SetCurrentTransationVolume(5000);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 2);
+    EXPECT_EQ(id.GetTransactionNumberBelow50000(), 1);
+    id.SetCurrentTransationVolume(49999);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 3);
+    EXPECT_EQ(id.GetTransactionNumberBelow50000(), 2);
+    id.SetCurrentTransationVolume(50000);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 4);
+    EXPECT_EQ(id.GetTransactionNumberBelow200000(), 1);
+    id.SetCurrentTransationVolume(199999);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 5);
+    EXPECT_EQ(id.GetTransactionNumberBelow200000(), 2);
+    id.SetCurrentTransationVolume(200000);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 6);
+    EXPECT_EQ(id.GetTransactionNumberAbove200000(), 1);
+    id.SetCurrentTransationVolume(1000000);
+    id.IncreaseTransactionNumber();
+    EXPECT_EQ(id.GetTransactionNumber(), 7);
+    EXPECT_EQ(id.GetTransactionNumberAbove200000(), 2);
+  }
+
+  TEST(CalculateRTDataTest, TestINitializeCalculatingRTDataEnvionment) {
+    CRTDataPtr pRTData = make_shared<CRTData>();
+    CStock id;
+
+    id.SetUnknownVolume(100000);
+    pRTData->SetVolume(10000);
+    for (int i = 0; i < 5; i++) {
+      pRTData->SetPBuy(i, 10000 - i * 10);
+      pRTData->SetPSell(i, 10010 + i * 10);
+      pRTData->SetVBuy(i, 10000 * (i + 1));
+      pRTData->SetVSell(i, 100000 * (i + 1));
+    }
+    EXPECT_FALSE(id.HaveFirstRTData());
+    EXPECT_EQ(id.GetLastRTDataPtr(), nullptr);
+    id.InitializeCalculatingRTDataEnvionment(pRTData);
+    EXPECT_TRUE(id.HaveFirstRTData());
+    EXPECT_EQ(id.GetUnknownVolume(), pRTData->GetVolume() + 100000);
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(id.GetGuaDan(pRTData->GetPBuy(i)), 10000 * (i + 1));
+      EXPECT_EQ(id.GetGuaDan(pRTData->GetPSell(i)), 100000 * (i + 1));
+    }
+  }
+
+  TEST(CalculateRTDataTest, TestCalculateOrdinaryBuySell) {
+    CStock id;
+    CRTDataPtr pLastRTData = make_shared<CRTData>();
+
+    pLastRTData->SetPSell(0, 100000);
+    pLastRTData->SetPBuy(0, 99990);
+    id.SetLastRTDataPtr(pLastRTData);
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateOrdinaryBuySell(99998); //
+    EXPECT_EQ(id.GetCurrentTransactionType(), __ORDINARY_BUY__);
+    EXPECT_EQ(id.GetOrdinaryBuyVolume(), 10000);
+    id.CalculateOrdinaryBuySell(99992); //
+    EXPECT_EQ(id.GetCurrentTransactionType(), __ORDINARY_SELL__);
+    EXPECT_EQ(id.GetOrdinarySellVolume(), 10000);
+    id.CalculateOrdinaryBuySell(99997); //
+    EXPECT_EQ(id.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+    EXPECT_EQ(id.GetUnknownVolume(), 10000);
+    id.CalculateOrdinaryBuySell(99993); //
+    EXPECT_EQ(id.GetCurrentTransactionType(), __UNKNOWN_BUYSELL__);
+    EXPECT_EQ(id.GetUnknownVolume(), 20000); // 加了两次10000
+  }
+
+  TEST(CalculateRTDataTest, TEStCalculateAttackBuy) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateAttackBuy();
+    EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_BUY__);
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 10000);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateAttackBuy();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 110000);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateAttackBuy();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackBuyAbove200000(), 1000000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 1110000);
+  }
+
+  TEST(CalculateRTDataTest, TestCalculateStrongBuy) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateStrongBuy();
+    EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_BUY__);
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetStrongBuyVolume(), 10000);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateStrongBuy();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetStrongBuyVolume(), 110000);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateStrongBuy();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackBuyAbove200000(), 1000000);
+    EXPECT_EQ(id.GetStrongBuyVolume(), 1110000);
+  }
+
+  TEST(CalculateRTDataTest, TestCalculateAttackBuyVolume) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateAttackBuyVolume();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateAttackBuyVolume();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateAttackBuyVolume();
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackBuyAbove200000(), 1000000);
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+  }
+
+  TEST(CalculateRTDataTest, TEStCalculateAttackSell) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateAttackSell();
+    EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_SELL__);
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 10000);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateAttackSell();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 110000);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateAttackSell();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackSellAbove200000(), 1000000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 1110000);
+  }
+
+  TEST(CalculateRTDataTest, TestCalculateStrongSell) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateStrongSell();
+    EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_SELL__);
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetStrongSellVolume(), 10000);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateStrongSell();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetStrongSellVolume(), 110000);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateStrongSell();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackSellAbove200000(), 1000000);
+    EXPECT_EQ(id.GetStrongSellVolume(), 1110000);
+  }
+
+  TEST(CalculateRTDataTest, TestCalculateAttackSellVolume) {
+    CStock id;
+    id.SetCurrentTransationVolume(10000);
+    id.CalculateAttackSellVolume();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 0);
+    id.SetCurrentTransationVolume(100000);
+    id.CalculateAttackSellVolume();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 0);
+    id.SetCurrentTransationVolume(1000000);
+    id.CalculateAttackSellVolume();
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 100000);
+    EXPECT_EQ(id.GetAttackSellAbove200000(), 1000000);
+    EXPECT_EQ(id.GetAttackSellVolume(), 0);
+  }
 }

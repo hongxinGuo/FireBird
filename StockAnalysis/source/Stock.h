@@ -239,6 +239,7 @@ public:
   void ReportGuaDanTransaction(void);
   void ReportGuaDan(void);
   void SetLastRTDataPtr(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
+  CRTDataPtr GetLastRTDataPtr(void) noexcept { return m_pLastRTData; }
 
   // 采用同步机制存取实时数据
   void PushRTData(CRTDataPtr pData);
