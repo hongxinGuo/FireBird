@@ -23,7 +23,7 @@ CQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
 CQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
-CCriticalSectionBool gl_ExitingSystem; //  系统退出标识，用于终止其他线程。
+atomic<bool> gl_ExitingSystem = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 bool gl_fResetSystem = false; // 系统重启标识
 

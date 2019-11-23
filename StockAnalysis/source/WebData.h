@@ -3,7 +3,8 @@
 #include"stdafx.h"
 #include"globedef.h"
 
-#include"CriticalSectionBool.h"
+using namespace std;
+#include<atomic>
 
 class CWebData {
 public:
@@ -13,7 +14,7 @@ public:
   // 公共接口函数
   bool GetWebData(void);
 
-  virtual bool IsNeedProcessingCurrentWebData(void) { return m_fSucceed; }
+  virtual bool IsNeedProcessingCurrentWebData(void) { return IsReadingSucceed(); }
 
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
@@ -30,6 +31,7 @@ public:
   virtual int  GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) = 0;// 申请下一个查询用字符串
   virtual void StartReadingThread(void) = 0;    // 调用网络读取线程。
 
+  // 以下为实现函数
   void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) { m_strInquire = str; }
@@ -42,12 +44,12 @@ public:
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
 
-  bool IsReadingSucceed(void) { return m_fSucceed; }
-  void SetReadingSucceed(bool fFlag) { m_fSucceed = fFlag; }
-  bool IsWebDataReceived(void) { return m_WebDataReceived.IsTrue(); }
-  void SetWebDataReceived(bool fFlag) { m_WebDataReceived.SetFlag(fFlag); }
-  bool IsReadingWebData(void) { return m_ReadingWebData.IsTrue(); }
-  void SetReadingWebData(bool fFlag) { m_ReadingWebData.SetFlag(fFlag); }
+  bool IsReadingSucceed(void) { return m_fReceivedData; }
+  void SetReadingSucceed(bool fFlag) { m_fReceivedData = fFlag; }
+  bool IsWebDataReceived(void) { return m_WebDataReceived; }
+  void SetWebDataReceived(bool fFlag) { m_WebDataReceived = fFlag; }
+  bool IsReadingWebData(void) { return m_ReadingWebData; }
+  void SetReadingWebData(bool fFlag) { m_ReadingWebData = fFlag; }
 
   void IncreaseCurrentPos(long lNumberOfChars = 1) { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
@@ -57,13 +59,13 @@ public:
 
 public:
   // 以下为测试用函数
-  void TESTSetBuffer(char* buffer, long lTotalNumber);
+  void __TESTSetBuffer(char* buffer, long lTotalNumber);
 
 protected:
   CString m_strInquire;// 查询所需的字符串
   char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
-  bool m_fSucceed; // 网络是否异常
+  bool m_fReceivedData; // 网络是否异常
 
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
@@ -71,8 +73,8 @@ protected:
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
-  CCriticalSectionBool m_ReadingWebData; // 接收实时数据线程是否执行标识
-  CCriticalSectionBool m_WebDataReceived;// 实时数据已接收完毕标识
+  atomic<bool> m_ReadingWebData; // 接收实时数据线程是否执行标识
+  atomic<bool> m_WebDataReceived;// 实时数据已接收完毕标识
 
   bool m_fReportStatus; //
 };

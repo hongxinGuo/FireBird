@@ -75,9 +75,6 @@
     <ClCompile Include="CrweberIndexWebDataTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="CriticalSectionBoolTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="SystemDequeDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="SystemTimeTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="CriticalSectionCounterTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="RTDataTest.cpp">

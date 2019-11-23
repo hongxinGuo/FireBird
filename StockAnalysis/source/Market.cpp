@@ -956,7 +956,7 @@ bool CMarket::SchedulingTask(void) {
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-  if (!gl_ExitingSystem.IsTrue() && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
+  if (!gl_ExitingSystem && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     GetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
@@ -1031,7 +1031,7 @@ bool CMarket::LoadTodayTempDataSaved(void) {
 bool CMarket::GetNeteaseDayLineWebData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-  if (!gl_ExitingSystem.IsTrue() && m_fGetDayLineData) {
+  if (!gl_ExitingSystem && m_fGetDayLineData) {
     switch (gl_cMaxSavingOneDayLineThreads) {
     case 8: case 7: case 6:case 5: case 4:
     gl_NeteaseDayLineWebDataFourth.GetWebData();
@@ -1361,7 +1361,7 @@ bool CMarket::SaveDayLineData(void) {
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
-    if (gl_ExitingSystem.IsTrue()) {
+    if (gl_ExitingSystem) {
       break; // 如果程序正在退出，则停止存储。
     }
   }

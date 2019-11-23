@@ -193,9 +193,9 @@ public:
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving.SetFlag(fFlag); }
-  bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving.IsTrue(); }
-  bool IsDayLineNeedSavingAndClearFlag(void) { return m_DayLineNeedSaving.CheckTrueAndThenClearIt(); }
+  void SetDayLineNeedSavingFlag(bool fFlag) { m_DayLineNeedSaving = fFlag; }
+  bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving; }
+  bool IsDayLineNeedSavingAndClearFlag(void) { bool f = m_DayLineNeedSaving.exchange(false); return f; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -276,7 +276,7 @@ protected:
   CStockCalculatedInfo m_stockCalculatedInfo;
 
   bool m_fDayLineLoaded; // 是否装入了日线数据
-  CCriticalSectionBool m_DayLineNeedSaving;
+  atomic<bool> m_DayLineNeedSaving;
 
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
   bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真

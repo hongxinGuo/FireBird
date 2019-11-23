@@ -82,8 +82,7 @@ static UINT indicators[] =
 
 // CMainFrame 构造/析构
 
-CMainFrame::CMainFrame()
-{
+CMainFrame::CMainFrame() {
   // TODO: 在此添加成员初始化代码
 
   m_uIdTimer = 0;
@@ -96,8 +95,7 @@ CMainFrame::CMainFrame()
   Reset();
 }
 
-void CMainFrame::Reset(void)
-{
+void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
 
   // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
@@ -114,11 +112,10 @@ void CMainFrame::Reset(void)
   m_lCurrentPos = 0;
 }
 
-CMainFrame::~CMainFrame()
-{
+CMainFrame::~CMainFrame() {
   if (gl_fTestMode) TRACE("使用了Test驱动\n");
 
-  gl_ExitingSystem.SetFlag(true);
+  gl_ExitingSystem = true;
 
   gl_ChinaStockMarket.UpdateOptionDB();
 
@@ -137,8 +134,7 @@ CMainFrame::~CMainFrame()
   TRACE("finally exited\n");
 }
 
-int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
     return -1;
 
@@ -164,7 +160,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
   CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
   if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-    !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
+      !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
   {
     TRACE0("未能创建工具栏\n");
     return -1;      // 未能创建
@@ -266,8 +262,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
   return 0;
 }
 
-bool CMainFrame::ResetSystem(void)
-{
+bool CMainFrame::ResetSystem(void) {
   CString str;
   TRACE(_T("开始重置系统\n"));
   str = _T("重置系统");
@@ -278,8 +273,7 @@ bool CMainFrame::ResetSystem(void)
   return false;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
   if (!CMDIFrameWndEx::PreCreateWindow(cs))
     return FALSE;
   // TODO: 在此处通过修改
@@ -288,8 +282,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
   return TRUE;
 }
 
-BOOL CMainFrame::CreateDockingWindows()
-{
+BOOL CMainFrame::CreateDockingWindows() {
   BOOL bNameValid;
   // 创建输出窗口
   CString strOutputWnd;
@@ -315,8 +308,7 @@ BOOL CMainFrame::CreateDockingWindows()
   return TRUE;
 }
 
-void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
-{
+void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons) {
   HICON hOutputBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_OUTPUT_WND_HC : IDI_OUTPUT_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
   m_wndOutput.SetIcon(hOutputBarIcon, FALSE);
 
@@ -326,33 +318,28 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 // CMainFrame 诊断
 
 #ifdef _DEBUG
-void CMainFrame::AssertValid() const
-{
+void CMainFrame::AssertValid() const {
   CMDIFrameWndEx::AssertValid();
 }
 
-void CMainFrame::Dump(CDumpContext& dc) const
-{
+void CMainFrame::Dump(CDumpContext& dc) const {
   CMDIFrameWndEx::Dump(dc);
 }
 #endif //_DEBUG
 
 // CMainFrame 消息处理程序
 
-void CMainFrame::OnWindowManager()
-{
+void CMainFrame::OnWindowManager() {
   ShowWindowsDialog();
 }
 
-void CMainFrame::OnViewCustomize()
-{
+void CMainFrame::OnViewCustomize() {
   CMFCToolBarsCustomizeDialog* pDlgCust = new CMFCToolBarsCustomizeDialog(this, TRUE /* 扫描菜单*/);
   pDlgCust->EnableUserDefinedToolbars();
   pDlgCust->Create();
 }
 
-LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp)
-{
+LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
   LRESULT lres = CMDIFrameWndEx::OnToolbarCreateNew(wp, lp);
   if (lres == 0)
   {
@@ -371,8 +358,7 @@ LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp)
   return lres;
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
-{
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
   // 基类将执行真正的工作
 
   if (!CMDIFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
@@ -398,8 +384,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
   return TRUE;
 }
 
-void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
-{
+void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
   CMDIFrameWndEx::OnSettingChange(uFlags, lpszSection);
   m_wndOutput.UpdateFonts();
 }
@@ -411,8 +396,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CMainFrame::OnTimer(UINT_PTR nIDEvent)
-{
+void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   // 重启系统在此处执行，容易调用各重置函数
@@ -421,7 +405,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   if (gl_fResetSystem) {
     while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
-      || gl_ThreadStatus.IsSavingDayLine()) {
+           || gl_ThreadStatus.IsSavingDayLine()) {
       Sleep(10);
     }
     ResetSystem();
@@ -479,8 +463,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
-{
+void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 #ifndef _DEBUG
@@ -489,7 +472,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
       //return; // 无动作
     }
 #endif
-    gl_ExitingSystem.SetFlag(true); // 提示各工作线程中途退出
+    gl_ExitingSystem = true; // 提示各工作线程中途退出
     if (gl_ThreadStatus.IsSavingDayLine()) { // 如果正在处理日线历史数据
       while (gl_ThreadStatus.IsSavingDayLine()) {
         Sleep(10); // 等待处理日线历史数据的线程退出
@@ -500,23 +483,20 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam)
   CMDIFrameWndEx::OnSysCommand(nID, lParam);
 }
 
-void CMainFrame::OnCalculateRelativeStrong()
-{
+void CMainFrame::OnCalculateRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
   gl_ChinaStockMarket.SetCalculatingRS(true);
   AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
-void CMainFrame::OnCompileTodayStock()
-{
+void CMainFrame::OnCompileTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
     AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
   }
 }
 
-void CMainFrame::OnDownloadDayline()
-{
+void CMainFrame::OnDownloadDayline() {
   // TODO: 在此添加命令处理程序代码
   if (!gl_ChinaStockMarket.m_fGetDayLineData) {
     gl_ChinaStockMarket.m_fGetDayLineData = true;
@@ -528,19 +508,16 @@ void CMainFrame::OnDownloadDayline()
   }
 }
 
-void CMainFrame::OnSaveDaylineData()
-{
+void CMainFrame::OnSaveDaylineData() {
   // TODO: 在此添加命令处理程序代码
 }
 
-void CMainFrame::OnSaveRtdata()
-{
+void CMainFrame::OnSaveRtdata() {
   // TODO: 在此添加命令处理程序代码
   gl_ChinaStockMarket.SaveRTData();
 }
 
-void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     pCmdUI->Enable(true);
@@ -548,14 +525,12 @@ void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI)
   else pCmdUI->Enable(false);
 }
 
-void CMainFrame::OnUpdateSaveDaylineData(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateSaveDaylineData(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   //for( auto pStock : gl_sMark)
 }
 
-void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
@@ -576,8 +551,7 @@ void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI)
 //
 //
 //////////////////////////////////////////////////////////////////
-BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
-{
+BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
   // TODO: 在此添加专用代码和/或调用基类
   if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) {
     SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
@@ -586,8 +560,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
   return CMDIFrameWndEx::PreTranslateMessage(pMsg);
 }
 
-void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
+void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   CStockPtr pStock;
   CString strTemp;
@@ -606,14 +579,70 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   case 's':
   case 'h':
   case 'z':
-    if (m_lCurrentPos < 10) {
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
-      m_lCurrentPos++;
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-    }
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-    break;
+  if (m_lCurrentPos < 10) {
+    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
+    m_lCurrentPos++;
+    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+  }
+  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  break;
   case 0x00d: // 回车
+  strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+  if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+    gl_ChinaStockMarket.SetShowStock(pStock);
+    //m_fNeedUpdateTitle = true;
+    Invalidate();
+  }
+  gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
+  m_lCurrentPos = 0;
+  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  break;
+  case 0x008: // back space
+  if (m_lCurrentPos > 0) {
+    m_lCurrentPos--;
+    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+  }
+  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  break;
+  default:
+  break;
+  }
+
+  CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
+}
+
+void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  // TODO: 在此添加消息处理程序代码和/或调用默认值
+  CStockPtr pStock;
+  long lIndex = 0;
+  CString strTemp;
+
+  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+    switch (nChar) {
+    case 45: // Ins 加入自选股票
+    pStock = gl_ChinaStockMarket.GetShowStock();
+    pStock->SetChoiced(true);
+    gl_ChinaStockMarket.gl_vStockChoice.push_back(pStock);
+    break;
+    case 33: // PAGE UP
+      // last stock
+    pStock = gl_ChinaStockMarket.GetShowStock();
+    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
+    if (lIndex > 0) lIndex--;
+    pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+    gl_ChinaStockMarket.SetShowStock(pStock);
+    //m_fNeedUpdateTitle = true;
+    break;
+    case 34: // PAGE DOWN
+      // next stock
+    pStock = gl_ChinaStockMarket.GetShowStock();
+    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
+    if (lIndex < gl_ChinaStockMarket.GetTotalActiveStock()) lIndex++;
+    pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
+    gl_ChinaStockMarket.SetShowStock(pStock);
+    //m_fNeedUpdateTitle = true;
+    break;
+    case 0x00d: // 回车
     strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
     if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
       gl_ChinaStockMarket.SetShowStock(pStock);
@@ -624,73 +653,15 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     m_lCurrentPos = 0;
     gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
     break;
-  case 0x008: // back space
-    if (m_lCurrentPos > 0) {
-      m_lCurrentPos--;
-      gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-    }
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-    break;
-  default:
-    break;
-  }
-
-  CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
-}
-
-void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-  // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CStockPtr pStock;
-  long lIndex = 0;
-  CString strTemp;
-
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    switch (nChar) {
-    case 45: // Ins 加入自选股票
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      pStock->SetChoiced(true);
-      gl_ChinaStockMarket.gl_vStockChoice.push_back(pStock);
-      break;
-    case 33: // PAGE UP
-      // last stock
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-      if (lIndex > 0) lIndex--;
-      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
-      gl_ChinaStockMarket.SetShowStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      break;
-    case 34: // PAGE DOWN
-      // next stock
-      pStock = gl_ChinaStockMarket.GetShowStock();
-      gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-      if (lIndex < gl_ChinaStockMarket.GetTotalActiveStock()) lIndex++;
-      pStock = gl_ChinaStockMarket.GetStockPtr(lIndex);
-      gl_ChinaStockMarket.SetShowStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      break;
-    case 0x00d: // 回车
-      strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
-      if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
-        gl_ChinaStockMarket.SetShowStock(pStock);
-        //m_fNeedUpdateTitle = true;
-        Invalidate();
-      }
-      gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
-      m_lCurrentPos = 0;
-      gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
-      break;
     default:
-      break;
+    break;
     }
   }
 
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::OnRebuildDaylineRS()
-{
+void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
 
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
@@ -699,14 +670,12 @@ void CMainFrame::OnRebuildDaylineRS()
   AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
-void CMainFrame::OnBuildResetSystem()
-{
+void CMainFrame::OnBuildResetSystem() {
   // TODO: Add your command handler code here
   gl_fResetSystem = true;
 }
 
-void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI)
-{
+void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
 #ifndef DEBUG

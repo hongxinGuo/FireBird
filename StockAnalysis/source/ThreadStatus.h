@@ -4,8 +4,8 @@
 
 #include"globedef.h"
 
-#include"CriticalSectionBool.h"
-#include"CriticalSectionCounter.h"
+using namespace std;
+#include<atomic>
 
 const int gl_cMaxCalculatingRSThreads = 80;
 
@@ -15,47 +15,47 @@ public:
   ~CThreadStatus();
 
   // 线程退出与否状态和设置。此标志用于系统退出，当所有必须关闭的线程关闭后方可允许系统退出，否则系统就要等待。
-  void SetExitingThread(bool fFlag) { m_ExitingThread.SetFlag(fFlag); }
-  bool IsExitingThread(void) { return m_ExitingThread.IsTrue(); }
+  void SetExitingThread(bool fFlag) { m_ExitingThread = fFlag; }
+  bool IsExitingThread(void) { return m_ExitingThread; }
 
   // 计算若干天日线相对强度与否和设置
-  void SetCalculatingDayLineRS(bool fFlag) { m_CalculateDayLineRelativeStrong.SetFlag(fFlag); }
-  bool IsCalculatingDayLineRS(void) { return m_CalculateDayLineRelativeStrong.IsTrue(); }
+  void SetCalculatingDayLineRS(bool fFlag) { m_CalculateDayLineRelativeStrong = fFlag; }
+  bool IsCalculatingDayLineRS(void) { return m_CalculateDayLineRelativeStrong; }
 
   // 实时数据需要计算与否和设置
-  void SetRTDataNeedCalculate(bool fFlag) { m_RTDataNeedCalculate.SetFlag(fFlag); }
-  bool IsRTDataNeedCalculate(void) { return m_RTDataNeedCalculate.IsTrue(); }
+  void SetRTDataNeedCalculate(bool fFlag) { m_RTDataNeedCalculate = fFlag; }
+  bool IsRTDataNeedCalculate(void) { return m_RTDataNeedCalculate; }
 
   // 实时数据计算中与否和设置
-  void SetCalculatingRTData(bool fFlag) { m_CalculatingRTData.SetFlag(fFlag); }
-  bool IsCalculatingRTData(void) { return m_CalculatingRTData.IsTrue(); }
+  void SetCalculatingRTData(bool fFlag) { m_CalculatingRTData = fFlag; }
+  bool IsCalculatingRTData(void) { return m_CalculatingRTData; }
 
   // 临时数据存储中与否和设置
-  void SetSavingTempData(bool fFlag) { m_SavingTempData.SetFlag(fFlag); }
-  bool IsSavingTempData(void) { return m_SavingTempData.IsTrue(); }
+  void SetSavingTempData(bool fFlag) { m_SavingTempData = fFlag; }
+  bool IsSavingTempData(void) { return m_SavingTempData; }
 
   // 股票代码存储中与否和设置
-  void SetSavingStockCodeData(bool fFlag) { m_SavingStockCodeData.SetFlag(fFlag); }
-  bool IsSavingStockCodeData(void) { return m_SavingStockCodeData.IsTrue(); }
+  void SetSavingStockCodeData(bool fFlag) { m_SavingStockCodeData = fFlag; }
+  bool IsSavingStockCodeData(void) { return m_SavingStockCodeData; }
 
   // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.IncreasingCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.DecreasingCounter(); } // 同时运行线程数减一
-  bool IsCalculatingRS(void) { return m_CounterOfCalculatingRSThreads.IsActive(); }  // 计算日线的线程是否处于运行中
-  int HowManyThreadsCalculatingDayLineRS(void) { return m_CounterOfCalculatingRSThreads.HowMany(); }
+  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads++; }  // 同时运行线程数加一
+  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads--; } // 同时运行线程数减一
+  bool IsCalculatingRS(void) { if (m_CounterOfCalculatingRSThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
+  int HowManyThreadsCalculatingDayLineRS(void) { return m_CounterOfCalculatingRSThreads; }
 
-  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.IncreasingCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.DecreasingCounter(); } // 同时运行线程数减一
-  bool IsSavingDayLine(void) { return m_SavingDayLine.IsActive(); }  // 计算日线的线程是否处于运行中
+  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine++; }  // 同时运行线程数加一
+  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine--; } // 同时运行线程数减一
+  bool IsSavingDayLine(void) { if (m_SavingDayLine > 0) return true; else return false; }  // 计算日线的线程是否处于运行中
 
 protected:
-  CCriticalSectionBool m_ExitingThread;
-  CCriticalSectionBool m_CalculateDayLineRelativeStrong;
-  CCriticalSectionBool m_RTDataNeedCalculate;
-  CCriticalSectionBool m_CalculatingRTData;
-  CCriticalSectionBool m_SavingTempData;
-  CCriticalSectionBool m_SavingStockCodeData;
+  atomic<bool> m_ExitingThread;
+  atomic<bool> m_CalculateDayLineRelativeStrong;
+  atomic<bool> m_RTDataNeedCalculate;
+  atomic<bool> m_CalculatingRTData;
+  atomic<bool> m_SavingTempData;
+  atomic<bool> m_SavingStockCodeData;
 
-  CCriticalSectionCounter m_SavingDayLine; // 存储日线历史数据的计数器
-  CCriticalSectionCounter m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
+  atomic<int> m_SavingDayLine; // 存储日线历史数据的计数器
+  atomic<int> m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
 };

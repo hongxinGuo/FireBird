@@ -9,9 +9,11 @@ CWebData::CWebData() noexcept {
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
   m_lByteRead = 0;
-  m_fSucceed = false;
+  m_fReceivedData = false;
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+  m_fReceivedData = false;
+  m_ReadingWebData = false;
 
 #ifdef DEBUG
   m_fReportStatus = true;
@@ -86,7 +88,7 @@ void CWebData::CreateTotalInquiringString(CString strMiddle) {
   m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
-void CWebData::TESTSetBuffer(char* buffer, long lTotalNumber) {
+void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   long i;
   for (i = 0; i < lTotalNumber; i++) {
     m_buffer[i] = buffer[i];

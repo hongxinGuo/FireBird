@@ -129,13 +129,7 @@
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\CriticalSectionBool.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\CriticalSectionClock.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CriticalSectionCounter.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Market.h">
@@ -281,13 +275,7 @@
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\CriticalSectionBool.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\CriticalSectionClock.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CriticalSectionCounter.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\Market.cpp">
