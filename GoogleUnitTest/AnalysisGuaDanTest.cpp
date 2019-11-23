@@ -464,6 +464,27 @@ namespace StockAnalysisTest {
     ASSERT(0);
     break;
     }
+    m_stock.SetCurrentGuadan(pCurrentData);
+    switch (iCount) {
+    case 0:// 无成交，出现新的挂单位置
+    for (int i = 0; i < 10; i++) {
+      EXPECT_EQ(m_stock.GetGuadan(9960 + i * 10), 10000);
+    }
+    break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    break;
+    default:
+    ASSERT(0);
+    break;
+    }
   }
 
   TEST(CStockTest, TestSetCurrentGuadan) {
