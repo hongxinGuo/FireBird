@@ -121,15 +121,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionBool.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionClock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CriticalSectionCounter.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
       <Filter>dependency</Filter>
     </Object>

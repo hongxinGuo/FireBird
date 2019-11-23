@@ -3,7 +3,6 @@
 
 #include"stdafx.h"
 #include"globedef.h"
-#include"CriticalSectionclock.h"
 
 #include "Stock.h"
 #include"SetStockCode.h"
@@ -13,6 +12,7 @@
 using namespace std;
 #include<vector>
 #include<map>
+#include<atomic>
 
 class CMarket final : public CObject
 {
@@ -129,12 +129,12 @@ public:
   size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  void SetReadingSinaRTDataTime(clock_t tt) { m_ReadingSinaRTDataTime.SetTime(tt); }
-  clock_t GetReadingSinaRTDataTime(void) { return m_ReadingSinaRTDataTime.GetTime(); }
-  void SetReadingTengxunRTDataTime(clock_t tt) { m_ReadingTengxunRTDataTime.SetTime(tt); }
-  clock_t GetReadingTengxunRTDataTime(void) { return m_ReadingTengxunRTDataTime.GetTime(); }
-  void SetReadingNeteaseDayDataTime(clock_t tt) { m_ReadingNeteaseDayDataTime.SetTime(tt); }
-  clock_t GetReadingNeteaseDayDataTime(void) { return m_ReadingNeteaseDayDataTime.GetTime(); }
+  void SetReadingSinaRTDataTime(clock_t tt) { m_ReadingSinaRTDataTime = tt; }
+  clock_t GetReadingSinaRTDataTime(void) { return m_ReadingSinaRTDataTime; }
+  void SetReadingTengxunRTDataTime(clock_t tt) { m_ReadingTengxunRTDataTime = tt; }
+  clock_t GetReadingTengxunRTDataTime(void) { return m_ReadingTengxunRTDataTime; }
+  void SetReadingNeteaseDayDataTime(clock_t tt) { m_ReadingNeteaseDayDataTime = tt; }
+  clock_t GetReadingNeteaseDayDataTime(void) { return m_ReadingNeteaseDayDataTime; }
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool ProcessRTData(void);
@@ -234,9 +234,9 @@ protected:
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量，需要设置同步机制
-  CCriticalSectionClock m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
-  CCriticalSectionClock m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  CCriticalSectionClock m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
+  atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
+  atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
+  atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
 
 private:
 };

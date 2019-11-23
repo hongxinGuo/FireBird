@@ -217,7 +217,6 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
-    <ClInclude Include="source\CriticalSectionClock.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\NeteaseDayLineWebData.h" />
@@ -258,7 +257,6 @@
     <ClCompile Include="NeteaseRTWebData.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
-    <ClCompile Include="source\CriticalSectionClock.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexWebData.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebData.cpp" />
