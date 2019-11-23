@@ -323,12 +323,38 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(id.HaveGuadan(10010 + i));
     }
     id.SetCurrentGuadan(pCurrentRTData);
-    for (int i = 0; i < 190; i += 10) {
+    for (int i = 0; i < 190; i += 20) {
       EXPECT_TRUE(id.HaveGuadan(10000 + i));
+      EXPECT_FALSE(id.HaveGuadan(10010 + i));
     }
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(id.GetGuadan(10080 - i * 20), pCurrentRTData->GetVBuy(i));
       EXPECT_EQ(id.GetGuadan(10100 + i * 20), pCurrentRTData->GetVSell(i));
     }
+    for (int i = 0; i < 5; i++) {
+      pCurrentRTData->SetPBuy(i, 10090 - i * 20);
+      pCurrentRTData->SetVBuy(i, i + 2000);
+      pCurrentRTData->SetPSell(i, 10110 + i * 20);
+      pCurrentRTData->SetVSell(i, i + 4000);
+    }
+    id.SetCurrentGuadan(pCurrentRTData);
+    for (int i = 0; i < 180; i += 20) {
+      EXPECT_EQ(id.GetGuadan(10020 + i), 0); // 原有的挂单被清零了
+    }
+    for (int i = 0; i < 5; i++) {
+      EXPECT_EQ(id.GetGuadan(10090 - i * 20), pCurrentRTData->GetVBuy(i));
+      EXPECT_EQ(id.GetGuadan(10110 + i * 20), pCurrentRTData->GetVSell(i));
+    }
+  }
+
+  TEST(CStockTest, TestHaveGuadan) {
+    CStock id;
+    EXPECT_FALSE(id.HaveGuadan(10000));
+    id.SetGuadan(10000, 0);
+    EXPECT_FALSE(id.HaveGuadan(10000));
+    id.SetGuadan(10000, 10000);
+    EXPECT_TRUE(id.HaveGuadan(10000));
+    id.SetGuadan(10000, 0);
+    EXPECT_FALSE(id.HaveGuadan(10000));
   }
 }

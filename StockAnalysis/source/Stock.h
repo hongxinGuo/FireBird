@@ -215,7 +215,7 @@ public:
   void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
   long GetGuadan(long lPrice) { return m_mapGuadan.at(lPrice); }
   void SetGuadan(long lPrice, long lVolume) { m_mapGuadan[lPrice] = lVolume; }
-  bool HaveGuadan(long lPrice) { if (m_mapGuadan.find(lPrice) == m_mapGuadan.end()) return false; return true; }
+  bool HaveGuadan(long lPrice);
 
   // 日线相对强度计算
   bool CalculateDayLineRS(void);

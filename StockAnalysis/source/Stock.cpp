@@ -432,7 +432,9 @@ void CStock::CalculateAttackSellVolume(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice) {
-  array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true }; // 需要检查的挂单位置。顺序为：Sell4, Sell3, ... Sell0, Buy0, .... Buy3, Buy4
+  // 需要检查的挂单位置。顺序为：卖单4, 卖单3, ... 卖单0, 卖单0, .... 买单3, 买单4
+  // 卖单买单谁在前面无所谓，但计算时需要记住此顺序。
+  array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
 
   for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
   SelectGuadanThatNeedToCalculate(pCurrentRTData, lCurrentTransactionPrice, fNeedCheck);
@@ -444,7 +446,7 @@ bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
 }
 
 void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
-  // 确定需要计算哪些挂单。一共有十个，没有收到交易影响的都要计算。
+  // 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
   ASSERT(lCurrentTransactionPrice == 0);
@@ -467,7 +469,8 @@ void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCu
     fNeedCheck.at(1) = false;
   }
   fNeedCheck.at(3) = false;
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  fNeedCheck.at(4) = false;
+  fNeedCheck.at(5) = false;
   break;
   case __ORDINARY_BUY__: // 卖单一被影响。计算其他八个挂单。
   case __UNKNOWN_BUYSELL__: // 卖单一和买单一被影响。计算其他八个挂单。
@@ -491,7 +494,8 @@ void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCu
     fNeedCheck.at(7) = false;
   }
   fNeedCheck.at(6) = false;
-  fNeedCheck.at(4) = fNeedCheck.at(5) = false;
+  fNeedCheck.at(5) = false;
+  fNeedCheck.at(4) = false;
   break;
   default:
   ASSERT(0); // 不可能执行到此分支。
@@ -536,6 +540,12 @@ void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
       m_stockCalculatedInfo.IncreaseCancelBuyVolume(m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i)));
     }
   }
+}
+
+bool CStock::HaveGuadan(long lPrice) {
+  if (m_mapGuadan.find(lPrice) == m_mapGuadan.end()) return false;
+  else if (m_mapGuadan.at(lPrice) == 0) return false;
+  return true;
 }
 
 bool CStock::CheckCurrentRTData() {
