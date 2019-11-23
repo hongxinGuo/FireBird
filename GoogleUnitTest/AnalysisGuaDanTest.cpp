@@ -471,6 +471,42 @@ namespace StockAnalysisTest {
       EXPECT_EQ(m_stock.GetGuadan(9960 + i * 10), 10000);
     }
     break;
+    case 1:// 无成交，出现新的挂单位置
+    EXPECT_FALSE(m_stock.HaveGuadan(9850));
+    EXPECT_EQ(m_stock.GetGuadan(9860), 10000);
+    EXPECT_EQ(m_stock.GetGuadan(9870), 20000);
+    for (int i = 0; i < 10; i++) {
+      EXPECT_FALSE(m_stock.HaveGuadan(9880 + i * 10));
+    }
+    for (int i = 0; i < 6; i++) {
+      EXPECT_EQ(m_stock.GetGuadan(9980 + i * 10), 10000);
+    }
+    for (int i = 0; i < 10; i++) {
+      EXPECT_FALSE(m_stock.HaveGuadan(10040 + i * 10));
+    }
+    EXPECT_EQ(m_stock.GetGuadan(10140), 20000);
+    for (int i = 0; i < 10; i++) {
+      EXPECT_FALSE(m_stock.HaveGuadan(10150 + i * 10));
+    }
+    EXPECT_EQ(m_stock.GetGuadan(10250), 10000);
+    EXPECT_FALSE(m_stock.HaveGuadan(10260));
+    break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    break;
+    default:
+    ASSERT(0);
+    break;
+    }
+    m_stock.CheckGuadan(pCurrentData, fNeedCheck);
+    switch (iCount) {
+    case 0:
     case 1:
     case 2:
     case 3:
