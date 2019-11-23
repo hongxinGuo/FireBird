@@ -42,6 +42,7 @@ public:
   void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.IncreasingCounter(); }  // 同时运行线程数加一
   void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.DecreasingCounter(); } // 同时运行线程数减一
   bool IsCalculatingRS(void) { return m_CounterOfCalculatingRSThreads.IsActive(); }  // 计算日线的线程是否处于运行中
+  int HowManyThreadsCalculatingDayLineRS(void) { return m_CounterOfCalculatingRSThreads.HowMany(); }
 
   void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.IncreasingCounter(); }  // 同时运行线程数加一
   void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.DecreasingCounter(); } // 同时运行线程数减一

@@ -33,6 +33,10 @@ bool CCriticalSectionCounter::DecreasingCounter(void) {
   return fSecceed;
 }
 
+int CCriticalSectionCounter::HowMany(void) {
+  return m_iCounter;
+}
+
 bool CCriticalSectionCounter::IsActive(void) {
   if (m_iCounter > 0) return true;
   else return false;

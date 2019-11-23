@@ -39,7 +39,7 @@ UINT ThreadCalculateRS(LPVOID) {
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday < gl_systemTime.GetDay());
 
-  while (gl_ThreadStatus.IsCalculatingRS()); // 等待所有的工作线程结束
+  while (gl_ThreadStatus.IsCalculatingRS()) Sleep(1000); // 等待所有的工作线程结束
 
   gl_ChinaStockMarket.UpdateOptionDB(); // 更新选项数据库
 
