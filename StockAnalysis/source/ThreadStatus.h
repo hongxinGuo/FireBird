@@ -7,7 +7,7 @@
 #include"CriticalSectionBool.h"
 #include"CriticalSectionCounter.h"
 
-const int gl_cMaxCalculatingRSThreads = 8;
+const int gl_cMaxCalculatingRSThreads = 80;
 
 class CThreadStatus {    // 个线程状态
 public:
@@ -39,14 +39,12 @@ public:
   bool IsSavingStockCodeData(void) { return m_SavingStockCodeData.IsTrue(); }
 
   // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.SecceedIncreasingCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.SecceedDecreasingCounter(); } // 同时运行线程数减一
-  bool IsCalculatingRSThreadAvailable(void) { return m_CounterOfCalculatingRSThreads.IsCounterAvailable(); }  // 是否允许生成新的工作线程
+  void IncreaseNunberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.IncreasingCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfCalculatingRSThreads(void) { m_CounterOfCalculatingRSThreads.DecreasingCounter(); } // 同时运行线程数减一
   bool IsCalculatingRS(void) { return m_CounterOfCalculatingRSThreads.IsActive(); }  // 计算日线的线程是否处于运行中
 
-  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.SecceedIncreasingCounter(); }  // 同时运行线程数加一
-  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.SecceedDecreasingCounter(); } // 同时运行线程数减一
-  bool IsSavingDayLineThreadAvailable(void) { return m_SavingDayLine.IsCounterAvailable(); }  // 是否允许生成新的工作线程
+  void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine.IncreasingCounter(); }  // 同时运行线程数加一
+  void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine.DecreasingCounter(); } // 同时运行线程数减一
   bool IsSavingDayLine(void) { return m_SavingDayLine.IsActive(); }  // 计算日线的线程是否处于运行中
 
 protected:

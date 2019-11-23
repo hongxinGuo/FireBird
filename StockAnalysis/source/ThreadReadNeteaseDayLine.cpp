@@ -22,6 +22,7 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;
   static int siDelayTime = 600;
   static bool fStarted = false;
+  static int siCount = 0;   // 初始计数器，计算执行了几次此线程。用于设定延迟时间
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
@@ -74,8 +75,11 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   if (pFile) delete pFile;
   pNeteaseDayLineWebData->SetReadingWebData(false);
   if (!fStarted) {
-    fStarted = true;
-    siDelayTime = 50;
+    if (siCount > 16) { // 十六次后缩短延迟时间
+      fStarted = true;
+      siDelayTime = 50;
+    }
+    else siCount++;
   }
 
   gl_ChinaStockMarket.SetReadingNeteaseDayDataTime(clock() - tt);

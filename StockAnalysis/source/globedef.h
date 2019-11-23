@@ -84,6 +84,7 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 extern const int gl_cMaxSavingOneDayLineThreads;
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
 extern CSemaphore gl_SaveOneStockDayLine;
+extern CSemaphore gl_CalculateDayLineRelativeStrong;
 extern CSemaphore gl_ProcessSinaRTDataQueue;
 extern CSemaphore gl_ProcessTengxunRTDataQueue;
 extern CSemaphore gl_ProcessNeteaseRTDataQueue;
