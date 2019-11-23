@@ -1166,11 +1166,11 @@ bool CRTData::IsDataHavingValidTime(void) {
 void CRTData::SaveData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
 
-  setRTData.m_Time = m_time;
+  setRTData.m_Time = ConvertValueToString(m_time);
   setRTData.m_Market = GetMarket();
   setRTData.m_StockCode = GetStockCode();
   setRTData.m_StockName = GetStockName();
-  setRTData.m_CurrentPrice = ConvertValueToString(GetNew(), 1000);
+  setRTData.m_New = ConvertValueToString(GetNew(), 1000);
   setRTData.m_High = ConvertValueToString(GetHigh(), 1000);
   setRTData.m_Low = ConvertValueToString(GetLow(), 1000);
   setRTData.m_LastClose = ConvertValueToString(GetLastClose(), 1000);
@@ -1213,4 +1213,36 @@ void CRTData::AppendData(CSetRealTimeData& setRTData) {
 
 void CRTData::LoadData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
+
+  m_time = atoll(setRTData.m_Time);
+  m_wMarket = setRTData.m_Market;
+  m_strStockCode = setRTData.m_StockCode;
+  m_strStockName = setRTData.m_StockName;
+  m_lLastClose = atof(setRTData.m_LastClose) * 1000;
+  m_lOpen = atof(setRTData.m_Open) * 1000;
+  m_lNew = atof(setRTData.m_New) * 1000;
+  m_lHigh = atof(setRTData.m_High) * 1000;
+  m_lLow = atof(setRTData.m_Low) * 1000;
+  m_llVolume = atoll(setRTData.m_Volume);
+  m_llAmount = atoll(setRTData.m_Amount);
+  m_lPBuy.at(0) = atof(setRTData.m_PBuy1) * 1000;
+  m_lVBuy.at(0) = atol(setRTData.m_VBuy1);
+  m_lPBuy.at(1) = atof(setRTData.m_PBuy2) * 1000;
+  m_lVBuy.at(1) = atol(setRTData.m_VBuy2);
+  m_lPBuy.at(2) = atof(setRTData.m_PBuy3) * 1000;
+  m_lVBuy.at(2) = atol(setRTData.m_VBuy3);
+  m_lPBuy.at(3) = atof(setRTData.m_PBuy4) * 1000;
+  m_lVBuy.at(3) = atol(setRTData.m_VBuy4);
+  m_lPBuy.at(4) = atof(setRTData.m_PBuy5) * 1000;
+  m_lVBuy.at(4) = atol(setRTData.m_VBuy5);
+  m_lPSell.at(0) = atof(setRTData.m_PSell1) * 1000;
+  m_lVSell.at(0) = atol(setRTData.m_VSell1);
+  m_lPSell.at(1) = atof(setRTData.m_PSell2) * 1000;
+  m_lVSell.at(1) = atol(setRTData.m_VSell2);
+  m_lPSell.at(2) = atof(setRTData.m_PSell3) * 1000;
+  m_lVSell.at(2) = atol(setRTData.m_VSell3);
+  m_lPSell.at(3) = atof(setRTData.m_PSell4) * 1000;
+  m_lVSell.at(3) = atol(setRTData.m_VSell4);
+  m_lPSell.at(4) = atof(setRTData.m_PSell5) * 1000;
+  m_lVSell.at(4) = atol(setRTData.m_VSell5);
 }

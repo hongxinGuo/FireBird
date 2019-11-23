@@ -21,7 +21,7 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  long m_Time;	//成交时间，以秒计算，从1970年1月1日起
+  CString m_Time;	//成交时间，以秒计算，
   long m_Market; // 上海为1，深圳为2， 。。。
   CStringW m_StockName;	//四位股票简称
   CString	m_StockCode;	//六位股票代码
@@ -29,7 +29,7 @@ public:
   CString	m_Open;	//今天开盘价
   CString	m_High;	//今天最高价
   CString	m_Low;	//今天最低价
-  CString	m_CurrentPrice;	//最新成交价格
+  CString	m_New;	//最新成交价格
   CString	m_Volume;	//目前总成交数量
   CString	m_Amount;	//当前总成交金额
   CString	m_Stroke;	//当前总成交笔数

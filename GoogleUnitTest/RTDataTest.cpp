@@ -1532,10 +1532,11 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CRTDataTest, TestSaveData) {
+  TEST(CRTDataTest, TestLoadData) {
     CSetRealTimeData setRTData;
     CRTDataPtr pRTData = make_shared<CRTData>();
-    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(20191123);
+    CRTData id;
+    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(19801123);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetMarket(__SHANGHAI_MARKET__);
@@ -1563,14 +1564,77 @@ namespace StockAnalysisTest {
     setRTData.Close();
 
     setRTData.Open();
-    EXPECT_EQ(setRTData.m_Time, pRTData->GetTransactionTime());
+    id.LoadData(setRTData);
+    EXPECT_EQ(id.GetTransactionTime(), pRTData->GetTransactionTime());
+    EXPECT_EQ(id.GetMarket(), pRTData->GetMarket());
+    EXPECT_STREQ(id.GetStockCode(), pRTData->GetStockCode());
+    EXPECT_DOUBLE_EQ(id.GetLastClose(), pRTData->GetLastClose());
+    EXPECT_DOUBLE_EQ(id.GetOpen(), pRTData->GetOpen());
+    EXPECT_DOUBLE_EQ(id.GetHigh(), pRTData->GetHigh());
+    EXPECT_DOUBLE_EQ(id.GetLow(), pRTData->GetLow());
+    EXPECT_DOUBLE_EQ(id.GetNew(), pRTData->GetNew());
+    EXPECT_DOUBLE_EQ(id.GetVolume(), pRTData->GetVolume());
+    EXPECT_DOUBLE_EQ(id.GetAmount(), pRTData->GetAmount());
+
+    for (int i = 0; i < 5; i++) {
+      EXPECT_DOUBLE_EQ(id.GetPSell(i), pRTData->GetPSell(i));
+      EXPECT_DOUBLE_EQ(id.GetVSell(i), pRTData->GetVSell(i));
+      EXPECT_DOUBLE_EQ(id.GetPBuy(i), pRTData->GetPBuy(i));
+      EXPECT_DOUBLE_EQ(id.GetVBuy(i), pRTData->GetVBuy(i));
+    }
+
+    setRTData.Close();
+
+    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
+    setRTData.Open();
+    setRTData.m_pDatabase->BeginTrans();
+    while (!setRTData.IsEOF()) {
+      setRTData.Delete();
+      setRTData.MoveNext();
+    }
+    setRTData.m_pDatabase->CommitTrans();
+    setRTData.Close();
+  }
+
+  TEST(CRTDataTest, TestSaveData) {
+    CSetRealTimeData setRTData;
+    CRTDataPtr pRTData = make_shared<CRTData>();
+    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(19801123);
+
+    pRTData->SetTransactionTime(tt);
+    pRTData->SetMarket(__SHANGHAI_MARKET__);
+    pRTData->SetStockCode(_T("sh600000"));
+    pRTData->SetStockName(_T("ÆÖ·¢ÒøÐÐ"));
+    pRTData->SetOpen(10000);
+    pRTData->SetLastClose(10500);
+    pRTData->SetNew(11000);
+    pRTData->SetHigh(11000);
+    pRTData->SetLow(10000);
+    pRTData->SetVolume(1234567890);
+    pRTData->SetAmount(12345678900);
+    for (int i = 0; i < 5; i++) {
+      pRTData->SetVBuy(i, 10000 + i * 1000);
+      pRTData->SetPBuy(i, 10000 - i * 10);
+      pRTData->SetVSell(i, 100000 + i * 10000);
+      pRTData->SetPSell(i, 10010 + i * 10);
+    }
+
+    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
+    setRTData.Open();
+    setRTData.m_pDatabase->BeginTrans();
+    pRTData->AppendData(setRTData);
+    setRTData.m_pDatabase->CommitTrans();
+    setRTData.Close();
+
+    setRTData.Open();
+    EXPECT_EQ(atoll(setRTData.m_Time), pRTData->GetTransactionTime());
     EXPECT_EQ(setRTData.m_Market, pRTData->GetMarket());
     EXPECT_STREQ(setRTData.m_StockCode, pRTData->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_LastClose) * 1000, pRTData->GetLastClose());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_Open) * 1000, pRTData->GetOpen());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_High) * 1000, pRTData->GetHigh());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_Low) * 1000, pRTData->GetLow());
-    EXPECT_DOUBLE_EQ(atof(setRTData.m_CurrentPrice) * 1000, pRTData->GetNew());
+    EXPECT_DOUBLE_EQ(atof(setRTData.m_New) * 1000, pRTData->GetNew());
     EXPECT_DOUBLE_EQ(atoll(setRTData.m_Volume), pRTData->GetVolume());
     EXPECT_DOUBLE_EQ(atoll(setRTData.m_Amount), pRTData->GetAmount());
 

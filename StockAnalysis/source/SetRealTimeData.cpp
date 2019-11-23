@@ -13,14 +13,14 @@ IMPLEMENT_DYNAMIC(CSetRealTimeData, CRecordset)
 CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_Time = 0;
+  m_Time = _T("0");
   m_Market = 0;
   m_StockCode = "";
   m_LastClose = _T("0");
   m_Open = _T("0");
   m_High = _T("0");
   m_Low = _T("0");
-  m_CurrentPrice = _T("0");
+  m_New = _T("0");
   m_Volume = _T("0");
   m_Amount = _T("0");
   m_Stroke = _T("0");
@@ -64,14 +64,14 @@ void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Long(pFX, _T("[Time]"), m_Time);
+  RFX_Text(pFX, _T("[Time]"), m_Time);
   RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);
   RFX_Text(pFX, _T("[High]"), m_High);
   RFX_Text(pFX, _T("[Low]"), m_Low);
-  RFX_Text(pFX, _T("[CurrentPrice]"), m_CurrentPrice);
+  RFX_Text(pFX, _T("[New]"), m_New);
   RFX_Text(pFX, _T("[Volume]"), m_Volume);
   RFX_Text(pFX, _T("[Amount]"), m_Amount);
   RFX_Text(pFX, _T("[Stroke]"), m_Stroke);
