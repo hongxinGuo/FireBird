@@ -97,13 +97,13 @@ namespace StockAnalysisTest {
                      10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
                      10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
                      10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
-  // 有成交，进攻型买入（比买二价高），买卖单出现撤单，。
+  // 有成交，进攻型卖出（比买二价高），买卖单出现撤单，。
   GuadanData Guadan9(8, __ATTACK_SELL__, 9991,
                      10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
                      10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
                      10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
                      10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
-  // 有成交，强买入（比买二价低，此例低于买三），买卖单出现撤单。
+  // 有成交，强卖出（比买二价低，此例低于买三），买卖单出现撤单。
   GuadanData Guadan10(9, __STRONG_SELL__, 9971,
                       10050, 9900, 10040, 9800, 10030, 9600, 10020, 9200, 10010, 8400,
                       10000, 9900, 9990, 9800, 9980, 9600, 9970, 9200, 9960, 8400,
@@ -305,6 +305,163 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_stock.GetGuadan(10050), 9900);
     break;
     default:
+    break;
+    }
+  }
+
+  class NeedCheckTest : public::testing::TestWithParam<GuadanData*>
+  {
+  protected:
+    void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      GuadanData* pData = GetParam();
+      // 预设20个挂单
+      for (int i = 0; i < 200; i += 10) {
+        m_stock.__TestSetGuadanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
+      }
+      pCurrentData = make_shared<CRTData>();
+      for (int i = 0; i < 5; i++) {
+        pCurrentData->SetVBuy(i, pData->CurrentData.GetVBuy(i));
+        pCurrentData->SetPBuy(i, pData->CurrentData.GetPBuy(i));
+        pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
+        pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
+      }
+      pLastData = make_shared<CRTData>();
+      for (int i = 0; i < 5; i++) {
+        pLastData->SetVBuy(i, pData->LastData.GetVBuy(i));
+        pLastData->SetPBuy(i, pData->LastData.GetPBuy(i));
+        pLastData->SetVSell(i, pData->LastData.GetVSell(i));
+        pLastData->SetPSell(i, pData->LastData.GetPSell(i));
+      }
+      for (int i = 0; i < 5; i++) {
+        m_stock.SetGuadan(pLastData->GetPBuy(i), pLastData->GetVBuy(i));
+        m_stock.SetGuadan(pLastData->GetPSell(i), pLastData->GetVSell(i));
+      }
+      lPrice = pData->lPrice;
+      iType = pData->iType;
+      iCount = pData->iCount;
+    }
+
+    void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    int iCount;
+    int iType;
+    long lPrice;
+    CRTDataPtr pCurrentData;
+    CRTDataPtr pLastData;
+    CStock m_stock;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestNeedCheck, NeedCheckTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
+                                                                        &Guadan5, &Guadan6, &Guadan7, &Guadan8, &Guadan9, &Guadan10));
+
+  TEST_P(NeedCheckTest, TestNeedCheck) {
+    array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
+
+    EXPECT_FALSE(m_stock.HaveFirstRTData());
+    m_stock.SetLastRTDataPtr(pLastData);
+    m_stock.SetCurrentTransactionType(iType);
+    for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
+
+    m_stock.SelectGuadanThatNeedToCalculate(pCurrentData, lPrice, fNeedCheck);
+    switch (iCount) {
+    case 0: // 无成交
+    for (int i = 0; i < 10; i++) {
+      EXPECT_TRUE(fNeedCheck.at(i));
+    }
+    break;
+    case 1:// 无成交，出现新的挂单位置
+    for (int i = 0; i < 10; i++) {
+      EXPECT_TRUE(fNeedCheck.at(i));
+    }
+    break;
+    case 2:// 无成交，出现新的挂单量
+    for (int i = 0; i < 10; i++) {
+      EXPECT_TRUE(fNeedCheck.at(i));
+    }
+    break;
+    case 3:// 无成交，出现撤单
+    for (int i = 0; i < 10; i++) {
+      EXPECT_TRUE(fNeedCheck.at(i));
+    }
+    break;
+    case 4:// 有成交，一般型买入（比卖一价低），买卖单出现撤单。
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_TRUE(fNeedCheck.at(1));
+    EXPECT_TRUE(fNeedCheck.at(2));
+    EXPECT_TRUE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_TRUE(fNeedCheck.at(6));
+    EXPECT_TRUE(fNeedCheck.at(7));
+    EXPECT_TRUE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    case 5:// 有成交，进攻型买入（比卖二价低），卖单出现撤单，买单增单。
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_TRUE(fNeedCheck.at(1));
+    EXPECT_TRUE(fNeedCheck.at(2));
+    EXPECT_FALSE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_TRUE(fNeedCheck.at(6));
+    EXPECT_TRUE(fNeedCheck.at(7));
+    EXPECT_TRUE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    case 6:// 有成交，强买入（比卖二价高，此例高于卖三），卖单出现撤单，买单也出现撤单。
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_FALSE(fNeedCheck.at(1));
+    EXPECT_FALSE(fNeedCheck.at(2));
+    EXPECT_FALSE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_TRUE(fNeedCheck.at(6));
+    EXPECT_TRUE(fNeedCheck.at(7));
+    EXPECT_TRUE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    case 7:// 有成交，一般型卖出（比买一价高），买卖单出现撤单。
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_TRUE(fNeedCheck.at(1));
+    EXPECT_TRUE(fNeedCheck.at(2));
+    EXPECT_TRUE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_TRUE(fNeedCheck.at(6));
+    EXPECT_TRUE(fNeedCheck.at(7));
+    EXPECT_TRUE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    case 8:// 有成交，进攻型卖出（比买二价高），买卖单出现撤单，
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_TRUE(fNeedCheck.at(1));
+    EXPECT_TRUE(fNeedCheck.at(2));
+    EXPECT_TRUE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_FALSE(fNeedCheck.at(6));
+    EXPECT_TRUE(fNeedCheck.at(7));
+    EXPECT_TRUE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    case 9:// 有成交，强卖出（比买二价低，此例低于买三），买卖单出现撤单。
+    EXPECT_TRUE(fNeedCheck.at(0));
+    EXPECT_TRUE(fNeedCheck.at(1));
+    EXPECT_TRUE(fNeedCheck.at(2));
+    EXPECT_TRUE(fNeedCheck.at(3));
+    EXPECT_FALSE(fNeedCheck.at(4));
+    EXPECT_FALSE(fNeedCheck.at(5));
+    EXPECT_FALSE(fNeedCheck.at(6));
+    EXPECT_FALSE(fNeedCheck.at(7));
+    EXPECT_FALSE(fNeedCheck.at(8));
+    EXPECT_TRUE(fNeedCheck.at(9));
+    break;
+    default:
+    ASSERT(0);
     break;
     }
   }
