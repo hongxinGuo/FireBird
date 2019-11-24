@@ -31,8 +31,7 @@ CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
 CNeteaseRTWebData::~CNeteaseRTWebData() {
 }
 
-bool CNeteaseRTWebData::ReadPrefix(void)
-{
+bool CNeteaseRTWebData::ReadPrefix(void) {
   static char buffer1[200];
   static CString strHeader = _T("_ntes_quote_callback({");
 
@@ -48,8 +47,7 @@ bool CNeteaseRTWebData::ReadPrefix(void)
   return true;
 }
 
-bool CNeteaseRTWebData::IsReadingFinished(void)
-{
+bool CNeteaseRTWebData::IsReadingFinished(void) {
   if ((*m_pCurrentPos == ' ') || (m_lCurrentPos >= (m_lByteRead - 4))) { // 到结尾处了
     return true;
   }
@@ -58,14 +56,12 @@ bool CNeteaseRTWebData::IsReadingFinished(void)
   }
 }
 
-bool CNeteaseRTWebData::ReportStatus(long lNumberOfData)
-{
+bool CNeteaseRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
 }
 
-bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
-{
+bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CRTDataPtr pRTData = make_shared<CRTData>();
   CString strVolume;
   char buffer[200];
@@ -77,7 +73,7 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void)
     if (gl_TESTpRTData != nullptr) {
       if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
         sprintf_s(buffer, "volume: %I64d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
-          pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
+                  pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
         strVolume = _T("2  ");
         strVolume += buffer;
         gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
@@ -114,24 +110,21 @@ void CNeteaseRTWebData::ProcessWebDataStored(void) {
   //gl_ChinaStockMarket.DistributeRTDataReceivedFromWebToProperStock();
 }
 
-void CNeteaseRTWebData::ReportDataError(void)
-{
+void CNeteaseRTWebData::ReportDataError(void) {
   TRACE("网易实时数据有误,抛掉不用\n");
   CString str;
   str = _T("网易实时数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CNeteaseRTWebData::ReportCommunicationError(void)
-{
+void CNeteaseRTWebData::ReportCommunicationError(void) {
   TRACE("Error reading http file ：http://api.money.126.net/data/feed/\n");
   CString str;
   str = _T("Error reading http file ：http://api.money.126.net/data/feed/");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CNeteaseRTWebData::InquireNextWebData(void)
-{
+void CNeteaseRTWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据

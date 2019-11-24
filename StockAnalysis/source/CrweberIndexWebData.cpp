@@ -20,8 +20,7 @@ CCrweberIndexWebData::CCrweberIndexWebData() : CWebData() {
 CCrweberIndexWebData::~CCrweberIndexWebData() {
 }
 
-bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(void)
-{
+bool CCrweberIndexWebData::SucceedReadingAndStoringOneWebData(void) {
   m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
@@ -229,23 +228,20 @@ void CCrweberIndexWebData::ProcessWebDataStored(void) {
   TRACE("crweber.com的字节数为%d\n", m_lByteRead);
 }
 
-void CCrweberIndexWebData::ReportDataError(void)
-{
+void CCrweberIndexWebData::ReportDataError(void) {
   CString str;
   str = _T("crweber.com data error");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CCrweberIndexWebData::ReportCommunicationError(void)
-{
+void CCrweberIndexWebData::ReportCommunicationError(void) {
   TRACE("Error reading http file ：www.crweber.com\n");
   CString str;
   str = _T("Error reading http file : http://www.crweber.com");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CCrweberIndexWebData::InquireNextWebData(void)
-{
+void CCrweberIndexWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   CreateTotalInquiringString(strMiddle);

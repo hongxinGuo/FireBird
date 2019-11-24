@@ -79,6 +79,6 @@ protected:
   atomic<bool> m_WebDataReceived;// 实时数据已接收完毕标识
 
   bool m_fReportStatus; //
-private:
+protected:
   bool m_fUsingThread;
 };
