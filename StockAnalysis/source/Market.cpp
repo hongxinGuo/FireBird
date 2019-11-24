@@ -316,9 +316,9 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   }
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
-  CStockPtr pID = m_vChinaMarketAStock.at(siCounter);
-  pID->SetInquiringOnce(true);
-  switch (pID->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
+  CStockPtr pStock = m_vChinaMarketAStock.at(siCounter);
+  pStock->SetInquiringOnce(true);
+  switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
   case __SHANGHAI_MAIN__: // 上海主板？
   case __SHANGHAI_INDEX__: // 上海指数
@@ -339,19 +339,10 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   ASSERT(0);
   }
   char buffer[30];
-  str += pID->GetStockCode().Right(6); // 取股票代码的右边六位数字。
-  tm tm_;
-  tm_.tm_year = pID->GetDayLineEndDay() / 10000 - 1900;
-  tm_.tm_mon = pID->GetDayLineEndDay() / 100 - (tm_.tm_year + 1900) * 100 - 1;
-  tm_.tm_mday = pID->GetDayLineEndDay() - (tm_.tm_year + 1900) * 10000 - (tm_.tm_mon + 1) * 100;
-  tm_.tm_hour = 12;
-  tm_.tm_min = 0;
-  tm_.tm_sec = 0;
-  time_t tTime;
-  tTime = mktime(&tm_);
+  str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
+  time_t tTime = gl_systemTime.FormatToTTime(pStock->GetDayLineEndDay());
   tTime += 3600 * 24; // 增加一天。
-  localtime_s(&tm_, &tTime);
-  const long lDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday; // 日线的起始日期是最新日期的后一天。
+  const long lDay = gl_systemTime.FormatToDay(tTime);
   sprintf_s(buffer, "%8d", lDay);
   strStartDay = buffer;
   siCounter++;

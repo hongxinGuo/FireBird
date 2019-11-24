@@ -37,6 +37,28 @@ bool CWebData::GetWebData(void) {
   return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 这是工作线程版。
+// 采用工作线程版，可以减少住线程的压力和复杂度，同时对数据可以采用正常的先查询后提取方法。
+//
+///////////////////////////////////////////////////////////////////////////////////////
+bool CWebData::GetDataByUsingThread(void) {
+  if (!IsReadingWebData()) {
+    InquireNextWebData();
+    if (IsNeedProcessingCurrentWebData()) {
+      while (!IsWebDataReceived()) Sleep(100);
+      if (IsReadingSucceed()) {
+        ResetCurrentPos();
+        if (SucceedReadingAndStoringOneWebData()) {
+          ProcessCurrentWebData();
+        }
+      }
+    }
+  }
+  return true;
+}
+
 void CWebData::ProcessCurrentWebData(void) {
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？

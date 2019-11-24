@@ -13,6 +13,7 @@ public:
 
   // 公共接口函数
   bool GetWebData(void);
+  bool CWebData::GetDataByUsingThread(void); // 此为线程版，必须有工作线程调用才能正确执行
 
   virtual bool IsNeedProcessingCurrentWebData(void) { return IsReadingSucceed(); }
 

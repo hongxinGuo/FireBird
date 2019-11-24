@@ -349,7 +349,7 @@ namespace StockAnalysisTest {
     CSetDayLineInfo setDayLineInfo;
     CStockCalculatedInfo id;
     long lDay = 21090201;
-    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(lDay);
+    time_t tt = gl_systemTime.FormatToTTime(lDay);
     CString strDay = _T("21090201"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     id.SetTransactionTime(tt);

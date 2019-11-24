@@ -23,7 +23,7 @@ public:
   bool IsWorkingDay(CTime timeCurrent) noexcept;
 
   // 时间转换辅助函数
-  time_t ChangeDayToMarketCloseTime(long lDay) noexcept; // 将整型(YYYYMMDD)转变为time_t形式
+  time_t FormatToTTime(long lDay, long lTime = 150000) noexcept; // 将整型(YYYYMMDD)转变为time_t形式
   long FormatToDay(time_t tt) noexcept;// 将时间转变为整型(YYYYMMDD)形式
   long FormatToDay(tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 

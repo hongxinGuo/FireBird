@@ -6,6 +6,7 @@
 #include"SinaRTWebData.h"
 
 using namespace std;
+#include<atomic>
 
 namespace StockAnalysisTest {
   TEST(SinaRTWebDataTest, TestInitialize) {
@@ -42,5 +43,51 @@ namespace StockAnalysis {
     EXPECT_TRUE(gl_SinaRTWebData.IsReadingSucceed());
     gl_SinaRTWebData.SetReadingSucceed(false);
     EXPECT_FALSE(gl_SinaRTWebData.IsReadingSucceed());
+  }
+
+  TEST(CWebDataTest, TestIsWebDataReceived) {
+    EXPECT_FALSE(gl_SinaRTWebData.IsWebDataReceived());
+    gl_SinaRTWebData.SetWebDataReceived(true);
+    EXPECT_TRUE(gl_SinaRTWebData.IsWebDataReceived());
+    gl_SinaRTWebData.SetWebDataReceived(false);
+    EXPECT_FALSE(gl_SinaRTWebData.IsWebDataReceived());
+  }
+
+  TEST(CWebDataTest, TestIsReadingWebData) {
+    EXPECT_FALSE(gl_SinaRTWebData.IsReadingWebData());
+    gl_SinaRTWebData.SetReadingWebData(true);
+    EXPECT_TRUE(gl_SinaRTWebData.IsReadingWebData());
+    gl_SinaRTWebData.SetReadingWebData(false);
+    EXPECT_FALSE(gl_SinaRTWebData.IsReadingWebData());
+  }
+
+  TEST(CWebDataTest, TestGetByteReaded) {
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 0);
+    gl_SinaRTWebData.SetByteReaded(10000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 10000);
+    gl_SinaRTWebData.AddByteReaded(10000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 20000);
+  }
+
+  TEST(CWebDataTest, TestGetInquiringStr) {
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T(""));
+    gl_SinaRTWebData.SetInquiringString(_T("abcdefg"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("abcdefg"));
+    gl_SinaRTWebData.AppendInquiringString(_T("hijk"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("abcdefghijk"));
+    gl_SinaRTWebData.CreateTotalInquiringString(_T("dcba"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
+  }
+
+  TEST(CWebDataTest, TestIncreaseCurentPos) {
+    char* pAddr = gl_SinaRTWebData.GetCurrentPosPtr();
+
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 0);
+    gl_SinaRTWebData.IncreaseCurrentPos();
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 1);
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPosPtr(), pAddr + 1);
+    gl_SinaRTWebData.IncreaseCurrentPos(100);
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 101);
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPosPtr(), pAddr + 101);
   }
 }

@@ -468,7 +468,7 @@ namespace StockAnalysisTest {
 
     pStock->SetMarket(__SHANGHAI_MARKET__);
     pStock->SetStockCode(_T("sh600000"));
-    pStock->SetTransactionTime(gl_systemTime.ChangeDayToMarketCloseTime(20191101));
+    pStock->SetTransactionTime(gl_systemTime.FormatToTTime(20191101));
     pStock->SetLastClose(101010);
     pStock->SetOpen(202020);
     pStock->SetHigh(303030);
@@ -567,7 +567,7 @@ namespace StockAnalysisTest {
     CSetDayLineInfo setDayLineInfo;
     CStockPtr pStock = make_shared<CStock>();
     long lDay = 21090101;
-    time_t tt = gl_systemTime.ChangeDayToMarketCloseTime(lDay);
+    time_t tt = gl_systemTime.FormatToTTime(lDay);
     CString strDay = _T("21090101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     pStock->SetMarket(__SHANGHAI_MARKET__);

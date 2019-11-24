@@ -64,12 +64,15 @@ void CSystemTime::CalculateLastTradeDay(void) noexcept {
   m_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-time_t CSystemTime::ChangeDayToMarketCloseTime(long lDay) noexcept {
+time_t CSystemTime::FormatToTTime(long lDay, long lTime) noexcept {
   ASSERT(lDay > 19700000);
   const long lYear = lDay / 10000;
   const long lMonth = (lDay - lYear * 10000) / 100;
   const long lD = (lDay - lYear * 10000 - lMonth * 100);
-  CTime ct(lYear, lMonth, lD, 15, 0, 0);	// 北京时间15时即UTC7时
+  const long lHour = lTime / 10000;
+  const long lMinute = (lTime - lHour * 10000) / 100;
+  const long lSecond = lTime - lHour * 10000 - lMinute * 100;
+  CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
   return (ct.GetTime());
 }
 

@@ -23,8 +23,8 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     gl_CrweberIndexWebData.SetReadingSucceed(true);
     gl_CrweberIndexWebData.SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_CrweberIndexWebData.GetInquiringString(), 1,
-      INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
-    Sleep(1000); // 服务器500ms延迟即可。
+                                                     INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
+    Sleep(500); // 服务器500ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
@@ -44,7 +44,7 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     *pChar = 0x000; // 最后以0x000结尾
     gl_CrweberIndexWebData.SetWebDataReceived(true);
   }
-  catch (exception & e) {
+  catch (CInternetException * e) {
     TRACE(_T("net error\n"));
     gl_CrweberIndexWebData.SetReadingSucceed(false);
     gl_CrweberIndexWebData.SetWebDataReceived(false);

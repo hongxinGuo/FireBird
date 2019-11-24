@@ -15,8 +15,7 @@ CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
 CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 }
 
-bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void)
-{
+bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void) {
   if (m_fNeedProcessingCurrentWebData) return true;
   else return false;
 }
@@ -26,8 +25,7 @@ bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void)
 // 网易的日线历史数据不需要前期处理，直接使用ProcessWebDataStored函数即可。故而此处只是将iCount增至m_lByteRead即可。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(void)
-{
+bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(void) {
   IncreaseCurrentPos(m_lByteRead);
   return true;
 }
@@ -38,24 +36,21 @@ void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
   gl_ChinaStockMarket.ProcessNeteaseDayLineData(this);
 }
 
-void CNeteaseDayLineWebData::ReportDataError(void)
-{
+void CNeteaseDayLineWebData::ReportDataError(void) {
   TRACE("网易日线历史数据有误,抛掉不用\n");
   CString str;
   str = _T("网易日线历史数据有误");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CNeteaseDayLineWebData::ReportCommunicationError(void)
-{
+void CNeteaseDayLineWebData::ReportCommunicationError(void) {
   TRACE("Error reading http file ：hq.sinajs.cn\n");
   CString str;
   str = _T("Error reading http file ：http://quotes.money.163.com");
   gl_systemMessage.PushInformationMessage(str);
 }
 
-void CNeteaseDayLineWebData::InquireNextWebData(void)
-{
+void CNeteaseDayLineWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
   CString strStartDay;
@@ -85,8 +80,7 @@ void CNeteaseDayLineWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
 
-void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode)
-{
+void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode) {
   CString str = strStockCode.Left(1);
   CString strRight = strStockCode.Right(6);
   if (str.Compare(_T("0")) == 0) {
