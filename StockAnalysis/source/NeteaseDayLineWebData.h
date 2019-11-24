@@ -7,6 +7,8 @@ public:
   CNeteaseDayLineWebData();
   ~CNeteaseDayLineWebData();
 
+  virtual bool GetWebData(void) override;
+
   virtual bool IsNeedProcessingCurrentWebData(void) override;
   virtual bool SucceedReadingAndStoringOneWebData(void) override;
   virtual void ProcessWebDataStored(void) override;

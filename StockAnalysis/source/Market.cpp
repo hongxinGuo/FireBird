@@ -638,12 +638,13 @@ bool CMarket::ProcessTengxunRTData(void) {
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
+bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength) {
   long iCount = 0;
-  char* pCurrentPos = pWebData->GetBufferAddr();
-  char* pTestPos = pWebData->GetBufferAddr();
+  char* pCurrentPos = buffer;
+  char* pTestPos = buffer;
   vector<CDayLinePtr> vTempDayLine;
-  long lLength = pWebData->GetByteReaded();
+  long lLength = lBufferLength;
+  CStockPtr pStock = nullptr;
 
   if (lLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
@@ -662,48 +663,43 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
   pCurrentPos++;
   iCount++;
   shared_ptr<CDayLine> pDayLine;
-  long lIndex = -1;
 
-  pTestPos = pWebData->GetBufferAddr();
+  pTestPos = buffer;
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
+  pStock = GetStockPtr(strStockCode);
   if (iCount == lLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    lIndex = m_mapChinaMarketAStock.at(pWebData->GetDownLoadingStockCode());
     // ASSERT(!m_vChinaMarketAStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
     // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
-    if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
-      m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
+    if (pStock->GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+      pStock->SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
     else { // 已经退市的股票
-      if (m_vChinaMarketAStock.at(lIndex)->GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
-        m_vChinaMarketAStock.at(lIndex)->SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
+      if (pStock->GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
+        pStock->SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
-    m_vChinaMarketAStock.at(lIndex)->SetDayLineNeedUpdate(false); // 都不需要更新日线数据
+    pStock->SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
   }
 
-  lIndex = 0;
   long iTemp = 0;
   CString strTemp;
-  CStockPtr pStock = nullptr;
-  pTestPos = pWebData->GetBufferAddr();
+  pTestPos = buffer;
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!ProcessOneItemDayLineData(pWebData->GetDownLoadingStockCode(), pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
+    if (!ProcessOneItemDayLineData(strStockCode, pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
       TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
-    lIndex = m_mapChinaMarketAStock.at(pDayLine->GetStockCode());
-    pStock = m_vChinaMarketAStock.at(lIndex);
     iCount += iTemp;
-    pTestPos = pWebData->GetBufferAddr();
+    pTestPos = buffer;
     pTestPos += iCount;
     ASSERT(*pTestPos == *pCurrentPos);
     if (!pStock->IsActive()) { // 新的股票代码？
@@ -728,7 +724,7 @@ bool CMarket::ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData) {
   else {
     pStock->SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
-  ASSERT(lIndex >= 0);
+
   pStock->m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
@@ -1429,6 +1425,15 @@ bool CMarket::IsDayLineNeedSaving(void) {
 bool CMarket::IsDayLineDataInquiringOnce(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (!pStock->IsInquiringOnce()) return false;
+  }
+  return true;
+}
+
+bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (pStock->IsDayLineReadFromWeb()) {
+      pStock->ProcessDayLineGetFromNeeteaseServer();
+    }
   }
   return true;
 }

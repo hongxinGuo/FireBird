@@ -22,6 +22,7 @@ CStock::CStock() : CObject() {
 }
 
 CStock::~CStock(void) {
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
 }
 
 void CStock::Reset(void) {
@@ -33,9 +34,15 @@ void CStock::Reset(void) {
   m_dCurrentGuadanTransactionPrice = 0;
   m_nCurrentTransactionType = 0;
 
-  m_fDayLineLoaded = false;
   m_fActive = false;
+
+  m_fDayLineLoaded = false;
   m_fDayLineNeedUpdate = true;
+  m_fDayLineReadFromWeb = false; // 从网络上读取了日线历史数据
+  m_DayLineNeedSaving = false;
+  m_lDayLineBufferLength = 0;
+  m_pDayLineBuffer = nullptr;
+
   m_fInquiringOnce = false;
 
   m_fChoiced = false;
@@ -44,8 +51,6 @@ void CStock::Reset(void) {
 
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_pLastRTData = nullptr;
-
-  m_DayLineNeedSaving = false;
 
   ClearRTDataDeque();
 
@@ -57,6 +62,12 @@ void CStock::ClearRTDataDeque(void) {
   for (int i = 0; i < lTotalNumber; i++) {
     CRTDataPtr pRTData = PopRTData();
   }
+}
+
+bool CStock::ProcessDayLineGetFromNeeteaseServer(void) {
+  if (m_fDayLineReadFromWeb) {
+  }
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -90,16 +90,14 @@ public:
 
   bool ClearAllDayLineVector(void);
 
-  // 是否有股票的历史日线数据需要更新。
+  // 股票历史数据处理
   bool IsDayLineNeedUpdate(void);
-
   bool IsDayLineNeedSaving(void);
-
   // 是否所有股票的历史日线数据都查询过一遍了
   bool IsDayLineDataInquiringOnce(void);
+  bool ProcessDayLineGetFromNeeteaseServer(void);
 
   long CompileCurrentTradeDayStock(void);
-
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
@@ -146,7 +144,7 @@ public:
   bool DistributeSinaRTDataToProperStock(void);
 
   // 处理日线历史数据
-  bool ProcessNeteaseDayLineData(CNeteaseDayLineWebData* pWebData);
+  bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength);
   bool ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
   // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
   bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);

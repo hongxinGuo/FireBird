@@ -46,6 +46,3 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam); // 此线程返回值为13
 
 // 读取网易实时数据线程，网址：http://api.money.126.net/data/feed/
 UINT ThreadReadNeteaseRTDataForBoost(LPVOID pParam); // 此线程返回值为14
-
-// 读取并处理网易日线历史数据线程
-UINT ThreadProcessWebData(LPVOID pParam); // 此线程返回值为15

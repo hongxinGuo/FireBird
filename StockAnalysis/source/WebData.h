@@ -12,9 +12,7 @@ public:
   ~CWebData() {}
 
   // 公共接口函数
-  bool GetWebData(void);
-  bool GetData(void);
-  bool GetDataByUsingThread(void); // 此为线程版，必须由工作线程调用才能正确执行
+  virtual bool GetWebData(void);
 
   virtual bool IsNeedProcessingCurrentWebData(void) { return IsReadingSucceed(); }
 
@@ -79,6 +77,4 @@ protected:
   atomic<bool> m_WebDataReceived;// 实时数据已接收完毕标识
 
   bool m_fReportStatus; //
-protected:
-  bool m_fUsingThread;
 };

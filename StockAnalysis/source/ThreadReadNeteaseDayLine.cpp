@@ -64,6 +64,16 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     }
     *pChar = 0x000;
     pNeteaseDayLineWebData->SetWebDataReceived(true);
+
+    char* p = pNeteaseDayLineWebData->GetBufferAddr();
+    char* pbuffer = new char[pNeteaseDayLineWebData->GetByteReaded()];
+    for (int i = 0; i < pNeteaseDayLineWebData->GetByteReaded(); i++) {
+      *pbuffer++ = *p++;
+    }
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    pStock->m_pDayLineBuffer = pbuffer;
+    pStock->m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
+    pStock->SetDayLineReadFromWeb(true);
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();

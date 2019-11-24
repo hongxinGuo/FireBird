@@ -10,11 +10,15 @@ CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
 
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-
-  m_fUsingThread = false; // 测试使用工作线程模式
 }
 
 CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
+}
+
+bool CNeteaseDayLineWebData::GetWebData(void) {
+  return(CWebData::GetWebData());
+
+  //InquireNextWebData();
 }
 
 bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void) {
@@ -35,7 +39,7 @@ bool CNeteaseDayLineWebData::SucceedReadingAndStoringOneWebData(void) {
 void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
   TRACE(_T("股票%s日线数据为%d字节\n"), m_strDownLoadingStockCode, m_lByteRead);
   ASSERT(m_lByteRead < 2048 * 1024);
-  gl_ChinaStockMarket.ProcessNeteaseDayLineData(this);
+  gl_ChinaStockMarket.ProcessNeteaseDayLineData(m_strDownLoadingStockCode, m_buffer, m_lByteRead);
 }
 
 void CNeteaseDayLineWebData::ReportDataError(void) {

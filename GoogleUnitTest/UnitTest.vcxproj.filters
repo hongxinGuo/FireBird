@@ -256,8 +256,5 @@
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
   </ItemGroup>
 </Project>

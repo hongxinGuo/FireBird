@@ -17,8 +17,6 @@ CWebData::CWebData() noexcept {
   m_ReadingWebData = false; // 接收实时数据线程是否执行标识
   m_WebDataReceived = false;// 实时数据已接收完毕标识
 
-  m_fUsingThread = false; // 默认状态下不使用工作线程模式
-
 #ifdef DEBUG
   m_fReportStatus = true;
 #else
@@ -26,50 +24,17 @@ CWebData::CWebData() noexcept {
 #endif
 }
 
-bool CWebData::GetWebData(void) {
-  if (m_fUsingThread) {
-    AfxBeginThread(ThreadProcessWebData, (LPVOID)this);
-  }
-  else {
-    GetData();
-  }
-  return false;
-}
-
 /////////////////////////////////////////////////////////////////////////
 //
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CWebData::GetData(void) {
+bool CWebData::GetWebData(void) {
   if (!IsReadingWebData()) {
     if (IsNeedProcessingCurrentWebData()) {
       ProcessCurrentWebData();
     }
     InquireNextWebData();
-  }
-  return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-// 这是工作线程版。
-// 采用工作线程版，可以减少住线程的压力和复杂度，同时对数据可以采用正常的先查询后提取方法。
-//
-///////////////////////////////////////////////////////////////////////////////////////
-bool CWebData::GetDataByUsingThread(void) {
-  if (!IsReadingWebData()) {
-    SetWebDataReceived(false);
-    InquireNextWebData();
-    if (IsNeedProcessingCurrentWebData()) {
-      while (!IsWebDataReceived()) Sleep(100);
-      if (IsReadingSucceed()) {
-        ResetCurrentPos();
-        if (SucceedReadingAndStoringWebData()) {
-          ProcessWebDataStored();
-        }
-      }
-    }
   }
   return true;
 }
