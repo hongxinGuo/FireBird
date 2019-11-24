@@ -323,6 +323,9 @@
     <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="source\ThreadProcessWebData.cpp">
+      <Filter>源文件\工作线程</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

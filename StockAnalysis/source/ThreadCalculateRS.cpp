@@ -53,7 +53,7 @@ UINT ThreadCalculateRS(LPVOID) {
   sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
   CString str;
   str = buffer;
-  gl_systemMessage.PushDayLineInfoMessage(str);
+  gl_systemMessage.PushInformationMessage(str);
 
   gl_ChinaStockMarket.SetCalculatingRS(false);  // 计算相对强度的状态为假
   gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态

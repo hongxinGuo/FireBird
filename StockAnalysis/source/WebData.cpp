@@ -1,4 +1,5 @@
 #include"stdafx.h"
+#include"Thread.h"
 
 #include"globedef.h"
 #include"Market.h"
@@ -15,6 +16,8 @@ CWebData::CWebData() noexcept {
   m_fReceivedData = false;
   m_ReadingWebData = false;
 
+  m_fUsingThread = true;
+
 #ifdef DEBUG
   m_fReportStatus = true;
 #else
@@ -22,12 +25,22 @@ CWebData::CWebData() noexcept {
 #endif
 }
 
+bool CWebData::GetWebData(void) {
+  if (m_fUsingThread) {
+    AfxBeginThread(ThreadProcessWebData, (LPVOID)this);
+  }
+  else {
+    GetData();
+  }
+  return false;
+}
+
 /////////////////////////////////////////////////////////////////////////
 //
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CWebData::GetWebData(void) {
+bool CWebData::GetData(void) {
   if (!IsReadingWebData()) {
     if (IsNeedProcessingCurrentWebData()) {
       ProcessCurrentWebData();
@@ -45,13 +58,14 @@ bool CWebData::GetWebData(void) {
 ///////////////////////////////////////////////////////////////////////////////////////
 bool CWebData::GetDataByUsingThread(void) {
   if (!IsReadingWebData()) {
+    SetWebDataReceived(false);
     InquireNextWebData();
     if (IsNeedProcessingCurrentWebData()) {
       while (!IsWebDataReceived()) Sleep(100);
       if (IsReadingSucceed()) {
         ResetCurrentPos();
-        if (SucceedReadingAndStoringOneWebData()) {
-          ProcessCurrentWebData();
+        if (SucceedReadingAndStoringWebData()) {
+          ProcessWebDataStored();
         }
       }
     }
