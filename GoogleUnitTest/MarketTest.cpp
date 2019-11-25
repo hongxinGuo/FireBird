@@ -41,7 +41,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
     EXPECT_TRUE(gl_ChinaStockMarket.m_fGetRTStockData);
-    EXPECT_FALSE(gl_ChinaStockMarket.m_fGetDayLineData);
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fGetDayLineFromWeb);
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayTempRTDataLoaded());
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownDayLine, 3);
     EXPECT_EQ(gl_ChinaStockMarket.m_iCountDownSlowReadingRTData, 3);

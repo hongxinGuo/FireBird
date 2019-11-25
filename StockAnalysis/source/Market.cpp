@@ -62,7 +62,7 @@ void CMarket::Reset(void) {
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
-  m_fGetDayLineData = m_fSaveDayLine = false;
+  m_fGetDayLineFromWeb = m_fSaveDayLine = false;
 
   m_fTodayTempDataLoaded = false;
 
@@ -830,7 +830,7 @@ bool CMarket::LoadTodayTempDataSaved(void) {
 bool CMarket::GetNeteaseDayLineWebData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-  if (!gl_ExitingSystem && m_fGetDayLineData) {
+  if (!gl_ExitingSystem && m_fGetDayLineFromWeb) {
     switch (gl_cMaxSavingOneDayLineThreads) {
     case 8: case 7: case 6:case 5: case 4:
     gl_NeteaseDayLineWebDataFourth.GetWebData();
@@ -886,7 +886,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     }
   }
 
-  ProcessDayLineGetFromNeeteaseServer();
+  // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
+  // ProcessDayLineGetFromNeeteaseServer();
 
   return true;
 }
@@ -997,17 +998,17 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     }
 
     // 检查提取日线历史数据的任务是否完成了。
-    if (m_fGetDayLineData) {
+    if (m_fGetDayLineFromWeb) {
       m_fSaveDayLine = true;
       if (IsDayLineDataInquiringOnce()) {
-        m_fGetDayLineData = false;
+        m_fGetDayLineFromWeb = false;
       }
     }
 
     // 判断是否存储日线库和股票代码库
     if (m_fSaveDayLine) {
       gl_ChinaStockMarket.SaveDayLineData();
-      if (!m_fGetDayLineData && (!IsDayLineNeedSaving() && !gl_ThreadStatus.IsSavingDayLine())) {
+      if (!m_fGetDayLineFromWeb && (!IsDayLineNeedSaving() && !gl_ThreadStatus.IsSavingDayLine())) {
         m_fSaveDayLine = false;
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -1635,11 +1636,11 @@ void CMarket::LoadOptionDB(void) {
 
   // 判断是否需要读取日线历史数据
   if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) {
-    m_fGetDayLineData = false;
+    m_fGetDayLineFromWeb = false;
     m_fSaveDayLine = false;
   }
   else {
-    m_fGetDayLineData = true;
+    m_fGetDayLineFromWeb = true;
     m_fSaveDayLine = true;
   }
 

@@ -9,23 +9,25 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
 
   CSingleLock singleLock(&gl_SaveOneStockDayLine);
   singleLock.Lock();
-  if (gl_ExitingSystem) {
+  if (singleLock.IsLocked()) {
+    if (gl_ExitingSystem) {
+      pTransfer = (strTransferSharedPtr*)pParam;
+      delete pTransfer;
+      pTransfer = nullptr;
+      singleLock.Unlock();
+      return 6;
+    }
+    gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
     pTransfer = (strTransferSharedPtr*)pParam;
+    pStock = pTransfer->m_pStock;
+    pStock->SaveDayLine();
+    pStock->SetDayLineLoaded(false);
+    pStock->m_vDayLine.clear();
     delete pTransfer;
     pTransfer = nullptr;
-    singleLock.Unlock();
-    return 13;
-  }
-  gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
-  pTransfer = (strTransferSharedPtr*)pParam;
-  pStock = pTransfer->m_pStock;
-  pStock->SaveDayLine();
-  pStock->SetDayLineLoaded(false);
-  pStock->m_vDayLine.clear();
-  delete pTransfer;
-  pTransfer = nullptr;
-  gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
+    gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
 
-  singleLock.Unlock();
-  return 6;
+    singleLock.Unlock();
+    return 6;
+  }
 }

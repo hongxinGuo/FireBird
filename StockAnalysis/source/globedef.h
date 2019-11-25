@@ -63,6 +63,7 @@ extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾
 extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.comÉÏµÄÃ¿ÈÕÓÍÔËÖ¸Êı
 
 extern CCrweberIndex gl_CrweberIndex;
+extern CCrweberIndex gl_CrweberIndexLast;
 
 extern CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 extern CSystemTime gl_systemTime; // ÏµÍ³Ê±¼ä»ã×Ü¡£

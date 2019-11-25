@@ -16,6 +16,7 @@ CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
 CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
 
 CCrweberIndex gl_CrweberIndex;
+CCrweberIndex gl_CrweberIndexLast;
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime gl_systemTime; // 系统时间汇总。

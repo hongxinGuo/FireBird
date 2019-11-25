@@ -18,6 +18,7 @@ public:
   void AppendData(CSetCrweberIndex& setCrweberIndex);
 
   bool IsTodayUpdated(void) { return m_fTodayUpdated; }
+  bool IsDataChanged(void);
 
   void SetNewestDataTime(long lDay) { m_lDay = lDay; }
   long GetCurrentDataTime(void) { return m_lDay; }
@@ -35,7 +36,7 @@ public:
   double GetTD19(void) { return m_dTD19; }
   double GetTD20(void) { return m_dTD20; }
   double GetTD21(void) { return m_dTD21; }
-  double GetVLCC_USGSPORT(void) { return m_dVLCC_USGSPORE; }
+  double GetVLCC_USGSPORE(void) { return m_dVLCC_USGSPORE; }
   double GetSUEZMAX_CBSUSG(void) { return m_dSUEZMAX_CBSUSG; }
   double GetTC1(void) { return m_dTC1; }
   double GetTC2(void) { return m_dTC2; }

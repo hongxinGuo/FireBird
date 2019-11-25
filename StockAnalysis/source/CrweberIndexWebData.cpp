@@ -220,7 +220,8 @@ CString CCrweberIndexWebData::GetNextString(void) {
 }
 
 void CCrweberIndexWebData::ProcessWebDataStored(void) {
-  if (gl_CrweberIndex.IsTodayUpdated()) {
+  if (gl_CrweberIndex.IsTodayUpdated() || gl_CrweberIndex.IsDataChanged()) {
+    gl_CrweberIndexLast = gl_CrweberIndex;
     gl_ChinaStockMarket.SaveCrweberIndexData();
     gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
     gl_CrweberIndex.m_fTodayUpdated = false;

@@ -62,16 +62,16 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
         else fDone = true;
       }
     }
-    *pChar = 0x000;
+    *pChar = 0x000; // 最后加上一个结束符0X000
     pNeteaseDayLineWebData->SetWebDataReceived(true);
 
     char* p = pNeteaseDayLineWebData->GetBufferAddr();
-    char* pbuffer = new char[pNeteaseDayLineWebData->GetByteReaded()];
-    for (int i = 0; i < pNeteaseDayLineWebData->GetByteReaded(); i++) {
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    pStock->m_pDayLineBuffer = new char[pNeteaseDayLineWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    char* pbuffer = pStock->m_pDayLineBuffer;
+    for (int i = 0; i < pNeteaseDayLineWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
-    pStock->m_pDayLineBuffer = pbuffer;
     pStock->m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
     pStock->SetDayLineReadFromWeb(true);
   }

@@ -19,6 +19,7 @@ bool CNeteaseDayLineWebData::GetWebData(void) {
   return(CWebData::GetWebData());
 
   //InquireNextWebData();
+  return true;
 }
 
 bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void) {
@@ -40,8 +41,8 @@ void CNeteaseDayLineWebData::ProcessWebDataStored(void) {
   TRACE(_T("股票%s日线数据为%d字节\n"), m_strDownLoadingStockCode, m_lByteRead);
   ASSERT(m_lByteRead < 2048 * 1024);
   CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(m_strDownLoadingStockCode);
-  // if (pStock != nullptr) pStock->ProcessNeteaseDayLineData();
-  gl_ChinaStockMarket.ProcessNeteaseDayLineData(m_strDownLoadingStockCode, m_buffer, m_lByteRead);
+  if (pStock != nullptr) pStock->ProcessNeteaseDayLineData();
+  //gl_ChinaStockMarket.ProcessNeteaseDayLineData(m_strDownLoadingStockCode, m_buffer, m_lByteRead);
 }
 
 void CNeteaseDayLineWebData::ReportDataError(void) {

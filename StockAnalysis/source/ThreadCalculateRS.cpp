@@ -75,12 +75,15 @@ UINT ThreadCalculateThisDayRS(LPVOID pParam) {
   CSingleLock sl(&gl_CalculateDayLineRelativeStrong);
   sl.Lock();
   if (sl.IsLocked()) {
+    if (gl_ExitingSystem) {
+      sl.Unlock();
+      return 11;
+    }
     lToday = (long)pParam;
     gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
     gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
     gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
     sl.Unlock();
   }
-
   return 11;
 }
