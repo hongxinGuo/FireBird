@@ -67,6 +67,7 @@ public:
   bool IsCurrentStockChanged(void);
 
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
+  void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
   long GetMinLineOffset(CStock sID, time_t Time);
 

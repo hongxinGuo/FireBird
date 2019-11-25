@@ -692,7 +692,7 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   ASSERT(*pTestPos == *pCurrentPos);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!pDayLine->ProcessDayLineData(strStockCode, pCurrentPos, iTemp)) { // 处理一条日线数据
+    if (!pDayLine->ProcessNeteaseData(strStockCode, pCurrentPos, iTemp)) { // 处理一条日线数据
       TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
@@ -1246,7 +1246,7 @@ bool CMarket::IsDayLineDataInquiringOnce(void) {
 bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineReadFromWeb()) {
-      pStock->ProcessDayLineGetFromNeeteaseServer();
+      pStock->ProcessNeteaseDayLineData();
     }
   }
   return true;

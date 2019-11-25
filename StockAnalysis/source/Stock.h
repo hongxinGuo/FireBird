@@ -199,7 +199,7 @@ public:
   bool IsDayLineNeedSaving(void) { return m_DayLineNeedSaving; }
   bool IsDayLineNeedSavingAndClearFlag(void) { bool f = m_DayLineNeedSaving.exchange(false); return f; }
 
-  bool ProcessDayLineGetFromNeeteaseServer(void);
+  bool CStock::ProcessNeteaseDayLineData(void);
 
   // 数据库的提取和存储
   bool SaveDayLine(void);

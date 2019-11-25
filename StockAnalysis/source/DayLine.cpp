@@ -207,7 +207,7 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLine::ProcessDayLineData(CString strStockCode, char*& pCurrentPos, long& lLength) {
+bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long& lLength) {
   long iCount = 0;
   static char buffer2[200], buffer3[100];
   long i = 0;
