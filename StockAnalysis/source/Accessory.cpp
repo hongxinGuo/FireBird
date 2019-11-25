@@ -148,3 +148,63 @@ double GetValue(CString strBuffer) {
     return(0.0);
   }
 }
+
+bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber) {
+  int i = 0;
+
+  while (*pCurrentPos != 0x2c) { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
+    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+      return false; // 数据出错，放弃载入
+    }
+    buffer[i++] = *pCurrentPos++;
+  }
+  buffer[i] = 0x000;
+  pCurrentPos++;
+  i++;
+  iReadNumber += i;
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。读入的数值放大一千倍。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool ReadOneValueExceptPeriodOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& lCounter) {
+  int i = 0;
+  bool fFoundPoint = false;
+  int iCount = 0;
+  while ((*pCurrentPos != ',') && (iCount < 3)) {
+    if (fFoundPoint) iCount++;
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x00d) || (*pCurrentPos == 0x000)) return false;
+    if (*pCurrentPos == '.') {
+      fFoundPoint = true;
+      pCurrentPos++;
+    }
+    else buffer[i++] = *pCurrentPos++;
+  }
+
+  if (fFoundPoint && (iCount < 3)) {
+    int jCount = i;
+    for (int j = iCount; j < 3; j++) {
+      buffer[jCount++] = '0';
+    }
+    buffer[jCount] = 0x000;
+  }
+  else {
+    buffer[i] = 0x000;
+  }
+
+  while (*pCurrentPos != ',') {
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x00d) || (*pCurrentPos == 0x000)) return false;
+    i++;
+    pCurrentPos++;
+  }
+  pCurrentPos++;
+  i++;
+  if (fFoundPoint) i++;
+  lCounter += i; // 多加1，是需要加上少算的逗号
+
+  return true;
+}

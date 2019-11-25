@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
     long lCount = 0;
-    bool fSucceed = gl_ChinaStockMarket.ProcessOneItemDayLineData(_T("sh600000"), m_DayLinePtr, m_pCurrentPos, lCount);
+    bool fSucceed = m_DayLinePtr->ProcessDayLineData(_T("sh600000"), m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
@@ -158,7 +158,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = gl_ChinaStockMarket.ReadOneValue(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {
@@ -259,7 +259,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadOneDayLineValueExceptPeriodTest, TestReadOneValue) {
     char buffer[30];
-    bool fSucceed = gl_ChinaStockMarket.ReadOneValueExceptPeriod(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueExceptPeriodOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

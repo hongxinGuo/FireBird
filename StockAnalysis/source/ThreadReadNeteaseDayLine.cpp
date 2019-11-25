@@ -82,7 +82,10 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     pNeteaseDayLineWebData->SetByteReaded(0);
   }
   if (pFile) pFile->Close();
-  if (pFile) delete pFile;
+  if (pFile) {
+    delete pFile;
+    pFile = nullptr;
+  }
   pNeteaseDayLineWebData->SetReadingWebData(false);
   if (!fStarted) {
     if (siCount > 16) { // 十六次后缩短延迟时间

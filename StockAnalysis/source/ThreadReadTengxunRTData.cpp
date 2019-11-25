@@ -51,7 +51,10 @@ UINT ThreadReadTengxunRTData(LPVOID) {
     gl_TengxunRTWebData.SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
-  if (pFile) delete pFile;
+  if (pFile) {
+    delete pFile;
+    pFile = nullptr;
+  }
   gl_TengxunRTWebData.SetReadingWebData(false);
 
   gl_ChinaStockMarket.SetReadingTengxunRTDataTime(clock() - tt);

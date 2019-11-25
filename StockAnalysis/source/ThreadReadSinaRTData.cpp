@@ -51,7 +51,10 @@ UINT ThreadReadSinaRTData(LPVOID) {
     gl_SinaRTWebData.SetReadingWebData(false);
   }
   if (pFile) pFile->Close();
-  if (pFile) delete pFile;
+  if (pFile) {
+    delete pFile;
+    pFile = nullptr;
+  }
   gl_SinaRTWebData.SetReadingWebData(false);
 
   gl_ChinaStockMarket.SetReadingSinaRTDataTime(clock() - tt);

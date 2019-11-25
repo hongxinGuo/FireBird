@@ -692,7 +692,7 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   ASSERT(*pTestPos == *pCurrentPos);
   while (iCount < lLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!ProcessOneItemDayLineData(strStockCode, pDayLine, pCurrentPos, iTemp)) { // 处理一条日线数据
+    if (!pDayLine->ProcessDayLineData(strStockCode, pCurrentPos, iTemp)) { // 处理一条日线数据
       TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
@@ -738,194 +738,6 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   vTempDayLine.clear();
   pStock->SetDayLineLoaded(true);
   pStock->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
-
-  return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读取一条日线数据。采用网易日线历史数据格式。
-//
-// 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
-//
-// 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,涨跌比率,换手率,成交股数,成交金额,总市值,流通市值\r\n
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength) {
-  long iCount = 0;
-  static char buffer2[200], buffer3[100];
-  long i = 0;
-  tm tm_;
-  int year = 0, month = 0, day = 0;
-  long lDay = 0;
-  CString str;
-  i = 0;
-  while (*pCurrentPos != 0x2c) {
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
-      return false; // 数据出错，放弃载入
-    }
-    buffer3[i++] = *pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  buffer3[i] = 0x00;
-  sscanf_s(buffer3, "%04d-%02d-%02d", &year, &month, &day);
-  tm_.tm_year = year - 1900;
-  tm_.tm_mon = month - 1;
-  tm_.tm_mday = day;
-  tm_.tm_hour = 15;
-  tm_.tm_min = 0;
-  tm_.tm_sec = 0;
-  tm_.tm_isdst = 0;
-  pDayLine->SetTime(mktime(&tm_));
-  lDay = year * 10000 + month * 100 + day;
-  pDayLine->SetDay(lDay);
-  //TRACE("%d %d %d\n", year, month, day);
-
-  if (*pCurrentPos != 0x27) return(false); // 不是逗号，数据出错，放弃载入
-  pCurrentPos++;
-  iCount++;
-
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  str = buffer2;
-  pDayLine->SetStockCode(strStockCode);
-  str = strStockCode.Left(2);
-  if (str == _T("sh")) {
-    pDayLine->SetMarket(__SHANGHAI_MARKET__);
-  }
-  else if (str == _T("sz")) {
-    pDayLine->SetMarket(__SHENZHEN_MARKET__);
-  }
-  else {
-    ASSERT(0); // 股票代码制式出错
-    return false;
-  }
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  str = buffer2;
-  pDayLine->SetStockName(str);
-
-  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetClose(buffer2);
-
-  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetHigh(buffer2);
-
-  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetLow(buffer2);
-
-  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetOpen(buffer2);
-
-  if (!ReadOneValueExceptPeriod(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetLastClose(buffer2);
-
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  if (pDayLine->GetOpen() == 0) {
-    //ASSERT(strcmp(buffer2, "None") == 0);
-    pDayLine->SetUpDown(0.0);
-  }
-  else pDayLine->SetUpDown(buffer2);
-
-  if (pDayLine->GetLastClose() == 0) { // 设置涨跌幅。
-    pDayLine->SetUpDownRate(0.0); // 如果昨日收盘价为零（没交易），则涨跌幅也设为零。
-  }
-  else {
-    // 需要放大1000 * 100倍。收盘价比实际值大1000倍，记录的是百分比，也要增大100倍。
-    pDayLine->SetUpDownRate(((double)(pDayLine->GetUpDown() * 100000.0)) / pDayLine->GetLastClose());
-  }
-
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetChangeHandRate(buffer2);
-
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetVolume(buffer2); // 读入的是股数
-
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetAmount(buffer2);
-
-  // 总市值的数据有两种形式，需要程序判定
-  if (!ReadOneValue(pCurrentPos, buffer2, iCount)) return false;
-  pDayLine->SetTotalValue(buffer2); // 总市值的单位为：元
-
-  // 流通市值不是用逗号结束，故而不能使用ReadOneValue函数
-  // 流通市值的数据形式有两种，故而需要程序判定。
-  i = 0;
-  while (*pCurrentPos != 0x00d) {
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false; // 数据出错，放弃载入
-    buffer2[i++] = *pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  buffer2[i] = 0x000;
-  pDayLine->SetCurrentValue(buffer2); // 流通市值的单位为：元。
-  // \r后面紧跟着应该是\n
-  if (*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
-  iCount++;
-
-  lLength = iCount;
-
-  return true;
-}
-
-bool CMarket::ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber) {
-  int i = 0;
-
-  while (*pCurrentPos != 0x2c) { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
-      return false; // 数据出错，放弃载入
-    }
-    buffer[i++] = *pCurrentPos++;
-  }
-  buffer[i] = 0x000;
-  pCurrentPos++;
-  i++;
-  iReadNumber += i;
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。读入的数值放大一千倍。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter) {
-  int i = 0;
-  bool fFoundPoint = false;
-  int iCount = 0;
-  while ((*pCurrentPos != ',') && (iCount < 3)) {
-    if (fFoundPoint) iCount++;
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x00d) || (*pCurrentPos == 0x000)) return false;
-    if (*pCurrentPos == '.') {
-      fFoundPoint = true;
-      pCurrentPos++;
-    }
-    else buffer[i++] = *pCurrentPos++;
-  }
-
-  if (fFoundPoint && (iCount < 3)) {
-    int jCount = i;
-    for (int j = iCount; j < 3; j++) {
-      buffer[jCount++] = '0';
-    }
-    buffer[jCount] = 0x000;
-  }
-  else {
-    buffer[i] = 0x000;
-  }
-
-  while (*pCurrentPos != ',') {
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x00d) || (*pCurrentPos == 0x000)) return false;
-    i++;
-    pCurrentPos++;
-  }
-  pCurrentPos++;
-  i++;
-  if (fFoundPoint) i++;
-  lCounter += i; // 多加1，是需要加上少算的逗号
 
   return true;
 }
@@ -1073,6 +885,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
       AfxBeginThread(ThreadCalculateRTData, nullptr);
     }
   }
+
+  ProcessDayLineGetFromNeeteaseServer();
 
   return true;
 }

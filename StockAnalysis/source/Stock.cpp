@@ -22,7 +22,10 @@ CStock::CStock() : CObject() {
 }
 
 CStock::~CStock(void) {
-  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
+  }
 }
 
 void CStock::Reset(void) {

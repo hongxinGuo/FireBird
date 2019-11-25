@@ -12,6 +12,7 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
   if (gl_ExitingSystem) {
     pTransfer = (strTransferSharedPtr*)pParam;
     delete pTransfer;
+    pTransfer = nullptr;
     singleLock.Unlock();
     return 13;
   }
@@ -22,6 +23,7 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
   pStock->SetDayLineLoaded(false);
   pStock->m_vDayLine.clear();
   delete pTransfer;
+  pTransfer = nullptr;
   gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
 
   singleLock.Unlock();

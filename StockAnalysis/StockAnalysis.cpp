@@ -30,8 +30,7 @@ END_MESSAGE_MAP()
 
 // CStockAnalysisApp 构造
 
-CStockAnalysisApp::CStockAnalysisApp() noexcept
-{
+CStockAnalysisApp::CStockAnalysisApp() noexcept {
   m_bHiColorIcons = TRUE;
 
   // 支持重新启动管理器
@@ -57,8 +56,7 @@ CStockAnalysisApp theApp;
 
 // CStockAnalysisApp 初始化
 
-BOOL CStockAnalysisApp::InitInstance()
-{
+BOOL CStockAnalysisApp::InitInstance() {
 #ifndef DEBUG
   // 非调试状态下只允许运行一个实例
   if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
@@ -113,15 +111,15 @@ BOOL CStockAnalysisApp::InitInstance()
   CMFCToolTipInfo ttParams;
   ttParams.m_bVislManagerTheme = TRUE;
   theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
-    RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
+                                               RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
 
   // 注册应用程序的文档模板。  文档模板
   // 将用作文档、框架窗口和视图之间的连接
   CMultiDocTemplate* pDocTemplate;
   pDocTemplate = new CMultiDocTemplate(IDR_StockAnalysisTYPE,
-    RUNTIME_CLASS(CStockAnalysisDoc),
-    RUNTIME_CLASS(CChildFrame), // 自定义 MDI 子框架
-    RUNTIME_CLASS(CStockAnalysisView));
+                                       RUNTIME_CLASS(CStockAnalysisDoc),
+                                       RUNTIME_CLASS(CChildFrame), // 自定义 MDI 子框架
+                                       RUNTIME_CLASS(CStockAnalysisView));
   if (!pDocTemplate)
     return FALSE;
   AddDocTemplate(pDocTemplate);
@@ -150,11 +148,10 @@ BOOL CStockAnalysisApp::InitInstance()
   return TRUE;
 }
 
-int CStockAnalysisApp::ExitInstance()
-{
+int CStockAnalysisApp::ExitInstance() {
   //TODO: 处理可能已添加的附加资源
   AfxOleTerm(FALSE);
-  
+
   return CWinAppEx::ExitInstance();
 }
 
@@ -180,12 +177,10 @@ protected:
   DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX)
-{
+CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX) {
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
   CDialogEx::DoDataExchange(pDX);
 }
 
@@ -193,16 +188,14 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
-void CStockAnalysisApp::OnAppAbout()
-{
+void CStockAnalysisApp::OnAppAbout() {
   CAboutDlg aboutDlg;
   aboutDlg.DoModal();
 }
 
 // CStockAnalysisApp 自定义加载/保存方法
 
-void CStockAnalysisApp::PreLoadState()
-{
+void CStockAnalysisApp::PreLoadState() {
   BOOL bNameValid;
   CString strName;
   bNameValid = strName.LoadString(IDS_EDIT_MENU);
@@ -210,12 +203,10 @@ void CStockAnalysisApp::PreLoadState()
   GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 }
 
-void CStockAnalysisApp::LoadCustomState()
-{
+void CStockAnalysisApp::LoadCustomState() {
 }
 
-void CStockAnalysisApp::SaveCustomState()
-{
+void CStockAnalysisApp::SaveCustomState() {
 }
 
 // CStockAnalysisApp 消息处理程序

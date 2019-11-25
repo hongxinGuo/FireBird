@@ -20,6 +20,8 @@ public:
   bool LoadData(CSetDayLine& setDayLine);
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
+  bool ProcessDayLineData(CString strStockCode, char*& pCurrentPos, long& lLength);
+
 public:
   long GetDay(void) noexcept { return m_lDay; }
   void SetDay(long lDay) noexcept { m_lDay = lDay; }

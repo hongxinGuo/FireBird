@@ -50,7 +50,10 @@ UINT ThreadReadCrweberIndex(LPVOID) {
     gl_CrweberIndexWebData.SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
-  if (pFile) delete pFile;
+  if (pFile) {
+    delete pFile;
+    pFile = nullptr;
+  }
   gl_CrweberIndexWebData.SetReadingWebData(false);
 
   return 12;

@@ -50,7 +50,10 @@ UINT ThreadReadNeteaseRTData(LPVOID) {
     gl_NeteaseRTWebData.SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
-  if (pFile) delete pFile;
+  if (pFile) {
+    delete pFile;
+    pFile = nullptr;
+  }
   gl_NeteaseRTWebData.SetReadingWebData(false);
 
   return 13;

@@ -145,10 +145,6 @@ public:
 
   // 处理日线历史数据
   bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength);
-  bool ProcessOneItemDayLineData(CString strStockCode, CDayLinePtr pDayLine, char*& pCurrentPos, long& lLength);
-  // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
-  bool ReadOneValue(char*& pCurrentPos, char* buffer, long& iReadNumber);
-  bool ReadOneValueExceptPeriod(char*& pCurrentPos, char* buffer, long& lCounter);
 
   // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
   bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
