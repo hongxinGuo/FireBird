@@ -82,6 +82,9 @@ void CMarket::Reset(void) {
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
+  m_iDayLineNeedProcess = 0;
+  m_iDayLineNeedSave = 0;
+
   // 生成股票代码池
   CreateTotalStockContainer();
 
@@ -832,7 +835,11 @@ bool CMarket::GetNeteaseDayLineWebData(void) {
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
   if (!gl_ExitingSystem && m_fGetDayLineFromWeb) {
     switch (gl_cMaxSavingOneDayLineThreads) {
-    case 8: case 7: case 6:case 5: case 4:
+    case 8: case 7: case 6:
+    gl_NeteaseDayLineWebDataSix.GetWebData(); // 网易日线历史数据
+    case 5:
+    gl_NeteaseDayLineWebDataFive.GetWebData();
+    case 4:
     gl_NeteaseDayLineWebDataFourth.GetWebData();
     case 3:
     gl_NeteaseDayLineWebDataThird.GetWebData();
@@ -887,7 +894,10 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   }
 
   // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-  // ProcessDayLineGetFromNeeteaseServer();
+  // 出现同步问题，暂时不使用此函数
+  if (m_iDayLineNeedProcess > 0) {
+    ProcessDayLineGetFromNeeteaseServer();
+  }
 
   return true;
 }
@@ -1246,8 +1256,10 @@ bool CMarket::IsDayLineDataInquiringOnce(void) {
 
 bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
   for (auto pStock : m_vChinaMarketAStock) {
-    if (pStock->IsDayLineReadFromWeb()) {
+    if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
+      pStock->SetDayLineNeedProcess(false);
+      gl_ChinaStockMarket.m_iDayLineNeedProcess--;
     }
   }
   return true;

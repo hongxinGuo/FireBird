@@ -21,7 +21,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(Index.GetTD19(), 0);
     EXPECT_DOUBLE_EQ(Index.GetTD20(), 0);
     EXPECT_DOUBLE_EQ(Index.GetTD21(), 0);
-    EXPECT_DOUBLE_EQ(Index.GetVLCC_USGSPORT(), 0);
+    EXPECT_DOUBLE_EQ(Index.GetVLCC_USGSPORE(), 0);
     EXPECT_DOUBLE_EQ(Index.GetSUEZMAX_CBSUSG(), 0);
     EXPECT_DOUBLE_EQ(Index.GetTC1(), 0);
     EXPECT_DOUBLE_EQ(Index.GetTC2(), 0);

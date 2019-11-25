@@ -60,6 +60,8 @@ extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFive; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSix; // 网易日线历史数据
 extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
 
 extern CCrweberIndex gl_CrweberIndex;

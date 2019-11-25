@@ -41,7 +41,7 @@ void CStock::Reset(void) {
 
   m_fDayLineLoaded = false;
   m_fDayLineNeedUpdate = true;
-  m_fDayLineReadFromWeb = false; // 从网络上读取了日线历史数据
+  m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
   m_fDayLineNeedSaving = false;
   m_lDayLineBufferLength = 0;
   m_pDayLineBuffer = nullptr;
@@ -80,7 +80,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   vector<CDayLinePtr> vTempDayLine;
   long lLength = m_lDayLineBufferLength;
 
-  ASSERT(m_fDayLineReadFromWeb);
+  ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
   if (lLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
@@ -94,8 +94,10 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     iCount++;
   }
   pCurrentPos++;
-  if (*pCurrentPos != 0x0a) return false;
   iCount++;
+  if (*pCurrentPos != 0x0a) {
+    return false;
+  }
   pCurrentPos++;
   iCount++;
   shared_ptr<CDayLine> pDayLine;
@@ -171,7 +173,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     }
   }
   vTempDayLine.clear();
-  SetDayLineReadFromWeb(false); // 处理完后清除标识
+  gl_ChinaStockMarket.m_iDayLineNeedSave++;
   SetDayLineLoaded(true);
   SetDayLineNeedSavingFlag(true); // 设置存储日线标识
 

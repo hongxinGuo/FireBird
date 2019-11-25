@@ -16,9 +16,11 @@ CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 }
 
 bool CNeteaseDayLineWebData::GetWebData(void) {
-  return(CWebData::GetWebData());
+  //return(CWebData::GetWebData());
 
-  //InquireNextWebData();
+  if (!IsReadingWebData()) {
+    InquireNextWebData();
+  }
   return true;
 }
 
@@ -74,10 +76,10 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
     sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
+    SetWebDataReceived(false);
+    SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    StartReadingThread();
   }
-  SetWebDataReceived(false);
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
 }
 
 int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire, long lTotalNumer, bool fSkipUnactiveStock) {

@@ -14,8 +14,8 @@ CWebData::CWebData() noexcept {
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReceivedData = false;
-  m_ReadingWebData = false; // 接收实时数据线程是否执行标识
-  m_WebDataReceived = false;// 实时数据已接收完毕标识
+  m_fReadingWebData = false; // 接收实时数据线程是否执行标识
+  m_fWebDataReceived = false;// 实时数据已接收完毕标识
 
 #ifdef DEBUG
   m_fReportStatus = true;

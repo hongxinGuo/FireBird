@@ -193,11 +193,11 @@ public:
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
   void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-  bool IsDayLineReadFromWeb(void) noexcept { return m_fDayLineReadFromWeb; }
-  void SetDayLineReadFromWeb(bool fFlag) noexcept { m_fDayLineReadFromWeb = fFlag; }
+  bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
+  void SetDayLineNeedProcess(bool fFlag) noexcept { m_fDayLineNeedProcess = fFlag; }
   void SetDayLineNeedSavingFlag(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSaving(void) { return m_fDayLineNeedSaving; }
-  bool IsDayLineNeedSavingAndClearFlag(void) { bool f = m_fDayLineNeedSaving.exchange(false); return f; }
+  bool IsDayLineNeedSavingAndClearFlag(void) { return(m_fDayLineNeedSaving.exchange(false)); }
 
   bool CStock::ProcessNeteaseDayLineData(void);
 
@@ -281,7 +281,7 @@ protected:
   CStockBasicInfo m_stockBasicInfo;
   CStockCalculatedInfo m_stockCalculatedInfo;
 
-  atomic_bool m_fDayLineReadFromWeb; // 从网络上读取了日线历史数据
+  atomic_bool m_fDayLineNeedProcess; // 从网络上读取了日线历史数据
   atomic_bool m_fDayLineNeedSaving;
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineLoaded; // 是否装入了日线数据

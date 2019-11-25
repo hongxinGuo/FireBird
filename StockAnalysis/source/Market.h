@@ -228,10 +228,14 @@ protected:
   bool m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
-  // 多线程读取之变量，需要设置同步机制
+  // 多线程读取之变量
   atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
   atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
+
+public:
+  atomic_int m_iDayLineNeedProcess;
+  atomic_int m_iDayLineNeedSave;
 
 private:
 };

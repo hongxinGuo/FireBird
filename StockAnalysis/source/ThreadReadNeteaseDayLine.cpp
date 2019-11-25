@@ -22,7 +22,7 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;
   static int siDelayTime = 600;
   static bool fStarted = false;
-  static int siCount = 0;   // 初始计数器，计算执行了几次此线程。用于设定延迟时间
+  static atomic_int siCount = 0;   // 初始计数器，计算执行了几次此线程。用于设定延迟时间
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
@@ -67,13 +67,15 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
 
     char* p = pNeteaseDayLineWebData->GetBufferAddr();
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    if (pStock->m_pDayLineBuffer != nullptr) delete pStock->m_pDayLineBuffer;
     pStock->m_pDayLineBuffer = new char[pNeteaseDayLineWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
     char* pbuffer = pStock->m_pDayLineBuffer;
     for (int i = 0; i < pNeteaseDayLineWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
     pStock->m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
-    pStock->SetDayLineReadFromWeb(true);
+    pStock->SetDayLineNeedProcess(true);
+    gl_ChinaStockMarket.m_iDayLineNeedProcess++;
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
@@ -88,11 +90,8 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   }
   pNeteaseDayLineWebData->SetReadingWebData(false);
   if (!fStarted) {
-    if (siCount > 16) { // 十六次后缩短延迟时间
-      fStarted = true;
-      siDelayTime = 50;
-    }
-    else siCount++;
+    fStarted = true;
+    siDelayTime = 50;
   }
 
   gl_ChinaStockMarket.SetReadingNeteaseDayDataTime(clock() - tt);

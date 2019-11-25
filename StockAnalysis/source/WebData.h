@@ -46,10 +46,10 @@ public:
 
   bool IsReadingSucceed(void) { return m_fReceivedData; }
   void SetReadingSucceed(bool fFlag) { m_fReceivedData = fFlag; }
-  bool IsWebDataReceived(void) { return m_WebDataReceived; }
-  void SetWebDataReceived(bool fFlag) { m_WebDataReceived = fFlag; }
-  bool IsReadingWebData(void) { return m_ReadingWebData; }
-  void SetReadingWebData(bool fFlag) { m_ReadingWebData = fFlag; }
+  bool IsWebDataReceived(void) { return m_fWebDataReceived; }
+  void SetWebDataReceived(bool fFlag) { m_fWebDataReceived = fFlag; }
+  bool IsReadingWebData(void) { return m_fReadingWebData; }
+  void SetReadingWebData(bool fFlag) { m_fReadingWebData = fFlag; }
 
   void IncreaseCurrentPos(long lNumberOfChars = 1) { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
@@ -73,8 +73,8 @@ protected:
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
-  atomic<bool> m_ReadingWebData; // 接收实时数据线程是否执行标识
-  atomic<bool> m_WebDataReceived;// 实时数据已接收完毕标识
+  atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
+  atomic_bool m_fWebDataReceived;// 实时数据已接收完毕标识
 
   bool m_fReportStatus; //
 };
