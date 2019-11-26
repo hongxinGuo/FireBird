@@ -193,8 +193,8 @@ public:
   void SetDayLineNeedUpdate(bool fFlag) noexcept;
   bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
   void SetDayLineNeedProcess(bool fFlag) noexcept { m_fDayLineNeedProcess = fFlag; }
-  void SetDayLineNeedSavingFlag(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSaving(void) { return m_fDayLineNeedSaving; }
+  void SetDayLineNeedSaving(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void) { return(m_fDayLineNeedSaving.exchange(false)); }
 
   bool CStock::ProcessNeteaseDayLineData(void);

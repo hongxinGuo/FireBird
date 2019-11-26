@@ -109,8 +109,11 @@ void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
   if (m_iDayLineNeedUpdate > 0) {
     GetNeteaseDayLineWebData();
   }
-  else {
-    int i = 0;
+}
+
+void CMarket::TaskProcessDayLineGetFromNeeteaseServer() {
+  if (m_iDayLineNeedProcess > 0) {
+    ProcessDayLineGetFromNeeteaseServer();
   }
 }
 
@@ -279,7 +282,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
   }
-
+  ASSERT(m_iDayLineNeedUpdate == 12000); // 目前总查询股票数为12000个。
   return true;
 }
 
@@ -359,6 +362,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   CStockPtr pStock = m_vChinaMarketAStock.at(siCounter);
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
+  ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false);
   switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
@@ -517,7 +521,7 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 // 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::DistributeSinaRTDataToProperStock(void) {
+bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
   CSingleLock sl(&gl_ProcessSinaRTDataQueue);
   sl.Lock();
   if (sl.IsLocked()) {
@@ -543,7 +547,7 @@ bool CMarket::DistributeSinaRTDataToProperStock(void) {
             pStock->SetStockCode(pRTData->GetStockCode());
             pStock->UpdateStatus(pRTData);
             pStock->SetTransactionTime(pRTData->GetTransactionTime());
-            pStock->SetDayLineNeedUpdate(true);
+            ASSERT(!pStock->IsDayLineNeedUpdate());
             pStock->SetIPOStatus(__STOCK_IPOED__);
             m_lTotalActiveStock++;
           }
@@ -723,6 +727,7 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
+    ASSERT(pStock->IsDayLineNeedUpdate());
     pStock->SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
   }
@@ -759,6 +764,7 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
+  ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     pStock->SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
@@ -779,7 +785,7 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   }
   vTempDayLine.clear();
   pStock->SetDayLineLoaded(true);
-  pStock->SetDayLineNeedSavingFlag(true); // 设置存储日线标识
+  pStock->SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
 }
@@ -845,7 +851,6 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
       }
       else siCountDownNeteaseNumber--;
     }
-
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (m_fReadingTengxunRTData) {
       if (siCountDownTengxunNumber <= 0) {
@@ -855,7 +860,6 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
       else siCountDownTengxunNumber--; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
   }
-
   return true;
 }
 
@@ -908,7 +912,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   if (s_iCountDownProcessRTWebData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
-    DistributeSinaRTDataToProperStock();
+    TaskDistributeSinaRTDataToProperStock();
     s_iCountDownProcessRTWebData = 0;
   }
   else s_iCountDownProcessRTWebData--;
@@ -923,10 +927,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   }
 
   // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-  // 出现同步问题，暂时不使用此函数
-  if (m_iDayLineNeedProcess > 0) {
-    ProcessDayLineGetFromNeeteaseServer();
-  }
+  TaskProcessDayLineGetFromNeeteaseServer();
 
   return true;
 }
@@ -995,23 +996,8 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     // 测试用。每小时自动查询crweber.com
     //gl_CrweberIndexWebData.GetWebData();
 
-    // 九点十三分重启系统
-    // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-    if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
-        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-        m_fSystemReady = false;
-      }
-    }
-
-    // 九点二十五分再次重启系统
-    if (m_fPermitResetSystem) { // 如果允许重置系统
-      if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
-        gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-        m_fSystemReady = false;
-        m_fPermitResetSystem = false; // 今天不再允许重启系统。
-      }
-    }
+    ResetSystem(lCurrentTime);
+    ResetSystemAgain(lCurrentTime);
 
     // 判断中国股票市场开市状态
     if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
@@ -1060,6 +1046,30 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
+  return true;
+}
+
+bool CMarket::ResetSystem(long lCurrentTime) {
+  // 九点十三分重启系统
+// 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
+  if (m_fPermitResetSystem) { // 如果允许重置系统
+    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      m_fSystemReady = false;
+    }
+  }
+  return true;
+}
+
+bool CMarket::ResetSystemAgain(long lCurrentTime) {
+  // 九点二十五分再次重启系统
+  if (m_fPermitResetSystem) { // 如果允许重置系统
+    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+      gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      m_fSystemReady = false;
+      m_fPermitResetSystem = false; // 今天不再允许重启系统。
+    }
+  }
   return true;
 }
 
@@ -1598,12 +1608,15 @@ void CMarket::LoadStockCodeDB(void) {
     }
     // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
     if (gl_systemTime.GetLastTradeDay() <= pStock->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
+      ASSERT(pStock->IsDayLineNeedUpdate());
       pStock->SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
     if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
+      ASSERT(pStock->IsDayLineNeedUpdate());
       pStock->SetDayLineNeedUpdate(false);
     }
     if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票不需更新日线数据
+      ASSERT(pStock->IsDayLineNeedUpdate());
       pStock->SetDayLineNeedUpdate(false);
     }
     setStockCode.MoveNext();

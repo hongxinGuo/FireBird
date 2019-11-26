@@ -18,7 +18,8 @@ namespace StockAnalysisTest {
       // 重置股票池状态（因已装入实际状态）
       for (auto pStock : gl_ChinaStockMarket.m_vChinaMarketAStock) {
         pStock->SetDayLineEndDay(-1);
-        pStock->SetDayLineNeedUpdate(true);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+        //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
       // 初始话活跃股票标识
       EXPECT_TRUE(gl_fTestMode);

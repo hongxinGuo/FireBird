@@ -30,16 +30,22 @@ public:
   // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
   bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
-  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
-  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
+  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
+  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
   void TaskGetNeteaseDayLineFromWeb(void);
+  void TaskProcessDayLineGetFromNeeteaseServer();
+
   bool GetNeteaseDayLineWebData(void);
   void TaskLoadSavedTempData(void);
+
+  bool ResetSystem(long lCurrentTime);
+  bool ResetSystemAgain(long lCurrentTime);
+
   // interface function
 public:
   // 系统状态区
@@ -154,7 +160,7 @@ public:
   bool ProcessTengxunRTData(void);
 
   //处理实时股票变化等
-  bool DistributeSinaRTDataToProperStock(void);
+  bool TaskDistributeSinaRTDataToProperStock(void);
 
   // 处理日线历史数据
   bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength);
@@ -231,6 +237,7 @@ protected:
   atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
 
 public:
+  // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
   atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
   atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量

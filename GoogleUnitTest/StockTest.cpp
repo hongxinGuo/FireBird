@@ -334,9 +334,6 @@ namespace StockAnalysisTest {
     stock.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
-    stock.SetDayLineNeedUpdate(true);
-    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
   }
 
   TEST(CStockTest, TestIsChoiced) {
@@ -397,9 +394,9 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CStock stock;
-    stock.SetDayLineNeedSavingFlag(true);
+    stock.SetDayLineNeedSaving(true);
     EXPECT_TRUE(stock.IsDayLineNeedSaving());
-    stock.SetDayLineNeedSavingFlag(false);
+    stock.SetDayLineNeedSaving(false);
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
   }
 

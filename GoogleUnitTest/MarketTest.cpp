@@ -53,11 +53,17 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(6000)->GetMarket(), __SHENZHEN_MARKET__);
     for (int i = 0; i < 12000; i++) {
       EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->GetOffset(), i);
+      EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->IsDayLineNeedUpdate());
+      EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->IsDayLineNeedProcess());
+      EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->IsDayLineNeedSaving());
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
 
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetSystem());
+    EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedProcess, 0);
+    EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedUpdate, 12000);
+    EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedSave, 0);
   }
 
   TEST_F(CMarketTest, TestGetInquiringStockStr2) {

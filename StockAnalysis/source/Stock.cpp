@@ -116,6 +116,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
+    ASSERT(IsDayLineNeedUpdate());
     SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
   }
@@ -152,6 +153,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
+  ASSERT(IsDayLineNeedUpdate());
   SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
@@ -172,7 +174,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   }
   vTempDayLine.clear();
   SetDayLineLoaded(true);
-  SetDayLineNeedSavingFlag(true); // 设置存储日线标识
+  SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
 }
@@ -879,10 +881,9 @@ bool CStock::IsTodayDataChanged(void) {
 
 void CStock::SetDayLineNeedUpdate(bool fFlag) noexcept {
   if (fFlag) {
-    if (!m_fDayLineNeedUpdate) {
-      m_fDayLineNeedUpdate = true;
-      gl_ChinaStockMarket.m_iDayLineNeedUpdate++;
-    }
+    ASSERT(!m_fDayLineNeedUpdate);
+    m_fDayLineNeedUpdate = true;
+    gl_ChinaStockMarket.m_iDayLineNeedUpdate++;
   }
   else {
     ASSERT(m_fDayLineNeedUpdate);
