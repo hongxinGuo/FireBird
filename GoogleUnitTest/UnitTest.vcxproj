@@ -67,6 +67,7 @@
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
+    <ClCompile Include="Market_NeteaseDayLineTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
@@ -139,7 +140,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\threadsavdayline.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />

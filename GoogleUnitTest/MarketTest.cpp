@@ -274,8 +274,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CMarketTest, TestIsDayLineNeedUpdate) {
     EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
-    for (auto pID : gl_ChinaStockMarket.m_vChinaMarketAStock) {
-      pID->SetDayLineNeedUpdate(false);
+    for (auto pStock : gl_ChinaStockMarket.m_vChinaMarketAStock) {
+      pStock->SetDayLineNeedUpdate(false);
     }
     EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
   }

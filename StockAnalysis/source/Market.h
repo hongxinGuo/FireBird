@@ -26,7 +26,20 @@ public:
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
 #endif
+public:
+  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
+  bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
+  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
+  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
+  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
+  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
 
+  // 各种任务
+  bool TaskGetRTDataFromWeb(void);
+  void TaskGetNeteaseDayLineFromWeb(void);
+  bool GetNeteaseDayLineWebData(void);
+  void TaskLoadSavedTempData(void);
   // interface function
 public:
   // 系统状态区
@@ -95,7 +108,6 @@ public:
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
   // 是否所有股票的历史日线数据都查询过一遍了
-  bool IsDayLineDataInquiringOnce(void);
   bool ProcessDayLineGetFromNeeteaseServer(void);
 
   long CompileCurrentTradeDayStock(void);
@@ -147,23 +159,8 @@ public:
   // 处理日线历史数据
   bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength);
 
-  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
-  bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
-  bool GetRTDataFromWeb(void);
-  bool LoadTodayTempDataSaved(void);
-  bool GetNeteaseDayLineWebData(void);
-
-  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
-
-  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
-
-  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-
-  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
 
 private:
   // 初始化
@@ -234,9 +231,9 @@ protected:
   atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
 
 public:
-  atomic_int m_iDayLineNeedProcess;
-  atomic_int m_iDayLineNeedSave;
-
+  atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
+  atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
+  atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量
 private:
 };
 

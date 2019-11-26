@@ -173,8 +173,6 @@ public:
   // 各种状态标识提取和设置
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
-  bool IsInquiringOnce(void) noexcept { return m_fInquiringOnce; }
-  void SetInquiringOnce(bool fFlag) noexcept { m_fInquiringOnce = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
@@ -192,7 +190,7 @@ public:
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
+  void SetDayLineNeedUpdate(bool fFlag) noexcept;
   bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
   void SetDayLineNeedProcess(bool fFlag) noexcept { m_fDayLineNeedProcess = fFlag; }
   void SetDayLineNeedSavingFlag(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
@@ -281,11 +279,10 @@ protected:
   CStockBasicInfo m_stockBasicInfo;
   CStockCalculatedInfo m_stockCalculatedInfo;
 
-  atomic_bool m_fDayLineNeedProcess; // 从网络上读取了日线历史数据
-  atomic_bool m_fDayLineNeedSaving;
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
+  atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
+  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
   atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
-  atomic_bool m_fInquiringOnce;// 是否被查询一次。（无论m_fIPOed是否为真，都要在运行中查询一次股票日线情况）。
 
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 

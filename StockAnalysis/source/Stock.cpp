@@ -46,8 +46,6 @@ void CStock::Reset(void) {
   m_lDayLineBufferLength = 0;
   m_pDayLineBuffer = nullptr;
 
-  m_fInquiringOnce = false;
-
   m_fChoiced = false;
   m_fMinLineUpdated = false;
   m_fDayLineUpdated = false;
@@ -173,7 +171,6 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     }
   }
   vTempDayLine.clear();
-  gl_ChinaStockMarket.m_iDayLineNeedSave++;
   SetDayLineLoaded(true);
   SetDayLineNeedSavingFlag(true); // 设置存储日线标识
 
@@ -877,6 +874,20 @@ bool CStock::IsTodayDataChanged(void) {
   }
   else {
     return false;
+  }
+}
+
+void CStock::SetDayLineNeedUpdate(bool fFlag) noexcept {
+  if (fFlag) {
+    if (!m_fDayLineNeedUpdate) {
+      m_fDayLineNeedUpdate = true;
+      gl_ChinaStockMarket.m_iDayLineNeedUpdate++;
+    }
+  }
+  else {
+    ASSERT(m_fDayLineNeedUpdate);
+    m_fDayLineNeedUpdate = false;
+    gl_ChinaStockMarket.m_iDayLineNeedUpdate--;
   }
 }
 

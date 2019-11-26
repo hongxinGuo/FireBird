@@ -84,6 +84,7 @@ void CMarket::Reset(void) {
 
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
+  m_iDayLineNeedUpdate = 0;
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -102,6 +103,25 @@ void CMarket::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 #endif //_DEBUG
+
+void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
+  ASSERT(SystemReady());
+  if (m_iDayLineNeedUpdate > 0) {
+    GetNeteaseDayLineWebData();
+  }
+  else {
+    int i = 0;
+  }
+}
+
+void CMarket::TaskLoadSavedTempData(void) {
+  ASSERT(SystemReady());
+  // 装入之前存储的系统今日数据（如果有的话）
+  if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
+    LoadTodayTempDB();
+    m_fTodayTempDataLoaded = true;
+  }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -130,6 +150,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成三版股票代码
@@ -143,6 +164,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成科创版股票代码
@@ -156,6 +178,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成B股股票代码
@@ -169,6 +192,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成上海指数代码
@@ -182,6 +206,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   ///////////////////////////////////////////////
@@ -196,6 +221,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成深圳中小板股票代码
@@ -209,6 +235,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成B股股票代码
@@ -222,6 +249,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成创业板股票代码
@@ -235,6 +263,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   // 生成深圳指数
@@ -248,6 +277,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
+    m_iDayLineNeedUpdate++;
   }
 
   return true;
@@ -308,6 +338,13 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
         siCounter = 0;
       }
     }
+    else if (m_vChinaMarketAStock.at(siCounter)->IsDayLineNeedProcess()) { // 日线数据已下载但尚未处理（一般此情况不会出现）
+      siCounter++;
+      iCount++;
+      if (siCounter == lTotalStock) {
+        siCounter = 0;
+      }
+    }
     else {
       fFound = true;
     }
@@ -320,7 +357,9 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
   CStockPtr pStock = m_vChinaMarketAStock.at(siCounter);
-  pStock->SetInquiringOnce(true);
+  ASSERT(!pStock->IsDayLineNeedSaving());
+  ASSERT(!pStock->IsDayLineNeedProcess());
+  pStock->SetDayLineNeedUpdate(false);
   switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
   case __SHANGHAI_MAIN__: // 上海主板？
@@ -759,7 +798,7 @@ bool CMarket::SchedulingTask(void) {
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (!gl_ExitingSystem && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
-    GetRTDataFromWeb();
+    TaskGetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
@@ -775,8 +814,8 @@ bool CMarket::SchedulingTask(void) {
 
   // 系统准备好了之后需要完成的各项工作
   if (SystemReady()) {
-    LoadTodayTempDataSaved();
-    GetNeteaseDayLineWebData();
+    TaskLoadSavedTempData();
+    TaskGetNeteaseDayLineFromWeb();
   }
   return true;
 }
@@ -786,7 +825,7 @@ bool CMarket::SchedulingTask(void) {
 // 从新浪、网易或者腾讯实时行情数据服务器读取实时数据。使用其中之一即可。
 //
 /////////////////////////////////////////////////////////////////////////////////
-bool CMarket::GetRTDataFromWeb(void) {
+bool CMarket::TaskGetRTDataFromWeb(void) {
   static int siCountDownTengxunNumber = 3;
   static int siCountDownNeteaseNumber = 300;
 
@@ -818,16 +857,6 @@ bool CMarket::GetRTDataFromWeb(void) {
   }
 
   return true;
-}
-
-bool CMarket::LoadTodayTempDataSaved(void) {
-  // 装入之前存储的系统今日数据（如果有的话）
-  if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
-    LoadTodayTempDB();
-    m_fTodayTempDataLoaded = true;
-    return true;
-  }
-  return false;
 }
 
 bool CMarket::GetNeteaseDayLineWebData(void) {
@@ -1010,7 +1039,7 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     // 检查提取日线历史数据的任务是否完成了。
     if (m_fGetDayLineFromWeb) {
       m_fSaveDayLine = true;
-      if (IsDayLineDataInquiringOnce()) {
+      if (!IsDayLineNeedUpdate()) {
         m_fGetDayLineFromWeb = false;
       }
     }
@@ -1169,6 +1198,7 @@ bool CMarket::SaveDayLineData(void) {
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
+      m_iDayLineNeedSave--;
       str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
@@ -1230,13 +1260,6 @@ bool CMarket::SaveCrweberIndexData(void) {
   return(true);
 }
 
-bool CMarket::IsDayLineNeedUpdate(void) {
-  for (auto pStock : m_vChinaMarketAStock) {
-    if (pStock->IsDayLineNeedUpdate()) return true;
-  }
-  return false;
-}
-
 bool CMarket::IsDayLineNeedSaving(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSaving()) {
@@ -1247,11 +1270,11 @@ bool CMarket::IsDayLineNeedSaving(void) {
   return false;
 }
 
-bool CMarket::IsDayLineDataInquiringOnce(void) {
+bool CMarket::IsDayLineNeedUpdate(void) {
   for (auto pStock : m_vChinaMarketAStock) {
-    if (!pStock->IsInquiringOnce()) return false;
+    if (pStock->IsDayLineNeedUpdate()) return true;
   }
-  return true;
+  return false;
 }
 
 bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
@@ -1259,7 +1282,8 @@ bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
       pStock->SetDayLineNeedProcess(false);
-      gl_ChinaStockMarket.m_iDayLineNeedProcess--;
+      m_iDayLineNeedSave++;
+      m_iDayLineNeedProcess--;
     }
   }
   return true;

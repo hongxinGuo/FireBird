@@ -4,6 +4,7 @@
 #include"globedef.h"
 
 #include"Stock.h"
+#include"Market.h"
 
 namespace StockAnalysisTest {
   TEST(CStockTest, TestInitialize) {
@@ -48,7 +49,9 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsDayLineLoaded());
     EXPECT_FALSE(stock.IsActive());
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    EXPECT_FALSE(stock.IsInquiringOnce());
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
     EXPECT_FALSE(stock.IsChoiced());
     EXPECT_FALSE(stock.IsMinLineUpdated());
     EXPECT_FALSE(stock.IsDayLineUpdated());
@@ -323,20 +326,17 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestIsDayLineNeedUpdate) {
     CStock stock;
+    long lNumberOfStock = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(false);
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate + 1);
     stock.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-  }
-
-  TEST(CStockTest, TestIsInquiringOnce) {
-    CStock stock;
-    EXPECT_FALSE(stock.IsInquiringOnce());
-    stock.SetInquiringOnce(true);
-    EXPECT_TRUE(stock.IsInquiringOnce());
-    stock.SetInquiringOnce(false);
-    EXPECT_FALSE(stock.IsInquiringOnce());
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
+    stock.SetDayLineNeedUpdate(true);
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
   }
 
   TEST(CStockTest, TestIsChoiced) {
