@@ -162,9 +162,6 @@ public:
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
 
-  // 处理日线历史数据
-  bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long lBufferLength);
-
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
 
