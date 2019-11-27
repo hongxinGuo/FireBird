@@ -76,11 +76,10 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   char* pCurrentPos = m_pDayLineBuffer;
   char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
-  long lLength = m_lDayLineBufferLength;
 
   ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
-  if (lLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+  if (m_lDayLineBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
   }
 
@@ -103,7 +102,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   pTestPos = m_pDayLineBuffer;
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
-  if (iCount == lLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+  if (iCount == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     // ASSERT(!m_vChinaMarketAStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
     // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
     if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
@@ -116,7 +115,6 @@ bool CStock::ProcessNeteaseDayLineData(void) {
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
-    ASSERT(IsDayLineNeedUpdate());
     SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
   }
@@ -126,7 +124,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   pTestPos = m_pDayLineBuffer;
   pTestPos += iCount;
   ASSERT(*pTestPos == *pCurrentPos);
-  while (iCount < lLength) {
+  while (iCount < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
     if (!pDayLine->ProcessNeteaseData(GetStockCode(), pCurrentPos, iTemp)) { // 处理一条日线数据
       TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
@@ -153,7 +151,6 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
-  ASSERT(IsDayLineNeedUpdate());
   SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
@@ -166,9 +163,10 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
-    if (pDayLine->GetDay() < gl_systemTime.GetDay()) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
+    if ((pDayLine->GetDay() < gl_systemTime.GetDay()) && (pDayLine->GetOpen() > 0) && (pDayLine->GetLow() > 0)) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
       // 当新股第一天上市时，其日线只有一天，而且在这里扔掉了，导致其日线容器为空。处理时注意。
       // 由于是调取gl_lLastTradeDay及之前的日线数据，故而新股的日线容器肯定为空。
+      // 清除掉不再交易（停牌或退市）的股票日线
       m_vDayLine.push_back(pDayLine);
     }
   }
@@ -189,22 +187,41 @@ bool CStock::SaveDayLine(void) {
   CSetDayLine setDayLine;
   long lIndex = 0;
   long lSize = 0;
-  CDayLinePtr pDayLine;
+  vector<CDayLinePtr> vDayLine;
+  CDayLinePtr pDayLine = nullptr;
+  long lCurrentPos = 0, lSizeOfOldDayLine = 0;
 
   CCriticalSection cs;
   CSingleLock s(&cs);
   s.Lock();
   if (s.IsLocked()) {
     lSize = m_vDayLine.size();
-    setDayLine.m_strFilter = _T("[ID] = 1"); // 采用主键作为搜索Index.必须设置，否则会把所有的数据读入，浪费时间
+    setDayLine.m_strFilter = _T("[StockCode] = ");
+    setDayLine.m_strFilter += _T("'");
+    setDayLine.m_strFilter += GetStockCode() + _T("'");
     s.Unlock();
   }
   setDayLine.Open();
+  while (!setDayLine.IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadData(setDayLine);
+    vDayLine[lCurrentPos++] = pDayLine;
+    setDayLine.MoveNext();
+  }
+  lSizeOfOldDayLine = vDayLine.size();
+  lCurrentPos = 0;
   setDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = m_vDayLine.at(i);
-    if (GetDayLineEndDay() >= pDayLine->GetDay()) continue; // 存储过的日线数据不用存储
-    pDayLine->AppendData(setDayLine);
+    while ((vDayLine.at(lCurrentPos)->GetDay() < pDayLine->GetDay()) && (lCurrentPos < lSizeOfOldDayLine)) lCurrentPos++;
+    if (lCurrentPos < lSizeOfOldDayLine) {
+      if (vDayLine.at(lCurrentPos)->GetDay() > pDayLine->GetDay()) {
+        pDayLine->AppendData(setDayLine);
+      }
+    }
+    else {
+      pDayLine->AppendData(setDayLine);
+    }
   }
   setDayLine.m_pDatabase->CommitTrans();
   setDayLine.Close();
@@ -212,10 +229,8 @@ bool CStock::SaveDayLine(void) {
   // 更新最新日线日期和起始日线日期
   s.Lock();
   if (s.IsLocked()) {
-    if (GetDayLineEndDay() < m_vDayLine.at(m_vDayLine.size() - 1)->GetDay()) {
-      SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
-      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
-    }
+    SetDayLineStartDay(m_vDayLine.at(0)->GetDay() ? m_vDayLine.at(0)->GetDay() : vDayLine.at(0)->GetDay());
+    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() ? vDayLine.at(vDayLine.size() - 1)->GetDay() : m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
     s.Unlock();
   }
 

@@ -197,7 +197,9 @@ public:
   void SetDayLineNeedSaving(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void) { return(m_fDayLineNeedSaving.exchange(false)); }
 
-  bool CStock::ProcessNeteaseDayLineData(void);
+  bool ProcessNeteaseDayLineData(void);
+  void IncreaseCurrentPos(long lValue = 1) noexcept { m_pCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -274,6 +276,8 @@ public:
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   char* m_pDayLineBuffer; // 日线读取缓冲区
   long m_lDayLineBufferLength;
+  char* m_pCurrentPos;
+  long m_lCurrentPos;
 
 protected:
   CStockBasicInfo m_stockBasicInfo;

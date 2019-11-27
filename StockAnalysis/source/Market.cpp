@@ -153,6 +153,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetOffset(iCount);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
+    ASSERT(pStock->IsDayLineNeedUpdate());
     m_iDayLineNeedUpdate++;
   }
 
@@ -303,7 +304,7 @@ void CMarket::ResetIT(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay) {
+bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
   static int iStarted = 0;
   static int siCounter = 0;
 
@@ -362,7 +363,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   CStockPtr pStock = m_vChinaMarketAStock.at(siCounter);
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
-  ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false);
   switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
@@ -386,11 +386,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDa
   }
   char buffer[30];
   str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
-  time_t tTime = gl_systemTime.FormatToTTime(pStock->GetDayLineEndDay());
-  tTime += 3600 * 24; // 增加一天。
-  const long lDay = gl_systemTime.FormatToDay(tTime);
-  sprintf_s(buffer, "%8d", lDay);
-  strStartDay = buffer;
   siCounter++;
   if (siCounter == lTotalStock) {
     siCounter = 0;
@@ -727,7 +722,6 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
       }
       //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
     }
-    ASSERT(pStock->IsDayLineNeedUpdate());
     pStock->SetDayLineNeedUpdate(false); // 都不需要更新日线数据
     return false;
   }
@@ -764,7 +758,6 @@ bool CMarket::ProcessNeteaseDayLineData(CString strStockCode, char* buffer, long
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
-  ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false); // 日线数据下载完毕，不需要申请新数据了。
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     pStock->SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
@@ -1031,9 +1024,10 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     }
 
     // 判断是否存储日线库和股票代码库
-    if (m_fSaveDayLine) {
+    if (m_fSaveDayLine || (m_iDayLineNeedSave > 0)) {
       gl_ChinaStockMarket.SaveDayLineData();
       if (!m_fGetDayLineFromWeb && (!IsDayLineNeedSaving() && !gl_ThreadStatus.IsSavingDayLine())) {
+        m_iDayLineNeedSave = 0;
         m_fSaveDayLine = false;
         m_fUpdatedStockCodeDataBase = true;
         TRACE("日线历史数据更新完毕\n");
@@ -1608,18 +1602,22 @@ void CMarket::LoadStockCodeDB(void) {
     }
     // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
     if (gl_systemTime.GetLastTradeDay() <= pStock->GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
-      ASSERT(pStock->IsDayLineNeedUpdate());
-      pStock->SetDayLineNeedUpdate(false); // 日线数据不需要更新
+      if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
-    if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
-      ASSERT(pStock->IsDayLineNeedUpdate());
-      pStock->SetDayLineNeedUpdate(false);
+    else if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
+      if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false);
     }
-    if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票不需更新日线数据
-      ASSERT(pStock->IsDayLineNeedUpdate());
-      pStock->SetDayLineNeedUpdate(false);
+    else if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则不需要再更新日线数据
+      if (pStock->IsDayLineNeedUpdate() && (pStock->GetDayLineEndDay() != 19900101)) pStock->SetDayLineNeedUpdate(false);
+    }
+    else {
+      int i = 0;
     }
     setStockCode.MoveNext();
+  }
+  if (gl_ChinaStockMarket.m_iDayLineNeedUpdate > 0) {
+    int i = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
+    TRACE("尚余%d个股票需要更新日线数据\n", i);
   }
   setStockCode.Close();
 }

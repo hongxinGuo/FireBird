@@ -64,14 +64,12 @@ void CNeteaseDayLineWebData::ReportCommunicationError(void) {
 void CNeteaseDayLineWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
-  CString strStartDay;
 
   // 准备网易日线数据申请格式
-  m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle, strStartDay);
+  m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle);
   if (m_fNeedProcessingCurrentWebData) {
     SetDownLoadingStockCode(strMiddle);
-    strMiddle += _T("&start=");
-    strMiddle += strStartDay;
+    strMiddle += _T("&start=19900101");
     strMiddle += _T("&end=");
     sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
     strMiddle += buffer2;

@@ -63,7 +63,7 @@ public:
   void ResetIT(void); //重置各迭代器
 
   //日线历史数据读取
-  bool CreateNeteaseDayLineInquiringStr(CString& str, CString& strStartDay);
+  bool CreateNeteaseDayLineInquiringStr(CString& str);
 
   bool IsAStock(CStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
