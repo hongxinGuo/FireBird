@@ -876,8 +876,8 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     // 测试用。每小时自动查询crweber.com
     //gl_CrweberIndexWebData.GetWebData();
 
-    ResetSystem(lCurrentTime);
-    ResetSystemAgain(lCurrentTime);
+    TaskResetSystem(lCurrentTime);
+    TaskResetSystemAgain(lCurrentTime);
 
     // 判断中国股票市场开市状态
     if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
@@ -917,11 +917,11 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   return true;
 }
 
-bool CMarket::ResetSystem(long lCurrentTime) {
+bool CMarket::TaskResetSystem(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (m_fPermitResetSystem) { // 如果允许重置系统
-    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
       gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }
@@ -929,10 +929,10 @@ bool CMarket::ResetSystem(long lCurrentTime) {
   return true;
 }
 
-bool CMarket::ResetSystemAgain(long lCurrentTime) {
+bool CMarket::TaskResetSystemAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
   if (m_fPermitResetSystem) { // 如果允许重置系统
-    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && ((gl_systemTime.GetDayOfWeek() > 0) && (gl_systemTime.GetDayOfWeek() < 6))) { // 交易日九点十五分重启系统
+    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
       gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
       m_fPermitResetSystem = false; // 今天不再允许重启系统。

@@ -29,8 +29,9 @@ public:
 
 public:
   // 测试用函数
-  void Sett_time(time_t Time) noexcept;
-  void SetTime(long lTime); // 此函数只用于测试
+  void __Test_Sett_time(time_t Time) noexcept;
+  void __Test_SetTime(long lTime); // 此函数只用于测试
+  void __Test_SetTM(tm tm_);
 
 protected:
   long m_lToday; // 今日日期。格式为：19990102

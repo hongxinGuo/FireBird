@@ -18,7 +18,7 @@ namespace StockAnalysisTest {
 
   TEST(SystemTimeTest, TestGett_time) {
     EXPECT_NE(gl_systemTime.Gett_time(), 0);
-    gl_systemTime.Sett_time(100100100100);
+    gl_systemTime.__Test_Sett_time(100100100100);
     EXPECT_EQ(gl_systemTime.Gett_time(), 100100100100);
   }
   TEST(SystemTimeTest, TestCalculateTime) {
@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
     time(&ttime);
     localtime_s(&tm_, &ttime);
 
-    gl_systemTime.Sett_time(ttime);
+    gl_systemTime.__Test_Sett_time(ttime);
     gl_systemTime.CalculateLastTradeDay();
 
     EXPECT_EQ(gl_systemTime.GetDayOfWeek(), tm_.tm_wday);

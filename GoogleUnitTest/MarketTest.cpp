@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
 
     static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
+      gl_ChinaStockMarket.__Test_SetResetSystem(false);
     }
 
     static void TearDownTestCase() {
@@ -290,5 +291,58 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsLoadSelectedStock());
     gl_ChinaStockMarket.SetLoadSelectedStock(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
+  }
+
+  TEST_F(CMarketTest, TestTaskResetSystem) {
+    tm tm_;
+    tm_.tm_wday = 1;
+    EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91259);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91401);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91300);
+    EXPECT_TRUE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+  }
+
+  TEST_F(CMarketTest, TestTaskResetSystem2) {
+    tm tm_;
+    tm_.tm_wday = 1;
+    EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91259);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91401);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystem(91400);
+    EXPECT_TRUE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+  }
+
+  TEST_F(CMarketTest, TestTaskResetSystemAgain) {
+    tm tm_;
+    tm_.tm_wday = 1;
+    EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystemAgain(92459);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    gl_ChinaStockMarket.TaskResetSystemAgain(93001);
+    EXPECT_FALSE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
+    gl_ChinaStockMarket.TaskResetSystemAgain(92500);
+    EXPECT_TRUE(gl_fResetSystem);
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
   }
 }

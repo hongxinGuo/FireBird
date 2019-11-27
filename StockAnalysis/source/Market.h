@@ -43,8 +43,8 @@ public:
   bool GetNeteaseDayLineWebData(void);
   void TaskLoadSavedTempData(void);
 
-  bool ResetSystem(long lCurrentTime);
-  bool ResetSystemAgain(long lCurrentTime);
+  bool TaskResetSystem(long lCurrentTime);
+  bool TaskResetSystemAgain(long lCurrentTime);
 
   // interface function
 public:
@@ -164,6 +164,10 @@ public:
 
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
+
+  // 测试用函数
+  bool __Test_IsPermitResetSystem(void) { return m_fPermitResetSystem; }
+  void __Test_SetResetSystem(bool fFlag) { gl_fResetSystem = fFlag; }
 
 private:
   // 初始化

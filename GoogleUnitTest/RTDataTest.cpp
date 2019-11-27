@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_systemTime.Sett_time(tt);
+    gl_systemTime.__Test_Sett_time(tt);
     CRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.IsDataHavingValidTime());

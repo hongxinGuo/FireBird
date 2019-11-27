@@ -26,14 +26,18 @@ CSystemTime::CSystemTime(void) {
 CSystemTime::~CSystemTime(void) noexcept {
 }
 
-void CSystemTime::Sett_time(time_t ttime) noexcept {
+void CSystemTime::__Test_Sett_time(time_t ttime) noexcept {
   m_ttime = ttime;
   localtime_s(&m_tm, &m_ttime);
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
-void CSystemTime::SetTime(long lTime) {
+void CSystemTime::__Test_SetTime(long lTime) {
+}
+
+void CSystemTime::__Test_SetTM(tm tm_) {
+  m_tm = tm_;
 }
 
 void CSystemTime::CalculateTime(void) noexcept {
