@@ -205,15 +205,16 @@ bool CStock::SaveDayLine(void) {
   while (!setDayLine.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
     pDayLine->LoadData(setDayLine);
-    vDayLine[lCurrentPos++] = pDayLine;
+    vDayLine.push_back(pDayLine);
+    lCurrentPos++;
     setDayLine.MoveNext();
   }
-  lSizeOfOldDayLine = vDayLine.size();
+  lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
   setDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = m_vDayLine.at(i);
-    while ((vDayLine.at(lCurrentPos)->GetDay() < pDayLine->GetDay()) && (lCurrentPos < lSizeOfOldDayLine)) lCurrentPos++;
+    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetDay() < pDayLine->GetDay())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetDay() > pDayLine->GetDay()) {
         pDayLine->AppendData(setDayLine);
@@ -229,8 +230,8 @@ bool CStock::SaveDayLine(void) {
   // 更新最新日线日期和起始日线日期
   s.Lock();
   if (s.IsLocked()) {
-    SetDayLineStartDay(m_vDayLine.at(0)->GetDay() ? m_vDayLine.at(0)->GetDay() : vDayLine.at(0)->GetDay());
-    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() ? vDayLine.at(vDayLine.size() - 1)->GetDay() : m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
+    SetDayLineStartDay((m_vDayLine.at(0)->GetDay() < vDayLine.at(0)->GetDay()) ? m_vDayLine.at(0)->GetDay() : vDayLine.at(0)->GetDay());
+    SetDayLineEndDay((m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() < vDayLine.at(vDayLine.size() - 1)->GetDay()) ? vDayLine.at(vDayLine.size() - 1)->GetDay() : m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
     s.Unlock();
   }
 

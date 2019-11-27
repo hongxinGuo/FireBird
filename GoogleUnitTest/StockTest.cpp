@@ -725,6 +725,7 @@ namespace StockAnalysisTest {
       pStock->m_vDayLine.push_back(pid);
     }
     pStock->SetDayLineEndDay(10190101);
+    pStock->SetStockCode(_T("sh600008"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLine();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
@@ -792,6 +793,7 @@ namespace StockAnalysisTest {
       pid->SetRelativeStrong(14.5);
       pStock->m_vDayLine.push_back(pid);
     }
+    pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineEndDay(10190101);
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLine();
