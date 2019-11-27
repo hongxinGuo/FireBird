@@ -1182,6 +1182,7 @@ bool CMarket::SaveDayLineData(void) {
 
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      m_iDayLineNeedSave--;
       if (pStock->m_vDayLine.size() > 0) { // 新股第一天上市时，由于只存储早于今天的日线数据，导致其容器是空的，故而需要判断一下
         pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
         pTransfer->m_pStock = pStock;
@@ -1192,7 +1193,6 @@ bool CMarket::SaveDayLineData(void) {
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
-      m_iDayLineNeedSave--;
       str = pStock->GetStockCode();
       str += _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
@@ -1276,7 +1276,6 @@ bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
       pStock->SetDayLineNeedProcess(false);
-      m_iDayLineNeedSave++;
       m_iDayLineNeedProcess--;
     }
   }

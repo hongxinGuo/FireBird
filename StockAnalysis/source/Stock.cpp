@@ -171,6 +171,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   vTempDayLine.clear();
   SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
+  gl_ChinaStockMarket.m_iDayLineNeedSave++;
 
   return true;
 }

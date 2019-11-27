@@ -22,7 +22,6 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
     pStock = pTransfer->m_pStock;
     pStock->SaveDayLine();
     pStock->SetDayLineLoaded(false);
-    gl_ChinaStockMarket.m_iDayLineNeedSave--;
     pStock->m_vDayLine.clear();
     delete pTransfer;
     pTransfer = nullptr;
