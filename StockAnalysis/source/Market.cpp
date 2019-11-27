@@ -62,7 +62,7 @@ void CMarket::Reset(void) {
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
-  m_fGetDayLineFromWeb = m_fSaveDayLine = false;
+  m_fSaveDayLine = false;
 
   m_fTodayTempDataLoaded = false;
 
@@ -542,7 +542,6 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
             pStock->SetStockCode(pRTData->GetStockCode());
             pStock->UpdateStatus(pRTData);
             pStock->SetTransactionTime(pRTData->GetTransactionTime());
-            ASSERT(!pStock->IsDayLineNeedUpdate());
             pStock->SetIPOStatus(__STOCK_IPOED__);
             m_lTotalActiveStock++;
           }
@@ -859,26 +858,24 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
 bool CMarket::GetNeteaseDayLineWebData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-  if (!gl_ExitingSystem && m_fGetDayLineFromWeb) {
-    switch (gl_cMaxSavingOneDayLineThreads) {
-    case 8: case 7: case 6:
-    gl_NeteaseDayLineWebDataSix.GetWebData(); // 网易日线历史数据
-    case 5:
-    gl_NeteaseDayLineWebDataFive.GetWebData();
-    case 4:
-    gl_NeteaseDayLineWebDataFourth.GetWebData();
-    case 3:
-    gl_NeteaseDayLineWebDataThird.GetWebData();
-    case 2:
-    gl_NeteaseDayLineWebDataSecond.GetWebData();
-    case 1: case 0:
-    gl_NeteaseDayLineWebData.GetWebData();
-    break;
-    default:
-    gl_NeteaseDayLineWebData.GetWebData();
-    TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
-    break;
-    }
+  switch (gl_cMaxSavingOneDayLineThreads) {
+  case 8: case 7: case 6:
+  gl_NeteaseDayLineWebDataSix.GetWebData(); // 网易日线历史数据
+  case 5:
+  gl_NeteaseDayLineWebDataFive.GetWebData();
+  case 4:
+  gl_NeteaseDayLineWebDataFourth.GetWebData();
+  case 3:
+  gl_NeteaseDayLineWebDataThird.GetWebData();
+  case 2:
+  gl_NeteaseDayLineWebDataSecond.GetWebData();
+  case 1: case 0:
+  gl_NeteaseDayLineWebData.GetWebData();
+  break;
+  default:
+  gl_NeteaseDayLineWebData.GetWebData();
+  TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+  break;
   }
   return true;
 }
@@ -1015,27 +1012,14 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
       }
     }
 
-    // 检查提取日线历史数据的任务是否完成了。
-    if (m_fGetDayLineFromWeb) {
-      m_fSaveDayLine = true;
-      if (!IsDayLineNeedUpdate()) {
-        m_fGetDayLineFromWeb = false;
-      }
-    }
-
-    // 判断是否存储日线库和股票代码库
-    if (m_fSaveDayLine || (m_iDayLineNeedSave > 0)) {
-      gl_ChinaStockMarket.SaveDayLineData();
-      if (!m_fGetDayLineFromWeb && (!IsDayLineNeedSaving() && !gl_ThreadStatus.IsSavingDayLine())) {
-        m_iDayLineNeedSave = 0;
-        m_fSaveDayLine = false;
-        m_fUpdatedStockCodeDataBase = true;
-        TRACE("日线历史数据更新完毕\n");
-        CString str;
-        str = _T("日线历史数据更新完毕");
-        gl_systemMessage.PushInformationMessage(str);
-        UpdateStockCodeDB();  // 更新股票池数据库
-      }
+    if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0)) {
+      m_fSaveDayLine = false;
+      m_fUpdatedStockCodeDataBase = true;
+      TRACE("日线历史数据更新完毕\n");
+      CString str;
+      str = _T("日线历史数据更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
+      UpdateStockCodeDB();  // 更新股票池数据库
     }
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
@@ -1074,6 +1058,12 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
   if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 9;
     // do something
+
+    // 判断是否存储日线库和股票代码库
+    if ((m_iDayLineNeedSave > 0)) {
+      m_fSaveDayLine = true;
+      gl_ChinaStockMarket.SaveDayLineData();
+    }
   } // 每十秒钟一次的任务
   else i10SecondsCounter -= lSecondNumber;
 
@@ -1679,16 +1669,6 @@ void CMarket::LoadOptionDB(void) {
     else {
       gl_ChinaStockMarket.SetLastLoginDay(setOption.m_LastLoginDay);
     }
-  }
-
-  // 判断是否需要读取日线历史数据
-  if (m_lLastLoginDay >= gl_systemTime.GetLastTradeDay()) {
-    m_fGetDayLineFromWeb = false;
-    m_fSaveDayLine = false;
-  }
-  else {
-    m_fGetDayLineFromWeb = true;
-    m_fSaveDayLine = true;
   }
 
   setOption.Close();

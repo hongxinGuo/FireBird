@@ -44,7 +44,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_WM_SETTINGCHANGE()
   ON_WM_TIMER()
   ON_COMMAND(ID_SAVE_RTDATA, &CMainFrame::OnSaveRtdata)
-  ON_COMMAND(ID_DownLoad_DayLine, &CMainFrame::OnDownloadDayline)
+  //  ON_COMMAND(ID_DownLoad_DayLine, &CMainFrame::OnDownloadDayline)
   ON_COMMAND(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnSaveDaylineData)
   ON_UPDATE_COMMAND_UI(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnUpdateSaveDaylineData)
   ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
@@ -493,18 +493,6 @@ void CMainFrame::OnCompileTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
     AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
-  }
-}
-
-void CMainFrame::OnDownloadDayline() {
-  // TODO: 在此添加命令处理程序代码
-  if (!gl_ChinaStockMarket.m_fGetDayLineFromWeb) {
-    gl_ChinaStockMarket.m_fGetDayLineFromWeb = true;
-    gl_ChinaStockMarket.m_fSaveDayLine = true;
-  }
-  else {
-    gl_ChinaStockMarket.m_fGetDayLineFromWeb = false;
-    gl_ChinaStockMarket.m_fSaveDayLine = false;
   }
 }
 
