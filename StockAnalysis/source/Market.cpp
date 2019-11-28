@@ -68,8 +68,6 @@ void CMarket::Reset(void) {
 
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。
 
-  m_fUpdatedStockCodeDataBase = false;
-
   m_fCalculatingRS = false;
 
   m_fGetRTStockData = true;
@@ -817,7 +815,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 bool CMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) {
   static int i1HourCounter = 3599; // 一小时一次的计数器
 
-                                   // 计算每一小时一次的任务
+  // 计算每一小时一次的任务
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
   }
@@ -882,6 +880,7 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     TaskResetSystemAgain(lCurrentTime);
 
     // 判断中国股票市场开市状态
+    TaskCheckMarketOpen(lCurrentTime);
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
     if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
@@ -896,35 +895,40 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
         SetTodayStockCompiledFlag(true);
       }
     }
-
-    if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
-      if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
-        gl_systemMessage.PushInnerSystemInformationMessage("日线历史数据处理过程中程序有瑕疵");
-      }
-      m_fSaveDayLine = false;
-      m_fUpdatedStockCodeDataBase = true;
-      TRACE("日线历史数据更新完毕\n");
-      CString str;
-      str = _T("日线历史数据更新完毕");
-      gl_systemMessage.PushInformationMessage(str);
-      if (IsUpdateStockCodeDB()) {
-        // 更新股票池数据库
-        AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
-        //UpdateStockCodeDB();
-      }
-    }
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
+  TaskUpdateStockCodeDB();
+
+  return true;
+}
+
+bool CMarket::TaskUpdateStockCodeDB(void) {
+  if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
+    if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
+      gl_systemMessage.PushInnerSystemInformationMessage("日线历史数据处理过程中程序有瑕疵");
+    }
+    m_fSaveDayLine = false;
+    TRACE("日线历史数据更新完毕\n");
+    CString str;
+    str = _T("日线历史数据更新完毕");
+    gl_systemMessage.PushInformationMessage(str);
+    if (IsUpdateStockCodeDB()) {
+      // 更新股票池数据库
+      AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
+    }
+  }
   return true;
 }
 
 bool CMarket::TaskCheckMarketOpen(long lCurrentTime) {
   if (!gl_systemTime.IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
     m_fMarketOpened = false;
+    return(m_fMarketOpened);
   }
   else if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
     m_fMarketOpened = false;
+    return(m_fMarketOpened);
   }
   else m_fMarketOpened = true;
   return m_fMarketOpened;

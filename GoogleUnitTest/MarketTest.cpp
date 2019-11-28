@@ -371,4 +371,23 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150630));
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
   }
+
+  TEST_F(CMarketTest, TestTaskUpdateStockCodeDB) {
+    gl_ChinaStockMarket.m_fSaveDayLine = true;
+    gl_ChinaStockMarket.m_iDayLineNeedSave = 1;
+    gl_ChinaStockMarket.m_iDayLineNeedProcess = 1;
+    gl_ChinaStockMarket.m_iDayLineNeedUpdate = 1;
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(false); // 不实际更新数据库
+    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSaveDayLine);
+    gl_ChinaStockMarket.m_iDayLineNeedProcess = 0;
+    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSaveDayLine);
+    gl_ChinaStockMarket.m_iDayLineNeedSave = 0;
+    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    EXPECT_TRUE(gl_ChinaStockMarket.m_fSaveDayLine);
+    gl_ChinaStockMarket.m_iDayLineNeedUpdate = 0;
+    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    EXPECT_FALSE(gl_ChinaStockMarket.m_fSaveDayLine);
+  }
 }

@@ -57,6 +57,8 @@ public:
   long GetCurrentPos(void) { return m_lCurrentPos; }
   char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
 
+  bool IsReportStatus(void) { return m_fReportStatus; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);

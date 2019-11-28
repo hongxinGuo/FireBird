@@ -17,13 +17,17 @@ namespace StockAnalysisTest {
   }
 
   TEST(SinaRTWebDataTest, TestReportDataError) {
-    gl_SinaRTWebData.ReportDataError();
-    EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("新浪实时数据有误"));
+    if (gl_SinaRTWebData.IsReportStatus()) {
+      gl_SinaRTWebData.ReportDataError();
+      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("新浪实时数据有误"));
+    }
   }
 
   TEST(SinaRTWebDataTest, TestReportCommunicationError) {
-    gl_SinaRTWebData.ReportCommunicationError();
-    EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file ：hq.sinajs.cn"));
+    if (gl_NeteaseDayLineWebData.IsReportStatus()) {
+      gl_SinaRTWebData.ReportCommunicationError();
+      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file ：hq.sinajs.cn"));
+    }
   }
 
   TEST(SinaRTWebDataTest, TestStartReadingThread) {

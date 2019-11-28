@@ -43,6 +43,7 @@ public:
   bool GetNeteaseDayLineWebData(void);
   void TaskLoadSavedTempData(void);
 
+  bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetSystem(long lCurrentTime);
   bool TaskResetSystemAgain(long lCurrentTime);
@@ -231,7 +232,6 @@ protected:
   bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fSystemReady; // 市场初始态已经设置好
   bool m_fTodayStockCompiled; // 今日是否执行了股票收盘
-  bool m_fUpdatedStockCodeDataBase; //是否更新了日线历史数据库标识
   bool m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
