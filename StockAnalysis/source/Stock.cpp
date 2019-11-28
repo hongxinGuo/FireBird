@@ -189,6 +189,7 @@ bool CStock::SaveDayLine(void) {
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
+  bool fNeedUpdateStartEndDay = false;
 
   CCriticalSection cs;
   CSingleLock s(&cs);
@@ -216,21 +217,27 @@ bool CStock::SaveDayLine(void) {
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetDay() > pDayLine->GetDay()) {
         pDayLine->AppendData(setDayLine);
+        fNeedUpdateStartEndDay = true;
       }
     }
     else {
       pDayLine->AppendData(setDayLine);
+      fNeedUpdateStartEndDay = true;
     }
   }
   setDayLine.m_pDatabase->CommitTrans();
   setDayLine.Close();
 
   // 更新最新日线日期和起始日线日期
-  s.Lock();
-  if (s.IsLocked()) {
-    SetDayLineStartDay((m_vDayLine.at(0)->GetDay() < vDayLine.at(0)->GetDay()) ? m_vDayLine.at(0)->GetDay() : vDayLine.at(0)->GetDay());
-    SetDayLineEndDay((m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() < vDayLine.at(vDayLine.size() - 1)->GetDay()) ? vDayLine.at(vDayLine.size() - 1)->GetDay() : m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
-    s.Unlock();
+  if (fNeedUpdateStartEndDay) {
+    if (m_vDayLine.at(0)->GetDay() < vDayLine.at(0)->GetDay()) {
+      SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
+      gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+    }
+    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > vDayLine.at(vDayLine.size() - 1)->GetDay()) {
+      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
+      gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+    }
   }
 
   return true;

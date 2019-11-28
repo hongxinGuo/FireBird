@@ -130,6 +130,9 @@ public:
   bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
   void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
+  bool IsUpdateStockCodeDB(void) noexcept { return m_fUpdateStockCodeDB; }
+  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
+
   bool IsUsingNeteaseRTDataReceiverAsTester(void) { return m_fUsingNeteaseRTDataReceiverAsTester; }
   bool IsUsingTengxunRTDataReceiverAsTester(void) { return m_fUsingTengxunRTDataReceiverAsTester; }
 
@@ -241,6 +244,8 @@ public:
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
   atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
   atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量
+
+  bool m_fUpdateStockCodeDB;
 private:
 };
 

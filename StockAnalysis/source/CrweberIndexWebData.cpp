@@ -210,8 +210,8 @@ CString CCrweberIndexWebData::GetNextString(void) {
     return _T("");
   }
   while (*m_pCurrentPos != '<') {
-    buffer[iBufferCount++] = *m_pCurrentPos++;
-    m_lCurrentPos++;
+    if (*m_pCurrentPos != ',') buffer[iBufferCount++] = *m_pCurrentPos; // Å×µô¶ººÅ£¬¶ººÅµ¼ÖÂatofº¯ÊýÎÞ·¨Ë³Àû×ª»¯×Ö·û´®
+    IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;
   CString str;

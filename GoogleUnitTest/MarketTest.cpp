@@ -16,6 +16,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      gl_ChinaStockMarket.__Test_SetResetSystem(false);
     }
 
     virtual void TearDown(void) override {
@@ -24,7 +25,6 @@ namespace StockAnalysisTest {
 
     static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      gl_ChinaStockMarket.__Test_SetResetSystem(false);
     }
 
     static void TearDownTestCase() {

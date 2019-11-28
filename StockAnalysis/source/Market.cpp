@@ -82,6 +82,8 @@ void CMarket::Reset(void) {
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
+  m_fUpdateStockCodeDB = false;
+
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
   m_iDayLineNeedUpdate = 0;
@@ -909,7 +911,9 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
       CString str;
       str = _T("日线历史数据更新完毕");
       gl_systemMessage.PushInformationMessage(str);
-      UpdateStockCodeDB();  // 更新股票池数据库
+      if (IsUpdateStockCodeDB()) {
+        UpdateStockCodeDB();  // 更新股票池数据库
+      }
     }
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
