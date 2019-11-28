@@ -18,7 +18,7 @@ CWebData::CWebData() noexcept {
   m_fWebDataReceived = false;// 实时数据已接收完毕标识
 
 #ifdef DEBUG
-  m_fReportStatus = false;
+  m_fReportStatus = true;
 #else
   m_fReportStatus = false;
 #endif
