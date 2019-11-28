@@ -43,6 +43,7 @@ public:
   bool GetNeteaseDayLineWebData(void);
   void TaskLoadSavedTempData(void);
 
+  bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetSystem(long lCurrentTime);
   bool TaskResetSystemAgain(long lCurrentTime);
 

@@ -143,6 +143,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\threadsavdayline.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />

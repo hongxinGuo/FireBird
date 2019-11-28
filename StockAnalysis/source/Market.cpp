@@ -882,13 +882,6 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     TaskResetSystemAgain(lCurrentTime);
 
     // 判断中国股票市场开市状态
-    if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
-      m_fMarketOpened = false;
-    }
-    else if ((gl_systemTime.GetDayOfWeek() == 0) || (gl_systemTime.GetDayOfWeek() == 6)) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-      m_fMarketOpened = false;
-    }
-    else m_fMarketOpened = true;
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
     if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
@@ -924,6 +917,17 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   else i1MinuteCounter -= lSecondNumber;
 
   return true;
+}
+
+bool CMarket::TaskCheckMarketOpen(long lCurrentTime) {
+  if (!gl_systemTime.IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
+    m_fMarketOpened = false;
+  }
+  else if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+    m_fMarketOpened = false;
+  }
+  else m_fMarketOpened = true;
+  return m_fMarketOpened;
 }
 
 bool CMarket::TaskResetSystem(long lCurrentTime) {
