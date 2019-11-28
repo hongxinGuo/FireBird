@@ -36,7 +36,7 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 const int gl_cMaxSavingOneDayLineThreads = 3;
 const int gl_cMaxCalculateDayLineRS = 8;
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
-CSemaphore gl_SaveOneStockDayLine(gl_cMaxSavingOneDayLineThreads, gl_cMaxSavingOneDayLineThreads);
+CSemaphore gl_SaveOneStockDayLine(4, 4);
 CSemaphore gl_CalculateDayLineRelativeStrong(gl_cMaxCalculateDayLineRS, gl_cMaxCalculateDayLineRS); // ¼ÆËãÈÕÏßÏà¶ÔÇ¿¶ÈµÄÏß³Ì×î¶àÔÊĞí8¸öÍ¬Ê±ÔËĞĞ
 CSemaphore gl_ProcessSinaRTDataQueue(1, 1);   // ĞÂÀËÊµÊ±Êı¾İ´¦ÀíÍ¬Ê±Ö»ÔÊĞíÒ»¸öÏß³Ì´æÔÚ
 CSemaphore gl_ProcessTengxunRTDataQueue(1, 1);

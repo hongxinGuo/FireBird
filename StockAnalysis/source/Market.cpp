@@ -904,7 +904,10 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
       }
     }
 
-    if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0)) {
+    if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
+      if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
+        gl_systemMessage.PushInnerSystemInformationMessage("日线历史数据处理过程中程序有瑕疵");
+      }
       m_fSaveDayLine = false;
       m_fUpdatedStockCodeDataBase = true;
       TRACE("日线历史数据更新完毕\n");
