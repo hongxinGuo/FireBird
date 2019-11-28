@@ -230,17 +230,21 @@ bool CStock::SaveDayLine(void) {
 
   // 更新最新日线日期和起始日线日期
   if (fNeedUpdateStartEndDay) {
-    if (m_vDayLine.at(0)->GetDay() < vDayLine.at(0)->GetDay()) {
-      SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
-      gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
-    }
-    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > vDayLine.at(vDayLine.size() - 1)->GetDay()) {
-      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
-      gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
-    }
+    UpdateDayLineStartEndDay();
   }
 
   return true;
+}
+
+void CStock::UpdateDayLineStartEndDay(void) {
+  if (m_vDayLine.at(0)->GetDay() < GetDayLineStartDay()) {
+    SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+  }
+  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > GetDayLineEndDay()) {
+    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+  }
 }
 
 void CStock::SaveBasicInfo(CSetDayLine& setDayLine) {

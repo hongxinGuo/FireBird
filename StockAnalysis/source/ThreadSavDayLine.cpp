@@ -26,7 +26,8 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
     delete pTransfer;
     pTransfer = nullptr;
     gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
-
+    str = pStock->GetStockCode() + _T("日线资料存储完成");
+    gl_systemMessage.PushDayLineInfoMessage(str);
     singleLock.Unlock();
     return 6;
   }

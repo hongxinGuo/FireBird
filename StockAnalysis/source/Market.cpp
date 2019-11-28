@@ -912,7 +912,9 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
       str = _T("日线历史数据更新完毕");
       gl_systemMessage.PushInformationMessage(str);
       if (IsUpdateStockCodeDB()) {
-        UpdateStockCodeDB();  // 更新股票池数据库
+        // 更新股票池数据库
+        AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
+        //UpdateStockCodeDB();
       }
     }
   } // 每一分钟一次的任务
@@ -1087,9 +1089,6 @@ bool CMarket::SaveDayLineData(void) {
         str1 += _T(" 新股上市,没有日线资料");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
-      str = pStock->GetStockCode();
-      str += _T("日线资料存储完成");
-      gl_systemMessage.PushDayLineInfoMessage(str);
     }
     if (gl_ExitingSystem) {
       break; // 如果程序正在退出，则停止存储。

@@ -239,13 +239,14 @@ protected:
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
   atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
 
+  bool m_fUpdateStockCodeDB;
+
 public:
   // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
   atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
   atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量
 
-  bool m_fUpdateStockCodeDB;
 private:
 };
 

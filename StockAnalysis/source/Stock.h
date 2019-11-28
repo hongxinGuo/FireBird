@@ -203,6 +203,7 @@ public:
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
+  void UpdateDayLineStartEndDay(void);
   void SaveBasicInfo(CSetDayLine& setDayLine);
   void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
   void SaveTempInfo(CSetDayLineToday& setDayLineToday);

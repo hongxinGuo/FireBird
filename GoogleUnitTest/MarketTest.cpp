@@ -25,6 +25,8 @@ namespace StockAnalysisTest {
 
     static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
+      gl_ChinaStockMarket.__Test_SetResetSystem(false);
+      gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
     }
 
     static void TearDownTestCase() {

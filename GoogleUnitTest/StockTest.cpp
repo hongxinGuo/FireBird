@@ -702,6 +702,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CDayLine id;
     CStockPtr pStock = make_shared<CStock>();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -729,6 +730,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLine();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
 
     setDayLine.m_strFilter = _T("[Day] = 21101201");
     setDayLine.Open();
@@ -832,5 +834,79 @@ namespace StockAnalysisTest {
     }
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
+  }
+
+  TEST(CStockTest, TestUpdateDayLineStartEndDay) {
+    CDayLinePtr pid;
+    CStock id;
+    CStockPtr pStock = make_shared<CStock>();
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+
+    for (int i = 0; i < 10; i++) {
+      pid = make_shared<CDayLine>();
+      pid->SetDay(19900101 + i * 100000);
+      pid->SetMarket(__SHANGHAI_MARKET__);
+      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockName(_T("首创股份"));
+      pid->SetLastClose(34235345);
+      pid->SetOpen(1000000 + i);
+      pid->SetHigh(45234543);
+      pid->SetLow(3452345);
+      pid->SetClose(452435);
+      pid->SetVolume(34523454);
+      pid->SetAmount(3245235345);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDownRate(123.45);
+      pid->SetTotalValue(234523452345);
+      pid->SetCurrentValue(234145345245);
+      pid->SetChangeHandRate(54.321);
+      pid->SetRelativeStrong(14.5);
+      pStock->m_vDayLine.push_back(pid);
+    }
+    pStock->SetStockCode(_T("sh600008"));
+    pStock->SetDayLineStartDay(19900102);
+    pStock->SetDayLineEndDay(20800100);
+    ASSERT(!gl_fNormalMode);
+    pStock->UpdateDayLineStartEndDay();
+    EXPECT_EQ(pStock->GetDayLineEndDay(), 19900101 + 9 * 100000);
+    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900101);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+  }
+
+  TEST(CStockTest, TestUpdateDayLineStartEndDay2) {
+    CDayLinePtr pid;
+    CStock id;
+    CStockPtr pStock = make_shared<CStock>();
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+
+    for (int i = 0; i < 10; i++) {
+      pid = make_shared<CDayLine>();
+      pid->SetDay(19900101 + i * 100000);
+      pid->SetMarket(__SHANGHAI_MARKET__);
+      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockName(_T("首创股份"));
+      pid->SetLastClose(34235345);
+      pid->SetOpen(1000000 + i);
+      pid->SetHigh(45234543);
+      pid->SetLow(3452345);
+      pid->SetClose(452435);
+      pid->SetVolume(34523454);
+      pid->SetAmount(3245235345);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDownRate(123.45);
+      pid->SetTotalValue(234523452345);
+      pid->SetCurrentValue(234145345245);
+      pid->SetChangeHandRate(54.321);
+      pid->SetRelativeStrong(14.5);
+      pStock->m_vDayLine.push_back(pid);
+    }
+    pStock->SetStockCode(_T("sh600008"));
+    pStock->SetDayLineStartDay(19900100);
+    pStock->SetDayLineEndDay(20800102);
+    ASSERT(!gl_fNormalMode);
+    pStock->UpdateDayLineStartEndDay();
+    EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
+    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
   }
 }

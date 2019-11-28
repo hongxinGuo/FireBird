@@ -297,6 +297,7 @@
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
+    <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
