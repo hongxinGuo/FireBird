@@ -41,6 +41,7 @@ public:
 
   bool GetNeteaseDayLineWebData(void);
 
+  void TaskSetCheckTodayActiveStockFlag(long lCurrentTime);
   bool TaskCompileTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
@@ -118,13 +119,14 @@ public:
   // 是否所有股票的历史日线数据都查询过一遍了
   bool ProcessDayLineGetFromNeeteaseServer(void);
 
-  long CompileCurrentTradeDayStock(void);
+  long CompileCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
 
   bool IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
+  void SetCheckTodayActiveStock(bool fFlag) noexcept { m_fCheckTodayActiveStock = fFlag; }
 
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }

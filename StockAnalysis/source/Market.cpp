@@ -840,19 +840,23 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     TaskCheckMarketOpen(lCurrentTime);
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
-    if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
-      m_fCheckTodayActiveStock = true;
-    }
-    else m_fCheckTodayActiveStock = false;
+    TaskSetCheckTodayActiveStockFlag(lCurrentTime);
 
     // 下午三点三分开始处理当日实时数据。
     TaskCompileTodayStock(lCurrentTime);
+
+    TaskUpdateStockCodeDB();
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
-  TaskUpdateStockCodeDB();
-
   return true;
+}
+
+void CMarket::TaskSetCheckTodayActiveStockFlag(long lCurrentTime) {
+  if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
+    m_fCheckTodayActiveStock = true;
+  }
+  else m_fCheckTodayActiveStock = false;
 }
 
 bool CMarket::TaskCompileTodayStock(long lCurrentTime) {
@@ -1045,7 +1049,6 @@ void CMarket::SetShowStock(CString strStockCode) {
 //  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-
 bool CMarket::SaveDayLineData(void) {
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
@@ -1158,13 +1161,12 @@ bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
 // long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CMarket::CompileCurrentTradeDayStock(void) {
+long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
   char buffer[20];
   CString strDay;
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
   long iCount = 0;
-  long lCurrentTradeDay = gl_systemTime.FormatToDay(m_ttNewestTransactionTime);
 
   CString str;
   str = _T("开始处理最新交易日的实时数据");
