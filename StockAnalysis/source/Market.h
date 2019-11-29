@@ -38,11 +38,10 @@ public:
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
   void TaskGetNeteaseDayLineFromWeb(void);
-  void TaskProcessDayLineGetFromNeeteaseServer();
 
   bool GetNeteaseDayLineWebData(void);
-  void TaskLoadSavedTempData(void);
 
+  bool TaskCompileTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetSystem(long lCurrentTime);

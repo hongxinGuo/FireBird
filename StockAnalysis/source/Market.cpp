@@ -110,21 +110,6 @@ void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
   }
 }
 
-void CMarket::TaskProcessDayLineGetFromNeeteaseServer() {
-  if (m_iDayLineNeedProcess > 0) {
-    ProcessDayLineGetFromNeeteaseServer();
-  }
-}
-
-void CMarket::TaskLoadSavedTempData(void) {
-  ASSERT(SystemReady());
-  // 装入之前存储的系统今日数据（如果有的话）
-  if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
-    LoadTodayTempDB();
-    m_fTodayTempDataLoaded = true;
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 初始化所有可能的股票代码池，只被CMarket的初始函数调用一次。
@@ -299,7 +284,6 @@ bool CMarket::CreateTotalStockContainer(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
-  static int iStarted = 0;
   static int siCounter = 0;
 
   bool fFound = false;
@@ -653,7 +637,7 @@ bool CMarket::SchedulingTask(void) {
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-  if (!gl_ExitingSystem && m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
+  if (m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
@@ -670,7 +654,10 @@ bool CMarket::SchedulingTask(void) {
 
   // 系统准备好了之后需要完成的各项工作
   if (SystemReady()) {
-    TaskLoadSavedTempData();
+    if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
+      LoadTodayTempDB();
+      m_fTodayTempDataLoaded = true;
+    }
     TaskGetNeteaseDayLineFromWeb();
   }
   return true;
@@ -775,7 +762,9 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   }
 
   // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-  TaskProcessDayLineGetFromNeeteaseServer();
+  if (m_iDayLineNeedProcess > 0) {
+    ProcessDayLineGetFromNeeteaseServer();
+  }
 
   return true;
 }
@@ -856,19 +845,25 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     }
     else m_fCheckTodayActiveStock = false;
 
-    // 下午三点一分开始处理当日实时数据。
-    if ((lCurrentTime >= 150100) && !IsTodayStockCompiled()) {
-      if (SystemReady()) {
-        AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
-        SetTodayStockCompiledFlag(true);
-      }
-    }
+    // 下午三点三分开始处理当日实时数据。
+    TaskCompileTodayStock(lCurrentTime);
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
   TaskUpdateStockCodeDB();
 
   return true;
+}
+
+bool CMarket::TaskCompileTodayStock(long lCurrentTime) {
+  if ((lCurrentTime >= 150300) && !IsTodayStockCompiled()) {
+    if (SystemReady()) {
+      AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
+      SetTodayStockCompiledFlag(true);
+      return true;
+    }
+  }
+  return false;
 }
 
 bool CMarket::TaskUpdateStockCodeDB(void) {
