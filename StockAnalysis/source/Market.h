@@ -60,12 +60,13 @@ public:
   int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
-  int GetInquiringStr(CString& str, vector<CStockPtr>::iterator& itStock, CString strPostfix, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
-  bool StepToNextActiveStockIT(vector<CStockPtr>::iterator& itStock);
-  void ResetIT(void); //重置各迭代器
+  int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock);
+  bool StepToActiveStockIndex(int& iStockIndex);
 
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& str);
+
+  int IncreaseStockInquiringIndex(int& iIndex);
 
   bool IsAStock(CStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
@@ -197,6 +198,7 @@ public:
   bool m_fUsingTengxunRTDataReceiverAsTester;
 
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  long m_lTotalStock; // 股票代码总数
 
   vector<CStockPtr> gl_vStockChoice; // 自选股票池
 
@@ -214,10 +216,6 @@ protected:
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
   long m_lTotalActiveStock;	// 当天股票总数
-
-  vector<CStockPtr>::iterator m_itSinaStock; // 新浪实时股票代码查询迭代器
-  vector<CStockPtr>::iterator m_itTengxunStock; // 腾讯实时股票代码迭代器
-  vector<CStockPtr>::iterator m_itNeteaseStock; // 网易实时股票代码迭代器
 
   vector<CStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;
