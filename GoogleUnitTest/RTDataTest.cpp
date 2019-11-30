@@ -1,6 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 #include"globedef.h"
+#include"accessory.h"
 
 #include"RTData.h"
 #include"SinaRTWebData.h"
@@ -1535,7 +1536,7 @@ namespace StockAnalysisTest {
   TEST(CRTDataTest, TestSaveData) {
     CSetRealTimeData setRTData;
     CRTDataPtr pRTData = make_shared<CRTData>();
-    time_t tt = gl_systemTime.FormatToTTime(21101123);
+    time_t tt = FormatToTTime(21101123);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetMarket(__SHANGHAI_MARKET__);
@@ -1596,7 +1597,7 @@ namespace StockAnalysisTest {
     CSetRealTimeData setRTData;
     CRTDataPtr pRTData = make_shared<CRTData>();
     CRTData id;
-    time_t tt = gl_systemTime.FormatToTTime(21101123);
+    time_t tt = FormatToTTime(21101123);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetMarket(__SHANGHAI_MARKET__);

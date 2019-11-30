@@ -6,7 +6,7 @@
 #include"accessory.h"
 
 namespace StockAnalysisTest {
-  TEST(TestGetDefaultSchemaConnection, GetDefaultSchemaAnalysisTest) {
+  TEST(AccessoryTest, TestGetDefaultSchemaAnalysis) {
     EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
     EXPECT_STREQ(GetDefaultSchemaConnect(), _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"));
     EXPECT_TRUE(gl_fTestMode);
@@ -16,6 +16,35 @@ namespace StockAnalysisTest {
     gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
     EXPECT_STREQ(GetDefaultSchemaConnect(), _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"));
     EXPECT_TRUE(gl_fTestMode);
+  }
+
+  TEST(AccessoryTest, TestFormatToDay) {
+    tm tm_, tm_2;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 0;
+    tm_.tm_min = 0;
+    tm_.tm_sec = 0;
+    tm_2 = tm_;
+    long lDay = FormatToDay(&tm_);
+    time_t tt = mktime(&tm_2);
+    long lDay2 = FormatToDay(tt);
+    EXPECT_EQ(lDay, 20000105);
+    EXPECT_EQ(lDay2, 20000105);
+  }
+
+  TEST(AssessoryTest, TestFormatToTTime) {
+    tm tm_;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 0;
+    tm_.tm_min = 0;
+    tm_.tm_sec = 0;
+    time_t tt = mktime(&tm_);
+    long lDay = FormatToDay(tt);
+    EXPECT_EQ(lDay, 20000105);
   }
 }
 

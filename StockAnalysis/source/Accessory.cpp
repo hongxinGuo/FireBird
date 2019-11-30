@@ -46,6 +46,28 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
   }
 }
 
+time_t FormatToTTime(long lDay, long lTime) noexcept {
+  ASSERT(lDay > 19700000);
+  const long lYear = lDay / 10000;
+  const long lMonth = (lDay - lYear * 10000) / 100;
+  const long lD = (lDay - lYear * 10000 - lMonth * 100);
+  const long lHour = lTime / 10000;
+  const long lMinute = (lTime - lHour * 10000) / 100;
+  const long lSecond = lTime - lHour * 10000 - lMinute * 100;
+  CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
+  return (ct.GetTime());
+}
+
+long FormatToDay(time_t const tt) noexcept {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
+}
+
+long FormatToDay(tm* ptm) noexcept {
+  return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。

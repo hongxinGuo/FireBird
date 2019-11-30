@@ -29,11 +29,13 @@ namespace StockAnalysisTest {
       while (!setStockCode.IsEOF()) {
         CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(setStockCode.m_StockCode);
         EXPECT_FALSE(pStock->IsActive());
+        pStock->SetIPOStatus(setStockCode.m_IPOed);
+        pStock->SetMarket(setStockCode.m_StockType);
+        pStock->SetStockCode(setStockCode.m_StockCode);
+        pStock->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
+        pStock->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
         if (setStockCode.m_IPOed == __STOCK_IPOED__) {
           pStock->SetActive(true);
-          pStock->SetStockCode(setStockCode.m_StockCode);
-          //pStock->SetStockName(setStockCode.m_StockName); // 字符串制式不相符
-          pStock->SetMarket(setStockCode.m_StockType);
           gl_ChinaStockMarket.IncreaseActiveStockNumber();
         }
         setStockCode.MoveNext();

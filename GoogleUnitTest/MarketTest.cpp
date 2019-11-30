@@ -623,4 +623,17 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.TaskSetCheckTodayActiveStockFlag(150000);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCheckTodayActiveStock());
   }
+
+  TEST_F(CMarketTest, TestLoadStockCodeDB) {
+    // 股票代码数据库在全局环境设置时即已装入测试系统，故而直接测试即可。
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetStockCode(), _T("sh600000"));
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->GetDayLineStartDay(), 19991110);
+    EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->IsActive());
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->GetIPOStatus(), __STOCK_DELISTED__);
+    EXPECT_STREQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->GetStockCode(), _T("sh600001"));
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->GetDayLineStartDay(), 19980122);
+    EXPECT_EQ(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->GetDayLineEndDay(), 20091215);
+    EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsActive());
+  }
 }

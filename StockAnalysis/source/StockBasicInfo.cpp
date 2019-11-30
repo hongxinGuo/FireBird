@@ -35,7 +35,7 @@ void CStockBasicInfo::Reset(void) {
 
 void CStockBasicInfo::SaveBasicInfo(CSetDayLine& setDayLine) {
   ASSERT(setDayLine.IsOpen());
-  setDayLine.m_Day = gl_systemTime.FormatToDay(m_TransactionTime);
+  setDayLine.m_Day = FormatToDay(m_TransactionTime);
   setDayLine.m_Market = m_wMarket;
   setDayLine.m_StockCode = m_strStockCode;
   setDayLine.m_StockName = m_strStockName;
@@ -56,7 +56,7 @@ void CStockBasicInfo::SaveBasicInfo(CSetDayLine& setDayLine) {
 
 void CStockBasicInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
-  setDayLineToday.m_Day = gl_systemTime.FormatToDay(m_TransactionTime);
+  setDayLineToday.m_Day = FormatToDay(m_TransactionTime);
   setDayLineToday.m_Market = m_wMarket;
   setDayLineToday.m_StockCode = m_strStockCode;
   setDayLineToday.m_StockName = m_strStockName;
