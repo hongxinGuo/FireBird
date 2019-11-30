@@ -854,16 +854,10 @@ void CStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
 }
 
 bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
-  if (setStockCode.m_StockCode != _T("")) {
-    SetStockCode(setStockCode.m_StockCode);
-  }
-  if (setStockCode.m_StockName != _T("")) {
-    CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-    SetStockName(str);
-  }
-  if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
-    SetIPOStatus(setStockCode.m_IPOed);
-  }
+  SetStockCode(setStockCode.m_StockCode);
+  CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
+  SetStockName(str);
+  SetIPOStatus(setStockCode.m_IPOed);
   SetDayLineStartDay(setStockCode.m_DayLineStartDay);
   if (GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDay(setStockCode.m_DayLineEndDay);

@@ -32,8 +32,12 @@ namespace StockAnalysisTest {
         pStock->SetIPOStatus(setStockCode.m_IPOed);
         pStock->SetMarket(setStockCode.m_StockType);
         pStock->SetStockCode(setStockCode.m_StockCode);
+        CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
+        pStock->SetStockName(str);
         pStock->SetDayLineStartDay(setStockCode.m_DayLineStartDay);
-        pStock->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
+        if (pStock->GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
+          pStock->SetDayLineEndDay(setStockCode.m_DayLineEndDay);
+        }
         if (setStockCode.m_IPOed == __STOCK_IPOED__) {
           pStock->SetActive(true);
           gl_ChinaStockMarket.IncreaseActiveStockNumber();

@@ -325,6 +325,24 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str2.Right(6), strCompare.Right(6));
   }
 
+  TEST_F(CMarketTest, TestGetNeteaseDayLineInquiringStr) {
+    CString str;
+    EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(2)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(str));
+    EXPECT_STREQ(str, _T("0600001"));
+    EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->IsDayLineNeedUpdate());
+    EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsDayLineNeedUpdate());
+
+    // »Ö¸´Ô­×´
+    for (int i = 0; i < 12000; i++) {
+      if (!gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->IsDayLineNeedUpdate()) {
+        gl_ChinaStockMarket.m_vChinaMarketAStock.at(i)->SetDayLineNeedUpdate(true);
+      }
+    }
+  }
+
   TEST_F(CMarketTest, TestIsAStock) {
     CStockPtr pstock = make_shared<CStock>();
     pstock->SetStockCode(_T("sh600000"));
