@@ -336,6 +336,18 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
   }
 
+  TEST(CStockTest, TestIsDayLineNeedProcess) {
+    CStock stock;
+    long lNumberOfStock = gl_ChinaStockMarket.m_iDayLineNeedProcess;
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(true);
+    EXPECT_TRUE(stock.IsDayLineNeedProcess());
+    EXPECT_EQ(lNumberOfStock + 1, gl_ChinaStockMarket.m_iDayLineNeedProcess);
+    stock.SetDayLineNeedProcess(false);
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedProcess);
+  }
+
   TEST(CStockTest, TestIsChoiced) {
     CStock stock;
     EXPECT_FALSE(stock.IsChoiced());

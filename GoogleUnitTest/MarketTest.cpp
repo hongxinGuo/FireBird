@@ -438,6 +438,7 @@ namespace StockAnalysisTest {
     }
     EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
   }
+
   TEST_F(CMarketTest, TestIsLoadSelectedStock) {
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     gl_ChinaStockMarket.SetLoadSelectedStock(true);

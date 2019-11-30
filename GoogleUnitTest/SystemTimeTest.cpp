@@ -92,4 +92,21 @@ namespace StockAnalysisTest {
     LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
     EXPECT_EQ(gl_systemTime.GetLastTradeDay(), LastTradeDay);
   }
+
+  TEST(SystemTimeTest, TestIsWorkingDay) {
+    CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(time1));
+    CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(time2));
+    CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(time3));
+    CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(time4));
+    CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(time5));
+    CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
+    EXPECT_FALSE(gl_systemTime.IsWorkingDay(time6));
+    CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
+    EXPECT_FALSE(gl_systemTime.IsWorkingDay(time7));
+  }
 }

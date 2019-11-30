@@ -1146,7 +1146,6 @@ bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
       pStock->SetDayLineNeedProcess(false);
-      m_iDayLineNeedProcess--;
     }
   }
   return true;

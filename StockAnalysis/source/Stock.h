@@ -194,7 +194,7 @@ public:
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
   void SetDayLineNeedUpdate(bool fFlag) noexcept;
   bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
-  void SetDayLineNeedProcess(bool fFlag) noexcept { m_fDayLineNeedProcess = fFlag; }
+  void SetDayLineNeedProcess(bool fFlag) noexcept;
   bool IsDayLineNeedSaving(void) { return m_fDayLineNeedSaving; }
   void SetDayLineNeedSaving(bool fFlag) { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void) { return(m_fDayLineNeedSaving.exchange(false)); }

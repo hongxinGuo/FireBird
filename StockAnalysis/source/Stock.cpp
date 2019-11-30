@@ -985,6 +985,19 @@ void CStock::SetDayLineNeedUpdate(bool fFlag) noexcept {
   }
 }
 
+void CStock::SetDayLineNeedProcess(bool fFlag) noexcept {
+  if (fFlag) {
+    ASSERT(!m_fDayLineNeedProcess);
+    m_fDayLineNeedProcess = true;
+    gl_ChinaStockMarket.m_iDayLineNeedProcess++;
+  }
+  else {
+    ASSERT(m_fDayLineNeedProcess);
+    m_fDayLineNeedProcess = false;
+    gl_ChinaStockMarket.m_iDayLineNeedProcess--;
+  }
+}
+
 #ifdef _DEBUG
 void CStock::AssertValid() const {
   CObject::AssertValid();

@@ -75,7 +75,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     }
     pStock->m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
     pStock->SetDayLineNeedProcess(true);
-    gl_ChinaStockMarket.m_iDayLineNeedProcess++;
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
