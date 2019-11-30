@@ -16,6 +16,8 @@ enum {
 #include"SetDayLine.h"
 #include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
+#include"SetStockCode.h"
+
 #include"RTData.h"
 #include"DayLine.h"
 #include"OneDeal.h"
@@ -214,6 +216,9 @@ public:
   bool LoadDayLineInfo(CSetDayLineInfo& setDayLine);
   // 存储实时行情数据进数据库。（目前弃之不用）
   bool SaveRealTimeData(CSetRealTimeData& setRT);
+  void SaveStockCodeDB(CSetStockCode& setStockCode);
+  void AppendStockCodeDB(CSetStockCode& setStockCode);
+  bool LoadStockCodeDB(CSetStockCode& setStockCode);
 
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }

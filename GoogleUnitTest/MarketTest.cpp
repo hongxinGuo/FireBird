@@ -449,6 +449,7 @@ namespace StockAnalysisTest {
   TEST_F(CMarketTest, TestTaskResetSystem) {
     tm tm_;
     tm_.tm_wday = 1;
+    gl_systemTime.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
     EXPECT_FALSE(gl_fResetSystem);
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
@@ -466,6 +467,7 @@ namespace StockAnalysisTest {
   TEST_F(CMarketTest, TestTaskResetSystem2) {
     tm tm_;
     tm_.tm_wday = 1;
+    gl_systemTime.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
     EXPECT_FALSE(gl_fResetSystem);
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
@@ -483,6 +485,7 @@ namespace StockAnalysisTest {
   TEST_F(CMarketTest, TestTaskResetSystemAgain) {
     tm tm_;
     tm_.tm_wday = 1;
+    gl_systemTime.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.__Test_IsPermitResetSystem());
     EXPECT_FALSE(gl_fResetSystem);
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());

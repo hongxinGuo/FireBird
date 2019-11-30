@@ -208,6 +208,14 @@ bool CStock::SaveDayLine(void) {
     lCurrentPos++;
     setDayLine.MoveNext();
   }
+  if (vDayLine.size() == 0) {
+    SetDayLineStartDay(gl_systemTime.GetDay());
+    SetDayLineEndDay(19900101);
+  }
+  else {
+    SetDayLineStartDay(vDayLine.at(0)->GetDay());
+    SetDayLineEndDay(vDayLine.at(vDayLine.size() - 1)->GetDay());
+  }
   lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
   setDayLine.m_pDatabase->BeginTrans();
@@ -813,6 +821,66 @@ bool CStock::SaveRealTimeData(CSetRealTimeData& setRTData) {
     pRTData->AppendData(setRTData);
   }
 
+  return true;
+}
+
+void CStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
+  CString str;
+  setStockCode.m_Counter = GetOffset();
+  setStockCode.m_StockType = GetMarket();
+  setStockCode.m_StockCode = GetStockCode();
+  if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
+    setStockCode.m_StockName = GetStockName(); // 则存储新的名字
+  }
+  if (GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
+    if (GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+      setStockCode.m_IPOed = __STOCK_DELISTED__;
+    }
+    else {
+      setStockCode.m_IPOed = GetIPOStatus();
+    }
+  }
+  else {
+    setStockCode.m_IPOed = GetIPOStatus();
+  }
+  setStockCode.m_DayLineStartDay = GetDayLineStartDay();
+  setStockCode.m_DayLineEndDay = GetDayLineEndDay();
+}
+
+void CStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
+  setStockCode.AddNew();
+  SaveStockCodeDB(setStockCode);
+  setStockCode.Update();
+}
+
+bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
+  if (setStockCode.m_StockCode != _T("")) {
+    SetStockCode(setStockCode.m_StockCode);
+  }
+  if (setStockCode.m_StockName != _T("")) {
+    CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
+    SetStockName(str);
+  }
+  if (setStockCode.m_IPOed != __STOCK_NOT_CHECKED__) { // 如果此股票代码已经被检查过，则设置股票目前状态。否则不设置。
+    SetIPOStatus(setStockCode.m_IPOed);
+  }
+  SetDayLineStartDay(setStockCode.m_DayLineStartDay);
+  if (GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
+    SetDayLineEndDay(setStockCode.m_DayLineEndDay);
+  }
+  // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
+  if (gl_systemTime.GetLastTradeDay() <= GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
+    if (IsDayLineNeedUpdate()) SetDayLineNeedUpdate(false); // 日线数据不需要更新
+  }
+  else if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
+    if (IsDayLineNeedUpdate()) SetDayLineNeedUpdate(false);
+  }
+  else if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则不需要再更新日线数据
+    if (IsDayLineNeedUpdate() && (GetDayLineEndDay() != 19900101)) SetDayLineNeedUpdate(false);
+  }
+  else {
+    int i = 0;
+  }
   return true;
 }
 
