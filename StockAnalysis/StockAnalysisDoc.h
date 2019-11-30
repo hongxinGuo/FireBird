@@ -6,7 +6,7 @@
 class CStockAnalysisDoc : public CDocument
 {
 protected: // 仅从序列化创建
-  CStockAnalysisDoc() noexcept;
+  CStockAnalysisDoc();
   DECLARE_DYNCREATE(CStockAnalysisDoc)
 
   // 特性

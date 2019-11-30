@@ -8,7 +8,7 @@
 class CStockAnalysisView : public CView
 {
 protected: // 仅从序列化创建
-  CStockAnalysisView() noexcept;
+  CStockAnalysisView();
   DECLARE_DYNCREATE(CStockAnalysisView)
 
   // 特性
@@ -76,8 +76,7 @@ public:
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本
-inline CStockAnalysisDoc* CStockAnalysisView::GetDocument() const
-{
+inline CStockAnalysisDoc* CStockAnalysisView::GetDocument() const {
   return reinterpret_cast<CStockAnalysisDoc*>(m_pDocument);
 }
 #endif

@@ -406,10 +406,17 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CStock stock;
+    int iNumberOfSave = gl_ChinaStockMarket.m_iDayLineNeedSave;
     stock.SetDayLineNeedSaving(true);
+    EXPECT_EQ(iNumberOfSave + 1, gl_ChinaStockMarket.m_iDayLineNeedSave);
     EXPECT_TRUE(stock.IsDayLineNeedSaving());
     stock.SetDayLineNeedSaving(false);
+    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.m_iDayLineNeedSave);
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.m_iDayLineNeedSave);
   }
 
   TEST(CStockTest, TestTodayDataIsActive) {

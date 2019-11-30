@@ -25,17 +25,14 @@ END_MESSAGE_MAP()
 
 // CStockAnalysisDoc 构造/析构
 
-CStockAnalysisDoc::CStockAnalysisDoc() noexcept
-{
+CStockAnalysisDoc::CStockAnalysisDoc() {
   // TODO: 在此添加一次性构造代码
 }
 
-CStockAnalysisDoc::~CStockAnalysisDoc()
-{
+CStockAnalysisDoc::~CStockAnalysisDoc() {
 }
 
-BOOL CStockAnalysisDoc::OnNewDocument()
-{
+BOOL CStockAnalysisDoc::OnNewDocument() {
   if (!CDocument::OnNewDocument())
     return FALSE;
 
@@ -47,8 +44,7 @@ BOOL CStockAnalysisDoc::OnNewDocument()
 
 // CStockAnalysisDoc 序列化
 
-void CStockAnalysisDoc::Serialize(CArchive& ar)
-{
+void CStockAnalysisDoc::Serialize(CArchive& ar) {
   if (ar.IsStoring())
   {
     // TODO: 在此添加存储代码
@@ -62,8 +58,7 @@ void CStockAnalysisDoc::Serialize(CArchive& ar)
 #ifdef SHARED_HANDLERS
 
 // 缩略图的支持
-void CStockAnalysisDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
-{
+void CStockAnalysisDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds) {
   // 修改此代码以绘制文档数据
   dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
@@ -83,8 +78,7 @@ void CStockAnalysisDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 搜索处理程序的支持
-void CStockAnalysisDoc::InitializeSearchContent()
-{
+void CStockAnalysisDoc::InitializeSearchContent() {
   CString strSearchContent;
   // 从文档数据设置搜索内容。
   // 内容部分应由“;”分隔
@@ -93,8 +87,7 @@ void CStockAnalysisDoc::InitializeSearchContent()
   SetSearchContent(strSearchContent);
 }
 
-void CStockAnalysisDoc::SetSearchContent(const CString& value)
-{
+void CStockAnalysisDoc::SetSearchContent(const CString& value) {
   if (value.IsEmpty())
   {
     RemoveChunk(PKEY_Search_Contents.fmtid, PKEY_Search_Contents.pid);
@@ -116,13 +109,11 @@ void CStockAnalysisDoc::SetSearchContent(const CString& value)
 // CStockAnalysisDoc 诊断
 
 #ifdef _DEBUG
-void CStockAnalysisDoc::AssertValid() const
-{
+void CStockAnalysisDoc::AssertValid() const {
   CDocument::AssertValid();
 }
 
-void CStockAnalysisDoc::Dump(CDumpContext& dc) const
-{
+void CStockAnalysisDoc::Dump(CDumpContext& dc) const {
   CDocument::Dump(dc);
 }
 #endif //_DEBUG

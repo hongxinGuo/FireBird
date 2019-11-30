@@ -65,6 +65,25 @@ void CStock::ClearRTDataDeque(void) {
   }
 }
 
+void CStock::SetDayLineNeedSaving(bool fFlag) {
+  if (fFlag) {
+    ASSERT(!m_fDayLineNeedSaving);
+    m_fDayLineNeedSaving = true;
+    gl_ChinaStockMarket.m_iDayLineNeedSave++;
+  }
+  else {
+    ASSERT(m_fDayLineNeedSaving);
+    m_fDayLineNeedSaving = false;
+    gl_ChinaStockMarket.m_iDayLineNeedSave--;
+  }
+}
+
+bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
+  bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
+  if (fNeedSaveing) gl_ChinaStockMarket.m_iDayLineNeedSave--;
+  return fNeedSaveing;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理从网易日线服务器上读取的股票日线数据。
@@ -171,7 +190,6 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   vTempDayLine.clear();
   SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
-  gl_ChinaStockMarket.m_iDayLineNeedSave++;
 
   return true;
 }
@@ -966,7 +984,7 @@ bool CStock::IsTodayDataChanged(void) {
   }
 }
 
-void CStock::SetDayLineNeedUpdate(bool fFlag) noexcept {
+void CStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
@@ -979,7 +997,7 @@ void CStock::SetDayLineNeedUpdate(bool fFlag) noexcept {
   }
 }
 
-void CStock::SetDayLineNeedProcess(bool fFlag) noexcept {
+void CStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = true;

@@ -16,7 +16,7 @@ public:
   virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
 
-  bool IsCreateOnce(void) noexcept { return sm_fCreatedOnce; }
+  bool IsCreateOnce(void) { return sm_fCreatedOnce; }
 
 private:
   double ConvertStringToTC(CString str);

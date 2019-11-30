@@ -19,49 +19,49 @@ public:
 
   void UpdateStatus(CRTDataPtr pRTData);
 
-  WORD GetMarket(void) noexcept { return m_wMarket; }
-  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
+  WORD GetMarket(void) { return m_wMarket; }
+  void SetMarket(WORD wValue) { m_wMarket = wValue; }
   CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) noexcept { m_strStockCode = str; }
-  CString GetStockName(void) noexcept { return m_strStockName; }
-  void SetStockName(CString str) noexcept { m_strStockName = str; }
+  void SetStockCode(CString str) { m_strStockCode = str; }
+  CString GetStockName(void) { return m_strStockName; }
+  void SetStockName(CString str) { m_strStockName = str; }
 
-  long GetOffset(void) noexcept { return m_nOffsetInContainer; }
-  void SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
-  long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
-  long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
-  void SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
-  long GetIPOStatus(void) noexcept { return m_lIPOed; }
-  void SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+  long GetOffset(void) { return m_nOffsetInContainer; }
+  void SetOffset(long lValue) { m_nOffsetInContainer = lValue; }
+  long GetDayLineStartDay(void) { return m_lDayLineStartDay; }
+  void SetDayLineStartDay(long lDay) { m_lDayLineStartDay = lDay; }
+  long GetDayLineEndDay(void) { return m_lDayLineEndDay; }
+  void SetDayLineEndDay(long lDay) { m_lDayLineEndDay = lDay; }
+  long GetIPOStatus(void) { return m_lIPOed; }
+  void SetIPOStatus(long lValue) { m_lIPOed = lValue; }
 
   // 基本实时数据，需要更新
-  time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
-  void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
-  long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) noexcept { return m_lNew; }
-  void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-  long GetUpDown(void) noexcept { return m_lUpDown; }
-  void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
-  double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
+  time_t GetTransactionTime(void) { return m_TransactionTime; }
+  void SetTransactionTime(time_t time) { m_TransactionTime = time; }
+  long GetLastClose(void) { return m_lLastClose; }
+  void SetLastClose(long lValue) { m_lLastClose = lValue; }
+  long GetOpen(void) { return m_lOpen; }
+  void SetOpen(long lValue) { m_lOpen = lValue; }
+  long GetHigh(void) { return m_lHigh; }
+  void SetHigh(long lValue) { m_lHigh = lValue; }
+  long GetLow(void) { return m_lLow; }
+  void SetLow(long lValue) { m_lLow = lValue; }
+  long GetNew(void) { return m_lNew; }
+  void SetNew(long lValue) { m_lNew = lValue; }
+  INT64 GetAmount(void) { return m_llAmount; }
+  void SetAmount(INT64 llValue) { m_llAmount = llValue; }
+  INT64 GetVolume(void) { return m_llVolume; }
+  void SetVolume(INT64 llValue) { m_llVolume = llValue; }
+  long GetUpDown(void) { return m_lUpDown; }
+  void SetUpDown(long lValue) { m_lUpDown = lValue; }
+  double GetUpDownRate(void) { return m_dUpDownRate; }
   void SetUpDownRate(double dValue) { m_dUpDownRate = dValue; }
-  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
-  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
-  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
+  double GetChangeHandRate(void) { return m_dChangeHandRate; }
+  void SetChangeHandRate(double dValue) { m_dChangeHandRate = dValue; }
+  void SetTotalValue(INT64 llValue) { m_llTotalValue = llValue; }
+  INT64 GetTotalValue(void) { return m_llTotalValue; }
+  void SetCurrentValue(INT64 llValue) { m_llCurrentValue = llValue; }
+  INT64 GetCurrentValue(void) { return m_llCurrentValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }

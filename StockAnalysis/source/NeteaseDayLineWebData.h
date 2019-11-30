@@ -19,7 +19,7 @@ public:
   virtual void StartReadingThread(void) override;
 
   void SetDownLoadingStockCode(CString strStockCode);
-  CString GetDownLoadingStockCode(void) noexcept { return m_strDownLoadingStockCode; }
+  CString GetDownLoadingStockCode(void) { return m_strDownLoadingStockCode; }
 
 private:
   CString m_strDownLoadingStockCode;

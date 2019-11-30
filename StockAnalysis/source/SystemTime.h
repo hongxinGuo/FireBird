@@ -9,22 +9,22 @@ public:
 
   time_t Gett_time(void) { return m_ttime; }
 
-  long GetDay(void) noexcept { return m_lToday; }
-  long GetTime(void) noexcept { return m_lTime; }
-  long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lLastTradeDay; }
-  long GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }
+  long GetDay(void) { return m_lToday; }
+  long GetTime(void) { return m_lTime; }
+  long GetLastTradeDay(void) { CalculateLastTradeDay(); return m_lLastTradeDay; }
+  long GetDayOfWeek(void) { return m_tm.tm_wday; }
 
-  void CalculateTime(void) noexcept;
-  void CalculateLastTradeDay(void) noexcept;
+  void CalculateTime(void);
+  void CalculateLastTradeDay(void);
 
-  CString GetTimeString(void) noexcept;
+  CString GetTimeString(void);
 
-  bool IsWorkingDay(void) noexcept;
-  bool IsWorkingDay(CTime timeCurrent) noexcept;
+  bool IsWorkingDay(void);
+  bool IsWorkingDay(CTime timeCurrent);
 
 public:
   // 测试用函数
-  void __Test_Sett_time(time_t Time) noexcept;
+  void __Test_Sett_time(time_t Time);
   void __Test_SetTime(long lTime); // 此函数只用于测试
   void __Test_SetTM(tm tm_);
 

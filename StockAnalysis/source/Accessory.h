@@ -9,9 +9,9 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer);
 time_t ConvertStringToTime(CString strFormat, CString strTime);
 
 // 时间转换辅助函数
-time_t FormatToTTime(long lDay, long lTime = 150000) noexcept; // 将整型(YYYYMMDD)转变为time_t形式
-long FormatToDay(time_t tt) noexcept;// 将时间转变为整型(YYYYMMDD)形式
-long FormatToDay(tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
+time_t FormatToTTime(long lDay, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式
+long FormatToDay(time_t tt);// 将时间转变为整型(YYYYMMDD)形式
+long FormatToDay(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
 
 // 用于个数据集的GetDefaultConnect()，以保持一致性。测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动。
 CString GetDefaultSchemaConnect();

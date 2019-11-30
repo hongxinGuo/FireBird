@@ -43,12 +43,6 @@
     <Filter Include="源文件\辅助类和函数">
       <UniqueIdentifier>{c15f47f1-9278-47e2-8f5d-465ca7ccf999}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Market">
-      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Market">
-      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Crweber.com">
       <UniqueIdentifier>{0046b2db-442f-404f-85e7-0fd6b6512cea}</UniqueIdentifier>
     </Filter>
@@ -60,6 +54,12 @@
     </Filter>
     <Filter Include="源文件\windows界面">
       <UniqueIdentifier>{7f374a32-c51a-484f-9711-e3e79cc75b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Market&amp;Stock">
+      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Market&amp;Stock">
+      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,16 +130,16 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Market.h">
-      <Filter>头文件\Market</Filter>
+      <Filter>头文件\Market&amp;Stock</Filter>
     </ClInclude>
     <ClInclude Include="source\Stock.h">
-      <Filter>头文件\Market</Filter>
+      <Filter>头文件\Market&amp;Stock</Filter>
     </ClInclude>
     <ClInclude Include="source\StockBasicInfo.h">
-      <Filter>头文件\Market</Filter>
+      <Filter>头文件\Market&amp;Stock</Filter>
     </ClInclude>
     <ClInclude Include="source\StockCalculatedInfo.h">
-      <Filter>头文件\Market</Filter>
+      <Filter>头文件\Market&amp;Stock</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndex.h">
       <Filter>头文件\Crweber.com</Filter>
@@ -174,11 +174,11 @@
     <ClInclude Include="source\QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="NeteaseRTWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\TransferSharedPtr.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\NeteaseRTWebData.h">
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -273,16 +273,16 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\Market.cpp">
-      <Filter>源文件\Market</Filter>
+      <Filter>源文件\Market&amp;Stock</Filter>
     </ClCompile>
     <ClCompile Include="source\Stock.cpp">
-      <Filter>源文件\Market</Filter>
+      <Filter>源文件\Market&amp;Stock</Filter>
     </ClCompile>
     <ClCompile Include="source\StockBasicInfo.cpp">
-      <Filter>源文件\Market</Filter>
+      <Filter>源文件\Market&amp;Stock</Filter>
     </ClCompile>
     <ClCompile Include="source\StockCalculatedInfo.cpp">
-      <Filter>源文件\Market</Filter>
+      <Filter>源文件\Market&amp;Stock</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndex.cpp">
       <Filter>源文件\Crweber.com</Filter>
@@ -317,14 +317,14 @@
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="NeteaseRTWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
       <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseRTWebData.cpp">
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

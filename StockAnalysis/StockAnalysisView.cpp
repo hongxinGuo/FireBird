@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
 
-CStockAnalysisView::CStockAnalysisView() noexcept {
+CStockAnalysisView::CStockAnalysisView() {
   // TODO: 在此处添加构造代码
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;

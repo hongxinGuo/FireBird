@@ -51,8 +51,8 @@ public:
   // interface function
 public:
   // 系统状态区
-  bool IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
-  void SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
+  bool IsPermitResetSystem(void) { return m_fPermitResetSystem; }
+  void SetPermitResetSystem(bool fFlag) { m_fPermitResetSystem = fFlag; }
 
   // 初始化市场
 
@@ -83,21 +83,21 @@ public:
   void IncreaseActiveStockNumber(void);
 
   // 得到当前显示股票
-  CStockPtr GetShowStock(void) noexcept { return m_pCurrentStock; }
+  CStockPtr GetShowStock(void) { return m_pCurrentStock; }
   void SetShowStock(CString strStockCode);
   void SetShowStock(CStockPtr pStock);
   bool IsCurrentStockChanged(void);
 
-  long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
-  void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
+  long GetTotalActiveStock(void) { return m_lTotalActiveStock; }
+  void SetTotalActiveStock(long lValue) { m_lTotalActiveStock = lValue; }
 
   long GetMinLineOffset(CStock sID, time_t Time);
 
-  bool SystemReady(void) noexcept { return m_fSystemReady; }
-  void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
+  bool SystemReady(void) { return m_fSystemReady; }
+  void SetSystemReady(bool fFlag) { m_fSystemReady = fFlag; }
 
-  bool IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
-  void SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
+  bool IsTodayStockCompiled(void) { return m_fTodayStockCompiled; }
+  void SetTodayStockCompiledFlag(bool fFlag) { m_fTodayStockCompiled = fFlag; }
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -122,35 +122,35 @@ public:
   long CompileCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
-  bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
-  void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
+  bool IsLoadSelectedStock(void) { return m_fLoadedSelectedStock; }
+  void SetLoadSelectedStock(bool fLoad) { m_fLoadedSelectedStock = fLoad; }
 
-  bool IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
-  void SetCheckTodayActiveStock(bool fFlag) noexcept { m_fCheckTodayActiveStock = fFlag; }
+  bool IsCheckTodayActiveStock(void) { return m_fCheckTodayActiveStock; }
+  void SetCheckTodayActiveStock(bool fFlag) { m_fCheckTodayActiveStock = fFlag; }
 
-  bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
-  void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
+  bool IsTodayTempRTDataLoaded(void) { return m_fTodayTempDataLoaded; }
+  void SetTodayTempRTDataLoaded(bool fFlag) { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
-  void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
+  bool IsCalculatingRS(void) { return m_fCalculatingRS; }
+  void SetCalculatingRS(bool fFlag) { m_fCalculatingRS = fFlag; }
 
-  bool IsUpdateStockCodeDB(void) noexcept { return m_fUpdateStockCodeDB; }
-  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
+  bool IsUpdateStockCodeDB(void) { return m_fUpdateStockCodeDB; }
+  void SetUpdateStockCodeDB(bool fFlag) { m_fUpdateStockCodeDB = fFlag; }
 
   bool IsUsingNeteaseRTDataReceiverAsTester(void) { return m_fUsingNeteaseRTDataReceiverAsTester; }
   bool IsUsingTengxunRTDataReceiverAsTester(void) { return m_fUsingTengxunRTDataReceiverAsTester; }
 
-  long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
-  void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
-  long GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
-  void SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
-  long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
-  void SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
+  long GetRelativeStrongStartDay(void) { return m_lRelativeStrongStartDay; }
+  void SetRelativeStrongStartDay(long lDay) { m_lRelativeStrongStartDay = lDay; }
+  long GetRelativeStrongEndDay(void) { return m_lRelativeStrongEndDay; }
+  void SetRelativeStrongEndDay(long lDay) { m_lRelativeStrongEndDay = lDay; }
+  long GetLastLoginDay(void) { return m_lLastLoginDay; }
+  void SetLastLoginDay(long lDay) { m_lLastLoginDay = lDay; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
 
-  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
+  size_t GetTotalStockMapIndexSize(void) { return m_mapChinaMarketAStock.size(); }
   long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
   void SetReadingSinaRTDataTime(clock_t tt) { m_ReadingSinaRTDataTime = tt; }

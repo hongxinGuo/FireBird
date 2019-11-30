@@ -46,7 +46,7 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
   }
 }
 
-time_t FormatToTTime(long lDay, long lTime) noexcept {
+time_t FormatToTTime(long lDay, long lTime) {
   ASSERT(lDay > 19700000);
   const long lYear = lDay / 10000;
   const long lMonth = (lDay - lYear * 10000) / 100;
@@ -58,13 +58,13 @@ time_t FormatToTTime(long lDay, long lTime) noexcept {
   return (ct.GetTime());
 }
 
-long FormatToDay(time_t const tt) noexcept {
+long FormatToDay(time_t const tt) {
   tm tm_;
   localtime_s(&tm_, &tt);
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long FormatToDay(tm* ptm) noexcept {
+long FormatToDay(tm* ptm) {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }
 

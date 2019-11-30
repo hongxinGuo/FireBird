@@ -23,10 +23,10 @@ CSystemTime::CSystemTime(void) {
   CalculateTime();
 }
 
-CSystemTime::~CSystemTime(void) noexcept {
+CSystemTime::~CSystemTime(void) {
 }
 
-void CSystemTime::__Test_Sett_time(time_t ttime) noexcept {
+void CSystemTime::__Test_Sett_time(time_t ttime) {
   m_ttime = ttime;
   localtime_s(&m_tm, &m_ttime);
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
@@ -40,14 +40,14 @@ void CSystemTime::__Test_SetTM(tm tm_) {
   m_tm = tm_;
 }
 
-void CSystemTime::CalculateTime(void) noexcept {
+void CSystemTime::CalculateTime(void) {
   time(&m_ttime);
   localtime_s(&m_tm, &m_ttime);
   m_lToday = (m_tm.tm_year + 1900) * 10000 + (m_tm.tm_mon + 1) * 100 + m_tm.tm_mday;
   m_lTime = m_tm.tm_hour * 10000 + m_tm.tm_min * 100 + m_tm.tm_sec;
 }
 
-void CSystemTime::CalculateLastTradeDay(void) noexcept {
+void CSystemTime::CalculateLastTradeDay(void) {
   time_t ttime = 0;
 
   switch (m_tm.tm_wday) {
@@ -68,7 +68,7 @@ void CSystemTime::CalculateLastTradeDay(void) noexcept {
   m_lLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-CString CSystemTime::GetTimeString(void) noexcept {
+CString CSystemTime::GetTimeString(void) {
   char buffer[30];
   sprintf_s(buffer, "%02d:%02d:%02d ", m_tm.tm_hour, m_tm.tm_min, m_tm.tm_sec);
   CString str;
@@ -76,14 +76,14 @@ CString CSystemTime::GetTimeString(void) noexcept {
   return(str);
 }
 
-bool CSystemTime::IsWorkingDay(void)  noexcept {
+bool CSystemTime::IsWorkingDay(void) {
   if ((m_tm.tm_wday == 0) || (m_tm.tm_wday == 6)) {
     return false;
   }
   else return true;
 }
 
-bool CSystemTime::IsWorkingDay(CTime timeCurrent) noexcept {
+bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
   if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
     return false;
   }

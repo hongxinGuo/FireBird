@@ -7,7 +7,7 @@ class CChildFrame : public CMDIChildWndEx
 {
   DECLARE_DYNCREATE(CChildFrame)
 public:
-  CChildFrame() noexcept;
+  CChildFrame();
 
   // 特性
 protected:

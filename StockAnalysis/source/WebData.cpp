@@ -6,7 +6,7 @@
 
 #include"WebData.h"
 
-CWebData::CWebData() noexcept {
+CWebData::CWebData() {
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
   m_lByteRead = 0;

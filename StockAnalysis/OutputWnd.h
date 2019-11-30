@@ -7,7 +7,7 @@ class COutputList : public CListBox
 {
   // 构造
 public:
-  COutputList() noexcept;
+  COutputList();
 
   // 实现
 public:
@@ -26,7 +26,7 @@ class COutputWnd : public CDockablePane
 {
   // 构造
 public:
-  COutputWnd() noexcept;
+  COutputWnd();
 
   void UpdateFonts();
 

@@ -8,7 +8,7 @@ using namespace std;
 
 class CWebData {
 public:
-  CWebData() noexcept;
+  CWebData();
   ~CWebData() {}
 
   // 公共接口函数

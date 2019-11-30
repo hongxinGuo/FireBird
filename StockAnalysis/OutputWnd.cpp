@@ -14,13 +14,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COutputBar
 
-COutputWnd::COutputWnd() noexcept
-{
+COutputWnd::COutputWnd() {
   m_uIdTimer = 0;
 }
 
-COutputWnd::~COutputWnd()
-{
+COutputWnd::~COutputWnd() {
 }
 
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
@@ -29,8 +27,7 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
   ON_WM_TIMER()
 END_MESSAGE_MAP()
 
-int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
+int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CDockablePane::OnCreate(lpCreateStruct) == -1)
     return -1;
 
@@ -48,12 +45,12 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-    !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-    !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
-    !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
-    !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
-    !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
-    !m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8))
+      !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+      !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
+      !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
+      !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
+      !m_wndOutputTrace2.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
+      !m_wndOutputInnerSystemInformation.Create(dwStyle, rectDummy, &m_wndTabs, 8))
   {
     TRACE0("未能创建输出窗口\n");
     return -1;      // 未能创建
@@ -96,16 +93,14 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
   return 0;
 }
 
-void COutputWnd::OnSize(UINT nType, int cx, int cy)
-{
+void COutputWnd::OnSize(UINT nType, int cx, int cy) {
   CDockablePane::OnSize(nType, cx, cy);
 
   // 选项卡控件应覆盖整个工作区:
   m_wndTabs.SetWindowPos(nullptr, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
-{
+void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
   CClientDC dc(this);
   CFont* pOldFont = dc.SelectObject(&afxGlobalData.fontRegular);
 
@@ -123,8 +118,7 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
   dc.SelectObject(pOldFont);
 }
 
-void COutputWnd::UpdateFonts()
-{
+void COutputWnd::UpdateFonts() {
   m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
@@ -137,12 +131,10 @@ void COutputWnd::UpdateFonts()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList1
 
-COutputList::COutputList() noexcept
-{
+COutputList::COutputList() {
 }
 
-COutputList::~COutputList()
-{
+COutputList::~COutputList() {
 }
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
@@ -155,8 +147,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList 消息处理程序
 
-void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
-{
+void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point) {
   CMenu menu;
   menu.LoadMenu(IDR_OUTPUT_POPUP);
 
@@ -176,18 +167,15 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
   SetFocus();
 }
 
-void COutputList::OnEditCopy()
-{
+void COutputList::OnEditCopy() {
   MessageBox(_T("复制输出"));
 }
 
-void COutputList::OnEditClear()
-{
+void COutputList::OnEditClear() {
   MessageBox(_T("清除输出"));
 }
 
-void COutputList::OnViewOutput()
-{
+void COutputList::OnViewOutput() {
   CDockablePane* pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
   CMDIFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
 
@@ -206,8 +194,7 @@ void COutputList::OnViewOutput()
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-void COutputWnd::OnTimer(UINT_PTR nIDEvent)
-{
+void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   CString str, str2;

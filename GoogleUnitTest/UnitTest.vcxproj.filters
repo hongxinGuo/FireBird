@@ -34,6 +34,9 @@
     <Filter Include="Test源文件\Crweber.com">
       <UniqueIdentifier>{78892de7-5339-4475-a1f3-fadecb405f9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{7d64aec8-6c8c-4407-baba-6976638576e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -108,159 +111,232 @@
     <ClCompile Include="Market_NeteaseDayLineTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DayLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\globedef.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Guadan.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Market.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\QueueRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\RTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetChoicedStock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetCrweberIndex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetDayLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineToday.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetOption.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SinaRTWebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Stock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StockBasicInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StockCalculatedInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\TengxunRTWebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Thread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateRS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadCompileCurrentTradeDayStock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseDayLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadTengxunRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadSavDayLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadUpdateStockCodeDB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\NeteaseRTWebData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
       <Filter>Test源文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Accessory.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DayLine.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\globedef.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Guadan.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Market.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\NeteaseRTWebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\OneDeal.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\QueueRTData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\RTData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetChoicedStock.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetCrweberIndex.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetDayLine.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineInfo.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineToday.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetOption.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetStockCode.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SinaRTWebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Stock.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\StockBasicInfo.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\StockCalculatedInfo.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SystemMessage.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SystemTime.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\TengxunRTWebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Thread.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\TransferSharedPtr.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebData.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\globedef.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineToday.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\Stock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\Thread.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\threadsavdayline.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj">
-      <Filter>dependency</Filter>
-    </Object>
   </ItemGroup>
 </Project>

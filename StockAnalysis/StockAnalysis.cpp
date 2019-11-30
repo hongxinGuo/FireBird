@@ -30,7 +30,7 @@ END_MESSAGE_MAP()
 
 // CStockAnalysisApp 构造
 
-CStockAnalysisApp::CStockAnalysisApp() noexcept {
+CStockAnalysisApp::CStockAnalysisApp() {
   m_bHiColorIcons = TRUE;
 
   // 支持重新启动管理器
@@ -162,7 +162,7 @@ int CStockAnalysisApp::ExitInstance() {
 class CAboutDlg : public CDialogEx
 {
 public:
-  CAboutDlg() noexcept;
+  CAboutDlg();
 
   // 对话框数据
 #ifdef AFX_DESIGN_TIME
@@ -177,7 +177,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX) {
+CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX) {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX) {

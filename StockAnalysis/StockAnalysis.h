@@ -15,7 +15,7 @@
 class CStockAnalysisApp : public CWinAppEx
 {
 public:
-  CStockAnalysisApp() noexcept;
+  CStockAnalysisApp();
 
   // 重写
 public:
