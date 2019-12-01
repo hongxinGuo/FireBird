@@ -59,48 +59,6 @@
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Market.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\NeteaseRTWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\QueueRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\RTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetChoicedStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetCrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetDayLineInfo.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetDayLineToday.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetOption.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SinaRTWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Stock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StockBasicInfo.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StockCalculatedInfo.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SystemTime.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\TengxunRTWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\Thread.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadCompileCurrentTradeDayStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSavDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadUpdateStockCodeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
     <ClCompile Include="accessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
@@ -133,41 +91,60 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\globedef.h" />
-    <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
-    <ClInclude Include="..\StockAnalysis\source\Market.h" />
-    <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\NeteaseRTWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
-    <ClInclude Include="..\StockAnalysis\source\QueueRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\RTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetChoicedStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetCrweberIndex.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetDayLineInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetDayLineToday.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetOption.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetStockCode.h" />
-    <ClInclude Include="..\StockAnalysis\source\SinaRTWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\Stock.h" />
-    <ClInclude Include="..\StockAnalysis\source\StockBasicInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\StockCalculatedInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
-    <ClInclude Include="..\StockAnalysis\source\SystemTime.h" />
-    <ClInclude Include="..\StockAnalysis\source\TengxunRTWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\Thread.h" />
-    <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
-    <ClInclude Include="..\StockAnalysis\source\TransferSharedPtr.h" />
-    <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="EnvironmentSetUp.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineInfo.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetDayLineToday.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Stock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\Thread.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

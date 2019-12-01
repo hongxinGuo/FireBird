@@ -200,7 +200,7 @@ public:
   bool IsDayLineNeedSavingAndClearFlag(void);
 
   bool ProcessNeteaseDayLineData(void);
-  void IncreaseCurrentPos(long lValue = 1) { m_pCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void IncreaseCurrentPos(long lValue = 1) { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }
 
   // 数据库的提取和存储
@@ -244,6 +244,8 @@ public:
   void CalculateAttackSell(void);
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
+  void SetLastRTDataPtr(CRTDataPtr pLastRTData) { m_pLastRTData = pLastRTData; }
+  CRTDataPtr GetLastRTDataPtr(void) { return m_pLastRTData; }
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
 
   bool AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
@@ -257,8 +259,6 @@ public:
   void ShowCurrentInformationofCancelingGuadan(void);
   void ReportGuadanTransaction(void);
   void ReportGuadan(void);
-  void SetLastRTDataPtr(CRTDataPtr pLastRTData) { m_pLastRTData = pLastRTData; }
-  CRTDataPtr GetLastRTDataPtr(void) { return m_pLastRTData; }
 
   // 采用同步机制存取实时数据
   void PushRTData(CRTDataPtr pData);

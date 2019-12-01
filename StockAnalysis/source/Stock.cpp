@@ -209,15 +209,10 @@ bool CStock::SaveDayLine(void) {
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
   bool fNeedUpdateStartEndDay = false;
 
-  CCriticalSection cs;
-  CSingleLock s(&cs);
-  s.Lock();
-  if (s.IsLocked()) {
-    lSize = m_vDayLine.size();
-    setDayLine.m_strFilter = _T("[StockCode] = '");
-    setDayLine.m_strFilter += GetStockCode() + _T("'");
-    s.Unlock();
-  }
+  lSize = m_vDayLine.size();
+  setDayLine.m_strFilter = _T("[StockCode] = '");
+  setDayLine.m_strFilter += GetStockCode() + _T("'");
+
   setDayLine.Open();
   while (!setDayLine.IsEOF()) {
     pDayLine = make_shared<CDayLine>();

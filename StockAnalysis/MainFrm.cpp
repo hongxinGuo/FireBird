@@ -439,7 +439,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
   // 显示网易日线历史数据读取时间（单位为毫秒）
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingNeteaseDayDataTime());
+  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingNeteaseDayLineDataTime());
   str = buffer;
   str += _T("ms");
   m_wndStatusBar.SetPaneText(6, (LPCTSTR)str);

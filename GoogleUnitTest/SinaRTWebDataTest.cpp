@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
 }
 
 // 由于基类CWebData为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
-namespace StockAnalysis {
+namespace StockAnalysisTest {
   TEST(CWebDataTest, TestIsReadingSucceed) {
     EXPECT_FALSE(gl_SinaRTWebData.IsReadingSucceed());
     gl_SinaRTWebData.SetReadingSucceed(true);

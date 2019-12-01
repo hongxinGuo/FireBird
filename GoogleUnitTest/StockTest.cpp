@@ -722,6 +722,7 @@ namespace StockAnalysisTest {
     CDayLine id;
     CStockPtr pStock = make_shared<CStock>();
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    gl_systemTime.__Test_SetDay(20190101);
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -927,5 +928,21 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+  }
+
+  TEST(CStockTest, TestIncreaseCurrentPos) {
+    CStock id;
+    long l = id.m_lCurrentPos;
+    char* p = id.m_pCurrentPos;
+    id.IncreaseCurrentPos();
+    EXPECT_EQ(l + 1, id.m_lCurrentPos);
+    EXPECT_EQ(p + 1, id.m_pCurrentPos);
+    id.IncreaseCurrentPos(10);
+    EXPECT_EQ(l + 11, id.m_lCurrentPos);
+    EXPECT_EQ(p + 11, id.m_pCurrentPos);
+    id.ResetCurrentPos();
+    EXPECT_EQ(l, id.m_lCurrentPos);
+    EXPECT_EQ(p, id.m_pCurrentPos);
+    EXPECT_EQ(p, id.m_pDayLineBuffer);
   }
 }

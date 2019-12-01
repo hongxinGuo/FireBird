@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
               10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
               10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
-  class CalculateRTDataTest : public::testing::TestWithParam<RTData*>
+  class CStockTest : public::testing::TestWithParam<RTData*>
   {
   protected:
     void SetUp(void) override {
@@ -158,10 +158,10 @@ namespace StockAnalysisTest {
     CStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestRTData, CalculateRTDataTest, testing::Values(&RT1, &RT2, &RT3,
-                                                                           &RT4, &RT5, &RT6, &RT7, &RT8));
+  INSTANTIATE_TEST_CASE_P(TestRTData, CStockTest, testing::Values(&RT1, &RT2, &RT3,
+                                                                  &RT4, &RT5, &RT6, &RT7, &RT8));
 
-  TEST_P(CalculateRTDataTest, TestRTData) {
+  TEST_P(CStockTest, TestRTData) {
     EXPECT_FALSE(m_stock.HaveFirstRTData());
     m_stock.ProcessOneRTData(pLastData);
     INT64 lFirstVolume = m_stock.GetUnknownVolume();
@@ -341,7 +341,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetTransactionNumberAbove200000(), 2);
   }
 
-  TEST(CalculateRTDataTest, TestINitializeCalculatingRTDataEnvionment) {
+  TEST(CStockTest, TestINitializeCalculatingRTDataEnvionment) {
     CRTDataPtr pRTData = make_shared<CRTData>();
     CStock id;
 
@@ -362,6 +362,15 @@ namespace StockAnalysisTest {
       EXPECT_EQ(id.GetGuadan(pRTData->GetPBuy(i)), 10000 * (i + 1));
       EXPECT_EQ(id.GetGuadan(pRTData->GetPSell(i)), 100000 * (i + 1));
     }
+  }
+
+  TEST(CStockTest, TestGetLastRTDataPtr) {
+    CRTDataPtr pRTData = make_shared<CRTData>();
+    CStock id;
+    CRTDataPtr pRTData2 = pRTData;
+
+    id.SetLastRTDataPtr(pRTData);
+    EXPECT_EQ(id.GetLastRTDataPtr(), pRTData2);
   }
 
   TEST(CStockTest, TestCalculateOrdinaryBuySell) {

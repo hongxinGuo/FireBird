@@ -157,8 +157,8 @@ public:
   clock_t GetReadingSinaRTDataTime(void) { return m_ReadingSinaRTDataTime; }
   void SetReadingTengxunRTDataTime(clock_t tt) { m_ReadingTengxunRTDataTime = tt; }
   clock_t GetReadingTengxunRTDataTime(void) { return m_ReadingTengxunRTDataTime; }
-  void SetReadingNeteaseDayDataTime(clock_t tt) { m_ReadingNeteaseDayDataTime = tt; }
-  clock_t GetReadingNeteaseDayDataTime(void) { return m_ReadingNeteaseDayDataTime; }
+  void SetReadingNeteaseDayLineDataTime(clock_t tt) { m_ReadingNeteaseDayLineDataTime = tt; }
+  clock_t GetReadingNeteaseDayLineDataTime(void) { return m_ReadingNeteaseDayLineDataTime; }
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool ProcessRTData(void);
@@ -237,7 +237,7 @@ protected:
   // 多线程读取之变量
   atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  atomic<clock_t> m_ReadingNeteaseDayDataTime;    // 每次读取网易日线历史数据的时间
+  atomic<clock_t> m_ReadingNeteaseDayLineDataTime;    // 每次读取网易日线历史数据的时间
 
   bool m_fUpdateStockCodeDB;
 
