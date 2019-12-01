@@ -180,14 +180,16 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
-    if ((pDayLine->GetDay() < gl_systemTime.GetDay()) && (pDayLine->GetOpen() > 0) && (pDayLine->GetLow() > 0)) { // 不要存储今日日线数据（今日日线数据由实时数据生成）.
-      // 当新股第一天上市时，其日线只有一天，而且在这里扔掉了，导致其日线容器为空。处理时注意。
-      // 由于是调取gl_lLastTradeDay及之前的日线数据，故而新股的日线容器肯定为空。
+    if ((pDayLine->GetOpen() > 0) && (pDayLine->GetLow() > 0) && (pDayLine->GetHigh() > 0)) {
       // 清除掉不再交易（停牌或退市）的股票日线
       m_vDayLine.push_back(pDayLine);
     }
   }
   vTempDayLine.clear();
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
+  }
   SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
 
@@ -355,11 +357,11 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   ASSERT(m_fDebugLoadDayLineFirst);
 
   while (!setDayLineInfo.IsEOF()) {
-    pDayLine = m_vDayLine[iPosition];
+    pDayLine = m_vDayLine.at(iPosition);
     while ((pDayLine->GetDay() < setDayLineInfo.m_Day)
            && (m_vDayLine.size() > (iPosition + 1))) {
       iPosition++;
-      pDayLine = m_vDayLine[iPosition];
+      pDayLine = m_vDayLine.at(iPosition);
     }
     if (pDayLine->GetDay() == setDayLineInfo.m_Day) {
       pDayLine->LoadData(setDayLineInfo);

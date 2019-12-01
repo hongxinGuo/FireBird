@@ -69,8 +69,8 @@ namespace StockAnalysisTest {
   TEST(StockBasicInfoTest, TestGetStockName) {
     CStockBasicInfo id;
     EXPECT_STREQ(id.GetStockName(), _T(""));
-    id.SetStockName(_T("sh600000"));
-    EXPECT_STREQ(id.GetStockName(), _T("sh600000"));
+    id.SetStockName(_T("浦发银行"));
+    EXPECT_STREQ(id.GetStockName(), _T("浦发银行"));
   }
   TEST(StockBasicInfoTest, TestGetOffset) {
     CStockBasicInfo id;
@@ -205,6 +205,13 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetRelativeStrong(), 0.0);
     id.SetRelativeStrong(10101010.0);
     EXPECT_DOUBLE_EQ(id.GetRelativeStrong(), 10101010.0);
+  }
+
+  TEST(StockBasicInfoTest, TestGetChangeHandRate) {
+    CStockBasicInfo id;
+    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0.0);
+    id.SetChangeHandRate(1.1);
+    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 1.1);
   }
 
   TEST(StockBasicInfoTest, TestReset) {

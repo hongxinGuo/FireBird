@@ -310,9 +310,14 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest, TestReadOnlyFunctions) {
+  }
+
+  TEST(CStockTest, TestGetRelativeStrong) {
     CStock stock;
 
     EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0);
+    stock.SetRelativeStrong(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 1.1);
   }
 
   TEST(CStockTest, TestIsActive) {
