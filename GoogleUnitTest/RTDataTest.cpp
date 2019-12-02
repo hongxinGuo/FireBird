@@ -32,6 +32,21 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(RTData.IsActive());
   }
 
+  TEST(CRTDataTest, TestGetDatasource) {
+    CRTData rtData;
+    EXPECT_EQ(rtData.GetDataSource(), __INVALID_RT_WEB_DATA__);
+    EXPECT_FALSE(rtData.IsValidDataSource());
+    rtData.SetDataSource(__SINA_RT_WEB_DATA__);
+    EXPECT_EQ(rtData.GetDataSource(), __SINA_RT_WEB_DATA__);
+    EXPECT_TRUE(rtData.IsValidDataSource());
+  }
+
+  TEST(CRTDataTest, TestGetStockCode) {
+    CRTData rtData;
+    rtData.SetStockCode(_T("sh600000"));
+    EXPECT_STREQ(rtData.GetStockCode(), _T("sh600000"));
+  }
+
   TEST(CRTDataTest, TestIsDataTimeAtCurrentDay) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;

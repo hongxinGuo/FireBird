@@ -10,23 +10,45 @@ CQueueRTData::~CQueueRTData() {
 }
 
 void CQueueRTData::Reset(void) {
-  long lTotal = m_priorityqueueRTStockData.size();
-  for (int i = 0; i < lTotal; i++) { // 清空队列
-    m_priorityqueueRTStockData.pop();
+  CSingleLock singleLock(&m_cs);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    long lTotal = m_queueRTStockData.size();
+    for (int i = 0; i < lTotal; i++) { // 清空队列
+      m_queueRTStockData.pop();
+    }
+    singleLock.Unlock();
   }
 }
 
 void CQueueRTData::PushRTData(CRTDataPtr pData) {
-  m_priorityqueueRTStockData.push(pData);
+  CSingleLock singleLock(&m_cs);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    m_queueRTStockData.push(pData);
+    singleLock.Unlock();
+  }
 }
 
 CRTDataPtr CQueueRTData::PopRTData(void) {
   CRTDataPtr pData;
-  pData = m_priorityqueueRTStockData.top();
-  m_priorityqueueRTStockData.pop();
-  return pData;
+  CSingleLock singleLock(&m_cs);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    pData = m_queueRTStockData.front();
+    m_queueRTStockData.pop();
+    singleLock.Unlock();
+    return pData;
+  }
 }
 
 long CQueueRTData::GetRTDataSize(void) {
-  return(m_priorityqueueRTStockData.size());
+  size_t size = 0;
+  CSingleLock singleLock(&m_cs);
+  singleLock.Lock();
+  if (singleLock.IsLocked()) {
+    size = m_queueRTStockData.size();
+    singleLock.Unlock();
+    return size;
+  }
 }

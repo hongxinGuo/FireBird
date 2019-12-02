@@ -82,7 +82,7 @@ CString GetDefaultSchemaConnect() {
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=mysql;UID=guo;PASSWORD=guo1426hx;charset=utf8"); // mysql操作的是SmartStockData Schema
+    return _T("DSN=mysql;UID=hxguo;PASSWORD=hxguo;charset=utf8"); // mysql操作的是SmartStockData Schema
   }
 }
 

@@ -714,4 +714,20 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetCheckTodayActiveStock(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCheckTodayActiveStock());
   }
+
+  TEST_F(CMarketTest, TestGetTotalActiveStock) {
+    long l = gl_ChinaStockMarket.GetTotalActiveStock();
+    gl_ChinaStockMarket.SetTotalActiveStock(4000);
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalActiveStock(), 4000);
+    gl_ChinaStockMarket.SetTotalActiveStock(l);
+  }
+
+  TEST_F(CMarketTest, TestGetStockPtr) {
+    CStockPtr pStock = nullptr;
+    long lIndex = -1;
+    pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600000"));
+    EXPECT_TRUE(gl_ChinaStockMarket.GetStockIndex(_T("sh600000"), lIndex));
+    EXPECT_EQ(lIndex, 0);
+    EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
+  }
 }
