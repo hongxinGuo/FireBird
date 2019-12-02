@@ -766,11 +766,6 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     }
   }
 
-  // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-  if (m_iDayLineNeedProcess > 0) {
-    ProcessDayLineGetFromNeeteaseServer();
-  }
-
   return true;
 }
 
@@ -937,6 +932,11 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
   if (i10SecondsCounter <= 0) {
     i10SecondsCounter = 9;
     // do something
+
+    // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
+    if (m_iDayLineNeedProcess > 0) {
+      ProcessDayLineGetFromNeeteaseServer();
+    }
 
     // 判断是否存储日线库和股票代码库
     if ((m_iDayLineNeedSave > 0)) {
