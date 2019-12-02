@@ -634,7 +634,11 @@ bool CMarket::ProcessTengxunRTData(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
-
+#ifdef DEBUG
+#define __NumberOfCount__ 10
+#else
+#define __NumberOfCount__ 1000
+#endif
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
@@ -642,7 +646,7 @@ bool CMarket::SchedulingTask(void) {
     TaskGetRTDataFromWeb();
 
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = 10; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
