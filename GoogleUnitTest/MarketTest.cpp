@@ -333,9 +333,9 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsDayLineNeedUpdate());
     EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(2)->IsDayLineNeedUpdate());
     EXPECT_TRUE(gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(str));
-    EXPECT_STREQ(str, _T("0600001"));
+    EXPECT_STREQ(str, _T("0600000"));
     EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(0)->IsDayLineNeedUpdate());
-    EXPECT_FALSE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_ChinaStockMarket.m_vChinaMarketAStock.at(1)->IsDayLineNeedUpdate());
 
     // »Ö¸´Ô­×´
     for (int i = 0; i < 12000; i++) {

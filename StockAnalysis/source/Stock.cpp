@@ -209,7 +209,7 @@ bool CStock::SaveDayLine(void) {
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-  bool fNeedUpdateStartEndDay = false;
+  bool fNeedUpdate = false;
 
   lSize = m_vDayLine.size();
   setDayLine.m_strFilter = _T("[StockCode] = '");
@@ -240,23 +240,23 @@ bool CStock::SaveDayLine(void) {
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetDay() > pDayLine->GetDay()) {
         pDayLine->AppendData(setDayLine);
-        fNeedUpdateStartEndDay = true;
+        fNeedUpdate = true;
       }
     }
     else {
       pDayLine->AppendData(setDayLine);
-      fNeedUpdateStartEndDay = true;
+      fNeedUpdate = true;
     }
   }
   setDayLine.m_pDatabase->CommitTrans();
   setDayLine.Close();
 
   // 更新最新日线日期和起始日线日期
-  if (fNeedUpdateStartEndDay) {
+  if (fNeedUpdate) {
     UpdateDayLineStartEndDay();
   }
 
-  return true;
+  return fNeedUpdate;
 }
 
 void CStock::UpdateDayLineStartEndDay(void) {
@@ -965,7 +965,7 @@ long CStock::GetRTDataDequeSize(void) {
 // 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CStock::TodayDataIsActive(void) {
+bool CStock::IsTodayDataActive(void) {
   if (!m_fActive) return false;
   else {
     return IsTodayDataChanged();

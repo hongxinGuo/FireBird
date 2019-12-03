@@ -109,6 +109,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
