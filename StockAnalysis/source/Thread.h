@@ -11,9 +11,6 @@ UINT ThreadReadSinaRTData(LPVOID pParam);    // 此工作线程返回值为1
 // 读取网易日线历史数据线程, pParam为调用此线程的变量的指针。网址：http://quotes.money.163.com/service/chddata.html?code=
 UINT ThreadReadNeteaseDayLine(LPVOID pParam);      // 此工作线程返回值为2
 
-// 计算实时数据线程
-UINT ThreadCalculateRTData(LPVOID pParam);  // 此工作线程返回值为3
-
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(LPVOID pParam);     // 此工作线程返回值为4
 

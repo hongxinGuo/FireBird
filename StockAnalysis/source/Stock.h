@@ -258,7 +258,6 @@ public:
   void ReportGuadanTransaction(void);
   void ReportGuadan(void);
 
-  // 采用同步机制存取实时数据
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);
   CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据

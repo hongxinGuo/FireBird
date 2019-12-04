@@ -772,7 +772,11 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
-      AfxBeginThread(ThreadCalculateRTData, nullptr);
+      if (gl_ThreadStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
+        gl_ChinaStockMarket.ProcessRTData();
+        gl_ThreadStatus.SetRTDataNeedCalculate(false);
+      }
+      gl_ThreadStatus.SetCalculatingRTData(false);
     }
   }
 

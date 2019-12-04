@@ -887,13 +887,7 @@ bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CStock::PushRTData(CRTDataPtr pData) {
-  CSingleLock singleLock(&m_RTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_queueRTData.push(pData);
-    ASSERT(m_queueRTData.size() > 0);
-    singleLock.Unlock();
-  }
+  m_queueRTData.push(pData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -903,31 +897,13 @@ void CStock::PushRTData(CRTDataPtr pData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CRTDataPtr CStock::PopRTData(void) {
-  CRTDataPtr pData;
-  CSingleLock singleLock(&m_RTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    ASSERT(m_queueRTData.size() > 0);
-    pData = m_queueRTData.front();
-    m_queueRTData.pop();
-    singleLock.Unlock();
-    return pData;
-  }
-  ASSERT(0);
-  return nullptr;
+  CRTDataPtr pData = m_queueRTData.front();
+  m_queueRTData.pop();
+  return pData;
 }
 
 CRTDataPtr CStock::GetRTDataAtHead(void) {
-  CRTDataPtr pData;
-  CSingleLock singleLock(&m_RTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    pData = m_queueRTData.front();
-    singleLock.Unlock();
-    return pData;
-  }
-  ASSERT(0);
-  return nullptr;
+  return m_queueRTData.front();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -937,15 +913,7 @@ CRTDataPtr CStock::GetRTDataAtHead(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 long CStock::GetRTDataQueueSize(void) {
-  CSingleLock singleLock(&m_RTDataLock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    long lCount = m_queueRTData.size();
-    singleLock.Unlock();
-    return lCount;
-  }
-  ASSERT(0);
-  return 0;
+  return m_queueRTData.size();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
