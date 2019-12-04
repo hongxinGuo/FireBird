@@ -43,8 +43,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
   ON_WM_SETTINGCHANGE()
   ON_WM_TIMER()
-  ON_COMMAND(ID_SAVE_RTDATA, &CMainFrame::OnSaveRtdata)
-  //  ON_COMMAND(ID_DownLoad_DayLine, &CMainFrame::OnDownloadDayline)
   ON_COMMAND(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnSaveDaylineData)
   ON_UPDATE_COMMAND_UI(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnUpdateSaveDaylineData)
   ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
@@ -52,17 +50,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
   ON_WM_SYSCOMMAND()
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
-  //  ON_WM_CHAR()
-  //  ON_WM_KEYUP()
   ON_WM_CHAR()
   ON_WM_KEYUP()
-  //ON_COMMAND(ID_SHOW_ORDINARY_BUY, &CMainFrame::OnShowOrdinaryBuy)
-  //ON_COMMAND(ID_SHOW_ORDINARY_SELL, &CMainFrame::OnShowOrdinarySell)
-  //ON_COMMAND(ID_SHOW_STRONG_BUY, &CMainFrame::OnShowStrongBuy)
-  //ON_COMMAND(ID_SHOW_STRONG_SELL, &CMainFrame::OnShowStrongSell)
-  //ON_COMMAND(ID_SHOW_UNKNOWNBUYSELL, &CMainFrame::OnShowUnknownbuysell)
-  //ON_COMMAND(ID_SHOW_ATTACK_BUY, &CMainFrame::OnShowAttackBuy)
-  //ON_COMMAND(ID_SHOW_ATTACK_SELL, &CMainFrame::OnShowAttackSell)
   ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
@@ -500,10 +489,10 @@ void CMainFrame::OnSaveDaylineData() {
   // TODO: 在此添加命令处理程序代码
 }
 
-void CMainFrame::OnSaveRtdata() {
-  // TODO: 在此添加命令处理程序代码
-  gl_ChinaStockMarket.SaveRTData();
-}
+//void CMainFrame::OnSaveRtdata() {
+//  // TODO: 在此添加命令处理程序代码
+//  gl_ChinaStockMarket.SaveRTData();
+//}
 
 void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码

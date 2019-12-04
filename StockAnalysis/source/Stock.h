@@ -214,8 +214,6 @@ public:
   bool LoadDayLineAndDayLineInfo(void); // 此函数加载
   bool LoadDayLine(CSetDayLine& setDayLine);
   bool LoadDayLineInfo(CSetDayLineInfo& setDayLine);
-  // 存储实时行情数据进数据库。（目前弃之不用）
-  bool SaveRealTimeData(CSetRealTimeData& setRT);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
@@ -264,7 +262,7 @@ public:
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);
   CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
-  long GetRTDataDequeSize(void);
+  long GetRTDataQueueSize(void);
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
 
@@ -304,7 +302,7 @@ protected:
 
   // 挂单的具体情况。
   map<long, long> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CRTDataPtr m_pLastRTData; // 从m_dequeRTData读出的上一个实时数据。
+  CRTDataPtr m_pLastRTData; // 从m_queueRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
@@ -313,7 +311,7 @@ protected:
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
 
-  deque<CRTDataPtr> m_dequeRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
 private:

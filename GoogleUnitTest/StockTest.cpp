@@ -455,11 +455,11 @@ namespace StockAnalysisTest {
   TEST(CStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CRTDataPtr pData = make_shared<CRTData>();
     CStock stock;
-    EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
     stock.PushRTData(pData);
-    EXPECT_EQ(stock.GetRTDataDequeSize(), 1);
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
     CRTDataPtr pData2 = stock.PopRTData();
-    EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
   }
 
   TEST(CStockTest, TestGetGuadan) {
@@ -478,9 +478,9 @@ namespace StockAnalysisTest {
       pRTData->SetLastClose(i);
       stock.PushRTData(pRTData);
     }
-    EXPECT_EQ(stock.GetRTDataDequeSize(), 10);
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 10);
     stock.ClearRTDataDeque();
-    EXPECT_EQ(stock.GetRTDataDequeSize(), 0);
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
   }
 
   TEST(CStockTest, TestSaveTempInfo) {

@@ -59,7 +59,7 @@ void CStock::Reset(void) {
 }
 
 void CStock::ClearRTDataDeque(void) {
-  long lTotalNumber = GetRTDataDequeSize();
+  long lTotalNumber = GetRTDataQueueSize();
   for (int i = 0; i < lTotalNumber; i++) {
     CRTDataPtr pRTData = PopRTData();
   }
@@ -407,8 +407,7 @@ bool CStock::CalculateDayLineRS(long lNumber) {
 bool CStock::ProcessRTData(void) {
   CRTDataPtr pRTData;
 
-  const long lTotalNumber = GetRTDataDequeSize(); //  缓存队列的长度。采用同步机制获取其数值.
-  if (lTotalNumber == 0) return false;
+  long lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (long i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
@@ -827,18 +826,6 @@ void CStock::ReportGuadan(void) {
   }
 }
 
-bool CStock::SaveRealTimeData(CSetRealTimeData& setRTData) {
-  ASSERT(setRTData.IsOpen());
-  for (auto pRTData : m_dequeRTData) {
-    pRTData->SetMarket(GetMarket());
-    pRTData->SetStockCode(GetStockCode());
-    pRTData->SetStockName(GetStockName());
-    pRTData->AppendData(setRTData);
-  }
-
-  return true;
-}
-
 void CStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
   setStockCode.m_Counter = GetOffset();
@@ -903,7 +890,8 @@ void CStock::PushRTData(CRTDataPtr pData) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    m_dequeRTData.push_back(pData);
+    m_queueRTData.push(pData);
+    ASSERT(m_queueRTData.size() > 0);
     singleLock.Unlock();
   }
 }
@@ -919,8 +907,9 @@ CRTDataPtr CStock::PopRTData(void) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    pData = m_dequeRTData.front();
-    m_dequeRTData.pop_front();
+    ASSERT(m_queueRTData.size() > 0);
+    pData = m_queueRTData.front();
+    m_queueRTData.pop();
     singleLock.Unlock();
     return pData;
   }
@@ -933,7 +922,7 @@ CRTDataPtr CStock::GetRTDataAtHead(void) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    pData = m_dequeRTData.front();
+    pData = m_queueRTData.front();
     singleLock.Unlock();
     return pData;
   }
@@ -947,11 +936,11 @@ CRTDataPtr CStock::GetRTDataAtHead(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-long CStock::GetRTDataDequeSize(void) {
+long CStock::GetRTDataQueueSize(void) {
   CSingleLock singleLock(&m_RTDataLock);
   singleLock.Lock();
   if (singleLock.IsLocked()) {
-    long lCount = m_dequeRTData.size();
+    long lCount = m_queueRTData.size();
     singleLock.Unlock();
     return lCount;
   }

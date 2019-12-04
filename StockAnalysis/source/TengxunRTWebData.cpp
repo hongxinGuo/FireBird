@@ -59,17 +59,6 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void) {
 }
 
 void CTengxunRTWebData::ProcessWebDataStored(void) {
-  gl_ChinaStockMarket.ProcessTengxunRTData();
-
-  CRTDataPtr pRTData = nullptr;
-  long lTotalData = gl_QueueTengxunRTData.GetRTDataSize();
-
-  for (long i = 0; i < lTotalData; i++) {
-    pRTData = gl_QueueTengxunRTData.PopRTData();
-    auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
-    pStock->SetTotalValue(pRTData->GetTotalValue());
-    pStock->SetCurrentValue(pRTData->GetCurrentValue());
-  }
 }
 
 void CTengxunRTWebData::ReportDataError(void) {

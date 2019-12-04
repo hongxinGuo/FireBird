@@ -621,8 +621,17 @@ bool CMarket::ProcessRTData(void) {
   return true;
 }
 
-bool CMarket::ProcessTengxunRTData(void) {
-  return false;
+bool CMarket::TaskProcessTengxunRTData(void) {
+  CRTDataPtr pRTData = nullptr;
+  long lTotalData = gl_QueueTengxunRTData.GetRTDataSize();
+
+  for (long i = 0; i < lTotalData; i++) {
+    pRTData = gl_QueueTengxunRTData.PopRTData();
+    auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
+    pStock->SetTotalValue(pRTData->GetTotalValue());
+    pStock->SetCurrentValue(pRTData->GetCurrentValue());
+  }
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -753,6 +762,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
     TaskDistributeSinaRTDataToProperStock();
+    TaskProcessTengxunRTData();
     s_iCountDownProcessRTWebData = 0;
   }
   else s_iCountDownProcessRTWebData--;
@@ -1099,11 +1109,6 @@ bool CMarket::SaveRTData(void) {
 
   setRTData.Open();
   setRTData.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vChinaMarketAStock) {
-    if (pStock->IsActive()) {
-      pStock->SaveRealTimeData(setRTData);
-    }
-  }
   setRTData.m_pDatabase->CommitTrans();
   setRTData.Close();
   return(true);
@@ -1430,6 +1435,7 @@ void CMarket::LoadStockCodeDB(void) {
   if (gl_ChinaStockMarket.m_iDayLineNeedUpdate > 0) {
     int i = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
     TRACE("尚余%d个股票需要更新日线数据\n", i);
+    //gl_systemMessage.PushInformationMessage(_T("检查日线数据.."));
   }
   setStockCode.Close();
 }

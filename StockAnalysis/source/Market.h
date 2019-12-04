@@ -41,6 +41,9 @@ public:
 
   bool GetNeteaseDayLineWebData(void);
 
+  // 处理腾讯实时数据
+  bool TaskProcessTengxunRTData(void);
+
   void TaskSetCheckTodayActiveStockFlag(long lCurrentTime);
   bool TaskCompileTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
@@ -162,9 +165,6 @@ public:
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool ProcessRTData(void);
-
-  // 处理腾讯实时数据
-  bool ProcessTengxunRTData(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
