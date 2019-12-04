@@ -215,6 +215,8 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   int year = 0, month = 0, day = 0;
   long lDay = 0;
   CString str;
+  double dTemp = 0;
+
   i = 0;
   while (*pCurrentPos != 0x2c) {
     if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
@@ -261,20 +263,25 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   str = buffer2;
   SetStockName(str);
 
-  if (!ReadOneValueExceptPeriodOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetClose(buffer2);
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
+  dTemp = atof(buffer2);
+  SetClose(dTemp * 1000);
 
-  if (!ReadOneValueExceptPeriodOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetHigh(buffer2);
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
+  dTemp = atof(buffer2);
+  SetHigh(dTemp * 1000);
 
-  if (!ReadOneValueExceptPeriodOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetLow(buffer2);
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
+  dTemp = atof(buffer2);
+  SetLow(dTemp * 1000);
 
-  if (!ReadOneValueExceptPeriodOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetOpen(buffer2);
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
+  dTemp = atof(buffer2);
+  SetOpen(dTemp * 1000);
 
-  if (!ReadOneValueExceptPeriodOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
-  SetLastClose(buffer2);
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
+  dTemp = atof(buffer2);
+  SetLastClose(dTemp * 1000);
 
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   if (GetOpen() == 0) {
@@ -323,4 +330,11 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   lLength = iCount;
 
   return true;
+}
+
+bool CDayLine::IsActive(void) {
+  if ((GetClose() != 0) && (GetLastClose() != 0)) {
+    return true;
+  }
+  else return false;
 }

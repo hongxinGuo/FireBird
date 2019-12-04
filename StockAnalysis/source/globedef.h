@@ -71,7 +71,7 @@ extern CCrweberIndex gl_CrweberIndexLast;
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 extern CSystemTime gl_systemTime; // 系统时间汇总。
 extern CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
-extern CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
+//extern CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
 extern CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

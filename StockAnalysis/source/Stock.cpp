@@ -180,7 +180,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
-    if ((pDayLine->GetOpen() > 0) && (pDayLine->GetLow() > 0) && (pDayLine->GetHigh() > 0)) {
+    if (pDayLine->IsActive()) {
       // 清除掉不再交易（停牌或退市）的股票日线
       m_vDayLine.push_back(pDayLine);
     }

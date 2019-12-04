@@ -1065,9 +1065,9 @@ bool CMarket::SaveDayLineData(void) {
         pTransfer->m_pStock = pStock;
         AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
       }
-      else { // 此种情况应该不会发生。
+      else { // 此种情况为有股票代码，但此代码尚未上市
         CString str1 = pStock->GetStockCode();
-        str1 += _T(" 新股上市,没有日线资料");
+        str1 += _T(" 为未上市股票代码");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
     }

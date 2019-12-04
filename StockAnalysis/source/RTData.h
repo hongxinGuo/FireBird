@@ -145,10 +145,8 @@ public:
   bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个长整型
+  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
   bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
-  // 从file中读入一个浮点数据，抛弃其中的逗号，最后字符为‘，’。
-  bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long& lReturnValue);
-  bool ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer);
 
   // 读取腾讯实时数据函数
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束

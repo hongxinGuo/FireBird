@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
   NetEaseDayLineData Data6(6, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   NetEaseDayLineData Data7(7, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   NetEaseDayLineData Data8(8, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data9(9, _T("2019-12-02,'000834,价值7030,3658.9802,None,None,None,3654.1602,4.82,,None,None,,\r\n"));
 
   class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
   protected:
@@ -73,6 +74,11 @@ namespace StockAnalysisTest {
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
+    EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
+    EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
+    EXPECT_EQ(m_DayLinePtr->GetOpen(), 11430);
+    EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
     break;
     case 2:
     EXPECT_TRUE(fSucceed);
@@ -93,6 +99,17 @@ namespace StockAnalysisTest {
     case 8:
     EXPECT_TRUE(fSucceed);
     break;
+    case 9:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_DayLinePtr->GetStockCode(), _T("sh000834"));
+    EXPECT_STREQ(m_DayLinePtr->GetStockName(), _T("价值7030"));
+    EXPECT_EQ(m_DayLinePtr->GetClose(), 3698980);
+    EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
+    EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
+    EXPECT_EQ(m_DayLinePtr->GetLow(), 0);
+    EXPECT_EQ(m_DayLinePtr->GetOpen(), 0);
+    EXPECT_EQ(m_DayLinePtr->GetVolume(), 0);
+    EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
     default:
     break;
     }
@@ -193,109 +210,6 @@ namespace StockAnalysisTest {
     break;
     case 8:
     EXPECT_FALSE(fSucceed);
-    break;
-    default:
-    break;
-    }
-  }
-
-  struct ReadOneDayLineValueExceptPeriodData {
-    ReadOneDayLineValueExceptPeriodData(int count, CString Data) {
-      m_iCount = count;
-      m_strData = Data;
-    }
-  public:
-    int m_iCount;
-    CString m_strData;
-  };
-
-  // 成功
-  ReadOneDayLineValueExceptPeriodData data1(1, _T("11.050,"));
-  // 小数点后两位
-  ReadOneDayLineValueExceptPeriodData data2(2, _T("11.05,"));
-  // 小数点后一位
-  ReadOneDayLineValueExceptPeriodData data3(3, _T("11.0,"));
-  // 小数点前出现0x00a
-  ReadOneDayLineValueExceptPeriodData data4(4, _T("1\n1.050,"));
-  // 小数点后出现0x00a
-  ReadOneDayLineValueExceptPeriodData data5(5, _T("11.0\n50,"));
-  // 缺少','
-  ReadOneDayLineValueExceptPeriodData data6(6, _T("11.050"));
-  // 读取小数点后三位后，放弃气候多余的数值
-  ReadOneDayLineValueExceptPeriodData data7(7, _T("11.050000,"));
-  // 0x00a出现于‘，’前。
-  ReadOneDayLineValueExceptPeriodData data8(8, _T("11.05000\n,"));
-
-  class ReadOneDayLineValueExceptPeriodTest : public::testing::TestWithParam<ReadOneDayLineValueExceptPeriodData*> {
-  protected:
-    void SetUp(void) override {
-      ReadOneDayLineValueExceptPeriodData* pData = GetParam();
-      m_iCount = pData->m_iCount;
-      long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
-      for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
-      }
-      m_pData[lLength] = 0x000;
-      m_pCurrentPos = m_pData;
-      m_lCountPos = 0;
-    }
-
-    void TearDown(void) override {
-      // clearup
-      delete m_pData;
-    }
-
-  public:
-    int m_iCount;
-    char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos = 0;
-  };
-
-  INSTANTIATE_TEST_CASE_P(TestReadOneValueExceptPeriod, ReadOneDayLineValueExceptPeriodTest,
-                          testing::Values(&data1, &data2, &data3, &data4, &data5, &data6, &data7, &data8
-                          ));
-
-  TEST_P(ReadOneDayLineValueExceptPeriodTest, TestReadOneValue) {
-    char buffer[30];
-    bool fSucceed = ReadOneValueExceptPeriodOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
-    CString str;
-    str = buffer;
-    switch (m_iCount) {
-    case 1:
-    EXPECT_TRUE(fSucceed);
-    EXPECT_EQ(m_lCountPos, 7);
-    EXPECT_STREQ(str, _T("11050"));
-    break;
-    case 2:
-    EXPECT_TRUE(fSucceed);
-    EXPECT_EQ(m_lCountPos, 6);
-    EXPECT_STREQ(str, _T("11050"));
-    break;
-    case 3:
-    EXPECT_TRUE(fSucceed);
-    EXPECT_EQ(m_lCountPos, 5);
-    EXPECT_STREQ(str, _T("11000"));
-    break;
-    case 4:
-    EXPECT_FALSE(fSucceed);
-    break;
-    case 5:
-    EXPECT_FALSE(fSucceed);
-    break;
-    case 6:
-    EXPECT_FALSE(fSucceed);
-    EXPECT_STREQ(str, _T("11050"));
-    break;
-    case 7:
-    EXPECT_TRUE(fSucceed);
-    EXPECT_EQ(m_lCountPos, 10);
-    EXPECT_STREQ(str, _T("11050"));
-    break;
-    case 8:
-    EXPECT_FALSE(fSucceed);
-    EXPECT_STREQ(str, _T("11050"));
     break;
     default:
     break;

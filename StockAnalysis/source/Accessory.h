@@ -26,4 +26,3 @@ double GetValue(CString strBuffer);
 
 // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber);
-bool ReadOneValueExceptPeriodOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& lCounter);

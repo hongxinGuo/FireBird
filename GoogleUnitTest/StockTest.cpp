@@ -426,22 +426,22 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestTodayDataIsActive) {
     CStock stock;
-    EXPECT_FALSE(stock.TodayDataIsActive());
+    EXPECT_FALSE(stock.IsTodayDataActive());
     stock.SetActive(true);
-    EXPECT_FALSE(stock.TodayDataIsActive());
+    EXPECT_FALSE(stock.IsTodayDataActive());
     stock.SetHigh(1010);
-    EXPECT_TRUE(stock.TodayDataIsActive());
+    EXPECT_TRUE(stock.IsTodayDataActive());
     stock.SetHigh(0);
     stock.SetLow(1);
-    EXPECT_TRUE(stock.TodayDataIsActive());
+    EXPECT_TRUE(stock.IsTodayDataActive());
     stock.SetLow(0);
     stock.SetAmount(10000);
-    EXPECT_TRUE(stock.TodayDataIsActive());
+    EXPECT_TRUE(stock.IsTodayDataActive());
     stock.SetAmount(0);
     stock.SetVolume(100);
-    EXPECT_TRUE(stock.TodayDataIsActive());
+    EXPECT_TRUE(stock.IsTodayDataActive());
     stock.SetActive(false);
-    EXPECT_FALSE(stock.TodayDataIsActive());
+    EXPECT_FALSE(stock.IsTodayDataActive());
   }
 
   TEST(CStockTest, TestGetCurrentGuadanTransactionPrice) {

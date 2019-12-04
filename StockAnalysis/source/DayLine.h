@@ -21,6 +21,7 @@ public:
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long& lLength);
+  bool IsActive(void);
 
 public:
   long GetDay(void) { return m_lDay; }

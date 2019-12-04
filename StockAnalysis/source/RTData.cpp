@@ -185,6 +185,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
   static char buffer3[100];
   static CString strHeader = _T("var hq_str_s");
   long lStockCode = 0;
+  double dTemp = 0;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -267,33 +268,40 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
     pSinaRTWebData->IncreaseCurrentPos();
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lOpen)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lOpen = dTemp * 1000;
     // 读入前收盘价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLastClose)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lLastClose = dTemp * 1000;
     // 读入当前价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lNew)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lNew = dTemp * 1000;
     // 读入最高价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lHigh)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lHigh = dTemp * 1000;
     // 读入最低价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lLow)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lLow = dTemp * 1000;
     // 读入竞买价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lBuy)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lBuy = dTemp * 1000;
     // 读入竞卖价
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lSell)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
       return false;
     }
+    m_lSell = dTemp * 1000;
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaRTWebData, m_llVolume)) {
       return false;
@@ -309,9 +317,10 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
         return false;
       }
       // 读入价格
-      if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPBuy.at(j))) {
+      if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
         return false;
       }
+      m_lPBuy.at(j) = dTemp * 1000;
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
@@ -320,18 +329,19 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
         return false;
       }
       // 读入价格
-      if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, m_lPSell.at(j))) {
+      if (!ReadSinaOneValue(pSinaRTWebData, dTemp)) {
         return false;
       }
+      m_lPSell.at(j) = dTemp * 1000;
     }
     // 读入成交日期和时间
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer1)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, buffer1)) {
       return false;
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
-    if (!ReadSinaOneValueExceptPeriod(pSinaRTWebData, buffer3)) {
+    if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
       return false;
     }
     strTime += buffer3;
@@ -399,6 +409,23 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValu
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// 读入一个值，遇到逗号结束。返回值在lReturnValue中
+//
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnValue) {
+  long dTemp;
+  static char buffer3[200];
+
+  if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
+    return false;
+  }
+  dReturnValue = GetValue(buffer3);
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // 读入一个值，遇到逗号结束。
 //
 //
@@ -419,71 +446,6 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer) {
   }
   catch (exception & e) {
     TRACE(_T("ReadSinaOneValue异常\n"));
-    return false;
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, long& lReturnValue) {
-  long lTemp;
-  static char buffer3[200];
-
-  if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
-    return false;
-  }
-  lTemp = GetValue(buffer3) * 1000;
-  if (lTemp < 0) return false;
-  if (lTemp > 0) lReturnValue = lTemp;
-  return true;
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 读入浮点数，小数点后保留三位，不足就加上0.，多于三位就抛弃。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValueExceptPeriod(CSinaRTWebData* pSinaRTWebData, char* buffer) {
-  int i = 0;
-  bool fFoundPoint = false;
-  int iCount = 0;
-  try {
-    while ((*pSinaRTWebData->m_pCurrentPos != ',') && (iCount < 3)) {
-      if (fFoundPoint) iCount++;
-      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
-      if (*pSinaRTWebData->m_pCurrentPos == '.') {
-        fFoundPoint = true;
-      }
-      else buffer[i++] = *pSinaRTWebData->m_pCurrentPos;
-      pSinaRTWebData->IncreaseCurrentPos();
-    }
-
-    if (fFoundPoint && (iCount < 3)) {
-      int jCount = i;
-      for (int j = iCount; j < 3; j++) {
-        buffer[jCount++] = '0';
-      }
-      buffer[jCount] = 0x000;
-    }
-    else {
-      buffer[i] = 0x000;
-    }
-
-    while (*pSinaRTWebData->m_pCurrentPos != ',') {
-      if ((*pSinaRTWebData->m_pCurrentPos == 0x00a) || (*pSinaRTWebData->m_pCurrentPos == 0x000)) return false;
-      i++;
-      pSinaRTWebData->IncreaseCurrentPos();
-    }
-    pSinaRTWebData->IncreaseCurrentPos();
-
-    return true;
-  }
-  catch (exception & e) {
-    TRACE(_T("ReadSinaOneValueExceptPeriod异常\n"));
     return false;
   }
 }
