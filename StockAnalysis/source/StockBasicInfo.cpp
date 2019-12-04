@@ -85,8 +85,9 @@ void CStockBasicInfo::UpdateStatus(CRTDataPtr pRTData) {
   SetUpDown(m_lNew - m_lLastClose);
   if (m_lLastClose != 0) SetUpDownRate((double)m_lUpDown * 100 / m_lLastClose);
   else SetUpDownRate(0);
-  SetTotalValue(pRTData->GetTotalValue());
-  SetCurrentValue(pRTData->GetCurrentValue());
+  // 新浪实时数据是没有总市值和流通市值这两项的，故而需要判断一下是否为零
+  if (pRTData->GetTotalValue() > 0) SetTotalValue(pRTData->GetTotalValue());
+  if (pRTData->GetCurrentValue() > 0) SetCurrentValue(pRTData->GetCurrentValue());
   if (m_llTotalValue != 0) m_dChangeHandRate = (double)m_llAmount * 100 / m_llTotalValue;
   else m_dChangeHandRate = 0;
   for (int i = 0; i < 5; i++) {
