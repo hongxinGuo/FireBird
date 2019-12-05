@@ -49,13 +49,13 @@ public:
   bool IsSavingDayLine(void) { if (m_SavingDayLine > 0) return true; else return false; }  // 计算日线的线程是否处于运行中
 
 protected:
-  atomic<bool> m_ExitingThread;
-  atomic<bool> m_CalculateDayLineRelativeStrong;
-  atomic<bool> m_RTDataNeedCalculate;
-  atomic<bool> m_CalculatingRTData;
-  atomic<bool> m_SavingTempData;
-  atomic<bool> m_SavingStockCodeData;
+  atomic_bool m_ExitingThread;
+  atomic_bool m_CalculateDayLineRelativeStrong;
+  atomic_bool m_RTDataNeedCalculate;
+  atomic_bool m_CalculatingRTData;
+  atomic_bool m_SavingTempData;
+  atomic_bool m_SavingStockCodeData;
 
-  atomic<int> m_SavingDayLine; // 存储日线历史数据的计数器
-  atomic<int> m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
+  atomic_int m_SavingDayLine; // 存储日线历史数据的计数器
+  atomic_int m_CounterOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
 };

@@ -325,8 +325,8 @@ namespace StockAnalysisTest {
     pRTData->SetNew(50505050);
     pRTData->SetVolume(6060606060606060);
     pRTData->SetAmount(7070707070707070);
-    pRTData->SetTotalValue(1324325345655656);
-    pRTData->SetCurrentValue(453454563456345);
+    pRTData->SetTotalValue(3);
+    pRTData->SetCurrentValue(4);
     for (int i = 0; i < 5; i++) {
       pRTData->SetPBuy(i, i * 12345);
       pRTData->SetVBuy(i, i * 23456);
@@ -368,9 +368,11 @@ namespace StockAnalysisTest {
     }
     pRTData->SetTotalValue(0);
     pRTData->SetCurrentValue(0);
+    pRTData->SetHigh(0);
     id.UpdateStatus(pRTData);
-    EXPECT_EQ(id.GetCurrentValue(), 453454563456345);
-    EXPECT_EQ(id.GetTotalValue(), 1324325345655656);
+    EXPECT_EQ(id.GetCurrentValue(), 4);
+    EXPECT_EQ(id.GetTotalValue(), 3);
+    EXPECT_EQ(id.GetHigh(), 0);
     pRTData->SetTotalValue(1);
     pRTData->SetCurrentValue(2);
     id.UpdateStatus(pRTData);

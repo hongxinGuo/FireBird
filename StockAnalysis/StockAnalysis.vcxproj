@@ -269,7 +269,7 @@
     <ClCompile Include="source\StockBasicInfo.cpp" />
     <ClCompile Include="source\StockCalculatedInfo.cpp" />
     <ClCompile Include="source\TengxunRTWebData.cpp" />
-    <ClCompile Include="source\Thread.cpp" />
+    <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="source\ThreadCalculateRS.cpp" />
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />

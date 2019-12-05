@@ -218,9 +218,6 @@
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\Thread.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
@@ -328,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="source\PriorityQueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
