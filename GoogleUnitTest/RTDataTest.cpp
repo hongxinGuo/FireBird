@@ -60,9 +60,9 @@ namespace StockAnalysisTest {
     CRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.IsValidTime());
-    data.SetTransactionTime(tt - 3600 * 12);
+    data.SetTransactionTime(tt - 3600 * 24 * 7);
     EXPECT_TRUE(data.IsValidTime());
-    data.SetTransactionTime(tt - 3600 * 12 - 1);
+    data.SetTransactionTime(tt - 3600 * 24 * 7 - 1);
     EXPECT_FALSE(data.IsValidTime());
   }
 

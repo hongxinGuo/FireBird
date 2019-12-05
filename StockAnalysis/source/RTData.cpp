@@ -1117,7 +1117,7 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
 }
 
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 12 * 3600)) { // 确保实时数据不早于当前时间的12小时前（只使用今日的数据）
+  if (m_time < (gl_systemTime.Gett_time() - 7 * 24 * 3600)) { // 确保实时数据不早于当前时间的7天前（春节放假最长为7天）
     return false;
   }
   else return true;
