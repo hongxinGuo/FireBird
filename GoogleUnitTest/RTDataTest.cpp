@@ -59,17 +59,11 @@ namespace StockAnalysisTest {
     gl_systemTime.__Test_Sett_time(tt);
     CRTData data;
     data.SetTransactionTime(tt);
-    EXPECT_TRUE(data.IsDataHavingValidTime());
-    data.SetTransactionTime(tt - 3600 * 24);
-    EXPECT_TRUE(data.IsDataHavingValidTime());
-    data.SetTransactionTime(tt - 3600 * 24 - 1);
-    EXPECT_FALSE(data.IsDataHavingValidTime());
-    data.SetTransactionTime(tt + 3600);
-    EXPECT_TRUE(data.IsDataHavingValidTime());
-    data.SetTransactionTime(tt + 3600 + 1);
-    EXPECT_FALSE(data.IsDataHavingValidTime());
-    data.SetTransactionTime(tt + 2 * 3600 * 24 + 1);
-    EXPECT_FALSE(data.IsDataHavingValidTime());
+    EXPECT_TRUE(data.IsValidTime());
+    data.SetTransactionTime(tt - 3600 * 12);
+    EXPECT_TRUE(data.IsValidTime());
+    data.SetTransactionTime(tt - 3600 * 12 - 1);
+    EXPECT_FALSE(data.IsValidTime());
   }
 
   TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {

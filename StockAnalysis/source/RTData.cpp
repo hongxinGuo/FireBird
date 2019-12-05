@@ -358,7 +358,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
-    if (IsDataHavingValidTime()) m_fActive = true;
+    if (IsValidTime()) m_fActive = true;
     else m_fActive = false;
 
     return true;
@@ -725,7 +725,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData) {
       }
     }
     pTengxunRTWebData->IncreaseCurrentPos();
-    if (!IsDataHavingValidTime()) { // 如果交易时间在一天前
+    if (!IsValidTime()) { // 如果交易时间在12小时前
       m_fActive = false;
     }
     else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
@@ -796,7 +796,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
 
-    if (!IsDataHavingValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;
     }
     else {
@@ -1116,11 +1116,10 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
   }
 }
 
-bool CRTData::IsDataHavingValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) {
+bool CRTData::IsValidTime(void) {
+  if (m_time < (gl_systemTime.Gett_time() - 12 * 3600)) { // 确保实时数据不早于当前时间的12小时前（只使用今日的数据）
     return false;
   }
-  else if (m_time > (gl_systemTime.Gett_time() + 3600)) return false;
   else return true;
 }
 

@@ -206,7 +206,7 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) { return m_fActive; }
-  bool IsDataHavingValidTime(void);
+  bool IsValidTime(void);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
   bool IsValidDataSource(void) { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
