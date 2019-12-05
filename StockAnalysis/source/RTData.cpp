@@ -1117,7 +1117,7 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
 }
 
 bool CRTData::IsDataHavingValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 7 * 3600 * 24)) {
+  if (m_time < (gl_systemTime.Gett_time() - 3600 * 24)) {
     return false;
   }
   else if (m_time > (gl_systemTime.Gett_time() + 3600)) return false;
