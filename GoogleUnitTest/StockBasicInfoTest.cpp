@@ -11,13 +11,16 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
+    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
+    EXPECT_EQ(id.GetTransactionTime(), 0);
     EXPECT_EQ(id.GetLastClose(), 0);
     EXPECT_EQ(id.GetOpen(), 0);
     EXPECT_EQ(id.GetHigh(), 0);
     EXPECT_EQ(id.GetLow(), 0);
     EXPECT_EQ(id.GetNew(), 0);
+    EXPECT_DOUBLE_EQ(id.GetUpDownRate(), 0);
     EXPECT_EQ(id.GetVolume(), 0);
     EXPECT_EQ(id.GetAmount(), 0);
     for (int i = 0; i < 5; i++) {
@@ -26,9 +29,10 @@ namespace StockAnalysisTest {
       EXPECT_EQ(id.GetVSell(i), 0);
       EXPECT_EQ(id.GetPSell(i), 0);
     }
+    EXPECT_DOUBLE_EQ(id.GetRelativeStrong(), 0);
+    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0);
     EXPECT_EQ(id.GetTotalValue(), 0);
     EXPECT_EQ(id.GetCurrentValue(), 0);
-    EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0);
     id.SetMarket(1);
     id.SetStockCode(_T("abcde"));
     id.SetStockName(_T("dcba"));

@@ -1249,7 +1249,7 @@ long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
 //////////////////////////////////////////////////////////////////////////////////
 bool CMarket::UpdateTodayTempDB(void) {
   CSetDayLineToday setDayLineToday;
-
+  CString str;
   // 存储今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   setDayLineToday.m_pDatabase->BeginTrans();
@@ -1263,8 +1263,12 @@ bool CMarket::UpdateTodayTempDB(void) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
-    ASSERT(pStock->GetVolume() == pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
-           + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume());
+    if (pStock->GetVolume() != pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
+        + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume()) {
+      str = pStock->GetStockCode();
+      str += _T(" 股数不正确");
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+    }
     setDayLineToday.AddNew();
     pStock->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
