@@ -858,8 +858,6 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
 
     // 下午三点三分开始处理当日实时数据。
     TaskCompileTodayStock(lCurrentTime);
-
-    TaskUpdateStockCodeDB();
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
@@ -957,6 +955,8 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
       m_fSaveDayLine = true;
       gl_ChinaStockMarket.SaveDayLineData();
     }
+
+    TaskUpdateStockCodeDB();
   } // 每十秒钟一次的任务
   else i10SecondsCounter -= lSecondNumber;
 

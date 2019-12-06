@@ -43,6 +43,8 @@ enum {
 #include"ThreadStatus.h"
 #include"SystemTime.h"
 
+#include"Semaphore.h"
+
 using namespace std;
 #include<deque>
 #include<vector>
@@ -92,6 +94,8 @@ extern CSemaphore gl_CalculateDayLineRelativeStrong;
 extern CSemaphore gl_ProcessSinaRTDataQueue;
 extern CSemaphore gl_ProcessTengxunRTDataQueue;
 extern CSemaphore gl_ProcessNeteaseRTDataQueue;
+
+extern Semaphore gl_SemaphoreCalculateDLRS;
 
 class CMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

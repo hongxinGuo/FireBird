@@ -183,6 +183,9 @@
     <ClInclude Include="source\PriorityQueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="source\Semaphore.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

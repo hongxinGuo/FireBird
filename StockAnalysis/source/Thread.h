@@ -33,6 +33,7 @@ UINT ThreadCalculateRS(LPVOID pParam); // 此工作线程返回值为8
 
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
 UINT ThreadCalculateThisDayRS(LPVOID pParam); // 此工作线程返回值为9
+UINT ThreadCalculateThisDayRSUsingSemaphore(LPVOID pParam); // 此工作线程返回值也为9
 
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(LPVOID pParam);     // 此工作线程返回值为4

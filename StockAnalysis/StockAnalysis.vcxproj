@@ -222,6 +222,7 @@
     <ClInclude Include="source\NeteaseRTWebData.h" />
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
+    <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebData.h" />
