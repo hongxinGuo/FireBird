@@ -9,50 +9,32 @@ CSystemDeque::~CSystemDeque() {
   m_dequeMessage.clear();
 }
 
-CSystemMessage::~CSystemMessage()
-{
+CSystemMessage::~CSystemMessage() {
 }
 
-void CSystemDeque::PushMessage(CString str)
-{
-  CSingleLock singleLock(&m_Lock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_dequeMessage.push_back(str);
-    singleLock.Unlock();
-  }
+void CSystemDeque::PushMessage(CString str) {
+  m_mutex.lock();
+  m_dequeMessage.push_back(str);
+  m_mutex.unlock();
 }
 
-CString CSystemDeque::PopMessage(void)
-{
+CString CSystemDeque::PopMessage(void) {
   CString str;
-  CSingleLock singleLock(&m_Lock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {  // 如果没有锁住，则线程终止，一直等待
-    str = m_dequeMessage.front();
-    m_dequeMessage.pop_front();
-    singleLock.Unlock();
-    return str;     // 只能从这里返回
-  }
-  ASSERT(0);
-  return ""; // 此分支不可能执行到，只为了消除编译器的警告而存在
+  m_mutex.lock();
+  str = m_dequeMessage.front();
+  m_dequeMessage.pop_front();
+  m_mutex.unlock();
+  return str;     // 只能从这里返回
 }
 
-long CSystemDeque::GetDequeSize(void)
-{
-  CSingleLock singleLock(&m_Lock);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    const long lCount = m_dequeMessage.size();
-    singleLock.Unlock();
-    return lCount;
-  }
-  ASSERT(0);
-  return false; // 此分支不可能执行到，只为了消除编译器的警告而存在
+long CSystemDeque::GetDequeSize(void) {
+  m_mutex.lock();
+  const long lCount = m_dequeMessage.size();
+  m_mutex.unlock();
+  return lCount;
 }
 
-CSystemMessage::CSystemMessage()
-{
+CSystemMessage::CSystemMessage() {
   static int siCounter = 0;
   if (siCounter++ > 0) {
     TRACE("系统消息只允许一个实例\n");

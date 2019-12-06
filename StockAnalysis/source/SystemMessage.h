@@ -5,6 +5,7 @@
 
 using namespace std;
 #include<deque>
+#include<mutex>
 
 class CSystemDeque {
 public:
@@ -17,7 +18,7 @@ public:
 
 protected:
   deque<CString> m_dequeMessage;
-  CCriticalSection m_Lock;
+  mutex m_mutex;
 };
 
 class CSystemMessage final

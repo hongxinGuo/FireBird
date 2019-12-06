@@ -108,7 +108,6 @@ protected:
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额
   INT64 m_lAttackSellAmount; // 向下卖出金额
-  INT64 m_lCurrentVolume;
   long m_lCurrentAttackBuy;
   long m_lCurrentStrongBuy;
   long m_lCurrentAttackSell;

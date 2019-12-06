@@ -1536,13 +1536,13 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setRTData.m_High) * 1000, pRTData->GetHigh());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_Low) * 1000, pRTData->GetLow());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_New) * 1000, pRTData->GetNew());
-    EXPECT_DOUBLE_EQ(atoll(setRTData.m_Volume), pRTData->GetVolume());
-    EXPECT_DOUBLE_EQ(atoll(setRTData.m_Amount), pRTData->GetAmount());
+    EXPECT_EQ(atoll(setRTData.m_Volume), pRTData->GetVolume());
+    EXPECT_EQ(atoll(setRTData.m_Amount), pRTData->GetAmount());
 
     EXPECT_DOUBLE_EQ(atof(setRTData.m_PSell1) * 1000, pRTData->GetPSell(0));
-    EXPECT_DOUBLE_EQ(atoll(setRTData.m_VSell1), pRTData->GetVSell(0));
+    EXPECT_EQ(atoll(setRTData.m_VSell1), pRTData->GetVSell(0));
     EXPECT_DOUBLE_EQ(atof(setRTData.m_PBuy1) * 1000, pRTData->GetPBuy(0));
-    EXPECT_DOUBLE_EQ(atoll(setRTData.m_VBuy1), pRTData->GetVBuy(0));
+    EXPECT_EQ(atoll(setRTData.m_VBuy1), pRTData->GetVBuy(0));
 
     setRTData.Close();
 

@@ -6,6 +6,7 @@
 
 using namespace std;
 #include<queue>
+#include<mutex>
 
 class CQueueRTData final
 {
@@ -21,5 +22,5 @@ public:
 
 protected:
   queue<CRTDataPtr> m_queueRTStockData;
-  CCriticalSection m_cs;
+  mutex m_MutexAccessRTData;
 };

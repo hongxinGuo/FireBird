@@ -11,9 +11,10 @@ CStockCalculatedInfo::~CStockCalculatedInfo() {
 
 void CStockCalculatedInfo::Reset() {
   m_time = 0;
+  m_wMarket = 0;
+  m_strStockCode = _T("");
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
-  m_lCurrentVolume = 0;
   m_lAttackBuyVolume = 0;
   m_lCurrentAttackBuy = 0;
   m_lAttackSellVolume = 0;

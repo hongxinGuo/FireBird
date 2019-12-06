@@ -10,45 +10,33 @@ CQueueRTData::~CQueueRTData() {
 }
 
 void CQueueRTData::Reset(void) {
-  CSingleLock singleLock(&m_cs);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    long lTotal = m_queueRTStockData.size();
-    for (int i = 0; i < lTotal; i++) { // 清空队列
-      m_queueRTStockData.pop();
-    }
-    singleLock.Unlock();
+  m_MutexAccessRTData.lock();
+  long lTotal = m_queueRTStockData.size();
+  for (int i = 0; i < lTotal; i++) { // 清空队列
+    m_queueRTStockData.pop();
   }
+  m_MutexAccessRTData.unlock();
 }
 
 void CQueueRTData::PushRTData(CRTDataPtr pData) {
-  CSingleLock singleLock(&m_cs);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    m_queueRTStockData.push(pData);
-    singleLock.Unlock();
-  }
+  m_MutexAccessRTData.lock();
+  m_queueRTStockData.push(pData);
+  m_MutexAccessRTData.unlock();
 }
 
 CRTDataPtr CQueueRTData::PopRTData(void) {
   CRTDataPtr pData;
-  CSingleLock singleLock(&m_cs);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    pData = m_queueRTStockData.front();
-    m_queueRTStockData.pop();
-    singleLock.Unlock();
-    return pData;
-  }
+  m_MutexAccessRTData.lock();
+  pData = m_queueRTStockData.front();
+  m_queueRTStockData.pop();
+  m_MutexAccessRTData.unlock();
+  return pData;
 }
 
 long CQueueRTData::GetRTDataSize(void) {
   size_t size = 0;
-  CSingleLock singleLock(&m_cs);
-  singleLock.Lock();
-  if (singleLock.IsLocked()) {
-    size = m_queueRTStockData.size();
-    singleLock.Unlock();
-    return size;
-  }
+  m_MutexAccessRTData.lock();
+  size = m_queueRTStockData.size();
+  m_MutexAccessRTData.unlock();
+  return size;
 }

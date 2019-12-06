@@ -12,6 +12,41 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CStockCalculatedInfo id;
     EXPECT_EQ(id.GetTransactionTime(), 0);
+    EXPECT_EQ(id.GetMarket(), 0);
+    EXPECT_STREQ(id.GetStockCode(), _T(""));
+    EXPECT_EQ(id.GetCurrentAttackBuy(), 0);
+    EXPECT_EQ(id.GetCurrentAttackSell(), 0);
+    EXPECT_EQ(id.GetUnknownVolume(), 0);
+    EXPECT_EQ(id.GetCurrentStrongBuy(), 0);
+    EXPECT_EQ(id.GetCurrentStrongSell(), 0);
+    EXPECT_EQ(id.GetCurrentUnknown(), 0);
+
+    EXPECT_EQ(id.GetCancelBuyVolume(), 0);
+    EXPECT_EQ(id.GetCancelSellVolume(), 0);
+
+    EXPECT_EQ(id.GetAttackBuyVolume(), 0);
+    EXPECT_EQ(id.GetAttackSellVolume(), 0);
+    EXPECT_EQ(id.GetAttackBuyAmount(), 0);
+    EXPECT_EQ(id.GetAttackSellAmount(), 0);
+
+    EXPECT_EQ(id.GetAttackBuyBelow50000(), 0);
+    EXPECT_EQ(id.GetAttackBuyBelow200000(), 0);
+    EXPECT_EQ(id.GetAttackBuyAbove200000(), 0);
+    EXPECT_EQ(id.GetAttackSellBelow50000(), 0);
+    EXPECT_EQ(id.GetAttackSellBelow200000(), 0);
+    EXPECT_EQ(id.GetAttackSellAbove200000(), 0);
+
+    EXPECT_EQ(id.GetOrdinaryBuyVolume(), 0);
+    EXPECT_EQ(id.GetOrdinarySellVolume(), 0);
+
+    EXPECT_EQ(id.GetStrongBuyVolume(), 0);
+    EXPECT_EQ(id.GetStrongSellVolume(), 0);
+
+    EXPECT_EQ(id.GetTransactionNumber(), 0);
+    EXPECT_EQ(id.GetTransactionNumberBelow5000(), 0);
+    EXPECT_EQ(id.GetTransactionNumberBelow50000(), 0);
+    EXPECT_EQ(id.GetTransactionNumberBelow200000(), 0);
+    EXPECT_EQ(id.GetTransactionNumberAbove200000(), 0);
   }
   TEST(CStockCalculatedInfoTest, TestGetTransactionTime) {
     ASSERT_FALSE(gl_fNormalMode);
