@@ -43,6 +43,6 @@ CSemaphore gl_ProcessSinaRTDataQueue(1, 1);   // ĞÂÀËÊµÊ±Êı¾İ´¦ÀíÍ¬Ê±Ö»ÔÊĞíÒ»¸öÏ
 CSemaphore gl_ProcessTengxunRTDataQueue(1, 1);
 CSemaphore gl_ProcessNeteaseRTDataQueue(1, 1);
 
-Semaphore gl_SemaphoreCalculateDLRS(16);
+Semaphore gl_SemaphoreCalculateDLRS(8);
 
 CMarket gl_ChinaStockMarket;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

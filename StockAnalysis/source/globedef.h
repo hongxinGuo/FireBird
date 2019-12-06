@@ -53,6 +53,8 @@ using namespace std;
 #include<memory>
 #include<atomic>
 
+using namespace MyAccessory;
+
 // ≤‚ ‘”√±‰¡ø
 extern CRTDataPtr gl_TESTpRTData;
 

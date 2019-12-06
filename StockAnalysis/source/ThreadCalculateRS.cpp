@@ -31,8 +31,8 @@ UINT ThreadCalculateRS(LPVOID) {
     if (gl_systemTime.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       //while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程（最多同时生成16个工作线程，再要生成线程就要等待已生成的结束才行）
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      //AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
-      AfxBeginThread(ThreadCalculateThisDayRSUsingSemaphore, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
+      AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
+      //AfxBeginThread(ThreadCalculateThisDayRSUsingSemaphore, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     if (gl_ExitingSystem) return true;
     if (gl_fExitingCalculatingRS) return true;
@@ -91,7 +91,7 @@ UINT ThreadCalculateThisDayRS(LPVOID pParam) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 计算给定日期的日线相对强度。
+// 计算给定日期的日线相对强度。使用C++11mutex和condition_variable构造的Semaphore。
 //
 // pParam： 给定的日期（长整型）
 //
