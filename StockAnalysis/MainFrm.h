@@ -71,8 +71,6 @@ protected:
 
 public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnSaveDaylineData();
-  afx_msg void OnUpdateSaveDaylineData(CCmdUI* pCmdUI);
   afx_msg void OnCompileTodayStock();
   afx_msg void OnUpdateCompileTodayStock(CCmdUI* pCmdUI);
   afx_msg void OnCalculateRelativeStrong();

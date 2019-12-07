@@ -52,7 +52,7 @@ public:
   double GetHANDY_1YEAR(void) noexcept { return m_dHANDY_TC_1YEAR; }
   double GetVLCC_3YEAR(void) noexcept { return m_dVLCC_TC_3YEAR; }
   double GetSUEZMAX_3YEAR(void) noexcept { return m_dSUEZMAX_TC_3YEAR; }
-  double GetAFRAMAX_3YEAR(void) { return m_dAFRAMAX_TC_3YEAR; }
+  double GetAFRAMAX_3YEAR(void) noexcept { return m_dAFRAMAX_TC_3YEAR; }
   double GetMR_3YEAR(void) noexcept { return m_dMR_TC_3YEAR; }
   double GetHANDY_3YEAR(void) noexcept { return m_dHANDY_TC_3YEAR; }
 

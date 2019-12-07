@@ -43,8 +43,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
   ON_WM_SETTINGCHANGE()
   ON_WM_TIMER()
-  ON_COMMAND(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnSaveDaylineData)
-  ON_UPDATE_COMMAND_UI(ID_SAVE_DAYLINE_DATA, &CMainFrame::OnUpdateSaveDaylineData)
   ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
   ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
   ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
@@ -485,26 +483,12 @@ void CMainFrame::OnCompileTodayStock() {
   }
 }
 
-void CMainFrame::OnSaveDaylineData() {
-  // TODO: 在此添加命令处理程序代码
-}
-
-//void CMainFrame::OnSaveRtdata() {
-//  // TODO: 在此添加命令处理程序代码
-//  gl_ChinaStockMarket.SaveRTData();
-//}
-
 void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     pCmdUI->Enable(true);
   }
   else pCmdUI->Enable(false);
-}
-
-void CMainFrame::OnUpdateSaveDaylineData(CCmdUI* pCmdUI) {
-  // TODO: 在此添加命令更新用户界面处理程序代码
-  //for( auto pStock : gl_sMark)
 }
 
 void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI) {
@@ -668,4 +652,4 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
 #else
   pCmdUI->Enable(true); // 调试状态下永远允许执行
 #endif
-}
+  }
