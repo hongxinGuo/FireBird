@@ -14,18 +14,14 @@ CSinaRTWebData::~CSinaRTWebData() {
 }
 
 void CSinaRTWebData::ProcessCurrentWebData(void) {
-  CSingleLock sl(&gl_ProcessSinaRTDataQueue);
-
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？
-      sl.Lock();
-      if (sl.IsLocked()) {
-        ResetCurrentPos();
-        if (SucceedReadingAndStoringWebData()) {
-          ProcessWebDataStored();
-        }
+      gl_ProcessSinaRTDataQueue.Wait();
+      ResetCurrentPos();
+      if (SucceedReadingAndStoringWebData()) {
+        ProcessWebDataStored();
       }
-      sl.Unlock();
+      gl_ProcessSinaRTDataQueue.Signal();
     }
   }
   else {  // 网络通信出现错误

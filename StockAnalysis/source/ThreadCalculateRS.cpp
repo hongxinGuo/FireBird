@@ -32,7 +32,6 @@ UINT ThreadCalculateRS(LPVOID) {
       //while (!gl_ThreadStatus.IsCalculatingRSThreadAvailable());  // 等待有可用的线程（最多同时生成16个工作线程，再要生成线程就要等待已生成的结束才行）
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
-      //AfxBeginThread(ThreadCalculateThisDayRSUsingSemaphore, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     if (gl_ExitingSystem) return true;
     if (gl_fExitingCalculatingRS) return true;
@@ -64,7 +63,7 @@ UINT ThreadCalculateRS(LPVOID) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 计算给定日期的日线相对强度。
+// 计算给定日期的日线相对强度。使用C++11mutex和condition_variable构造的Semaphore。
 //
 // pParam： 给定的日期（长整型）
 //
@@ -73,42 +72,15 @@ UINT ThreadCalculateRS(LPVOID) {
 UINT ThreadCalculateThisDayRS(LPVOID pParam) {
   long lToday;
 
-  CSingleLock sl(&gl_CalculateDayLineRelativeStrong);
-  sl.Lock();
-  if (sl.IsLocked()) {
-    if (gl_ExitingSystem) {
-      sl.Unlock();
-      return 9;
-    }
-    lToday = (long)pParam;
-    gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
-    gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
-    gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
-    sl.Unlock();
-  }
-  return 9;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-//
-// 计算给定日期的日线相对强度。使用C++11mutex和condition_variable构造的Semaphore。
-//
-// pParam： 给定的日期（长整型）
-//
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCalculateThisDayRSUsingSemaphore(LPVOID pParam) {
-  long lToday;
-
-  gl_SemaphoreCalculateDLRS.Wait();
+  gl_SemaphoreCalculateDayLineRS.Wait();
   if (gl_ExitingSystem) {
-    gl_SemaphoreCalculateDLRS.Signal();
+    gl_SemaphoreCalculateDayLineRS.Signal();
     return 9;
   }
   lToday = (long)pParam;
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDLRS.Signal();
+  gl_SemaphoreCalculateDayLineRS.Signal();
   return 9;
 }

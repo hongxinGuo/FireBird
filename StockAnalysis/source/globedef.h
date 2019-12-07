@@ -91,13 +91,11 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 extern const int gl_cMaxSavingOneDayLineThreads;
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
-extern CSemaphore gl_SaveOneStockDayLine;
-extern CSemaphore gl_CalculateDayLineRelativeStrong;
-extern CSemaphore gl_ProcessSinaRTDataQueue;
-extern CSemaphore gl_ProcessTengxunRTDataQueue;
-extern CSemaphore gl_ProcessNeteaseRTDataQueue;
-
-extern Semaphore gl_SemaphoreCalculateDLRS;
+extern Semaphore gl_SaveOneStockDayLine;
+extern Semaphore gl_SemaphoreCalculateDayLineRS;
+extern Semaphore gl_ProcessSinaRTDataQueue;
+extern Semaphore gl_ProcessTengxunRTDataQueue;
+extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 class CMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

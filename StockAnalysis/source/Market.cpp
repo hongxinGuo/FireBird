@@ -479,45 +479,42 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
-  CSingleLock sl(&gl_ProcessSinaRTDataQueue);
-  sl.Lock();
-  if (sl.IsLocked()) {
-    CStockPtr pStock;
-    const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
-    CString strVolume;
+  gl_ProcessSinaRTDataQueue.Wait();
+  CStockPtr pStock;
+  const long lTotalNumber = gl_QueueSinaRTData.GetRTDataSize();
+  CString strVolume;
 
-    for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-      CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();
-      if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
-        gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
+  for (int iCount = 0; iCount < lTotalNumber; iCount++) {
+    CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();
+    if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
+      gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
+    }
+    if (pRTData->IsActive()) { // 此实时数据有效？
+      if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
+        m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      if (pRTData->IsActive()) { // 此实时数据有效？
-        if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
-          m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+      long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
+      pStock = m_vChinaMarketAStock.at(lIndex);
+      if (!pStock->IsActive()) {
+        if (pRTData->IsValidTime()) {
+          pStock->SetActive(true);
+          pStock->SetStockName(pRTData->GetStockName());
+          pStock->SetStockCode(pRTData->GetStockCode());
+          pStock->UpdateStatus(pRTData);
+          pStock->SetTransactionTime(pRTData->GetTransactionTime());
+          pStock->SetIPOStatus(__STOCK_IPOED__);
+          m_lTotalActiveStock++;
         }
-        long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
-        pStock = m_vChinaMarketAStock.at(lIndex);
-        if (!pStock->IsActive()) {
-          if (pRTData->IsValidTime()) {
-            pStock->SetActive(true);
-            pStock->SetStockName(pRTData->GetStockName());
-            pStock->SetStockCode(pRTData->GetStockCode());
-            pStock->UpdateStatus(pRTData);
-            pStock->SetTransactionTime(pRTData->GetTransactionTime());
-            pStock->SetIPOStatus(__STOCK_IPOED__);
-            m_lTotalActiveStock++;
-          }
-        }
-        if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
-          pStock->PushRTData(pRTData); // 存储新的数据至数据池
-          pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
-        }
+      }
+      if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+        pStock->PushRTData(pRTData); // 存储新的数据至数据池
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
       }
     }
-    gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   }
+  gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   ASSERT(gl_QueueSinaRTData.GetRTDataSize() == 0); // 必须一次处理全体数据。
-  sl.Unlock();
+  gl_ProcessSinaRTDataQueue.Signal();
 
   return true;
 }

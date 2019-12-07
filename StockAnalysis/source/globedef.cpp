@@ -35,14 +35,13 @@ bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标
 bool gl_fTestMode = true; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
 const int gl_cMaxSavingOneDayLineThreads = 3;
-const int gl_cMaxCalculateDayLineRS = 8;
+constexpr int gl_cMaxCalculateDayLineRS = 8;
 // 信号量必须声明为全局变量（为了初始化）
-CSemaphore gl_SaveOneStockDayLine(4, 4);
-CSemaphore gl_CalculateDayLineRelativeStrong(gl_cMaxCalculateDayLineRS, gl_cMaxCalculateDayLineRS); // 计算日线相对强度的线程最多允许8个同时运行
-CSemaphore gl_ProcessSinaRTDataQueue(1, 1);   // 新浪实时数据处理同时只允许一个线程存在
-CSemaphore gl_ProcessTengxunRTDataQueue(1, 1);
-CSemaphore gl_ProcessNeteaseRTDataQueue(1, 1);
+Semaphore gl_SaveOneStockDayLine(4);
+Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
+Semaphore gl_ProcessTengxunRTDataQueue(1);
+Semaphore gl_ProcessNeteaseRTDataQueue(1);
 
-Semaphore gl_SemaphoreCalculateDLRS(8);
+Semaphore gl_SemaphoreCalculateDayLineRS(8);
 
 CMarket gl_ChinaStockMarket;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
