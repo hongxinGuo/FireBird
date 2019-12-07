@@ -17,7 +17,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
 
     return tt;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertBufferToTime异常\n"));
     return 0;
   }
@@ -40,7 +40,7 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
 
     return tt;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertBufferToTime异常\n"));
     return 0;
   }
@@ -96,7 +96,7 @@ CString ConvertValueToString(long lValue, int iDividend) {
     str = buffer;
     return str;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
@@ -113,7 +113,7 @@ CString ConvertValueToString(int iValue, int iDividend) {
 
     return str;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
@@ -129,7 +129,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
     str = buffer;
     return str;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
@@ -145,7 +145,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
     str = buffer;
     return str;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ConvertValuetoString异常\n"));
     return _T("");
   }
@@ -155,7 +155,7 @@ double GetValue(char* buffer) {
   try {
     return atof(buffer);
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("CDayline::SetValue exception\n"));
     return(0.0);
   }
@@ -165,7 +165,7 @@ double GetValue(CString strBuffer) {
   try {
     return atof(strBuffer);
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("CDayline::SetValue exception\n"));
     return(0.0);
   }

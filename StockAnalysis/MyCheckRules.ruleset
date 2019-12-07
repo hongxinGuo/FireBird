@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="MyCheckRules" ToolsVersion="16.0">
+  <Include Path="concurrencycheckrules.ruleset" Action="Default" />
+  <Include Path="concurrencyrules.ruleset" Action="Default" />
+  <Include Path="cppcorecheckconstrules.ruleset" Action="Default" />
+  <Include Path="cppcorecheckdeclrules.ruleset" Action="Default" />
+  <Include Path="cppcorechecklifetimerules.ruleset" Action="Default" />
+</RuleSet>

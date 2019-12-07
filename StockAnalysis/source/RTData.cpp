@@ -363,7 +363,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
 
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ReadSinaData异常\n"));
     return false;
   }
@@ -414,7 +414,6 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValu
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnValue) {
-  long dTemp;
   static char buffer3[200];
 
   if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
@@ -444,7 +443,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer) {
 
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ReadSinaOneValue异常\n"));
     return false;
   }
@@ -735,7 +734,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData) {
 
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ReadTengxunData异常\n"));
     return false;
   }
@@ -807,7 +806,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
     }
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("ReadNeteaseData异常\n"));
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
@@ -892,7 +891,7 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, char* bu
     pTengxunRTWebData->IncreaseCurrentPos();
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE("ReadTengxunOneValue函数异常\n");
     return false;
   }
@@ -986,7 +985,7 @@ bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long
     }
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("GetNeteaseIndexAndValue Exception\n"));
     lIndex = 0;
     strValue = _T("");
@@ -1110,7 +1109,7 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     }
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("SetValue异常\n"));
     return false;
   }

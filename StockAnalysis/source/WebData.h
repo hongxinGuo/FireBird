@@ -14,7 +14,7 @@ public:
   // 公共接口函数
   virtual bool GetWebData(void);
 
-  virtual bool IsNeedProcessingCurrentWebData(void) { return IsReadingSucceed(); }
+  virtual bool IsNeedProcessingCurrentWebData(void) noexcept { return IsReadingSucceed(); }
 
   virtual void ProcessCurrentWebData(void); // 默认处理当前网络数据函数
   virtual bool SucceedReadingAndStoringWebData(void); // 默认读取存储函数
@@ -34,30 +34,30 @@ public:
   // 以下为实现函数
   void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
-  void SetInquiringString(CString str) { m_strInquire = str; }
-  char* GetBufferAddr(void) { return m_buffer; }
+  void SetInquiringString(CString str) noexcept { m_strInquire = str; }
+  char* GetBufferAddr(void) noexcept { return m_buffer; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
-  long GetByteReaded(void) { return m_lByteRead; }
-  void SetByteReaded(long lValue) { m_lByteRead = lValue; }
-  void AddByteReaded(long lValue) { m_lByteRead += lValue; }
+  long GetByteReaded(void)noexcept { return m_lByteRead; }
+  void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
+  void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
 
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
 
-  bool IsReadingSucceed(void) { return m_fReceivedData; }
-  void SetReadingSucceed(bool fFlag) { m_fReceivedData = fFlag; }
-  bool IsWebDataReceived(void) { return m_fWebDataReceived; }
-  void SetWebDataReceived(bool fFlag) { m_fWebDataReceived = fFlag; }
-  bool IsReadingWebData(void) { return m_fReadingWebData; }
-  void SetReadingWebData(bool fFlag) { m_fReadingWebData = fFlag; }
+  bool IsReadingSucceed(void) noexcept { return m_fReceivedData; }
+  void SetReadingSucceed(bool fFlag) noexcept { m_fReceivedData = fFlag; }
+  bool IsWebDataReceived(void) noexcept { return m_fWebDataReceived; }
+  void SetWebDataReceived(bool fFlag) noexcept { m_fWebDataReceived = fFlag; }
+  bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
+  void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-  void IncreaseCurrentPos(long lNumberOfChars = 1) { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
-  void ResetCurrentPos(void) { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
 
-  long GetCurrentPos(void) { return m_lCurrentPos; }
-  char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
+  long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
+  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
 
-  bool IsReportStatus(void) { return m_fReportStatus; }
+  bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
 public:
   // 以下为测试用函数

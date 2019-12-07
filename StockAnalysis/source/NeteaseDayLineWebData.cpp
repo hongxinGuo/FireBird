@@ -24,7 +24,7 @@ bool CNeteaseDayLineWebData::GetWebData(void) {
   return true;
 }
 
-bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void) {
+bool CNeteaseDayLineWebData::IsNeedProcessingCurrentWebData(void) noexcept {
   if (m_fNeedProcessingCurrentWebData) return true;
   else return false;
 }
@@ -80,7 +80,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
   }
 }
 
-int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire, long lTotalNumer, bool fSkipUnactiveStock) {
+int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire, long, bool) {
   strInquire = _T("");
   return 0;
 }

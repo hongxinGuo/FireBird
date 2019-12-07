@@ -343,7 +343,6 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
   default: // 越界
   ASSERT(0);
   }
-  char buffer[30];
   str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
   IncreaseStockInquiringIndex(siCounter);
   return true;
@@ -972,7 +971,7 @@ CString CMarket::GetStockName(CString strStockCode) {
   try {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode))->GetStockName());
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE("GetStockName函数异常\n");
     return _T("");
   }
@@ -990,7 +989,7 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
     lIndex = m_mapChinaMarketAStock.at(strStockCode);
     return true;
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE("GetStockIndex函数异常\n");
     lIndex = -1;
     return false;
@@ -1008,7 +1007,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
   try {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }
@@ -1018,7 +1017,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
   try {
     return m_vChinaMarketAStock.at(lIndex);
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE("GetStockPtr函数异常\n");
     return nullptr;
   }

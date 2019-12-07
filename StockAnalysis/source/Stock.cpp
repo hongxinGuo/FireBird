@@ -204,7 +204,6 @@ bool CStock::ProcessNeteaseDayLineData(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::SaveDayLine(void) {
   CSetDayLine setDayLine;
-  long lIndex = 0;
   long lSize = 0;
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
@@ -873,9 +872,6 @@ bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   }
   else if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则不需要再更新日线数据
     if (IsDayLineNeedUpdate() && (GetDayLineEndDay() != 19900101)) SetDayLineNeedUpdate(false);
-  }
-  else {
-    int i = 0;
   }
   return true;
 }
