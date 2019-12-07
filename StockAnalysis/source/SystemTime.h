@@ -7,12 +7,12 @@ public:
   CSystemTime(void);
   ~CSystemTime(void);
 
-  time_t Gett_time(void) { return m_ttime; }
+  time_t Gett_time(void) noexcept { return m_ttime; }
 
-  long GetDay(void) { return m_lToday; }
-  long GetTime(void) { return m_lTime; }
-  long GetLastTradeDay(void) { CalculateLastTradeDay(); return m_lLastTradeDay; }
-  long GetDayOfWeek(void) { return m_tm.tm_wday; }
+  long GetDay(void) noexcept { return m_lToday; }
+  long GetTime(void) noexcept { return m_lTime; }
+  long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lLastTradeDay; }
+  long GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }
 
   void CalculateTime(void);
   void CalculateLastTradeDay(void);
@@ -25,9 +25,9 @@ public:
 public:
   // 测试用函数
   void __Test_Sett_time(time_t Time);
-  void __Test_SetTime(long lTime) { m_lTime = lTime; }// 此函数只用于测试
+  void __Test_SetTime(long lTime) noexcept { m_lTime = lTime; }// 此函数只用于测试
   void __Test_SetTM(tm tm_);
-  void __Test_SetDay(long lDay) { m_lToday = lDay; }
+  void __Test_SetDay(long lDay) noexcept { m_lToday = lDay; }
 
 protected:
   long m_lToday; // 今日日期。格式为：19990102

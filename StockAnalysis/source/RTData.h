@@ -164,38 +164,38 @@ public:
   bool SetValue(long lIndex, CString strValue);
 
 public:
-  void SetDataSource(long lDataSource) { m_lDataSource = lDataSource; }
-  long GetDataSource(void) { return m_lDataSource; }
-  time_t GetTransactionTime(void) { return m_time; }
-  void SetTransactionTime(time_t time) { m_time = time; }
-  WORD GetMarket(void) { return m_wMarket; }
-  void SetMarket(WORD wMarket) { m_wMarket = wMarket; }
+  void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
+  long GetDataSource(void) noexcept { return m_lDataSource; }
+  time_t GetTransactionTime(void) noexcept { return m_time; }
+  void SetTransactionTime(time_t time) noexcept { m_time = time; }
+  WORD GetMarket(void) noexcept { return m_wMarket; }
+  void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
   CString GetStockCode(void) { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
-  long GetLastClose(void) { return m_lLastClose; }
-  void SetLastClose(long lValue) { m_lLastClose = lValue; }
-  long GetOpen(void) { return m_lOpen; }
-  void SetOpen(long lValue) { m_lOpen = lValue; }
-  long GetHigh(void) { return m_lHigh; }
-  void SetHigh(long lValue) { m_lHigh = lValue; }
-  long GetLow(void) { return m_lLow; }
-  void SetLow(long lValue) { m_lLow = lValue; }
-  long GetNew(void) { return m_lNew; }
-  void SetNew(long lValue) { m_lNew = lValue; }
-  INT64 GetAmount(void) { return m_llAmount; }
-  void SetAmount(INT64 llValue) { m_llAmount = llValue; }
-  INT64 GetVolume(void) { return m_llVolume; }
-  void SetVolume(INT64 llValue) { m_llVolume = llValue; }
-  void SetTotalValue(INT64 llValue) { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) { return m_llCurrentValue; }
-  long GetBuy(void) { return m_lBuy; }
-  void SetBuy(long lValue) { m_lBuy = lValue; }
-  long GetSell(void) { return m_lSell; }
-  void SetSell(long lValue) { m_lSell = lValue; }
+  long GetLastClose(void) noexcept { return m_lLastClose; }
+  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+  long GetOpen(void) noexcept { return m_lOpen; }
+  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+  long GetHigh(void) noexcept { return m_lHigh; }
+  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+  long GetLow(void) noexcept { return m_lLow; }
+  void SetLow(long lValue) noexcept { m_lLow = lValue; }
+  long GetNew(void) noexcept { return m_lNew; }
+  void SetNew(long lValue) noexcept { m_lNew = lValue; }
+  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+  INT64 GetCurrentValue(void)  noexcept { return m_llCurrentValue; }
+  long GetBuy(void) noexcept { return m_lBuy; }
+  void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
+  long GetSell(void) noexcept { return m_lSell; }
+  void SetSell(long lValue) noexcept { m_lSell = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
@@ -205,10 +205,10 @@ public:
   long GetVSell(int iIndex) { return m_lVSell.at(iIndex); }
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
-  bool IsActive(void) { return m_fActive; }
+  bool IsActive(void) noexcept { return m_fActive; }
   bool IsValidTime(void);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
-  bool IsValidDataSource(void) { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
+  bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 
   // 数据库存储和读取
   void SaveData(CSetRealTimeData& setRTData);

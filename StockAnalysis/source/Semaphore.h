@@ -8,7 +8,7 @@ namespace MyAccessory {
   class Semaphore
   {
   public:
-    Semaphore(long count = 1) : m_count(count) {}
+    Semaphore(long count = 1) noexcept : m_count(count) {}
     Semaphore(const Semaphore&) = delete;
     Semaphore& operator=(const Semaphore&) = delete;
 
