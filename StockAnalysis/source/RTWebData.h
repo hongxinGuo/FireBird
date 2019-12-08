@@ -10,7 +10,9 @@ public:
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
   }
-  ~CRTWebData() {}
+  ~CRTWebData() {
+    if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
+  }
 
 public:
   char* m_pDataBuffer;

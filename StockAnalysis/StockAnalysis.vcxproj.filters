@@ -189,6 +189,9 @@
     <ClInclude Include="source\RTWebData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
+    <ClInclude Include="source\QueueRTWebData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -334,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueRTWebData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

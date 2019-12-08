@@ -223,6 +223,7 @@
     <ClInclude Include="source\NeteaseRTWebData.h" />
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
+    <ClInclude Include="source\QueueRTWebData.h" />
     <ClInclude Include="source\RTWebData.h" />
     <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="source\NeteaseRTWebData.cpp" />
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
     <ClCompile Include="source\QueueRTData.cpp" />
+    <ClCompile Include="source\QueueRTWebData.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SinaRTWebData.cpp" />

@@ -91,7 +91,7 @@ int CSinaRTWebData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool
 }
 
 void CSinaRTWebData::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadSinaRTData, nullptr);
+  AfxBeginThread(ThreadReadSinaRTData, this);
 }
 
 bool CSinaRTWebData::ReportStatus(long lNumberOfData) {

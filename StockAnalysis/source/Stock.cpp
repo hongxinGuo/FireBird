@@ -102,6 +102,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     return false;
   }
 
+  ASSERT(m_pDayLineBuffer[m_lDayLineBufferLength] == 0x000); // 最后字符为增加的0x000.
   while (*pCurrentPos != 0X0d) {
     if ((*pCurrentPos == 0x0a) || (*pCurrentPos == 0x000)) {
       return false;

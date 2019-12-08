@@ -11,51 +11,63 @@
 #include"globedef.h"
 #include"Market.h"
 
-UINT ThreadReadTengxunRTData(LPVOID) {
+UINT ThreadReadTengxunRTData(LPVOID pParam) {
+  CTengxunRTWebData* pTengxunWebData = (CTengxunRTWebData*)pParam;
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = gl_TengxunRTWebData.GetBufferAddr();
+  char* pChar = pTengxunWebData->GetBufferAddr();
 
   const clock_t tt = clock();
 
   try {
-    gl_TengxunRTWebData.SetReadingWebData(true);  //
-    gl_TengxunRTWebData.SetReadingSucceed(true);
-    gl_TengxunRTWebData.SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)gl_TengxunRTWebData.GetInquiringString()));
+    pTengxunWebData->SetReadingWebData(true);  //
+    pTengxunWebData->SetReadingSucceed(true);
+    pTengxunWebData->SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pTengxunWebData->GetInquiringString()));
     Sleep(100); // 腾讯服务器100ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          gl_TengxunRTWebData.AddByteReaded(iCount);
+          pTengxunWebData->AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        gl_TengxunRTWebData.AddByteReaded(iCount);
+        pTengxunWebData->AddByteReaded(iCount);
       }
       else fDone = true;
     }
     *pChar = 0x000;
-    gl_TengxunRTWebData.SetWebDataReceived(true);
+    pTengxunWebData->SetWebDataReceived(true);
+
+    // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
+    char* p = pTengxunWebData->GetBufferAddr();
+    CRTWebDataPtr pRTWebData = make_shared<CRTWebData>();
+    pRTWebData->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pRTWebData->m_lBufferLength = pTengxunWebData->GetByteReaded();
+    char* pbuffer = pRTWebData->m_pDataBuffer;
+    for (int i = 0; i < pTengxunWebData->GetByteReaded() + 1; i++) {
+      *pbuffer++ = *p++;
+    }
+    gl_QueueTengxunRTWebData.PushRTWebData(pRTWebData);
   }
   catch (CInternetException * e) {
     e->Delete();
-    gl_TengxunRTWebData.SetReadingSucceed(false);
-    gl_TengxunRTWebData.SetWebDataReceived(false);
+    pTengxunWebData->SetReadingSucceed(false);
+    pTengxunWebData->SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {
     delete pFile;
     pFile = nullptr;
   }
-  gl_TengxunRTWebData.SetReadingWebData(false);
+  pTengxunWebData->SetReadingWebData(false);
 
   gl_ChinaStockMarket.SetReadingTengxunRTDataTime(clock() - tt);
 

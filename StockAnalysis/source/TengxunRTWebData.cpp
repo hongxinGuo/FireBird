@@ -100,7 +100,7 @@ int CTengxunRTWebData::GetInquiringStr(CString& strInquire, long lTotalNumber, b
 }
 
 void CTengxunRTWebData::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadTengxunRTData, nullptr);
+  AfxBeginThread(ThreadReadTengxunRTData, this);
 }
 
 bool CTengxunRTWebData::ReportStatus(long lNumberOfData) {
