@@ -15,7 +15,7 @@
 #include"Stock.h"
 #include"Market.h"
 
-#include"SinaRTWebData.h"
+#include"SinaWebRTData.h"
 
 #include"Thread.h"
 
@@ -110,7 +110,7 @@ CMainFrame::~CMainFrame() {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }
 
-  while (gl_SinaRTWebData.IsReadingWebData()) {
+  while (gl_SinaWebRTData.IsReadingWebData()) {
     Sleep(1); // 等待实时数据读取线程结束
   }
 
@@ -652,4 +652,4 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
 #else
   pCmdUI->Enable(true); // 调试状态下永远允许执行
 #endif
-  }
+}

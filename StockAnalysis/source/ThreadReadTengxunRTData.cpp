@@ -12,7 +12,7 @@
 #include"Market.h"
 
 UINT ThreadReadTengxunRTData(LPVOID pParam) {
-  CTengxunRTWebData* pTengxunWebData = (CTengxunRTWebData*)pParam;
+  CTengxunWebRTData* pTengxunWebData = (CTengxunWebRTData*)pParam;
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
@@ -48,14 +48,14 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
 
     // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
     char* p = pTengxunWebData->GetBufferAddr();
-    CRTWebDataPtr pRTWebData = make_shared<CRTWebData>();
-    pRTWebData->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pRTWebData->m_lBufferLength = pTengxunWebData->GetByteReaded();
-    char* pbuffer = pRTWebData->m_pDataBuffer;
+    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
+    pWebRTData->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebRTData->m_lBufferLength = pTengxunWebData->GetByteReaded();
+    char* pbuffer = pWebRTData->m_pDataBuffer;
     for (int i = 0; i < pTengxunWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueTengxunRTWebData.PushRTWebData(pRTWebData);
+    gl_QueueTengxunWebRTData.PushWebRTData(pWebRTData);
   }
   catch (CInternetException * e) {
     e->Delete();

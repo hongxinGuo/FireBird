@@ -12,62 +12,62 @@
 #include"Market.h"
 
 UINT ThreadReadNeteaseRTData(LPVOID pParam) {
-  CNeteaseRTWebData* pNeteaseRTWebData = (CNeteaseRTWebData*)pParam;
+  CNeteaseWebRTData* pNeteaseWebRTData = (CNeteaseWebRTData*)pParam;
 
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = pNeteaseRTWebData->GetBufferAddr();
+  char* pChar = pNeteaseWebRTData->GetBufferAddr();
 
   try {
-    pNeteaseRTWebData->SetReadingWebData(true);  //
-    pNeteaseRTWebData->SetReadingSucceed(true);
-    pNeteaseRTWebData->SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseRTWebData->GetInquiringString()));
+    pNeteaseWebRTData->SetReadingWebData(true);  //
+    pNeteaseWebRTData->SetReadingSucceed(true);
+    pNeteaseWebRTData->SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseWebRTData->GetInquiringString()));
     Sleep(200); // 腾讯服务器100ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          pNeteaseRTWebData->AddByteReaded(iCount);
+          pNeteaseWebRTData->AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(50); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        pNeteaseRTWebData->AddByteReaded(iCount);
+        pNeteaseWebRTData->AddByteReaded(iCount);
       }
       else fDone = true;
     }
     *pChar = 0x000;
-    pNeteaseRTWebData->SetWebDataReceived(true);
-    pNeteaseRTWebData->ResetCurrentPos();
+    pNeteaseWebRTData->SetWebDataReceived(true);
+    pNeteaseWebRTData->ResetCurrentPos();
 
     // 将读取的网易实时数据放入网易实时网络数据缓冲区中，并设置相关标识。
-    char* p = pNeteaseRTWebData->GetBufferAddr();
-    CRTWebDataPtr pRTWebData = make_shared<CRTWebData>();
-    pRTWebData->m_pDataBuffer = new char[pNeteaseRTWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pRTWebData->m_lBufferLength = pNeteaseRTWebData->GetByteReaded();
-    char* pbuffer = pRTWebData->m_pDataBuffer;
-    for (int i = 0; i < pNeteaseRTWebData->GetByteReaded() + 1; i++) {
+    char* p = pNeteaseWebRTData->GetBufferAddr();
+    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
+    pWebRTData->m_pDataBuffer = new char[pNeteaseWebRTData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebRTData->m_lBufferLength = pNeteaseWebRTData->GetByteReaded();
+    char* pbuffer = pWebRTData->m_pDataBuffer;
+    for (int i = 0; i < pNeteaseWebRTData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueNeteaseRTWebData.PushRTWebData(pRTWebData);
+    gl_QueueNeteaseWebRTData.PushWebRTData(pWebRTData);
   }
   catch (CInternetException * e) {
     e->Delete();
-    pNeteaseRTWebData->SetReadingSucceed(false);
-    pNeteaseRTWebData->SetWebDataReceived(false);
+    pNeteaseWebRTData->SetReadingSucceed(false);
+    pNeteaseWebRTData->SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {
     delete pFile;
     pFile = nullptr;
   }
-  pNeteaseRTWebData->SetReadingWebData(false);
+  pNeteaseWebRTData->SetReadingWebData(false);
 
   return 13;
 }

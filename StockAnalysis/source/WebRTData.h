@@ -3,16 +3,16 @@
 using namespace std;
 #include<memory>
 
-class CRTWebData
+class CWebRTData
 {
 public:
-  CRTWebData() {
+  CWebRTData() {
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
     m_pCurrentPos = nullptr;
     m_lCurrentPos = 0;
   }
-  ~CRTWebData() {
+  ~CWebRTData() {
     if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
@@ -25,4 +25,4 @@ public:
   long m_lCurrentPos;
 };
 
-typedef shared_ptr<CRTWebData> CRTWebDataPtr;
+typedef shared_ptr<CWebRTData> CWebRTDataPtr;

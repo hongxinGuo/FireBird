@@ -2,11 +2,11 @@
 #include "WebData.h"
 #include"RTData.h"
 
-class CSinaRTWebData final : public CWebData {
+class CSinaWebRTData final : public CWebData {
   friend class CRTData;
 public:
-  CSinaRTWebData();
-  ~CSinaRTWebData();
+  CSinaWebRTData();
+  ~CSinaWebRTData();
 
   virtual bool GetWebData(void) override;
 

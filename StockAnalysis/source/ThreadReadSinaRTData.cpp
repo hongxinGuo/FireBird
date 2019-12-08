@@ -11,63 +11,63 @@
 #include"Market.h"
 
 UINT ThreadReadSinaRTData(LPVOID pParam) {
-  CSinaRTWebData* pSinaRTWebData = (CSinaRTWebData*)pParam;
+  CSinaWebRTData* pSinaWebRTData = (CSinaWebRTData*)pParam;
   CInternetSession session;
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = pSinaRTWebData->GetBufferAddr();
+  char* pChar = pSinaWebRTData->GetBufferAddr();
 
   const clock_t tt = clock();
 
   try {
-    pSinaRTWebData->SetReadingWebData(true);
-    pSinaRTWebData->SetReadingSucceed(true);
-    pSinaRTWebData->SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pSinaRTWebData->GetInquiringString()));
+    pSinaWebRTData->SetReadingWebData(true);
+    pSinaWebRTData->SetReadingSucceed(true);
+    pSinaWebRTData->SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pSinaWebRTData->GetInquiringString()));
     Sleep(100); // 新浪服务器100ms延迟即可。
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          pSinaRTWebData->AddByteReaded(iCount);
+          pSinaWebRTData->AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        pSinaRTWebData->AddByteReaded(iCount);
+        pSinaWebRTData->AddByteReaded(iCount);
       }
       else fDone = true;
     }
     *pChar = 0x000; // 最后以0x000结尾
-    pSinaRTWebData->SetWebDataReceived(true);
+    pSinaWebRTData->SetWebDataReceived(true);
 
     // 将读取的新浪实时数据放入新浪实时网络数据缓冲区中，并设置相关标识。
-    char* p = pSinaRTWebData->GetBufferAddr();
-    CRTWebDataPtr pRTWebData = make_shared<CRTWebData>();
-    pRTWebData->m_pDataBuffer = new char[pSinaRTWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pRTWebData->m_lBufferLength = pSinaRTWebData->GetByteReaded();
-    char* pbuffer = pRTWebData->m_pDataBuffer;
-    for (int i = 0; i < pSinaRTWebData->GetByteReaded() + 1; i++) {
+    char* p = pSinaWebRTData->GetBufferAddr();
+    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
+    pWebRTData->m_pDataBuffer = new char[pSinaWebRTData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebRTData->m_lBufferLength = pSinaWebRTData->GetByteReaded();
+    char* pbuffer = pWebRTData->m_pDataBuffer;
+    for (int i = 0; i < pSinaWebRTData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueSinaRTWebData.PushRTWebData(pRTWebData);
+    gl_QueueSinaWebRTData.PushWebRTData(pWebRTData);
   }
   catch (CInternetException * e) {
     e->Delete();
-    pSinaRTWebData->SetReadingSucceed(false);
-    pSinaRTWebData->SetWebDataReceived(false);
-    pSinaRTWebData->SetReadingWebData(false);
+    pSinaWebRTData->SetReadingSucceed(false);
+    pSinaWebRTData->SetWebDataReceived(false);
+    pSinaWebRTData->SetReadingWebData(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {
     delete pFile;
     pFile = nullptr;
   }
-  pSinaRTWebData->SetReadingWebData(false);
+  pSinaWebRTData->SetReadingWebData(false);
 
   gl_ChinaStockMarket.SetReadingSinaRTDataTime(clock() - tt);
 

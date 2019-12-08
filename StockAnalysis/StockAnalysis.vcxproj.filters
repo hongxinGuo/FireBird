@@ -105,15 +105,6 @@
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
-    <ClInclude Include="source\NeteaseDayLineWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SinaRTWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TengxunRTWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\WebData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
@@ -177,20 +168,29 @@
     <ClInclude Include="source\TransferSharedPtr.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\NeteaseRTWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\PriorityQueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\RTWebData.h">
+    <ClInclude Include="source\NeteaseWebRTData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SinaWebRTData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TengxunWebRTData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebRTData.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\QueueRTWebData.h">
-      <Filter>头文件\辅助类和函数</Filter>
+    <ClInclude Include="source\NeteaseWebDayLineData.h">
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,15 +253,6 @@
     </ClCompile>
     <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp">
       <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseDayLineWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SinaRTWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TengxunRTWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\网络通信</Filter>
@@ -329,17 +320,26 @@
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\NeteaseRTWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\PriorityQueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\QueueRTWebData.cpp">
+    <ClCompile Include="source\QueueWebRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseWebDayLineData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseWebRTData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SinaWebRTData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TengxunWebRTData.cpp">
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,24 +3,24 @@
 #include"thread.h"
 #include"market.h"
 
-#include "SinaRTWebData.h"
+#include "SinaWebRTData.h"
 
-CSinaRTWebData::CSinaRTWebData() : CWebData() {
+CSinaWebRTData::CSinaWebRTData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
 }
 
-CSinaRTWebData::~CSinaRTWebData() {
+CSinaWebRTData::~CSinaWebRTData() {
 }
 
-bool CSinaRTWebData::GetWebData(void) {
+bool CSinaWebRTData::GetWebData(void) {
   if (!IsReadingWebData()) {
     InquireNextWebData();
   }
   return true;
 }
 
-void CSinaRTWebData::InquireNextWebData(void) {
+void CSinaWebRTData::InquireNextWebData(void) {
   static int iCountUp = 0;
   CRTDataPtr pRTData = nullptr;
   static int iTotalInquiringStocks = 0;
@@ -47,15 +47,15 @@ void CSinaRTWebData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-int CSinaRTWebData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
+int CSinaWebRTData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
   return gl_ChinaStockMarket.GetSinaInquiringStockStr(strInquire, lTotalNumber, fSkipUnactiveStock);
 }
 
-void CSinaRTWebData::StartReadingThread(void) {
+void CSinaWebRTData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadSinaRTData, this);
 }
 
-bool CSinaRTWebData::ReportStatus(long lNumberOfData) {
+bool CSinaWebRTData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }

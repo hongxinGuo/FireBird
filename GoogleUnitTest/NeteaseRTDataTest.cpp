@@ -3,7 +3,7 @@
 #include"globedef.h"
 
 #include"RTData.h"
-#include"NeteaseRTWebData.h"
+#include"NeteaseWebRTData.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestNeteaseInitialize) {
@@ -130,12 +130,12 @@ namespace StockAnalysisTest {
       NeteaseRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pData = m_NeteaseRTWebData.GetBufferAddr();
+      m_pData = m_NeteaseWebRTData.GetBufferAddr();
       for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
       m_pData[m_lStringLength] = 0x000;
-      m_NeteaseRTWebData.SetByteReaded(m_lStringLength);
+      m_NeteaseWebRTData.SetByteReaded(m_lStringLength);
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
         m_RTData.SetPSell(i, -1);
@@ -161,7 +161,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     long m_lStringLength;
-    CNeteaseRTWebData m_NeteaseRTWebData;
+    CNeteaseWebRTData m_NeteaseWebRTData;
     CRTData m_RTData;
   };
 
@@ -173,7 +173,7 @@ namespace StockAnalysisTest {
   ));
 
   TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
-    bool fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseRTWebData);
+    bool fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseWebRTData);
     time_t ttime;
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -186,7 +186,7 @@ namespace StockAnalysisTest {
     switch (m_iCount) {
     case 0:
     EXPECT_TRUE(fSucceed); // 没有错误
-    EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_EQ(m_lStringLength, m_NeteaseWebRTData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -217,9 +217,9 @@ namespace StockAnalysisTest {
     break;
     case 1:
     EXPECT_TRUE(fSucceed); // 第一个数据没有错误
-    fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseRTWebData);
+    fSucceed = m_RTData.ReadNeteaseData(&m_NeteaseWebRTData);
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-    EXPECT_EQ(m_lStringLength, m_NeteaseRTWebData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_EQ(m_lStringLength, m_NeteaseWebRTData.GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -276,12 +276,12 @@ namespace StockAnalysisTest {
       ReadNeteaseOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pData = m_NeteaseRTWebData.GetBufferAddr();
+      m_pData = m_NeteaseWebRTData.GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
       m_pData[lLength] = 0x000;
-      m_NeteaseRTWebData.ResetCurrentPos();
+      m_NeteaseWebRTData.ResetCurrentPos();
     }
 
     void TearDown(void) override {
@@ -291,7 +291,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     char* m_pData;
-    CNeteaseRTWebData m_NeteaseRTWebData;
+    CNeteaseWebRTData m_NeteaseWebRTData;
     CRTData m_RTData;
   };
 
@@ -302,7 +302,7 @@ namespace StockAnalysisTest {
   TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
     CString strValue;
     long lIndex = 0;
-    bool fSucceed = m_RTData.GetNeteaseIndexAndValue(&m_NeteaseRTWebData, lIndex, strValue);
+    bool fSucceed = m_RTData.GetNeteaseIndexAndValue(&m_NeteaseWebRTData, lIndex, strValue);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
@@ -345,11 +345,11 @@ namespace StockAnalysisTest {
       NeteaseRTDataIndexValue* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pData = m_NeteaseRTWebData.GetBufferAddr();
+      m_pData = m_NeteaseWebRTData.GetBufferAddr();
       for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
-      m_NeteaseRTWebData.ResetCurrentPos();
+      m_NeteaseWebRTData.ResetCurrentPos();
       m_lIndex = m_RTData.GetNeteaseSymbolIndex(pData->m_strIndex);
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -379,7 +379,7 @@ namespace StockAnalysisTest {
     long m_lIndex;
     long m_lValue;
     CString m_strValue;
-    CNeteaseRTWebData m_NeteaseRTWebData;
+    CNeteaseWebRTData m_NeteaseWebRTData;
     CRTData m_RTData;
   };
 

@@ -29,17 +29,17 @@ enum {
 
 #include"SetDayLine.h"
 
-#include"SinaRTWebData.h"
-#include"TengxunRTWebData.h"
-#include"NeteaseDayLineWebData.h"
-#include"NeteaseRTWebData.h"
+#include"SinaWebRTData.h"
+#include"TengxunWebRTData.h"
+#include"NeteaseWebDayLineData.h"
+#include"NeteaseWebRTData.h"
 #include"CrweberIndexWebData.h"
 
 #include"CrweberIndex.h"
 
 #include"SystemMessage.h"
 #include"QueueRTData.h"
-#include"QueueRTWebData.h"
+#include"QueueWebRTData.h"
 #include"PriorityQueueRTData.h"
 #include"ThreadStatus.h"
 #include"SystemTime.h"
@@ -59,15 +59,15 @@ using namespace MyAccessory;
 // 测试用变量
 extern CRTDataPtr gl_TESTpRTData;
 
-extern CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
-extern CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
-extern CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFive; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSix; // 网易日线历史数据
+extern CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
+extern CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
+extern CNeteaseWebRTData gl_NeteaseWebRTData; // 网易实时数据采集
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineData; // 网易日线历史数据
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSecond; // 网易日线历史数据
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineDataThird; // 网易日线历史数据
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFourth; // 网易日线历史数据
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFive; // 网易日线历史数据
+extern CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSix; // 网易日线历史数据
 extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
 
 extern CCrweberIndex gl_CrweberIndex;
@@ -81,9 +81,9 @@ extern CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
 extern CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 extern CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
 
-extern CQueueRTWebData gl_QueueSinaRTWebData; // 新浪网络数据暂存队列
-extern CQueueRTWebData gl_QueueTengxunRTWebData; // 腾讯网络数据暂存队列
-extern CQueueRTWebData gl_QueueNeteaseRTWebData; // 网易网络数据暂存队列
+extern CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
+extern CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
+extern CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
 
 extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

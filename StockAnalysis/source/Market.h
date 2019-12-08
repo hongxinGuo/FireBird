@@ -39,7 +39,7 @@ public:
   bool TaskGetRTDataFromWeb(void);
   void TaskGetNeteaseDayLineFromWeb(void);
 
-  bool GetNeteaseDayLineWebData(void);
+  bool GetNeteaseWebDayLineData(void);
 
   // 处理腾讯实时数据
   bool TaskProcessTengxunRTData(void);
@@ -167,9 +167,9 @@ public:
   bool ProcessRTData(void);
 
   // 处理网络上提取的实时股票数据
-  bool ProcessRTWebDataGetFromSinaServer(void);
-  bool ProcessRTWebDataGetFromTengxunServer(void);
-  bool ProcessRTWebDataGetFromNeteaseServer(void);
+  bool ProcessWebRTDataGetFromSinaServer(void);
+  bool ProcessWebRTDataGetFromTengxunServer(void);
+  bool ProcessWebRTDataGetFromNeteaseServer(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);

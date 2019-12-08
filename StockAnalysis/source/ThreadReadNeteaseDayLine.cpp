@@ -19,7 +19,7 @@
 #include"Market.h"
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
-  CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;
+  CNeteaseWebDayLineData* pNeteaseWebDayLineData = (CNeteaseWebDayLineData*)pParam;
   static int siDelayTime = 600;
   static bool fStarted = false;
   static atomic_int siCount = 0;   // 初始计数器，计算执行了几次此线程。用于设定延迟时间
@@ -27,68 +27,68 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CHttpFile* pFile = nullptr;
   long iCount = 0;
   bool fDone = false;
-  char* pChar = pNeteaseDayLineWebData->GetBufferAddr();
+  char* pChar = pNeteaseWebDayLineData->GetBufferAddr();
   CString str;
 
   const clock_t tt = clock();
-  ASSERT(pNeteaseDayLineWebData->IsReadingWebData());    // 调用此线程时已经设置了此标识
+  ASSERT(pNeteaseWebDayLineData->IsReadingWebData());    // 调用此线程时已经设置了此标识
   try {
-    pNeteaseDayLineWebData->SetReadingWebData(true);
-    pNeteaseDayLineWebData->SetReadingSucceed(true);
-    pNeteaseDayLineWebData->SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseDayLineWebData->GetInquiringString()));
+    pNeteaseWebDayLineData->SetReadingWebData(true);
+    pNeteaseWebDayLineData->SetReadingSucceed(true);
+    pNeteaseWebDayLineData->SetByteReaded(0);
+    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseWebDayLineData->GetInquiringString()));
     Sleep(siDelayTime);
     while (!fDone) {
       do {
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          pNeteaseDayLineWebData->AddByteReaded(iCount);
+          pNeteaseWebDayLineData->AddByteReaded(iCount);
         }
       } while (iCount > 0);
       Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后去读第三次，否则继续读。
       iCount = pFile->Read(pChar, 1024);
       if (iCount > 0) {
         pChar += iCount;
-        pNeteaseDayLineWebData->AddByteReaded(iCount);
+        pNeteaseWebDayLineData->AddByteReaded(iCount);
       }
       else {
         Sleep(30); // 等待30毫秒后读第三次，确认没有新数据后才返回，否则继续读。
         iCount = pFile->Read(pChar, 1024);
         if (iCount > 0) {
           pChar += iCount;
-          pNeteaseDayLineWebData->AddByteReaded(iCount);
+          pNeteaseWebDayLineData->AddByteReaded(iCount);
         }
         else fDone = true;
       }
     }
     *pChar = 0x000; // 最后加上一个结束符0X000
-    pNeteaseDayLineWebData->SetWebDataReceived(true);
+    pNeteaseWebDayLineData->SetWebDataReceived(true);
 
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-    char* p = pNeteaseDayLineWebData->GetBufferAddr();
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    char* p = pNeteaseWebDayLineData->GetBufferAddr();
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseWebDayLineData->GetDownLoadingStockCode());
     if (pStock->m_pDayLineBuffer != nullptr) delete pStock->m_pDayLineBuffer;
-    pStock->m_pDayLineBuffer = new char[pNeteaseDayLineWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pStock->m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
     char* pbuffer = pStock->m_pDayLineBuffer;
-    for (int i = 0; i < pNeteaseDayLineWebData->GetByteReaded() + 1; i++) {
+    for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    pStock->m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
+    pStock->m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
     pStock->SetDayLineNeedProcess(true);
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
-    pNeteaseDayLineWebData->SetReadingSucceed(false);
-    pNeteaseDayLineWebData->SetWebDataReceived(false);
-    pNeteaseDayLineWebData->SetByteReaded(0);
+    pNeteaseWebDayLineData->SetReadingSucceed(false);
+    pNeteaseWebDayLineData->SetWebDataReceived(false);
+    pNeteaseWebDayLineData->SetByteReaded(0);
   }
   if (pFile) pFile->Close();
   if (pFile) {
     delete pFile;
     pFile = nullptr;
   }
-  pNeteaseDayLineWebData->SetReadingWebData(false);
+  pNeteaseWebDayLineData->SetReadingWebData(false);
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;

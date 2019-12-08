@@ -3,12 +3,12 @@
 
 #include"RTData.h"
 
-class CNeteaseRTWebData final : public CWebData {
+class CNeteaseWebRTData final : public CWebData {
   friend class CRTData;
 
 public:
-  CNeteaseRTWebData();
-  ~CNeteaseRTWebData();
+  CNeteaseWebRTData();
+  ~CNeteaseWebRTData();
 
   virtual bool GetWebData(void) override;
 

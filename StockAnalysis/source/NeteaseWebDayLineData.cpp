@@ -3,26 +3,26 @@
 #include"thread.h"
 #include"market.h"
 
-#include "NeteaseDayLineWebData.h"
+#include "NeteaseWebDayLineData.h"
 
-CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
+CNeteaseWebDayLineData::CNeteaseWebDayLineData() : CWebData() {
   m_fNeedProcessingCurrentWebData = true;
 
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 }
 
-CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
+CNeteaseWebDayLineData::~CNeteaseWebDayLineData() {
 }
 
-bool CNeteaseDayLineWebData::GetWebData(void) {
+bool CNeteaseWebDayLineData::GetWebData(void) {
   if (!IsReadingWebData()) {
     InquireNextWebData();
   }
   return true;
 }
 
-void CNeteaseDayLineWebData::InquireNextWebData(void) {
+void CNeteaseWebDayLineData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
 
@@ -41,16 +41,16 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
   }
 }
 
-int CNeteaseDayLineWebData::GetInquiringStr(CString& strInquire, long, bool) {
+int CNeteaseWebDayLineData::GetInquiringStr(CString& strInquire, long, bool) {
   strInquire = _T("");
   return 0;
 }
 
-void CNeteaseDayLineWebData::StartReadingThread(void) {
+void CNeteaseWebDayLineData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
 
-void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode) {
+void CNeteaseWebDayLineData::SetDownLoadingStockCode(CString strStockCode) {
   CString str = strStockCode.Left(1);
   CString strRight = strStockCode.Right(6);
   if (str.Compare(_T("0")) == 0) {

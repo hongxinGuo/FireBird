@@ -6,15 +6,15 @@
 // 测试用变量
 CRTDataPtr gl_TESTpRTData = nullptr;
 
-CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
-CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
-CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
-CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFive; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSix; // 网易日线历史数据
+CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
+CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
+CNeteaseWebRTData gl_NeteaseWebRTData; // 网易实时数据采集
+CNeteaseWebDayLineData gl_NeteaseWebDayLineData; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSecond; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataThird; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFourth; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFive; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSix; // 网易日线历史数据
 CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
 
 CCrweberIndex gl_CrweberIndex;
@@ -28,9 +28,9 @@ CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
 CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
 
-CQueueRTWebData gl_QueueSinaRTWebData; // 新浪网络数据暂存队列
-CQueueRTWebData gl_QueueTengxunRTWebData; // 腾讯网络数据暂存队列
-CQueueRTWebData gl_QueueNeteaseRTWebData; // 网易网络数据暂存队列
+CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
+CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
+CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

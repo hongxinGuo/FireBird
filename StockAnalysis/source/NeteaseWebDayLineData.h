@@ -2,10 +2,10 @@
 
 #include "WebData.h"
 
-class CNeteaseDayLineWebData final : public CWebData {
+class CNeteaseWebDayLineData final : public CWebData {
 public:
-  CNeteaseDayLineWebData();
-  ~CNeteaseDayLineWebData();
+  CNeteaseWebDayLineData();
+  ~CNeteaseWebDayLineData();
 
   virtual bool GetWebData(void) override;
 
