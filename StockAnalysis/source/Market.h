@@ -169,6 +169,7 @@ public:
   // 处理网络上提取的实时股票数据
   bool ProcessRTWebDataGetFromSinaServer(void);
   bool ProcessRTWebDataGetFromTengxunServer(void);
+  bool ProcessRTWebDataGetFromNeteaseServer(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);

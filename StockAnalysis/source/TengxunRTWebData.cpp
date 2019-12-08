@@ -20,37 +20,6 @@ bool CTengxunRTWebData::GetWebData(void) {
   return true;
 }
 
-/*
-bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void) {
-  CRTDataPtr pRTData = make_shared<CRTData>();
-  CString strVolume;
-  char buffer[200];
-
-  pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
-  if (gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) {
-    CString str;
-    if (pRTData->IsActive()) {
-      CStockPtr pStock = nullptr;
-      if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
-        if (!pStock->IsActive()) {
-          str = pStock->GetStockCode();
-          str += _T(" 腾讯实时检测到不处于活跃状态");
-          //gl_systemMessage.PushInnerSystemInformationMessage(str);
-        }
-      }
-      else {
-        str = pRTData->GetStockCode();
-        str += _T(" 无效股票代码（腾讯实时数据）");
-        gl_systemMessage.PushInnerSystemInformationMessage(str);
-      }
-    }
-  }
-  gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-  return true;
-  return false;
-}
-*/
-
 void CTengxunRTWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());

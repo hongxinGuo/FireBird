@@ -22,12 +22,15 @@ CCrweberIndex gl_CrweberIndexLast;
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 CSystemTime gl_systemTime; // 系统时间汇总。
+
 CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
 //CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
 CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
+CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
 
 CQueueRTWebData gl_QueueSinaRTWebData; // 新浪网络数据暂存队列
 CQueueRTWebData gl_QueueTengxunRTWebData; // 腾讯网络数据暂存队列
+CQueueRTWebData gl_QueueNeteaseRTWebData; // 网易网络数据暂存队列
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

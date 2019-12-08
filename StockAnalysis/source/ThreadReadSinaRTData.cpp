@@ -45,7 +45,7 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
     *pChar = 0x000; // 最后以0x000结尾
     pSinaRTWebData->SetWebDataReceived(true);
 
-    // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
+    // 将读取的新浪实时数据放入新浪实时网络数据缓冲区中，并设置相关标识。
     char* p = pSinaRTWebData->GetBufferAddr();
     CRTWebDataPtr pRTWebData = make_shared<CRTWebData>();
     pRTWebData->m_pDataBuffer = new char[pSinaRTWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。

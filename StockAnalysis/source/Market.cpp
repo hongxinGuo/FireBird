@@ -637,10 +637,61 @@ bool CMarket::ProcessRTWebDataGetFromSinaServer(void) {
   return true;
 }
 
+bool CMarket::ProcessRTWebDataGetFromNeteaseServer(void) {
+  CRTWebDataPtr pRTWebData = nullptr;
+  char buffer[50];
+  CString strInvalidStock = _T("_ntes_quote_callback({"); // 此为无效股票查询到的数据格式，共22个字符
+
+  long lTotalData = gl_QueueNeteaseRTWebData.GetRTWebDataSize();
+  for (int i = 0; i < lTotalData; i++) {
+    pRTWebData = gl_QueueNeteaseRTWebData.PopRTWebData();
+    pRTWebData->m_pCurrentPos = pRTWebData->m_pDataBuffer;
+    pRTWebData->m_lCurrentPos = 0;
+
+    strncpy_s(buffer, pRTWebData->m_pCurrentPos, 22); // 读入"_ntes_quote_callback({"
+    buffer[22] = 0x000;
+    CString str1;
+    str1 = buffer;
+    if (strInvalidStock.Compare(str1) != 0) { // 数据格式出错
+      return false;
+    }
+    pRTWebData->IncreaseCurrentPos(22);
+
+    while (!((*pRTWebData->m_pCurrentPos == ' ') || (pRTWebData->m_lCurrentPos >= (pRTWebData->m_lBufferLength - 4)))) {
+      CRTDataPtr pRTData = make_shared<CRTData>();
+      if (pRTData->ReadNeteaseData(pRTWebData)) {
+        pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
+        gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+        //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+
+        // 检测一下
+        CString str;
+        if (pRTData->IsActive()) {
+          CStockPtr pStock = nullptr;
+          if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+            if (!pStock->IsActive()) {
+              str = pStock->GetStockCode();
+              str += _T(" 网易实时检测到不处于活跃状态");
+              //gl_systemMessage.PushInnerSystemInformationMessage(str);
+            }
+          }
+          else {
+            str = pRTData->GetStockCode();
+            str += _T(" 无效股票代码（网易实时数据）");
+            gl_systemMessage.PushInnerSystemInformationMessage(str);
+          }
+        }
+      }
+      else return false;  // 后面的数据出问题，抛掉不用。
+    }
+  }
+  return true;
+}
+
 bool CMarket::ProcessRTWebDataGetFromTengxunServer(void) {
   CRTWebDataPtr pRTWebData = nullptr;
   char buffer[50];
-  CString str = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+  CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
   long lTotalData = gl_QueueTengxunRTWebData.GetRTWebDataSize();
   for (int i = 0; i < lTotalData; i++) {
@@ -652,16 +703,34 @@ bool CMarket::ProcessRTWebDataGetFromTengxunServer(void) {
     buffer[21] = 0x000;
     CString str1 = buffer;
 
-    if (str1.Compare(str) == 0) {
+    if (str1.Compare(strInvalidStock) == 0) {
       pRTWebData->IncreaseCurrentPos(21);
     }
 
     while (pRTWebData->m_lCurrentPos < pRTWebData->m_lBufferLength) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadTengxunData(pRTWebData)) {
-        pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
+        pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
         gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+
+        // 检测一下
+        CString str;
+        if (pRTData->IsActive()) {
+          CStockPtr pStock = nullptr;
+          if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+            if (!pStock->IsActive()) {
+              str = pStock->GetStockCode();
+              str += _T(" 腾讯实时检测到不处于活跃状态");
+              //gl_systemMessage.PushInnerSystemInformationMessage(str);
+            }
+          }
+          else {
+            str = pRTData->GetStockCode();
+            str += _T(" 无效股票代码（腾讯实时数据）");
+            gl_systemMessage.PushInnerSystemInformationMessage(str);
+          }
+        }
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
@@ -721,6 +790,7 @@ bool CMarket::SchedulingTask(void) {
       m_fTodayTempDataLoaded = true;
     }
     ProcessRTWebDataGetFromTengxunServer();
+    //ProcessRTWebDataGetFromNeteaseServer();
     TaskGetNeteaseDayLineFromWeb();
   }
   return true;
