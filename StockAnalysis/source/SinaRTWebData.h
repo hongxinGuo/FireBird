@@ -8,6 +8,8 @@ public:
   CSinaRTWebData();
   ~CSinaRTWebData();
 
+  virtual bool GetWebData(void) override;
+
   virtual bool IsNeedProcessingCurrentWebData(void) noexcept { return IsWebDataReceived(); }
 
   virtual void ProcessCurrentWebData(void) override; // 默认处理当前网络数据函数

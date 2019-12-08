@@ -66,18 +66,16 @@ bool CNeteaseRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadNeteaseData(this)) {
-    pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
+  pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__);
 #ifdef DEBUG
-    // 测试网易实时数据与新浪实时数据的同一性。
-    if (gl_TESTpRTData != nullptr) {
-      if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
-        sprintf_s(buffer, "volume: %I64d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
-                  pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
-        strVolume = _T("2  ");
-        strVolume += buffer;
-        gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
-      }
+  // 测试网易实时数据与新浪实时数据的同一性。
+  if (gl_TESTpRTData != nullptr) {
+    if (pRTData->GetStockCode().Compare(gl_TESTpRTData->GetStockCode()) == 0) {
+      sprintf_s(buffer, "volume: %I64d, askvol1: %d, askvol2: %d, askvol3: %d, askvol4: %d, askvol5: %d",
+                pRTData->GetVolume(), pRTData->GetVSell(0), pRTData->GetVSell(1), pRTData->GetVSell(2), pRTData->GetVSell(3), pRTData->GetVSell(4));
+      strVolume = _T("2  ");
+      strVolume += buffer;
+      gl_systemMessage.PushInnerSystemInformationMessage(strVolume);
     }
     if (gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) {
       CString str;

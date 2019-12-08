@@ -166,6 +166,10 @@ public:
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool ProcessRTData(void);
 
+  // 处理网络上提取的实时股票数据
+  bool ProcessRTWebDataGetFromSinaServer(void);
+  bool ProcessRTWebDataGetFromTengxunServer(void);
+
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
 

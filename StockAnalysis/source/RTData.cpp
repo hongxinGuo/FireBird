@@ -179,7 +179,7 @@ bool CRTData::Compare(CRTDataPtr pRTData) {
 // 31：”15:05:32″，时间；
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
+bool CRTData::ReadSinaData(CRTWebDataPtr pSinaRTWebData) {
   static char buffer1[100];
   char buffer2[7];
   static char buffer3[100];
@@ -375,7 +375,7 @@ bool CRTData::ReadSinaData(CSinaRTWebData* pSinaRTWebData) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue) {
+bool CRTData::ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -394,7 +394,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnVa
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue) {
+bool CRTData::ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
@@ -413,7 +413,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValu
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnValue) {
+bool CRTData::ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, double& dReturnValue) {
   static char buffer3[200];
 
   if (!ReadSinaOneValue(pSinaRTWebData, buffer3)) {
@@ -429,7 +429,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnVa
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer) {
+bool CRTData::ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, char* buffer) {
   int i = 0;
   try {
     while (*pSinaRTWebData->m_pCurrentPos != ',') {
@@ -502,7 +502,7 @@ bool CRTData::ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData) {
+bool CRTData::ReadTengxunData(CRTWebDataPtr pTengxunRTWebData) {
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
@@ -758,7 +758,7 @@ bool CRTData::ReadTengxunData(CTengxunRTWebData* pTengxunRTWebData) {
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
+bool CRTData::ReadNeteaseData(CRTWebDataPtr pNeteaseRTWebData) {
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseRTWebData->m_pCurrentPos;
@@ -810,7 +810,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
     TRACE(_T("ReadNeteaseData异常\n"));
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
-    while ((*pNeteaseRTWebData->m_pCurrentPos != '{') && (pNeteaseRTWebData->m_lCurrentPos < pNeteaseRTWebData->m_lByteRead)) {
+    while ((*pNeteaseRTWebData->m_pCurrentPos != '{') && (pNeteaseRTWebData->m_lCurrentPos < pNeteaseRTWebData->m_lBufferLength)) {
       pNeteaseRTWebData->IncreaseCurrentPos();
     }
     return true; // 返回真，则跨过此错误数据，继续处理。
@@ -823,7 +823,7 @@ bool CRTData::ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, INT64& llReturnValue) {
+bool CRTData::ReadTengxunOneValue(CRTWebDataPtr pTengxunRTWebData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -842,7 +842,7 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, INT64& l
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& dReturnValue) {
+bool CRTData::ReadTengxunOneValue(CRTWebDataPtr pTengxunRTWebData, double& dReturnValue) {
   double dTemp;
   static char buffer3[200];
 
@@ -860,11 +860,11 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, double& 
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, long& lReturnValue) {
+bool CRTData::ReadTengxunOneValue(CRTWebDataPtr pRTWebData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
-  if (!ReadTengxunOneValue(pTengxunRTWebData, buffer3)) {
+  if (!ReadTengxunOneValue(pRTWebData, buffer3)) {
     return false;
   }
   lTemp = atol(buffer3);
@@ -879,16 +879,16 @@ bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, long& lR
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CTengxunRTWebData* pTengxunRTWebData, char* buffer) {
+bool CRTData::ReadTengxunOneValue(CRTWebDataPtr pRTWebData, char* buffer) {
   int i = 0;
   try {
-    while (*pTengxunRTWebData->m_pCurrentPos != '~') {
-      if ((*pTengxunRTWebData->m_pCurrentPos == 0x00a) || (*pTengxunRTWebData->m_pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pTengxunRTWebData->m_pCurrentPos;
-      pTengxunRTWebData->IncreaseCurrentPos();
+    while (*pRTWebData->m_pCurrentPos != '~') {
+      if ((*pRTWebData->m_pCurrentPos == 0x00a) || (*pRTWebData->m_pCurrentPos == 0x000)) return false;
+      buffer[i++] = *pRTWebData->m_pCurrentPos;
+      pRTWebData->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
-    pTengxunRTWebData->IncreaseCurrentPos();
+    pRTWebData->IncreaseCurrentPos();
     return true;
   }
   catch (exception&) {
@@ -909,7 +909,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   return lIndex;
 }
 
-bool CRTData::GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue) {
+bool CRTData::GetNeteaseIndexAndValue(CRTWebDataPtr pNeteaseRTWebData, long& lIndex, CString& strValue) {
   char buffer[100];
   int i = 0;
   CString strIndex;

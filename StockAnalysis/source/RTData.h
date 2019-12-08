@@ -116,6 +116,7 @@ enum {
 
 #include"NeteaseRTWebData.h"
 #include"SinaRTWebData.h"
+#include"RTWebData.h"
 #include"TengxunRTWebData.h"
 
 #include"SetRealTimeData.h"
@@ -142,25 +143,25 @@ public:
 public:
   // 读取新浪实时数据函数
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
-  bool ReadSinaData(CSinaRTWebData* pSinaRTWebData);
-  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
-  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个长整型
-  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
-  bool ReadSinaOneValue(CSinaRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
+  bool ReadSinaData(CRTWebDataPtr pSinaRTWebData);
+  bool ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
+  bool ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个长整型
+  bool ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
+  bool ReadSinaOneValue(CRTWebDataPtr pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
 
   // 读取腾讯实时数据函数
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束
-  bool ReadTengxunData(CTengxunRTWebData* pSinaRTWebData);
-  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
-  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个INT64整型
-  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
-  bool ReadTengxunOneValue(CTengxunRTWebData* pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
+  bool ReadTengxunData(CRTWebDataPtr pSinaRTWebData);
+  bool ReadTengxunOneValue(CRTWebDataPtr pSinaRTWebData, long& lReturnValue); // 从file中读入一个长整型
+  bool ReadTengxunOneValue(CRTWebDataPtr pSinaRTWebData, INT64& llReturnValue); // 从file中读入一个INT64整型
+  bool ReadTengxunOneValue(CRTWebDataPtr pSinaRTWebData, double& dReturnValue); // 从file中读入一个浮点数
+  bool ReadTengxunOneValue(CRTWebDataPtr pSinaRTWebData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘~’。
 
   // 读取网易实时数据函数
   // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
-  bool ReadNeteaseData(CNeteaseRTWebData* pNeteaseRTWebData);
+  bool ReadNeteaseData(CRTWebDataPtr pNeteaseRTWebData);
   long GetNeteaseSymbolIndex(CString strSymbol);
-  bool GetNeteaseIndexAndValue(CNeteaseRTWebData* pNeteaseRTWebData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
+  bool GetNeteaseIndexAndValue(CRTWebDataPtr pNeteaseRTWebData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
   bool SetValue(long lIndex, CString strValue);
 
 public:

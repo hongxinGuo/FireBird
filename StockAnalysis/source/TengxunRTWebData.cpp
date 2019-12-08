@@ -13,6 +13,13 @@ CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
 CTengxunRTWebData::~CTengxunRTWebData() {
 }
 
+bool CTengxunRTWebData::GetWebData(void) {
+  if (!IsReadingWebData()) {
+    InquireNextWebData();
+  }
+  return true;
+}
+
 bool CTengxunRTWebData::ReadPrefix(void) {
   char buffer[50];
   CString str = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
@@ -32,29 +39,27 @@ bool CTengxunRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CString strVolume;
   char buffer[200];
 
-  if (pRTData->ReadTengxunData(this)) {
-    pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
-    if (gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) {
-      CString str;
-      if (pRTData->IsActive()) {
-        CStockPtr pStock = nullptr;
-        if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
-          if (!pStock->IsActive()) {
-            str = pStock->GetStockCode();
-            str += _T(" 腾讯实时检测到不处于活跃状态");
-            //gl_systemMessage.PushInnerSystemInformationMessage(str);
-          }
-        }
-        else {
-          str = pRTData->GetStockCode();
-          str += _T(" 无效股票代码（腾讯实时数据）");
-          gl_systemMessage.PushInnerSystemInformationMessage(str);
+  pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__);
+  if (gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester()) {
+    CString str;
+    if (pRTData->IsActive()) {
+      CStockPtr pStock = nullptr;
+      if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+        if (!pStock->IsActive()) {
+          str = pStock->GetStockCode();
+          str += _T(" 腾讯实时检测到不处于活跃状态");
+          //gl_systemMessage.PushInnerSystemInformationMessage(str);
         }
       }
+      else {
+        str = pRTData->GetStockCode();
+        str += _T(" 无效股票代码（腾讯实时数据）");
+        gl_systemMessage.PushInnerSystemInformationMessage(str);
+      }
     }
-    gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-    return true;
   }
+  gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+  return true;
   return false;
 }
 

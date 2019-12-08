@@ -617,6 +617,58 @@ bool CMarket::ProcessRTData(void) {
   return true;
 }
 
+bool CMarket::ProcessRTWebDataGetFromSinaServer(void) {
+  CRTWebDataPtr pRTWebData = nullptr;
+  long lTotalData = gl_QueueSinaRTWebData.GetRTWebDataSize();
+  for (int i = 0; i < lTotalData; i++) {
+    pRTWebData = gl_QueueSinaRTWebData.PopRTWebData();
+    pRTWebData->m_pCurrentPos = pRTWebData->m_pDataBuffer;
+    pRTWebData->m_lCurrentPos = 0;
+    while (pRTWebData->m_lCurrentPos < pRTWebData->m_lBufferLength) {
+      CRTDataPtr pRTData = make_shared<CRTData>();
+      if (pRTData->ReadSinaData(pRTWebData)) {
+        pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
+        gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+        //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+      }
+      else return false;  // 后面的数据出问题，抛掉不用。
+    }
+  }
+  return true;
+}
+
+bool CMarket::ProcessRTWebDataGetFromTengxunServer(void) {
+  CRTWebDataPtr pRTWebData = nullptr;
+  char buffer[50];
+  CString str = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+
+  long lTotalData = gl_QueueTengxunRTWebData.GetRTWebDataSize();
+  for (int i = 0; i < lTotalData; i++) {
+    pRTWebData = gl_QueueTengxunRTWebData.PopRTWebData();
+    pRTWebData->m_pCurrentPos = pRTWebData->m_pDataBuffer;
+    pRTWebData->m_lCurrentPos = 0;
+
+    strncpy_s(buffer, pRTWebData->m_pCurrentPos, 21);
+    buffer[21] = 0x000;
+    CString str1 = buffer;
+
+    if (str1.Compare(str) == 0) {
+      pRTWebData->IncreaseCurrentPos(21);
+    }
+
+    while (pRTWebData->m_lCurrentPos < pRTWebData->m_lBufferLength) {
+      CRTDataPtr pRTData = make_shared<CRTData>();
+      if (pRTData->ReadTengxunData(pRTWebData)) {
+        pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
+        gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+        //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+      }
+      else return false;  // 后面的数据出问题，抛掉不用。
+    }
+  }
+  return true;
+}
+
 bool CMarket::TaskProcessTengxunRTData(void) {
   CRTDataPtr pRTData = nullptr;
   long lTotalData = gl_QueueTengxunRTData.GetRTDataSize();
@@ -649,7 +701,7 @@ bool CMarket::SchedulingTask(void) {
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
-
+    ProcessRTWebDataGetFromSinaServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
@@ -668,6 +720,7 @@ bool CMarket::SchedulingTask(void) {
       LoadTodayTempDB();
       m_fTodayTempDataLoaded = true;
     }
+    ProcessRTWebDataGetFromTengxunServer();
     TaskGetNeteaseDayLineFromWeb();
   }
   return true;

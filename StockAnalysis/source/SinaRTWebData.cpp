@@ -13,6 +13,13 @@ CSinaRTWebData::CSinaRTWebData() : CWebData() {
 CSinaRTWebData::~CSinaRTWebData() {
 }
 
+bool CSinaRTWebData::GetWebData(void) {
+  if (!IsReadingWebData()) {
+    InquireNextWebData();
+  }
+  return true;
+}
+
 void CSinaRTWebData::ProcessCurrentWebData(void) {
   if (IsWebDataReceived()) {
     if (IsReadingSucceed()) { //网络通信一切顺利？
@@ -31,12 +38,10 @@ void CSinaRTWebData::ProcessCurrentWebData(void) {
 
 bool CSinaRTWebData::SucceedReadingAndStoringOneWebData(void) {
   CRTDataPtr pRTData = make_shared<CRTData>();
-  if (pRTData->ReadSinaData(this)) {
-    pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
-    gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-    //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
-    return true;
-  }
+  pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
+  gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+  //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+  return true;
   return false;
 }
 
