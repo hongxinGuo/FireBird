@@ -180,6 +180,8 @@ public:
   void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
   bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
   void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
+  bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
+  void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
   // 第一个实时数据判断和设置
@@ -298,6 +300,8 @@ protected:
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
+
+  bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
   // 挂单的具体情况。
   map<long, long> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。

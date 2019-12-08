@@ -323,7 +323,7 @@ namespace StockAnalysisTest {
     id.SetAttackSellBelow50000(45896);
     id.SetAttackSellBelow200000(56457);
     id.SetAttackSellAbove200000(8767);
-    id.SetAttackBuyAmount(1234566);
+    id.SetAttackBuyAmount(123456612);
     id.SetAttackBuyVolume(23423534);
     id.SetAttackSellAmount(4353454);
     id.SetAttackSellVolume(94589489);

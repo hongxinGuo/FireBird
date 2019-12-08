@@ -137,8 +137,7 @@ public:
   bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
   void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
-  bool IsUpdateStockCodeDB(void) noexcept { return m_fUpdateStockCodeDB; }
-  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
+  bool IsUpdateStockCodeDB(void);
 
   bool IsUsingNeteaseRTDataReceiverAsTester(void) noexcept { return m_fUsingNeteaseRTDataReceiverAsTester; }
   bool IsUsingTengxunRTDataReceiverAsTester(void) noexcept { return m_fUsingTengxunRTDataReceiverAsTester; }
@@ -243,8 +242,6 @@ protected:
   atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
   atomic<clock_t> m_ReadingNeteaseDayLineDataTime;    // 每次读取网易日线历史数据的时间
-
-  bool m_fUpdateStockCodeDB;
 
 public:
   // 网易日线历史数据读取处理和存储计数器。

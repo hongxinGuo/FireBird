@@ -50,6 +50,8 @@ void CStock::Reset(void) {
   m_fMinLineUpdated = false;
   m_fDayLineUpdated = false;
 
+  m_fDayLineDBUpdated = false;
+
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_pLastRTData = nullptr;
 
@@ -262,11 +264,11 @@ bool CStock::SaveDayLine(void) {
 void CStock::UpdateDayLineStartEndDay(void) {
   if (m_vDayLine.at(0)->GetDay() < GetDayLineStartDay()) {
     SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
-    gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+    SetDayLineDBUpdated(true);
   }
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > GetDayLineEndDay()) {
     SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
-    gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+    SetDayLineDBUpdated(true);
   }
 }
 

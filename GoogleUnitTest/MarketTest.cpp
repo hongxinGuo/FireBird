@@ -26,7 +26,6 @@ namespace StockAnalysisTest {
     static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.__Test_SetResetSystem(false);
-      gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
     }
 
     static void TearDownTestCase() {
@@ -552,7 +551,6 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.m_iDayLineNeedSave = 1;
     gl_ChinaStockMarket.m_iDayLineNeedProcess = 1;
     gl_ChinaStockMarket.m_iDayLineNeedUpdate = 1;
-    gl_ChinaStockMarket.SetUpdateStockCodeDB(false); // 不实际更新数据库
     gl_ChinaStockMarket.TaskUpdateStockCodeDB();
     EXPECT_TRUE(gl_ChinaStockMarket.m_fSaveDayLine);
     gl_ChinaStockMarket.m_iDayLineNeedProcess = 0;

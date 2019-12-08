@@ -515,7 +515,7 @@ namespace StockAnalysisTest {
     pStock->SetAttackSellBelow50000(45896);
     pStock->SetAttackSellBelow200000(56457);
     pStock->SetAttackSellAbove200000(8767);
-    pStock->SetAttackBuyAmount(1234566);
+    pStock->SetAttackBuyAmount(123456654);
     pStock->SetAttackBuyVolume(23423534);
     pStock->SetAttackSellAmount(4353454);
     pStock->SetAttackSellVolume(94589489);
@@ -619,7 +619,7 @@ namespace StockAnalysisTest {
     pStock->SetAttackSellBelow50000(45896);
     pStock->SetAttackSellBelow200000(56457);
     pStock->SetAttackSellAbove200000(8767);
-    pStock->SetAttackBuyAmount(1234566);
+    pStock->SetAttackBuyAmount(123456678);
     pStock->SetAttackBuyVolume(23423534);
     pStock->SetAttackSellAmount(4353454);
     pStock->SetAttackSellVolume(94589489);
@@ -725,7 +725,7 @@ namespace StockAnalysisTest {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CDayLine id;
-    CStockPtr pStock = make_shared<CStock>();
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
     gl_systemTime.__Test_SetDay(20190101);
 
@@ -797,7 +797,7 @@ namespace StockAnalysisTest {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CStock id;
-    CStockPtr pStock = make_shared<CStock>();
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -864,8 +864,7 @@ namespace StockAnalysisTest {
   TEST(CStockTest, TestUpdateDayLineStartEndDay) {
     CDayLinePtr pid;
     CStock id;
-    CStockPtr pStock = make_shared<CStock>();
-    gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -894,15 +893,14 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->UpdateDayLineStartEndDay();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 19900101 + 9 * 100000);
-    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900101);
+    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900102);
     EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
   }
 
   TEST(CStockTest, TestUpdateDayLineStartEndDay2) {
     CDayLinePtr pid;
     CStock id;
-    CStockPtr pStock = make_shared<CStock>();
-    gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -932,7 +930,7 @@ namespace StockAnalysisTest {
     pStock->UpdateDayLineStartEndDay();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
   }
 
   TEST(CStockTest, TestIncreaseCurrentPos) {

@@ -80,8 +80,6 @@ void CMarket::Reset(void) {
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
-  m_fUpdateStockCodeDB = false;
-
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
   m_iDayLineNeedUpdate = 0;
@@ -435,6 +433,13 @@ bool CMarket::IsStock(CString strStockCode, CStockPtr& pStock) {
     pStock = NULL;
     return(false);
   }
+}
+
+bool CMarket::IsUpdateStockCodeDB(void) {
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (pStock->IsDayLineDBUpdated()) return true;
+  }
+  return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -816,7 +821,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     if (m_fUsingNeteaseRTDataReceiver) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
+        //gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
         siCountDownNeteaseNumber = 3;
       }
       else siCountDownNeteaseNumber--;
