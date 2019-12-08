@@ -186,6 +186,9 @@
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="source\RTWebData.h">
+      <Filter>头文件\实现类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

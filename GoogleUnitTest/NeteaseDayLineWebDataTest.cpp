@@ -11,7 +11,6 @@ namespace StockAnalysisTest {
   TEST(NeteaseDayLineWebDataTest, TestInitialize) {
     EXPECT_STREQ(gl_NeteaseDayLineWebData.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
     EXPECT_STREQ(gl_NeteaseDayLineWebData.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
-    EXPECT_TRUE(gl_NeteaseDayLineWebData.IsNeedProcessingCurrentWebData());
     EXPECT_FALSE(gl_NeteaseDayLineWebData.IsReadingSucceed());
   }
 

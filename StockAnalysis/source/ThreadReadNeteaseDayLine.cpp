@@ -65,6 +65,7 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     *pChar = 0x000; // 最后加上一个结束符0X000
     pNeteaseDayLineWebData->SetWebDataReceived(true);
 
+    // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     char* p = pNeteaseDayLineWebData->GetBufferAddr();
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     if (pStock->m_pDayLineBuffer != nullptr) delete pStock->m_pDayLineBuffer;

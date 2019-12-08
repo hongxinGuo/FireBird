@@ -174,8 +174,8 @@ double GetValue(CString strBuffer) {
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber) {
   int i = 0;
 
-  while (*pCurrentPos != 0x2c) { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) {
+  while (*pCurrentPos != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
+    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) { // 遇到回车、换行或者字符串结束符
       return false; // 数据出错，放弃载入
     }
     buffer[i++] = *pCurrentPos++;

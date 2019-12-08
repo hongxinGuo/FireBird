@@ -55,10 +55,9 @@ public:
   long GetDayLineStartDay(void) noexcept { return m_stockBasicInfo.GetDayLineStartDay(); }
   void SetDayLineStartDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineStartDay(lDay); }
   long GetDayLineEndDay(void) noexcept { return m_stockBasicInfo.GetDayLineEndDay(); }
-  void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }
+  void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }  void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
   long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
   void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
-  void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
   long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
   long GetOpen(void) noexcept { return m_stockBasicInfo.GetOpen(); }
   void SetOpen(long lValue) noexcept { m_stockBasicInfo.SetOpen(lValue); }
@@ -278,6 +277,7 @@ public:
 
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   char* m_pDayLineBuffer; // 日线读取缓冲区
+  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
   long m_lDayLineBufferLength;
   char* m_pCurrentPos;
   long m_lCurrentPos;
