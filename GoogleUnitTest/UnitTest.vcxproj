@@ -106,13 +106,13 @@
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebDayLineData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\QueueWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />
@@ -122,7 +122,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\SinaWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\Stock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
@@ -132,7 +132,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />

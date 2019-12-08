@@ -145,10 +145,10 @@
     <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebDayLineData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
@@ -157,7 +157,13 @@
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
@@ -187,7 +193,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\SinaWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
@@ -217,7 +223,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj">
@@ -227,6 +233,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadMaintainDayLineDB.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
@@ -257,15 +266,6 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadMaintainDayLineDB.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTWebData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>
