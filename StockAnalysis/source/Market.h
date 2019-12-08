@@ -138,6 +138,7 @@ public:
   void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
 
   bool IsUpdateStockCodeDB(void);
+  void ClearUpdateStockCodeDBFlag(void);
 
   bool IsUsingNeteaseRTDataReceiverAsTester(void) noexcept { return m_fUsingNeteaseRTDataReceiverAsTester; }
   bool IsUsingTengxunRTDataReceiverAsTester(void) noexcept { return m_fUsingTengxunRTDataReceiverAsTester; }

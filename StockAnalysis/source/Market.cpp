@@ -442,6 +442,12 @@ bool CMarket::IsUpdateStockCodeDB(void) {
   return false;
 }
 
+void CMarket::ClearUpdateStockCodeDBFlag(void) {
+  for (auto pStock : m_vChinaMarketAStock) {
+    pStock->SetDayLineDBUpdated(false);
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////
 //
 //
@@ -1019,6 +1025,7 @@ bool CMarket::TaskUpdateStockCodeDB(void) {
     if (IsUpdateStockCodeDB()) {
       // 更新股票池数据库
       AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
+      ClearUpdateStockCodeDBFlag();
     }
   }
   return true;
