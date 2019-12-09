@@ -42,7 +42,6 @@ bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标
 bool gl_fTestMode = true; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
 const int gl_cMaxSavingOneDayLineThreads = 4;
-constexpr int gl_cMaxCalculateDayLineRS = 8;
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在

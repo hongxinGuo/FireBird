@@ -76,7 +76,7 @@ CMainFrame::CMainFrame() {
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
-  //ASSERT(gl_fNormalMode);
+  ASSERT(gl_fNormalMode);
 
   Reset();
 }
@@ -434,8 +434,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
 
   if (gl_fTestMode) {
-    //str = _T("警告：使用了Test驱动");
-    //gl_systemMessage.PushInformationMessage(str);
+    str = _T("警告：使用了Test驱动");
+    gl_systemMessage.PushInformationMessage(str);
   }
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
