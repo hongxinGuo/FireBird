@@ -44,7 +44,6 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
       else fDone = true;
     }
     *pChar = 0x000;
-    pTengxunWebData->SetWebDataReceived(true);
 
     // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
     char* p = pTengxunWebData->GetBufferAddr();
@@ -56,6 +55,8 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueTengxunWebRTData.PushWebRTData(pWebRTData);
+
+    pTengxunWebData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();

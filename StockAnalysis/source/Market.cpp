@@ -699,6 +699,27 @@ bool CMarket::ProcessWebRTDataGetFromNeteaseServer(void) {
   return true;
 }
 
+bool CMarket::ProcessWebRTDataGetFromCrweberdotcom(void) {
+  CWebRTDataPtr pWebData = nullptr;
+  long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
+  for (int i = 0; i < lTotalData; i++) {
+    pWebData = gl_QueueCrweberdotcomWebData.PopWebRTData();
+    pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
+    pWebData->m_lCurrentPos = 0;
+    if (gl_CrweberIndex.ReadData(pWebData)) {
+      if (gl_CrweberIndex.IsTodayUpdated() || gl_CrweberIndex.IsDataChanged()) {
+        gl_CrweberIndexLast = gl_CrweberIndex;
+        gl_ChinaStockMarket.SaveCrweberIndexData();
+        gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
+        gl_CrweberIndex.m_fTodayUpdated = false;
+      }
+      TRACE("crweber.com的字节数为%d\n", pWebData->m_lBufferLength);
+    }
+    else return false;  // 后面的数据出问题，抛掉不用。
+  }
+  return true;
+}
+
 bool CMarket::ProcessWebRTDataGetFromTengxunServer(void) {
   CWebRTDataPtr pWebRTData = nullptr;
   char buffer[50];
@@ -934,6 +955,7 @@ bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
 
     // 自动查询crweber.com
     gl_CrweberIndexWebData.GetWebData();
+    ProcessWebRTDataGetFromCrweberdotcom();
 
     ResetSystemFlagAtMidnight(lCurrentTime);
     SaveTempDataIntoDB(lCurrentTime);

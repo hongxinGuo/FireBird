@@ -43,7 +43,6 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
       else fDone = true;
     }
     *pChar = 0x000; // 最后以0x000结尾
-    pSinaWebRTData->SetWebDataReceived(true);
 
     // 将读取的新浪实时数据放入新浪实时网络数据缓冲区中，并设置相关标识。
     char* p = pSinaWebRTData->GetBufferAddr();
@@ -55,6 +54,8 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueSinaWebRTData.PushWebRTData(pWebRTData);
+
+    pSinaWebRTData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();

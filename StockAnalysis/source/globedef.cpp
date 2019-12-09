@@ -31,6 +31,7 @@ CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
 CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
 CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
 CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
+CQueueWebRTData gl_QueueCrweberdotcomWebData; // crweber.com网络数据暂存队列
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

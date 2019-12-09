@@ -12,22 +12,7 @@ namespace StockAnalysisTest {
   TEST(SinaWebRTDataTest, TestInitialize) {
     EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
     EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_FALSE(gl_SinaWebRTData.IsNeedProcessingCurrentWebData());
     EXPECT_FALSE(gl_SinaWebRTData.IsReadingSucceed());
-  }
-
-  TEST(SinaWebRTDataTest, TestReportDataError) {
-    if (gl_SinaWebRTData.IsReportStatus()) {
-      gl_SinaWebRTData.ReportDataError();
-      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("新浪实时数据有误"));
-    }
-  }
-
-  TEST(SinaWebRTDataTest, TestReportCommunicationError) {
-    if (gl_NeteaseWebDayLineData.IsReportStatus()) {
-      gl_SinaWebRTData.ReportCommunicationError();
-      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file ：hq.sinajs.cn"));
-    }
   }
 
   TEST(SinaWebRTDataTest, TestStartReadingThread) {

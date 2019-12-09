@@ -8,19 +8,6 @@ namespace StockAnalysisTest {
   TEST(CrweberIndexWebDataTest, TestInitialize) {
     EXPECT_STREQ(gl_CrweberIndexWebData.GetInquiringStringPrefix(), _T("http://www.crweber.com"));
     EXPECT_STREQ(gl_CrweberIndexWebData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_TRUE(gl_CrweberIndexWebData.IsCreateOnce());
-    EXPECT_FALSE(gl_CrweberIndexWebData.IsNeedProcessingCurrentWebData());
-    EXPECT_FALSE(gl_CrweberIndexWebData.IsReadingSucceed());
-  }
-
-  TEST(CrweberIndexWebDataTest, TestReportDataError) {
-    gl_CrweberIndexWebData.ReportDataError();
-    EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("crweber.com data error"));
-  }
-
-  TEST(CrweberIndexWebDataTest, TestReportCommunicationError) {
-    gl_CrweberIndexWebData.ReportCommunicationError();
-    EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file : http://www.crweber.com"));
   }
 
   TEST(CrweberIndexWebDataTest, TestGetInquireString) {

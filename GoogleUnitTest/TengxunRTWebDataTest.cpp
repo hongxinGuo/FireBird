@@ -11,7 +11,6 @@ namespace StockAnalysisTest {
   TEST(TengxunWebRTDataTest, TestInitialize) {
     EXPECT_STREQ(gl_TengxunWebRTData.GetInquiringStringPrefix(), _T("http://qt.gtimg.cn/q="));
     EXPECT_STREQ(gl_TengxunWebRTData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_FALSE(gl_TengxunWebRTData.IsNeedProcessingCurrentWebData());
     EXPECT_FALSE(gl_TengxunWebRTData.IsReadingSucceed());
   }
 }

@@ -3,6 +3,7 @@
 #include"stdafx.h"
 
 #include"SetCrweberIndex.h"
+#include"WebRTData.h"
 
 using namespace std;
 #include<vector>
@@ -16,6 +17,8 @@ public:
   void LoadData(CSetCrweberIndex& setCrweberIndex);
   void SaveData(CSetCrweberIndex& setCewwberIndex);
   void AppendData(CSetCrweberIndex& setCrweberIndex);
+
+  bool ReadData(CWebRTDataPtr pWebRTData);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
   bool IsDataChanged(void);
@@ -55,6 +58,12 @@ public:
   double GetAFRAMAX_3YEAR(void) noexcept { return m_dAFRAMAX_TC_3YEAR; }
   double GetMR_3YEAR(void) noexcept { return m_dMR_TC_3YEAR; }
   double GetHANDY_3YEAR(void) noexcept { return m_dHANDY_TC_3YEAR; }
+
+private:
+  double ConvertStringToTC(CString str);
+  long ConvertStringToTime(CString str);
+  double GetOneValue(CWebRTDataPtr pWebRTData);
+  CString GetNextString(CWebRTDataPtr pWebRTData);
 
 public:
   long m_lID;

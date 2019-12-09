@@ -30,48 +30,8 @@ CWebData::CWebData() {
 //////////////////////////////////////////////////////////////////////////
 bool CWebData::GetWebData(void) {
   if (!IsReadingWebData()) {
-    if (IsNeedProcessingCurrentWebData()) {
-      ProcessCurrentWebData();
-    }
     InquireNextWebData();
   }
-  return true;
-}
-
-void CWebData::ProcessCurrentWebData(void) {
-  if (IsWebDataReceived()) {
-    if (IsReadingSucceed()) { //网络通信一切顺利？
-      ResetCurrentPos();
-      if (SucceedReadingAndStoringWebData()) {
-        ProcessWebDataStored();
-      }
-    }
-  }
-  else {  // 网络通信出现错误
-    ReportCommunicationError();
-  }
-}
-
-///////////////////////////////////////////////////////////////////////
-//
-// 此为默认的读取存储函数，如有必要，继承类也可以覆盖此函数
-//
-///////////////////////////////////////////////////////////////////////
-bool CWebData::SucceedReadingAndStoringWebData(void) {
-  int iNumberOfDataReadAndStored = 0;
-  ReadPrefix();
-  while (!IsReadingFinished()) {
-    if (!SucceedReadingAndStoringOneWebData()) {
-      ReportDataError();
-      return false;  // 后面的数据出问题，抛掉不用。
-    }
-    iNumberOfDataReadAndStored++;
-  }
-  if (m_fReportStatus) ReportStatus(iNumberOfDataReadAndStored);
-  return true;
-}
-
-bool CWebData::ReadPrefix(void) {
   return true;
 }
 

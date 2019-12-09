@@ -43,8 +43,6 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
       else fDone = true;
     }
     *pChar = 0x000;
-    pNeteaseWebRTData->SetWebDataReceived(true);
-    pNeteaseWebRTData->ResetCurrentPos();
 
     // 将读取的网易实时数据放入网易实时网络数据缓冲区中，并设置相关标识。
     char* p = pNeteaseWebRTData->GetBufferAddr();
@@ -56,6 +54,9 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueNeteaseWebRTData.PushWebRTData(pWebRTData);
+
+    pNeteaseWebRTData->SetWebDataReceived(true);
+    pNeteaseWebRTData->ResetCurrentPos();
   }
   catch (CInternetException * e) {
     e->Delete();

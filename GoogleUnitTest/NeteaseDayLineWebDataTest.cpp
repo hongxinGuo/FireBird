@@ -19,18 +19,4 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_NeteaseWebDayLineData.GetInquiringStr(str), 0);
     EXPECT_STREQ(str, _T(""));
   }
-
-  TEST(NeteaseWebDayLineDataTest, TestReportDataError) {
-    if (gl_NeteaseWebDayLineData.IsReportStatus()) {
-      gl_NeteaseWebDayLineData.ReportDataError();
-      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("网易日线历史数据有误"));
-    }
-  }
-
-  TEST(NeteaseWebDayLineDataTest, TestReportCommunicationError) {
-    if (gl_NeteaseWebDayLineData.IsReportStatus()) {
-      gl_NeteaseWebDayLineData.ReportCommunicationError();
-      EXPECT_STREQ(gl_systemMessage.PopInformationMessage(), _T("Error reading http file ：http://quotes.money.163.com"));
-    }
-  }
 }
