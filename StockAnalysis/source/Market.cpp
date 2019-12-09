@@ -1623,6 +1623,9 @@ void CMarket::LoadOptionDB(void) {
     }
     else {
       gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
+      if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > 19900101) {
+        gl_SaveOneStockDayLine.SetMaxCount(1);
+      }
     }
     if (setOption.m_RalativeStrongStartDay == 0) {
       gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);

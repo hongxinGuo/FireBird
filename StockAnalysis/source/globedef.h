@@ -99,7 +99,7 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 extern const int gl_cMaxSavingOneDayLineThreads;
 // ĞÅºÅÁ¿±ØĞëÉùÃ÷ÎªÈ«¾Ö±äÁ¿£¨ÎªÁË³õÊ¼»¯£©
-extern Semaphore gl_SaveOneStockDayLine;
+extern Semaphore gl_SaveOneStockDayLine;  // ´ËĞÅºÅÁ¿ÓÃÓÚÉú³ÉÈÕÏßÀúÊ·Êı¾İ¿â
 extern Semaphore gl_SemaphoreCalculateDayLineRS;
 extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;

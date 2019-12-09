@@ -32,6 +32,7 @@ using namespace std;
 #include<deque>
 #include<map>
 #include<array>
+#include<mutex>
 
 // 证券名称数据包
 class CStock final : public CObject {

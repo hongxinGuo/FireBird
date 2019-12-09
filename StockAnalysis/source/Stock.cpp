@@ -216,6 +216,7 @@ bool CStock::SaveDayLine(void) {
   lSize = m_vDayLine.size();
   setDayLine.m_strFilter = _T("[StockCode] = '");
   setDayLine.m_strFilter += GetStockCode() + _T("'");
+  setDayLine.m_strSort = _T("[Day]");
 
   setDayLine.Open();
   while (!setDayLine.IsEOF()) {
@@ -225,6 +226,7 @@ bool CStock::SaveDayLine(void) {
     lCurrentPos++;
     setDayLine.MoveNext();
   }
+  setDayLine.Close();
   if (vDayLine.size() == 0) {
     SetDayLineStartDay(gl_systemTime.GetDay());
     SetDayLineEndDay(19900101);
@@ -233,8 +235,10 @@ bool CStock::SaveDayLine(void) {
     SetDayLineStartDay(vDayLine.at(0)->GetDay());
     SetDayLineEndDay(vDayLine.at(vDayLine.size() - 1)->GetDay());
   }
+
   lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
+  setDayLine.Open();
   setDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = m_vDayLine.at(i);
