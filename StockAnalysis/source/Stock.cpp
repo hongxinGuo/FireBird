@@ -389,7 +389,7 @@ bool CStock::CalculateDayLineRS(void) {
   return true;
 }
 
-bool CStock::CalculateDayLineRS(long lNumber) {
+bool CStock::CalculateDayLineRS(INT64 lNumber) {
   double dTempRS = 0;
   const long lTotalNumber = m_vDayLine.size();
   for (int i = lNumber; i < lTotalNumber; i++) {
@@ -485,7 +485,7 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   SetLastRTDataPtr(pRTData);
 }
 
-void CStock::CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuadanTransactionPrice) {
+void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
   IncreaseTransactionNumber();
   lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
   m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -535,7 +535,7 @@ void CStock::IncreaseTransactionNumber(void) {
                                                           + m_stockCalculatedInfo.GetTransactionNumberBelow50000() + m_stockCalculatedInfo.GetTransactionNumberBelow5000()));
 }
 
-void CStock::CalculateOrdinaryBuySell(long lCurrentGuadanTransactionPrice) {
+void CStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
   if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) { //一般性买入
     IncreaseOrdinaryBuyVolume(m_lCurrentGuadanTransactionVolume);
     m_nCurrentTransactionType = __ORDINARY_BUY__;
@@ -606,7 +606,7 @@ void CStock::CalculateAttackSellVolume(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice) {
+bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
   // 需要检查的挂单位置。顺序为：卖单4, 卖单3, ... 卖单0, 卖单0, .... 买单3, 买单4
   // 卖单买单谁在前面无所谓，但计算时需要记住此顺序。
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
@@ -620,7 +620,7 @@ bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionP
   return(true);
 }
 
-void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
+void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
   // 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
@@ -717,7 +717,7 @@ void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
   }
 }
 
-bool CStock::HaveGuadan(long lPrice) {
+bool CStock::HaveGuadan(INT64 lPrice) {
   if (m_mapGuadan.find(lPrice) == m_mapGuadan.end()) return false;
   else if (m_mapGuadan.at(lPrice) == 0) return false;
   return true;
@@ -915,7 +915,7 @@ CRTDataPtr CStock::GetRTDataAtHead(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-long CStock::GetRTDataQueueSize(void) {
+INT64 CStock::GetRTDataQueueSize(void) {
   return m_queueRTData.size();
 }
 

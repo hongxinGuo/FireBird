@@ -52,14 +52,15 @@ public:
   CString GetStockName(void) { return m_stockBasicInfo.GetStockName(); }
   void SetStockName(CString str) { m_stockBasicInfo.SetStockName(str); }
   long GetOffset(void) noexcept { return m_stockBasicInfo.GetOffset(); }
-  void SetOffset(long lValue) noexcept { m_stockBasicInfo.SetOffset(lValue); }
+  void SetOffset(INT64 lValue) noexcept { m_stockBasicInfo.SetOffset(lValue); }
   long GetDayLineStartDay(void) noexcept { return m_stockBasicInfo.GetDayLineStartDay(); }
   void SetDayLineStartDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineStartDay(lDay); }
   long GetDayLineEndDay(void) noexcept { return m_stockBasicInfo.GetDayLineEndDay(); }
-  void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }  void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
+  void SetDayLineEndDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineEndDay(lDay); }
   long GetIPOStatus(void) noexcept { return m_stockBasicInfo.GetIPOStatus(); }
   void SetIPOStatus(long lValue) noexcept { m_stockBasicInfo.SetIPOStatus(lValue); }
   long GetLastClose(void) noexcept { return m_stockBasicInfo.GetLastClose(); }
+  void SetLastClose(long lValue) noexcept { m_stockBasicInfo.SetLastClose(lValue); }
   long GetOpen(void) noexcept { return m_stockBasicInfo.GetOpen(); }
   void SetOpen(long lValue) noexcept { m_stockBasicInfo.SetOpen(lValue); }
   long GetHigh(void) noexcept { return m_stockBasicInfo.GetHigh(); }
@@ -110,7 +111,7 @@ public:
   void IncreaseStrongBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongBuyVolume(value); }
   INT64 GetCurrentAttackBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentAttackBuy(); }
   void SetCurrentAttackBuy(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentAttackBuy(value); }
-  long GetCurrentStrongBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongBuy(); }
+  INT64 GetCurrentStrongBuy(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongBuy(); }
   void SetCurrentStrongBuy(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentStrongBuy(value); }
   INT64 GetAttackSellVolume(void) noexcept { return m_stockCalculatedInfo.GetAttackSellVolume(); } // 向下卖出。成交价低于买一价但高于买二价。
   void SetAttackSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackSellVolume(value); }
@@ -118,25 +119,25 @@ public:
   INT64 GetStrongSellVolume(void) noexcept { return m_stockCalculatedInfo.GetStrongSellVolume(); }
   void SetStrongSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetStrongSellVolume(value); }
   void IncreaseStrongSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseStrongSellVolume(value); }
-  long GetCurrentAttackSell(void)  noexcept { return m_stockCalculatedInfo.GetCurrentAttackSell(); }
+  INT64 GetCurrentAttackSell(void)  noexcept { return m_stockCalculatedInfo.GetCurrentAttackSell(); }
   void SetCurrentAttackSell(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentAttackSell(value); }
-  long GetCurrentStrongSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongSell(); }
+  INT64 GetCurrentStrongSell(void) noexcept { return m_stockCalculatedInfo.GetCurrentStrongSell(); }
   void SetCurrentStrongSell(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentStrongSell(value); }
   INT64 GetUnknownVolume(void) noexcept { return m_stockCalculatedInfo.GetUnknownVolume(); }
   void SetUnknownVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetUnknownVolume(value); }
   void IncreaseUnknownVolume(INT64 value) noexcept { m_stockCalculatedInfo.IncreaseUnknownVolume(value); }
-  long GetCurrentUnknown(void) noexcept { return m_stockCalculatedInfo.GetCurrentUnknown(); }
-  void SetCurrentUnknown(long value) noexcept { m_stockCalculatedInfo.SetCurrentUnknown(value); }
+  INT64 GetCurrentUnknown(void) noexcept { return m_stockCalculatedInfo.GetCurrentUnknown(); }
+  void SetCurrentUnknown(INT64 value) noexcept { m_stockCalculatedInfo.SetCurrentUnknown(value); }
   INT64 GetCancelBuyVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelBuyVolume(); }
   void SetCancelBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelBuyVolume(value); }
   INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
   void SetCancelSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelSellVolume(value); }
 
-  void SetTransactionNumber(long value) noexcept { m_stockCalculatedInfo.SetTransactionNumber(value); }
-  void SetTransactionNumberBelow5000(long value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow5000(value); }
-  void SetTransactionNumberBelow50000(long value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow50000(value); }
-  void SetTransactionNumberBelow200000(long value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow200000(value); }
-  void SetTransactionNumberAbove200000(long value) noexcept { m_stockCalculatedInfo.SetTransactionNumberAbove200000(value); }
+  void SetTransactionNumber(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumber(value); }
+  void SetTransactionNumberBelow5000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow5000(value); }
+  void SetTransactionNumberBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow50000(value); }
+  void SetTransactionNumberBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow200000(value); }
+  void SetTransactionNumberAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberAbove200000(value); }
   void SetAttackBuyBelow50000(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyBelow50000(value); }
   void SetAttackBuyBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyBelow200000(value); }
   void SetAttackBuyAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackBuyAbove200000(value); }
@@ -144,11 +145,11 @@ public:
   void SetAttackSellBelow200000(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackSellBelow200000(value); }
   void SetAttackSellAbove200000(INT64 value) noexcept { m_stockCalculatedInfo.SetAttackSellAbove200000(value); }
 
-  long GetTransactionNumber(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumber(); }
-  long GetTransactionNumberBelow5000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow5000(); }
-  long GetTransactionNumberBelow50000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow50000(); }
-  long GetTransactionNumberBelow200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow200000(); }
-  long GetTransactionNumberAbove200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberAbove200000(); }
+  INT64 GetTransactionNumber(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumber(); }
+  INT64 GetTransactionNumberBelow5000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow5000(); }
+  INT64 GetTransactionNumberBelow50000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow50000(); }
+  INT64 GetTransactionNumberBelow200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberBelow200000(); }
+  INT64 GetTransactionNumberAbove200000(void) noexcept { return m_stockCalculatedInfo.GetTransactionNumberAbove200000(); }
 
   INT64 GetAttackBuyBelow50000(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyBelow50000(); }
   INT64 GetAttackBuyBelow200000(void) noexcept { return m_stockCalculatedInfo.GetAttackBuyBelow200000(); }
@@ -202,7 +203,7 @@ public:
   bool IsDayLineNeedSavingAndClearFlag(void);
 
   bool ProcessNeteaseDayLineData(void);
-  void IncreaseCurrentPos(long lValue = 1) noexcept { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }
 
   // 数据库的提取和存储
@@ -223,21 +224,21 @@ public:
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
   void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
-  long GetGuadan(long lPrice) { return m_mapGuadan.at(lPrice); }
-  void SetGuadan(long lPrice, long lVolume) { m_mapGuadan[lPrice] = lVolume; }
-  bool HaveGuadan(long lPrice);
+  INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
+  void SetGuadan(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
+  bool HaveGuadan(INT64 lPrice);
 
   // 日线相对强度计算
   bool CalculateDayLineRS(void);
-  bool CalculateDayLineRS(long lNumber);
+  bool CalculateDayLineRS(INT64 lNumber);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CRTDataPtr pRTData);
-  void CalculateOneDeal(CRTDataPtr pRTData, long lCurrentGuadanTransactionPrice);
+  void CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
-  void CalculateOrdinaryBuySell(long lCurrentGuadanTransactionPrice);
+  void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
   void CalculateAttackBuy(void);
   void CalculateStrongBuy(void);
   void CalculateAttackBuyVolume(void);
@@ -248,8 +249,8 @@ public:
   CRTDataPtr GetLastRTDataPtr(void) noexcept { return m_pLastRTData; }
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
 
-  bool AnalysisGuadan(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice);
-  void SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, long lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
+  bool AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
+  void SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
   void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
   void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
@@ -263,7 +264,7 @@ public:
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);
   CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
-  long GetRTDataQueueSize(void);
+  INT64 GetRTDataQueueSize(void);
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
 
@@ -274,16 +275,16 @@ public:
 
 public:
   // 测试专用函数
-  void __TestSetGuadanDeque(long lPrice, long lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
+  void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 
 public:
 
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   char* m_pDayLineBuffer; // 日线读取缓冲区
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  long m_lDayLineBufferLength;
+  INT64 m_lDayLineBufferLength;
   char* m_pCurrentPos;
-  long m_lCurrentPos;
+  INT64 m_lCurrentPos;
 
 protected:
   CStockBasicInfo m_stockBasicInfo;
@@ -305,7 +306,7 @@ protected:
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
   // 挂单的具体情况。
-  map<long, long> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
+  map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CRTDataPtr m_pLastRTData; // 从m_queueRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格

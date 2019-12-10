@@ -628,7 +628,7 @@ bool CMarket::ProcessRTData(void) {
   return true;
 }
 
-bool CMarket::ProcessWebRTDataGetFromSinaServer(void) {
+bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
@@ -648,7 +648,7 @@ bool CMarket::ProcessWebRTDataGetFromSinaServer(void) {
   return true;
 }
 
-bool CMarket::ProcessWebRTDataGetFromNeteaseServer(void) {
+bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback({"); // 此为无效股票查询到的数据格式，共22个字符
@@ -699,7 +699,7 @@ bool CMarket::ProcessWebRTDataGetFromNeteaseServer(void) {
   return true;
 }
 
-bool CMarket::ProcessWebRTDataGetFromCrweberdotcom(void) {
+bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataReceivedPtr pWebData = nullptr;
   long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
@@ -720,7 +720,7 @@ bool CMarket::ProcessWebRTDataGetFromCrweberdotcom(void) {
   return true;
 }
 
-bool CMarket::ProcessWebRTDataGetFromTengxunServer(void) {
+bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
@@ -802,7 +802,7 @@ bool CMarket::SchedulingTask(void) {
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
-    ProcessWebRTDataGetFromSinaServer();
+    TaskProcessWebRTDataGetFromSinaServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
@@ -821,7 +821,7 @@ bool CMarket::SchedulingTask(void) {
       LoadTodayTempDB();
       m_fTodayTempDataLoaded = true;
     }
-    ProcessWebRTDataGetFromTengxunServer();
+    TaskProcessWebRTDataGetFromTengxunServer();
     //ProcessWebRTDataGetFromNeteaseServer();
     TaskGetNeteaseDayLineFromWeb();
   }
@@ -955,7 +955,7 @@ bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
 
     // 自动查询crweber.com
     gl_CrweberIndexWebData.GetWebData();
-    ProcessWebRTDataGetFromCrweberdotcom();
+    TaskProcessWebRTDataGetFromCrweberdotcom();
 
     ResetSystemFlagAtMidnight(lCurrentTime);
     SaveTempDataIntoDB(lCurrentTime);

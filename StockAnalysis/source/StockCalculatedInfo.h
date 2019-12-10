@@ -28,26 +28,26 @@ public:
   INT64 GetAttackBuyVolume(void) noexcept { return m_lAttackBuyVolume; } // 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
   INT64 GetStrongBuyVolume(void) noexcept { return m_lStrongBuyVolume; } // 向上强力买入,成交价超过之前的卖二报价
   INT64 GetCurrentAttackBuy(void) noexcept { return m_lCurrentAttackBuy; }
-  long GetCurrentStrongBuy(void) noexcept { return m_lCurrentStrongBuy; }
+  INT64 GetCurrentStrongBuy(void) noexcept { return m_lCurrentStrongBuy; }
   INT64 GetAttackSellVolume(void) noexcept { return m_lAttackSellVolume; } // 向下卖出。成交价低于买一价但高于买二价。
   INT64 GetStrongSellVolume(void) noexcept { return m_lStrongSellVolume; }
-  long GetCurrentAttackSell(void) noexcept { return m_lCurrentAttackSell; }
-  long GetCurrentStrongSell(void) noexcept { return m_lCurrentStrongSell; }
+  INT64 GetCurrentAttackSell(void) noexcept { return m_lCurrentAttackSell; }
+  INT64 GetCurrentStrongSell(void) noexcept { return m_lCurrentStrongSell; }
   INT64 GetUnknownVolume(void) noexcept { return m_lUnknownVolume; }
-  long GetCurrentUnknown(void) noexcept { return m_lCurrentUnknown; }
+  INT64 GetCurrentUnknown(void) noexcept { return m_lCurrentUnknown; }
   INT64 GetCancelBuyVolume(void) noexcept { return m_lCancelBuyVolume; }
   INT64 GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
 
-  long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
-  void IncreaseTransactionNumber(long value = 1) noexcept { m_lTransactionNumber += value; }
-  long GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
-  void IncreaseTransactionNumberBelow5000(long value = 1) noexcept { m_lTransactionNumberBelow5000 += value; }
-  long GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
-  void IncreaseTransactionNumberBelow50000(long value = 1) noexcept { m_lTransactionNumberBelow50000 += value; }
-  long GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
-  void IncreaseTransactionNumberBelow200000(long value = 1) noexcept { m_lTransactionNumberBelow200000 += value; }
-  long GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
-  void IncreaseTransactionNumberAbove200000(long value = 1) noexcept { m_lTransactionNumberAbove200000 += value; }
+  INT64 GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
+  void IncreaseTransactionNumber(INT64 value = 1) noexcept { m_lTransactionNumber += value; }
+  INT64 GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
+  void IncreaseTransactionNumberBelow5000(INT64 value = 1) noexcept { m_lTransactionNumberBelow5000 += value; }
+  INT64 GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
+  void IncreaseTransactionNumberBelow50000(INT64 value = 1) noexcept { m_lTransactionNumberBelow50000 += value; }
+  INT64 GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
+  void IncreaseTransactionNumberBelow200000(INT64 value = 1) noexcept { m_lTransactionNumberBelow200000 += value; }
+  INT64 GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
+  void IncreaseTransactionNumberAbove200000(INT64 value = 1) noexcept { m_lTransactionNumberAbove200000 += value; }
 
   INT64 GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
   INT64 GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
@@ -66,27 +66,27 @@ public:
   void IncreaseAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume += value; }
   void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; } // 向上强力买入,成交价超过之前的卖二报价
   void IncreaseStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume += value; }
-  void SetCurrentAttackBuy(long value) noexcept { m_lCurrentAttackBuy = value; }
-  void SetCurrentStrongBuy(long value) noexcept { m_lCurrentStrongBuy = value; }
+  void SetCurrentAttackBuy(INT64 value) noexcept { m_lCurrentAttackBuy = value; }
+  void SetCurrentStrongBuy(INT64 value) noexcept { m_lCurrentStrongBuy = value; }
   void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; } // 向下卖出。成交价低于买一价但高于买二价。
   void IncreaseAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume += value; }
   void SetStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume = value; }
   void IncreaseStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume += value; }
-  void SetCurrentAttackSell(long value) noexcept { m_lCurrentAttackSell = value; }
-  void SetCurrentStrongSell(long value) noexcept { m_lCurrentStrongSell = value; }
+  void SetCurrentAttackSell(INT64 value) noexcept { m_lCurrentAttackSell = value; }
+  void SetCurrentStrongSell(INT64 value) noexcept { m_lCurrentStrongSell = value; }
   void SetUnknownVolume(INT64 value) noexcept { m_lUnknownVolume = value; }
   void IncreaseUnknownVolume(INT64 value) noexcept { m_lUnknownVolume += value; }
-  void SetCurrentUnknown(long value) noexcept { m_lCurrentUnknown = value; }
+  void SetCurrentUnknown(INT64 value) noexcept { m_lCurrentUnknown = value; }
   void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
   void IncreaseCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume += value; }
   void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
   void IncreaseCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume += value; }
 
-  void SetTransactionNumber(long value) noexcept { m_lTransactionNumber = value; }
-  void SetTransactionNumberBelow5000(long value) noexcept { m_lTransactionNumberBelow5000 = value; }
-  void SetTransactionNumberBelow50000(long value) noexcept { m_lTransactionNumberBelow50000 = value; }
-  void SetTransactionNumberBelow200000(long value) noexcept { m_lTransactionNumberBelow200000 = value; }
-  void SetTransactionNumberAbove200000(long value) noexcept { m_lTransactionNumberAbove200000 = value; }
+  void SetTransactionNumber(INT64 value) noexcept { m_lTransactionNumber = value; }
+  void SetTransactionNumberBelow5000(INT64 value) noexcept { m_lTransactionNumberBelow5000 = value; }
+  void SetTransactionNumberBelow50000(INT64 value) noexcept { m_lTransactionNumberBelow50000 = value; }
+  void SetTransactionNumberBelow200000(INT64 value) noexcept { m_lTransactionNumberBelow200000 = value; }
+  void SetTransactionNumberAbove200000(INT64 value) noexcept { m_lTransactionNumberAbove200000 = value; }
 
   void SetAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 = value; }
   void IncreaseAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 += value; }
@@ -108,17 +108,17 @@ protected:
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额
   INT64 m_lAttackSellAmount; // 向下卖出金额
-  long m_lCurrentAttackBuy;
-  long m_lCurrentStrongBuy;
-  long m_lCurrentAttackSell;
-  long m_lCurrentStrongSell;
+  INT64 m_lCurrentAttackBuy;
+  INT64 m_lCurrentStrongBuy;
+  INT64 m_lCurrentAttackSell;
+  INT64 m_lCurrentStrongSell;
 
   // 以下为需存储项
-  long m_lTransactionNumber; // 本交易日的成交笔数
-  long m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
-  long m_lTransactionNumberBelow50000; //
-  long m_lTransactionNumberBelow200000; //
-  long m_lTransactionNumberAbove200000; //
+  INT64 m_lTransactionNumber; // 本交易日的成交笔数
+  INT64 m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
+  INT64 m_lTransactionNumberBelow50000; //
+  INT64 m_lTransactionNumberBelow200000; //
+  INT64 m_lTransactionNumberAbove200000; //
 
   INT64 m_lOrdinaryBuyVolume;
   INT64 m_lOrdinarySellVolume;
@@ -127,7 +127,7 @@ protected:
   INT64 m_lAttackSellVolume; // 向下卖出。成交价低于买一价但高于买二价。
   INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
   INT64 m_lUnknownVolume; // 不明状态的成交量
-  long m_lCurrentUnknown; // 当前成交量中的不明状态成交量
+  INT64 m_lCurrentUnknown; // 当前成交量中的不明状态成交量
   INT64 m_lCancelBuyVolume;	// 买单撤单量
   INT64 m_lCancelSellVolume; // 卖单撤单量
 

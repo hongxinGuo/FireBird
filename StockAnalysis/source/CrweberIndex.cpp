@@ -78,7 +78,7 @@ void CCrweberIndex::SaveData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.m_TD19 = ConvertValueToString(m_dTD19);
   setCrweberIndex.m_TD20 = ConvertValueToString(m_dTD20);
   setCrweberIndex.m_TD21 = ConvertValueToString(m_dTD21);
-  setCrweberIndex.m_VLCC_USGSPORE = ConvertValueToString(m_dVLCC_USGSPORE * 100);
+  setCrweberIndex.m_VLCC_USGSPORE = ConvertValueToString(m_dVLCC_USGSPORE * 100); // 从百万转成以万为单位。
   setCrweberIndex.m_SUEZMAX_CBSUSG = ConvertValueToString(m_dSUEZMAX_CBSUSG);
   setCrweberIndex.m_TC1 = ConvertValueToString(m_dTC1);
   setCrweberIndex.m_TC2 = ConvertValueToString(m_dTC2);
