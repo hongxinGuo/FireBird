@@ -14,7 +14,6 @@ public:
   // 公共接口函数
   virtual bool GetWebData(void);
 
-  virtual bool IsReadingFinished(void); // 读完了所有的数据
   virtual bool ReportStatus(long lNumberOfData);
 
   // 下列为继承类必须实现的几个功能函数，完成具体任务。

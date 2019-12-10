@@ -33,11 +33,6 @@ bool CWebData::GetWebData(void) {
   return true;
 }
 
-bool CWebData::IsReadingFinished(void) {
-  if (m_lCurrentPos < m_lByteRead) return false;
-  else return true;
-}
-
 bool CWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个实时数据\n", lNumberOfData);
   return true;
