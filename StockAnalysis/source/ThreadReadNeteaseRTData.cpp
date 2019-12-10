@@ -45,14 +45,14 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
 
     // 将读取的网易实时数据放入网易实时网络数据缓冲区中，并设置相关标识。
     char* p = pNeteaseWebRTData->GetBufferAddr();
-    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
-    pWebRTData->m_pDataBuffer = new char[pNeteaseWebRTData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pWebRTData->m_lBufferLength = pNeteaseWebRTData->GetByteReaded();
-    char* pbuffer = pWebRTData->m_pDataBuffer;
+    CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
+    pWebDataReceived->m_pDataBuffer = new char[pNeteaseWebRTData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebDataReceived->m_lBufferLength = pNeteaseWebRTData->GetByteReaded();
+    char* pbuffer = pWebDataReceived->m_pDataBuffer;
     for (int i = 0; i < pNeteaseWebRTData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueNeteaseWebRTData.PushWebRTData(pWebRTData);
+    gl_QueueNeteaseWebRTData.PushWebRTData(pWebDataReceived);
 
     pNeteaseWebRTData->ResetCurrentPos();
   }

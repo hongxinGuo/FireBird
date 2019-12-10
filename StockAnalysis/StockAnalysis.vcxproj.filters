@@ -186,11 +186,11 @@
     <ClInclude Include="source\QueueWebRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebRTData.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\NeteaseWebDayLineData.h">
       <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebDataReceived.h">
+      <Filter>头文件\实现类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

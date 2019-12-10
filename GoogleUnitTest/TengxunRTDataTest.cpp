@@ -3,6 +3,7 @@
 #include"globedef.h"
 
 #include"RTData.h"
+#include"WebDataReceived.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestTengxunInitialize) {
@@ -127,7 +128,7 @@ namespace StockAnalysisTest {
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       TengxunRTData* pData = GetParam();
-      m_pTengxunWebRTData = make_shared<CWebRTData>();
+      m_pTengxunWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -161,7 +162,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     long m_lStringLength;
-    CWebRTDataPtr m_pTengxunWebRTData;
+    CWebDataReceivedPtr m_pTengxunWebRTData;
     CRTData m_RTData;
   };
 
@@ -690,7 +691,7 @@ namespace StockAnalysisTest {
   protected:
     void SetUp(void) override {
       ReadTengxunOneValueData* pData = GetParam();
-      m_pTengxunWebRTData = make_shared<CWebRTData>();
+      m_pTengxunWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[lLength + 1];
@@ -709,7 +710,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     char* m_pData;
-    CWebRTDataPtr m_pTengxunWebRTData;
+    CWebDataReceivedPtr m_pTengxunWebRTData;
     CRTData m_RTData;
   };
 

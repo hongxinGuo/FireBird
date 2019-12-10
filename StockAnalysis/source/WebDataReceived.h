@@ -3,16 +3,16 @@
 using namespace std;
 #include<memory>
 
-class CWebRTData
+class CWebDataReceived
 {
 public:
-  CWebRTData() {
+  CWebDataReceived() {
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
     m_pCurrentPos = nullptr;
     m_lCurrentPos = 0;
   }
-  ~CWebRTData() {
+  ~CWebDataReceived() {
     if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
@@ -28,4 +28,4 @@ public:
   long m_lCurrentPos;
 };
 
-typedef shared_ptr<CWebRTData> CWebRTDataPtr;
+typedef shared_ptr<CWebDataReceived> CWebDataReceivedPtr;

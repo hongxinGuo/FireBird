@@ -224,7 +224,7 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebRTData.h" />
-    <ClInclude Include="source\WebRTData.h" />
+    <ClInclude Include="source\WebDataReceived.h" />
     <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />

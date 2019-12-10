@@ -3,7 +3,7 @@
 #include"stdafx.h"
 
 #include"SetCrweberIndex.h"
-#include"WebRTData.h"
+#include"WebDataReceived.h"
 
 using namespace std;
 #include<vector>
@@ -18,7 +18,7 @@ public:
   void SaveData(CSetCrweberIndex& setCewwberIndex);
   void AppendData(CSetCrweberIndex& setCrweberIndex);
 
-  bool ReadData(CWebRTDataPtr pWebRTData);
+  bool ReadData(CWebDataReceivedPtr pWebDataReceived);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
   bool IsDataChanged(void);
@@ -62,8 +62,8 @@ public:
 private:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
-  double GetOneValue(CWebRTDataPtr pWebRTData);
-  CString GetNextString(CWebRTDataPtr pWebRTData);
+  double GetOneValue(CWebDataReceivedPtr pWebDataReceived);
+  CString GetNextString(CWebDataReceivedPtr pWebDataReceived);
 
 public:
   long m_lID;

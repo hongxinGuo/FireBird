@@ -45,14 +45,14 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
 
     // 将读取的新浪实时数据放入新浪实时网络数据缓冲区中，并设置相关标识。
     char* p = pCrweberWebData->GetBufferAddr();
-    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
-    pWebRTData->m_pDataBuffer = new char[pCrweberWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pWebRTData->m_lBufferLength = pCrweberWebData->GetByteReaded();
-    char* pbuffer = pWebRTData->m_pDataBuffer;
+    CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
+    pWebDataReceived->m_pDataBuffer = new char[pCrweberWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebDataReceived->m_lBufferLength = pCrweberWebData->GetByteReaded();
+    char* pbuffer = pWebDataReceived->m_pDataBuffer;
     for (int i = 0; i < pCrweberWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueCrweberdotcomWebData.PushWebRTData(pWebRTData);
+    gl_QueueCrweberdotcomWebData.PushWebRTData(pWebDataReceived);
   }
   catch (CInternetException * e) {
     TRACE(_T("net error\n"));

@@ -109,52 +109,52 @@ void CCrweberIndex::AppendData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.Update();
 }
 
-bool CCrweberIndex::ReadData(CWebRTDataPtr pWebRTData) {
-  pWebRTData->m_lCurrentPos = 0;
+bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
+  pWebDataReceived->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   long lUpdateDay = 0;
 
-  while (pWebRTData->m_lCurrentPos < pWebRTData->m_lBufferLength) {
-    str = GetNextString(pWebRTData);
+  while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
+    str = GetNextString(pWebDataReceived);
     strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
-      strTime = GetNextString(pWebRTData); // 当前时间
+      strTime = GetNextString(pWebDataReceived); // 当前时间
       lUpdateDay = ConvertStringToTime(strTime);
 
-      for (int i = 0; i < 4; i++) GetNextString(pWebRTData); // 抛掉4个没用字符串
+      for (int i = 0; i < 4; i++) GetNextString(pWebDataReceived); // 抛掉4个没用字符串
 
-      str1 = GetNextString(pWebRTData); // "VLCC"
-      gl_CrweberIndex.m_dTD1 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD2 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD3C = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD15 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dVLCC_USGSPORE = GetOneValue(pWebRTData);
+      str1 = GetNextString(pWebDataReceived); // "VLCC"
+      gl_CrweberIndex.m_dTD1 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD2 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD3C = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD15 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dVLCC_USGSPORE = GetOneValue(pWebDataReceived);
 
-      str1 = GetNextString(pWebRTData); // "SUEZMAX"
-      gl_CrweberIndex.m_dTD5 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD20 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD6 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dSUEZMAX_CBSUSG = GetOneValue(pWebRTData);
+      str1 = GetNextString(pWebDataReceived); // "SUEZMAX"
+      gl_CrweberIndex.m_dTD5 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD20 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD6 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dSUEZMAX_CBSUSG = GetOneValue(pWebDataReceived);
 
-      str1 = GetNextString(pWebRTData); // "AFRAMAX"
-      gl_CrweberIndex.m_dTD7 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD9 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD19 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD8 = GetOneValue(pWebRTData);
+      str1 = GetNextString(pWebDataReceived); // "AFRAMAX"
+      gl_CrweberIndex.m_dTD7 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD9 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD19 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD8 = GetOneValue(pWebDataReceived);
 
-      str1 = GetNextString(pWebRTData); // "PANAMAX"
-      gl_CrweberIndex.m_dTD21 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTD12 = GetOneValue(pWebRTData);
+      str1 = GetNextString(pWebDataReceived); // "PANAMAX"
+      gl_CrweberIndex.m_dTD21 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTD12 = GetOneValue(pWebDataReceived);
 
-      str1 = GetNextString(pWebRTData); // "CPP"
-      gl_CrweberIndex.m_dTC2 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTC3 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTC14 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dCPP_USGCBS = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTC1 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTC5 = GetOneValue(pWebRTData);
-      gl_CrweberIndex.m_dTC4 = GetOneValue(pWebRTData);
+      str1 = GetNextString(pWebDataReceived); // "CPP"
+      gl_CrweberIndex.m_dTC2 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTC3 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTC14 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dCPP_USGCBS = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTC1 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTC5 = GetOneValue(pWebDataReceived);
+      gl_CrweberIndex.m_dTC4 = GetOneValue(pWebDataReceived);
 
       CString strDay = ConvertValueToString(lUpdateDay, 1);
       TRACE("m_lastUpdateDay = %d,  m_lDay = %d, m_UpdateDay = %d\n", gl_CrweberIndex.m_lLastUpdateDay, gl_CrweberIndex.m_lDay, lUpdateDay);
@@ -167,56 +167,56 @@ bool CCrweberIndex::ReadData(CWebRTDataPtr pWebRTData) {
 
     strHead = str.Left(6);
     if (strHead.Compare(_T("Tanker")) == 0) {
-      for (int i = 0; i < 7; i++) GetNextString(pWebRTData); // "CPP"
-      str1 = GetNextString(pWebRTData);
+      for (int i = 0; i < 7; i++) GetNextString(pWebDataReceived); // "CPP"
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebRTData);
-      GetNextString(pWebRTData);
-      str1 = GetNextString(pWebRTData);
+      GetNextString(pWebDataReceived);
+      GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebRTData);
-      GetNextString(pWebRTData);
-      str1 = GetNextString(pWebRTData);
+      GetNextString(pWebDataReceived);
+      GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebRTData);
-      GetNextString(pWebRTData);
-      str1 = GetNextString(pWebRTData);
+      GetNextString(pWebDataReceived);
+      GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebRTData);
-      GetNextString(pWebRTData);
-      str1 = GetNextString(pWebRTData);
+      GetNextString(pWebDataReceived);
+      GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebRTData);
-      GetNextString(pWebRTData);
-      str1 = GetNextString(pWebRTData);
+      GetNextString(pWebDataReceived);
+      GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dHANDY_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebRTData);
+      str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dHANDY_TC_3YEAR = ConvertStringToTC(str1);
 
-      pWebRTData->m_lCurrentPos = pWebRTData->m_lBufferLength; //
+      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
   }
-  pWebRTData->m_pCurrentPos = pWebRTData->GetBufferAddr();
+  pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
   for (int i = 0; i < 1024 * 1024; i++) {
-    pWebRTData->m_pCurrentPos = 0x000;
-    pWebRTData->m_pCurrentPos++;
+    pWebDataReceived->m_pCurrentPos = 0x000;
+    pWebDataReceived->m_pCurrentPos++;
   }
-  pWebRTData->m_lCurrentPos = pWebRTData->m_lBufferLength; //
+  pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
 
   return true;
 }
@@ -266,42 +266,43 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   return year * 10000 + month * 100 + day;
 }
 
-double CCrweberIndex::GetOneValue(CWebRTDataPtr pWebRTData) {
+double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
   CString str, strValue;
   double dValue = 0.0;
 
-  str = GetNextString(pWebRTData); // "TD1\r\n   "
-  GetNextString(pWebRTData); // 无用数据
-  GetNextString(pWebRTData); // 无用数据
-  strValue = GetNextString(pWebRTData); // TD1指数的当前值
+  str = GetNextString(pWebDataReceived); // "TD1\r\n   "
+  GetNextString(pWebDataReceived); // 无用数据
+  GetNextString(pWebDataReceived); // 无用数据
+  strValue = GetNextString(pWebDataReceived); // TD1指数的当前值
   dValue = atof(strValue.GetBuffer());
   return dValue;
 }
 
-CString CCrweberIndex::GetNextString(CWebRTDataPtr pWebRTData) {
+CString CCrweberIndex::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
   bool fFound = false;
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebRTData->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebRTData->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebRTData->m_pCurrentPos != '>') {
-        pWebRTData->IncreaseCurrentPos();
+  while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
+    if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
+      while (*pWebDataReceived->m_pCurrentPos != '>') {
+        pWebDataReceived->IncreaseCurrentPos();
       }
-      pWebRTData->IncreaseCurrentPos();
-      while ((*pWebRTData->m_pCurrentPos == 0x00a) || (*pWebRTData->m_pCurrentPos == 0x00d) || (*pWebRTData->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
-        pWebRTData->IncreaseCurrentPos();
+      pWebDataReceived->IncreaseCurrentPos();
+      while ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x00d)
+             || (*pWebDataReceived->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+        pWebDataReceived->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebRTData->m_pCurrentPos == 0x000) { // 读到结尾处了
-    ASSERT(pWebRTData->m_lCurrentPos >= pWebRTData->m_lBufferLength);
+  if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+    ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
     return _T("");
   }
-  while (*pWebRTData->m_pCurrentPos != '<') {
-    if (*pWebRTData->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebRTData->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
-    pWebRTData->IncreaseCurrentPos();
+  while (*pWebDataReceived->m_pCurrentPos != '<') {
+    if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+    pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;
   CString str;

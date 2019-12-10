@@ -46,14 +46,14 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
 
     // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
     char* p = pTengxunWebData->GetBufferAddr();
-    CWebRTDataPtr pWebRTData = make_shared<CWebRTData>();
-    pWebRTData->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pWebRTData->m_lBufferLength = pTengxunWebData->GetByteReaded();
-    char* pbuffer = pWebRTData->m_pDataBuffer;
+    CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
+    pWebDataReceived->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+    pWebDataReceived->m_lBufferLength = pTengxunWebData->GetByteReaded();
+    char* pbuffer = pWebDataReceived->m_pDataBuffer;
     for (int i = 0; i < pTengxunWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
-    gl_QueueTengxunWebRTData.PushWebRTData(pWebRTData);
+    gl_QueueTengxunWebRTData.PushWebRTData(pWebDataReceived);
   }
   catch (CInternetException * e) {
     e->Delete();
