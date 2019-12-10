@@ -34,7 +34,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   ASSERT(pNeteaseWebDayLineData->IsReadingWebData());    // 调用此线程时已经设置了此标识
   try {
     pNeteaseWebDayLineData->SetReadingWebData(true);
-    pNeteaseWebDayLineData->SetReadingSucceed(true);
     pNeteaseWebDayLineData->SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseWebDayLineData->GetInquiringString()));
     Sleep(siDelayTime);
@@ -63,7 +62,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
       }
     }
     *pChar = 0x000; // 最后加上一个结束符0X000
-    pNeteaseWebDayLineData->SetWebDataReceived(true);
 
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     char* p = pNeteaseWebDayLineData->GetBufferAddr();
@@ -79,8 +77,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   }
   catch (CInternetException * e) {  // 出现错误的话，简单报错即可，无需处理
     e->Delete();
-    pNeteaseWebDayLineData->SetReadingSucceed(false);
-    pNeteaseWebDayLineData->SetWebDataReceived(false);
     pNeteaseWebDayLineData->SetByteReaded(0);
   }
   if (pFile) pFile->Close();

@@ -35,10 +35,6 @@ public:
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
 
-  bool IsReadingSucceed(void) noexcept { return m_fReceivedData; }
-  void SetReadingSucceed(bool fFlag) noexcept { m_fReceivedData = fFlag; }
-  bool IsWebDataReceived(void) noexcept { return m_fWebDataReceived; }
-  void SetWebDataReceived(bool fFlag) noexcept { m_fWebDataReceived = fFlag; }
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
@@ -58,7 +54,6 @@ protected:
   CString m_strInquire;// 查询所需的字符串
   char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
-  bool m_fReceivedData; // 网络是否异常
 
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
@@ -67,7 +62,6 @@ protected:
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
   atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
-  atomic_bool m_fWebDataReceived;// 实时数据已接收完毕标识
 
   bool m_fReportStatus; //
 };

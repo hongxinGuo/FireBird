@@ -22,7 +22,6 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
 
   try {
     pNeteaseWebRTData->SetReadingWebData(true);  //
-    pNeteaseWebRTData->SetReadingSucceed(true);
     pNeteaseWebRTData->SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pNeteaseWebRTData->GetInquiringString()));
     Sleep(200); // 腾讯服务器100ms延迟即可。
@@ -55,13 +54,10 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
     }
     gl_QueueNeteaseWebRTData.PushWebRTData(pWebRTData);
 
-    pNeteaseWebRTData->SetWebDataReceived(true);
     pNeteaseWebRTData->ResetCurrentPos();
   }
   catch (CInternetException * e) {
     e->Delete();
-    pNeteaseWebRTData->SetReadingSucceed(false);
-    pNeteaseWebRTData->SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {

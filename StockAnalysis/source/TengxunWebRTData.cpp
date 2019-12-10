@@ -35,7 +35,6 @@ void CTengxunWebRTData::InquireNextWebData(void) {
   }
 
   CreateTotalInquiringString(strMiddle);
-  SetWebDataReceived(false);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();
 }

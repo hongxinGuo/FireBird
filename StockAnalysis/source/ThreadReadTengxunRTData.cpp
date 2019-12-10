@@ -23,7 +23,6 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
 
   try {
     pTengxunWebData->SetReadingWebData(true);  //
-    pTengxunWebData->SetReadingSucceed(true);
     pTengxunWebData->SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pTengxunWebData->GetInquiringString()));
     Sleep(100); // 腾讯服务器100ms延迟即可。
@@ -55,13 +54,9 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueTengxunWebRTData.PushWebRTData(pWebRTData);
-
-    pTengxunWebData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();
-    pTengxunWebData->SetReadingSucceed(false);
-    pTengxunWebData->SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {

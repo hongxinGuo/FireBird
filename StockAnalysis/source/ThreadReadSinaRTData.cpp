@@ -22,7 +22,6 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
 
   try {
     pSinaWebRTData->SetReadingWebData(true);
-    pSinaWebRTData->SetReadingSucceed(true);
     pSinaWebRTData->SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pSinaWebRTData->GetInquiringString()));
     Sleep(100); // 新浪服务器100ms延迟即可。
@@ -54,14 +53,9 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueSinaWebRTData.PushWebRTData(pWebRTData);
-
-    pSinaWebRTData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     e->Delete();
-    pSinaWebRTData->SetReadingSucceed(false);
-    pSinaWebRTData->SetWebDataReceived(false);
-    pSinaWebRTData->SetReadingWebData(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {

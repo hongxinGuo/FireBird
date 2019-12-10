@@ -21,7 +21,6 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
 
   try {
     pCrweberWebData->SetReadingWebData(true);
-    pCrweberWebData->SetReadingSucceed(true);
     pCrweberWebData->SetByteReaded(0);
     pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pCrweberWebData->GetInquiringString(), 1,
                                                      INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
@@ -54,13 +53,9 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
       *pbuffer++ = *p++;
     }
     gl_QueueCrweberdotcomWebData.PushWebRTData(pWebRTData);
-
-    pCrweberWebData->SetWebDataReceived(true);
   }
   catch (CInternetException * e) {
     TRACE(_T("net error\n"));
-    pCrweberWebData->SetReadingSucceed(false);
-    pCrweberWebData->SetWebDataReceived(false);
   }
   if (pFile) pFile->Close();
   if (pFile) {

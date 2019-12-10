@@ -1646,6 +1646,7 @@ void CMarket::LoadOptionDB(void) {
     else {
       gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
       if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > 19900101) {
+        // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }

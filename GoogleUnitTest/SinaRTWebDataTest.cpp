@@ -12,36 +12,17 @@ namespace StockAnalysisTest {
   TEST(SinaWebRTDataTest, TestInitialize) {
     EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
     EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingSucceed());
   }
 
   TEST(SinaWebRTDataTest, TestStartReadingThread) {
     EXPECT_FALSE(gl_SinaWebRTData.IsReadingWebData());
-    EXPECT_FALSE(gl_SinaWebRTData.IsWebDataReceived());
     EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 0);
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingSucceed());
     // 线程无法测试，故只测试初始状态。
   }
 }
 
 // 由于基类CWebData为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
 namespace StockAnalysisTest {
-  TEST(CWebDataTest, TestIsReadingSucceed) {
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingSucceed());
-    gl_SinaWebRTData.SetReadingSucceed(true);
-    EXPECT_TRUE(gl_SinaWebRTData.IsReadingSucceed());
-    gl_SinaWebRTData.SetReadingSucceed(false);
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingSucceed());
-  }
-
-  TEST(CWebDataTest, TestIsWebDataReceived) {
-    EXPECT_FALSE(gl_SinaWebRTData.IsWebDataReceived());
-    gl_SinaWebRTData.SetWebDataReceived(true);
-    EXPECT_TRUE(gl_SinaWebRTData.IsWebDataReceived());
-    gl_SinaWebRTData.SetWebDataReceived(false);
-    EXPECT_FALSE(gl_SinaWebRTData.IsWebDataReceived());
-  }
-
   TEST(CWebDataTest, TestIsReadingWebData) {
     EXPECT_FALSE(gl_SinaWebRTData.IsReadingWebData());
     gl_SinaWebRTData.SetReadingWebData(true);
