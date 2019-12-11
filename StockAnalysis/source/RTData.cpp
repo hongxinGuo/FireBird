@@ -739,118 +739,6 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
-// 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
-//
-// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
-//
-// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
-//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
-//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
-//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
-//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
-//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
-//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
-//
-// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
-  long lIndex = 0;
-  CString strValue = _T("");
-  char bufferStockCode[50];
-  char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
-  char bufferTest[2000];
-  char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
-  long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
-  bool fFind = false;
-  CString strStockCode, strHeader;
-  long lSectionLength = 0;
-  CString strTest;
-
-  int i = 0;
-  while ((*pTestCurrentPos != '}') && (i < 1900)) {
-    bufferTest[i++] = *pTestCurrentPos++;
-  }
-  lSectionLength = i;
-  bufferTest[i] = 0x000;
-  strTest = bufferTest;
-
-  try {
-    m_fActive = false;    // 初始状态为无效数据
-    // 跨过前缀字符（"0601872")，直接使用其后的数据
-    if (!((*pNeteaseWebRTData->m_pCurrentPos == '{') || (*pNeteaseWebRTData->m_pCurrentPos == ','))) {
-      throw exception();
-    }
-    else pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos != '\"') {
-      throw exception();
-    }
-    else pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos == '0') strHeader = _T("sh");
-    else if (*pNeteaseWebRTData->m_pCurrentPos == '1') strHeader = _T("sz");
-    else {
-      throw exception();
-    }
-    pNeteaseWebRTData->IncreaseCurrentPos();
-    i = 0;
-    while (!fFind && (pNeteaseWebRTData->m_lCurrentPos < (lSectionBegin + lSectionLength))) {
-      if (*pNeteaseWebRTData->m_pCurrentPos == '"') {
-        fFind = true;
-        pNeteaseWebRTData->IncreaseCurrentPos(3);
-        bufferStockCode[i] = 0x000;
-      }
-      else {
-        bufferStockCode[i++] = *pNeteaseWebRTData->m_pCurrentPos;
-        pNeteaseWebRTData->IncreaseCurrentPos();
-      }
-    }
-    if (!fFind) {
-      throw exception();
-    }
-    strStockCode = strHeader;
-    strStockCode += bufferStockCode;
-    if (gl_ChinaStockMarket.GetStockPtr(strStockCode) == nullptr) {
-      throw exception();
-    }
-    do {
-      if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-        SetValue(lIndex, strValue);
-      }
-      else throw;
-    } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
-    // 读过此'}'就结束了
-    if (*pNeteaseWebRTData->m_pCurrentPos == '}') {
-      pNeteaseWebRTData->IncreaseCurrentPos();
-    }
-
-    if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
-      m_fActive = false;
-    }
-    else {
-      if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
-        m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-      }
-      else m_fActive = true;
-    }
-    return true;
-  }
-  catch (exception&) {
-    TRACE(_T("%s's ReadNeteaseData异常\n", strStockCode));
-    CString str = strStockCode;
-    str += _T("'s ReadNeteaseData异常");
-    gl_systemMessage.PushInnerSystemInformationMessage(str);
-    m_fActive = false;
-    // 跨过此错误数据，寻找下一个数据的起始处。
-    pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
-    pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
-    return true; // 返回真，则跨过此错误数据，继续处理。
-  }
-  return true;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 读入一个INT64值，遇到~号结束。返回值在llReturnValue中
@@ -929,6 +817,150 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* bu
     TRACE("ReadTengxunOneValue函数异常\n");
     return false;
   }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
+// 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
+  long lIndex = 0;
+  CString strValue = _T("");
+  char bufferStockCode[50];
+  char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
+  char bufferTest[2000];
+  char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
+  long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
+  bool fFind = false;
+  CString strStockCode = _T(" "), strHeader;
+  long lSectionLength = 0;
+  CString strTest;
+
+  int i = 0;
+  while ((*pTestCurrentPos != '}') && (i < 1900)) {
+    bufferTest[i++] = *pTestCurrentPos++;
+  }
+  lSectionLength = i;
+  bufferTest[i] = 0x000;
+  strTest = bufferTest;
+
+  try {
+    m_fActive = false;    // 初始状态为无效数据
+    // 跨过前缀字符（"0601872")，直接使用其后的数据
+    if (!ReadNeteaseStockCodePrefix(pNeteaseWebRTData)) {
+      throw exception();
+    }
+    do {
+      if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
+        SetValue(lIndex, strValue);
+      }
+      else {
+        throw exception();
+      }
+    } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
+    // 读过此'}'就结束了
+    if (*pNeteaseWebRTData->m_pCurrentPos == '}') {
+      pNeteaseWebRTData->IncreaseCurrentPos();
+    }
+
+    if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+      m_fActive = false;
+    }
+    else {
+      if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
+        m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+      }
+      else m_fActive = true;
+    }
+    return true;
+  }
+  catch (exception&) {
+    //TRACE(_T("%s's ReadNeteaseData异常\n", strStockCode));
+    CString str = strStockCode;
+    str += _T("'s ReadNeteaseData异常");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
+#ifdef DEBUG
+    gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+#endif // DEBUG
+
+    m_fActive = false;
+    // 跨过此错误数据，寻找下一个数据的起始处。
+    pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
+    pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
+    return true; // 返回真，则跨过此错误数据，继续处理。
+  }
+  return true;
+}
+
+bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
+  long lIndex = 0;
+  CString strValue = _T("");
+  char bufferStockCode[50];
+  char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
+  char bufferTest[20];
+  long lSectionBegin = pWebDataReceived->GetCurrentPos();
+  bool fFind = false;
+  CString strStockCode, strHeader;
+  CString strTest;
+
+  int i = 0;
+  while ((*pTestCurrentPos != '{') && (i < 20)) {
+    bufferTest[i++] = *pTestCurrentPos++;
+  }
+  bufferTest[i] = 0x000;
+  strTest = bufferTest;
+
+  i = 0;  // 跨过前缀字符（"0601872")，直接使用其后的数据
+  if (!((*pWebDataReceived->m_pCurrentPos == '{') || (*pWebDataReceived->m_pCurrentPos == ','))) {
+    return false;
+  }
+  else pWebDataReceived->IncreaseCurrentPos();
+  if (*pWebDataReceived->m_pCurrentPos != '\"') {
+    return false;
+  }
+  else pWebDataReceived->IncreaseCurrentPos();
+  if (*pWebDataReceived->m_pCurrentPos == '0') strHeader = _T("sh");
+  else if (*pWebDataReceived->m_pCurrentPos == '1') strHeader = _T("sz");
+  else {
+    return false;
+  }
+  pWebDataReceived->IncreaseCurrentPos();
+  i = 0;
+  while (!fFind && (i < 13)) {
+    if (*pWebDataReceived->m_pCurrentPos == '"') {
+      fFind = true;
+      bufferStockCode[i] = 0x000;
+    }
+    else {
+      bufferStockCode[i++] = *pWebDataReceived->m_pCurrentPos;
+    }
+    pWebDataReceived->IncreaseCurrentPos();
+  }
+  if (!fFind) return false;
+  while ((*pWebDataReceived->m_pCurrentPos != '{') && (*pWebDataReceived->m_pCurrentPos != '"')) {
+    pWebDataReceived->IncreaseCurrentPos();
+  }
+  pWebDataReceived->IncreaseCurrentPos();
+  strStockCode = strHeader;
+  strStockCode += bufferStockCode;
+  if (gl_ChinaStockMarket.GetStockPtr(strStockCode) == nullptr) {
+    return false;
+  }
+  return true;
 }
 
 long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {

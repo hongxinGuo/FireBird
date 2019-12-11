@@ -160,6 +160,7 @@ public:
   // 读取网易实时数据函数
   // 从字符指针处读入网易制式数据。此指针开始处为_ntes_quote_callback,遇到\n(回车)结束
   bool ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData);
+  bool ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived);
   long GetNeteaseSymbolIndex(CString strSymbol);
   bool GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
   bool SetValue(long lIndex, CString strValue);
