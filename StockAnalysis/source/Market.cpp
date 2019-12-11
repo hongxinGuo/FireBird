@@ -76,7 +76,7 @@ void CMarket::Reset(void) {
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -648,10 +648,28 @@ bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 从网络文件file中读取网易制式实时数据，返回值是所读数据是否出现格式错误。
+// 开始处为第一个{，结束处为倒数第二个}。如果尚有数据需处理，则被处理的字符为','；如果没有数据了，则被处理的字符为' '。
+//
+// 要获取最新行情，访问数据接口：http://api.money.126.net/data/feed/0601872
+//
+// _ntes_quote_callback({"0601872":{"code": "0601872", "percent": 0.038251, "high": 5.72, "askvol3": 311970, "askvol2": 257996,
+//                      "askvol5": 399200, "askvol4": 201000, "price": 5.7, "open": 5.53, "bid5": 5.65, "bid4": 5.66, "bid3": 5.67,
+//                       "bid2": 5.68, "bid1": 5.69, "low": 5.51, "updown": 0.21, "type": "SH", "symbol": "601872", "status": 0,
+//                       "ask4": 5.73, "bidvol3": 234700, "bidvol2": 166300, "bidvol1": 641291, "update": "2019/11/04 15:59:54",
+//                       "bidvol5": 134500, "bidvol4": 96600, "yestclose": 5.49, "askvol1": 396789, "ask5": 5.74, "volume": 78750304,
+//                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
+//                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
+//
+// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   char buffer[50];
-  CString strInvalidStock = _T("_ntes_quote_callback({"); // 此为无效股票查询到的数据格式，共22个字符
+  CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
   long lTotalData = gl_QueueNeteaseWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
@@ -659,14 +677,14 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
     pWebDataReceived->m_lCurrentPos = 0;
 
-    strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 22); // 读入"_ntes_quote_callback({"
-    buffer[22] = 0x000;
+    strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
+    buffer[21] = 0x000;
     CString str1;
     str1 = buffer;
     if (strInvalidStock.Compare(str1) != 0) { // 数据格式出错
       return false;
     }
-    pWebDataReceived->IncreaseCurrentPos(22);
+    pWebDataReceived->IncreaseCurrentPos(21);
 
     while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
       CRTDataPtr pRTData = make_shared<CRTData>();
@@ -822,7 +840,7 @@ bool CMarket::SchedulingTask(void) {
       m_fTodayTempDataLoaded = true;
     }
     TaskProcessWebRTDataGetFromTengxunServer();
-    //ProcessWebRTDataGetFromNeteaseServer();
+    TaskProcessWebRTDataGetFromNeteaseServer();
     TaskGetNeteaseDayLineFromWeb();
   }
   return true;
@@ -835,7 +853,7 @@ bool CMarket::SchedulingTask(void) {
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskGetRTDataFromWeb(void) {
   static int siCountDownTengxunNumber = 3;
-  static int siCountDownNeteaseNumber = 300;
+  static int siCountDownNeteaseNumber = 3;
 
   if (m_fUsingSinaRTDataReceiver) {
     gl_SinaWebRTData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -844,11 +862,10 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
   if (SystemReady()) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
     // 网易实时数据有时还发送没有要求过的股票，不知为何。
-    ASSERT(m_fUsingNeteaseRTDataReceiver == false);
     if (m_fUsingNeteaseRTDataReceiver) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        //gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
+        gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
         siCountDownNeteaseNumber = 3;
       }
       else siCountDownNeteaseNumber--;

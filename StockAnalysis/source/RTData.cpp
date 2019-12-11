@@ -2,8 +2,7 @@
 #include "globedef.h"
 #include"Accessory.h"
 #include"RTData.h"
-
-#include"Accessory.h"
+#include"Market.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -761,34 +760,66 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
 bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
+  char bufferStockCode[50];
   char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
   char bufferTest[2000];
-  char* pTestCurrentPos1 = pNeteaseWebRTData->m_pCurrentPos - 1;
+  char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
+  long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
   bool fFind = false;
+  CString strStockCode, strHeader;
+  long lSectionLength = 0;
+  CString strTest;
 
   int i = 0;
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
   }
+  lSectionLength = i;
   bufferTest[i] = 0x000;
+  strTest = bufferTest;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
     // 跨过前缀字符（"0601872")，直接使用其后的数据
-    while (!fFind) {
-      if ((*pNeteaseWebRTData->m_pCurrentPos == '"')
-          && (*(pNeteaseWebRTData->m_pCurrentPos + 1) == ':')
-          && (*(pNeteaseWebRTData->m_pCurrentPos + 2) == '{')) {
+    if (!((*pNeteaseWebRTData->m_pCurrentPos == '{') || (*pNeteaseWebRTData->m_pCurrentPos == ','))) {
+      throw exception();
+    }
+    else pNeteaseWebRTData->IncreaseCurrentPos();
+    if (*pNeteaseWebRTData->m_pCurrentPos != '\"') {
+      throw exception();
+    }
+    else pNeteaseWebRTData->IncreaseCurrentPos();
+    if (*pNeteaseWebRTData->m_pCurrentPos == '0') strHeader = _T("sh");
+    else if (*pNeteaseWebRTData->m_pCurrentPos == '1') strHeader = _T("sz");
+    else {
+      throw exception();
+    }
+    pNeteaseWebRTData->IncreaseCurrentPos();
+    i = 0;
+    while (!fFind && (pNeteaseWebRTData->m_lCurrentPos < (lSectionBegin + lSectionLength))) {
+      if (*pNeteaseWebRTData->m_pCurrentPos == '"') {
         fFind = true;
         pNeteaseWebRTData->IncreaseCurrentPos(3);
+        bufferStockCode[i] = 0x000;
       }
-      else pNeteaseWebRTData->IncreaseCurrentPos();
+      else {
+        bufferStockCode[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+        pNeteaseWebRTData->IncreaseCurrentPos();
+      }
+    }
+    if (!fFind) {
+      throw exception();
+    }
+    strStockCode = strHeader;
+    strStockCode += bufferStockCode;
+    if (gl_ChinaStockMarket.GetStockPtr(strStockCode) == nullptr) {
+      throw exception();
     }
     do {
       if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
         SetValue(lIndex, strValue);
       }
-      else throw exception();
+      else throw;
     } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
     // 读过此'}'就结束了
     if (*pNeteaseWebRTData->m_pCurrentPos == '}') {
@@ -807,14 +838,14 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("ReadNeteaseData异常\n"));
+    TRACE(_T("%s's ReadNeteaseData异常\n", strStockCode));
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
-    while ((*pNeteaseWebRTData->m_pCurrentPos != '{') && (pNeteaseWebRTData->m_lCurrentPos < pNeteaseWebRTData->m_lBufferLength)) {
-      pNeteaseWebRTData->IncreaseCurrentPos();
-    }
+    pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
+    pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

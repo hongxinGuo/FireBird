@@ -64,5 +64,5 @@ int CNeteaseWebRTData::GetInquiringStr(CString& strInquire, long lTotalNumber, b
 }
 
 void CNeteaseWebRTData::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadNeteaseRTData, nullptr);
+  AfxBeginThread(ThreadReadNeteaseRTData, this);
 }
