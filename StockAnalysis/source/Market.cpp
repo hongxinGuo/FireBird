@@ -692,7 +692,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
         pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
         gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
-
+        //TRACE(_T("网易实时数据接收到%s \n"), pRTData->GetStockCode());
         // 检测一下
         CString str;
         if (pRTData->IsActive()) {
