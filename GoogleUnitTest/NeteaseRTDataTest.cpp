@@ -30,6 +30,7 @@ namespace StockAnalysisTest {
     }
     EXPECT_FALSE(RTData.IsActive());
   }
+
   struct NeteaseRTData {
     NeteaseRTData(int count, CString Data) {
       m_iCount = count;
@@ -252,6 +253,158 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
     break;
 
+    default:
+    break;
+    }
+  }
+
+  struct NeteaseRTDataStockCodePrefix {
+    NeteaseRTDataStockCodePrefix(int count, CString Data) {
+      m_iCount = count;
+      m_strData = Data;
+    }
+  public:
+    int m_iCount;
+    CString m_strData;
+  };
+
+  // 无错误数据
+  NeteaseRTDataStockCodePrefix StockCodePrefixData101(0, _T("{\"0600000\":{"));
+  // 无错误，起始为','
+  NeteaseRTDataStockCodePrefix StockCodePrefixData102(1, _T(",\"0600000\":{"));
+  //无错误，深圳股票
+  NeteaseRTDataStockCodePrefix StockCodePrefixData103(2, _T("{\"1000001\":{"));
+  // 起始非'{'','
+  NeteaseRTDataStockCodePrefix StockCodePrefixData104(3, _T("'\"0600601\":{"));
+  // 第二个字符非'\"'
+  NeteaseRTDataStockCodePrefix StockCodePrefixData105(4, _T("{'0600601\":{"));
+  // 代码第一个字符非0或者1
+  NeteaseRTDataStockCodePrefix StockCodePrefixData106(5, _T("{\"2600601\":{"));
+  // 无效股票代码
+  NeteaseRTDataStockCodePrefix StockCodePrefixData107(6, _T("{\"1600601\":{"));
+  // 无效股票代码
+  NeteaseRTDataStockCodePrefix StockCodePrefixData108(7, _T("{\"0500000\":{"));
+  // 无错误，':'后多一个空格
+  NeteaseRTDataStockCodePrefix StockCodePrefixData109(8, _T("{\"0600601\": {"));
+  // 缺少后'"'
+  NeteaseRTDataStockCodePrefix StockCodePrefixData110(9, _T("{\"0600601':{"));
+  // 缺少后'{'
+  NeteaseRTDataStockCodePrefix StockCodePrefixData111(10, _T("{\"0600601\":}  "));
+  // 缺少后'{'
+  NeteaseRTDataStockCodePrefix StockCodePrefixData112(11, _T("{\"0600601\":}}  "));
+  // 缺少后'{'
+  NeteaseRTDataStockCodePrefix StockCodePrefixData113(12, _T("{\"0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData114(13, _T("{\"0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData115(14, _T("{\"0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData116(15, _T("{\"0600601\":{"));
+  // 所有的数量皆为零
+
+  class StockCodePrefixTest : public::testing::TestWithParam<NeteaseRTDataStockCodePrefix*> {
+  protected:
+    void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      NeteaseRTDataStockCodePrefix* pData = GetParam();
+      m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
+      m_iCount = pData->m_iCount;
+      m_lStringLength = pData->m_strData.GetLength();
+      m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
+      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
+      for (int i = 0; i < m_lStringLength; i++) {
+        m_pData[i] = pData->m_strData[i];
+      }
+      m_pData[m_lStringLength] = 0x000;
+      m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
+      m_pNeteaseWebRTData->ResetCurrentPos();
+      for (int i = 0; i < 5; i++) {
+        m_RTData.SetPBuy(i, -1);
+        m_RTData.SetPSell(i, -1);
+        m_RTData.SetVBuy(i, -1);
+        m_RTData.SetVSell(i, -1);
+      }
+      m_RTData.SetAmount(-1);
+      m_RTData.SetVolume(-1);
+      m_RTData.SetOpen(-1);
+      m_RTData.SetNew(-1);
+      m_RTData.SetLastClose(-1);
+      m_RTData.SetHigh(-1);
+      m_RTData.SetLow(-1);
+      m_RTData.SetSell(-1);
+      m_RTData.SetBuy(-1);
+    }
+
+    void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    int m_iCount;
+    char* m_pData;
+    long m_lStringLength;
+    CWebDataReceivedPtr m_pNeteaseWebRTData;
+    CRTData m_RTData;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, StockCodePrefixTest,
+                          testing::Values(&StockCodePrefixData101, &StockCodePrefixData102
+                                          , &StockCodePrefixData103, &StockCodePrefixData104, &StockCodePrefixData105,
+                                          &StockCodePrefixData106, &StockCodePrefixData107, &StockCodePrefixData108,
+                                          &StockCodePrefixData109, &StockCodePrefixData110, &StockCodePrefixData111,
+                                          &StockCodePrefixData112/* &StockCodePrefixData113, &StockCodePrefixData114,
+                                          &StockCodePrefixData115, &StockCodePrefixData116*/
+                          ));
+
+  TEST_P(StockCodePrefixTest, TestStockCodePrefix) {
+    bool fSucceed = m_RTData.ReadNeteaseStockCodePrefix(m_pNeteaseWebRTData);
+
+    switch (m_iCount) {
+    case 0:
+    EXPECT_TRUE(fSucceed);
+    break;
+    case 1:
+    EXPECT_TRUE(fSucceed);
+    break;
+    case 2:
+    EXPECT_TRUE(fSucceed);
+    break;
+    case 3:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 4:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 5:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 6:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 7:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 8: // 无错误
+    EXPECT_TRUE(fSucceed);
+    break;
+    case 9:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 10:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 11:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 12:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 13:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 14:
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 15:
+    EXPECT_FALSE(fSucceed);
+    break;
     default:
     break;
     }

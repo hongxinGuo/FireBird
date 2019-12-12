@@ -717,6 +717,16 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   return true;
 }
 
+bool CMarket::TaskProcessNeteaseRTData(void) {
+  CRTDataPtr pRTData = nullptr;
+  long lTotalData = gl_QueueNeteaseRTData.GetRTDataSize();
+
+  for (long i = 0; i < lTotalData; i++) {
+    pRTData = gl_QueueNeteaseRTData.PopRTData();
+  }
+  return true;
+}
+
 bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataReceivedPtr pWebData = nullptr;
   long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
@@ -931,6 +941,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
     TaskDistributeSinaRTDataToProperStock();
     TaskProcessTengxunRTData();
+    TaskProcessNeteaseRTData();
     s_iCountDownProcessWebRTData = 0;
   }
   else s_iCountDownProcessWebRTData--;

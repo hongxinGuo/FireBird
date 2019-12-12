@@ -170,6 +170,7 @@ public:
   bool TaskProcessWebRTDataGetFromSinaServer(void);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
+  bool TaskProcessNeteaseRTData(void);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
   //处理实时股票变化等
