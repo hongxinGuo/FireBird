@@ -722,6 +722,7 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
   long lTotalData = gl_QueueNeteaseRTData.GetRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
+    // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_QueueNeteaseRTData.PopRTData();
   }
   return true;

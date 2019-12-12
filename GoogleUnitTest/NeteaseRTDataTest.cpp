@@ -268,11 +268,11 @@ namespace StockAnalysisTest {
     CString m_strData;
   };
 
-  // 无错误数据
+  // 无错误数据，上海市场股票
   NeteaseRTDataStockCodePrefix StockCodePrefixData101(0, _T("{\"0600000\":{"));
   // 无错误，起始为','
   NeteaseRTDataStockCodePrefix StockCodePrefixData102(1, _T(",\"0600000\":{"));
-  //无错误，深圳股票
+  //无错误，深圳市场股票
   NeteaseRTDataStockCodePrefix StockCodePrefixData103(2, _T("{\"1000001\":{"));
   // 起始非'{'','
   NeteaseRTDataStockCodePrefix StockCodePrefixData104(3, _T("'\"0600601\":{"));
@@ -292,8 +292,8 @@ namespace StockAnalysisTest {
   NeteaseRTDataStockCodePrefix StockCodePrefixData111(10, _T("{\"0600601\":}  "));
   // 缺少后'{'
   NeteaseRTDataStockCodePrefix StockCodePrefixData112(11, _T("{\"0600601\":}}  "));
-  // 缺少后'{'
-  NeteaseRTDataStockCodePrefix StockCodePrefixData113(12, _T("{\"0600601\":{"));
+  // 后'}'超过了五个字符
+  NeteaseRTDataStockCodePrefix StockCodePrefixData113(12, _T("{\"0600601\":   {"));
   NeteaseRTDataStockCodePrefix StockCodePrefixData114(13, _T("{\"0600601\":{"));
   NeteaseRTDataStockCodePrefix StockCodePrefixData115(14, _T("{\"0600601\":{"));
   NeteaseRTDataStockCodePrefix StockCodePrefixData116(15, _T("{\"0600601\":{"));
@@ -349,7 +349,7 @@ namespace StockAnalysisTest {
                                           , &StockCodePrefixData103, &StockCodePrefixData104, &StockCodePrefixData105,
                                           &StockCodePrefixData106, &StockCodePrefixData107, &StockCodePrefixData108,
                                           &StockCodePrefixData109, &StockCodePrefixData110, &StockCodePrefixData111,
-                                          &StockCodePrefixData112/* &StockCodePrefixData113, &StockCodePrefixData114,
+                                          &StockCodePrefixData112, &StockCodePrefixData113/*, &StockCodePrefixData114,
                                           &StockCodePrefixData115, &StockCodePrefixData116*/
                           ));
 
