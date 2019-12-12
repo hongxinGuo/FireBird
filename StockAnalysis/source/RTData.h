@@ -198,6 +198,10 @@ public:
   void SetBuy(long lValue) noexcept { m_lBuy = lValue; }
   long GetSell(void) noexcept { return m_lSell; }
   void SetSell(long lValue) noexcept { m_lSell = lValue; }
+  long GetHighLimit(void) noexcept { return m_lHighLimit; }
+  void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
+  long GetLowLimit(void) noexcept { return m_lLowLimit; }
+  void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   void SetPBuy(int iIndex, long lValue) { m_lPBuy.at(iIndex) = lValue; }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
@@ -239,6 +243,8 @@ protected:
   long m_lLow; // 今日最低。单位：0.001元
   long m_lBuy; // 竞买价。单位：0.001元
   long m_lSell; // 竞卖价。单位：0.001元
+  long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+  long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
   INT64 m_llVolume; // 总成交量。单位：股
   INT64 m_llAmount; // 总成交金额。单位：元
   INT64 m_llTotalValue;	// 总市值。单位：万元

@@ -81,6 +81,10 @@ public:
   INT64 GetTotalValue(void) noexcept { return m_stockBasicInfo.GetTotalValue(); }
   void SetCurrentValue(INT64 llValue) noexcept { m_stockBasicInfo.SetCurrentValue(llValue); }
   INT64 GetCurrentValue(void) noexcept { return m_stockBasicInfo.GetCurrentValue(); }
+  long GetHighLimit(void) noexcept { return m_stockBasicInfo.GetHighLimit(); }
+  void SetHighLimit(long lValue) noexcept { m_stockBasicInfo.SetHighLimit(lValue); }
+  long GetLowLimit(void) noexcept { return m_stockBasicInfo.GetLowLimit(); }
+  void SetLowLimit(long lValue) noexcept { m_stockBasicInfo.SetLowLimit(lValue); }
   long GetPBuy(int iIndex) { return m_stockBasicInfo.GetPBuy(iIndex); }
   long GetVBuy(int iIndex) { return m_stockBasicInfo.GetVBuy(iIndex); }
   long GetPSell(int iIndex) { return m_stockBasicInfo.GetPSell(iIndex); }

@@ -26,6 +26,8 @@ void CRTData::Reset(void) {
   m_llCurrentValue = m_llTotalValue = 0;
   m_lBuy = 0;
   m_lSell = 0;
+  m_lHighLimit = 0;
+  m_lLowLimit = 0;
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = 0;
     m_lVBuy.at(i) = 0;
@@ -112,6 +114,8 @@ bool CRTData::SetData(CRTData& data) {
   m_lNew = data.m_lNew;
   m_lBuy = data.m_lBuy;
   m_lSell = data.m_lSell;
+  m_lHighLimit = data.m_lHighLimit;
+  m_lLowLimit = data.m_lLowLimit;
 
   if (data.m_llVolume != 0) {
     m_llVolume = data.m_llVolume;
@@ -711,10 +715,12 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
+    m_lHighLimit = dTemp * 1000;
     // µøÍ£¼Û
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
+    m_lLowLimit = dTemp * 1000;
 
     while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();

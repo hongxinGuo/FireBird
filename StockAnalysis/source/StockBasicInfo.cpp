@@ -20,6 +20,7 @@ void CStockBasicInfo::Reset(void) {
   m_TransactionTime = 0;
   m_lLastClose = m_lOpen = 0;
   m_lHigh = m_lLow = m_lNew = 0;
+  m_lHighLimit = m_lLowLimit = 0;
   m_llVolume = 0;
   m_llAmount = 0;
   m_lUpDown = 0;

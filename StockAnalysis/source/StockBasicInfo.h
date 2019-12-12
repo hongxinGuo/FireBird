@@ -62,6 +62,10 @@ public:
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
+  long GetHighLimit(void) noexcept { return m_lHighLimit; }
+  void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
+  long GetLowLimit(void) noexcept { return m_lLowLimit; }
+  void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
@@ -99,6 +103,8 @@ protected:
   long m_lHigh; // 以0.001元计的最高价
   long m_lLow; // 以0.001元计的最低价
   long m_lNew; // 以0.001元计的最新价
+  long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
+  long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
   long m_lUpDown; // 涨跌值
   double m_dUpDownRate; // 涨跌率
   INT64 m_llVolume;	// 以1股计的成交量

@@ -808,6 +808,8 @@ bool CMarket::TaskProcessTengxunRTData(void) {
     auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
     pStock->SetTotalValue(pRTData->GetTotalValue());
     pStock->SetCurrentValue(pRTData->GetCurrentValue());
+    if (pRTData->GetHighLimit() > 0) pStock->SetHighLimit(pRTData->GetHighLimit());
+    if (pRTData->GetLowLimit() > 0) pStock->SetLowLimit(pRTData->GetLowLimit());
   }
   return true;
 }
