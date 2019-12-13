@@ -715,12 +715,12 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lHighLimit = dTemp * 1000;
+    if (dTemp > 0.01) m_lHighLimit = dTemp * 1000;
     // 跌停价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lLowLimit = dTemp * 1000;
+    if (dTemp > 0.01) m_lLowLimit = dTemp * 1000;
 
     while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();
@@ -860,9 +860,13 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
   }
+  bufferTest[i++] = *pTestCurrentPos++;
   lSectionLength = i;
   bufferTest[i] = 0x000;
   strTest = bufferTest;
+  char ch = *(pSectionPos + lSectionLength - 1);
+  ASSERT(ch == '}');
+  ASSERT(bufferTest[i - 1] == '}');
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -872,16 +876,18 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     }
     do {
       if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-        SetValue(lIndex, strValue);
+        if (!SetValue(lIndex, strValue)) throw exception();
       }
       else {
         throw exception();
       }
     } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
-    // 读过此'}'就结束了
-    if (*pNeteaseWebRTData->m_pCurrentPos == '}') {
+    // 读过'}'就结束了
+    while (*pNeteaseWebRTData->m_pCurrentPos != '}') {
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
+    ASSERT(*pNeteaseWebRTData->m_pCurrentPos == '}');
+    pNeteaseWebRTData->IncreaseCurrentPos();
 
     if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
       m_fActive = false;
@@ -896,8 +902,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   }
   catch (exception&) {
     //TRACE(_T("%s's ReadNeteaseData异常\n", strStockCode));
-    CString str = strStockCode;
-    str += _T("'s ReadNeteaseData异常");
+    CString str = _T("ReadNeteaseData异常");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
 #ifdef DEBUG
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
@@ -907,6 +912,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     // 跨过此错误数据，寻找下一个数据的起始处。
     pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
     pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
+    ASSERT(*(pNeteaseWebRTData->m_pCurrentPos - 1) == '}');
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
   return true;
@@ -917,7 +923,7 @@ bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
   CString strValue = _T("");
   char bufferStockCode[50];
   char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
-  char bufferTest[20];
+  char bufferTest[30];
   long lSectionBegin = pWebDataReceived->GetCurrentPos();
   bool fFind = false;
   CString strStockCode, strHeader;
@@ -1016,7 +1022,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
     }
     buffer[i] = 0x000;
     strIndex = buffer;
-    lIndex = GetNeteaseSymbolIndex(strIndex);
+    if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) throw exception();
     // 跨过"\""字符
     pNeteaseWebRTData->IncreaseCurrentPos();
     if (*pNeteaseWebRTData->m_pCurrentPos != ':') {
@@ -1180,12 +1186,13 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     break;
     default:
     // 出错了
+    throw exception();
     break;
     }
     return true;
   }
   catch (exception&) {
-    TRACE(_T("SetValue异常\n"));
+    TRACE(_T("SetValue异常， Index = %d strValue = %s\n", lIndex, strValue));
     return false;
   }
 }

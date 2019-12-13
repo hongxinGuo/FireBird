@@ -46,9 +46,9 @@ namespace StockAnalysisTest {
   // 两个数据，无错误
   NeteaseRTData Data102(1, _T("{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"high\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"\u65b9\u6b63\u79d1\u6280\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"\u2193\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"\u6d66\u53d1\u94f6\u884c\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"\u2193\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} });"));
   // 所有的数量皆为零
-  NeteaseRTData Data103(2, _T("v_sh600601=\"1~方正科技~600601~0~0~0~0~0~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
-  // 出现负值
-  NeteaseRTData Data104(3, _T("v_sh600601=\"1~方正科技~600601~-3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
+  NeteaseRTData Data103(2, _T("{\"0600000\":{\"cod\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"浦发银行\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"\u2193\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} });"));
+  // 两个数据，第一个错误，第二个正确
+  NeteaseRTData Data104(3, _T("{\"0600601\":{\"code\": \"0600601\", \"percent\": -0.003077, \"hig\": 3.3, \"askvol3\": 269300, \"askvol2\": 133985, \"askvol5\": 283900, \"askvol4\": 89800, \"price\": 3.24, \"open\": 3.25, \"bid5\": 3.2, \"bid4\": 3.21, \"bid3\": 3.22, \"bid2\": 3.23, \"bid1\": 3.24, \"low\": 3.22, \"updown\": -0.01, \"type\": \"SH\", \"symbol\": \"600601\", \"status\": 0, \"ask4\": 3.28, \"bidvol3\": 113300, \"bidvol2\": 472100, \"bidvol1\": 24100, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 181600, \"bidvol4\": 94800, \"yestclose\": 3.25, \"askvol1\": 143800, \"ask5\": 3.29, \"volume\": 9349540, \"ask1\": 3.25, \"name\": \"\u65b9\u6b63\u79d1\u6280\", \"ask3\": 3.27, \"ask2\": 3.26, \"arrow\": \"\u2193\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 30503027},\"0600000\":{\"code\": \"0600000\", \"percent\": -0.022275, \"high\": 12.48, \"askvol3\": 162290, \"askvol2\": 106387, \"askvol5\": 609700, \"askvol4\": 237059, \"price\": 12.29, \"open\": 12.48, \"bid5\": 12.25, \"bid4\": 12.26, \"bid3\": 12.27, \"bid2\": 12.28, \"bid1\": 12.29, \"low\": 12.29, \"updown\": -0.28, \"type\": \"SH\", \"symbol\": \"600000\", \"status\": 0, \"ask4\": 12.33, \"bidvol3\": 118700, \"bidvol2\": 184600, \"bidvol1\": 178647, \"update\": \"2019/11/11 15:59:55\", \"bidvol5\": 640700, \"bidvol4\": 175500, \"yestclose\": 12.57, \"askvol1\": 51100, \"ask5\": 12.34, \"volume\": 38594267, \"ask1\": 12.3, \"name\": \"\u6d66\u53d1\u94f6\u884c\", \"ask3\": 12.32, \"ask2\": 12.31, \"arrow\": \"\u2193\", \"time\": \"2019/11/11 15:59:53\", \"turnover\": 477989511} });"));
   // 出现负值
   NeteaseRTData Data105(4, _T("v_sh600601=\"1~方正科技~600601~3.50~-3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
   // 出现负值
@@ -169,8 +169,8 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102
-                                                                                         /*, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102, &Data103
+                                                                                         /*, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
                                                                                          &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
                                                                                          &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
                                                                                          &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
@@ -222,6 +222,46 @@ namespace StockAnalysisTest {
     case 1:
     EXPECT_TRUE(fSucceed); // 第一个数据没有错误
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
+    EXPECT_TRUE(fSucceed); // 第二个数据没有错误
+    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->m_lCurrentPos + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
+    EXPECT_EQ(m_RTData.GetOpen(), 12480);
+    EXPECT_EQ(m_RTData.GetLastClose(), 12570);
+    EXPECT_EQ(m_RTData.GetNew(), 12290);
+    EXPECT_EQ(m_RTData.GetVolume(), 38594267);
+    EXPECT_EQ(m_RTData.GetVBuy(0), 178647);
+    EXPECT_EQ(m_RTData.GetPBuy(0), 12290);
+    EXPECT_EQ(m_RTData.GetVBuy(1), 184600);
+    EXPECT_EQ(m_RTData.GetPBuy(1), 12280);
+    EXPECT_EQ(m_RTData.GetVBuy(2), 118700);
+    EXPECT_EQ(m_RTData.GetPBuy(2), 12270);
+    EXPECT_EQ(m_RTData.GetVBuy(3), 175500);
+    EXPECT_EQ(m_RTData.GetPBuy(3), 12260);
+    EXPECT_EQ(m_RTData.GetVBuy(4), 640700);
+    EXPECT_EQ(m_RTData.GetPBuy(4), 12250);
+    EXPECT_EQ(m_RTData.GetVSell(0), 51100);
+    EXPECT_EQ(m_RTData.GetPSell(0), 12300);
+    EXPECT_EQ(m_RTData.GetVSell(1), 106387);
+    EXPECT_EQ(m_RTData.GetPSell(1), 12310);
+    EXPECT_EQ(m_RTData.GetVSell(2), 162290);
+    EXPECT_EQ(m_RTData.GetPSell(2), 12320);
+    EXPECT_EQ(m_RTData.GetVSell(3), 237059);
+    EXPECT_EQ(m_RTData.GetPSell(3), 12330);
+    EXPECT_EQ(m_RTData.GetVSell(4), 609700);
+    EXPECT_EQ(m_RTData.GetPSell(4), 12340);
+    EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
+    break;
+    case 2:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("")); // 没有设置，仍是初始值
+    EXPECT_EQ(m_RTData.GetHigh(), -1); // 后续部分皆未设置。
+    break;
+    case 3:
+    EXPECT_TRUE(fSucceed); // 第一个数据错误
+    fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601")); // 股票代码已设置
+    EXPECT_EQ(m_RTData.GetHigh(), 0); // 此位置出错，没有设置。
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->m_lCurrentPos + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
@@ -420,11 +460,13 @@ namespace StockAnalysisTest {
     CString m_strData;
   };
 
-  ReadNeteaseOneValueData neteasedata1(1, _T("\"code\": \"浦发银行\","));
+  ReadNeteaseOneValueData neteasedata1(1, _T("\"name\": \"浦发银行\","));
   ReadNeteaseOneValueData neteasedata2(2, _T("\"turnover\": 12345}"));
-  ReadNeteaseOneValueData neteasedata3(3, _T("\"turnover\","));
-  ReadNeteaseOneValueData neteasedata4(4, _T("11.050~"));
-  ReadNeteaseOneValueData neteasedata5(1, _T("11.050~"));
+  ReadNeteaseOneValueData neteasedata3(3, _T("\"high\": 4.04,"));
+  ReadNeteaseOneValueData neteasedata4(4, _T("\"turnover\","));
+  ReadNeteaseOneValueData neteasedata5(5, _T("\"turnover\"}"));
+  ReadNeteaseOneValueData neteasedata6(6, _T("\"update\": \"2019/08/03 08:00:03\"}"));
+  ReadNeteaseOneValueData neteasedata7(7, _T("\"time\": \"2019/08/03 08:00:03\","));
 
   class ReadNeteaseOneValueTest : public::testing::TestWithParam<ReadNeteaseOneValueData*> {
   protected:
@@ -454,7 +496,8 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
-                          testing::Values(&neteasedata1, &neteasedata2, &neteasedata3
+                          testing::Values(&neteasedata1, &neteasedata2, &neteasedata3, &neteasedata4, &neteasedata5, &neteasedata6,
+                                          &neteasedata7
                           ));
 
   TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
@@ -472,9 +515,29 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(strValue, "12345");
     break;
     case 3:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(lIndex, 12);
+    EXPECT_STREQ(strValue, _T("4.04"));
+    break;
+    case 4:
     EXPECT_FALSE(fSucceed);
     EXPECT_EQ(lIndex, 63);
     EXPECT_STREQ(strValue, _T(""));
+    break;
+    case 5:
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(lIndex, 63);
+    EXPECT_STREQ(strValue, _T(""));
+    break;
+    case 6:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(lIndex, 7);
+    EXPECT_STREQ(strValue, _T("2019/08/03 08:00:03"));
+    break;
+    case 7:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_EQ(lIndex, 1);
+    EXPECT_STREQ(strValue, _T("2019/08/03 08:00:03"));
     break;
     default:
     break;

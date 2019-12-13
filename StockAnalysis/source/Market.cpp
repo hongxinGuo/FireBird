@@ -76,7 +76,7 @@ void CMarket::Reset(void) {
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -724,6 +724,7 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
   for (long i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_QueueNeteaseRTData.PopRTData();
+    pRTData = nullptr;
   }
   return true;
 }
@@ -805,11 +806,13 @@ bool CMarket::TaskProcessTengxunRTData(void) {
 
   for (long i = 0; i < lTotalData; i++) {
     pRTData = gl_QueueTengxunRTData.PopRTData();
-    auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
-    pStock->SetTotalValue(pRTData->GetTotalValue());
-    pStock->SetCurrentValue(pRTData->GetCurrentValue());
-    if (pRTData->GetHighLimit() > 0) pStock->SetHighLimit(pRTData->GetHighLimit());
-    if (pRTData->GetLowLimit() > 0) pStock->SetLowLimit(pRTData->GetLowLimit());
+    if (pRTData->IsActive()) {
+      auto pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode());
+      pStock->SetTotalValue(pRTData->GetTotalValue());
+      pStock->SetCurrentValue(pRTData->GetCurrentValue());
+      pStock->SetHighLimit(pRTData->GetHighLimit());
+      pStock->SetLowLimit(pRTData->GetLowLimit());
+    }
   }
   return true;
 }

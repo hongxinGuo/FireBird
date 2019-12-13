@@ -214,6 +214,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetPSell(3), 12480);
     EXPECT_EQ(m_RTData.GetVSell(4), 551300);
     EXPECT_EQ(m_RTData.GetPSell(4), 12490);
+    EXPECT_EQ(m_RTData.GetHighLimit(), 13160);
+    EXPECT_EQ(m_RTData.GetLowLimit(), 10760);
     EXPECT_EQ(m_RTData.GetTransactionTime(), ttime);
     break;
     case 1:
@@ -608,6 +610,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(fSucceed);
     EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600002"));
+    EXPECT_EQ(m_RTData.GetHighLimit(), 0); // 实际值为-1，不存储，故而仍是初始值0
+    EXPECT_EQ(m_RTData.GetLowLimit(), 0); // 实际值为-1， 不存储，故而仍是初始值0
     EXPECT_FALSE(m_RTData.IsActive()); // 此股票不是活跃股票
     break;
     case 33: // 有错误，前缀出错
