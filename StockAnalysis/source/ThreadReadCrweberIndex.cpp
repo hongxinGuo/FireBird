@@ -54,7 +54,7 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
     }
     gl_QueueCrweberdotcomWebData.PushWebRTData(pWebDataReceived);
   }
-  catch (CInternetException * e) {
+  catch (CInternetException*) {
     TRACE(_T("net error\n"));
   }
   if (pFile) pFile->Close();

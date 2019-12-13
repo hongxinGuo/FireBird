@@ -638,7 +638,6 @@ bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadSinaData(pWebDataReceived)) {
-        pRTData->SetDataSource(__SINA_RT_WEB_DATA__); // 从新浪实时行情服务器处接收到的数据
         gl_QueueSinaRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
       }
@@ -668,57 +667,67 @@ bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
-  char buffer[50];
-  CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
   int iCount = 0;
 
   long lTotalData = gl_QueueNeteaseWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueNeteaseWebRTData.PopWebRTData();
-    pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
-    pWebDataReceived->m_lCurrentPos = 0;
+    pWebDataReceived->ResetCurrentPos();
 
-    strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
-    buffer[21] = 0x000;
-    CString str1;
-    str1 = buffer;
-    if (strInvalidStock.Compare(str1) != 0) { // 数据格式出错
-      return false;
-    }
-    pWebDataReceived->IncreaseCurrentPos(21);
+    if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
 
     iCount = 0;
     while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadNeteaseData(pWebDataReceived)) {
         iCount++;
-        pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
         gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
         //TRACE(_T("网易实时数据接收到%s \n"), pRTData->GetStockCode());
         // 检测一下
-        CString str;
-        if (pRTData->IsActive()) {
-          CStockPtr pStock = nullptr;
-          if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
-            if (!pStock->IsActive()) {
-              str = pStock->GetStockCode();
-              str += _T(" 网易实时检测到不处于活跃状态");
-              //gl_systemMessage.PushInnerSystemInformationMessage(str);
-            }
-          }
-          else {
-            str = pRTData->GetStockCode();
-            str += _T(" 无效股票代码（网易实时数据）");
-            gl_systemMessage.PushInnerSystemInformationMessage(str);
-          }
-        }
+        CheckNeteaseRTData(pRTData);
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
     TRACE(_T("ReadNetease正常结束,共处理了%d个数据\n", iCount));
   }
   return true;
+}
+
+bool CMarket::IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
+  char buffer[50];
+  CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
+
+  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
+  buffer[21] = 0x000;
+  CString str1;
+  str1 = buffer;
+  if (strInvalidStock.Compare(str1) != 0) { // 数据格式出错
+    return false;
+  }
+  pWebDataReceived->IncreaseCurrentPos(21);
+  return true;
+}
+
+void CMarket::CheckNeteaseRTData(CRTDataPtr pRTData) {
+  // 检测一下
+  CString str;
+  ASSERT(pRTData->GetDataSource() == __NETEASE_RT_WEB_DATA__);
+  if (pRTData->IsActive()) {
+    CStockPtr pStock = nullptr;
+    if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+      if (!pStock->IsActive()) {
+        str = pStock->GetStockCode();
+        str += _T(" 网易实时检测到不处于活跃状态");
+        //gl_systemMessage.PushInnerSystemInformationMessage(str);
+      }
+    }
+    else {
+      str = pRTData->GetStockCode();
+      str += _T(" 无效股票代码（网易实时数据）");
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+    }
+  }
 }
 
 bool CMarket::TaskProcessNeteaseRTData(void) {
@@ -757,52 +766,61 @@ bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
 
 bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
-  char buffer[50];
-  CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
   long lTotalData = gl_QueueTengxunWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueTengxunWebRTData.PopWebRTData();
-    pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
-    pWebDataReceived->m_lCurrentPos = 0;
+    pWebDataReceived->ResetCurrentPos();
 
-    strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
-    buffer[21] = 0x000;
-    CString str1 = buffer;
-
-    if (str1.Compare(strInvalidStock) == 0) {
-      pWebDataReceived->IncreaseCurrentPos(21);
-    }
+    if (!IsValidTengxunRTDataPrefix(pWebDataReceived)) return false;
 
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadTengxunData(pWebDataReceived)) {
-        pRTData->SetDataSource(__TENGXUN_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
         gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
 
         // 检测一下
-        CString str;
-        if (pRTData->IsActive()) {
-          CStockPtr pStock = nullptr;
-          if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
-            if (!pStock->IsActive()) {
-              str = pStock->GetStockCode();
-              str += _T(" 腾讯实时检测到不处于活跃状态");
-              //gl_systemMessage.PushInnerSystemInformationMessage(str);
-            }
-          }
-          else {
-            str = pRTData->GetStockCode();
-            str += _T(" 无效股票代码（腾讯实时数据）");
-            gl_systemMessage.PushInnerSystemInformationMessage(str);
-          }
-        }
+        CheckTengxunRTData(pRTData);
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
   }
   return true;
+}
+
+bool CMarket::IsValidTengxunRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
+  char buffer[50];
+  CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
+  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
+  buffer[21] = 0x000;
+  CString str1 = buffer;
+
+  if (str1.Compare(strInvalidStock) == 0) {
+    pWebDataReceived->IncreaseCurrentPos(21);
+    return true;
+  }
+  else return false;
+}
+
+void CMarket::CheckTengxunRTData(CRTDataPtr pRTData) {
+  CString str;
+  ASSERT(pRTData->GetDataSource() == __TENGXUN_RT_WEB_DATA__);
+  if (pRTData->IsActive()) {
+    CStockPtr pStock = nullptr;
+    if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
+      if (!pStock->IsActive()) {
+        str = pStock->GetStockCode();
+        str += _T(" 腾讯实时检测到不处于活跃状态");
+        //gl_systemMessage.PushInnerSystemInformationMessage(str);
+      }
+    }
+    else {
+      str = pRTData->GetStockCode();
+      str += _T(" 无效股票代码（腾讯实时数据）");
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+    }
+  }
 }
 
 bool CMarket::TaskProcessTengxunRTData(void) {

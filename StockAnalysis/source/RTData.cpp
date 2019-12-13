@@ -365,6 +365,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     if (IsValidTime()) m_fActive = true;
     else m_fActive = false;
 
+    SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
   catch (exception&) {
@@ -738,6 +739,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     }
     else m_fActive = true;
 
+    SetDataSource(__TENGXUN_RT_WEB_DATA__);
     return true;
   }
   catch (exception&) {
@@ -901,6 +903,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
       }
       else m_fActive = true;
     }
+    SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true;
   }
   catch (exception&) {
@@ -916,18 +919,17 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
     pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
     ASSERT(*(pNeteaseWebRTData->m_pCurrentPos - 1) == '}');
+    SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
   return true;
 }
 
 bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
-  long lIndex = 0;
   CString strValue = _T("");
   char bufferStockCode[50];
   char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
   char bufferTest[30];
-  long lSectionBegin = pWebDataReceived->GetCurrentPos();
   bool fFind = false;
   CString strStockCode, strHeader;
   CString strTest;
