@@ -83,7 +83,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CStockPtr pStock, int iXStart, int
       strPrice = _T("    ----------");
     }
     else {
-      sprintf_s(buffer, "    %10d", pStock->GetGuadan(lCurrentPrice));
+      sprintf_s(buffer, "    %10I64d", pStock->GetGuadan(lCurrentPrice));
       strPrice = buffer;
     }
 

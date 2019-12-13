@@ -766,7 +766,7 @@ void CStock::ReportGuadanTransaction(void) {
   const CTime ctime(m_pLastRTData->GetTransactionTime());
   sprintf_s(buffer, "%02d:%02d:%02d", ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
-  sprintf_s(buffer, " %s %I64d股成交于%10.3f    ", m_stockBasicInfo.GetStockCode().GetBuffer(),
+  sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), m_stockBasicInfo.GetStockCode().GetBuffer(),
             m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
   str = strTime;
   str += buffer;
@@ -774,31 +774,31 @@ void CStock::ReportGuadanTransaction(void) {
   switch (m_nCurrentTransactionType) {
   case __STRONG_BUY__:
   str1 = _T(" STRONG BUY");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongBuyVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongBuyVolume());
   break;
   case __STRONG_SELL__:
   str1 = _T(" STRONG SELL");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongSellVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetStrongSellVolume());
   break;
   case __ATTACK_BUY__:
   str1 = _T(" ATTACK BUY");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackBuyVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackBuyVolume());
   break;
   case __ATTACK_SELL__:
   str1 = _T(" ATTACK SELL");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackSellVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetAttackSellVolume());
   break;
   case __ORDINARY_BUY__:
   str1 = _T(" ORDINARY BUY");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinaryBuyVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinaryBuyVolume());
   break;
   case __ORDINARY_SELL__:
   str1 = _T(" ORDINARY SELL");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinarySellVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetOrdinarySellVolume());
   break;
   case __UNKNOWN_BUYSELL__:
   str1 = _T(" UNKNOWN BUYSELL");
-  sprintf_s(buffer, ": %I64d，  %I64d", m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetUnknownVolume());
+  sprintf_s(buffer, _T(": %I64d，  %I64d"), m_lCurrentGuadanTransactionVolume, m_stockCalculatedInfo.GetUnknownVolume());
   break;
   default:
   break;
@@ -817,16 +817,16 @@ void CStock::ReportGuadan(void) {
   CString str1;
   char buffer[30];
   if (m_lCurrentCanselSellVolume > 0) {
-    sprintf_s(buffer, "当前取消卖单量：%I64d", m_lCurrentCanselSellVolume);
+    sprintf_s(buffer, _T("当前取消卖单量：%I64d"), m_lCurrentCanselSellVolume);
     str1 = buffer;
-    sprintf_s(buffer, "  总取消卖单量：%I64d", m_stockCalculatedInfo.GetCancelSellVolume());
+    sprintf_s(buffer, _T("  总取消卖单量：%I64d"), m_stockCalculatedInfo.GetCancelSellVolume());
     str1 += buffer;
     gl_systemMessage.PushCancelSellMessage(str1);   // 采用同步机制传递消息
   }
   if (m_lCurrentCanselBuyVolume > 0) {
-    sprintf_s(buffer, "当前取消买单量：%I64d", m_lCurrentCanselBuyVolume);
+    sprintf_s(buffer, _T("当前取消买单量：%I64d"), m_lCurrentCanselBuyVolume);
     str1 = buffer;
-    sprintf_s(buffer, "  总取消买单量：%I64d", m_stockCalculatedInfo.GetCancelBuyVolume());
+    sprintf_s(buffer, _T("  总取消买单量：%I64d"), m_stockCalculatedInfo.GetCancelBuyVolume());
     str1 += buffer;
     gl_systemMessage.PushCancelSellMessage(str1); // 采用同步机制传递消息
   }

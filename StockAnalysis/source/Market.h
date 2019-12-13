@@ -62,7 +62,7 @@ public:
   // 实时数据读取
   int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 900, bool fSkipUnactiveStock = true);
+  int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 700, bool fSkipUnactiveStock = true);
   int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock);
   bool StepToActiveStockIndex(int& iStockIndex);
 

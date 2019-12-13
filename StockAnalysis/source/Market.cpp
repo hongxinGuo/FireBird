@@ -76,7 +76,7 @@ void CMarket::Reset(void) {
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 
@@ -670,6 +670,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
+  int iCount = 0;
 
   long lTotalData = gl_QueueNeteaseWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
@@ -686,9 +687,11 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     }
     pWebDataReceived->IncreaseCurrentPos(21);
 
+    iCount = 0;
     while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadNeteaseData(pWebDataReceived)) {
+        iCount++;
         pRTData->SetDataSource(__NETEASE_RT_WEB_DATA__); // 从腾讯实时行情服务器处接收到的数据
         gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
         //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
@@ -713,6 +716,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
+    TRACE(_T("ReadNetease正常结束,共处理了%d个数据\n", iCount));
   }
   return true;
 }
@@ -726,6 +730,7 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
     pRTData = gl_QueueNeteaseRTData.PopRTData();
     pRTData = nullptr;
   }
+  if (lTotalData > 0) TRACE(_T("处理了%d个网易实时数据\n"), lTotalData);
   return true;
 }
 
@@ -868,8 +873,8 @@ bool CMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskGetRTDataFromWeb(void) {
-  static int siCountDownTengxunNumber = 3;
-  static int siCountDownNeteaseNumber = 3;
+  static int siCountDownTengxunNumber = 5;
+  static int siCountDownNeteaseNumber = 5;
 
   if (m_fUsingSinaRTDataReceiver) {
     gl_SinaWebRTData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
@@ -882,7 +887,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
         gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
-        siCountDownNeteaseNumber = 3;
+        siCountDownNeteaseNumber = 5;
       }
       else siCountDownNeteaseNumber--;
     }
@@ -890,9 +895,9 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     if (m_fReadingTengxunRTData) {
       if (siCountDownTengxunNumber <= 0) {
         gl_TengxunWebRTData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
-        siCountDownTengxunNumber = 3;
+        siCountDownTengxunNumber = 5;
       }
-      else siCountDownTengxunNumber--; // 新浪实时数据读取三次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
+      else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
   }
   return true;

@@ -74,6 +74,7 @@ void CRTData::Reset(void) {
   m_mapNeteaseSymbolToIndex[_T("updown")] = 61;
   m_mapNeteaseSymbolToIndex[_T("arrow")] = 62;
   m_mapNeteaseSymbolToIndex[_T("turnover")] = 63;
+  m_mapNeteaseSymbolToIndex[_T("turno")] = 64;
 }
 
 CRTData::CRTData(void) : CObject() {
@@ -846,12 +847,10 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* bu
 bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
-  char bufferStockCode[50];
   char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
   char bufferTest[2000];
   char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
   long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
-  bool fFind = false;
   CString strStockCode = _T(" "), strHeader;
   long lSectionLength = 0;
   CString strTest;
@@ -859,6 +858,10 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   int i = 0;
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
+  }
+  if (i >= 1900) {
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+    return false; // 整个数据出现错误，后面的皆抛掉
   }
   bufferTest[i++] = *pTestCurrentPos++;
   lSectionLength = i;

@@ -15,7 +15,7 @@ public:
   virtual bool ReportStatus(long lNumberOfData) override;
 
   virtual void InquireNextWebData(void) override;
-  virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) override;
+  virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 600, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
 
 private:
