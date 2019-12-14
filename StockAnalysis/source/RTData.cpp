@@ -1084,6 +1084,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
 
 bool CRTData::SetValue(long lIndex, CString strValue) {
   CString str1, str;
+
   try {
     switch (lIndex) {
     case 1: // time
@@ -1191,6 +1192,8 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     case 61: // updown
     case 62: // arrow
     case 63: // turnover
+    break;
+    case 64: // turno.这个似乎是个故障，因为其后的数据是无效的。
     break;
     default:
     // 出错了

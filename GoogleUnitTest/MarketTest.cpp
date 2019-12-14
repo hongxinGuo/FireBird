@@ -753,11 +753,13 @@ namespace StockAnalysisTest {
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_TRUE(gl_ChinaStockMarket.IsValidTengxunRTDataPrefix(pWebDataReceived));
+    EXPECT_TRUE(gl_ChinaStockMarket.SkipInValidTengxunRTData(pWebDataReceived));
+    EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 21);
     str = _T("v_pv_none_mtch=\"1\";\n");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_FALSE(gl_ChinaStockMarket.IsValidTengxunRTDataPrefix(pWebDataReceived));
+    EXPECT_FALSE(gl_ChinaStockMarket.SkipInValidTengxunRTData(pWebDataReceived));
+    EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
   }
 }

@@ -769,30 +769,33 @@ bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
 
 bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
+  int i = 0;
 
   long lTotalData = gl_QueueTengxunWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueTengxunWebRTData.PopWebRTData();
     pWebDataReceived->ResetCurrentPos();
-
-    if (!IsValidTengxunRTDataPrefix(pWebDataReceived)) return false;
-
+    i = 0;
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
-      CRTDataPtr pRTData = make_shared<CRTData>();
-      if (pRTData->ReadTengxunData(pWebDataReceived)) {
-        gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-        //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+      if (!SkipInValidTengxunRTData(pWebDataReceived)) {
+        CRTDataPtr pRTData = make_shared<CRTData>();
+        if (pRTData->ReadTengxunData(pWebDataReceived)) {
+          i++;
+          gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
 
-        // 检测一下
-        CheckTengxunRTData(pRTData);
+          // 检测一下
+          CheckTengxunRTData(pRTData);
+        }
+        else return false;  // 后面的数据出问题，抛掉不用。
       }
-      else return false;  // 后面的数据出问题，抛掉不用。
     }
+    TRACE(_T("接收到%d个腾讯实时数据\n"), i);
   }
   return true;
 }
 
-bool CMarket::IsValidTengxunRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
+bool CMarket::SkipInValidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
   strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
@@ -866,7 +869,7 @@ bool CMarket::SchedulingTask(void) {
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
-}
+  }
   m_iCountDownSlowReadingRTData--;
 
   //根据时间，调度各项定时任务.每秒调度一次
