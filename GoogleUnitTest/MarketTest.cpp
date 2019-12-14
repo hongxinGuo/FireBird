@@ -728,4 +728,36 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lIndex, 0);
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
   }
+
+  TEST_F(CMarketTest, TestIsValidNeteaseRTDataPrefix) {
+    CWebDataReceivedPtr pWebDataReceived;
+    pWebDataReceived = make_shared<CWebDataReceived>();
+    CString str = _T("_ntes_quote_callback({\"");
+    pWebDataReceived->m_pDataBuffer = new char[50];
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_TRUE(gl_ChinaStockMarket.IsValidNeteaseRTDataPrefix(pWebDataReceived));
+    str = _T("_ntes_quo_callback({\"");
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsValidNeteaseRTDataPrefix(pWebDataReceived));
+  }
+
+  TEST_F(CMarketTest, TestIsValidTengxunRTDataPrefix) {
+    CWebDataReceivedPtr pWebDataReceived;
+    pWebDataReceived = make_shared<CWebDataReceived>();
+    CString str = _T("v_pv_none_match=\"1\";\n");
+    pWebDataReceived->m_pDataBuffer = new char[50];
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_TRUE(gl_ChinaStockMarket.IsValidTengxunRTDataPrefix(pWebDataReceived));
+    str = _T("v_pv_none_mtch=\"1\";\n");
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsValidTengxunRTDataPrefix(pWebDataReceived));
+  }
 }
