@@ -101,13 +101,6 @@ void CMarket::Dump(CDumpContext& dc) const {
 }
 #endif //_DEBUG
 
-void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
-  ASSERT(SystemReady());
-  if (m_iDayLineNeedUpdate > 0) {
-    GetNeteaseWebDayLineData();
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 初始化所有可能的股票代码池，只被CMarket的初始函数调用一次。
@@ -480,6 +473,13 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
   return(lAmount);
 }
 
+void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
+  ASSERT(SystemReady());
+  if (m_iDayLineNeedUpdate > 0) {
+    GetNeteaseWebDayLineData();
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
@@ -498,7 +498,7 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CRTDataPtr pRTData = gl_QueueSinaRTData.PopRTData();
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
-      gl_systemMessage.PushInnerSystemInformationMessage(_T("实时数据源设置有误"));
+      gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
     }
     if (pRTData->IsActive()) { // 此实时数据有效？
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
@@ -689,7 +689,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
-    TRACE(_T("ReadNetease正常结束,共处理了%d个数据\n", iCount));
+    TRACE(_T("ReadNetease正常结束,共处理了%d个数据\n"), iCount);
   }
   return true;
 }
@@ -739,7 +739,10 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
     pRTData = gl_QueueNeteaseRTData.PopRTData();
     pRTData = nullptr;
   }
-  if (lTotalData > 0) TRACE(_T("处理了%d个网易实时数据\n"), lTotalData);
+  if (lTotalData > 0) {
+    TRACE(_T("共处理了%d个网易实时数据\n"), lTotalData);
+  }
+
   return true;
 }
 
@@ -863,7 +866,7 @@ bool CMarket::SchedulingTask(void) {
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
-  }
+}
   m_iCountDownSlowReadingRTData--;
 
   //根据时间，调度各项定时任务.每秒调度一次

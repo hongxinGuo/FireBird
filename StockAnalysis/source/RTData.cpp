@@ -248,6 +248,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       }
       pSinaWebRTData->IncreaseCurrentPos();
       m_fActive = false;
+      SetDataSource(__SINA_RT_WEB_DATA__);
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
@@ -372,6 +373,8 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     TRACE(_T("ReadSinaData异常\n"));
     return false;
   }
+  SetDataSource(__SINA_RT_WEB_DATA__);
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
