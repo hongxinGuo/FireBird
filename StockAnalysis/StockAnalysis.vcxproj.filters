@@ -192,9 +192,6 @@
     <ClInclude Include="source\WebDataReceived.h">
       <Filter>头文件\实现类</Filter>
     </ClInclude>
-    <ClInclude Include="source\ThreadReadWebDataAccessory.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -343,9 +340,6 @@
     </ClCompile>
     <ClCompile Include="source\TengxunWebRTData.cpp">
       <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadWebDataAccessory.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

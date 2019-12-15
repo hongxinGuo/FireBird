@@ -4,6 +4,8 @@
 #include"stdafx.h"
 #include"globedef.h"
 
+#include"WebDataReceived.h"
+
 using namespace std;
 #include<atomic>
 
@@ -12,11 +14,13 @@ public:
   CWebData();
   ~CWebData() {}
 
+  bool ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  CWebDataReceivedPtr TransferWebDataToQueueData(void);
+
   // 公共接口函数
   virtual bool GetWebData(void);
 
   virtual bool ReportStatus(long lNumberOfData);
-
   // 下列为继承类必须实现的几个功能函数，完成具体任务。
   virtual void InquireNextWebData(void) {}        // 申请下一个网络数据
   virtual int  GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) { return 0; }// 申请下一个查询用字符串

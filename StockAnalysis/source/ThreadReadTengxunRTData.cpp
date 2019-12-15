@@ -12,60 +12,14 @@
 #include"Market.h"
 
 UINT ThreadReadTengxunRTData(LPVOID pParam) {
-  CTengxunWebRTData* pTengxunWebData = (CTengxunWebRTData*)pParam;
-  CInternetSession session;
-  CHttpFile* pFile = nullptr;
-  long iCount = 0;
-  bool fDone = false;
-  char* pChar = pTengxunWebData->GetBufferAddr();
+  CTengxunWebRTData* pTengxunWebRTData = (CTengxunWebRTData*)pParam;
 
-  const clock_t tt = clock();
-
-  try {
-    pTengxunWebData->SetReadingWebData(true);  //
-    pTengxunWebData->SetByteReaded(0);
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)pTengxunWebData->GetInquiringString()));
-    Sleep(100); // 腾讯服务器100ms延迟即可。
-    while (!fDone) {
-      do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          pTengxunWebData->AddByteReaded(iCount);
-        }
-      } while (iCount > 0);
-      Sleep(30); // 等待30毫秒后再读一次，确认没有新数据后才返回。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        pTengxunWebData->AddByteReaded(iCount);
-      }
-      else fDone = true;
+  if (pTengxunWebRTData->ReadWebData(100, 30)) {
+    CWebDataReceivedPtr pWebDataReceived = pTengxunWebRTData->TransferWebDataToQueueData();
+    if (pWebDataReceived != nullptr) {
+      gl_QueueTengxunWebRTData.PushWebRTData(pWebDataReceived);
     }
-    *pChar = 0x000;
-
-    // 将读取的腾讯实时数据放入腾讯实时网络数据缓冲区中，并设置相关标识。
-    char* p = pTengxunWebData->GetBufferAddr();
-    CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
-    pWebDataReceived->m_pDataBuffer = new char[pTengxunWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    pWebDataReceived->m_lBufferLength = pTengxunWebData->GetByteReaded();
-    char* pbuffer = pWebDataReceived->m_pDataBuffer;
-    for (int i = 0; i < pTengxunWebData->GetByteReaded() + 1; i++) {
-      *pbuffer++ = *p++;
-    }
-    gl_QueueTengxunWebRTData.PushWebRTData(pWebDataReceived);
   }
-  catch (CInternetException * e) {
-    e->Delete();
-  }
-  if (pFile) pFile->Close();
-  if (pFile) {
-    delete pFile;
-    pFile = nullptr;
-  }
-  pTengxunWebData->SetReadingWebData(false);
-
-  gl_ChinaStockMarket.SetReadingTengxunRTDataTime(clock() - tt);
 
   return 10;
 }
