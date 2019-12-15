@@ -673,7 +673,6 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueNeteaseWebRTData.PopWebRTData();
     pWebDataReceived->ResetCurrentPos();
-
     if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
       iCount = 0;
