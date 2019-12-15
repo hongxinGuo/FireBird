@@ -767,20 +767,28 @@ bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// 腾讯实时数据，如果遇到被查询股票代码为非上市时，只是简单略过，不返回数据。故而查询900个股票，返回的数据量要小于900.
+// 只有当所有的查询股票皆为非上市时，才返回一个21个字符串：v_pv_none_match=\"1\";\n
+//
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
-  int i = 0;
+  int j = 0;
 
   long lTotalData = gl_QueueTengxunWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueTengxunWebRTData.PopWebRTData();
     pWebDataReceived->ResetCurrentPos();
-    i = 0;
+    j = 0;
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
-      if (!SkipInValidTengxunRTData(pWebDataReceived)) {
+      if (!SkipInValidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
         CRTDataPtr pRTData = make_shared<CRTData>();
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
-          i++;
+          j++;
           gl_QueueTengxunRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
           //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
 
@@ -790,11 +798,16 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
         else return false;  // 后面的数据出问题，抛掉不用。
       }
     }
-    TRACE(_T("接收到%d个腾讯实时数据\n"), i);
+    TRACE(_T("接收到%d个腾讯实时数据\n"), j);
   }
   return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::SkipInValidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符

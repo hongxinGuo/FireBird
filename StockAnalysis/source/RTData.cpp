@@ -325,7 +325,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
         return false;
       }
-      m_lPBuy.at(j) = dTemp * 1000;
+      m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
@@ -337,7 +337,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
         return false;
       }
-      m_lPSell.at(j) = dTemp * 1000;
+      m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
@@ -363,6 +363,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
+    // 0.07版后，采用十天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天）
     if (IsValidTime()) m_fActive = true;
     else m_fActive = false;
 
@@ -373,8 +374,6 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     TRACE(_T("ReadSinaData异常\n"));
     return false;
   }
-  SetDataSource(__SINA_RT_WEB_DATA__);
-  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -620,7 +619,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
       if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
         return false;
       }
-      m_lPBuy.at(j) = dTemp * 1000;
+      m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
 
       // 买盘数量（手）
       if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
@@ -634,7 +633,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
       if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
         return false;
       }
-      m_lPSell.at(j) = dTemp * 1000;
+      m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
       // 卖盘数量（手）
       if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
         return false;
@@ -720,12 +719,12 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    if (dTemp > 0.01) m_lHighLimit = dTemp * 1000;
+    if (dTemp > 0.01) m_lHighLimit = static_cast<long>(dTemp * 1000);
     // 跌停价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    if (dTemp > 0.01) m_lLowLimit = dTemp * 1000;
+    if (dTemp > 0.01) m_lLowLimit = static_cast<long>(dTemp * 1000);
 
     while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();
@@ -864,14 +863,15 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
   }
-  if (i >= 1900) {
-    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
-    return false; // 整个数据出现错误，后面的皆抛掉
-  }
   bufferTest[i++] = *pTestCurrentPos++;
   lSectionLength = i;
   bufferTest[i] = 0x000;
   strTest = bufferTest;
+  if (i >= 1900) {
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+    gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+    return false; // 整个数据出现错误，后面的皆抛掉
+  }
   char ch = *(pSectionPos + lSectionLength - 1);
   ASSERT(ch == '}');
   ASSERT(bufferTest[i - 1] == '}');
@@ -991,7 +991,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   try {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
   }
-  catch (exception & e) {
+  catch (exception&) {
     TRACE(_T("GetNeteaseSymbolIndex异常: %s\n"), strSymbol);
     lIndex = 0;
   }
@@ -1111,37 +1111,37 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
     break;
     case 10: // open
-    m_lOpen = atof(strValue) * 1000;
+    m_lOpen = static_cast<long>(atof(strValue) * 1000);
     break;
     case 11: // yestclose
-    m_lLastClose = atof(strValue) * 1000;
+    m_lLastClose = static_cast<long>(atof(strValue) * 1000);
     break;
     case 12: // high
-    m_lHigh = atof(strValue) * 1000;
+    m_lHigh = static_cast<long>(atof(strValue) * 1000);
     break;
     case 13: // low
-    m_lLow = atof(strValue) * 1000;
+    m_lLow = static_cast<long>(atof(strValue) * 1000);
     break;
     case 14: // price
-    m_lNew = atof(strValue) * 1000;
+    m_lNew = static_cast<long>(atof(strValue) * 1000);
     break;
     case 15: // volume
     m_llVolume = atol(strValue);
     break;
     case 20: // bid1
-    m_lPBuy[0] = atof(strValue) * 1000;
+    m_lPBuy[0] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 21: // bid2
-    m_lPBuy[1] = atof(strValue) * 1000;
+    m_lPBuy[1] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 22: // bid3
-    m_lPBuy[2] = atof(strValue) * 1000;
+    m_lPBuy[2] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 23: // bid4
-    m_lPBuy[3] = atof(strValue) * 1000;
+    m_lPBuy[3] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 24: // bid5
-    m_lPBuy[4] = atof(strValue) * 1000;
+    m_lPBuy[4] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 30: // bidvol1
     m_lVBuy[0] = atol(strValue);
@@ -1159,19 +1159,19 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     m_lVBuy[4] = atol(strValue);
     break;
     case 40: // ask1
-    m_lPSell[0] = atof(strValue) * 1000;
+    m_lPSell[0] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 41: // ask2
-    m_lPSell[1] = atof(strValue) * 1000;
+    m_lPSell[1] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 42: // ask3
-    m_lPSell[2] = atof(strValue) * 1000;
+    m_lPSell[2] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 43: // ask4
-    m_lPSell[3] = atof(strValue) * 1000;
+    m_lPSell[3] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 44: // ask5
-    m_lPSell[4] = atof(strValue) * 1000;
+    m_lPSell[4] = static_cast<long>(atof(strValue) * 1000);
     break;
     case 50: // askvol1
     m_lVSell[0] = atol(strValue);
@@ -1203,13 +1203,19 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("SetValue异常， Index = %d strValue = %s\n", lIndex, strValue));
+    TRACE(_T("SetValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
     return false;
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 实时数据的有效时间范围为最近一周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十天时间，
+// 故而十天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 7 * 24 * 3600)) { // 确保实时数据不早于当前时间的7天前（春节放假最长为7天）
+  if (m_time < (gl_systemTime.Gett_time() - 10 * 24 * 3600)) { // 确保实时数据不早于当前时间的10天前（春节放假最长为7天，加上前后的休息日，共十天）
     return false;
   }
   else return true;
@@ -1270,31 +1276,31 @@ void CRTData::LoadData(CSetRealTimeData& setRTData) {
   m_wMarket = setRTData.m_Market;
   m_strStockCode = setRTData.m_StockCode;
   m_strStockName = setRTData.m_StockName;
-  m_lLastClose = atof(setRTData.m_LastClose) * 1000;
-  m_lOpen = atof(setRTData.m_Open) * 1000;
-  m_lNew = atof(setRTData.m_New) * 1000;
-  m_lHigh = atof(setRTData.m_High) * 1000;
-  m_lLow = atof(setRTData.m_Low) * 1000;
+  m_lLastClose = static_cast<long>(atof(setRTData.m_LastClose) * 1000);
+  m_lOpen = static_cast<long>(atof(setRTData.m_Open) * 1000);
+  m_lNew = static_cast<long>(atof(setRTData.m_New) * 1000);
+  m_lHigh = static_cast<long>(atof(setRTData.m_High) * 1000);
+  m_lLow = static_cast<long>(atof(setRTData.m_Low) * 1000);
   m_llVolume = atoll(setRTData.m_Volume);
   m_llAmount = atoll(setRTData.m_Amount);
-  m_lPBuy.at(0) = atof(setRTData.m_PBuy1) * 1000;
+  m_lPBuy.at(0) = static_cast<long>(atof(setRTData.m_PBuy1) * 1000);
   m_lVBuy.at(0) = atol(setRTData.m_VBuy1);
-  m_lPBuy.at(1) = atof(setRTData.m_PBuy2) * 1000;
+  m_lPBuy.at(1) = static_cast<long>(atof(setRTData.m_PBuy2) * 1000);
   m_lVBuy.at(1) = atol(setRTData.m_VBuy2);
-  m_lPBuy.at(2) = atof(setRTData.m_PBuy3) * 1000;
+  m_lPBuy.at(2) = static_cast<long>(atof(setRTData.m_PBuy3) * 1000);
   m_lVBuy.at(2) = atol(setRTData.m_VBuy3);
-  m_lPBuy.at(3) = atof(setRTData.m_PBuy4) * 1000;
+  m_lPBuy.at(3) = static_cast<long>(atof(setRTData.m_PBuy4) * 1000);
   m_lVBuy.at(3) = atol(setRTData.m_VBuy4);
-  m_lPBuy.at(4) = atof(setRTData.m_PBuy5) * 1000;
+  m_lPBuy.at(4) = static_cast<long>(atof(setRTData.m_PBuy5) * 1000);
   m_lVBuy.at(4) = atol(setRTData.m_VBuy5);
-  m_lPSell.at(0) = atof(setRTData.m_PSell1) * 1000;
+  m_lPSell.at(0) = static_cast<long>(atof(setRTData.m_PSell1) * 1000);
   m_lVSell.at(0) = atol(setRTData.m_VSell1);
-  m_lPSell.at(1) = atof(setRTData.m_PSell2) * 1000;
+  m_lPSell.at(1) = static_cast<long>(atof(setRTData.m_PSell2) * 1000);
   m_lVSell.at(1) = atol(setRTData.m_VSell2);
-  m_lPSell.at(2) = atof(setRTData.m_PSell3) * 1000;
+  m_lPSell.at(2) = static_cast<long>(atof(setRTData.m_PSell3) * 1000);
   m_lVSell.at(2) = atol(setRTData.m_VSell3);
-  m_lPSell.at(3) = atof(setRTData.m_PSell4) * 1000;
+  m_lPSell.at(3) = static_cast<long>(atof(setRTData.m_PSell4) * 1000);
   m_lVSell.at(3) = atol(setRTData.m_VSell4);
-  m_lPSell.at(4) = atof(setRTData.m_PSell5) * 1000;
+  m_lPSell.at(4) = static_cast<long>(atof(setRTData.m_PSell5) * 1000);
   m_lVSell.at(4) = atol(setRTData.m_VSell5);
 }
