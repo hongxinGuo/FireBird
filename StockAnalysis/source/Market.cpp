@@ -762,7 +762,7 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
 
 bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataReceivedPtr pWebData = nullptr;
-  long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
+  long lTotalData = gl_QueueCrweberdotcomWebData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebData = gl_QueueCrweberdotcomWebData.PopWebRTData();
     pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;

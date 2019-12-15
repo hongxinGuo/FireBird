@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __WEB_DATA_RECEIVED_H__
+#define __WEB_DATA_RECEIVED_H__
 
 using namespace std;
 #include<memory>
@@ -29,3 +30,5 @@ public:
 };
 
 typedef shared_ptr<CWebDataReceived> CWebDataReceivedPtr;
+
+#endif

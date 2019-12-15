@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 新浪实时行情接口读取线程。
+// Crweber.com行情接口读取线程。
 //
-// 新浪的服务器延迟不超过100ms，故而在等待100ms后即可开始读取接收到的数据。
+// Crweber.com的服务器延迟比较长，故而在等待500ms后开始读取接收到的数据。
 //
 //
 //
@@ -10,6 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"Market.h"
 #include "Thread.h"
+#include"ThreadReadWebDataAccessory.h"
 
 UINT ThreadReadCrweberIndex(LPVOID pParam) {
   CCrweberIndexWebData* pCrweberWebData = (CCrweberIndexWebData*)(pParam);
@@ -43,7 +44,8 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
     }
     *pChar = 0x000; // 最后以0x000结尾
 
-    // 将读取的新浪实时数据放入新浪实时网络数据缓冲区中，并设置相关标识。
+    // 将读取的Crweber.com数据放入数据缓冲区中，并设置相关标识。
+    /*
     char* p = pCrweberWebData->GetBufferAddr();
     CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
     pWebDataReceived->m_pDataBuffer = new char[pCrweberWebData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
@@ -52,6 +54,8 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
     for (int i = 0; i < pCrweberWebData->GetByteReaded() + 1; i++) {
       *pbuffer++ = *p++;
     }
+    */
+    CWebDataReceivedPtr pWebDataReceived = TransferWebDataToBuffer(pCrweberWebData);
     gl_QueueCrweberdotcomWebData.PushWebRTData(pWebDataReceived);
   }
   catch (CInternetException*) {

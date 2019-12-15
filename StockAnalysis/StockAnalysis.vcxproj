@@ -226,6 +226,7 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebRTData.h" />
+    <ClInclude Include="source\ThreadReadWebDataAccessory.h" />
     <ClInclude Include="source\WebDataReceived.h" />
     <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="source\SetStockCode.cpp" />
     <ClCompile Include="source\Stock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
+    <ClCompile Include="source\ThreadReadWebDataAccessory.cpp" />
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />

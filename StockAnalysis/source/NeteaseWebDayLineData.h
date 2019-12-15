@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __NETEASE_WEB_DAYLINE_DATA_H__
+#define __NETEASE_WEB_DAYLINE_DATA_H__
 
 #include "WebData.h"
 
@@ -8,7 +9,6 @@ public:
   ~CNeteaseWebDayLineData();
 
   virtual bool GetWebData(void) override;
-
   virtual void InquireNextWebData(void) override;
   virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 900, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
@@ -20,3 +20,5 @@ private:
   CString m_strDownLoadingStockCode;
   bool m_fNeedProcessingCurrentWebData;
 };
+
+#endif
