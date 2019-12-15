@@ -31,7 +31,7 @@ void CTengxunWebRTData::InquireNextWebData(void) {
     GetInquiringStr(strMiddle, 900, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle, 900, true);
+    GetInquiringStr(strMiddle, 900, false);
   }
 
   CreateTotalInquiringString(strMiddle);

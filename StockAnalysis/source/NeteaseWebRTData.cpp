@@ -51,7 +51,7 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
     GetInquiringStr(strMiddle, 550, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle, 550, true);
+    GetInquiringStr(strMiddle, 550, false);
   }
   CreateTotalInquiringString(strMiddle);
 

@@ -674,24 +674,39 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     pWebDataReceived = gl_QueueNeteaseWebRTData.PopWebRTData();
     pWebDataReceived->ResetCurrentPos();
 
-    if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
-
-    iCount = 0;
-    while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
-      CRTDataPtr pRTData = make_shared<CRTData>();
-      if (pRTData->ReadNeteaseData(pWebDataReceived)) {
-        iCount++;
-        gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
-        //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
-        //TRACE(_T("网易实时数据接收到%s \n"), pRTData->GetStockCode());
-        // 检测一下
-        CheckNeteaseRTData(pRTData);
+    if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
+      if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
+      iCount = 0;
+      while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
+        CRTDataPtr pRTData = make_shared<CRTData>();
+        if (pRTData->ReadNeteaseData(pWebDataReceived)) {
+          iCount++;
+          gl_QueueNeteaseRTData.PushRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
+          //TRACE(_T("网易实时数据接收到%s \n"), pRTData->GetStockCode());
+          // 检测一下
+          CheckNeteaseRTData(pRTData);
+        }
+        else return false;  // 后面的数据出问题，抛掉不用。
       }
-      else return false;  // 后面的数据出问题，抛掉不用。
+      TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
     }
-    TRACE(_T("ReadNetease正常结束,共处理了%d个数据\n"), iCount);
   }
   return true;
+}
+
+bool CMarket::IsInvalidNeteaseRTData(CWebDataReceivedPtr pWebDataReceived) {
+  char buffer[50];
+  CString strInvalidStock = _T("_ntes_quote_callback({ });"); // 此为无效股票查询到的数据格式，共26个字符
+  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 26);
+  buffer[26] = 0x000;
+  CString str1 = buffer;
+
+  if (str1.Compare(strInvalidStock) == 0) {
+    ASSERT(pWebDataReceived->m_lBufferLength == 26);
+    return true;
+  }
+  else return false;
 }
 
 bool CMarket::IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
@@ -783,9 +798,9 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueTengxunWebRTData.PopWebRTData();
     pWebDataReceived->ResetCurrentPos();
-    j = 0;
-    while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
-      if (!SkipInValidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+    if (!IsInvalidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+      j = 0;
+      while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
         CRTDataPtr pRTData = make_shared<CRTData>();
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
           j++;
@@ -797,8 +812,8 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
+      TRACE(_T("接收到%d个腾讯实时数据\n"), j);
     }
-    TRACE(_T("接收到%d个腾讯实时数据\n"), j);
   }
   return true;
 }
@@ -808,7 +823,7 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::SkipInValidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
+bool CMarket::IsInvalidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
   strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
@@ -816,7 +831,7 @@ bool CMarket::SkipInValidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
   CString str1 = buffer;
 
   if (str1.Compare(strInvalidStock) == 0) {
-    pWebDataReceived->IncreaseCurrentPos(21);
+    ASSERT(pWebDataReceived->m_lBufferLength == 21);
     return true;
   }
   else return false;
