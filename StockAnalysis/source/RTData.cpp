@@ -914,6 +914,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     CString str = _T("ReadNeteaseData异常");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
 #ifdef DEBUG
+    TRACE(_T("%s\n", strTest));
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 #endif // DEBUG
 
@@ -925,7 +926,6 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
-  return true;
 }
 
 bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {

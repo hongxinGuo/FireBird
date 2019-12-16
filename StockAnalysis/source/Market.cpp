@@ -753,9 +753,6 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
     pRTData = gl_QueueNeteaseRTData.PopRTData();
     pRTData = nullptr;
   }
-  if (lTotalData > 0) {
-    TRACE(_T("共处理了%d个网易实时数据\n"), lTotalData);
-  }
 
   return true;
 }
