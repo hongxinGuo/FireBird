@@ -36,19 +36,19 @@ public:
   void SetStockName(CString str) { m_strStockName = str; }
 
   long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(char* buffer) { m_lLastClose = GetValue(buffer); }
+  void SetLastClose(char* buffer) { m_lLastClose = static_cast<long>(GetValue(buffer)); }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(char* buffer) { m_lOpen = GetValue(buffer); }
+  void SetOpen(char* buffer) { m_lOpen = static_cast<long>(GetValue(buffer)); }
   void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
   long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(char* buffer) { m_lHigh = GetValue(buffer); }
+  void SetHigh(char* buffer) { m_lHigh = static_cast<long>(GetValue(buffer)); }
   void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
   long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(char* buffer) { m_lLow = GetValue(buffer); }
+  void SetLow(char* buffer) { m_lLow = static_cast<long>(GetValue(buffer)); }
   void SetLow(long lValue) noexcept { m_lLow = lValue; }
   long GetClose(void) noexcept { return m_lClose; }
-  void SetClose(char* buffer) { m_lClose = GetValue(buffer); }
+  void SetClose(char* buffer) { m_lClose = static_cast<long>(GetValue(buffer)); }
   void SetClose(long lValue) noexcept { m_lClose = lValue; }
   double GetUpDown(void) noexcept { return m_dUpDown; }
   void SetUpDown(char* buffer) { m_dUpDown = GetValue(buffer); }
@@ -60,17 +60,17 @@ public:
   void SetChangeHandRate(char* buffer) { m_dChangeHandRate = GetValue(buffer); }
   void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(char* buffer) { m_llVolume = GetValue(buffer); }
+  void SetVolume(char* buffer) { m_llVolume = static_cast<INT64>(GetValue(buffer)); }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
   INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(char* buffer) { m_llAmount = GetValue(buffer); }
+  void SetAmount(char* buffer) { m_llAmount = static_cast<INT64>(GetValue(buffer)); }
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
 
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetTotalValue(char* buffer) { m_llTotalValue = GetValue(buffer); }
+  void SetTotalValue(char* buffer) { m_llTotalValue = static_cast<INT64>(GetValue(buffer)); }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
-  void SetCurrentValue(char* buffer) { m_llCurrentValue = GetValue(buffer); }
+  void SetCurrentValue(char* buffer) { m_llCurrentValue = static_cast<INT64>(GetValue(buffer)); }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }

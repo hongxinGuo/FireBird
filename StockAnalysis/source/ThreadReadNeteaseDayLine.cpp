@@ -27,23 +27,13 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
 
   if (pNeteaseWebDayLineData->ReadWebData(siDelayTime, 30, 30)) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-    char* p = pNeteaseWebDayLineData->GetBufferAddr();
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseWebDayLineData->GetDownLoadingStockCode());
-    if (pStock->m_pDayLineBuffer != nullptr) delete pStock->m_pDayLineBuffer;
-    pStock->m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-    char* pbuffer = pStock->m_pDayLineBuffer;
-    for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
-      *pbuffer++ = *p++;
-    }
-    pStock->m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
-    pStock->SetDayLineNeedProcess(true);
+    pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseWebDayLineData);
   }
-
   if (!fStarted) {
     fStarted = true;
     siDelayTime = 50;
   }
-
   gl_ChinaStockMarket.SetReadingNeteaseDayLineDataTime(clock() - tt);
 
   return 2; // 此线程正常返回值为2

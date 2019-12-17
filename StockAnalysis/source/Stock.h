@@ -22,6 +22,8 @@ enum {
 #include"DayLine.h"
 #include"OneDeal.h"
 
+#include"NeteaseWebDayLineData.h"
+
 #include"StockBasicInfo.h"
 #include"StockCalculatedInfo.h"
 
@@ -52,7 +54,7 @@ public:
   CString GetStockName(void) { return m_stockBasicInfo.GetStockName(); }
   void SetStockName(CString str) { m_stockBasicInfo.SetStockName(str); }
   long GetOffset(void) noexcept { return m_stockBasicInfo.GetOffset(); }
-  void SetOffset(INT64 lValue) noexcept { m_stockBasicInfo.SetOffset(lValue); }
+  void SetOffset(long lValue) noexcept { m_stockBasicInfo.SetOffset(lValue); }
   long GetDayLineStartDay(void) noexcept { return m_stockBasicInfo.GetDayLineStartDay(); }
   void SetDayLineStartDay(long lDay) noexcept { m_stockBasicInfo.SetDayLineStartDay(lDay); }
   long GetDayLineEndDay(void) noexcept { return m_stockBasicInfo.GetDayLineEndDay(); }
@@ -206,6 +208,7 @@ public:
   void SetDayLineNeedSaving(bool fFlag);
   bool IsDayLineNeedSavingAndClearFlag(void);
 
+  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
   void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }

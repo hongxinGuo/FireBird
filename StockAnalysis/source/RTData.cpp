@@ -226,7 +226,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     default:
     return false;
     }
-    lStockCode = GetValue(buffer2);
+    lStockCode = static_cast<long>(GetValue(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2); // 读入'="'
@@ -276,7 +276,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lOpen = dTemp * 1000;
+    m_lOpen = static_cast<long>(dTemp * 1000);
     // 读入前收盘价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
@@ -286,27 +286,27 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lNew = dTemp * 1000;
+    m_lNew = static_cast<long>(dTemp * 1000);
     // 读入最高价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lHigh = dTemp * 1000;
+    m_lHigh = static_cast<long>(dTemp * 1000);
     // 读入最低价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lLow = dTemp * 1000;
+    m_lLow = static_cast<long>(dTemp * 1000);
     // 读入竞买价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lBuy = dTemp * 1000;
+    m_lBuy = static_cast<long>(dTemp * 1000);
     // 读入竞卖价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       return false;
     }
-    m_lSell = dTemp * 1000;
+    m_lSell = static_cast<long>(dTemp * 1000);
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
       return false;
@@ -389,7 +389,7 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, INT64& llRetu
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
     return false;
   }
-  llTemp = GetValue(buffer3);
+  llTemp = static_cast<INT64>(GetValue(buffer3));
   if (llTemp < 0) return false;
   if (llTemp > 0) llReturnValue = llTemp;
   return true;
@@ -408,7 +408,7 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, long& lReturn
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
     return false;
   }
-  lTemp = GetValue(buffer3);
+  lTemp = static_cast<long>(GetValue(buffer3));
   if (lTemp < 0) return false;
   if (lTemp > 0) lReturnValue = lTemp;
   return true;
@@ -589,17 +589,17 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lNew = dTemp * 1000;
+    m_lNew = static_cast<long>(dTemp * 1000);
     // 前收盘价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lLastClose = dTemp * 1000;
+    m_lLastClose = static_cast<long>(dTemp * 1000);
     // 开盘价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lOpen = dTemp * 1000;
+    m_lOpen = static_cast<long>(dTemp * 1000);
     // 成交手数。成交股数存储实际值
     if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
       return false;
@@ -705,12 +705,12 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_llCurrentValue = dTemp * 100000000;
+    m_llCurrentValue = static_cast<INT64>(dTemp * 100000000);
     // 总市值（单位为：亿元）
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_llTotalValue = dTemp * 100000000;
+    m_llTotalValue = static_cast<INT64>(dTemp * 100000000);
     // 市净率
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
@@ -914,7 +914,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     CString str = _T("ReadNeteaseData异常");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
 #ifdef DEBUG
-    TRACE(_T("%s\n", strTest));
+    TRACE(_T("%s\n"), strTest);
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 #endif // DEBUG
 

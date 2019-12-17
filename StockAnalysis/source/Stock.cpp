@@ -86,6 +86,21 @@ bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   return fNeedSaveing;
 }
 
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData) {
+  // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
+  char* p = pNeteaseWebDayLineData->GetBufferAddr();
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  char* pbuffer = m_pDayLineBuffer;
+  for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
+    *pbuffer++ = *p++;
+  }
+  m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
+  SetDayLineNeedProcess(true);
+
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理从网易日线服务器上读取的股票日线数据。
@@ -391,10 +406,10 @@ bool CStock::CalculateDayLineRS(void) {
 
 bool CStock::CalculateDayLineRS(INT64 lNumber) {
   double dTempRS = 0;
-  const long lTotalNumber = m_vDayLine.size();
-  for (int i = lNumber; i < lTotalNumber; i++) {
+  const INT64 lTotalNumber = m_vDayLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
-    for (int j = i - lNumber; j < i; j++) {
+    for (INT64 j = i - lNumber; j < i; j++) {
       dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
     m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
@@ -413,9 +428,9 @@ bool CStock::CalculateDayLineRS(INT64 lNumber) {
 bool CStock::ProcessRTData(void) {
   CRTDataPtr pRTData;
 
-  long lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
-  for (long i = 0; i < lTotalNumber; i++) {
+  for (INT64 i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if (pRTData->IsActive()) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
