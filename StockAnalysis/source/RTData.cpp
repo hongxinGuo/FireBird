@@ -74,7 +74,6 @@ void CRTData::Reset(void) {
   m_mapNeteaseSymbolToIndex[_T("updown")] = 61;
   m_mapNeteaseSymbolToIndex[_T("arrow")] = 62;
   m_mapNeteaseSymbolToIndex[_T("turnover")] = 63;
-  m_mapNeteaseSymbolToIndex[_T("turno")] = 64;
 }
 
 CRTData::CRTData(void) : CObject() {
@@ -439,8 +438,9 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, double& dRetu
 bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, char* buffer) {
   int i = 0;
   try {
-    while (*pSinaWebRTData->m_pCurrentPos != ',') {
-      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) return false;
+    while ((*pSinaWebRTData->m_pCurrentPos != ',')) {
+      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) throw exception();
+      if (i > 150) throw exception();
       buffer[i++] = *pSinaWebRTData->m_pCurrentPos;
       pSinaWebRTData->IncreaseCurrentPos();
     }
@@ -910,7 +910,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     return true;
   }
   catch (exception&) {
-    //TRACE(_T("%s's ReadNeteaseData“Ï≥£\n", strStockCode));
+    TRACE(_T("%s's ReadNeteaseData“Ï≥£\n"), strStockCode);
     CString str = _T("ReadNeteaseData“Ï≥£");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
 #ifdef DEBUG

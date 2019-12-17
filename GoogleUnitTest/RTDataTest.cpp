@@ -106,7 +106,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("updown")), 61);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("arrow")), 62);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turnover")), 63);
-    EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turno")), 64);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("turnvoer")), 0); // 错误的符号返回值皆为零
   }
 

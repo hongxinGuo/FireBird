@@ -688,7 +688,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
-      TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
+      //TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
     }
   }
   return true;
@@ -808,7 +808,7 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
-      TRACE(_T("接收到%d个腾讯实时数据\n"), j);
+      //TRACE(_T("接收到%d个腾讯实时数据\n"), j);
     }
   }
   return true;

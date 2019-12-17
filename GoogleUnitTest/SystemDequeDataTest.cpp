@@ -14,7 +14,7 @@
 #include"QueueRTData.h"
 
 namespace StockAnalysisTest {
-  TEST(SystemDaeuqDataTest, TestInitialize) {
+  TEST(SystemDequeDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     for (int i = 0; i < l; i++) {
