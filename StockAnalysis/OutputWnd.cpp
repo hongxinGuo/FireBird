@@ -212,8 +212,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   fUpdate = false;
   // 将输出信息拷贝到消息队列中。
   if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
-    lCurrentPos = m_wndOutputInformation.GetTopIndex();
-    if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    lCurrentPos = m_wndOutputInformation.GetCurSel();
+    if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInformationMessage();
       str2 = strTime + _T(": ") + str;
@@ -230,8 +230,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   }
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
-    lCurrentPos = m_wndOutputDayLineInfo.GetTopIndex();
-    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
+    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopDayLineInfoMessage();
       str2 = strTime + _T(": ") + str;
@@ -303,8 +303,8 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   }
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetInnerSystemInformationDequeSize()) > 0) {
-    lCurrentPos = m_wndOutputInnerSystemInformation.GetTopIndex();
-    if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
+    if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInnerSystemInformationMessage();
       str2 = strTime + _T(": ") + str;
