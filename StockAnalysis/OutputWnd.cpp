@@ -213,14 +213,17 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   // 将输出信息拷贝到消息队列中。
   if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
     lCurrentPos = m_wndOutputInformation.GetCurSel();
-    if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
+    if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInformationMessage();
       str2 = strTime + _T(": ") + str;
       m_wndOutputInformation.AddString(str2);
     }
     lCurrentPos = m_wndOutputInformation.GetTopIndex();
-    if (fUpdate) m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
+    if (fUpdate) {
+      m_wndOutputInformation.SetCurSel(m_wndOutputInformation.GetCount() - 1);
+      m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
+    }
   }
 
   if (m_wndOutputDayLineInfo.GetCount() > 10000) {// 如果显示列表超过10000个，则删除前面的1000个。
@@ -231,13 +234,18 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
     lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
-    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
+    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) {
+      fUpdate = true;
+    }
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopDayLineInfoMessage();
       str2 = strTime + _T(": ") + str;
       m_wndOutputDayLineInfo.AddString(str2);
     }
-    if (fUpdate) m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
+    if (fUpdate) {
+      m_wndOutputDayLineInfo.SetCurSel(m_wndOutputDayLineInfo.GetCount() - 1);
+      m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
+    }
   }
 
   if (m_wndOutputTransaction.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
@@ -304,13 +312,16 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetInnerSystemInformationDequeSize()) > 0) {
     lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
-    if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 10)) fUpdate = true;
+    if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
     for (int i = 0; i < lTotal; i++) {
       str = gl_systemMessage.PopInnerSystemInformationMessage();
       str2 = strTime + _T(": ") + str;
       m_wndOutputInnerSystemInformation.AddString(str2);
     }
-    if (fUpdate) m_wndOutputInnerSystemInformation.SetTopIndex(m_wndOutputInnerSystemInformation.GetCount() - 1);
+    if (fUpdate) {
+      m_wndOutputInnerSystemInformation.SetCurSel(m_wndOutputInnerSystemInformation.GetCount() - 1);
+      m_wndOutputInnerSystemInformation.SetTopIndex(m_wndOutputInnerSystemInformation.GetCount() - 1);
+    }
   }
 
   // 调用基类的OnTimer函数
