@@ -12,6 +12,16 @@ CSystemDeque::~CSystemDeque() {
 CSystemMessage::~CSystemMessage() {
 }
 
+void CSystemDeque::Display(COutputList* pOutputList, CString strTime) {
+  CString str, str2;
+  long lTotal = GetDequeSize();
+  for (int i = 0; i < lTotal; i++) {
+    str = PopMessage();
+    str2 = strTime + _T(": ") + str;
+    pOutputList->AddString(str2);
+  }
+}
+
 void CSystemDeque::PushMessage(CString str) {
   m_mutex.lock();
   m_dequeMessage.push_back(str);

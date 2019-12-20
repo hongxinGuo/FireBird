@@ -10,6 +10,9 @@ public:
   COutputList();
 
   // 实现
+  void TruncateList(long lLimit);
+  void SetCurAtLastLine(void);
+
 public:
   virtual ~COutputList();
 

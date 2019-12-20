@@ -134,6 +134,19 @@ void COutputWnd::UpdateFonts() {
 COutputList::COutputList() {
 }
 
+void COutputList::TruncateList(long lLimit) {
+  if (GetCount() > lLimit) {
+    for (int i = 0; i < 1000; i++) {
+      DeleteString(0);
+    }
+  }
+}
+
+void COutputList::SetCurAtLastLine(void) {
+  SetCurSel(GetCount() - 1);
+  SetTopIndex(GetCount() - 1);
+}
+
 COutputList::~COutputList() {
 }
 
@@ -204,123 +217,80 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   CString strTime = gl_systemTime.GetTimeString();
 
   // 如果显示列表超过10000个，则删除前面的1000个。
-  if (m_wndOutputInformation.GetCount() > 10000) {
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputInformation.DeleteString(0);
-    }
-  }
-  fUpdate = false;
+  m_wndOutputInformation.TruncateList(10000);
   // 将输出信息拷贝到消息队列中。
   if ((lTotal = gl_systemMessage.GetInformationDequeSize()) > 0) {
     lCurrentPos = m_wndOutputInformation.GetCurSel();
     if (m_wndOutputInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopInformationMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputInformation.AddString(str2);
-    }
-    lCurrentPos = m_wndOutputInformation.GetTopIndex();
+    gl_systemMessage.DisplayInformation(&m_wndOutputInformation, strTime);
     if (fUpdate) {
-      m_wndOutputInformation.SetCurSel(m_wndOutputInformation.GetCount() - 1);
-      m_wndOutputInformation.SetTopIndex(m_wndOutputInformation.GetCount() - 1);
+      m_wndOutputInformation.SetCurAtLastLine();
     }
   }
 
-  if (m_wndOutputDayLineInfo.GetCount() > 10000) {// 如果显示列表超过10000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputDayLineInfo.DeleteString(0);
-    }
-  }
+  m_wndOutputDayLineInfo.TruncateList(10000);
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
     lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
-    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) {
-      fUpdate = true;
-    }
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopDayLineInfoMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputDayLineInfo.AddString(str2);
-    }
+    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, strTime);
     if (fUpdate) {
-      m_wndOutputDayLineInfo.SetCurSel(m_wndOutputDayLineInfo.GetCount() - 1);
-      m_wndOutputDayLineInfo.SetTopIndex(m_wndOutputDayLineInfo.GetCount() - 1);
+      m_wndOutputDayLineInfo.SetCurAtLastLine();
     }
   }
 
-  if (m_wndOutputTransaction.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputTransaction.DeleteString(0);
-    }
-  }
+  m_wndOutputTransaction.TruncateList(10000);
+  fUpdate = false;
   if ((lTotal = gl_systemMessage.GetTransactionDequeSize()) > 0) {
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopTransactionMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputTransaction.AddString(str2);
+    lCurrentPos = m_wndOutputTransaction.GetCurSel();
+    if (m_wndOutputTransaction.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayTransaction(&m_wndOutputTransaction, strTime);
+    if (fUpdate) {
+      m_wndOutputTransaction.SetCurAtLastLine();
     }
-    m_wndOutputTransaction.SetTopIndex(m_wndOutputTransaction.GetCount() - 1);
   }
 
-  if (m_wndOutputCancelSell.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputCancelSell.DeleteString(0);
-    }
-  }
+  m_wndOutputCancelSell.TruncateList(10000);
+  fUpdate = false;
   if ((lTotal = gl_systemMessage.GetCancelSellDequeSize()) > 0) {
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopCancelSellMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputCancelSell.AddString(str2);
+    lCurrentPos = m_wndOutputCancelSell.GetCurSel();
+    if (m_wndOutputCancelSell.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayCancelSell(&m_wndOutputCancelSell, strTime);
+    if (fUpdate) {
+      m_wndOutputCancelSell.SetCurAtLastLine();
     }
-    m_wndOutputCancelSell.SetTopIndex(m_wndOutputCancelSell.GetCount() - 1);
   }
 
-  if (m_wndOutputCancelBuy.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputCancelBuy.DeleteString(0);
-    }
-  }
+  m_wndOutputCancelBuy.TruncateList(10000);
+  fUpdate = false;
   if ((lTotal = gl_systemMessage.GetCancelBuyDequeSize()) > 0) {
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopCancelBuyMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputCancelBuy.AddString(str2);
+    lCurrentPos = m_wndOutputCancelBuy.GetCurSel();
+    if (m_wndOutputCancelBuy.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayCancelBuy(&m_wndOutputCancelBuy, strTime);
+    if (fUpdate) {
+      m_wndOutputCancelBuy.SetCurAtLastLine();
     }
-    m_wndOutputCancelBuy.SetTopIndex(m_wndOutputCancelBuy.GetCount() - 1);
   }
 
-  if (m_wndOutputTrace2.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputTrace2.DeleteString(0);
-    }
-  }
+  m_wndOutputTrace2.TruncateList(10000);
+  fUpdate = false;
   if ((lTotal = gl_systemMessage.GetTrace2DequeSize()) > 0) {
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopTrace2Message();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputTrace2.AddString(str2);
+    lCurrentPos = m_wndOutputTrace2.GetCurSel();
+    if (m_wndOutputTrace2.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayTrace2(&m_wndOutputTrace2, strTime);
+    if (fUpdate) {
+      m_wndOutputTrace2.SetCurAtLastLine();
     }
-    m_wndOutputTrace2.SetTopIndex(m_wndOutputTrace2.GetCount() - 1);
   }
 
-  if (m_wndOutputInnerSystemInformation.GetCount() > 10000) {// 如果显示列表超过2000个，则删除前面的1000个。
-    for (int i = 0; i < 1000; i++) {
-      m_wndOutputInnerSystemInformation.DeleteString(0);
-    }
-  }
+  m_wndOutputInnerSystemInformation.TruncateList(10000);
   fUpdate = false;
   if ((lTotal = gl_systemMessage.GetInnerSystemInformationDequeSize()) > 0) {
     lCurrentPos = m_wndOutputInnerSystemInformation.GetCurSel();
     if (m_wndOutputInnerSystemInformation.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-    for (int i = 0; i < lTotal; i++) {
-      str = gl_systemMessage.PopInnerSystemInformationMessage();
-      str2 = strTime + _T(": ") + str;
-      m_wndOutputInnerSystemInformation.AddString(str2);
-    }
+    gl_systemMessage.DisplayInnerSystemInformation(&m_wndOutputInnerSystemInformation, strTime);
     if (fUpdate) {
-      m_wndOutputInnerSystemInformation.SetCurSel(m_wndOutputInnerSystemInformation.GetCount() - 1);
-      m_wndOutputInnerSystemInformation.SetTopIndex(m_wndOutputInnerSystemInformation.GetCount() - 1);
+      m_wndOutputInnerSystemInformation.SetCurAtLastLine();
     }
   }
 
