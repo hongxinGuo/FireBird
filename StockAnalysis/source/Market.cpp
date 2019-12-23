@@ -71,12 +71,12 @@ void CMarket::Reset(void) {
   m_fCalculatingRS = false;
 
   m_fGetRTStockData = true;
-  m_fReadingTengxunRTData = true; // 默认状态下不读取腾讯实时行情
+  m_fReadingTengxunRTData = true; // 默认状态下读取腾讯实时行情
   m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
   m_fUsingNeteaseRTDataReceiverAsTester = false;
   m_fUsingTengxunRTDataReceiverAsTester = true;
 

@@ -134,9 +134,9 @@ void COutputWnd::UpdateFonts() {
 COutputList::COutputList() {
 }
 
-void COutputList::TruncateList(long lLimit) {
-  if (GetCount() > lLimit) {
-    for (int i = 0; i < 1000; i++) {
+void COutputList::TruncateList(long lMaxLimit, long lNumberOfTruncation) {
+  if (GetCount() > lMaxLimit) {
+    for (int i = 0; i < lNumberOfTruncation; i++) {
       DeleteString(0);
     }
   }
