@@ -375,5 +375,6 @@
       <Filter>资源文件</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="..\readme.md" />
   </ItemGroup>
 </Project>
