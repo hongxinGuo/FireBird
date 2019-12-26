@@ -15,7 +15,7 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
 
   const clock_t tt = clock();
 
-  if (pSinaWebRTData->ReadWebData(100, 30)) {
+  if (pSinaWebRTData->ReadWebData(50, 30, 20)) {
     CWebDataReceivedPtr pWebDataReceived = pSinaWebRTData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_QueueSinaWebRTData.PushWebRTData(pWebDataReceived);

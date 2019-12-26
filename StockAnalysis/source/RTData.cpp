@@ -154,6 +154,8 @@ bool CRTData::Compare(CRTDataPtr pRTData) {
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00”;
 //
+// 无效数据格式为：var hq_str_sh688801="";
+//
 // 这个字符串由许多数据拼接在一起，不同含义的数据用逗号隔开了，按照程序员的思路，顺序号从0开始。
 // 0：”大秦铁路”，股票名字；
 // 1：”27.55″，今日开盘价；
@@ -189,6 +191,25 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   static CString strHeader = _T("var hq_str_s");
   long lStockCode = 0;
   double dTemp = 0;
+  char* pTestCurrentPos = pSinaWebRTData->m_pCurrentPos;
+  char bufferTest[2000];
+  CString strTest;
+
+#ifdef DEBUG
+  int i = 0;
+  while ((*pTestCurrentPos != ';') && (i < 1900)) {
+    bufferTest[i++] = *pTestCurrentPos++;
+  }
+  bufferTest[i++] = *pTestCurrentPos++;
+  bufferTest[i] = 0x000;
+  strTest = bufferTest;
+  if (i >= 1900) {
+    TRACE(_T("%s\n"), strTest);
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+    gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+    return false; // 整个数据出现错误，后面的皆抛掉
+  }
+#endif //
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -197,7 +218,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(12);
 
@@ -208,7 +229,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos();
 
@@ -223,23 +244,20 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
-    return false;
+    throw exception();
     }
     lStockCode = static_cast<long>(GetValue(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2); // 读入'="'
-    if (buffer1[0] != '=') {
-      return false;
-    }
-    if (buffer1[1] != '"') {
-      return false;
+    if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
     strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2);
-    if (buffer1[0] == '"') { // 没有数据
+    if (buffer1[0] == '"') { // 没有数据?
       if (buffer1[1] != ';') {
-        return false;
+        throw exception();
       }
       pSinaWebRTData->IncreaseCurrentPos(2);
       if (*pSinaWebRTData->m_pCurrentPos != 0x00a) {
@@ -251,17 +269,17 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
-      return false;
+      throw exception();
     }
     if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
 
     int i = 2;
-    while (*pSinaWebRTData->m_pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
+    while ((*pSinaWebRTData->m_pCurrentPos != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
       if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) {
-        return false;
+        throw exception();
       }
       buffer1[i++] = *pSinaWebRTData->m_pCurrentPos;
       pSinaWebRTData->IncreaseCurrentPos();
@@ -273,56 +291,56 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lOpen = static_cast<long>(dTemp * 1000);
     // 读入前收盘价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lLastClose = dTemp * 1000;
     // 读入当前价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lNew = static_cast<long>(dTemp * 1000);
     // 读入最高价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lHigh = static_cast<long>(dTemp * 1000);
     // 读入最低价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lLow = static_cast<long>(dTemp * 1000);
     // 读入竞买价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lBuy = static_cast<long>(dTemp * 1000);
     // 读入竞卖价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lSell = static_cast<long>(dTemp * 1000);
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
-      return false;
+      throw exception();
     }
     // 读入成交金额
     if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) {
-      return false;
+      throw exception();
     }
     // 读入买一--买五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) {
-        return false;
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-        return false;
+        throw exception();
       }
       m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
     }
@@ -330,23 +348,23 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) {
-        return false;
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-        return false;
+        throw exception();
       }
       m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
-      return false;
+      throw exception();
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
     if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-      return false;
+      throw exception();
     }
     strTime += buffer3;
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
@@ -355,7 +373,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     while (*pSinaWebRTData->m_pCurrentPos != 0x00a) { // 寻找字符'\n'（回车符）
       pSinaWebRTData->IncreaseCurrentPos();
       if (*pSinaWebRTData->m_pCurrentPos == 0x000) {
-        return false;
+        throw exception();
       }
     }
     pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'\n'
@@ -365,12 +383,14 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     // 0.07版后，采用十天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天）
     if (IsValidTime()) m_fActive = true;
     else m_fActive = false;
-
     SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
   catch (exception&) {
     TRACE(_T("ReadSinaData异常\n"));
+    CString str = m_strStockCode;
+    str += _T(" ReadSinaData异常\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
 }
@@ -452,6 +472,8 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, char* buffer)
   }
   catch (exception&) {
     TRACE(_T("ReadSinaOneValue异常\n"));
+    CString str = _T("ReadSinaOneValue异常\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
 }
@@ -859,6 +881,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lSectionLength = 0;
   CString strTest;
 
+#ifdef DEBUG
   int i = 0;
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
@@ -872,6 +895,8 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
     return false; // 整个数据出现错误，后面的皆抛掉
   }
+#endif //
+
   char ch = *(pSectionPos + lSectionLength - 1);
   ASSERT(ch == '}');
   ASSERT(bufferTest[i - 1] == '}');
