@@ -16,5 +16,10 @@
 
 2.在管理工具中添加两个ODBC64位驱动：分别对应hxguo和Test。
 
-![Image](Img/Microsoft ODBC管理器.png)
+![Image Text](Img/Microsoft%20ODBC.png)
+
+![Image Text](Img/Microsoft%20ODBCOption1.png)
+
+![Image Text](Img/Microsoft%20ODBCOption2.png)
+
 
