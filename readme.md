@@ -18,8 +18,8 @@
 
 ![Image Text](Img/Microsoft%20ODBC.png)
 
-![Image Text](Img/Microsoft%20ODBCOption1.png)
+![Image Text](Img/Microsoft%20ODBC%20Option1.png)
 
-![Image Text](Img/Microsoft%20ODBCOption2.png)
+![Image Text](Img/Microsoft%20ODBC%20Option2.png)
 
 
