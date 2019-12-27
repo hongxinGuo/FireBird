@@ -15,5 +15,6 @@
 1.安装MySQL社区版8.0.18.0，设置两个默认用户hxguo和Test，默认密码分别为hxguo和test。
 
 2.在管理工具中添加两个ODBC64位驱动：分别对应hxguo和Test。
-![Image Text](Img/Microsoft ODBC 管理器 2019_12_27 8_48_52.png)
+
+![Image](Img/Microsoft ODBC管理器.png)
 
