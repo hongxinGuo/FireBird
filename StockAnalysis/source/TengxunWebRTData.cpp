@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"Market.h"
 
-#include"thread.h"
+#include"Thread.h"
 #include "TengxunWebRTData.h"
 
 CTengxunWebRTData::CTengxunWebRTData() : CWebData() {

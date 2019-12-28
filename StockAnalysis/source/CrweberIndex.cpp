@@ -113,6 +113,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   pWebDataReceived->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
+  CString strNoUse;
   long lUpdateDay = 0;
 
   while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
@@ -122,7 +123,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       strTime = GetNextString(pWebDataReceived); // 当前时间
       lUpdateDay = ConvertStringToTime(strTime);
 
-      for (int i = 0; i < 4; i++) GetNextString(pWebDataReceived); // 抛掉4个没用字符串
+      for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
 
       str1 = GetNextString(pWebDataReceived); // "VLCC"
       gl_CrweberIndex.m_dTD1 = GetOneValue(pWebDataReceived);
@@ -167,42 +168,42 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
 
     strHead = str.Left(6);
     if (strHead.Compare(_T("Tanker")) == 0) {
-      for (int i = 0; i < 7; i++) GetNextString(pWebDataReceived); // "CPP"
+      for (int i = 0; i < 7; i++) strNoUse = GetNextString(pWebDataReceived); // "CPP"
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dHANDY_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
@@ -271,8 +272,8 @@ double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
   double dValue = 0.0;
 
   str = GetNextString(pWebDataReceived); // "TD1\r\n   "
-  GetNextString(pWebDataReceived); // 无用数据
-  GetNextString(pWebDataReceived); // 无用数据
+  str = GetNextString(pWebDataReceived); // 无用数据
+  str = GetNextString(pWebDataReceived); // 无用数据
   strValue = GetNextString(pWebDataReceived); // TD1指数的当前值
   dValue = atof(strValue.GetBuffer());
   return dValue;

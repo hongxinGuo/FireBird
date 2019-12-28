@@ -163,7 +163,7 @@ public:
   bool ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived);
   long GetNeteaseSymbolIndex(CString strSymbol);
   bool GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
-  bool SetValue(long lIndex, CString strValue);
+  bool SetNeteaseRTValue(long lIndex, CString strValue);
 
 public:
   void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }

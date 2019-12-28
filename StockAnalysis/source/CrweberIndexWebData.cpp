@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"globedef.h"
-#include"thread.h"
-#include"market.h"
+#include"Thread.h"
+#include"Market.h"
 
 #include"Accessory.h"
 

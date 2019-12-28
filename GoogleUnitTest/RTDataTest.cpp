@@ -60,9 +60,9 @@ namespace StockAnalysisTest {
     CRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.IsValidTime());
-    data.SetTransactionTime(tt - 3600 * 24 * 10);
+    data.SetTransactionTime(tt - 3600 * 24 * 14);
     EXPECT_TRUE(data.IsValidTime());
-    data.SetTransactionTime(tt - 3600 * 24 * 10 - 1);
+    data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
     EXPECT_FALSE(data.IsValidTime());
   }
 
@@ -199,7 +199,7 @@ namespace StockAnalysisTest {
     time_t tt2;
     long lIndex = m_RTData.GetNeteaseSymbolIndex(m_strSymbol);
     EXPECT_EQ(lIndex, m_lIndex);
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     switch (m_iCount) {
     case 0: // ³ö´í
     break;
@@ -207,11 +207,11 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_strSymbol, _T("time"));
     break;
     case 2: // code
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh601872"));
     break;
     case 3: // name
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_STREQ(m_RTData.GetStockName(), _T("ÕÐÉÌÂÖ´¬"));
     break;
     case 4: // name
@@ -234,114 +234,114 @@ namespace StockAnalysisTest {
     tm_.tm_sec = second;
     tm_.tm_isdst = 0;
     tt = mktime(&tm_);
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     tt2 = m_RTData.GetTransactionTime();
     EXPECT_EQ(tt, tt2);
     break;
     case 10: // open
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetOpen(), 5700);
     break;
     case 11: // yestclose
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetLastClose(), 5860);
     break;
     case 12: // high
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetHigh(), 5900);
     break;
     case 13: // low
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetLow(), 5450);
     break;
     case 14: // price
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetNew(), 5550);
     break;
     case 15: // volume
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVolume(), 10101010);
     break;
     case 16: // precloseioev
     break;
     case 20: // bid1
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPBuy(0), 5540);
     break;
     case 21: // bid2
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPBuy(1), 5530);
     break;
     case 22: // bid3
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPBuy(2), 5520);
     break;
     case 23: // bid4
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPBuy(3), 5510);
     break;
     case 24: // bid5
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPBuy(4), 5500);
     break;
     case 30: // bidvol1
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVBuy(0), 10101);
     break;
     case 31: // bidvol2
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVBuy(1), 20202);
     break;
     case 32: // bidvol3
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVBuy(2), 30303);
     break;
     case 33: // bidvol4
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVBuy(3), 40404);
     break;
     case 34: // bidvol5
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVBuy(4), 50505);
     break;
     case 40: // ask1
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPSell(0), 5550);
     break;
     case 41: // ask2
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPSell(1), 5560);
     break;
     case 42: // ask3
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPSell(2), 5570);
     break;
     case 43: // ask4
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPSell(3), 5580);
     break;
     case 44: // ask5
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetPSell(4), 5590);
     break;
     case 50: // askvol1
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVSell(0), 101010);
     break;
     case 51: // askvol2
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVSell(1), 202020);
     break;
     case 52: // askvol3
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVSell(2), 303030);
     break;
     case 53: // askvol4
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVSell(3), 404040);
     break;
     case 54: // askvol5
-    m_RTData.SetValue(lIndex, m_strValue);
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_EQ(m_RTData.GetVSell(4), 505050);
     break;
     case 60: // percent

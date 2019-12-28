@@ -15,6 +15,7 @@ public:
   ~CWebData() {}
 
   bool ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  bool ReadDataFromWebOnce(void);
   CWebDataReceivedPtr TransferWebDataToQueueData(void);
 
   // 公共接口函数
@@ -55,9 +56,12 @@ public:
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
 
 protected:
+  CHttpFile* m_pFile; // 网络文件指针
   CString m_strInquire;// 查询所需的字符串
   char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
+  char* m_pCurrentReadPos; // 当前读入字符的存入位置
+  long m_lCurrentByteRead; // 本次接收到到的字符数
 
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;

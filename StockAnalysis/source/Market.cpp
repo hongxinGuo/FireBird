@@ -5,10 +5,10 @@
 #include"globedef.h"
 #include"Thread.h"
 
-#include"accessory.h"
+#include"Accessory.h"
 #include"TransferSharedPtr.h"
 
-#include"stock.h"
+#include"Stock.h"
 #include"Market.h"
 
 #include"SetDayLineInfo.h"
@@ -396,15 +396,17 @@ bool CMarket::IsAStock(CStockPtr pStock) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::IsAStock(CString strStockCode) {
-  if ((strStockCode[0] == 's') && (strStockCode[1] == 'h') && (strStockCode[2] == '6') && (strStockCode[3] == '0')) {
-    if ((strStockCode[4] == '0') || (strStockCode[4] == '1')) {
-      return true;
-    }
-  }
-  else {
-    if ((strStockCode[0] == 's') && (strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
-      if ((strStockCode[4] == '0') || (strStockCode[4] == '2')) {
+  if (strStockCode[0] == 's') {
+    if ((strStockCode[1] == 'h') && (strStockCode[2] == '6') && (strStockCode[3] == '0')) {
+      if ((strStockCode[4] == '0') || (strStockCode[4] == '1')) {
         return true;
+      }
+    }
+    else {
+      if ((strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
+        if ((strStockCode[4] == '0') || (strStockCode[4] == '2')) {
+          return true;
+        }
       }
     }
   }

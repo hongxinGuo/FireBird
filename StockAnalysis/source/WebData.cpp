@@ -7,9 +7,12 @@
 #include"WebData.h"
 
 CWebData::CWebData() {
+  m_pFile = nullptr;
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
   m_lByteRead = 0;
+  m_pCurrentReadPos = m_buffer;
+  m_lCurrentByteRead = 0;
   m_strInquire = _T("");
   m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
@@ -23,10 +26,9 @@ CWebData::CWebData() {
 
 bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session;
-  CHttpFile* pFile = nullptr;
-  long iCount = 0;
+  m_pFile = nullptr;
   bool fDone = false;
-  char* pChar = GetBufferAddr();
+  m_pCurrentReadPos = GetBufferAddr();
 
   try {
     SetReadingWebData(true);
@@ -34,46 +36,47 @@ bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lTh
     /*pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString(), 1,
                                                      INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
     */
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
+    ASSERT(m_pFile == nullptr);
+    ASSERT(m_lCurrentByteRead == 0);
+    ASSERT(m_pCurrentReadPos == m_buffer);
+    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(lStartDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
       do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          AddByteReaded(iCount);
-        }
-      } while (iCount > 0);
+        ReadDataFromWebOnce();
+      } while (m_lCurrentByteRead > 0);
       Sleep(lSecondDelayTime); // 等待lSecondDelayTime毫秒后再读一次，确认没有新数据后才返回。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        AddByteReaded(iCount);
-      }
-      else {
+      if (!ReadDataFromWebOnce()) {
         Sleep(lThirdDelayTime); // 等待lThirdDelayTime毫秒后读第三次，确认没有新数据后才返回，否则继续读。
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          AddByteReaded(iCount);
+        if (!ReadDataFromWebOnce()) {
+          fDone = true;
         }
-        else fDone = true;
       }
     }
-    *pChar = 0x000; // 最后以0x000结尾
+    *m_pCurrentReadPos = 0x000; // 最后以0x000结尾
   }
   catch (CInternetException*) {
     TRACE(_T("net error\n"));
     return false;
   }
-  if (pFile) pFile->Close();
-  if (pFile) {
-    delete pFile;
-    pFile = nullptr;
+  if (m_pFile) m_pFile->Close();
+  if (m_pFile) {
+    delete m_pFile;
+    m_pFile = nullptr;
   }
   SetReadingWebData(false);
 
   return true;
+}
+
+bool CWebData::ReadDataFromWebOnce(void) {
+  m_lCurrentByteRead = m_pFile->Read(m_pCurrentReadPos, 1024);
+  if (m_lCurrentByteRead > 0) {
+    m_pCurrentReadPos += m_lCurrentByteRead;
+    AddByteReaded(m_lCurrentByteRead);
+    return true;
+  }
+  else return false;
 }
 
 CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {

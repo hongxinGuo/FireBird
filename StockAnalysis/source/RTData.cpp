@@ -195,7 +195,6 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   char bufferTest[2000];
   CString strTest;
 
-#ifdef DEBUG
   int i = 0;
   while ((*pTestCurrentPos != ';') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
@@ -204,12 +203,11 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   bufferTest[i] = 0x000;
   strTest = bufferTest;
   if (i >= 1900) {
-    TRACE(_T("%s\n"), strTest);
+    TRACE(_T("%s\n"), strTest.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
     return false; // 整个数据出现错误，后面的皆抛掉
   }
-#endif //
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -909,7 +907,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     }
     do {
       if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-        if (!SetValue(lIndex, strValue)) throw exception();
+        if (!SetNeteaseRTValue(lIndex, strValue)) throw exception();
       }
       else {
         throw exception();
@@ -1107,7 +1105,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
   }
 }
 
-bool CRTData::SetValue(long lIndex, CString strValue) {
+bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
 
   try {
@@ -1218,8 +1216,6 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     case 62: // arrow
     case 63: // turnover
     break;
-    case 64: // turno.这个似乎是个故障，因为其后的数据是无效的。
-    break;
     default:
     // 出错了
     throw exception();
@@ -1228,19 +1224,19 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("SetValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
+    TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
     return false;
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 实时数据的有效时间范围为最近一周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十天时间，
-// 故而十天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
+// 实时数据的有效时间范围为最近两周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十一天时间，加上三天富裕，
+// 故而十四天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 10 * 24 * 3600)) { // 确保实时数据不早于当前时间的10天前（春节放假最长为7天，加上前后的休息日，共十天）
+  if (m_time < (gl_systemTime.Gett_time() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
   else return true;

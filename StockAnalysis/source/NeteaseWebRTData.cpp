@@ -20,7 +20,7 @@
 #include"globedef.h"
 #include"Market.h"
 
-#include"thread.h"
+#include"Thread.h"
 #include "NeteaseWebRTData.h"
 
 CNeteaseWebRTData::CNeteaseWebRTData() : CWebData() {
