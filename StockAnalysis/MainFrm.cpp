@@ -548,7 +548,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   break;
   case 0x00d: // 回车
   strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
-  if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+  if (gl_ChinaStockMarket.IsStock(strTemp)) {
+    pStock = gl_ChinaStockMarket.GetStockPtr(strTemp);
     gl_ChinaStockMarket.SetShowStock(pStock);
     //m_fNeedUpdateTitle = true;
     Invalidate();
@@ -604,7 +605,8 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     break;
     case 0x00d: // 回车
     strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
-    if (gl_ChinaStockMarket.IsStock(strTemp, pStock)) {
+    if (gl_ChinaStockMarket.IsStock(strTemp)) {
+      pStock = gl_ChinaStockMarket.GetStockPtr(strTemp);
       gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       Invalidate();
@@ -647,7 +649,7 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   pCmdUI->Enable(true); // 调试状态下永远允许执行
 #endif

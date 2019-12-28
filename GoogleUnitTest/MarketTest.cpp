@@ -386,12 +386,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMarketTest, TestIsStock) {
-    CStockPtr pstock;
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 1);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsStock(_T("sh600000"), pstock));
-    EXPECT_NE(pstock, nullptr);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsStock(_T("sh60000"), pstock));
-    EXPECT_EQ(pstock, nullptr);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsStock(_T("sh600000")));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStock(_T("sh60000")));
   }
 
   TEST_F(CMarketTest, TestGetStockName) {

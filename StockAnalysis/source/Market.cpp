@@ -418,12 +418,12 @@ bool CMarket::IsAStock(CString strStockCode) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::IsStock(CString strStockCode, CStockPtr& pStock) {
-  if ((pStock = GetStockPtr(strStockCode)) != nullptr) {
+bool CMarket::IsStock(CString strStockCode) {
+  CStockPtr pStock = GetStockPtr(strStockCode);
+  if (pStock != nullptr) {
     return(true);
   }
   else {
-    pStock = NULL;
     return(false);
   }
 }
@@ -1057,7 +1057,7 @@ void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
   if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
     m_fPermitResetSystem = true;
     CString str;
-    str = _T(" 重置系统重置标识");
+    str = _T("重置系统重置标识");
     gl_systemMessage.PushInformationMessage(str);
   }
 }
@@ -1068,7 +1068,7 @@ void CMarket::SaveTempDataIntoDB(long lCurrentTime) {
     if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
       if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
         CString str;
-        str = _T(" 存储临时数据");
+        str = _T("存储临时数据");
         gl_systemMessage.PushInformationMessage(str);
         UpdateTempRTData();
       }
@@ -1231,7 +1231,7 @@ bool CMarket::GetStockIndex(CString strStockCode, long& lIndex) {
     return true;
   }
   catch (exception&) {
-    TRACE("GetStockIndex函数异常\n");
+    TRACE("GetStockIndex越界\n");
     lIndex = -1;
     return false;
   }
@@ -1249,7 +1249,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
   catch (exception&) {
-    TRACE("GetStockPtr函数异常\n");
+    TRACE("GetStockPtr越界\n");
     return nullptr;
   }
 }
@@ -1259,7 +1259,7 @@ CStockPtr CMarket::GetStockPtr(long lIndex) {
     return m_vChinaMarketAStock.at(lIndex);
   }
   catch (exception&) {
-    TRACE("GetStockPtr函数异常\n");
+    TRACE("GetStockPtr越界\n");
     return nullptr;
   }
 }

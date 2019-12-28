@@ -73,7 +73,7 @@ public:
 
   bool IsAStock(CStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
-  bool IsStock(CString  strStockCode, CStockPtr& pStock);	// 是否为正确的股票代码
+  bool IsStock(CString  strStockCode);	// 是否为正确的股票代码
 
   CString GetStockName(CString strStockCode);
 
