@@ -65,8 +65,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedProcess, 0);
     EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedUpdate, 12000);
     EXPECT_EQ(gl_ChinaStockMarket.m_iDayLineNeedSave, 0);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester());
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUsingTengxunRTDataReceiverAsTester());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUsingSinaRTDataReceiver());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUsingTengxunRTDataReceiver());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiver());
   }
 
   TEST_F(CMarketTest, TestGetTengxunInquiringStockStr) {

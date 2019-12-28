@@ -140,9 +140,6 @@ public:
   bool IsUpdateStockCodeDB(void);
   void ClearUpdateStockCodeDBFlag(void);
 
-  bool IsUsingNeteaseRTDataReceiverAsTester(void) noexcept { return m_fUsingNeteaseRTDataReceiverAsTester; }
-  bool IsUsingTengxunRTDataReceiverAsTester(void) noexcept { return m_fUsingTengxunRTDataReceiverAsTester; }
-
   long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
   void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
   long GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
@@ -188,6 +185,11 @@ public:
   bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
   void __Test_SetResetSystem(bool fFlag) noexcept { gl_fResetSystem = fFlag; }
 
+  // 状态反馈
+  bool IsUsingSinaRTDataReceiver(void) { return m_fUsingSinaRTDataReceiver; }
+  bool IsUsingNeteaseRTDataReceiver(void) { return m_fUsingNeteaseRTDataReceiver; }
+  bool IsUsingTengxunRTDataReceiver(void) { return m_fUsingTengxunRTDataReceiver; }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -199,16 +201,13 @@ public:
   bool m_fCurrentEditStockChanged;
   bool m_fMarketOpened; // 是否开市
   bool m_fGetRTStockData; // 读取实时数据标识
-  bool m_fReadingTengxunRTData; // 读取腾讯实时行情
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   int m_iCountDownDayLine; // 日线数据读取延时计数。
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
 
-  bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取
+  bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
-  bool m_fUsingNeteaseRTDataReceiverAsTester;
-  bool m_fUsingTengxunRTDataReceiverAsTester;
 
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
   long m_lTotalStock; // 股票代码总数

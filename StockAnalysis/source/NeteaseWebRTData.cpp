@@ -47,11 +47,11 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
+  if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未准备好，则使用全局股票池
     GetInquiringStr(strMiddle, 550, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle, 550, false);
+    GetInquiringStr(strMiddle, 550, false); // 目前还是使用全部股票池
   }
   CreateTotalInquiringString(strMiddle);
 
