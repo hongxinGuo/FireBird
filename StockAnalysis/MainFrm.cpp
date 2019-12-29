@@ -387,6 +387,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   // 重启系统在此处执行，容易调用各重置函数
   CString str;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   if (gl_fResetSystem) {
@@ -403,14 +404,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   //更新状态条
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
-    m_wndStatusBar.SetPaneText(2, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockCode());
-    m_wndStatusBar.SetPaneText(3, (LPCTSTR)gl_ChinaStockMarket.m_pCurrentStock->GetStockName());
+    m_wndStatusBar.SetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
+    m_wndStatusBar.SetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
-  if (gl_ChinaStockMarket.m_fCurrentEditStockChanged) {
-    str = gl_ChinaStockMarket.m_aStockCodeTemp;
+  if (gl_ChinaStockMarket.IsCurrentEditStockChanged()) {
+    str = m_aStockCodeTemp;
     m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = false;
+    gl_ChinaStockMarket.SetCurrentEditStockChanged(false);
   }
   // 显示新浪实时数据读取时间（单位为毫秒）
   char buffer[30];
@@ -540,30 +541,30 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case 'h':
   case 'z':
   if (m_lCurrentPos < 10) {
-    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = nChar;
+    m_aStockCodeTemp[m_lCurrentPos] = nChar;
     m_lCurrentPos++;
-    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+    m_aStockCodeTemp[m_lCurrentPos] = 0x000;
   }
-  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
   break;
   case 0x00d: // 回车
-  strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+  strTemp = m_aStockCodeTemp;
   if (gl_ChinaStockMarket.IsStock(strTemp)) {
     pStock = gl_ChinaStockMarket.GetStockPtr(strTemp);
     gl_ChinaStockMarket.SetShowStock(pStock);
     //m_fNeedUpdateTitle = true;
     Invalidate();
   }
-  gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
+  m_aStockCodeTemp[0] = 0x000;
   m_lCurrentPos = 0;
-  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
   break;
   case 0x008: // back space
   if (m_lCurrentPos > 0) {
     m_lCurrentPos--;
-    gl_ChinaStockMarket.m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+    m_aStockCodeTemp[m_lCurrentPos] = 0x000;
   }
-  gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+  gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
   break;
   default:
   break;
@@ -577,13 +578,14 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   CStockPtr pStock;
   long lIndex = 0;
   CString strTemp;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
+  if (pCurrentStock != nullptr) {
     switch (nChar) {
     case 45: // Ins 加入自选股票
     pStock = gl_ChinaStockMarket.GetShowStock();
     pStock->SetChoiced(true);
-    gl_ChinaStockMarket.gl_vStockChoice.push_back(pStock);
+    gl_ChinaStockMarket.PushChoiceStock(pStock);
     break;
     case 33: // PAGE UP
       // last stock
@@ -604,16 +606,16 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     //m_fNeedUpdateTitle = true;
     break;
     case 0x00d: // 回车
-    strTemp = gl_ChinaStockMarket.m_aStockCodeTemp;
+    strTemp = m_aStockCodeTemp;
     if (gl_ChinaStockMarket.IsStock(strTemp)) {
       pStock = gl_ChinaStockMarket.GetStockPtr(strTemp);
       gl_ChinaStockMarket.SetShowStock(pStock);
       //m_fNeedUpdateTitle = true;
       Invalidate();
     }
-    gl_ChinaStockMarket.m_aStockCodeTemp[0] = 0x000;
+    m_aStockCodeTemp[0] = 0x000;
     m_lCurrentPos = 0;
-    gl_ChinaStockMarket.m_fCurrentEditStockChanged = true;
+    gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
     break;
     default:
     break;
@@ -649,7 +651,7 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   pCmdUI->Enable(true); // 调试状态下永远允许执行
 #endif

@@ -46,8 +46,9 @@ public:
 
 protected:
   UINT                    m_uIdTimer;
-
   long                    m_lCurrentPos;
+
+  char m_aStockCodeTemp[30];
 
 protected:  // 控件条嵌入成员
   CMFCMenuBar       m_wndMenuBar;

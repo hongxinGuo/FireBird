@@ -327,10 +327,11 @@ void CStock::UpdateStatus(CRTDataPtr pRTData) {
 bool CStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
-  setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLine.m_strFilter += pCurrentStock->GetStockCode();
   setDayLine.m_strFilter += _T("'");
   setDayLine.m_strSort = _T("[Day]");
   setDayLine.Open();
@@ -339,7 +340,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
 
   // 装入DayLineInfo数据
   setDayLineInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineInfo.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLineInfo.m_strFilter += pCurrentStock->GetStockCode();
   setDayLineInfo.m_strFilter += _T("'");
   setDayLineInfo.m_strSort = _T("[Day]");
   setDayLineInfo.Open();
@@ -778,10 +779,12 @@ bool CStock::CheckCurrentRTData() {
 
 void CStock::ShowCurrentTransaction() {
   // 显示当前交易情况
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
-      if (gl_ChinaStockMarket.m_pCurrentStock->GetCurrentTransationVolume() > 0) {
-        gl_ChinaStockMarket.m_pCurrentStock->ReportGuadanTransaction();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  if (pCurrentStock != nullptr) {
+    if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
+      if (pCurrentStock->GetCurrentTransationVolume() > 0) {
+        pCurrentStock->ReportGuadanTransaction();
       }
     }
   }
@@ -789,9 +792,11 @@ void CStock::ShowCurrentTransaction() {
 
 void CStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
-      gl_ChinaStockMarket.m_pCurrentStock->ReportGuadan();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  if (pCurrentStock != nullptr) {
+    if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
+      pCurrentStock->ReportGuadan();
     }
   }
 }

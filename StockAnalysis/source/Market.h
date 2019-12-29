@@ -41,9 +41,7 @@ public:
 
   bool GetNeteaseWebDayLineData(void);
 
-  // 处理腾讯实时数据
-  bool TaskProcessTengxunRTData(void);
-
+  bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   void TaskSetCheckTodayActiveStockFlag(long lCurrentTime);
   bool TaskCompileTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
@@ -63,7 +61,7 @@ public:
   int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
   int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 700, bool fSkipUnactiveStock = true);
-  int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock);
+  int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
   bool StepToActiveStockIndex(int& iStockIndex);
 
   //日线历史数据读取
@@ -190,35 +188,45 @@ public:
   bool IsUsingNeteaseRTDataReceiver(void) { return m_fUsingNeteaseRTDataReceiver; }
   bool IsUsingTengxunRTDataReceiver(void) { return m_fUsingTengxunRTDataReceiver; }
 
+  long GetTotalStock(void) { return m_lTotalStock; }
+  time_t GetNewestTransactionTime(void) { return m_ttNewestTransactionTime; }
+  CStockPtr GetCurrentStockPtr(void) { return m_pCurrentStock; }
+  bool IsMarketOpened(void) { return m_fMarketOpened; }
+  bool IsGetRTData(void) { return m_fGetRTData; }
+  bool IsSaveDayLine(void) { return m_fSaveDayLine; }
+  void SetSaveDayLine(bool fFlag) { m_fSaveDayLine = fFlag; }
+
+  int GetCountDownSlowReadingRTData(void) { return m_iCountDownSlowReadingRTData; }
+  bool IsCurrentEditStockChanged(void) { return m_fCurrentEditStockChanged; }
+  void SetCurrentEditStockChanged(bool fFlag) { m_fCurrentEditStockChanged = fFlag; }
+
+  void PushChoiceStock(CStockPtr pStock) { m_vStockChoice.push_back(pStock); }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
 
 public:
 
-  CStockPtr m_pCurrentStock; // 当前显示的股票
-  char m_aStockCodeTemp[30];
+protected:
+  vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  vector<CStockPtr> m_vStockChoice; // 自选股票池
+  vector<CrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
+
   bool m_fCurrentEditStockChanged;
-  bool m_fMarketOpened; // 是否开市
-  bool m_fGetRTStockData; // 读取实时数据标识
-  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
-  int m_iCountDownDayLine; // 日线数据读取延时计数。
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
+  bool m_fMarketOpened; // 是否开市
+  bool m_fGetRTData; // 读取实时数据标识
+  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
+  CStockPtr m_pCurrentStock; // 当前显示的股票
+
+  time_t m_ttNewestTransactionTime;
 
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
 
-  vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
   long m_lTotalStock; // 股票代码总数
-
-  vector<CStockPtr> gl_vStockChoice; // 自选股票池
-
-  vector<CrweberIndexPtr> gl_vCrweberIndex; // crweber.com网站上的油运指数
-
-  time_t m_ttNewestTransactionTime;
-
-protected:
 
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
 

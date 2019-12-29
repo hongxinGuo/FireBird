@@ -122,6 +122,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   CPoint ptCurrent;
 
   CStockPtr pStock;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
   int iGraphYEnd2 = iGraphYEnd + 100;
@@ -171,10 +172,10 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   pdc->LineTo(ptCurrent);
   pdc->SelectObject(ppen);
 
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    ShowGuadan(pdc, gl_ChinaStockMarket.m_pCurrentStock, 10, 10, 500);
+  if (pCurrentStock != nullptr) {
+    ShowGuadan(pdc, pCurrentStock, 10, 10, 500);
 
-    //ShowCurrentTransactionInfo(pdc, gl_sMarketm_pCurrentStock, 200, 10);
+    //ShowCurrentTransactionInfo(pdc, pCurrentStock, 200, 10);
   }
 
   pdc->SelectObject(ppen);
@@ -189,10 +190,10 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPoint ptCurrent;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
-  if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
-  if (!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded()) return;
-  const long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->GetDayLineSize();
+  if (pCurrentStock == nullptr) return;
+  if (!pCurrentStock->IsDayLineLoaded()) return;
 
   const long lXHigh = m_rectClient.bottom / 2;
   const long lXLow = m_rectClient.bottom;
@@ -204,46 +205,41 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   // 画相对强度
   if (m_fShowRS) {
     pDC->SelectObject(&penWhite1);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLineRS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLineRS(pDC, m_rectClient);
   }
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
     pDC->SelectObject(&penYellow2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine3RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine3RS(pDC, m_rectClient);
   }
-
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
     pDC->SelectObject(&penRed2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine5RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine5RS(pDC, m_rectClient);
   }
-
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
     pDC->SelectObject(&penBlue2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine10RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine10RS(pDC, m_rectClient);
   }
-
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
     pDC->SelectObject(&penGreen2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine30RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine30RS(pDC, m_rectClient);
   }
-
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
     pDC->SelectObject(&penWhite2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine60RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine60RS(pDC, m_rectClient);
   }
-
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
     pDC->SelectObject(&penYellow2);
-    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine120RS(pDC, m_rectClient);
+    pCurrentStock->ShowDayLine120RS(pDC, m_rectClient);
   }
 
   ////////////////////////////////////////////////////////////////画日线蜡烛线
-  gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine(pDC, m_rectClient);
+  pCurrentStock->ShowDayLine(pDC, m_rectClient);
 
   pDC->SelectObject(ppen);
 }

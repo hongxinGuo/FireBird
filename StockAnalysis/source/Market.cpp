@@ -70,8 +70,7 @@ void CMarket::Reset(void) {
 
   m_fCalculatingRS = false;
 
-  m_fGetRTStockData = true;
-  m_iCountDownDayLine = 3;    // 400ms延时（100ms每次）
+  m_fGetRTData = true;
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
@@ -887,7 +886,7 @@ bool CMarket::SchedulingTask(void) {
   gl_systemTime.CalculateTime();      // 计算系统各种时间
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
-  if (m_fGetRTStockData && (m_iCountDownSlowReadingRTData <= 0)) {
+  if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
     TaskProcessWebRTDataGetFromSinaServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
