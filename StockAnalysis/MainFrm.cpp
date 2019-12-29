@@ -21,6 +21,7 @@
 
 using namespace std;
 #include<string>
+#include<thread>
 
 const int __STOCK_ANALYSIS_TIMER__ = 1;
 
@@ -585,7 +586,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     case 45: // Ins 加入自选股票
     pStock = gl_ChinaStockMarket.GetShowStock();
     pStock->SetChoiced(true);
-    gl_ChinaStockMarket.PushChoiceStock(pStock);
+    gl_ChinaStockMarket.StoreChoiceStock(pStock);
     break;
     case 33: // PAGE UP
       // last stock

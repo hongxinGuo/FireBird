@@ -200,7 +200,7 @@ public:
   bool IsCurrentEditStockChanged(void) { return m_fCurrentEditStockChanged; }
   void SetCurrentEditStockChanged(bool fFlag) { m_fCurrentEditStockChanged = fFlag; }
 
-  void PushChoiceStock(CStockPtr pStock) { m_vStockChoice.push_back(pStock); }
+  void StoreChoiceStock(CStockPtr pStock) { m_vStockChoice.push_back(pStock); }
 
 private:
   // ≥ı ºªØ

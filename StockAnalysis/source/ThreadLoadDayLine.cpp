@@ -22,5 +22,5 @@ UINT ThreadLoadDayLine(LPVOID) {
   pCurrentStock->CalculateDayLineRS();
   pCurrentStock->SetDayLineLoaded(true);
 
-  return 7;
+  return 16;
 }

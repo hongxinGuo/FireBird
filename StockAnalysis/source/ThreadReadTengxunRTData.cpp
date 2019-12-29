@@ -21,5 +21,5 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
     }
   }
 
-  return 10;
+  return 2;
 }

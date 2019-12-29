@@ -21,5 +21,5 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
     }
   }
 
-  return 13;
+  return 3;
 }

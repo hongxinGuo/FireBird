@@ -51,6 +51,8 @@ int CSinaWebRTData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool
 }
 
 void CSinaWebRTData::StartReadingThread(void) {
+  // 准备使用thread标准库改写
+  //static thread run(ThreadReadSinaRTData, this);
   AfxBeginThread(ThreadReadSinaRTData, this);
 }
 

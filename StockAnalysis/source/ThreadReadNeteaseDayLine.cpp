@@ -38,5 +38,5 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   */
   gl_ChinaStockMarket.SetReadingNeteaseDayLineDataTime(clock() - tt);
 
-  return 2; // 此线程正常返回值为2
+  return 4; // 此线程正常返回值为4
 }

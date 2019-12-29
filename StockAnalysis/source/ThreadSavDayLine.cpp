@@ -41,5 +41,6 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_SaveOneStockDayLine.Signal();
-  return 6;
+
+  return 15;
 }

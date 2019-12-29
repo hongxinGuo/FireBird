@@ -15,11 +15,8 @@ UINT ThreadCalculateRS(LPVOID) {
   const long year = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 10000;
   const long month = gl_ChinaStockMarket.GetRelativeStrongEndDay() / 100 - year * 100;
   const long day = gl_ChinaStockMarket.GetRelativeStrongEndDay() - year * 10000 - month * 100;
-
   CTime ctCurrent(year, month, day, 12, 0, 0);
-
   long lToday = gl_ChinaStockMarket.GetRelativeStrongEndDay();
-
   const CTimeSpan oneDay(1, 0, 0, 0);
 
   if (lToday >= gl_systemTime.GetDay()) return(true);
@@ -58,7 +55,7 @@ UINT ThreadCalculateRS(LPVOID) {
   gl_ChinaStockMarket.SetCalculatingRS(false);  // 计算相对强度的状态为假
   gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
 
-  return 8;
+  return 11;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -81,5 +78,6 @@ UINT ThreadCalculateThisDayRS(LPVOID pParam) {
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
   gl_SemaphoreCalculateDayLineRS.Signal();
-  return 9;
+
+  return 12;
 }

@@ -37,5 +37,5 @@ UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
     gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);  // 设置今日已处理标识
   }
 
-  return 5;
+  return 14;
 }

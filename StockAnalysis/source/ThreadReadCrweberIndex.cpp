@@ -22,5 +22,5 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
     }
   }
 
-  return 12;
+  return 5;
 }
