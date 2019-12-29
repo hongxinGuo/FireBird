@@ -412,7 +412,28 @@ bool CStock::CalculateDayLineRS(INT64 lNumber) {
     for (INT64 j = i - lNumber; j < i; j++) {
       dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
+    switch (lNumber) {
+    case 3:
+    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
+    break;
+    case 120:
     m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
   }
   return false;
 }
@@ -1019,18 +1040,12 @@ void CStock::ShowDayLine(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLineRSX(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->GetRelativeStrong() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->GetRelativeStrong() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
-  }
+bool CStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
+  int y = rectClient.bottom - dValue * rectClient.bottom / 200;
+  pDC->LineTo(rectClient.right - 1 - 3 * i, y);
+  if (3 * i > m_vDayLine.size()) return false;
+  if (rectClient.right <= 3 * i) return false; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  return true;
 }
 
 void CStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
@@ -1039,11 +1054,8 @@ void CStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->GetRelativeStrong() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->GetRelativeStrong() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->GetRelativeStrong())) break;
   }
 }
 
@@ -1053,11 +1065,8 @@ void CStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get3DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get3DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get3DayRS())) break;
   }
 }
 
@@ -1067,11 +1076,8 @@ void CStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get5DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get5DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get5DayRS())) break;
   }
 }
 
@@ -1081,11 +1087,8 @@ void CStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get10DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get10DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get10DayRS())) break;
   }
 }
 
@@ -1095,11 +1098,8 @@ void CStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get30DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get30DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get30DayRS())) break;
   }
 }
 
@@ -1109,11 +1109,8 @@ void CStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get60DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get60DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get60DayRS())) break;
   }
 }
 
@@ -1123,11 +1120,8 @@ void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
   it--;
   int y = rectClient.bottom - (*it--)->Get120DayRS() * rectClient.bottom / 200;
   pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--) {
-    y = rectClient.bottom - (*it)->Get120DayRS() * rectClient.bottom / 200;
-    pDC->LineTo(rectClient.right - 1 - 3 * i++, y);
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get120DayRS())) break;
   }
 }
 

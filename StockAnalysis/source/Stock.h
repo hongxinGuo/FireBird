@@ -281,7 +281,7 @@ public:
   bool PushDayLinePtr(CDayLinePtr pDayLine) { m_vDayLine.push_back(pDayLine); return true; }
   CDayLinePtr GetDayLinePtr(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
-  void ShowDayLineRSX(CDC* pDC, CRect rectClient);
+  bool RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue);
   void ShowDayLineRS(CDC* pDC, CRect rectClient);
   void ShowDayLine3RS(CDC* pDC, CRect rectClient);
   void ShowDayLine5RS(CDC* pDC, CRect rectClient);
