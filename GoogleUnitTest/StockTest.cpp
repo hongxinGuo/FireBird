@@ -10,7 +10,7 @@ namespace StockAnalysisTest {
   TEST(CStockTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     CStock stock;
-    EXPECT_EQ(stock.m_vDayLine.size(), 0);
+    EXPECT_EQ(stock.GetDayLineSize(), 0);
     EXPECT_FALSE(stock.IsActive());
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
@@ -748,7 +748,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->m_vDayLine.push_back(pid);
+      pStock->PushDayLinePtr(pid);
     }
     pStock->SetDayLineEndDay(10190101);
     pStock->SetStockCode(_T("sh600008"));
@@ -761,7 +761,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     for (int i = 0; i < 10; i++) {
       id.LoadData(setDayLine);
-      pid = pStock->m_vDayLine.at(i);
+      pid = pStock->GetDayLinePtr(i);
       EXPECT_EQ(setDayLine.m_Day, pid->GetDay());
       EXPECT_EQ(setDayLine.m_Market, pid->GetMarket());
       EXPECT_STREQ(setDayLine.m_StockCode, pid->GetStockCode());
@@ -796,6 +796,7 @@ namespace StockAnalysisTest {
   TEST(CStockTest, TestLoadDayLine) {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
+    CDayLinePtr pDayLine = nullptr;
     CStock id;
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
 
@@ -818,7 +819,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->m_vDayLine.push_back(pid);
+      pStock->PushDayLinePtr(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineEndDay(10190101);
@@ -830,23 +831,24 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     id.LoadDayLine(setDayLine);
     for (int i = 0; i < 10; i++) {
-      pid = id.m_vDayLine.at(i);
-      EXPECT_EQ(pStock->m_vDayLine.at(i)->GetDay(), pid->GetDay());
-      EXPECT_EQ(pStock->m_vDayLine.at(i)->GetMarket(), pid->GetMarket());
-      EXPECT_STREQ(pStock->m_vDayLine.at(i)->GetStockCode(), pid->GetStockCode());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetLastClose(), pid->GetLastClose());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetOpen(), pid->GetOpen());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetHigh(), pid->GetHigh());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetLow(), pid->GetLow());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetClose(), pid->GetClose());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetVolume(), pid->GetVolume());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetAmount(), pid->GetAmount());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetUpDown(), pid->GetUpDown());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetUpDownRate(), pid->GetUpDownRate());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetTotalValue(), pid->GetTotalValue());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetCurrentValue(), pid->GetCurrentValue());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetChangeHandRate(), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(pStock->m_vDayLine.at(i)->GetRelativeStrong(), pid->GetRelativeStrong());
+      pid = id.GetDayLinePtr(i);
+      pDayLine = pStock->GetDayLinePtr(i);
+      EXPECT_EQ(pDayLine->GetDay(), pid->GetDay());
+      EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
+      EXPECT_STREQ(pDayLine->GetStockCode(), pid->GetStockCode());
+      EXPECT_DOUBLE_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
+      EXPECT_DOUBLE_EQ(pDayLine->GetOpen(), pid->GetOpen());
+      EXPECT_DOUBLE_EQ(pDayLine->GetHigh(), pid->GetHigh());
+      EXPECT_DOUBLE_EQ(pDayLine->GetLow(), pid->GetLow());
+      EXPECT_DOUBLE_EQ(pDayLine->GetClose(), pid->GetClose());
+      EXPECT_DOUBLE_EQ(pDayLine->GetVolume(), pid->GetVolume());
+      EXPECT_DOUBLE_EQ(pDayLine->GetAmount(), pid->GetAmount());
+      EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
+      EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
+      EXPECT_DOUBLE_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
+      EXPECT_DOUBLE_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
+      EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
+      EXPECT_DOUBLE_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
     }
     setDayLine.Close();
 
@@ -885,7 +887,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->m_vDayLine.push_back(pid);
+      pStock->PushDayLinePtr(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineStartDay(19900102);
@@ -921,7 +923,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->m_vDayLine.push_back(pid);
+      pStock->PushDayLinePtr(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineStartDay(19900100);
@@ -935,17 +937,17 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestIncreaseCurrentPos) {
     CStock id;
-    long l = id.m_lCurrentPos;
-    char* p = id.m_pCurrentPos;
+    long l = id.GetCurrentPos();
+    char* p = id.GetCurrentPosPtr();
     id.IncreaseCurrentPos();
-    EXPECT_EQ(l + 1, id.m_lCurrentPos);
-    EXPECT_EQ(p + 1, id.m_pCurrentPos);
+    EXPECT_EQ(l + 1, id.GetCurrentPos());
+    EXPECT_EQ(p + 1, id.GetCurrentPosPtr());
     id.IncreaseCurrentPos(10);
-    EXPECT_EQ(l + 11, id.m_lCurrentPos);
-    EXPECT_EQ(p + 11, id.m_pCurrentPos);
+    EXPECT_EQ(l + 11, id.GetCurrentPos());
+    EXPECT_EQ(p + 11, id.GetCurrentPosPtr());
     id.ResetCurrentPos();
-    EXPECT_EQ(l, id.m_lCurrentPos);
-    EXPECT_EQ(p, id.m_pCurrentPos);
-    EXPECT_EQ(p, id.m_pDayLineBuffer);
+    EXPECT_EQ(l, id.GetCurrentPos());
+    EXPECT_EQ(p, id.GetCurrentPosPtr());
+    EXPECT_EQ(p, id.GetDayLineBufferPtr());
   }
 }

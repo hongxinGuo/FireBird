@@ -1314,7 +1314,7 @@ bool CMarket::SaveDayLineData(void) {
 
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      if (pStock->m_vDayLine.size() > 0) {
+      if (pStock->GetDayLineSize() > 0) {
         pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
         pTransfer->m_pStock = pStock;
         AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
@@ -1335,7 +1335,7 @@ bool CMarket::SaveDayLineData(void) {
 
 bool CMarket::ClearAllDayLineVector(void) {
   for (auto pStock : m_vChinaMarketAStock) {
-    pStock->m_vDayLine.clear();
+    pStock->ClearDayLineContainer();
   }
 
   return true;

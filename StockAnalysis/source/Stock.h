@@ -275,6 +275,25 @@ public:
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
 
+  // 日线历史数据
+  size_t GetDayLineSize(void) { return m_vDayLine.size(); }
+  void ClearDayLineContainer(void) { m_vDayLine.clear(); }
+  bool PushDayLinePtr(CDayLinePtr pDayLine) { m_vDayLine.push_back(pDayLine); return true; }
+  CDayLinePtr GetDayLinePtr(long lIndex) { return m_vDayLine.at(lIndex); }
+  void ShowDayLine(CDC* pDC, CRect rectClient);
+  void ShowDayLineRSX(CDC* pDC, CRect rectClient);
+  void ShowDayLineRS(CDC* pDC, CRect rectClient);
+  void ShowDayLine3RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine5RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine10RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine30RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine60RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine120RS(CDC* pDC, CRect rectClient);
+
+  long GetCurrentPos(void) { return m_lCurrentPos; }
+  char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
+  char* GetDayLineBufferPtr(void) { return m_pDayLineBuffer; }
+
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
@@ -285,13 +304,6 @@ public:
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
 
 public:
-
-  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
-  char* m_pDayLineBuffer; // 日线读取缓冲区
-  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  INT64 m_lDayLineBufferLength;
-  char* m_pCurrentPos;
-  INT64 m_lCurrentPos;
 
 protected:
   CStockBasicInfo m_stockBasicInfo;
@@ -325,6 +337,14 @@ protected:
 
   queue<CRTDataPtr> m_queueRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
+
+  // 日线历史数据
+  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
+  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
+  char* m_pDayLineBuffer; // 日线读取缓冲区
+  INT64 m_lDayLineBufferLength;
+  char* m_pCurrentPos;
+  INT64 m_lCurrentPos;
 
 private:
   bool m_fDebugLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错

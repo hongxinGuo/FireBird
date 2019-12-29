@@ -192,170 +192,59 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
 
   if (gl_ChinaStockMarket.m_pCurrentStock == nullptr) return;
   if (!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded()) return;
-  const long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.size();
+  const long lDayLineNumber = gl_ChinaStockMarket.m_pCurrentStock->GetDayLineSize();
 
   const long lXHigh = m_rectClient.bottom / 2;
   const long lXLow = m_rectClient.bottom;
   const long lYEnd = m_rectClient.right;
-  long i = 0;
-  long y = 0;
   ppen = pDC->SelectObject(&penRed1);
   pDC->MoveTo(m_rectClient.right, m_rectClient.bottom * 3 / 4);
   pDC->LineTo(0, m_rectClient.bottom * 3 / 4);
-  // 显示各相对强度
-  vector<CDayLinePtr>::iterator it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-  long lDay = 0;
 
   // 画相对强度
   if (m_fShowRS) {
     pDC->SelectObject(&penWhite1);
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->GetRelativeStrong() * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->GetRelativeStrong() * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLineRS(pDC, m_rectClient);
   }
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
     pDC->SelectObject(&penYellow2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d3DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d3DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i++, y);
-      lDay = (*it)->GetDay();
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine3RS(pDC, m_rectClient);
   }
 
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
     pDC->SelectObject(&penRed2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d5DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d5DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
-      lDay = (*it)->GetDay();
-      i++;
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine5RS(pDC, m_rectClient);
   }
 
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
     pDC->SelectObject(&penBlue2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d10DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d10DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
-      lDay = (*it)->GetDay();
-      i++;
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine10RS(pDC, m_rectClient);
   }
 
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
     pDC->SelectObject(&penGreen2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d30DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d30DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
-      i++;
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine30RS(pDC, m_rectClient);
   }
 
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
     pDC->SelectObject(&penWhite2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d60DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d60DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
-      i++;
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine60RS(pDC, m_rectClient);
   }
 
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
     pDC->SelectObject(&penYellow2);
-    it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-    i = 1;
-    it--;
-    y = m_rectClient.bottom - (*it--)->m_d120DayRS * m_rectClient.bottom / 200;
-    pDC->MoveTo(m_rectClient.right - 1, y);
-    for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-      y = m_rectClient.bottom - (*it)->m_d120DayRS * m_rectClient.bottom / 200;
-      pDC->LineTo(m_rectClient.right - 1 - 3 * i, y);
-      i++;
-      if (3 * i > lDayLineNumber) break;
-      if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-    }
+    gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine120RS(pDC, m_rectClient);
   }
 
   ////////////////////////////////////////////////////////////////画日线蜡烛线
-  long lHigh = 0;
-  it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-  it--;
-  i = 0;
-  long lLow = (*it)->GetLow();
-  for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-    if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
-    if ((*it)->GetLow() > 0) {
-      if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
-    }
-    if (3 * i > lDayLineNumber) break;
-    if (m_rectClient.right <= 3 * i) break; // 画到
-    else i++;
-  }
+  gl_ChinaStockMarket.m_pCurrentStock->ShowDayLine(pDC, m_rectClient);
 
-  it = gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.end();
-  it--;
-  i = 0;
-  long x = 0;
-  pDC->SelectObject(&penWhite1);
-  for (; it != gl_ChinaStockMarket.m_pCurrentStock->m_vDayLine.begin(); it--) {
-    x = m_rectClient.right - 2 - i * 3;
-    y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
-    pDC->MoveTo(x, y);
-    y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * m_rectClient.Height();
-    pDC->LineTo(x, y);
-    lDay = (*it)->GetDay();
-    i++;
-    if (3 * i > lDayLineNumber) break;
-    if (m_rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-  }
   pDC->SelectObject(ppen);
 }
 

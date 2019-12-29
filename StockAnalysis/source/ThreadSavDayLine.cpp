@@ -32,7 +32,7 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
   pStock = pTransfer->m_pStock;
   fDataSaved = pStock->SaveDayLine();
   pStock->SetDayLineLoaded(false);
-  pStock->m_vDayLine.clear();
+  pStock->ClearDayLineContainer();
   delete pTransfer;
   pTransfer = nullptr;
   gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();

@@ -55,11 +55,17 @@
     <Filter Include="源文件\windows界面">
       <UniqueIdentifier>{7f374a32-c51a-484f-9711-e3e79cc75b9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Market&amp;Stock">
-      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
+    <Filter Include="头文件\Stock">
+      <UniqueIdentifier>{95ea4f37-63d6-42c7-8c2c-732d1e8f4bd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Market&amp;Stock">
+    <Filter Include="头文件\Market">
       <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Stock">
+      <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Market">
+      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,16 +127,7 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Market.h">
-      <Filter>头文件\Market&amp;Stock</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Stock.h">
-      <Filter>头文件\Market&amp;Stock</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StockBasicInfo.h">
-      <Filter>头文件\Market&amp;Stock</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StockCalculatedInfo.h">
-      <Filter>头文件\Market&amp;Stock</Filter>
+      <Filter>头文件\Market</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndex.h">
       <Filter>头文件\Crweber.com</Filter>
@@ -191,6 +188,15 @@
     </ClInclude>
     <ClInclude Include="source\WebDataReceived.h">
       <Filter>头文件\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Stock.h">
+      <Filter>头文件\Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockBasicInfo.h">
+      <Filter>头文件\Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StockCalculatedInfo.h">
+      <Filter>头文件\Stock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -270,16 +276,7 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\Market.cpp">
-      <Filter>源文件\Market&amp;Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Stock.cpp">
-      <Filter>源文件\Market&amp;Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockBasicInfo.cpp">
-      <Filter>源文件\Market&amp;Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockCalculatedInfo.cpp">
-      <Filter>源文件\Market&amp;Stock</Filter>
+      <Filter>源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndex.cpp">
       <Filter>源文件\Crweber.com</Filter>
@@ -340,6 +337,15 @@
     </ClCompile>
     <ClCompile Include="source\TengxunWebRTData.cpp">
       <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Stock.cpp">
+      <Filter>源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockBasicInfo.cpp">
+      <Filter>源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StockCalculatedInfo.cpp">
+      <Filter>源文件\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
