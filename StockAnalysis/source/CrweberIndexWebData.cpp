@@ -15,13 +15,6 @@ CCrweberIndexWebData::CCrweberIndexWebData() : CWebData() {
 CCrweberIndexWebData::~CCrweberIndexWebData() {
 }
 
-bool CCrweberIndexWebData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
 void CCrweberIndexWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 

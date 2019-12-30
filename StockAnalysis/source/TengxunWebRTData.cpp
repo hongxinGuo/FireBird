@@ -13,13 +13,6 @@ CTengxunWebRTData::CTengxunWebRTData() : CWebData() {
 CTengxunWebRTData::~CTengxunWebRTData() {
 }
 
-bool CTengxunWebRTData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
 void CTengxunWebRTData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());

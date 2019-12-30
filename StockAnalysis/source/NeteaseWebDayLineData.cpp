@@ -15,13 +15,6 @@ CNeteaseWebDayLineData::CNeteaseWebDayLineData() : CWebData() {
 CNeteaseWebDayLineData::~CNeteaseWebDayLineData() {
 }
 
-bool CNeteaseWebDayLineData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
 /////////////////////////////////////////////////////////////////////////////////
 //
 // 查询字符串的格式为：

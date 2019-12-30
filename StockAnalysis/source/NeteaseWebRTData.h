@@ -7,7 +7,6 @@ public:
   CNeteaseWebRTData();
   ~CNeteaseWebRTData();
 
-  virtual bool GetWebData(void) override;
   virtual bool ReportStatus(long lNumberOfData) override;
   virtual void InquireNextWebData(void) override;
   virtual int GetInquiringStr(CString& strInquire, long lTotalNumber = 600, bool fSkipUnactiveStock = true) override;

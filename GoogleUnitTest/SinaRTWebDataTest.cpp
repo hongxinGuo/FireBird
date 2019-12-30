@@ -19,6 +19,15 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 0);
     // 线程无法测试，故只测试初始状态。
   }
+
+  TEST(SinaWebRTDataTest, TestGetInquiringStr) {
+    CString str;
+    EXPECT_EQ(gl_SinaWebRTData.GetInquiringStr(str, 900, false), 900);
+  }
+
+  TEST(SinaWebRTDataTest, TestReportStatus) {
+    EXPECT_TRUE(gl_SinaWebRTData.ReportStatus(1));
+  }
 }
 
 // 由于基类CWebData为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试

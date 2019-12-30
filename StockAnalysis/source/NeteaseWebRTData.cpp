@@ -31,13 +31,6 @@ CNeteaseWebRTData::CNeteaseWebRTData() : CWebData() {
 CNeteaseWebRTData::~CNeteaseWebRTData() {
 }
 
-bool CNeteaseWebRTData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
 bool CNeteaseWebRTData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
