@@ -770,12 +770,12 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_High) * 1000, pid->GetHigh());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_Low) * 1000, pid->GetLow());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_Close) * 1000, pid->GetClose());
-      EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Volume), pid->GetVolume());
-      EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Amount), pid->GetAmount());
+      EXPECT_EQ(atoll(setDayLine.m_Volume), pid->GetVolume());
+      EXPECT_EQ(atoll(setDayLine.m_Amount), pid->GetAmount());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown), pid->GetUpDown());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), pid->GetUpDownRate());
-      EXPECT_DOUBLE_EQ(atoll(setDayLine.m_TotalValue), pid->GetTotalValue());
-      EXPECT_DOUBLE_EQ(atoll(setDayLine.m_CurrentValue), pid->GetCurrentValue());
+      EXPECT_EQ(atoll(setDayLine.m_TotalValue), pid->GetTotalValue());
+      EXPECT_EQ(atoll(setDayLine.m_CurrentValue), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), pid->GetChangeHandRate());
       EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), pid->GetRelativeStrong());
       setDayLine.MoveNext();
@@ -836,17 +836,17 @@ namespace StockAnalysisTest {
       EXPECT_EQ(pDayLine->GetDay(), pid->GetDay());
       EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
       EXPECT_STREQ(pDayLine->GetStockCode(), pid->GetStockCode());
-      EXPECT_DOUBLE_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
-      EXPECT_DOUBLE_EQ(pDayLine->GetOpen(), pid->GetOpen());
-      EXPECT_DOUBLE_EQ(pDayLine->GetHigh(), pid->GetHigh());
-      EXPECT_DOUBLE_EQ(pDayLine->GetLow(), pid->GetLow());
-      EXPECT_DOUBLE_EQ(pDayLine->GetClose(), pid->GetClose());
-      EXPECT_DOUBLE_EQ(pDayLine->GetVolume(), pid->GetVolume());
-      EXPECT_DOUBLE_EQ(pDayLine->GetAmount(), pid->GetAmount());
+      EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
+      EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
+      EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
+      EXPECT_EQ(pDayLine->GetLow(), pid->GetLow());
+      EXPECT_EQ(pDayLine->GetClose(), pid->GetClose());
+      EXPECT_EQ(pDayLine->GetVolume(), pid->GetVolume());
+      EXPECT_EQ(pDayLine->GetAmount(), pid->GetAmount());
       EXPECT_DOUBLE_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
       EXPECT_DOUBLE_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
-      EXPECT_DOUBLE_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
-      EXPECT_DOUBLE_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
+      EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
+      EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
       EXPECT_DOUBLE_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
     }
@@ -937,7 +937,7 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestIncreaseCurrentPos) {
     CStock id;
-    long l = id.GetCurrentPos();
+    INT64 l = id.GetCurrentPos();
     char* p = id.GetCurrentPosPtr();
     id.IncreaseCurrentPos();
     EXPECT_EQ(l + 1, id.GetCurrentPos());

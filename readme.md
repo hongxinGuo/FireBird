@@ -23,7 +23,7 @@
 
 ![Image Text](Img/Microsoft%20ODBC%20Option2.png)
 
-3.如果您的系统中没有Visual Studio环境的话，需要下载VS2019再发行包(https://visualstudio.microsoft.com/zh-hans/downloads/?rr=https%3A%2F%2Fsupport.microsoft.com%2Fen-us%2Fhelp%2F2977003%2Fthe-latest-supported-visual-c-downloads )，本系统默认编译为64位系统，故而需要选择X64。
+3.如果您的系统中没有Visual Studio环境的话，需要下载VS2019再发行包(https://visualstudio.microsoft.com/zh-hans/downloads/?rr=https%3A%2F%2Fsupport.microsoft.com%2Fen-us%2Fhelp%2F2977003%2Fthe-latest-supported-visual-c-downloads )，本系统默认编译为64位系统。
 
 4.将StockAnalysis放入工作目录中。
 

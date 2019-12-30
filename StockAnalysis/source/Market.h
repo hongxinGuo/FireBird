@@ -18,7 +18,7 @@
 #include"CrweberIndexWebData.h"
 #include"CrweberIndex.h"
 
-#include"semaphore.h"
+#include"Semaphore.h"
 using namespace MyAccessory;
 
 using namespace std;
@@ -27,11 +27,11 @@ using namespace std;
 #include<atomic>
 
 // 信号量必须声明为全局变量（为了初始化）
-extern semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
-extern semaphore gl_SemaphoreCalculateDayLineRS;
-extern semaphore gl_ProcessSinaRTDataQueue;
-extern semaphore gl_ProcessTengxunRTDataQueue;
-extern semaphore gl_ProcessNeteaseRTDataQueue;
+extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SemaphoreCalculateDayLineRS;
+extern Semaphore gl_ProcessSinaRTDataQueue;
+extern Semaphore gl_ProcessTengxunRTDataQueue;
+extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
 extern CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
@@ -270,6 +270,11 @@ protected:
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
+
+  CString m_strSinaRTDataInquiringStr;
+  CString m_strTengxunRTDataInquiringStr;
+  CString m_strNeteaseRTDataInquiringStr;
+  CString m_strNeteaseDayLineDataInquiringStr;
 
   long m_lTotalStock; // 股票代码总数
 

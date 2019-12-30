@@ -210,8 +210,8 @@ public:
 
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -290,7 +290,7 @@ public:
   void ShowDayLine60RS(CDC* pDC, CRect rectClient);
   void ShowDayLine120RS(CDC* pDC, CRect rectClient);
 
-  long GetCurrentPos(void) { return m_lCurrentPos; }
+  INT64 GetCurrentPos(void) { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
   char* GetDayLineBufferPtr(void) { return m_pDayLineBuffer; }
 
@@ -344,7 +344,7 @@ protected:
   char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;
   char* m_pCurrentPos;
-  INT64 m_lCurrentPos;
+  INT64 m_llCurrentPos;
 
 private:
   bool m_fDebugLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错

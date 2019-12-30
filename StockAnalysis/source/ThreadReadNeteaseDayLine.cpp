@@ -20,9 +20,6 @@
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseWebDayLineData* pNeteaseWebDayLineData = (CNeteaseWebDayLineData*)pParam;
-  //static int siDelayTime = 50;
-  //static bool fStarted = false;
-
   const clock_t tt = clock();
 
   if (pNeteaseWebDayLineData->ReadWebData(/*siDelayTime*/ 50, 30, 20)) {
@@ -30,12 +27,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseWebDayLineData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseWebDayLineData);
   }
-  /*
-  if (!fStarted) {
-    fStarted = true;
-    siDelayTime = 50;
-  }
-  */
   gl_ChinaStockMarket.SetReadingNeteaseDayLineDataTime(clock() - tt);
 
   return 4; // 此线程正常返回值为4

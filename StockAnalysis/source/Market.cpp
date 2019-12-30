@@ -17,11 +17,11 @@
 #include"SetCrweberIndex.h"
 
 // 信号量必须声明为全局变量（为了初始化）
-semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
-semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
-semaphore gl_ProcessTengxunRTDataQueue(1);
-semaphore gl_ProcessNeteaseRTDataQueue(1);
-semaphore gl_SemaphoreCalculateDayLineRS(8);
+Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
+Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
+Semaphore gl_ProcessTengxunRTDataQueue(1);
+Semaphore gl_ProcessNeteaseRTDataQueue(1);
+Semaphore gl_SemaphoreCalculateDayLineRS(8);
 
 CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
 CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
@@ -289,6 +289,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     m_iDayLineNeedUpdate++;
   }
   m_lTotalStock = m_vChinaMarketAStock.size();
+  ASSERT(m_lTotalStock == m_iDayLineNeedUpdate);
   ASSERT(m_iDayLineNeedUpdate == 12000); // 目前总查询股票数为12000个。
   return true;
 }
@@ -321,7 +322,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(siCounter);
     }
-    else if (pStock->GetDayLineEndDay() >= gl_systemTime.GetLastTradeDay()) { // 上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+    else if (pStock->GetDayLineEndDay() >= gl_systemTime.GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(siCounter);
@@ -652,6 +653,7 @@ bool CMarket::StepToActiveStockIndex(int& iStockIndex) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 bool CMarket::ProcessRTData(void) {
+  ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
       pStock->ProcessRTData();
@@ -873,13 +875,13 @@ void CMarket::CheckTengxunRTData(CRTDataPtr pRTData) {
     if ((pStock = gl_ChinaStockMarket.GetStockPtr(pRTData->GetStockCode())) != nullptr) {
       if (!pStock->IsActive()) {
         str = pStock->GetStockCode();
-        str += _T(" 腾讯实时检测到不处于活跃状态");
+        str += _T("腾讯实时检测到不处于活跃状态");
         //gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
     }
     else {
       str = pRTData->GetStockCode();
-      str += _T(" 无效股票代码（腾讯实时数据）");
+      str += _T("无效股票代码（腾讯实时数据）");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
     }
   }
@@ -1042,10 +1044,8 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
-      if (gl_ThreadStatus.IsRTDataNeedCalculate()) { // 只有市场初始态设置好后，才允许处理实时数据。
-        gl_ChinaStockMarket.ProcessRTData();
-        gl_ThreadStatus.SetRTDataNeedCalculate(false);
-      }
+      ProcessRTData();
+      gl_ThreadStatus.SetRTDataNeedCalculate(false);
       gl_ThreadStatus.SetCalculatingRTData(false);
     }
   }

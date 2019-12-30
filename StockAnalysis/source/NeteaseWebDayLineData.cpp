@@ -22,6 +22,12 @@ bool CNeteaseWebDayLineData::GetWebData(void) {
   return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////
+//
+// 查询字符串的格式为：
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 void CNeteaseWebDayLineData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
@@ -50,13 +56,14 @@ void CNeteaseWebDayLineData::StartReadingThread(void) {
 }
 
 void CNeteaseWebDayLineData::SetDownLoadingStockCode(CString strStockCode) {
-  CString str = strStockCode.Left(1);
+  char* p = strStockCode.GetBuffer();
+  char cFirstChar = *p;
   CString strRight = strStockCode.Right(6);
-  if (str.Compare(_T("0")) == 0) {
+  if (cFirstChar == '0') {
     m_strDownLoadingStockCode = _T("sh");
     m_strDownLoadingStockCode += strRight;
   }
-  else if (str.Compare(_T("1")) == 0) {
+  else if (cFirstChar == '1') {
     m_strDownLoadingStockCode = _T("sz");
     m_strDownLoadingStockCode += strRight;
   }

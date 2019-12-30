@@ -31,7 +31,7 @@ bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lTh
   m_pCurrentReadPos = GetBufferAddr();
 
   try {
-    SetReadingWebData(true);
+    ASSERT(IsReadingWebData());
     SetByteReaded(0);
     /*pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString(), 1,
                                                      INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));

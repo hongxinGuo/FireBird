@@ -230,7 +230,7 @@ public:
 public:
 
 protected:
-  long m_lDataSource; // 实时数据来源标识。1：新浪网站；2：腾讯网站；3：网易网站；。。。
+  long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
   // Serialized data
   time_t m_time;	// 交易发生时的时间
   WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
