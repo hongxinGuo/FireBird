@@ -1,6 +1,7 @@
 #include"stdafx.h"
 
 #include"Accessory.h"
+#include"Market.h"
 #include "CrweberIndex.h"
 
 CCrweberIndex::CCrweberIndex() {

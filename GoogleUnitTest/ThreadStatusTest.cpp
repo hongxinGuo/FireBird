@@ -1,8 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"globedef.h"
-
+#include"Market.h"
 #include"ThreadStatus.h"
 
 namespace StockAnalysisTest {

@@ -3,6 +3,7 @@
 #include"Accessory.h"
 #include"RTData.h"
 #include"SetDayLineToday.h"
+#include"SetDayLine.h"
 
 using namespace std;
 #include<array>

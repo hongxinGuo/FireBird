@@ -17,7 +17,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
 
     return tt;
   }
-  catch (exception&) {
+  catch (exception & e) {
     TRACE(_T("ConvertBufferToTime“Ï≥£\n"));
     return 0;
   }

@@ -16,6 +16,39 @@
 #include"SetOption.h"
 #include"SetCrweberIndex.h"
 
+// 信号量必须声明为全局变量（为了初始化）
+semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
+semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
+semaphore gl_ProcessTengxunRTDataQueue(1);
+semaphore gl_ProcessNeteaseRTDataQueue(1);
+semaphore gl_SemaphoreCalculateDayLineRS(8);
+
+CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
+CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
+CNeteaseWebRTData gl_NeteaseWebRTData; // 网易实时数据采集
+CNeteaseWebDayLineData gl_NeteaseWebDayLineData; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSecond; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataThird; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFourth; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFive; // 网易日线历史数据
+CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSix; // 网易日线历史数据
+CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
+
+CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
+//CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
+CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
+CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
+
+CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
+CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
+CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
+CQueueWebRTData gl_QueueCrweberdotcomWebData; // crweber.com网络数据暂存队列
+
+CCrweberIndex gl_CrweberIndex;
+CCrweberIndex gl_CrweberIndexLast;
+
+const int gl_cMaxSavingOneDayLineThreads = 4;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

@@ -1,6 +1,6 @@
 #include"stdafx.h"
 #include"pch.h"
-#include"globedef.h"
+#include"Market.h"
 
 #include"RTData.h"
 

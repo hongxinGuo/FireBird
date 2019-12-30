@@ -110,10 +110,6 @@ CMainFrame::~CMainFrame() {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }
 
-  while (gl_SinaWebRTData.IsReadingWebData()) {
-    Sleep(1); // 等待实时数据读取线程结束
-  }
-
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
   gl_ChinaStockMarket.UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
@@ -456,7 +452,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
 #ifndef _DEBUG
     // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序（此功能目前不再使用了。因现在可以每分钟存储临时数据）
-    if (gl_ChinaStockMarket.m_fMarketOpened || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
+    if (gl_ChinaStockMarket.IsMarketOpened() || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
       //return; // 无动作
     }
 #endif

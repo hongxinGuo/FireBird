@@ -1,8 +1,5 @@
 #include"globedef.h"
 
-#include "QueueRTData.h"
-#include "SystemMessage.h"
-
 CPriorityQueueRTData::CPriorityQueueRTData() {
 }
 

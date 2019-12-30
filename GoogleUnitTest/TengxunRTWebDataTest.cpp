@@ -1,8 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"globedef.h"
-
+#include"Market.h"
 #include"TengxunWebRTData.h"
 
 using namespace std;

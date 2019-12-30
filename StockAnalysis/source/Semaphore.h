@@ -1,3 +1,11 @@
+///////////////////////////////////////////////////////////////////////////
+//
+// C++11中没有信号量，故而采用mutex和condition_variable标准库构造semaphore
+// 公共接口：
+// Wait() : P操作，申请资源
+// Signal() : V操作，释放资源
+//
+///////////////////////////////////////////////////////////////////////////
 #pragma once
 
 using namespace std;
@@ -5,12 +13,12 @@ using namespace std;
 #include<condition_variable>
 
 namespace MyAccessory {
-  class Semaphore
+  class semaphore
   {
   public:
-    Semaphore(long count = 1) noexcept : m_count(count) {}
-    Semaphore(const Semaphore&) = delete;
-    Semaphore& operator=(const Semaphore&) = delete;
+    semaphore(long count = 1) noexcept : m_count(count) {}
+    semaphore(const semaphore&) = delete;
+    semaphore& operator=(const semaphore&) = delete;
 
     void SetMaxCount(long lCount = 1) { m_count = lCount; }
     long GetMaxCount(void) { return m_count; }
