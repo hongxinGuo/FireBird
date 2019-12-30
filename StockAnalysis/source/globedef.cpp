@@ -11,7 +11,7 @@ CSystemTime gl_systemTime; // 系统时间汇总。
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
-atomic<bool> gl_ExitingSystem = false; //  系统退出标识，用于终止其他线程。
+atomic_bool gl_ExitingSystem = false; //  系统退出标识，用于终止其他线程。
 bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 bool gl_fResetSystem = false; // 系统重启标识
 

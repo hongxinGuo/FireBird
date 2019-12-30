@@ -83,4 +83,6 @@ public:
   afx_msg void OnRebuildDaylineRS();
   afx_msg void OnBuildResetSystem();
   afx_msg void OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI);
+  afx_msg void OnBuildAbortBuindingRs();
+  afx_msg void OnUpdateBuildAbortBuindingRs(CCmdUI* pCmdUI);
 };

@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
+  ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnBuildAbortBuindingRs)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateBuildAbortBuindingRs)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -469,7 +471,6 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  gl_ChinaStockMarket.SetCalculatingRS(true);
   AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
@@ -627,7 +628,6 @@ void CMainFrame::OnRebuildDaylineRS() {
 
   gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
   gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
-  gl_ChinaStockMarket.SetCalculatingRS(true);
   AfxBeginThread(ThreadCalculateRS, nullptr);
 }
 
@@ -650,6 +650,20 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
     pCmdUI->Enable(true);
   }
 #else
-  pCmdUI->Enable(true); // 调试状态下永远允许执行
+  // 调试状态下永远允许执行
+  if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
+  else pCmdUI->Enable(true); 
 #endif
+  }
+
+void CMainFrame::OnBuildAbortBuindingRs() {
+  // TODO: Add your command handler code here
+  ASSERT(gl_fExitingCalculatingRS == false);
+  gl_fExitingCalculatingRS = true;
+}
+
+void CMainFrame::OnUpdateBuildAbortBuindingRs(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(true);
+  else pCmdUI->Enable(false);
 }

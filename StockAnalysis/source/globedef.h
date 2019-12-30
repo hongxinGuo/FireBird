@@ -49,7 +49,7 @@ extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 extern deque<CString> gl_dequeRTStockInquire; // 申请实时股票信息的股票队列
 extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列。
 
-extern atomic<bool> gl_ExitingSystem; //  系统退出标识，用于终止其他线程。
+extern atomic_bool gl_ExitingSystem; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRS; // 用于通知工作线程退出的信号
 extern bool gl_fResetSystem; // 系统重启标识
 

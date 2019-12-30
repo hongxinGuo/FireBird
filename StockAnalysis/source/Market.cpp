@@ -67,6 +67,11 @@ CMarket::CMarket(void) : CObject() {
   Reset();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 全局变量的解析位于程序退出的最后，要晚于CMainFrame的解析。故而如果要想将系统退出的过程放在这里，需要研究。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CMarket::~CMarket() {
 }
 
@@ -100,8 +105,6 @@ void CMarket::Reset(void) {
   m_fTodayTempDataLoaded = false;
 
   m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。
-
-  m_fCalculatingRS = false;
 
   m_fGetRTData = true;
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次

@@ -177,9 +177,6 @@ public:
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
-  void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
-
   bool IsUpdateStockCodeDB(void);
   void ClearUpdateStockCodeDBFlag(void);
 
@@ -293,8 +290,6 @@ protected:
   bool m_fCurrentStockChanged; // 当前选择的股票改变了
   INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
   INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
-
-  bool m_fCalculatingRS;
 
   // 系统状态区
   bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统

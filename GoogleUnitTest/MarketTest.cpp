@@ -746,14 +746,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetReadingTengxunRTDataTime(), tt);
   }
 
-  TEST_F(CMarketTest, TesstIsCalculatingRS) {
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCalculatingRS());
-    gl_ChinaStockMarket.SetCalculatingRS(true);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsCalculatingRS());
-    gl_ChinaStockMarket.SetCalculatingRS(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCalculatingRS());
-  }
-
   TEST_F(CMarketTest, TesstIsTodayTempRTDataLoaded) {
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayTempRTDataLoaded());
     gl_ChinaStockMarket.SetTodayTempRTDataLoaded(true);
