@@ -39,7 +39,7 @@
 #define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
 #define ID_COMPILE_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
-#define ID_CALCULATE_RELATIVE_STRONG    32773
+#define ID_CALCULATE_TODAY_RELATIVE_STRONG    32773
 #define ID_SAVE_RTDATA                  32774
 #define ID_DownLoad_DayLine             32775
 #define ID_SAVE_DAYLINE_DATA            32776
@@ -61,6 +61,9 @@
 #define ID_REBUILD_DAYLINE_RS           32792
 #define ID_BUILD_32793                  32793
 #define ID_BUILD_RESET_SYSTEM           32794
+#define ID_BUILD_32795                  32795
+#define ID_BUILD_                       32796
+#define ID_BUILD_ABORT_BUINDING_RS      32797
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -71,11 +74,11 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32795
+#define _APS_NEXT_COMMAND_VALUE         32799
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

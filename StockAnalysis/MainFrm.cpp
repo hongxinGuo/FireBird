@@ -247,6 +247,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   return 0;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//
+//系统更新任务由CMarket类中的调度函数完成，
+//
+/////////////////////////////////////////////////////////////////////////////////////////////
+bool CMainFrame::SchedulingTask(void) {
+  gl_ChinaStockMarket.SchedulingTask();
+  return true;
+}
+
 bool CMainFrame::ResetSystem(void) {
   CString str;
   TRACE(_T("开始重置系统\n"));
@@ -398,10 +408,25 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
     gl_fResetSystem = false;
   }
 
-  // 调用主调度函数。系统更新任务由CMarket类中的调度函数完成，CMainFrame只执行更新状态任务
-  gl_ChinaStockMarket.SchedulingTask();
+  // 调用主调度函数,CMainFrame只执行更新状态任务
+  SchedulingTask();
+
+  UpdateStatus();
+
+  if (gl_fTestMode) {
+    str = _T("警告：使用了Test驱动");
+    gl_systemMessage.PushInformationMessage(str);
+  }
+
+  CMDIFrameWndEx::OnTimer(nIDEvent);
+}
+
+void CMainFrame::UpdateStatus(void) {
+  CString str;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   //更新状态条
+  // 显示股票代码和名称
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
     m_wndStatusBar.SetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
     m_wndStatusBar.SetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
@@ -432,13 +457,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   //更新时间
   m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
-
-  if (gl_fTestMode) {
-    str = _T("警告：使用了Test驱动");
-    gl_systemMessage.PushInformationMessage(str);
-  }
-
-  CMDIFrameWndEx::OnTimer(nIDEvent);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -452,18 +470,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
-#ifndef _DEBUG
-    // 如果是发行版本，则不允许在开市时或者尚未处理本日股票数据前退出程序（此功能目前不再使用了。因现在可以每分钟存储临时数据）
-    if (gl_ChinaStockMarket.IsMarketOpened() || !gl_ChinaStockMarket.IsTodayStockCompiled()) {
-      //return; // 无动作
+    if (!gl_ThreadStatus.IsSavingDayLine()) { // 如果没有正在处理日线历史数据
+      gl_ExitingSystem = true; // 提示各工作线程中途退出
     }
-#endif
-    gl_ExitingSystem = true; // 提示各工作线程中途退出
-    if (gl_ThreadStatus.IsSavingDayLine()) { // 如果正在处理日线历史数据
-      while (gl_ThreadStatus.IsSavingDayLine()) {
-        Sleep(1); // 等待处理日线历史数据的线程退出
-      }
-    }
+    else return;
   }
 
   CMDIFrameWndEx::OnSysCommand(nID, lParam);
@@ -645,7 +655,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

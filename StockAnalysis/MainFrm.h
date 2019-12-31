@@ -25,6 +25,8 @@ public:
 
   // 操作
 public:
+  bool SchedulingTask(void);
+  void UpdateStatus(void);
 
 private:
 

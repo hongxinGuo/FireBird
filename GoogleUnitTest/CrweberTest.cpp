@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include"Market.h"
 #include"crweberIndex.h"
 
 namespace StockAnalysisTest {
@@ -40,5 +41,102 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(Index.GetAFRAMAX_3YEAR(), 0);
     EXPECT_DOUBLE_EQ(Index.GetMR_3YEAR(), 0);
     EXPECT_DOUBLE_EQ(Index.GetHANDY_3YEAR(), 0);
+  }
+
+  TEST(CrwberTest, TestLoadData) {
+    CSetCrweberIndex setCrweberIndex;
+    CCrweberIndex id, id2;
+    id.m_lDay = 20000101;
+    id.m_dTD1 = 1.0;
+    id.m_dTD2 = 2.0;
+    id.m_dTD3C = 3.0;
+    id.m_dTD5 = 4.0;
+    id.m_dTD6 = 5.0;
+    id.m_dTD7 = 6.0;
+    id.m_dTD8 = 7.0;
+    id.m_dTD9 = 8.0;
+    id.m_dTD12 = 9.0;
+    id.m_dTD15 = 10.0;
+    id.m_dTD19 = 11.0;
+    id.m_dTD20 = 12.0;
+    id.m_dTD21 = 13.0;
+    id.m_dVLCC_USGSPORE = 22.0;
+    id.m_dSUEZMAX_CBSUSG = 23.0;
+    id.m_dTC1 = 24.0;
+    id.m_dTC2 = 25.0;
+    id.m_dTC3 = 26.0;
+    id.m_dTC4 = 27.0;
+    id.m_dTC5 = 28.0;
+    id.m_dTC14 = 29.0;
+
+    setCrweberIndex.Open();
+    setCrweberIndex.m_pDatabase->BeginTrans();
+    while (!setCrweberIndex.IsEOF()) {
+      setCrweberIndex.Delete();
+      setCrweberIndex.MoveNext();
+    }
+    setCrweberIndex.m_pDatabase->CommitTrans();
+    setCrweberIndex.Close();
+    setCrweberIndex.Open();
+    setCrweberIndex.m_pDatabase->BeginTrans();
+    setCrweberIndex.AddNew();
+    id.SaveData(setCrweberIndex);
+    setCrweberIndex.Update();
+    setCrweberIndex.m_pDatabase->CommitTrans();
+    setCrweberIndex.Close();
+
+    setCrweberIndex.Open();
+    id2.LoadData(setCrweberIndex);
+    setCrweberIndex.Close();
+    EXPECT_EQ(id.m_lDay, id2.m_lDay);
+    EXPECT_DOUBLE_EQ(id.m_dTD1, id2.m_dTD1);
+
+    id.m_dTD1 = 30.0;
+    setCrweberIndex.Open();
+    setCrweberIndex.m_pDatabase->BeginTrans();
+    id.AppendData(setCrweberIndex);
+    setCrweberIndex.m_pDatabase->CommitTrans();
+    setCrweberIndex.Close();
+
+    setCrweberIndex.Open();
+    setCrweberIndex.MoveNext();
+    id2.LoadData(setCrweberIndex);
+    setCrweberIndex.Close();
+    EXPECT_DOUBLE_EQ(id2.m_dTD1, 30.0);
+  }
+
+  TEST(CrweberIndexTest, TestIsDataChanged) {
+    CCrweberIndex id, id2;
+    id.m_lDay = 20000101;
+    id.m_dTD1 = 1.0;
+    id.m_dTD2 = 2.0;
+    id.m_dTD3C = 3.0;
+    id.m_dTD5 = 4.0;
+    id.m_dTD6 = 5.0;
+    id.m_dTD7 = 6.0;
+    id.m_dTD8 = 7.0;
+    id.m_dTD9 = 8.0;
+    id.m_dTD12 = 9.0;
+    id.m_dTD15 = 10.0;
+    id.m_dTD19 = 11.0;
+    id.m_dTD20 = 12.0;
+    id.m_dTD21 = 13.0;
+    id.m_dVLCC_USGSPORE = 22.0;
+    id.m_dSUEZMAX_CBSUSG = 23.0;
+    id.m_dTC1 = 24.0;
+    id.m_dTC2 = 25.0;
+    id.m_dTC3 = 26.0;
+    id.m_dTC4 = 27.0;
+    id.m_dTC5 = 28.0;
+    id.m_dTC14 = 29.0;
+
+    gl_CrweberIndex = id;
+    gl_CrweberIndexLast = id;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD1 = id.m_dTD1 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD1 = id.m_dTD1;
+    gl_CrweberIndex.m_dTD2 = id.m_dTD2 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
   }
 }
