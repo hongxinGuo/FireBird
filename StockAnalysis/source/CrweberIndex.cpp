@@ -15,6 +15,19 @@ CCrweberIndex::CCrweberIndex() {
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
+
+  m_mapMonth[_T("January")] = 1;
+  m_mapMonth[_T("Febrary")] = 2;
+  m_mapMonth[_T("March")] = 3;
+  m_mapMonth[_T("April")] = 4;
+  m_mapMonth[_T("May")] = 5;
+  m_mapMonth[_T("June")] = 6;
+  m_mapMonth[_T("July")] = 7;
+  m_mapMonth[_T("August")] = 8;
+  m_mapMonth[_T("September")] = 9;
+  m_mapMonth[_T("October")] = 10;
+  m_mapMonth[_T("November")] = 11;
+  m_mapMonth[_T("December")] = 12;
 }
 
 CCrweberIndex::~CCrweberIndex() {
@@ -249,9 +262,7 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   buffer1[i] = 0x000;
   CString strTime = buffer1;
   int month = 1, day, year;
-  if (strTime.Compare(_T("October")) == 0) month = 10;
-  else if (strTime.Compare(_T("November")) == 0) month = 11;
-  else if (strTime.Compare(_T("December")) == 0) month = 12;
+  month = GetMonth(strTime);
 
   i = 0;
   while (*pChar != ' ') buffer1[i++] = *pChar++;
@@ -266,6 +277,18 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   year = atol(strTime);
 
   return year * 10000 + month * 100 + day;
+}
+
+long CCrweberIndex::GetMonth(CString strMonth) {
+  try {
+    return m_mapMonth.at(strMonth);
+  }
+  catch (exception&) {
+    long lDay = gl_systemTime.GetDay();
+    long lYear = lDay / 10000;
+    long lMonth = lDay / 100 - lYear * 100;
+    return lMonth;
+  }
 }
 
 double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {

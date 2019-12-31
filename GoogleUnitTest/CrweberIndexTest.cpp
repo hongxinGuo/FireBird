@@ -136,7 +136,34 @@ namespace StockAnalysisTest {
     gl_CrweberIndex.m_dTD1 = id.m_dTD1 + 1;
     EXPECT_TRUE(id.IsDataChanged());
     gl_CrweberIndex.m_dTD1 = id.m_dTD1;
+    EXPECT_FALSE(id.IsDataChanged());
     gl_CrweberIndex.m_dTD2 = id.m_dTD2 + 1;
     EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD2 = id.m_dTD2;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD3C = id.m_dTD3C + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD3C = id.m_dTD3C;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD5 = id.m_dTD5 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+  }
+
+  TEST(CrweberIndexTest, TestGetMonth) {
+    CCrweberIndex Index;
+    EXPECT_EQ(Index.GetMonth(_T("January")), 1);
+    EXPECT_EQ(Index.GetMonth(_T("Febrary")), 2);
+    EXPECT_EQ(Index.GetMonth(_T("March")), 3);
+    EXPECT_EQ(Index.GetMonth(_T("April")), 4);
+    EXPECT_EQ(Index.GetMonth(_T("May")), 5);
+    EXPECT_EQ(Index.GetMonth(_T("June")), 6);
+    EXPECT_EQ(Index.GetMonth(_T("July")), 7);
+    EXPECT_EQ(Index.GetMonth(_T("August")), 8);
+    EXPECT_EQ(Index.GetMonth(_T("September")), 9);
+    EXPECT_EQ(Index.GetMonth(_T("October")), 10);
+    EXPECT_EQ(Index.GetMonth(_T("November")), 11);
+    EXPECT_EQ(Index.GetMonth(_T("December")), 12);
+    EXPECT_EQ(Index.GetMonth(_T("DEcmber")), gl_systemTime.GetMonth());
+    EXPECT_EQ(Index.GetMonth(_T("Junuary")), gl_systemTime.GetMonth());
   }
 }

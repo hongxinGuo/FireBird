@@ -10,6 +10,7 @@ public:
   time_t Gett_time(void) noexcept { return m_ttime; }
 
   long GetDay(void) noexcept { return m_lToday; }
+  long GetMonth(void) noexcept { return m_tm.tm_mon + 1; }
   long GetTime(void) noexcept { return m_lTime; }
   long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lLastTradeDay; }
   long GetDayOfWeek(void) noexcept { return m_tm.tm_wday; }

@@ -8,6 +8,7 @@
 using namespace std;
 #include<vector>
 #include<memory>
+#include<map>
 
 class CCrweberIndex final {
 public:
@@ -59,6 +60,8 @@ public:
   double GetMR_3YEAR(void) noexcept { return m_dMR_TC_3YEAR; }
   double GetHANDY_3YEAR(void) noexcept { return m_dHANDY_TC_3YEAR; }
 
+  long GetMonth(CString strMonth);
+
 private:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
@@ -105,6 +108,9 @@ public:
 
   bool m_fTodayUpdated;
   long m_lLastUpdateDay;
+
+protected:
+  map<CString, long> m_mapMonth;
 };
 
 typedef shared_ptr<CCrweberIndex> CrweberIndexPtr;

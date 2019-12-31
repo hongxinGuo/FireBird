@@ -99,9 +99,6 @@
     <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="CrweberTest.cpp">
-      <Filter>Test源文件\Crweber.com</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="AccessoryTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="CrweberIndexTest.cpp">
+      <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
