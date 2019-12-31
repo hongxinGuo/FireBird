@@ -133,7 +133,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadMaintainDayLineDB.obj" />

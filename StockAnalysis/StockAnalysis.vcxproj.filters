@@ -236,9 +236,6 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadCalculateRS.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadLoadDayLine.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
@@ -346,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="source\StockCalculatedInfo.cpp">
       <Filter>源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

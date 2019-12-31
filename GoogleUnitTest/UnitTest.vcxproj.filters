@@ -226,9 +226,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -266,6 +263,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

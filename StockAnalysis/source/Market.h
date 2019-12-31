@@ -166,6 +166,7 @@ public:
   bool ProcessDayLineGetFromNeeteaseServer(void);
 
   long CompileCurrentTradeDayStock(long lCurrentTradeDay);
+  bool CalculateRelativeStrong(long lStartCalculatingDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }

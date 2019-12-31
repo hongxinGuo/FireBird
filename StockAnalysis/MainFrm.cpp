@@ -46,16 +46,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_WM_TIMER()
   ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
   ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
-  ON_COMMAND(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnCalculateRelativeStrong)
+  ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRelativeStrong)
   ON_WM_SYSCOMMAND()
-  ON_UPDATE_COMMAND_UI(ID_CALCULATE_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateRelativeStrong)
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRelativeStrong)
   ON_WM_CHAR()
   ON_WM_KEYUP()
   ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
-  ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRs)
-  ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnBuildAbortBuindingRs)
-  ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateBuildAbortBuindingRs)
+  ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRS)
+  ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -392,7 +392,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   if (gl_fResetSystem) {
     while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
            || gl_ThreadStatus.IsSavingDayLine()) {
-      Sleep(10);
+      Sleep(1);
     }
     ResetSystem();
     gl_fResetSystem = false;
@@ -461,7 +461,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
     gl_ExitingSystem = true; // 提示各工作线程中途退出
     if (gl_ThreadStatus.IsSavingDayLine()) { // 如果正在处理日线历史数据
       while (gl_ThreadStatus.IsSavingDayLine()) {
-        Sleep(10); // 等待处理日线历史数据的线程退出
+        Sleep(1); // 等待处理日线历史数据的线程退出
       }
     }
   }
@@ -469,9 +469,9 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   CMDIFrameWndEx::OnSysCommand(nID, lParam);
 }
 
-void CMainFrame::OnCalculateRelativeStrong() {
+void CMainFrame::OnCalculateTodayRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  AfxBeginThread(ThreadCalculateRS, nullptr);
+  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)(gl_systemTime.GetDay()));
 }
 
 void CMainFrame::OnCompileTodayStock() {
@@ -489,7 +489,7 @@ void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI) {
   else pCmdUI->Enable(false);
 }
 
-void CMainFrame::OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
@@ -625,10 +625,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-
-  gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-  gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
-  AfxBeginThread(ThreadCalculateRS, nullptr);
+  gl_ChinaStockMarket.CalculateRelativeStrong(19900101);
 }
 
 void CMainFrame::OnBuildResetSystem() {
@@ -636,7 +633,7 @@ void CMainFrame::OnBuildResetSystem() {
   gl_fResetSystem = true;
 }
 
-void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
 #ifndef DEBUG
@@ -652,17 +649,17 @@ void CMainFrame::OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI) {
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
-  else pCmdUI->Enable(true); 
+  else pCmdUI->Enable(true);
 #endif
-  }
+}
 
-void CMainFrame::OnBuildAbortBuindingRs() {
+void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
   ASSERT(gl_fExitingCalculatingRS == false);
   gl_fExitingCalculatingRS = true;
 }
 
-void CMainFrame::OnUpdateBuildAbortBuindingRs(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(true);
   else pCmdUI->Enable(false);

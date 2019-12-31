@@ -1591,6 +1591,11 @@ bool CMarket::LoadTodayTempDB(void) {
   return true;
 }
 
+bool CMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
+  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)lStartCalculatingDay);
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 //
 // 计算lDay的日线相对强度, lDay的格式为：YYYYMMDD,如 19990605.

@@ -13,10 +13,10 @@
 #include"WebData.h"
 
 UINT ThreadReadCrweberIndex(LPVOID pParam) {
-  CCrweberIndexWebData* pCrweberWebData = (CCrweberIndexWebData*)(pParam);
+  CCrweberIndexWebData* pCrweberIndexWebData = (CCrweberIndexWebData*)(pParam);
 
-  if (pCrweberWebData->ReadWebData(500, 50, 20)) {
-    CWebDataReceivedPtr pWebDataReceived = pCrweberWebData->TransferWebDataToQueueData();
+  if (pCrweberIndexWebData->ReadWebData(500, 50, 20)) {
+    CWebDataReceivedPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_QueueCrweberdotcomWebData.PushWebRTData(pWebDataReceived);
     }
