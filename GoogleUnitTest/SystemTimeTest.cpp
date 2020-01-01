@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
 
     long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
     EXPECT_EQ(gl_systemTime.GetDay(), day);
-    EXPECT_EQ(gl_systemTime.GetMonth(), tm_.tm_mon + 1);
+    EXPECT_EQ(gl_systemTime.GetMonthOfYear(), tm_.tm_mon + 1);
 
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
     EXPECT_EQ(gl_systemTime.GetTime(), time);
@@ -134,7 +134,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemTime.GetDay(), day);
   }
 
-  TEST(SystemTimeTest, TestGetMonth) {
+  TEST(SystemTimeTest, TestGetMonthOfYear) {
     ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;
     tm tm_;
@@ -142,6 +142,8 @@ namespace StockAnalysisTest {
     localtime_s(&tm_, &ttime);
 
     gl_systemTime.__Test_Sett_time(ttime);
-    EXPECT_EQ(gl_systemTime.GetMonth(), tm_.tm_mon + 1);
+    EXPECT_EQ(gl_systemTime.GetMonthOfYear(), tm_.tm_mon + 1);
+    EXPECT_EQ(gl_systemTime.GetDayOfMonth(), tm_.tm_mday);
+    EXPECT_EQ(gl_systemTime.GetYear(), tm_.tm_year + 1900);
   }
 }

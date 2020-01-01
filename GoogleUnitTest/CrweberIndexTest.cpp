@@ -149,21 +149,99 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(id.IsDataChanged());
   }
 
-  TEST(CrweberIndexTest, TestGetMonth) {
+  TEST(CrweberIndexTest, TestGetMonthOfYear) {
     CCrweberIndex Index;
-    EXPECT_EQ(Index.GetMonth(_T("January")), 1);
-    EXPECT_EQ(Index.GetMonth(_T("Febrary")), 2);
-    EXPECT_EQ(Index.GetMonth(_T("March")), 3);
-    EXPECT_EQ(Index.GetMonth(_T("April")), 4);
-    EXPECT_EQ(Index.GetMonth(_T("May")), 5);
-    EXPECT_EQ(Index.GetMonth(_T("June")), 6);
-    EXPECT_EQ(Index.GetMonth(_T("July")), 7);
-    EXPECT_EQ(Index.GetMonth(_T("August")), 8);
-    EXPECT_EQ(Index.GetMonth(_T("September")), 9);
-    EXPECT_EQ(Index.GetMonth(_T("October")), 10);
-    EXPECT_EQ(Index.GetMonth(_T("November")), 11);
-    EXPECT_EQ(Index.GetMonth(_T("December")), 12);
-    EXPECT_EQ(Index.GetMonth(_T("DEcmber")), gl_systemTime.GetMonth());
-    EXPECT_EQ(Index.GetMonth(_T("Junuary")), gl_systemTime.GetMonth());
+    EXPECT_EQ(Index.GetMonthOfYear(_T("January")), 1);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("Febrary")), 2);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("March")), 3);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("April")), 4);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("May")), 5);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("June")), 6);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("July")), 7);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("August")), 8);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("September")), 9);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("October")), 10);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("November")), 11);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("December")), 12);
+    EXPECT_EQ(Index.GetMonthOfYear(_T("DEcmber")), gl_systemTime.GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfYear(_T("Junuary")), gl_systemTime.GetMonthOfYear());
+  }
+
+  struct CrweberIndexTime {
+    CrweberIndexTime(long lId, CString strTime, long lTime) {
+      m_lId = lId;
+      m_strTime = strTime;
+      m_lTime = lTime;
+    }
+
+  public:
+    long m_lId;
+    CString m_strTime;
+    long m_lTime;
+  };
+
+  CrweberIndexTime CrweberIndexTimeData1(1, _T(" January 25 2019 "), 20190125);
+  CrweberIndexTime CrweberIndexTimeData2(2, _T(" Febrary 2 2019 "), 20190202);
+  CrweberIndexTime CrweberIndexTimeData3(3, _T(" March 5 2019 "), 20190305);
+  CrweberIndexTime CrweberIndexTimeData4(4, _T(" April 25 2019 "), 20190425);
+  CrweberIndexTime CrweberIndexTimeData5(5, _T(" May 25 2019 "), 20190525);
+  CrweberIndexTime CrweberIndexTimeData6(6, _T(" June 25 2019 "), 20190625);
+  CrweberIndexTime CrweberIndexTimeData7(7, _T(" July 25 2019 "), 20190725);
+  CrweberIndexTime CrweberIndexTimeData8(8, _T(" August 25 2019 "), 20190825);
+  CrweberIndexTime CrweberIndexTimeData9(9, _T(" September 25 2019 "), 20190925);
+  CrweberIndexTime CrweberIndexTimeData10(10, _T(" October 7 2019 "), 20191007);
+  CrweberIndexTime CrweberIndexTimeData11(11, _T(" November 5 2019 "), 20191105);
+  CrweberIndexTime CrweberIndexTimeData12(12, _T(" December 2 2019 "), 20191202);
+  CrweberIndexTime CrweberIndexTimeData13(13, _T(" decmber 1 2019 "), 20190101);
+  CrweberIndexTime CrweberIndexTimeData14(14, _T(" January, 25 2019 "), 20190125);
+  CrweberIndexTime CrweberIndexTimeData15(15, _T(" January, 25 2019 "), 20190125);
+
+  class CrweberIndexTimeTest : public testing::TestWithParam<CrweberIndexTime*> {
+  protected:
+    void SetUp(void) override {
+      ASSERT(!gl_fNormalMode);
+      CrweberIndexTime* pCrweberIndexTime = GetParam();
+      m_lId = pCrweberIndexTime->m_lId;
+      m_strTime = pCrweberIndexTime->m_strTime;
+      m_lTime = pCrweberIndexTime->m_lTime;
+    }
+    void TearDown(void) override {
+      // clearup
+    }
+  public:
+    long m_lId;
+    CString m_strTime;
+    long m_lTime;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestCrweberIndexTime, CrweberIndexTimeTest,
+                          testing::Values(&CrweberIndexTimeData1
+                                          , &CrweberIndexTimeData2, &CrweberIndexTimeData3, &CrweberIndexTimeData4, &CrweberIndexTimeData5
+                                          , &CrweberIndexTimeData6, &CrweberIndexTimeData7, &CrweberIndexTimeData8, &CrweberIndexTimeData9
+                                          , &CrweberIndexTimeData10, &CrweberIndexTimeData11, &CrweberIndexTimeData12, &CrweberIndexTimeData13
+                                          , &CrweberIndexTimeData14, &CrweberIndexTimeData15));
+
+  TEST_P(CrweberIndexTimeTest, TestCrweberIndexTime) {
+    CCrweberIndex Index;
+    long lMonth = m_lTime / 100 - (m_lTime / 10000) * 100;
+    long lTime = Index.ConvertStringToTime(m_strTime);
+    switch (m_lId) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    EXPECT_EQ(lTime, m_lTime);
+    break;
+    default:
+    EXPECT_EQ(lTime, m_lTime - lMonth * 100 + gl_systemTime.GetMonthOfYear() * 100);
+    }
   }
 }

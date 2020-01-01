@@ -60,13 +60,12 @@ public:
   double GetMR_3YEAR(void) noexcept { return m_dMR_TC_3YEAR; }
   double GetHANDY_3YEAR(void) noexcept { return m_dHANDY_TC_3YEAR; }
 
-  long GetMonth(CString strMonth);
-
-private:
+public:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
   double GetOneValue(CWebDataReceivedPtr pWebDataReceived);
   CString GetNextString(CWebDataReceivedPtr pWebDataReceived);
+  long GetMonthOfYear(CString strMonth);
 
 public:
   long m_lID;
