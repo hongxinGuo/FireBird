@@ -74,8 +74,8 @@ protected:
 
 public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnCompileTodayStock();
-  afx_msg void OnUpdateCompileTodayStock(CCmdUI* pCmdUI);
+  afx_msg void OnProcessTodayStock();
+  afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
   afx_msg void OnCalculateTodayRelativeStrong();
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
   afx_msg void OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI);

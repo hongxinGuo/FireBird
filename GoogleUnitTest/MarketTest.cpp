@@ -488,18 +488,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
   }
 
-  TEST_F(CMarketTest, TestIsTodayStockCompiled) {
+  TEST_F(CMarketTest, TestIsTodayStockProcessed) {
     gl_systemTime.CalculateTime();
     if (gl_systemTime.GetTime() > 150000) {
-      EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
+      EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     }
     else {
-      EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
+      EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
     }
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
   }
 
   TEST_F(CMarketTest, TestIsDayLineNeedUpdate) {
@@ -657,22 +657,22 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetSystem());
   }
 
-  TEST_F(CMarketTest, TestCompileTodayStock) {
+  TEST_F(CMarketTest, TestProcessTodayStock) {
     gl_ChinaStockMarket.SetSystemReady(false);
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCompileTodayStock(150259));
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCompileTodayStock(150300));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetSystemReady(true);
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCompileTodayStock(150259));
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCompileTodayStock(150300));
-    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetSystemReady(true);
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCompileTodayStock(150259));
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCompileTodayStock(150300));
-    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockCompiled());
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
   }
 
   TEST_F(CMarketTest, TestSetCheckActiveStockFlag) {

@@ -75,9 +75,6 @@
     <ClCompile Include="CrweberIndexWebDataTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="SystemDequeDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="CrweberIndexTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="DequeDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,9 +226,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -266,6 +263,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessCurrentTradeDayStock.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

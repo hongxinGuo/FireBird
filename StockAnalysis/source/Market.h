@@ -88,7 +88,7 @@ public:
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   void TaskSetCheckTodayActiveStockFlag(long lCurrentTime);
-  bool TaskCompileTodayStock(long lCurrentTime);
+  bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetSystem(long lCurrentTime);
@@ -142,8 +142,8 @@ public:
   bool SystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) { m_fSystemReady = fFlag; }
 
-  bool IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
-  void SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
+  bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
+  void SetTodayStockProcessedFlag(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -165,7 +165,7 @@ public:
   // 是否所有股票的历史日线数据都查询过一遍了
   bool ProcessDayLineGetFromNeeteaseServer(void);
 
-  long CompileCurrentTradeDayStock(long lCurrentTradeDay);
+  long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateRelativeStrong(long lStartCalculatingDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
@@ -295,7 +295,7 @@ protected:
   // 系统状态区
   bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fSystemReady; // 市场初始态已经设置好
-  bool m_fTodayStockCompiled; // 今日是否执行了股票收盘
+  bool m_fTodayStockProcessed; // 今日是否执行了股票收盘
   bool m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 

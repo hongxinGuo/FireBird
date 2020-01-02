@@ -44,8 +44,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
   ON_WM_SETTINGCHANGE()
   ON_WM_TIMER()
-  ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnCompileTodayStock)
-  ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateCompileTodayStock)
+  ON_COMMAND(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnProcessTodayStock)
+  ON_UPDATE_COMMAND_UI(ID_COMPILE_TODAY_STOCK, &CMainFrame::OnUpdateProcessTodayStock)
   ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRelativeStrong)
   ON_WM_SYSCOMMAND()
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRelativeStrong)
@@ -484,14 +484,14 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
   AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)(gl_systemTime.GetDay()));
 }
 
-void CMainFrame::OnCompileTodayStock() {
+void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) {
-    AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
+    AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
   }
 }
 
-void CMainFrame::OnUpdateCompileTodayStock(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     pCmdUI->Enable(true);
@@ -655,7 +655,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

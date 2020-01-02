@@ -281,7 +281,7 @@
     <ClCompile Include="source\TengxunWebRTData.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="source\ThreadCalculateDayLineRS.cpp" />
-    <ClCompile Include="source\ThreadCompileCurrentTradeDayStock.cpp" />
+    <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp" />

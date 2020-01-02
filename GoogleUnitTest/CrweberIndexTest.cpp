@@ -3,6 +3,9 @@
 #include"Market.h"
 #include"crweberIndex.h"
 
+using namespace std;
+#include<string>
+
 namespace StockAnalysisTest {
   TEST(CrweberTest, TestInitialize) {
     CCrweberIndex Index;
@@ -147,6 +150,66 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(id.IsDataChanged());
     gl_CrweberIndex.m_dTD5 = id.m_dTD5 + 1;
     EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD5 = id.m_dTD5;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD6 = id.m_dTD6 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD6 = id.m_dTD6;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD7 = id.m_dTD7 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD7 = id.m_dTD7;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD8 = id.m_dTD8 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD8 = id.m_dTD8;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD9 = id.m_dTD9 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD9 = id.m_dTD9;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD12 = id.m_dTD12 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD12 = id.m_dTD12;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD15 = id.m_dTD15 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD15 = id.m_dTD15;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD19 = id.m_dTD19 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD19 = id.m_dTD19;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD20 = id.m_dTD20 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTD20 = id.m_dTD20;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dVLCC_USGSPORE = id.m_dVLCC_USGSPORE + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dVLCC_USGSPORE = id.m_dVLCC_USGSPORE;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC1 = id.m_dTC1 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC1 = id.m_dTC1;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC2 = id.m_dTC2 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC2 = id.m_dTC2;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC3 = id.m_dTC3 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC3 = id.m_dTC3;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC4 = id.m_dTC4 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC4 = id.m_dTC4;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC5 = id.m_dTC5 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC5 = id.m_dTC5;
+    EXPECT_FALSE(id.IsDataChanged());
+    gl_CrweberIndex.m_dTC14 = id.m_dTC14 + 1;
+    EXPECT_TRUE(id.IsDataChanged());
   }
 
   TEST(CrweberIndexTest, TestGetMonthOfYear) {
@@ -225,6 +288,7 @@ namespace StockAnalysisTest {
     CCrweberIndex Index;
     long lMonth = m_lTime / 100 - (m_lTime / 10000) * 100;
     long lTime = Index.ConvertStringToTime(m_strTime);
+
     switch (m_lId) {
     case 1:
     case 2:

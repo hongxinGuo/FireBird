@@ -94,9 +94,9 @@ void CMarket::Reset(void) {
   tm tm_;
   localtime_s(&tm_, &ttime);
   if (tm_.tm_hour >= 15) { // 中国股票市场已经闭市
-    m_fTodayStockCompiled = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
+    m_fTodayStockProcessed = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
-  else m_fTodayStockCompiled = false;
+  else m_fTodayStockProcessed = false;
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
 
@@ -1131,7 +1131,7 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     TaskSetCheckTodayActiveStockFlag(lCurrentTime);
 
     // 下午三点三分开始处理当日实时数据。
-    TaskCompileTodayStock(lCurrentTime);
+    TaskProcessTodayStock(lCurrentTime);
   } // 每一分钟一次的任务
   else i1MinuteCounter -= lSecondNumber;
 
@@ -1145,11 +1145,11 @@ void CMarket::TaskSetCheckTodayActiveStockFlag(long lCurrentTime) {
   else m_fCheckTodayActiveStock = false;
 }
 
-bool CMarket::TaskCompileTodayStock(long lCurrentTime) {
-  if ((lCurrentTime >= 150300) && !IsTodayStockCompiled()) {
+bool CMarket::TaskProcessTodayStock(long lCurrentTime) {
+  if ((lCurrentTime >= 150300) && !IsTodayStockProcessed()) {
     if (SystemReady()) {
-      AfxBeginThread(ThreadCompileCurrentTradeDayStock, nullptr);
-      SetTodayStockCompiledFlag(true);
+      AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
+      SetTodayStockProcessedFlag(true);
       return true;
     }
   }
@@ -1448,7 +1448,7 @@ bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
 // long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CMarket::CompileCurrentTradeDayStock(long lCurrentTradeDay) {
+long CMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   char buffer[20];
   CString strDay;
   CSetDayLine setDayLine;
