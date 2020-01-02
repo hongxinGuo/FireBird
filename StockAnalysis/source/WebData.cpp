@@ -14,7 +14,7 @@ CWebData::CWebData() {
   m_pCurrentReadPos = m_buffer;
   m_lCurrentByteRead = 0;
   m_strInquire = _T("");
-  m_strWebDataInquire = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+  m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 
 #ifdef DEBUG
@@ -24,7 +24,7 @@ CWebData::CWebData() {
 #endif
 }
 
-bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
+bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session;
   m_pFile = nullptr;
   bool fDone = false;
@@ -33,14 +33,11 @@ bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lTh
   try {
     ASSERT(IsReadingWebData());
     SetByteReaded(0);
-    /*pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString(), 1,
-                                                     INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
-    */
     ASSERT(m_pFile == nullptr);
     ASSERT(m_lCurrentByteRead == 0);
     ASSERT(m_pCurrentReadPos == m_buffer);
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    Sleep(lStartDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
+    Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
       do {
         ReadDataFromWebOnce();

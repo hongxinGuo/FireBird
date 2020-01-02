@@ -39,6 +39,18 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
   ON_WM_SIZE()
   //  ON_WM_CHAR()
   //  ON_WM_KEYUP()
+  ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
+  ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
+  ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
+  ON_COMMAND(ID_SHOW_RS30, &CStockAnalysisView::OnShowRs30)
+  ON_COMMAND(ID_SHOW_RS60, &CStockAnalysisView::OnShowRs60)
+  ON_COMMAND(ID_SHOW_RS120, &CStockAnalysisView::OnShowRs120)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS10, &CStockAnalysisView::OnUpdateShowRs10)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS120, &CStockAnalysisView::OnUpdateShowRs120)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS3, &CStockAnalysisView::OnUpdateShowRs3)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -54,7 +66,7 @@ CStockAnalysisView::CStockAnalysisView() {
   m_fShow10DayRS = true;
   m_fShow30DayRS = true;
   m_fShow60DayRS = true;
-  m_fShow120DayRS = false;
+  m_fShow120DayRS = true;
 
   m_uIdTimer = 0;
 
@@ -400,4 +412,76 @@ void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
   // TODO: 在此处添加消息处理程序代码
   m_rectClient.right = cx;
   m_rectClient.bottom = cy;
+}
+
+void CStockAnalysisView::OnShowRs3() {
+  // TODO: Add your command handler code here
+  if (m_fShow3DayRS) m_fShow3DayRS = false;
+  else m_fShow3DayRS = true;
+}
+
+void CStockAnalysisView::OnShowRs5() {
+  // TODO: Add your command handler code here
+  if (m_fShow5DayRS) m_fShow5DayRS = false;
+  else m_fShow5DayRS = true;
+}
+
+void CStockAnalysisView::OnShowRs10() {
+  // TODO: Add your command handler code here
+  if (m_fShow10DayRS) m_fShow10DayRS = false;
+  else m_fShow10DayRS = true;
+}
+
+void CStockAnalysisView::OnShowRs30() {
+  // TODO: Add your command handler code here
+  if (m_fShow30DayRS) m_fShow30DayRS = false;
+  else m_fShow30DayRS = true;
+}
+
+void CStockAnalysisView::OnShowRs60() {
+  // TODO: Add your command handler code here
+  if (m_fShow60DayRS) m_fShow60DayRS = false;
+  else m_fShow60DayRS = true;
+}
+
+void CStockAnalysisView::OnShowRs120() {
+  // TODO: Add your command handler code here
+  if (m_fShow120DayRS) m_fShow120DayRS = false;
+  else m_fShow120DayRS = true;
+}
+
+void CStockAnalysisView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow10DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
+}
+
+void CStockAnalysisView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow120DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
+}
+
+void CStockAnalysisView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow3DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
+}
+
+void CStockAnalysisView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow30DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
+}
+
+void CStockAnalysisView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow5DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
+}
+
+void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_fShow60DayRS) pCmdUI->SetCheck(1);
+  else pCmdUI->SetCheck(0);
 }

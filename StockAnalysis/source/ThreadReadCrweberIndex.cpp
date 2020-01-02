@@ -14,7 +14,6 @@
 
 UINT ThreadReadCrweberIndex(LPVOID pParam) {
   CCrweberIndexWebData* pCrweberIndexWebData = (CCrweberIndexWebData*)(pParam);
-
   if (pCrweberIndexWebData->ReadWebData(500, 50, 20)) {
     CWebDataReceivedPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {

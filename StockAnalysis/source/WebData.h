@@ -14,11 +14,11 @@ public:
   CWebData();
   ~CWebData() {}
 
-  bool ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
   bool ReadDataFromWebOnce(void);
   CWebDataReceivedPtr TransferWebDataToQueueData(void);
 
-  // 公共接口函数
+  // 唯一的公共接口函数
   virtual bool GetWebData(void);
 
   virtual bool ReportStatus(long lNumberOfData);
@@ -66,7 +66,7 @@ protected:
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
 
-  CString m_strWebDataInquire; // 查询字符串
+  CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 

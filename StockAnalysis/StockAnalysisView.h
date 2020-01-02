@@ -73,6 +73,18 @@ public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
   afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnShowRs3();
+  afx_msg void OnShowRs5();
+  afx_msg void OnShowRs10();
+  afx_msg void OnShowRs30();
+  afx_msg void OnShowRs60();
+  afx_msg void OnShowRs120();
+  afx_msg void OnUpdateShowRs10(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateShowRs120(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateShowRs3(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateShowRs30(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateShowRs5(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateShowRs60(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本
