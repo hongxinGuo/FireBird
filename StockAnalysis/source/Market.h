@@ -103,16 +103,16 @@ public:
   // 初始化市场
 
   // 实时数据读取
-  int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 700, bool fSkipUnactiveStock = true);
-  int GetNextInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
-  bool StepToActiveStockIndex(int& iStockIndex);
+  CString GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
+  CString GetNextInquiringStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
+  bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& str);
 
-  int IncreaseStockInquiringIndex(int& iIndex);
+  long IncreaseStockInquiringIndex(long& lIndex);
 
   bool IsAStock(CStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
@@ -245,6 +245,15 @@ public:
 
   void StoreChoiceStock(CStockPtr pStock) { m_vStockChoice.push_back(pStock); }
 
+  void ResetSinaRTDataInquiringIndex(void) { m_lCurrentSinaRTDataInquiringIndex = 0; }
+  void ResetTengxunRTDataInquiringIndex(void) { m_lCurrentTengxunRTDataInquiringIndex = 0; }
+  void ResetNeteaseRTDataInquiringIndex(void) { m_lCurrentNeteaseRTDataInquiringIndex = 0; }
+  void ResetNeteaseDayLineDataInquiringIndex(void) { m_lCurrentNeteaseDayLineDataInquiringIndex = 0; }
+  long GetSinaRTDataInquiringIndex(void) { return m_lCurrentSinaRTDataInquiringIndex; }
+  long GetTengxunRTDataInquiringIndex(void) { return m_lCurrentTengxunRTDataInquiringIndex; }
+  long GetNeteaseRTDataInquiringIndex(void) { return m_lCurrentNeteaseRTDataInquiringIndex; }
+  long GetNeteaseDayLineDataInquiringIndex(void) { return m_lCurrentNeteaseDayLineDataInquiringIndex; }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -273,6 +282,11 @@ protected:
   CString m_strTengxunRTDataInquiringStr;
   CString m_strNeteaseRTDataInquiringStr;
   CString m_strNeteaseDayLineDataInquiringStr;
+
+  long m_lCurrentSinaRTDataInquiringIndex;
+  long m_lCurrentTengxunRTDataInquiringIndex;
+  long m_lCurrentNeteaseRTDataInquiringIndex;
+  long m_lCurrentNeteaseDayLineDataInquiringIndex;
 
   long m_lTotalStock; // 股票代码总数
 

@@ -21,8 +21,10 @@ namespace StockAnalysisTest {
   }
 
   TEST(SinaWebRTDataTest, TestGetInquiringStr) {
-    CString str;
-    EXPECT_EQ(gl_SinaWebRTData.GetNextInquiringStr(str, 900, false), 900);
+    gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
+    CString str = gl_SinaWebRTData.GetNextInquiringStr(900, false);
+    CString str2 = str.Left(9);
+    EXPECT_STREQ(str2, _T("sh600000,"));
   }
 
   TEST(SinaWebRTDataTest, TestReportStatus) {

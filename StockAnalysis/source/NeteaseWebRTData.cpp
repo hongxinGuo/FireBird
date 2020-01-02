@@ -41,10 +41,10 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
 
   // 申请下一批次股票实时数据
   if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未准备好，则使用全局股票池
-    GetNextInquiringStr(strMiddle, 550, false);
+    strMiddle = GetNextInquiringStr(550, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetNextInquiringStr(strMiddle, 550, false); // 目前还是使用全部股票池
+    strMiddle = GetNextInquiringStr(550, false); // 目前还是使用全部股票池
   }
   CreateTotalInquiringString(strMiddle);
 
@@ -52,8 +52,8 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-int CNeteaseWebRTData::GetNextInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
-  return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(strInquire, lTotalNumber, fSkipUnactiveStock);
+CString CNeteaseWebRTData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+  return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
 void CNeteaseWebRTData::StartReadingThread(void) {
