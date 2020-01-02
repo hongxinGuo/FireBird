@@ -334,7 +334,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStockPtr(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-    EXPECT_TRUE(gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(str));
+    str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
+    EXPECT_TRUE(str.GetLength() > 0);
     EXPECT_STREQ(str, _T("0600000"));
     pStock = gl_ChinaStockMarket.GetStockPtr(0);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());

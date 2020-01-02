@@ -16,7 +16,6 @@ public:
 
 private:
   CString m_strDownLoadingStockCode;
-  bool m_fNeedProcessingCurrentWebData;
 };
 
 #endif

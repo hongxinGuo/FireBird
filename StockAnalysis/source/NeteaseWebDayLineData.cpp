@@ -6,8 +6,6 @@
 #include "NeteaseWebDayLineData.h"
 
 CNeteaseWebDayLineData::CNeteaseWebDayLineData() : CWebData() {
-  m_fNeedProcessingCurrentWebData = true;
-
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 }
@@ -26,8 +24,8 @@ void CNeteaseWebDayLineData::InquireNextWebData(void) {
   char buffer2[200];
 
   // 准备网易日线数据申请格式
-  m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle);
-  if (m_fNeedProcessingCurrentWebData) {
+  strMiddle = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
+  if (strMiddle.GetLength() > 0) {
     SetDownLoadingStockCode(strMiddle);
     strMiddle += _T("&start=19900101");
     strMiddle += _T("&end=");

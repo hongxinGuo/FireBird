@@ -110,7 +110,7 @@ public:
   bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
-  bool CreateNeteaseDayLineInquiringStr(CString& str);
+  CString CreateNeteaseDayLineInquiringStr(void);
 
   long IncreaseStockInquiringIndex(long& lIndex);
 

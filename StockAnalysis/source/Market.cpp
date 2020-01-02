@@ -313,10 +313,10 @@ bool CMarket::CreateTotalStockContainer(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
+CString CMarket::CreateNeteaseDayLineInquiringStr() {
   bool fFound = false;
   int iCount = 0;
-  CString strTemp;
+  CString strTemp, str = _T("");
   while (!fFound && (iCount++ < 1000)) {
     CStockPtr pStock = m_vChinaMarketAStock.at(m_lCurrentNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
@@ -343,7 +343,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
 
   if (iCount >= 1000) { //  没有找到需要申请日线的股票
     TRACE("未找到需更新日线历史数据的股票\n");
-    return false;
+    return _T("");
   }
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
@@ -373,7 +373,7 @@ bool CMarket::CreateNeteaseDayLineInquiringStr(CString& str) {
   }
   str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
   IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
-  return true;
+  return str;
 }
 
 long CMarket::IncreaseStockInquiringIndex(long& lIndex) {
