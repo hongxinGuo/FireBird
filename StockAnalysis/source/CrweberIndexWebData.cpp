@@ -23,11 +23,6 @@ void CCrweberIndexWebData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-int CCrweberIndexWebData::GetInquiringStr(CString& strInquire, long, bool) {
-  strInquire = _T("");
-  return 0;
-}
-
 void CCrweberIndexWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadCrweberIndex, this);
 }

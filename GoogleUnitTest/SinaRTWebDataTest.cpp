@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
 
   TEST(SinaWebRTDataTest, TestGetInquiringStr) {
     CString str;
-    EXPECT_EQ(gl_SinaWebRTData.GetInquiringStr(str, 900, false), 900);
+    EXPECT_EQ(gl_SinaWebRTData.GetNextInquiringStr(str, 900, false), 900);
   }
 
   TEST(SinaWebRTDataTest, TestReportStatus) {

@@ -8,7 +8,7 @@ public:
   ~CTengxunWebRTData();
 
   virtual void InquireNextWebData(void) override;
-  virtual int GetInquiringStr(CString& strInquire, long lTotalNubmer = 900, bool fSkipUnactiveStock = true) override;
+  virtual int GetNextInquiringStr(CString& strInquire, long lTotalNubmer = 900, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
   virtual bool ReportStatus(long lNumberOfData) override;
 };

@@ -37,7 +37,7 @@
 #define IDS_EDIT_MENU                   306
 #define IDS_TRACE2_TAB2                 307
 #define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
-#define ID_COMPILE_TODAY_STOCK          32771
+#define ID_PROCESS_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_TODAY_RELATIVE_STRONG    32773
 #define ID_SAVE_RTDATA                  32774

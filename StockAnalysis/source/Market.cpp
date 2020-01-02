@@ -574,7 +574,7 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
 int CMarket::GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock) {
   static int siCounter = 0;
 
-  return GetInquiringStr(str, siCounter, _T(","), lTotalNumber, fSkipUnactiveStock);
+  return GetNextInquiringStr(str, siCounter, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -586,7 +586,7 @@ int CMarket::GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool f
   static int siCounter = 0;
 
   ASSERT(SystemReady());
-  return GetInquiringStr(str, siCounter, _T(","), lTotalNumber, fSkipUnactiveStock);
+  return GetNextInquiringStr(str, siCounter, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 int CMarket::GetNeteaseInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock) {
@@ -624,7 +624,7 @@ int CMarket::GetNeteaseInquiringStockStr(CString& str, long lTotalNumber, bool f
   return iCount;
 }
 
-int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock) {
+int CMarket::GetNextInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock) {
   if (fSkipUnactiveStock) StepToActiveStockIndex(iStockIndex);
   str += m_vChinaMarketAStock.at(iStockIndex)->GetStockCode();  // 得到第一个股票代码
   IncreaseStockInquiringIndex(iStockIndex);

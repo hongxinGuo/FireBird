@@ -39,11 +39,6 @@ void CNeteaseWebDayLineData::InquireNextWebData(void) {
   }
 }
 
-int CNeteaseWebDayLineData::GetInquiringStr(CString& strInquire, long, bool) {
-  strInquire = _T("");
-  return 0;
-}
-
 void CNeteaseWebDayLineData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }

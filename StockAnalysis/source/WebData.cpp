@@ -14,7 +14,7 @@ CWebData::CWebData() {
   m_pCurrentReadPos = m_buffer;
   m_lCurrentByteRead = 0;
   m_strInquire = _T("");
-  m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+  m_strWebDataInquire = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 
 #ifdef DEBUG

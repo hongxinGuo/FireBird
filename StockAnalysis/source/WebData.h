@@ -24,7 +24,7 @@ public:
   virtual bool ReportStatus(long lNumberOfData);
   // 下列为继承类必须实现的几个功能函数，完成具体任务。
   virtual void InquireNextWebData(void) { ASSERT(0); }        // 申请下一个网络数据
-  virtual int  GetInquiringStr(CString&, long, bool) { ASSERT(0); return 0; }// 申请下一个查询用字符串
+  virtual int GetNextInquiringStr(CString&, long, bool) { ASSERT(0); return 0; }// 申请下一个查询用字符串
   virtual void StartReadingThread(void) { ASSERT(0); } // 调用网络读取线程。
 
   // 以下为实现函数
@@ -66,6 +66,7 @@ protected:
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
 
+  CString m_strWebDataInquire; // 查询字符串
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
