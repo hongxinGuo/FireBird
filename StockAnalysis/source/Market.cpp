@@ -618,7 +618,7 @@ CString CMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnacti
     if (m_lCurrentNeteaseRTDataInquiringIndex == 0) break;
     IncreaseStockInquiringIndex(m_lCurrentNeteaseRTDataInquiringIndex);
   }
-  if (m_lCurrentNeteaseRTDataInquiringIndex > 0) m_lCurrentNeteaseRTDataInquiringIndex--;
+  if (m_lCurrentNeteaseRTDataInquiringIndex > 0) m_lCurrentNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
 
   return str;
 }
@@ -630,7 +630,7 @@ CString CMarket::GetNextInquiringStr(long& iStockIndex, CString strPostfix, long
   str += m_vChinaMarketAStock.at(iStockIndex)->GetStockCode();  // 得到第一个股票代码
   IncreaseStockInquiringIndex(iStockIndex);
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((iStockIndex < m_vChinaMarketAStock.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+  while ((iStockIndex < gl_ChinaStockMarket.GetTotalStock()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     if (fSkipUnactiveStock) StepToActiveStockIndex(iStockIndex);
     iCount++;
     str += strPostfix;
@@ -638,7 +638,7 @@ CString CMarket::GetNextInquiringStr(long& iStockIndex, CString strPostfix, long
     if (iStockIndex == 0) break;
     IncreaseStockInquiringIndex(iStockIndex);
   }
-  if (iStockIndex > 0) iStockIndex--;
+  if (iStockIndex > 0) iStockIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
   return str;
 }

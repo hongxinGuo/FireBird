@@ -222,10 +222,6 @@ public:
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
 
-  // 测试用函数
-  bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
-  void __Test_SetResetSystem(bool fFlag) noexcept { gl_fResetSystem = fFlag; }
-
   // 状态反馈
   bool IsUsingSinaRTDataReceiver(void) { return m_fUsingSinaRTDataReceiver; }
   bool IsUsingNeteaseRTDataReceiver(void) { return m_fUsingNeteaseRTDataReceiver; }
@@ -253,6 +249,11 @@ public:
   long GetTengxunRTDataInquiringIndex(void) { return m_lCurrentTengxunRTDataInquiringIndex; }
   long GetNeteaseRTDataInquiringIndex(void) { return m_lCurrentNeteaseRTDataInquiringIndex; }
   long GetNeteaseDayLineDataInquiringIndex(void) { return m_lCurrentNeteaseDayLineDataInquiringIndex; }
+
+
+  // 测试用函数
+  bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
+  void __Test_SetResetSystem(bool fFlag) noexcept { gl_fResetSystem = fFlag; }
 
 private:
   // 初始化
