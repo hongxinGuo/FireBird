@@ -110,6 +110,7 @@ bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNete
 bool CStock::ProcessNeteaseDayLineData(void) {
   char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
+  shared_ptr<CDayLine> pDayLine;
 
   ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
@@ -121,20 +122,18 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   ResetCurrentPos();
   if (!SkipNeteaseDayLineInformationHeader()) return false;
 
-  shared_ptr<CDayLine> pDayLine;
-
   pTestPos = m_pDayLineBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
-      //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
+      TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
       if (GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
-      //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
+      TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
     }
     return false;
   }
@@ -145,7 +144,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   while (m_llCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
     if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
-      TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
+      TRACE(_T("%s日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
@@ -159,8 +158,8 @@ bool CStock::ProcessNeteaseDayLineData(void) {
       SetMarket(pDayLine->GetMarket());
       SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
       SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      strTemp = GetStockCode().Right(6); // 截取股票代码右边的六个数字
       gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
+      TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }

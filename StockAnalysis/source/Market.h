@@ -242,14 +242,14 @@ public:
 
   void StoreChoiceStock(CStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
 
-  void ResetSinaRTDataInquiringIndex(void) noexcept { m_lCurrentSinaRTDataInquiringIndex = 0; }
-  void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lCurrentTengxunRTDataInquiringIndex = 0; }
-  void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lCurrentNeteaseRTDataInquiringIndex = 0; }
-  void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lCurrentNeteaseDayLineDataInquiringIndex = 0; }
-  long GetSinaRTDataInquiringIndex(void) noexcept { return m_lCurrentSinaRTDataInquiringIndex; }
-  long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lCurrentTengxunRTDataInquiringIndex; }
-  long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lCurrentNeteaseRTDataInquiringIndex; }
-  long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lCurrentNeteaseDayLineDataInquiringIndex; }
+  void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
+  void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lTengxunRTDataInquiringIndex = 0; }
+  void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lNeteaseRTDataInquiringIndex = 0; }
+  void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lNeteaseDayLineDataInquiringIndex = 0; }
+  long GetSinaRTDataInquiringIndex(void) noexcept { return m_lSinaRTDataInquiringIndex; }
+  long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
+  long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
+  long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
 
   // 测试用函数
   bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
@@ -284,10 +284,10 @@ protected:
   CString m_strNeteaseRTDataInquiringStr;
   CString m_strNeteaseDayLineDataInquiringStr;
 
-  long m_lCurrentSinaRTDataInquiringIndex;
-  long m_lCurrentTengxunRTDataInquiringIndex;
-  long m_lCurrentNeteaseRTDataInquiringIndex;
-  long m_lCurrentNeteaseDayLineDataInquiringIndex;
+  long m_lSinaRTDataInquiringIndex;
+  long m_lTengxunRTDataInquiringIndex;
+  long m_lNeteaseRTDataInquiringIndex;
+  long m_lNeteaseDayLineDataInquiringIndex;
 
   long m_lTotalStock; // 股票代码总数
 

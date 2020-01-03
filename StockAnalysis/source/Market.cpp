@@ -117,10 +117,10 @@ void CMarket::Reset(void) {
   m_iDayLineNeedSave = 0;
   m_iDayLineNeedUpdate = 0;
 
-  m_lCurrentSinaRTDataInquiringIndex = 0;
-  m_lCurrentTengxunRTDataInquiringIndex = 0;
-  m_lCurrentNeteaseRTDataInquiringIndex = 0;
-  m_lCurrentNeteaseDayLineDataInquiringIndex = 0;
+  m_lSinaRTDataInquiringIndex = 0;
+  m_lTengxunRTDataInquiringIndex = 0;
+  m_lNeteaseRTDataInquiringIndex = 0;
+  m_lNeteaseDayLineDataInquiringIndex = 0;
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -318,23 +318,23 @@ CString CMarket::CreateNeteaseDayLineInquiringStr() {
   int iCount = 0;
   CString strTemp, str = _T("");
   while (!fFound && (iCount++ < 1000)) {
-    CStockPtr pStock = m_vChinaMarketAStock.at(m_lCurrentNeteaseDayLineDataInquiringIndex);
+    CStockPtr pStock = m_vChinaMarketAStock.at(m_lNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
       // TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
-      IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
+      IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
     else if (pStock->GetIPOStatus() == __STOCK_NULL__) {	// 尚未使用过的股票代码无需查询日线数据
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
-      IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
+      IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
     else if (pStock->GetDayLineEndDay() >= gl_systemTime.GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
-      IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
+      IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
     else if (pStock->IsDayLineNeedProcess()) { // 日线数据已下载但尚未处理（一般此情况不会出现）
-      IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
+      IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
     else {
       fFound = true;
@@ -347,7 +347,7 @@ CString CMarket::CreateNeteaseDayLineInquiringStr() {
   }
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
-  CStockPtr pStock = m_vChinaMarketAStock.at(m_lCurrentNeteaseDayLineDataInquiringIndex);
+  CStockPtr pStock = m_vChinaMarketAStock.at(m_lNeteaseDayLineDataInquiringIndex);
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
   pStock->SetDayLineNeedUpdate(false);
@@ -372,7 +372,7 @@ CString CMarket::CreateNeteaseDayLineInquiringStr() {
   ASSERT(0);
   }
   str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
-  IncreaseStockInquiringIndex(m_lCurrentNeteaseDayLineDataInquiringIndex);
+  IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
   return str;
 }
 
@@ -575,7 +575,7 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  return GetNextInquiringStr(m_lCurrentSinaRTDataInquiringIndex, _T(","), lTotalNumber, fSkipUnactiveStock);
+  return GetNextInquiringStr(m_lSinaRTDataInquiringIndex, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -585,16 +585,16 @@ CString CMarket::GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveS
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CMarket::GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
   ASSERT(SystemReady());
-  return GetNextInquiringStr(m_lCurrentTengxunRTDataInquiringIndex, _T(","), lTotalNumber, fSkipUnactiveStock);
+  return GetNextInquiringStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
 CString CMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString str = _T("");
 
   CString strStockCode, strRight6, strLeft2, strPrefix;
-  if (fSkipUnactiveStock) StepToActiveStockIndex(m_lCurrentNeteaseRTDataInquiringIndex);
-  strStockCode = m_vChinaMarketAStock.at(m_lCurrentNeteaseRTDataInquiringIndex)->GetStockCode();
-  IncreaseStockInquiringIndex(m_lCurrentNeteaseRTDataInquiringIndex);
+  if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
+  strStockCode = m_vChinaMarketAStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
+  IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
   strRight6 = strStockCode.Right(6);
   strLeft2 = strStockCode.Left(2);
   if (strLeft2.Compare(_T("sh")) == 0) {
@@ -603,11 +603,11 @@ CString CMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnacti
   else strPrefix = _T("1");
   str += strPrefix + strRight6;  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((m_lCurrentNeteaseRTDataInquiringIndex < m_vChinaMarketAStock.size()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-    if (fSkipUnactiveStock) StepToActiveStockIndex(m_lCurrentNeteaseRTDataInquiringIndex);
+  while ((m_lNeteaseRTDataInquiringIndex < m_lTotalStock) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+    if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
     iCount++;
     str += _T(",");
-    strStockCode = m_vChinaMarketAStock.at(m_lCurrentNeteaseRTDataInquiringIndex)->GetStockCode();
+    strStockCode = m_vChinaMarketAStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
     strRight6 = strStockCode.Right(6);
     strLeft2 = strStockCode.Left(2);
     if (strLeft2.Compare(_T("sh")) == 0) {
@@ -615,10 +615,10 @@ CString CMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnacti
     }
     else strPrefix = _T("1");
     str += strPrefix + strRight6;  // 得到第一个股票代码
-    if (m_lCurrentNeteaseRTDataInquiringIndex == 0) break;
-    IncreaseStockInquiringIndex(m_lCurrentNeteaseRTDataInquiringIndex);
+    if (m_lNeteaseRTDataInquiringIndex == 0) break;
+    IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
   }
-  if (m_lCurrentNeteaseRTDataInquiringIndex > 0) m_lCurrentNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
+  if (m_lNeteaseRTDataInquiringIndex > 0) m_lNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
 
   return str;
 }
