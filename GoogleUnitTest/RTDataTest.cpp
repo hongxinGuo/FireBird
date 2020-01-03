@@ -66,6 +66,25 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.IsValidTime());
   }
 
+  TEST(CRTDataTest, TestCheckSinaRTDataActive) {
+    tm tm_;
+    tm_.tm_year = 2019 - 1900;
+    tm_.tm_mon = 10;
+    tm_.tm_mday = 7; // 2019年11月7日是星期四。
+    tm_.tm_hour = 12;
+    tm_.tm_min = 0;
+    tm_.tm_sec = 0;
+    time_t tt = mktime(&tm_);
+    gl_systemTime.__Test_Sett_time(tt);
+    CRTData data;
+    data.SetTransactionTime(tt);
+    EXPECT_TRUE(data.CheckSinaRTDataActive());
+    data.SetTransactionTime(tt - 3600 * 24 * 14);
+    EXPECT_TRUE(data.CheckSinaRTDataActive());
+    data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
+    EXPECT_FALSE(data.CheckSinaRTDataActive());
+  }
+
   TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {
     CRTData rtData;
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("time")), 1);

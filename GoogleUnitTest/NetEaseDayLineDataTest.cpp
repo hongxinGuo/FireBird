@@ -80,7 +80,7 @@ namespace StockAnalysisTest {
                           ));
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
-    long lCount = 0;
+    INT64 lCount = 0;
     bool fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:

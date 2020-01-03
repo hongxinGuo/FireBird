@@ -378,9 +378,8 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
-    // 0.07版后，采用十天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天）
-    if (IsValidTime()) m_fActive = true;
-    else m_fActive = false;
+    // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
+    CheckSinaRTDataActive();
     SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
@@ -391,6 +390,13 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
+}
+
+bool CRTData::CheckSinaRTDataActive(void) {
+  if (IsValidTime()) m_fActive = true;
+  else m_fActive = false;
+
+  return m_fActive;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -753,14 +759,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
       }
     }
     pTengxunWebRTData->IncreaseCurrentPos();
-    if (!IsValidTime()) { // 如果交易时间在12小时前
-      m_fActive = false;
-    }
-    else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
-      m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-    }
-    else m_fActive = true;
-
+    CheckTengxunRTDataActive();
     SetDataSource(__TENGXUN_RT_WEB_DATA__);
     return true;
   }
@@ -768,6 +767,18 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     TRACE(_T("ReadTengxunData异常\n"));
     return false;
   }
+}
+
+bool CRTData::CheckTengxunRTDataActive() {
+  if (!IsValidTime()) { // 如果交易时间在12小时前
+    m_fActive = false;
+  }
+  else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
+    m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+  }
+  else m_fActive = true;
+
+  return m_fActive;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -920,15 +931,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     ASSERT(*pNeteaseWebRTData->m_pCurrentPos == '}');
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
-      m_fActive = false;
-    }
-    else {
-      if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
-        m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-      }
-      else m_fActive = true;
-    }
+    CheckNeteaseRTDataActive();
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true;
   }
@@ -949,6 +952,19 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
+}
+
+bool CRTData::CheckNeteaseRTDataActive(void) {
+  if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    m_fActive = false;
+  }
+  else {
+    if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
+      m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+    }
+    else m_fActive = true;
+  }
+  return m_fActive;
 }
 
 bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {

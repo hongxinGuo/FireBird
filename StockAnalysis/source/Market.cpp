@@ -1223,7 +1223,7 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
 
     // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
     if (m_iDayLineNeedProcess > 0) {
-      ProcessDayLineGetFromNeeteaseServer();
+      TaskProcessDayLineGetFromNeeteaseServer();
     }
 
     // 判断是否存储日线库和股票代码库
@@ -1430,7 +1430,7 @@ bool CMarket::IsDayLineNeedUpdate(void) {
   return false;
 }
 
-bool CMarket::ProcessDayLineGetFromNeeteaseServer(void) {
+bool CMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();

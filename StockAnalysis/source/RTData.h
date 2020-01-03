@@ -212,6 +212,9 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) noexcept { return m_fActive; }
+  bool CheckNeteaseRTDataActive(void);
+  bool CheckSinaRTDataActive(void);
+  bool CheckTengxunRTDataActive(void);
   bool IsValidTime(void);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
@@ -255,6 +258,6 @@ protected:
   array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
 // 非存储数据
-  bool m_fActive; // 本股票是否存在实时数据
+  bool m_fActive; // 本股票是否存在有效实时数据
   map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
 };

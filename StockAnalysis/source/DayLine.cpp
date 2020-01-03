@@ -208,7 +208,7 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long& lLength) {
+bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength) {
   long iCount = 0;
   static char buffer2[200], buffer3[100];
   long i = 0;
@@ -327,7 +327,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   if (*pCurrentPos++ != 0x0a) return false; // 数据出错，放弃载入
   iCount++;
 
-  lLength = iCount;
+  lLength += iCount;
   return true;
 }
 

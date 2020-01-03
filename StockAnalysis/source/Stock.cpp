@@ -108,8 +108,6 @@ bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNete
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::ProcessNeteaseDayLineData(void) {
-  long iCount = 0;
-  char* pCurrentPos = m_pDayLineBuffer;
   char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
 
@@ -120,28 +118,14 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   }
 
   ASSERT(m_pDayLineBuffer[m_lDayLineBufferLength] == 0x000); // 最后字符为增加的0x000.
-  while (*pCurrentPos != 0X0d) {
-    if ((*pCurrentPos == 0x0a) || (*pCurrentPos == 0x000)) {
-      return false;
-    }
-    pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  if (*pCurrentPos != 0x0a) {
-    return false;
-  }
-  pCurrentPos++;
-  iCount++;
+  ResetCurrentPos();
+  if (!SkipNeteaseDayLineInformationHeader()) return false;
+
   shared_ptr<CDayLine> pDayLine;
 
-  pTestPos = m_pDayLineBuffer;
-  pTestPos += iCount;
-  ASSERT(*pTestPos == *pCurrentPos);
-  if (iCount == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    // ASSERT(!m_vChinaMarketAStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
-    // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+  ASSERT(*pTestPos == *m_pCurrentPos);
+  if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
@@ -155,23 +139,19 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     return false;
   }
 
-  long iTemp = 0;
   CString strTemp;
-  pTestPos = m_pDayLineBuffer;
-  pTestPos += iCount;
-  ASSERT(*pTestPos == *pCurrentPos);
-  while (iCount < m_lDayLineBufferLength) {
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+  ASSERT(*pTestPos == *m_pCurrentPos);
+  while (m_llCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!pDayLine->ProcessNeteaseData(GetStockCode(), pCurrentPos, iTemp)) { // 处理一条日线数据
-      TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
+    if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
+      TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
-    iCount += iTemp;
-    pTestPos = m_pDayLineBuffer;
-    pTestPos += iCount;
-    ASSERT(*pTestPos == *pCurrentPos);
+    pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+    ASSERT(*pTestPos == *m_pCurrentPos);
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
       SetActive(true);
@@ -211,6 +191,23 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
 
+  return true;
+}
+
+bool CStock::SkipNeteaseDayLineInformationHeader() {
+  ASSERT(m_pCurrentPos == m_pDayLineBuffer);
+  ASSERT(m_llCurrentPos == 0);
+  while (*m_pCurrentPos != 0X0d) {
+    if ((*m_pCurrentPos == 0x0a) || (*m_pCurrentPos == 0x000)) {
+      return false;
+    }
+    IncreaseCurrentPos();
+  }
+  IncreaseCurrentPos();
+  if (*m_pCurrentPos != 0x0a) {
+    return false;
+  }
+  IncreaseCurrentPos();
   return true;
 }
 
@@ -1128,6 +1125,17 @@ void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
   for (; it != m_vDayLine.begin(); it--, i++) {
     if (!RSLineTo(pDC, rectClient, i, (*it)->Get120DayRS())) break;
   }
+}
+
+void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
+  char* p;
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[lBufferLength + 1];
+  p = m_pDayLineBuffer;
+  for (int i = 0; i < lBufferLength; i++) {
+    *p++ = pDayLineBuffer[i];
+  }
+  pDayLineBuffer[lBufferLength] = 0x000;
 }
 
 #ifdef _DEBUG

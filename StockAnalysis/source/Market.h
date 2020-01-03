@@ -94,6 +94,9 @@ public:
   bool TaskResetSystem(long lCurrentTime);
   bool TaskResetSystemAgain(long lCurrentTime);
 
+  // 是否所有股票的历史日线数据都查询过一遍了
+  bool TaskProcessDayLineGetFromNeeteaseServer(void);
+
   // interface function
 public:
   // 系统状态区
@@ -134,13 +137,13 @@ public:
   void SetShowStock(CStockPtr pStock);
   bool IsCurrentStockChanged(void);
 
-  long GetTotalActiveStock(void) { return m_lTotalActiveStock; }
-  void SetTotalActiveStock(long lValue) { m_lTotalActiveStock = lValue; }
+  long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
+  void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
   long GetMinLineOffset(CStock sID, time_t Time);
 
   bool SystemReady(void) noexcept { return m_fSystemReady; }
-  void SetSystemReady(bool fFlag) { m_fSystemReady = fFlag; }
+  void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
   void SetTodayStockProcessedFlag(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
@@ -162,8 +165,6 @@ public:
   // 股票历史数据处理
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
-  // 是否所有股票的历史日线数据都查询过一遍了
-  bool ProcessDayLineGetFromNeeteaseServer(void);
 
   long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateRelativeStrong(long lStartCalculatingDay);
@@ -223,33 +224,32 @@ public:
   void SaveTempDataIntoDB(long lCurrentTime);
 
   // 状态反馈
-  bool IsUsingSinaRTDataReceiver(void) { return m_fUsingSinaRTDataReceiver; }
-  bool IsUsingNeteaseRTDataReceiver(void) { return m_fUsingNeteaseRTDataReceiver; }
-  bool IsUsingTengxunRTDataReceiver(void) { return m_fUsingTengxunRTDataReceiver; }
+  bool IsUsingSinaRTDataReceiver(void) noexcept { return m_fUsingSinaRTDataReceiver; }
+  bool IsUsingNeteaseRTDataReceiver(void) noexcept { return m_fUsingNeteaseRTDataReceiver; }
+  bool IsUsingTengxunRTDataReceiver(void) noexcept { return m_fUsingTengxunRTDataReceiver; }
 
-  long GetTotalStock(void) { return m_lTotalStock; }
-  time_t GetNewestTransactionTime(void) { return m_ttNewestTransactionTime; }
-  CStockPtr GetCurrentStockPtr(void) { return m_pCurrentStock; }
-  bool IsMarketOpened(void) { return m_fMarketOpened; }
-  bool IsGetRTData(void) { return m_fGetRTData; }
-  bool IsSaveDayLine(void) { return m_fSaveDayLine; }
-  void SetSaveDayLine(bool fFlag) { m_fSaveDayLine = fFlag; }
+  long GetTotalStock(void) noexcept { return m_lTotalStock; }
+  time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
+  CStockPtr GetCurrentStockPtr(void) noexcept { return m_pCurrentStock; }
+  bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
+  bool IsGetRTData(void) noexcept { return m_fGetRTData; }
+  bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
+  void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
 
-  int GetCountDownSlowReadingRTData(void) { return m_iCountDownSlowReadingRTData; }
-  bool IsCurrentEditStockChanged(void) { return m_fCurrentEditStockChanged; }
-  void SetCurrentEditStockChanged(bool fFlag) { m_fCurrentEditStockChanged = fFlag; }
+  int GetCountDownSlowReadingRTData(void) noexcept { return m_iCountDownSlowReadingRTData; }
+  bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
+  void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-  void StoreChoiceStock(CStockPtr pStock) { m_vStockChoice.push_back(pStock); }
+  void StoreChoiceStock(CStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
 
-  void ResetSinaRTDataInquiringIndex(void) { m_lCurrentSinaRTDataInquiringIndex = 0; }
-  void ResetTengxunRTDataInquiringIndex(void) { m_lCurrentTengxunRTDataInquiringIndex = 0; }
-  void ResetNeteaseRTDataInquiringIndex(void) { m_lCurrentNeteaseRTDataInquiringIndex = 0; }
-  void ResetNeteaseDayLineDataInquiringIndex(void) { m_lCurrentNeteaseDayLineDataInquiringIndex = 0; }
-  long GetSinaRTDataInquiringIndex(void) { return m_lCurrentSinaRTDataInquiringIndex; }
-  long GetTengxunRTDataInquiringIndex(void) { return m_lCurrentTengxunRTDataInquiringIndex; }
-  long GetNeteaseRTDataInquiringIndex(void) { return m_lCurrentNeteaseRTDataInquiringIndex; }
-  long GetNeteaseDayLineDataInquiringIndex(void) { return m_lCurrentNeteaseDayLineDataInquiringIndex; }
-
+  void ResetSinaRTDataInquiringIndex(void) noexcept { m_lCurrentSinaRTDataInquiringIndex = 0; }
+  void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lCurrentTengxunRTDataInquiringIndex = 0; }
+  void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lCurrentNeteaseRTDataInquiringIndex = 0; }
+  void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lCurrentNeteaseDayLineDataInquiringIndex = 0; }
+  long GetSinaRTDataInquiringIndex(void) noexcept { return m_lCurrentSinaRTDataInquiringIndex; }
+  long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lCurrentTengxunRTDataInquiringIndex; }
+  long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lCurrentNeteaseRTDataInquiringIndex; }
+  long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lCurrentNeteaseDayLineDataInquiringIndex; }
 
   // 测试用函数
   bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }

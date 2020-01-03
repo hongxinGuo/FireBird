@@ -210,8 +210,9 @@ public:
 
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
+  bool SkipNeteaseDayLineInformationHeader(void);
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -232,7 +233,7 @@ public:
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
   void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
   INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
-  void SetGuadan(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
+  void SetGuadan(INT64 lPrice, INT64 lVolume) noexcept { m_mapGuadan[lPrice] = lVolume; }
   bool HaveGuadan(INT64 lPrice);
 
   // 日线相对强度计算
@@ -277,8 +278,8 @@ public:
 
   // 日线历史数据
   size_t GetDayLineSize(void) { return m_vDayLine.size(); }
-  void ClearDayLineContainer(void) { m_vDayLine.clear(); }
-  bool PushDayLinePtr(CDayLinePtr pDayLine) { m_vDayLine.push_back(pDayLine); return true; }
+  void ClearDayLineContainer(void) noexcept { m_vDayLine.clear(); }
+  bool PushDayLinePtr(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
   CDayLinePtr GetDayLinePtr(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
   bool RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue);
@@ -290,9 +291,9 @@ public:
   void ShowDayLine60RS(CDC* pDC, CRect rectClient);
   void ShowDayLine120RS(CDC* pDC, CRect rectClient);
 
-  INT64 GetCurrentPos(void) { return m_llCurrentPos; }
-  char* GetCurrentPosPtr(void) { return m_pCurrentPos; }
-  char* GetDayLineBufferPtr(void) { return m_pDayLineBuffer; }
+  INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
+  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
+  char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -302,7 +303,7 @@ public:
 public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
-
+  void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
 public:
 
 protected:
@@ -327,7 +328,7 @@ protected:
   // 挂单的具体情况。
   map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CRTDataPtr m_pLastRTData; // 从m_queueRTData读出的上一个实时数据。
-  INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
+  INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64 m_lCurrentCanselSellVolume;
@@ -335,7 +336,7 @@ protected:
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
 
-  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
   // 日线历史数据

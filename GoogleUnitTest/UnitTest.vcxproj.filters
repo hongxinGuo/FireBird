@@ -37,6 +37,9 @@
     <Filter Include="源文件">
       <UniqueIdentifier>{7d64aec8-6c8c-4407-baba-6976638576e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Stock">
+      <UniqueIdentifier>{0c83be19-9f25-4eab-b2a9-a61810981f64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -52,15 +55,6 @@
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
     <ClCompile Include="MarketTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockBasicInfoTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockCalculatedInfoTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="SinaRTWebDataTest.cpp">
@@ -90,12 +84,6 @@
     <ClCompile Include="NeteaseRTDataTest.cpp">
       <Filter>Test源文件\实现类\RTData</Filter>
     </ClCompile>
-    <ClCompile Include="CalculatingRTDataTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalysisGuaDanTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -110,6 +98,21 @@
     </ClCompile>
     <ClCompile Include="DequeDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="StockBasicInfoTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="StockCalculatedInfoTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="StockTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="AnalysisGuaDanTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculatingRTDataTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -950,4 +950,20 @@ namespace StockAnalysisTest {
     EXPECT_EQ(p, id.GetCurrentPosPtr());
     EXPECT_EQ(p, id.GetDayLineBufferPtr());
   }
+
+  TEST(CStockTest, TestSkipNeteaseDayLineFirstInformationLine) {
+    CStock id;
+    CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
+    id.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
+    id.ResetCurrentPos();
+    EXPECT_TRUE(id.SkipNeteaseDayLineInformationHeader());
+    str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\n"); // 缺少\r
+    id.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
+    id.ResetCurrentPos();
+    EXPECT_FALSE(id.SkipNeteaseDayLineInformationHeader());
+    str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r"); // 缺少\n
+    id.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
+    id.ResetCurrentPos();
+    EXPECT_FALSE(id.SkipNeteaseDayLineInformationHeader());
+  }
 }
