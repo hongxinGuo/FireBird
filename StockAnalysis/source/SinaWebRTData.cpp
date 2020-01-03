@@ -44,8 +44,6 @@ CString CSinaWebRTData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiv
 }
 
 void CSinaWebRTData::StartReadingThread(void) {
-  // 准备使用thread标准库改写
-  //static thread run(ThreadReadSinaRTData, this);
   AfxBeginThread(ThreadReadSinaRTData, this);
 }
 

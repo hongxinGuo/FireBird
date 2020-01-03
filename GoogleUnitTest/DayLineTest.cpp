@@ -447,4 +447,15 @@ namespace StockAnalysisTest {
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
   }
+
+  TEST(CDayLineTest, TestIsActive) {
+    CDayLine dayLine;
+    EXPECT_FALSE(dayLine.IsActive());
+    dayLine.SetClose(100);
+    EXPECT_FALSE(dayLine.IsActive());
+    dayLine.SetOpen(100);
+    EXPECT_FALSE(dayLine.IsActive());
+    dayLine.SetLastClose(100);
+    EXPECT_TRUE(dayLine.IsActive());
+  }
 }

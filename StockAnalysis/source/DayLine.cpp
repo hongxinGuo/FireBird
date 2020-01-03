@@ -95,6 +95,7 @@ void CDayLine::operator =(CDayLine& oneDl) {
 }
 
 bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
+  ASSERT(setDayLineInfo.IsOpen());
   m_lTransactionNumber = atol(setDayLineInfo.m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(setDayLineInfo.m_TransactionNumberBelow5000);
   m_lTransactionNumberBelow50000 = atol(setDayLineInfo.m_TransactionNumberBelow50000);
@@ -178,6 +179,7 @@ bool CDayLine::AppendData(CSetDayLine& setDayLine) {
 }
 
 bool CDayLine::LoadData(CSetDayLine& setDayLine) {
+  ASSERT(setDayLine.IsOpen());
   m_lDay = setDayLine.m_Day;
   m_wMarket = setDayLine.m_Market;
   m_strStockCode = setDayLine.m_StockCode;
@@ -199,7 +201,7 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 读取一条日线数据。采用网易日线历史数据格式。
+// 处理一条日线数据。采用网易日线历史数据格式。
 //
 // 与实时数据相类似，各种价格皆放大一千倍后以长整型存储。存入数据库时以DECIMAL(10,3)类型存储。
 // 字符串的制式为：2019-07-10,600000,浦东银行,收盘价,最高价,最低价,开盘价,前收盘价,涨跌值,涨跌比率,换手率,成交股数,成交金额,总市值,流通市值\r\n
@@ -218,7 +220,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
 
   i = 0;
   while ((*pCurrentPos != 0x02c)) { // 读取日期，直到遇到逗号
-    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 20)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
+    if ((*pCurrentPos == 0x0d) || (*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 30)) { // 如果遇到回车、换行、字符串结束符或者读取了20个字符
       return false; // 数据出错，放弃载入
     }
     buffer3[i++] = *pCurrentPos++;
@@ -240,7 +242,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   SetDay(lDay);
   //TRACE("%d %d %d\n", year, month, day);
 
-  if (*pCurrentPos != 0x027) return(false); // 不是逗号(')，数据出错，放弃载入
+  if (*pCurrentPos != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入
   pCurrentPos++;
   iCount++;
 
@@ -255,7 +257,6 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
     SetMarket(__SHENZHEN_MARKET__);
   }
   else {
-    ASSERT(0); // 股票代码制式出错
     return false;
   }
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
@@ -314,7 +315,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, long
   // 流通市值的数据形式有两种，故而需要程序判定。
   i = 0;
   while (*pCurrentPos != 0x00d) {
-    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000)) return false; // 数据出错，放弃载入
+    if ((*pCurrentPos == 0x00a) || (*pCurrentPos == 0x000) || (i > 30)) return false; // 数据出错，放弃载入
     buffer2[i++] = *pCurrentPos++;
     iCount++;
   }
