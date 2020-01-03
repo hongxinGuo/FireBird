@@ -294,6 +294,7 @@ public:
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
   char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
+  INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

@@ -54,6 +54,7 @@ public:
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
+  void __TESTSetBuffer(CString str);
 
 protected:
   CHttpFile* m_pFile; // 网络文件指针

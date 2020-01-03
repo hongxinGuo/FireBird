@@ -119,3 +119,16 @@ void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
 }
+
+void CWebData::__TESTSetBuffer(CString str) {
+  long i;
+  long lTotalNumber = str.GetLength();
+  char* buffer = str.GetBuffer();
+  for (i = 0; i < lTotalNumber; i++) {
+    m_buffer[i] = buffer[i];
+  }
+  m_buffer[lTotalNumber] = 0x000;
+  m_lByteRead = lTotalNumber;
+  m_pCurrentPos = m_buffer;
+  m_lCurrentPos = 0;
+}

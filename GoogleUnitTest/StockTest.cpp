@@ -424,6 +424,18 @@ namespace StockAnalysisTest {
     EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.m_iDayLineNeedSave);
   }
 
+  TEST(CStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
+    CString str = _T("abcedfg\r\n");
+    gl_NeteaseWebDayLineData.__TESTSetBuffer(str);
+    CStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    EXPECT_EQ(stock.GetDayLineBufferLength(), 0);
+    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_NeteaseWebDayLineData);
+    EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
+    EXPECT_TRUE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。
+  }
+
   TEST(CStockTest, TestTodayDataIsActive) {
     CStock stock;
     EXPECT_FALSE(stock.IsTodayDataActive());
@@ -444,6 +456,22 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsTodayDataActive());
   }
 
+  TEST(CStockTest, TestIsTodayDataChanged) {
+    CStock stock;
+    EXPECT_FALSE(stock.IsTodayDataChanged());
+    stock.SetHigh(10);
+    EXPECT_TRUE(stock.IsTodayDataChanged());
+    stock.SetHigh(0);
+    stock.SetLow(10);
+    EXPECT_TRUE(stock.IsTodayDataChanged());
+    stock.SetLow(0);
+    stock.SetVolume(10);
+    EXPECT_TRUE(stock.IsTodayDataChanged());
+    stock.SetVolume(0);
+    stock.SetAmount(10);
+    EXPECT_TRUE(stock.IsTodayDataChanged());
+  }
+
   TEST(CStockTest, TestGetCurrentGuadanTransactionPrice) {
     CStock id;
 
@@ -454,10 +482,14 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CRTDataPtr pData = make_shared<CRTData>();
+    pData->SetStockCode(_T("sh600008"));
     CStock stock;
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
     stock.PushRTData(pData);
     EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
+    pData = stock.GetRTDataAtHead();
+    EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
+    EXPECT_STREQ(pData->GetStockCode(), _T("sh600008"));
     CRTDataPtr pData2 = stock.PopRTData();
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
   }

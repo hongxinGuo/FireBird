@@ -1,5 +1,5 @@
 #ifndef __MARKET_H__
-#define __MERKET_H__
+#define __MARKET_H__
 
 #include"stdafx.h"
 #include"globedef.h"
