@@ -80,12 +80,10 @@ bool CWebData::ReadDataFromWebOnce(void) {
 
 CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
   CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
-  pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  pWebDataReceived->m_vBuffer.resize(GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
   pWebDataReceived->m_lBufferLength = GetByteReaded();
-  char* pbuffer = pWebDataReceived->m_pDataBuffer;
-
-  for (int i = 0; i < GetByteReaded() + 1; i++) {
-    *pbuffer++ = m_buffer.at(i);
+  for (long i = 0; i < GetByteReaded() + 1; i++) {
+    pWebDataReceived->SetChar(i, m_buffer.at(i));
   }
   return pWebDataReceived;
 }

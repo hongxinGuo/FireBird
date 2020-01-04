@@ -226,11 +226,6 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
   }
-  pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
-  for (int i = 0; i < 1024 * 1024; i++) {
-    pWebDataReceived->m_pCurrentPos = 0x000;
-    pWebDataReceived->m_pCurrentPos++;
-  }
   pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
 
   return true;
@@ -305,25 +300,25 @@ CString CCrweberIndex::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebDataReceived->m_pCurrentPos != '>') {
+  while ((pWebDataReceived->GetChar() != 0x000) && !fFound) {
+    if (pWebDataReceived->GetChar() == '<') { // 无用配置字符
+      while (pWebDataReceived->GetChar() != '>') {
         pWebDataReceived->IncreaseCurrentPos();
       }
       pWebDataReceived->IncreaseCurrentPos();
-      while ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x00d)
-             || (*pWebDataReceived->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+      while ((pWebDataReceived->GetChar() == 0x00a) || (pWebDataReceived->GetChar() == 0x00d)
+             || (pWebDataReceived->GetChar() == ' ')) { // 跨过回车、换行和空格符
         pWebDataReceived->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+  if (pWebDataReceived->GetChar() == 0x000) { // 读到结尾处了
     ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
     return _T("");
   }
-  while (*pWebDataReceived->m_pCurrentPos != '<') {
-    if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+  while (pWebDataReceived->GetChar() != '<') {
+    if (pWebDataReceived->GetChar() != ',') buffer[iBufferCount++] = pWebDataReceived->GetChar(); // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
     pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;

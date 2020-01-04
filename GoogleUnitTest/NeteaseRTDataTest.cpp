@@ -160,12 +160,11 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
-      for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+      m_pNeteaseWebRTData->m_vBuffer.resize(m_lStringLength + 1);
+      for (long i = 0; i < m_lStringLength; i++) {
+        m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }
-      m_pData[m_lStringLength] = 0x000;
+      m_pNeteaseWebRTData->SetChar(m_lStringLength, 0x000);
       m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
@@ -375,12 +374,11 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
-      for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+      m_pNeteaseWebRTData->m_vBuffer.resize(m_lStringLength + 1);
+      for (long i = 0; i < m_lStringLength; i++) {
+        m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }
-      m_pData[m_lStringLength] = 0x000;
+      m_pNeteaseWebRTData->SetChar(m_lStringLength, 0x000);
       m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
@@ -406,7 +404,6 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char* m_pData;
     long m_lStringLength;
     CWebDataReceivedPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
@@ -503,12 +500,11 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
+      m_pNeteaseWebRTData->m_vBuffer.resize(lLength + 1);
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }
-      m_pData[lLength] = 0x000;
+      m_pNeteaseWebRTData->SetChar(lLength, 0x000);
       m_pNeteaseWebRTData->ResetCurrentPos();
     }
 
@@ -518,7 +514,6 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char* m_pData;
     CWebDataReceivedPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
   };

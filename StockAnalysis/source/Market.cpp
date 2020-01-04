@@ -671,7 +671,6 @@ bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_QueueSinaWebRTData.PopWebRTData();
-    pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
     pWebDataReceived->m_lCurrentPos = 0;
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
       CRTDataPtr pRTData = make_shared<CRTData>();
@@ -714,7 +713,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
       iCount = 0;
-      while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
+      while (!((pWebDataReceived->GetChar() == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CRTDataPtr pRTData = make_shared<CRTData>();
         if (pRTData->ReadNeteaseData(pWebDataReceived)) {
           iCount++;
@@ -735,7 +734,7 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 bool CMarket::IsInvalidNeteaseRTData(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback({ });"); // 此为无效股票查询到的数据格式，共26个字符
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 26);
+  pWebDataReceived->Copy(buffer, 26);
   buffer[26] = 0x000;
   CString str1 = buffer;
 
@@ -750,7 +749,7 @@ bool CMarket::IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
+  pWebDataReceived->Copy(buffer, 21);// 读入"_ntes_quote_callback("
   buffer[21] = 0x000;
   CString str1;
   str1 = buffer;
@@ -800,7 +799,6 @@ bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   long lTotalData = gl_QueueCrweberdotcomWebData.GetWebRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebData = gl_QueueCrweberdotcomWebData.PopWebRTData();
-    pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
     pWebData->m_lCurrentPos = 0;
     if (gl_CrweberIndex.ReadData(pWebData)) {
       if (gl_CrweberIndex.IsTodayUpdated() || gl_CrweberIndex.IsDataChanged()) {
@@ -860,7 +858,8 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 bool CMarket::IsInvalidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
+
+  pWebDataReceived->Copy(buffer, 21);
   buffer[21] = 0x000;
   CString str1 = buffer;
 
