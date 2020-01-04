@@ -303,6 +303,7 @@ public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
   void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
+
 public:
 
 protected:
