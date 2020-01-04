@@ -60,6 +60,23 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_SinaWebRTData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
   }
 
+  TEST(CWebDataTest, TestTransferWebDataToBuffer) {
+    gl_SinaWebRTData.__TESTSetBuffer(_T("abcdefg"));
+
+    vector<char> buffer;
+    buffer.resize(8);
+    gl_SinaWebRTData.TransferWebDataToBuffer(buffer);
+    EXPECT_EQ(buffer.at(0), 'a');
+    EXPECT_EQ(buffer.at(1), 'b');
+    EXPECT_EQ(buffer.at(2), 'c');
+    EXPECT_EQ(buffer.at(3), 'd');
+    EXPECT_EQ(buffer.at(4), 'e');
+    EXPECT_EQ(buffer.at(5), 'f');
+    EXPECT_EQ(buffer.at(6), 'g');
+    EXPECT_EQ(buffer.at(7), 0x000);
+    EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 7);
+  }
+
   TEST(CWebDataTest, TestIncreaseCurentPos) {
     EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 0);
     gl_SinaWebRTData.IncreaseCurrentPos();

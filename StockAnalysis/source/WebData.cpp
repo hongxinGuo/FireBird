@@ -112,7 +112,7 @@ void CWebData::CreateTotalInquiringString(CString strMiddle) {
 }
 
 void CWebData::TransferWebDataToBuffer(vector<char>& buffer) {
-  for (int i = 0; i < m_lCurrentByteRead + 1; i++) {
+  for (int i = 0; i < m_lByteRead + 1; i++) {
     buffer.at(i) = m_buffer.at(i);
   }
 }
