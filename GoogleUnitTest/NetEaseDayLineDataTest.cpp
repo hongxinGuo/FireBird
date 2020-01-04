@@ -5,6 +5,9 @@
 
 #include"DayLine.h"
 
+using namespace std;
+#include<vector>
+
 namespace StockAnalysisTest {
   struct NetEaseDayLineData {
     NetEaseDayLineData(int count, CString Data) {
@@ -43,11 +46,10 @@ namespace StockAnalysisTest {
       NetEaseDayLineData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
+      m_pData.resize(lLength + 1);
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData.GetAt(i);
+        m_pData.at(i) = pData->m_strData.GetAt(i);
       }
-      m_pCurrentPos = m_pData;
       m_lCountPos = 0;
 
       m_DayLine.SetAmount(-1);
@@ -62,14 +64,12 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
-      delete m_pData;
     }
 
   public:
     int m_iCount;
-    char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos = 0;
+    vector<char> m_pData;
+    INT64 m_lCountPos = 0;
     CDayLine m_DayLine;
     CDayLinePtr m_DayLinePtr;
   };
@@ -80,8 +80,7 @@ namespace StockAnalysisTest {
                           ));
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
-    INT64 lCount = 0;
-    bool fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
+    bool fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pData, m_lCountPos);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
@@ -168,25 +167,22 @@ namespace StockAnalysisTest {
       ReadDayLineOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pData = new char[lLength + 1];
+      m_pData.resize(lLength + 1);
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pData.at(i) = pData->m_strData[i];
       }
-      m_pData[lLength] = 0x000;
-      m_pCurrentPos = m_pData;
+      m_pData.at(lLength) = 0x000;
       m_lCountPos = 0;
     }
 
     void TearDown(void) override {
       // clearup
-      delete m_pData;
     }
 
   public:
     int m_iCount;
-    char* m_pData;
-    char* m_pCurrentPos;
-    long m_lCountPos = 0;
+    vector<char> m_pData;
+    INT64 m_lCountPos = 0;
   };
 
   INSTANTIATE_TEST_CASE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
@@ -195,7 +191,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pData, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

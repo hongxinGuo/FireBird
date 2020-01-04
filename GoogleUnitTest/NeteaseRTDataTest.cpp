@@ -594,10 +594,7 @@ namespace StockAnalysisTest {
       NeteaseRTDataIndexValue* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pData = m_NeteaseWebRTData.GetBufferAddr();
-      for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
-      }
+      m_NeteaseWebRTData.__TESTSetBuffer(pData->m_strData);
       m_NeteaseWebRTData.ResetCurrentPos();
       m_lIndex = m_RTData.GetNeteaseSymbolIndex(pData->m_strIndex);
       for (int i = 0; i < 5; i++) {

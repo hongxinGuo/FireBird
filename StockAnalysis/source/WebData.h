@@ -8,6 +8,8 @@
 
 using namespace std;
 #include<atomic>
+#include<array>
+#include<vector>
 
 class CWebData {
 public:
@@ -31,11 +33,11 @@ public:
   void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) noexcept { m_strInquire = str; }
-  char* GetBufferAddr(void) noexcept { return m_buffer; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
   long GetByteReaded(void)noexcept { return m_lByteRead; }
   void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
   void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
+  void TransferWebDataToBuffer(vector<char>& buffer);
 
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
@@ -43,11 +45,10 @@ public:
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
@@ -59,13 +60,12 @@ public:
 protected:
   CHttpFile* m_pFile; // 网络文件指针
   CString m_strInquire;// 查询所需的字符串
-  char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
+  array<char, 2048 * 1024> m_buffer; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
-  char* m_pCurrentReadPos; // 当前读入字符的存入位置
+  long m_lCurrentReadPos; // 当前读入字符的存入位置
   long m_lCurrentByteRead; // 本次接收到到的字符数
 
-  char* m_pCurrentPos; // 当前处理的位置
-  long m_lCurrentPos;
+  long m_lCurrentPos;// 当前处理的位置
 
   CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀

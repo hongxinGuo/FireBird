@@ -20,7 +20,7 @@ public:
   bool LoadData(CSetDayLine& setDayLine);
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
-  bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
+  bool ProcessNeteaseData(CString strStockCode, vector<char>& buffer, INT64& lLength);
   bool IsActive(void);
 
 public:

@@ -211,8 +211,8 @@ public:
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
   bool SkipNeteaseDayLineInformationHeader(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
+  void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -292,8 +292,6 @@ public:
   void ShowDayLine120RS(CDC* pDC, CRect rectClient);
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
-  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
-  char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
 
 #ifdef _DEBUG
@@ -343,9 +341,7 @@ protected:
   // 日线历史数据
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;
-  char* m_pCurrentPos;
   INT64 m_llCurrentPos;
 
 private:

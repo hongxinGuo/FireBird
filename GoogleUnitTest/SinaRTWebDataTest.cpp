@@ -61,14 +61,10 @@ namespace StockAnalysisTest {
   }
 
   TEST(CWebDataTest, TestIncreaseCurentPos) {
-    char* pAddr = gl_SinaWebRTData.GetCurrentPosPtr();
-
     EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 0);
     gl_SinaWebRTData.IncreaseCurrentPos();
     EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 1);
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPosPtr(), pAddr + 1);
     gl_SinaWebRTData.IncreaseCurrentPos(100);
     EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 101);
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPosPtr(), pAddr + 101);
   }
 }
