@@ -17,12 +17,12 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
+UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
 
   int i;
-  long lDay = FormatToDay(gl_ChinaStockMarket.m_ttNewestTransactionTime);
-  i = gl_ChinaStockMarket.CompileCurrentTradeDayStock(lDay);
+  long lDay = FormatToDay(gl_ChinaStockMarket.GetNewestTransactionTime());
+  i = gl_ChinaStockMarket.ProcessCurrentTradeDayStock(lDay);
   char buffer[30];
   sprintf_s(buffer, "%d", i);
   CString str;
@@ -34,8 +34,8 @@ UINT ThreadCompileCurrentTradeDayStock(LPVOID) {
   if (gl_systemTime.GetTime() > 150300) {   // 如果中国股市闭市了
     gl_ChinaStockMarket.UpdateStockCodeDB();  // 更新代码。
     gl_ChinaStockMarket.UpdateOptionDB();   // 更新状态
-    gl_ChinaStockMarket.SetTodayStockCompiledFlag(true);  // 设置今日已处理标识
+    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);  // 设置今日已处理标识
   }
 
-  return 5;
+  return 14;
 }

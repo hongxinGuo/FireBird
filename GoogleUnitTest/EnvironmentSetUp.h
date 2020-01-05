@@ -15,8 +15,10 @@ namespace StockAnalysisTest {
     }
 
     virtual void SetUp(void) {
+      CStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
-      for (auto pStock : gl_ChinaStockMarket.m_vChinaMarketAStock) {
+      for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
+        pStock = gl_ChinaStockMarket.GetStockPtr(i);
         pStock->SetDayLineEndDay(-1);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);

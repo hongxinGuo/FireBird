@@ -22,10 +22,6 @@ CStock::CStock() : CObject() {
 }
 
 CStock::~CStock(void) {
-  if (m_pDayLineBuffer != nullptr) {
-    delete m_pDayLineBuffer;
-    m_pDayLineBuffer = nullptr;
-  }
 }
 
 void CStock::Reset(void) {
@@ -44,7 +40,6 @@ void CStock::Reset(void) {
   m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
   m_fDayLineNeedSaving = false;
   m_lDayLineBufferLength = 0;
-  m_pDayLineBuffer = nullptr;
 
   m_fChoiced = false;
   m_fMinLineUpdated = false;
@@ -71,30 +66,25 @@ void CStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = true;
-    gl_ChinaStockMarket.m_iDayLineNeedSave++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedSaveNumber();
   }
   else {
     ASSERT(m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = false;
-    gl_ChinaStockMarket.m_iDayLineNeedSave--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedSaveNumber();
   }
 }
 
 bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  if (fNeedSaveing) gl_ChinaStockMarket.m_iDayLineNeedSave--;
+  if (fNeedSaveing) gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData) {
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-  char* p = pNeteaseWebDayLineData->GetBufferAddr();
-  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
-  m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-  char* pbuffer = m_pDayLineBuffer;
-  for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
-    *pbuffer++ = *p++;
-  }
+  m_vDayLineBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  pNeteaseWebDayLineData->TransferWebDataToBuffer(m_vDayLineBuffer);
   m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
   SetDayLineNeedProcess(true);
 
@@ -108,10 +98,8 @@ bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNete
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::ProcessNeteaseDayLineData(void) {
-  long iCount = 0;
-  char* pCurrentPos = m_pDayLineBuffer;
-  char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
+  shared_ptr<CDayLine> pDayLine;
 
   ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
@@ -119,99 +107,98 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     return false;
   }
 
-  ASSERT(m_pDayLineBuffer[m_lDayLineBufferLength] == 0x000); // 最后字符为增加的0x000.
-  while (*pCurrentPos != 0X0d) {
-    if ((*pCurrentPos == 0x0a) || (*pCurrentPos == 0x000)) {
-      return false;
-    }
-    pCurrentPos++;
-    iCount++;
-  }
-  pCurrentPos++;
-  iCount++;
-  if (*pCurrentPos != 0x0a) {
-    return false;
-  }
-  pCurrentPos++;
-  iCount++;
-  shared_ptr<CDayLine> pDayLine;
+  ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
+  ResetCurrentPos();
+  if (!SkipNeteaseDayLineInformationHeader()) return false;
 
-  pTestPos = m_pDayLineBuffer;
-  pTestPos += iCount;
-  ASSERT(*pTestPos == *pCurrentPos);
-  if (iCount == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    // ASSERT(!m_vChinaMarketAStock[lIndex]->m_fActive); 当一个股票IPO后但尚未上市时，股票代码存在但没有日线数据。取消此断言判断。
-    // 有些股票在上市后出现被收购或其他情况，导致日线数据不再更新。此种情况不能设置此股票为无效代码
+  if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
-      //TRACE("无效股票代码：%s\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
+      TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
       if (GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
-      //TRACE("%S 没有可更新的日线数据\n", static_cast<LPCWSTR>(m_vChinaMarketAStock.at(Index)->GetStockCode()));
+      TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
     }
     return false;
   }
 
-  long iTemp = 0;
   CString strTemp;
-  pTestPos = m_pDayLineBuffer;
-  pTestPos += iCount;
-  ASSERT(*pTestPos == *pCurrentPos);
-  while (iCount < m_lDayLineBufferLength) {
+  while (m_llCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!pDayLine->ProcessNeteaseData(GetStockCode(), pCurrentPos, iTemp)) { // 处理一条日线数据
-      TRACE(_T("%s 日线数据出错\n"), pDayLine->GetStockCode());
+    if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_vDayLineBuffer, m_llCurrentPos)) { // 处理一条日线数据
+      TRACE(_T("%s日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
-    iCount += iTemp;
-    pTestPos = m_pDayLineBuffer;
-    pTestPos += iCount;
-    ASSERT(*pTestPos == *pCurrentPos);
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetActive(true);
       SetDayLineLoaded(false);
-      SetMarket(pDayLine->GetMarket());
-      SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      strTemp = GetStockCode().Right(6); // 截取股票代码右边的六个数字
-      gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
+      SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
+      TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
-  strTemp = pDayLine->GetStockCode();
-  strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushDayLineInfoMessage(strTemp);
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
     SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
+  // 将日线数据以时间为正序存入
+  StoreDayLine(vTempDayLine);
+  ReportDayLineDownLoaded();
+  SetDayLineNeedSaving(true); // 设置存储日线标识
 
+  return true;
+}
+
+bool CStock::SkipNeteaseDayLineInformationHeader() {
+  ASSERT(m_llCurrentPos == 0);
+  while (m_vDayLineBuffer.at(m_llCurrentPos) != 0X0d) {
+    if ((m_vDayLineBuffer.at(m_llCurrentPos) == 0x0a) || (m_vDayLineBuffer.at(m_llCurrentPos) == 0x000)) {
+      return false;
+    }
+    IncreaseCurrentPos();
+  }
+  IncreaseCurrentPos();
+  if (m_vDayLineBuffer.at(m_llCurrentPos) != 0x0a) {
+    return false;
+  }
+  IncreaseCurrentPos();
+  return true;
+}
+
+void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
+  SetActive(true);
+  SetDayLineLoaded(false);
+  SetMarket(wMarket);
+  SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
+}
+
+void CStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
+  CDayLinePtr pDayLine = nullptr;
   m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
     if (pDayLine->IsActive()) {
-      // 清除掉不再交易（停牌或退市）的股票日线
+      // 清除掉不再交易（停牌或退市后出现的）的股票日线
       m_vDayLine.push_back(pDayLine);
     }
   }
-  vTempDayLine.clear();
-  if (m_pDayLineBuffer != nullptr) {
-    delete m_pDayLineBuffer;
-    m_pDayLineBuffer = nullptr;
-  }
   SetDayLineLoaded(true);
-  SetDayLineNeedSaving(true); // 设置存储日线标识
+}
 
-  return true;
+void CStock::ReportDayLineDownLoaded(void) {
+  CString strTemp = GetStockCode();
+  strTemp += _T("日线下载完成.");
+  gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -327,10 +314,11 @@ void CStock::UpdateStatus(CRTDataPtr pRTData) {
 bool CStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
-  setDayLine.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLine.m_strFilter += pCurrentStock->GetStockCode();
   setDayLine.m_strFilter += _T("'");
   setDayLine.m_strSort = _T("[Day]");
   setDayLine.Open();
@@ -339,7 +327,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
 
   // 装入DayLineInfo数据
   setDayLineInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineInfo.m_strFilter += gl_ChinaStockMarket.m_pCurrentStock->GetStockCode();
+  setDayLineInfo.m_strFilter += pCurrentStock->GetStockCode();
   setDayLineInfo.m_strFilter += _T("'");
   setDayLineInfo.m_strSort = _T("[Day]");
   setDayLineInfo.Open();
@@ -412,7 +400,28 @@ bool CStock::CalculateDayLineRS(INT64 lNumber) {
     for (INT64 j = i - lNumber; j < i; j++) {
       dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
     }
+    switch (lNumber) {
+    case 3:
+    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
+    break;
+    case 120:
     m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
   }
   return false;
 }
@@ -757,10 +766,12 @@ bool CStock::CheckCurrentRTData() {
 
 void CStock::ShowCurrentTransaction() {
   // 显示当前交易情况
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
-      if (gl_ChinaStockMarket.m_pCurrentStock->GetCurrentTransationVolume() > 0) {
-        gl_ChinaStockMarket.m_pCurrentStock->ReportGuadanTransaction();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  if (pCurrentStock != nullptr) {
+    if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
+      if (pCurrentStock->GetCurrentTransationVolume() > 0) {
+        pCurrentStock->ReportGuadanTransaction();
       }
     }
   }
@@ -768,9 +779,11 @@ void CStock::ShowCurrentTransaction() {
 
 void CStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
-  if (gl_ChinaStockMarket.m_pCurrentStock != nullptr) {
-    if (gl_ChinaStockMarket.m_pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
-      gl_ChinaStockMarket.m_pCurrentStock->ReportGuadan();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  if (pCurrentStock != nullptr) {
+    if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
+      pCurrentStock->ReportGuadan();
     }
   }
 }
@@ -960,12 +973,12 @@ void CStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
-    gl_ChinaStockMarket.m_iDayLineNeedUpdate++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedUpdateNumber();
   }
   else {
     ASSERT(m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = false;
-    gl_ChinaStockMarket.m_iDayLineNeedUpdate--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedUpdateNumber();
   }
 }
 
@@ -973,13 +986,144 @@ void CStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = true;
-    gl_ChinaStockMarket.m_iDayLineNeedProcess++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
     ASSERT(m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = false;
-    gl_ChinaStockMarket.m_iDayLineNeedProcess--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedProcessNumber();
   }
+}
+
+void CStock::ShowDayLine(CDC* pDC, CRect rectClient) {
+  const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
+  CPen penWhite1(PS_SOLID, 1, crWhite);
+  long lHigh = 0;
+  long lDay;
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  it--;
+  int i = 0, y = 0;
+  long lLow = (*it)->GetLow();
+  for (; it != m_vDayLine.begin(); it--) {
+    if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
+    if ((*it)->GetLow() > 0) {
+      if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
+    }
+    if (3 * i > m_vDayLine.size()) break;
+    if (rectClient.right <= 3 * i) break; // 画到
+    else i++;
+  }
+
+  it = m_vDayLine.end();
+  it--;
+  i = 0;
+  long x = 0;
+  pDC->SelectObject(&penWhite1);
+  for (; it != m_vDayLine.begin(); it--) {
+    x = rectClient.right - 2 - i * 3;
+    y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    pDC->MoveTo(x, y);
+    y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    pDC->LineTo(x, y);
+    lDay = (*it)->GetDay();
+    i++;
+    if (3 * i > m_vDayLine.size()) break;
+    if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
+  }
+}
+
+bool CStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
+  int y = rectClient.bottom - dValue * rectClient.bottom / 200;
+  pDC->LineTo(rectClient.right - 1 - 3 * i, y);
+  if (3 * i > m_vDayLine.size()) return false;
+  if (rectClient.right <= 3 * i) return false; // 画到窗口左边框为止
+  return true;
+}
+
+void CStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->GetRelativeStrong() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->GetRelativeStrong())) break;
+  }
+}
+
+void CStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get3DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get3DayRS())) break;
+  }
+}
+
+void CStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get5DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get5DayRS())) break;
+  }
+}
+
+void CStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get10DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get10DayRS())) break;
+  }
+}
+
+void CStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get30DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get30DayRS())) break;
+  }
+}
+
+void CStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get60DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get60DayRS())) break;
+  }
+}
+
+void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
+  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
+  int i = 1;
+  it--;
+  int y = rectClient.bottom - (*it--)->Get120DayRS() * rectClient.bottom / 200;
+  pDC->MoveTo(rectClient.right - 1, y);
+  for (; it != m_vDayLine.begin(); it--, i++) {
+    if (!RSLineTo(pDC, rectClient, i, (*it)->Get120DayRS())) break;
+  }
+}
+
+void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
+  m_vDayLineBuffer.resize(lBufferLength + 1);
+  for (int i = 0; i < lBufferLength; i++) {
+    m_vDayLineBuffer.at(i) = pDayLineBuffer[i];
+  }
+  m_vDayLineBuffer.at(lBufferLength) = 0x000;
+  m_lDayLineBufferLength = lBufferLength;
 }
 
 #ifdef _DEBUG

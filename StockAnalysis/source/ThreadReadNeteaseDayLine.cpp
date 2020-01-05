@@ -19,22 +19,15 @@
 #include"Market.h"
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
-  CNeteaseWebDayLineData* pNeteaseWebDayLineData = (CNeteaseWebDayLineData*)pParam;
-  static int siDelayTime = 600;
-  static bool fStarted = false;
-
+  CNeteaseDayLineWebData* pNeteaseWebDayLineData = (CNeteaseDayLineWebData*)pParam;
   const clock_t tt = clock();
 
-  if (pNeteaseWebDayLineData->ReadWebData(siDelayTime, 30, 30)) {
+  if (pNeteaseWebDayLineData->ReadWebData(/*siDelayTime*/ 50, 30, 20)) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseWebDayLineData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseWebDayLineData);
   }
-  if (!fStarted) {
-    fStarted = true;
-    siDelayTime = 50;
-  }
   gl_ChinaStockMarket.SetReadingNeteaseDayLineDataTime(clock() - tt);
 
-  return 2; // 此线程正常返回值为2
+  return 4; // 此线程正常返回值为4
 }

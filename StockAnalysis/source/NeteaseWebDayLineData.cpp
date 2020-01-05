@@ -1,34 +1,31 @@
 #include"stdafx.h"
 #include"globedef.h"
-#include"thread.h"
-#include"market.h"
+#include"Thread.h"
+#include"Market.h"
 
 #include "NeteaseWebDayLineData.h"
 
-CNeteaseWebDayLineData::CNeteaseWebDayLineData() : CWebData() {
-  m_fNeedProcessingCurrentWebData = true;
-
+CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
 }
 
-CNeteaseWebDayLineData::~CNeteaseWebDayLineData() {
+CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 }
 
-bool CNeteaseWebDayLineData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
-void CNeteaseWebDayLineData::InquireNextWebData(void) {
+/////////////////////////////////////////////////////////////////////////////////
+//
+// 查询字符串的格式为：
+//
+//
+////////////////////////////////////////////////////////////////////////////////
+void CNeteaseDayLineWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
 
   // 准备网易日线数据申请格式
-  m_fNeedProcessingCurrentWebData = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr(strMiddle);
-  if (m_fNeedProcessingCurrentWebData) {
+  strMiddle = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
+  if (strMiddle.GetLength() > 0) {
     SetDownLoadingStockCode(strMiddle);
     strMiddle += _T("&start=19900101");
     strMiddle += _T("&end=");
@@ -40,23 +37,19 @@ void CNeteaseWebDayLineData::InquireNextWebData(void) {
   }
 }
 
-int CNeteaseWebDayLineData::GetInquiringStr(CString& strInquire, long, bool) {
-  strInquire = _T("");
-  return 0;
-}
-
-void CNeteaseWebDayLineData::StartReadingThread(void) {
+void CNeteaseDayLineWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
 
-void CNeteaseWebDayLineData::SetDownLoadingStockCode(CString strStockCode) {
-  CString str = strStockCode.Left(1);
+void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode) {
+  char* p = strStockCode.GetBuffer();
+  char cFirstChar = *p;
   CString strRight = strStockCode.Right(6);
-  if (str.Compare(_T("0")) == 0) {
+  if (cFirstChar == '0') {
     m_strDownLoadingStockCode = _T("sh");
     m_strDownLoadingStockCode += strRight;
   }
-  else if (str.Compare(_T("1")) == 0) {
+  else if (cFirstChar == '1') {
     m_strDownLoadingStockCode = _T("sz");
     m_strDownLoadingStockCode += strRight;
   }

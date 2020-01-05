@@ -163,7 +163,7 @@ public:
   bool ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived);
   long GetNeteaseSymbolIndex(CString strSymbol);
   bool GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, long& lIndex, CString& strValue); // 从field中读取一个索引和一个以字符串表示的值
-  bool SetValue(long lIndex, CString strValue);
+  bool SetNeteaseRTValue(long lIndex, CString strValue);
 
 public:
   void SetDataSource(long lDataSource) noexcept { m_lDataSource = lDataSource; }
@@ -212,6 +212,9 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) noexcept { return m_fActive; }
+  bool CheckNeteaseRTDataActive(void);
+  bool CheckSinaRTDataActive(void);
+  bool CheckTengxunRTDataActive(void);
   bool IsValidTime(void);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
@@ -230,7 +233,7 @@ public:
 public:
 
 protected:
-  long m_lDataSource; // 实时数据来源标识。1：新浪网站；2：腾讯网站；3：网易网站；。。。
+  long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
   // Serialized data
   time_t m_time;	// 交易发生时的时间
   WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
@@ -255,6 +258,6 @@ protected:
   array<long, 5> m_lVSell;// 卖盘量1--5。单位: 股
 
 // 非存储数据
-  bool m_fActive; // 本股票是否存在实时数据
+  bool m_fActive; // 本股票是否存在有效实时数据
   map<CString, long> m_mapNeteaseSymbolToIndex; // 网易实时数据字段映射
 };

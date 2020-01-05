@@ -37,6 +37,9 @@
     <Filter Include="源文件">
       <UniqueIdentifier>{7d64aec8-6c8c-4407-baba-6976638576e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\Stock">
+      <UniqueIdentifier>{0c83be19-9f25-4eab-b2a9-a61810981f64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -51,19 +54,7 @@
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="accessoryTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="MarketTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockBasicInfoTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="StockCalculatedInfoTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="SinaRTWebDataTest.cpp">
@@ -77,9 +68,6 @@
     </ClCompile>
     <ClCompile Include="CrweberIndexWebDataTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemDequeDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
@@ -96,20 +84,38 @@
     <ClCompile Include="NeteaseRTDataTest.cpp">
       <Filter>Test源文件\实现类\RTData</Filter>
     </ClCompile>
-    <ClCompile Include="CalculatingRTDataTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalysisGuaDanTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="CrweberTest.cpp">
-      <Filter>Test源文件\Crweber.com</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="Market_NeteaseDayLineTest.cpp">
       <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="AccessoryTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="CrweberIndexTest.cpp">
+      <Filter>Test源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="DequeDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="StockBasicInfoTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="StockCalculatedInfoTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="StockTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="AnalysisGuaDanTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculatingRTDataTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessDayLineDataTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,12 +232,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -266,6 +266,12 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessCurrentTradeDayStock.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

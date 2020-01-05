@@ -60,11 +60,11 @@
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="accessoryTest.cpp" />
+    <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CrweberIndexWebDataTest.cpp" />
-    <ClCompile Include="CrweberTest.cpp" />
+    <ClCompile Include="CrweberIndexTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarketTest.cpp" />
@@ -73,12 +73,13 @@
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebDataTest.cpp" />
     <ClCompile Include="StockBasicInfoTest.cpp" />
     <ClCompile Include="StockCalculatedInfoTest.cpp" />
     <ClCompile Include="StockTest.cpp" />
-    <ClCompile Include="SystemDequeDataTest.cpp" />
+    <ClCompile Include="DequeDataTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="SystemTimeTest.cpp" />
@@ -133,10 +134,10 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateRS.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCompileCurrentTradeDayStock.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadMaintainDayLineDB.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessCurrentTradeDayStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj" />
@@ -152,6 +153,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.2\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.2\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
+    <Import Project="..\packages\boost.1.71.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.71.0.0\build\boost.targets')" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -192,9 +194,11 @@
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
       <SupportJustMyCode>true</SupportJustMyCode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAsManaged>false</CompileAsManaged>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -250,5 +254,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.2\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.2\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.71.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.71.0.0\build\boost.targets'))" />
   </Target>
 </Project>

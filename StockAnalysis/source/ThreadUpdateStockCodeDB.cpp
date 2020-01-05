@@ -14,5 +14,5 @@
 UINT ThreadUpdateStockCodeDB(LPVOID) {
   //
   gl_ChinaStockMarket.UpdateStockCodeDB();
-  return 14;
+  return 18;
 }

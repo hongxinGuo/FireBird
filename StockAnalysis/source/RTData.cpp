@@ -154,6 +154,8 @@ bool CRTData::Compare(CRTDataPtr pRTData) {
 //                     22114263,589824680,4695,26.91,57590,26.90,14700,26.89,14300,
 //                     26.88,15100,26.87,3100,26.92,8900,26.93,14230,26.94,25150,26.95,15220,26.96,2008-01-11,15:05:32,00”;
 //
+// 无效数据格式为：var hq_str_sh688801="";
+//
 // 这个字符串由许多数据拼接在一起，不同含义的数据用逗号隔开了，按照程序员的思路，顺序号从0开始。
 // 0：”大秦铁路”，股票名字；
 // 1：”27.55″，今日开盘价；
@@ -189,30 +191,47 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   static CString strHeader = _T("var hq_str_s");
   long lStockCode = 0;
   double dTemp = 0;
+  long lTestCurrentPos = pSinaWebRTData->m_lCurrentPos;
+  char bufferTest[2000];
+  CString strTest;
+
+  int i = 0;
+  while ((pSinaWebRTData->GetChar(lTestCurrentPos) != ';') && (i < 1900)) {
+    bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);
+  }
+  bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);
+  bufferTest[i] = 0x000;
+  strTest = bufferTest;
+  if (i >= 1900) {
+    TRACE(_T("%s\n"), strTest.GetBuffer());
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+    gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+    return false; // 整个数据出现错误，后面的皆抛掉
+  }
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 12); // 读入“var hq_str_s"
+    pSinaWebRTData->Copy(buffer1, 12); // 读入“var hq_str_s"
     buffer1[12] = 0x000;
     CString str1;
     str1 = buffer1;
     if (strHeader.Compare(str1) != 0) { // 数据格式出错
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(12);
 
-    if (*pSinaWebRTData->m_pCurrentPos == 'h') { // 上海股票
+    if (pSinaWebRTData->GetChar() == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pSinaWebRTData->m_pCurrentPos == 'z') {
+    else if (pSinaWebRTData->GetChar() == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos();
 
-    strncpy_s(buffer2, pSinaWebRTData->m_pCurrentPos, 6);
+    pSinaWebRTData->Copy(buffer2, 6);
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -223,26 +242,23 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
-    return false;
+    throw exception();
     }
     lStockCode = static_cast<long>(GetValue(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2); // 读入'="'
-    if (buffer1[0] != '=') {
-      return false;
-    }
-    if (buffer1[1] != '"') {
-      return false;
+    pSinaWebRTData->Copy(buffer1, 2);// 读入'="'
+    if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2);
-    if (buffer1[0] == '"') { // 没有数据
+    pSinaWebRTData->Copy(buffer1, 2);
+    if (buffer1[0] == '"') { // 没有数据?
       if (buffer1[1] != ';') {
-        return false;
+        throw exception();
       }
       pSinaWebRTData->IncreaseCurrentPos(2);
-      if (*pSinaWebRTData->m_pCurrentPos != 0x00a) {
+      if (pSinaWebRTData->GetChar() != 0x00a) {
         return false;
       }
       pSinaWebRTData->IncreaseCurrentPos();
@@ -251,19 +267,19 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
-      return false;
+      throw exception();
     }
     if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
-      return false;
+      throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
 
     int i = 2;
-    while (*pSinaWebRTData->m_pCurrentPos != 0x02c) { // 读入剩下的中文名字（第一个字在buffer1中）
-      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) {
-        return false;
+    while ((pSinaWebRTData->GetChar() != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
+      if ((pSinaWebRTData->GetChar() == 0x00a) || (pSinaWebRTData->GetChar() == 0x000)) {
+        throw exception();
       }
-      buffer1[i++] = *pSinaWebRTData->m_pCurrentPos;
+      buffer1[i++] = pSinaWebRTData->GetChar();
       pSinaWebRTData->IncreaseCurrentPos();
     }
     buffer1[i] = 0x000;
@@ -273,56 +289,56 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
 
     // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lOpen = static_cast<long>(dTemp * 1000);
     // 读入前收盘价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lLastClose = dTemp * 1000;
     // 读入当前价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lNew = static_cast<long>(dTemp * 1000);
     // 读入最高价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lHigh = static_cast<long>(dTemp * 1000);
     // 读入最低价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lLow = static_cast<long>(dTemp * 1000);
     // 读入竞买价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lBuy = static_cast<long>(dTemp * 1000);
     // 读入竞卖价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-      return false;
+      throw exception();
     }
     m_lSell = static_cast<long>(dTemp * 1000);
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
-      return false;
+      throw exception();
     }
     // 读入成交金额
     if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) {
-      return false;
+      throw exception();
     }
     // 读入买一--买五的股数和价格
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) {
-        return false;
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-        return false;
+        throw exception();
       }
       m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
     }
@@ -330,49 +346,57 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     for (int j = 0; j < 5; j++) {
       // 读入数量
       if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) {
-        return false;
+        throw exception();
       }
       // 读入价格
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
-        return false;
+        throw exception();
       }
       m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
-      return false;
+      throw exception();
     }
     CString strTime;
     strTime = buffer1;
     strTime += ' '; //添加一个空格，以利于下面的转换
     if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
-      return false;
+      throw exception();
     }
     strTime += buffer3;
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 
     // 后面的数据皆为无效数据，读至此数据的结尾处即可。
-    while (*pSinaWebRTData->m_pCurrentPos != 0x00a) { // 寻找字符'\n'（回车符）
+    while (pSinaWebRTData->GetChar() != 0x00a) { // 寻找字符'\n'（回车符）
       pSinaWebRTData->IncreaseCurrentPos();
-      if (*pSinaWebRTData->m_pCurrentPos == 0x000) {
-        return false;
+      if (pSinaWebRTData->GetChar() == 0x000) {
+        throw exception();
       }
     }
     pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'\n'
     // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
-    // 0.07版后，采用十天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天）
-    if (IsValidTime()) m_fActive = true;
-    else m_fActive = false;
-
+    // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
+    CheckSinaRTDataActive();
     SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
   catch (exception&) {
     TRACE(_T("ReadSinaData异常\n"));
+    CString str = m_strStockCode;
+    str += _T(" ReadSinaData异常\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
+}
+
+bool CRTData::CheckSinaRTDataActive(void) {
+  if (IsValidTime()) m_fActive = true;
+  else m_fActive = false;
+
+  return m_fActive;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,10 +462,10 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, double& dRetu
 bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, char* buffer) {
   int i = 0;
   try {
-    while ((*pSinaWebRTData->m_pCurrentPos != ',')) {
-      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) throw exception();
+    while ((pSinaWebRTData->GetChar() != ',')) {
+      if ((pSinaWebRTData->GetChar() == 0x00a) || (pSinaWebRTData->GetChar() == 0x000)) throw exception();
       if (i > 150) throw exception();
-      buffer[i++] = *pSinaWebRTData->m_pCurrentPos;
+      buffer[i++] = pSinaWebRTData->GetChar();
       pSinaWebRTData->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
@@ -452,6 +476,8 @@ bool CRTData::ReadSinaOneValue(CWebDataReceivedPtr pSinaWebRTData, char* buffer)
   }
   catch (exception&) {
     TRACE(_T("ReadSinaOneValue异常\n"));
+    CString str = _T("ReadSinaOneValue异常\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
 }
@@ -521,7 +547,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pTengxunWebRTData->m_pCurrentPos, 3); // 读入“v_s"
+    pTengxunWebRTData->Copy(buffer1, 3); // 读入“v_s"
     buffer1[3] = 0x000;
     CString str1;
     str1 = buffer1;
@@ -529,10 +555,10 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
       return false;
     }
     pTengxunWebRTData->IncreaseCurrentPos(3);
-    if (*pTengxunWebRTData->m_pCurrentPos == 'h') { // 上海股票
+    if (pTengxunWebRTData->GetChar() == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pTengxunWebRTData->m_pCurrentPos == 'z') {
+    else if (pTengxunWebRTData->GetChar() == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
@@ -541,7 +567,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     pTengxunWebRTData->IncreaseCurrentPos();
 
     // 六位股票代码
-    strncpy_s(buffer2, pTengxunWebRTData->m_pCurrentPos, 6);
+    pTengxunWebRTData->Copy(buffer2, 6);
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -557,7 +583,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     lStockCode = atoi(buffer2);
     pTengxunWebRTData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pTengxunWebRTData->m_pCurrentPos, 2); // 读入'="'
+    pTengxunWebRTData->Copy(buffer1, 2); // 读入'="'
     if (buffer1[0] != '=') {
       return false;
     }
@@ -726,21 +752,14 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     }
     if (dTemp > 0.01) m_lLowLimit = static_cast<long>(dTemp * 1000);
 
-    while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
+    while (pTengxunWebRTData->GetChar() != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();
-      if (*pTengxunWebRTData->m_pCurrentPos == 0x000) {
+      if (pTengxunWebRTData->GetChar() == 0x000) {
         return false;
       }
     }
     pTengxunWebRTData->IncreaseCurrentPos();
-    if (!IsValidTime()) { // 如果交易时间在12小时前
-      m_fActive = false;
-    }
-    else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
-      m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-    }
-    else m_fActive = true;
-
+    CheckTengxunRTDataActive();
     SetDataSource(__TENGXUN_RT_WEB_DATA__);
     return true;
   }
@@ -748,6 +767,18 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
     TRACE(_T("ReadTengxunData异常\n"));
     return false;
   }
+}
+
+bool CRTData::CheckTengxunRTDataActive() {
+  if (!IsValidTime()) { // 如果交易时间在12小时前
+    m_fActive = false;
+  }
+  else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
+    m_fActive = false; // 腾讯非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+  }
+  else m_fActive = true;
+
+  return m_fActive;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -815,9 +846,9 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, long& lR
 bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* buffer) {
   int i = 0;
   try {
-    while (*pWebDataReceived->m_pCurrentPos != '~') {
-      if ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pWebDataReceived->m_pCurrentPos;
+    while (pWebDataReceived->GetChar() != '~') {
+      if ((pWebDataReceived->GetChar() == 0x00a) || (pWebDataReceived->GetChar() == 0x000)) return false;
+      buffer[i++] = pWebDataReceived->GetChar();
       pWebDataReceived->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
@@ -851,19 +882,20 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* bu
 bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
-  char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
+  long lTestCurrentPos = pNeteaseWebRTData->m_lCurrentPos;
   char bufferTest[2000];
-  char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
+  long lSectionPos = pNeteaseWebRTData->m_lCurrentPos;
   long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
   CString strStockCode = _T(" "), strHeader;
   long lSectionLength = 0;
   CString strTest;
 
+#ifdef DEBUG
   int i = 0;
-  while ((*pTestCurrentPos != '}') && (i < 1900)) {
-    bufferTest[i++] = *pTestCurrentPos++;
+  while ((pNeteaseWebRTData->GetChar(lTestCurrentPos) != '}') && (i < 1900)) {
+    bufferTest[i++] = pNeteaseWebRTData->GetChar(lTestCurrentPos++);
   }
-  bufferTest[i++] = *pTestCurrentPos++;
+  bufferTest[i++] = pNeteaseWebRTData->GetChar(lTestCurrentPos++);
   lSectionLength = i;
   bufferTest[i] = 0x000;
   strTest = bufferTest;
@@ -872,7 +904,9 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
     return false; // 整个数据出现错误，后面的皆抛掉
   }
-  char ch = *(pSectionPos + lSectionLength - 1);
+#endif //
+
+  char ch = pNeteaseWebRTData->GetChar(lSectionPos + lSectionLength - 1);
   ASSERT(ch == '}');
   ASSERT(bufferTest[i - 1] == '}');
 
@@ -884,28 +918,20 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     }
     do {
       if (GetNeteaseIndexAndValue(pNeteaseWebRTData, lIndex, strValue)) {
-        if (!SetValue(lIndex, strValue)) throw exception();
+        if (!SetNeteaseRTValue(lIndex, strValue)) throw exception();
       }
       else {
         throw exception();
       }
-    } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
+    } while ((lIndex != 63) && (pNeteaseWebRTData->GetChar() != '}'));  // 读至turnover(63)或者遇到字符'}'
     // 读过'}'就结束了
-    while (*pNeteaseWebRTData->m_pCurrentPos != '}') {
+    while (pNeteaseWebRTData->GetChar() != '}') {
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
-    ASSERT(*pNeteaseWebRTData->m_pCurrentPos == '}');
+    ASSERT(pNeteaseWebRTData->GetChar() == '}');
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
-      m_fActive = false;
-    }
-    else {
-      if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
-        m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
-      }
-      else m_fActive = true;
-    }
+    CheckNeteaseRTDataActive();
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true;
   }
@@ -920,59 +946,72 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
 
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
-    pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
     pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
-    ASSERT(*(pNeteaseWebRTData->m_pCurrentPos - 1) == '}');
+    lTestCurrentPos = pNeteaseWebRTData->GetCurrentPos();
+    ASSERT(pNeteaseWebRTData->GetChar(lTestCurrentPos - 1) == '}');
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
 }
 
+bool CRTData::CheckNeteaseRTDataActive(void) {
+  if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+    m_fActive = false;
+  }
+  else {
+    if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
+      m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
+    }
+    else m_fActive = true;
+  }
+  return m_fActive;
+}
+
 bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
   CString strValue = _T("");
   char bufferStockCode[50];
-  char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
+  long lTestCurrentPos = pWebDataReceived->m_lCurrentPos;
   char bufferTest[30];
   bool fFind = false;
   CString strStockCode, strHeader;
   CString strTest;
 
   int i = 0;
-  while ((*pTestCurrentPos != '{') && (i < 20)) {
-    bufferTest[i++] = *pTestCurrentPos++;
+  while ((pWebDataReceived->GetChar(lTestCurrentPos) != '{') && (i < 20)) {
+    bufferTest[i++] = pWebDataReceived->GetChar(lTestCurrentPos++);
   }
   bufferTest[i] = 0x000;
   strTest = bufferTest;
 
   i = 0;  // 跨过前缀字符（"0601872")，直接使用其后的数据
-  if (!((*pWebDataReceived->m_pCurrentPos == '{') || (*pWebDataReceived->m_pCurrentPos == ','))) {
+  if (!((pWebDataReceived->GetChar() == '{') || (pWebDataReceived->GetChar() == ','))) {
     return false;
   }
   else pWebDataReceived->IncreaseCurrentPos();
-  if (*pWebDataReceived->m_pCurrentPos != '\"') {
+  if (pWebDataReceived->GetChar() != '\"') {
     return false;
   }
   else pWebDataReceived->IncreaseCurrentPos();
-  if (*pWebDataReceived->m_pCurrentPos == '0') strHeader = _T("sh");
-  else if (*pWebDataReceived->m_pCurrentPos == '1') strHeader = _T("sz");
+  if (pWebDataReceived->GetChar() == '0') strHeader = _T("sh");
+  else if (pWebDataReceived->GetChar() == '1') strHeader = _T("sz");
   else {
     return false;
   }
   pWebDataReceived->IncreaseCurrentPos();
   i = 0;
-  while (!fFind && (i < 13)) {
-    if (*pWebDataReceived->m_pCurrentPos == '"') {
+  while (!fFind && (i < 13) && (pWebDataReceived->GetChar() != 0x000)) {
+    if (pWebDataReceived->GetChar() == '"') {
       fFind = true;
       bufferStockCode[i] = 0x000;
     }
     else {
-      bufferStockCode[i++] = *pWebDataReceived->m_pCurrentPos;
+      bufferStockCode[i++] = pWebDataReceived->GetChar();
     }
     pWebDataReceived->IncreaseCurrentPos();
   }
   if (!fFind) return false;
   i = 1;
-  while ((*pWebDataReceived->m_pCurrentPos != '{') && (*pWebDataReceived->m_pCurrentPos != '"' && (i < 5))) {
+  while ((pWebDataReceived->GetChar() != '{') && (pWebDataReceived->GetChar() != '"' && (i < 5))) {
     i++;
     pWebDataReceived->IncreaseCurrentPos();
   }
@@ -1003,28 +1042,27 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
   int i = 0;
   CString strIndex;
   bool fFind = false;
-  char* pTestCurrentPos;
-  char* p = pNeteaseWebRTData->m_pCurrentPos - 1;
+  long lTestCurrentPos;
   char bufferTest[100];
 
   try {
-    while (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+    while (pNeteaseWebRTData->GetChar() != '"') {
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
-    while ((*pTestCurrentPos != '}') && (*pTestCurrentPos != ',') && (i < 99)) {
-      bufferTest[i++] = *pTestCurrentPos++;
+    lTestCurrentPos = pNeteaseWebRTData->m_lCurrentPos;
+    while ((pNeteaseWebRTData->GetChar(lTestCurrentPos) != '}') && (pNeteaseWebRTData->GetChar(lTestCurrentPos) != ',') && (i < 99)) {
+      bufferTest[i++] = pNeteaseWebRTData->GetChar(lTestCurrentPos++);
     }
     bufferTest[i] = 0x000;
 
     i = 0;
-    while ((*pNeteaseWebRTData->m_pCurrentPos != '"') && (*pNeteaseWebRTData->m_pCurrentPos != ':') && (*pNeteaseWebRTData->m_pCurrentPos != ',')) {
-      buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+    while ((pNeteaseWebRTData->GetChar() != '"') && (pNeteaseWebRTData->GetChar() != ':') && (pNeteaseWebRTData->GetChar() != ',')) {
+      buffer[i++] = pNeteaseWebRTData->GetChar();
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
-    if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+    if (pNeteaseWebRTData->GetChar() != '"') {
       TRACE(_T("未遇到正确字符'\"'"));
       return false;
     }
@@ -1033,18 +1071,18 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
     if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) throw exception();
     // 跨过"\""字符
     pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos != ':') {
+    if (pNeteaseWebRTData->GetChar() != ':') {
       TRACE(_T("未遇到正确字符':'"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos != ' ') {
+    if (pNeteaseWebRTData->GetChar() != ' ') {
       TRACE(_T("未遇到正确字符' '"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    if (*pNeteaseWebRTData->m_pCurrentPos == '"') {
+    if (pNeteaseWebRTData->GetChar() == '"') {
       fFind = true;
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
@@ -1052,11 +1090,11 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
 
     i = 0;
     if (fFind) {
-      while ((*pNeteaseWebRTData->m_pCurrentPos != '"') && (*pNeteaseWebRTData->m_pCurrentPos != ',')) {
-        buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+      while ((pNeteaseWebRTData->GetChar() != '"') && (pNeteaseWebRTData->GetChar() != ',')) {
+        buffer[i++] = pNeteaseWebRTData->GetChar();
         pNeteaseWebRTData->IncreaseCurrentPos();
       }
-      if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+      if (pNeteaseWebRTData->GetChar() != '"') {
         TRACE(_T("未遇到正确字符'\"'"));
         return false;
       }
@@ -1065,8 +1103,8 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
     else {
-      while ((*pNeteaseWebRTData->m_pCurrentPos != ',') && (*pNeteaseWebRTData->m_pCurrentPos != '}')) {
-        buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+      while ((pNeteaseWebRTData->GetChar() != ',') && (pNeteaseWebRTData->GetChar() != '}')) {
+        buffer[i++] = pNeteaseWebRTData->GetChar();
         pNeteaseWebRTData->IncreaseCurrentPos();
       }
       buffer[i] = 0x000;
@@ -1082,7 +1120,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
   }
 }
 
-bool CRTData::SetValue(long lIndex, CString strValue) {
+bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
 
   try {
@@ -1193,8 +1231,6 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     case 62: // arrow
     case 63: // turnover
     break;
-    case 64: // turno.这个似乎是个故障，因为其后的数据是无效的。
-    break;
     default:
     // 出错了
     throw exception();
@@ -1203,19 +1239,19 @@ bool CRTData::SetValue(long lIndex, CString strValue) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("SetValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
+    TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
     return false;
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-// 实时数据的有效时间范围为最近一周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十天时间，
-// 故而十天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
+// 实时数据的有效时间范围为最近两周内。当股市放假时，其最新数据是放假前的最后一天数据。春节放假时间最长，有十一天时间，加上三天富裕，
+// 故而十四天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 10 * 24 * 3600)) { // 确保实时数据不早于当前时间的10天前（春节放假最长为7天，加上前后的休息日，共十天）
+  if (m_time < (gl_systemTime.Gett_time() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
   else return true;

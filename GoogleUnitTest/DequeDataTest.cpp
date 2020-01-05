@@ -10,11 +10,12 @@
 #include"pch.h"
 
 #include"globedef.h"
+#include"Market.h"
 
 #include"QueueRTData.h"
 
 namespace StockAnalysisTest {
-  TEST(SystemDequeDataTest, TestInitialize) {
+  TEST(DequeDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     for (int i = 0; i < l; i++) {
@@ -24,7 +25,7 @@ namespace StockAnalysisTest {
   }
 
   // 测试有优先级的队列存储临时实时数据。
-  TEST(SystemDequeDataTest, TestGetRTDataDuqueSize) {
+  TEST(DequeDataTest, TestGetRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_QueueSinaRTData.GetRTDataSize(), 0);
     CRTDataPtr pRTData = make_shared<CRTData>();

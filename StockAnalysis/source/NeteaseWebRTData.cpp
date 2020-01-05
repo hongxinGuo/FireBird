@@ -20,38 +20,31 @@
 #include"globedef.h"
 #include"Market.h"
 
-#include"thread.h"
+#include"Thread.h"
 #include "NeteaseWebRTData.h"
 
-CNeteaseWebRTData::CNeteaseWebRTData() : CWebData() {
+CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
 }
 
-CNeteaseWebRTData::~CNeteaseWebRTData() {
+CNeteaseRTWebData::~CNeteaseRTWebData() {
 }
 
-bool CNeteaseWebRTData::GetWebData(void) {
-  if (!IsReadingWebData()) {
-    InquireNextWebData();
-  }
-  return true;
-}
-
-bool CNeteaseWebRTData::ReportStatus(long lNumberOfData) {
+bool CNeteaseRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
 }
 
-void CNeteaseWebRTData::InquireNextWebData(void) {
+void CNeteaseRTWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (!gl_ChinaStockMarket.SystemReady() || gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiverAsTester()) { // 如果系统尚未准备好，则使用全局股票池
-    GetInquiringStr(strMiddle, 550, false);
+  if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未准备好，则使用全局股票池
+    strMiddle = GetNextInquiringStr(550, false);
   }
   else { // 开市时使用今日活跃股票池
-    GetInquiringStr(strMiddle, 550, false);
+    strMiddle = GetNextInquiringStr(550, false); // 目前还是使用全部股票池
   }
   CreateTotalInquiringString(strMiddle);
 
@@ -59,10 +52,10 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-int CNeteaseWebRTData::GetInquiringStr(CString& strInquire, long lTotalNumber, bool fSkipUnactiveStock) {
-  return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(strInquire, lTotalNumber, fSkipUnactiveStock);
+CString CNeteaseRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+  return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
-void CNeteaseWebRTData::StartReadingThread(void) {
+void CNeteaseRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseRTData, this);
 }

@@ -7,11 +7,13 @@
 #include"WebData.h"
 
 CWebData::CWebData() {
-  m_pCurrentPos = m_buffer;
+  m_pFile = nullptr;
   m_lCurrentPos = 0;
   m_lByteRead = 0;
+  m_lCurrentReadPos = 0;
+  m_lCurrentByteRead = 0;
   m_strInquire = _T("");
-  m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
+  m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
 
 #ifdef DEBUG
@@ -21,69 +23,67 @@ CWebData::CWebData() {
 #endif
 }
 
-bool CWebData::ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
+bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session;
-  CHttpFile* pFile = nullptr;
-  long iCount = 0;
+  m_pFile = nullptr;
   bool fDone = false;
-  char* pChar = GetBufferAddr();
+  m_lCurrentReadPos = 0;
 
   try {
-    SetReadingWebData(true);
+    ASSERT(IsReadingWebData());
     SetByteReaded(0);
-    /*pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString(), 1,
-                                                     INTERNET_FLAG_TRANSFER_ASCII | INTERNET_FLAG_RELOAD | INTERNET_FLAG_DONT_CACHE));
-    */
-    pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    Sleep(lStartDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
+    ASSERT(m_pFile == nullptr);
+    ASSERT(m_lCurrentByteRead == 0);
+    ASSERT(m_lCurrentReadPos == 0);
+    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
+    Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
       do {
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          AddByteReaded(iCount);
-        }
-      } while (iCount > 0);
+        ReadDataFromWebOnce();
+      } while (m_lCurrentByteRead > 0);
       Sleep(lSecondDelayTime); // 等待lSecondDelayTime毫秒后再读一次，确认没有新数据后才返回。
-      iCount = pFile->Read(pChar, 1024);
-      if (iCount > 0) {
-        pChar += iCount;
-        AddByteReaded(iCount);
-      }
-      else {
+      if (!ReadDataFromWebOnce()) {
         Sleep(lThirdDelayTime); // 等待lThirdDelayTime毫秒后读第三次，确认没有新数据后才返回，否则继续读。
-        iCount = pFile->Read(pChar, 1024);
-        if (iCount > 0) {
-          pChar += iCount;
-          AddByteReaded(iCount);
+        if (!ReadDataFromWebOnce()) {
+          fDone = true;
         }
-        else fDone = true;
       }
     }
-    *pChar = 0x000; // 最后以0x000结尾
+    m_buffer.at(m_lCurrentReadPos) = 0x000; // 最后以0x000结尾
   }
   catch (CInternetException*) {
     TRACE(_T("net error\n"));
     return false;
   }
-  if (pFile) pFile->Close();
-  if (pFile) {
-    delete pFile;
-    pFile = nullptr;
+  if (m_pFile) m_pFile->Close();
+  if (m_pFile) {
+    delete m_pFile;
+    m_pFile = nullptr;
   }
   SetReadingWebData(false);
 
   return true;
 }
 
+bool CWebData::ReadDataFromWebOnce(void) {
+  char buffer[2048];
+  m_lCurrentByteRead = m_pFile->Read(buffer, 1024);
+  if (m_lCurrentByteRead > 0) {
+    for (int i = 0; i < m_lCurrentByteRead; i++) {
+      m_buffer.at(m_lCurrentReadPos++) = buffer[i];
+    }
+    AddByteReaded(m_lCurrentByteRead);
+    return true;
+  }
+  else return false;
+}
+
 CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
-  char* p = GetBufferAddr();
   CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
-  pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  pWebDataReceived->m_vBuffer.resize(GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
   pWebDataReceived->m_lBufferLength = GetByteReaded();
-  char* pbuffer = pWebDataReceived->m_pDataBuffer;
-  for (int i = 0; i < GetByteReaded() + 1; i++) {
-    *pbuffer++ = *p++;
+  for (long i = 0; i < GetByteReaded() + 1; i++) {
+    pWebDataReceived->SetChar(i, m_buffer.at(i));
   }
   return pWebDataReceived;
 }
@@ -109,6 +109,12 @@ void CWebData::CreateTotalInquiringString(CString strMiddle) {
   m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
+void CWebData::TransferWebDataToBuffer(vector<char>& buffer) {
+  for (int i = 0; i < m_lByteRead + 1; i++) {
+    buffer.at(i) = m_buffer.at(i);
+  }
+}
+
 void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   long i;
   for (i = 0; i < lTotalNumber; i++) {
@@ -116,6 +122,17 @@ void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   }
   m_buffer[lTotalNumber] = 0x000;
   m_lByteRead = lTotalNumber;
-  m_pCurrentPos = m_buffer;
+  m_lCurrentPos = 0;
+}
+
+void CWebData::__TESTSetBuffer(CString str) {
+  long i;
+  long lTotalNumber = str.GetLength();
+  char* buffer = str.GetBuffer();
+  for (i = 0; i < lTotalNumber; i++) {
+    m_buffer[i] = buffer[i];
+  }
+  m_buffer[lTotalNumber] = 0x000;
+  m_lByteRead = lTotalNumber;
   m_lCurrentPos = 0;
 }

@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"globedef.h"
+#include"Market.h"
 
 #include"SinaWebRTData.h"
 
@@ -10,54 +10,78 @@ using namespace std;
 
 namespace StockAnalysisTest {
   TEST(SinaWebRTDataTest, TestInitialize) {
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringStringSuffix(), _T(""));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringStringSuffix(), _T(""));
   }
 
   TEST(SinaWebRTDataTest, TestStartReadingThread) {
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingWebData());
-    EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 0);
+    EXPECT_FALSE(gl_SinaRTWebData.IsReadingWebData());
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 0);
     // 线程无法测试，故只测试初始状态。
+  }
+
+  TEST(SinaWebRTDataTest, TestGetInquiringStr) {
+    gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
+    CString str = gl_SinaRTWebData.GetNextInquiringStr(900, false);
+    CString str2 = str.Left(9);
+    EXPECT_STREQ(str2, _T("sh600000,"));
+  }
+
+  TEST(SinaWebRTDataTest, TestReportStatus) {
+    EXPECT_TRUE(gl_SinaRTWebData.ReportStatus(1));
   }
 }
 
 // 由于基类CWebData为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
 namespace StockAnalysisTest {
   TEST(CWebDataTest, TestIsReadingWebData) {
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingWebData());
-    gl_SinaWebRTData.SetReadingWebData(true);
-    EXPECT_TRUE(gl_SinaWebRTData.IsReadingWebData());
-    gl_SinaWebRTData.SetReadingWebData(false);
-    EXPECT_FALSE(gl_SinaWebRTData.IsReadingWebData());
+    EXPECT_FALSE(gl_SinaRTWebData.IsReadingWebData());
+    gl_SinaRTWebData.SetReadingWebData(true);
+    EXPECT_TRUE(gl_SinaRTWebData.IsReadingWebData());
+    gl_SinaRTWebData.SetReadingWebData(false);
+    EXPECT_FALSE(gl_SinaRTWebData.IsReadingWebData());
   }
 
   TEST(CWebDataTest, TestGetByteReaded) {
-    EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 0);
-    gl_SinaWebRTData.SetByteReaded(10000);
-    EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 10000);
-    gl_SinaWebRTData.AddByteReaded(10000);
-    EXPECT_EQ(gl_SinaWebRTData.GetByteReaded(), 20000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 0);
+    gl_SinaRTWebData.SetByteReaded(10000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 10000);
+    gl_SinaRTWebData.AddByteReaded(10000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 20000);
   }
 
   TEST(CWebDataTest, TestGetInquiringStr) {
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringString(), _T(""));
-    gl_SinaWebRTData.SetInquiringString(_T("abcdefg"));
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringString(), _T("abcdefg"));
-    gl_SinaWebRTData.AppendInquiringString(_T("hijk"));
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringString(), _T("abcdefghijk"));
-    gl_SinaWebRTData.CreateTotalInquiringString(_T("dcba"));
-    EXPECT_STREQ(gl_SinaWebRTData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T(""));
+    gl_SinaRTWebData.SetInquiringString(_T("abcdefg"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("abcdefg"));
+    gl_SinaRTWebData.AppendInquiringString(_T("hijk"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("abcdefghijk"));
+    gl_SinaRTWebData.CreateTotalInquiringString(_T("dcba"));
+    EXPECT_STREQ(gl_SinaRTWebData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
+  }
+
+  TEST(CWebDataTest, TestTransferWebDataToBuffer) {
+    gl_SinaRTWebData.__TESTSetBuffer(_T("abcdefg"));
+
+    vector<char> buffer;
+    buffer.resize(8);
+    gl_SinaRTWebData.TransferWebDataToBuffer(buffer);
+    EXPECT_EQ(buffer.at(0), 'a');
+    EXPECT_EQ(buffer.at(1), 'b');
+    EXPECT_EQ(buffer.at(2), 'c');
+    EXPECT_EQ(buffer.at(3), 'd');
+    EXPECT_EQ(buffer.at(4), 'e');
+    EXPECT_EQ(buffer.at(5), 'f');
+    EXPECT_EQ(buffer.at(6), 'g');
+    EXPECT_EQ(buffer.at(7), 0x000);
+    EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 7);
   }
 
   TEST(CWebDataTest, TestIncreaseCurentPos) {
-    char* pAddr = gl_SinaWebRTData.GetCurrentPosPtr();
-
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 0);
-    gl_SinaWebRTData.IncreaseCurrentPos();
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 1);
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPosPtr(), pAddr + 1);
-    gl_SinaWebRTData.IncreaseCurrentPos(100);
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPos(), 101);
-    EXPECT_EQ(gl_SinaWebRTData.GetCurrentPosPtr(), pAddr + 101);
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 0);
+    gl_SinaRTWebData.IncreaseCurrentPos();
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 1);
+    gl_SinaRTWebData.IncreaseCurrentPos(100);
+    EXPECT_EQ(gl_SinaRTWebData.GetCurrentPos(), 101);
   }
 }

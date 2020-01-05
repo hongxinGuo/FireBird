@@ -8,33 +8,36 @@
 
 using namespace std;
 #include<atomic>
+#include<array>
+#include<vector>
 
 class CWebData {
 public:
   CWebData();
   ~CWebData() {}
 
-  bool ReadWebData(long lStartDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  bool ReadDataFromWebOnce(void);
   CWebDataReceivedPtr TransferWebDataToQueueData(void);
 
-  // 公共接口函数
+  // 唯一的公共接口函数
   virtual bool GetWebData(void);
 
   virtual bool ReportStatus(long lNumberOfData);
   // 下列为继承类必须实现的几个功能函数，完成具体任务。
   virtual void InquireNextWebData(void) { ASSERT(0); }        // 申请下一个网络数据
-  virtual int  GetInquiringStr(CString&, long, bool) { ASSERT(0); return 0; }// 申请下一个查询用字符串
+  virtual CString GetNextInquiringStr(long, bool) { ASSERT(0); return _T(""); }// 申请下一个查询用字符串
   virtual void StartReadingThread(void) { ASSERT(0); } // 调用网络读取线程。
 
   // 以下为实现函数
   void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) noexcept { m_strInquire = str; }
-  char* GetBufferAddr(void) noexcept { return m_buffer; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
   long GetByteReaded(void)noexcept { return m_lByteRead; }
   void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
   void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
+  void TransferWebDataToBuffer(vector<char>& buffer);
 
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
@@ -42,26 +45,29 @@ public:
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
+  void __TESTSetBuffer(CString str);
 
 protected:
+  CHttpFile* m_pFile; // 网络文件指针
   CString m_strInquire;// 查询所需的字符串
-  char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
+  array<char, 2048 * 1024> m_buffer; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
+  long m_lCurrentReadPos; // 当前读入字符的存入位置
+  long m_lCurrentByteRead; // 本次接收到到的字符数
 
-  char* m_pCurrentPos; // 当前处理的位置
-  long m_lCurrentPos;
+  long m_lCurrentPos;// 当前处理的位置
 
+  CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 

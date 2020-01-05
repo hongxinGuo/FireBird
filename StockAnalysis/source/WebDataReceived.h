@@ -3,29 +3,30 @@
 
 using namespace std;
 #include<memory>
+#include<vector>
 
 class CWebDataReceived
 {
 public:
   CWebDataReceived() {
-    m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
-    m_pCurrentPos = nullptr;
     m_lCurrentPos = 0;
   }
   ~CWebDataReceived() {
-    if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  char* GetBufferAddr(void) noexcept { return m_pDataBuffer; }
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDataBuffer; m_lCurrentPos = 0; }
-
+  char GetChar(void) { return m_vBuffer.at(m_lCurrentPos); }
+  char GetChar(long lCurrentPos) { return m_vBuffer.at(lCurrentPos); }
+  void SetChar(char cChar) { m_vBuffer.at(m_lCurrentPos) = cChar; }
+  void SetChar(long lIndex, char cChar) { m_vBuffer.at(lIndex) = cChar; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
+  bool Copy(char* buffer, long lLength) { for (int i = 0; i < lLength; i++) buffer[i] = m_vBuffer.at(m_lCurrentPos + i); return true; }
+  void Assign(long lLength, char* buffer) { for (int i = 0; i < lLength; i++) m_vBuffer.at(m_lCurrentPos + i) = buffer[i]; }
 public:
-  char* m_pDataBuffer;
+  vector<char> m_vBuffer;
   long m_lBufferLength;
-  char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
 };
 

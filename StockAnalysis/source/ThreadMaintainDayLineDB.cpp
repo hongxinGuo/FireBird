@@ -14,5 +14,5 @@
 UINT ThreadMaintainDayLineDataBase(LPVOID) {
   //
 
-  return 9;
+  return 17;
 }

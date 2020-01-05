@@ -1,18 +1,15 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"globedef.h"
-
+#include"Market.h"
 #include"ThreadStatus.h"
 
 namespace StockAnalysisTest {
   TEST(ThreadStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
-    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
@@ -24,14 +21,6 @@ namespace StockAnalysisTest {
       CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
     }
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
-  }
-
-  TEST(ThreadStatusTest, TestIsExitingThread) {
-    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
-    gl_ThreadStatus.SetExitingThread(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsExitingThread());
-    gl_ThreadStatus.SetExitingThread(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsExitingThread());
   }
 
   TEST(ThereadStatusTest, TestIsCalculatingDayLineRS) {
@@ -64,14 +53,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
     gl_ThreadStatus.SetSavingTempData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
-  }
-
-  TEST(ThreadStatusTest, TestIsSavingStockCodeData) {
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
-    gl_ThreadStatus.SetSavingStockCodeData(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsSavingStockCodeData());
-    gl_ThreadStatus.SetSavingStockCodeData(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingStockCodeData());
   }
 
   TEST(ThreadStatusTest, TestIsCalculatingRS) {

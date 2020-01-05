@@ -11,15 +11,16 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadLoadDayLine(LPVOID) {
-  ASSERT(gl_ChinaStockMarket.m_pCurrentStock != nullptr);
-  ASSERT(!gl_ChinaStockMarket.m_pCurrentStock->IsDayLineLoaded());
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  ASSERT(pCurrentStock != nullptr);
+  ASSERT(!pCurrentStock->IsDayLineLoaded());
 
   // 装入日线数据
-  gl_ChinaStockMarket.m_pCurrentStock->LoadDayLineAndDayLineInfo();
+  pCurrentStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度
-  gl_ChinaStockMarket.m_pCurrentStock->CalculateDayLineRS();
+  pCurrentStock->CalculateDayLineRS();
+  pCurrentStock->SetDayLineLoaded(true);
 
-  gl_ChinaStockMarket.m_pCurrentStock->SetDayLineLoaded(true);
-
-  return 7;
+  return 16;
 }

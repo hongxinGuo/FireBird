@@ -1,6 +1,7 @@
 #include"stdafx.h"
 
 #include"Accessory.h"
+#include"Market.h"
 #include "CrweberIndex.h"
 
 CCrweberIndex::CCrweberIndex() {
@@ -14,6 +15,19 @@ CCrweberIndex::CCrweberIndex() {
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
+
+  m_mapMonth[_T("January")] = 1;
+  m_mapMonth[_T("Febrary")] = 2;
+  m_mapMonth[_T("March")] = 3;
+  m_mapMonth[_T("April")] = 4;
+  m_mapMonth[_T("May")] = 5;
+  m_mapMonth[_T("June")] = 6;
+  m_mapMonth[_T("July")] = 7;
+  m_mapMonth[_T("August")] = 8;
+  m_mapMonth[_T("September")] = 9;
+  m_mapMonth[_T("October")] = 10;
+  m_mapMonth[_T("November")] = 11;
+  m_mapMonth[_T("December")] = 12;
 }
 
 CCrweberIndex::~CCrweberIndex() {
@@ -113,6 +127,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   pWebDataReceived->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
+  CString strNoUse;
   long lUpdateDay = 0;
 
   while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
@@ -122,7 +137,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       strTime = GetNextString(pWebDataReceived); // 当前时间
       lUpdateDay = ConvertStringToTime(strTime);
 
-      for (int i = 0; i < 4; i++) GetNextString(pWebDataReceived); // 抛掉4个没用字符串
+      for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
 
       str1 = GetNextString(pWebDataReceived); // "VLCC"
       gl_CrweberIndex.m_dTD1 = GetOneValue(pWebDataReceived);
@@ -167,42 +182,42 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
 
     strHead = str.Left(6);
     if (strHead.Compare(_T("Tanker")) == 0) {
-      for (int i = 0; i < 7; i++) GetNextString(pWebDataReceived); // "CPP"
+      for (int i = 0; i < 7; i++) strNoUse = GetNextString(pWebDataReceived); // "CPP"
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dVLCC_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dSUEZMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dAFRAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dPANAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dMR_TC_3YEAR = ConvertStringToTC(str1);
 
-      GetNextString(pWebDataReceived);
-      GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebDataReceived);
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dHANDY_TC_1YEAR = ConvertStringToTC(str1);
       str1 = GetNextString(pWebDataReceived);
@@ -210,11 +225,6 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
 
       pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
-  }
-  pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
-  for (int i = 0; i < 1024 * 1024; i++) {
-    pWebDataReceived->m_pCurrentPos = 0x000;
-    pWebDataReceived->m_pCurrentPos++;
   }
   pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
 
@@ -247,9 +257,7 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   buffer1[i] = 0x000;
   CString strTime = buffer1;
   int month = 1, day, year;
-  if (strTime.Compare(_T("October")) == 0) month = 10;
-  else if (strTime.Compare(_T("November")) == 0) month = 11;
-  else if (strTime.Compare(_T("December")) == 0) month = 12;
+  month = GetMonthOfYear(strTime);
 
   i = 0;
   while (*pChar != ' ') buffer1[i++] = *pChar++;
@@ -266,13 +274,22 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   return year * 10000 + month * 100 + day;
 }
 
+long CCrweberIndex::GetMonthOfYear(CString strMonth) {
+  try {
+    return m_mapMonth.at(strMonth);
+  }
+  catch (exception&) {
+    return gl_systemTime.GetMonthOfYear();
+  }
+}
+
 double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
   CString str, strValue;
   double dValue = 0.0;
 
   str = GetNextString(pWebDataReceived); // "TD1\r\n   "
-  GetNextString(pWebDataReceived); // 无用数据
-  GetNextString(pWebDataReceived); // 无用数据
+  str = GetNextString(pWebDataReceived); // 无用数据
+  str = GetNextString(pWebDataReceived); // 无用数据
   strValue = GetNextString(pWebDataReceived); // TD1指数的当前值
   dValue = atof(strValue.GetBuffer());
   return dValue;
@@ -283,25 +300,25 @@ CString CCrweberIndex::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebDataReceived->m_pCurrentPos != '>') {
+  while ((pWebDataReceived->GetChar() != 0x000) && !fFound) {
+    if (pWebDataReceived->GetChar() == '<') { // 无用配置字符
+      while (pWebDataReceived->GetChar() != '>') {
         pWebDataReceived->IncreaseCurrentPos();
       }
       pWebDataReceived->IncreaseCurrentPos();
-      while ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x00d)
-             || (*pWebDataReceived->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+      while ((pWebDataReceived->GetChar() == 0x00a) || (pWebDataReceived->GetChar() == 0x00d)
+             || (pWebDataReceived->GetChar() == ' ')) { // 跨过回车、换行和空格符
         pWebDataReceived->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+  if (pWebDataReceived->GetChar() == 0x000) { // 读到结尾处了
     ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
     return _T("");
   }
-  while (*pWebDataReceived->m_pCurrentPos != '<') {
-    if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+  while (pWebDataReceived->GetChar() != '<') {
+    if (pWebDataReceived->GetChar() != ',') buffer[iBufferCount++] = pWebDataReceived->GetChar(); // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
     pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;

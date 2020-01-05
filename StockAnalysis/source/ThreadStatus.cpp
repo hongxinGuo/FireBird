@@ -13,12 +13,10 @@ CThreadStatus::CThreadStatus() {
   }
   m_CounterOfCalculatingRSThreads = 0;
 
-  m_ExitingThread = false;
   m_CalculateDayLineRelativeStrong = false;
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;
-  m_SavingStockCodeData = false;
 }
 
 CThreadStatus::~CThreadStatus() {

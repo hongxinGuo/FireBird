@@ -1,18 +1,63 @@
 #ifndef __MARKET_H__
-#define __MERKET_H__
+#define __MARKET_H__
 
 #include"stdafx.h"
 #include"globedef.h"
 
+#include"QueueRTData.h"
+#include"QueueWebRTData.h"
+#include"PriorityQueueRTData.h"
+
 #include "Stock.h"
 #include"SetStockCode.h"
 
+#include"SinaWebRTData.h"
+#include"TengxunWebRTData.h"
+#include"NeteaseWebDayLineData.h"
+#include"NeteaseWebRTData.h"
+#include"CrweberIndexWebData.h"
 #include"CrweberIndex.h"
+
+#include"Semaphore.h"
+using namespace MyAccessory;
 
 using namespace std;
 #include<vector>
 #include<map>
 #include<atomic>
+
+// 信号量必须声明为全局变量（为了初始化）
+extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SemaphoreCalculateDayLineRS;
+extern Semaphore gl_ProcessSinaRTDataQueue;
+extern Semaphore gl_ProcessTengxunRTDataQueue;
+extern Semaphore gl_ProcessNeteaseRTDataQueue;
+
+extern CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
+extern CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
+extern CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFifth; // 网易日线历史数据
+extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSixth; // 网易日线历史数据
+extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
+
+extern CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
+extern CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
+extern CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
+extern CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
+
+extern CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
+extern CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
+extern CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
+extern CQueueWebRTData gl_QueueCrweberdotcomWebData; // crweber.com网络数据暂存队列
+
+extern CCrweberIndex gl_CrweberIndex;
+extern CCrweberIndex gl_CrweberIndexLast;
+
+extern const int gl_cMaxSavingOneDayLineThreads;
 
 class CMarket final : public CObject
 {
@@ -27,7 +72,7 @@ public:
   virtual	void Dump(CDumpContext& dc) const;
 #endif
 public:
-  // 定时更新，完成具体调度任务。由主线程的OnTimer函数调用。其后跟随各被调度函数
+  // 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
   bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
@@ -38,18 +83,18 @@ public:
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
   void TaskGetNeteaseDayLineFromWeb(void);
-
   bool GetNeteaseWebDayLineData(void);
 
-  // 处理腾讯实时数据
-  bool TaskProcessTengxunRTData(void);
-
-  void TaskSetCheckTodayActiveStockFlag(long lCurrentTime);
-  bool TaskCompileTodayStock(long lCurrentTime);
+  bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
+  void TaskSetCheckActiveStockFlag(long lCurrentTime);
+  bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetSystem(long lCurrentTime);
   bool TaskResetSystemAgain(long lCurrentTime);
+
+  // 是否所有股票的历史日线数据都查询过一遍了
+  bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
   // interface function
 public:
@@ -60,20 +105,20 @@ public:
   // 初始化市场
 
   // 实时数据读取
-  int GetSinaInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int GetTengxunInquiringStockStr(CString& str, long lTotalNumber, bool fSkipUnactiveStock = true);
-  int	GetNeteaseInquiringStockStr(CString& str, long lTotalNumber = 700, bool fSkipUnactiveStock = true);
-  int CMarket::GetInquiringStr(CString& str, int& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock);
-  bool StepToActiveStockIndex(int& iStockIndex);
+  CString GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
+  CString GetNextInquiringStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
+  bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
-  bool CreateNeteaseDayLineInquiringStr(CString& str);
+  CString CreateNeteaseDayLineInquiringStr(void);
 
-  int IncreaseStockInquiringIndex(int& iIndex);
+  long IncreaseStockInquiringIndex(long& lIndex);
 
   bool IsAStock(CStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
-  bool IsStock(CString  strStockCode, CStockPtr& pStock);	// 是否为正确的股票代码
+  bool IsStock(CString  strStockCode);	// 是否为正确的股票代码
 
   CString GetStockName(CString strStockCode);
 
@@ -91,16 +136,16 @@ public:
   void SetShowStock(CStockPtr pStock);
   bool IsCurrentStockChanged(void);
 
-  long GetTotalActiveStock(void) { return m_lTotalActiveStock; }
-  void SetTotalActiveStock(long lValue) { m_lTotalActiveStock = lValue; }
+  long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
+  void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
   long GetMinLineOffset(CStock sID, time_t Time);
 
   bool SystemReady(void) noexcept { return m_fSystemReady; }
-  void SetSystemReady(bool fFlag) { m_fSystemReady = fFlag; }
+  void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-  bool IsTodayStockCompiled(void) noexcept { return m_fTodayStockCompiled; }
-  void SetTodayStockCompiledFlag(bool fFlag) noexcept { m_fTodayStockCompiled = fFlag; }
+  bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
+  void SetTodayStockProcessedFlag(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -114,34 +159,27 @@ public:
   bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
 
-  bool ClearAllDayLineVector(void);
+  bool ClearDayLineContainer(void);
 
   // 股票历史数据处理
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
-  // 是否所有股票的历史日线数据都查询过一遍了
-  bool ProcessDayLineGetFromNeeteaseServer(void);
 
-  long CompileCurrentTradeDayStock(long lCurrentTradeDay);
+  long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
+  bool CalculateRelativeStrong(long lStartCalculatingDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
 
-  bool IsCheckTodayActiveStock(void) noexcept { return m_fCheckTodayActiveStock; }
-  void SetCheckTodayActiveStock(bool fFlag) noexcept { m_fCheckTodayActiveStock = fFlag; }
+  bool IsCheckActiveStock(void) noexcept { return m_fCheckActiveStock; }
+  void SetCheckActiveStock(bool fFlag) noexcept { m_fCheckActiveStock = fFlag; }
 
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsCalculatingRS(void) noexcept { return m_fCalculatingRS; }
-  void SetCalculatingRS(bool fFlag) noexcept { m_fCalculatingRS = fFlag; }
-
   bool IsUpdateStockCodeDB(void);
   void ClearUpdateStockCodeDBFlag(void);
-
-  bool IsUsingNeteaseRTDataReceiverAsTester(void) noexcept { return m_fUsingNeteaseRTDataReceiverAsTester; }
-  bool IsUsingTengxunRTDataReceiverAsTester(void) noexcept { return m_fUsingTengxunRTDataReceiverAsTester; }
 
   long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
   void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
@@ -184,6 +222,47 @@ public:
   void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
 
+  // 状态反馈
+  bool IsUsingSinaRTDataReceiver(void) noexcept { return m_fUsingSinaRTDataReceiver; }
+  bool IsUsingNeteaseRTDataReceiver(void) noexcept { return m_fUsingNeteaseRTDataReceiver; }
+  bool IsUsingTengxunRTDataReceiver(void) noexcept { return m_fUsingTengxunRTDataReceiver; }
+
+  long GetTotalStock(void) noexcept { return m_lTotalStock; }
+  time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
+  CStockPtr GetCurrentStockPtr(void) noexcept { return m_pCurrentStock; }
+  bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
+  bool IsGetRTData(void) noexcept { return m_fGetRTData; }
+  bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
+  void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
+
+  int GetCountDownSlowReadingRTData(void) noexcept { return m_iCountDownSlowReadingRTData; }
+  bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
+  void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
+
+  void StoreChoiceStock(CStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
+
+  void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
+  void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lTengxunRTDataInquiringIndex = 0; }
+  void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lNeteaseRTDataInquiringIndex = 0; }
+  void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lNeteaseDayLineDataInquiringIndex = 0; }
+  long GetSinaRTDataInquiringIndex(void) noexcept { return m_lSinaRTDataInquiringIndex; }
+  long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
+  long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
+  long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
+
+  int GetDayLineNeedUpdateNumber(void) { int i = m_iDayLineNeedUpdate; return i; }
+  void SetDayLineNeedUpdateNumber(int i) { m_iDayLineNeedUpdate = i; }
+  int GetDayLineNeedProcessNumber(void) { int i = m_iDayLineNeedProcess; return i; }
+  void SetDayLineNeedProcessNumber(int i) { m_iDayLineNeedProcess = i; }
+  int GetDayLineNeedSaveNumber(void) { int i = m_iDayLineNeedSave; return i; }
+  void SetDayLineNeedSaveNumber(int i) { m_iDayLineNeedSave = i; }
+  void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { m_iDayLineNeedUpdate += iNumber; }
+  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { m_iDayLineNeedUpdate -= iNumber; }
+  void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { m_iDayLineNeedProcess += iNumber; }
+  void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { m_iDayLineNeedProcess -= iNumber; }
+  void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }
+  void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
+
   // 测试用函数
   bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
   void __Test_SetResetSystem(bool fFlag) noexcept { gl_fResetSystem = fFlag; }
@@ -192,43 +271,43 @@ private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
 
-public:
-
-  CStockPtr m_pCurrentStock; // 当前显示的股票
-  char m_aStockCodeTemp[30];
-  bool m_fCurrentEditStockChanged;
-  bool m_fMarketOpened; // 是否开市
-  bool m_fGetRTStockData; // 读取实时数据标识
-  bool m_fReadingTengxunRTData; // 读取腾讯实时行情
-  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
-  int m_iCountDownDayLine; // 日线数据读取延时计数。
-  int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
-
-  bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取
-  bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
-  bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
-  bool m_fUsingNeteaseRTDataReceiverAsTester;
-  bool m_fUsingTengxunRTDataReceiverAsTester;
+protected:
 
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数
+  long m_lTotalActiveStock;	// 当天股票总数
 
-  vector<CStockPtr> gl_vStockChoice; // 自选股票池
+  vector<CStockPtr> m_vStockChoice; // 自选股票池
+  vector<CrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
 
-  vector<CrweberIndexPtr> gl_vCrweberIndex; // crweber.com网站上的油运指数
+  bool m_fCurrentEditStockChanged;
+  int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
+  bool m_fMarketOpened; // 是否开市
+  bool m_fGetRTData; // 读取实时数据标识
+  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
+  CStockPtr m_pCurrentStock; // 当前显示的股票
 
   time_t m_ttNewestTransactionTime;
 
-protected:
+  bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
+  bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
+  bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
 
-  map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+  CString m_strSinaRTDataInquiringStr;
+  CString m_strTengxunRTDataInquiringStr;
+  CString m_strNeteaseRTDataInquiringStr;
+  CString m_strNeteaseDayLineDataInquiringStr;
+
+  long m_lSinaRTDataInquiringIndex;
+  long m_lTengxunRTDataInquiringIndex;
+  long m_lNeteaseRTDataInquiringIndex;
+  long m_lNeteaseDayLineDataInquiringIndex;
 
   // Option各选项
   long m_lRelativeStrongStartDay;
   long m_lRelativeStrongEndDay;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
-
-  long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;
@@ -237,21 +316,18 @@ protected:
   INT64 m_lTotalMarketBuy; // 沪深市场中的A股向上买入金额
   INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
-  bool m_fCalculatingRS;
-
   // 系统状态区
   bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fSystemReady; // 市场初始态已经设置好
-  bool m_fTodayStockCompiled; // 今日是否执行了股票收盘
-  bool m_fCheckTodayActiveStock; // 是否查询今日活跃股票代码
+  bool m_fTodayStockProcessed; // 今日是否执行了股票收盘
+  bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量
   atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  atomic<clock_t> m_ReadingNeteaseDayLineDataTime;    // 每次读取网易日线历史数据的时间
+  atomic<clock_t> m_ReadingNeteaseDayLineDataTime; // 每次读取网易日线历史数据的时间
 
-public:
   // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
   atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量

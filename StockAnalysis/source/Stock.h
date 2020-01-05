@@ -138,6 +138,8 @@ public:
   void SetCancelBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelBuyVolume(value); }
   INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
   void SetCancelSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelSellVolume(value); }
+  INT64 GetCurrentCancelBuyVolume(void) noexcept { return m_lCurrentCanselBuyVolume; }
+  INT64 GetCurrentCancelSellVolume(void) noexcept { return m_lCurrentCanselSellVolume; }
 
   void SetTransactionNumber(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumber(value); }
   void SetTransactionNumberBelow5000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow5000(value); }
@@ -208,10 +210,14 @@ public:
   void SetDayLineNeedSaving(bool fFlag);
   bool IsDayLineNeedSavingAndClearFlag(void);
 
-  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
+  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_lCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) { m_pCurrentPos = m_pDayLineBuffer; m_lCurrentPos = 0; }
+  bool SkipNeteaseDayLineInformationHeader(void);
+  void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
+  void StoreDayLine(vector<CDayLinePtr>& vTempDayLine);
+  void ReportDayLineDownLoaded(void);
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
+  void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -232,7 +238,7 @@ public:
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
   void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
   INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
-  void SetGuadan(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
+  void SetGuadan(INT64 lPrice, INT64 lVolume) noexcept { m_mapGuadan[lPrice] = lVolume; }
   bool HaveGuadan(INT64 lPrice);
 
   // 日线相对强度计算
@@ -275,6 +281,24 @@ public:
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
 
+  // 日线历史数据
+  size_t GetDayLineSize(void) { return m_vDayLine.size(); }
+  void ClearDayLineContainer(void) noexcept { m_vDayLine.clear(); }
+  bool PushDayLinePtr(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
+  CDayLinePtr GetDayLinePtr(long lIndex) { return m_vDayLine.at(lIndex); }
+  void ShowDayLine(CDC* pDC, CRect rectClient);
+  bool RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue);
+  void ShowDayLineRS(CDC* pDC, CRect rectClient);
+  void ShowDayLine3RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine5RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine10RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine30RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine60RS(CDC* pDC, CRect rectClient);
+  void ShowDayLine120RS(CDC* pDC, CRect rectClient);
+
+  INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
+  INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
+
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
@@ -283,15 +307,9 @@ public:
 public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
+  void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
 
 public:
-
-  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
-  char* m_pDayLineBuffer; // 日线读取缓冲区
-  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  INT64 m_lDayLineBufferLength;
-  char* m_pCurrentPos;
-  INT64 m_lCurrentPos;
 
 protected:
   CStockBasicInfo m_stockBasicInfo;
@@ -315,7 +333,7 @@ protected:
   // 挂单的具体情况。
   map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
   CRTDataPtr m_pLastRTData; // 从m_queueRTData读出的上一个实时数据。
-  INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前的时间，而是实时数据队列最前面数据的时间）
+  INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64 m_lCurrentCanselSellVolume;
@@ -323,8 +341,14 @@ protected:
 
   queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
 
-  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。目前还是使用双向队列（因为有遗留代码用到），将来还是改为queue为好。
+  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
+
+  // 日线历史数据
+  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
+  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
+  INT64 m_lDayLineBufferLength;
+  INT64 m_llCurrentPos;
 
 private:
   bool m_fDebugLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错

@@ -19,27 +19,24 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
   bool fDataSaved = false;
-  gl_SaveOneStockDayLine.Wait(); // 使用多线程模式
-  if (gl_ExitingSystem) {
-    pTransfer = static_cast<strTransferSharedPtr*>(pParam);
-    delete pTransfer;
-    pTransfer = nullptr;
-    gl_SaveOneStockDayLine.Signal();
-    return 6;
-  }
+
   gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
+  gl_SaveOneStockDayLine.Wait(); // 使用多线程模式
   pTransfer = static_cast<strTransferSharedPtr*>(pParam);
-  pStock = pTransfer->m_pStock;
-  fDataSaved = pStock->SaveDayLine();
-  pStock->SetDayLineLoaded(false);
-  pStock->m_vDayLine.clear();
+  if (!gl_ExitingSystem) {
+    pStock = pTransfer->m_pStock;
+    fDataSaved = pStock->SaveDayLine();
+    pStock->SetDayLineLoaded(false);
+    pStock->ClearDayLineContainer();
+    if (fDataSaved) {
+      str = pStock->GetStockCode() + _T("日线资料存储完成");
+      gl_systemMessage.PushDayLineInfoMessage(str);
+    }
+  }
   delete pTransfer;
   pTransfer = nullptr;
   gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
-  if (fDataSaved) {
-    str = pStock->GetStockCode() + _T("日线资料存储完成");
-    gl_systemMessage.PushDayLineInfoMessage(str);
-  }
   gl_SaveOneStockDayLine.Signal();
-  return 6;
+
+  return 15;
 }

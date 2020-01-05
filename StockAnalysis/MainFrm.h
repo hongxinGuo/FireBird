@@ -25,6 +25,8 @@ public:
 
   // 操作
 public:
+  bool SchedulingTask(void);
+  void UpdateStatus(void);
 
 private:
 
@@ -46,8 +48,9 @@ public:
 
 protected:
   UINT                    m_uIdTimer;
-
   long                    m_lCurrentPos;
+
+  char m_aStockCodeTemp[30];
 
 protected:  // 控件条嵌入成员
   CMFCMenuBar       m_wndMenuBar;
@@ -71,15 +74,17 @@ protected:
 
 public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
-  afx_msg void OnCompileTodayStock();
-  afx_msg void OnUpdateCompileTodayStock(CCmdUI* pCmdUI);
-  afx_msg void OnCalculateRelativeStrong();
+  afx_msg void OnProcessTodayStock();
+  afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
+  afx_msg void OnCalculateTodayRelativeStrong();
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-  afx_msg void OnUpdateCalculateRelativeStrong(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI);
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnRebuildDaylineRS();
   afx_msg void OnBuildResetSystem();
-  afx_msg void OnUpdateRebuildDaylineRs(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI);
+  afx_msg void OnAbortBuindingRS();
+  afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
 };
