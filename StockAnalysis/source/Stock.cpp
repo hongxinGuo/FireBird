@@ -136,12 +136,8 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     }
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetActive(true);
       SetDayLineLoaded(false);
-      SetMarket(pDayLine->GetMarket());
-      SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-      gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
+      SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
       TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
@@ -170,6 +166,15 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
+}
+
+void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
+  SetActive(true);
+  SetDayLineLoaded(false);
+  SetMarket(wMarket);
+  SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
 }
 
 bool CStock::SkipNeteaseDayLineInformationHeader() {

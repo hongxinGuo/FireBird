@@ -133,7 +133,7 @@
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <CompileAsManaged>false</CompileAsManaged>

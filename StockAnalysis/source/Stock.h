@@ -210,6 +210,7 @@ public:
 
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
+  void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
   bool SkipNeteaseDayLineInformationHeader(void);
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
   void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }

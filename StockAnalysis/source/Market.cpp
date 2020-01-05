@@ -547,13 +547,10 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
       pStock = m_vChinaMarketAStock.at(lIndex);
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime()) {
-          pStock->SetActive(true);
-          pStock->SetStockName(pRTData->GetStockName());
-          pStock->SetStockCode(pRTData->GetStockCode());
+          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
           pStock->UpdateStatus(pRTData);
           pStock->SetTransactionTime(pRTData->GetTransactionTime());
           pStock->SetIPOStatus(__STOCK_IPOED__);
-          m_lTotalActiveStock++;
         }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？

@@ -967,6 +967,28 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
   }
 
+  TEST(CStockTest, TestSetTodayActive) {
+    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    EXPECT_FALSE(pStock->IsActive());
+    CString strStockName = pStock->GetStockName();
+    WORD wMarket = pStock->GetMarket();
+    long lTotalActiveStock = gl_ChinaStockMarket.GetTotalActiveStock();
+    pStock->SetTodayActive(__SHENZHEN_MARKET__, _T("sh600002"), _T("梨园"));
+    EXPECT_TRUE(pStock->IsActive());
+    EXPECT_FALSE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(pStock->GetMarket(), __SHENZHEN_MARKET__);
+    EXPECT_STREQ(pStock->GetStockCode(), _T("sh600002"));
+    EXPECT_STREQ(pStock->GetStockName(), _T("梨园"));
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalActiveStock(), lTotalActiveStock + 1);
+
+    // clearup
+    pStock->SetActive(false);
+    pStock->SetMarket(wMarket);
+    pStock->SetStockCode(_T("sh600001"));
+    pStock->SetStockName(strStockName);
+    gl_ChinaStockMarket.SetTotalActiveStock(lTotalActiveStock);
+  }
+
   TEST(CStockTest, TestIncreaseCurrentPos) {
     CStock id;
     INT64 l = id.GetCurrentPos();

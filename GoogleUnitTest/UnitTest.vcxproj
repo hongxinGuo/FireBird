@@ -194,7 +194,7 @@
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
       <SupportJustMyCode>true</SupportJustMyCode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAsManaged>false</CompileAsManaged>
       <ControlFlowGuard>Guard</ControlFlowGuard>
