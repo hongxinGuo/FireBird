@@ -142,39 +142,18 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
-  strTemp = pDayLine->GetStockCode();
-  strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushDayLineInfoMessage(strTemp);
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
     SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
-
-  m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
-    pDayLine = vTempDayLine.at(i);
-    if (pDayLine->IsActive()) {
-      // 清除掉不再交易（停牌或退市后出现的）的股票日线
-      m_vDayLine.push_back(pDayLine);
-    }
-  }
-  vTempDayLine.clear();
-  SetDayLineLoaded(true);
+  StoreDayLine(vTempDayLine);
+  ReportDayLineDownLoaded();
   SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
-}
-
-void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
-  SetActive(true);
-  SetDayLineLoaded(false);
-  SetMarket(wMarket);
-  SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-  SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-  gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
 }
 
 bool CStock::SkipNeteaseDayLineInformationHeader() {
@@ -191,6 +170,35 @@ bool CStock::SkipNeteaseDayLineInformationHeader() {
   }
   IncreaseCurrentPos();
   return true;
+}
+
+void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
+  SetActive(true);
+  SetDayLineLoaded(false);
+  SetMarket(wMarket);
+  SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
+}
+
+void CStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
+  CDayLinePtr pDayLine = nullptr;
+  m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
+  // 将日线数据以时间为正序存入
+  for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+    pDayLine = vTempDayLine.at(i);
+    if (pDayLine->IsActive()) {
+      // 清除掉不再交易（停牌或退市后出现的）的股票日线
+      m_vDayLine.push_back(pDayLine);
+    }
+  }
+  SetDayLineLoaded(true);
+}
+
+void CStock::ReportDayLineDownLoaded(void) {
+  CString strTemp = GetStockCode();
+  strTemp += _T("日线下载完成.");
+  gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
               10050, 10000, 10040, 10000, 10030, 10000, 10020, 10000, 10010, 10000,
               10000, 10000, 9990, 10000, 9980, 10000, 9970, 10000, 9960, 10000);
 
-  class CStockTest : public::testing::TestWithParam<RTData*>
+  class CStockTest2 : public::testing::TestWithParam<RTData*>
   {
   protected:
     void SetUp(void) override {
@@ -158,10 +158,10 @@ namespace StockAnalysisTest {
     CStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestRTData, CStockTest, testing::Values(&RT1, &RT2, &RT3,
-                                                                  &RT4, &RT5, &RT6, &RT7, &RT8));
+  INSTANTIATE_TEST_CASE_P(TestRTData, CStockTest2, testing::Values(&RT1, &RT2, &RT3,
+                                                                   &RT4, &RT5, &RT6, &RT7, &RT8));
 
-  TEST_P(CStockTest, TestRTData) {
+  TEST_P(CStockTest2, TestRTData) {
     EXPECT_FALSE(m_stock.HaveFirstRTData());
     m_stock.ProcessOneRTData(pLastData);
     INT64 lFirstVolume = m_stock.GetUnknownVolume();
@@ -309,7 +309,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CStockTest, TestIncreaseTransactionNumber) {
+  TEST(CStockTest3, TestIncreaseTransactionNumber) {
     CStock id;
     id.SetCurrentTransationVolume(4999);
     id.IncreaseTransactionNumber();
@@ -341,7 +341,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetTransactionNumberAbove200000(), 2);
   }
 
-  TEST(CStockTest, TestINitializeCalculatingRTDataEnvionment) {
+  TEST(CStockTest3, TestINitializeCalculatingRTDataEnvionment) {
     CRTDataPtr pRTData = make_shared<CRTData>();
     CStock id;
 
@@ -364,7 +364,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CStockTest, TestGetLastRTDataPtr) {
+  TEST(CStockTest3, TestGetLastRTDataPtr) {
     CRTDataPtr pRTData = make_shared<CRTData>();
     CStock id;
     CRTDataPtr pRTData2 = pRTData;
@@ -373,7 +373,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetLastRTDataPtr(), pRTData2);
   }
 
-  TEST(CStockTest, TestCalculateOrdinaryBuySell) {
+  TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
     CStock id;
     CRTDataPtr pLastRTData = make_shared<CRTData>();
 
@@ -395,7 +395,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetUnknownVolume(), 20000); // 加了两次10000
   }
 
-  TEST(CStockTest, TEStCalculateAttackBuy) {
+  TEST(CStockTest3, TEStCalculateAttackBuy) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuy();
@@ -415,7 +415,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackBuyVolume(), 1110000);
   }
 
-  TEST(CStockTest, TestCalculateStrongBuy) {
+  TEST(CStockTest3, TestCalculateStrongBuy) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongBuy();
@@ -435,7 +435,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetStrongBuyVolume(), 1110000);
   }
 
-  TEST(CStockTest, TestCalculateAttackBuyVolume) {
+  TEST(CStockTest3, TestCalculateAttackBuyVolume) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuyVolume();
@@ -454,7 +454,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackBuyVolume(), 0);
   }
 
-  TEST(CStockTest, TEStCalculateAttackSell) {
+  TEST(CStockTest3, TEStCalculateAttackSell) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSell();
@@ -474,7 +474,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetAttackSellVolume(), 1110000);
   }
 
-  TEST(CStockTest, TestCalculateStrongSell) {
+  TEST(CStockTest3, TestCalculateStrongSell) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongSell();
@@ -494,7 +494,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetStrongSellVolume(), 1110000);
   }
 
-  TEST(CStockTest, TestCalculateAttackSellVolume) {
+  TEST(CStockTest3, TestCalculateAttackSellVolume) {
     CStock id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSellVolume();

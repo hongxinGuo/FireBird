@@ -523,7 +523,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CStockTest, TestSetCurrentGuadan) {
+  TEST(CStockTest3, TestSetCurrentGuadan) {
     CStock id;
     CRTDataPtr pCurrentRTData = make_shared<CRTData>();
 
@@ -561,7 +561,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CStockTest, TestHaveGuadan) {
+  TEST(CStockTest3, TestHaveGuadan) {
     CStock id;
     EXPECT_FALSE(id.HaveGuadan(10000));
     id.SetGuadan(10000, 0);
