@@ -66,22 +66,22 @@ void CStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = true;
-    gl_ChinaStockMarket.m_iDayLineNeedSave++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedSaveNumber();
   }
   else {
     ASSERT(m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = false;
-    gl_ChinaStockMarket.m_iDayLineNeedSave--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedSaveNumber();
   }
 }
 
 bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  if (fNeedSaveing) gl_ChinaStockMarket.m_iDayLineNeedSave--;
+  if (fNeedSaveing) gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData) {
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
   m_vDayLineBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
   pNeteaseWebDayLineData->TransferWebDataToBuffer(m_vDayLineBuffer);
@@ -973,12 +973,12 @@ void CStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
-    gl_ChinaStockMarket.m_iDayLineNeedUpdate++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedUpdateNumber();
   }
   else {
     ASSERT(m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = false;
-    gl_ChinaStockMarket.m_iDayLineNeedUpdate--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedUpdateNumber();
   }
 }
 
@@ -986,12 +986,12 @@ void CStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = true;
-    gl_ChinaStockMarket.m_iDayLineNeedProcess++;
+    gl_ChinaStockMarket.IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
     ASSERT(m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = false;
-    gl_ChinaStockMarket.m_iDayLineNeedProcess--;
+    gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedProcessNumber();
   }
 }
 

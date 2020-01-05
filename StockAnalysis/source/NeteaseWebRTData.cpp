@@ -23,20 +23,20 @@
 #include"Thread.h"
 #include "NeteaseWebRTData.h"
 
-CNeteaseWebRTData::CNeteaseWebRTData() : CWebData() {
+CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
 }
 
-CNeteaseWebRTData::~CNeteaseWebRTData() {
+CNeteaseRTWebData::~CNeteaseRTWebData() {
 }
 
-bool CNeteaseWebRTData::ReportStatus(long lNumberOfData) {
+bool CNeteaseRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
 }
 
-void CNeteaseWebRTData::InquireNextWebData(void) {
+void CNeteaseRTWebData::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
@@ -52,10 +52,10 @@ void CNeteaseWebRTData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-CString CNeteaseWebRTData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+CString CNeteaseRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
   return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
-void CNeteaseWebRTData::StartReadingThread(void) {
+void CNeteaseRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseRTData, this);
 }

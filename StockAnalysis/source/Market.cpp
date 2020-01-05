@@ -23,15 +23,15 @@ Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(8);
 
-CSinaWebRTData gl_SinaWebRTData; // 新浪实时数据采集
-CTengxunWebRTData gl_TengxunWebRTData; // 腾讯实时数据采集
-CNeteaseWebRTData gl_NeteaseWebRTData; // 网易实时数据采集
-CNeteaseWebDayLineData gl_NeteaseWebDayLineData; // 网易日线历史数据
-CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSecond; // 网易日线历史数据
-CNeteaseWebDayLineData gl_NeteaseWebDayLineDataThird; // 网易日线历史数据
-CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFourth; // 网易日线历史数据
-CNeteaseWebDayLineData gl_NeteaseWebDayLineDataFive; // 网易日线历史数据
-CNeteaseWebDayLineData gl_NeteaseWebDayLineDataSix; // 网易日线历史数据
+CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
+CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
+CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
+CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
+CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
+CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
+CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
+CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFifth; // 网易日线历史数据
+CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSixth; // 网易日线历史数据
 CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
 
 CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
@@ -104,7 +104,7 @@ void CMarket::Reset(void) {
 
   m_fTodayTempDataLoaded = false;
 
-  m_fCheckTodayActiveStock = true;  //检查当日活跃股票，必须为真。
+  m_fCheckActiveStock = true;  //检查当日活跃股票，必须为真。
 
   m_fGetRTData = true;
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
@@ -959,7 +959,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
   static int siCountDownNeteaseNumber = 5;
 
   if (IsUsingSinaRTDataReceiver()) {
-    gl_SinaWebRTData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
 
   if (SystemReady()) {
@@ -968,7 +968,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     if (IsUsingNeteaseRTDataReceiver()) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_NeteaseWebRTData.GetWebData(); // 目前不使用此功能。
+        gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
         siCountDownNeteaseNumber = 5;
       }
       else siCountDownNeteaseNumber--;
@@ -976,7 +976,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (IsUsingTengxunRTDataReceiver()) {
       if (siCountDownTengxunNumber <= 0) {
-        gl_TengxunWebRTData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
+        gl_TengxunRTWebData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
         siCountDownTengxunNumber = 5;
       }
       else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
@@ -990,20 +990,20 @@ bool CMarket::GetNeteaseWebDayLineData(void) {
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
   switch (gl_cMaxSavingOneDayLineThreads) {
   case 8: case 7: case 6:
-  gl_NeteaseWebDayLineDataSix.GetWebData(); // 网易日线历史数据
+  gl_NeteaseDayLineWebDataSixth.GetWebData(); // 网易日线历史数据
   case 5:
-  gl_NeteaseWebDayLineDataFive.GetWebData();
+  gl_NeteaseDayLineWebDataFifth.GetWebData();
   case 4:
-  gl_NeteaseWebDayLineDataFourth.GetWebData();
+  gl_NeteaseDayLineWebDataFourth.GetWebData();
   case 3:
-  gl_NeteaseWebDayLineDataThird.GetWebData();
+  gl_NeteaseDayLineWebDataThird.GetWebData();
   case 2:
-  gl_NeteaseWebDayLineDataSecond.GetWebData();
+  gl_NeteaseDayLineWebDataSecond.GetWebData();
   case 1: case 0:
-  gl_NeteaseWebDayLineData.GetWebData();
+  gl_NeteaseDayLineWebData.GetWebData();
   break;
   default:
-  gl_NeteaseWebDayLineData.GetWebData();
+  gl_NeteaseDayLineWebData.GetWebData();
   TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
   break;
   }
@@ -1125,7 +1125,7 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
     TaskCheckMarketOpen(lCurrentTime);
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
-    TaskSetCheckTodayActiveStockFlag(lCurrentTime);
+    TaskSetCheckActiveStockFlag(lCurrentTime);
 
     // 下午三点三分开始处理当日实时数据。
     TaskProcessTodayStock(lCurrentTime);
@@ -1135,11 +1135,11 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
   return true;
 }
 
-void CMarket::TaskSetCheckTodayActiveStockFlag(long lCurrentTime) {
+void CMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
   if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
-    m_fCheckTodayActiveStock = true;
+    m_fCheckActiveStock = true;
   }
-  else m_fCheckTodayActiveStock = false;
+  else m_fCheckActiveStock = false;
 }
 
 bool CMarket::TaskProcessTodayStock(long lCurrentTime) {
@@ -1365,7 +1365,7 @@ bool CMarket::SaveDayLineData(void) {
   return(true);
 }
 
-bool CMarket::ClearAllDayLineVector(void) {
+bool CMarket::ClearDayLineContainer(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     pStock->ClearDayLineContainer();
   }

@@ -5,22 +5,22 @@
 
 #include "SinaWebRTData.h"
 
-CSinaWebRTData::CSinaWebRTData() : CWebData() {
+CSinaRTWebData::CSinaRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
 }
 
-CSinaWebRTData::~CSinaWebRTData() {
+CSinaRTWebData::~CSinaRTWebData() {
 }
 
-void CSinaWebRTData::InquireNextWebData(void) {
+void CSinaRTWebData::InquireNextWebData(void) {
   CRTDataPtr pRTData = nullptr;
   static int iTotalInquiringStocks = 0;
 
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (gl_ChinaStockMarket.IsCheckTodayActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+  if (gl_ChinaStockMarket.IsCheckActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
     iTotalInquiringStocks += 900;
     strMiddle = GetNextInquiringStr(900, false);
     if (iTotalInquiringStocks > gl_ChinaStockMarket.GetTotalStock() * 3) {
@@ -39,15 +39,15 @@ void CSinaWebRTData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-CString CSinaWebRTData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+CString CSinaRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
   return gl_ChinaStockMarket.GetSinaInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
-void CSinaWebRTData::StartReadingThread(void) {
+void CSinaRTWebData::StartReadingThread(void) {
   AfxBeginThread(ThreadReadSinaRTData, this);
 }
 
-bool CSinaWebRTData::ReportStatus(long lNumberOfData) {
+bool CSinaRTWebData::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个新浪实时数据\n", lNumberOfData);
   return true;
 }

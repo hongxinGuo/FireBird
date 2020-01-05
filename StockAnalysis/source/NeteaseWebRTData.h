@@ -2,10 +2,10 @@
 #define __NETEASE_WEB_RT_DATA_H__
 #include "WebData.h"
 
-class CNeteaseWebRTData final : public CWebData {
+class CNeteaseRTWebData final : public CWebData {
 public:
-  CNeteaseWebRTData();
-  ~CNeteaseWebRTData();
+  CNeteaseRTWebData();
+  ~CNeteaseRTWebData();
 
   virtual bool ReportStatus(long lNumberOfData) override;
   virtual void InquireNextWebData(void) override;

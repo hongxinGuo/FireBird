@@ -210,7 +210,7 @@ public:
   void SetDayLineNeedSaving(bool fFlag);
   bool IsDayLineNeedSavingAndClearFlag(void);
 
-  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseWebDayLineData* pNeteaseWebDayLineData);
+  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
   bool SkipNeteaseDayLineInformationHeader(void);
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);

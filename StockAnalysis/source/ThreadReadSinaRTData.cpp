@@ -11,7 +11,7 @@
 #include"Market.h"
 
 UINT ThreadReadSinaRTData(LPVOID pParam) {
-  CSinaWebRTData* pSinaWebRTData = (CSinaWebRTData*)pParam;
+  CSinaRTWebData* pSinaWebRTData = (CSinaRTWebData*)pParam;
 
   const clock_t tt = clock();
 

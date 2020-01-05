@@ -3,10 +3,10 @@
 
 #include "WebData.h"
 
-class CNeteaseWebDayLineData final : public CWebData {
+class CNeteaseDayLineWebData final : public CWebData {
 public:
-  CNeteaseWebDayLineData();
-  ~CNeteaseWebDayLineData();
+  CNeteaseDayLineWebData();
+  ~CNeteaseDayLineWebData();
 
   virtual void InquireNextWebData(void) override;
   virtual void StartReadingThread(void) override;

@@ -350,26 +350,26 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockTest, TestIsDayLineNeedUpdate) {
     CStock stock;
-    long lNumberOfStock = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
+    long lNumberOfStock = gl_ChinaStockMarket.GetDayLineNeedUpdateNumber();
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(false);
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate + 1);
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.GetDayLineNeedUpdateNumber() + 1);
     stock.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedUpdate);
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.GetDayLineNeedUpdateNumber());
   }
 
   TEST_F(CStockTest, TestIsDayLineNeedProcess) {
     CStock stock;
-    long lNumberOfStock = gl_ChinaStockMarket.m_iDayLineNeedProcess;
+    long lNumberOfStock = gl_ChinaStockMarket.GetDayLineNeedProcessNumber();
     EXPECT_FALSE(stock.IsDayLineNeedProcess());
     stock.SetDayLineNeedProcess(true);
     EXPECT_TRUE(stock.IsDayLineNeedProcess());
-    EXPECT_EQ(lNumberOfStock + 1, gl_ChinaStockMarket.m_iDayLineNeedProcess);
+    EXPECT_EQ(lNumberOfStock + 1, gl_ChinaStockMarket.GetDayLineNeedProcessNumber());
     stock.SetDayLineNeedProcess(false);
     EXPECT_FALSE(stock.IsDayLineNeedProcess());
-    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.m_iDayLineNeedProcess);
+    EXPECT_EQ(lNumberOfStock, gl_ChinaStockMarket.GetDayLineNeedProcessNumber());
   }
 
   TEST_F(CStockTest, TestIsChoiced) {
@@ -430,26 +430,26 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CStock stock;
-    int iNumberOfSave = gl_ChinaStockMarket.m_iDayLineNeedSave;
+    int iNumberOfSave = gl_ChinaStockMarket.GetDayLineNeedSaveNumber();
     stock.SetDayLineNeedSaving(true);
-    EXPECT_EQ(iNumberOfSave + 1, gl_ChinaStockMarket.m_iDayLineNeedSave);
+    EXPECT_EQ(iNumberOfSave + 1, gl_ChinaStockMarket.GetDayLineNeedSaveNumber());
     EXPECT_TRUE(stock.IsDayLineNeedSaving());
     stock.SetDayLineNeedSaving(false);
-    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.m_iDayLineNeedSave);
+    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.GetDayLineNeedSaveNumber());
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
     stock.SetDayLineNeedSaving(true);
     EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
-    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.m_iDayLineNeedSave);
+    EXPECT_EQ(iNumberOfSave, gl_ChinaStockMarket.GetDayLineNeedSaveNumber());
   }
 
   TEST_F(CStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
     CString str = _T("abcedfg\r\n");
-    gl_NeteaseWebDayLineData.__TESTSetBuffer(str);
+    gl_NeteaseDayLineWebData.__TESTSetBuffer(str);
     CStock stock;
     EXPECT_FALSE(stock.IsDayLineNeedProcess());
     EXPECT_EQ(stock.GetDayLineBufferLength(), 0);
-    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_NeteaseWebDayLineData);
+    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_NeteaseDayLineWebData);
     EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
     EXPECT_TRUE(stock.IsDayLineNeedProcess());
     stock.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。

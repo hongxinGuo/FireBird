@@ -3,10 +3,10 @@
 #include "WebData.h"
 #include"RTData.h"
 
-class CSinaWebRTData final : public CWebData {
+class CSinaRTWebData final : public CWebData {
 public:
-  CSinaWebRTData();
-  ~CSinaWebRTData();
+  CSinaRTWebData();
+  ~CSinaRTWebData();
 
   virtual void InquireNextWebData(void) override;
   virtual CString GetNextInquiringStr(long lTotalNumer = 900, bool fSkipUnactiveStock = true) override;

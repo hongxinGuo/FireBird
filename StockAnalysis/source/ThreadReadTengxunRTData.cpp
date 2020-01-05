@@ -12,7 +12,7 @@
 #include"Market.h"
 
 UINT ThreadReadTengxunRTData(LPVOID pParam) {
-  CTengxunWebRTData* pTengxunWebRTData = (CTengxunWebRTData*)pParam;
+  CTengxunRTWebData* pTengxunWebRTData = (CTengxunRTWebData*)pParam;
 
   if (pTengxunWebRTData->ReadWebData(50, 30, 20)) {
     CWebDataReceivedPtr pWebDataReceived = pTengxunWebRTData->TransferWebDataToQueueData();

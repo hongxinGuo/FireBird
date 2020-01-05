@@ -620,7 +620,7 @@ namespace StockAnalysisTest {
     long m_lIndex;
     long m_lValue;
     CString m_strValue;
-    CNeteaseWebRTData m_NeteaseWebRTData;
+    CNeteaseRTWebData m_NeteaseWebRTData;
     CRTData m_RTData;
   };
 
