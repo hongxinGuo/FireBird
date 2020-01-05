@@ -138,6 +138,8 @@ public:
   void SetCancelBuyVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelBuyVolume(value); }
   INT64 GetCancelSellVolume(void) noexcept { return m_stockCalculatedInfo.GetCancelSellVolume(); }
   void SetCancelSellVolume(INT64 value) noexcept { m_stockCalculatedInfo.SetCancelSellVolume(value); }
+  INT64 GetCurrentCancelBuyVolume(void) noexcept { return m_lCurrentCanselBuyVolume; }
+  INT64 GetCurrentCancelSellVolume(void) noexcept { return m_lCurrentCanselSellVolume; }
 
   void SetTransactionNumber(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumber(value); }
   void SetTransactionNumberBelow5000(INT64 value) noexcept { m_stockCalculatedInfo.SetTransactionNumberBelow5000(value); }
