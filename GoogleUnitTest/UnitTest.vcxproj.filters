@@ -114,6 +114,9 @@
     <ClCompile Include="CalculatingRTDataTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessDayLineDataTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

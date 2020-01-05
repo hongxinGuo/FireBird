@@ -73,6 +73,7 @@
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebDataTest.cpp" />
     <ClCompile Include="StockBasicInfoTest.cpp" />

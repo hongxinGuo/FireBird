@@ -38,7 +38,7 @@ namespace StockAnalysisTest {
   DayLineData Data13(13, _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2019-07-23\n,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   // 中途遇到\r
   DayLineData Data14(14, _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n2019-07-23\r,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  /*
+
   class NeteaseDayLineTest : public::testing::TestWithParam<DayLineData*> {
   protected:
     void SetUp(void) override {
@@ -54,8 +54,11 @@ namespace StockAnalysisTest {
 
     void TearDown(void) override {
       // clearup
-      m_pStock->SetDayLineNeedProcess(false);
-      m_pStock->SetDayLineNeedSaving(false);
+      if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
+      if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
+      if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);
+      if (m_pStock->IsDayLineLoaded()) m_pStock->SetDayLineLoaded(false);
+      m_pStock->SetIPOStatus(__STOCK_IPOED__);
     }
 
   public:
@@ -73,40 +76,62 @@ namespace StockAnalysisTest {
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 2:
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 3:
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 4:
     case 5:
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 6:
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 7:
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 8:
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 9:
+    EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pStock->IsDayLineLoaded());
     break;
     case 10: // 时间字符串超过30个
     EXPECT_FALSE(fSucceed);
+    EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_FALSE(m_pStock->IsDayLineLoaded());
     break;
     case 11: // 流通市值字符串超过30个
     EXPECT_FALSE(fSucceed);
+    EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_FALSE(m_pStock->IsDayLineLoaded());
     break;
     case 12:
     EXPECT_FALSE(fSucceed);
+    EXPECT_FALSE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_FALSE(m_pStock->IsDayLineLoaded());
     break;
     default:
     break;
     }
-  }*/
+  }
 }

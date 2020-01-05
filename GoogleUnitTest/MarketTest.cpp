@@ -371,7 +371,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
     EXPECT_TRUE(str.GetLength() > 0);
-    EXPECT_STREQ(str, _T("0600000"));
+    EXPECT_STREQ(str, _T("0600000")); // 测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线
     pStock = gl_ChinaStockMarket.GetStockPtr(0);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStockPtr(1);

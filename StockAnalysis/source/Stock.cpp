@@ -161,7 +161,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
     if (pDayLine->IsActive()) {
-      // 清除掉不再交易（停牌或退市）的股票日线
+      // 清除掉不再交易（停牌或退市后出现的）的股票日线
       m_vDayLine.push_back(pDayLine);
     }
   }
@@ -1110,6 +1110,7 @@ void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
     m_vDayLineBuffer.at(i) = pDayLineBuffer[i];
   }
   m_vDayLineBuffer.at(lBufferLength) = 0x000;
+  m_lDayLineBufferLength = lBufferLength;
 }
 
 #ifdef _DEBUG
