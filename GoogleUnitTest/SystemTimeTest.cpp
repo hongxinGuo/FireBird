@@ -146,4 +146,16 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemTime.GetDayOfMonth(), tm_.tm_mday);
     EXPECT_EQ(gl_systemTime.GetYear(), tm_.tm_year + 1900);
   }
+
+  TEST(SystemTimeTest, TestIsEarlyThen) {
+    EXPECT_TRUE(gl_systemTime.IsEarlyThen(20190101, 20190104, 2));
+    EXPECT_TRUE(gl_systemTime.IsEarlyThen(20180101, 20190101, 354));
+    EXPECT_TRUE(gl_systemTime.IsEarlyThen(20190130, 20190201, 1));
+    EXPECT_TRUE(gl_systemTime.IsEarlyThen(20190101, 20190110, 8));
+    EXPECT_TRUE(gl_systemTime.IsEarlyThen(20190101, 20190104, 2));
+    EXPECT_FALSE(gl_systemTime.IsEarlyThen(20191231, 20200101, 2));
+    EXPECT_FALSE(gl_systemTime.IsEarlyThen(20191131, 20200101, 33));
+    EXPECT_FALSE(gl_systemTime.IsEarlyThen(20190131, 20190201, 2));
+    EXPECT_FALSE(gl_systemTime.IsEarlyThen(20190101, 20190110, 10));
+  }
 }

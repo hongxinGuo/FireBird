@@ -869,7 +869,7 @@ void CStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
   if (GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
-    if (GetDayLineEndDay() < (gl_systemTime.GetDay() - 100)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+    if (gl_systemTime.IsEarlyThen(GetDayLineEndDay(), gl_systemTime.GetDay(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
       setStockCode.m_IPOed = __STOCK_DELISTED__;
     }
     else {

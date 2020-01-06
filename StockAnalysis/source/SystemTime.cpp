@@ -86,3 +86,14 @@ bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
   }
   else return true;
 }
+
+bool CSystemTime::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawn) {
+  CTimeSpan ts(lTimeSpawn, 0, 0, 0);
+  const long year = lEarlyDay / 10000;
+  const long month = lEarlyDay / 100 - year * 100;
+  const long day = lEarlyDay - year * 10000 - month * 100;
+  CTime ctEarly(year, month, day, 12, 0, 0);
+  ctEarly += ts;
+  long lNewDay = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
+  return (lNewDay < lLatelyDay);
+}
