@@ -124,13 +124,13 @@ void CCrweberIndex::AppendData(CSetCrweberIndex& setCrweberIndex) {
 }
 
 bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
-  pWebDataReceived->m_lCurrentPos = 0;
+  pWebDataReceived->SetCurrentPos(0);
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
   long lUpdateDay = 0;
 
-  while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
+  while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
     str = GetNextString(pWebDataReceived);
     strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
@@ -223,10 +223,10 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       str1 = GetNextString(pWebDataReceived);
       gl_CrweberIndex.m_dHANDY_TC_3YEAR = ConvertStringToTC(str1);
 
-      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+      pWebDataReceived->SetCurrentPos(pWebDataReceived->GetBufferLength()); //
     }
   }
-  pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+  pWebDataReceived->SetCurrentPos(pWebDataReceived->GetBufferLength()); //
 
   return true;
 }
@@ -314,7 +314,7 @@ CString CCrweberIndex::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
     else fFound = true;
   }
   if (pWebDataReceived->GetChar() == 0x000) { // 读到结尾处了
-    ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
+    ASSERT(pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength());
     return _T("");
   }
   while (pWebDataReceived->GetChar() != '<') {

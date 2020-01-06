@@ -86,6 +86,17 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetTengxunRTDataInquiringIndex(), 0);
   }
 
+  TEST_F(CMarketTest, TestClearUpdateStockCodeDBFlag) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
+      CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(i);
+      pStock->SetDayLineDBUpdated(true);
+    }
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    gl_ChinaStockMarket.ClearUpdateStockCodeDBFlag();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+  }
+
   TEST_F(CMarketTest, TestGetTengxunInquiringStockStr) {
     CStockPtr pStock = nullptr;
     gl_ChinaStockMarket.SetSystemReady(true);
@@ -633,6 +644,14 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CMarketTest, TestIsValidNeteaseRTData) {
+    CWebDataReceivedPtr pData = make_shared<CWebDataReceived>();
+    CString str = _T("_ntes_quote_callback({ });");
+    pData->SetBufferLength(str.GetLength());
+    pData->Assign(str.GetLength(), str.GetBuffer());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsInvalidNeteaseRTData(pData));
+  }
+
   TEST_F(CMarketTest, TestResetSystemFlagAtMidnight) {
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetSystem());
     gl_ChinaStockMarket.ResetSystemFlagAtMidnight(0);
@@ -769,15 +788,15 @@ namespace StockAnalysisTest {
     CWebDataReceivedPtr pWebDataReceived;
     pWebDataReceived = make_shared<CWebDataReceived>();
     CString str = _T("_ntes_quote_callback({\"");
-    pWebDataReceived->m_vBuffer.resize(50);
+    pWebDataReceived->BufferResize(50);
     pWebDataReceived->Assign(str.GetLength(), (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_TRUE(gl_ChinaStockMarket.IsValidNeteaseRTDataPrefix(pWebDataReceived));
     pWebDataReceived->ResetCurrentPos();
     str = _T("_ntes_quo_callback({\"");
     pWebDataReceived->Assign(str.GetLength(), (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_ChinaStockMarket.IsValidNeteaseRTDataPrefix(pWebDataReceived));
   }
@@ -786,15 +805,15 @@ namespace StockAnalysisTest {
     CWebDataReceivedPtr pWebDataReceived;
     pWebDataReceived = make_shared<CWebDataReceived>();
     CString str = _T("v_pv_none_match=\"1\";\n");
-    pWebDataReceived->m_vBuffer.resize(50);
+    pWebDataReceived->BufferResize(50);
     pWebDataReceived->Assign(str.GetLength(), (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_TRUE(gl_ChinaStockMarket.IsInvalidTengxunRTData(pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
     str = _T("v_pv_none_mtch=\"1\";\n");
     pWebDataReceived->Assign(str.GetLength(), (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_ChinaStockMarket.IsInvalidTengxunRTData(pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);

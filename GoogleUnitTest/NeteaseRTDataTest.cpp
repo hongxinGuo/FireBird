@@ -160,12 +160,12 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_vBuffer.resize(m_lStringLength + 1);
+      m_pNeteaseWebRTData->BufferResize(m_lStringLength + 1);
       for (long i = 0; i < m_lStringLength; i++) {
         m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }
       m_pNeteaseWebRTData->SetChar(m_lStringLength, 0x000);
-      m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
+      m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -217,7 +217,7 @@ namespace StockAnalysisTest {
     switch (m_iCount) {
     case 0:
     EXPECT_TRUE(fSucceed); // 没有错误
-    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->m_lCurrentPos + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -250,7 +250,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(fSucceed); // 第一个数据没有错误
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->m_lCurrentPos + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -290,7 +290,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601")); // 股票代码已设置
     EXPECT_EQ(m_RTData.GetHigh(), 0); // 此位置出错，没有设置。
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
-    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->m_lCurrentPos + 4); // 最后剩下四个字符" });"没有读
+    EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
@@ -374,12 +374,12 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_vBuffer.resize(m_lStringLength + 1);
+      m_pNeteaseWebRTData->BufferResize(m_lStringLength + 1);
       for (long i = 0; i < m_lStringLength; i++) {
         m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }
       m_pNeteaseWebRTData->SetChar(m_lStringLength, 0x000);
-      m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
+      m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -500,7 +500,7 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_vBuffer.resize(lLength + 1);
+      m_pNeteaseWebRTData->BufferResize(lLength + 1);
       for (int i = 0; i < lLength; i++) {
         m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }

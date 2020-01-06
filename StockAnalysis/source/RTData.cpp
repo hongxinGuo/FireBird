@@ -191,7 +191,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   static CString strHeader = _T("var hq_str_s");
   long lStockCode = 0;
   double dTemp = 0;
-  long lTestCurrentPos = pSinaWebRTData->m_lCurrentPos;
+  long lTestCurrentPos = pSinaWebRTData->GetCurrentPos();
   char bufferTest[2000];
   CString strTest;
 
@@ -882,9 +882,9 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* bu
 bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
-  long lTestCurrentPos = pNeteaseWebRTData->m_lCurrentPos;
+  long lTestCurrentPos = pNeteaseWebRTData->GetCurrentPos();
   char bufferTest[2000];
-  long lSectionPos = pNeteaseWebRTData->m_lCurrentPos;
+  long lSectionPos = pNeteaseWebRTData->GetCurrentPos();
   long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
   CString strStockCode = _T(" "), strHeader;
   long lSectionLength = 0;
@@ -946,7 +946,7 @@ bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
 
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
-    pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
+    pNeteaseWebRTData->SetCurrentPos(lSectionBegin + lSectionLength);
     lTestCurrentPos = pNeteaseWebRTData->GetCurrentPos();
     ASSERT(pNeteaseWebRTData->GetChar(lTestCurrentPos - 1) == '}');
     SetDataSource(__NETEASE_RT_WEB_DATA__);
@@ -970,7 +970,7 @@ bool CRTData::CheckNeteaseRTDataActive(void) {
 bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
   CString strValue = _T("");
   char bufferStockCode[50];
-  long lTestCurrentPos = pWebDataReceived->m_lCurrentPos;
+  long lTestCurrentPos = pWebDataReceived->GetCurrentPos();
   char bufferTest[30];
   bool fFind = false;
   CString strStockCode, strHeader;
@@ -1051,7 +1051,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataReceivedPtr pNeteaseWebRTData, lon
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    lTestCurrentPos = pNeteaseWebRTData->m_lCurrentPos;
+    lTestCurrentPos = pNeteaseWebRTData->GetCurrentPos();
     while ((pNeteaseWebRTData->GetChar(lTestCurrentPos) != '}') && (pNeteaseWebRTData->GetChar(lTestCurrentPos) != ',') && (i < 99)) {
       bufferTest[i++] = pNeteaseWebRTData->GetChar(lTestCurrentPos++);
     }
