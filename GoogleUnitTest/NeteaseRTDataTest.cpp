@@ -336,34 +336,34 @@ namespace StockAnalysisTest {
   };
 
   // 无错误数据，上海市场股票
-  NeteaseRTDataStockCodePrefix StockCodePrefixData101(0, _T("{\"0600000\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData101(0, _T("{\"0600000\":{ "));
   // 无错误，起始为','
-  NeteaseRTDataStockCodePrefix StockCodePrefixData102(1, _T(",\"0600000\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData102(1, _T(",\"0600000\":{ "));
   //无错误，深圳市场股票
-  NeteaseRTDataStockCodePrefix StockCodePrefixData103(2, _T("{\"1000001\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData103(2, _T("{\"1000001\":{ "));
   // 起始非'{'','
-  NeteaseRTDataStockCodePrefix StockCodePrefixData104(3, _T("'\"0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData104(3, _T("'\"0600601\":{ "));
   // 第二个字符非'\"'
-  NeteaseRTDataStockCodePrefix StockCodePrefixData105(4, _T("{'0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData105(4, _T("{'0600601\":{ "));
   // 代码第一个字符非0或者1
-  NeteaseRTDataStockCodePrefix StockCodePrefixData106(5, _T("{\"2600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData106(5, _T("{\"2600601\":{ "));
   // 无效股票代码
-  NeteaseRTDataStockCodePrefix StockCodePrefixData107(6, _T("{\"1600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData107(6, _T("{\"1600601\":{ "));
   // 无效股票代码
-  NeteaseRTDataStockCodePrefix StockCodePrefixData108(7, _T("{\"0500000\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData108(7, _T("{\"0500000\":{ "));
   // 无错误，':'后多一个空格
-  NeteaseRTDataStockCodePrefix StockCodePrefixData109(8, _T("{\"0600601\": {"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData109(8, _T("{\"0600601\": { "));
   // 缺少后'"'
-  NeteaseRTDataStockCodePrefix StockCodePrefixData110(9, _T("{\"0600601':{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData110(9, _T("{\"0600601':{ "));
   // 缺少后'{'
-  NeteaseRTDataStockCodePrefix StockCodePrefixData111(10, _T("{\"0600601\":}  "));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData111(10, _T("{\"0600601\":}   "));
   // 缺少后'{'
-  NeteaseRTDataStockCodePrefix StockCodePrefixData112(11, _T("{\"0600601\":}}  "));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData112(11, _T("{\"0600601\":}}   "));
   // 后'}'超过了五个字符
-  NeteaseRTDataStockCodePrefix StockCodePrefixData113(12, _T("{\"0600601\":   {"));
-  NeteaseRTDataStockCodePrefix StockCodePrefixData114(13, _T("{\"0600601\":{"));
-  NeteaseRTDataStockCodePrefix StockCodePrefixData115(14, _T("{\"0600601\":{"));
-  NeteaseRTDataStockCodePrefix StockCodePrefixData116(15, _T("{\"0600601\":{"));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData113(12, _T("{\"0600601\":   { "));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData114(13, _T("{\"0600601\":{ "));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData115(14, _T("{\"0600601\":{ "));
+  NeteaseRTDataStockCodePrefix StockCodePrefixData116(15, _T("{\"0600601\":{ "));
   // 所有的数量皆为零
 
   class StockCodePrefixTest : public::testing::TestWithParam<NeteaseRTDataStockCodePrefix*> {
@@ -500,7 +500,7 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->BufferResize(lLength + 1);
+      m_pNeteaseWebRTData->SetBufferLength(lLength);
       for (int i = 0; i < lLength; i++) {
         m_pNeteaseWebRTData->SetChar(i, pData->m_strData[i]);
       }

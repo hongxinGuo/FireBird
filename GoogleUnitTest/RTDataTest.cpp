@@ -470,7 +470,7 @@ namespace StockAnalysisTest {
       m_pSinaWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pSinaWebRTData->BufferResize(m_lStringLength + 1);
+      m_pSinaWebRTData->SetBufferLength(m_lStringLength);
       for (long i = 0; i < m_lStringLength; i++) {
         m_pSinaWebRTData->SetChar(i, pData->m_strData[i]);
       }

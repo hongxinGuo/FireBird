@@ -999,7 +999,7 @@ bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
   }
   pWebDataReceived->IncreaseCurrentPos();
   i = 0;
-  while (!fFind && (i < 13) && (pWebDataReceived->GetChar() != 0x000)) {
+  while (!fFind && (i < 10) && (pWebDataReceived->GetChar() != 0x000)) {
     if (pWebDataReceived->GetChar() == '"') {
       fFind = true;
       bufferStockCode[i] = 0x000;
