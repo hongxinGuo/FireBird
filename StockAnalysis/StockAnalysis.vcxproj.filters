@@ -180,9 +180,6 @@
     <ClInclude Include="source\TengxunWebRTData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\QueueWebRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\NeteaseWebDayLineData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
@@ -197,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="source\StockCalculatedInfo.h">
       <Filter>头文件\Stock</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebInquire.h">
+      <Filter>头文件\Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +320,6 @@
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\QueueWebRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\NeteaseWebDayLineData.cpp">
       <Filter>源文件\网络通信</Filter>
     </ClCompile>
@@ -346,6 +346,12 @@
     </ClCompile>
     <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp">
       <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueWebData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueWebInquire.cpp">
+      <Filter>源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -39,10 +39,7 @@ CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
 CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
 CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
 
-CQueueWebRTData gl_QueueSinaWebRTData; // 新浪网络数据暂存队列
-CQueueWebRTData gl_QueueTengxunWebRTData; // 腾讯网络数据暂存队列
-CQueueWebRTData gl_QueueNeteaseWebRTData; // 网易网络数据暂存队列
-CQueueWebRTData gl_QueueCrweberdotcomWebData; // crweber.com网络数据暂存队列
+CQueueWebInquire gl_queueWebInquire;
 
 CCrweberIndex gl_CrweberIndex;
 CCrweberIndex gl_CrweberIndexLast;
@@ -665,9 +662,9 @@ bool CMarket::ProcessRTData(void) {
 
 bool CMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
-  long lTotalData = gl_QueueSinaWebRTData.GetWebRTDataSize();
+  long lTotalData = gl_queueWebInquire.GetSinaRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_QueueSinaWebRTData.PopWebRTData();
+    pWebDataReceived = gl_queueWebInquire.PopSinaRTData();
     pWebDataReceived->m_lCurrentPos = 0;
     while (pWebDataReceived->m_lCurrentPos < pWebDataReceived->m_lBufferLength) {
       CRTDataPtr pRTData = make_shared<CRTData>();
@@ -703,9 +700,9 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   int iCount = 0;
 
-  long lTotalData = gl_QueueNeteaseWebRTData.GetWebRTDataSize();
+  long lTotalData = gl_queueWebInquire.GetNeteaseRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_QueueNeteaseWebRTData.PopWebRTData();
+    pWebDataReceived = gl_queueWebInquire.PopNeteaseRTData();
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
@@ -793,9 +790,9 @@ bool CMarket::TaskProcessNeteaseRTData(void) {
 
 bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataReceivedPtr pWebData = nullptr;
-  long lTotalData = gl_QueueCrweberdotcomWebData.GetWebRTDataSize();
+  long lTotalData = gl_queueWebInquire.GetCrweberDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebData = gl_QueueCrweberdotcomWebData.PopWebRTData();
+    pWebData = gl_queueWebInquire.PopCrweberData();
     pWebData->m_lCurrentPos = 0;
     if (gl_CrweberIndex.ReadData(pWebData)) {
       if (gl_CrweberIndex.IsTodayUpdated() || gl_CrweberIndex.IsDataChanged()) {
@@ -823,9 +820,9 @@ bool CMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   int j = 0;
 
-  long lTotalData = gl_QueueTengxunWebRTData.GetWebRTDataSize();
+  long lTotalData = gl_queueWebInquire.GetTengxunRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_QueueTengxunWebRTData.PopWebRTData();
+    pWebDataReceived = gl_queueWebInquire.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
       j = 0;
