@@ -166,9 +166,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -272,6 +269,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

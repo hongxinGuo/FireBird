@@ -44,13 +44,9 @@ extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFifth; // 网易日线历史数据
 extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSixth; // 网易日线历史数据
-extern CCrweberIndexWebData gl_CrweberIndexWebData;   // crweber.com上的每日油运指数
+extern CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
 
-extern CPriorityQueueRTData gl_QueueSinaRTData; // 系统实时数据队列。
-extern CQueueRTData gl_QueueSinaRTDataForSave; // 用于存储的新浪实时数据队列
-extern CPriorityQueueRTData gl_QueueTengxunRTData; // 系统实时数据队列。
-extern CPriorityQueueRTData gl_QueueNeteaseRTData; // 系统实时数据队列。
-
+extern CQueueRTData gl_queueRTData;
 extern CQueueWebInquire gl_queueWebInquire;
 
 extern CCrweberIndex gl_CrweberIndex;

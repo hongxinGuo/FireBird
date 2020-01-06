@@ -224,11 +224,12 @@
     <ClInclude Include="source\Accessory.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
+    <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebInquire.h" />
     <ClInclude Include="source\NeteaseWebDayLineData.h" />
     <ClInclude Include="source\NeteaseWebRTData.h" />
     <ClInclude Include="source\PriorityQueueRTData.h" />
-    <ClInclude Include="source\QueueRTData.h" />
+    <ClInclude Include="source\QueueRTDataImp.h" />
     <ClInclude Include="source\QueueWebData.h" />
     <ClInclude Include="source\WebDataReceived.h" />
     <ClInclude Include="source\Semaphore.h" />
@@ -273,7 +274,7 @@
     <ClCompile Include="source\NeteaseWebDayLineData.cpp" />
     <ClCompile Include="source\NeteaseWebRTData.cpp" />
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
-    <ClCompile Include="source\QueueRTData.cpp" />
+    <ClCompile Include="source\QueueRTDataImp.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
