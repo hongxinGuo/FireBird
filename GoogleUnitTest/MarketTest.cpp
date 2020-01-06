@@ -457,6 +457,12 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lIndex, -1);
   }
 
+  TEST_F(CMarketTest, TestIncreaseTotalActiveStock) {
+    long l = gl_ChinaStockMarket.GetTotalActiveStock();
+    gl_ChinaStockMarket.IncreaseActiveStockNumber();
+    EXPECT_EQ(gl_ChinaStockMarket.GetTotalActiveStock(), l + 1);
+  }
+
   TEST_F(CMarketTest, TestGetStockCode) {
     EXPECT_EQ(gl_ChinaStockMarket.GetStockPtr(_T("sh66000")), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.GetStockPtr(_T("sh600001")) == nullptr);
