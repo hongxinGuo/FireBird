@@ -96,7 +96,7 @@ void CMainFrame::Reset(void) {
   gl_systemTime.CalculateLastTradeDay();
 
   // 重置系统实时队列
-  gl_QueueSinaRTData.Reset();
+  gl_queueRTData.ResetSinaRTQueue();
 
   m_lCurrentPos = 0;
 }

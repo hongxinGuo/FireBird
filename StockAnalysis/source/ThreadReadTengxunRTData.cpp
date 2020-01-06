@@ -17,7 +17,7 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
   if (pTengxunWebRTData->ReadWebData(50, 30, 20)) {
     CWebDataReceivedPtr pWebDataReceived = pTengxunWebRTData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
-      gl_QueueTengxunWebRTData.PushWebRTData(pWebDataReceived);
+      gl_queueWebInquire.PushTengxunRTData(pWebDataReceived);
     }
   }
 

@@ -14,19 +14,19 @@ using namespace std;
 #include<queue>
 #include<mutex>
 
-class CQueueWebRTData final
+class CQueueWebData final
 {
 public:
-  CQueueWebRTData();
-  ~CQueueWebRTData();
+  CQueueWebData();
+  ~CQueueWebData();
   void Reset(void);
 
   // 通用接口函数
-  void PushWebRTData(CWebDataReceivedPtr pData);
-  CWebDataReceivedPtr PopWebRTData(void);
-  long GetWebRTDataSize(void);
+  void PushWebData(CWebDataReceivedPtr pData);
+  CWebDataReceivedPtr PopWebData(void);
+  long GetWebDataSize(void);
 
 protected:
-  queue<CWebDataReceivedPtr> m_queueWebRTData;
-  mutex m_MutexAccessWebRTData;
+  queue<CWebDataReceivedPtr> m_queueWebData;
+  mutex m_MutexAccessWebData;
 };

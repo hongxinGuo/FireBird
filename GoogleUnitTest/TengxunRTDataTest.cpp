@@ -160,7 +160,7 @@ namespace StockAnalysisTest {
       m_pTengxunWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pTengxunWebRTData->m_vBuffer.resize(m_lStringLength + 1);
+      m_pTengxunWebRTData->BufferResize(m_lStringLength + 1);
       for (long i = 0; i < m_lStringLength; i++) {
         m_pTengxunWebRTData->SetChar(i, pData->m_strData[i]);
       }
@@ -725,7 +725,7 @@ namespace StockAnalysisTest {
       m_pTengxunWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pTengxunWebRTData->m_vBuffer.resize(lLength + 1);
+      m_pTengxunWebRTData->BufferResize(lLength + 1);
       for (long i = 0; i < lLength; i++) {
         m_pTengxunWebRTData->SetChar(i, pData->m_strData[i]);
       }

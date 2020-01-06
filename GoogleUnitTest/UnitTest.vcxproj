@@ -112,8 +112,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\QueueWebRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />

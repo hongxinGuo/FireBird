@@ -18,7 +18,7 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
   if (pSinaWebRTData->ReadWebData(50, 30, 20)) {
     CWebDataReceivedPtr pWebDataReceived = pSinaWebRTData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
-      gl_QueueSinaWebRTData.PushWebRTData(pWebDataReceived);
+      gl_queueWebInquire.PushSinaRTData(pWebDataReceived);
     }
   }
   gl_ChinaStockMarket.SetReadingSinaRTDataTime(clock() - tt);
