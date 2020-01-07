@@ -585,23 +585,38 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1;
     gl_systemTime.__Test_SetTM(tm_);
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(91500));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(113500));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113501));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(125500));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(150630));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
     tm_.tm_wday = 0;
     gl_systemTime.__Test_SetTM(tm_);
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150630));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
   }
 
   TEST_F(CMarketTest, TestTaskUpdateStockCodeDB) {

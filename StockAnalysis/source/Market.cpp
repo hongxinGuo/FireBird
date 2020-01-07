@@ -505,11 +505,33 @@ INT64 CMarket::GetTotalAttackSellAmount(void) {
   return(lAmount);
 }
 
-void CMarket::TaskGetNeteaseDayLineFromWeb(void) {
+bool CMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(SystemReady());
   if (m_iDayLineNeedUpdate > 0) {
-    GetNeteaseWebDayLineData();
+    // 抓取日线数据.
+    // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+    switch (gl_cMaxSavingOneDayLineThreads) {
+    case 8: case 7: case 6:
+    gl_NeteaseDayLineWebDataSixth.GetWebData(); // 网易日线历史数据
+    case 5:
+    gl_NeteaseDayLineWebDataFifth.GetWebData();
+    case 4:
+    gl_NeteaseDayLineWebDataFourth.GetWebData();
+    case 3:
+    gl_NeteaseDayLineWebDataThird.GetWebData();
+    case 2:
+    gl_NeteaseDayLineWebDataSecond.GetWebData();
+    case 1: case 0:
+    gl_NeteaseDayLineWebData.GetWebData();
+    break;
+    default:
+    gl_NeteaseDayLineWebData.GetWebData();
+    TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
+    break;
+    }
+    return true;
   }
+  else return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -797,7 +819,6 @@ bool CMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
         gl_CrweberIndex.m_fTodayUpdated = false;
       }
-      TRACE("crweber.com的字节数为%d\n", pWebData->GetBufferLength());
     }
     else return false;  // 后面的数据出问题，抛掉不用。
   }
@@ -907,7 +928,7 @@ bool CMarket::TaskProcessTengxunRTData(void) {
 bool CMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
 #ifdef DEBUG
-#define __NumberOfCount__ 10
+#define __NumberOfCount__ 3
 #else
 #define __NumberOfCount__ 1000
 #endif
@@ -948,7 +969,7 @@ bool CMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskGetRTDataFromWeb(void) {
-  static int siCountDownTengxunNumber = 5;
+  static int siCountDownTengxunNumber = 0;
   static int siCountDownNeteaseNumber = 5;
 
   if (IsUsingSinaRTDataReceiver()) {
@@ -962,7 +983,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
         gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
-        siCountDownNeteaseNumber = 5;
+        siCountDownNeteaseNumber = 0;
       }
       else siCountDownNeteaseNumber--;
     }
@@ -974,31 +995,6 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
       }
       else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
-  }
-  return true;
-}
-
-bool CMarket::GetNeteaseWebDayLineData(void) {
-  // 抓取日线数据.
-  // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-  switch (gl_cMaxSavingOneDayLineThreads) {
-  case 8: case 7: case 6:
-  gl_NeteaseDayLineWebDataSixth.GetWebData(); // 网易日线历史数据
-  case 5:
-  gl_NeteaseDayLineWebDataFifth.GetWebData();
-  case 4:
-  gl_NeteaseDayLineWebDataFourth.GetWebData();
-  case 3:
-  gl_NeteaseDayLineWebDataThird.GetWebData();
-  case 2:
-  gl_NeteaseDayLineWebDataSecond.GetWebData();
-  case 1: case 0:
-  gl_NeteaseDayLineWebData.GetWebData();
-  break;
-  default:
-  gl_NeteaseDayLineWebData.GetWebData();
-  TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
-  break;
   }
   return true;
 }
@@ -1052,10 +1048,12 @@ bool CMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) {
   // 计算每一小时一次的任务
   if (i1HourCounter <= 0) {
     i1HourCounter = 3599;
+
+    return true;
   }
   else i1HourCounter -= lSecondNumber;
 
-  return true;
+  return false;
 }
 
 bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
@@ -1071,10 +1069,14 @@ bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
 
     ResetSystemFlagAtMidnight(lCurrentTime);
     SaveTempDataIntoDB(lCurrentTime);
-  } // 每五分钟一次的任务
-  else i5MinuteCounter -= lSecondNumber;
 
-  return true;
+    return true;
+  } // 每五分钟一次的任务
+  else {
+    i5MinuteCounter -= lSecondNumber;
+
+    return false;
+  }
 }
 
 void CMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
@@ -1122,17 +1124,25 @@ bool CMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
 
     // 下午三点三分开始处理当日实时数据。
     TaskProcessTodayStock(lCurrentTime);
-  } // 每一分钟一次的任务
-  else i1MinuteCounter -= lSecondNumber;
 
-  return true;
+    return true;
+  } // 每一分钟一次的任务
+  else {
+    i1MinuteCounter -= lSecondNumber;
+
+    return false;
+  }
 }
 
-void CMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
+bool CMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
   if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
     m_fCheckActiveStock = true;
+    return true;
   }
-  else m_fCheckActiveStock = false;
+  else {
+    m_fCheckActiveStock = false;
+    return false;
+  }
 }
 
 bool CMarket::TaskProcessTodayStock(long lCurrentTime) {
@@ -1149,7 +1159,7 @@ bool CMarket::TaskProcessTodayStock(long lCurrentTime) {
 bool CMarket::TaskUpdateStockCodeDB(void) {
   if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
     if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
-      gl_systemMessage.PushInnerSystemInformationMessage("日线历史数据处理过程中程序有瑕疵");
+      gl_systemMessage.PushInnerSystemInformationMessage(_T("日线历史数据处理过程中程序有瑕疵"));
     }
     m_fSaveDayLine = false;
     TRACE("日线历史数据更新完毕\n");
@@ -1220,12 +1230,13 @@ bool CMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) 
       m_fSaveDayLine = true;
       gl_ChinaStockMarket.SaveDayLineData();
     }
-
     TaskUpdateStockCodeDB();
+    return true;
   } // 每十秒钟一次的任务
-  else i10SecondsCounter -= lSecondNumber;
-
-  return true;
+  else {
+    i10SecondsCounter -= lSecondNumber;
+    return false;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

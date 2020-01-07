@@ -196,14 +196,14 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   CString strTest;
 
   int i = 0;
-  while ((pSinaWebRTData->GetChar(lTestCurrentPos) != ';') && (i < 1900)) {
+  while ((pSinaWebRTData->GetChar(lTestCurrentPos) != ';') && (pSinaWebRTData->GetChar(lTestCurrentPos) != 0x000) && (i < 1900)) {
     bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);
   }
   bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);
   bufferTest[i] = 0x000;
   strTest = bufferTest;
   if (i >= 1900) {
-    TRACE(_T("%s\n"), strTest.GetBuffer());
+    TRACE(_T("%d %s\n"), strTest.GetLength(), strTest.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
     return false; // 整个数据出现错误，后面的皆抛掉

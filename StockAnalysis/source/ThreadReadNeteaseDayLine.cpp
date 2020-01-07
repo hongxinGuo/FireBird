@@ -22,7 +22,7 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseDayLineWebData* pNeteaseWebDayLineData = (CNeteaseDayLineWebData*)pParam;
   const clock_t tt = clock();
 
-  if (pNeteaseWebDayLineData->ReadWebData(/*siDelayTime*/ 50, 30, 20)) {
+  if (pNeteaseWebDayLineData->ReadWebData(/*siDelayTime*/ 200, 50, 30)) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(pNeteaseWebDayLineData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseWebDayLineData);

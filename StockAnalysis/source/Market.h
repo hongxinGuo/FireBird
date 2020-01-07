@@ -77,11 +77,10 @@ public:
 
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
-  void TaskGetNeteaseDayLineFromWeb(void);
-  bool GetNeteaseWebDayLineData(void);
+  bool TaskGetNeteaseDayLineFromWeb(void);
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
-  void TaskSetCheckActiveStockFlag(long lCurrentTime);
+  bool TaskSetCheckActiveStockFlag(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);

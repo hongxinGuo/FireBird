@@ -172,7 +172,6 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       gl_CrweberIndex.m_dTC4 = GetOneValue(pWebDataReceived);
 
       CString strDay = ConvertValueToString(lUpdateDay, 1);
-      TRACE("m_lastUpdateDay = %d,  m_lDay = %d, m_UpdateDay = %d\n", gl_CrweberIndex.m_lLastUpdateDay, gl_CrweberIndex.m_lDay, lUpdateDay);
       if (lUpdateDay > gl_CrweberIndex.m_lLastUpdateDay) {
         gl_CrweberIndex.m_lDay = lUpdateDay;
         gl_CrweberIndex.m_lLastUpdateDay = lUpdateDay;

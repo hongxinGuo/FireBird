@@ -50,6 +50,8 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
       }
     }
     m_buffer.at(m_lCurrentReadPos) = 0x000; // 最后以0x000结尾
+    ASSERT(m_lByteRead == m_lCurrentReadPos);
+    ASSERT(m_lByteRead < 2048 * 1024);
   }
   catch (CInternetException*) {
     TRACE(_T("net error\n"));
@@ -69,6 +71,7 @@ bool CWebData::ReadDataFromWebOnce(void) {
   char buffer[2048];
   m_lCurrentByteRead = m_pFile->Read(buffer, 1024);
   if (m_lCurrentByteRead > 0) {
+    ASSERT(m_lCurrentByteRead <= 1024);
     for (int i = 0; i < m_lCurrentByteRead; i++) {
       m_buffer.at(m_lCurrentReadPos++) = buffer[i];
     }
