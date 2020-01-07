@@ -8,8 +8,8 @@ namespace StockAnalysisTest {
   TEST(CDayLineTest, TestGetDay) {
     ASSERT_FALSE(gl_fNormalMode);
     CDayLine dl;
-    dl.SetDay(19900101);
-    EXPECT_EQ(dl.GetDay(), 19900101);
+    dl.SetDay(__CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(dl.GetDay(), __CHINA_MARKET_BEGIN_DAY__);
   }
 
   TEST(CDayLineTest, TestGetTime) {

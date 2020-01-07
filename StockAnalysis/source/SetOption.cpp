@@ -9,9 +9,9 @@ IMPLEMENT_DYNAMIC(CSetOption, CRecordset)
 CSetOption::CSetOption(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_RalativeStrongStartDay = 19900101;
-  m_RelativeStrongEndDay = 19900101;
-  m_LastLoginDay = 19900101;
+  m_RalativeStrongStartDay = __CHINA_MARKET_BEGIN_DAY__;
+  m_RelativeStrongEndDay = __CHINA_MARKET_BEGIN_DAY__;
+  m_LastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
   m_nFields = 3;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要

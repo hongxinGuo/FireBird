@@ -11,8 +11,8 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     EXPECT_EQ(id.GetTransactionTime(), 0);
     EXPECT_EQ(id.GetLastClose(), 0);
@@ -50,7 +50,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
   }
 
@@ -85,14 +85,14 @@ namespace StockAnalysisTest {
 
   TEST(StockBasicInfoTest, TestGetDayLineEndDay) {
     CStockBasicInfo id;
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     id.SetDayLineEndDay(19980101);
     EXPECT_EQ(id.GetDayLineEndDay(), 19980101);
   }
 
   TEST(StockBasicInfoTest, TestGetDayLineStartDay) {
     CStockBasicInfo id;
-    EXPECT_EQ(id.GetDayLineStartDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__);
     id.SetDayLineStartDay(19980101);
     EXPECT_EQ(id.GetDayLineStartDay(), 19980101);
   }
@@ -227,7 +227,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     id.SetMarket(1);
     id.SetStockCode(_T("abcde"));
@@ -264,7 +264,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
 
     EXPECT_EQ(id.GetLastClose(), 0);
@@ -294,7 +294,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
     id.SetMarket(1);
     id.SetStockCode(_T("abcde"));
@@ -313,7 +313,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
 
     CRTDataPtr  pRTData = make_shared<CRTData>();
@@ -344,7 +344,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(id.GetStockCode(), _T(""));
     EXPECT_STREQ(id.GetStockName(), _T(""));
     EXPECT_EQ(id.GetOffset(), -1);
-    EXPECT_EQ(id.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(id.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(id.GetIPOStatus(), __STOCK_NOT_CHECKED__);
 
     EXPECT_EQ(id.GetLastClose(), 10101010);

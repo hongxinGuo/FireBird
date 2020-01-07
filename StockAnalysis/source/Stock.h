@@ -233,6 +233,7 @@ public:
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
+  void SetCheckingDayLineStatus(void);
 
   // ¹Òµ¥Çé¿ö
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }

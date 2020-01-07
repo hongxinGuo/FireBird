@@ -635,7 +635,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-  gl_ChinaStockMarket.CalculateRelativeStrong(19900101);
+  gl_ChinaStockMarket.CalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
 }
 
 void CMainFrame::OnBuildResetSystem() {

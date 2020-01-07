@@ -112,7 +112,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   if (!SkipNeteaseDayLineInformationHeader()) return false;
 
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+    if (GetDayLineEndDay() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
@@ -231,7 +231,7 @@ bool CStock::SaveDayLine(void) {
   setDayLine.Close();
   if (vDayLine.size() == 0) {
     SetDayLineStartDay(gl_systemTime.GetDay());
-    SetDayLineEndDay(19900101);
+    SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
     SetDayLineStartDay(vDayLine.at(0)->GetDay());
@@ -898,17 +898,22 @@ bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   if (GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDay(setStockCode.m_DayLineEndDay);
   }
+  SetCheckingDayLineStatus();
+  return true;
+}
+
+void CStock::SetCheckingDayLineStatus(void) {
+  ASSERT(IsDayLineNeedUpdate());
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
   if (gl_systemTime.GetLastTradeDay() <= GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
-    if (IsDayLineNeedUpdate()) SetDayLineNeedUpdate(false); // 日线数据不需要更新
+    SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
-  else if (setStockCode.m_IPOed == __STOCK_NULL__) { // 无效代码不需更新日线数据
-    if (IsDayLineNeedUpdate()) SetDayLineNeedUpdate(false);
+  else if (GetIPOStatus() == __STOCK_NULL__) { // 无效代码不需更新日线数据
+    SetDayLineNeedUpdate(false);
   }
-  else if (setStockCode.m_IPOed == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则不需要再更新日线数据
-    if (IsDayLineNeedUpdate() && (GetDayLineEndDay() != 19900101)) SetDayLineNeedUpdate(false);
+  else if (GetIPOStatus() == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
+    if ((GetDayLineEndDay() != __CHINA_MARKET_BEGIN_DAY__) && (gl_systemTime.GetDayOfWeek() != 1)) SetDayLineNeedUpdate(false);
   }
-  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

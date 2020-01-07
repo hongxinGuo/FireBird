@@ -91,7 +91,7 @@ void CMarket::Reset(void) {
   }
   else m_fTodayStockProcessed = false;
 
-  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = 19900101;
+  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
 
@@ -1752,30 +1752,30 @@ void CMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
-    gl_ChinaStockMarket.SetLastLoginDay(19900101);
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    gl_ChinaStockMarket.SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
     if (setOption.m_RelativeStrongEndDay == 0) {
-      gl_ChinaStockMarket.SetRelativeStrongEndDay(19900101);
+      gl_ChinaStockMarket.SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
       gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
-      if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > 19900101) {
+      if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。
         gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }
     if (setOption.m_RalativeStrongStartDay == 0) {
-      gl_ChinaStockMarket.SetRelativeStrongStartDay(19900101);
+      gl_ChinaStockMarket.SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
       gl_ChinaStockMarket.SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
     }
     if (setOption.m_LastLoginDay == 0) {
-      gl_ChinaStockMarket.SetLastLoginDay(19900101);
+      gl_ChinaStockMarket.SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
       gl_ChinaStockMarket.SetLastLoginDay(setOption.m_LastLoginDay);

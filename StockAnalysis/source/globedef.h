@@ -3,6 +3,8 @@
 
 #include"stdafx.h"
 
+#define __CHINA_MARKET_BEGIN_DAY__ 19900101
+
 enum {
   __STOCK_NOT_CHECKED__ = 128, // 尚未检查过的股票代码
   __STOCK_IPOED__ = 255, // 正常股票标识

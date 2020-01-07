@@ -27,8 +27,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
   strMiddle = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
   if (strMiddle.GetLength() > 0) {
     SetDownLoadingStockCode(strMiddle);
-    strMiddle += _T("&start=19900101");
-    strMiddle += _T("&end=");
+    strMiddle += _T("&start=19900101&end=");
     sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);

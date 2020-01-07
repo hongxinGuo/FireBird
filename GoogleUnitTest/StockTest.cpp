@@ -106,14 +106,14 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockTest, TestGetDayLineStartDay) {
     CStock stock;
-    EXPECT_EQ(stock.GetDayLineStartDay(), 19900101);
+    EXPECT_EQ(stock.GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__);
     stock.SetDayLineStartDay(100100100);
     EXPECT_EQ(stock.GetDayLineStartDay(), 100100100);
   }
 
   TEST_F(CStockTest, TestGetDayLineEndDay) {
     CStock stock;
-    EXPECT_EQ(stock.GetDayLineEndDay(), 19900101);
+    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     stock.SetDayLineEndDay(100100100);
     EXPECT_EQ(stock.GetDayLineEndDay(), 100100100);
   }
@@ -497,6 +497,32 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 0);
     id.SetCurrentGuadanTransactionPrice(10.01);
     EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 10.01);
+  }
+
+  TEST_F(CStockTest, TestSetCheckingDayLineStatus) {
+    CStock id;
+    EXPECT_TRUE(id.IsDayLineNeedUpdate());
+    id.SetDayLineEndDay(gl_systemTime.GetDay());
+    id.SetCheckingDayLineStatus();
+    EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    id.SetDayLineNeedUpdate(true);
+    id.SetDayLineEndDay(gl_systemTime.GetLastTradeDay());
+    id.SetCheckingDayLineStatus();
+    EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    id.SetDayLineNeedUpdate(true);
+    id.SetDayLineEndDay(gl_systemTime.GetLastTradeDay() - 1);
+    id.SetIPOStatus(__STOCK_NULL__);
+    id.SetCheckingDayLineStatus();
+    EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    id.SetDayLineNeedUpdate(true);
+    id.SetIPOStatus(__STOCK_DELISTED__);
+    id.SetCheckingDayLineStatus();
+    if (gl_systemTime.GetDayOfWeek() == 1) EXPECT_TRUE(id.IsDayLineNeedUpdate());
+    else EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    id.SetDayLineNeedUpdate(true);
+    id.SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    id.SetCheckingDayLineStatus();
+    EXPECT_TRUE(id.IsDayLineNeedUpdate());
   }
 
   TEST_F(CStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
@@ -921,7 +947,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(19900101 + i * 100000);
+      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
       pid->SetStockName(_T("首创股份"));
@@ -945,7 +971,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(20800100);
     ASSERT(!gl_fNormalMode);
     pStock->UpdateDayLineStartEndDay();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), 19900101 + 9 * 100000);
+    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900102);
     EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
   }
@@ -957,7 +983,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(19900101 + i * 100000);
+      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
       pid->SetStockName(_T("首创股份"));
