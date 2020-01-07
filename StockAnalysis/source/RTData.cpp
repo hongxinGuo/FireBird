@@ -196,7 +196,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
   CString strTest;
 
   int i = 0;
-  while ((pSinaWebRTData->GetChar(lTestCurrentPos) != ';') && (pSinaWebRTData->GetChar(lTestCurrentPos) != 0x000) && (i < 1900)) {
+  while ((pSinaWebRTData->GetChar(lTestCurrentPos) != ';') && (i < 1900)) {
     bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);
   }
   bufferTest[i++] = pSinaWebRTData->GetChar(lTestCurrentPos++);

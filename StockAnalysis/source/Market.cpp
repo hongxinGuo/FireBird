@@ -928,7 +928,7 @@ bool CMarket::TaskProcessTengxunRTData(void) {
 bool CMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
 #ifdef DEBUG
-#define __NumberOfCount__ 3
+#define __NumberOfCount__ 10
 #else
 #define __NumberOfCount__ 1000
 #endif
@@ -969,7 +969,7 @@ bool CMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CMarket::TaskGetRTDataFromWeb(void) {
-  static int siCountDownTengxunNumber = 0;
+  static int siCountDownTengxunNumber = 5;
   static int siCountDownNeteaseNumber = 5;
 
   if (IsUsingSinaRTDataReceiver()) {
