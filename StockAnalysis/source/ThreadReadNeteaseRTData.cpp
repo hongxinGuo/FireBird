@@ -12,10 +12,10 @@
 #include"Market.h"
 
 UINT ThreadReadNeteaseRTData(LPVOID pParam) {
-  CNeteaseRTWebData* pNeteaseWebRTData = (CNeteaseRTWebData*)pParam;
+  CNeteaseRTWebData* pNeteaseRTWebData = (CNeteaseRTWebData*)pParam;
 
-  if (pNeteaseWebRTData->ReadWebData(100, 50, 30)) {
-    CWebDataReceivedPtr pWebDataReceived = pNeteaseWebRTData->TransferWebDataToQueueData();
+  if (pNeteaseRTWebData->ReadWebData(50, 30, 20)) {
+    CWebDataReceivedPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_queueWebInquire.PushNeteaseRTData(pWebDataReceived);
     }

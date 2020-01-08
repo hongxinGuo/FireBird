@@ -16,13 +16,14 @@ CSinaRTWebData::~CSinaRTWebData() {
 void CSinaRTWebData::InquireNextWebData(void) {
   CRTDataPtr pRTData = nullptr;
   static int iTotalInquiringStocks = 0;
+  const int iInquiringNumber = 850;
 
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
-    iTotalInquiringStocks += 900;
-    strMiddle = GetNextInquiringStr(900, false);
+    iTotalInquiringStocks += iInquiringNumber;
+    strMiddle = GetNextInquiringStr(iInquiringNumber, false);
     if (iTotalInquiringStocks > gl_ChinaStockMarket.GetTotalStock() * 3) {
       if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
         gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
@@ -31,7 +32,7 @@ void CSinaRTWebData::InquireNextWebData(void) {
     }
   }
   else { // 开市时使用今日活跃股票池
-    strMiddle = GetNextInquiringStr(900, true);
+    strMiddle = GetNextInquiringStr(iInquiringNumber, true);
   }
   CreateTotalInquiringString(strMiddle);
 

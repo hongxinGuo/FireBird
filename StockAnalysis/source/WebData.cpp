@@ -27,14 +27,14 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
   CInternetSession session;
   m_pFile = nullptr;
   bool fDone = false;
-  m_lCurrentReadPos = 0;
 
   try {
     ASSERT(IsReadingWebData());
     SetByteReaded(0);
+    m_lCurrentReadPos = 0;
     ASSERT(m_pFile == nullptr);
     ASSERT(m_lCurrentByteRead == 0);
-    ASSERT(m_lCurrentReadPos == 0);
+    m_buffer.at(0) = 0x000;
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
@@ -49,7 +49,7 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
         }
       }
     }
-    m_buffer.at(m_lCurrentReadPos) = 0x000; // 最后以0x000结尾
+    m_buffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
     ASSERT(m_lByteRead == m_lCurrentReadPos);
     ASSERT(m_lByteRead < 2048 * 1024);
   }
@@ -88,6 +88,7 @@ CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
   for (long i = 0; i < GetByteReaded() + 1; i++) {
     pWebDataReceived->SetChar(i, m_buffer.at(i));
   }
+  ASSERT(m_buffer.at(GetByteReaded()) == 0x000);
   return pWebDataReceived;
 }
 
@@ -114,7 +115,7 @@ void CWebData::CreateTotalInquiringString(CString strMiddle) {
 
 void CWebData::TransferWebDataToBuffer(vector<char>& buffer) {
   for (int i = 0; i < m_lByteRead + 1; i++) {
-    buffer.at(i) = m_buffer.at(i);
+    buffer[i] = m_buffer.at(i);
   }
 }
 

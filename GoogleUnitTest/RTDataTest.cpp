@@ -1313,6 +1313,7 @@ namespace StockAnalysisTest {
         m_pSinaWebRTData->SetChar(i, pData->m_strData[i]);
       }
       m_pSinaWebRTData->SetChar(lLength, 0x000);
+      m_pSinaWebRTData->SetBufferLength(lLength);
       m_pSinaWebRTData->ResetCurrentPos();
     }
 

@@ -81,11 +81,11 @@ bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData) {
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseDayLineWebData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-  m_vDayLineBuffer.resize(pNeteaseWebDayLineData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
-  pNeteaseWebDayLineData->TransferWebDataToBuffer(m_vDayLineBuffer);
-  m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
+  m_vDayLineBuffer.resize(pNeteaseDayLineWebData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  pNeteaseDayLineWebData->TransferWebDataToBuffer(m_vDayLineBuffer);
+  m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
   SetDayLineNeedProcess(true);
 
   return true;

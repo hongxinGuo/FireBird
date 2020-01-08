@@ -16,12 +16,12 @@ public:
   }
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; }
+  void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; ASSERT(m_lCurrentPos <= m_lBufferLength); }
   char GetChar(void) { return m_vBuffer.at(m_lCurrentPos); }
   char GetChar(long lCurrentPos) { ASSERT(lCurrentPos <= m_lBufferLength); return m_vBuffer.at(lCurrentPos); }
   void SetChar(char cChar) { m_vBuffer.at(m_lCurrentPos) = cChar; }
-  void SetChar(long lIndex, char cChar) { m_vBuffer.at(lIndex) = cChar; }
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
+  void SetChar(long lIndex, char cChar) { m_vBuffer[lIndex] = cChar; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; ASSERT(m_lCurrentPos <= m_lBufferLength); }
   void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
   void SetBufferLength(long lLength) noexcept { m_lBufferLength = lLength; m_vBuffer.resize(lLength + 1); }
   long GetBufferLength(void) noexcept { return m_lBufferLength; }

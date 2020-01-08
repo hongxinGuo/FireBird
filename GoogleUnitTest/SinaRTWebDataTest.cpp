@@ -75,6 +75,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(buffer.at(6), 'g');
     EXPECT_EQ(buffer.at(7), 0x000);
     EXPECT_EQ(gl_SinaRTWebData.GetByteReaded(), 7);
+    gl_SinaRTWebData.__TESTSetBuffer(_T(""));
+    gl_SinaRTWebData.TransferWebDataToBuffer(buffer);
+    EXPECT_EQ(buffer.at(0), 0x000);
   }
 
   TEST(CWebDataTest, TestIncreaseCurentPos) {

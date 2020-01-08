@@ -164,6 +164,8 @@ namespace StockAnalysisTest {
       for (long i = 0; i < m_lStringLength; i++) {
         m_pTengxunWebRTData->SetChar(i, pData->m_strData[i]);
       }
+      m_pTengxunWebRTData->SetChar(m_lStringLength, 0x000);
+      m_pTengxunWebRTData->SetBufferLength(m_lStringLength + 1);
       m_pTengxunWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -730,6 +732,7 @@ namespace StockAnalysisTest {
         m_pTengxunWebRTData->SetChar(i, pData->m_strData[i]);
       }
       m_pTengxunWebRTData->SetChar(lLength, 0x000);
+      m_pTengxunWebRTData->SetBufferLength(lLength + 1);
       m_pTengxunWebRTData->ResetCurrentPos();
     }
 
