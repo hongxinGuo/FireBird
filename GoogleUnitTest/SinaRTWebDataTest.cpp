@@ -59,4 +59,14 @@ namespace StockAnalysisTest {
     gl_WebDataInquirer.m_SinaRTWebData.CreateTotalInquiringString(_T("dcba"));
     EXPECT_STREQ(gl_WebDataInquirer.m_SinaRTWebData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
   }
+
+  TEST(CWebDataTest, TestIncreaseCurentPos) {
+    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 0);
+    gl_WebDataInquirer.m_SinaRTWebData.IncreaseCurrentPos();
+    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPosPtr(), gl_WebDataInquirer.m_SinaRTWebData.GetBufferAddr() + 1);
+    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 1);
+    gl_WebDataInquirer.m_SinaRTWebData.IncreaseCurrentPos(100);
+    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 101);
+    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPosPtr(), gl_WebDataInquirer.m_SinaRTWebData.GetBufferAddr() + 101);
+  }
 }
