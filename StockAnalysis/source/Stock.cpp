@@ -22,6 +22,10 @@ CStock::CStock() : CObject() {
 }
 
 CStock::~CStock(void) {
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
+  }
 }
 
 void CStock::Reset(void) {
@@ -81,11 +85,16 @@ bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseDayLineWebData) {
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-  m_vDayLineBuffer.resize(pNeteaseDayLineWebData->GetByteReaded() + 1); // 缓冲区需要多加一个字符长度（最后那个0x000）。
-  pNeteaseDayLineWebData->TransferWebDataToBuffer(m_vDayLineBuffer);
-  m_lDayLineBufferLength = pNeteaseDayLineWebData->GetByteReaded();
+  char* p = pNeteaseWebDayLineData->GetBufferAddr();
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  char* pbuffer = m_pDayLineBuffer;
+  for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
+    *pbuffer++ = *p++;
+  }
+  m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
   SetDayLineNeedProcess(true);
 
   return true;
@@ -98,6 +107,7 @@ bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNete
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 bool CStock::ProcessNeteaseDayLineData(void) {
+  char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
   shared_ptr<CDayLine> pDayLine;
 
@@ -107,12 +117,14 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     return false;
   }
 
-  ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
+  ASSERT(m_pDayLineBuffer[m_lDayLineBufferLength] == 0x000); // 最后字符为增加的0x000.
   ResetCurrentPos();
   if (!SkipNeteaseDayLineInformationHeader()) return false;
 
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+  ASSERT(*pTestPos == *m_pCurrentPos);
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDayLineEndDay() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+    if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
@@ -126,46 +138,71 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   }
 
   CString strTemp;
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+  ASSERT(*pTestPos == *m_pCurrentPos);
   while (m_llCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
-    if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_vDayLineBuffer, m_llCurrentPos)) { // 处理一条日线数据
+    if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
       TRACE(_T("%s日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
+    pTestPos = m_pDayLineBuffer + m_llCurrentPos;
+    ASSERT(*pTestPos == *m_pCurrentPos);
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
+      SetActive(true);
       SetDayLineLoaded(false);
-      SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
+      SetMarket(pDayLine->GetMarket());
+      SetStockCode(pDayLine->GetStockCode()); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+      SetStockName(pDayLine->GetStockName());// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+      gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
       TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
+  strTemp = pDayLine->GetStockCode();
+  strTemp += _T("日线下载完成.");
+  gl_systemMessage.PushDayLineInfoMessage(strTemp);
   if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
     SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
+
+  m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  StoreDayLine(vTempDayLine);
-  ReportDayLineDownLoaded();
+  for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+    pDayLine = vTempDayLine.at(i);
+    if (pDayLine->IsActive()) {
+      // 清除掉不再交易（停牌或退市）的股票日线
+      m_vDayLine.push_back(pDayLine);
+    }
+  }
+  vTempDayLine.clear();
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
+  }
+  SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
 }
 
 bool CStock::SkipNeteaseDayLineInformationHeader() {
+  ASSERT(m_pCurrentPos == m_pDayLineBuffer);
   ASSERT(m_llCurrentPos == 0);
-  while (m_vDayLineBuffer.at(m_llCurrentPos) != 0X0d) {
-    if ((m_vDayLineBuffer.at(m_llCurrentPos) == 0x0a) || (m_vDayLineBuffer.at(m_llCurrentPos) == 0x000)) {
+  while (*m_pCurrentPos != 0X0d) {
+    if ((*m_pCurrentPos == 0x0a) || (*m_pCurrentPos == 0x000)) {
       return false;
     }
     IncreaseCurrentPos();
   }
   IncreaseCurrentPos();
-  if (m_vDayLineBuffer.at(m_llCurrentPos) != 0x0a) {
+  if (*m_pCurrentPos != 0x0a) {
     return false;
   }
   IncreaseCurrentPos();
@@ -1123,12 +1160,14 @@ void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
 }
 
 void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
-  m_vDayLineBuffer.resize(lBufferLength + 1);
+  char* p;
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[lBufferLength + 1];
+  p = m_pDayLineBuffer;
   for (int i = 0; i < lBufferLength; i++) {
-    m_vDayLineBuffer.at(i) = pDayLineBuffer[i];
+    *p++ = pDayLineBuffer[i];
   }
-  m_vDayLineBuffer.at(lBufferLength) = 0x000;
-  m_lDayLineBufferLength = lBufferLength;
+  pDayLineBuffer[lBufferLength] = 0x000;
 }
 
 #ifdef _DEBUG

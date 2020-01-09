@@ -298,6 +298,7 @@ public:
   void ShowDayLine120RS(CDC* pDC, CRect rectClient);
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
+  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
 
 #ifdef _DEBUG
@@ -348,7 +349,9 @@ protected:
   // 日线历史数据
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
+  char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;
+  char* m_pCurrentPos;
   INT64 m_llCurrentPos;
 
 private:

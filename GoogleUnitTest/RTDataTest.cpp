@@ -470,10 +470,12 @@ namespace StockAnalysisTest {
       m_pSinaWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pSinaWebRTData->SetBufferLength(m_lStringLength);
-      for (long i = 0; i < m_lStringLength; i++) {
-        m_pSinaWebRTData->SetChar(i, pData->m_strData[i]);
+      m_pSinaWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
+      m_pData = m_pSinaWebRTData->m_pDataBuffer;
+      for (int i = 0; i < m_lStringLength; i++) {
+        m_pData[i] = pData->m_strData[i];
       }
+
       m_pSinaWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -1308,12 +1310,12 @@ namespace StockAnalysisTest {
       m_pSinaWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pSinaWebRTData->BufferResize(lLength + 1);
-      for (long i = 0; i < lLength; i++) {
-        m_pSinaWebRTData->SetChar(i, pData->m_strData[i]);
+      m_pSinaWebRTData->m_pDataBuffer = new char[lLength + 1];
+      m_pData = m_pSinaWebRTData->GetBufferAddr();
+      for (int i = 0; i < lLength; i++) {
+        m_pData[i] = pData->m_strData[i];
       }
-      m_pSinaWebRTData->SetChar(lLength, 0x000);
-      m_pSinaWebRTData->SetBufferLength(lLength);
+      m_pData[lLength] = 0x000;
       m_pSinaWebRTData->ResetCurrentPos();
     }
 

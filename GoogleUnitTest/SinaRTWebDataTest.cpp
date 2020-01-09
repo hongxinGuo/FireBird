@@ -79,12 +79,4 @@ namespace StockAnalysisTest {
     gl_WebDataInquirer.m_SinaRTWebData.TransferWebDataToBuffer(buffer);
     EXPECT_EQ(buffer.at(0), 0x000);
   }
-
-  TEST(CWebDataTest, TestIncreaseCurentPos) {
-    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 0);
-    gl_WebDataInquirer.m_SinaRTWebData.IncreaseCurrentPos();
-    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 1);
-    gl_WebDataInquirer.m_SinaRTWebData.IncreaseCurrentPos(100);
-    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetCurrentPos(), 101);
-  }
 }

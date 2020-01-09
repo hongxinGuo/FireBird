@@ -3,35 +3,32 @@
 
 using namespace std;
 #include<memory>
-#include<vector>
 
 class CWebDataReceived
 {
 public:
   CWebDataReceived() {
+    m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
+    m_pCurrentPos = nullptr;
     m_lCurrentPos = 0;
   }
   ~CWebDataReceived() {
+    if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; ASSERT(m_lCurrentPos <= m_lBufferLength); }
-  char GetChar(void) { return m_vBuffer.at(m_lCurrentPos); }
-  char GetChar(long lCurrentPos) { ASSERT(lCurrentPos <= m_lBufferLength); return m_vBuffer.at(lCurrentPos); }
-  void SetChar(char cChar) { m_vBuffer.at(m_lCurrentPos) = cChar; }
-  void SetChar(long lIndex, char cChar) { m_vBuffer[lIndex] = cChar; }
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; ASSERT(m_lCurrentPos <= m_lBufferLength); }
-  void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
-  void SetBufferLength(long lLength) noexcept { m_lBufferLength = lLength; m_vBuffer.resize(lLength + 1); }
+  void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; m_pCurrentPos = m_pDataBuffer + lValue; }
+  char* GetBufferAddr(void) noexcept { return m_pDataBuffer; }
+  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDataBuffer; m_lCurrentPos = 0; }
   long GetBufferLength(void) noexcept { return m_lBufferLength; }
-  void BufferResize(long lLength) noexcept { m_vBuffer.resize(lLength); }
-  bool Copy(char* buffer, long lLength) { for (int i = 0; i < lLength; i++) buffer[i] = m_vBuffer.at(m_lCurrentPos + i); return true; }
-  void Assign(long lLength, char* buffer) { for (int i = 0; i < lLength; i++) m_vBuffer.at(m_lCurrentPos + i) = buffer[i]; }
+  void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
 
-protected:
-  vector<char> m_vBuffer;
+public:
+  char* m_pDataBuffer;
   long m_lBufferLength;
+  char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
 };
 
