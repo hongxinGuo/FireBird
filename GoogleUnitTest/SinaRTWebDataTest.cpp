@@ -59,24 +59,4 @@ namespace StockAnalysisTest {
     gl_WebDataInquirer.m_SinaRTWebData.CreateTotalInquiringString(_T("dcba"));
     EXPECT_STREQ(gl_WebDataInquirer.m_SinaRTWebData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
   }
-
-  TEST(CWebDataTest, TestTransferWebDataToBuffer) {
-    gl_WebDataInquirer.m_SinaRTWebData.__TESTSetBuffer(_T("abcdefg"));
-
-    vector<char> buffer;
-    buffer.resize(8);
-    gl_WebDataInquirer.m_SinaRTWebData.TransferWebDataToBuffer(buffer);
-    EXPECT_EQ(buffer.at(0), 'a');
-    EXPECT_EQ(buffer.at(1), 'b');
-    EXPECT_EQ(buffer.at(2), 'c');
-    EXPECT_EQ(buffer.at(3), 'd');
-    EXPECT_EQ(buffer.at(4), 'e');
-    EXPECT_EQ(buffer.at(5), 'f');
-    EXPECT_EQ(buffer.at(6), 'g');
-    EXPECT_EQ(buffer.at(7), 0x000);
-    EXPECT_EQ(gl_WebDataInquirer.m_SinaRTWebData.GetByteReaded(), 7);
-    gl_WebDataInquirer.m_SinaRTWebData.__TESTSetBuffer(_T(""));
-    gl_WebDataInquirer.m_SinaRTWebData.TransferWebDataToBuffer(buffer);
-    EXPECT_EQ(buffer.at(0), 0x000);
-  }
 }

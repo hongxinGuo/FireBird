@@ -406,6 +406,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
+    char* m_pData;
     long m_lStringLength;
     CWebDataReceivedPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
@@ -517,6 +518,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
+    char* m_pData;
     CWebDataReceivedPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
   };

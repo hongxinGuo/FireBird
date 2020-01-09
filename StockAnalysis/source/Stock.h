@@ -216,8 +216,8 @@ public:
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
   void StoreDayLine(vector<CDayLinePtr>& vTempDayLine);
   void ReportDayLineDownLoaded(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
   bool SaveDayLine(void);
@@ -300,6 +300,7 @@ public:
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
+  char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

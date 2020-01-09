@@ -44,6 +44,7 @@ void CStock::Reset(void) {
   m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
   m_fDayLineNeedSaving = false;
   m_lDayLineBufferLength = 0;
+  m_pDayLineBuffer = nullptr;
 
   m_fChoiced = false;
   m_fMinLineUpdated = false;
@@ -1167,7 +1168,8 @@ void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
   for (int i = 0; i < lBufferLength; i++) {
     *p++ = pDayLineBuffer[i];
   }
-  pDayLineBuffer[lBufferLength] = 0x000;
+  m_pDayLineBuffer[lBufferLength] = 0x000;
+  m_lDayLineBufferLength = lBufferLength;
 }
 
 #ifdef _DEBUG

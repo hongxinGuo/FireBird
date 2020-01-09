@@ -500,6 +500,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
+    char* m_pData;
     long m_lStringLength;
     CWebDataReceivedPtr m_pSinaWebRTData;
     CRTData m_RTData;
