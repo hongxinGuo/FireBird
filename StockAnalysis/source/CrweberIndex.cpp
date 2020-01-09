@@ -226,7 +226,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
     }
   }
   pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
-  for (int i = 0; i < 1024 * 1024; i++) {
+  for (int i = 0; i < pWebDataReceived->m_lBufferLength; i++) {
     *pWebDataReceived->m_pCurrentPos++ = 0x000;
   }
   pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
