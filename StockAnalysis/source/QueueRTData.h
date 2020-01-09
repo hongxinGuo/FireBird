@@ -1,5 +1,10 @@
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 存储实时数据的聚合类。只有头文件。
+//
+//
+/////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#include"stdafx.h"
 
 #include"QueueRTDataImp.h"
 #include"PriorityQueueRTData.h"
@@ -18,8 +23,8 @@ public:
   CRTDataPtr PopNeteaseRTData(void) { return m_queueNeteaseRTData.PopRTData(); }
 
 protected:
-  CPriorityQueueRTData m_queueSinaRTData; // 系统实时数据队列。
+  CPriorityQueueRTData m_queueSinaRTData; // 新浪实时数据队列。
   CQueueRTDataImp m_queueSinaRTDataForSave; // 用于存储的新浪实时数据队列
-  CPriorityQueueRTData m_queueTengxunRTData; // 系统实时数据队列。
-  CPriorityQueueRTData m_queueNeteaseRTData; // 系统实时数据队列。
+  CPriorityQueueRTData m_queueTengxunRTData; // 腾讯实时数据队列。
+  CPriorityQueueRTData m_queueNeteaseRTData; // 网易实时数据队列。
 };

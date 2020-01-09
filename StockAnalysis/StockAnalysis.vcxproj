@@ -231,6 +231,7 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTDataImp.h" />
     <ClInclude Include="source\QueueWebData.h" />
+    <ClInclude Include="source\WebDataInquirer.h" />
     <ClInclude Include="source\WebDataReceived.h" />
     <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="source\ThreadStatus.cpp" />
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="source\WebData.cpp" />
+    <ClCompile Include="source\WebDataInquirer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

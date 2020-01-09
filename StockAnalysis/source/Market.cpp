@@ -23,24 +23,12 @@ Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(8);
 
-CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
-CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
-CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
-CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFifth; // 网易日线历史数据
-CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSixth; // 网易日线历史数据
-CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
-
 CQueueRTData gl_queueRTData;
 CQueueWebInquire gl_queueWebInquire;
+CWebDataInquirer gl_WebDataInquirer;
 
 CCrweberIndex gl_CrweberIndex;
 CCrweberIndex gl_CrweberIndexLast;
-
-const int gl_cMaxSavingOneDayLineThreads = 4;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -510,26 +498,7 @@ bool CMarket::TaskGetNeteaseDayLineFromWeb(void) {
   if (m_iDayLineNeedUpdate > 0) {
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-    switch (gl_cMaxSavingOneDayLineThreads) {
-    case 8: case 7: case 6:
-    gl_NeteaseDayLineWebDataSixth.GetWebData(); // 网易日线历史数据
-    case 5:
-    gl_NeteaseDayLineWebDataFifth.GetWebData();
-    case 4:
-    gl_NeteaseDayLineWebDataFourth.GetWebData();
-    case 3:
-    gl_NeteaseDayLineWebDataThird.GetWebData();
-    case 2:
-    gl_NeteaseDayLineWebDataSecond.GetWebData();
-    case 1: case 0:
-    gl_NeteaseDayLineWebData.GetWebData();
-    break;
-    default:
-    gl_NeteaseDayLineWebData.GetWebData();
-    TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
-    break;
-    }
-    return true;
+    return(gl_WebDataInquirer.GetNeteaseDayLineData());
   }
   else return false;
 }
@@ -973,7 +942,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
   static int siCountDownNeteaseNumber = 5;
 
   if (IsUsingSinaRTDataReceiver()) {
-    gl_SinaRTWebData.GetWebData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    gl_WebDataInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
 
   if (SystemReady()) {
@@ -982,7 +951,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     if (IsUsingNeteaseRTDataReceiver()) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_NeteaseRTWebData.GetWebData(); // 目前不使用此功能。
+        gl_WebDataInquirer.GetNeteaseRTData(); // 目前不使用此功能。
         siCountDownNeteaseNumber = 0;
       }
       else siCountDownNeteaseNumber--;
@@ -990,7 +959,7 @@ bool CMarket::TaskGetRTDataFromWeb(void) {
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (IsUsingTengxunRTDataReceiver()) {
       if (siCountDownTengxunNumber <= 0) {
-        gl_TengxunRTWebData.GetWebData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
+        gl_WebDataInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
         siCountDownTengxunNumber = 5;
       }
       else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
@@ -1064,7 +1033,7 @@ bool CMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
     i5MinuteCounter = 299;
 
     // 自动查询crweber.com
-    gl_CrweberIndexWebData.GetWebData();
+    gl_WebDataInquirer.GetCrweberIndexData();
     TaskProcessWebRTDataGetFromCrweberdotcom();
 
     ResetSystemFlagAtMidnight(lCurrentTime);

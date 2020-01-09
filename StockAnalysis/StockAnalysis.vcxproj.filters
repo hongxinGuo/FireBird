@@ -67,6 +67,12 @@
     <Filter Include="源文件\Market">
       <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\网络数据提取器">
+      <UniqueIdentifier>{d3a3ad51-6024-4a9e-94df-151326f729ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\网络数据提取器">
+      <UniqueIdentifier>{72c0370f-98bb-40af-9cd0-d0eb922a24c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -202,6 +208,9 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\QueueRTData.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebDataInquirer.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
   </ItemGroup>
@@ -355,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="source\QueueRTDataImp.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebDataInquirer.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

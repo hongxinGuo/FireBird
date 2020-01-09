@@ -445,11 +445,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
     CString str = _T("abcedfg\r\n");
-    gl_NeteaseDayLineWebData.__TESTSetBuffer(str);
+    gl_WebDataInquirer.m_NeteaseDayLineWebData.__TESTSetBuffer(str);
     CStock stock;
     EXPECT_FALSE(stock.IsDayLineNeedProcess());
     EXPECT_EQ(stock.GetDayLineBufferLength(), 0);
-    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_NeteaseDayLineWebData);
+    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_WebDataInquirer.m_NeteaseDayLineWebData);
     EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
     EXPECT_TRUE(stock.IsDayLineNeedProcess());
     stock.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。

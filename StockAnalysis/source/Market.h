@@ -13,6 +13,8 @@
 
 #include"QueueWebInquire.h"
 
+#include"WebDataInquirer.h"
+
 #include"SinaWebRTData.h"
 #include"TengxunWebRTData.h"
 #include"NeteaseWebDayLineData.h"
@@ -35,24 +37,12 @@ extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
-extern CSinaRTWebData gl_SinaRTWebData; // 新浪实时数据采集
-extern CTengxunRTWebData gl_TengxunRTWebData; // 腾讯实时数据采集
-extern CNeteaseRTWebData gl_NeteaseRTWebData; // 网易实时数据采集
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebData; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSecond; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataThird; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFourth; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataFifth; // 网易日线历史数据
-extern CNeteaseDayLineWebData gl_NeteaseDayLineWebDataSixth; // 网易日线历史数据
-extern CCrweberIndexWebData gl_CrweberIndexWebData; // crweber.com上的每日油运指数
-
 extern CQueueRTData gl_queueRTData;
 extern CQueueWebInquire gl_queueWebInquire;
+extern CWebDataInquirer gl_WebDataInquirer;
 
 extern CCrweberIndex gl_CrweberIndex;
 extern CCrweberIndex gl_CrweberIndexLast;
-
-extern const int gl_cMaxSavingOneDayLineThreads;
 
 class CMarket final : public CObject
 {
