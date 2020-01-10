@@ -225,7 +225,6 @@
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\QueueRTData.h" />
-    <ClInclude Include="source\QueueWebInquire.h" />
     <ClInclude Include="source\NeteaseWebDayLineData.h" />
     <ClInclude Include="source\NeteaseWebRTData.h" />
     <ClInclude Include="source\PriorityQueueRTData.h" />

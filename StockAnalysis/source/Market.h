@@ -11,8 +11,6 @@
 #include "Stock.h"
 #include"SetStockCode.h"
 
-#include"QueueWebInquire.h"
-
 #include"WebDataInquirer.h"
 
 #include"SinaWebRTData.h"
@@ -38,7 +36,6 @@ extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CQueueRTData gl_queueRTData;
-extern CQueueWebInquire gl_queueWebInquire;
 extern CWebDataInquirer gl_WebDataInquirer;
 
 extern CCrweberIndex gl_CrweberIndex;

@@ -17,7 +17,7 @@ UINT ThreadReadCrweberIndex(LPVOID pParam) {
   if (pCrweberIndexWebData->ReadWebData(500, 50, 30)) {
     CWebDataReceivedPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
-      gl_queueWebInquire.PushCrweberData(pWebDataReceived);
+      gl_WebDataInquirer.PushCrweberData(pWebDataReceived);
     }
   }
 

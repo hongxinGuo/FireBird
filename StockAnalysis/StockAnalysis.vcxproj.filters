@@ -198,12 +198,6 @@
     <ClInclude Include="source\StockCalculatedInfo.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="source\QueueWebData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="source\QueueWebInquire.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueRTDataImp.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -211,7 +205,10 @@
       <Filter>头文件\Market</Filter>
     </ClInclude>
     <ClInclude Include="source\WebDataInquirer.h">
-      <Filter>头文件\Market</Filter>
+      <Filter>头文件\网络数据提取器</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebData.h">
+      <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -366,7 +363,7 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\WebDataInquirer.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,6 +43,21 @@ public:
     return true;
   }
   bool GetCrweberIndexData(void) { return m_CrweberIndexWebData.GetWebData(); }
+
+public:
+  long GetSinaRTDataSize(void) { return m_queueSinaRTWebData.GetWebDataSize(); }
+  void PushSinaRTData(CWebDataReceivedPtr pData) { m_queueSinaRTWebData.PushWebData(pData); }
+  CWebDataReceivedPtr PopSinaRTData(void) { return m_queueSinaRTWebData.PopWebData(); }
+  long GetTengxunRTDataSize(void) { return m_queueTengxunRTWebData.GetWebDataSize(); }
+  void PushTengxunRTData(CWebDataReceivedPtr pData) { m_queueTengxunRTWebData.PushWebData(pData); }
+  CWebDataReceivedPtr PopTengxunRTData(void) { return m_queueTengxunRTWebData.PopWebData(); }
+  long GetNeteaseRTDataSize(void) { return m_queueNeteaseRTWebData.GetWebDataSize(); }
+  void PushNeteaseRTData(CWebDataReceivedPtr pData) { m_queueNeteaseRTWebData.PushWebData(pData); }
+  CWebDataReceivedPtr PopNeteaseRTData(void) { return m_queueNeteaseRTWebData.PopWebData(); }
+  long GetCrweberDataSize(void) { return m_queueCrweberWebData.GetWebDataSize(); }
+  void PushCrweberData(CWebDataReceivedPtr pData) { m_queueCrweberWebData.PushWebData(pData); }
+  CWebDataReceivedPtr PopCrweberData(void) { return m_queueCrweberWebData.PopWebData(); }
+
 public:
   CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
   CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集
@@ -54,4 +69,9 @@ public:
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataFifth; // 网易日线历史数据
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataSixth; // 网易日线历史数据
   CCrweberIndexWebData m_CrweberIndexWebData; // crweber.com上的每日油运指数
+protected:
+  CQueueWebData m_queueSinaRTWebData; // 新浪网络数据暂存队列
+  CQueueWebData m_queueTengxunRTWebData; // 腾讯网络数据暂存队列
+  CQueueWebData m_queueNeteaseRTWebData; // 网易网络数据暂存队列
+  CQueueWebData m_queueCrweberWebData; // crweber.com网络数据暂存队列
 };
