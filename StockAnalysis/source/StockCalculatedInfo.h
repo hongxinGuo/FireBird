@@ -11,7 +11,7 @@ public:
   void Reset(void);
 
   void SaveTodayInfo(CSetDayLineInfo& setDayLineInfo);
-  void SaveTempInfo(CSetDayLineToday& setDayLineToday, bool fHaveFirstData = true, INT64 lValue = 0);
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
 
   time_t GetTransactionTime(void) noexcept { return m_time; }

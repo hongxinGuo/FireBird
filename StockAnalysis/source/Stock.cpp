@@ -327,12 +327,7 @@ void CStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
 void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   m_stockBasicInfo.SaveTempInfo(setDayLineToday);
-  if (HaveFirstRTData()) {
-    m_stockCalculatedInfo.SaveTempInfo(setDayLineToday, true, 0);
-  }
-  else {
-    m_stockCalculatedInfo.SaveTempInfo(setDayLineToday, false, GetVolume());
-  }
+  m_stockCalculatedInfo.SaveTempInfo(setDayLineToday);
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -172,6 +172,7 @@ namespace StockAnalysisTest {
     }
     EXPECT_TRUE(m_stock.HaveFirstRTData());
     m_stock.ProcessOneRTData(pCurrentData);
+    EXPECT_TRUE(m_stock.IsVolumeConsistence());
     INT64 lCurrentVolume = m_stock.GetOrdinaryBuyVolume() + m_stock.GetOrdinarySellVolume() + m_stock.GetUnknownVolume()
       + m_stock.GetAttackBuyVolume() + m_stock.GetAttackSellVolume() + m_stock.GetStrongBuyVolume() + m_stock.GetStrongSellVolume();
     EXPECT_EQ(m_stock.GetCurrentTransationVolume(), lCurrentVolume - lFirstVolume);

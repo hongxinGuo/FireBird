@@ -65,7 +65,7 @@ void CStockCalculatedInfo::SaveTodayInfo(CSetDayLineInfo& setDayLineInfo) {
   setDayLineInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 }
 
-void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday, bool fHaveFirstData, INT64 lVolume) {
+void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   setDayLineToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
@@ -78,12 +78,7 @@ void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday, bool 
   setDayLineToday.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
   setDayLineToday.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
   setDayLineToday.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  if (fHaveFirstData) {
-    setDayLineToday.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  }
-  else {
-    setDayLineToday.m_UnknownVolume = ConvertValueToString(lVolume);
-  }
+  setDayLineToday.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
   setDayLineToday.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
   setDayLineToday.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
   setDayLineToday.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
