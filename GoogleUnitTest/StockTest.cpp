@@ -6,6 +6,10 @@
 #include"Stock.h"
 #include"Market.h"
 
+static CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
+static CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集
+static CNeteaseDayLineWebData m_NeteaseDayLineWebData; // 网易日线历史数据
+
 namespace StockAnalysisTest {
   class CStockTest : public ::testing::Test
   {
@@ -445,11 +449,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
     CString str = _T("abcedfg\r\n");
-    gl_WebDataInquirer.m_NeteaseDayLineWebData.__TESTSetBuffer(str);
+    m_NeteaseDayLineWebData.__TESTSetBuffer(str);
     CStock stock;
     EXPECT_FALSE(stock.IsDayLineNeedProcess());
     EXPECT_EQ(stock.GetDayLineBufferLength(), 0);
-    stock.TransferNeteaseDayLineWebDataToBuffer(&gl_WebDataInquirer.m_NeteaseDayLineWebData);
+    stock.TransferNeteaseDayLineWebDataToBuffer(&m_NeteaseDayLineWebData);
     EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
     EXPECT_TRUE(stock.IsDayLineNeedProcess());
     stock.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。

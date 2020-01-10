@@ -4,9 +4,11 @@
 
 #include"RTData.h"
 
+static CCrweberIndexWebData m_CrweberIndexWebData; // crweber.com上的每日油运指数
+
 namespace StockAnalysisTest {
   TEST(CrweberIndexWebDataTest, TestInitialize) {
-    EXPECT_STREQ(gl_WebDataInquirer.m_CrweberIndexWebData.GetInquiringStringPrefix(), _T("http://www.crweber.com"));
-    EXPECT_STREQ(gl_WebDataInquirer.m_CrweberIndexWebData.GetInquiringStringSuffix(), _T(""));
+    EXPECT_STREQ(m_CrweberIndexWebData.GetInquiringStringPrefix(), _T("http://www.crweber.com"));
+    EXPECT_STREQ(m_CrweberIndexWebData.GetInquiringStringSuffix(), _T(""));
   }
 }

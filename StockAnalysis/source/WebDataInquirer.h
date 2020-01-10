@@ -58,7 +58,7 @@ public:
   void PushCrweberData(CWebDataReceivedPtr pData) { m_queueCrweberWebData.PushWebData(pData); }
   CWebDataReceivedPtr PopCrweberData(void) { return m_queueCrweberWebData.PopWebData(); }
 
-public:
+protected:
   CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
   CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集
   CNeteaseRTWebData m_NeteaseRTWebData; // 网易实时数据采集
@@ -69,7 +69,6 @@ public:
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataFifth; // 网易日线历史数据
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataSixth; // 网易日线历史数据
   CCrweberIndexWebData m_CrweberIndexWebData; // crweber.com上的每日油运指数
-protected:
   CQueueWebData m_queueSinaRTWebData; // 新浪网络数据暂存队列
   CQueueWebData m_queueTengxunRTWebData; // 腾讯网络数据暂存队列
   CQueueWebData m_queueNeteaseRTWebData; // 网易网络数据暂存队列

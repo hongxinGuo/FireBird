@@ -356,9 +356,6 @@
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\QueueWebInquire.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
     <ClCompile Include="source\QueueRTDataImp.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>

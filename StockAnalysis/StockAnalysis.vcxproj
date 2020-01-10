@@ -270,7 +270,6 @@
     <ClCompile Include="source\Accessory.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexWebData.cpp" />
-    <ClCompile Include="source\QueueWebInquire.cpp" />
     <ClCompile Include="source\NeteaseWebDayLineData.cpp" />
     <ClCompile Include="source\NeteaseWebRTData.cpp" />
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
