@@ -1548,8 +1548,6 @@ bool CMarket::LoadTodayTempDB(void) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
           pStock->LoadAndCalculateTempInfo(setDayLineToday);
-          pStock->SetVolume(atoll(setDayLineToday.m_Volume));
-          pStock->SetLastSavedVolume(atoll(setDayLineToday.m_Volume));
         }
         setDayLineToday.MoveNext();
       }

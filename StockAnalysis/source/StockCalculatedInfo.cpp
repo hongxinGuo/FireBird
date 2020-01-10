@@ -91,7 +91,7 @@ void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
 
 ////////////////////////////////////////////////////////////////////////////
 //
-// 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话），故而未知成交数量这项需要特殊处理
+// 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话）
 //
 ////////////////////////////////////////////////////////////////////////////
 void CStockCalculatedInfo::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {

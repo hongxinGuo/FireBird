@@ -180,7 +180,8 @@ public:
 
   // 更新当前各变量状态
   void UpdateStatus(CRTDataPtr pRTData);
-  void SetLastSavedVolume(INT64 llVolume) { m_llLastSavedVolume = llVolume; }
+  void SetLastSavedVolume(INT64 llVolume) noexcept { m_llLastSavedVolume = llVolume; }
+  INT64 GetLastSavedVolume(void) noexcept { return m_llLastSavedVolume; }
 
   // 各种状态标识提取和设置
   bool IsActive(void) noexcept { return m_fActive; }

@@ -334,11 +334,14 @@ void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
 
 ////////////////////////////////////////////////////////////////////////////
 //
-// 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话），故而未知成交数量这项需要特殊处理
+// 只有一处调用本函数，就是在系统初始化时装入之前计算出的信息（如果开市了的话）.
+// 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
 void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
   m_stockCalculatedInfo.LoadAndCalculateTempInfo(setDayLineToday);
+  SetVolume(atoll(setDayLineToday.m_Volume));
+  SetLastSavedVolume(atoll(setDayLineToday.m_Volume));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
