@@ -302,6 +302,8 @@ public:
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
   char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
 
+  bool IsVolumeConsistence(void) noexcept;
+
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;

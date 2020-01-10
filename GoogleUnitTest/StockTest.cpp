@@ -568,6 +568,7 @@ namespace StockAnalysisTest {
     CSetDayLineToday setDayLineToday;
     CStockPtr pStock = make_shared<CStock>();
 
+    pStock->SetHavingFirstRTData(true);
     pStock->SetMarket(__SHANGHAI_MARKET__);
     pStock->SetStockCode(_T("sh600000"));
     pStock->SetTransactionTime(FormatToTTime(20191101));
@@ -1068,5 +1069,14 @@ namespace StockAnalysisTest {
     id.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
     id.ResetCurrentPos();
     EXPECT_FALSE(id.SkipNeteaseDayLineInformationHeader());
+  }
+
+  TEST_F(CStockTest, TestIsVolumeConsisitence) {
+    CStock id;
+    EXPECT_TRUE(id.IsVolumeConsistence());
+    id.SetVolume(10000);
+    EXPECT_FALSE(id.IsVolumeConsistence());
+    id.SetUnknownVolume(10000);
+    EXPECT_TRUE(id.IsVolumeConsistence());
   }
 }

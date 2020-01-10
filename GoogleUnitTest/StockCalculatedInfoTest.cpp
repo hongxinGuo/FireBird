@@ -346,7 +346,7 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
     setDayLineToday.m_Volume = ConvertValueToString(lVolumeBegin);
-    id.SaveTempInfo(setDayLineToday);
+    id.SaveTempInfo(setDayLineToday, true, 0);
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();

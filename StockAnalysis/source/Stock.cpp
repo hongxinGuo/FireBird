@@ -327,7 +327,12 @@ void CStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
 void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   m_stockBasicInfo.SaveTempInfo(setDayLineToday);
-  m_stockCalculatedInfo.SaveTempInfo(setDayLineToday);
+  if (HaveFirstRTData()) {
+    m_stockCalculatedInfo.SaveTempInfo(setDayLineToday, true, 0);
+  }
+  else {
+    m_stockCalculatedInfo.SaveTempInfo(setDayLineToday, false, GetVolume());
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -512,13 +517,20 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
+  if (GetStockCode().Compare(_T("sz000018")) == 0) {
+    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
+    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
+          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+  }
   SetLastRTDataPtr(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
   // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
   // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
   // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
+  m_stockBasicInfo.SetVolume(m_pLastRTData->GetVolume()); // 这里再设置一次成交量
   m_stockCalculatedInfo.SetUnknownVolume(m_stockCalculatedInfo.GetUnknownVolume() + m_pLastRTData->GetVolume());
+
   // 设置第一次的挂单映射。
   for (int j = 0; j < 5; j++) {
     SetGuadan(pRTData->GetPBuy(j), pRTData->GetVBuy(j));
@@ -548,6 +560,11 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
 }
 
 void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
+  if (GetStockCode().Compare(_T("sz000018")) == 0) {
+    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
+    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
+          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+  }
   IncreaseTransactionNumber();
   lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
   m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -576,6 +593,11 @@ void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactio
   ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
          + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
          + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
+  if (GetStockCode().Compare(_T("sz000018")) == 0) {
+    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
+    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
+          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+  }
 }
 
 void CStock::IncreaseTransactionNumber(void) {
@@ -1170,6 +1192,17 @@ void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
   }
   m_pDayLineBuffer[lBufferLength] = 0x000;
   m_lDayLineBufferLength = lBufferLength;
+}
+
+bool CStock::IsVolumeConsistence(void) noexcept {
+  if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
+      + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
+    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
+    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
+          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
+    return false;
+  }
+  else return true;
 }
 
 #ifdef _DEBUG

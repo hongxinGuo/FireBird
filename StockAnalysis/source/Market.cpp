@@ -1509,8 +1509,7 @@ bool CMarket::UpdateTodayTempDB(void) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
-    if (pStock->GetVolume() != pStock->GetOrdinaryBuyVolume() + pStock->GetOrdinarySellVolume() + pStock->GetAttackBuyVolume()
-        + pStock->GetAttackSellVolume() + pStock->GetStrongBuyVolume() + pStock->GetStrongSellVolume() + pStock->GetUnknownVolume()) {
+    if (!pStock->IsVolumeConsistence()) {
       str = pStock->GetStockCode();
       str += _T(" 股数不正确");
       gl_systemMessage.PushInnerSystemInformationMessage(str);

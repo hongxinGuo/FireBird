@@ -162,8 +162,10 @@ namespace StockAnalysisTest {
                                                                    &RT4, &RT5, &RT6, &RT7, &RT8));
 
   TEST_P(CStockTest2, TestRTData) {
+    EXPECT_TRUE(m_stock.IsVolumeConsistence());
     EXPECT_FALSE(m_stock.HaveFirstRTData());
     m_stock.ProcessOneRTData(pLastData);
+    EXPECT_TRUE(m_stock.IsVolumeConsistence());
     INT64 lFirstVolume = m_stock.GetUnknownVolume();
     for (int i = 9960; i < 10050; i += 10) {
       EXPECT_EQ(m_stock.GetGuadan(i), 10000);
