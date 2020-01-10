@@ -377,7 +377,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetTransactionNumberBelow50000(), id.GetTransactionNumberBelow50000());
     EXPECT_EQ(id.GetTransactionNumberBelow5000(), id.GetTransactionNumberBelow5000());
 
-    EXPECT_EQ(id2.GetUnknownVolume() - lVolumeBegin, id.GetUnknownVolume()); //装入数据后要预设UnkownVolume，故而与存入数值相差一总股数
+    EXPECT_EQ(id2.GetUnknownVolume(), id.GetUnknownVolume()); //装入数据后要预设UnkownVolume，故而与存入数值相差一总股数
   }
 
   TEST(StockCalculatedInfoTest, TestSaveTodayInfo) {

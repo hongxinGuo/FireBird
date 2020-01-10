@@ -180,6 +180,7 @@ public:
 
   // 更新当前各变量状态
   void UpdateStatus(CRTDataPtr pRTData);
+  void SetLastSavedVolume(INT64 llVolume) { m_llLastSavedVolume = llVolume; }
 
   // 各种状态标识提取和设置
   bool IsActive(void) noexcept { return m_fActive; }
@@ -319,6 +320,7 @@ public:
 protected:
   CStockBasicInfo m_stockBasicInfo;
   CStockCalculatedInfo m_stockCalculatedInfo;
+  INT64 m_llLastSavedVolume;
 
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理

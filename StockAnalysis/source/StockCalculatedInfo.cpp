@@ -95,11 +95,7 @@ void CStockCalculatedInfo::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
 //
 ////////////////////////////////////////////////////////////////////////////
 void CStockCalculatedInfo::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
-  // 要设置m_lUnknownVolume为记录集中的m_UnknownVolume - m_Volume，这是因为第一次计算时只是初始化系统。
-  // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
-  // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
-  // 故而此处这样计算。
-  m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume) - atoll(setDayLineToday.m_Volume);  // 需要如此设置m_lUnknownVolume
+  m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume);
 
   m_lTransactionNumber = atol(setDayLineToday.m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(setDayLineToday.m_TransactionNumberBelow5000);

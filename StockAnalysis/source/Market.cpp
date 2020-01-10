@@ -1547,10 +1547,9 @@ bool CMarket::LoadTodayTempDB(void) {
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-          // 需要设置m_lUnknownVolume = pRTData->m_lVolume - setDayLineToday.m_Volume + setDayLineToday.m_UnknownVolume
-          // 而第一次执行计算实时数据时，只是初始化系统环境，其中设置m_lUnknownVolume += pRTData->GetVolume
-          // 故而LoadAndCalculateTempInfo需要特别处理。
           pStock->LoadAndCalculateTempInfo(setDayLineToday);
+          pStock->SetVolume(atoll(setDayLineToday.m_Volume));
+          pStock->SetLastSavedVolume(atoll(setDayLineToday.m_Volume));
         }
         setDayLineToday.MoveNext();
       }

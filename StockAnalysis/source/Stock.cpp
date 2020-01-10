@@ -32,6 +32,8 @@ void CStock::Reset(void) {
   m_stockBasicInfo.Reset();
   m_stockCalculatedInfo.Reset();
 
+  m_llLastSavedVolume = 0;
+
   m_lCurrentCanselSellVolume = m_lCurrentCanselBuyVolume = m_lCurrentGuadanTransactionVolume = 0;
 
   m_dCurrentGuadanTransactionPrice = 0;
@@ -520,11 +522,10 @@ void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   SetLastRTDataPtr(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
-  // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，而是为了计算方便设置为临时数据的m_lUnknownVolume-m_lVolume，
-  // 这样加上m_pLastRTData->GetVolume()，即得到当前的m_lUnknownVolume.
-  // 因为：m_lUnknownVolume = 当前的成交量 - 之前的成交量 + 之前的无法判断成交量
-  m_stockBasicInfo.SetVolume(m_pLastRTData->GetVolume()); // 这里再设置一次成交量
-  m_stockCalculatedInfo.SetUnknownVolume(m_stockCalculatedInfo.GetUnknownVolume() + m_pLastRTData->GetVolume());
+  // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，故而需要重新计算m_lUnknownVolume.
+  // m_lUnknownVolume = 当前的成交量 - 之前临时存储的成交量 + 之前存储的m_lUnkonwnVolume.
+  m_stockBasicInfo.SetVolume(pRTData->GetVolume());
+  m_stockCalculatedInfo.SetUnknownVolume(m_stockCalculatedInfo.GetUnknownVolume() + m_pLastRTData->GetVolume() - m_llLastSavedVolume);
 
   // 设置第一次的挂单映射。
   for (int j = 0; j < 5; j++) {
