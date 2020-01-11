@@ -77,14 +77,15 @@ bool CWebData::ReadDataFromWebOnce(void) {
 }
 
 CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
-  char* p = GetBufferAddr();
+  char* pSrc = GetBufferAddr();
   CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
   pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-  pWebDataReceived->m_lBufferLength = GetByteReaded();
-  char* pbuffer = pWebDataReceived->m_pDataBuffer;
+  char* pDest = pWebDataReceived->m_pDataBuffer;
   for (int i = 0; i < GetByteReaded() + 1; i++) {
-    *pbuffer++ = *p++;
+    *pDest++ = *pSrc++;
   }
+  pWebDataReceived->m_lBufferLength = GetByteReaded();
+  pWebDataReceived->ResetCurrentPos();
   return pWebDataReceived;
 }
 

@@ -91,7 +91,7 @@ void CMarket::Reset(void) {
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
-  m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 不使用网易实时数据提取器
 
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
@@ -696,11 +696,9 @@ bool CMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       iCount = 0;
       while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CRTDataPtr pRTData = make_shared<CRTData>();
-        if (pRTData->ReadNeteaseData(pWebDataReceived)) {
+        if (pRTData->SecceedReadingNeteaseData(pWebDataReceived)) {
           iCount++;
           gl_queueRTData.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
-           //gl_QueueNeteaseRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
-           //TRACE(_T("网易实时数据接收到%s \n"), pRTData->GetStockCode());
            // 检测一下
           CheckNeteaseRTData(pRTData);
         }

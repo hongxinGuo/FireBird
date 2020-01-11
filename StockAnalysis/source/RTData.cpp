@@ -879,7 +879,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataReceivedPtr pWebDataReceived, char* bu
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
+bool CRTData::SecceedReadingNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
