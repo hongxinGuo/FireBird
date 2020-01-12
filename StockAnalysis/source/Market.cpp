@@ -603,6 +603,34 @@ CString CMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnacti
   return str;
 }
 
+bool CMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
+  long lLength = str.GetLength();
+  char* p = str.GetBuffer();
+  int i = 0;
+  char buffer[8];
+  CString strStockCode, strRight;
+  while (i < lLength) {
+    strncpy_s(buffer, p, 7);
+    p += 8;
+    i += 8;
+    buffer[7] = 0x000;
+    strRight = buffer;
+    if (buffer[0] == '0') strStockCode = "sh";
+    else if (buffer[0] == '1') strStockCode = "sz";
+    else return false;
+    strStockCode += strRight.Right(6);
+    CStockPtr pStock = GetStockPtr(strStockCode);
+    if (pStock == nullptr) {
+      CString strReport = _T("网易日线查询股票代码错误：");
+      TRACE(_T("网易日线查询股票代码错误：%s\n"), strStockCode.GetBuffer());
+      strReport += strStockCode;
+      gl_systemMessage.PushInnerSystemInformationMessage(strReport);
+      return false;
+    }
+  }
+  return false;
+}
+
 CString CMarket::GetNextInquiringStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock) {
   CString str = _T("");
 

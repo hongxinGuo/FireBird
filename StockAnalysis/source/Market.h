@@ -89,6 +89,7 @@ public:
   CString GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
   CString GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
   CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
+  bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextInquiringStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
   bool StepToActiveStockIndex(long& lStockIndex);
 

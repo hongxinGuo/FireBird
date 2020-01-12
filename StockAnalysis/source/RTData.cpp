@@ -939,11 +939,10 @@ bool CRTData::SecceedReadingNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     TRACE(_T("%s's ReadNeteaseData异常\n"), strStockCode);
     CString str = _T("ReadNeteaseData异常");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
-#ifdef DEBUG
     TRACE(_T("%s\n"), strTest);
+#ifdef DEBUG
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 #endif // DEBUG
-
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
     pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;

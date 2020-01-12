@@ -53,7 +53,9 @@ void CNeteaseRTWebData::InquireNextWebData(void) {
 }
 
 CString CNeteaseRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  return gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
+  CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
+  gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(str);
+  return str;
 }
 
 void CNeteaseRTWebData::StartReadingThread(void) {
