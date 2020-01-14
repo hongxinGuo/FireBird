@@ -21,7 +21,7 @@ Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
 Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
-Semaphore gl_SemaphoreCalculateDayLineRS(8);
+Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
 
 CQueueRTData gl_queueRTData;
 CWebDataInquirer gl_WebDataInquirer;
@@ -1279,7 +1279,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
   catch (exception&) {
-    TRACE("GetStockPtr越界, StockCode = %s\n", strStockCode);
+    TRACE("GetStockPtr越界, StockCode = %s\n", strStockCode.GetBuffer());
     return nullptr;
   }
 }

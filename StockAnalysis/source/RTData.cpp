@@ -274,7 +274,7 @@ bool CRTData::ReadSinaData(CWebDataReceivedPtr pSinaWebRTData) {
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
 
-    int i = 2;
+    i = 2;
     while ((*pSinaWebRTData->m_pCurrentPos != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
       if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) {
         throw exception();
@@ -936,10 +936,10 @@ bool CRTData::SecceedReadingNeteaseData(CWebDataReceivedPtr pNeteaseWebRTData) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("%s's ReadNeteaseData异常\n"), strStockCode);
+    TRACE(_T("%s's ReadNeteaseData异常\n"), strStockCode.GetBuffer());
     CString str = _T("ReadNeteaseData异常");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
-    TRACE(_T("%s\n"), strTest);
+    TRACE(_T("%s\n"), strTest.GetBuffer());
 #ifdef DEBUG
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
 #endif // DEBUG
@@ -1030,7 +1030,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
   }
   catch (exception&) {
-    TRACE(_T("GetNeteaseSymbolIndex异常: %s\n"), strSymbol);
+    TRACE(_T("GetNeteaseSymbolIndex异常: %s\n"), strSymbol.GetBuffer());
     lIndex = 0;
   }
   return lIndex;
@@ -1239,7 +1239,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
     return true;
   }
   catch (exception&) {
-    TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue);
+    TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue.GetBuffer());
     return false;
   }
 }

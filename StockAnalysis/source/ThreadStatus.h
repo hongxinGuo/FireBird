@@ -7,7 +7,7 @@
 using namespace std;
 #include<atomic>
 
-const int gl_cMaxCalculatingRSThreads = 80;
+const int gl_cMaxCalculatingRSThreads = 8;
 
 class CThreadStatus {    // ¸öÏß³Ì×´Ì¬
 public:
