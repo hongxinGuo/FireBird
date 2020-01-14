@@ -129,13 +129,13 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
-      TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
+      //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
-      if (GetDayLineEndDay() + 100 < gl_systemTime.GetDay()) {
+      if (gl_systemTime.IsEarlyThen(GetDayLineEndDay(), gl_systemTime.GetDay(), 30)) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
-      TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
+      //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
     }
     return false;
   }
@@ -156,14 +156,14 @@ bool CStock::ProcessNeteaseDayLineData(void) {
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
       SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
-      TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode());
+      TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode().GetBuffer());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
-  if ((vTempDayLine.at(0)->GetDay() + 100) < gl_systemTime.GetDay()) { // 提取到的股票日线数据其最新日不是上个月的这个交易日（退市了或相似情况），给一个月的时间观察。
+  if (gl_systemTime.IsEarlyThen(vTempDayLine.at(0)->GetDay(), gl_systemTime.GetDay(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
@@ -512,11 +512,6 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
-  if (GetStockCode().Compare(_T("sz000018")) == 0) {
-    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
-    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
-          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
-  }
   SetLastRTDataPtr(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
@@ -554,11 +549,6 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
 }
 
 void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
-  if (GetStockCode().Compare(_T("sz000018")) == 0) {
-    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
-    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
-          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
-  }
   IncreaseTransactionNumber();
   lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
   m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -587,11 +577,6 @@ void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactio
   ASSERT(pRTData->GetVolume() == m_stockCalculatedInfo.GetOrdinaryBuyVolume() + m_stockCalculatedInfo.GetOrdinarySellVolume()
          + m_stockCalculatedInfo.GetAttackBuyVolume() + m_stockCalculatedInfo.GetAttackSellVolume()
          + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
-  if (GetStockCode().Compare(_T("sz000018")) == 0) {
-    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
-    TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
-          GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
-  }
 }
 
 void CStock::IncreaseTransactionNumber(void) {
@@ -812,7 +797,7 @@ bool CStock::CheckCurrentRTData() {
     if (m_stockCalculatedInfo.GetAttackSellVolume() < 0) j += 8;
     if (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) j += 16;
     if (m_stockCalculatedInfo.GetStrongSellVolume() < 0) j += 32;
-    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_systemTime.GetTime(), m_stockBasicInfo.GetStockCode(), j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_systemTime.GetTime(), m_stockBasicInfo.GetStockCode().GetBuffer(), j);
     return false;
   }
   return true;
@@ -966,7 +951,9 @@ void CStock::SetCheckingDayLineStatus(void) {
     SetDayLineNeedUpdate(false);
   }
   else if (GetIPOStatus() == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((GetDayLineEndDay() != __CHINA_MARKET_BEGIN_DAY__) && (gl_systemTime.GetDayOfWeek() != 1)) SetDayLineNeedUpdate(false);
+    if ((gl_systemTime.GetDayOfWeek() != 1) && (GetDayLineEndDay() != __CHINA_MARKET_BEGIN_DAY__)) {
+      SetDayLineNeedUpdate(false);
+    }
   }
 }
 
@@ -1191,7 +1178,7 @@ void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
 bool CStock::IsVolumeConsistence(void) noexcept {
   if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
       + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-    TRACE(_T("%s股数%d\n"), GetStockCode(), GetVolume());
+    TRACE(_T("%s股数%d\n"), GetStockCode().GetBuffer(), GetVolume());
     TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
           GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
     return false;

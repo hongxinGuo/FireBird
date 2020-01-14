@@ -74,6 +74,8 @@ protected:
   atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
 
   bool m_fReportStatus; //
+
+  CString m_strConnection;
 };
 
 #endif

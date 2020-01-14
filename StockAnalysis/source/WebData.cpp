@@ -53,7 +53,7 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
     *m_pCurrentReadPos = 0x000; // 最后以0x000结尾
   }
   catch (CInternetException*) {
-    TRACE(_T("net error\n"));
+    TRACE(_T("%s net error\n"), m_strConnection);
     return false;
   }
   if (m_pFile) m_pFile->Close();

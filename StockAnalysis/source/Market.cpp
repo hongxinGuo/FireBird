@@ -91,7 +91,7 @@ void CMarket::Reset(void) {
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
-  m_fUsingNeteaseRTDataReceiver = true; // 不使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
 
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
@@ -531,8 +531,6 @@ bool CMarket::TaskDistributeSinaRTDataToProperStock(void) {
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime()) {
           pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
-          pStock->UpdateStatus(pRTData);
-          pStock->SetTransactionTime(pRTData->GetTransactionTime());
           pStock->SetIPOStatus(__STOCK_IPOED__);
         }
       }
@@ -1281,7 +1279,7 @@ CStockPtr CMarket::GetStockPtr(CString strStockCode) {
     return (m_vChinaMarketAStock.at(m_mapChinaMarketAStock.at(strStockCode)));
   }
   catch (exception&) {
-    TRACE("GetStockPtr越界\n");
+    TRACE("GetStockPtr越界, StockCode = %s\n", strStockCode);
     return nullptr;
   }
 }
@@ -1705,6 +1703,8 @@ bool CMarket::UpdateStockCodeDB(void) {
 
 void CMarket::LoadStockCodeDB(void) {
   CSetStockCode setStockCode;
+  char buffer[30];
+  CString str;
 
   setStockCode.Open();
   // 装入股票代码数据库
@@ -1715,8 +1715,12 @@ void CMarket::LoadStockCodeDB(void) {
   }
   if (gl_ChinaStockMarket.m_iDayLineNeedUpdate > 0) {
     int i = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
-    TRACE("尚余%d个股票需要更新日线数据\n", i);
-    //gl_systemMessage.PushInformationMessage(_T("检查日线数据.."));
+    if (gl_systemTime.GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
+    TRACE("尚余%d个股票需要检查日线数据\n", i);
+    _itoa_s(i, buffer, 10);
+    str = buffer;
+    str += _T("个股票需要检查日线数据");
+    gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
 }

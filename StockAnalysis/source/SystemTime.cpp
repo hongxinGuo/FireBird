@@ -87,8 +87,8 @@ bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
   else return true;
 }
 
-bool CSystemTime::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawn) {
-  CTimeSpan ts(lTimeSpawn, 0, 0, 0);
+bool CSystemTime::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) {
+  CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
   const long year = lEarlyDay / 10000;
   const long month = lEarlyDay / 100 - year * 100;
   const long day = lEarlyDay - year * 10000 - month * 100;

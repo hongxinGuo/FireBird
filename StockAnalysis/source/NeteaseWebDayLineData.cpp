@@ -8,6 +8,7 @@
 CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
+  m_strConnection = _T("NeteaseDayLine");
 }
 
 CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {

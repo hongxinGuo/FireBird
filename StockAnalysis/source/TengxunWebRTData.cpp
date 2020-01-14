@@ -8,6 +8,7 @@
 CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://qt.gtimg.cn/q=");
   m_strWebDataInquireSuffix = _T("");
+  m_strConnection = _T("TengxunRT");
 }
 
 CTengxunRTWebData::~CTengxunRTWebData() {

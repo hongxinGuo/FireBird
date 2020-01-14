@@ -26,6 +26,7 @@
 CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
+  m_strConnection = _T("NeteaseRT");
 }
 
 CNeteaseRTWebData::~CNeteaseRTWebData() {

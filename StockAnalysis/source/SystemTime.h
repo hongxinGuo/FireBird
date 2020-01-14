@@ -25,7 +25,7 @@ public:
   bool IsWorkingDay(void);
   bool IsWorkingDay(CTime timeCurrent);
 
-  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawn);
+  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
 
 public:
   // ≤‚ ‘”√∫Ø ˝

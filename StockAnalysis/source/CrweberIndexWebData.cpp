@@ -10,6 +10,7 @@
 CCrweberIndexWebData::CCrweberIndexWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://www.crweber.com");
   m_strWebDataInquireSuffix = _T("");
+  m_strConnection = _T("CCrweberIndex");
 }
 
 CCrweberIndexWebData::~CCrweberIndexWebData() {

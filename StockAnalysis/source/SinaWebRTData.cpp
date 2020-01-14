@@ -8,6 +8,7 @@
 CSinaRTWebData::CSinaRTWebData() : CWebData() {
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
+  m_strConnection = _T("SinaRT");
 }
 
 CSinaRTWebData::~CSinaRTWebData() {

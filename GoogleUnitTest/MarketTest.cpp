@@ -77,7 +77,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedSaveNumber(), 0);
     EXPECT_TRUE(gl_ChinaStockMarket.IsUsingSinaRTDataReceiver());
     EXPECT_TRUE(gl_ChinaStockMarket.IsUsingTengxunRTDataReceiver());
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiver());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUsingNeteaseRTDataReceiver());
 
     EXPECT_EQ(gl_ChinaStockMarket.GetNeteaseDayLineDataInquiringIndex(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetNeteaseRTDataInquiringIndex(), 0);
