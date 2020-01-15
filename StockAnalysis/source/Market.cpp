@@ -662,7 +662,7 @@ bool CMarket::StepToActiveStockIndex(long& iStockIndex) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-bool CMarket::ProcessRTData(void) {
+bool CMarket::TaskProcessRTData(void) {
   ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsActive()) {
@@ -1027,7 +1027,7 @@ bool CMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   if (SystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
-      ProcessRTData();
+      TaskProcessRTData();
       gl_ThreadStatus.SetRTDataNeedCalculate(false);
       gl_ThreadStatus.SetCalculatingRTData(false);
     }
@@ -1771,8 +1771,8 @@ void CMarket::LoadOptionDB(void) {
       gl_ChinaStockMarket.SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
       if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
-        // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。
-        gl_SaveOneStockDayLine.SetMaxCount(1);
+        // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
+        //gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }
     if (setOption.m_RalativeStrongStartDay == 0) {

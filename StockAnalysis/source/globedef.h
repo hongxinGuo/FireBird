@@ -3,13 +3,14 @@
 
 #include"stdafx.h"
 
+// 中国股票市场起始日
 #define __CHINA_MARKET_BEGIN_DAY__ 19900101
 
 enum {
   __STOCK_NOT_CHECKED__ = 128, // 尚未检查过的股票代码
   __STOCK_IPOED__ = 255, // 正常股票标识
   __STOCK_NULL__ = 0, // 无效代码（此代码的股票不存在）
-  __STOCK_DELISTED__ = 1, // 已退市的股票标识
+  __STOCK_DELISTED__ = 1, // 已退市（或停牌）的股票标识
 };
 
 enum {

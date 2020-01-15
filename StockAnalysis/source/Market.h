@@ -74,6 +74,9 @@ public:
   bool TaskResetSystem(long lCurrentTime);
   bool TaskResetSystemAgain(long lCurrentTime);
 
+  //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
+  bool TaskProcessRTData(void);
+
   // 是否所有股票的历史日线数据都查询过一遍了
   bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
@@ -182,9 +185,6 @@ public:
   clock_t GetReadingTengxunRTDataTime(void) noexcept { return m_ReadingTengxunRTDataTime; }
   void SetReadingNeteaseDayLineDataTime(clock_t tt) noexcept { m_ReadingNeteaseDayLineDataTime = tt; }
   clock_t GetReadingNeteaseDayLineDataTime(void) noexcept { return m_ReadingNeteaseDayLineDataTime; }
-
-  //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
-  bool ProcessRTData(void);
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
