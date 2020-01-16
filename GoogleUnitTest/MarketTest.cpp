@@ -67,6 +67,13 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
       EXPECT_FALSE(pStock->IsDayLineNeedProcess());
       EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+      if ((pStock->GetStockCode() >= _T("sh000000")) && (pStock->GetStockCode() <= _T("sh000999"))) {
+        EXPECT_FALSE(pStock->IsNeedProcessRTData());
+      }
+      else if ((pStock->GetStockCode() >= _T("sz399000")) && (pStock->GetStockCode() <= _T("sz399999"))) {
+        EXPECT_FALSE(pStock->IsNeedProcessRTData());
+      }
+      else EXPECT_TRUE(pStock->IsNeedProcessRTData());
     }
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalStockIndex(_T("sz000000")), 6000);
@@ -583,9 +590,9 @@ namespace StockAnalysisTest {
     tm tm_;
     tm_.tm_wday = 1;
     gl_systemTime.__Test_SetTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91459));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91359));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(91500));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(91400));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(113500));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());

@@ -199,6 +199,8 @@ public:
   // 第一个实时数据判断和设置
   bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
   bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
+  void SetNeedProcessRTData(bool fFlag) noexcept { m_fNeedProcessRTData = fFlag; }
+  bool IsNeedProcessRTData(void) noexcept { return m_fNeedProcessRTData; }
 
   bool IsTodayDataActive(void); //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
@@ -331,6 +333,7 @@ protected:
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
+  bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况
 
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.

@@ -144,6 +144,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海主板
     pStock->SetOffset(iCount);
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
     ASSERT(pStock->IsDayLineNeedUpdate());
@@ -159,6 +160,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海三板
     pStock->SetOffset(iCount);
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -173,6 +175,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
     pStock->SetOffset(iCount);
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -187,6 +190,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海B股
     pStock->SetOffset(iCount);
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -201,6 +205,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海指数
     pStock->SetOffset(iCount);
+    pStock->SetNeedProcessRTData(false);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++; // 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -216,6 +221,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -230,6 +236,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -244,6 +251,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -258,6 +266,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
+    pStock->SetNeedProcessRTData(true);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -272,6 +281,7 @@ bool CMarket::CreateTotalStockContainer(void) {
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
+    pStock->SetNeedProcessRTData(false);
     m_vChinaMarketAStock.push_back(pStock);
     m_mapChinaMarketAStock[pStock->GetStockCode()] = iCount++;// 使用下标生成新的映射
     m_iDayLineNeedUpdate++;
@@ -1174,7 +1184,7 @@ bool CMarket::TaskCheckMarketOpen(long lCurrentTime) {
     m_fMarketOpened = false;
     return(m_fMarketOpened);
   }
-  else if ((lCurrentTime < 91500) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+  else if ((lCurrentTime < 91400) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
     m_fMarketOpened = false;
     return(m_fMarketOpened);
   }
@@ -1533,7 +1543,7 @@ bool CMarket::UpdateTodayTempDB(void) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
-    if (!pStock->IsVolumeConsistence()) {
+    if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
       str = pStock->GetStockCode();
       str += _T(" 股数不正确");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
