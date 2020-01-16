@@ -210,6 +210,18 @@
     <ClInclude Include="source\QueueWebData.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
+    <ClInclude Include="source\VirtualMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndexMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefingWebData.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -361,6 +373,18 @@
     </ClCompile>
     <ClCompile Include="source\WebDataInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberIndexMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefingWebData.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
+      <Filter>源文件\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

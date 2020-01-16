@@ -4,6 +4,8 @@
 #include"stdafx.h"
 #include"globedef.h"
 
+#include"VirtualMarket.h"
+
 #include"QueueRTData.h"
 #include"QueueWebData.h"
 #include"PriorityQueueRTData.h"
@@ -41,7 +43,7 @@ extern CWebDataInquirer gl_WebDataInquirer;
 extern CCrweberIndex gl_CrweberIndex;
 extern CCrweberIndex gl_CrweberIndexLast;
 
-class CMarket final : public CObject
+class CMarket final : public CVirtualMarket
 {
 public:
   // 只能有一个实例
@@ -55,7 +57,7 @@ public:
 #endif
 public:
   // 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
-  bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
+  virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
   bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次

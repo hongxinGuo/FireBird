@@ -117,6 +117,9 @@
     <ClCompile Include="ProcessDayLineDataTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
+    <ClCompile Include="PotenDailyBriefingWebDataTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -272,6 +275,15 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefMarket.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadPotenDailyBriefing.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include"NeteaseWebRTData.h"
 #include"CrweberIndexWebData.h"
 #include"CrweberIndex.h"
+#include"PotenDailyBriefingWebData.h"
 
 class CWebDataInquirer final : public CObject {
 public:
@@ -43,6 +44,7 @@ public:
     return true;
   }
   bool GetCrweberIndexData(void) { return m_CrweberIndexWebData.GetWebData(); }
+  bool GetPotenDailyBriefingData(void) { return m_PotenDailyBriefingWebData.GetWebData(); }
 
 public:
   long GetSinaRTDataSize(void) { return m_queueSinaRTWebData.GetWebDataSize(); }
@@ -57,6 +59,9 @@ public:
   long GetCrweberDataSize(void) { return m_queueCrweberWebData.GetWebDataSize(); }
   void PushCrweberData(CWebDataReceivedPtr pData) { m_queueCrweberWebData.PushWebData(pData); }
   CWebDataReceivedPtr PopCrweberData(void) { return m_queueCrweberWebData.PopWebData(); }
+  long GetPotenDailyBriefingDataSize(void) { return m_queuePotenDailyBriefingWebData.GetWebDataSize(); }
+  void PushPotenDailyBriefingData(CWebDataReceivedPtr pData) { m_queuePotenDailyBriefingWebData.PushWebData(pData); }
+  CWebDataReceivedPtr PopPotenDailyBriefingData(void) { return m_queuePotenDailyBriefingWebData.PopWebData(); }
 
 protected:
   CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
@@ -69,8 +74,11 @@ protected:
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataFifth; // 网易日线历史数据
   CNeteaseDayLineWebData m_NeteaseDayLineWebDataSixth; // 网易日线历史数据
   CCrweberIndexWebData m_CrweberIndexWebData; // crweber.com上的每日油运指数
+  CPotenDailyBriefingWebData m_PotenDailyBriefingWebData; // Poten.com上的油运数据。
+
   CQueueWebData m_queueSinaRTWebData; // 新浪网络数据暂存队列
   CQueueWebData m_queueTengxunRTWebData; // 腾讯网络数据暂存队列
   CQueueWebData m_queueNeteaseRTWebData; // 网易网络数据暂存队列
   CQueueWebData m_queueCrweberWebData; // crweber.com网络数据暂存队列
+  CQueueWebData m_queuePotenDailyBriefingWebData; // Poten.com网络数据暂存队列
 };

@@ -20,7 +20,8 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam); // 此线程返回值为3，参数为pNeteaseW
 UINT ThreadReadNeteaseDayLine(LPVOID pParam);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
 // 读取crweber.com网站上的油运指数线程。网址：http://www.crweber.com
 UINT ThreadReadCrweberIndex(LPVOID pParam); // 此工作线程返回值为5，参数为pCrweberIndexWebData
-
+// 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
+UINT ThreadReadPotenDailyBriefing(LPVOID pParam); // 此工作线程返回值为6.
 // 数据库处理任务
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。

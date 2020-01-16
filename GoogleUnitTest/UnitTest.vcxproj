@@ -73,6 +73,7 @@
     <ClCompile Include="NeteaseDayLineWebDataTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="PotenDailyBriefingWebDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebDataTest.cpp" />
@@ -111,6 +112,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj" />
@@ -141,6 +144,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadPotenDailyBriefing.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />

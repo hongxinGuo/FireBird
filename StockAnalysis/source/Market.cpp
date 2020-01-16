@@ -35,7 +35,7 @@ CCrweberIndex gl_CrweberIndexLast;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CMarket::CMarket(void) : CObject() {
+CMarket::CMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
     TRACE("市场变量只允许存在一个实例\n");
