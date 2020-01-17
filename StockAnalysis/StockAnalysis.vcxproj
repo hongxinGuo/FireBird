@@ -227,7 +227,7 @@
     <ClInclude Include="source\CrweberIndexWebData.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebData.h" />
-    <ClInclude Include="source\PotenDailyBriefMarket.h" />
+    <ClInclude Include="source\PotenDailyBriefingMarket.h" />
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\NeteaseWebDayLineData.h" />
     <ClInclude Include="source\NeteaseWebRTData.h" />
@@ -281,7 +281,7 @@
     <ClCompile Include="source\NeteaseWebRTData.cpp" />
     <ClCompile Include="source\PotenDailyBriefing.cpp" />
     <ClCompile Include="source\PotenDailyBriefingWebData.cpp" />
-    <ClCompile Include="source\PotenDailyBriefMarket.cpp" />
+    <ClCompile Include="source\PotenDailyBriefingMarket.cpp" />
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
     <ClCompile Include="source\QueueRTDataImp.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />

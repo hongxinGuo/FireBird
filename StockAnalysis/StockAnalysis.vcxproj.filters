@@ -216,9 +216,6 @@
     <ClInclude Include="source\CrweberIndexMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\PotenDailyBriefingWebData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
@@ -232,6 +229,9 @@
       <Filter>头文件\Market</Filter>
     </ClInclude>
     <ClInclude Include="source\WebDataReceived.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefingMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
   </ItemGroup>
@@ -383,9 +383,6 @@
     <ClCompile Include="source\WebDataInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefMarket.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
     <ClCompile Include="source\CrweberIndexMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
@@ -402,6 +399,9 @@
       <Filter>源文件\Poten Daily Briefing</Filter>
     </ClCompile>
     <ClCompile Include="source\ChinaMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
   </ItemGroup>

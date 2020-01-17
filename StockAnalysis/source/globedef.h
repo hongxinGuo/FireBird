@@ -28,7 +28,7 @@ enum {
 };
 
 #include"VirtualMarket.h"
-#include"PotenDailyBriefMarket.h"
+#include"PotenDailyBriefingMarket.h"
 
 #include"RTData.h"
 

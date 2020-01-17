@@ -85,4 +85,4 @@ public:
 protected:
 };
 
-typedef CPotenDailyBriefing* PotenDailyBriefingPtr;
+typedef shared_ptr<CPotenDailyBriefing> CPotenDailyBriefingPtr;

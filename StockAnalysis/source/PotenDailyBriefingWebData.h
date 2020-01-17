@@ -16,4 +16,5 @@ public:
 
 protected:
   long m_lInquiringDay;
+  long m_lNextInquiringDay;
 };
