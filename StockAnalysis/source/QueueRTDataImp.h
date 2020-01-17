@@ -1,7 +1,5 @@
 #pragma once
 
-#include"afxmt.h"
-
 #include"RTData.h"
 
 using namespace std;

@@ -14,11 +14,13 @@ enum {
 };
 
 #include"SetDayLine.h"
+#include"SetDayLineInfo.h"
 #include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
 #include"SetStockCode.h"
 
 #include"RTData.h"
+
 #include"DayLine.h"
 #include"OneDeal.h"
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include"afxmt.h"
-
 class CSystemTime final {
 public:
   CSystemTime(void);

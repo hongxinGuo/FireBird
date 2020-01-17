@@ -1,8 +1,6 @@
 #pragma once
 
-#include"afxmt.h"
-
-#include"globedef.h"
+#include"stdafx.h"
 
 using namespace std;
 #include<atomic>

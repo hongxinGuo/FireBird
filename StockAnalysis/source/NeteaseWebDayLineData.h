@@ -1,5 +1,4 @@
-#ifndef __NETEASE_WEB_DAYLINE_DATA_H__
-#define __NETEASE_WEB_DAYLINE_DATA_H__
+#pragma once
 
 #include "WebData.h"
 
@@ -17,5 +16,3 @@ public:
 private:
   CString m_strDownLoadingStockCode;
 };
-
-#endif

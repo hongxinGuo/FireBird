@@ -3,6 +3,8 @@
 #include"globedef.h"
 #include"StockBasicInfo.h"
 
+#include"Accessory.h"
+
 namespace StockAnalysisTest {
   TEST(StockBasicInfoTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

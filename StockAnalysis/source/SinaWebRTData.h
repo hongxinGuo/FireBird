@@ -1,5 +1,5 @@
-#ifndef __SINA_WEB_RT_DATA_H__
-#define __SINA_WEB_RT_DATA_H__
+#pragma once
+
 #include "WebData.h"
 #include"RTData.h"
 
@@ -13,5 +13,3 @@ public:
   virtual void StartReadingThread(void) override;
   virtual bool ReportStatus(long lNumberOfData) override;
 };
-
-#endif

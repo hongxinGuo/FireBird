@@ -1,6 +1,8 @@
 #include"globedef.h"
 #include "StockBasicInfo.h"
 
+#include"Accessory.h"
+
 CStockBasicInfo::CStockBasicInfo() {
   Reset();
 }
