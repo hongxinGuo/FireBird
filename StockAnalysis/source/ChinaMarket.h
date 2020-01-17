@@ -43,12 +43,12 @@ extern CWebDataInquirer gl_WebDataInquirer;
 extern CCrweberIndex gl_CrweberIndex;
 extern CCrweberIndex gl_CrweberIndexLast;
 
-class CMarket final : public CVirtualMarket
+class CChinaMarket final : public CVirtualMarket
 {
 public:
   // 只能有一个实例
-  CMarket(void);
-  ~CMarket(void);
+  CChinaMarket(void);
+  ~CChinaMarket(void);
   void Reset(void);
 
 #ifdef _DEBUG

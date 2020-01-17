@@ -7,7 +7,7 @@
 // 返回值为4
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-#include"Market.h"
+#include"ChinaMarket.h"
 
 UINT ThreadSaveTempRTData(LPVOID) {
   ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。

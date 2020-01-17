@@ -6,7 +6,7 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
-#include"Market.h"
+#include"ChinaMarket.h"
 #include"Thread.h"
 
 UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {

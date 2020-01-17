@@ -10,7 +10,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
-#include"Market.h"
+#include"ChinaMarket.h"
 #include"TransferSharedPtr.h"
 
 UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {

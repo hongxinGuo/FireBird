@@ -28,6 +28,9 @@ enum {
   __SHENZHEN_CHUANGYE__ = 12, // ÉîÛÚ´´Òµ°å
 };
 
+#include"VirtualMarket.h"
+#include"PotenDailyBriefMarket.h"
+
 #include"RTData.h"
 
 #include"SystemMessage.h"
@@ -40,6 +43,7 @@ enum {
 using namespace std;
 #include<deque>
 #include<atomic>
+#include<vector>
 
 // ²âÊÔÓÃ±äÁ¿
 extern CRTDataPtr gl_TESTpRTData;
@@ -61,8 +65,12 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 extern const int gl_cMaxSavingOneDayLineThreads;
 
-class CMarket;
+extern vector<CVirtualMarket*> gl_vMarket; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
+
+extern CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
+
+class CChinaMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-extern CMarket gl_ChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
+extern CChinaMarket gl_ChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
 
 #endif

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include"Market.h"
+#include"ChinaMarket.h"
 #include"crweberIndex.h"
 
 using namespace std;

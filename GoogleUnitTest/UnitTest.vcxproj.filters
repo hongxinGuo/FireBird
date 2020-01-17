@@ -151,9 +151,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\Market.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebDayLineData.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -284,6 +281,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

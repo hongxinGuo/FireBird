@@ -102,12 +102,12 @@
   <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\Market.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebDayLineData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj" />

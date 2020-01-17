@@ -1,6 +1,6 @@
 #include"globedef.h"
 
-#include "Market.h"
+#include "ChinaMarket.h"
 #include "SystemTime.h"
 
 // ²âÊÔÓÃ±äÁ¿
@@ -20,4 +20,7 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 const int gl_cMaxSavingOneDayLineThreads = 4;
 
-CMarket gl_ChinaStockMarket;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
+vector<CVirtualMarket*> gl_vMarket; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
+
+CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
+CChinaMarket gl_ChinaStockMarket;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

@@ -225,6 +225,7 @@
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebData.h" />
+    <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebData.h" />
     <ClInclude Include="source\PotenDailyBriefMarket.h" />
     <ClInclude Include="source\QueueRTData.h" />
@@ -250,7 +251,7 @@
     <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
     <ClInclude Include="source\globedef.h" />
-    <ClInclude Include="source\Market.h" />
+    <ClInclude Include="source\ChinaMarket.h" />
     <ClInclude Include="source\OneDeal.h" />
     <ClInclude Include="source\RTData.h" />
     <ClInclude Include="source\SetChoicedStock.h" />
@@ -278,6 +279,7 @@
     <ClCompile Include="source\CrweberIndexWebData.cpp" />
     <ClCompile Include="source\NeteaseWebDayLineData.cpp" />
     <ClCompile Include="source\NeteaseWebRTData.cpp" />
+    <ClCompile Include="source\PotenDailyBriefing.cpp" />
     <ClCompile Include="source\PotenDailyBriefingWebData.cpp" />
     <ClCompile Include="source\PotenDailyBriefMarket.cpp" />
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
@@ -303,7 +305,7 @@
     <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />
-    <ClCompile Include="source\Market.cpp" />
+    <ClCompile Include="source\ChinaMarket.cpp" />
     <ClCompile Include="source\OneDeal.cpp" />
     <ClCompile Include="source\RTData.cpp" />
     <ClCompile Include="source\SetChoicedStock.cpp" />

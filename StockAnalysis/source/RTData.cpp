@@ -2,7 +2,7 @@
 #include "globedef.h"
 #include"Accessory.h"
 #include"RTData.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

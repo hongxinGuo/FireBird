@@ -9,7 +9,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseRTData(LPVOID pParam) {
   CNeteaseRTWebData* pNeteaseRTWebData = (CNeteaseRTWebData*)pParam;

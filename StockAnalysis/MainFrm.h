@@ -26,6 +26,7 @@ public:
   // 操作
 public:
   bool SchedulingTask(void);
+  bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
   void UpdateStatus(void);
 
 private:

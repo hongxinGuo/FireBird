@@ -16,7 +16,7 @@
 // 此线程的正常返回值为2
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"Market.h"
+#include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;

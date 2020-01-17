@@ -8,7 +8,7 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"Market.h"
+#include"ChinaMarket.h"
 
 UINT ThreadReadSinaRTData(LPVOID pParam) {
   CSinaRTWebData* pSinaRTWebData = (CSinaRTWebData*)pParam;

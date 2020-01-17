@@ -4,7 +4,7 @@
 #include"globedef.h"
 
 #include"Stock.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 static CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
 static CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集

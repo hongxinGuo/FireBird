@@ -13,7 +13,7 @@
 #include"RTData.h"
 #include"DayLine.h"
 #include"Stock.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 #include"SinaWebRTData.h"
 
@@ -85,7 +85,7 @@ CMainFrame::CMainFrame() {
 }
 
 void CMainFrame::Reset(void) {
-  // 在此之前已经准备好了全局股票池（在CMarket的构造函数中）。
+  // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 
   // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
   gl_ChinaStockMarket.LoadStockCodeDB();
@@ -239,6 +239,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   // 将改进任务栏的可用性，因为显示的文档名带有缩略图。
   ModifyStyle(0, FWS_PREFIXTITLE);
 
+  //生成市场容器Vector
+  CreateMarketContainer();
+
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
   m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
@@ -247,13 +250,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   return 0;
 }
 
+bool CMainFrame::CreateMarketContainer(void) {
+  gl_vMarket.push_back(&gl_ChinaStockMarket); // 中国股票市场
+  gl_vMarket.push_back(&gl_PotenDailyBriefingMarket); // poten.com提供的每日航运指数
+  return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //
-//系统更新任务由CMarket类中的调度函数完成，
+//系统更新任务由各CVirtualMarket类中的调度函数完成，
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void) {
-  gl_ChinaStockMarket.SchedulingTask();
+  for (auto pVirtualMarket : gl_vMarket) {
+    pVirtualMarket->SchedulingTask();
+  }
   return true;
 }
 
@@ -386,7 +397,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
-// 大部分系统定时操作的发起者，但具体工作由CMarket类的SchedulingTask()完成，本函数只完成显示实时信息的工作。
+// 大部分系统定时操作的发起者，但具体工作由CVirtualMarket类的SchedulingTask()完成，本函数只完成显示实时信息的工作。
 //
 //
 //

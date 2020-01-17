@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"globedef.h"
 #include"Thread.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 #include "NeteaseWebDayLineData.h"
 

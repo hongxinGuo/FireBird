@@ -6,7 +6,7 @@
 #include"Accessory.h"
 
 #include "Stock.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 using namespace std;
 #include"string"

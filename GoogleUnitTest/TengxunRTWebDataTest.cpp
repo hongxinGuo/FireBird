@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"Market.h"
+#include"ChinaMarket.h"
 #include"TengxunWebRTData.h"
 
 using namespace std;

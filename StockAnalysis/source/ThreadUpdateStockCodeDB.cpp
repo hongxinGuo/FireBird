@@ -1,7 +1,7 @@
 #include"globedef.h"
 
 #include"DayLine.h"
-#include"Market.h"
+#include"ChinaMarket.h"
 
 #include"Thread.h"
 
