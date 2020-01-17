@@ -1,3 +1,4 @@
+#include"globedef.h"
 #include "Accessory.h"
 
 time_t ConvertBufferToTime(CString strFormat, char* buffer) {

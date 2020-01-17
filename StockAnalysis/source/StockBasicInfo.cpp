@@ -1,3 +1,4 @@
+#include"globedef.h"
 #include "StockBasicInfo.h"
 
 CStockBasicInfo::CStockBasicInfo() {

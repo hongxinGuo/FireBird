@@ -6,6 +6,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
+#include"globedef.h"
+
 #include"SinaWebRTData.h"
 #include"TengxunWebRTData.h"
 #include"NeteaseWebDayLineData.h"

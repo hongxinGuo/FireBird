@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include"globedef.h"
 #include "DayLine.h"
 
 CDayLine::CDayLine() : CObject() {
