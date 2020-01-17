@@ -13,9 +13,9 @@ public:
   CPotenDailyBriefing();
   ~CPotenDailyBriefing();
   void Reset(void);
-  void LoadData(CSetPotenDailyBriefing& setCrweberIndex);
-  void SaveData(CSetPotenDailyBriefing& setCewwberIndex);
-  void AppendData(CSetPotenDailyBriefing& setCrweberIndex);
+  void LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing);
+  void SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing);
+  void AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing);
 
   bool ReadData(CWebDataReceivedPtr pWebDataReceived);
 
@@ -59,9 +59,25 @@ public:
   double m_dVLCC_TC_1YEAR;
   double m_dSUEZMAX_TC_1YEAR;
   double m_dAFRAMAX_TC_1YEAR;
-  double m_dPANAMAX_TC_1YEAR;
+  double m_dLR2_TC_1YEAR;
+  double m_dLR1_TC_1YEAR;
   double m_dMR_TC_1YEAR;
   double m_dHANDY_TC_1YEAR;
+
+  double m_dVLCC_NewBuild;
+  double m_dSUEZMAX_NewBuild;
+  double m_dAFRAMAX_NewBuild;
+  double m_dLR2_NewBuild;
+  double m_dLR1_NewBuild;
+  double m_dMR_NewBuild;
+  double m_dHANDYMAX_NewBuild;
+  double m_dVLCC_5YearsOld;
+  double m_dSUEZMAX_5YearsOld;
+  double m_dAFRAMAX_5YearsOld;
+  double m_dLR2_5YearsOld;
+  double m_dLR1_5YearsOld;
+  double m_dMR_5YearsOld;
+  double m_dHANDYMAX_5YearsOld;
 
   bool m_fTodayUpdated;
   long m_lLastUpdateDay;

@@ -1,5 +1,4 @@
-#ifndef __GLOBE_DEFINE__
-#define __GLOBE_DEFINE__
+#pragma once
 
 #include"stdafx.h"
 
@@ -72,5 +71,3 @@ extern CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
 class CChinaMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 extern CChinaMarket gl_ChinaStockMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
-
-#endif

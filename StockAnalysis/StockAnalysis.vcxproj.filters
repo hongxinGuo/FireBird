@@ -189,9 +189,6 @@
     <ClInclude Include="source\NeteaseWebDayLineData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebDataReceived.h">
-      <Filter>头文件\实现类</Filter>
-    </ClInclude>
     <ClInclude Include="source\Stock.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
@@ -232,6 +229,9 @@
       <Filter>头文件\Poten Daily Briefing</Filter>
     </ClInclude>
     <ClInclude Include="source\ChinaMarket.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebDataReceived.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
   </ItemGroup>

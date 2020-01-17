@@ -1,15 +1,13 @@
-#ifndef __WEB_DATA_H__
-#define __WEB_DATA_H__
+#pragma once
 
 #include"stdafx.h"
-#include"globedef.h"
 
 #include"WebDataReceived.h"
 
 using namespace std;
 #include<atomic>
 
-class CWebData {
+class CWebData : public CObject {
 public:
   CWebData();
   ~CWebData() {}
@@ -77,5 +75,3 @@ protected:
 
   CString m_strConnection;
 };
-
-#endif

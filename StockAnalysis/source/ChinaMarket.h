@@ -1,5 +1,4 @@
-#ifndef __MARKET_H__
-#define __MARKET_H__
+#pragma once
 
 #include"stdafx.h"
 #include"globedef.h"
@@ -14,13 +13,6 @@
 #include"SetStockCode.h"
 
 #include"WebDataInquirer.h"
-
-#include"SinaWebRTData.h"
-#include"TengxunWebRTData.h"
-#include"NeteaseWebDayLineData.h"
-#include"NeteaseWebRTData.h"
-#include"CrweberIndexWebData.h"
-#include"CrweberIndex.h"
 
 #include"Semaphore.h"
 using namespace MyAccessory;
@@ -38,7 +30,6 @@ extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CQueueRTData gl_queueRTData;
-extern CWebDataInquirer gl_WebDataInquirer;
 
 extern CCrweberIndex gl_CrweberIndex;
 extern CCrweberIndex gl_CrweberIndexLast;
@@ -321,5 +312,3 @@ protected:
 
 private:
 };
-
-#endif

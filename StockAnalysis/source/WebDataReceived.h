@@ -1,11 +1,11 @@
-#ifndef __WEB_DATA_RECEIVED_H__
-#define __WEB_DATA_RECEIVED_H__
+#pragma once
+
+#include"stdafx.h"
 
 using namespace std;
 #include<memory>
 
-class CWebDataReceived
-{
+class CWebDataReceived : public CObject {
 public:
   CWebDataReceived() {
     m_pDataBuffer = nullptr;
@@ -33,5 +33,3 @@ public:
 };
 
 typedef shared_ptr<CWebDataReceived> CWebDataReceivedPtr;
-
-#endif

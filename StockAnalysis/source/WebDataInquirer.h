@@ -82,3 +82,5 @@ protected:
   CQueueWebData m_queueCrweberWebData; // crweber.com网络数据暂存队列
   CQueueWebData m_queuePotenDailyBriefingWebData; // Poten.com网络数据暂存队列
 };
+
+extern CWebDataInquirer gl_WebDataInquirer; //

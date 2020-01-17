@@ -9,7 +9,7 @@ CPotenDailyBriefing::CPotenDailyBriefing() {
   m_lDay = 0;
   m_dTD3C = m_dTD9 = m_dTD20 = m_dTD21 = 0;
   m_dTC1 = m_dTC2 = m_dTC5 = m_dTC14 = 0;
-  m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dPANAMAX_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDY_TC_1YEAR = 0;
+  m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dLR2_TC_1YEAR = m_dLR1_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDY_TC_1YEAR = 0;
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
@@ -22,50 +22,52 @@ void CPotenDailyBriefing::Reset(void) {
   m_fTodayUpdated = false;
 }
 
-void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setCrweberIndex) {
-  m_lDay = setCrweberIndex.m_Day;
-  m_dTD3C = atof(setCrweberIndex.m_TD3C);
-  m_dTD9 = atof(setCrweberIndex.m_TD9);
-  m_dTD20 = atof(setCrweberIndex.m_TD20);
-  m_dTD21 = atof(setCrweberIndex.m_TD21);
-  m_dTC1 = atof(setCrweberIndex.m_TC1);
-  m_dTC2 = atof(setCrweberIndex.m_TC2);
-  m_dTC5 = atof(setCrweberIndex.m_TC5);
-  m_dTC14 = atof(setCrweberIndex.m_TC14);
-  m_dVLCC_TC_1YEAR = atof(setCrweberIndex.m_VLCC_TC_1YEAR);
-  m_dSUEZMAX_TC_1YEAR = atof(setCrweberIndex.m_SUEZMAX_TC_1YEAR);
-  m_dAFRAMAX_TC_1YEAR = atof(setCrweberIndex.m_AFRAMAX_TC_1YEAR);
-  m_dPANAMAX_TC_1YEAR = atof(setCrweberIndex.m_PANAMAX_TC_1YEAR);
-  m_dMR_TC_1YEAR = atof(setCrweberIndex.m_MR_TC_1YEAR);
-  m_dHANDY_TC_1YEAR = atof(setCrweberIndex.m_HANDY_TC_1YEAR);
+void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
+  m_lDay = setPotenDailyBriefing.m_Day;
+  m_dTD3C = atof(setPotenDailyBriefing.m_TD3C);
+  m_dTD9 = atof(setPotenDailyBriefing.m_TD9);
+  m_dTD20 = atof(setPotenDailyBriefing.m_TD20);
+  m_dTD21 = atof(setPotenDailyBriefing.m_TD21);
+  m_dTC1 = atof(setPotenDailyBriefing.m_TC1);
+  m_dTC2 = atof(setPotenDailyBriefing.m_TC2);
+  m_dTC5 = atof(setPotenDailyBriefing.m_TC5);
+  m_dTC14 = atof(setPotenDailyBriefing.m_TC14);
+  m_dVLCC_TC_1YEAR = atof(setPotenDailyBriefing.m_VLCC_TC_1YEAR);
+  m_dSUEZMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_SUEZMAX_TC_1YEAR);
+  m_dAFRAMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_AFRAMAX_TC_1YEAR);
+  m_dLR2_TC_1YEAR = atof(setPotenDailyBriefing.m_LR2_TC_1YEAR);
+  m_dLR1_TC_1YEAR = atof(setPotenDailyBriefing.m_LR1_TC_1YEAR);
+  m_dMR_TC_1YEAR = atof(setPotenDailyBriefing.m_MR_TC_1YEAR);
+  m_dHANDY_TC_1YEAR = atof(setPotenDailyBriefing.m_HANDY_TC_1YEAR);
 }
 
-void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setCrweberIndex) {
-  ASSERT(setCrweberIndex.IsOpen());
+void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
+  ASSERT(setPotenDailyBriefing.IsOpen());
 
-  setCrweberIndex.m_Day = m_lDay;
-  setCrweberIndex.m_TD3C = ConvertValueToString(m_dTD3C);
-  setCrweberIndex.m_TD9 = ConvertValueToString(m_dTD9);
-  setCrweberIndex.m_TD20 = ConvertValueToString(m_dTD20);
-  setCrweberIndex.m_TD21 = ConvertValueToString(m_dTD21);
-  setCrweberIndex.m_TC1 = ConvertValueToString(m_dTC1);
-  setCrweberIndex.m_TC2 = ConvertValueToString(m_dTC2);
-  setCrweberIndex.m_TC5 = ConvertValueToString(m_dTC5);
-  setCrweberIndex.m_TC14 = ConvertValueToString(m_dTC14);
+  setPotenDailyBriefing.m_Day = m_lDay;
+  setPotenDailyBriefing.m_TD3C = ConvertValueToString(m_dTD3C);
+  setPotenDailyBriefing.m_TD9 = ConvertValueToString(m_dTD9);
+  setPotenDailyBriefing.m_TD20 = ConvertValueToString(m_dTD20);
+  setPotenDailyBriefing.m_TD21 = ConvertValueToString(m_dTD21);
+  setPotenDailyBriefing.m_TC1 = ConvertValueToString(m_dTC1);
+  setPotenDailyBriefing.m_TC2 = ConvertValueToString(m_dTC2);
+  setPotenDailyBriefing.m_TC5 = ConvertValueToString(m_dTC5);
+  setPotenDailyBriefing.m_TC14 = ConvertValueToString(m_dTC14);
 
-  setCrweberIndex.m_VLCC_TC_1YEAR = ConvertValueToString(m_dVLCC_TC_1YEAR);
-  setCrweberIndex.m_SUEZMAX_TC_1YEAR = ConvertValueToString(m_dSUEZMAX_TC_1YEAR);
-  setCrweberIndex.m_AFRAMAX_TC_1YEAR = ConvertValueToString(m_dAFRAMAX_TC_1YEAR);
-  setCrweberIndex.m_PANAMAX_TC_1YEAR = ConvertValueToString(m_dPANAMAX_TC_1YEAR);
-  setCrweberIndex.m_MR_TC_1YEAR = ConvertValueToString(m_dMR_TC_1YEAR);
-  setCrweberIndex.m_HANDY_TC_1YEAR = ConvertValueToString(m_dHANDY_TC_1YEAR);
+  setPotenDailyBriefing.m_VLCC_TC_1YEAR = ConvertValueToString(m_dVLCC_TC_1YEAR);
+  setPotenDailyBriefing.m_SUEZMAX_TC_1YEAR = ConvertValueToString(m_dSUEZMAX_TC_1YEAR);
+  setPotenDailyBriefing.m_AFRAMAX_TC_1YEAR = ConvertValueToString(m_dAFRAMAX_TC_1YEAR);
+  setPotenDailyBriefing.m_LR2_TC_1YEAR = ConvertValueToString(m_dLR2_TC_1YEAR);
+  setPotenDailyBriefing.m_LR1_TC_1YEAR = ConvertValueToString(m_dLR1_TC_1YEAR);
+  setPotenDailyBriefing.m_MR_TC_1YEAR = ConvertValueToString(m_dMR_TC_1YEAR);
+  setPotenDailyBriefing.m_HANDY_TC_1YEAR = ConvertValueToString(m_dHANDY_TC_1YEAR);
 }
 
-void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setCrweberIndex) {
-  ASSERT(setCrweberIndex.IsOpen());
-  setCrweberIndex.AddNew();
-  SaveData(setCrweberIndex);
-  setCrweberIndex.Update();
+void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
+  ASSERT(setPotenDailyBriefing.IsOpen());
+  setPotenDailyBriefing.AddNew();
+  SaveData(setPotenDailyBriefing);
+  setPotenDailyBriefing.Update();
 }
 
 bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {

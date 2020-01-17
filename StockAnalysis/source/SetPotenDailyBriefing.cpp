@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include"accessory.h"
+#include"Accessory.h"
 
 #include "SetPotenDailyBriefing.h"
 #include"globedef.h"
@@ -12,8 +12,8 @@ CSetPotenDailyBriefing::CSetPotenDailyBriefing(CDatabase* pdb)
   m_Day = 0;
   m_TD3C = m_TD9 = m_TD20 = m_TD21 = _T("0");
   m_TC1 = m_TC2 = m_TC5 = m_TC14 = _T("0");
-  m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_PANAMAX_TC_1YEAR = m_MR_TC_1YEAR = m_HANDY_TC_1YEAR = _T("0");
-  m_nFields = 30;
+  m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_LR2_TC_1YEAR = m_LR1_TC_1YEAR = m_MR_TC_1YEAR = m_HANDY_TC_1YEAR = _T("0");
+  m_nFields = 31;
 }
 
 CString CSetPotenDailyBriefing::GetDefaultConnect() {
@@ -42,7 +42,8 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[VLCC_TC_1YEAR]"), m_VLCC_TC_1YEAR);
   RFX_Text(pFX, _T("[SUEZMAX_TC_1YEAR]"), m_SUEZMAX_TC_1YEAR);
   RFX_Text(pFX, _T("[AFRAMAX_TC_1YEAR]"), m_AFRAMAX_TC_1YEAR);
-  RFX_Text(pFX, _T("[PANAMAX_TC_1YEAR]"), m_PANAMAX_TC_1YEAR);
+  RFX_Text(pFX, _T("[LR2_TC_1YEAR]"), m_LR2_TC_1YEAR);
+  RFX_Text(pFX, _T("[LR1_TC_1YEAR]"), m_LR1_TC_1YEAR);
   RFX_Text(pFX, _T("[MR_TC_1YEAR]"), m_MR_TC_1YEAR);
   RFX_Text(pFX, _T("[HANDY_TC_1YEAR]"), m_HANDY_TC_1YEAR);
   RFX_Text(pFX, _T("[VLCC_NEWBUILD]"), m_VLCC_NEW_BUILD);
@@ -52,13 +53,13 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[LR1_NEWBUILD]"), m_LR1_NEW_BUILD);
   RFX_Text(pFX, _T("[MR_NEWBUILD]"), m_MR_NEW_BUILD);
   RFX_Text(pFX, _T("[HANDYMAX_NEWBUILD]"), m_HANDYMAX_NEW_BUILD);
-  RFX_Text(pFX, _T("[VLCC_5YEARSOLD]"), m_VLCC_5YEARS_OLD);
-  RFX_Text(pFX, _T("[SUEZMAX_5YEARSOLD]"), m_SUEZMAX_5YEARS_OLD);
-  RFX_Text(pFX, _T("[AFRXMAX_5YEARSOLD]"), m_AFRAMAX_5YEARS_OLD);
-  RFX_Text(pFX, _T("[LR2_5YEARSOLD]"), m_LR2_5YEARS_OLD);
-  RFX_Text(pFX, _T("[LR1_5YEARSOLD]"), m_LR1_5YEARS_OLD);
-  RFX_Text(pFX, _T("[MR_5YEARSOLD]"), m_MR_5YEARS_OLD);
-  RFX_Text(pFX, _T("[HANDYMAX_5YEARSOLD]"), m_HANDYMAX_5YEARS_OLD);
+  RFX_Text(pFX, _T("[VLCC_5YEAROLD]"), m_VLCC_5YEAR_OLD);
+  RFX_Text(pFX, _T("[SUEZMAX_5YEAROLD]"), m_SUEZMAX_5YEAR_OLD);
+  RFX_Text(pFX, _T("[AFRXMAX_5YEAROLD]"), m_AFRAMAX_5YEAR_OLD);
+  RFX_Text(pFX, _T("[LR2_5YEAROLD]"), m_LR2_5YEAR_OLD);
+  RFX_Text(pFX, _T("[LR1_5YEAROLD]"), m_LR1_5YEAR_OLD);
+  RFX_Text(pFX, _T("[MR_5YEAROLD]"), m_MR_5YEAR_OLD);
+  RFX_Text(pFX, _T("[HANDYMAX_5YEAROLD]"), m_HANDYMAX_5YEAR_OLD);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ
