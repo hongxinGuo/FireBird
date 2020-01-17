@@ -233,6 +233,7 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTDataImp.h" />
     <ClInclude Include="source\QueueWebData.h" />
+    <ClInclude Include="source\SetPotenDailyBriefing.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebDataInquirer.h" />
     <ClInclude Include="source\WebDataReceived.h" />
@@ -284,6 +285,7 @@
     <ClCompile Include="source\QueueWebData.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
+    <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="source\SinaWebRTData.cpp" />
     <ClCompile Include="source\StockBasicInfo.cpp" />
     <ClCompile Include="source\StockCalculatedInfo.cpp" />

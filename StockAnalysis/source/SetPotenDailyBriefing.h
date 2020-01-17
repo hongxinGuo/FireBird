@@ -2,11 +2,11 @@
 
 #include"stdafx.h"
 
-class CSetCrweberIndex : public CRecordset
+class CSetPotenDailyBriefing : public CRecordset
 {
 public:
-  CSetCrweberIndex(CDatabase* pDatabase = NULL);
-  DECLARE_DYNAMIC(CSetCrweberIndex)
+  CSetPotenDailyBriefing(CDatabase* pDatabase = NULL);
+  DECLARE_DYNAMIC(CSetPotenDailyBriefing)
 
   // 字段/参数数据
 
@@ -19,40 +19,34 @@ public:
   // 以同时支持 Unicode 和这些转换)。
   long m_ID;
   long m_Day;
-  CString m_TD1;
-  CString m_TD2;
   CString m_TD3C;
-  CString m_TD5;
-  CString m_TD6;
-  CString m_TD7;
-  CString m_TD8;
   CString m_TD9;
-  CString m_TD12;
-  CString m_TD15;
-  CString m_TD19;
   CString m_TD20;
   CString m_TD21;
-  CString m_VLCC_USGSPORE;
-  CString m_SUEZMAX_CBSUSG;
   CString m_TC1;
   CString m_TC2;
-  CString m_TC3;
-  CString m_TC4;
   CString m_TC5;
   CString m_TC14;
-  CString m_CPP_USGCBS;
   CString m_VLCC_TC_1YEAR;
   CString m_SUEZMAX_TC_1YEAR;
   CString m_AFRAMAX_TC_1YEAR;
   CString m_PANAMAX_TC_1YEAR;
   CString m_MR_TC_1YEAR;
   CString m_HANDY_TC_1YEAR;
-  CString m_VLCC_TC_3YEAR;
-  CString m_SUEZMAX_TC_3YEAR;
-  CString m_AFRAMAX_TC_3YEAR;
-  CString m_PANAMAX_TC_3YEAR;
-  CString m_MR_TC_3YEAR;
-  CString m_HANDY_TC_3YEAR;
+  CString m_VLCC_NEW_BUILD;
+  CString m_SUEZMAX_NEW_BUILD;
+  CString m_AFRAMAX_NEW_BUILD;
+  CString m_LR2_NEW_BUILD;
+  CString m_LR1_NEW_BUILD;
+  CString m_MR_NEW_BUILD;
+  CString m_HANDYMAX_NEW_BUILD;
+  CString m_VLCC_5YEARS_OLD;
+  CString m_SUEZMAX_5YEARS_OLD;
+  CString m_AFRAMAX_5YEARS_OLD;
+  CString m_LR2_5YEARS_OLD;
+  CString m_LR1_5YEARS_OLD;
+  CString m_MR_5YEARS_OLD;
+  CString m_HANDYMAX_5YEARS_OLD;
 
   // 重写
     // 向导生成的虚函数重写
