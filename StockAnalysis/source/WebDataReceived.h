@@ -8,6 +8,7 @@ using namespace std;
 class CWebDataReceived : public CObject {
 public:
   CWebDataReceived() {
+    m_lTime = 0;
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
     m_pCurrentPos = nullptr;
@@ -26,6 +27,7 @@ public:
   void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
 
 public:
+  INT64 m_lTime; // 此数据的提取时间。格式为yyyymmddhhmmss
   char* m_pDataBuffer;
   long m_lBufferLength;
   char* m_pCurrentPos; // 当前处理的位置

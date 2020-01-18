@@ -25,6 +25,8 @@ public:
   void SetNewestDataTime(long lDay) noexcept { m_lDay = lDay; }
   long GetCurrentDataTime(void) noexcept { return m_lDay; }
 
+  void SetDay(long lDay) noexcept { m_lDay = lDay; }
+  long GetDay(void) noexcept { return m_lDay; }
   double GetTD3C(void) noexcept { return m_dTD3C; }
   double GetTD9(void) noexcept { return m_dTD9; }
   double GetTD20(void) noexcept { return m_dTD20; }
@@ -37,7 +39,7 @@ public:
   double GetSUEZMAX_1YEAR(void) noexcept { return m_dSUEZMAX_TC_1YEAR; }
   double GetAFRAMAX_1YEAR(void) noexcept { return m_dAFRAMAX_TC_1YEAR; }
   double GetMR_1YEAR(void) noexcept { return m_dMR_TC_1YEAR; }
-  double GetHANDY_1YEAR(void) noexcept { return m_dHANDY_TC_1YEAR; }
+  double GetHANDYMAX_1YEAR(void) noexcept { return m_dHANDYMAX_TC_1YEAR; }
 
 public:
   double ConvertStringToTC(CString str);
@@ -62,7 +64,7 @@ public:
   double m_dLR2_TC_1YEAR;
   double m_dLR1_TC_1YEAR;
   double m_dMR_TC_1YEAR;
-  double m_dHANDY_TC_1YEAR;
+  double m_dHANDYMAX_TC_1YEAR;
 
   double m_dVLCC_NewBuild;
   double m_dSUEZMAX_NewBuild;
@@ -71,13 +73,13 @@ public:
   double m_dLR1_NewBuild;
   double m_dMR_NewBuild;
   double m_dHANDYMAX_NewBuild;
-  double m_dVLCC_5YearsOld;
-  double m_dSUEZMAX_5YearsOld;
-  double m_dAFRAMAX_5YearsOld;
-  double m_dLR2_5YearsOld;
-  double m_dLR1_5YearsOld;
-  double m_dMR_5YearsOld;
-  double m_dHANDYMAX_5YearsOld;
+  double m_dVLCC_5YearOld;
+  double m_dSUEZMAX_5YearOld;
+  double m_dAFRAMAX_5YearOld;
+  double m_dLR2_5YearOld;
+  double m_dLR1_5YearOld;
+  double m_dMR_5YearOld;
+  double m_dHANDYMAX_5YearOld;
 
   bool m_fTodayUpdated;
   long m_lLastUpdateDay;

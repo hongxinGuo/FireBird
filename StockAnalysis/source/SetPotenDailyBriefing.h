@@ -33,7 +33,7 @@ public:
   CString m_LR2_TC_1YEAR;
   CString m_LR1_TC_1YEAR;
   CString m_MR_TC_1YEAR;
-  CString m_HANDY_TC_1YEAR;
+  CString m_HANDYMAX_TC_1YEAR;
   CString m_VLCC_NEW_BUILD;
   CString m_SUEZMAX_NEW_BUILD;
   CString m_AFRAMAX_NEW_BUILD;

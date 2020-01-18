@@ -9,7 +9,9 @@ CPotenDailyBriefing::CPotenDailyBriefing() {
   m_lDay = 0;
   m_dTD3C = m_dTD9 = m_dTD20 = m_dTD21 = 0;
   m_dTC1 = m_dTC2 = m_dTC5 = m_dTC14 = 0;
-  m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dLR2_TC_1YEAR = m_dLR1_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDY_TC_1YEAR = 0;
+  m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dLR2_TC_1YEAR = m_dLR1_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDYMAX_TC_1YEAR = 0;
+  m_dAFRAMAX_5YearOld = m_dHANDYMAX_5YearOld = m_dVLCC_5YearOld = m_dSUEZMAX_5YearOld = m_dLR1_5YearOld = m_dLR2_5YearOld = m_dMR_5YearOld = 0;
+  m_dAFRAMAX_NewBuild = m_dHANDYMAX_NewBuild = m_dVLCC_NewBuild = m_dSUEZMAX_NewBuild = m_dLR1_NewBuild = m_dLR2_NewBuild = m_dMR_NewBuild = 0;
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
@@ -38,7 +40,7 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
   m_dLR2_TC_1YEAR = atof(setPotenDailyBriefing.m_LR2_TC_1YEAR);
   m_dLR1_TC_1YEAR = atof(setPotenDailyBriefing.m_LR1_TC_1YEAR);
   m_dMR_TC_1YEAR = atof(setPotenDailyBriefing.m_MR_TC_1YEAR);
-  m_dHANDY_TC_1YEAR = atof(setPotenDailyBriefing.m_HANDY_TC_1YEAR);
+  m_dHANDYMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_HANDYMAX_TC_1YEAR);
 }
 
 void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -60,7 +62,7 @@ void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing
   setPotenDailyBriefing.m_LR2_TC_1YEAR = ConvertValueToString(m_dLR2_TC_1YEAR);
   setPotenDailyBriefing.m_LR1_TC_1YEAR = ConvertValueToString(m_dLR1_TC_1YEAR);
   setPotenDailyBriefing.m_MR_TC_1YEAR = ConvertValueToString(m_dMR_TC_1YEAR);
-  setPotenDailyBriefing.m_HANDY_TC_1YEAR = ConvertValueToString(m_dHANDY_TC_1YEAR);
+  setPotenDailyBriefing.m_HANDYMAX_TC_1YEAR = ConvertValueToString(m_dHANDYMAX_TC_1YEAR);
 }
 
 void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -75,17 +77,6 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
-
-  bool fFoundTime = false;
-  while (!fFoundTime) {
-    str = GetNextString(pWebDataReceived);
-    strHead = str.Left(20);
-    if (strHead.Compare(_T("POTEN DAILY BRIEFING")) == 0) {
-      strTime = GetNextString(pWebDataReceived); // 当前时间
-      m_lDay = ConvertStringToTime(strTime);
-      fFoundTime = true;
-    }
-  }
 
   while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
     str = GetNextString(pWebDataReceived);
@@ -106,78 +97,94 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉3个没用字符串
       str1 = GetNextString(pWebDataReceived); // "PANAMAX"
       m_dTD21 = GetOneValue(str1);
+      for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
 
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 5; i++) { // "CPP"
         strNoUse = GetNextString(pWebDataReceived);
         strHead = strNoUse.Left(5);
         strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived); // "CPP"
+        str1 = GetNextString(pWebDataReceived);
         strNoUse = GetNextString(pWebDataReceived);
-        if (strHead.Compare(_T("MR,38")) == 0) {
+        if (strHead.Compare(_T("MR 38")) == 0) {
           m_dTC14 = GetOneValue(str1);
         }
-        else if (strHead.Compare(_T("MR,37"))) {
+        else if (strHead.Compare(_T("MR 37")) == 0) {
           m_dTC2 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("LR2,7")) == 0) {
+        if (strHead.Compare(_T("LR2 7")) == 0) {
           m_dTC1 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("LR1,5")) == 0) {
+        if (strHead.Compare(_T("LR1 5")) == 0) {
           m_dTC5 = GetOneValue(str1);
         }
         if (strHead.Compare(_T("MR,38")) == 0) {
           m_dTC14 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("TIME ")) == 0) {
-          i = 4;
+        if (strHead.Compare(_T("&nbsp")) == 0) {
+          i = 5;
         }
       }
-    }
+      str1 = GetNextString(pWebDataReceived); // "CPP"
+      strHead = str1.Left(12);
+      if (strHead.Compare(_T("TIME CHARTER")) == 0) {
+        for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dVLCC_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dVLCC_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dVLCC_5YearOld = GetOneValue(str1);
 
-    strHead = str.Left(6);
-    if (strHead.Compare(_T("Tanker")) == 0) {
-      for (int i = 0; i < 7; i++) strNoUse = GetNextString(pWebDataReceived); // "CPP"
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dVLCC_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dVLCC_TC_3YEAR = ConvertStringToTC(str1);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dSUEZMAX_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dSUEZMAX_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dSUEZMAX_5YearOld = GetOneValue(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dSUEZMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dSUEZMAX_TC_3YEAR = ConvertStringToTC(str1);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dAFRAMAX_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dAFRAMAX_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dAFRAMAX_5YearOld = GetOneValue(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dAFRAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dAFRAMAX_TC_3YEAR = ConvertStringToTC(str1);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR2_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR2_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR2_5YearOld = GetOneValue(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dPANAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dPANAMAX_TC_3YEAR = ConvertStringToTC(str1);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR1_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR1_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLR1_5YearOld = GetOneValue(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dMR_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dMR_TC_3YEAR = ConvertStringToTC(str1);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dMR_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dMR_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dMR_5YearOld = GetOneValue(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dHANDY_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
-      gl_CrweberIndex.m_dHANDY_TC_3YEAR = ConvertStringToTC(str1);
-
-      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived);
+        m_dHANDYMAX_TC_1YEAR = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dHANDYMAX_NewBuild = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived);
+        m_dHANDYMAX_5YearOld = GetOneValue(str1);
+        pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+      }
     }
   }
   pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
@@ -219,20 +226,24 @@ long CPotenDailyBriefing::ConvertStringToTime(CString str) {
 double CPotenDailyBriefing::GetOneValue(CString strValue) {
   double dValue = 0;
   char buffer[30];
+  long lStrLength = strValue.GetLength();
   bool fMinus = false;
   char* p = strValue.GetBuffer();
-  int i = 0;
+  int i = 0, j = 0;
 
-  while (*p != 0x000) {
+  while (j < lStrLength) {
+    j++;
     if (*p == '(') {
       fMinus = true; p++;
     }
-    if (*p == ')') {
+    else if (*p == ')') {
       fMinus = true;
       p++;
     }
-    if (*p == ',') p++;
-    buffer[i++] = *p++;
+    else if (*p == ',') p++;
+    else {
+      buffer[i++] = *p++;
+    }
   }
   buffer[i] = 0x000;
   dValue = atof(buffer);

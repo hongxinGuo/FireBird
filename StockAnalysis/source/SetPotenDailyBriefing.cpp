@@ -12,7 +12,7 @@ CSetPotenDailyBriefing::CSetPotenDailyBriefing(CDatabase* pdb)
   m_Day = 0;
   m_TD3C = m_TD9 = m_TD20 = m_TD21 = _T("0");
   m_TC1 = m_TC2 = m_TC5 = m_TC14 = _T("0");
-  m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_LR2_TC_1YEAR = m_LR1_TC_1YEAR = m_MR_TC_1YEAR = m_HANDY_TC_1YEAR = _T("0");
+  m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_LR2_TC_1YEAR = m_LR1_TC_1YEAR = m_MR_TC_1YEAR = m_HANDYMAX_TC_1YEAR = _T("0");
   m_nFields = 31;
 }
 
@@ -45,7 +45,7 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[LR2_TC1YEAR]"), m_LR2_TC_1YEAR);
   RFX_Text(pFX, _T("[LR1_TC1YEAR]"), m_LR1_TC_1YEAR);
   RFX_Text(pFX, _T("[MR_TC1YEAR]"), m_MR_TC_1YEAR);
-  RFX_Text(pFX, _T("[HANDYMAX_TC1YEAR]"), m_HANDY_TC_1YEAR);
+  RFX_Text(pFX, _T("[HANDYMAX_TC1YEAR]"), m_HANDYMAX_TC_1YEAR);
   RFX_Text(pFX, _T("[VLCC_NEWBUILD]"), m_VLCC_NEW_BUILD);
   RFX_Text(pFX, _T("[SUEZMAX_NEWBUILD]"), m_SUEZMAX_NEW_BUILD);
   RFX_Text(pFX, _T("[AFRAMAX_NEWBUILD]"), m_AFRAMAX_NEW_BUILD);
