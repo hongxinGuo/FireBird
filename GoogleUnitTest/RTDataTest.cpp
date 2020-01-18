@@ -1617,19 +1617,19 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id.GetTransactionTime(), pRTData->GetTransactionTime());
     EXPECT_EQ(id.GetMarket(), pRTData->GetMarket());
     EXPECT_STREQ(id.GetStockCode(), pRTData->GetStockCode());
-    EXPECT_DOUBLE_EQ(id.GetLastClose(), pRTData->GetLastClose());
-    EXPECT_DOUBLE_EQ(id.GetOpen(), pRTData->GetOpen());
-    EXPECT_DOUBLE_EQ(id.GetHigh(), pRTData->GetHigh());
-    EXPECT_DOUBLE_EQ(id.GetLow(), pRTData->GetLow());
-    EXPECT_DOUBLE_EQ(id.GetNew(), pRTData->GetNew());
-    EXPECT_DOUBLE_EQ(id.GetVolume(), pRTData->GetVolume());
-    EXPECT_DOUBLE_EQ(id.GetAmount(), pRTData->GetAmount());
+    EXPECT_EQ(id.GetLastClose(), pRTData->GetLastClose());
+    EXPECT_EQ(id.GetOpen(), pRTData->GetOpen());
+    EXPECT_EQ(id.GetHigh(), pRTData->GetHigh());
+    EXPECT_EQ(id.GetLow(), pRTData->GetLow());
+    EXPECT_EQ(id.GetNew(), pRTData->GetNew());
+    EXPECT_EQ(id.GetVolume(), pRTData->GetVolume());
+    EXPECT_EQ(id.GetAmount(), pRTData->GetAmount());
 
     for (int i = 0; i < 5; i++) {
-      EXPECT_DOUBLE_EQ(id.GetPSell(i), pRTData->GetPSell(i));
-      EXPECT_DOUBLE_EQ(id.GetVSell(i), pRTData->GetVSell(i));
-      EXPECT_DOUBLE_EQ(id.GetPBuy(i), pRTData->GetPBuy(i));
-      EXPECT_DOUBLE_EQ(id.GetVBuy(i), pRTData->GetVBuy(i));
+      EXPECT_EQ(id.GetPSell(i), pRTData->GetPSell(i));
+      EXPECT_EQ(id.GetVSell(i), pRTData->GetVSell(i));
+      EXPECT_EQ(id.GetPBuy(i), pRTData->GetPBuy(i));
+      EXPECT_EQ(id.GetVBuy(i), pRTData->GetVBuy(i));
     }
 
     setRTData.Close();

@@ -93,7 +93,7 @@ public:
   double m_dLNG_138M3EastMonthly; //138-150M3 Steam turbine (West)‘¬‘Àº€
 
   double m_dLPG_VLGC44LastSpotRate;
-  double m_dLPG_VLGC44SpotRate;
+  double m_dLPG_VLGC44SpotTCERate;
 
   double m_dBunker_USGolf_IFO380;
   double m_dBunker_USGolf_MDO;

@@ -57,6 +57,27 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
   m_dLR1_5YearOld = atof(setPotenDailyBriefing.m_LR1_5YearOld);
   m_dMR_5YearOld = atof(setPotenDailyBriefing.m_MR_5YearOld);
   m_dHANDYMAX_5YearOld = atof(setPotenDailyBriefing.m_HANDYMAX_5YearOld);
+
+  m_dHandyUSFlag_USG_USAC = atof(setPotenDailyBriefing.m_HandyUSFlag_USG_USAC);
+
+  m_dLNG_160M3WestWeekly = atof(setPotenDailyBriefing.m_LNG_160M3EastWeekly);
+  m_dLNG_160M3WestMonthly = atof(setPotenDailyBriefing.m_LNG_160M3WestMonthly);
+  m_dLNG_138M3WestWeekly = atof(setPotenDailyBriefing.m_LNG_138M3WestWeekly);
+  m_dLNG_138M3WestMonthly = atof(setPotenDailyBriefing.m_LNG_138M3WestMonthly);
+  m_dLNG_160M3EastWeekly = atof(setPotenDailyBriefing.m_LNG_138M3WestWeekly);
+  m_dLNG_160M3EastMonthly = atof(setPotenDailyBriefing.m_LNG_160M3EastMonthly);
+  m_dLNG_138M3EastWeekly = atof(setPotenDailyBriefing.m_LNG_138M3EastWeekly);
+  m_dLNG_138M3EastMonthly = atof(setPotenDailyBriefing.m_LNG_138M3EastMonthly);
+
+  m_dLPG_VLGC44LastSpotRate = atof(setPotenDailyBriefing.m_LPG_VLGC44LastSpotRate);
+  m_dLPG_VLGC44SpotTCERate = atof(setPotenDailyBriefing.m_LPG_VLGC44SpotTCERate);
+
+  m_dBunker_USGolf_IFO380 = atof(setPotenDailyBriefing.m_Bunker_USGolf_IFO380);
+  m_dBunker_USGolf_MDO = atof(setPotenDailyBriefing.m_Bunker_USGolf_MDO);
+  m_dBunker_Rotterdam_IFO380 = atof(setPotenDailyBriefing.m_Bunker_Rotterdam_IFO380);
+  m_dBunker_Rotterdam_MDO = atof(setPotenDailyBriefing.m_Bunker_Rotterdam_MDO);
+  m_dBunker_Singapore_IFO380 = atof(setPotenDailyBriefing.m_Bunker_Singapore_IFO380);
+  m_dBunker_Singapore_MDO = atof(setPotenDailyBriefing.m_Bunker_Singapore_MDO);
 }
 
 void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -95,6 +116,27 @@ void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing
   setPotenDailyBriefing.m_LR1_NewBuild = ConvertValueToString(m_dLR1_NewBuild);
   setPotenDailyBriefing.m_MR_NewBuild = ConvertValueToString(m_dMR_NewBuild);
   setPotenDailyBriefing.m_HANDYMAX_NewBuild = ConvertValueToString(m_dHANDYMAX_NewBuild);
+
+  setPotenDailyBriefing.m_HandyUSFlag_USG_USAC = ConvertValueToString(m_dHandyUSFlag_USG_USAC);
+
+  setPotenDailyBriefing.m_LNG_160M3WestWeekly = ConvertValueToString(m_dLNG_160M3WestWeekly);
+  setPotenDailyBriefing.m_LNG_160M3WestMonthly = ConvertValueToString(m_dLNG_160M3WestMonthly);
+  setPotenDailyBriefing.m_LNG_138M3WestWeekly = ConvertValueToString(m_dLNG_138M3WestWeekly);
+  setPotenDailyBriefing.m_LNG_138M3WestMonthly = ConvertValueToString(m_dLNG_138M3WestMonthly);
+  setPotenDailyBriefing.m_LNG_160M3EastWeekly = ConvertValueToString(m_dLNG_160M3EastWeekly);
+  setPotenDailyBriefing.m_LNG_160M3EastMonthly = ConvertValueToString(m_dLNG_160M3EastMonthly);
+  setPotenDailyBriefing.m_LNG_138M3EastWeekly = ConvertValueToString(m_dLNG_138M3EastWeekly);
+  setPotenDailyBriefing.m_LNG_138M3EastMonthly = ConvertValueToString(m_dLNG_138M3EastMonthly);
+
+  setPotenDailyBriefing.m_LPG_VLGC44LastSpotRate = ConvertValueToString(m_dLPG_VLGC44LastSpotRate);
+  setPotenDailyBriefing.m_LPG_VLGC44SpotTCERate = ConvertValueToString(m_dLPG_VLGC44SpotTCERate);
+
+  setPotenDailyBriefing.m_Bunker_USGolf_IFO380 = ConvertValueToString(m_dBunker_USGolf_IFO380);
+  setPotenDailyBriefing.m_Bunker_USGolf_MDO = ConvertValueToString(m_dBunker_USGolf_MDO);
+  setPotenDailyBriefing.m_Bunker_Rotterdam_IFO380 = ConvertValueToString(m_dBunker_Rotterdam_IFO380);
+  setPotenDailyBriefing.m_Bunker_Rotterdam_MDO = ConvertValueToString(m_dBunker_Rotterdam_MDO);
+  setPotenDailyBriefing.m_Bunker_Singapore_IFO380 = ConvertValueToString(m_dBunker_Singapore_IFO380);
+  setPotenDailyBriefing.m_Bunker_Singapore_MDO = ConvertValueToString(m_dBunker_Singapore_MDO);
 }
 
 void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -114,22 +156,22 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
     str = GetNextString(pWebDataReceived);
     strHead = str.Left(12);
     if (strHead.Compare(_T("DIRTY TANKER")) == 0) {
-      for (int i = 0; i < 5; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      for (int i = 0; i < 5; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô5¸öÃ»ÓÃ×Ö·û´®
       str1 = GetNextString(pWebDataReceived); // "VLCC"
       m_dTD3C = GetOneValue(str1);
 
-      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô5¸öÃ»ÓÃ×Ö·û´®
       str1 = GetNextString(pWebDataReceived); // "SUEZMAX"
       m_dTD20 = GetOneValue(str1);
 
-      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô5¸öÃ»ÓÃ×Ö·û´®
       str1 = GetNextString(pWebDataReceived); // "AFRAMAX"
       m_dTD9 = GetOneValue(str1);
 
       for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô3¸öÃ»ÓÃ×Ö·û´®
       str1 = GetNextString(pWebDataReceived); // "PANAMAX"
       m_dTD21 = GetOneValue(str1);
-      for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô9¸öÃ»ÓÃ×Ö·û´®
 
       for (int i = 0; i < 5; i++) { // "CPP"
         strNoUse = GetNextString(pWebDataReceived);
@@ -156,7 +198,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
           i = 5;
         }
       }
-      str1 = GetNextString(pWebDataReceived); // "CPP"
+      str1 = GetNextString(pWebDataReceived); // "TIME CHARTER"
       strHead = str1.Left(12);
       if (strHead.Compare(_T("TIME CHARTER")) == 0) {
         for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
@@ -215,6 +257,72 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
         m_dHANDYMAX_NewBuild = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived);
         m_dHANDYMAX_5YearOld = GetOneValue(str1);
+
+        for (int i = 0; i < 8; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        strHead = str1.Left(8);
+        ASSERT(strHead.Compare(_T("Handy 38")) == 0);
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dHandyUSFlag_USG_USAC = GetOneValue(str1);
+
+        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        strHead = str1.Left(5);
+        ASSERT(strHead.Compare(_T("160M3")) == 0);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLNG_160M3WestWeekly = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dLNG_160M3WestMonthly = GetOneValue(str1);
+
+        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived);
+        m_dLNG_138M3WestWeekly = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dLNG_138M3WestMonthly = GetOneValue(str1);
+
+        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived);
+        m_dLNG_160M3EastWeekly = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dLNG_160M3EastMonthly = GetOneValue(str1);
+
+        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived);
+        m_dLNG_138M3EastWeekly = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dLNG_138M3EastMonthly = GetOneValue(str1);
+
+        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        strHead = str1.Left(4);
+        ASSERT(strHead.Compare(_T("VLGC")) == 0);
+        str1 = GetNextString(pWebDataReceived);
+        m_dLPG_VLGC44LastSpotRate = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
+
+        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        strHead = str1.Left(7);
+        ASSERT(strHead.Compare(_T("US Gulf")) == 0);
+        str1 = GetNextString(pWebDataReceived);
+        m_dBunker_USGolf_IFO380 = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dBunker_USGolf_MDO = GetOneValue(str1);
+
+        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived);
+        m_dBunker_Rotterdam_IFO380 = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dBunker_Rotterdam_MDO = GetOneValue(str1);
+
+        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        str1 = GetNextString(pWebDataReceived);
+        m_dBunker_Singapore_IFO380 = GetOneValue(str1);
+        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+        m_dBunker_Singapore_MDO = GetOneValue(str1);
+
         pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
       }
     }

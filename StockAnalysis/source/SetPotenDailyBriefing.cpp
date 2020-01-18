@@ -74,7 +74,7 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[LNG_138M3EastMonthly]"), m_LNG_138M3EastMonthly);
 
   RFX_Text(pFX, _T("[LPG_VLGC44LastSpotRate]"), m_LPG_VLGC44LastSpotRate);
-  RFX_Text(pFX, _T("[LPG_VLGC44SpotRate]"), m_LPG_VLGC44SpotRate);
+  RFX_Text(pFX, _T("[LPG_VLGC44SpotTCERate]"), m_LPG_VLGC44SpotTCERate);
 
   RFX_Text(pFX, _T("[Bunker_USGolf_IFO380]"), m_Bunker_USGolf_IFO380);
   RFX_Text(pFX, _T("[Bunker_USGolf_MDO]"), m_Bunker_USGolf_MDO);

@@ -62,7 +62,7 @@ public:
   CString m_LNG_138M3EastMonthly; //138-150M3 Steam turbine (West)‘¬‘Àº€
 
   CString m_LPG_VLGC44LastSpotRate;
-  CString m_LPG_VLGC44SpotRate;
+  CString m_LPG_VLGC44SpotTCERate;
 
   CString m_Bunker_USGolf_IFO380;
   CString m_Bunker_USGolf_MDO;
