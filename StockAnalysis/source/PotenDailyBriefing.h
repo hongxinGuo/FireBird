@@ -81,6 +81,27 @@ public:
   double m_dMR_5YearOld;
   double m_dHANDYMAX_5YearOld;
 
+  double m_dHandyUSFlag_USG_USAC;
+
+  double m_dLNG_160M3WestWeekly; //160M3 Tri-fuel diesel electric (West) 周运价
+  double m_dLNG_160M3WestMonthly; // 160M3 Tri-fuel diesel electric (West）月运价
+  double m_dLNG_138M3WestWeekly; //138-150M3 Steam turbine (West)周运价
+  double m_dLNG_138M3WestMonthly; //138-150M3 Steam turbine (West)月运价
+  double m_dLNG_160M3EastWeekly; //160M3 Tri-fuel diesel electric (West) 周运价
+  double m_dLNG_160M3EastMonthly; // 160M3 Tri-fuel diesel electric (West）月运价
+  double m_dLNG_138M3EastWeekly; //138-150M3 Steam turbine (West)周运价
+  double m_dLNG_138M3EastMonthly; //138-150M3 Steam turbine (West)月运价
+
+  double m_dLPG_VLGC44LastSpotRate;
+  double m_dLPG_VLGC44SpotRate;
+
+  double m_dBunker_USGolf_IFO380;
+  double m_dBunker_USGolf_MDO;
+  double m_dBunker_Rotterdam_IFO380;
+  double m_dBunker_Rotterdam_MDO;
+  double m_dBunker_Singapore_IFO380;
+  double m_dBunker_Singapore_MDO;
+
   bool m_fTodayUpdated;
   long m_lLastUpdateDay;
 

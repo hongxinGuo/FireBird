@@ -26,14 +26,14 @@ void CPotenDailyBriefing::Reset(void) {
 
 void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
   m_lDay = setPotenDailyBriefing.m_Day;
-  m_dTD3C = atof(setPotenDailyBriefing.m_TD3C);
-  m_dTD9 = atof(setPotenDailyBriefing.m_TD9);
-  m_dTD20 = atof(setPotenDailyBriefing.m_TD20);
-  m_dTD21 = atof(setPotenDailyBriefing.m_TD21);
-  m_dTC1 = atof(setPotenDailyBriefing.m_TC1);
-  m_dTC2 = atof(setPotenDailyBriefing.m_TC2);
-  m_dTC5 = atof(setPotenDailyBriefing.m_TC5);
-  m_dTC14 = atof(setPotenDailyBriefing.m_TC14);
+  m_dTD3C = atof(setPotenDailyBriefing.m_VLCC_TD3C);
+  m_dTD9 = atof(setPotenDailyBriefing.m_AFRAMAX_TD9);
+  m_dTD20 = atof(setPotenDailyBriefing.m_SUEZMAX_TD20);
+  m_dTD21 = atof(setPotenDailyBriefing.m_PANAMAX_TD21);
+  m_dTC1 = atof(setPotenDailyBriefing.m_LR2_TC1);
+  m_dTC2 = atof(setPotenDailyBriefing.m_MR_TC2);
+  m_dTC5 = atof(setPotenDailyBriefing.m_LR1_TC5);
+  m_dTC14 = atof(setPotenDailyBriefing.m_MR_TC14);
   m_dVLCC_TC_1YEAR = atof(setPotenDailyBriefing.m_VLCC_TC_1YEAR);
   m_dSUEZMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_SUEZMAX_TC_1YEAR);
   m_dAFRAMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_AFRAMAX_TC_1YEAR);
@@ -63,14 +63,14 @@ void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing
   ASSERT(setPotenDailyBriefing.IsOpen());
 
   setPotenDailyBriefing.m_Day = m_lDay;
-  setPotenDailyBriefing.m_TD3C = ConvertValueToString(m_dTD3C);
-  setPotenDailyBriefing.m_TD9 = ConvertValueToString(m_dTD9);
-  setPotenDailyBriefing.m_TD20 = ConvertValueToString(m_dTD20);
-  setPotenDailyBriefing.m_TD21 = ConvertValueToString(m_dTD21);
-  setPotenDailyBriefing.m_TC1 = ConvertValueToString(m_dTC1);
-  setPotenDailyBriefing.m_TC2 = ConvertValueToString(m_dTC2);
-  setPotenDailyBriefing.m_TC5 = ConvertValueToString(m_dTC5);
-  setPotenDailyBriefing.m_TC14 = ConvertValueToString(m_dTC14);
+  setPotenDailyBriefing.m_VLCC_TD3C = ConvertValueToString(m_dTD3C);
+  setPotenDailyBriefing.m_AFRAMAX_TD9 = ConvertValueToString(m_dTD9);
+  setPotenDailyBriefing.m_SUEZMAX_TD20 = ConvertValueToString(m_dTD20);
+  setPotenDailyBriefing.m_PANAMAX_TD21 = ConvertValueToString(m_dTD21);
+  setPotenDailyBriefing.m_LR2_TC1 = ConvertValueToString(m_dTC1);
+  setPotenDailyBriefing.m_MR_TC2 = ConvertValueToString(m_dTC2);
+  setPotenDailyBriefing.m_LR1_TC5 = ConvertValueToString(m_dTC5);
+  setPotenDailyBriefing.m_MR_TC14 = ConvertValueToString(m_dTC14);
 
   setPotenDailyBriefing.m_VLCC_TC_1YEAR = ConvertValueToString(m_dVLCC_TC_1YEAR);
   setPotenDailyBriefing.m_SUEZMAX_TC_1YEAR = ConvertValueToString(m_dSUEZMAX_TC_1YEAR);

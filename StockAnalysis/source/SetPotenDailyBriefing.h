@@ -19,14 +19,16 @@ public:
   // 以同时支持 Unicode 和这些转换)。
   long m_ID;
   long m_Day;
-  CString m_TD3C;
-  CString m_TD9;
-  CString m_TD20;
-  CString m_TD21;
-  CString m_TC1;
-  CString m_TC2;
-  CString m_TC5;
-  CString m_TC14;
+
+  CString m_VLCC_TD3C;
+  CString m_AFRAMAX_TD9;
+  CString m_SUEZMAX_TD20;
+  CString m_PANAMAX_TD21;
+  CString m_LR2_TC1;
+  CString m_LR1_TC5;
+  CString m_MR_TC2;
+  CString m_MR_TC14;
+
   CString m_VLCC_TC_1YEAR;
   CString m_SUEZMAX_TC_1YEAR;
   CString m_AFRAMAX_TC_1YEAR;
@@ -49,6 +51,25 @@ public:
   CString m_MR_5YearOld;
   CString m_HANDYMAX_5YearOld;
 
+  CString m_HandyUSFlag_USG_USAC;
+  CString m_LNG_160M3WestWeekly; //160M3 Tri-fuel diesel electric (West) 周运价
+  CString m_LNG_160M3WestMonthly; // 160M3 Tri-fuel diesel electric (West）月运价
+  CString m_LNG_138M3WestWeekly; //138-150M3 Steam turbine (West)周运价
+  CString m_LNG_138M3WestMonthly; //138-150M3 Steam turbine (West)月运价
+  CString m_LNG_160M3EastWeekly; //160M3 Tri-fuel diesel electric (West) 周运价
+  CString m_LNG_160M3EastMonthly; // 160M3 Tri-fuel diesel electric (West）月运价
+  CString m_LNG_138M3EastWeekly; //138-150M3 Steam turbine (West)周运价
+  CString m_LNG_138M3EastMonthly; //138-150M3 Steam turbine (West)月运价
+
+  CString m_LPG_VLGC44LastSpotRate;
+  CString m_LPG_VLGC44SpotRate;
+
+  CString m_Bunker_USGolf_IFO380;
+  CString m_Bunker_USGolf_MDO;
+  CString m_Bunker_Rotterdam_IFO380;
+  CString m_Bunker_Rotterdam_MDO;
+  CString m_Bunker_Singapore_IFO380;
+  CString m_Bunker_Singapore_MDO;
   // 重写
     // 向导生成的虚函数重写
 public:
