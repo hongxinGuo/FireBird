@@ -273,7 +273,9 @@ bool CMainFrame::ResetSystem(void) {
   TRACE(_T("开始重置系统\n"));
   str = _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
-  gl_ChinaStockMarket.Reset();
+  for (auto pMarket : gl_vMarket) {
+    pMarket->Reset();
+  }
   Reset();
   TRACE(_T("重置系统结束\n"));
   return false;

@@ -12,6 +12,7 @@ using namespace std;
 class CPotenDailyBriefingMarket : public CVirtualMarket {
 public:
   CPotenDailyBriefingMarket(void);
+  virtual void Reset(void) override;
   ~CPotenDailyBriefingMarket(void);
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPer10Second(long lSecond);
@@ -30,6 +31,7 @@ public:
 
 protected:
   bool m_fDataBaseLoaded;
+  bool m_fTodayDataUupdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;

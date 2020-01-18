@@ -40,7 +40,7 @@ public:
   // 只能有一个实例
   CChinaMarket(void);
   ~CChinaMarket(void);
-  void Reset(void);
+  virtual void Reset(void) override;
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

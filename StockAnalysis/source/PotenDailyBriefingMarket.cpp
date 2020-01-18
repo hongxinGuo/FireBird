@@ -4,9 +4,15 @@
 #include "PotenDailyBriefingMarket.h"
 
 CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
+  Reset();
+}
+
+void CPotenDailyBriefingMarket::Reset(void) {
+  m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
   m_lNewestUpdatedDay = 20180411; //
   m_lNewestDatabaseDay = 0;
+  m_fTodayDataUupdated = false;
 }
 
 CPotenDailyBriefingMarket::~CPotenDailyBriefingMarket(void) {
@@ -28,9 +34,12 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond) {
     if ((m_lNewestUpdatedDay < gl_systemTime.GetDay())) {
       gl_WebDataInquirer.GetPotenDailyBriefingData();
     }
-    else if (m_lNewestUpdatedDay > m_lNewestDatabaseDay) {
-      SaveDatabase();
-      UpdateStatus();
+    else if (!m_fDataBaseLoaded) {
+      if ((m_lNewestUpdatedDay > m_lNewestDatabaseDay)) {
+        SaveDatabase();
+        UpdateStatus();
+      }
+      m_fDataBaseLoaded = true;
     }
   }
   else {
