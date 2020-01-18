@@ -19,6 +19,8 @@ public:
   bool LoadDatabase(void);
   bool SaveDatabase(void);
 
+  bool UpdateStatus(void);
+
   bool ProcessData(void);
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }

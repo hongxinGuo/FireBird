@@ -46,20 +46,20 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[LR1_TC1YEAR]"), m_LR1_TC_1YEAR);
   RFX_Text(pFX, _T("[MR_TC1YEAR]"), m_MR_TC_1YEAR);
   RFX_Text(pFX, _T("[HANDYMAX_TC1YEAR]"), m_HANDYMAX_TC_1YEAR);
-  RFX_Text(pFX, _T("[VLCC_NEWBUILD]"), m_VLCC_NEW_BUILD);
-  RFX_Text(pFX, _T("[SUEZMAX_NEWBUILD]"), m_SUEZMAX_NEW_BUILD);
-  RFX_Text(pFX, _T("[AFRAMAX_NEWBUILD]"), m_AFRAMAX_NEW_BUILD);
-  RFX_Text(pFX, _T("[LR2_NEWBUILD]"), m_LR2_NEW_BUILD);
-  RFX_Text(pFX, _T("[LR1_NEWBUILD]"), m_LR1_NEW_BUILD);
-  RFX_Text(pFX, _T("[MR_NEWBUILD]"), m_MR_NEW_BUILD);
-  RFX_Text(pFX, _T("[HANDYMAX_NEWBUILD]"), m_HANDYMAX_NEW_BUILD);
-  RFX_Text(pFX, _T("[VLCC_5YEAROLD]"), m_VLCC_5YEAR_OLD);
-  RFX_Text(pFX, _T("[SUEZMAX_5YEAROLD]"), m_SUEZMAX_5YEAR_OLD);
-  RFX_Text(pFX, _T("[AFRAMAX_5YEAROLD]"), m_AFRAMAX_5YEAR_OLD);
-  RFX_Text(pFX, _T("[LR2_5YEAROLD]"), m_LR2_5YEAR_OLD);
-  RFX_Text(pFX, _T("[LR1_5YEAROLD]"), m_LR1_5YEAR_OLD);
-  RFX_Text(pFX, _T("[MR_5YEAROLD]"), m_MR_5YEAR_OLD);
-  RFX_Text(pFX, _T("[HANDYMAX_5YEAROLD]"), m_HANDYMAX_5YEAR_OLD);
+  RFX_Text(pFX, _T("[VLCC_NEWBUILD]"), m_VLCC_NewBuild);
+  RFX_Text(pFX, _T("[SUEZMAX_NEWBUILD]"), m_SUEZMAX_NewBuild);
+  RFX_Text(pFX, _T("[AFRAMAX_NEWBUILD]"), m_AFRAMAX_NewBuild);
+  RFX_Text(pFX, _T("[LR2_NEWBUILD]"), m_LR2_NewBuild);
+  RFX_Text(pFX, _T("[LR1_NEWBUILD]"), m_LR1_NewBuild);
+  RFX_Text(pFX, _T("[MR_NEWBUILD]"), m_MR_NewBuild);
+  RFX_Text(pFX, _T("[HANDYMAX_NEWBUILD]"), m_HANDYMAX_NewBuild);
+  RFX_Text(pFX, _T("[VLCC_5YEAROLD]"), m_VLCC_5YearOld);
+  RFX_Text(pFX, _T("[SUEZMAX_5YEAROLD]"), m_SUEZMAX_5YearOld);
+  RFX_Text(pFX, _T("[AFRAMAX_5YEAROLD]"), m_AFRAMAX_5YearOld);
+  RFX_Text(pFX, _T("[LR2_5YEAROLD]"), m_LR2_5YearOld);
+  RFX_Text(pFX, _T("[LR1_5YEAROLD]"), m_LR1_5YearOld);
+  RFX_Text(pFX, _T("[MR_5YEAROLD]"), m_MR_5YearOld);
+  RFX_Text(pFX, _T("[HANDYMAX_5YEAROLD]"), m_HANDYMAX_5YearOld);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ

@@ -41,6 +41,22 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
   m_dLR1_TC_1YEAR = atof(setPotenDailyBriefing.m_LR1_TC_1YEAR);
   m_dMR_TC_1YEAR = atof(setPotenDailyBriefing.m_MR_TC_1YEAR);
   m_dHANDYMAX_TC_1YEAR = atof(setPotenDailyBriefing.m_HANDYMAX_TC_1YEAR);
+
+  m_dVLCC_NewBuild = atof(setPotenDailyBriefing.m_VLCC_NewBuild);
+  m_dSUEZMAX_NewBuild = atof(setPotenDailyBriefing.m_SUEZMAX_NewBuild);
+  m_dAFRAMAX_NewBuild = atof(setPotenDailyBriefing.m_AFRAMAX_NewBuild);
+  m_dLR2_NewBuild = atof(setPotenDailyBriefing.m_LR2_NewBuild);
+  m_dLR1_NewBuild = atof(setPotenDailyBriefing.m_LR1_NewBuild);
+  m_dMR_NewBuild = atof(setPotenDailyBriefing.m_MR_NewBuild);
+  m_dHANDYMAX_NewBuild = atof(setPotenDailyBriefing.m_HANDYMAX_NewBuild);
+
+  m_dVLCC_5YearOld = atof(setPotenDailyBriefing.m_VLCC_5YearOld);
+  m_dSUEZMAX_5YearOld = atof(setPotenDailyBriefing.m_SUEZMAX_5YearOld);
+  m_dAFRAMAX_5YearOld = atof(setPotenDailyBriefing.m_AFRAMAX_5YearOld);
+  m_dLR2_5YearOld = atof(setPotenDailyBriefing.m_LR2_5YearOld);
+  m_dLR1_5YearOld = atof(setPotenDailyBriefing.m_LR1_5YearOld);
+  m_dMR_5YearOld = atof(setPotenDailyBriefing.m_MR_5YearOld);
+  m_dHANDYMAX_5YearOld = atof(setPotenDailyBriefing.m_HANDYMAX_5YearOld);
 }
 
 void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -63,6 +79,22 @@ void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing
   setPotenDailyBriefing.m_LR1_TC_1YEAR = ConvertValueToString(m_dLR1_TC_1YEAR);
   setPotenDailyBriefing.m_MR_TC_1YEAR = ConvertValueToString(m_dMR_TC_1YEAR);
   setPotenDailyBriefing.m_HANDYMAX_TC_1YEAR = ConvertValueToString(m_dHANDYMAX_TC_1YEAR);
+
+  setPotenDailyBriefing.m_VLCC_5YearOld = ConvertValueToString(m_dVLCC_5YearOld);
+  setPotenDailyBriefing.m_SUEZMAX_5YearOld = ConvertValueToString(m_dSUEZMAX_5YearOld);
+  setPotenDailyBriefing.m_AFRAMAX_5YearOld = ConvertValueToString(m_dAFRAMAX_5YearOld);
+  setPotenDailyBriefing.m_LR2_5YearOld = ConvertValueToString(m_dLR2_5YearOld);
+  setPotenDailyBriefing.m_LR1_5YearOld = ConvertValueToString(m_dLR1_5YearOld);
+  setPotenDailyBriefing.m_MR_5YearOld = ConvertValueToString(m_dMR_5YearOld);
+  setPotenDailyBriefing.m_HANDYMAX_5YearOld = ConvertValueToString(m_dHANDYMAX_5YearOld);
+
+  setPotenDailyBriefing.m_VLCC_NewBuild = ConvertValueToString(m_dVLCC_NewBuild);
+  setPotenDailyBriefing.m_SUEZMAX_NewBuild = ConvertValueToString(m_dSUEZMAX_NewBuild);
+  setPotenDailyBriefing.m_AFRAMAX_NewBuild = ConvertValueToString(m_dAFRAMAX_NewBuild);
+  setPotenDailyBriefing.m_LR2_NewBuild = ConvertValueToString(m_dLR2_NewBuild);
+  setPotenDailyBriefing.m_LR1_NewBuild = ConvertValueToString(m_dLR1_NewBuild);
+  setPotenDailyBriefing.m_MR_NewBuild = ConvertValueToString(m_dMR_NewBuild);
+  setPotenDailyBriefing.m_HANDYMAX_NewBuild = ConvertValueToString(m_dHANDYMAX_NewBuild);
 }
 
 void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing) {

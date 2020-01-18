@@ -34,20 +34,20 @@ public:
   CString m_LR1_TC_1YEAR;
   CString m_MR_TC_1YEAR;
   CString m_HANDYMAX_TC_1YEAR;
-  CString m_VLCC_NEW_BUILD;
-  CString m_SUEZMAX_NEW_BUILD;
-  CString m_AFRAMAX_NEW_BUILD;
-  CString m_LR2_NEW_BUILD;
-  CString m_LR1_NEW_BUILD;
-  CString m_MR_NEW_BUILD;
-  CString m_HANDYMAX_NEW_BUILD;
-  CString m_VLCC_5YEAR_OLD;
-  CString m_SUEZMAX_5YEAR_OLD;
-  CString m_AFRAMAX_5YEAR_OLD;
-  CString m_LR2_5YEAR_OLD;
-  CString m_LR1_5YEAR_OLD;
-  CString m_MR_5YEAR_OLD;
-  CString m_HANDYMAX_5YEAR_OLD;
+  CString m_VLCC_NewBuild;
+  CString m_SUEZMAX_NewBuild;
+  CString m_AFRAMAX_NewBuild;
+  CString m_LR2_NewBuild;
+  CString m_LR1_NewBuild;
+  CString m_MR_NewBuild;
+  CString m_HANDYMAX_NewBuild;
+  CString m_VLCC_5YearOld;
+  CString m_SUEZMAX_5YearOld;
+  CString m_AFRAMAX_5YearOld;
+  CString m_LR2_5YearOld;
+  CString m_LR1_5YearOld;
+  CString m_MR_5YearOld;
+  CString m_HANDYMAX_5YearOld;
 
   // 重写
     // 向导生成的虚函数重写

@@ -30,6 +30,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond) {
     }
     else if (m_lNewestUpdatedDay > m_lNewestDatabaseDay) {
       SaveDatabase();
+      UpdateStatus();
     }
   }
   else {
@@ -84,10 +85,15 @@ bool CPotenDailyBriefingMarket::SaveDatabase(void) {
   }
   setPotenDailyBriefing.m_pDatabase->CommitTrans();
   setPotenDailyBriefing.Close();
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::UpdateStatus(void) {
   for (auto pPotenDailyBriefing : m_vPotenDailyBriefing) {
     if (pPotenDailyBriefing->m_lDay > m_lNewestDatabaseDay) {
       m_lNewestDatabaseDay = pPotenDailyBriefing->m_lDay;
     }
   }
+
   return true;
 }
