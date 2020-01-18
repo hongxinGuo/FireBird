@@ -34,12 +34,13 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond) {
     if ((m_lNewestUpdatedDay < gl_systemTime.GetDay())) {
       gl_WebDataInquirer.GetPotenDailyBriefingData();
     }
-    else if (!m_fDataBaseLoaded) {
+    else if (!m_fTodayDataUupdated) {
       if ((m_lNewestUpdatedDay > m_lNewestDatabaseDay)) {
         SaveDatabase();
         UpdateStatus();
+        gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
       }
-      m_fDataBaseLoaded = true;
+      m_fTodayDataUupdated = true;
     }
   }
   else {

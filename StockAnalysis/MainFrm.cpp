@@ -88,6 +88,8 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 
   // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
+  ASSERT(!gl_fTestMode);
+  ASSERT(gl_fNormalMode);
   gl_ChinaStockMarket.LoadStockCodeDB();
   gl_ChinaStockMarket.LoadOptionDB();
 
@@ -668,7 +670,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
