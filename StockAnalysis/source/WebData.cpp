@@ -55,9 +55,11 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
     *m_pCurrentReadPos = 0x000; // 最后以0x000结尾
   }
   catch (CInternetException * exception) {
+    m_dwWebErrorCode = exception->m_dwError;
     if (exception->m_dwError == 404) {
-      TRACE(_T("此日没有poten数据\n"));
+      TRACE(_T("Error Code 404\n"));
     }
+
     TRACE(_T("%s net error\n"), m_strConnection.GetBuffer());
     return false;
   }

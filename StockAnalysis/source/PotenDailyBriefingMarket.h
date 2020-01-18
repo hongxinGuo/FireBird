@@ -18,6 +18,8 @@ public:
 
   bool LoadDatabase(void);
 
+  bool ProcessData(void);
+
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
   long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }

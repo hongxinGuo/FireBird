@@ -404,6 +404,9 @@
     <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
+    <ClCompile Include="source\VirtualMarket.cpp">
+      <Filter>源文件\Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

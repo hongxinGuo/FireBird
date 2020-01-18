@@ -56,6 +56,7 @@ public:
 
 protected:
   CHttpFile* m_pFile; // 网络文件指针
+  DWORD m_dwWebErrorCode; //网络读取错误代码
   CString m_strInquire;// 查询所需的字符串
   char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数

@@ -75,54 +75,62 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
-  long lUpdateDay = 0;
+
+  bool fFoundTime = false;
+  while (!fFoundTime) {
+    str = GetNextString(pWebDataReceived);
+    strHead = str.Left(20);
+    if (strHead.Compare(_T("POTEN DAILY BRIEFING")) == 0) {
+      strTime = GetNextString(pWebDataReceived); // 当前时间
+      m_lDay = ConvertStringToTime(strTime);
+      fFoundTime = true;
+    }
+  }
 
   while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
     str = GetNextString(pWebDataReceived);
-    strHead = str.Left(10);
-    if (strHead.Compare(_T("Updated by")) == 0) {
-      strTime = GetNextString(pWebDataReceived); // 当前时间
-      lUpdateDay = ConvertStringToTime(strTime);
-
-      for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
-
+    strHead = str.Left(12);
+    if (strHead.Compare(_T("DIRTY TANKER")) == 0) {
+      for (int i = 0; i < 5; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
       str1 = GetNextString(pWebDataReceived); // "VLCC"
-      gl_CrweberIndex.m_dTD1 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD2 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD3C = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD15 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dVLCC_USGSPORE = GetOneValue(pWebDataReceived);
+      m_dTD3C = GetOneValue(str1);
 
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
       str1 = GetNextString(pWebDataReceived); // "SUEZMAX"
-      gl_CrweberIndex.m_dTD5 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD20 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD6 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dSUEZMAX_CBSUSG = GetOneValue(pWebDataReceived);
+      m_dTD20 = GetOneValue(str1);
 
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
       str1 = GetNextString(pWebDataReceived); // "AFRAMAX"
-      gl_CrweberIndex.m_dTD7 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD9 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD19 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD8 = GetOneValue(pWebDataReceived);
+      m_dTD9 = GetOneValue(str1);
 
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉3个没用字符串
       str1 = GetNextString(pWebDataReceived); // "PANAMAX"
-      gl_CrweberIndex.m_dTD21 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTD12 = GetOneValue(pWebDataReceived);
+      m_dTD21 = GetOneValue(str1);
 
-      str1 = GetNextString(pWebDataReceived); // "CPP"
-      gl_CrweberIndex.m_dTC2 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTC3 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTC14 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dCPP_USGCBS = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTC1 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTC5 = GetOneValue(pWebDataReceived);
-      gl_CrweberIndex.m_dTC4 = GetOneValue(pWebDataReceived);
-
-      CString strDay = ConvertValueToString(lUpdateDay, 1);
-      if (lUpdateDay > gl_CrweberIndex.m_lLastUpdateDay) {
-        gl_CrweberIndex.m_lDay = lUpdateDay;
-        gl_CrweberIndex.m_lLastUpdateDay = lUpdateDay;
-        gl_CrweberIndex.m_fTodayUpdated = true;
+      for (int i = 0; i < 4; i++) {
+        strNoUse = GetNextString(pWebDataReceived);
+        strHead = strNoUse.Left(5);
+        strNoUse = GetNextString(pWebDataReceived);
+        str1 = GetNextString(pWebDataReceived); // "CPP"
+        strNoUse = GetNextString(pWebDataReceived);
+        if (strHead.Compare(_T("MR,38")) == 0) {
+          m_dTC14 = GetOneValue(str1);
+        }
+        else if (strHead.Compare(_T("MR,37"))) {
+          m_dTC2 = GetOneValue(str1);
+        }
+        if (strHead.Compare(_T("LR2,7")) == 0) {
+          m_dTC1 = GetOneValue(str1);
+        }
+        if (strHead.Compare(_T("LR1,5")) == 0) {
+          m_dTC5 = GetOneValue(str1);
+        }
+        if (strHead.Compare(_T("MR,38")) == 0) {
+          m_dTC14 = GetOneValue(str1);
+        }
+        if (strHead.Compare(_T("TIME ")) == 0) {
+          i = 4;
+        }
       }
     }
 
@@ -196,42 +204,40 @@ double CPotenDailyBriefing::ConvertStringToTC(CString str) {
   return abc;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// 此时间串的格式为：mm/dd/yyyy
+//
+/////////////////////////////////////////////////////////////////////////////
 long CPotenDailyBriefing::ConvertStringToTime(CString str) {
-  char buffer1[20];
-  char* pChar = str.GetBuffer();
-  while (*pChar != ' ') pChar++;
-  pChar++;
-  int i = 0;
-  while (*pChar != ' ') buffer1[i++] = *pChar++;
-  pChar++;
-  buffer1[i] = 0x000;
-  CString strTime = buffer1;
-  int month = 1, day, year;
+  int month, day, year;
 
-  i = 0;
-  while (*pChar != ' ') buffer1[i++] = *pChar++;
-  pChar++;
-  buffer1[i] = 0x000;
-  strTime = buffer1;
-  day = atol(strTime);
-  i = 0;
-  while (*pChar != ' ') buffer1[i++] = *pChar++;
-  buffer1[i] = 0x000;
-  strTime = buffer1;
-  year = atol(strTime);
-
+  sscanf_s(str.GetBuffer(), "%02d/%02d/%04d", &month, &day, &year);
   return year * 10000 + month * 100 + day;
 }
 
-double CPotenDailyBriefing::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
-  CString str, strValue;
-  double dValue = 0.0;
+double CPotenDailyBriefing::GetOneValue(CString strValue) {
+  double dValue = 0;
+  char buffer[30];
+  bool fMinus = false;
+  char* p = strValue.GetBuffer();
+  int i = 0;
 
-  str = GetNextString(pWebDataReceived); // "TD1\r\n   "
-  str = GetNextString(pWebDataReceived); // 无用数据
-  str = GetNextString(pWebDataReceived); // 无用数据
-  strValue = GetNextString(pWebDataReceived); // TD1指数的当前值
-  dValue = atof(strValue.GetBuffer());
+  while (*p != 0x000) {
+    if (*p == '(') {
+      fMinus = true; p++;
+    }
+    if (*p == ')') {
+      fMinus = true;
+      p++;
+    }
+    if (*p == ',') p++;
+    buffer[i++] = *p++;
+  }
+  buffer[i] = 0x000;
+  dValue = atof(buffer);
+  if (fMinus) dValue = -dValue;
+
   return dValue;
 }
 

@@ -29,11 +29,12 @@ void CPotenDailyBriefingWebData::InquireNextWebData(void) {
   CTime today(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  sprintf_s(buffer, _T("%02d/%02d/%04d"), day, month, year);
+  sprintf_s(buffer, _T("%02d/%02d/%04d"), month, day, year);
   strMiddle = buffer;
   CreateTotalInquiringString(strMiddle);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();
+  TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDay);
 
   today += oneDay;
   m_lNextInquiringDay = today.GetYear() * 10000 + today.GetMonth() * 100 + today.GetDay();

@@ -33,13 +33,14 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond) {
     m_fDataBaseLoaded = true;
   }
 
+  ProcessData();
+
   return true;
 }
 
 bool CPotenDailyBriefingMarket::LoadDatabase(void) {
   CSetPotenDailyBriefing setPotenDailyBriefing;
   setPotenDailyBriefing.Open();
-  // 装入股票代码数据库
   while (!setPotenDailyBriefing.IsEOF()) {
     CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
@@ -50,6 +51,19 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     setPotenDailyBriefing.MoveNext();
   }
   setPotenDailyBriefing.Close();
+
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::ProcessData(void) {
+  long lTotal = gl_WebDataInquirer.GetPotenDailyBriefingDataSize();
+  for (int i = 0; i < lTotal; i++) {
+    CWebDataReceivedPtr pWebData = gl_WebDataInquirer.PopPotenDailyBriefingData();
+    CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
+    if (pPotenDailyBriefing->ReadData(pWebData)) {
+      m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
+    }
+  }
 
   return true;
 }

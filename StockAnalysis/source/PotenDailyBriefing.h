@@ -42,7 +42,7 @@ public:
 public:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
-  double GetOneValue(CWebDataReceivedPtr pWebDataReceived);
+  double GetOneValue(CString strValue);
   CString GetNextString(CWebDataReceivedPtr pWebDataReceived);
 
 public:

@@ -263,7 +263,7 @@ bool CMainFrame::CreateMarketContainer(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void) {
   for (auto pVirtualMarket : gl_vMarket) {
-    pVirtualMarket->SchedulingTask();
+    if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
   }
   return true;
 }

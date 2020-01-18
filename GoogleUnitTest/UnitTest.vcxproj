@@ -74,6 +74,7 @@
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
+    <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
@@ -154,6 +155,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\VirtualMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\WebData.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />

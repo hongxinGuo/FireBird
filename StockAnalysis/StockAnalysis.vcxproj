@@ -323,6 +323,7 @@
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp" />
+    <ClCompile Include="source\VirtualMarket.cpp" />
     <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="source\WebDataInquirer.cpp" />
     <ClCompile Include="stdafx.cpp">
