@@ -22,6 +22,7 @@ public:
 
   bool IsWorkingDay(void);
   bool IsWorkingDay(CTime timeCurrent);
+  bool IsWorkingDay(long lDay);
 
   bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
   long GetNextDay(long lDay, long lTimeSpanDays = 1);

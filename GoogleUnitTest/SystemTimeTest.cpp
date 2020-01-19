@@ -97,18 +97,25 @@ namespace StockAnalysisTest {
   TEST(SystemTimeTest, TestIsWorkingDay) {
     CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
     EXPECT_TRUE(gl_systemTime.IsWorkingDay(time1));
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(20191125));
     CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
     EXPECT_TRUE(gl_systemTime.IsWorkingDay(time2));
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(20191126));
     CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
     EXPECT_TRUE(gl_systemTime.IsWorkingDay(time3));
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(20191127));
     CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
     EXPECT_TRUE(gl_systemTime.IsWorkingDay(time4));
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(20191128));
     CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
     EXPECT_TRUE(gl_systemTime.IsWorkingDay(time5));
+    EXPECT_TRUE(gl_systemTime.IsWorkingDay(20191129));
     CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
     EXPECT_FALSE(gl_systemTime.IsWorkingDay(time6));
+    EXPECT_FALSE(gl_systemTime.IsWorkingDay(20191130));
     CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
     EXPECT_FALSE(gl_systemTime.IsWorkingDay(time7));
+    EXPECT_FALSE(gl_systemTime.IsWorkingDay(20191201));
   }
 
   TEST(SystemTimeTest, TestGetDayOfWeek) {

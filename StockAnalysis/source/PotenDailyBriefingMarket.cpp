@@ -16,6 +16,9 @@ void CPotenDailyBriefingMarket::Reset(void) {
   gl_systemTime.CalculateTime();
   for (long l = 20180411; l <= gl_systemTime.GetDay(); l = gl_systemTime.GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
+    if (!gl_systemTime.IsWorkingDay(l)) {
+      m_mapDataLoadedDays.at(l) = true; // 星期六和星期日poten.com都没有数据，故而无需查询。
+    }
   }
 }
 

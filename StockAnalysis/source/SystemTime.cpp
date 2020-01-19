@@ -87,6 +87,18 @@ bool CSystemTime::IsWorkingDay(CTime timeCurrent) {
   else return true;
 }
 
+bool CSystemTime::IsWorkingDay(long lDay) {
+  const long year = lDay / 10000;
+  const long month = lDay / 100 - year * 100;
+  const long day = lDay - year * 10000 - month * 100;
+  CTime ct(year, month, day, 12, 0, 0);
+
+  if ((ct.GetDayOfWeek() == 1) || (ct.GetDayOfWeek() == 7)) {
+    return false;
+  }
+  else return true;
+}
+
 bool CSystemTime::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) {
   CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
   const long year = lEarlyDay / 10000;
