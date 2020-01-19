@@ -55,6 +55,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond) {
 
 bool CPotenDailyBriefingMarket::LoadDatabase(void) {
   CSetPotenDailyBriefing setPotenDailyBriefing;
+  setPotenDailyBriefing.m_strSort = _T("[Day]");
   setPotenDailyBriefing.Open();
   while (!setPotenDailyBriefing.IsEOF()) {
     CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
@@ -77,8 +78,12 @@ bool CPotenDailyBriefingMarket::ProcessData(void) {
     CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
     if (pPotenDailyBriefing->ReadData(pWebData)) {
       pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
+      TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
       ASSERT(pPotenDailyBriefing->m_lDay > m_lNewestDatabaseDay);
       m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
+    }
+    else {
+      TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetDay());
     }
   }
   return true;
