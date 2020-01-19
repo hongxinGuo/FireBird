@@ -13,6 +13,7 @@ namespace StockAnalysisTest {
     CPotenDailyBriefing id;
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("7,600")), 7600);
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("(7,600)")), -7600);
+    EXPECT_DOUBLE_EQ(id.GetOneValue(_T("(1,100)")), -1100);
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("(7,600")), -7600);
   }
 }

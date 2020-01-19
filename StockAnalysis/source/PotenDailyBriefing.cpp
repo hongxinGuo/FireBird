@@ -158,6 +158,8 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   CString strValue, strTime;
   CString strNoUse;
 
+  bool fFound = false;
+
   while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
     str = GetNextString(pWebDataReceived);
     strHead = str.Left(12);
@@ -177,7 +179,13 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô3¸öÃ»ÓÃ×Ö·û´®
       str1 = GetNextString(pWebDataReceived); // "PANAMAX"
       m_dTD21 = GetOneValue(str1);
-      for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô9¸öÃ»ÓÃ×Ö·û´®
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(12);
+        if (strHead.Compare(_T("CLEAN TANKER")) == 0) fFound = true;
+      } while (!fFound);
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô3¸öÃ»ÓÃ×Ö·û´®
 
       for (int i = 0; i < 5; i++) { // "CPP"
         strNoUse = GetNextString(pWebDataReceived);
@@ -185,180 +193,180 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
         strNoUse = GetNextString(pWebDataReceived);
         str1 = GetNextString(pWebDataReceived);
         strNoUse = GetNextString(pWebDataReceived);
-        if (strHead.Compare(_T("MR 38")) == 0) {
+        if ((strHead.Compare(_T("MR 38")) == 0) || (strHead.Compare(_T("MR,38")) == 0)) {
           m_dTC14 = GetOneValue(str1);
         }
-        else if (strHead.Compare(_T("MR 37")) == 0) {
+        else if ((strHead.Compare(_T("MR 37")) == 0) || (strHead.Compare(_T("MR,37")) == 0)) {
           m_dTC2 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("LR2 7")) == 0) {
+        else if ((strHead.Compare(_T("LR2 7")) == 0) || (strHead.Compare(_T("LR2,7")) == 0)) {
           m_dTC1 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("LR1 5")) == 0) {
+        else if ((strHead.Compare(_T("LR1 5")) == 0) || (strHead.Compare(_T("LR1,5")) == 0)) {
           m_dTC5 = GetOneValue(str1);
         }
-        if (strHead.Compare(_T("MR,38")) == 0) {
-          m_dTC14 = GetOneValue(str1);
-        }
-        if (strHead.Compare(_T("&nbsp")) == 0) {
+        else {
           i = 5;
         }
       }
-      str1 = GetNextString(pWebDataReceived); // "TIME CHARTER"
-      strHead = str1.Left(12);
-      if (strHead.Compare(_T("TIME CHARTER")) == 0) {
-        for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dVLCC_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dVLCC_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dVLCC_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dSUEZMAX_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dSUEZMAX_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dSUEZMAX_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dAFRAMAX_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dAFRAMAX_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dAFRAMAX_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR2_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR2_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR2_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR1_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR1_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLR1_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dMR_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dMR_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dMR_5YearOld = GetOneValue(str1);
-
-        strNoUse = GetNextString(pWebDataReceived);
-        str1 = GetNextString(pWebDataReceived);
-        m_dHANDYMAX_TC_1YEAR = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dHANDYMAX_NewBuild = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived);
-        m_dHANDYMAX_5YearOld = GetOneValue(str1);
-
-        for (int i = 0; i < 8; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        strHead = str1.Left(8);
-        ASSERT(strHead.Compare(_T("Handy 38")) == 0);
+      fFound = false;
+      do {
         strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dHandyUSFlag_USG_USAC = GetOneValue(str1);
+        strHead = strNoUse.Left(12);
+        if (strHead.Compare(_T("TIME CHARTER")) == 0) fFound = true;
+      } while (!fFound);
 
-        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        strHead = str1.Left(5);
-        ASSERT(strHead.Compare(_T("160M3")) == 0);
+      for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dVLCC_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dVLCC_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dVLCC_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dSUEZMAX_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dSUEZMAX_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dSUEZMAX_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dAFRAMAX_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dAFRAMAX_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dAFRAMAX_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR2_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR2_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR2_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR1_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR1_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLR1_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dMR_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dMR_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dMR_5YearOld = GetOneValue(str1);
+
+      strNoUse = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebDataReceived);
+      m_dHANDYMAX_TC_1YEAR = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dHANDYMAX_NewBuild = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived);
+      m_dHANDYMAX_5YearOld = GetOneValue(str1);
+
+      for (int i = 0; i < 8; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      strHead = str1.Left(8);
+      ASSERT(strHead.Compare(_T("Handy 38")) == 0);
+      strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dHandyUSFlag_USG_USAC = GetOneValue(str1);
+
+      for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      strHead = str1.Left(5);
+      ASSERT(strHead.Compare(_T("160M3")) == 0);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLNG_160M3WestWeekly = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dLNG_160M3WestMonthly = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(4);
+        if (strHead.Compare(_T("138-")) == 0) fFound = true;
+      } while (!fFound);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLNG_138M3WestWeekly = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dLNG_138M3WestMonthly = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(5);
+        if (strHead.Compare(_T("160M3")) == 0) fFound = true;
+      } while (!fFound);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLNG_160M3EastWeekly = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dLNG_160M3EastMonthly = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(4);
+        if (strHead.Compare(_T("138-")) == 0) fFound = true;
+      } while (!fFound);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLNG_138M3EastWeekly = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dLNG_138M3EastMonthly = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(4);
+        if (strHead.Compare(_T("VLGC")) == 0) fFound = true;
+      } while (!fFound);
+      str1 = GetNextString(pWebDataReceived);
+      m_dLPG_VLGC44LastSpotRate = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(7);
+        if (strHead.Compare(_T("US Gulf")) == 0) fFound = true;
+      } while (!fFound);
+
+      str1 = GetNextString(pWebDataReceived);
+      m_dBunker_USGolf_IFO380 = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dBunker_USGolf_MDO = GetOneValue(str1);
+
+      for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+      str1 = GetNextString(pWebDataReceived);
+      m_dBunker_Rotterdam_IFO380 = GetOneValue(str1);
+      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+      m_dBunker_Rotterdam_MDO = GetOneValue(str1);
+
+      fFound = false;
+      do {
+        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        strHead = strNoUse.Left(7);
+        if (strHead.Compare(_T("Singapo")) == 0) fFound = true;
+        if (strHead.Compare(_T("ENERGY ")) == 0) break;
+      } while (!fFound);
+      if (fFound) {
         str1 = GetNextString(pWebDataReceived);
-        m_dLNG_160M3WestWeekly = GetOneValue(str1);
+        m_dBunker_Singapore_IFO380 = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dLNG_160M3WestMonthly = GetOneValue(str1);
-
-        bool fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(4);
-          if (strHead.Compare(_T("138-")) == 0) fFound = true;
-        } while (!fFound);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLNG_138M3WestWeekly = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dLNG_138M3WestMonthly = GetOneValue(str1);
-
-        fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(5);
-          if (strHead.Compare(_T("160M3")) == 0) fFound = true;
-        } while (!fFound);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLNG_160M3EastWeekly = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dLNG_160M3EastMonthly = GetOneValue(str1);
-
-        fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(4);
-          if (strHead.Compare(_T("138-")) == 0) fFound = true;
-        } while (!fFound);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLNG_138M3EastWeekly = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dLNG_138M3EastMonthly = GetOneValue(str1);
-
-        fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(4);
-          if (strHead.Compare(_T("VLGC")) == 0) fFound = true;
-        } while (!fFound);
-        str1 = GetNextString(pWebDataReceived);
-        m_dLPG_VLGC44LastSpotRate = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
-
-        fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(7);
-          if (strHead.Compare(_T("US Gulf")) == 0) fFound = true;
-        } while (!fFound);
-
-        str1 = GetNextString(pWebDataReceived);
-        m_dBunker_USGolf_IFO380 = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dBunker_USGolf_MDO = GetOneValue(str1);
-
-        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived);
-        m_dBunker_Rotterdam_IFO380 = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dBunker_Rotterdam_MDO = GetOneValue(str1);
-
-        fFound = false;
-        do {
-          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-          strHead = strNoUse.Left(7);
-          if (strHead.Compare(_T("Singapo")) == 0) fFound = true;
-          if (strHead.Compare(_T("ENERGY ")) == 0) break;
-        } while (!fFound);
-        if (fFound) {
-          str1 = GetNextString(pWebDataReceived);
-          m_dBunker_Singapore_IFO380 = GetOneValue(str1);
-          str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-          m_dBunker_Singapore_MDO = GetOneValue(str1);
-        }
-
-        pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+        m_dBunker_Singapore_MDO = GetOneValue(str1);
       }
+
+      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
   }
   pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
