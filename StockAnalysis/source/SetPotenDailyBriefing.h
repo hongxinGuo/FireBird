@@ -63,13 +63,6 @@ public:
 
   CString m_LPG_VLGC44LastSpotRate;
   CString m_LPG_VLGC44SpotTCERate;
-
-  CString m_Bunker_USGolf_IFO380;
-  CString m_Bunker_USGolf_MDO;
-  CString m_Bunker_Rotterdam_IFO380;
-  CString m_Bunker_Rotterdam_MDO;
-  CString m_Bunker_Singapore_IFO380;
-  CString m_Bunker_Singapore_MDO;
   // 重写
     // 向导生成的虚函数重写
 public:

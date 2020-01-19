@@ -8,6 +8,7 @@
 
 using namespace std;
 #include<vector>
+#include<map>
 
 class CPotenDailyBriefingMarket : public CVirtualMarket {
 public:
@@ -34,6 +35,7 @@ protected:
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUupdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
+  map<long, bool> m_mapDataLoadedDays;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;
 };

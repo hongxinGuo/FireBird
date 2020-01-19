@@ -96,13 +96,6 @@ public:
   double m_dLPG_VLGC44LastSpotRate;
   double m_dLPG_VLGC44SpotTCERate;
 
-  double m_dBunker_USGolf_IFO380;
-  double m_dBunker_USGolf_MDO;
-  double m_dBunker_Rotterdam_IFO380;
-  double m_dBunker_Rotterdam_MDO;
-  double m_dBunker_Singapore_IFO380;
-  double m_dBunker_Singapore_MDO;
-
   bool m_fTodayUpdated;
   long m_lLastUpdateDay;
 

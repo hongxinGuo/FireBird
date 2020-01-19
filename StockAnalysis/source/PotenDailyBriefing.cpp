@@ -16,8 +16,6 @@ CPotenDailyBriefing::CPotenDailyBriefing() {
   m_dLNG_138M3EastMonthly = m_dLNG_138M3EastWeekly = m_dLNG_138M3WestMonthly = m_dLNG_138M3WestWeekly = 0;
   m_dLNG_160M3EastMonthly = m_dLNG_160M3EastWeekly = m_dLNG_160M3WestMonthly = m_dLNG_160M3WestWeekly = 0;
   m_dLPG_VLGC44LastSpotRate = m_dLPG_VLGC44SpotTCERate = 0;
-  m_dBunker_Rotterdam_IFO380 = m_dBunker_Rotterdam_MDO = m_dBunker_Singapore_IFO380 = m_dBunker_Singapore_MDO = 0;
-  m_dBunker_USGolf_IFO380 = m_dBunker_USGolf_MDO = 0;
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
@@ -77,13 +75,6 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
 
   m_dLPG_VLGC44LastSpotRate = atof(setPotenDailyBriefing.m_LPG_VLGC44LastSpotRate);
   m_dLPG_VLGC44SpotTCERate = atof(setPotenDailyBriefing.m_LPG_VLGC44SpotTCERate);
-
-  m_dBunker_USGolf_IFO380 = atof(setPotenDailyBriefing.m_Bunker_USGolf_IFO380);
-  m_dBunker_USGolf_MDO = atof(setPotenDailyBriefing.m_Bunker_USGolf_MDO);
-  m_dBunker_Rotterdam_IFO380 = atof(setPotenDailyBriefing.m_Bunker_Rotterdam_IFO380);
-  m_dBunker_Rotterdam_MDO = atof(setPotenDailyBriefing.m_Bunker_Rotterdam_MDO);
-  m_dBunker_Singapore_IFO380 = atof(setPotenDailyBriefing.m_Bunker_Singapore_IFO380);
-  m_dBunker_Singapore_MDO = atof(setPotenDailyBriefing.m_Bunker_Singapore_MDO);
 }
 
 void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -136,13 +127,6 @@ void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing
 
   setPotenDailyBriefing.m_LPG_VLGC44LastSpotRate = ConvertValueToString(m_dLPG_VLGC44LastSpotRate);
   setPotenDailyBriefing.m_LPG_VLGC44SpotTCERate = ConvertValueToString(m_dLPG_VLGC44SpotTCERate);
-
-  setPotenDailyBriefing.m_Bunker_USGolf_IFO380 = ConvertValueToString(m_dBunker_USGolf_IFO380);
-  setPotenDailyBriefing.m_Bunker_USGolf_MDO = ConvertValueToString(m_dBunker_USGolf_MDO);
-  setPotenDailyBriefing.m_Bunker_Rotterdam_IFO380 = ConvertValueToString(m_dBunker_Rotterdam_IFO380);
-  setPotenDailyBriefing.m_Bunker_Rotterdam_MDO = ConvertValueToString(m_dBunker_Rotterdam_MDO);
-  setPotenDailyBriefing.m_Bunker_Singapore_IFO380 = ConvertValueToString(m_dBunker_Singapore_IFO380);
-  setPotenDailyBriefing.m_Bunker_Singapore_MDO = ConvertValueToString(m_dBunker_Singapore_MDO);
 }
 
 void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
@@ -184,7 +168,6 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       str1 = GetNextString(pWebDataReceived); // "PANAMAX"
       m_dTD21 = GetOneValue(str1);
 
-      fFound = false;
       if (!SkipOverStrings(pWebDataReceived, _T("CLEAN TANKER"))) return false;
       for (int i = 0; i < 3; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô3¸öÃ»ÓÃ×Ö·û´®
 
@@ -304,33 +287,6 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       m_dLPG_VLGC44LastSpotRate = GetOneValue(str1);
       str1 = GetNextString(pWebDataReceived); // "Handy, 38"
       m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
-
-      if (!SkipOverStrings(pWebDataReceived, _T("BUNKERS"))) return false;
-      if (!SkipOverStrings(pWebDataReceived, _T("US Gulf"))) return false;
-      str1 = GetNextString(pWebDataReceived);
-      m_dBunker_USGolf_IFO380 = GetOneValue(str1);
-      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-      m_dBunker_USGolf_MDO = GetOneValue(str1);
-
-      if (!SkipOverStrings(pWebDataReceived, _T("Rotterdam"))) return false;
-      str1 = GetNextString(pWebDataReceived);
-      m_dBunker_Rotterdam_IFO380 = GetOneValue(str1);
-      str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-      m_dBunker_Rotterdam_MDO = GetOneValue(str1);
-
-      fFound = false;
-      do {
-        strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        strHead = strNoUse.Left(7);
-        if (strHead.Compare(_T("Singapo")) == 0) fFound = true;
-        if (strHead.Compare(_T("ENERGY ")) == 0) break;
-      } while (!fFound);
-      if (fFound) {
-        str1 = GetNextString(pWebDataReceived);
-        m_dBunker_Singapore_IFO380 = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dBunker_Singapore_MDO = GetOneValue(str1);
-      }
 
       pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
