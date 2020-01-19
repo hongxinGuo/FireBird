@@ -276,7 +276,7 @@ bool CMainFrame::ResetSystem(void) {
   str = _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
   for (auto pMarket : gl_vMarket) {
-    pMarket->Reset();
+    pMarket->ResetMarket();
   }
   Reset();
   TRACE(_T("重置系统结束\n"));
@@ -670,7 +670,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

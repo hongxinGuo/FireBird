@@ -12,6 +12,12 @@ CPotenDailyBriefing::CPotenDailyBriefing() {
   m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dLR2_TC_1YEAR = m_dLR1_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDYMAX_TC_1YEAR = 0;
   m_dAFRAMAX_5YearOld = m_dHANDYMAX_5YearOld = m_dVLCC_5YearOld = m_dSUEZMAX_5YearOld = m_dLR1_5YearOld = m_dLR2_5YearOld = m_dMR_5YearOld = 0;
   m_dAFRAMAX_NewBuild = m_dHANDYMAX_NewBuild = m_dVLCC_NewBuild = m_dSUEZMAX_NewBuild = m_dLR1_NewBuild = m_dLR2_NewBuild = m_dMR_NewBuild = 0;
+  m_dHandyUSFlag_USG_USAC = 0;
+  m_dLNG_138M3EastMonthly = m_dLNG_138M3EastWeekly = m_dLNG_138M3WestMonthly = m_dLNG_138M3WestWeekly = 0;
+  m_dLNG_160M3EastMonthly = m_dLNG_160M3EastWeekly = m_dLNG_160M3WestMonthly = m_dLNG_160M3WestWeekly = 0;
+  m_dLPG_VLGC44LastSpotRate = m_dLPG_VLGC44SpotTCERate = 0;
+  m_dBunker_Rotterdam_IFO380 = m_dBunker_Rotterdam_MDO = m_dBunker_Singapore_IFO380 = m_dBunker_Singapore_MDO = 0;
+  m_dBunker_USGolf_IFO380 = m_dBunker_USGolf_MDO = 0;
 
   m_fTodayUpdated = false;
   m_lLastUpdateDay = 0;
@@ -275,37 +281,57 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dLNG_160M3WestMonthly = GetOneValue(str1);
 
-        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        bool fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(4);
+          if (strHead.Compare(_T("138-")) == 0) fFound = true;
+        } while (!fFound);
         str1 = GetNextString(pWebDataReceived);
         m_dLNG_138M3WestWeekly = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dLNG_138M3WestMonthly = GetOneValue(str1);
 
-        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(5);
+          if (strHead.Compare(_T("160M3")) == 0) fFound = true;
+        } while (!fFound);
         str1 = GetNextString(pWebDataReceived);
         m_dLNG_160M3EastWeekly = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dLNG_160M3EastMonthly = GetOneValue(str1);
 
-        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+        fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(4);
+          if (strHead.Compare(_T("138-")) == 0) fFound = true;
+        } while (!fFound);
         str1 = GetNextString(pWebDataReceived);
         m_dLNG_138M3EastWeekly = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dLNG_138M3EastMonthly = GetOneValue(str1);
 
-        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        strHead = str1.Left(4);
-        ASSERT(strHead.Compare(_T("VLGC")) == 0);
+        fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(4);
+          if (strHead.Compare(_T("VLGC")) == 0) fFound = true;
+        } while (!fFound);
         str1 = GetNextString(pWebDataReceived);
         m_dLPG_VLGC44LastSpotRate = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
 
-        for (int i = 0; i < 9; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        strHead = str1.Left(7);
-        ASSERT(strHead.Compare(_T("US Gulf")) == 0);
+        fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(7);
+          if (strHead.Compare(_T("US Gulf")) == 0) fFound = true;
+        } while (!fFound);
+
         str1 = GetNextString(pWebDataReceived);
         m_dBunker_USGolf_IFO380 = GetOneValue(str1);
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
@@ -317,11 +343,19 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
         str1 = GetNextString(pWebDataReceived); // "Handy, 38"
         m_dBunker_Rotterdam_MDO = GetOneValue(str1);
 
-        for (int i = 0; i < 2; i++) strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
-        str1 = GetNextString(pWebDataReceived);
-        m_dBunker_Singapore_IFO380 = GetOneValue(str1);
-        str1 = GetNextString(pWebDataReceived); // "Handy, 38"
-        m_dBunker_Singapore_MDO = GetOneValue(str1);
+        fFound = false;
+        do {
+          strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
+          strHead = strNoUse.Left(7);
+          if (strHead.Compare(_T("Singapo")) == 0) fFound = true;
+          if (strHead.Compare(_T("ENERGY ")) == 0) break;
+        } while (!fFound);
+        if (fFound) {
+          str1 = GetNextString(pWebDataReceived);
+          m_dBunker_Singapore_IFO380 = GetOneValue(str1);
+          str1 = GetNextString(pWebDataReceived); // "Handy, 38"
+          m_dBunker_Singapore_MDO = GetOneValue(str1);
+        }
 
         pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
       }
@@ -333,6 +367,10 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   }
   pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
 
+  return true;
+}
+
+bool CPotenDailyBriefing::SkipOverStrings(CString str) {
   return true;
 }
 
@@ -365,7 +403,7 @@ long CPotenDailyBriefing::ConvertStringToTime(CString str) {
 
 double CPotenDailyBriefing::GetOneValue(CString strValue) {
   double dValue = 0;
-  char buffer[30];
+  char buffer[50];
   long lStrLength = strValue.GetLength();
   bool fMinus = false;
   char* p = strValue.GetBuffer();

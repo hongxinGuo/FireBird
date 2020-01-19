@@ -18,6 +18,7 @@ public:
   void AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing);
 
   bool ReadData(CWebDataReceivedPtr pWebDataReceived);
+  bool SkipOverStrings(CString str);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
   bool IsDataChanged(void);

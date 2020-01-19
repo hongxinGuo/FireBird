@@ -24,6 +24,7 @@ public:
   bool IsWorkingDay(CTime timeCurrent);
 
   bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
+  long GetNextDay(long lDay, long lTimeSpanDays = 1);
 
 public:
   // ≤‚ ‘”√∫Ø ˝

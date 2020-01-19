@@ -97,3 +97,14 @@ bool CSystemTime::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOf
   long lNewDay = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
   return (lNewDay < lLatelyDay);
 }
+
+long CSystemTime::GetNextDay(long lDay, long lTimeSpanDays) {
+  CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
+  const long year = lDay / 10000;
+  const long month = lDay / 100 - year * 100;
+  const long day = lDay - year * 10000 - month * 100;
+  CTime ctDay(year, month, day, 12, 0, 0);
+  ctDay += ts;
+  long lNewDay = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
+  return (lNewDay);
+}

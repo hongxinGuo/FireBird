@@ -7,9 +7,8 @@ public:
   CVirtualMarket(void);
   ~CVirtualMarket(void);
 
-  virtual void Reset(void) = 0;
-
   virtual bool SchedulingTask(void) = 0; // 由程序的定时器调度，大约每100毫秒一次
+  virtual void ResetMarket(void) = 0;
 
   bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }
   void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }

@@ -10,7 +10,7 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
 void CPotenDailyBriefingMarket::Reset(void) {
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
-  m_lNewestUpdatedDay = 20180411; //
+  m_lNewestUpdatedDay = 20200111; //
   m_lNewestDatabaseDay = 0;
   m_fTodayDataUupdated = false;
 }
@@ -61,7 +61,7 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
     if (setPotenDailyBriefing.m_Day > m_lNewestUpdatedDay) {
-      m_lNewestDatabaseDay = m_lNewestUpdatedDay = setPotenDailyBriefing.m_Day;
+      m_lNewestDatabaseDay = m_lNewestUpdatedDay =  gl_systemTime.GetNextDay(setPotenDailyBriefing.m_Day);
     }
     setPotenDailyBriefing.MoveNext();
   }

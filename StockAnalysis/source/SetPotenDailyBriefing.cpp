@@ -13,6 +13,11 @@ CSetPotenDailyBriefing::CSetPotenDailyBriefing(CDatabase* pdb)
   m_VLCC_TD3C = m_AFRAMAX_TD9 = m_SUEZMAX_TD20 = m_PANAMAX_TD21 = _T("0");
   m_LR2_TC1 = m_MR_TC2 = m_LR1_TC5 = m_MR_TC14 = _T("0");
   m_VLCC_TC_1YEAR = m_SUEZMAX_TC_1YEAR = m_AFRAMAX_TC_1YEAR = m_LR2_TC_1YEAR = m_LR1_TC_1YEAR = m_MR_TC_1YEAR = m_HANDYMAX_TC_1YEAR = _T("0");
+  m_HandyUSFlag_USG_USAC = _T("0");
+  m_LNG_138M3EastMonthly = m_LNG_138M3EastWeekly = m_LNG_138M3WestMonthly = m_LNG_138M3WestWeekly = _T("0");
+  m_LNG_160M3EastMonthly = m_LNG_160M3EastWeekly = m_LNG_160M3WestMonthly = m_LNG_160M3WestWeekly = _T("0");
+  m_LPG_VLGC44LastSpotRate = m_LPG_VLGC44SpotTCERate = _T("0");
+  m_Bunker_Rotterdam_IFO380 = m_Bunker_Rotterdam_MDO = m_Bunker_Singapore_IFO380 = m_Bunker_Singapore_MDO = m_Bunker_USGolf_IFO380 = m_Bunker_USGolf_MDO = _T("0");
   m_nFields = 48;
 }
 
@@ -64,24 +69,24 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
 
   RFX_Text(pFX, _T("[HANDYUSFLAG_USG_USAC]"), m_HandyUSFlag_USG_USAC);
 
-  RFX_Text(pFX, _T("[LNG_160M3WestWeekly]"), m_LNG_160M3WestWeekly);
-  RFX_Text(pFX, _T("[LNG_160M3WestMonthly]"), m_LNG_160M3WestMonthly);
-  RFX_Text(pFX, _T("[LNG_138M3WestWeekly]"), m_LNG_138M3WestWeekly);
-  RFX_Text(pFX, _T("[LNG_138M3WestWeekly]"), m_LNG_138M3WestWeekly);
-  RFX_Text(pFX, _T("[LNG_138M3WestWeekly]"), m_LNG_138M3WestWeekly);
-  RFX_Text(pFX, _T("[LNG_138M3WestWeekly]"), m_LNG_138M3WestWeekly);
-  RFX_Text(pFX, _T("[LNG_138M3EastWeekly]"), m_LNG_138M3EastWeekly);
-  RFX_Text(pFX, _T("[LNG_138M3EastMonthly]"), m_LNG_138M3EastMonthly);
+  RFX_Text(pFX, _T("[LNG_160M3WESTWEEKLY]"), m_LNG_160M3WestWeekly);
+  RFX_Text(pFX, _T("[LNG_160M3WESTMONTHLY]"), m_LNG_160M3WestMonthly);
+  RFX_Text(pFX, _T("[LNG_138M3WESTWEEKLY]"), m_LNG_138M3WestWeekly);
+  RFX_Text(pFX, _T("[LNG_138M3WESTMONTHLY]"), m_LNG_138M3WestMonthly);
+  RFX_Text(pFX, _T("[LNG_160M3EASTWEEKLY]"), m_LNG_160M3EastWeekly);
+  RFX_Text(pFX, _T("[LNG_160M3EASTMONTHLY]"), m_LNG_160M3EastMonthly);
+  RFX_Text(pFX, _T("[LNG_138M3EASTWEEKLY]"), m_LNG_138M3EastWeekly);
+  RFX_Text(pFX, _T("[LNG_138M3EASTMONTHLY]"), m_LNG_138M3EastMonthly);
 
-  RFX_Text(pFX, _T("[LPG_VLGC44LastSpotRate]"), m_LPG_VLGC44LastSpotRate);
-  RFX_Text(pFX, _T("[LPG_VLGC44SpotTCERate]"), m_LPG_VLGC44SpotTCERate);
+  RFX_Text(pFX, _T("[LPG_VLGC44LASTSPOTRATE]"), m_LPG_VLGC44LastSpotRate);
+  RFX_Text(pFX, _T("[LPG_VLGC44SPOTTCERATE]"), m_LPG_VLGC44SpotTCERate);
 
-  RFX_Text(pFX, _T("[Bunker_USGolf_IFO380]"), m_Bunker_USGolf_IFO380);
-  RFX_Text(pFX, _T("[Bunker_USGolf_MDO]"), m_Bunker_USGolf_MDO);
-  RFX_Text(pFX, _T("[Bunker_Rotterdam_IFO380]"), m_Bunker_Rotterdam_IFO380);
-  RFX_Text(pFX, _T("[Bunker_Rotterdam_MDO]"), m_Bunker_Rotterdam_MDO);
-  RFX_Text(pFX, _T("[Bunker_Singapore_IFO380]"), m_Bunker_Singapore_IFO380);
-  RFX_Text(pFX, _T("[Bunker_Singapore_MDO]"), m_Bunker_Singapore_MDO);
+  RFX_Text(pFX, _T("[BUNKER_USGULF_IFO380]"), m_Bunker_USGolf_IFO380);
+  RFX_Text(pFX, _T("[BUNKER_USGULF_MDO]"), m_Bunker_USGolf_MDO);
+  RFX_Text(pFX, _T("[BUNKER_ROTTERDAM_IFO380]"), m_Bunker_Rotterdam_IFO380);
+  RFX_Text(pFX, _T("[BUNKER_ROTTERDAM_MDO]"), m_Bunker_Rotterdam_MDO);
+  RFX_Text(pFX, _T("[BUNKER_SINGAPORE_IFO380]"), m_Bunker_Singapore_IFO380);
+  RFX_Text(pFX, _T("[BUNKER_SINGAPORE_MDO]"), m_Bunker_Singapore_MDO);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ
