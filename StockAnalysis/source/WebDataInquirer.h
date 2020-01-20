@@ -61,9 +61,11 @@ public:
   long GetCrweberDataSize(void) { return m_queueCrweberWebData.GetWebDataSize(); }
   void PushCrweberData(CWebDataReceivedPtr pData) { m_queueCrweberWebData.PushWebData(pData); }
   CWebDataReceivedPtr PopCrweberData(void) { return m_queueCrweberWebData.PopWebData(); }
+
   long GetPotenDailyBriefingDataSize(void) { return m_queuePotenDailyBriefingWebData.GetWebDataSize(); }
   void PushPotenDailyBriefingData(CWebDataReceivedPtr pData) { m_queuePotenDailyBriefingWebData.PushWebData(pData); }
   CWebDataReceivedPtr PopPotenDailyBriefingData(void) { return m_queuePotenDailyBriefingWebData.PopWebData(); }
+  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebData.IsReadingWebData(); }
 
 protected:
   CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集

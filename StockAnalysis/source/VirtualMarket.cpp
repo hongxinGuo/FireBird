@@ -6,3 +6,7 @@ CVirtualMarket::CVirtualMarket(void) {
 
 CVirtualMarket::~CVirtualMarket(void) {
 }
+
+bool CVirtualMarket::SchedulingTask(void) {
+  return false;
+}

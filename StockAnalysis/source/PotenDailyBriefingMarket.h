@@ -17,12 +17,14 @@ public:
   ~CPotenDailyBriefingMarket(void);
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) override { Reset(); }
-  bool SchedulingTaskPer10Second(long lSecond);
+  bool SchedulingTaskPerSecond(long lSecond);
 
   bool LoadDatabase(void);
   bool SaveDatabase(void);
 
   bool UpdateStatus(void);
+
+  void SetNextInquiringDay(void);
 
   bool ProcessData(void);
 

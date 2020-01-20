@@ -38,7 +38,7 @@ static char THIS_FILE[] = __FILE__;
 CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
-    TRACE("市场变量只允许存在一个实例\n");
+    TRACE("ChinaMarket市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
 
@@ -1088,7 +1088,7 @@ void CChinaMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
   if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
     m_fPermitResetSystem = true;
     CString str;
-    str = _T("重置系统重置标识");
+    str = _T("重置中国股票市场系统重置标识");
     gl_systemMessage.PushInformationMessage(str);
   }
 }

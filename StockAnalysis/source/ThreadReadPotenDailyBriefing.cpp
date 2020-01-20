@@ -19,6 +19,5 @@ UINT ThreadReadPotenDailyBriefing(LPVOID pParam) {
       gl_WebDataInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }
-
   return 5;
 }
