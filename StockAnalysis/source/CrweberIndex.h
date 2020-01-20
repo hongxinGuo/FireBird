@@ -112,4 +112,4 @@ protected:
   map<CString, long> m_mapMonth;
 };
 
-typedef shared_ptr<CCrweberIndex> CrweberIndexPtr;
+typedef shared_ptr<CCrweberIndex> CCrweberIndexPtr;

@@ -106,6 +106,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\globedef.obj" />

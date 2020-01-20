@@ -129,9 +129,6 @@
     <ClInclude Include="source\CrweberIndexWebData.h">
       <Filter>头文件\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\SetCrweberIndex.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\SetDayLineToday.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
@@ -233,6 +230,9 @@
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefingMarket.h">
       <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetCrweberIndex.h">
+      <Filter>头文件\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

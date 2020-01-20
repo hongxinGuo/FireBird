@@ -930,6 +930,8 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTask(void) {
+  CVirtualMarket::SchedulingTask(); // 调用基类调度函数，完成共同任务
+
   static time_t s_timeLast = 0;
 #ifdef DEBUG
 #define __NumberOfCount__ 10

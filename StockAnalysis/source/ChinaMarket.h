@@ -3,6 +3,8 @@
 #include"stdafx.h"
 #include"globedef.h"
 
+#include"CrweberIndex.h"
+
 #include"VirtualMarket.h"
 
 #include"QueueRTData.h"
@@ -257,7 +259,7 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CStockPtr> m_vStockChoice; // 自选股票池
-  vector<CrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
+  vector<CCrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
 
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器

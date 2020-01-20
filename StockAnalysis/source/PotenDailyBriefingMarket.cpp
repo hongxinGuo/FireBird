@@ -9,7 +9,6 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
     TRACE("Poten市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
-
   Reset();
 }
 
@@ -32,6 +31,8 @@ CPotenDailyBriefingMarket::~CPotenDailyBriefingMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTask(void) {
+  CVirtualMarket::SchedulingTask(); // 调用基类调度函数，完成共同任务
+
   static time_t s_timeLast = 0;
 
   //根据时间，调度各项定时任务.每秒调度一次
@@ -43,19 +44,19 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond) {
-  if (!gl_WebDataInquirer.IsReadingPotenDailyBriefing()) {
+  if ((!m_fTodayDataUupdated) && (!gl_WebDataInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
     if (m_fDataBaseLoaded) {
       if ((m_lNewestUpdatedDay <= gl_systemTime.GetDay())) {
         gl_WebDataInquirer.GetPotenDailyBriefingData();
         SetNextInquiringDay();
       }
-      else if (!m_fTodayDataUupdated) {
+      else {
         if ((m_lNewestUpdatedDay > m_lNewestDatabaseDay)) {
           SaveDatabase();
           UpdateStatus();
-          gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
         }
+        gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
         m_fTodayDataUupdated = true;
       }
     }
