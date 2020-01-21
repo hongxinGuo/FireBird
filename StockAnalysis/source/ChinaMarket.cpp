@@ -1083,7 +1083,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
     gl_WebDataInquirer.GetCrweberIndexData();
     TaskProcessWebRTDataGetFromCrweberdotcom();
 
-    ResetSystemFlagAtMidnight(lCurrentTime);
     SaveTempDataIntoDB(lCurrentTime);
 
     return true;
@@ -1092,16 +1091,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
     i5MinuteCounter -= lSecondNumber;
 
     return false;
-  }
-}
-
-void CChinaMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
-  // 午夜过后重置各种标识
-  if (lCurrentTime <= 1500 && !m_fPermitResetSystem) {  // 在零点到零点十五分，重置系统标识
-    m_fPermitResetSystem = true;
-    CString str;
-    str = _T("重置中国股票市场系统重置标识");
-    gl_systemMessage.PushInformationMessage(str);
   }
 }
 
@@ -1209,7 +1198,7 @@ bool CChinaMarket::TaskResetSystem(long lCurrentTime) {
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetSystem()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      m_fResetSystem = true;// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      SetResetSystem(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }
   }
@@ -1220,7 +1209,7 @@ bool CChinaMarket::TaskResetSystemAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
   if (IsPermitResetSystem()) { // 如果允许重置系统
     if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      m_fResetSystem = true;// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      SetResetSystem(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
       SetPermitResetSystem(false); // 今天不再允许重启系统。
     }

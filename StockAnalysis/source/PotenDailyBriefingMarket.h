@@ -18,7 +18,8 @@ public:
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) override;
 
-  bool SchedulingTaskPerSecond(long lSecond);
+  bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
+  bool TaskResetSystem(long lCurrentTime);
   void Reset(void);
 
   bool LoadDatabase(void);

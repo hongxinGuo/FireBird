@@ -195,7 +195,6 @@ public:
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
 
-  void ResetSystemFlagAtMidnight(long lCurrentTime);
   void SaveTempDataIntoDB(long lCurrentTime);
 
   // 状态反馈

@@ -665,7 +665,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CChinaMarket, TestResetSystemFlagAtMidnight) {
+  TEST_F(CChinaMarket, TestResetSystemFlagAtMidnight) { // 这个其实是测试的CVirtualMarket类中的函数。
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetSystem());
     gl_ChinaStockMarket.ResetSystemFlagAtMidnight(0);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetSystem());
