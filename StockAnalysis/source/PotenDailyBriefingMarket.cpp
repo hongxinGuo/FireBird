@@ -43,6 +43,11 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
   return false;
 }
 
+void CPotenDailyBriefingMarket::ResetMarket(void) {
+  Reset();
+  gl_systemMessage.PushInformationMessage(_T("÷ÿ÷√poten.com"));
+}
+
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond) {
   if ((!m_fTodayDataUupdated) && (!gl_WebDataInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();

@@ -42,8 +42,6 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
     ASSERT(0);
   }
 
-  m_fPermitResetSystem = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
-
   Reset();
 }
 
@@ -53,6 +51,18 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
+}
+
+void CChinaMarket::ResetMarket(void) {
+  Reset();
+  TRACE(_T("重置中国股市\n"));
+  gl_systemMessage.PushInformationMessage(_T("重置中国股市"));
+  while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
+         || gl_ThreadStatus.IsSavingDayLine()) {
+    Sleep(1);
+  }
+  LoadStockCodeDB();
+  LoadOptionDB();
 }
 
 void CChinaMarket::Reset(void) {
@@ -1197,9 +1207,9 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
 bool CChinaMarket::TaskResetSystem(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-  if (m_fPermitResetSystem) { // 如果允许重置系统
+  if (IsPermitResetSystem()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      m_fResetSystem = true;// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }
   }
@@ -1208,11 +1218,11 @@ bool CChinaMarket::TaskResetSystem(long lCurrentTime) {
 
 bool CChinaMarket::TaskResetSystemAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
-  if (m_fPermitResetSystem) { // 如果允许重置系统
+  if (IsPermitResetSystem()) { // 如果允许重置系统
     if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      gl_fResetSystem = true;     // 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      m_fResetSystem = true;// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
-      m_fPermitResetSystem = false; // 今天不再允许重启系统。
+      SetPermitResetSystem(false); // 今天不再允许重启系统。
     }
   }
   return true;
@@ -1784,7 +1794,7 @@ void CChinaMarket::LoadOptionDB(void) {
       if (gl_ChinaStockMarket.GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
-        //gl_SaveOneStockDayLine.SetMaxCount(1);
+        gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }
     if (setOption.m_RalativeStrongStartDay == 0) {

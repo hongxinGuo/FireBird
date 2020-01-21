@@ -42,8 +42,8 @@ public:
   // 只能有一个实例
   CChinaMarket(void);
   ~CChinaMarket(void);
+  virtual void ResetMarket(void) override;
   void Reset(void);
-  virtual void ResetMarket(void) override { Reset(); }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -79,8 +79,6 @@ public:
   // interface function
 public:
   // 系统状态区
-  bool IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
-  void SetPermitResetSystem(bool fFlag) noexcept { m_fPermitResetSystem = fFlag; }
 
   // 初始化市场
 
@@ -241,18 +239,11 @@ public:
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }
   void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
 
-  // 测试用函数
-  bool __Test_IsPermitResetSystem(void) noexcept { return m_fPermitResetSystem; }
-  void __Test_SetResetSystem(bool fFlag) noexcept { gl_fResetSystem = fFlag; }
-
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
 
-public:
-
 protected:
-
   vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数
@@ -297,7 +288,6 @@ protected:
   INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
   // 系统状态区
-  bool m_fPermitResetSystem; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fSystemReady; // 市场初始态已经设置好
   bool m_fTodayStockProcessed; // 今日是否执行了股票收盘
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码

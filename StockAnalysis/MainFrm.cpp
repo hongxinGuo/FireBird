@@ -81,17 +81,25 @@ CMainFrame::CMainFrame() {
 
   ASSERT(gl_fNormalMode);
 
+  //生成市场容器Vector
+  CreateMarketContainer();
+  ASSERT(!gl_fTestMode);
+  ASSERT(gl_fNormalMode);
+
+  ResetMarket();
+
   Reset();
+}
+
+bool CMainFrame::CreateMarketContainer(void) {
+  gl_vMarket.push_back(&gl_ChinaStockMarket); // 中国股票市场
+  gl_vMarket.push_back(&gl_PotenDailyBriefingMarket); // poten.com提供的每日航运指数
+  gl_vMarket.push_back(&gl_CrweberIndexmarket); // Crweber.com提供的每日航运指数
+  return true;
 }
 
 void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
-
-  // 这两个操作记录集的函数也需要位于设置gl_fTestMode之后。
-  ASSERT(!gl_fTestMode);
-  ASSERT(gl_fNormalMode);
-  gl_ChinaStockMarket.LoadStockCodeDB();
-  gl_ChinaStockMarket.LoadOptionDB();
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateTime();
@@ -241,21 +249,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   // 将改进任务栏的可用性，因为显示的文档名带有缩略图。
   ModifyStyle(0, FWS_PREFIXTITLE);
 
-  //生成市场容器Vector
-  CreateMarketContainer();
-
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
   m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     CString str;
   }
   return 0;
-}
-
-bool CMainFrame::CreateMarketContainer(void) {
-  gl_vMarket.push_back(&gl_ChinaStockMarket); // 中国股票市场
-  gl_vMarket.push_back(&gl_PotenDailyBriefingMarket); // poten.com提供的每日航运指数
-  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,16 +269,26 @@ bool CMainFrame::SchedulingTask(void) {
   return true;
 }
 
-bool CMainFrame::ResetSystem(void) {
+bool CMainFrame::ResetMarket(void) {
   CString str;
   TRACE(_T("开始重置系统\n"));
   str = _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
   for (auto pMarket : gl_vMarket) {
-    pMarket->ResetMarket();
+    if (pMarket->IsResetSystem()) {
+      pMarket->ResetMarket();
+      pMarket->SetResetSystem(false);
+    }
   }
   Reset();
   TRACE(_T("重置系统结束\n"));
+  return false;
+}
+
+bool CMainFrame::IsNeedResetMarket(void) {
+  for (auto pMarket : gl_vMarket) {
+    if (pMarket->IsResetSystem()) return true;
+  }
   return false;
 }
 
@@ -414,13 +423,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
 
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
-  if (gl_fResetSystem) {
-    while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
-           || gl_ThreadStatus.IsSavingDayLine()) {
-      Sleep(1);
-    }
-    ResetSystem();
-    gl_fResetSystem = false;
+  if (IsNeedResetMarket()) {
+    ResetMarket();
   }
 
   // 调用主调度函数,CMainFrame只执行更新状态任务
@@ -655,7 +659,9 @@ void CMainFrame::OnRebuildDaylineRS() {
 
 void CMainFrame::OnBuildResetSystem() {
   // TODO: Add your command handler code here
-  gl_fResetSystem = true;
+  for (auto pMarket : gl_vMarket) {
+    pMarket->SetResetSystem(true);
+  }
 }
 
 void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {

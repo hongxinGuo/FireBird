@@ -58,7 +58,6 @@ extern deque<CString> gl_dequeDayLineStockInquire; // 申请日线历史数据的股票队列
 
 extern atomic_bool gl_ExitingSystem; //  系统退出标识，用于终止其他线程。
 extern bool gl_fExitingCalculatingRS; // 用于通知工作线程退出的信号
-extern bool gl_fResetSystem; // 系统重启标识
 
 extern bool gl_fNormalMode; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 extern bool gl_fTestMode; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
