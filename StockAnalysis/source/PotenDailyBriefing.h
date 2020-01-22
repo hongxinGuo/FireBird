@@ -21,7 +21,6 @@ public:
   bool SkipOverStrings(CWebDataReceivedPtr pWebDataReceived, CString str);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
-  bool IsDataChanged(void);
 
   void SetNewestDataTime(long lDay) noexcept { m_lDay = lDay; }
   long GetCurrentDataTime(void) noexcept { return m_lDay; }

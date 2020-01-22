@@ -52,7 +52,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_WM_CHAR()
   ON_WM_KEYUP()
   ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
-  ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetSystem)
+  ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
@@ -275,9 +275,9 @@ bool CMainFrame::ResetMarket(void) {
   str = _T("重置系统");
   gl_systemMessage.PushInformationMessage(str);
   for (auto pMarket : gl_vMarket) {
-    if (pMarket->IsResetSystem()) {
+    if (pMarket->IsResetMarket()) {
       pMarket->ResetMarket();
-      pMarket->SetResetSystem(false);
+      pMarket->SetResetMarket(false);
     }
   }
   Reset();
@@ -287,7 +287,7 @@ bool CMainFrame::ResetMarket(void) {
 
 bool CMainFrame::IsNeedResetMarket(void) {
   for (auto pMarket : gl_vMarket) {
-    if (pMarket->IsResetSystem()) return true;
+    if (pMarket->IsResetMarket()) return true;
   }
   return false;
 }
@@ -657,10 +657,10 @@ void CMainFrame::OnRebuildDaylineRS() {
   gl_ChinaStockMarket.CalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
 }
 
-void CMainFrame::OnBuildResetSystem() {
+void CMainFrame::OnBuildResetMarket() {
   // TODO: Add your command handler code here
   for (auto pMarket : gl_vMarket) {
-    pMarket->SetResetSystem(true);
+    pMarket->SetResetMarket(true);
   }
 }
 

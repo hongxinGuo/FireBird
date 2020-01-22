@@ -50,7 +50,7 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  TaskResetSystem(lCurrentTime);
+  TaskResetMarket(lCurrentTime);
 
   if ((!m_fTodayDataUupdated) && (!gl_WebDataInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
@@ -77,12 +77,12 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
   return true;
 }
 
-bool CPotenDailyBriefingMarket::TaskResetSystem(long lCurrentTime) {
+bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
   // 十九点二十五分重启系统
-  if (IsPermitResetSystem()) { // 如果允许重置系统
-    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000)) { // 十九点十五分重启本市场
-      SetResetSystem(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-      SetPermitResetSystem(false); // 今天不再允许重启系统。
+  if (IsPermitResetMarket()) { // 如果允许重置系统
+    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000)) { // 九点二十五分重启本市场
+      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
   }
   return true;

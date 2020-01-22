@@ -1118,8 +1118,8 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
     // 测试用。每小时自动查询crweber.com
     //gl_CrweberIndexWebData.GetWebData();
 
-    TaskResetSystem(lCurrentTime);
-    TaskResetSystemAgain(lCurrentTime);
+    TaskResetMarket(lCurrentTime);
+    TaskResetMarketAgain(lCurrentTime);
 
     // 判断中国股票市场开市状态
     TaskCheckMarketOpen(lCurrentTime);
@@ -1193,25 +1193,25 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
   return m_fMarketOpened;
 }
 
-bool CChinaMarket::TaskResetSystem(long lCurrentTime) {
+bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
-  if (IsPermitResetSystem()) { // 如果允许重置系统
+  if (IsPermitResetMarket()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      SetResetSystem(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }
   }
   return true;
 }
 
-bool CChinaMarket::TaskResetSystemAgain(long lCurrentTime) {
+bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
-  if (IsPermitResetSystem()) { // 如果允许重置系统
+  if (IsPermitResetMarket()) { // 如果允许重置系统
     if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
-      SetResetSystem(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
-      SetPermitResetSystem(false); // 今天不再允许重启系统。
+      SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
   }
   return true;

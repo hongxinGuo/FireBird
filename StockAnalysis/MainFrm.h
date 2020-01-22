@@ -85,7 +85,7 @@ public:
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnRebuildDaylineRS();
-  afx_msg void OnBuildResetSystem();
+  afx_msg void OnBuildResetMarket();
   afx_msg void OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI);
   afx_msg void OnAbortBuindingRS();
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);

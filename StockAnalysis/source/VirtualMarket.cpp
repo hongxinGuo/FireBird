@@ -3,8 +3,8 @@
 #include "VirtualMarket.h"
 
 CVirtualMarket::CVirtualMarket(void) {
-  m_fPermitResetSystem = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
-  m_fResetSystem = true;
+  m_fPermitResetMarket = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
+  m_fResetMarket = true;
   m_fReadyToRun = true;
 }
 
@@ -43,15 +43,15 @@ bool CVirtualMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-    ResetSystemFlagAtMidnight(lCurrentTime);
+    ResetMarketFlagAtMidnight(lCurrentTime);
   }
   return true;
 }
 
-void CVirtualMarket::ResetSystemFlagAtMidnight(long lCurrentTime) {
+void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
   // 午夜过后重置各种标识
-  if (lCurrentTime <= 1500 && !IsPermitResetSystem()) {  // 在零点到零点十五分，重置系统标识
-    m_fPermitResetSystem = true;
+  if (lCurrentTime <= 1500 && !IsPermitResetMarket()) {  // 在零点到零点十五分，重置系统标识
+    m_fPermitResetMarket = true;
     CString str;
     str = _T("重置系统重置标识");
     gl_systemMessage.PushInformationMessage(str);

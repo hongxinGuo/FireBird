@@ -19,7 +19,7 @@ public:
   virtual void ResetMarket(void) override;
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
-  bool TaskResetSystem(long lCurrentTime);
+  bool TaskResetMarket(long lCurrentTime);
   void Reset(void);
 
   bool LoadDatabase(void);

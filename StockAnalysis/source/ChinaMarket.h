@@ -67,8 +67,8 @@ public:
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckMarketOpen(long lCurrentTime);
-  bool TaskResetSystem(long lCurrentTime);
-  bool TaskResetSystemAgain(long lCurrentTime);
+  bool TaskResetMarket(long lCurrentTime);
+  bool TaskResetMarketAgain(long lCurrentTime);
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);

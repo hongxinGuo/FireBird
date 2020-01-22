@@ -64,11 +64,11 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
 
   m_dHandyUSFlag_USG_USAC = atof(setPotenDailyBriefing.m_HandyUSFlag_USG_USAC);
 
-  m_dLNG_160M3WestWeekly = atof(setPotenDailyBriefing.m_LNG_160M3EastWeekly);
+  m_dLNG_160M3WestWeekly = atof(setPotenDailyBriefing.m_LNG_160M3WestWeekly);
   m_dLNG_160M3WestMonthly = atof(setPotenDailyBriefing.m_LNG_160M3WestMonthly);
   m_dLNG_138M3WestWeekly = atof(setPotenDailyBriefing.m_LNG_138M3WestWeekly);
   m_dLNG_138M3WestMonthly = atof(setPotenDailyBriefing.m_LNG_138M3WestMonthly);
-  m_dLNG_160M3EastWeekly = atof(setPotenDailyBriefing.m_LNG_138M3WestWeekly);
+  m_dLNG_160M3EastWeekly = atof(setPotenDailyBriefing.m_LNG_160M3EastWeekly);
   m_dLNG_160M3EastMonthly = atof(setPotenDailyBriefing.m_LNG_160M3EastMonthly);
   m_dLNG_138M3EastWeekly = atof(setPotenDailyBriefing.m_LNG_138M3EastWeekly);
   m_dLNG_138M3EastMonthly = atof(setPotenDailyBriefing.m_LNG_138M3EastMonthly);
@@ -141,8 +141,6 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
-
-  bool fFound = false;
 
   while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
     str = GetNextString(pWebDataReceived);
@@ -398,30 +396,4 @@ CString CPotenDailyBriefing::GetNextString(CWebDataReceivedPtr pWebDataReceived)
   CString str;
   str = buffer;
   return str;
-}
-
-bool CPotenDailyBriefing::IsDataChanged(void) {
-  if ((gl_CrweberIndex.GetTD1() != gl_CrweberIndexLast.GetTD1()) ||
-    (gl_CrweberIndex.GetTD2() != gl_CrweberIndexLast.GetTD2()) ||
-      (gl_CrweberIndex.GetTD3C() != gl_CrweberIndexLast.GetTD3C()) ||
-      (gl_CrweberIndex.GetTD5() != gl_CrweberIndexLast.GetTD5()) ||
-      (gl_CrweberIndex.GetTD6() != gl_CrweberIndexLast.GetTD6()) ||
-      (gl_CrweberIndex.GetTD7() != gl_CrweberIndexLast.GetTD7()) ||
-      (gl_CrweberIndex.GetTD8() != gl_CrweberIndexLast.GetTD8()) ||
-      (gl_CrweberIndex.GetTD9() != gl_CrweberIndexLast.GetTD9()) ||
-      (gl_CrweberIndex.GetTD12() != gl_CrweberIndexLast.GetTD12()) ||
-      (gl_CrweberIndex.GetTD15() != gl_CrweberIndexLast.GetTD15()) ||
-      (gl_CrweberIndex.GetTD19() != gl_CrweberIndexLast.GetTD19()) ||
-      (gl_CrweberIndex.GetTD20() != gl_CrweberIndexLast.GetTD20()) ||
-      (gl_CrweberIndex.GetTD21() != gl_CrweberIndexLast.GetTD21()) ||
-      (gl_CrweberIndex.GetVLCC_USGSPORE() != gl_CrweberIndexLast.GetVLCC_USGSPORE()) ||
-      (gl_CrweberIndex.GetTC1() != gl_CrweberIndexLast.GetTC1()) ||
-      (gl_CrweberIndex.GetTC2() != gl_CrweberIndexLast.GetTC2()) ||
-      (gl_CrweberIndex.GetTC3() != gl_CrweberIndexLast.GetTC3()) ||
-      (gl_CrweberIndex.GetTC4() != gl_CrweberIndexLast.GetTC4()) ||
-      (gl_CrweberIndex.GetTC5() != gl_CrweberIndexLast.GetTC5()) ||
-      (gl_CrweberIndex.GetTC14() != gl_CrweberIndexLast.GetTC14())) {
-    return true;
-  }
-  return false;
 }
