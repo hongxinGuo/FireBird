@@ -41,7 +41,7 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
     SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_timeLast, lCurrentTime);
     s_timeLast = gl_systemTime.Gett_time();
   }
-  return false;
+  return true;
 }
 
 void CPotenDailyBriefingMarket::ResetMarket(void) {
@@ -138,7 +138,7 @@ bool CPotenDailyBriefingMarket::SaveDatabase(void) {
   setPotenDailyBriefing.Open();
   setPotenDailyBriefing.m_pDatabase->BeginTrans();
   for (auto pPotenDailyBriefing : m_vPotenDailyBriefing) {
-    if (pPotenDailyBriefing->m_lDay >= m_lNewestDatabaseDay) {
+    if (pPotenDailyBriefing->m_lDay > m_lNewestDatabaseDay) {
       pPotenDailyBriefing->AppendData(setPotenDailyBriefing);
     }
   }

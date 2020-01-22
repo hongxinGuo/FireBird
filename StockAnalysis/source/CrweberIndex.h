@@ -22,7 +22,7 @@ public:
   bool ReadData(CWebDataReceivedPtr pWebDataReceived);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
-  bool IsDataChanged(void);
+  bool IsDataChanged(CCrweberIndex& CrweberIndexLast);
 
   void SetNewestDataTime(long lDay) noexcept { m_lDay = lDay; }
   long GetCurrentDataTime(void) noexcept { return m_lDay; }

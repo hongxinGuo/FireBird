@@ -26,9 +26,6 @@ Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
 CQueueRTData gl_queueRTData;
 CWebDataInquirer gl_WebDataInquirer;
 
-CCrweberIndex gl_CrweberIndex;
-CCrweberIndex gl_CrweberIndexLast;
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -114,9 +111,6 @@ void CChinaMarket::Reset(void) {
 
   // 生成股票代码池
   CreateTotalStockContainer();
-
-  // 重置此全局变量
-  gl_CrweberIndex.Reset();
 }
 
 #ifdef _DEBUG
@@ -819,26 +813,6 @@ bool CChinaMarket::TaskProcessNeteaseRTData(void) {
   return true;
 }
 
-bool CChinaMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
-  CWebDataReceivedPtr pWebData = nullptr;
-  long lTotalData = gl_WebDataInquirer.GetCrweberDataSize();
-  for (int i = 0; i < lTotalData; i++) {
-    pWebData = gl_WebDataInquirer.PopCrweberData();
-    pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
-    pWebData->SetCurrentPos(0);
-    if (gl_CrweberIndex.ReadData(pWebData)) {
-      if (gl_CrweberIndex.IsTodayUpdated() || gl_CrweberIndex.IsDataChanged()) {
-        gl_CrweberIndexLast = gl_CrweberIndex;
-        gl_ChinaStockMarket.SaveCrweberIndexData();
-        gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
-        gl_CrweberIndex.m_fTodayUpdated = false;
-      }
-    }
-    else return false;  // 后面的数据出问题，抛掉不用。
-  }
-  return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 腾讯实时数据，如果遇到被查询股票代码为非上市时，只是简单略过，不返回数据。故而查询900个股票，返回的数据量要小于900.
@@ -1079,10 +1053,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
 
-    // 自动查询crweber.com
-    gl_WebDataInquirer.GetCrweberIndexData();
-    TaskProcessWebRTDataGetFromCrweberdotcom();
-
     SaveTempDataIntoDB(lCurrentTime);
 
     return true;
@@ -1114,9 +1084,6 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   if (i1MinuteCounter <= 0) {
     i1MinuteCounter = 59; // 重置计数器
-
-    // 测试用。每小时自动查询crweber.com
-    //gl_CrweberIndexWebData.GetWebData();
 
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
@@ -1396,25 +1363,6 @@ bool CChinaMarket::SaveRTData(void) {
   setRTData.m_pDatabase->BeginTrans();
   setRTData.m_pDatabase->CommitTrans();
   setRTData.Close();
-  return(true);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//	将crweber.com油运指数数据存入数据库。
-//
-//
-//////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SaveCrweberIndexData(void) {
-  CSetCrweberIndex setIndex;
-  setIndex.m_strFilter = _T("[ID] = 1");
-
-  // 存储今日生成的数据于CrweberIndex表中。
-  setIndex.Open();
-  setIndex.m_pDatabase->BeginTrans();
-  gl_CrweberIndex.AppendData(setIndex);
-  setIndex.m_pDatabase->CommitTrans();
-  setIndex.Close();
   return(true);
 }
 

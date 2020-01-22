@@ -11,12 +11,32 @@ public:
   ~CCrweberIndexMarket();
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) override { Reset(); }
-  void Reset(void) {}
+  void Reset(void);
+
+  bool SchedulingTaskPer5Minute(long lSecond, long lCurrentTime);
+  bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
+
+  bool LoadDatabase(void);
+  bool SaveDatabase(void);
+  bool SaveCrweberIndexData(void);
+
+  bool UpdateStatus(void);
+
+  void SetNextInquiringDay(void);
+
+  bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
+  void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
+  long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }
+  void SetNewestUpdateDay(long lDay) noexcept { m_lNewestUpdatedDay = lDay; }
 
 protected:
+  vector<CCrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
+
+  CCrweberIndex m_CrweberIndex;
+  CCrweberIndex m_CrweberIndexLast;
+
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUupdated;
-  vector<CCrweberIndexPtr> m_vPotenDailyBriefing;
   map<long, bool> m_mapDataLoadedDays;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;

@@ -33,9 +33,6 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CQueueRTData gl_queueRTData;
 
-extern CCrweberIndex gl_CrweberIndex;
-extern CCrweberIndex gl_CrweberIndexLast;
-
 class CChinaMarket final : public CVirtualMarket
 {
 public:
@@ -129,7 +126,6 @@ public:
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool SaveDayLineData(void);  // 日线数据处理函数，将读取到的日线数据存入数据库中
-  bool SaveCrweberIndexData(void);  // crweber.com油运指数存储函数
   bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
   bool UpdateOptionDB(void);
@@ -190,7 +186,6 @@ public:
   bool IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived);
   void CheckNeteaseRTData(CRTDataPtr pRTData);
   bool TaskProcessNeteaseRTData(void);
-  bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
@@ -249,7 +244,6 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CStockPtr> m_vStockChoice; // 自选股票池
-  vector<CCrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
 
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器

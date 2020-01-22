@@ -46,7 +46,9 @@ public:
     return true;
   }
   bool GetCrweberIndexData(void) { return m_CrweberIndexWebData.GetWebData(); }
+  bool IsReadingCrweberIndex(void) { return m_CrweberIndexWebData.IsReadingWebData(); }
   bool GetPotenDailyBriefingData(void) { return m_PotenDailyBriefingWebData.GetWebData(); }
+  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebData.IsReadingWebData(); }
 
 public:
   long GetSinaRTDataSize(void) { return m_queueSinaRTWebData.GetWebDataSize(); }
@@ -65,7 +67,6 @@ public:
   long GetPotenDailyBriefingDataSize(void) { return m_queuePotenDailyBriefingWebData.GetWebDataSize(); }
   void PushPotenDailyBriefingData(CWebDataReceivedPtr pData) { m_queuePotenDailyBriefingWebData.PushWebData(pData); }
   CWebDataReceivedPtr PopPotenDailyBriefingData(void) { return m_queuePotenDailyBriefingWebData.PopWebData(); }
-  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebData.IsReadingWebData(); }
 
 protected:
   CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
