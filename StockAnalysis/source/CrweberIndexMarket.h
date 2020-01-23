@@ -5,6 +5,9 @@
 #include"CrweberIndex.h"
 #include"VirtualMarket.h"
 
+using namespace std;
+#include<map>
+
 class CCrweberIndexMarket final : public CVirtualMarket {
 public:
   CCrweberIndexMarket();
@@ -18,7 +21,7 @@ public:
 
   bool LoadDatabase(void);
   bool SaveDatabase(void);
-  bool SaveCrweberIndexData(void);
+  bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 
   bool UpdateStatus(void);
 

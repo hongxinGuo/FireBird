@@ -9,12 +9,18 @@ CCrweberIndexMarket::CCrweberIndexMarket() {
     TRACE("CrweberIndexMarket市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
+
+  Reset();
 }
 
 CCrweberIndexMarket::~CCrweberIndexMarket() {
 }
 
 void CCrweberIndexMarket::Reset(void) {
+  m_fDataBaseLoaded = false;
+  m_fTodayDataUupdated = false;
+  //m_lNewestDatabaseDay = 0;
+  //m_lNewestUpdatedDay = 0;
   // 重置此全局变量
   m_CrweberIndex.Reset();
 }
@@ -37,10 +43,17 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
 bool CCrweberIndexMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
   // 自动查询crweber.com
   if (!gl_WebDataInquirer.IsReadingCrweberIndex()) {
-    gl_WebDataInquirer.GetCrweberIndexData();
     TaskProcessWebRTDataGetFromCrweberdotcom();
+    if (m_fDataBaseLoaded) {
+      gl_WebDataInquirer.GetCrweberIndexData();
+    }
+    else {
+      LoadDatabase();
+      m_lNewestDatabaseDay = m_vCrweberIndex.at(m_vCrweberIndex.size() - 1)->m_lDay;
+      SaveDatabase();
+      m_fDataBaseLoaded = true;
+    }
   }
-
   return true;
 }
 
@@ -54,7 +67,9 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
     if (m_CrweberIndex.ReadData(pWebData)) {
       if (m_CrweberIndex.IsTodayUpdated() || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
         m_CrweberIndexLast = m_CrweberIndex;
-        SaveCrweberIndexData();
+        CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>(m_CrweberIndex);
+        m_vCrweberIndex.push_back(pCrweberIndex);
+        SaveCrweberIndexData(pCrweberIndex);
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
         m_CrweberIndex.m_fTodayUpdated = false;
       }
@@ -64,20 +79,63 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   return true;
 }
 
+bool CCrweberIndexMarket::LoadDatabase(void) {
+  CSetCrweberIndex setCrweberIndex;
+  int i = 0;
+  long lDay = 0;
+
+  setCrweberIndex.m_strSort = _T("[Day]");
+  setCrweberIndex.Open();
+  while (!setCrweberIndex.IsEOF()) {
+    CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
+    pCrweberIndex->LoadData(setCrweberIndex);
+    m_vCrweberIndex.resize(i + 1);
+    m_vCrweberIndex[i] = pCrweberIndex;
+    if (lDay < pCrweberIndex->m_lDay) {
+      i++;
+      lDay = pCrweberIndex->m_lDay;
+    }
+    setCrweberIndex.MoveNext();
+  }
+  setCrweberIndex.Close();
+  return true;
+}
+
+bool CCrweberIndexMarket::SaveDatabase(void) {
+  CSetCrweberIndex setCrweberIndex;
+
+  setCrweberIndex.Open();
+  while (!setCrweberIndex.IsEOF()) {
+    setCrweberIndex.Delete();
+    setCrweberIndex.MoveNext();
+  }
+  setCrweberIndex.Close();
+
+  setCrweberIndex.Open();
+  setCrweberIndex.m_pDatabase->BeginTrans();
+  for (auto pCrweberIndex : m_vCrweberIndex) {
+    pCrweberIndex->AppendData(setCrweberIndex);
+  }
+  setCrweberIndex.m_pDatabase->CommitTrans();
+  setCrweberIndex.Close();
+
+  return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将crweber.com油运指数数据存入数据库。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CCrweberIndexMarket::SaveCrweberIndexData(void) {
+bool CCrweberIndexMarket::SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex) {
   CSetCrweberIndex setIndex;
   setIndex.m_strFilter = _T("[ID] = 1");
 
   // 存储今日生成的数据于CrweberIndex表中。
   setIndex.Open();
   setIndex.m_pDatabase->BeginTrans();
-  m_CrweberIndex.AppendData(setIndex);
+  pCrweberIndex->AppendData(setIndex);
   setIndex.m_pDatabase->CommitTrans();
   setIndex.Close();
   return(true);

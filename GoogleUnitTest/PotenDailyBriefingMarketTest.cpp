@@ -44,12 +44,16 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingMarketTest, TestTaskResetMarket) {
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
-    gl_PotenDailyBriefingMarket.TaskResetMarket(92459);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(85959);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
     gl_PotenDailyBriefingMarket.TaskResetMarket(93001);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
-    gl_PotenDailyBriefingMarket.TaskResetMarket(92500);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(90000);
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
+    gl_PotenDailyBriefingMarket.SetPermitResetMarket(true); // 重置此标识
+    gl_PotenDailyBriefingMarket.TaskResetMarket(93000);
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
 
