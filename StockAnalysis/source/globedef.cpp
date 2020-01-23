@@ -23,5 +23,5 @@ vector<CVirtualMarket*> gl_vMarket; // 各市场指针的容器，只用于执行各市场的Sched
 
 // 各市场。皆为唯一实例
 CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
-CCrweberIndexMarket gl_CrweberIndexmarket;
+CCrweberIndexMarket gl_CrweberIndexMarket;
 CChinaMarket gl_ChinaStockMarket;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

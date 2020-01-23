@@ -129,6 +129,9 @@
     <ClCompile Include="PotenDailyBriefingTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
+    <ClCompile Include="CrweberIndexMarketTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

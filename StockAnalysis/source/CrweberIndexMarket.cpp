@@ -18,9 +18,9 @@ CCrweberIndexMarket::~CCrweberIndexMarket() {
 
 void CCrweberIndexMarket::Reset(void) {
   m_fDataBaseLoaded = false;
-  m_fTodayDataUupdated = false;
-  //m_lNewestDatabaseDay = 0;
-  //m_lNewestUpdatedDay = 0;
+  m_fTodayDataUupdated = true;
+  m_lNewestDatabaseDay = 0;
+  m_lNewestUpdatedDay = 0;
   // 重置此全局变量
   m_CrweberIndex.Reset();
 }
@@ -65,13 +65,18 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
     pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
     pWebData->SetCurrentPos(0);
     if (m_CrweberIndex.ReadData(pWebData)) {
-      if (m_CrweberIndex.IsTodayUpdated() || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
+      m_lNewestUpdatedDay = m_CrweberIndex.m_lDay;
+      if (m_lNewestDatabaseDay < m_CrweberIndex.m_lDay) {
+        m_fTodayDataUupdated = true;
+        m_lNewestDatabaseDay = m_CrweberIndex.m_lDay;
+      }
+      if (!m_fTodayDataUupdated || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
         m_CrweberIndexLast = m_CrweberIndex;
         CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>(m_CrweberIndex);
         m_vCrweberIndex.push_back(pCrweberIndex);
         SaveCrweberIndexData(pCrweberIndex);
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
-        m_CrweberIndex.m_fTodayUpdated = false;
+        m_fTodayDataUupdated = false;
       }
     }
     else return false;  // 后面的数据出问题，抛掉不用。
@@ -82,7 +87,6 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
 bool CCrweberIndexMarket::LoadDatabase(void) {
   CSetCrweberIndex setCrweberIndex;
   int i = 0;
-  long lDay = 0;
 
   setCrweberIndex.m_strSort = _T("[Day]");
   setCrweberIndex.Open();
@@ -91,9 +95,9 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
     pCrweberIndex->LoadData(setCrweberIndex);
     m_vCrweberIndex.resize(i + 1);
     m_vCrweberIndex[i] = pCrweberIndex;
-    if (lDay < pCrweberIndex->m_lDay) {
+    if (m_lNewestDatabaseDay < pCrweberIndex->m_lDay) {
       i++;
-      lDay = pCrweberIndex->m_lDay;
+      m_lNewestDatabaseDay = pCrweberIndex->m_lDay;
     }
     setCrweberIndex.MoveNext();
   }

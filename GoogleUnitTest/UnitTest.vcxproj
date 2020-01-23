@@ -63,6 +63,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
+    <ClCompile Include="CrweberIndexMarketTest.cpp" />
     <ClCompile Include="CrweberIndexWebDataTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />

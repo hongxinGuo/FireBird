@@ -68,7 +68,7 @@ extern vector<CVirtualMarket*> gl_vMarket; // 各市场指针的容器，只用于执行各市场
 
 // 各市场唯一的实例
 extern CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
-extern CCrweberIndexMarket gl_CrweberIndexmarket;
+extern CCrweberIndexMarket gl_CrweberIndexMarket;
 class CChinaMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
 extern CChinaMarket gl_ChinaStockMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

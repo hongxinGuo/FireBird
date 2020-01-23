@@ -94,7 +94,7 @@ CMainFrame::CMainFrame() {
 bool CMainFrame::CreateMarketContainer(void) {
   gl_vMarket.push_back(&gl_ChinaStockMarket); // 中国股票市场
   gl_vMarket.push_back(&gl_PotenDailyBriefingMarket); // poten.com提供的每日航运指数
-  gl_vMarket.push_back(&gl_CrweberIndexmarket); // Crweber.com提供的每日航运指数
+  gl_vMarket.push_back(&gl_CrweberIndexMarket); // Crweber.com提供的每日航运指数
   return true;
 }
 

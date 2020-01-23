@@ -23,10 +23,6 @@ public:
   bool SaveDatabase(void);
   bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 
-  bool UpdateStatus(void);
-
-  void SetNextInquiringDay(void);
-
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
   long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }
@@ -40,7 +36,6 @@ protected:
 
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUupdated;
-  map<long, bool> m_mapDataLoadedDays;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;
 };
