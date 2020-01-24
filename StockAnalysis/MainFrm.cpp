@@ -682,7 +682,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-  }
+}
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here

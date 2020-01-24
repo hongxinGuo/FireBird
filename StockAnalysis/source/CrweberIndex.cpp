@@ -92,7 +92,7 @@ void CCrweberIndex::SaveData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.m_TD19 = ConvertValueToString(m_dTD19);
   setCrweberIndex.m_TD20 = ConvertValueToString(m_dTD20);
   setCrweberIndex.m_TD21 = ConvertValueToString(m_dTD21);
-  setCrweberIndex.m_VLCC_USGSPORE = ConvertValueToString(m_dVLCC_USGSPORE * 100); // 从百万转成以万为单位。
+  setCrweberIndex.m_VLCC_USGSPORE = ConvertValueToString(m_dVLCC_USGSPORE); // 从百万转成以万为单位。
   setCrweberIndex.m_SUEZMAX_CBSUSG = ConvertValueToString(m_dSUEZMAX_CBSUSG);
   setCrweberIndex.m_TC1 = ConvertValueToString(m_dTC1);
   setCrweberIndex.m_TC2 = ConvertValueToString(m_dTC2);
@@ -100,7 +100,7 @@ void CCrweberIndex::SaveData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.m_TC4 = ConvertValueToString(m_dTC4);
   setCrweberIndex.m_TC5 = ConvertValueToString(m_dTC5);
   setCrweberIndex.m_TC14 = ConvertValueToString(m_dTC14);
-  setCrweberIndex.m_CPP_USGCBS = ConvertValueToString(m_dCPP_USGCBS * 1000);
+  setCrweberIndex.m_CPP_USGCBS = ConvertValueToString(m_dCPP_USGCBS);
 
   setCrweberIndex.m_VLCC_TC_1YEAR = ConvertValueToString(m_dVLCC_TC_1YEAR);
   setCrweberIndex.m_SUEZMAX_TC_1YEAR = ConvertValueToString(m_dSUEZMAX_TC_1YEAR);
@@ -144,7 +144,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       m_dTD2 = GetOneValue(pWebDataReceived);
       m_dTD3C = GetOneValue(pWebDataReceived);
       m_dTD15 = GetOneValue(pWebDataReceived);
-      m_dVLCC_USGSPORE = GetOneValue(pWebDataReceived);
+      m_dVLCC_USGSPORE = GetOneValue(pWebDataReceived) * 100;
 
       str1 = GetNextString(pWebDataReceived); // "SUEZMAX"
       m_dTD5 = GetOneValue(pWebDataReceived);
@@ -166,7 +166,7 @@ bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
       m_dTC2 = GetOneValue(pWebDataReceived);
       m_dTC3 = GetOneValue(pWebDataReceived);
       m_dTC14 = GetOneValue(pWebDataReceived);
-      m_dCPP_USGCBS = GetOneValue(pWebDataReceived);
+      m_dCPP_USGCBS = GetOneValue(pWebDataReceived) * 1000;
       m_dTC1 = GetOneValue(pWebDataReceived);
       m_dTC5 = GetOneValue(pWebDataReceived);
       m_dTC4 = GetOneValue(pWebDataReceived);
