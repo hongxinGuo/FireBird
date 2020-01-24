@@ -9,6 +9,9 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
     TRACE("Poten市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
+
+  m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
+
   Reset();
 }
 

@@ -39,6 +39,8 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
     ASSERT(0);
   }
 
+  m_lTimeZoneOffset = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+
   Reset();
 }
 

@@ -47,9 +47,6 @@ public:
   virtual	void Dump(CDumpContext& dc) const;
 #endif
 public:
-  virtual long GetTime(void) { return 0; } //得到本市场的当地时间，格式为：hhmmss
-  virtual long GetDay(void) { return 0; } // 得到本市场的当地日期， 格式为：yyyymmdd
-
   // 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次

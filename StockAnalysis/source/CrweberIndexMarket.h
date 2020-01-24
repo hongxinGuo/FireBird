@@ -15,8 +15,6 @@ public:
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) override;
   void Reset(void);
-  virtual long GetTime(void) { return 0; } //得到本市场的当地时间，格式为：hhmmss
-  virtual long GetDay(void) { return 0; } // 得到本市场的当地日期， 格式为：yyyymmdd
 
   bool SchedulingTaskPer5Minute(long lSecond, long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);

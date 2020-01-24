@@ -9,8 +9,28 @@ public:
 
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) = 0;
-  virtual long GetTime(void) = 0; //得到本市场的当地时间，格式为：hhmmss
-  virtual long GetDay(void) = 0; // 得到本市场的当地日期， 格式为：yyyymmdd
+
+  long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
+  time_t GetLocalTime(void) noexcept { return m_tLocal; }
+  time_t GetMarketTime(void) noexcept { return m_tMarket; }
+  long GetTime(void) noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
+  long GetDay(void) noexcept { return m_lMarketToday; }// 得到本市场的当地日期， 格式为：yyyymmdd
+  long GetDayOfWeek(void) noexcept { return m_tmMarket.tm_wday; }
+  long GetMonthOfYear(void) noexcept { return m_tmMarket.tm_mon + 1; }
+  long GetDayOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
+  long GetYear(void) noexcept { return m_tmMarket.tm_year + 1900; }
+  long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lMarketLastTradeDay; }
+  bool IsWorkingDay(void);
+  bool IsWorkingDay(CTime timeCurrent);
+  bool IsWorkingDay(long lDay);
+
+  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
+  long GetNextDay(long lDay, long lTimeSpanDays = 1);
+
+  CString GetTimeString(void);
+
+  void CalculateTime(void); // 计算本市场的各时间
+  void CalculateLastTradeDay(void);
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
@@ -28,6 +48,14 @@ public:
 
 protected:
   long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计）。
+
+  // 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
+  time_t m_tLocal; // 软件运行时的当地时间
+  time_t m_tMarket; // 本市场的标准时间
+  long m_lMarketToday; //本市场日期
+  long m_lMarketTime; // 本市场时间
+  long m_lMarketLastTradeDay; // 本市场
+  tm m_tmMarket; // 本市场时间结构
 private:
   bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fResetMarket; // 重启系统标识

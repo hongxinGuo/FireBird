@@ -103,6 +103,7 @@ void CMainFrame::Reset(void) {
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateLocalTime();
+  gl_systemTime.CalculateGMTTime();
   gl_systemTime.CalculateLastTradeDay();
 
   // 重置系统实时队列
