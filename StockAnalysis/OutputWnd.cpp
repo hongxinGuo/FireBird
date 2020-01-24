@@ -5,6 +5,8 @@
 #include "resource.h"
 #include "MainFrm.h"
 
+#include"ChinaMarket.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -214,7 +216,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   long lTotal = 0;
   long lCurrentPos = 0;
   bool fUpdate = false;
-  CString strTime = gl_systemTime.GetTimeString();
+  CString strTime = gl_ChinaStockMarket.GetTimeString();
 
   // 如果显示列表超过10000个，则删除前面的1000个。
   m_wndOutputInformation.TruncateList(10000);

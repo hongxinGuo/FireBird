@@ -87,8 +87,9 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingMarketTest, TestCalculateMarketTime) {
     ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;
-    tm tm_;
+    tm tm_, tmLocal;
     time(&ttime);
+    localtime_s(&tmLocal, &ttime);
     ttime -= gl_PotenDailyBriefingMarket.GetTimeZoneOffset();
     gmtime_s(&tm_, &ttime);
     long lTimeZone;
@@ -107,7 +108,7 @@ namespace StockAnalysisTest {
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetTime(), time);
     char buffer[30];
-    sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+    sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     CString str;
     str = buffer;
 

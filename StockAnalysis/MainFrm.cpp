@@ -101,9 +101,6 @@ bool CMainFrame::CreateMarketContainer(void) {
 void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 
-  // 设置股票日线查询环境
-  gl_systemTime.CalculateLocalTime();
-
   // 重置系统实时队列
   gl_queueRTData.ResetSinaRTQueue();
 
@@ -419,8 +416,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   CString str;
 
-  gl_systemTime.CalculateLocalTime();
-
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   // 重启系统在此处执行，容易调用各重置函数
   if (IsNeedResetMarket()) {
@@ -475,7 +470,7 @@ void CMainFrame::UpdateStatus(void) {
   m_wndStatusBar.SetPaneText(6, (LPCTSTR)str);
 
   //更新时间
-  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_systemTime.GetTimeString());
+  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_ChinaStockMarket.GetTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -682,7 +677,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-}
+  }
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here

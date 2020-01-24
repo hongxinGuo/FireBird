@@ -86,7 +86,6 @@
     <ClCompile Include="DequeDataTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
-    <ClCompile Include="SystemTimeTest.cpp" />
     <ClCompile Include="TengxunRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebDataTest.cpp" />
   </ItemGroup>
@@ -141,7 +140,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\SystemTime.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj" />

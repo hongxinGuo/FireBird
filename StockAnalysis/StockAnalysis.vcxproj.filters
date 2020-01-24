@@ -141,9 +141,6 @@
     <ClInclude Include="source\SystemMessage.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\SystemTime.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="ChildFrm.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
@@ -309,9 +306,6 @@
       <Filter>源文件\Crweber.com</Filter>
     </ClCompile>
     <ClCompile Include="source\SystemMessage.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SystemTime.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="ChildFrm.cpp">

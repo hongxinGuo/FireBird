@@ -248,7 +248,6 @@
     <ClInclude Include="source\TransferSharedPtr.h" />
     <ClInclude Include="source\WebData.h" />
     <ClInclude Include="source\Thread.h" />
-    <ClInclude Include="source\SystemTime.h" />
     <ClInclude Include="source\DayLine.h" />
     <ClInclude Include="source\globedef.h" />
     <ClInclude Include="source\ChinaMarket.h" />
@@ -302,7 +301,6 @@
     <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="source\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="source\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="source\SystemTime.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
     <ClCompile Include="source\globedef.cpp" />
     <ClCompile Include="source\ChinaMarket.cpp" />

@@ -1,13 +1,11 @@
 #include"globedef.h"
 
 #include "ChinaMarket.h"
-#include "SystemTime.h"
 
 // 测试用变量
 CRTDataPtr gl_TESTpRTData = nullptr;
 
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
-CSystemTime gl_systemTime; // 系统时间汇总。
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 

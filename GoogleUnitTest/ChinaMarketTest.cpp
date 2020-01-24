@@ -498,8 +498,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsTodayStockProcessed) {
-    gl_systemTime.CalculateLocalTime();
-    if (gl_systemTime.GetTime() > 150000) {
+    gl_ChinaStockMarket.CalculateTime();
+    if (gl_ChinaStockMarket.GetTime() > 150000) {
       EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     }
     else {

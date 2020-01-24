@@ -19,9 +19,9 @@ bool CVirtualMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
   CalculateTime();
   //根据时间，调度各项定时任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > s_timeLast) {
-    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_timeLast);
-    s_timeLast = gl_systemTime.Gett_time();
+  if (GetLocalTime() > s_timeLast) {
+    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast);
+    s_timeLast = GetLocalTime();
   }
   return true;
 }
@@ -105,14 +105,17 @@ long CVirtualMarket::GetNextDay(long lDay, long lTimeSpanDays) {
 
 CString CVirtualMarket::GetTimeString(void) {
   char buffer[30];
-  sprintf_s(buffer, "%02d:%02d:%02d ", m_tmMarket.tm_hour, m_tmMarket.tm_min, m_tmMarket.tm_sec);
+  tm tmLocal;
+
+  localtime_s(&tmLocal, &m_tLocal);
+  sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
   CString str;
   str = buffer;
   return(str);
 }
 
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
-  const long lCurrentTime = gl_systemTime.GetTime();
+  const long lCurrentTime = GetTime();
   //long lCurrentTime2 = GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。

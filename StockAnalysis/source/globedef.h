@@ -38,7 +38,6 @@ enum {
 #include"QueueWebData.h"
 #include"PriorityQueueRTData.h"
 #include"ThreadStatus.h"
-#include"SystemTime.h"
 
 using namespace std;
 #include<deque>
@@ -49,7 +48,6 @@ using namespace std;
 extern CRTDataPtr gl_TESTpRTData;
 
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
-extern CSystemTime gl_systemTime; // 系统时间汇总。
 
 extern CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
 
