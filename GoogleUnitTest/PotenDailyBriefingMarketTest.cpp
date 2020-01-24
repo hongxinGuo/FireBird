@@ -127,9 +127,8 @@ namespace StockAnalysisTest {
     default: // ÆäËû
     ttime -= 24 * 3600; //
     }
-    localtime_s(&tm_, &ttime);
+    gmtime_s(&tm_, &ttime);
     long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetLastTradeDay(), LastTradeDay);
   }
 

@@ -304,5 +304,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexMarket.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\WebDataInquirer.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>
