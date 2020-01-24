@@ -1251,7 +1251,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_systemTime.Gett_time() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+  if (m_time < (gl_ChinaStockMarket.GetLocalTime() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
   else return true;

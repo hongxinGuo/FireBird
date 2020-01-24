@@ -65,7 +65,7 @@ public:
   long ConvertStringToTime(CString str);
   double GetOneValue(CWebDataReceivedPtr pWebDataReceived);
   CString GetNextString(CWebDataReceivedPtr pWebDataReceived);
-  long GetMonthOfYear(CString strMonth);
+  long GetMonthOfTheYear(CString strMonth);
 
 public:
   long m_lID;

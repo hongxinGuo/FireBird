@@ -506,22 +506,22 @@ namespace StockAnalysisTest {
   TEST_F(CStockTest, TestSetCheckingDayLineStatus) {
     CStock id;
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
-    id.SetDayLineEndDay(gl_systemTime.GetDay());
+    id.SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
     id.SetCheckingDayLineStatus();
     EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
-    id.SetDayLineEndDay(gl_systemTime.GetLastTradeDay());
+    id.SetDayLineEndDay(gl_ChinaStockMarket.GetLastTradeDay());
     id.SetCheckingDayLineStatus();
     EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
-    id.SetDayLineEndDay(gl_systemTime.GetLastTradeDay() - 1);
+    id.SetDayLineEndDay(gl_ChinaStockMarket.GetLastTradeDay() - 1);
     id.SetIPOStatus(__STOCK_NULL__);
     id.SetCheckingDayLineStatus();
     EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
     id.SetIPOStatus(__STOCK_DELISTED__);
     id.SetCheckingDayLineStatus();
-    if (gl_systemTime.GetDayOfWeek() == 1) EXPECT_TRUE(id.IsDayLineNeedUpdate());
+    if (gl_ChinaStockMarket.GetDayOfWeek() == 1) EXPECT_TRUE(id.IsDayLineNeedUpdate());
     else EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
     id.SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);

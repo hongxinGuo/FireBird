@@ -31,12 +31,12 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask(); // 调用基类调度函数，完成共同任务
 
   static time_t s_timeLast = 0;
-  const long lCurrentTime = gl_systemTime.GetTime();
+  const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > (s_timeLast + 60 * 5)) {
-    SchedulingTaskPer5Minute(gl_systemTime.Gett_time() - s_timeLast, lCurrentTime);
-    s_timeLast = gl_systemTime.Gett_time();
+  if (GetLocalTime() > (s_timeLast + 60 * 5)) {
+    SchedulingTaskPer5Minute(GetLocalTime() - s_timeLast, lCurrentTime);
+    s_timeLast = GetLocalTime();
   }
 
   return true;

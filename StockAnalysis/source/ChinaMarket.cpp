@@ -324,7 +324,7 @@ CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
-    else if (pStock->GetDayLineEndDay() >= gl_systemTime.GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+    else if (pStock->GetDayLineEndDay() >= GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
@@ -924,8 +924,6 @@ bool CChinaMarket::SchedulingTask(void) {
 #else
 #define __NumberOfCount__ 1000
 #endif
-  gl_systemTime.CalculateLocalTime();      // 计算系统各种时间
-
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
@@ -937,9 +935,9 @@ bool CChinaMarket::SchedulingTask(void) {
   m_iCountDownSlowReadingRTData--;
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > s_timeLast) {
-    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_timeLast);
-    s_timeLast = gl_systemTime.Gett_time();
+  if (GetLocalTime() > s_timeLast) {
+    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast);
+    s_timeLast = GetLocalTime();
   }
 
   // 系统准备好了之后需要完成的各项工作
@@ -1002,7 +1000,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   static int s_iCountDownProcessWebRTData = 0;
-  const long lCurrentTime = gl_systemTime.GetTime();
+  const long lCurrentTime = GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerHour(lSecondNumber, lCurrentTime);
@@ -1150,7 +1148,7 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 }
 
 bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
-  if (!gl_systemTime.IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
+  if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
     m_fMarketOpened = false;
     return(m_fMarketOpened);
   }
@@ -1166,7 +1164,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
+    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }
@@ -1177,7 +1175,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && gl_systemTime.IsWorkingDay()) { // 交易日九点十五分重启系统
+    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && IsWorkingDay()) { // 交易日九点十五分重启系统
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
       SetPermitResetMarket(false); // 今天不再允许重启系统。
@@ -1528,7 +1526,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   if (!setDayLineToday.IsEOF()) {
-    if (setDayLineToday.m_Day == gl_systemTime.GetDay()) { // 如果是当天的行情，则载入，否则放弃
+    if (setDayLineToday.m_Day == GetDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStockPtr(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
@@ -1676,7 +1674,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
   }
   if (gl_ChinaStockMarket.m_iDayLineNeedUpdate > 0) {
     int i = gl_ChinaStockMarket.m_iDayLineNeedUpdate;
-    if (gl_systemTime.GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
+    if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
     _itoa_s(i, buffer, 10);
     str = buffer;
@@ -1701,14 +1699,14 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.AddNew();
     setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
-    setOption.m_LastLoginDay = gl_systemTime.GetDay();
+    setOption.m_LastLoginDay = GetDay();
     setOption.Update();
   }
   else {
     setOption.Edit();
     setOption.m_RelativeStrongEndDay = gl_ChinaStockMarket.GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = gl_ChinaStockMarket.GetRelativeStrongStartDay();
-    setOption.m_LastLoginDay = gl_systemTime.GetDay();
+    setOption.m_LastLoginDay = GetDay();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();

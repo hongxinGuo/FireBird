@@ -21,10 +21,10 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_lNewestUpdatedDay = 20180411; //
   m_lNewestDatabaseDay = 0;
   m_fTodayDataUupdated = false;
-  gl_systemTime.CalculateLocalTime();
-  for (long l = 20180411; l <= gl_systemTime.GetDay(); l = gl_systemTime.GetNextDay(l)) {
+  CalculateTime();
+  for (long l = 20180411; l <= GetDay(); l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
-    if (!gl_systemTime.IsWorkingDay(l)) {
+    if (!IsWorkingDay(l)) {
       m_mapDataLoadedDays.at(l) = true; // 星期六和星期日poten.com都没有数据，故而无需查询。
     }
   }
@@ -37,12 +37,12 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask(); // 调用基类调度函数，完成共同任务
 
   static time_t s_timeLast = 0;
-  const long lCurrentTime = gl_systemTime.GetTime();
+  const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (gl_systemTime.Gett_time() > (s_timeLast)) {
-    SchedulingTaskPerSecond(gl_systemTime.Gett_time() - s_timeLast, lCurrentTime);
-    s_timeLast = gl_systemTime.Gett_time();
+  if (GetLocalTime() > (s_timeLast)) {
+    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast, lCurrentTime);
+    s_timeLast = GetLocalTime();
   }
   return true;
 }
@@ -58,7 +58,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
   if ((!m_fTodayDataUupdated) && (!gl_WebDataInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
     if (m_fDataBaseLoaded) {
-      if ((m_lNewestUpdatedDay <= gl_systemTime.GetDay())) {
+      if ((m_lNewestUpdatedDay <= GetDay())) {
         gl_WebDataInquirer.GetPotenDailyBriefingData();
         SetNextInquiringDay();
       }
@@ -104,7 +104,7 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
       m_lNewestDatabaseDay = setPotenDailyBriefing.m_Day;
     }
     if (setPotenDailyBriefing.m_Day > m_lNewestUpdatedDay) {
-      m_lNewestUpdatedDay = gl_systemTime.GetNextDay(setPotenDailyBriefing.m_Day);
+      m_lNewestUpdatedDay = GetNextDay(setPotenDailyBriefing.m_Day);
     }
     setPotenDailyBriefing.MoveNext();
   }
@@ -170,7 +170,7 @@ void CPotenDailyBriefingMarket::SetNextInquiringDay(void) {
   do {
     today += oneDay;
     lNextInquiringDay = today.GetYear() * 10000 + today.GetMonth() * 100 + today.GetDay();
-  } while ((lNextInquiringDay <= gl_systemTime.GetDay()) && m_mapDataLoadedDays.at(lNextInquiringDay));
+  } while ((lNextInquiringDay <= GetDay()) && m_mapDataLoadedDays.at(lNextInquiringDay));
 
   SetNewestUpdateDay(lNextInquiringDay);
 }

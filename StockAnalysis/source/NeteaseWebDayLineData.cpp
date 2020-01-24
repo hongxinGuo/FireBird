@@ -29,7 +29,7 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
   if (strMiddle.GetLength() > 0) {
     SetDownLoadingStockCode(strMiddle);
     strMiddle += _T("&start=19900101&end=");
-    sprintf_s(buffer2, "%8d", gl_systemTime.GetDay());
+    sprintf_s(buffer2, "%8d", gl_ChinaStockMarket.GetDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
     SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

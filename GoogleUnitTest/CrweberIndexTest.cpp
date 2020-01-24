@@ -214,20 +214,20 @@ namespace StockAnalysisTest {
 
   TEST(CrweberIndexTest, TestGetMonthOfYear) {
     CCrweberIndex Index;
-    EXPECT_EQ(Index.GetMonthOfYear(_T("January")), 1);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("Febrary")), 2);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("March")), 3);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("April")), 4);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("May")), 5);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("June")), 6);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("July")), 7);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("August")), 8);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("September")), 9);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("October")), 10);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("November")), 11);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("December")), 12);
-    EXPECT_EQ(Index.GetMonthOfYear(_T("DEcmber")), gl_systemTime.GetMonthOfYear());
-    EXPECT_EQ(Index.GetMonthOfYear(_T("Junuary")), gl_systemTime.GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("January")), 1);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Febrary")), 2);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("March")), 3);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("April")), 4);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("May")), 5);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("June")), 6);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("July")), 7);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("August")), 8);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("September")), 9);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("October")), 10);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("November")), 11);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("December")), 12);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("DEcmber")), gl_systemTime.GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Junuary")), gl_systemTime.GetMonthOfYear());
   }
 
   struct CrweberIndexTime {

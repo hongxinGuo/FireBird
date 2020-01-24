@@ -19,23 +19,23 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (lToday >= gl_systemTime.GetDay()) return(true);
+  if (lToday >= gl_ChinaStockMarket.GetDay()) return(true);
 
   time_t tStart = 0, tEnd = 0;
   time(&tStart);
   do {
-    if (gl_systemTime.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
+    if (gl_ChinaStockMarket.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
     }
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (lToday <= gl_systemTime.GetDay()); // 计算至当前日期（包括今日）
+  } while (lToday <= gl_ChinaStockMarket.GetDay()); // 计算至当前日期（包括今日）
 
   while (gl_ThreadStatus.IsCalculatingRS()) Sleep(1); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_systemTime.GetDay());
+    gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
     gl_ChinaStockMarket.UpdateOptionDB(); // 更新选项数据库
     // 显示花费的时间
     time(&tEnd);

@@ -46,6 +46,13 @@ public:
   bool IsResetMarket(void) noexcept { return m_fResetMarket; }
   void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
+public:
+  // 测试用函数
+  void __Test_Sett_time(time_t Time) { m_tLocal = Time; }
+  void __Test_SetTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
+  void __Test_SetTM(tm tm_) { m_tmMarket = tm_; }
+  void __Test_SetDay(long lDay) noexcept { m_lMarketToday = lDay; }
+
 protected:
   long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计）。
 

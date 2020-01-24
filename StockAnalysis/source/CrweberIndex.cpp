@@ -260,7 +260,7 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   buffer1[i] = 0x000;
   CString strTime = buffer1;
   int month = 1, day, year;
-  month = GetMonthOfYear(strTime);
+  month = GetMonthOfTheYear(strTime);
 
   i = 0;
   while (*pChar != ' ') buffer1[i++] = *pChar++;
@@ -277,12 +277,12 @@ long CCrweberIndex::ConvertStringToTime(CString str) {
   return year * 10000 + month * 100 + day;
 }
 
-long CCrweberIndex::GetMonthOfYear(CString strMonth) {
+long CCrweberIndex::GetMonthOfTheYear(CString strMonth) {
   try {
     return m_mapMonth.at(strMonth);
   }
   catch (exception&) {
-    return gl_systemTime.GetMonthOfYear();
+    return gl_CrweberIndexMarket.GetMonthOfYear();
   }
 }
 

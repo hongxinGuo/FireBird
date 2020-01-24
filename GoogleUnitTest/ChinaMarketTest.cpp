@@ -15,6 +15,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      gl_ChinaStockMarket.CalculateTime();
     }
 
     virtual void TearDown(void) override {
@@ -531,7 +532,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarket, TestTaskResetMarket) {
     tm tm_;
     tm_.tm_wday = 1;
-    gl_systemTime.__Test_SetTM(tm_);
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     gl_ChinaStockMarket.TaskResetMarket(91259);
@@ -545,7 +546,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarket, TestTaskResetMarket2) {
     tm tm_;
     tm_.tm_wday = 1;
-    gl_systemTime.__Test_SetTM(tm_);
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
@@ -563,7 +564,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarket, TestTaskResetMarketAgain) {
     tm tm_;
     tm_.tm_wday = 1;
-    gl_systemTime.__Test_SetTM(tm_);
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
@@ -583,7 +584,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarket, TestCheckMarketOpen) {
     tm tm_;
     tm_.tm_wday = 1;
-    gl_systemTime.__Test_SetTM(tm_);
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91359));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(91400));
@@ -600,7 +601,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
     tm_.tm_wday = 0;
-    gl_systemTime.__Test_SetTM(tm_);
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91459));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91500));

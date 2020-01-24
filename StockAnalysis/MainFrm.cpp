@@ -103,8 +103,6 @@ void CMainFrame::Reset(void) {
 
   // 设置股票日线查询环境
   gl_systemTime.CalculateLocalTime();
-  gl_systemTime.CalculateGMTTime();
-  gl_systemTime.CalculateLastTradeDay();
 
   // 重置系统实时队列
   gl_queueRTData.ResetSinaRTQueue();
@@ -421,7 +419,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   CString str;
 
-  gl_systemTime.CalculateGMTTime();
   gl_systemTime.CalculateLocalTime();
 
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
@@ -503,7 +500,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateTodayRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)(gl_systemTime.GetDay()));
+  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)(gl_ChinaStockMarket.GetDay()));
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -679,13 +676,13 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-}
+  }
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
