@@ -922,7 +922,7 @@ bool CChinaMarket::SchedulingTask(void) {
 #else
 #define __NumberOfCount__ 1000
 #endif
-  gl_systemTime.CalculateTime();      // 计算系统各种时间
+  gl_systemTime.CalculateLocalTime();      // 计算系统各种时间
 
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {

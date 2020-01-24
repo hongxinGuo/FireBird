@@ -102,7 +102,7 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 
   // 设置股票日线查询环境
-  gl_systemTime.CalculateTime();
+  gl_systemTime.CalculateLocalTime();
   gl_systemTime.CalculateLastTradeDay();
 
   // 重置系统实时队列
@@ -418,11 +418,13 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
-  // 重启系统在此处执行，容易调用各重置函数
   CString str;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+
+  gl_systemTime.CalculateGMTTime();
+  gl_systemTime.CalculateLocalTime();
 
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
+  // 重启系统在此处执行，容易调用各重置函数
   if (IsNeedResetMarket()) {
     ResetMarket();
   }
@@ -676,7 +678,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

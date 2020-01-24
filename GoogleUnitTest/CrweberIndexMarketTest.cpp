@@ -21,6 +21,11 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_CrweberIndexMarket.SetDatabaseLoaded(false);
+      gl_CrweberIndexMarket.SetPermitResetMarket(true);
+      gl_CrweberIndexMarket.SetReadyToRun(true);
+      gl_CrweberIndexMarket.SetResetMarket(true);
+      gl_CrweberIndexMarket.SetNewestUpdateDay(0);
     }
 
     static void SetUpTestCase() { // 本测试类的初始化函数
@@ -43,6 +48,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDay) {
+    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 0);
     gl_CrweberIndexMarket.SetNewestUpdateDay(20201220);
     EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 20201220);
   }

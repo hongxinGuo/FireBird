@@ -40,6 +40,10 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   return true;
 }
 
+void CCrweberIndexMarket::ResetMarket(void) {
+  Reset();
+}
+
 bool CCrweberIndexMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
   // 自动查询crweber.com
   if (!gl_WebDataInquirer.IsReadingCrweberIndex()) {
@@ -136,7 +140,6 @@ bool CCrweberIndexMarket::SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex) {
   CSetCrweberIndex setIndex;
   setIndex.m_strFilter = _T("[ID] = 1");
 
-  // 存储今日生成的数据于CrweberIndex表中。
   setIndex.Open();
   setIndex.m_pDatabase->BeginTrans();
   pCrweberIndex->AppendData(setIndex);

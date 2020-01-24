@@ -9,6 +9,8 @@ public:
 
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) = 0;
+  virtual long GetTime(void) = 0; //得到本市场的当地时间，格式为：hhmmss
+  virtual long GetDay(void) = 0; // 得到本市场的当地日期， 格式为：yyyymmdd
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
@@ -24,6 +26,8 @@ public:
   bool IsResetMarket(void) noexcept { return m_fResetMarket; }
   void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
+protected:
+  long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计）。
 private:
   bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
   bool m_fResetMarket; // 重启系统标识

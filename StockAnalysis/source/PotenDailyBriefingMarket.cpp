@@ -18,7 +18,7 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_lNewestUpdatedDay = 20180411; //
   m_lNewestDatabaseDay = 0;
   m_fTodayDataUupdated = false;
-  gl_systemTime.CalculateTime();
+  gl_systemTime.CalculateLocalTime();
   for (long l = 20180411; l <= gl_systemTime.GetDay(); l = gl_systemTime.GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
     if (!gl_systemTime.IsWorkingDay(l)) {
@@ -78,9 +78,9 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
 }
 
 bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
-  // 十九点二十五分重启系统
+  // 九点重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 90000) && (lCurrentTime <= 93000)) { // 九点二十五分重启本市场
+    if ((lCurrentTime >= 90000) && (lCurrentTime <= 93000)) { // 九点重启本市场
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }

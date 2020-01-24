@@ -23,6 +23,7 @@ bool CVirtualMarket::SchedulingTask(void) {
 
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
   const long lCurrentTime = gl_systemTime.GetTime();
+  //long lCurrentTime2 = GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerHour(lSecond, lCurrentTime);
