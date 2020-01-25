@@ -24,7 +24,7 @@ Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
 
 CQueueRTData gl_queueRTData;
-CWebInquirer gl_WebDataInquirer;
+CWebInquirer gl_WebInquirer;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -513,7 +513,7 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   if (m_iDayLineNeedUpdate > 0) {
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-    return(gl_WebDataInquirer.GetNeteaseDayLineData());
+    return(gl_WebInquirer.GetNeteaseDayLineData());
   }
   else return false;
 }
@@ -690,9 +690,9 @@ bool CChinaMarket::TaskProcessRTData(void) {
 
 bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
-  long lTotalData = gl_WebDataInquirer.GetSinaRTDataSize();
+  long lTotalData = gl_WebInquirer.GetSinaRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_WebDataInquirer.PopSinaRTData();
+    pWebDataReceived = gl_WebInquirer.PopSinaRTData();
     pWebDataReceived->SetCurrentPos(0);
     while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
       CRTDataPtr pRTData = make_shared<CRTData>();
@@ -728,9 +728,9 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   int iCount = 0;
 
-  long lTotalData = gl_WebDataInquirer.GetNeteaseRTDataSize();
+  long lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_WebDataInquirer.PopNeteaseRTData();
+    pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
     pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
@@ -827,9 +827,9 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataReceivedPtr pWebDataReceived = nullptr;
   int j = 0;
 
-  long lTotalData = gl_WebDataInquirer.GetTengxunRTDataSize();
+  long lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebDataReceived = gl_WebDataInquirer.PopTengxunRTData();
+    pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
       j = 0;
@@ -963,7 +963,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
   static int siCountDownNeteaseNumber = 5;
 
   if (IsUsingSinaRTDataReceiver()) {
-    gl_WebDataInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
+    gl_WebInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
 
   if (SystemReady()) {
@@ -972,7 +972,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
     if (IsUsingNeteaseRTDataReceiver()) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_WebDataInquirer.GetNeteaseRTData(); // 目前不使用此功能。
+        gl_WebInquirer.GetNeteaseRTData(); // 目前不使用此功能。
         siCountDownNeteaseNumber = 0;
       }
       else siCountDownNeteaseNumber--;
@@ -980,7 +980,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (IsUsingTengxunRTDataReceiver()) {
       if (siCountDownTengxunNumber <= 0) {
-        gl_WebDataInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
+        gl_WebInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
         siCountDownTengxunNumber = 5;
       }
       else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够

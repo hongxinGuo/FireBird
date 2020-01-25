@@ -1,6 +1,6 @@
 #include"globedef.h"
 
-#include"WebDataInquirer.h"
+#include"WebInquirer.h"
 #include "PotenDailyBriefingMarket.h"
 
 CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
@@ -55,11 +55,11 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
 
-  if ((!m_fTodayDataUupdated) && (!gl_WebDataInquirer.IsReadingPotenDailyBriefing())) {
+  if ((!m_fTodayDataUupdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
     if (m_fDataBaseLoaded) {
       if ((m_lNewestUpdatedDay <= GetDay())) {
-        gl_WebDataInquirer.GetPotenDailyBriefingData();
+        gl_WebInquirer.GetPotenDailyBriefingData();
         SetNextInquiringDay();
       }
       else {
@@ -114,9 +114,9 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
 }
 
 bool CPotenDailyBriefingMarket::ProcessData(void) {
-  long lTotal = gl_WebDataInquirer.GetPotenDailyBriefingDataSize();
+  long lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
   for (int i = 0; i < lTotal; i++) {
-    CWebDataReceivedPtr pWebData = gl_WebDataInquirer.PopPotenDailyBriefingData();
+    CWebDataReceivedPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
     if (pWebData->GetBufferLength() > 40 * 1024) { // 从poten.com读取的数据大小如果低于40KB时，其没有实际内容，无需处理
       CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
       if (pPotenDailyBriefing->ReadData(pWebData)) {

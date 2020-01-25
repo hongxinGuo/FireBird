@@ -1,7 +1,7 @@
 #include "CrweberIndexMarket.h"
 #include"ChinaMarket.h"
 
-#include"WebDataInquirer.h"
+#include"WebInquirer.h"
 
 CCrweberIndexMarket::CCrweberIndexMarket() {
   static int siInstance = 0;
@@ -48,10 +48,10 @@ void CCrweberIndexMarket::ResetMarket(void) {
 
 bool CCrweberIndexMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
   // ×Ô¶¯²éÑ¯crweber.com
-  if (!gl_WebDataInquirer.IsReadingCrweberIndex()) {
+  if (!gl_WebInquirer.IsReadingCrweberIndex()) {
     TaskProcessWebRTDataGetFromCrweberdotcom();
     if (m_fDataBaseLoaded) {
-      gl_WebDataInquirer.GetCrweberIndexData();
+      gl_WebInquirer.GetCrweberIndexData();
     }
     else {
       LoadDatabase();
@@ -65,9 +65,9 @@ bool CCrweberIndexMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTi
 
 bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataReceivedPtr pWebData = nullptr;
-  long lTotalData = gl_WebDataInquirer.GetCrweberDataSize();
+  long lTotalData = gl_WebInquirer.GetCrweberDataSize();
   for (int i = 0; i < lTotalData; i++) {
-    pWebData = gl_WebDataInquirer.PopCrweberData();
+    pWebData = gl_WebInquirer.PopCrweberData();
     pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
     pWebData->SetCurrentPos(0);
     if (m_CrweberIndex.ReadData(pWebData)) {

@@ -180,9 +180,6 @@
     <ClInclude Include="source\QueueRTData.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebDataInquirer.h">
-      <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueWebData.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
@@ -230,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="source\TengxunRTWebInquiry.h">
       <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebInquirer.h">
+      <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -356,9 +356,6 @@
     <ClCompile Include="source\QueueRTDataImp.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\WebDataInquirer.cpp">
-      <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
     <ClCompile Include="source\CrweberIndexMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
@@ -400,6 +397,9 @@
     </ClCompile>
     <ClCompile Include="source\TengxunRTWebInquiry.cpp">
       <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebInquirer.cpp">
+      <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

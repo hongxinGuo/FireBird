@@ -16,7 +16,7 @@ UINT ThreadReadPotenDailyBriefing(LPVOID pParam) {
     CWebDataReceivedPtr pWebDataReceived = pPotenDailyBriefingWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       pWebDataReceived->m_lTime = (INT64)(pPotenDailyBriefingWebData->GetInquiringDay()) * 1000000;
-      gl_WebDataInquirer.PushPotenDailyBriefingData(pWebDataReceived);
+      gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }
   return 5;

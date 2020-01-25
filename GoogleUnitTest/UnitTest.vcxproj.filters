@@ -304,7 +304,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\VirtualWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\WebDataInquirer.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\WebInquirer.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

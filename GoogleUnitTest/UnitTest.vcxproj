@@ -157,7 +157,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\VirtualMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\VirtualWebInquiry.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\WebDataInquirer.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\WebInquirer.obj" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

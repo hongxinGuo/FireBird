@@ -19,14 +19,14 @@
 
 class CWebInquirer final : public CObject {
 public:
-  bool GetSinaRTData(void) { return m_SinaRTWebData.GetWebData(); }
-  bool GetTengxunRTData(void) { return m_TengxunRTWebData.GetWebData(); }
-  bool GetNeteaseRTData(void) { return m_NeteaseRTWebData.GetWebData(); }
+  bool GetSinaRTData(void) { return m_SinaRTWebInquiry.GetWebData(); }
+  bool GetTengxunRTData(void) { return m_TengxunRTWebInquiry.GetWebData(); }
+  bool GetNeteaseRTData(void) { return m_NeteaseRTWebInquiry.GetWebData(); }
   bool GetNeteaseDayLineData(void);
-  bool GetCrweberIndexData(void) { return m_CrweberIndexWebData.GetWebData(); }
-  bool IsReadingCrweberIndex(void) { return m_CrweberIndexWebData.IsReadingWebData(); }
-  bool GetPotenDailyBriefingData(void) { return m_PotenDailyBriefingWebData.GetWebData(); }
-  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebData.IsReadingWebData(); }
+  bool GetCrweberIndexData(void) { return m_CrweberIndexWebInquiry.GetWebData(); }
+  bool IsReadingCrweberIndex(void) { return m_CrweberIndexWebInquiry.IsReadingWebData(); }
+  bool GetPotenDailyBriefingData(void) { return m_PotenDailyBriefingWebInquiry.GetWebData(); }
+  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebInquiry.IsReadingWebData(); }
 
 public:
   long GetSinaRTDataSize(void) { return m_queueSinaRTWebData.GetWebDataSize(); }
@@ -47,17 +47,17 @@ public:
   CWebDataReceivedPtr PopPotenDailyBriefingData(void) { return m_queuePotenDailyBriefingWebData.PopWebData(); }
 
 protected:
-  CSinaRTWebInquiry m_SinaRTWebData; // 新浪实时数据采集
-  CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
-  CNeteaseRTWebInquiry m_NeteaseRTWebData; // 网易实时数据采集
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebData; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebDataSecond; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebDataThird; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebDataFourth; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebDataFifth; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebDataSixth; // 网易日线历史数据
-  CCrweberIndexWebInquiry m_CrweberIndexWebData; // crweber.com上的每日油运指数
-  CPotenDailyBriefingWebInquiry m_PotenDailyBriefingWebData; // Poten.com上的油运数据。
+  CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
+  CTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
+  CNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 网易实时数据采集
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquirySecond; // 网易日线历史数据
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryThird; // 网易日线历史数据
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryFourth; // 网易日线历史数据
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryFifth; // 网易日线历史数据
+  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquirySixth; // 网易日线历史数据
+  CCrweberIndexWebInquiry m_CrweberIndexWebInquiry; // crweber.com上的每日油运指数
+  CPotenDailyBriefingWebInquiry m_PotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
 
   CQueueWebData m_queueSinaRTWebData; // 新浪网络数据暂存队列
   CQueueWebData m_queueTengxunRTWebData; // 腾讯网络数据暂存队列
@@ -66,4 +66,4 @@ protected:
   CQueueWebData m_queuePotenDailyBriefingWebData; // Poten.com网络数据暂存队列
 };
 
-extern CWebInquirer gl_WebDataInquirer; //
+extern CWebInquirer gl_WebInquirer; //

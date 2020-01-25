@@ -14,7 +14,7 @@
 #include "Stock.h"
 #include"SetStockCode.h"
 
-#include"WebDataInquirer.h"
+#include"WebInquirer.h"
 
 #include"Semaphore.h"
 using namespace MyAccessory;
