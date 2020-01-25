@@ -2,11 +2,11 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
-#include"TengxunWebRTData.h"
+#include"TengxunRTWebInquiry.h"
 
 using namespace std;
 
-static CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集
+static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
 
 namespace StockAnalysisTest {
   TEST(TengxunWebRTDataTest, TestInitialize) {

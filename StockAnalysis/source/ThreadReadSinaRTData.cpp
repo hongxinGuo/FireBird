@@ -11,7 +11,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadReadSinaRTData(LPVOID pParam) {
-  CSinaRTWebData* pSinaRTWebData = (CSinaRTWebData*)pParam;
+  CSinaRTWebInquiry* pSinaRTWebData = (CSinaRTWebInquiry*)pParam;
 
   const clock_t tt = clock();
 

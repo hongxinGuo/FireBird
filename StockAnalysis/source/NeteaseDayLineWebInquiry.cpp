@@ -3,15 +3,15 @@
 #include"Thread.h"
 #include"ChinaMarket.h"
 
-#include "NeteaseWebDayLineData.h"
+#include "NeteaseDayLineWebInquiry.h"
 
-CNeteaseDayLineWebData::CNeteaseDayLineWebData() : CWebData() {
+CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
   m_strConnection = _T("NeteaseDayLine");
 }
 
-CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
+CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@ CNeteaseDayLineWebData::~CNeteaseDayLineWebData() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CNeteaseDayLineWebData::InquireNextWebData(void) {
+void CNeteaseDayLineWebInquiry::InquireNextWebData(void) {
   CString strMiddle = _T("");
   char buffer2[200];
 
@@ -37,11 +37,11 @@ void CNeteaseDayLineWebData::InquireNextWebData(void) {
   }
 }
 
-void CNeteaseDayLineWebData::StartReadingThread(void) {
+void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
 
-void CNeteaseDayLineWebData::SetDownLoadingStockCode(CString strStockCode) {
+void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
   char* p = strStockCode.GetBuffer();
   char cFirstChar = *p;
   CString strRight = strStockCode.Right(6);

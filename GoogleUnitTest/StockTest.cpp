@@ -6,9 +6,9 @@
 #include"Stock.h"
 #include"ChinaMarket.h"
 
-static CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
-static CTengxunRTWebData m_TengxunRTWebData; // 腾讯实时数据采集
-static CNeteaseDayLineWebData m_NeteaseDayLineWebData; // 网易日线历史数据
+static CSinaRTWebInquiry m_SinaRTWebData; // 新浪实时数据采集
+static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
+static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebData; // 网易日线历史数据
 
 namespace StockAnalysisTest {
   class CStockTest : public ::testing::Test

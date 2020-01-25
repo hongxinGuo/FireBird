@@ -19,7 +19,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
-  CNeteaseDayLineWebData* pNeteaseDayLineWebData = (CNeteaseDayLineWebData*)pParam;
+  CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData = (CNeteaseDayLineWebInquiry*)pParam;
   const clock_t tt = clock();
 
   if (pNeteaseDayLineWebData->ReadWebData(/*siDelayTime*/ 100, 30, 20)) {

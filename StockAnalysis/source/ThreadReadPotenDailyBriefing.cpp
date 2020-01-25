@@ -8,10 +8,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"ChinaMarket.h"
 #include "Thread.h"
-#include"WebData.h"
+#include"VirtualWebInquiry.h"
 
 UINT ThreadReadPotenDailyBriefing(LPVOID pParam) {
-  CPotenDailyBriefingWebData* pPotenDailyBriefingWebData = (CPotenDailyBriefingWebData*)(pParam);
+  CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData = (CPotenDailyBriefingWebInquiry*)(pParam);
   if (pPotenDailyBriefingWebData->ReadWebData(500, 50, 30)) {
     CWebDataReceivedPtr pWebDataReceived = pPotenDailyBriefingWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {

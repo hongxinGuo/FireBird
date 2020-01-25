@@ -1,11 +1,11 @@
 #pragma once
 
-#include "WebData.h"
+#include "VirtualWebInquiry.h"
 
-class CTengxunRTWebData final : public CWebData {
+class CTengxunRTWebInquiry final : public CVirtualWebInquiry {
 public:
-  CTengxunRTWebData();
-  ~CTengxunRTWebData();
+  CTengxunRTWebInquiry();
+  ~CTengxunRTWebInquiry();
 
   virtual void InquireNextWebData(void) override;
   virtual CString GetNextInquiringStr(long lTotalNubmer = 900, bool fSkipUnactiveStock = true) override;

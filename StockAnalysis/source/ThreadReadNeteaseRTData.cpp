@@ -12,7 +12,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseRTData(LPVOID pParam) {
-  CNeteaseRTWebData* pNeteaseRTWebData = (CNeteaseRTWebData*)pParam;
+  CNeteaseRTWebInquiry* pNeteaseRTWebData = (CNeteaseRTWebInquiry*)pParam;
 
   if (pNeteaseRTWebData->ReadWebData(50, 30, 30)) {
     CWebDataReceivedPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();

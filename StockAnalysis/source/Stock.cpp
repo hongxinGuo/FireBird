@@ -89,7 +89,7 @@ bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData) {
+bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
   char* p = pNeteaseWebDayLineData->GetBufferAddr();
   if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;

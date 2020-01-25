@@ -114,10 +114,10 @@ enum {
 #include"stdafx.h"
 #include"afxinet.h"
 
-#include"NeteaseWebRTData.h"
-#include"SinaWebRTData.h"
+#include"NeteaseRTWebInquiry.h"
+#include"SinaRTWebInquiry.h"
 #include"WebDataReceived.h"
-#include"TengxunWebRTData.h"
+#include"TengxunRTWebInquiry.h"
 
 #include"SetRealTimeData.h"
 

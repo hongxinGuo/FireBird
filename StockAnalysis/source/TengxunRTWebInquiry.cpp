@@ -3,18 +3,18 @@
 #include"ChinaMarket.h"
 
 #include"Thread.h"
-#include "TengxunWebRTData.h"
+#include "TengxunRTWebInquiry.h"
 
-CTengxunRTWebData::CTengxunRTWebData() : CWebData() {
+CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://qt.gtimg.cn/q=");
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("TengxunRT");
 }
 
-CTengxunRTWebData::~CTengxunRTWebData() {
+CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
 }
 
-void CTengxunRTWebData::InquireNextWebData(void) {
+void CTengxunRTWebInquiry::InquireNextWebData(void) {
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
@@ -33,15 +33,15 @@ void CTengxunRTWebData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-CString CTengxunRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+CString CTengxunRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
   return gl_ChinaStockMarket.GetTengxunInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
-void CTengxunRTWebData::StartReadingThread(void) {
+void CTengxunRTWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadTengxunRTData, this);
 }
 
-bool CTengxunRTWebData::ReportStatus(long lNumberOfData) {
+bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个腾讯实时数据\n", lNumberOfData);
   return true;
 }

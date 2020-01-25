@@ -10,10 +10,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"ChinaMarket.h"
 #include "Thread.h"
-#include"WebData.h"
+#include"VirtualWebInquiry.h"
 
 UINT ThreadReadCrweberIndex(LPVOID pParam) {
-  CCrweberIndexWebData* pCrweberIndexWebData = (CCrweberIndexWebData*)(pParam);
+  CCrweberIndexWebInquiry* pCrweberIndexWebData = (CCrweberIndexWebInquiry*)(pParam);
   if (pCrweberIndexWebData->ReadWebData(500, 50, 30)) {
     CWebDataReceivedPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {

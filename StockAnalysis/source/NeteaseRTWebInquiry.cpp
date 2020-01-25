@@ -21,23 +21,23 @@
 #include"ChinaMarket.h"
 
 #include"Thread.h"
-#include "NeteaseWebRTData.h"
+#include "NeteaseRTWebInquiry.h"
 
-CNeteaseRTWebData::CNeteaseRTWebData() : CWebData() {
+CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("NeteaseRT");
 }
 
-CNeteaseRTWebData::~CNeteaseRTWebData() {
+CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
 }
 
-bool CNeteaseRTWebData::ReportStatus(long lNumberOfData) {
+bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个网易实时数据\n", lNumberOfData);
   return true;
 }
 
-void CNeteaseRTWebData::InquireNextWebData(void) {
+void CNeteaseRTWebInquiry::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
@@ -53,12 +53,12 @@ void CNeteaseRTWebData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-CString CNeteaseRTWebData::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+CString CNeteaseRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
   gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(str);
   return str;
 }
 
-void CNeteaseRTWebData::StartReadingThread(void) {
+void CNeteaseRTWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadNeteaseRTData, this);
 }

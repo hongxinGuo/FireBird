@@ -3,11 +3,11 @@
 
 #include"ChinaMarket.h"
 
-#include"NeteaseWebDayLineData.h"
+#include"NeteaseDayLineWebInquiry.h"
 
 using namespace std;
 
-static CNeteaseDayLineWebData m_NeteaseDayLineWebData; // 网易日线历史数据
+static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebData; // 网易日线历史数据
 
 namespace StockAnalysisTest {
   TEST(NeteaseWebDayLineDataTest, TestInitialize) {

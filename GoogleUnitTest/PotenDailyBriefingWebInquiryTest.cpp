@@ -3,7 +3,7 @@
 
 #include"RTData.h"
 
-static CPotenDailyBriefingWebData m_PotenDailyBriefingWebData; // poten.com上的每日油运指数
+static CPotenDailyBriefingWebInquiry m_PotenDailyBriefingWebData; // poten.com上的每日油运指数
 
 namespace StockAnalysisTest {
   TEST(PotenDailyBriefingWebDataTest, TestInitialize) {

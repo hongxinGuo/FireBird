@@ -5,18 +5,18 @@
 
 #include"Accessory.h"
 
-#include "CrweberIndexWebData.h"
+#include "CrweberIndexWebInquiry.h"
 
-CCrweberIndexWebData::CCrweberIndexWebData() : CWebData() {
+CCrweberIndexWebInquiry::CCrweberIndexWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://www.crweber.com");
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("CrweberIndex");
 }
 
-CCrweberIndexWebData::~CCrweberIndexWebData() {
+CCrweberIndexWebInquiry::~CCrweberIndexWebInquiry() {
 }
 
-void CCrweberIndexWebData::InquireNextWebData(void) {
+void CCrweberIndexWebInquiry::InquireNextWebData(void) {
   CString strMiddle = _T("");
 
   CreateTotalInquiringString(strMiddle);
@@ -24,6 +24,6 @@ void CCrweberIndexWebData::InquireNextWebData(void) {
   StartReadingThread();
 }
 
-void CCrweberIndexWebData::StartReadingThread(void) {
+void CCrweberIndexWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadCrweberIndex, this);
 }

@@ -1,12 +1,12 @@
 #pragma once
 
-#include"WebData.h"
+#include"VirtualWebInquiry.h"
 
-class CPotenDailyBriefingWebData final : public CWebData
+class CPotenDailyBriefingWebInquiry final : public CVirtualWebInquiry
 {
 public:
-  CPotenDailyBriefingWebData();
-  ~CPotenDailyBriefingWebData();
+  CPotenDailyBriefingWebInquiry();
+  ~CPotenDailyBriefingWebInquiry();
 
   virtual void InquireNextWebData(void) override;
   virtual void StartReadingThread(void) override;

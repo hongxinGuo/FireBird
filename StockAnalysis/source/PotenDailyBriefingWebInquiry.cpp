@@ -5,9 +5,9 @@
 
 #include"Accessory.h"
 
-#include "PotenDailyBriefingWebData.h"
+#include "PotenDailyBriefingWebInquiry.h"
 
-CPotenDailyBriefingWebData::CPotenDailyBriefingWebData() : CWebData() {
+CPotenDailyBriefingWebInquiry::CPotenDailyBriefingWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://energy.poten.com/poten-daily-briefing-webpage-");
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("PotenDailyBriefing");
@@ -15,10 +15,10 @@ CPotenDailyBriefingWebData::CPotenDailyBriefingWebData() : CWebData() {
   m_lInquiringDay = 20180411; //poten.com网站的最新格式从此日期之后开始，之前的格式暂时不去读取。
 }
 
-CPotenDailyBriefingWebData::~CPotenDailyBriefingWebData() {
+CPotenDailyBriefingWebInquiry::~CPotenDailyBriefingWebInquiry() {
 }
 
-void CPotenDailyBriefingWebData::InquireNextWebData(void) {
+void CPotenDailyBriefingWebInquiry::InquireNextWebData(void) {
   m_lInquiringDay = gl_PotenDailyBriefingMarket.GetNewestUpdateDay();
   CString strMiddle = _T("");
   char buffer[50];
@@ -34,6 +34,6 @@ void CPotenDailyBriefingWebData::InquireNextWebData(void) {
   TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDay);
 }
 
-void CPotenDailyBriefingWebData::StartReadingThread(void) {
+void CPotenDailyBriefingWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadPotenDailyBriefing, this);
 }

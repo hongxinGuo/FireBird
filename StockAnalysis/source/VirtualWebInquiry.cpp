@@ -6,9 +6,9 @@
 #include"globedef.h"
 #include"ChinaMarket.h"
 
-#include"WebData.h"
+#include"VirtualWebInquiry.h"
 
-CWebData::CWebData() {
+CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
   m_pCurrentPos = m_buffer;
   m_lCurrentPos = 0;
@@ -26,7 +26,7 @@ CWebData::CWebData() {
 #endif
 }
 
-bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
+bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session;
   m_pFile = nullptr;
   bool fDone = false;
@@ -73,7 +73,7 @@ bool CWebData::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lTh
   return true;
 }
 
-bool CWebData::ReadDataFromWebOnce(void) {
+bool CVirtualWebInquiry::ReadDataFromWebOnce(void) {
   m_lCurrentByteRead = m_pFile->Read(m_pCurrentReadPos, 1024);
   if (m_lCurrentByteRead > 0) {
     m_pCurrentReadPos += m_lCurrentByteRead;
@@ -83,7 +83,7 @@ bool CWebData::ReadDataFromWebOnce(void) {
   else return false;
 }
 
-CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
+CWebDataReceivedPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
   char* pSrc = GetBufferAddr();
   CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
   pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
@@ -101,23 +101,23 @@ CWebDataReceivedPtr CWebData::TransferWebDataToQueueData() {
 // 这是此类唯一的接口函数
 //
 //////////////////////////////////////////////////////////////////////////
-bool CWebData::GetWebData(void) {
+bool CVirtualWebInquiry::GetWebData(void) {
   if (!IsReadingWebData()) {
     InquireNextWebData();
   }
   return true;
 }
 
-bool CWebData::ReportStatus(long lNumberOfData) {
+bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) {
   TRACE("读入%d个实时数据\n", lNumberOfData);
   return true;
 }
 
-void CWebData::CreateTotalInquiringString(CString strMiddle) {
+void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
   m_strInquire = m_strWebDataInquirePrefix + strMiddle + m_strWebDataInquireSuffix;
 }
 
-void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
+void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   long i;
   for (i = 0; i < lTotalNumber; i++) {
     m_buffer[i] = buffer[i];
@@ -128,7 +128,7 @@ void CWebData::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   m_lCurrentPos = 0;
 }
 
-void CWebData::__TESTSetBuffer(CString str) {
+void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
   long i;
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();

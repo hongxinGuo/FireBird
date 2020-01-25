@@ -3,12 +3,12 @@
 
 #include"ChinaMarket.h"
 
-#include"SinaWebRTData.h"
+#include"SinaRTWebInquiry.h"
 
 using namespace std;
 #include<atomic>
 
-static CSinaRTWebData m_SinaRTWebData; // 新浪实时数据采集
+static CSinaRTWebInquiry m_SinaRTWebData; // 新浪实时数据采集
 
 namespace StockAnalysisTest {
   TEST(SinaWebRTDataTest, TestInitialize) {
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
   }
 }
 
-// 由于基类CWebData为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
+// 由于基类CVirtualWebInquiry为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
 namespace StockAnalysisTest {
   TEST(CWebDataTest, TestIsReadingWebData) {
     EXPECT_FALSE(m_SinaRTWebData.IsReadingWebData());

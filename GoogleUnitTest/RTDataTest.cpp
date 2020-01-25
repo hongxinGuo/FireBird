@@ -6,7 +6,7 @@
 #include"ChinaMarket.h"
 
 #include"RTData.h"
-#include"SinaWebRTData.h"
+#include"SinaRTWebInquiry.h"
 
 namespace StockAnalysisTest {
   TEST(CStockRTDataTest, TestInitialize) {

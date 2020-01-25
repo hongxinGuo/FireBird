@@ -57,18 +57,6 @@
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
       <Filter>Test源文件\实现类</Filter>
     </ClCompile>
-    <ClCompile Include="SinaRTWebDataTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="TengxunRTWebDataTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="NeteaseDayLineWebDataTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="CrweberIndexWebDataTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -114,9 +102,6 @@
     <ClCompile Include="ProcessDayLineDataTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="PotenDailyBriefingWebDataTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaMarketTest.cpp">
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
@@ -128,6 +113,21 @@
     </ClCompile>
     <ClCompile Include="CrweberIndexMarketTest.cpp">
       <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="CrweberIndexWebInquiryTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="SinaRTWebInquiryTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="TengxunRTWebInquiryTest.cpp">
+      <Filter>Test源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,10 +145,16 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChildFrm.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexMarket.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\DayLine.obj">
@@ -160,10 +166,10 @@
     <Object Include="..\StockAnalysis\x64\Debug\MainFrm.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebDayLineData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseDayLineWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\NeteaseWebRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\NeteaseRTWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\OneDeal.obj">
@@ -172,7 +178,22 @@
     <Object Include="..\StockAnalysis\x64\Debug\OutputWnd.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefing.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingMarket.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebInquiry.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
@@ -196,13 +217,16 @@
     <Object Include="..\StockAnalysis\x64\Debug\SetOption.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\SetPotenDailyBriefing.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetRealTimeData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetStockCode.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SinaWebRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\SinaRTWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
@@ -229,13 +253,19 @@
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\TengxunWebRTData.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebInquiry.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadLoadDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadMaintainDayLineDB.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessCurrentTradeDayStock.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadCrweberIndex.obj">
@@ -245,6 +275,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadNeteaseRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadPotenDailyBriefing.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj">
@@ -265,43 +298,10 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadUpdateStockCodeDB.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\WebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadProcessCurrentTradeDayStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadReadPotenDailyBriefing.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\SetPotenDailyBriefing.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefing.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingMarket.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\VirtualMarket.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\CrweberIndexMarket.obj">
+    <Object Include="..\StockAnalysis\x64\Debug\VirtualWebInquiry.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebDataInquirer.obj">

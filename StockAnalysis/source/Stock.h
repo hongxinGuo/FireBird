@@ -24,7 +24,7 @@ enum {
 #include"DayLine.h"
 #include"OneDeal.h"
 
-#include"NeteaseWebDayLineData.h"
+#include"NeteaseDayLineWebInquiry.h"
 
 #include"StockBasicInfo.h"
 #include"StockCalculatedInfo.h"
@@ -216,7 +216,7 @@ public:
   void SetDayLineNeedSaving(bool fFlag);
   bool IsDayLineNeedSavingAndClearFlag(void);
 
-  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebData* pNeteaseWebDayLineData);
+  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
   bool SkipNeteaseDayLineInformationHeader(void);
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);

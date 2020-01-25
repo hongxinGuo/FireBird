@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"RTData.h"
-#include"NeteaseWebRTData.h"
+#include"NeteaseRTWebInquiry.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestNeteaseInitialize) {
@@ -630,7 +630,7 @@ namespace StockAnalysisTest {
     long m_lIndex;
     long m_lValue;
     CString m_strValue;
-    CNeteaseRTWebData m_NeteaseWebRTData;
+    CNeteaseRTWebInquiry m_NeteaseWebRTData;
     CRTData m_RTData;
   };
 

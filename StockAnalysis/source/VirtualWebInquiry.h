@@ -7,10 +7,10 @@
 using namespace std;
 #include<atomic>
 
-class CWebData : public CObject {
+class CVirtualWebInquiry : public CObject {
 public:
-  CWebData();
-  ~CWebData() {}
+  CVirtualWebInquiry();
+  ~CVirtualWebInquiry() {}
 
   bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
   bool ReadDataFromWebOnce(void);

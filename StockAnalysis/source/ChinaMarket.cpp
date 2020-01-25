@@ -24,7 +24,7 @@ Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
 
 CQueueRTData gl_queueRTData;
-CWebDataInquirer gl_WebDataInquirer;
+CWebInquirer gl_WebDataInquirer;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

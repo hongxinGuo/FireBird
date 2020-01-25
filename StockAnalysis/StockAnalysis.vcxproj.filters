@@ -123,12 +123,6 @@
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\工作线程</Filter>
     </ClInclude>
-    <ClInclude Include="source\WebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CrweberIndexWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\SetDayLineToday.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
@@ -171,18 +165,6 @@
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\NeteaseWebRTData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SinaWebRTData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TengxunWebRTData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\NeteaseWebDayLineData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\Stock.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
@@ -210,9 +192,6 @@
     <ClInclude Include="source\CrweberIndexMarket.h">
       <Filter>头文件\Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefingWebData.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\SetPotenDailyBriefing.h">
       <Filter>头文件\数据库</Filter>
     </ClInclude>
@@ -230,6 +209,27 @@
     </ClInclude>
     <ClInclude Include="source\SetCrweberIndex.h">
       <Filter>头文件\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\VirtualWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndexWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\NeteaseRTWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefingWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SinaRTWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TengxunRTWebInquiry.h">
+      <Filter>头文件\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,12 +287,6 @@
     <ClCompile Include="source\ThreadSavDayLine.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\WebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CrweberIndexWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\SetCrweberIndex.cpp">
       <Filter>源文件\数据库</Filter>
     </ClCompile>
@@ -341,18 +335,6 @@
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\NeteaseWebDayLineData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseWebRTData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SinaWebRTData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TengxunWebRTData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\Stock.cpp">
       <Filter>源文件\Stock</Filter>
     </ClCompile>
@@ -380,9 +362,6 @@
     <ClCompile Include="source\CrweberIndexMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefingWebData.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
@@ -400,6 +379,27 @@
     </ClCompile>
     <ClCompile Include="source\VirtualMarket.cpp">
       <Filter>源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\VirtualWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseRTWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SinaRTWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TengxunRTWebInquiry.cpp">
+      <Filter>源文件\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
