@@ -9,6 +9,12 @@ CVirtualMarket::CVirtualMarket(void) {
   m_fResetMarket = true;
   m_fReadyToRun = true;
 
+  m_lMarketLastTradeDay = 0;
+  m_lMarketTime = 0;
+  m_lMarketToday = 0;
+  m_tLocal = 0;
+  m_tMarket = 0;
+
   m_lTimeZoneOffset = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 }
 

@@ -140,6 +140,11 @@ public:
 
   bool Compare(CRTDataPtr pRTData);
 
+  // 数据库存储和读取
+  void SaveData(CSetRealTimeData& setRTData);
+  void AppendData(CSetRealTimeData& setRTData);
+  void LoadData(CSetRealTimeData& setRTData);
+
 public:
   // 读取新浪实时数据函数
   // 从字符指针处读入新浪制式数据。此指针开始处为var hq_str_s,遇到\n(回车)结束
@@ -218,11 +223,6 @@ public:
   bool IsValidTime(void);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
-
-  // 数据库存储和读取
-  void SaveData(CSetRealTimeData& setRTData);
-  void AppendData(CSetRealTimeData& setRTData);
-  void LoadData(CSetRealTimeData& setRTData);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
