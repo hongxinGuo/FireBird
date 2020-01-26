@@ -64,7 +64,7 @@ public:
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
   bool TaskCheckStartReceivingData(long lCurrentTime);
-  void TaskCheckMarketOpen(long lCurrentTime);
+  bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskResetMarketAgain(long lCurrentTime);
 

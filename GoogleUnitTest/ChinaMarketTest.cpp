@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
-    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), gl_ChinaStockMarket.GetStock(_T("sh600000")));
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
@@ -480,7 +480,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestGetCurrentStock) {
     CStockPtr pStock = make_shared<CStock>();
-    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), gl_ChinaStockMarket.GetStock(_T("sh600000")));
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), pStock);
@@ -585,39 +585,62 @@ namespace StockAnalysisTest {
     tm tm_;
     tm_.tm_wday = 1;
     gl_ChinaStockMarket.__Test_SetTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91359));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(92900));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(91400));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(92901));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(113500));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(150259));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113501));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125459));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(125500));
-    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(150630));
-    EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150300));
     tm_.tm_wday = 0;
     gl_ChinaStockMarket.__Test_SetTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91459));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(92859));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(91500));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(92900));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113459));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150259));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(113500));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150300));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125459));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(125500));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150630));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(150631));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
+  }
+
+  TEST_F(CChinaMarket, TestCheckStartReceivingData) {
+    tm tm_;
+    tm_.tm_wday = 1;
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91359));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91400));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113500));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113501));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(125459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(125500));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(150630));
+    EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(150631));
+    tm_.tm_wday = 0;
+    gl_ChinaStockMarket.__Test_SetTM(tm_);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(125459));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(125500));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(150630));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(150631));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
   }
 
   TEST_F(CChinaMarket, TestTaskUpdateStockCodeDB) {

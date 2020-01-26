@@ -1177,9 +1177,14 @@ bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
   return m_fStartReceivingData;
 }
 
-void CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
-  if ((lCurrentTime > 92900) && (lCurrentTime < 150300)) m_fMarketOpened = true;
+bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
+  if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
+    m_fMarketOpened = false;
+  }
+  else if ((lCurrentTime > 92900) && (lCurrentTime < 150300)) m_fMarketOpened = true;
   else m_fMarketOpened = false;
+
+  return m_fMarketOpened;
 }
 
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
