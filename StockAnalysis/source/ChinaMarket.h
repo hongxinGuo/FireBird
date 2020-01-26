@@ -63,7 +63,8 @@ public:
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskUpdateStockCodeDB(void);
-  bool TaskCheckMarketOpen(long lCurrentTime);
+  bool TaskCheckStartReceivingData(long lCurrentTime);
+  void TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskResetMarketAgain(long lCurrentTime);
 
@@ -203,6 +204,7 @@ public:
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
+  bool IsStartReceivingData(void) noexcept { return m_fStartReceivingData; }
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
   void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
@@ -236,7 +238,7 @@ public:
   void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
 
   void SetRecordRTData(void);
-  bool IsRecordingRTData(void) noexcept { if (m_pStockSavedRTData != nullptr) return true; else return false; }
+  bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
 private:
   // 初始化
@@ -251,11 +253,12 @@ protected:
   vector<CStockPtr> m_vStockChoice; // 自选股票池
 
   CQueueRTDataImp m_vRTData;
-  CStockPtr m_pStockSavedRTData;
+  bool m_fSaveRTData;
 
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
   bool m_fMarketOpened; // 是否开市
+  bool m_fStartReceivingData; // 是否开始接收实时数据
   bool m_fGetRTData; // 读取实时数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   CStockPtr m_pCurrentStock; // 当前显示的股票

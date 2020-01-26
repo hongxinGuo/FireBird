@@ -40,8 +40,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   }
 
   m_lTimeZoneOffset = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
-  m_pStockSavedRTData = nullptr;
-
+  m_fSaveRTData = true;
   Reset();
 }
 
@@ -72,8 +71,6 @@ void CChinaMarket::Reset(void) {
   m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
   m_fCurrentEditStockChanged = false;
-
-  m_pCurrentStock = nullptr;
 
   m_lTotalMarketBuy = m_lTotalMarketSell = 0;
 
@@ -114,6 +111,7 @@ void CChinaMarket::Reset(void) {
 
   // 生成股票代码池
   CreateTotalStockContainer();
+  m_pCurrentStock = GetStock(_T("sh600000")); // 默认股票为浦发银行
 }
 
 #ifdef _DEBUG
@@ -127,11 +125,11 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 void CChinaMarket::SetRecordRTData(void) {
-  if (m_pStockSavedRTData == nullptr) {
-    m_pStockSavedRTData = m_pCurrentStock;
+  if (m_fSaveRTData) {
+    m_fSaveRTData = false;
   }
   else {
-    m_pStockSavedRTData = nullptr;
+    m_fSaveRTData = true;
   }
 }
 
@@ -552,8 +550,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      long lIndex = m_mapChinaMarketAStock.at(pRTData->GetStockCode());
-      pStock = m_vChinaMarketAStock.at(lIndex);
+      pStock = GetStock(pRTData->GetStockCode());
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime()) {
           pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
@@ -562,6 +559,9 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
         pStock->PushRTData(pRTData); // 存储新的数据至数据池
+        if (pStock == m_pCurrentStock) {
+          StoreChoiceRTData(pRTData);
+        }
         pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
       }
     }
@@ -708,7 +708,6 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadSinaData(pWebDataReceived)) {
         gl_queueRTData.PushSinaRTData(pRTData); // 将此实时数据指针存入实时数据队列
-        StoreChoiceRTData(pRTData);
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
@@ -717,11 +716,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
 }
 
 void CChinaMarket::StoreChoiceRTData(CRTDataPtr pRTData) {
-  if (m_pStockSavedRTData != nullptr) {
-    if (pRTData->GetStockCode().Compare(m_pStockSavedRTData->GetStockCode()) == 0) {
-      m_vRTData.PushRTData(pRTData);
-    }
-  }
+  m_vRTData.PushRTData(pRTData);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -947,7 +942,7 @@ bool CChinaMarket::SchedulingTask(void) {
     TaskGetRTDataFromWeb();
     TaskProcessWebRTDataGetFromSinaServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fMarketOpened && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fStartReceivingData && SystemReady()) m_iCountDownSlowReadingRTData = __NumberOfCount__; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1026,6 +1021,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   SchedulingTaskPer1Minute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
 
+  TaskCheckMarketOpen(lCurrentTime);
+
   if (s_iCountDownProcessWebRTData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
@@ -1071,8 +1068,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   if (i5MinuteCounter <= 0) {
     i5MinuteCounter = 299;
 
-    TaskSaveChoicedRTData();
-
     SaveTempDataIntoDB(lCurrentTime);
 
     return true;
@@ -1087,7 +1082,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
 void CChinaMarket::SaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
   if (m_fSystemReady) {
-    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+    if (m_fStartReceivingData && !gl_ThreadStatus.IsCalculatingRTData()) {
       if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
         CString str;
         str = _T("存储临时数据");
@@ -1116,6 +1111,8 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
 
     // 下午三点三分开始处理当日实时数据。
     TaskProcessTodayStock(lCurrentTime);
+
+    TaskSaveChoicedRTData();
 
     return true;
   } // 每一分钟一次的任务
@@ -1167,17 +1164,22 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
   return true;
 }
 
-bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
+bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
   if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
-    m_fMarketOpened = false;
-    return(m_fMarketOpened);
+    m_fStartReceivingData = false;
+    return(m_fStartReceivingData);
   }
   else if ((lCurrentTime < 91400) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
-    m_fMarketOpened = false;
-    return(m_fMarketOpened);
+    m_fStartReceivingData = false;
+    return(m_fStartReceivingData);
   }
-  else m_fMarketOpened = true;
-  return m_fMarketOpened;
+  else m_fStartReceivingData = true;
+  return m_fStartReceivingData;
+}
+
+void CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
+  if ((lCurrentTime > 92900) && (lCurrentTime < 150300)) m_fMarketOpened = true;
+  else m_fMarketOpened = false;
 }
 
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
@@ -1205,7 +1207,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
-  if (m_pStockSavedRTData != nullptr) {
+  if (SystemReady() && m_fSaveRTData) {
     AfxBeginThread(ThreadSaveRTData, nullptr);
   }
   return true;
@@ -1385,17 +1387,19 @@ bool CChinaMarket::ClearDayLineContainer(void) {
 bool CChinaMarket::SaveRTData(void) {
   CSetRealTimeData setRTData;
   CRTDataPtr pRTData = nullptr;
-
-  setRTData.m_strFilter = _T("[ID] = 1");
-  setRTData.Open();
-  setRTData.m_pDatabase->BeginTrans();
   long lTotal = m_vRTData.GetRTDataSize();
-  for (int i = 0; i < lTotal; i++) {
-    pRTData = m_vRTData.PopRTData();
-    pRTData->AppendData(setRTData);
+
+  if (lTotal > 0) {
+    setRTData.m_strFilter = _T("[ID] = 1");
+    setRTData.Open();
+    setRTData.m_pDatabase->BeginTrans();
+    for (int i = 0; i < lTotal; i++) {
+      pRTData = m_vRTData.PopRTData();
+      pRTData->AppendData(setRTData);
+    }
+    setRTData.m_pDatabase->CommitTrans();
+    setRTData.Close();
   }
-  setRTData.m_pDatabase->CommitTrans();
-  setRTData.Close();
   return(true);
 }
 
