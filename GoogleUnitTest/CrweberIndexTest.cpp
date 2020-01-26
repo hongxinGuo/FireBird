@@ -310,14 +310,18 @@ namespace StockAnalysisTest {
 
   class CrweberIndexTimeTest : public testing::TestWithParam<CrweberIndexTime*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT(!gl_fNormalMode);
       CrweberIndexTime* pCrweberIndexTime = GetParam();
       m_lId = pCrweberIndexTime->m_lId;
       m_strTime = pCrweberIndexTime->m_strTime;
       m_lTime = pCrweberIndexTime->m_lTime;
     }
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
   public:

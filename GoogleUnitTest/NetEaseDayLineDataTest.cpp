@@ -38,7 +38,11 @@ namespace StockAnalysisTest {
 
   class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       NetEaseDayLineData* pData = GetParam();
       m_iCount = pData->m_iCount;
@@ -60,7 +64,7 @@ namespace StockAnalysisTest {
       m_DayLinePtr = make_shared<CDayLine>();
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
       delete m_pData;
     }
@@ -164,7 +168,11 @@ namespace StockAnalysisTest {
 
   class ReadDayLineOneValueTest : public::testing::TestWithParam<ReadDayLineOneValueData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ReadDayLineOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
@@ -177,7 +185,7 @@ namespace StockAnalysisTest {
       m_lCountPos = 0;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
       delete m_pData;
     }

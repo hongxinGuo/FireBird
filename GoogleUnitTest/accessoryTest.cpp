@@ -72,7 +72,11 @@ namespace StockAnalysisTest {
   class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       strConvertBufferToTime* pData = GetParam();
       strBuffer = pData->m_strBuffer;
@@ -80,7 +84,7 @@ namespace StockAnalysisTest {
       iTime = pData->m_Time;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -138,7 +142,11 @@ namespace StockAnalysisTest {
   class ConvertDoubleToStringTest : public::testing::TestWithParam<StrConvertDoubleToString*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertDoubleToString* pData = GetParam();
       dValue = pData->m_dValue;
@@ -146,7 +154,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -196,7 +204,11 @@ namespace StockAnalysisTest {
   class ConvertLongToStringTest : public::testing::TestWithParam<StrConvertLongToString*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertLongToString* pData = GetParam();
       lValue = pData->m_lValue;
@@ -204,7 +216,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -254,7 +266,11 @@ namespace StockAnalysisTest {
   class ConvertIntegerToStringTest : public::testing::TestWithParam<StrConvertIntegerToString*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertIntegerToString* pData = GetParam();
       iValue = pData->m_iValue;
@@ -262,7 +278,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -312,7 +328,11 @@ namespace StockAnalysisTest {
   class ConvertINT64ToStringTest : public::testing::TestWithParam<StrConvertINT64ToString*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertINT64ToString* pData = GetParam();
       iValue = pData->m_iValue;
@@ -320,7 +340,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -365,7 +385,11 @@ namespace StockAnalysisTest {
   class GetValueTest : public::testing::TestWithParam<StructGetValue*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       StructGetValue* pData = GetParam();
       iCount = pData->m_iCount;
@@ -373,7 +397,7 @@ namespace StockAnalysisTest {
       strValue = pData->m_strValue;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 

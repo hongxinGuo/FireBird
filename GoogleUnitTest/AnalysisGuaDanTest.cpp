@@ -113,7 +113,11 @@ namespace StockAnalysisTest {
   class RTDataGuadanTest : public::testing::TestWithParam<GuadanData*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();
       // 预设20个挂单
@@ -143,7 +147,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -312,7 +316,11 @@ namespace StockAnalysisTest {
   class NeedCheckTest : public::testing::TestWithParam<GuadanData*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();
       // 预设20个挂单
@@ -342,7 +350,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 

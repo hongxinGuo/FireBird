@@ -13,16 +13,16 @@ namespace StockAnalysisTest {
   class CChinaMarket : public ::testing::Test
   {
   protected:
-    virtual void SetUp(void) override {
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.CalculateTime();
     }
 
-    virtual void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
-    static void SetUpTestCase() { // 本测试类的初始化函数
+    static void SetUpTestSuite() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
     }
 
-    static void TearDownTestCase() {
+    static void TearDownTestSuite() {
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
       gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();

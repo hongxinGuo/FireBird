@@ -41,7 +41,11 @@ namespace StockAnalysisTest {
 
   class NeteaseDayLineTest : public::testing::TestWithParam<DayLineData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       m_pStock = gl_ChinaStockMarket.GetStock(_T("sh600000"));
       m_pStock->SetDayLineNeedProcess(true);
@@ -52,7 +56,7 @@ namespace StockAnalysisTest {
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);

@@ -123,7 +123,11 @@ namespace StockAnalysisTest {
   class CStockTest2 : public::testing::TestWithParam<RTData*>
   {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       RTData* pData = GetParam();
       pCurrentData = make_shared<CRTData>();
@@ -147,7 +151,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 

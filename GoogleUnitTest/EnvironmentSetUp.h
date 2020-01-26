@@ -14,6 +14,11 @@ namespace StockAnalysisTest {
     virtual ~TestEnvironment() {
     }
 
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+
     virtual void SetUp(void) {
       CStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）

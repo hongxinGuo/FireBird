@@ -156,7 +156,11 @@ namespace StockAnalysisTest {
 
   class CalculateNeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
@@ -187,7 +191,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -371,7 +375,11 @@ namespace StockAnalysisTest {
 
   class StockCodePrefixTest : public::testing::TestWithParam<NeteaseRTDataStockCodePrefix*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataStockCodePrefix* pData = GetParam();
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
@@ -402,7 +410,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -500,7 +508,11 @@ namespace StockAnalysisTest {
 
   class ReadNeteaseOneValueTest : public::testing::TestWithParam<ReadNeteaseOneValueData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ReadNeteaseOneValueData* pData = GetParam();
       m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
@@ -514,7 +526,7 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData->ResetCurrentPos();
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) {
       // clearup
     }
 
@@ -591,7 +603,11 @@ namespace StockAnalysisTest {
 
   class GetNeteaseIndexValueRTDataTest : public::testing::TestWithParam<NeteaseRTDataIndexValue*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataIndexValue* pData = GetParam();
       m_iCount = pData->m_iCount;
@@ -619,7 +635,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 

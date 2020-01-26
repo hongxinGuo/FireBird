@@ -185,7 +185,11 @@ namespace StockAnalysisTest {
 
   class NeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
       m_iCount = pData->m_lCount;
@@ -194,7 +198,7 @@ namespace StockAnalysisTest {
       m_strValue = pData->m_strValue;
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -466,7 +470,11 @@ namespace StockAnalysisTest {
 
   class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       SinaRTData* pData = GetParam();
       m_pSinaWebRTData = make_shared<CWebDataReceived>();
@@ -496,7 +504,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -1308,7 +1316,11 @@ namespace StockAnalysisTest {
 
   class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ReadSinaOneCalueData* pData = GetParam();
       m_pSinaWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
@@ -1322,7 +1334,7 @@ namespace StockAnalysisTest {
       m_pSinaWebRTData->ResetCurrentPos();
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 

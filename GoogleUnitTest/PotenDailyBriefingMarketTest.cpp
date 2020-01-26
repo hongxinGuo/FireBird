@@ -23,11 +23,11 @@ namespace StockAnalysisTest {
       // clearup
     }
 
-    static void SetUpTestCase() { // 本测试类的初始化函数
+    static void SetUpTestSuite() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
     }
 
-    static void TearDownTestCase() {
+    static void TearDownTestSuite() {
       gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
       gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
       gl_PotenDailyBriefingMarket.SetReadyToRun(true);

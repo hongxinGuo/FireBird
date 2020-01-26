@@ -156,7 +156,11 @@ namespace StockAnalysisTest {
 
   class CalculateTengxunRTDataTest : public::testing::TestWithParam<TengxunRTData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       TengxunRTData* pData = GetParam();
       m_pTengxunWebRTData = make_shared<CWebDataReceived>();
@@ -185,7 +189,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -724,7 +728,11 @@ namespace StockAnalysisTest {
 
   class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
   protected:
-    void SetUp(void) override {
+    static void SetUpTestSuite() {
+    }
+    static void TearDownTestSuite() {
+    }
+    virtual void SetUp(void) override {
       ReadTengxunOneValueData* pData = GetParam();
       m_pTengxunWebRTData = make_shared<CWebDataReceived>();
       m_iCount = pData->m_iCount;
@@ -738,7 +746,7 @@ namespace StockAnalysisTest {
       m_pTengxunWebRTData->ResetCurrentPos();
     }
 
-    void TearDown(void) override {
+    virtual void TearDown(void) override {
       // clearup
     }
 
