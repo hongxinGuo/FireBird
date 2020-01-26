@@ -11,6 +11,8 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   }
 
   m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
+  CalculateTime();
+  m_fTodayDataUupdated = false;
 
   Reset();
 }
@@ -20,8 +22,6 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_fDataBaseLoaded = false;
   m_lNewestUpdatedDay = 20180411; //
   m_lNewestDatabaseDay = 0;
-  m_fTodayDataUupdated = false;
-  CalculateTime();
   for (long l = 20180411; l <= GetDay(); l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
     if (!IsWorkingDay(l)) {

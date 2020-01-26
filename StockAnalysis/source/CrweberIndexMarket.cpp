@@ -11,6 +11,7 @@ CCrweberIndexMarket::CCrweberIndexMarket() {
   }
 
   m_lTimeZoneOffset = 0; // crweber.com π”√GMT°£
+  CalculateTime();
 
   Reset();
 }

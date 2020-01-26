@@ -38,8 +38,8 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
     TRACE("ChinaMarket市场变量只允许存在一个实例\n");
     ASSERT(0);
   }
-
   m_lTimeZoneOffset = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
+  CalculateTime();
   m_fSaveRTData = true;
   Reset();
 }
