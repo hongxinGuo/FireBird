@@ -18,7 +18,7 @@ namespace StockAnalysisTest {
       CStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
-        pStock = gl_ChinaStockMarket.GetStockPtr(i);
+        pStock = gl_ChinaStockMarket.GetStock(i);
         pStock->SetDayLineEndDay(-1);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
-        CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(setStockCode.m_StockCode);
+        CStockPtr pStock = gl_ChinaStockMarket.GetStock(setStockCode.m_StockCode);
         EXPECT_FALSE(pStock->IsActive());
         pStock->SetIPOStatus(setStockCode.m_IPOed);
         pStock->SetMarket(setStockCode.m_StockType);

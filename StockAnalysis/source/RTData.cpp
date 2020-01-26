@@ -1018,7 +1018,7 @@ bool CRTData::ReadNeteaseStockCodePrefix(CWebDataReceivedPtr pWebDataReceived) {
   pWebDataReceived->IncreaseCurrentPos();
   strStockCode = strHeader;
   strStockCode += bufferStockCode;
-  if (gl_ChinaStockMarket.GetStockPtr(strStockCode) == nullptr) {
+  if (gl_ChinaStockMarket.GetStock(strStockCode) == nullptr) {
     return false;
   }
   return true;

@@ -34,9 +34,6 @@
     <Filter Include="Test源文件\Crweber.com">
       <UniqueIdentifier>{78892de7-5339-4475-a1f3-fadecb405f9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{7d64aec8-6c8c-4407-baba-6976638576e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Stock">
       <UniqueIdentifier>{0c83be19-9f25-4eab-b2a9-a61810981f64}</UniqueIdentifier>
     </Filter>
@@ -305,6 +302,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\WebInquirer.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveRTData.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

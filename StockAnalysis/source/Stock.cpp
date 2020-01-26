@@ -353,7 +353,7 @@ void CStock::UpdateStatus(CRTDataPtr pRTData) {
 bool CStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
@@ -808,7 +808,7 @@ bool CStock::CheckCurrentRTData() {
 
 void CStock::ShowCurrentTransaction() {
   // 显示当前交易情况
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {
@@ -821,7 +821,7 @@ void CStock::ShowCurrentTransaction() {
 
 void CStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStockPtr();
+  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     if (pCurrentStock->GetStockCode().Compare(m_stockBasicInfo.GetStockCode()) == 0) {

@@ -318,6 +318,7 @@
     <ClCompile Include="source\Stock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
+    <ClCompile Include="source\ThreadSaveRTData.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="source\ThreadStatus.cpp" />
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp" />

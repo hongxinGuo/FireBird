@@ -807,7 +807,7 @@ namespace StockAnalysisTest {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CDayLine id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
+    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
     gl_ChinaStockMarket.__Test_SetDay(20190101);
 
@@ -880,7 +880,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CDayLinePtr pDayLine = nullptr;
     CStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
+    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -948,7 +948,7 @@ namespace StockAnalysisTest {
   TEST_F(CStockTest, TestUpdateDayLineStartEndDay) {
     CDayLinePtr pid;
     CStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
+    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -984,7 +984,7 @@ namespace StockAnalysisTest {
   TEST_F(CStockTest, TestUpdateDayLineStartEndDay2) {
     CDayLinePtr pid;
     CStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600008"));
+    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1018,7 +1018,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockTest, TestSetTodayActive) {
-    CStockPtr pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
     EXPECT_FALSE(pStock->IsActive());
     CString strStockName = pStock->GetStockName();
     WORD wMarket = pStock->GetMarket();

@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
   protected:
     void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      m_pStock = gl_ChinaStockMarket.GetStockPtr(_T("sh600000"));
+      m_pStock = gl_ChinaStockMarket.GetStock(_T("sh600000"));
       m_pStock->SetDayLineNeedProcess(true);
       m_pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
       DayLineData* pData = GetParam();

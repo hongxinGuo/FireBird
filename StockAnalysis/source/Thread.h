@@ -40,3 +40,5 @@ UINT ThreadLoadDayLine(LPVOID);        // 此工作线程返回值为16
 UINT ThreadMaintainDayLineDataBase(LPVOID);   // 此工作线程返回值为17
 //更新股票代码数据库线程
 UINT ThreadUpdateStockCodeDB(LPVOID); // 此线程返回值为18
+//存储所选股票实时数据线程
+UINT ThreadSaveRTData(LPVOID); // 此线程返回值为19

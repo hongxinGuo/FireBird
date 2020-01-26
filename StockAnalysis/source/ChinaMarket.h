@@ -67,6 +67,8 @@ public:
   bool TaskResetMarket(long lCurrentTime);
   bool TaskResetMarketAgain(long lCurrentTime);
 
+  bool TaskSaveChoicedRTData(void);
+
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);
 
@@ -101,15 +103,15 @@ public:
   // 得到股票索引
   bool GetStockIndex(CString strStockCode, long& lIndex);
   // 得到股票指针
-  CStockPtr GetStockPtr(CString strStockCode);
-  CStockPtr GetStockPtr(long lIndex);
+  CStockPtr GetStock(CString strStockCode);
+  CStockPtr GetStock(long lIndex);
 
   void IncreaseActiveStockNumber(void);
 
   // 得到当前显示股票
-  CStockPtr GetShowStock(void) noexcept { return m_pCurrentStock; }
-  void SetShowStock(CString strStockCode);
-  void SetShowStock(CStockPtr pStock);
+  CStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
+  void SetCurrentStock(CString strStockCode);
+  void SetCurrentStock(CStockPtr pStock);
   bool IsCurrentStockChanged(void);
 
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
@@ -178,6 +180,7 @@ public:
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
+  void StoreChoiceRTData(CRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
   bool IsInvalidTengxunRTData(CWebDataReceivedPtr pWebDataReceived);
   void CheckTengxunRTData(CRTDataPtr pRTData);
@@ -199,7 +202,6 @@ public:
 
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
-  CStockPtr GetCurrentStockPtr(void) noexcept { return m_pCurrentStock; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
@@ -233,6 +235,9 @@ public:
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }
   void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
 
+  void SetRecordRTData(void);
+  bool IsRecordingRTData(void) noexcept { if (m_pStockSavedRTData != nullptr) return true; else return false; }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -244,6 +249,9 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CStockPtr> m_vStockChoice; // 自选股票池
+
+  CQueueRTDataImp m_vRTData;
+  CStockPtr m_pStockSavedRTData;
 
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器
