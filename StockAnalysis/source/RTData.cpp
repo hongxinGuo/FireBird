@@ -13,7 +13,6 @@ static char THIS_FILE[] = __FILE__;
 void CRTData::Reset(void) {
   m_lDataSource = __INVALID_RT_WEB_DATA__;
   m_time = 0;
-  // 必须初始化m_strStockCode的长度为6.
   m_strStockCode = "";
   m_wMarket = 0;
   m_lLastClose = 0;
@@ -770,7 +769,7 @@ bool CRTData::ReadTengxunData(CWebDataReceivedPtr pTengxunWebRTData) {
 }
 
 bool CRTData::CheckTengxunRTDataActive() {
-  if (!IsValidTime()) { // 如果交易时间在12小时前
+  if (!IsValidTime()) { // 如果交易时间在14天前
     m_fActive = false;
   }
   else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据

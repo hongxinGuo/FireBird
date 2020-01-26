@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       strConvertBufferToTime* pData = GetParam();
       strBuffer = pData->m_strBuffer;
@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
       iTime = pData->m_Time;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -146,7 +146,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertDoubleToString* pData = GetParam();
       dValue = pData->m_dValue;
@@ -154,7 +154,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -208,7 +208,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertLongToString* pData = GetParam();
       lValue = pData->m_lValue;
@@ -216,7 +216,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -270,7 +270,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertIntegerToString* pData = GetParam();
       iValue = pData->m_iValue;
@@ -278,7 +278,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -332,7 +332,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertINT64ToString* pData = GetParam();
       iValue = pData->m_iValue;
@@ -340,7 +340,7 @@ namespace StockAnalysisTest {
       lDividend = pData->m_lDividend;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -389,7 +389,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StructGetValue* pData = GetParam();
       iCount = pData->m_iCount;
@@ -397,7 +397,7 @@ namespace StockAnalysisTest {
       strValue = pData->m_strValue;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 

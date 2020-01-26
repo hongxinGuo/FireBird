@@ -19,7 +19,7 @@ namespace StockAnalysisTest {
     static void TearDownTestSuite() {
     }
 
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       CStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
       EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
     }
   };
 }

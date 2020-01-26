@@ -69,7 +69,7 @@
     <ClCompile Include="DayLineTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
-    <ClCompile Include="Market_NeteaseDayLineTest.cpp" />
+    <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
@@ -78,6 +78,7 @@
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
+    <ClCompile Include="ReceivedDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="StockBasicInfoTest.cpp" />

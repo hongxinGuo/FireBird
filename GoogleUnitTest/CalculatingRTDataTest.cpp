@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       RTData* pData = GetParam();
       pCurrentData = make_shared<CRTData>();
@@ -151,7 +151,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 

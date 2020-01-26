@@ -3,7 +3,7 @@
 #include"stdafx.h"
 
 #include"SetPotenDailyBriefing.h"
-#include"WebDataReceived.h"
+#include"ReceivedData.h"
 
 using namespace std;
 #include<vector>

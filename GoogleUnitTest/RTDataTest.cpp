@@ -187,8 +187,10 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
@@ -472,12 +474,14 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       SinaRTData* pData = GetParam();
-      m_pSinaWebRTData = make_shared<CWebDataReceived>();
+      m_pSinaWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pSinaWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -1318,11 +1322,13 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
+
     virtual void SetUp(void) override {
       ReadSinaOneCalueData* pData = GetParam();
-      m_pSinaWebRTData = make_shared<CWebDataReceived>();
+      m_pSinaWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pSinaWebRTData->m_pDataBuffer = new char[lLength + 1];

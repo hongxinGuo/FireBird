@@ -14,19 +14,19 @@ namespace StockAnalysisTest {
   class CStockTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite() { // 本测试类的初始化函数
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    static void TearDownTestSuite() {
+    }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
     }
 
     virtual void TearDown(void) override {
       // clearup
-    }
-
-    static void SetUpTestCase() { // 本测试类的初始化函数
-      ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestCase() {
     }
   };
 
@@ -519,14 +519,14 @@ namespace StockAnalysisTest {
     id.SetCheckingDayLineStatus();
     EXPECT_FALSE(id.IsDayLineNeedUpdate());
     id.SetDayLineNeedUpdate(true);
+    id.SetIPOStatus(__STOCK_IPOED__);
+    id.SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    id.SetCheckingDayLineStatus();
+    EXPECT_TRUE(id.IsDayLineNeedUpdate());
     id.SetIPOStatus(__STOCK_DELISTED__);
     id.SetCheckingDayLineStatus();
     if (gl_ChinaStockMarket.GetDayOfWeek() == 1) EXPECT_TRUE(id.IsDayLineNeedUpdate());
     else EXPECT_FALSE(id.IsDayLineNeedUpdate());
-    id.SetDayLineNeedUpdate(true);
-    id.SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
-    id.SetCheckingDayLineStatus();
-    EXPECT_TRUE(id.IsDayLineNeedUpdate());
   }
 
   TEST_F(CStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试

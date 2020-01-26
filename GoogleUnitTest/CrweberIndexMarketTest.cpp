@@ -9,7 +9,19 @@ namespace StockAnalysisTest {
   class CCrweberIndexMarketTest : public ::testing::Test
   {
   protected:
-    virtual void SetUp(void) {
+    static void SetUpTestSuite() { // 本测试类的初始化函数
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    static void TearDownTestSuite() {
+      gl_CrweberIndexMarket.SetDatabaseLoaded(false);
+      gl_CrweberIndexMarket.SetPermitResetMarket(true);
+      gl_CrweberIndexMarket.SetReadyToRun(true);
+      gl_CrweberIndexMarket.SetResetMarket(true);
+      gl_CrweberIndexMarket.SetNewestUpdateDay(0);
+    }
+
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
@@ -19,20 +31,8 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
-      gl_CrweberIndexMarket.SetDatabaseLoaded(false);
-      gl_CrweberIndexMarket.SetPermitResetMarket(true);
-      gl_CrweberIndexMarket.SetReadyToRun(true);
-      gl_CrweberIndexMarket.SetResetMarket(true);
-      gl_CrweberIndexMarket.SetNewestUpdateDay(0);
-    }
-
-    static void SetUpTestSuite() { // 本测试类的初始化函数
-      ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestSuite() {
       gl_CrweberIndexMarket.SetDatabaseLoaded(false);
       gl_CrweberIndexMarket.SetPermitResetMarket(true);
       gl_CrweberIndexMarket.SetReadyToRun(true);

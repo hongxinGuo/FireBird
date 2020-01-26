@@ -9,6 +9,17 @@ namespace StockAnalysisTest {
   class CPotenDailyBriefingMarketTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite() { // 本测试类的初始化函数
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    static void TearDownTestSuite() {
+      gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
+      gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
+      gl_PotenDailyBriefingMarket.SetReadyToRun(true);
+      gl_PotenDailyBriefingMarket.SetResetMarket(true);
+    }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
@@ -21,17 +32,6 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-    }
-
-    static void SetUpTestSuite() { // 本测试类的初始化函数
-      ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestSuite() {
-      gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
-      gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
-      gl_PotenDailyBriefingMarket.SetReadyToRun(true);
-      gl_PotenDailyBriefingMarket.SetResetMarket(true);
     }
   };
 

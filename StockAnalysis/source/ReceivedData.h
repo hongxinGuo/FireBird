@@ -5,16 +5,16 @@
 using namespace std;
 #include<memory>
 
-class CWebDataReceived : public CObject {
+class CReceivedData : public CObject {
 public:
-  CWebDataReceived() {
+  CReceivedData() {
     m_lTime = 0;
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
     m_pCurrentPos = nullptr;
     m_lCurrentPos = 0;
   }
-  ~CWebDataReceived() {
+  ~CReceivedData() {
     if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
@@ -34,4 +34,4 @@ public:
   long m_lCurrentPos;
 };
 
-typedef shared_ptr<CWebDataReceived> CWebDataReceivedPtr;
+typedef shared_ptr<CReceivedData> CWebDataReceivedPtr;

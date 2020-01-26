@@ -2,7 +2,7 @@
 
 #include"stdafx.h"
 
-#include"WebDataReceived.h"
+#include"ReceivedData.h"
 
 using namespace std;
 #include<atomic>

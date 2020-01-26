@@ -237,7 +237,7 @@
     <ClInclude Include="source\SetPotenDailyBriefing.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebInquirer.h" />
-    <ClInclude Include="source\WebDataReceived.h" />
+    <ClInclude Include="source\ReceivedData.h" />
     <ClInclude Include="source\Semaphore.h" />
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />

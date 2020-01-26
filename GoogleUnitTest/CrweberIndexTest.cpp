@@ -314,14 +314,14 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT(!gl_fNormalMode);
       CrweberIndexTime* pCrweberIndexTime = GetParam();
       m_lId = pCrweberIndexTime->m_lId;
       m_strTime = pCrweberIndexTime->m_strTime;
       m_lTime = pCrweberIndexTime->m_lTime;
     }
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
   public:

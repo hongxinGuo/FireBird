@@ -13,15 +13,6 @@ namespace StockAnalysisTest {
   class CChinaMarket : public ::testing::Test
   {
   protected:
-    virtual void SetUp(void) {
-      ASSERT_FALSE(gl_fNormalMode);
-      gl_ChinaStockMarket.CalculateTime();
-    }
-
-    virtual void TearDown(void) {
-      // clearup
-    }
-
     static void SetUpTestSuite() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
@@ -35,6 +26,15 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
       gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
+    }
+
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      gl_ChinaStockMarket.CalculateTime();
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
     }
   };
 
@@ -823,7 +823,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestIsValidNeteaseRTDataPrefix) {
     CWebDataReceivedPtr pWebDataReceived;
-    pWebDataReceived = make_shared<CWebDataReceived>();
+    pWebDataReceived = make_shared<CReceivedData>();
     CString str = _T("_ntes_quote_callback({\"");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
@@ -839,7 +839,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestIsValidTengxunRTDataPrefix) {
     CWebDataReceivedPtr pWebDataReceived;
-    pWebDataReceived = make_shared<CWebDataReceived>();
+    pWebDataReceived = make_shared<CReceivedData>();
     CString str = _T("v_pv_none_match=\"1\";\n");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());

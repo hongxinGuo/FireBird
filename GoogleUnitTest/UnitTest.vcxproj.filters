@@ -69,9 +69,6 @@
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="Market_NeteaseDayLineTest.cpp">
-      <Filter>Test源文件\Market</Filter>
-    </ClCompile>
     <ClCompile Include="AccessoryTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -125,6 +122,12 @@
     </ClCompile>
     <ClCompile Include="TengxunRTWebInquiryTest.cpp">
       <Filter>Test源文件\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp">
+      <Filter>Test源文件\Market</Filter>
+    </ClCompile>
+    <ClCompile Include="ReceivedDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

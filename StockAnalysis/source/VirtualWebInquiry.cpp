@@ -85,7 +85,7 @@ bool CVirtualWebInquiry::ReadDataFromWebOnce(void) {
 
 CWebDataReceivedPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
   char* pSrc = GetBufferAddr();
-  CWebDataReceivedPtr pWebDataReceived = make_shared<CWebDataReceived>();
+  CWebDataReceivedPtr pWebDataReceived = make_shared<CReceivedData>();
   pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
   char* pDest = pWebDataReceived->m_pDataBuffer;
   for (int i = 0; i < GetByteReaded() + 1; i++) {

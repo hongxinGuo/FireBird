@@ -117,7 +117,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();
       // 预设20个挂单
@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -320,7 +320,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();
       // 预设20个挂单
@@ -350,7 +350,7 @@ namespace StockAnalysisTest {
       iCount = pData->iCount;
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 

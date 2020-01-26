@@ -158,12 +158,14 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
+      m_pNeteaseWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -191,7 +193,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -377,12 +379,14 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataStockCodePrefix* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
+      m_pNeteaseWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -410,7 +414,7 @@ namespace StockAnalysisTest {
       m_RTData.SetBuy(-1);
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -510,11 +514,13 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+
+    virtual void SetUp(void) override {
       ReadNeteaseOneValueData* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CWebDataReceived>();
+      m_pNeteaseWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[lLength + 1];
@@ -526,7 +532,7 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData->ResetCurrentPos();
     }
 
-    virtual void TearDown(void) {
+    virtual void TearDown(void) override {
       // clearup
     }
 
@@ -605,9 +611,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
-    virtual void SetUp(void) {
+
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataIndexValue* pData = GetParam();
       m_iCount = pData->m_iCount;

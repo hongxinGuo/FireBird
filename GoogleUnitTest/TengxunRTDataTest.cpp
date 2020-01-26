@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"RTData.h"
-#include"WebDataReceived.h"
+#include"ReceivedData.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestTengxunInitialize) {
@@ -158,12 +158,14 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       TengxunRTData* pData = GetParam();
-      m_pTengxunWebRTData = make_shared<CWebDataReceived>();
+      m_pTengxunWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -730,11 +732,13 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite() {
     }
+
     static void TearDownTestSuite() {
     }
+
     virtual void SetUp(void) override {
       ReadTengxunOneValueData* pData = GetParam();
-      m_pTengxunWebRTData = make_shared<CWebDataReceived>();
+      m_pTengxunWebRTData = make_shared<CReceivedData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[lLength + 1];

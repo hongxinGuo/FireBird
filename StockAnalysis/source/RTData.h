@@ -116,7 +116,7 @@ enum {
 
 #include"NeteaseRTWebInquiry.h"
 #include"SinaRTWebInquiry.h"
-#include"WebDataReceived.h"
+#include"ReceivedData.h"
 #include"TengxunRTWebInquiry.h"
 
 #include"SetRealTimeData.h"
