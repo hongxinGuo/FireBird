@@ -12,7 +12,7 @@
 #include"globedef.h"
 #include"ChinaMarket.h"
 
-#include"QueueRTData.h"
+#include"RTDataContainer.h"
 
 namespace StockAnalysisTest {
   TEST(DequeDataTest, TestInitialize) {
@@ -27,40 +27,40 @@ namespace StockAnalysisTest {
   // 测试有优先级的队列存储临时实时数据。
   TEST(DequeDataTest, TestGetRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
     CRTDataPtr pRTData = make_shared<CRTData>();
     pRTData->SetTransactionTime(100100100);
-    gl_queueRTData.PushSinaRTData(pRTData);
+    gl_RTDataContainer.PushSinaRTData(pRTData);
     CRTDataPtr pRTData2 = make_shared<CRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
-    gl_queueRTData.PushSinaRTData(pRTData2);
+    gl_RTDataContainer.PushSinaRTData(pRTData2);
     CRTDataPtr pRTData3 = make_shared<CRTData>();
     pRTData3->SetTransactionTime(200200);
-    gl_queueRTData.PushSinaRTData(pRTData3);
+    gl_RTDataContainer.PushSinaRTData(pRTData3);
     CRTDataPtr pRTData4 = make_shared<CRTData>();
     pRTData4->SetTransactionTime(200);
-    gl_queueRTData.PushSinaRTData(pRTData4);
+    gl_RTDataContainer.PushSinaRTData(pRTData4);
     CRTDataPtr pRTData5 = make_shared<CRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
-    gl_queueRTData.PushSinaRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 5);
-    CRTDataPtr p2 = gl_queueRTData.PopSinaRTData();
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 4);
+    gl_RTDataContainer.PushSinaRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 5);
+    CRTDataPtr p2 = gl_RTDataContainer.PopSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
-    p2 = gl_queueRTData.PopSinaRTData();
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 3);
+    p2 = gl_RTDataContainer.PopSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 3);
     EXPECT_EQ(p2->GetTransactionTime(), 200200);
-    p2 = gl_queueRTData.PopSinaRTData();
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 2);
+    p2 = gl_RTDataContainer.PopSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 2);
     EXPECT_EQ(p2->GetTransactionTime(), 100100100);
-    p2 = gl_queueRTData.PopSinaRTData();
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 1);
+    p2 = gl_RTDataContainer.PopSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 1);
     EXPECT_EQ(p2->GetTransactionTime(), 200200200);
     EXPECT_EQ(p2->GetBuy(), 1);
-    p2 = gl_queueRTData.PopSinaRTData();
-    EXPECT_EQ(gl_queueRTData.GetSinaRTDataSize(), 0);
+    p2 = gl_RTDataContainer.PopSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
     EXPECT_EQ(p2->GetBuy(), 2); // 后放入的相同时间的数据应该位于后面
     EXPECT_EQ(p2->GetTransactionTime(), 200200200);
   }

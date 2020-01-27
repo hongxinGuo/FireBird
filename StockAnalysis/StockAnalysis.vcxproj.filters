@@ -174,12 +174,6 @@
     <ClInclude Include="source\StockCalculatedInfo.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
-    <ClInclude Include="source\QueueRTDataImp.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="source\QueueRTData.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueWebData.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
@@ -229,6 +223,12 @@
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
     <ClInclude Include="source\ReceivedData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\RTDataContainer.h">
+      <Filter>头文件\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
@@ -353,9 +353,6 @@
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\QueueRTDataImp.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\CrweberIndexMarket.cpp">
       <Filter>源文件\Market</Filter>
     </ClCompile>
@@ -403,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="source\ThreadSaveRTData.cpp">
       <Filter>源文件\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

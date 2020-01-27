@@ -104,7 +104,7 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
 
   // 重置系统实时队列
-  gl_queueRTData.ResetSinaRTQueue();
+  gl_RTDataContainer.ResetSinaRTQueue();
 
   m_lCurrentPos = 0;
 }

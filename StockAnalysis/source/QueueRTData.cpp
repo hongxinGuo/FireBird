@@ -1,15 +1,15 @@
 #include"globedef.h"
 
-#include "QueueRTDataImp.h"
+#include "QueueRTData.h"
 #include "SystemMessage.h"
 
-CQueueRTDataImp::CQueueRTDataImp() {
+CQueueRTData::CQueueRTData() {
 }
 
-CQueueRTDataImp::~CQueueRTDataImp() {
+CQueueRTData::~CQueueRTData() {
 }
 
-void CQueueRTDataImp::Reset(void) {
+void CQueueRTData::Reset(void) {
   m_MutexAccessRTData.lock();
   long lTotal = m_queueRTStockData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
@@ -18,13 +18,13 @@ void CQueueRTDataImp::Reset(void) {
   m_MutexAccessRTData.unlock();
 }
 
-void CQueueRTDataImp::PushRTData(CRTDataPtr pData) {
+void CQueueRTData::PushRTData(CRTDataPtr pData) {
   m_MutexAccessRTData.lock();
   m_queueRTStockData.push(pData);
   m_MutexAccessRTData.unlock();
 }
 
-CRTDataPtr CQueueRTDataImp::PopRTData(void) {
+CRTDataPtr CQueueRTData::PopRTData(void) {
   CRTDataPtr pData;
   m_MutexAccessRTData.lock();
   pData = m_queueRTStockData.front();
@@ -33,7 +33,7 @@ CRTDataPtr CQueueRTDataImp::PopRTData(void) {
   return pData;
 }
 
-long CQueueRTDataImp::GetRTDataSize(void) {
+long CQueueRTData::GetRTDataSize(void) {
   size_t size = 0;
   m_MutexAccessRTData.lock();
   size = m_queueRTStockData.size();

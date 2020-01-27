@@ -120,7 +120,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingMarket.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\PotenDailyBriefingWebInquiry.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTDataImp.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />

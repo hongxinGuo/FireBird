@@ -7,7 +7,7 @@
 
 #include"VirtualMarket.h"
 
-#include"QueueRTData.h"
+#include"RTDataContainer.h"
 #include"QueueWebData.h"
 #include"PriorityQueueRTData.h"
 
@@ -31,7 +31,7 @@ extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
-extern CQueueRTData gl_queueRTData;
+extern CRTDataContainer gl_RTDataContainer;
 
 class CChinaMarket final : public CVirtualMarket
 {
@@ -252,7 +252,7 @@ protected:
 
   vector<CStockPtr> m_vStockChoice; // ×ÔÑ¡¹ÉÆ±³Ø
 
-  CQueueRTDataImp m_vRTData;
+  CQueueRTData m_vRTData;
   bool m_fSaveRTData;
 
   bool m_fCurrentEditStockChanged;
