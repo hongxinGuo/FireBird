@@ -515,7 +515,7 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
-  SetLastRTDataPtr(pRTData);
+  SetLastRTData(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
   // 在系统启动时已经将此临时状态读入了，故而m_lUnknownVolume不为零，故而需要重新计算m_lUnknownVolume.
@@ -548,7 +548,7 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   AnalysisGuadan(pRTData, lCurrentGuadanTransactionPrice);
 
   // 更新前交易状态
-  SetLastRTDataPtr(pRTData);
+  SetLastRTData(pRTData);
 }
 
 void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {

@@ -362,7 +362,7 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, 100000 * (i + 1));
     }
     EXPECT_FALSE(id.HaveFirstRTData());
-    EXPECT_EQ(id.GetLastRTDataPtr(), nullptr);
+    EXPECT_EQ(id.GetLastRTData(), nullptr);
     id.InitializeCalculatingRTDataEnvionment(pRTData);
     EXPECT_TRUE(id.HaveFirstRTData());
     EXPECT_EQ(id.GetUnknownVolume(), pRTData->GetVolume() + 100000);
@@ -377,8 +377,8 @@ namespace StockAnalysisTest {
     CStock id;
     CRTDataPtr pRTData2 = pRTData;
 
-    id.SetLastRTDataPtr(pRTData);
-    EXPECT_EQ(id.GetLastRTDataPtr(), pRTData2);
+    id.SetLastRTData(pRTData);
+    EXPECT_EQ(id.GetLastRTData(), pRTData2);
   }
 
   TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
@@ -387,7 +387,7 @@ namespace StockAnalysisTest {
 
     pLastRTData->SetPSell(0, 100000);
     pLastRTData->SetPBuy(0, 99990);
-    id.SetLastRTDataPtr(pLastRTData);
+    id.SetLastRTData(pLastRTData);
     id.SetCurrentTransationVolume(10000);
     id.CalculateOrdinaryBuySell(99998); //
     EXPECT_EQ(id.GetCurrentTransactionType(), __ORDINARY_BUY__);

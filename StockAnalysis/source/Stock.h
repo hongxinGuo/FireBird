@@ -265,8 +265,8 @@ public:
   void CalculateAttackSell(void);
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
-  void SetLastRTDataPtr(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
-  CRTDataPtr GetLastRTDataPtr(void) noexcept { return m_pLastRTData; }
+  void SetLastRTData(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
+  CRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
 
   bool AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
@@ -291,8 +291,8 @@ public:
   // 日线历史数据
   size_t GetDayLineSize(void) { return m_vDayLine.size(); }
   void ClearDayLineContainer(void) noexcept { m_vDayLine.clear(); }
-  bool PushDayLinePtr(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
-  CDayLinePtr GetDayLinePtr(long lIndex) { return m_vDayLine.at(lIndex); }
+  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
+  CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
   bool RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue);
   void ShowDayLineRS(CDC* pDC, CRect rectClient);

@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
 
   TEST_P(RTDataGuadanTest, TestGuadan) {
     EXPECT_FALSE(m_stock.HaveFirstRTData());
-    m_stock.SetLastRTDataPtr(pLastData);
+    m_stock.SetLastRTData(pLastData);
     m_stock.SetCurrentTransactionType(iType);
     m_stock.AnalysisGuadan(pCurrentData, lPrice);
     switch (iCount) {
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
     array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
 
     EXPECT_FALSE(m_stock.HaveFirstRTData());
-    m_stock.SetLastRTDataPtr(pLastData);
+    m_stock.SetLastRTData(pLastData);
     m_stock.SetCurrentTransactionType(iType);
     for (int i = 0; i < 10; i++) fNeedCheck.at(i) = true; // 预设为都要计算。
 

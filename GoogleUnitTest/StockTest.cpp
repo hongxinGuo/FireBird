@@ -830,7 +830,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->PushDayLinePtr(pid);
+      pStock->StoreDayLine(pid);
     }
     pStock->SetDayLineEndDay(10190101);
     pStock->SetStockCode(_T("sh600008"));
@@ -843,7 +843,7 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     for (int i = 0; i < 10; i++) {
       id.LoadData(setDayLine);
-      pid = pStock->GetDayLinePtr(i);
+      pid = pStock->GetDayLine(i);
       EXPECT_EQ(setDayLine.m_Day, pid->GetDay());
       EXPECT_EQ(setDayLine.m_Market, pid->GetMarket());
       EXPECT_STREQ(setDayLine.m_StockCode, pid->GetStockCode());
@@ -901,7 +901,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->PushDayLinePtr(pid);
+      pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineEndDay(10190101);
@@ -913,8 +913,8 @@ namespace StockAnalysisTest {
     setDayLine.Open();
     id.LoadDayLine(setDayLine);
     for (int i = 0; i < 10; i++) {
-      pid = id.GetDayLinePtr(i);
-      pDayLine = pStock->GetDayLinePtr(i);
+      pid = id.GetDayLine(i);
+      pDayLine = pStock->GetDayLine(i);
       EXPECT_EQ(pDayLine->GetDay(), pid->GetDay());
       EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
       EXPECT_STREQ(pDayLine->GetStockCode(), pid->GetStockCode());
@@ -969,7 +969,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->PushDayLinePtr(pid);
+      pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineStartDay(19900102);
@@ -1005,7 +1005,7 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRelativeStrong(14.5);
-      pStock->PushDayLinePtr(pid);
+      pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
     pStock->SetDayLineStartDay(19900100);
