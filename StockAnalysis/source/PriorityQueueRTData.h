@@ -34,7 +34,7 @@ protected:
 protected:
   // 当系统更新到采集多元实时数据后，此队列需要改为有优先级的队列，优先级为实时数据的交易时间，
   // 这样就能够将多处采集到的实时数据按照时间排列为一个队列。
-  // 大致为这样： priority_queue<CStockRTdataPtr, vector<CStockRTDataDataPtr>, cmpRTData> m_queueRTStockData;
+  // 大致为这样： priority_queue<CStockRTdataPtr, vector<CStockRTDataDataPtr>, cmpRTData> m_qRTStockData;
   // 结构cmpRTData定义为：
   // struct cmpRTData {
   //   bool operator () (const CRTDataPtr p1, const CRTDataPtr p2) const {

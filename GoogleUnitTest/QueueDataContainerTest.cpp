@@ -15,7 +15,7 @@
 #include"RTDataContainer.h"
 
 namespace StockAnalysisTest {
-  TEST(DequeDataTest, TestInitialize) {
+  TEST(QueueDataContainerTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     for (int i = 0; i < l; i++) {
@@ -25,7 +25,7 @@ namespace StockAnalysisTest {
   }
 
   // 测试有优先级的队列存储临时实时数据。
-  TEST(DequeDataTest, TestGetRTDataDuqueSize) {
+  TEST(QueueDataContainerTest, TestGetRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
     CRTDataPtr pRTData = make_shared<CRTData>();

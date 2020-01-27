@@ -225,10 +225,10 @@
     <ClInclude Include="source\ReceivedData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\RTDataContainer.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\RTDataContainer.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>

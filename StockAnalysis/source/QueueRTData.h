@@ -19,6 +19,6 @@ public:
   long GetRTDataSize(void);
 
 protected:
-  queue<CRTDataPtr> m_queueRTStockData;
+  queue<CRTDataPtr> m_qRTStockData;
   mutex m_MutexAccessRTData;
 };

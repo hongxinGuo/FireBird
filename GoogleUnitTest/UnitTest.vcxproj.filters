@@ -75,9 +75,6 @@
     <ClCompile Include="CrweberIndexTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
-    <ClCompile Include="DequeDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="StockBasicInfoTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Test源文件\Market</Filter>
     </ClCompile>
     <ClCompile Include="ReceivedDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueDataContainerTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,6 +27,6 @@ public:
   long GetWebDataSize(void);
 
 protected:
-  queue<CWebDataReceivedPtr> m_queueWebData;
+  queue<CWebDataReceivedPtr> m_qWebData;
   mutex m_MutexAccessWebData;
 };

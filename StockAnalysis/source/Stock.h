@@ -345,16 +345,16 @@ protected:
 
   // 挂单的具体情况。
   map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CRTDataPtr m_pLastRTData; // 从m_queueRTData读出的上一个实时数据。
+  CRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64 m_lCurrentCanselSellVolume;
   INT64 m_lCurrentCanselBuyVolume;
 
-  queue<COneDealPtr> m_queueDeal; // 具体成交信息队列（目前尚未使用）。
+  queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-  queue<CRTDataPtr> m_queueRTData; // 实时数据队列。
+  queue<CRTDataPtr> m_qRTData; // 实时数据队列。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
   // 日线历史数据
