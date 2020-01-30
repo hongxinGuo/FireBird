@@ -8,7 +8,7 @@
 #include"Accessory.h"
 #include"TransferSharedPtr.h"
 
-#include"Stock.h"
+#include"ChinaStock.h"
 #include"ChinaMarket.h"
 
 #include"SetDayLineInfo.h"
@@ -116,11 +116,11 @@ void CChinaMarket::Reset(void) {
 
 #ifdef _DEBUG
 void CChinaMarket::AssertValid() const {
-  CObject::AssertValid();
+  CVirtualMarket::AssertValid();
 }
 
 void CChinaMarket::Dump(CDumpContext& dc) const {
-  CObject::Dump(dc);
+  CVirtualMarket::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -153,7 +153,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 600000; i < 602000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海主板
@@ -169,7 +169,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 603000; i < 604000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海三板
@@ -184,7 +184,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 688000; i < 689000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
@@ -199,7 +199,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 900000; i < 901000; i++) {
     CString str = _T("sh");
     _itoa_s(i, buffer, 10);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海B股
@@ -214,7 +214,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 0; i < 1000; i++) {
     CString str = _T("sh");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
     pStock->SetMarket(__SHANGHAI_MARKET__); // 上海指数
@@ -230,7 +230,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 0; i < 2000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
     pStock->SetStockCode(str);
@@ -245,7 +245,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 2000; i < 3000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
     pStock->SetStockCode(str);
@@ -260,7 +260,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 200000; i < 201000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
     pStock->SetStockCode(str);
@@ -275,7 +275,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 300000; i < 301000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
     pStock->SetStockCode(str);
@@ -290,7 +290,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   for (int i = 399000; i < 400000; i++) {
     CString str = _T("sz");
     sprintf_s(buffer, 10, "%06d", i);
-    pStock = make_shared<CStock>();
+    pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
     pStock->SetStockCode(str);
@@ -393,7 +393,7 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex) {
 //
 //
 ////////////////////////////////////////////////////////////////////////
-long CChinaMarket::GetMinLineOffset(CStock sID, time_t Time) {
+long CChinaMarket::GetMinLineOffset(CChinaStock sID, time_t Time) {
   ASSERT(Time >= 0);
   tm tmTemp{};
   time_t t = 0;

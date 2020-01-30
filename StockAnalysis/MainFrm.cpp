@@ -12,7 +12,7 @@
 
 #include"RTData.h"
 #include"DayLine.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 #include"ChinaMarket.h"
 
 #include"SinaRTWebInquiry.h"

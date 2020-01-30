@@ -3,7 +3,7 @@
 
 #include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
 
-#include"Stock.h"
+#include"ChinaStock.h"
 
 using namespace std;
 #include<vector>

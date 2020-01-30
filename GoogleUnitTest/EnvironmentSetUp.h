@@ -4,7 +4,7 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 
 #include"SetStockCode.h"
 

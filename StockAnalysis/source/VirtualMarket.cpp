@@ -21,6 +21,16 @@ CVirtualMarket::CVirtualMarket(void) {
 CVirtualMarket::~CVirtualMarket(void) {
 }
 
+#ifdef _DEBUG
+void CVirtualMarket::AssertValid() const {
+  CObject::AssertValid();
+}
+
+void CVirtualMarket::Dump(CDumpContext& dc) const {
+  CObject::Dump(dc);
+}
+#endif //_DEBUG
+
 bool CVirtualMarket::SchedulingTask(void) {
   static time_t s_timeLast = 0;
   CalculateTime();

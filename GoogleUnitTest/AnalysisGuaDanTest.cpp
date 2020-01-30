@@ -3,7 +3,7 @@
 
 #include"globedef.h"
 
-#include"Stock.h"
+#include"ChinaStock.h"
 
 using namespace std;
 #include<memory>
@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
     long lPrice;
     CRTDataPtr pCurrentData;
     CRTDataPtr pLastData;
-    CStock m_stock;
+    CChinaStock m_stock;
   };
 
   INSTANTIATE_TEST_CASE_P(TestGuadanData, RTDataGuadanTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
@@ -360,7 +360,7 @@ namespace StockAnalysisTest {
     long lPrice;
     CRTDataPtr pCurrentData;
     CRTDataPtr pLastData;
-    CStock m_stock;
+    CChinaStock m_stock;
   };
 
   INSTANTIATE_TEST_CASE_P(TestNeedCheck, NeedCheckTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
@@ -668,7 +668,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestSetCurrentGuadan) {
-    CStock id;
+    CChinaStock id;
     CRTDataPtr pCurrentRTData = make_shared<CRTData>();
 
     for (int i = 0; i < 5; i++) {
@@ -706,7 +706,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestHaveGuadan) {
-    CStock id;
+    CChinaStock id;
     EXPECT_FALSE(id.HaveGuadan(10000));
     id.SetGuadan(10000, 0);
     EXPECT_FALSE(id.HaveGuadan(10000));

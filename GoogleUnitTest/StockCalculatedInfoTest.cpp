@@ -5,7 +5,7 @@
 #include"accessory.h"
 
 #include"StockCalculatedInfo.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 
 namespace StockAnalysisTest {
   TEST(StockCalculatedInfoTest, TestInitialize) {

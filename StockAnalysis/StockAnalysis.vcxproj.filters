@@ -165,9 +165,6 @@
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\Stock.h">
-      <Filter>头文件\Stock</Filter>
-    </ClInclude>
     <ClInclude Include="source\StockBasicInfo.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
@@ -230,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="source\RTDataContainer.h">
       <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaStock.h">
+      <Filter>头文件\Stock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,9 +335,6 @@
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\Stock.cpp">
-      <Filter>源文件\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="source\StockBasicInfo.cpp">
       <Filter>源文件\Stock</Filter>
     </ClCompile>
@@ -403,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="source\QueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStock.cpp">
+      <Filter>源文件\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

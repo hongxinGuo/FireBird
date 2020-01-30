@@ -5,7 +5,7 @@
 
 #include"Accessory.h"
 
-#include "Stock.h"
+#include "ChinaStock.h"
 #include"ChinaMarket.h"
 
 using namespace std;
@@ -17,18 +17,18 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CStock::CStock() : CObject() {
+CChinaStock::CChinaStock() : CObject() {
   Reset();
 }
 
-CStock::~CStock(void) {
+CChinaStock::~CChinaStock(void) {
   if (m_pDayLineBuffer != nullptr) {
     delete m_pDayLineBuffer;
     m_pDayLineBuffer = nullptr;
   }
 }
 
-void CStock::Reset(void) {
+void CChinaStock::Reset(void) {
   m_stockBasicInfo.Reset();
   m_stockCalculatedInfo.Reset();
 
@@ -63,14 +63,14 @@ void CStock::Reset(void) {
   m_fDebugLoadDayLineFirst = false;
 }
 
-void CStock::ClearRTDataDeque(void) {
+void CChinaStock::ClearRTDataDeque(void) {
   long lTotalNumber = GetRTDataQueueSize();
   for (int i = 0; i < lTotalNumber; i++) {
     CRTDataPtr pRTData = PopRTData();
   }
 }
 
-void CStock::SetDayLineNeedSaving(bool fFlag) {
+void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = true;
@@ -83,13 +83,13 @@ void CStock::SetDayLineNeedSaving(bool fFlag) {
   }
 }
 
-bool CStock::IsDayLineNeedSavingAndClearFlag(void) {
+bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
   bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
   if (fNeedSaveing) gl_ChinaStockMarket.DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
-bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
+bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
   char* p = pNeteaseWebDayLineData->GetBufferAddr();
   if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
@@ -110,7 +110,7 @@ bool CStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pN
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::ProcessNeteaseDayLineData(void) {
+bool CChinaStock::ProcessNeteaseDayLineData(void) {
   char* pTestPos = m_pDayLineBuffer;
   vector<CDayLinePtr> vTempDayLine;
   shared_ptr<CDayLine> pDayLine;
@@ -191,7 +191,7 @@ bool CStock::ProcessNeteaseDayLineData(void) {
   return true;
 }
 
-bool CStock::SkipNeteaseDayLineInformationHeader() {
+bool CChinaStock::SkipNeteaseDayLineInformationHeader() {
   ASSERT(m_pCurrentPos == m_pDayLineBuffer);
   ASSERT(m_llCurrentPos == 0);
   while (*m_pCurrentPos != 0X0d) {
@@ -208,7 +208,7 @@ bool CStock::SkipNeteaseDayLineInformationHeader() {
   return true;
 }
 
-void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
+void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
   SetActive(true);
   SetDayLineLoaded(false);
   SetMarket(wMarket);
@@ -217,7 +217,7 @@ void CStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStock
   gl_ChinaStockMarket.SetTotalActiveStock(gl_ChinaStockMarket.GetTotalActiveStock() + 1);
 }
 
-void CStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
+void CChinaStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
   CDayLinePtr pDayLine = nullptr;
   m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
@@ -231,7 +231,7 @@ void CStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
   SetDayLineLoaded(true);
 }
 
-void CStock::ReportDayLineDownLoaded(void) {
+void CChinaStock::ReportDayLineDownLoaded(void) {
   CString strTemp = GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
@@ -243,7 +243,7 @@ void CStock::ReportDayLineDownLoaded(void) {
 //  此函数被工作线程调用，需要注意数据同步问题。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::SaveDayLine(void) {
+bool CChinaStock::SaveDayLine(void) {
   CSetDayLine setDayLine;
   long lSize = 0;
   vector<CDayLinePtr> vDayLine;
@@ -303,7 +303,7 @@ bool CStock::SaveDayLine(void) {
   return fNeedUpdate;
 }
 
-void CStock::UpdateDayLineStartEndDay(void) {
+void CChinaStock::UpdateDayLineStartEndDay(void) {
   if (m_vDayLine.at(0)->GetDay() < GetDayLineStartDay()) {
     SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
     SetDayLineDBUpdated(true);
@@ -314,15 +314,15 @@ void CStock::UpdateDayLineStartEndDay(void) {
   }
 }
 
-void CStock::SaveBasicInfo(CSetDayLine& setDayLine) {
+void CChinaStock::SaveBasicInfo(CSetDayLine& setDayLine) {
   m_stockBasicInfo.SaveBasicInfo(setDayLine);
 }
 
-void CStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
+void CChinaStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
   m_stockCalculatedInfo.SaveTodayInfo(setDayLineInfo);
 }
 
-void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
+void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   m_stockBasicInfo.SaveTempInfo(setDayLineToday);
   m_stockCalculatedInfo.SaveTempInfo(setDayLineToday);
@@ -334,7 +334,7 @@ void CStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
 // 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
-void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
+void CChinaStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
   m_stockCalculatedInfo.LoadAndCalculateTempInfo(setDayLineToday);
   SetVolume(atoll(setDayLineToday.m_Volume));
   SetLastSavedVolume(atoll(setDayLineToday.m_Volume));
@@ -346,11 +346,11 @@ void CStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
-void CStock::UpdateStatus(CRTDataPtr pRTData) {
+void CChinaStock::UpdateStatus(CRTDataPtr pRTData) {
   m_stockBasicInfo.UpdateStatus(pRTData);
 }
 
-bool CStock::LoadDayLineAndDayLineInfo(void) {
+bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
   CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
@@ -376,7 +376,7 @@ bool CStock::LoadDayLineAndDayLineInfo(void) {
   return true;
 }
 
-bool CStock::LoadDayLine(CSetDayLine& setDayLine) {
+bool CChinaStock::LoadDayLine(CSetDayLine& setDayLine) {
   CDayLinePtr pDayLine;
 
   ASSERT(m_fDebugLoadDayLineFirst == false);
@@ -398,7 +398,7 @@ bool CStock::LoadDayLine(CSetDayLine& setDayLine) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
+bool CChinaStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 
@@ -421,7 +421,7 @@ bool CStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   return true;
 }
 
-bool CStock::CalculateDayLineRS(void) {
+bool CChinaStock::CalculateDayLineRS(void) {
   CalculateDayLineRS(3);
   CalculateDayLineRS(5);
   CalculateDayLineRS(10);
@@ -431,7 +431,7 @@ bool CStock::CalculateDayLineRS(void) {
   return true;
 }
 
-bool CStock::CalculateDayLineRS(INT64 lNumber) {
+bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vDayLine.size();
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -473,7 +473,7 @@ bool CStock::CalculateDayLineRS(INT64 lNumber) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////
-bool CStock::ProcessRTData(void) {
+bool CChinaStock::ProcessRTData(void) {
   CRTDataPtr pRTData;
 
   INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
@@ -499,7 +499,7 @@ bool CStock::ProcessRTData(void) {
 // 如果是第一次计算，则只设置初始状态。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
+bool CChinaStock::ProcessOneRTData(CRTDataPtr pRTData) {
   if (HaveFirstRTData()) { // 如果开始计算（第二次收到实时数据及以后）
     CalculateOneRTData(pRTData);
   }
@@ -514,7 +514,7 @@ bool CStock::ProcessOneRTData(CRTDataPtr pRTData) {
 // 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
 //
 ////////////////////////////////////////////////////////////////////////////////////////
-void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
+void CChinaStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   SetLastRTData(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
@@ -530,7 +530,7 @@ void CStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   }
 }
 
-void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
+void CChinaStock::CalculateOneRTData(CRTDataPtr pRTData) {
   long lCurrentGuadanTransactionPrice = 0;
 
   m_lCurrentGuadanTransactionVolume = pRTData->GetVolume() - m_pLastRTData->GetVolume();
@@ -551,7 +551,7 @@ void CStock::CalculateOneRTData(CRTDataPtr pRTData) {
   SetLastRTData(pRTData);
 }
 
-void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
+void CChinaStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
   IncreaseTransactionNumber();
   lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
   m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -582,7 +582,7 @@ void CStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactio
          + m_stockCalculatedInfo.GetStrongBuyVolume() + m_stockCalculatedInfo.GetStrongSellVolume() + m_stockCalculatedInfo.GetUnknownVolume());
 }
 
-void CStock::IncreaseTransactionNumber(void) {
+void CChinaStock::IncreaseTransactionNumber(void) {
   m_stockCalculatedInfo.IncreaseTransactionNumber(); // 成交数加一。
   if (m_lCurrentGuadanTransactionVolume < 5000) {
     m_stockCalculatedInfo.IncreaseTransactionNumberBelow5000();
@@ -601,7 +601,7 @@ void CStock::IncreaseTransactionNumber(void) {
                                                           + m_stockCalculatedInfo.GetTransactionNumberBelow50000() + m_stockCalculatedInfo.GetTransactionNumberBelow5000()));
 }
 
-void CStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
+void CChinaStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
   if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) { //一般性买入
     IncreaseOrdinaryBuyVolume(m_lCurrentGuadanTransactionVolume);
     m_nCurrentTransactionType = __ORDINARY_BUY__;
@@ -616,19 +616,19 @@ void CStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice) {
   }
 }
 
-void CStock::CalculateAttackBuy(void) {
+void CChinaStock::CalculateAttackBuy(void) {
   m_nCurrentTransactionType = __ATTACK_BUY__;
   IncreaseAttackBuyVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackBuyVolume();
 }
 
-void CStock::CalculateStrongBuy(void) {
+void CChinaStock::CalculateStrongBuy(void) {
   m_nCurrentTransactionType = __STRONG_BUY__;
   IncreaseStrongBuyVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackBuyVolume();
 }
 
-void CStock::CalculateAttackBuyVolume(void) {
+void CChinaStock::CalculateAttackBuyVolume(void) {
   if (m_lCurrentGuadanTransactionVolume < 50000) {
     IncreaseAttackBuyBelow50000(m_lCurrentGuadanTransactionVolume);
   }
@@ -640,19 +640,19 @@ void CStock::CalculateAttackBuyVolume(void) {
   }
 }
 
-void CStock::CalculateAttackSell(void) {
+void CChinaStock::CalculateAttackSell(void) {
   m_nCurrentTransactionType = __ATTACK_SELL__;
   IncreaseAttackSellVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackSellVolume();
 }
 
-void CStock::CalculateStrongSell(void) {
+void CChinaStock::CalculateStrongSell(void) {
   m_nCurrentTransactionType = __STRONG_SELL__;
   IncreaseStrongSellVolume(m_lCurrentGuadanTransactionVolume);
   CalculateAttackSellVolume();
 }
 
-void CStock::CalculateAttackSellVolume(void) {
+void CChinaStock::CalculateAttackSellVolume(void) {
   if (m_lCurrentGuadanTransactionVolume < 50000) {
     IncreaseAttackSellBelow50000(m_lCurrentGuadanTransactionVolume);
   }
@@ -672,7 +672,7 @@ void CStock::CalculateAttackSellVolume(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
+bool CChinaStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
   // 需要检查的挂单位置。顺序为：卖单4, 卖单3, ... 卖单0, 卖单0, .... 买单3, 买单4
   // 卖单买单谁在前面无所谓，但计算时需要记住此顺序。
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
@@ -686,7 +686,7 @@ bool CStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransaction
   return(true);
 }
 
-void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
+void CChinaStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
   // 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
@@ -744,7 +744,7 @@ void CStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lC
   }
 }
 
-void CStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
+void CChinaStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
   // 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
   // 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
   for (int i = pCurrentRTData->GetPBuy(4); i <= pCurrentRTData->GetPSell(4); i += 10) {
@@ -756,14 +756,14 @@ void CStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
   }
 }
 
-void CStock::CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
+void CChinaStock::CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
   for (int i = 0; i < 5; i++) {
     CheckSellGuadan(fNeedCheck, i);
     CheckBuyGuadan(fNeedCheck, i);
   }
 }
 
-void CStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
+void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
   ASSERT((i < 5) && (i >= 0));
   if (fNeedCheck.at(4 - i)) {
     if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) { // 撤单了的话
@@ -773,7 +773,7 @@ void CStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
   }
 }
 
-void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
+void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
   ASSERT((i < 5) && (i >= 0));
   if (fNeedCheck.at(5 + i)) {
     if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) { // 撤单了的话
@@ -783,13 +783,13 @@ void CStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
   }
 }
 
-bool CStock::HaveGuadan(INT64 lPrice) {
+bool CChinaStock::HaveGuadan(INT64 lPrice) {
   if (m_mapGuadan.find(lPrice) == m_mapGuadan.end()) return false;
   else if (m_mapGuadan.at(lPrice) == 0) return false;
   return true;
 }
 
-bool CStock::CheckCurrentRTData() {
+bool CChinaStock::CheckCurrentRTData() {
   if ((m_stockCalculatedInfo.GetOrdinaryBuyVolume() < 0) || (m_stockCalculatedInfo.GetOrdinarySellVolume() < 0)
       || (m_stockCalculatedInfo.GetAttackBuyVolume() < 0) || (m_stockCalculatedInfo.GetAttackSellVolume() < 0)
       || (m_stockCalculatedInfo.GetStrongBuyVolume() < 0) || (m_stockCalculatedInfo.GetStrongSellVolume() < 0)) {
@@ -806,7 +806,7 @@ bool CStock::CheckCurrentRTData() {
   return true;
 }
 
-void CStock::ShowCurrentTransaction() {
+void CChinaStock::ShowCurrentTransaction() {
   // 显示当前交易情况
   CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
@@ -819,7 +819,7 @@ void CStock::ShowCurrentTransaction() {
   }
 }
 
-void CStock::ShowCurrentInformationofCancelingGuadan(void) {
+void CChinaStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
   CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
@@ -830,7 +830,7 @@ void CStock::ShowCurrentInformationofCancelingGuadan(void) {
   }
 }
 
-void CStock::ReportGuadanTransaction(void) {
+void CChinaStock::ReportGuadanTransaction(void) {
   char buffer[100];
   CString str, str2, strTime;
   const CTime ctime(m_pLastRTData->GetTransactionTime());
@@ -883,7 +883,7 @@ void CStock::ReportGuadanTransaction(void) {
   gl_systemMessage.PushTrace2Message(str2);
 }
 
-void CStock::ReportGuadan(void) {
+void CChinaStock::ReportGuadan(void) {
   CString str1;
   char buffer[30];
   if (m_lCurrentCanselSellVolume > 0) {
@@ -902,7 +902,7 @@ void CStock::ReportGuadan(void) {
   }
 }
 
-void CStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
+void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
   setStockCode.m_Counter = GetOffset();
   setStockCode.m_StockType = GetMarket();
@@ -925,13 +925,13 @@ void CStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   setStockCode.m_DayLineEndDay = GetDayLineEndDay();
 }
 
-void CStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
+void CChinaStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
   setStockCode.AddNew();
   SaveStockCodeDB(setStockCode);
   setStockCode.Update();
 }
 
-bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
+bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   SetStockCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
@@ -944,7 +944,7 @@ bool CStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   return true;
 }
 
-void CStock::SetCheckingDayLineStatus(void) {
+void CChinaStock::SetCheckingDayLineStatus(void) {
   ASSERT(IsDayLineNeedUpdate());
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
   if (gl_ChinaStockMarket.GetLastTradeDay() <= GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
@@ -966,7 +966,7 @@ void CStock::SetCheckingDayLineStatus(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CStock::PushRTData(CRTDataPtr pData) {
+void CChinaStock::PushRTData(CRTDataPtr pData) {
   m_qRTData.push(pData);
 }
 
@@ -976,13 +976,13 @@ void CStock::PushRTData(CRTDataPtr pData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CRTDataPtr CStock::PopRTData(void) {
+CRTDataPtr CChinaStock::PopRTData(void) {
   CRTDataPtr pData = m_qRTData.front();
   m_qRTData.pop();
   return pData;
 }
 
-CRTDataPtr CStock::GetRTDataAtHead(void) {
+CRTDataPtr CChinaStock::GetRTDataAtHead(void) {
   return m_qRTData.front();
 }
 
@@ -992,7 +992,7 @@ CRTDataPtr CStock::GetRTDataAtHead(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-INT64 CStock::GetRTDataQueueSize(void) {
+INT64 CChinaStock::GetRTDataQueueSize(void) {
   return m_qRTData.size();
 }
 
@@ -1002,14 +1002,14 @@ INT64 CStock::GetRTDataQueueSize(void) {
 // 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CStock::IsTodayDataActive(void) {
+bool CChinaStock::IsTodayDataActive(void) {
   if (!m_fActive) return false;
   else {
     return IsTodayDataChanged();
   }
 }
 
-bool CStock::IsTodayDataChanged(void) {
+bool CChinaStock::IsTodayDataChanged(void) {
   if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
     return true;
   }
@@ -1018,7 +1018,7 @@ bool CStock::IsTodayDataChanged(void) {
   }
 }
 
-void CStock::SetDayLineNeedUpdate(bool fFlag) {
+void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
@@ -1031,7 +1031,7 @@ void CStock::SetDayLineNeedUpdate(bool fFlag) {
   }
 }
 
-void CStock::SetDayLineNeedProcess(bool fFlag) {
+void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = true;
@@ -1044,7 +1044,7 @@ void CStock::SetDayLineNeedProcess(bool fFlag) {
   }
 }
 
-void CStock::ShowDayLine(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
   const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
   CPen penWhite1(PS_SOLID, 1, crWhite);
   long lHigh = 0;
@@ -1081,7 +1081,7 @@ void CStock::ShowDayLine(CDC* pDC, CRect rectClient) {
   }
 }
 
-bool CStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
+bool CChinaStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
   int y = rectClient.bottom - dValue * rectClient.bottom / 200;
   pDC->LineTo(rectClient.right - 1 - 3 * i, y);
   if (3 * i > m_vDayLine.size()) return false;
@@ -1089,7 +1089,7 @@ bool CStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
   return true;
 }
 
-void CStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1100,7 +1100,7 @@ void CStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1111,7 +1111,7 @@ void CStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1122,7 +1122,7 @@ void CStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1133,7 +1133,7 @@ void CStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1144,7 +1144,7 @@ void CStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1155,7 +1155,7 @@ void CStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
+void CChinaStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
   int i = 1;
   it--;
@@ -1166,7 +1166,7 @@ void CStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
   }
 }
 
-void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
+void CChinaStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
   char* p;
   if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
   m_pDayLineBuffer = new char[lBufferLength + 1];
@@ -1178,7 +1178,7 @@ void CStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
   m_lDayLineBufferLength = lBufferLength;
 }
 
-bool CStock::IsVolumeConsistence(void) noexcept {
+bool CChinaStock::IsVolumeConsistence(void) noexcept {
   if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
       + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
     TRACE(_T("%s股数%d\n"), GetStockCode().GetBuffer(), GetVolume());
@@ -1190,11 +1190,11 @@ bool CStock::IsVolumeConsistence(void) noexcept {
 }
 
 #ifdef _DEBUG
-void CStock::AssertValid() const {
+void CChinaStock::AssertValid() const {
   CObject::AssertValid();
 }
 
-void CStock::Dump(CDumpContext& dc) const {
+void CChinaStock::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 

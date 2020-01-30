@@ -1,5 +1,5 @@
 #pragma once
-#include "Stock.h"
+#include "ChinaStock.h"
 
 struct strTransferSharedPtr {
 public:

@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 #include"PotenDailyBriefingMarket.h"
 
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。
@@ -89,12 +89,14 @@ namespace StockAnalysisTest {
     time_t ttime;
     tm tm_, tmLocal;
     time(&ttime);
+    gl_PotenDailyBriefingMarket.CalculateTime();
+    EXPECT_EQ(ttime, gl_PotenDailyBriefingMarket.GetLocalTime());
+    EXPECT_EQ(ttime - gl_PotenDailyBriefingMarket.GetTimeZoneOffset(), gl_PotenDailyBriefingMarket.GetMarketTime());
     localtime_s(&tmLocal, &ttime);
     ttime -= gl_PotenDailyBriefingMarket.GetTimeZoneOffset();
     gmtime_s(&tm_, &ttime);
     long lTimeZone;
     _get_timezone(&lTimeZone);
-    gl_PotenDailyBriefingMarket.CalculateTime();
     gl_PotenDailyBriefingMarket.CalculateLastTradeDay();
     long lTime = gl_PotenDailyBriefingMarket.GetTime();
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetDayOfWeek(), tm_.tm_wday);

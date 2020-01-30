@@ -2,7 +2,7 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 
 #include"SetStockCode.h"
 
@@ -403,7 +403,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsAStock) {
-    CStockPtr pstock = make_shared<CStock>();
+    CStockPtr pstock = make_shared<CChinaStock>();
     pstock->SetStockCode(_T("sh600000"));
     EXPECT_TRUE(gl_ChinaStockMarket.IsAStock(pstock));
     pstock->SetStockCode(_T("ss600000"));
@@ -479,7 +479,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetCurrentStock) {
-    CStockPtr pStock = make_shared<CStock>();
+    CStockPtr pStock = make_shared<CChinaStock>();
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), gl_ChinaStockMarket.GetStock(_T("sh600000")));
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetCurrentStock(pStock);

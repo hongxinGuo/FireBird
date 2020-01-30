@@ -11,7 +11,7 @@
 #include"QueueWebData.h"
 #include"PriorityQueueRTData.h"
 
-#include "Stock.h"
+#include "ChinaStock.h"
 #include"SetStockCode.h"
 
 #include"WebInquirer.h"
@@ -118,7 +118,7 @@ public:
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
   void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
-  long GetMinLineOffset(CStock sID, time_t Time);
+  long GetMinLineOffset(CChinaStock sID, time_t Time);
 
   bool SystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }

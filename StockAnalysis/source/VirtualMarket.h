@@ -7,6 +7,12 @@ public:
   CVirtualMarket(void);
   ~CVirtualMarket(void);
 
+#ifdef _DEBUG
+  virtual	void AssertValid() const;
+  virtual	void Dump(CDumpContext& dc) const;
+#endif
+
+public:
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) = 0;
 

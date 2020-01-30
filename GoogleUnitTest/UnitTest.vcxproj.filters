@@ -81,9 +81,6 @@
     <ClCompile Include="StockCalculatedInfoTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
-    <ClCompile Include="StockTest.cpp">
-      <Filter>Test源文件\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="AnalysisGuaDanTest.cpp">
       <Filter>Test源文件\Stock</Filter>
     </ClCompile>
@@ -128,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="QueueDataContainerTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockTest.cpp">
+      <Filter>Test源文件\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,9 +229,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\stdafx.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\Stock.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -308,6 +305,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ChinaStock.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

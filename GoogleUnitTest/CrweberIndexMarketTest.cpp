@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"Stock.h"
+#include"ChinaStock.h"
 #include"CrweberIndexMarket.h"
 
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。

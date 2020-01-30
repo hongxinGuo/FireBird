@@ -259,7 +259,7 @@
     <ClInclude Include="source\SetOption.h" />
     <ClInclude Include="source\SetRealTimeData.h" />
     <ClInclude Include="source\SetStockCode.h" />
-    <ClInclude Include="source\Stock.h" />
+    <ClInclude Include="source\ChinaStock.h" />
     <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="source\ThreadStatus.h" />
     <ClInclude Include="stdafx.h" />
@@ -315,7 +315,7 @@
     <ClCompile Include="source\SetOption.cpp" />
     <ClCompile Include="source\SetRealTimeData.cpp" />
     <ClCompile Include="source\SetStockCode.cpp" />
-    <ClCompile Include="source\Stock.cpp" />
+    <ClCompile Include="source\ChinaStock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="source\ThreadSavDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveRTData.cpp" />

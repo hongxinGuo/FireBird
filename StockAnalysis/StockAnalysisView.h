@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include"Stock.h"
+#include"ChinaStock.h"
 
 class CStockAnalysisView : public CView
 {

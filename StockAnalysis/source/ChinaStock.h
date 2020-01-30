@@ -39,10 +39,10 @@ using namespace std;
 #include<mutex>
 
 // 证券名称数据包
-class CStock final : public CObject {
+class CChinaStock final : public CObject {
 public:
-  CStock(void);
-  ~CStock(void);
+  CChinaStock(void);
+  ~CChinaStock(void);
   void Reset(void);
 
 public:
@@ -369,4 +369,4 @@ private:
   bool m_fDebugLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错
 };
 
-typedef shared_ptr<CStock> CStockPtr;
+typedef shared_ptr<CChinaStock> CStockPtr;

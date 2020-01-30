@@ -35,7 +35,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > (s_timeLast + 60 * 5)) {
+  if (GetLocalTime() > (s_timeLast + 60)) {
     SchedulingTaskPer5Minute(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
   }
