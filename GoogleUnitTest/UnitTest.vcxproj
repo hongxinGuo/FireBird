@@ -81,8 +81,6 @@
     <ClCompile Include="ReceivedDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
-    <ClCompile Include="StockBasicInfoTest.cpp" />
-    <ClCompile Include="StockCalculatedInfoTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
     <ClCompile Include="QueueDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
@@ -138,8 +136,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysis.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisDoc.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\StockAnalysisView.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockBasicInfo.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\StockCalculatedInfo.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SystemMessage.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\TengxunRTWebInquiry.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadCalculateDayLineRS.obj" />

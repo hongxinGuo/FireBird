@@ -165,9 +165,6 @@
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\StockBasicInfo.h">
-      <Filter>头文件\Stock</Filter>
-    </ClInclude>
     <ClInclude Include="source\StockCalculatedInfo.h">
       <Filter>头文件\Stock</Filter>
     </ClInclude>
@@ -334,9 +331,6 @@
     </ClCompile>
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StockBasicInfo.cpp">
-      <Filter>源文件\Stock</Filter>
     </ClCompile>
     <ClCompile Include="source\StockCalculatedInfo.cpp">
       <Filter>源文件\Stock</Filter>

@@ -242,7 +242,6 @@
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebInquiry.h" />
-    <ClInclude Include="source\StockBasicInfo.h" />
     <ClInclude Include="source\StockCalculatedInfo.h" />
     <ClInclude Include="source\TengxunRTWebInquiry.h" />
     <ClInclude Include="source\TransferSharedPtr.h" />
@@ -288,7 +287,6 @@
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="source\StockBasicInfo.cpp" />
     <ClCompile Include="source\StockCalculatedInfo.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
