@@ -105,7 +105,7 @@ void CChinaStock::Reset(void) {
 
   ClearRTDataDeque();
 
-  m_fDebugLoadDayLineFirst = false;
+  m_fLoadDayLineFirst = false;
 }
 
 void CChinaStock::ClearRTDataDeque(void) {
@@ -507,7 +507,7 @@ void CChinaStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
 bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
@@ -533,7 +533,7 @@ bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
 bool CChinaStock::LoadDayLine(CSetDayLine& setDayLine) {
   CDayLinePtr pDayLine;
 
-  ASSERT(m_fDebugLoadDayLineFirst == false);
+  ASSERT(!m_fLoadDayLineFirst);
   // 装入DayLine数据
   m_vDayLine.clear();
   while (!setDayLine.IsEOF()) {
@@ -542,7 +542,7 @@ bool CChinaStock::LoadDayLine(CSetDayLine& setDayLine) {
     m_vDayLine.push_back(pDayLine);
     setDayLine.MoveNext();
   }
-  m_fDebugLoadDayLineFirst = true;
+  m_fLoadDayLineFirst = true;
   return true;
 }
 
@@ -556,7 +556,7 @@ bool CChinaStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 
-  ASSERT(m_fDebugLoadDayLineFirst);
+  ASSERT(m_fLoadDayLineFirst);
 
   while (!setDayLineInfo.IsEOF()) {
     pDayLine = m_vDayLine.at(iPosition);
@@ -571,7 +571,7 @@ bool CChinaStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
     if (m_vDayLine.size() <= (iPosition + 1)) break;
     setDayLineInfo.MoveNext();
   }
-  m_fDebugLoadDayLineFirst = false;
+  m_fLoadDayLineFirst = false;
   return true;
 }
 
@@ -962,7 +962,7 @@ bool CChinaStock::CheckCurrentRTData() {
 
 void CChinaStock::ShowCurrentTransaction() {
   // 显示当前交易情况
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     if (pCurrentStock->GetStockCode().Compare(GetStockCode()) == 0) {
@@ -975,7 +975,7 @@ void CChinaStock::ShowCurrentTransaction() {
 
 void CChinaStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     if (pCurrentStock->GetStockCode().Compare(GetStockCode()) == 0) {

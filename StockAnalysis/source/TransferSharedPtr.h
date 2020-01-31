@@ -3,5 +3,5 @@
 
 struct strTransferSharedPtr {
 public:
-  CStockPtr m_pStock;
+  CChinaStockPtr m_pStock;
 };

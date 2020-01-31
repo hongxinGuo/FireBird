@@ -439,7 +439,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 void CMainFrame::UpdateStatus(void) {
   CString str;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   //更新状态条
   // 显示股票代码和名称
@@ -547,7 +547,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CStockPtr pStock;
+  CChinaStockPtr pStock;
   CString strTemp;
 
   switch (nChar) {
@@ -599,10 +599,10 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CStockPtr pStock;
+  CChinaStockPtr pStock;
   long lIndex = 0;
   CString strTemp;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {

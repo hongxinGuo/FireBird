@@ -287,7 +287,6 @@
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="source\StockCalculatedInfo.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="source\ThreadCalculateDayLineRS.cpp" />

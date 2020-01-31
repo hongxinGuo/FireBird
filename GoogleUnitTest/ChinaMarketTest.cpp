@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CChinaMarket, TestInitialize) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
@@ -94,7 +94,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarket, TestClearUpdateStockCodeDBFlag) {
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
     for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
-      CStockPtr pStock = gl_ChinaStockMarket.GetStock(i);
+      CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(i);
       pStock->SetDayLineDBUpdated(true);
     }
     EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
@@ -103,7 +103,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetTengxunInquiringStockStr) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     gl_ChinaStockMarket.SetSystemReady(true);
     gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
     CString str = gl_ChinaStockMarket.GetTengxunInquiringStockStr(900, false);
@@ -194,7 +194,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetSinaInquiringStockStr2) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
     CString str = gl_ChinaStockMarket.GetSinaInquiringStockStr(900, false);
     EXPECT_EQ(gl_ChinaStockMarket.GetSinaRTDataInquiringIndex(), 899);
@@ -297,7 +297,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetNeteaseInquiringStockStr) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
     CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(900, false);
     EXPECT_EQ(gl_ChinaStockMarket.GetNeteaseRTDataInquiringIndex(), 899);
@@ -379,7 +379,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestGetNeteaseDayLineInquiringStr) {
     CString str;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(0);
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
@@ -403,7 +403,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsAStock) {
-    CStockPtr pstock = make_shared<CChinaStock>();
+    CChinaStockPtr pstock = make_shared<CChinaStock>();
     pstock->SetStockCode(_T("sh600000"));
     EXPECT_TRUE(gl_ChinaStockMarket.IsAStock(pstock));
     pstock->SetStockCode(_T("ss600000"));
@@ -479,7 +479,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetCurrentStock) {
-    CStockPtr pStock = make_shared<CChinaStock>();
+    CChinaStockPtr pStock = make_shared<CChinaStock>();
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), gl_ChinaStockMarket.GetStock(_T("sh600000")));
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetCurrentStock(pStock);
@@ -512,7 +512,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsDayLineNeedUpdate) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
     for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
       pStock = gl_ChinaStockMarket.GetStock(i);
@@ -742,7 +742,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestLoadStockCodeDB) {
     // 股票代码数据库在全局环境设置时即已装入测试系统，故而直接测试即可。
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     pStock = gl_ChinaStockMarket.GetStock(0);
     EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
@@ -813,7 +813,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestGetStockPtr) {
-    CStockPtr pStock = nullptr;
+    CChinaStockPtr pStock = nullptr;
     long lIndex = -1;
     pStock = gl_ChinaStockMarket.GetStock(_T("sh600000"));
     EXPECT_TRUE(gl_ChinaStockMarket.GetStockIndex(_T("sh600000"), lIndex));

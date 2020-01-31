@@ -76,7 +76,7 @@ CStockAnalysisView::CStockAnalysisView() {
 CStockAnalysisView::~CStockAnalysisView() {
 }
 
-bool CStockAnalysisView::ShowGuadan(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
+bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
   CSize sizeText = pDC->GetTextExtent(str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
@@ -107,7 +107,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CStockPtr pStock, int iXStart, int
   return true;
 }
 
-bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CStockPtr pStock, int iXStart, int iYStart) {
+bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
   if (gl_ChinaStockMarket.GetTotalActiveStock() > 0) {
     pStock = gl_ChinaStockMarket.GetStock(0); // 600000
   }
@@ -133,8 +133,8 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   CPen* ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
   CPoint ptCurrent;
 
-  CStockPtr pStock;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pStock;
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
   int iGraphYEnd2 = iGraphYEnd + 100;
@@ -202,7 +202,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPoint ptCurrent;
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   if (pCurrentStock == nullptr) return;
   if (!pCurrentStock->IsDayLineLoaded()) return;

@@ -332,9 +332,6 @@
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\StockCalculatedInfo.cpp">
-      <Filter>源文件\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
       <Filter>源文件\工作线程</Filter>
     </ClCompile>

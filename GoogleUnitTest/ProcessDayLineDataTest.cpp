@@ -67,7 +67,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    CStockPtr m_pStock;
+    CChinaStockPtr m_pStock;
   };
 
   INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, NeteaseDayLineTest,

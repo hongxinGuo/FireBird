@@ -95,7 +95,7 @@ public:
 
   long IncreaseStockInquiringIndex(long& lIndex);
 
-  bool IsAStock(CStockPtr pStock); // 是否为沪深A股
+  bool IsAStock(CChinaStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
   bool IsStock(CString  strStockCode);	// 是否为正确的股票代码
 
@@ -104,15 +104,15 @@ public:
   // 得到股票索引
   bool GetStockIndex(CString strStockCode, long& lIndex);
   // 得到股票指针
-  CStockPtr GetStock(CString strStockCode);
-  CStockPtr GetStock(long lIndex);
+  CChinaStockPtr GetStock(CString strStockCode);
+  CChinaStockPtr GetStock(long lIndex);
 
   void IncreaseActiveStockNumber(void);
 
   // 得到当前显示股票
-  CStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
+  CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
-  void SetCurrentStock(CStockPtr pStock);
+  void SetCurrentStock(CChinaStockPtr pStock);
   bool IsCurrentStockChanged(void);
 
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
@@ -213,7 +213,7 @@ public:
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
   void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-  void StoreChoiceStock(CStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
+  void StoreChoiceStock(CChinaStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
 
   void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
   void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lTengxunRTDataInquiringIndex = 0; }
@@ -245,12 +245,12 @@ private:
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
 
 protected:
-  vector<CStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数
   long m_lTotalActiveStock;	// 当天股票总数
 
-  vector<CStockPtr> m_vStockChoice; // 自选股票池
+  vector<CChinaStockPtr> m_vStockChoice; // 自选股票池
 
   CQueueRTData m_vRTData;
   bool m_fSaveRTData;
@@ -261,7 +261,7 @@ protected:
   bool m_fStartReceivingData; // 是否开始接收实时数据
   bool m_fGetRTData; // 读取实时数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
-  CStockPtr m_pCurrentStock; // 当前显示的股票
+  CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
   time_t m_ttNewestTransactionTime;
 
@@ -284,7 +284,7 @@ protected:
   long m_lRelativeStrongEndDay;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
 
-  vector<CStockPtr> m_vpSelectedStock; // 当前选择的股票
+  vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;
 
   bool m_fCurrentStockChanged; // 当前选择的股票改变了

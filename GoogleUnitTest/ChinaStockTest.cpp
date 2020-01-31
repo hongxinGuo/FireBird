@@ -795,7 +795,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
-    CStockPtr pStock = make_shared<CChinaStock>();
+    CChinaStockPtr pStock = make_shared<CChinaStock>();
 
     pStock->SetHavingFirstRTData(true);
     pStock->SetMarket(__SHANGHAI_MARKET__);
@@ -898,7 +898,7 @@ namespace StockAnalysisTest {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CDayLine id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
     gl_ChinaStockMarket.__Test_SetDay(20190101);
 
@@ -971,7 +971,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CDayLinePtr pDayLine = nullptr;
     CChinaStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1039,7 +1039,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay) {
     CDayLinePtr pid;
     CChinaStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1075,7 +1075,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay2) {
     CDayLinePtr pid;
     CChinaStock id;
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1109,7 +1109,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {
-    CStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
     EXPECT_FALSE(pStock->IsActive());
     CString strStockName = pStock->GetStockName();
     WORD wMarket = pStock->GetMarket();

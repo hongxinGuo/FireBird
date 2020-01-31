@@ -11,7 +11,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadLoadDayLine(LPVOID) {
-  CStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   ASSERT(pCurrentStock != nullptr);
   ASSERT(!pCurrentStock->IsDayLineLoaded());
