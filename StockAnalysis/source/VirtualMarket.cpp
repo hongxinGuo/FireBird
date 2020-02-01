@@ -42,7 +42,7 @@ bool CVirtualMarket::SchedulingTask(void) {
   return true;
 }
 
-void CVirtualMarket::CalculateTime(void) {
+void CVirtualMarket::CalculateTime(void) noexcept {
   time(&m_tLocal);
   m_tMarket = m_tLocal - m_lTimeZoneOffset;
   gmtime_s(&m_tmMarket, &m_tMarket);
@@ -50,7 +50,7 @@ void CVirtualMarket::CalculateTime(void) {
   m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
 
-void CVirtualMarket::CalculateLastTradeDay(void) {
+void CVirtualMarket::CalculateLastTradeDay(void) noexcept {
   time_t ttime = 0;
 
   switch (m_tmMarket.tm_wday) {
@@ -71,21 +71,21 @@ void CVirtualMarket::CalculateLastTradeDay(void) {
   m_lMarketLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
-bool CVirtualMarket::IsWorkingDay(void) {
+bool CVirtualMarket::IsWorkingDay(void) noexcept {
   if ((m_tmMarket.tm_wday == 0) || (m_tmMarket.tm_wday == 6)) {
     return false;
   }
   else return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) {
+bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) noexcept {
   if ((timeCurrent.GetDayOfWeek() == 1) || (timeCurrent.GetDayOfWeek() == 7)) {
     return false;
   }
   else return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(long lDay) {
+bool CVirtualMarket::IsWorkingDay(long lDay) noexcept {
   const long year = lDay / 10000;
   const long month = lDay / 100 - year * 100;
   const long day = lDay - year * 10000 - month * 100;
@@ -97,7 +97,7 @@ bool CVirtualMarket::IsWorkingDay(long lDay) {
   else return true;
 }
 
-bool CVirtualMarket::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) {
+bool CVirtualMarket::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept {
   CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
   const long year = lEarlyDay / 10000;
   const long month = lEarlyDay / 100 - year * 100;
@@ -108,7 +108,7 @@ bool CVirtualMarket::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpaw
   return (lNewDay < lLatelyDay);
 }
 
-long CVirtualMarket::GetNextDay(long lDay, long lTimeSpanDays) {
+long CVirtualMarket::GetNextDay(long lDay, long lTimeSpanDays) noexcept {
   CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
   const long year = lDay / 10000;
   const long month = lDay / 100 - year * 100;

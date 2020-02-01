@@ -26,18 +26,18 @@ public:
   long GetDayOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
   long GetYear(void) noexcept { return m_tmMarket.tm_year + 1900; }
   long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lMarketLastTradeDay; }
-  bool IsWorkingDay(void);
-  bool IsWorkingDay(CTime timeCurrent);
-  bool IsWorkingDay(long lDay);
+  bool IsWorkingDay(void) noexcept;
+  bool IsWorkingDay(CTime timeCurrent) noexcept;
+  bool IsWorkingDay(long lDay) noexcept;
 
-  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
-  long GetNextDay(long lDay, long lTimeSpanDays = 1);
+  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept;
+  long GetNextDay(long lDay, long lTimeSpanDays = 1) noexcept;
 
   CString GetTimeString(void); // 得到本地时间的字符串
   CString GetMarketTimeString(void); // 得到本市场时间的字符串
 
-  void CalculateTime(void); // 计算本市场的各时间
-  void CalculateLastTradeDay(void);
+  void CalculateTime(void) noexcept;// 计算本市场的各时间
+  void CalculateLastTradeDay(void) noexcept;
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
@@ -55,9 +55,9 @@ public:
 
 public:
   // 测试用函数
-  void __Test_Sett_time(time_t Time) { m_tLocal = Time; }
+  void __Test_Sett_time(time_t Time) noexcept { m_tLocal = Time; }
   void __Test_SetTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
-  void __Test_SetTM(tm tm_) { m_tmMarket = tm_; }
+  void __Test_SetTM(tm tm_) noexcept { m_tmMarket = tm_; }
   void __Test_SetDay(long lDay) noexcept { m_lMarketToday = lDay; }
 
 protected:

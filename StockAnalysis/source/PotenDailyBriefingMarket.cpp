@@ -49,7 +49,7 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
 
 void CPotenDailyBriefingMarket::ResetMarket(void) {
   Reset();
-  CString str = _T("重置poten.com于市场时间：");
+  CString str = _T("重置poten.com于美东标准时间：");
   str += GetMarketTimeString();
   gl_systemMessage.PushInformationMessage(str);
 }

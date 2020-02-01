@@ -45,7 +45,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
 
 void CCrweberIndexMarket::ResetMarket(void) {
   Reset();
-  CString str = _T("重置Crweber.com于市场时间：");
+  CString str = _T("重置Crweber.com于格林威治标准时间：");
   str += GetMarketTimeString();
   gl_systemMessage.PushInformationMessage(str);
 }

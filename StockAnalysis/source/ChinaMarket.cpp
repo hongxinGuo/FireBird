@@ -55,7 +55,9 @@ CChinaMarket::~CChinaMarket() {
 void CChinaMarket::ResetMarket(void) {
   Reset();
   TRACE(_T("重置中国股市\n"));
-  gl_systemMessage.PushInformationMessage(_T("重置中国股市"));
+  CString str = _T("重置中国股市于北京标准时间：");
+  str += GetMarketTimeString();
+  gl_systemMessage.PushInformationMessage(str);
   while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
          || gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1);
