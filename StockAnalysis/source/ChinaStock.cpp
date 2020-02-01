@@ -116,7 +116,7 @@ void CChinaStock::ClearRTDataDeque(void) {
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
-  if (m_vDayLine.size() == 0) return false;
+  if (m_vDayLine.size() <= 0) return false;
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > GetDayLineEndDay()) return true;
   else return false;
 }

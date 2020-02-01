@@ -17,7 +17,7 @@ CCrweberIndex::CCrweberIndex() {
   m_lLastUpdateDay = 0;
 
   m_mapMonth[_T("January")] = 1;
-  m_mapMonth[_T("Febrary")] = 2;
+  m_mapMonth[_T("February")] = 2;
   m_mapMonth[_T("March")] = 3;
   m_mapMonth[_T("April")] = 4;
   m_mapMonth[_T("May")] = 5;

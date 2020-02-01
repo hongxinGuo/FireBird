@@ -293,7 +293,7 @@ namespace StockAnalysisTest {
   };
 
   CrweberIndexTime CrweberIndexTimeData1(1, _T(" January 25 2019 "), 20190125);
-  CrweberIndexTime CrweberIndexTimeData2(2, _T(" Febrary 2 2019 "), 20190202);
+  CrweberIndexTime CrweberIndexTimeData2(2, _T(" February 2 2019 "), 20190202);
   CrweberIndexTime CrweberIndexTimeData3(3, _T(" March 5 2019 "), 20190305);
   CrweberIndexTime CrweberIndexTimeData4(4, _T(" April 25 2019 "), 20190425);
   CrweberIndexTime CrweberIndexTimeData5(5, _T(" May 25 2019 "), 20190525);
