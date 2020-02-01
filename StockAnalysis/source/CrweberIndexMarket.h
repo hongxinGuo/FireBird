@@ -16,7 +16,8 @@ public:
   virtual void ResetMarket(void) override;
   void Reset(void);
 
-  bool SchedulingTaskPer5Minute(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
+  bool TaskResetMarket(long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
   bool LoadDatabase(void);

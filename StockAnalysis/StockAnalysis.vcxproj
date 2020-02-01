@@ -242,7 +242,6 @@
     <ClInclude Include="source\SetCrweberIndex.h" />
     <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebInquiry.h" />
-    <ClInclude Include="source\StockCalculatedInfo.h" />
     <ClInclude Include="source\TengxunRTWebInquiry.h" />
     <ClInclude Include="source\TransferSharedPtr.h" />
     <ClInclude Include="source\VirtualWebInquiry.h" />

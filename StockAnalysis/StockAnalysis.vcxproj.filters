@@ -13,29 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="头文件\实现类">
-      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\数据库">
-      <UniqueIdentifier>{a1fe4dd0-a07a-4fac-8e77-595b2c79d08b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\实现类">
-      <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\数据库">
-      <UniqueIdentifier>{fad8b004-f8ce-49d4-a1ce-8cbebe538b4c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\工作线程">
       <UniqueIdentifier>{afa4e90e-fd75-4f18-b402-d12a0f75d833}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\工作线程">
       <UniqueIdentifier>{20d5a37d-8e89-4f7b-bf66-b3260b0142ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\网络通信">
-      <UniqueIdentifier>{046a774c-ac48-4cf0-96f1-c2a7f01315a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\网络通信">
-      <UniqueIdentifier>{0203b3b7-62eb-4f8a-8e1d-fd4d450d6bc9}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\辅助类和函数">
       <UniqueIdentifier>{e9fe89bd-789b-4bbc-8d76-2b466f9f63b1}</UniqueIdentifier>
@@ -55,18 +37,6 @@
     <Filter Include="源文件\windows界面">
       <UniqueIdentifier>{7f374a32-c51a-484f-9711-e3e79cc75b9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Stock">
-      <UniqueIdentifier>{95ea4f37-63d6-42c7-8c2c-732d1e8f4bd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Market">
-      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Stock">
-      <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Market">
-      <UniqueIdentifier>{3998e40a-13f1-46fe-94d1-746d19b3bb8b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\网络数据提取器">
       <UniqueIdentifier>{d3a3ad51-6024-4a9e-94df-151326f729ea}</UniqueIdentifier>
     </Filter>
@@ -79,6 +49,39 @@
     <Filter Include="源文件\Poten Daily Briefing">
       <UniqueIdentifier>{52662461-24bd-43ef-85a1-e88fca5a96fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\China Stock Market">
+      <UniqueIdentifier>{16557625-a09d-4e58-97a5-4f794fb65075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Stock Market\数据库">
+      <UniqueIdentifier>{13ecdaff-a4be-49d7-8e13-b37df1208114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Stock Market\网络通信">
+      <UniqueIdentifier>{73cf621c-e037-44e4-9071-f8e73c30f28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market">
+      <UniqueIdentifier>{bbdb3553-c794-4b3a-9b9e-e276966333b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market\网络通信">
+      <UniqueIdentifier>{2611ccea-99cc-46b4-b539-0ef79cf1189e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market\数据库">
+      <UniqueIdentifier>{2f1ae1e8-661f-4971-a472-5e96e8380eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market\工作线程">
+      <UniqueIdentifier>{614cba05-4bb4-404e-a5e0-ba0aead33e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\基类">
+      <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\基类">
+      <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Stock Market\实现类">
+      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market\实现类">
+      <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -87,32 +90,14 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="source\SetChoicedStock.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetDayLine.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetDayLineInfo.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetOption.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRealTimeData.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetStockCode.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\DayLine.h">
-      <Filter>头文件\实现类</Filter>
+      <Filter>头文件\China Stock Market\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\OneDeal.h">
-      <Filter>头文件\实现类</Filter>
+      <Filter>头文件\China Stock Market\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\RTData.h">
-      <Filter>头文件\实现类</Filter>
+      <Filter>头文件\China Stock Market\实现类</Filter>
     </ClInclude>
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
@@ -122,9 +107,6 @@
     </ClInclude>
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\工作线程</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetDayLineToday.h">
-      <Filter>头文件\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
@@ -165,53 +147,14 @@
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\StockCalculatedInfo.h">
-      <Filter>头文件\Stock</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueWebData.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
     <ClInclude Include="source\VirtualMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CrweberIndexMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetPotenDailyBriefing.h">
-      <Filter>头文件\数据库</Filter>
+      <Filter>头文件\基类</Filter>
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefing.h">
       <Filter>头文件\Poten Daily Briefing</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ChinaMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefingMarket.h">
-      <Filter>头文件\Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetCrweberIndex.h">
-      <Filter>头文件\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\VirtualWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CrweberIndexWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\NeteaseRTWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefingWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SinaRTWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TengxunRTWebInquiry.h">
-      <Filter>头文件\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
@@ -225,70 +168,85 @@
     <ClInclude Include="source\RTDataContainer.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="source\SetCrweberIndex.h">
+      <Filter>头文件\Crweber.com</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetPotenDailyBriefing.h">
+      <Filter>头文件\Poten Daily Briefing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndexWebInquiry.h">
+      <Filter>头文件\Crweber.com</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefingWebInquiry.h">
+      <Filter>头文件\Poten Daily Briefing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket.h">
+      <Filter>头文件\China Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CrweberIndexMarket.h">
+      <Filter>头文件\Crweber.com</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PotenDailyBriefingMarket.h">
+      <Filter>头文件\Poten Daily Briefing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetChoicedStock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLine.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLineInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetDayLineToday.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetOption.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetRealTimeData.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetStockCode.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
+      <Filter>头文件\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\NeteaseRTWebInquiry.h">
+      <Filter>头文件\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SinaRTWebInquiry.h">
+      <Filter>头文件\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TengxunRTWebInquiry.h">
+      <Filter>头文件\China Stock Market\网络通信</Filter>
+    </ClInclude>
     <ClInclude Include="source\ChinaStock.h">
-      <Filter>头文件\Stock</Filter>
+      <Filter>头文件\China Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\VirtualWebInquiry.h">
+      <Filter>头文件\基类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\SetChoicedStock.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLine.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLineInfo.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetOption.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetRealTimeData.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetStockCode.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\DayLine.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\China Stock Market\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\OneDeal.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\China Stock Market\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\RTData.cpp">
-      <Filter>源文件\实现类</Filter>
+      <Filter>源文件\China Stock Market\实现类</Filter>
     </ClCompile>
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadLoadDayLine.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadTengxunRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadSinaRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveTempRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSavDayLine.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetCrweberIndex.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLineToday.cpp">
-      <Filter>源文件\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -317,83 +275,125 @@
     <ClCompile Include="StockAnalysisView.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\PriorityQueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp">
-      <Filter>源文件\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\CrweberIndexMarket.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetPotenDailyBriefing.cpp">
-      <Filter>源文件\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\PotenDailyBriefing.cpp">
       <Filter>源文件\Poten Daily Briefing</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ChinaMarket.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\VirtualMarket.cpp">
-      <Filter>源文件\Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\VirtualWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseRTWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SinaRTWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TengxunRTWebInquiry.cpp">
-      <Filter>源文件\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadSaveRTData.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\QueueRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
+      <Filter>源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp">
+      <Filter>源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp">
+      <Filter>源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\NeteaseRTWebInquiry.cpp">
+      <Filter>源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SinaRTWebInquiry.cpp">
+      <Filter>源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TengxunRTWebInquiry.cpp">
+      <Filter>源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
     <ClCompile Include="source\ChinaStock.cpp">
-      <Filter>源文件\Stock</Filter>
+      <Filter>源文件\China Stock Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket.cpp">
+      <Filter>源文件\China Stock Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CrweberIndexMarket.cpp">
+      <Filter>源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
+      <Filter>源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadLoadDayLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
+      <Filter>源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSaveTempRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadSinaRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadTengxunRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSavDayLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSaveRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetPotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetCrweberIndex.cpp">
+      <Filter>源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetChoicedStock.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLine.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLineInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetDayLineToday.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetOption.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetRealTimeData.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetStockCode.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\VirtualMarket.cpp">
+      <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\VirtualWebInquiry.cpp">
+      <Filter>源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
