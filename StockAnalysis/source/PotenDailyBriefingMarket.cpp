@@ -10,6 +10,7 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
     ASSERT(0);
   }
 
+  m_strMarketId = _T("Poten.com");
   m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
   CalculateTime();
   m_fTodayDataUupdated = false;

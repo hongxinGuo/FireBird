@@ -17,7 +17,7 @@ public:
   virtual void ResetMarket(void) = 0;
 
   long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
-  time_t GetLocalTime(void) noexcept { return m_tLocal; }
+  time_t GetLocalTime(void) noexcept { return sm_tLocal; }
   time_t GetMarketTime(void) noexcept { return m_tMarket; }
   long GetTime(void) noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
   long GetDay(void) noexcept { return m_lMarketToday; }// 得到本市场的当地日期， 格式为：yyyymmdd
@@ -38,11 +38,11 @@ public:
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
   void CalculateLastTradeDay(void) noexcept;
+  void ResetMarketFlagAtMidnight(long lCurrentTime);
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
   bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-  void ResetMarketFlagAtMidnight(long lCurrentTime);
   bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
   bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
@@ -55,14 +55,15 @@ public:
 
 public:
   // 测试用函数
-  void __Test_Sett_time(time_t Time) noexcept { m_tLocal = Time; }
-  void __Test_SetTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
-  void __Test_SetTM(tm tm_) noexcept { m_tmMarket = tm_; }
-  void __Test_SetDay(long lDay) noexcept { m_lMarketToday = lDay; }
+  void __TEST_SetLocalTime(time_t Time) noexcept { sm_tLocal = Time; }
+  void __TEST_SetMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
+  void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
+  void __TEST_SetMarketDay(long lDay) noexcept { m_lMarketToday = lDay; }
 
 protected:
   long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计，负值处于东十二区，正值处于西十二区）。
-  time_t m_tLocal; // 软件运行时的当地时间
+  CString m_strMarketId; // 该市场标识字符串
+  static time_t sm_tLocal; // 软件运行时的当地时间。所有的市场都是用同一个当地时间，故而为静态数据。
 
   // 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
   time_t m_tMarket; // 本市场的标准时间

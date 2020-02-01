@@ -10,6 +10,7 @@ CCrweberIndexMarket::CCrweberIndexMarket() {
     ASSERT(0);
   }
 
+  m_strMarketId = _T("Crweber.com");
   m_lTimeZoneOffset = 0; // crweber.com π”√GMT°£
   CalculateTime();
 

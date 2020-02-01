@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_ChinaStockMarket.__Test_Sett_time(tt);
+    gl_ChinaStockMarket.__TEST_SetLocalTime(tt);
     id.SetTransactionTime(tt);
     EXPECT_TRUE(id.IsValidTime());
     EXPECT_FALSE(id.CheckNeteaseRTDataActive());

@@ -4,6 +4,9 @@
 
 #include "VirtualMarket.h"
 
+// 所有的市场使用同一个当地时间。
+time_t CVirtualMarket::sm_tLocal = 0;
+
 CVirtualMarket::CVirtualMarket(void) {
   m_fPermitResetMarket = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
   m_fResetMarket = true;
@@ -12,9 +15,9 @@ CVirtualMarket::CVirtualMarket(void) {
   m_lMarketLastTradeDay = 0;
   m_lMarketTime = 0;
   m_lMarketToday = 0;
-  m_tLocal = 0;
   m_tMarket = 0;
 
+  m_strMarketId = _T("Error. CVirtualMarket Called ");
   m_lTimeZoneOffset = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 }
 
@@ -43,8 +46,8 @@ bool CVirtualMarket::SchedulingTask(void) {
 }
 
 void CVirtualMarket::CalculateTime(void) noexcept {
-  time(&m_tLocal);
-  m_tMarket = m_tLocal - m_lTimeZoneOffset;
+  time(&sm_tLocal);
+  m_tMarket = sm_tLocal - m_lTimeZoneOffset;
   gmtime_s(&m_tmMarket, &m_tMarket);
   m_lMarketToday = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
   m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
@@ -123,7 +126,7 @@ CString CVirtualMarket::GetTimeString(void) {
   char buffer[30];
   tm tmLocal;
 
-  localtime_s(&tmLocal, &m_tLocal);
+  localtime_s(&tmLocal, &sm_tLocal);
   sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
   CString str;
   str = buffer;
@@ -174,7 +177,7 @@ void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
   if (lCurrentTime <= 1500 && !IsPermitResetMarket()) {  // 在零点到零点十五分，重置系统标识
     m_fPermitResetMarket = true;
     CString str;
-    str = _T("重置系统重置标识");
+    str = m_strMarketId + _T("重置系统重置标识");
     gl_systemMessage.PushInformationMessage(str);
   }
 }

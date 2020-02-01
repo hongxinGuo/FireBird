@@ -13,23 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\工作线程">
-      <UniqueIdentifier>{afa4e90e-fd75-4f18-b402-d12a0f75d833}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\工作线程">
-      <UniqueIdentifier>{20d5a37d-8e89-4f7b-bf66-b3260b0142ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\辅助类和函数">
       <UniqueIdentifier>{e9fe89bd-789b-4bbc-8d76-2b466f9f63b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\辅助类和函数">
       <UniqueIdentifier>{c15f47f1-9278-47e2-8f5d-465ca7ccf999}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Crweber.com">
-      <UniqueIdentifier>{0046b2db-442f-404f-85e7-0fd6b6512cea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Crweber.com">
-      <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\Windows界面">
       <UniqueIdentifier>{ff91081d-aab4-4a5b-8015-494761ebc4f1}</UniqueIdentifier>
@@ -42,12 +30,6 @@
     </Filter>
     <Filter Include="源文件\网络数据提取器">
       <UniqueIdentifier>{72c0370f-98bb-40af-9cd0-d0eb922a24c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Poten Daily Briefing">
-      <UniqueIdentifier>{928679be-5389-4503-a809-8cea8f203509}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Poten Daily Briefing">
-      <UniqueIdentifier>{52662461-24bd-43ef-85a1-e88fca5a96fb}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\China Stock Market">
       <UniqueIdentifier>{16557625-a09d-4e58-97a5-4f794fb65075}</UniqueIdentifier>
@@ -82,6 +64,18 @@
     <Filter Include="源文件\China Stock Market\实现类">
       <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Crweber.com Market">
+      <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Poten Daily Briefing Market">
+      <UniqueIdentifier>{928679be-5389-4503-a809-8cea8f203509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Crweber.com Market">
+      <UniqueIdentifier>{0046b2db-442f-404f-85e7-0fd6b6512cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Poten Daily Briefing Market">
+      <UniqueIdentifier>{52662461-24bd-43ef-85a1-e88fca5a96fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -102,17 +96,11 @@
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="source\Thread.h">
-      <Filter>头文件\工作线程</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ThreadStatus.h">
-      <Filter>头文件\工作线程</Filter>
-    </ClInclude>
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndex.h">
-      <Filter>头文件\Crweber.com</Filter>
+      <Filter>头文件\Crweber.com Market</Filter>
     </ClInclude>
     <ClInclude Include="source\SystemMessage.h">
       <Filter>头文件\辅助类和函数</Filter>
@@ -154,7 +142,7 @@
       <Filter>头文件\基类</Filter>
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing</Filter>
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
@@ -169,25 +157,25 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\SetCrweberIndex.h">
-      <Filter>头文件\Crweber.com</Filter>
+      <Filter>头文件\Crweber.com Market</Filter>
     </ClInclude>
     <ClInclude Include="source\SetPotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing</Filter>
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndexWebInquiry.h">
-      <Filter>头文件\Crweber.com</Filter>
+      <Filter>头文件\Crweber.com Market</Filter>
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h">
-      <Filter>头文件\Poten Daily Briefing</Filter>
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\ChinaMarket.h">
       <Filter>头文件\China Stock Market</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndexMarket.h">
-      <Filter>头文件\Crweber.com</Filter>
+      <Filter>头文件\Crweber.com Market</Filter>
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefingMarket.h">
-      <Filter>头文件\Poten Daily Briefing</Filter>
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\SetChoicedStock.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
@@ -228,6 +216,12 @@
     <ClInclude Include="source\VirtualWebInquiry.h">
       <Filter>头文件\基类</Filter>
     </ClInclude>
+    <ClInclude Include="source\ThreadStatus.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Thread.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -245,14 +239,11 @@
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadStatus.cpp">
-      <Filter>源文件\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndex.cpp">
-      <Filter>源文件\Crweber.com</Filter>
+      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\SystemMessage.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -282,7 +273,7 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\PotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing</Filter>
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
@@ -291,10 +282,10 @@
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
-      <Filter>源文件\Crweber.com</Filter>
+      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp">
-      <Filter>源文件\Poten Daily Briefing</Filter>
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp">
       <Filter>源文件\China Stock Market\网络通信</Filter>
@@ -315,10 +306,10 @@
       <Filter>源文件\China Stock Market</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndexMarket.cpp">
-      <Filter>源文件\Crweber.com</Filter>
+      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
-      <Filter>源文件\Poten Daily Briefing</Filter>
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
@@ -333,10 +324,10 @@
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com</Filter>
+      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing</Filter>
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
@@ -363,10 +354,10 @@
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\SetPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing</Filter>
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
     <ClCompile Include="source\SetCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com</Filter>
+      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\SetChoicedStock.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
@@ -394,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="source\VirtualWebInquiry.cpp">
       <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadStatus.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

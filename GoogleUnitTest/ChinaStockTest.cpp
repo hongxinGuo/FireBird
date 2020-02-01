@@ -900,7 +900,7 @@ namespace StockAnalysisTest {
     CDayLine id;
     CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
-    gl_ChinaStockMarket.__Test_SetDay(20190101);
+    gl_ChinaStockMarket.__TEST_SetMarketDay(20190101);
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
