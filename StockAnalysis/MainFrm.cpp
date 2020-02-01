@@ -479,17 +479,13 @@ void CMainFrame::UpdateStatus(void) {
 //
 // 当系统退出时，需要先退出工作线程。
 //
-// 如果是发行版本的话，不允许在开市时或者未处理今日股票数据前退出系统（为了保存正在处理的信息）。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
-    if (!gl_ThreadStatus.IsSavingDayLine()) { // 如果没有正在处理日线历史数据
-      gl_ExitingSystem = true; // 提示各工作线程中途退出
-    }
-    else return;
+    gl_ExitingSystem = true; // 提示各工作线程中途退出
   }
 
   CMDIFrameWndEx::OnSysCommand(nID, lParam);

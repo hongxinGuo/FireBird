@@ -12,7 +12,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
+    EXPECT_EQ(gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS(), 0);
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
     long l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）

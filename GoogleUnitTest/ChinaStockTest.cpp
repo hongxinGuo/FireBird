@@ -660,6 +660,18 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.HaveFirstRTData());
   }
 
+  TEST_F(CChinaStockTest, TestHaveNewDayLineData) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.HaveNewDayLineData());
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDay(20200101);
+    stock.StoreDayLine(pDayLine);
+    stock.SetDayLineEndDay(20200101);
+    EXPECT_FALSE(stock.HaveNewDayLineData());
+    stock.SetDayLineEndDay(20191231);
+    EXPECT_TRUE(stock.HaveNewDayLineData());
+  }
+
   TEST_F(CChinaStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CChinaStock stock;
     int iNumberOfSave = gl_ChinaStockMarket.GetDayLineNeedSaveNumber();

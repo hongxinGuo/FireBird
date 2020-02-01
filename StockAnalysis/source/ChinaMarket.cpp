@@ -1360,9 +1360,16 @@ bool CChinaMarket::SaveDayLineData(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->GetDayLineSize() > 0) {
-        pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
-        pTransfer->m_pStock = pStock;
-        AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+        if (pStock->HaveNewDayLineData()) {
+          pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
+          pTransfer->m_pStock = pStock;
+          AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+        }
+        else {
+          CString str1 = pStock->GetStockCode();
+          str1 += _T("没有新的日线历史数据");
+          gl_systemMessage.PushDayLineInfoMessage(str1);
+        }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
         CString str1 = pStock->GetStockCode();
