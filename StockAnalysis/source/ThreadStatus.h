@@ -36,7 +36,7 @@ public:
 
   void IncreaseNunberOfSavingDayLineThreads(void) { m_SavingDayLine++; }  // 同时运行线程数加一
   void DecreaseNumberOfSavingDayLineThreads(void) { m_SavingDayLine--; } // 同时运行线程数减一
-  bool IsSavingDayLine(void) { if (m_SavingDayLine > 0) return true; else return false; }  // 计算日线的线程是否处于运行中
+  bool IsSavingDayLine(void); // 计算日线的线程是否处于运行中
 
 protected:
   atomic_bool m_CalculateDayLineRelativeStrong;

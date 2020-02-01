@@ -1763,7 +1763,7 @@ void CChinaMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    gl_ChinaStockMarket.SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    gl_ChinaStockMarket.SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
     gl_ChinaStockMarket.SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
     gl_ChinaStockMarket.SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
   }

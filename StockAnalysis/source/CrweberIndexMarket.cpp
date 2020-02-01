@@ -22,7 +22,7 @@ CCrweberIndexMarket::~CCrweberIndexMarket() {
 
 void CCrweberIndexMarket::Reset(void) {
   m_fDataBaseLoaded = false;
-  m_fTodayDataUupdated = true;
+  m_fTodayDataUpdated = true;
   m_lNewestDatabaseDay = 0;
   m_lNewestUpdatedDay = 0;
   // 重置此全局变量
@@ -91,16 +91,16 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
     if (m_CrweberIndex.ReadData(pWebData)) {
       m_lNewestUpdatedDay = m_CrweberIndex.m_lDay;
       if (m_lNewestDatabaseDay < m_CrweberIndex.m_lDay) {
-        m_fTodayDataUupdated = true;
+        m_fTodayDataUpdated = true;
         m_lNewestDatabaseDay = m_CrweberIndex.m_lDay;
       }
-      if (!m_fTodayDataUupdated || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
+      if (!m_fTodayDataUpdated || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
         m_CrweberIndexLast = m_CrweberIndex;
         CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>(m_CrweberIndex);
         m_vCrweberIndex.push_back(pCrweberIndex);
         SaveCrweberIndexData(pCrweberIndex);
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
-        m_fTodayDataUupdated = false;
+        m_fTodayDataUpdated = true;
       }
     }
     else return false;  // 后面的数据出问题，抛掉不用。

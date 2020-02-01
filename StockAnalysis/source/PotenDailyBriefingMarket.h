@@ -38,7 +38,7 @@ public:
 
 protected:
   bool m_fDataBaseLoaded;
-  bool m_fTodayDataUupdated;
+  bool m_fTodayDataUpdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
   map<long, bool> m_mapDataLoadedDays;
   long m_lNewestUpdatedDay;

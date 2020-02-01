@@ -17,7 +17,16 @@ CThreadStatus::CThreadStatus() {
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;
+
+  m_SavingDayLine = 0;
 }
 
 CThreadStatus::~CThreadStatus() {
+}
+
+bool CThreadStatus::IsSavingDayLine(void) {
+  if (m_SavingDayLine > 0) {
+    return true;
+  }
+  else return false;
 }

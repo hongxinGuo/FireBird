@@ -13,7 +13,7 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   m_strMarketId = _T("Poten.com");
   m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
   CalculateTime();
-  m_fTodayDataUupdated = false;
+  m_fTodayDataUpdated = false;
 
   Reset();
 }
@@ -58,7 +58,7 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
 
-  if ((!m_fTodayDataUupdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
+  if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
     if (m_fDataBaseLoaded) {
       if ((m_lNewestUpdatedDay <= GetDay())) {
@@ -71,7 +71,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
           UpdateStatus();
         }
         gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
-        m_fTodayDataUupdated = true;
+        m_fTodayDataUpdated = true;
       }
     }
     else {

@@ -36,7 +36,7 @@ protected:
   CCrweberIndex m_CrweberIndexLast;
 
   bool m_fDataBaseLoaded;
-  bool m_fTodayDataUupdated;
+  bool m_fTodayDataUpdated;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;
 };
