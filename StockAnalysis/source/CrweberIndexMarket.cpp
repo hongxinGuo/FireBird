@@ -45,9 +45,14 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
 
 void CCrweberIndexMarket::ResetMarket(void) {
   Reset();
+  CString str = _T("重置Crweber.com于市场时间：");
+  str += GetMarketTimeString();
+  gl_systemMessage.PushInformationMessage(str);
 }
 
 bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
+  TaskResetMarket(lCurrentTime);
+
   // 自动查询crweber.com
   if (!gl_WebInquirer.IsReadingCrweberIndex()) {
     TaskProcessWebRTDataGetFromCrweberdotcom();

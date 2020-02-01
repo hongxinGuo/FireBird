@@ -130,6 +130,17 @@ CString CVirtualMarket::GetTimeString(void) {
   return(str);
 }
 
+CString CVirtualMarket::GetMarketTimeString(void) {
+  char buffer[30];
+  tm tmMarket;
+
+  gmtime_s(&tmMarket, &m_tMarket);
+  sprintf_s(buffer, "%02d:%02d:%02d ", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+  CString str;
+  str = buffer;
+  return(str);
+}
+
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
   const long lCurrentTime = GetTime();
   //long lCurrentTime2 = GetTime();

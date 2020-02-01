@@ -33,7 +33,8 @@ public:
   bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays);
   long GetNextDay(long lDay, long lTimeSpanDays = 1);
 
-  CString GetTimeString(void);
+  CString GetTimeString(void); // 得到本地时间的字符串
+  CString GetMarketTimeString(void); // 得到本市场时间的字符串
 
   void CalculateTime(void); // 计算本市场的各时间
   void CalculateLastTradeDay(void);
@@ -60,17 +61,17 @@ public:
   void __Test_SetDay(long lDay) noexcept { m_lMarketToday = lDay; }
 
 protected:
-  long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计）。
+  long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计，负值处于东十二区，正值处于西十二区）。
+  time_t m_tLocal; // 软件运行时的当地时间
 
   // 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
-  time_t m_tLocal; // 软件运行时的当地时间
   time_t m_tMarket; // 本市场的标准时间
-  long m_lMarketToday; //本市场日期
-  long m_lMarketTime; // 本市场时间
-  long m_lMarketLastTradeDay; // 本市场
+  long m_lMarketToday; //本市场的日期
+  long m_lMarketTime; // 本市场的时间
+  long m_lMarketLastTradeDay; // 本市场的上次交易日期
   tm m_tmMarket; // 本市场时间结构
 private:
-  bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统
+  bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）
   bool m_fResetMarket; // 重启系统标识
-  bool m_fReadyToRun;
+  bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
 };

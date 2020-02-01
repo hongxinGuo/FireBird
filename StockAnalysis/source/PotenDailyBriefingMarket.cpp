@@ -49,7 +49,9 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
 
 void CPotenDailyBriefingMarket::ResetMarket(void) {
   Reset();
-  gl_systemMessage.PushInformationMessage(_T("重置poten.com"));
+  CString str = _T("重置poten.com于市场时间：");
+  str += GetMarketTimeString();
+  gl_systemMessage.PushInformationMessage(str);
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {

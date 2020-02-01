@@ -116,6 +116,10 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(str.Compare(gl_PotenDailyBriefingMarket.GetTimeString()), 0);
 
+    sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+    str = buffer;
+    EXPECT_EQ(str.Compare(gl_PotenDailyBriefingMarket.GetMarketTimeString()), 0);
+
     switch (tm_.tm_wday) {
     case 1: // ÐÇÆÚÒ»
     ttime -= 3 * 24 * 3600; //
