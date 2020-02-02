@@ -282,6 +282,7 @@ long CCrweberIndex::GetMonthOfTheYear(CString strMonth) {
     return m_mapMonth.at(strMonth);
   }
   catch (exception&) {
+    TRACE(_T("不正确的月份名称"));
     return gl_CrweberIndexMarket.GetMonthOfYear();
   }
 }

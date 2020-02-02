@@ -366,12 +366,12 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_High) * 1000, id.GetHigh());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_Low) * 1000, id.GetLow());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_Close) * 1000, id.GetClose());
-    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Volume), id.GetVolume());
-    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_Amount), id.GetAmount());
+    EXPECT_EQ(atoll(setDayLine.m_Volume), id.GetVolume());
+    EXPECT_EQ(atoll(setDayLine.m_Amount), id.GetAmount());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown), id.GetUpDown());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), id.GetUpDownRate());
-    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_TotalValue), id.GetTotalValue());
-    EXPECT_DOUBLE_EQ(atoll(setDayLine.m_CurrentValue), id.GetCurrentValue());
+    EXPECT_EQ(atoll(setDayLine.m_TotalValue), id.GetTotalValue());
+    EXPECT_EQ(atoll(setDayLine.m_CurrentValue), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), id.GetRelativeStrong());
     setDayLine.Close();

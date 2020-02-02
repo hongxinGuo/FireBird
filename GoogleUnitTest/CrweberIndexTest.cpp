@@ -264,7 +264,7 @@ namespace StockAnalysisTest {
   TEST(CrweberIndexTest, TestGetMonthOfYear) {
     CCrweberIndex Index;
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("January")), 1);
-    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Febrary")), 2);
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("February")), 2);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("March")), 3);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("April")), 4);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("May")), 5);
@@ -277,6 +277,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("December")), 12);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("DEcmber")), gl_CrweberIndexMarket.GetMonthOfYear());
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("Junuary")), gl_CrweberIndexMarket.GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Febrary")), gl_CrweberIndexMarket.GetMonthOfYear());
   }
 
   struct CrweberIndexTime {
@@ -307,6 +308,7 @@ namespace StockAnalysisTest {
   CrweberIndexTime CrweberIndexTimeData13(13, _T(" decmber 1 2019 "), 20190101);
   CrweberIndexTime CrweberIndexTimeData14(14, _T(" January, 25 2019 "), 20190125);
   CrweberIndexTime CrweberIndexTimeData15(15, _T(" January, 25 2019 "), 20190125);
+  CrweberIndexTime CrweberIndexTimeData16(16, _T(" Febrary, 25 2019 "), 20190125);
 
   class CrweberIndexTimeTest : public testing::TestWithParam<CrweberIndexTime*> {
   protected:

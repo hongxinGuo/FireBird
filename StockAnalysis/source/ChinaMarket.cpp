@@ -1365,6 +1365,11 @@ bool CChinaMarket::SaveDayLineData(void) {
           pTransfer->m_pStock = pStock;
           AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
         }
+        else { // 此种情况大多为出现临时假期（工作日为假期）。
+          CString str1 = pStock->GetStockCode();
+          str1 += _T("没有新的日线数据");
+          gl_systemMessage.PushDayLineInfoMessage(str1);
+        }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
         CString str1 = pStock->GetStockCode();
