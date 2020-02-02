@@ -387,6 +387,9 @@ bool CChinaStock::SaveDayLine(void) {
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
   bool fNeedUpdate = false;
 
+  ASSERT(m_vDayLine.size() > 0);
+  ASSERT(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > m_lDayLineEndDay);
+
   lSize = m_vDayLine.size();
   setDayLine.m_strFilter = _T("[StockCode] = '");
   setDayLine.m_strFilter += GetStockCode() + _T("'");

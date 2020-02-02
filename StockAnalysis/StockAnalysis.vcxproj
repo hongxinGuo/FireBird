@@ -141,6 +141,8 @@
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <CompileAs>CompileAsCpp</CompileAs>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

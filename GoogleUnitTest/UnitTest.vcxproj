@@ -31,6 +31,7 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CLRSupport>false</CLRSupport>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -191,7 +192,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BrowseInformation>false</BrowseInformation>
       <EnablePREfast>false</EnablePREfast>
@@ -201,7 +202,7 @@
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>true</SupportJustMyCode>
+      <SupportJustMyCode>false</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAsManaged>false</CompileAsManaged>
@@ -216,7 +217,7 @@
       <GenerateMapFile>false</GenerateMapFile>
       <MapExports>true</MapExports>
       <ShowProgress>NotSet</ShowProgress>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <AssemblyDebug>false</AssemblyDebug>

@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
-        CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(setStockCode.m_StockCode);
+        pStock = gl_ChinaStockMarket.GetStock(setStockCode.m_StockCode);
         EXPECT_FALSE(pStock->IsActive());
         pStock->SetIPOStatus(setStockCode.m_IPOed);
         pStock->SetMarket(setStockCode.m_StockType);

@@ -291,7 +291,7 @@ namespace StockAnalysisTest {
     else {
       str = gl_ChinaStockMarket.GetSinaInquiringStockStr(900);
       str = gl_ChinaStockMarket.GetSinaInquiringStockStr(900);
-      CString str2 = str.Left(9);
+      str2 = str.Left(9);
       EXPECT_STREQ(str2, _T("sh600000,"));
     }
   }

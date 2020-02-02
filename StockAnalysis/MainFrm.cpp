@@ -88,7 +88,12 @@ CMainFrame::CMainFrame() {
   ASSERT(!gl_fTestMode);
   ASSERT(gl_fNormalMode);
 
+  CString str;
+  TRACE(_T("开始重置系统\n"));
+  str = _T("重置系统");
+  gl_systemMessage.PushInformationMessage(str);
   ResetMarket();
+  TRACE(_T("重置系统结束\n"));
 
   Reset();
 }
@@ -268,18 +273,12 @@ bool CMainFrame::SchedulingTask(void) {
 }
 
 bool CMainFrame::ResetMarket(void) {
-  CString str;
-  TRACE(_T("开始重置系统\n"));
-  str = _T("重置系统");
-  gl_systemMessage.PushInformationMessage(str);
   for (auto pMarket : gl_vMarket) {
     if (pMarket->IsResetMarket()) {
       pMarket->ResetMarket();
       pMarket->SetResetMarket(false);
     }
   }
-  Reset();
-  TRACE(_T("重置系统结束\n"));
   return false;
 }
 
