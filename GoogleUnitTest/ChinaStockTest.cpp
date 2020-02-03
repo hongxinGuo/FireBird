@@ -646,7 +646,16 @@ namespace StockAnalysisTest {
     stock.SetHavingFirstRTData(true);
     EXPECT_TRUE(stock.HaveFirstRTData());
     stock.SetHavingFirstRTData(false);
-    EXPECT_TRUE(stock.HaveFirstRTData());
+    EXPECT_TRUE(stock.HaveFirstRTData()); // 设置拥有第一个实时数据后，其标识就永远为真了。
+  }
+
+  TEST_F(CChinaStockTest, TestIsRTDataShowNeedUpdated) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsRTDataShowNeedUpdated());
+    stock.SetRTDataShowNeedUpdated(true);
+    EXPECT_TRUE(stock.IsRTDataShowNeedUpdated());
+    stock.SetRTDataShowNeedUpdated(false);
+    EXPECT_FALSE(stock.IsRTDataShowNeedUpdated());
   }
 
   TEST_F(CChinaStockTest, TestIsStartCalculating) {

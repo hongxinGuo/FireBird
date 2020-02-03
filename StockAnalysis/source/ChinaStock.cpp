@@ -101,6 +101,7 @@ void CChinaStock::Reset(void) {
 
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_fNeedProcessRTData = true;
+  m_fRTDataShowNeedUpdated = false;
   m_pLastRTData = nullptr;
 
   ClearRTDataDeque();
@@ -648,8 +649,10 @@ bool CChinaStock::ProcessRTData(void) {
       if (IsNeedProcessRTData() && gl_ChinaStockMarket.IsMarketOpened()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
         ProcessOneRTData(pRTData);
         CheckCurrentRTData();
-        ShowCurrentTransaction();
-        ShowCurrentInformationofCancelingGuadan();
+        m_fRTDataShowNeedUpdated = true;
+        // 下面两个功能移至CChinaMarket类中，作为每秒执行的任务。
+        //ShowCurrentTransaction();
+        //ShowCurrentInformationofCancelingGuadan();
       }
     }
   }

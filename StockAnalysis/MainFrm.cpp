@@ -107,10 +107,6 @@ bool CMainFrame::CreateMarketContainer(void) {
 
 void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
-
-  // 重置系统实时队列
-  gl_RTDataContainer.ResetSinaRTQueue();
-
   m_lCurrentPos = 0;
 }
 
@@ -668,13 +664,13 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-}
+  }
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here

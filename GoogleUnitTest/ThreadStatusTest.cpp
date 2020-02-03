@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
 
   TEST(ThreadStatusTest, TestIsSavingDayLine) {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多3个线程
+    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多6个线程
       gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
     }
     for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
