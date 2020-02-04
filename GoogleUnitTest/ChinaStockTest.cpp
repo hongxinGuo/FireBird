@@ -646,16 +646,25 @@ namespace StockAnalysisTest {
     stock.SetHavingFirstRTData(true);
     EXPECT_TRUE(stock.HaveFirstRTData());
     stock.SetHavingFirstRTData(false);
-    EXPECT_TRUE(stock.HaveFirstRTData()); // 设置拥有第一个实时数据后，其标识就永远为真了。
+    EXPECT_TRUE(stock.HaveFirstRTData()); // 此标识设置后就永远为真了。
   }
 
-  TEST_F(CChinaStockTest, TestIsRTDataShowNeedUpdated) {
+  TEST_F(CChinaStockTest, TestIsRTDataCalculated) {
     CChinaStock stock;
-    EXPECT_FALSE(stock.IsRTDataShowNeedUpdated());
-    stock.SetRTDataShowNeedUpdated(true);
-    EXPECT_TRUE(stock.IsRTDataShowNeedUpdated());
-    stock.SetRTDataShowNeedUpdated(false);
-    EXPECT_FALSE(stock.IsRTDataShowNeedUpdated());
+    EXPECT_FALSE(stock.IsRTDataCalculated());
+    stock.SetRTDataCalculated(true);
+    EXPECT_TRUE(stock.IsRTDataCalculated());
+    stock.SetRTDataCalculated(false);
+    EXPECT_FALSE(stock.IsRTDataCalculated());
+  }
+
+  TEST_F(CChinaStockTest, TestIsRecordRTData) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsRecordRTData());
+    stock.SetRecordRTData(true);
+    EXPECT_TRUE(stock.IsRecordRTData());
+    stock.SetRecordRTData(false);
+    EXPECT_FALSE(stock.IsRecordRTData());
   }
 
   TEST_F(CChinaStockTest, TestIsStartCalculating) {

@@ -216,8 +216,10 @@ public:
   bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
   void SetNeedProcessRTData(bool fFlag) noexcept { m_fNeedProcessRTData = fFlag; }
   bool IsNeedProcessRTData(void) noexcept { return m_fNeedProcessRTData; }
-  void SetRTDataShowNeedUpdated(bool fFlag) noexcept { m_fRTDataShowNeedUpdated = fFlag; }
-  bool IsRTDataShowNeedUpdated(void) noexcept { return m_fRTDataShowNeedUpdated; }
+  void SetRTDataCalculated(bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
+  bool IsRTDataCalculated(void) noexcept { return m_fRTDataCalculated; }
+  void SetRecordRTData(bool fFlag) noexcept { m_fRecordRTData = fFlag; }
+  bool IsRecordRTData(void) noexcept { return m_fRecordRTData; }
 
   bool IsTodayDataActive(void); //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
@@ -416,7 +418,8 @@ protected:
 
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况
-  bool m_fRTDataShowNeedUpdated; // 实时数据显示需要更新
+  bool m_fRTDataCalculated; // 实时数据显示需要更新
+  bool m_fRecordRTData; // 记录此股票实时数据进数据库的标识。
 
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.

@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), gl_ChinaStockMarket.GetStock(_T("sh600000")));
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
     EXPECT_TRUE(gl_ChinaStockMarket.IsGetRTData());

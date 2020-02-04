@@ -71,6 +71,7 @@ public:
   bool TaskShowCurrentTransaction(void);
 
   bool TaskSaveChoicedRTData(void);
+  bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);
@@ -263,6 +264,7 @@ protected:
   bool m_fStartReceivingData; // 是否开始接收实时数据
   bool m_fGetRTData; // 读取实时数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
+  bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
   CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
   time_t m_ttNewestTransactionTime;
