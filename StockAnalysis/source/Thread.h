@@ -33,7 +33,7 @@ UINT ThreadSaveTempRTData(LPVOID);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
 UINT ThreadProcessCurrentTradeDayStock(LPVOID);     // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
-UINT ThreadSaveDayLineOfOneStock(LPVOID pParam); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
+UINT ThreadSaveHistoryDayLineOfOneStock(LPVOID pParam); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
 // 从数据库中读取日线历史数据线程
 UINT ThreadLoadDayLine(LPVOID);        // 此工作线程返回值为16
 // 维护日线数据库线程（尚未实现）

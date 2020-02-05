@@ -1288,7 +1288,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     // 判断是否存储日线库和股票代码库
     if ((m_iDayLineNeedSave > 0)) {
       m_fSaveDayLine = true;
-      gl_ChinaStockMarket.SaveDayLineData();
+      gl_ChinaStockMarket.SaveHistoryDayLineData();
     }
     TaskUpdateStockCodeDB();
     return true;
@@ -1391,18 +1391,22 @@ void CChinaMarket::SetCurrentStock(CString strStockCode) {
 //
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
+  bool fSet = false;
   if (m_pCurrentStock != nullptr) {
     if (!m_pCurrentStock->IsSameStock(pStock)) {
-      pStock->SetRecordRTData(true);
-      if (m_pCurrentStock != nullptr) m_pCurrentStock->SetRecordRTData(false);
-      m_pCurrentStock = pStock;
-      m_fCurrentStockChanged = true;
-      m_pCurrentStock->SetDayLineLoaded(false);
-      AfxBeginThread(ThreadLoadDayLine, 0);
+      m_pCurrentStock->SetRecordRTData(false);
+      fSet = true;
     }
   }
   else {
+    fSet = true;
+  }
+  if (fSet) {
+    pStock->SetRecordRTData(true);
     m_pCurrentStock = pStock;
+    m_fCurrentStockChanged = true;
+    m_pCurrentStock->SetDayLineLoaded(false);
+    AfxBeginThread(ThreadLoadDayLine, 0);
   }
 }
 
@@ -1412,7 +1416,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 //  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SaveDayLineData(void) {
+bool CChinaMarket::SaveHistoryDayLineData(void) {
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
 
@@ -1422,7 +1426,7 @@ bool CChinaMarket::SaveDayLineData(void) {
         if (pStock->HaveNewDayLineData()) {
           pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
           pTransfer->m_pStock = pStock;
-          AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+          AfxBeginThread(ThreadSaveHistoryDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
         }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市

@@ -46,10 +46,6 @@ public:
   void Reset(void);
 
 public:
-  // 数据库操作
-  void SaveBasicInfo(CSetDayLine& psetDayLine);
-  void SaveTempInfo(CSetDayLineToday& setDayLineToday);
-
   void UpdateStatus(CRTDataPtr pRTData);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -230,7 +226,9 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
-  bool SaveDayLine(void);
+  void SaveBasicInfo(CSetDayLine& psetDayLine); // 存储当日基本数据
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
+  bool SaveDayLine(void); // 存储日线历史数据
   void UpdateDayLineStartEndDay(void);
   void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
   void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
