@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
   ::testing::AddGlobalTestEnvironment(new TestEnvironment);
 
   EXPECT_FALSE(gl_fNormalMode);
+  EXPECT_TRUE(gl_fTestMode);
 
   return RUN_ALL_TESTS();
 }

@@ -8,6 +8,8 @@
 #include"Accessory.h"
 #include"TransferSharedPtr.h"
 
+#include"WebInquirer.h"
+
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 

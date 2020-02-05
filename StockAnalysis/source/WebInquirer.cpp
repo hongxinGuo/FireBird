@@ -5,6 +5,8 @@
 
 #include"WebInquirer.h"
 
+int gl_cMaxSavingOneDayLineThreads = 4;
+
 bool CWebInquirer::GetNeteaseDayLineData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。

@@ -4,6 +4,8 @@
 #include"ChinaMarket.h"
 #include"ThreadStatus.h"
 
+#include"WebInquirer.h"
+
 namespace StockAnalysisTest {
   TEST(ThreadStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);

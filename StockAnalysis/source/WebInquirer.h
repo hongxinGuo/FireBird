@@ -17,6 +17,8 @@
 
 #include"CrweberIndex.h"
 
+extern int gl_cMaxSavingOneDayLineThreads;
+
 class CWebInquirer final : public CObject {
 public:
   bool GetSinaRTData(void) { return m_SinaRTWebInquiry.GetWebData(); }
