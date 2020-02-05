@@ -620,18 +620,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     //m_fNeedUpdateTitle = true;
     break;
-    case 0x00d: // 回车
-    strTemp = m_aStockCodeTemp;
-    if (gl_ChinaStockMarket.IsStock(strTemp)) {
-      pStock = gl_ChinaStockMarket.GetStock(strTemp);
-      gl_ChinaStockMarket.SetCurrentStock(pStock);
-      //m_fNeedUpdateTitle = true;
-      Invalidate();
-    }
-    m_aStockCodeTemp[0] = 0x000;
-    m_lCurrentPos = 0;
-    gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
-    break;
     default:
     break;
     }
@@ -664,13 +652,13 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-  }
+}
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here

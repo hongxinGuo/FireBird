@@ -43,10 +43,10 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
-    EXPECT_STREQ(gl_ChinaStockMarket.GetCurrentStock()->GetStockCode(), _T("sh600000"));
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackBuyAmount(), 0);
     EXPECT_EQ(gl_ChinaStockMarket.GetTotalAttackSellAmount(), 0);
     EXPECT_TRUE(gl_ChinaStockMarket.IsGetRTData());
@@ -480,7 +480,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestGetCurrentStock) {
     CChinaStockPtr pStock = make_shared<CChinaStock>();
-    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock()->GetOffset(), gl_ChinaStockMarket.GetStock(_T("sh600000"))->GetOffset());
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), pStock);
@@ -568,14 +568,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
-    gl_ChinaStockMarket.TaskResetMarketAgain(92459);
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(92459));
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
-    gl_ChinaStockMarket.TaskResetMarketAgain(93001);
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(93001));
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
-    EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
-    gl_ChinaStockMarket.TaskResetMarketAgain(92500);
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(92500));
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());

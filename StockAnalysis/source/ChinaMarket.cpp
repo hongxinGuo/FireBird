@@ -116,10 +116,10 @@ void CChinaMarket::Reset(void) {
   m_lNeteaseRTDataInquiringIndex = 0;
   m_lNeteaseDayLineDataInquiringIndex = 0;
 
+  m_pCurrentStock = nullptr;
+
   // 生成股票代码池
   CreateTotalStockContainer();
-  CChinaStockPtr pStock = GetStock(_T("sh600000")); // 默认股票为浦发银行
-  SetCurrentStock(pStock);
 }
 
 #ifdef _DEBUG
@@ -1215,9 +1215,11 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
   // 九点二十五分再次重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 92500) && (lCurrentTime <= 93000) && IsWorkingDay()) { // 交易日九点十五分重启系统
-      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-      m_fSystemReady = false;
+    if ((lCurrentTime >= 92500)) {
+      if ((lCurrentTime <= 93000) && IsWorkingDay()) { // 交易日九点二十五分再次重启系统
+        SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+        m_fSystemReady = false;
+      }
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
   }

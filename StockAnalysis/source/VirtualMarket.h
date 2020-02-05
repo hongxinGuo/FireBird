@@ -49,7 +49,7 @@ public:
   bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }
   void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
   bool IsPermitResetMarket(void) noexcept { return m_fPermitResetMarket; }
-  void SetPermitResetMarket(bool fFlag) noexcept { m_fPermitResetMarket = fFlag; }
+  void SetPermitResetMarket(bool fFlag) noexcept { m_fPermitResetMarket = fFlag; } // 此函数只用于测试时使用
   bool IsResetMarket(void) noexcept { return m_fResetMarket; }
   void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
@@ -72,7 +72,7 @@ protected:
   long m_lMarketLastTradeDay; // 本市场的上次交易日期
   tm m_tmMarket; // 本市场时间结构
 private:
-  bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）
+  bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值为真。
   bool m_fResetMarket; // 重启系统标识
   bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
 };

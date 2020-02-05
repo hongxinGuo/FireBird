@@ -178,6 +178,7 @@ void CVirtualMarket::ResetMarketFlagAtMidnight(long lCurrentTime) {
     m_fPermitResetMarket = true;
     CString str;
     str = m_strMarketId + _T("重置系统重置标识");
+    TRACE(_T("%s\n"), str);
     gl_systemMessage.PushInformationMessage(str);
   }
 }
