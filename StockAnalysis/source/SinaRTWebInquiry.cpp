@@ -27,7 +27,7 @@ void CSinaRTWebInquiry::InquireNextWebData(void) {
     strMiddle = GetNextInquiringStr(iInquiringNumber, false);
     if (iTotalInquiringStocks > gl_ChinaStockMarket.GetTotalStock() * 3) {
       if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
-        gl_systemMessage.PushInformationMessage(_T("完成系统初始化"));
+        gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
       }
       gl_ChinaStockMarket.SetSystemReady(true); // 所有的股票实时数据都轮询三遍，当日活跃股票集已经建立，故而可以接受日线数据了。
     }

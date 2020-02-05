@@ -211,6 +211,7 @@ public:
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
   void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
+  bool IsRTDataSetCleared(void) noexcept { return m_fRTDataSetCleared; }
 
   int GetCountDownSlowReadingRTData(void) noexcept { return m_iCountDownSlowReadingRTData; }
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }

@@ -348,6 +348,8 @@ namespace StockAnalysisTest {
       lPrice = pData->lPrice;
       iType = pData->iType;
       iCount = pData->iCount;
+      m_stock.SetCancelBuyVolume(0);
+      m_stock.SetCancelSellVolume(0);
     }
 
     virtual void TearDown(void) override {

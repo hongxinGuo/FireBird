@@ -35,6 +35,9 @@ using namespace std;
 #include<array>
 #include<mutex>
 
+class CChinaStock;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
+
 // 证券名称数据包
 class CChinaStock final : public CObject {
 public:
@@ -56,8 +59,8 @@ public:
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
-  long GetOffset(void) noexcept { return m_nOffsetInContainer; }
-  void SetOffset(long lValue) noexcept { m_nOffsetInContainer = lValue; }
+  long GetOffset(void) noexcept { return m_lOffsetInContainer; }
+  void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
   long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
   void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
   long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
@@ -134,13 +137,9 @@ public:
 
   INT64 GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   INT64 GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
-  void IncreaseTransactionNumberBelow5000(INT64 value = 1) noexcept { m_lTransactionNumberBelow5000 += value; }
   INT64 GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
-  void IncreaseTransactionNumberBelow50000(INT64 value = 1) noexcept { m_lTransactionNumberBelow50000 += value; }
   INT64 GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
-  void IncreaseTransactionNumberBelow200000(INT64 value = 1) noexcept { m_lTransactionNumberBelow200000 += value; }
   INT64 GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
-  void IncreaseTransactionNumberAbove200000(INT64 value = 1) noexcept { m_lTransactionNumberAbove200000 += value; }
 
   INT64 GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
   INT64 GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
@@ -152,28 +151,19 @@ public:
   void SetAttackBuyAmount(INT64 value) noexcept { m_lAttackBuyAmount = value; }
   void SetAttackSellAmount(INT64 value) noexcept { m_lAttackSellAmount = value; }
   void SetOrdinaryBuyVolume(INT64 value) noexcept { m_lOrdinaryBuyVolume = value; }
-  void IncreaseOrdinaryBuyVolume(INT64 value) noexcept { m_lOrdinaryBuyVolume += value; }
   void SetOrdinarySellVolume(INT64 value) noexcept { m_lOrdinarySellVolume = value; }
-  void IncreaseOrdinarySellVolume(INT64 value) noexcept { m_lOrdinarySellVolume += value; }
   void SetAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume = value; } // 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
-  void IncreaseAttackBuyVolume(INT64 value) noexcept { m_lAttackBuyVolume += value; }
   void SetStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume = value; } // 向上强力买入,成交价超过之前的卖二报价
-  void IncreaseStrongBuyVolume(INT64 value) noexcept { m_lStrongBuyVolume += value; }
   void SetCurrentAttackBuy(INT64 value) noexcept { m_lCurrentAttackBuy = value; }
   void SetCurrentStrongBuy(INT64 value) noexcept { m_lCurrentStrongBuy = value; }
   void SetAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume = value; } // 向下卖出。成交价低于买一价但高于买二价。
-  void IncreaseAttackSellVolume(INT64 value) noexcept { m_lAttackSellVolume += value; }
   void SetStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume = value; }
-  void IncreaseStrongSellVolume(INT64 value) noexcept { m_lStrongSellVolume += value; }
   void SetCurrentAttackSell(INT64 value) noexcept { m_lCurrentAttackSell = value; }
   void SetCurrentStrongSell(INT64 value) noexcept { m_lCurrentStrongSell = value; }
   void SetUnknownVolume(INT64 value) noexcept { m_lUnknownVolume = value; }
-  void IncreaseUnknownVolume(INT64 value) noexcept { m_lUnknownVolume += value; }
   void SetCurrentUnknown(INT64 value) noexcept { m_lCurrentUnknown = value; }
   void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
-  void IncreaseCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume += value; }
   void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
-  void IncreaseCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume += value; }
 
   void SetTransactionNumber(INT64 value) noexcept { m_lTransactionNumber = value; }
   void SetTransactionNumberBelow5000(INT64 value) noexcept { m_lTransactionNumberBelow5000 = value; }
@@ -182,17 +172,11 @@ public:
   void SetTransactionNumberAbove200000(INT64 value) noexcept { m_lTransactionNumberAbove200000 = value; }
 
   void SetAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 = value; }
-  void IncreaseAttackBuyBelow50000(INT64 value) noexcept { m_lAttackBuyBelow50000 += value; }
   void SetAttackBuyBelow200000(INT64 value) noexcept { m_lAttackBuyBelow200000 = value; }
-  void IncreaseAttackBuyBelow200000(INT64 value) noexcept { m_lAttackBuyBelow200000 += value; }
   void SetAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 = value; }
-  void IncreaseAttackBuyAbove200000(INT64 value) noexcept { m_lAttackBuyAbove200000 += value; }
   void SetAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 = value; }
-  void IncreaseAttackSellBelow50000(INT64 value) noexcept { m_lAttackSellBelow50000 += value; }
   void SetAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 = value; }
-  void IncreaseAttackSellBelow200000(INT64 value) noexcept { m_lAttackSellBelow200000 += value; }
   void SetAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 = value; }
-  void IncreaseAttackSellAbove200000(INT64 value) noexcept { m_lAttackSellAbove200000 += value; }
 
   // 更新当前各变量状态
   void SetLastSavedVolume(INT64 llVolume) noexcept { m_llLastSavedVolume = llVolume; }
@@ -211,6 +195,9 @@ public:
   void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
+
+  bool IsSameStock(CChinaStockPtr pStock);
+
   // 第一个实时数据判断和设置
   bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
   bool SetHavingFirstRTData(bool fFlag) noexcept { if (m_fHaveFirstRTData || !fFlag) return false; m_fHaveFirstRTData = fFlag; return true; }
@@ -280,6 +267,7 @@ public:
   void CalculateAttackSell(void);
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
+  void ResetCalculatingData(void);
   void SetLastRTData(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
   CRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
   void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
@@ -345,7 +333,7 @@ protected:
   CString m_strStockCode; // 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString m_strStockName; // 股票名称
   CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
-  long m_nOffsetInContainer;	// 在容器中的偏移量
+  long m_lOffsetInContainer;	// 在容器中的偏移量
   long m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long m_lIPOed; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
@@ -452,5 +440,3 @@ protected:
 private:
   bool m_fLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错
 };
-
-typedef shared_ptr<CChinaStock> CChinaStockPtr;

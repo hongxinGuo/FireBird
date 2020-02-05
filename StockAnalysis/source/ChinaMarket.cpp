@@ -1091,7 +1091,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
 void CChinaMarket::SaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
   if (m_fSystemReady) {
-    if (m_fStartReceivingData && !gl_ThreadStatus.IsCalculatingRTData()) {
+    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
       if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
         CString str;
         str = _T("存储临时数据");
@@ -1255,7 +1255,7 @@ bool CChinaMarket::TaskClearChoicedRTDataSet(long lCurrentTime) {
   }
 
   if (!m_fRTDataSetCleared) {
-    if ((lCurrentTime > 92700) && (lCurrentTime < 93000)) {
+    if ((lCurrentTime > 92900) && (lCurrentTime < 93100)) {
       CSetRealTimeData setRTData;
       setRTData.Open();
       setRTData.m_pDatabase->BeginTrans();
@@ -1391,13 +1391,18 @@ void CChinaMarket::SetCurrentStock(CString strStockCode) {
 //
 /////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
-  if (m_pCurrentStock != pStock) {
-    pStock->SetRecordRTData(true);
-    if (m_pCurrentStock != nullptr) m_pCurrentStock->SetRecordRTData(false);
+  if (m_pCurrentStock != nullptr) {
+    if (!m_pCurrentStock->IsSameStock(pStock)) {
+      pStock->SetRecordRTData(true);
+      if (m_pCurrentStock != nullptr) m_pCurrentStock->SetRecordRTData(false);
+      m_pCurrentStock = pStock;
+      m_fCurrentStockChanged = true;
+      m_pCurrentStock->SetDayLineLoaded(false);
+      AfxBeginThread(ThreadLoadDayLine, 0);
+    }
+  }
+  else {
     m_pCurrentStock = pStock;
-    m_fCurrentStockChanged = true;
-    m_pCurrentStock->SetDayLineLoaded(false);
-    AfxBeginThread(ThreadLoadDayLine, 0);
   }
 }
 
