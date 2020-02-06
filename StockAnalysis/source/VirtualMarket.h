@@ -14,7 +14,7 @@ public:
 
 public:
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
-  virtual void ResetMarket(void) = 0;
+  virtual void ResetMarket(void);
 
   long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
   time_t GetLocalTime(void) noexcept { return sm_tLocal; }
@@ -38,12 +38,12 @@ public:
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
   void CalculateLastTradeDay(void) noexcept;
-  void ResetMarketFlagAtMidnight(long lCurrentTime);
+  void TaskResetMarketFlagAtMidnight(long lCurrentTime);
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
+  bool SchedulingTaskPer10Second(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
   bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
+  bool SchedulingTaskPer5Minute(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
   bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
   bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }

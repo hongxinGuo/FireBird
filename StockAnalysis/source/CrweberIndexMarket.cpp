@@ -36,7 +36,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > (s_timeLast + 10)) {
+  if (GetLocalTime() > s_timeLast) {
     SchedulingTaskPer1Minute(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
   }
@@ -52,22 +52,30 @@ void CCrweberIndexMarket::ResetMarket(void) {
 }
 
 bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
+  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
+
   TaskResetMarket(lCurrentTime);
 
   // 自动查询crweber.com
-  if (!gl_WebInquirer.IsReadingCrweberIndex()) {
-    TaskProcessWebRTDataGetFromCrweberdotcom();
-    if (m_fDataBaseLoaded) {
-      gl_WebInquirer.GetCrweberIndexData();
+  i1MinuteCounter -= lSecond;
+  if (i1MinuteCounter < 0) {
+    if (!gl_WebInquirer.IsReadingCrweberIndex()) {
+      TaskProcessWebRTDataGetFromCrweberdotcom();
+      if (m_fDataBaseLoaded) {
+        gl_WebInquirer.GetCrweberIndexData();
+      }
+      else {
+        LoadDatabase();
+        m_lNewestDatabaseDay = m_vCrweberIndex.at(m_vCrweberIndex.size() - 1)->m_lDay;
+        SaveDatabase();
+        m_fDataBaseLoaded = true;
+      }
     }
-    else {
-      LoadDatabase();
-      m_lNewestDatabaseDay = m_vCrweberIndex.at(m_vCrweberIndex.size() - 1)->m_lDay;
-      SaveDatabase();
-      m_fDataBaseLoaded = true;
-    }
+    return true;
   }
-  return true;
+  else {
+    return false;
+  }
 }
 
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {

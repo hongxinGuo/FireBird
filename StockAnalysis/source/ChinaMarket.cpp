@@ -1062,21 +1062,22 @@ bool CChinaMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) 
   static int i1HourCounter = 3599; // 一小时一次的计数器
 
   // 计算每一小时一次的任务
-  if (i1HourCounter <= 0) {
+  i1HourCounter -= lSecondNumber;
+  if (i1HourCounter < 0) {
     i1HourCounter = 3599;
 
     return true;
   }
-  else i1HourCounter -= lSecondNumber;
-
-  return false;
+  else
+    return false;
 }
 
 bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
   static int i5MinuteCounter = 299; // 五分钟一次的计数器
 
   // 计算每五分钟一次的任务。
-  if (i5MinuteCounter <= 0) {
+  i5MinuteCounter -= lSecondNumber;
+  if (i5MinuteCounter < 0) {
     i5MinuteCounter = 299;
 
     SaveTempDataIntoDB(lCurrentTime);
@@ -1084,8 +1085,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
     return true;
   } // 每五分钟一次的任务
   else {
-    i5MinuteCounter -= lSecondNumber;
-
     return false;
   }
 }
@@ -1108,7 +1107,8 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  if (i1MinuteCounter <= 0) {
+  i1MinuteCounter -= lSecondNumber;
+  if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59; // 重置计数器
 
     TaskResetMarket(lCurrentTime);
@@ -1130,8 +1130,6 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
     return true;
   } // 每一分钟一次的任务
   else {
-    i1MinuteCounter -= lSecondNumber;
-
     return false;
   }
 }
@@ -1280,7 +1278,8 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
   static int i10SecondsCounter = 9; // 十秒一次的计数器
 
   // 计算每十秒钟一次的任务
-  if (i10SecondsCounter <= 0) {
+  i10SecondsCounter -= lSecondNumber;
+  if (i10SecondsCounter < 0) {
     i10SecondsCounter = 9;
     // do something
 
@@ -1298,7 +1297,6 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     return true;
   } // 每十秒钟一次的任务
   else {
-    i10SecondsCounter -= lSecondNumber;
     return false;
   }
 }

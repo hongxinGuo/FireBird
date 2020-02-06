@@ -40,6 +40,9 @@
     <Filter Include="Test源文件\Poten Daily Briefing">
       <UniqueIdentifier>{e62e6340-eb5f-4b31-8ba1-6618bc393d32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\基类">
+      <UniqueIdentifier>{b76a2824-01a9-4d35-9c1f-4f852315de8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualMarketTest.cpp">
+      <Filter>Test源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -88,6 +88,7 @@
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
+    <ClCompile Include="VirtualMarketTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
