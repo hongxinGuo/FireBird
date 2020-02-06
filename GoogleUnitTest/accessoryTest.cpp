@@ -72,10 +72,6 @@ namespace StockAnalysisTest {
   class ConvertBufferToTimeTest : public::testing::TestWithParam<strConvertBufferToTime*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       strConvertBufferToTime* pData = GetParam();
@@ -142,10 +138,6 @@ namespace StockAnalysisTest {
   class ConvertDoubleToStringTest : public::testing::TestWithParam<StrConvertDoubleToString*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertDoubleToString* pData = GetParam();
@@ -204,10 +196,6 @@ namespace StockAnalysisTest {
   class ConvertLongToStringTest : public::testing::TestWithParam<StrConvertLongToString*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertLongToString* pData = GetParam();
@@ -266,10 +254,6 @@ namespace StockAnalysisTest {
   class ConvertIntegerToStringTest : public::testing::TestWithParam<StrConvertIntegerToString*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertIntegerToString* pData = GetParam();
@@ -328,10 +312,6 @@ namespace StockAnalysisTest {
   class ConvertINT64ToStringTest : public::testing::TestWithParam<StrConvertINT64ToString*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StrConvertINT64ToString* pData = GetParam();
@@ -385,10 +365,6 @@ namespace StockAnalysisTest {
   class GetValueTest : public::testing::TestWithParam<StructGetValue*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       StructGetValue* pData = GetParam();

@@ -14,11 +14,11 @@ namespace StockAnalysisTest {
   class CChinaStockTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestSuite() { // 本测试类的初始化函数
+    static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
     }
 
-    static void TearDownTestSuite() {
+    static void TearDownTestCase() {
     }
 
     virtual void SetUp(void) override {

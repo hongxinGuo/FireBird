@@ -41,10 +41,6 @@ namespace StockAnalysisTest {
 
   class NeteaseDayLineTest : public::testing::TestWithParam<DayLineData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       m_pStock = gl_ChinaStockMarket.GetStock(_T("sh600000"));

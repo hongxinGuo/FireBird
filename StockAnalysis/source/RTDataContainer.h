@@ -11,6 +11,8 @@
 
 class CRTDataContainer final : public CObject {
 public:
+  CRTDataContainer();
+  ~CRTDataContainer();
   void ResetSinaRTQueue(void) { m_qSinaRTData.Reset(); }
   long GetSinaRTDataSize(void) { return m_qSinaRTData.GetRTDataSize(); }
   void PushSinaRTData(CRTDataPtr pData) { m_qSinaRTData.PushRTData(pData); }

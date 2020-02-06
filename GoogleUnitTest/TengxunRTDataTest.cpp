@@ -156,12 +156,6 @@ namespace StockAnalysisTest {
 
   class CalculateTengxunRTDataTest : public::testing::TestWithParam<TengxunRTData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       TengxunRTData* pData = GetParam();
@@ -730,12 +724,6 @@ namespace StockAnalysisTest {
 
   class ReadTengxunOneValueTest : public::testing::TestWithParam<ReadTengxunOneValueData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ReadTengxunOneValueData* pData = GetParam();
       m_pTengxunWebRTData = make_shared<CReceivedData>();

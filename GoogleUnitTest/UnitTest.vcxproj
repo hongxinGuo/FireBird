@@ -123,6 +123,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\RTDataContainer.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetCrweberIndex.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\SetDayLine.obj" />

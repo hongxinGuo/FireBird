@@ -113,10 +113,6 @@ namespace StockAnalysisTest {
   class RTDataGuadanTest : public::testing::TestWithParam<GuadanData*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();
@@ -316,10 +312,6 @@ namespace StockAnalysisTest {
   class NeedCheckTest : public::testing::TestWithParam<GuadanData*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       GuadanData* pData = GetParam();

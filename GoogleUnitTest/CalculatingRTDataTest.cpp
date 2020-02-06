@@ -123,10 +123,6 @@ namespace StockAnalysisTest {
   class CStockTest2 : public::testing::TestWithParam<RTData*>
   {
   protected:
-    static void SetUpTestSuite() {
-    }
-    static void TearDownTestSuite() {
-    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       RTData* pData = GetParam();

@@ -389,6 +389,9 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
+    <ClCompile Include="source\RTDataContainer.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

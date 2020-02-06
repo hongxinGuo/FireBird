@@ -5,12 +5,6 @@
 
 namespace StockAnalysisTest {
   class CReceivedDataTest : public ::testing::Test {
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       EXPECT_EQ(m_id.m_pDataBuffer, nullptr);
       EXPECT_EQ(m_id.m_pCurrentPos, nullptr);

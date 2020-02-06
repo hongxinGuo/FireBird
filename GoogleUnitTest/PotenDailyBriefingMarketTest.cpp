@@ -9,11 +9,11 @@ namespace StockAnalysisTest {
   class CPotenDailyBriefingMarketTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestSuite() { // 本测试类的初始化函数
+    static void SetUpTestCase() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
     }
 
-    static void TearDownTestSuite() {
+    static void TearDownTestCase() {
       gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
       gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
       gl_PotenDailyBriefingMarket.SetReadyToRun(true);

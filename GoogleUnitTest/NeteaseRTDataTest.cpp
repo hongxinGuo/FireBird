@@ -156,12 +156,6 @@ namespace StockAnalysisTest {
 
   class CalculateNeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
@@ -377,12 +371,6 @@ namespace StockAnalysisTest {
 
   class StockCodePrefixTest : public::testing::TestWithParam<NeteaseRTDataStockCodePrefix*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataStockCodePrefix* pData = GetParam();
@@ -512,12 +500,6 @@ namespace StockAnalysisTest {
 
   class ReadNeteaseOneValueTest : public::testing::TestWithParam<ReadNeteaseOneValueData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ReadNeteaseOneValueData* pData = GetParam();
       m_pNeteaseWebRTData = make_shared<CReceivedData>();
@@ -609,12 +591,6 @@ namespace StockAnalysisTest {
 
   class GetNeteaseIndexValueRTDataTest : public::testing::TestWithParam<NeteaseRTDataIndexValue*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataIndexValue* pData = GetParam();

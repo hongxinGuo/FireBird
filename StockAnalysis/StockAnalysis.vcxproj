@@ -286,6 +286,7 @@
     <ClCompile Include="source\PriorityQueueRTData.cpp" />
     <ClCompile Include="source\QueueRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
+    <ClCompile Include="source\RTDataContainer.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SetPotenDailyBriefing.cpp" />

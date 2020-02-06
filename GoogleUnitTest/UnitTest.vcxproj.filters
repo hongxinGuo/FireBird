@@ -298,5 +298,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\ChinaStock.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\RTDataContainer.obj">
+      <Filter>dependency</Filter>
+    </Object>
   </ItemGroup>
 </Project>

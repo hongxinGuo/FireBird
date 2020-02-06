@@ -38,12 +38,6 @@ namespace StockAnalysisTest {
 
   class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NetEaseDayLineData* pData = GetParam();
@@ -170,12 +164,6 @@ namespace StockAnalysisTest {
 
   class ReadDayLineOneValueTest : public::testing::TestWithParam<ReadDayLineOneValueData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ReadDayLineOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;

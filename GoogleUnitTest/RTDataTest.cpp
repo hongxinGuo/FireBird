@@ -185,12 +185,6 @@ namespace StockAnalysisTest {
 
   class NeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
@@ -472,12 +466,6 @@ namespace StockAnalysisTest {
 
   class CalculateSinaRTDataTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       SinaRTData* pData = GetParam();
@@ -1320,12 +1308,6 @@ namespace StockAnalysisTest {
 
   class ReadOneValueTest : public::testing::TestWithParam<ReadSinaOneCalueData*> {
   protected:
-    static void SetUpTestSuite() {
-    }
-
-    static void TearDownTestSuite() {
-    }
-
     virtual void SetUp(void) override {
       ReadSinaOneCalueData* pData = GetParam();
       m_pSinaWebRTData = make_shared<CReceivedData>();
