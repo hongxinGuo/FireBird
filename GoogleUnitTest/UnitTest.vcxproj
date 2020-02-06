@@ -208,6 +208,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalOptions>-d2FH4- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -221,6 +222,7 @@
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <AssemblyDebug>false</AssemblyDebug>
+      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

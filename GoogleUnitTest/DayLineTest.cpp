@@ -327,7 +327,7 @@ namespace StockAnalysisTest {
 
   TEST(CDayLineTest, TestSaveData) {
     CSetDayLine setDayLine;
-    CDayLine id;
+    CDayLine id, id2;
 
     id.SetDay(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
@@ -357,6 +357,7 @@ namespace StockAnalysisTest {
 
     setDayLine.m_strFilter = _T("[Day] = 21101101");
     setDayLine.Open();
+    id2.LoadData(setDayLine);
     EXPECT_EQ(setDayLine.m_Day, id.GetDay());
     EXPECT_EQ(setDayLine.m_Market, id.GetMarket());
     EXPECT_STREQ(setDayLine.m_StockCode, id.GetStockCode());
@@ -375,6 +376,24 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), id.GetRelativeStrong());
     setDayLine.Close();
+
+    EXPECT_EQ(id2.GetDay(), id.GetDay());
+    EXPECT_EQ(id2.GetMarket(), id.GetMarket());
+    EXPECT_STREQ(id2.GetStockCode(), id.GetStockCode());
+    //EXPECT_STREQ(setDayLine.m_StockName, id.GetStockName());
+    EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
+    EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
+    EXPECT_DOUBLE_EQ(id2.GetHigh(), id.GetHigh());
+    EXPECT_DOUBLE_EQ(id2.GetLow(), id.GetLow());
+    EXPECT_DOUBLE_EQ(id2.GetClose(), id.GetClose());
+    EXPECT_EQ(id2.GetVolume(), id.GetVolume());
+    EXPECT_EQ(id2.GetAmount(), id.GetAmount());
+    EXPECT_DOUBLE_EQ(id2.GetUpDown(), id.GetUpDown());
+    EXPECT_DOUBLE_EQ(id2.GetUpDownRate(), id.GetUpDownRate());
+    EXPECT_EQ(id2.GetTotalValue(), id.GetTotalValue());
+    EXPECT_EQ(id2.GetCurrentValue(), id.GetCurrentValue());
+    EXPECT_DOUBLE_EQ(id2.GetChangeHandRate(), id.GetChangeHandRate());
+    EXPECT_DOUBLE_EQ(id2.GetRelativeStrong(), id.GetRelativeStrong());
 
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
