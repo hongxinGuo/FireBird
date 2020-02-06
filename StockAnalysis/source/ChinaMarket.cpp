@@ -1368,14 +1368,6 @@ void CChinaMarket::IncreaseActiveStockNumber(void) {
   m_lTotalActiveStock++;
 }
 
-bool CChinaMarket::IsCurrentStockChanged(void) {
-  if (m_fCurrentStockChanged) {
-    m_fCurrentStockChanged = false;
-    return true;
-  }
-  else return false;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //	通过股票代码和市场代码设置当前选择股票

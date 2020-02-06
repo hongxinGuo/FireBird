@@ -439,6 +439,7 @@ void CMainFrame::UpdateStatus(void) {
   //更新状态条
   // 显示股票代码和名称
   if (gl_ChinaStockMarket.IsCurrentStockChanged()) {
+    gl_ChinaStockMarket.SetCurrentStockChanged(false);
     m_wndStatusBar.SetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
     m_wndStatusBar.SetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
@@ -652,7 +653,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-  }
+}
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

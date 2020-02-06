@@ -34,6 +34,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.SetCurrentStockChanged(false);
     }
   };
 
@@ -479,14 +480,24 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarket, TestGetCurrentStock) {
     CChinaStockPtr pStock = make_shared<CChinaStock>();
+    pStock->SetOffset(2);
+    CChinaStockPtr pStock2 = make_shared<CChinaStock>();
+    pStock->SetOffset(100);
+
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_FALSE(pStock->IsRecordRTData());
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), pStock);
+    EXPECT_TRUE(pStock->IsRecordRTData());
     EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    gl_ChinaStockMarket.SetCurrentStockChanged(false);
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_FALSE(pStock2->IsRecordRTData());
+    gl_ChinaStockMarket.SetCurrentStock(pStock2);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
+    EXPECT_TRUE(pStock2->IsRecordRTData());
   }
 
   TEST_F(CChinaMarket, TestMarketReady) {

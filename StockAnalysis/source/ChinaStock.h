@@ -321,7 +321,7 @@ public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
   void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
-
+  void __TestResetLoadDayLineFirst(void) { m_fLoadDayLineFirst = false; }
 public:
 
 protected:
@@ -377,7 +377,7 @@ protected:
 
   INT64 m_lOrdinaryBuyVolume;
   INT64 m_lOrdinarySellVolume;
-  INT64 m_lAttackBuyVolume;	// 向上买入。成交价高于卖一价但低于卖二价。次数量包括下面的强买量。
+  INT64 m_lAttackBuyVolume;	// 向上买入。成交价高于卖一价但低于卖二价。此数量包括下面的强买量。
   INT64 m_lStrongBuyVolume;	// 向上强力买入,成交价超过之前的卖二报价
   INT64 m_lAttackSellVolume; // 向下卖出。成交价低于买一价但高于买二价。
   INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价

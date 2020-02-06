@@ -45,6 +45,28 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
     EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 0);
     EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_EQ(gl_CrweberIndexMarket.GetTimeZoneOffset(), 0);
+  }
+
+  TEST_F(CCrweberIndexMarketTest, TestResetMarket) {
+    long l = gl_systemMessage.GetInformationDequeSize();
+    gl_CrweberIndexMarket.ResetMarket();
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1);
+  }
+
+  TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
+    gl_CrweberIndexMarket.SetResetMarket(false);
+    gl_CrweberIndexMarket.TaskResetMarket(9999);
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
+    gl_CrweberIndexMarket.TaskResetMarket(13001);
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
+    gl_CrweberIndexMarket.TaskResetMarket(10000);
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDay) {

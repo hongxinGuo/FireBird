@@ -544,7 +544,7 @@ bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
 bool CChinaStock::LoadDayLine(CSetDayLine& setDayLine) {
   CDayLinePtr pDayLine;
 
-  ASSERT(!m_fLoadDayLineFirst);
+  if (gl_fNormalMode) ASSERT(!m_fLoadDayLineFirst);
   // 装入DayLine数据
   m_vDayLine.clear();
   while (!setDayLine.IsEOF()) {
@@ -567,7 +567,7 @@ bool CChinaStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 
-  ASSERT(m_fLoadDayLineFirst);
+  if (gl_fNormalMode) ASSERT(m_fLoadDayLineFirst);
 
   while (!setDayLineInfo.IsEOF()) {
     pDayLine = m_vDayLine.at(iPosition);

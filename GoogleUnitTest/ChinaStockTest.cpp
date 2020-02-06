@@ -194,6 +194,28 @@ namespace StockAnalysisTest {
     id.SetCurrentValue(10101010);
     EXPECT_EQ(id.GetCurrentValue(), 10101010);
   }
+
+  TEST_F(CChinaStockTest, TestGetHighLimit) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetHighLimit(), 0);
+    stock.SetHighLimit(101010);
+    EXPECT_EQ(stock.GetHighLimit(), 101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetLowLimit) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetLowLimit(), 0);
+    stock.SetLowLimit(101010);
+    EXPECT_EQ(stock.GetLowLimit(), 101010);
+  }
+
+  TEST_F(CChinaStockTest, TestGetLastSavedVolume) {
+    CChinaStock stock;
+    EXPECT_EQ(stock.GetLastSavedVolume(), 0);
+    stock.SetLastSavedVolume(101010101010);
+    EXPECT_EQ(stock.GetLastSavedVolume(), 101010101010);
+  }
+
   TEST_F(CChinaStockTest, TestGetPBuy) {
     CChinaStock id;
     for (int i = 0; i < 5; i++) {
