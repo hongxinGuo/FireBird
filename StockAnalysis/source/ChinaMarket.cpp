@@ -724,7 +724,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
 }
 
 void CChinaMarket::StoreChoiceRTData(CRTDataPtr pRTData) {
-  m_vRTData.PushRTData(pRTData);
+  m_qRTData.push(pRTData);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1454,14 +1454,15 @@ bool CChinaMarket::ClearDayLineContainer(void) {
 bool CChinaMarket::SaveRTData(void) {
   CSetRealTimeData setRTData;
   CRTDataPtr pRTData = nullptr;
-  long lTotal = m_vRTData.GetRTDataSize();
+  long lTotal = m_qRTData.size();
 
   if (lTotal > 0) {
     setRTData.m_strFilter = _T("[ID] = 1");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
     for (int i = 0; i < lTotal; i++) {
-      pRTData = m_vRTData.PopRTData();
+      pRTData = m_qRTData.front();
+      m_qRTData.pop(); // 抛掉最前面这个数据
       pRTData->AppendData(setRTData);
     }
     setRTData.m_pDatabase->CommitTrans();

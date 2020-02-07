@@ -17,7 +17,7 @@ CVirtualMarket::CVirtualMarket(void) {
   m_lMarketToday = 0;
   m_tMarket = 0;
 
-  m_strMarketId = _T("Error. CVirtualMarket Called ");
+  m_strMarketId = _T("Warning: CVirtualMarket Called.");
   m_lTimeZoneOffset = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 }
 

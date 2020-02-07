@@ -9,22 +9,12 @@ namespace StockAnalysisTest {
   class CVirtualMarketTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestCase() { // 本测试类的初始化函数
-      ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestCase() {
-      gl_VirtualMarket.SetPermitResetMarket(true);
-      gl_VirtualMarket.SetReadyToRun(true);
-      gl_VirtualMarket.SetResetMarket(true);
-    }
-
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
-      EXPECT_TRUE(gl_VirtualMarket.IsReadyToRun());
-      EXPECT_TRUE(gl_VirtualMarket.IsResetMarket());
+      gl_VirtualMarket.SetPermitResetMarket(true);
+      gl_VirtualMarket.SetReadyToRun(true);
+      gl_VirtualMarket.SetResetMarket(true);
     }
 
     virtual void TearDown(void) override {
@@ -41,7 +31,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualMarketTest, TestIsPermitResetMarket) {
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
+    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket()) << "PermitResetMarket should be true\n";
     gl_VirtualMarket.SetPermitResetMarket(false);
     EXPECT_FALSE(gl_VirtualMarket.IsPermitResetMarket());
     gl_VirtualMarket.SetPermitResetMarket(true);
@@ -100,6 +90,37 @@ namespace StockAnalysisTest {
     gmtime_s(&tm_, &ttime);
     long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
     EXPECT_EQ(gl_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+  }
+
+  TEST_F(CVirtualMarketTest, TestGetLastTradeDay) {
+    time_t ttime;
+    tm tm_, tm2;
+
+    for (int i = 0; i < 7; i++) {
+      time(&ttime);
+      ttime += i * 60 * 60 * 24;
+      gmtime_s(&tm2, &ttime);
+      tm_ = tm2;
+      gl_VirtualMarket.__TEST_SetMarketTime(ttime);
+      gl_VirtualMarket.__TEST_SetMarketTM(tm2);
+
+      switch (tm_.tm_wday) {
+      case 1: // 星期一
+      ttime -= 3 * 24 * 3600; //
+      break;
+      case 0: //星期日
+      ttime -= 3 * 24 * 3600; //
+      break;
+      case 6: // 星期六
+      ttime -= 2 * 24 * 3600; //
+      break;
+      default: // 其他
+      ttime -= 24 * 3600; //
+      }
+      gmtime_s(&tm_, &ttime);
+      long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+      EXPECT_EQ(gl_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+    }
   }
 
   TEST_F(CVirtualMarketTest, TestIsWorkingDay) {

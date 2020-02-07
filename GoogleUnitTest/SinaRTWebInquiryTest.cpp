@@ -14,6 +14,7 @@ namespace StockAnalysisTest {
   TEST(SinaWebRTDataTest, TestInitialize) {
     EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
     EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringSuffix(), _T(""));
+    EXPECT_FALSE(m_SinaRTWebData.IsReportStatus());
   }
 
   TEST(SinaWebRTDataTest, TestStartReadingThread) {
@@ -31,44 +32,5 @@ namespace StockAnalysisTest {
 
   TEST(SinaWebRTDataTest, TestReportStatus) {
     EXPECT_TRUE(m_SinaRTWebData.ReportStatus(1));
-  }
-}
-
-// 由于基类CVirtualWebInquiry为虚类，无法直接生成实例，故而基类的非虚拟函数在此测试
-namespace StockAnalysisTest {
-  TEST(CWebDataTest, TestIsReadingWebData) {
-    EXPECT_FALSE(m_SinaRTWebData.IsReadingWebData());
-    m_SinaRTWebData.SetReadingWebData(true);
-    EXPECT_TRUE(m_SinaRTWebData.IsReadingWebData());
-    m_SinaRTWebData.SetReadingWebData(false);
-    EXPECT_FALSE(m_SinaRTWebData.IsReadingWebData());
-  }
-
-  TEST(CWebDataTest, TestGetByteReaded) {
-    EXPECT_EQ(m_SinaRTWebData.GetByteReaded(), 0);
-    m_SinaRTWebData.SetByteReaded(10000);
-    EXPECT_EQ(m_SinaRTWebData.GetByteReaded(), 10000);
-    m_SinaRTWebData.AddByteReaded(10000);
-    EXPECT_EQ(m_SinaRTWebData.GetByteReaded(), 20000);
-  }
-
-  TEST(CWebDataTest, TestGetInquiringStr) {
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringString(), _T(""));
-    m_SinaRTWebData.SetInquiringString(_T("abcdefg"));
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringString(), _T("abcdefg"));
-    m_SinaRTWebData.AppendInquiringString(_T("hijk"));
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringString(), _T("abcdefghijk"));
-    m_SinaRTWebData.CreateTotalInquiringString(_T("dcba"));
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringString(), _T("http://hq.sinajs.cn/list=dcba"));
-  }
-
-  TEST(CWebDataTest, TestIncreaseCurentPos) {
-    EXPECT_EQ(m_SinaRTWebData.GetCurrentPos(), 0);
-    m_SinaRTWebData.IncreaseCurrentPos();
-    EXPECT_EQ(m_SinaRTWebData.GetCurrentPosPtr(), m_SinaRTWebData.GetBufferAddr() + 1);
-    EXPECT_EQ(m_SinaRTWebData.GetCurrentPos(), 1);
-    m_SinaRTWebData.IncreaseCurrentPos(100);
-    EXPECT_EQ(m_SinaRTWebData.GetCurrentPos(), 101);
-    EXPECT_EQ(m_SinaRTWebData.GetCurrentPosPtr(), m_SinaRTWebData.GetBufferAddr() + 101);
   }
 }

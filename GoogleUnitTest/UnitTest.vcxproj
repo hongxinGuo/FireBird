@@ -78,6 +78,7 @@
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
+    <ClCompile Include="PriorityQueueRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="ReceivedDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="TengxunRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
+    <ClCompile Include="VirtualWebInquiryTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">

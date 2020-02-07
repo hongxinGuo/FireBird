@@ -23,6 +23,7 @@ using namespace std;
 #include<vector>
 #include<map>
 #include<atomic>
+#include<queue>
 
 // 信号量必须声明为全局变量（为了初始化）
 extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
@@ -257,7 +258,7 @@ protected:
 
   vector<CChinaStockPtr> m_vStockChoice; // 自选股票池
 
-  CQueueRTData m_vRTData;
+  queue<CRTDataPtr> m_qRTData;
   bool m_fSaveRTData;
 
   bool m_fCurrentEditStockChanged;

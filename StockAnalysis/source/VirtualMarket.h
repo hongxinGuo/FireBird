@@ -56,6 +56,7 @@ public:
 public:
   // 测试用函数
   void __TEST_SetLocalTime(time_t Time) noexcept { sm_tLocal = Time; }
+  void __TEST_SetMarketTime(time_t Time) noexcept { m_tMarket = Time; }
   void __TEST_SetMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
   void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
   void __TEST_SetMarketDay(long lDay) noexcept { m_lMarketToday = lDay; }

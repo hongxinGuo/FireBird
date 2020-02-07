@@ -1,6 +1,7 @@
 #pragma once
 
 #include"stdafx.h"
+#include"afxinet.h"
 
 #include"ReceivedData.h"
 

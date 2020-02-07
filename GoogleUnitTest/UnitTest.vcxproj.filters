@@ -129,6 +129,12 @@
     <ClCompile Include="VirtualMarketTest.cpp">
       <Filter>Test源文件\基类</Filter>
     </ClCompile>
+    <ClCompile Include="VirtualWebInquiryTest.cpp">
+      <Filter>Test源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="PriorityQueueRTDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
