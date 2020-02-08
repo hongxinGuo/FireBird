@@ -36,7 +36,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > s_timeLast) {
+  if (GetLocalTime() > s_timeLast + 60) {
     SchedulingTaskPer1Minute(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
   }
@@ -55,6 +55,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   TaskResetMarket(lCurrentTime);
+  TaskResetMarketFlagAtMidnight(lCurrentTime);
 
   // 自动查询crweber.com
   i1MinuteCounter -= lSecond;
@@ -82,8 +83,10 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
   // 九点重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 10000) && (lCurrentTime <= 193000)) { // 本市场时间的一点重启本市场 // 东八区为下午四时。
-      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+    if (lCurrentTime >= 10000) { // 本市场时间的一点重启本市场 // 东八区本地时间为上午九时。
+      if (lCurrentTime <= 13000) {
+        SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+      }
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
   }

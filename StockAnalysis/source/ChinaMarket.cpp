@@ -1111,6 +1111,7 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59; // ÖØÖÃ¼ÆÊýÆ÷
 
+    TaskResetMarketFlagAtMidnight(lCurrentTime);
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
 

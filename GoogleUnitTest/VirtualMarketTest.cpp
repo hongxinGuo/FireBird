@@ -172,33 +172,6 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTask) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTask()) << "第一次调用时，内部时间初值为0，故而返回真";
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTask()) << "第二次调用时，内部时间已经设置为当前时间了，间隔不超过一秒，故而返回假";
-  }
-
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPerSecond) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerSecond(90000));
-  }
-
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPer1Minute) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer1Minute(60, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer1Minute(59, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer1Minute(1, 12010));
-  }
-
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPer10Second) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer10Second(10, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer10Second(9, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer10Second(1, 12010));
-  }
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPer5Minute) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer5Minute(300, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer5Minute(299, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer5Minute(1, 12010));
-  }
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPerHour) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerHour(3600, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPerHour(3599, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerHour(1, 12010));
+    EXPECT_TRUE(gl_VirtualMarket.SchedulingTask());
   }
 }

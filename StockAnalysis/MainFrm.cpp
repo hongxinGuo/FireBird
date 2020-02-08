@@ -653,7 +653,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   }
   else {
     pCmdUI->Enable(true);
-}
+  }
 #else
   // 调试状态下永远允许执行
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);

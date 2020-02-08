@@ -51,8 +51,9 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
     gl_CrweberIndexMarket.TaskResetMarket(13001);
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
+    gl_CrweberIndexMarket.SetPermitResetMarket(true);
     gl_CrweberIndexMarket.TaskResetMarket(10000);
     EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());

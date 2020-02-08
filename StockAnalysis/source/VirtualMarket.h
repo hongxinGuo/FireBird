@@ -40,12 +40,6 @@ public:
   void CalculateLastTradeDay(void) noexcept;
   void TaskResetMarketFlagAtMidnight(long lCurrentTime);
 
-  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-  bool SchedulingTaskPer10Second(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
-  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-  bool SchedulingTaskPer5Minute(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
-
   bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }
   void SetReadyToRun(bool fFlag) noexcept { m_fReadyToRun = fFlag; }
   bool IsPermitResetMarket(void) noexcept { return m_fPermitResetMarket; }

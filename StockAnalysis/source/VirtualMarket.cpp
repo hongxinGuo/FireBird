@@ -35,15 +35,8 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
-  static time_t s_timeLast = 0;
   CalculateTime();
-  //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > s_timeLast) {
-    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast);
-    s_timeLast = GetLocalTime();
-    return true;
-  }
-  else return false;
+  return true;
 }
 
 void CVirtualMarket::ResetMarket(void) {
@@ -148,48 +141,6 @@ CString CVirtualMarket::GetMarketTimeString(void) {
   return(str);
 }
 
-bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
-  const long lCurrentTime = GetTime();
-  //long lCurrentTime2 = GetTime();
-
-  // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
-  SchedulingTaskPerHour(lSecond, lCurrentTime);
-  SchedulingTaskPer5Minute(lSecond, lCurrentTime);
-  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
-  SchedulingTaskPer10Second(lSecond, lCurrentTime);
-
-  return true;
-}
-
-bool CVirtualMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 9;  // 一分钟一次的计数器
-
- // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 9; // 重置计数器
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-bool CVirtualMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
-
- // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 59; // 重置计数器
-    TaskResetMarketFlagAtMidnight(lCurrentTime);
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
   // 午夜过后重置各种标识
   if (lCurrentTime <= 1500 && !IsPermitResetMarket()) {  // 在零点到零点十五分，重置系统标识
@@ -198,33 +149,5 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
     str = m_strMarketId + _T("重置系统重置标识");
     TRACE(_T("%s\n"), str);
     gl_systemMessage.PushInformationMessage(str);
-  }
-}
-
-bool CVirtualMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 299;  // 一分钟一次的计数器
-
- // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 299; // 重置计数器
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-bool CVirtualMarket::SchedulingTaskPerHour(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 3599;  // 一分钟一次的计数器
-
- // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 3599; // 重置计数器
-    return true;
-  }
-  else {
-    return false;
   }
 }

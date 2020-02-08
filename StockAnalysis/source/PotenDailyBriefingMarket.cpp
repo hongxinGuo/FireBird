@@ -57,6 +57,7 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
+  TaskResetMarketFlagAtMidnight(lCurrentTime);
 
   if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
