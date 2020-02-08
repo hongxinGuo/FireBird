@@ -16,6 +16,12 @@ public:
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void);
 
+  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
+  bool SchedulingTaskPer10Second(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
+  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+  bool SchedulingTaskPer5Minute(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
+  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
+
   long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
   time_t GetLocalTime(void) noexcept { return sm_tLocal; }
   time_t GetMarketTime(void) noexcept { return m_tMarket; }
@@ -70,4 +76,10 @@ private:
   bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值为真。
   bool m_fResetMarket; // 重启系统标识
   bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
+
+  int m_i1MinuteCounter;  // 一分钟一次的计数器
+  int m_i5MinuteCounter;  // 一分钟一次的计数器
+  int m_i1HourCounter;  // 一分钟一次的计数器
+  int m_i10SecondCounter;  // 一分钟一次的计数器
+  time_t m_timeLast;
 };

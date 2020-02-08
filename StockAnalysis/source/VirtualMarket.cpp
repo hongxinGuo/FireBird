@@ -19,6 +19,12 @@ CVirtualMarket::CVirtualMarket(void) {
 
   m_strMarketId = _T("Warning: CVirtualMarket Called.");
   m_lTimeZoneOffset = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
+
+  m_i10SecondCounter = 9;  // 一分钟一次的计数器
+  m_i1MinuteCounter = 59;  // 一分钟一次的计数器
+  m_i5MinuteCounter = 299;  // 一分钟一次的计数器
+  m_i1HourCounter = 3599;  // 一分钟一次的计数器
+  m_timeLast = 0;
 }
 
 CVirtualMarket::~CVirtualMarket(void) {
@@ -35,8 +41,14 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
-  ASSERT(0); // 不允许调用基类调度函数。
-  return true;
+  CalculateTime();
+  //根据时间，调度各项定时任务.每秒调度一次
+  if (GetLocalTime() > m_timeLast) {
+    SchedulingTaskPerSecond(GetLocalTime() - m_timeLast);
+    m_timeLast = GetLocalTime();
+    return true;
+  }
+  else return false;
 }
 
 void CVirtualMarket::ResetMarket(void) {
@@ -150,5 +162,67 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
     str = m_strMarketId + _T("重置系统重置标识");
     TRACE(_T("%S \n"), str.GetBuffer());
     gl_systemMessage.PushInformationMessage(str);
+  }
+}
+
+bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
+  const long lCurrentTime = GetTime();
+  //long lCurrentTime2 = GetTime();
+
+  // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
+  SchedulingTaskPerHour(lSecond, lCurrentTime);
+  SchedulingTaskPer5Minute(lSecond, lCurrentTime);
+  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+  SchedulingTaskPer10Second(lSecond, lCurrentTime);
+
+  return true;
+}
+
+bool CVirtualMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) {
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  m_i10SecondCounter -= lSecond;
+  if (m_i10SecondCounter < 0) {
+    m_i10SecondCounter = 9; // 重置计数器
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+bool CVirtualMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  m_i1MinuteCounter -= lSecond;
+  if (m_i1MinuteCounter < 0) {
+    m_i1MinuteCounter = 59; // 重置计数器
+    TaskResetMarketFlagAtMidnight(lCurrentTime);
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+bool CVirtualMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  m_i5MinuteCounter -= lSecond;
+  if (m_i5MinuteCounter < 0) {
+    m_i5MinuteCounter = 299; // 重置计数器
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+bool CVirtualMarket::SchedulingTaskPerHour(long lSecond, long lCurrentTime) {
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  m_i1HourCounter -= lSecond;
+  if (m_i1HourCounter < 0) {
+    m_i1HourCounter = 3599; // 重置计数器
+    return true;
+  }
+  else {
+    return false;
   }
 }

@@ -35,7 +35,7 @@ CPotenDailyBriefingMarket::~CPotenDailyBriefingMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTask(void) {
-  CalculateTime();
+  CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
   const long lCurrentTime = GetTime();
@@ -57,7 +57,6 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
-  TaskResetMarketFlagAtMidnight(lCurrentTime);
 
   if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();

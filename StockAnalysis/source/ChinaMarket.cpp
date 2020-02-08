@@ -937,7 +937,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTask(void) {
-  CalculateTime();
+  CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
 #ifdef DEBUG
@@ -1111,7 +1111,6 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59; // ÖØÖÃ¼ÆÊýÆ÷
 
-    TaskResetMarketFlagAtMidnight(lCurrentTime);
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
 

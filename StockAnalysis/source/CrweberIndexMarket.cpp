@@ -30,7 +30,7 @@ void CCrweberIndexMarket::Reset(void) {
 }
 
 bool CCrweberIndexMarket::SchedulingTask(void) {
-  CalculateTime();
+  CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
   const long lCurrentTime = GetTime();
@@ -55,7 +55,6 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   TaskResetMarket(lCurrentTime);
-  TaskResetMarketFlagAtMidnight(lCurrentTime);
 
   // 自动查询crweber.com
   i1MinuteCounter -= lSecond;
