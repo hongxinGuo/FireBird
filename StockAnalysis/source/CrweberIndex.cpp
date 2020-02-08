@@ -123,7 +123,7 @@ void CCrweberIndex::AppendData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.Update();
 }
 
-bool CCrweberIndex::ReadData(CWebDataReceivedPtr pWebDataReceived) {
+bool CCrweberIndex::ReadData(CWebDataPtr pWebDataReceived) {
   pWebDataReceived->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
@@ -287,7 +287,7 @@ long CCrweberIndex::GetMonthOfTheYear(CString strMonth) {
   }
 }
 
-double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
+double CCrweberIndex::GetOneValue(CWebDataPtr pWebDataReceived) {
   CString str, strValue;
   double dValue = 0.0;
 
@@ -299,7 +299,7 @@ double CCrweberIndex::GetOneValue(CWebDataReceivedPtr pWebDataReceived) {
   return dValue;
 }
 
-CString CCrweberIndex::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
+CString CCrweberIndex::GetNextString(CWebDataPtr pWebDataReceived) {
   bool fFound = false;
   char buffer[10000];
   long iBufferCount = 0;

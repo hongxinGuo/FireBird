@@ -119,7 +119,7 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
 bool CPotenDailyBriefingMarket::ProcessData(void) {
   long lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
   for (int i = 0; i < lTotal; i++) {
-    CWebDataReceivedPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
+    CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
     if (pWebData->GetBufferLength() > 40 * 1024) { // 从poten.com读取的数据大小如果低于40KB时，其没有实际内容，无需处理
       CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
       if (pPotenDailyBriefing->ReadData(pWebData)) {

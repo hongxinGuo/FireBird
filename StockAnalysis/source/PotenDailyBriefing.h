@@ -3,7 +3,7 @@
 #include"stdafx.h"
 
 #include"SetPotenDailyBriefing.h"
-#include"ReceivedData.h"
+#include"WebData.h"
 
 using namespace std;
 #include<vector>
@@ -17,8 +17,8 @@ public:
   void SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing);
   void AppendData(CSetPotenDailyBriefing& setPotenDailyBriefing);
 
-  bool ReadData(CWebDataReceivedPtr pWebDataReceived);
-  bool SkipOverStrings(CWebDataReceivedPtr pWebDataReceived, CString str);
+  bool ReadData(CWebDataPtr pWebDataReceived);
+  bool SkipOverStrings(CWebDataPtr pWebDataReceived, CString str);
 
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
 
@@ -45,7 +45,7 @@ public:
   double ConvertStringToTC(CString str);
   long ConvertStringToTime(CString str);
   double GetOneValue(CString strValue);
-  CString GetNextString(CWebDataReceivedPtr pWebDataReceived);
+  CString GetNextString(CWebDataPtr pWebDataReceived);
 
 public:
   long m_lID;

@@ -8,7 +8,7 @@
 
 #include"afxmt.h"
 
-#include"ReceivedData.h"
+#include"WebData.h"
 
 using namespace std;
 #include<queue>
@@ -22,11 +22,11 @@ public:
   void Reset(void);
 
   // 通用接口函数
-  void PushWebData(CWebDataReceivedPtr pData);
-  CWebDataReceivedPtr PopWebData(void);
+  void PushWebData(CWebDataPtr pData);
+  CWebDataPtr PopWebData(void);
   long GetWebDataSize(void);
 
 protected:
-  queue<CWebDataReceivedPtr> m_qWebData;
+  queue<CWebDataPtr> m_qWebData;
   mutex m_MutexAccessWebData;
 };

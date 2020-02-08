@@ -32,21 +32,21 @@ public:
 
 public:
   long GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetWebDataSize(); }
-  void PushSinaRTData(CWebDataReceivedPtr pData) { m_qSinaRTWebData.PushWebData(pData); }
-  CWebDataReceivedPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopWebData(); }
+  void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushWebData(pData); }
+  CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopWebData(); }
   long GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetWebDataSize(); }
-  void PushTengxunRTData(CWebDataReceivedPtr pData) { m_qTengxunRTWebData.PushWebData(pData); }
-  CWebDataReceivedPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopWebData(); }
+  void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushWebData(pData); }
+  CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopWebData(); }
   long GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetWebDataSize(); }
-  void PushNeteaseRTData(CWebDataReceivedPtr pData) { m_qNeteaseRTWebData.PushWebData(pData); }
-  CWebDataReceivedPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopWebData(); }
+  void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushWebData(pData); }
+  CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopWebData(); }
   long GetCrweberDataSize(void) { return m_qCrweberWebData.GetWebDataSize(); }
-  void PushCrweberData(CWebDataReceivedPtr pData) { m_qCrweberWebData.PushWebData(pData); }
-  CWebDataReceivedPtr PopCrweberData(void) { return m_qCrweberWebData.PopWebData(); }
+  void PushCrweberData(CWebDataPtr pData) { m_qCrweberWebData.PushWebData(pData); }
+  CWebDataPtr PopCrweberData(void) { return m_qCrweberWebData.PopWebData(); }
 
   long GetPotenDailyBriefingDataSize(void) { return m_qPotenDailyBriefingWebData.GetWebDataSize(); }
-  void PushPotenDailyBriefingData(CWebDataReceivedPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
-  CWebDataReceivedPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
+  void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
+  CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
 
 protected:
   CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集

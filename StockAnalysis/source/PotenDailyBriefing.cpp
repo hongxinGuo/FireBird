@@ -136,7 +136,7 @@ void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefi
   setPotenDailyBriefing.Update();
 }
 
-bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
+bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
   pWebDataReceived->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
@@ -298,7 +298,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataReceivedPtr pWebDataReceived) {
   return true;
 }
 
-bool CPotenDailyBriefing::SkipOverStrings(CWebDataReceivedPtr pWebDataReceived, CString str) {
+bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString str) {
   bool fFound = false;
   CString strNoUse, strHead;
   do {
@@ -366,7 +366,7 @@ double CPotenDailyBriefing::GetOneValue(CString strValue) {
   return dValue;
 }
 
-CString CPotenDailyBriefing::GetNextString(CWebDataReceivedPtr pWebDataReceived) {
+CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
   bool fFound = false;
   char buffer[10000];
   long iBufferCount = 0;

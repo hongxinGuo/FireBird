@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"ReceivedData.h"
+#include"WebData.h"
 
 namespace StockAnalysisTest {
   class CReceivedDataTest : public ::testing::Test {
@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
     }
 
   public:
-    CReceivedData m_id;
+    CWebData m_id;
   };
 
   TEST_F(CReceivedDataTest, TestGetCurrentPos) {

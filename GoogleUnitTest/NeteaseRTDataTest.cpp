@@ -159,7 +159,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTData* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CReceivedData>();
+      m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -195,7 +195,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     long m_lStringLength;
-    CWebDataReceivedPtr m_pNeteaseWebRTData;
+    CWebDataPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
   };
 
@@ -374,7 +374,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseRTDataStockCodePrefix* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CReceivedData>();
+      m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -410,7 +410,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     long m_lStringLength;
-    CWebDataReceivedPtr m_pNeteaseWebRTData;
+    CWebDataPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
   };
 
@@ -502,7 +502,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ReadNeteaseOneValueData* pData = GetParam();
-      m_pNeteaseWebRTData = make_shared<CReceivedData>();
+      m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pNeteaseWebRTData->m_pDataBuffer = new char[lLength + 1];
@@ -521,7 +521,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     char* m_pData;
-    CWebDataReceivedPtr m_pNeteaseWebRTData;
+    CWebDataPtr m_pNeteaseWebRTData;
     CRTData m_RTData;
   };
 

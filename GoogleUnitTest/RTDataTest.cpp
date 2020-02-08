@@ -469,7 +469,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       SinaRTData* pData = GetParam();
-      m_pSinaWebRTData = make_shared<CReceivedData>();
+      m_pSinaWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pSinaWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
@@ -504,7 +504,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     long m_lStringLength;
-    CWebDataReceivedPtr m_pSinaWebRTData;
+    CWebDataPtr m_pSinaWebRTData;
     CRTData m_RTData;
   };
 
@@ -1310,7 +1310,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ReadSinaOneCalueData* pData = GetParam();
-      m_pSinaWebRTData = make_shared<CReceivedData>();
+      m_pSinaWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pSinaWebRTData->m_pDataBuffer = new char[lLength + 1];
@@ -1329,7 +1329,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     char* m_pData;
-    CWebDataReceivedPtr m_pSinaWebRTData;
+    CWebDataPtr m_pSinaWebRTData;
     CRTData m_RTData;
   };
 

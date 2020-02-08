@@ -828,8 +828,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsValidNeteaseRTDataPrefix) {
-    CWebDataReceivedPtr pWebDataReceived;
-    pWebDataReceived = make_shared<CReceivedData>();
+    CWebDataPtr pWebDataReceived;
+    pWebDataReceived = make_shared<CWebData>();
     CString str = _T("_ntes_quote_callback({\"");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
@@ -844,8 +844,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarket, TestIsValidTengxunRTDataPrefix) {
-    CWebDataReceivedPtr pWebDataReceived;
-    pWebDataReceived = make_shared<CReceivedData>();
+    CWebDataPtr pWebDataReceived;
+    pWebDataReceived = make_shared<CWebData>();
     CString str = _T("v_pv_none_match=\"1\";\n");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());

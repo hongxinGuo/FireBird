@@ -147,9 +147,6 @@
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
-    <ClInclude Include="source\ReceivedData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\QueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -220,6 +217,9 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Thread.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>

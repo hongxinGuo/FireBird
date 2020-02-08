@@ -707,7 +707,7 @@ bool CChinaMarket::TaskProcessRTData(void) {
 }
 
 bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
-  CWebDataReceivedPtr pWebDataReceived = nullptr;
+  CWebDataPtr pWebDataReceived = nullptr;
   long lTotalData = gl_WebInquirer.GetSinaRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopSinaRTData();
@@ -746,7 +746,7 @@ void CChinaMarket::StoreChoiceRTData(CRTDataPtr pRTData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
-  CWebDataReceivedPtr pWebDataReceived = nullptr;
+  CWebDataPtr pWebDataReceived = nullptr;
   int iCount = 0;
 
   long lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
@@ -773,7 +773,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   return true;
 }
 
-bool CChinaMarket::IsInvalidNeteaseRTData(CWebDataReceivedPtr pWebDataReceived) {
+bool CChinaMarket::IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback({ });"); // 此为无效股票查询到的数据格式，共26个字符
   strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 26);
@@ -787,7 +787,7 @@ bool CChinaMarket::IsInvalidNeteaseRTData(CWebDataReceivedPtr pWebDataReceived) 
   else return false;
 }
 
-bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived) {
+bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
@@ -845,7 +845,7 @@ bool CChinaMarket::TaskProcessNeteaseRTData(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
-  CWebDataReceivedPtr pWebDataReceived = nullptr;
+  CWebDataPtr pWebDataReceived = nullptr;
   int j = 0;
 
   long lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
@@ -877,7 +877,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsInvalidTengxunRTData(CWebDataReceivedPtr pWebDataReceived) {
+bool CChinaMarket::IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 

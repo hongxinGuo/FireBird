@@ -5,9 +5,9 @@
 
 #include"PriorityQueueRTData.h"
 
-CPriorityQueueRTData gl_PriorityQueueRTData;
-
 namespace StockAnalysisTest {
+  static CPriorityQueueRTData gl_PriorityQueueRTData;
+
   class CPriorityQueueRTDataTest : public ::testing::Test
   {
   protected:

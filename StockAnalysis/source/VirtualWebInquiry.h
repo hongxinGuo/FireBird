@@ -3,7 +3,7 @@
 #include"stdafx.h"
 #include"afxinet.h"
 
-#include"ReceivedData.h"
+#include"WebData.h"
 
 using namespace std;
 #include<atomic>
@@ -15,7 +15,7 @@ public:
 
   bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
   bool ReadDataFromWebOnce(void);
-  CWebDataReceivedPtr TransferWebDataToQueueData(void);
+  CWebDataPtr TransferWebDataToQueueData(void);
 
   // 唯一的公共接口函数
   virtual bool GetWebData(void);

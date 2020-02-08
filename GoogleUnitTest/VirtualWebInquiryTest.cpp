@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
   TEST_F(CVirtualWebInquiryTest, TestTransferWebDataToQueueData) {
     CString str = _T("abcdefghijklmnop");
     gl_VirtualWebInquiry.__TESTSetBuffer(str);
-    CWebDataReceivedPtr p = gl_VirtualWebInquiry.TransferWebDataToQueueData();
+    CWebDataPtr p = gl_VirtualWebInquiry.TransferWebDataToQueueData();
     EXPECT_EQ(p->GetBufferLength(), str.GetLength());
     char* pChar = p->GetBufferAddr();
     CString strCompare = pChar;

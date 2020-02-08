@@ -15,7 +15,7 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
   CNeteaseRTWebInquiry* pNeteaseRTWebData = (CNeteaseRTWebInquiry*)pParam;
 
   if (pNeteaseRTWebData->ReadWebData(50, 30, 30)) {
-    CWebDataReceivedPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
+    CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
     }

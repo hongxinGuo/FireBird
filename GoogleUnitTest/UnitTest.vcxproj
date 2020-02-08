@@ -80,11 +80,13 @@
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
     <ClCompile Include="PriorityQueueRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
-    <ClCompile Include="ReceivedDataTest.cpp" />
+    <ClCompile Include="QueueRTDataTest.cpp" />
+    <ClCompile Include="QueueWebDataTest.cpp" />
+    <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
-    <ClCompile Include="QueueDataContainerTest.cpp" />
+    <ClCompile Include="RTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunRTDataTest.cpp" />

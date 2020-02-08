@@ -188,11 +188,11 @@ public:
   bool TaskProcessWebRTDataGetFromSinaServer(void);
   void StoreChoiceRTData(CRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
-  bool IsInvalidTengxunRTData(CWebDataReceivedPtr pWebDataReceived);
+  bool IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived);
   void CheckTengxunRTData(CRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
-  bool IsInvalidNeteaseRTData(CWebDataReceivedPtr pWebDataReceived);
-  bool IsValidNeteaseRTDataPrefix(CWebDataReceivedPtr pWebDataReceived);
+  bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
+  bool IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived);
   void CheckNeteaseRTData(CRTDataPtr pRTData);
   bool TaskProcessNeteaseRTData(void);
 
