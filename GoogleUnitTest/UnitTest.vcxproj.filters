@@ -7,9 +7,6 @@
     <Filter Include="Test源文件">
       <UniqueIdentifier>{2ab98a78-c6ad-4adb-af4d-5d58250ca9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\实现类">
-      <UniqueIdentifier>{27c6973c-ec73-41f0-b043-4d04d6e6b343}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\数据库">
       <UniqueIdentifier>{4de35834-a737-4d99-87e9-8b8bceb44dc3}</UniqueIdentifier>
     </Filter>
@@ -24,9 +21,6 @@
     </Filter>
     <Filter Include="Test源文件\工作线程">
       <UniqueIdentifier>{226f4191-deca-4101-8419-583cc71eb53b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\实现类\RTData">
-      <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Test源文件\Crweber.com">
       <UniqueIdentifier>{78892de7-5339-4475-a1f3-fadecb405f9b}</UniqueIdentifier>
@@ -43,31 +37,40 @@
     <Filter Include="Test源文件\China Stock Market">
       <UniqueIdentifier>{fb29c2c6-610d-402f-96f6-c35bc477ffc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\网络数据提取器">
+      <UniqueIdentifier>{c25ec651-9279-4da1-a0a9-bd73cdca6c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\China Stock Market\实现类">
+      <UniqueIdentifier>{27c6973c-ec73-41f0-b043-4d04d6e6b343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\China Stock Market\实现类\RTData">
+      <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="DayLineTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
+      <Filter>Test源文件\China Stock Market\实现类</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Test源文件</Filter>
     </ClCompile>
     <ClCompile Include="NetEaseDayLineDataTest.cpp">
-      <Filter>Test源文件\实现类</Filter>
+      <Filter>Test源文件\China Stock Market\实现类</Filter>
     </ClCompile>
     <ClCompile Include="SystemMessageTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="RTDataTest.cpp">
-      <Filter>Test源文件\实现类\RTData</Filter>
+      <Filter>Test源文件\China Stock Market\实现类\RTData</Filter>
     </ClCompile>
     <ClCompile Include="TengxunRTDataTest.cpp">
-      <Filter>Test源文件\实现类\RTData</Filter>
+      <Filter>Test源文件\China Stock Market\实现类\RTData</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseRTDataTest.cpp">
-      <Filter>Test源文件\实现类\RTData</Filter>
+      <Filter>Test源文件\China Stock Market\实现类\RTData</Filter>
     </ClCompile>
     <ClCompile Include="ThreadStatusTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>

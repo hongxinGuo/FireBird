@@ -41,8 +41,9 @@ bool CVirtualMarket::SchedulingTask(void) {
   if (GetLocalTime() > s_timeLast) {
     SchedulingTaskPerSecond(GetLocalTime() - s_timeLast);
     s_timeLast = GetLocalTime();
+    return true;
   }
-  return true;
+  else return false;
 }
 
 void CVirtualMarket::ResetMarket(void) {

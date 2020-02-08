@@ -235,13 +235,15 @@ namespace StockAnalysisTest {
     m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
     EXPECT_STREQ(m_RTData.GetStockName(), _T("招商轮船"));
     break;
-    case 4: // name
+    case 4: // 市场
+    m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
+    EXPECT_EQ(m_RTData.GetMarket(), __SHANGHAI_MARKET__);
     break;
     case 5:
     break;
     case 6:
     break;
-    case 7:
+    case 7: // 更新时间2019/10/11 01:10:02
     time_t tt;
     tm tm_;
     int year, month, day, hour, minute, second;

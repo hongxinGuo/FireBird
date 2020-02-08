@@ -1122,125 +1122,122 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
 bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
 
-  try {
-    switch (lIndex) {
-    case 1: // time
-    break;
-    case 2: // code
-    ASSERT(strValue.GetLength() == 7);
-    str = strValue.Left(1);
-    if (str.Compare(_T("0")) == 0) {
-      str1 = _T("sh");
-    }
-    else str1 = _T("sz");
-    m_strStockCode = str1 + strValue.Right(6);
-    break;
-    case 3: // name
-    m_strStockName = strValue;
-    break;
-    case 4: // type
-    break;
-    case 5: // symbol
-    break;
-    case 6: // status
-    break;
-    case 7: // update
-    m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
-    break;
-    case 10: // open
-    m_lOpen = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 11: // yestclose
-    m_lLastClose = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 12: // high
-    m_lHigh = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 13: // low
-    m_lLow = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 14: // price
-    m_lNew = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 15: // volume
-    m_llVolume = atol(strValue);
-    break;
-    case 20: // bid1
-    m_lPBuy[0] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 21: // bid2
-    m_lPBuy[1] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 22: // bid3
-    m_lPBuy[2] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 23: // bid4
-    m_lPBuy[3] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 24: // bid5
-    m_lPBuy[4] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 30: // bidvol1
-    m_lVBuy[0] = atol(strValue);
-    break;
-    case 31: // bidvol2
-    m_lVBuy[1] = atol(strValue);
-    break;
-    case 32: // bidvol3
-    m_lVBuy[2] = atol(strValue);
-    break;
-    case 33: // bidvol4
-    m_lVBuy[3] = atol(strValue);
-    break;
-    case 34: // bidvol5
-    m_lVBuy[4] = atol(strValue);
-    break;
-    case 40: // ask1
-    m_lPSell[0] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 41: // ask2
-    m_lPSell[1] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 42: // ask3
-    m_lPSell[2] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 43: // ask4
-    m_lPSell[3] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 44: // ask5
-    m_lPSell[4] = static_cast<long>(atof(strValue) * 1000);
-    break;
-    case 50: // askvol1
-    m_lVSell[0] = atol(strValue);
-    break;
-    case 51: // askvol2
-    m_lVSell[1] = atol(strValue);
-    break;
-    case 52: // askvol3
-    m_lVSell[2] = atol(strValue);
-    break;
-    case 53: // askvol4
-    m_lVSell[3] = atol(strValue);
-    break;
-    case 54: // askvol5
-    m_lVSell[4] = atol(strValue);
-    break;
-    case 60: // percent
-    case 61: // updown
-    case 62: // arrow
-    case 63: // turnover
-    break;
-    default:
-    // 出错了
-    throw exception();
-    break;
-    }
-    return true;
+  switch (lIndex) {
+  case 1: // time
+  break;
+  case 2: // code
+  ASSERT(strValue.GetLength() == 7);
+  str = strValue.Left(1);
+  if (str.Compare(_T("0")) == 0) {
+    str1 = _T("sh");
   }
-  catch (exception&) {
-    TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue.GetBuffer());
-    return false;
+  else str1 = _T("sz");
+  m_strStockCode = str1 + strValue.Right(6);
+  break;
+  case 3: // name
+  m_strStockName = strValue;
+  break;
+  case 4: // type
+  if (strValue.Compare(_T("SH")) == 0) m_wMarket = __SHANGHAI_MARKET__;
+  else m_wMarket = __SHENZHEN_MARKET__;
+  break;
+  case 5: // symbol
+  break;
+  case 6: // status
+  break;
+  case 7: // update
+  m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  break;
+  case 10: // open
+  m_lOpen = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 11: // yestclose
+  m_lLastClose = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 12: // high
+  m_lHigh = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 13: // low
+  m_lLow = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 14: // price
+  m_lNew = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 15: // volume
+  m_llVolume = atol(strValue);
+  break;
+  case 20: // bid1
+  m_lPBuy[0] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 21: // bid2
+  m_lPBuy[1] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 22: // bid3
+  m_lPBuy[2] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 23: // bid4
+  m_lPBuy[3] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 24: // bid5
+  m_lPBuy[4] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 30: // bidvol1
+  m_lVBuy[0] = atol(strValue);
+  break;
+  case 31: // bidvol2
+  m_lVBuy[1] = atol(strValue);
+  break;
+  case 32: // bidvol3
+  m_lVBuy[2] = atol(strValue);
+  break;
+  case 33: // bidvol4
+  m_lVBuy[3] = atol(strValue);
+  break;
+  case 34: // bidvol5
+  m_lVBuy[4] = atol(strValue);
+  break;
+  case 40: // ask1
+  m_lPSell[0] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 41: // ask2
+  m_lPSell[1] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 42: // ask3
+  m_lPSell[2] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 43: // ask4
+  m_lPSell[3] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 44: // ask5
+  m_lPSell[4] = static_cast<long>(atof(strValue) * 1000);
+  break;
+  case 50: // askvol1
+  m_lVSell[0] = atol(strValue);
+  break;
+  case 51: // askvol2
+  m_lVSell[1] = atol(strValue);
+  break;
+  case 52: // askvol3
+  m_lVSell[2] = atol(strValue);
+  break;
+  case 53: // askvol4
+  m_lVSell[3] = atol(strValue);
+  break;
+  case 54: // askvol5
+  m_lVSell[4] = atol(strValue);
+  break;
+  case 60: // percent
+  case 61: // updown
+  case 62: // arrow
+  case 63: // turnover
+  break;
+  default:
+  // 出错了
+  TRACE(_T("SetNeteaseRTValue异常， Index = %d strValue = %s\n"), lIndex, strValue.GetBuffer());
+  return false;
+  break;
   }
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

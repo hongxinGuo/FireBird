@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
   };
 
   NetEaseDayLineData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data2(2, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDayLineData Data2(2, _T("2019-07-23,'000001,平安银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   NetEaseDayLineData Data3(3, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   NetEaseDayLineData Data4(4, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   NetEaseDayLineData Data5(5, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
@@ -81,7 +81,9 @@ namespace StockAnalysisTest {
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
     INT64 lCount = 0;
-    bool fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
+    bool fSucceed;
+    if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pCurrentPos, lCount);
+    else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);

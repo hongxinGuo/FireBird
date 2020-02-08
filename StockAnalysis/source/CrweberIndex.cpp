@@ -123,53 +123,53 @@ void CCrweberIndex::AppendData(CSetCrweberIndex& setCrweberIndex) {
   setCrweberIndex.Update();
 }
 
-bool CCrweberIndex::ReadData(CWebDataPtr pWebDataReceived) {
-  pWebDataReceived->m_lCurrentPos = 0;
+bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
+  pWebData->m_lCurrentPos = 0;
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
   long lUpdateDay = 0;
 
-  while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
-    str = GetNextString(pWebDataReceived);
+  while (pWebData->GetCurrentPos() < pWebData->GetBufferLength()) {
+    str = GetNextString(pWebData);
     strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
-      strTime = GetNextString(pWebDataReceived); // 当前时间
+      strTime = GetNextString(pWebData); // 当前时间
       lUpdateDay = ConvertStringToTime(strTime);
 
-      for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
+      for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebData); // 抛掉4个没用字符串
 
-      str1 = GetNextString(pWebDataReceived); // "VLCC"
-      m_dTD1 = GetOneValue(pWebDataReceived);
-      m_dTD2 = GetOneValue(pWebDataReceived);
-      m_dTD3C = GetOneValue(pWebDataReceived);
-      m_dTD15 = GetOneValue(pWebDataReceived);
-      m_dVLCC_USGSPORE = GetOneValue(pWebDataReceived) * 100;
+      str1 = GetNextString(pWebData); // "VLCC"
+      m_dTD1 = GetOneValue(pWebData);
+      m_dTD2 = GetOneValue(pWebData);
+      m_dTD3C = GetOneValue(pWebData);
+      m_dTD15 = GetOneValue(pWebData);
+      m_dVLCC_USGSPORE = GetOneValue(pWebData) * 100;
 
-      str1 = GetNextString(pWebDataReceived); // "SUEZMAX"
-      m_dTD5 = GetOneValue(pWebDataReceived);
-      m_dTD20 = GetOneValue(pWebDataReceived);
-      m_dTD6 = GetOneValue(pWebDataReceived);
-      m_dSUEZMAX_CBSUSG = GetOneValue(pWebDataReceived);
+      str1 = GetNextString(pWebData); // "SUEZMAX"
+      m_dTD5 = GetOneValue(pWebData);
+      m_dTD20 = GetOneValue(pWebData);
+      m_dTD6 = GetOneValue(pWebData);
+      m_dSUEZMAX_CBSUSG = GetOneValue(pWebData);
 
-      str1 = GetNextString(pWebDataReceived); // "AFRAMAX"
-      m_dTD7 = GetOneValue(pWebDataReceived);
-      m_dTD9 = GetOneValue(pWebDataReceived);
-      m_dTD19 = GetOneValue(pWebDataReceived);
-      m_dTD8 = GetOneValue(pWebDataReceived);
+      str1 = GetNextString(pWebData); // "AFRAMAX"
+      m_dTD7 = GetOneValue(pWebData);
+      m_dTD9 = GetOneValue(pWebData);
+      m_dTD19 = GetOneValue(pWebData);
+      m_dTD8 = GetOneValue(pWebData);
 
-      str1 = GetNextString(pWebDataReceived); // "PANAMAX"
-      m_dTD21 = GetOneValue(pWebDataReceived);
-      m_dTD12 = GetOneValue(pWebDataReceived);
+      str1 = GetNextString(pWebData); // "PANAMAX"
+      m_dTD21 = GetOneValue(pWebData);
+      m_dTD12 = GetOneValue(pWebData);
 
-      str1 = GetNextString(pWebDataReceived); // "CPP"
-      m_dTC2 = GetOneValue(pWebDataReceived);
-      m_dTC3 = GetOneValue(pWebDataReceived);
-      m_dTC14 = GetOneValue(pWebDataReceived);
-      m_dCPP_USGCBS = GetOneValue(pWebDataReceived) * 1000;
-      m_dTC1 = GetOneValue(pWebDataReceived);
-      m_dTC5 = GetOneValue(pWebDataReceived);
-      m_dTC4 = GetOneValue(pWebDataReceived);
+      str1 = GetNextString(pWebData); // "CPP"
+      m_dTC2 = GetOneValue(pWebData);
+      m_dTC3 = GetOneValue(pWebData);
+      m_dTC14 = GetOneValue(pWebData);
+      m_dCPP_USGCBS = GetOneValue(pWebData) * 1000;
+      m_dTC1 = GetOneValue(pWebData);
+      m_dTC5 = GetOneValue(pWebData);
+      m_dTC4 = GetOneValue(pWebData);
 
       CString strDay = ConvertValueToString(lUpdateDay, 1);
       if (lUpdateDay > m_lLastUpdateDay) {
@@ -181,55 +181,55 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebDataReceived) {
 
     strHead = str.Left(6);
     if (strHead.Compare(_T("Tanker")) == 0) {
-      for (int i = 0; i < 7; i++) strNoUse = GetNextString(pWebDataReceived); // "CPP"
-      str1 = GetNextString(pWebDataReceived);
+      for (int i = 0; i < 7; i++) strNoUse = GetNextString(pWebData); // "CPP"
+      str1 = GetNextString(pWebData);
       m_dVLCC_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dVLCC_TC_3YEAR = ConvertStringToTC(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebData);
+      strNoUse = GetNextString(pWebData);
+      str1 = GetNextString(pWebData);
       m_dSUEZMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dSUEZMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebData);
+      strNoUse = GetNextString(pWebData);
+      str1 = GetNextString(pWebData);
       m_dAFRAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dAFRAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebData);
+      strNoUse = GetNextString(pWebData);
+      str1 = GetNextString(pWebData);
       m_dPANAMAX_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dPANAMAX_TC_3YEAR = ConvertStringToTC(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebData);
+      strNoUse = GetNextString(pWebData);
+      str1 = GetNextString(pWebData);
       m_dMR_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dMR_TC_3YEAR = ConvertStringToTC(str1);
 
-      strNoUse = GetNextString(pWebDataReceived);
-      strNoUse = GetNextString(pWebDataReceived);
-      str1 = GetNextString(pWebDataReceived);
+      strNoUse = GetNextString(pWebData);
+      strNoUse = GetNextString(pWebData);
+      str1 = GetNextString(pWebData);
       m_dHANDY_TC_1YEAR = ConvertStringToTC(str1);
-      str1 = GetNextString(pWebDataReceived);
+      str1 = GetNextString(pWebData);
       m_dHANDY_TC_3YEAR = ConvertStringToTC(str1);
 
-      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+      pWebData->m_lCurrentPos = pWebData->m_lBufferLength; //
     }
   }
-  pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
-  for (int i = 0; i < pWebDataReceived->m_lBufferLength; i++) {
-    *pWebDataReceived->m_pCurrentPos++ = 0x000;
+  pWebData->m_pCurrentPos = pWebData->GetBufferAddr();
+  for (int i = 0; i < pWebData->m_lBufferLength; i++) {
+    *pWebData->m_pCurrentPos++ = 0x000;
   }
-  pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+  pWebData->m_lCurrentPos = pWebData->m_lBufferLength; //
 
   return true;
 }
@@ -287,43 +287,43 @@ long CCrweberIndex::GetMonthOfTheYear(CString strMonth) {
   }
 }
 
-double CCrweberIndex::GetOneValue(CWebDataPtr pWebDataReceived) {
+double CCrweberIndex::GetOneValue(CWebDataPtr pWebData) {
   CString str, strValue;
   double dValue = 0.0;
 
-  str = GetNextString(pWebDataReceived); // "TD1\r\n   "
-  str = GetNextString(pWebDataReceived); // 无用数据
-  str = GetNextString(pWebDataReceived); // 无用数据
-  strValue = GetNextString(pWebDataReceived); // TD1指数的当前值
+  str = GetNextString(pWebData); // "TD1\r\n   "
+  str = GetNextString(pWebData); // 无用数据
+  str = GetNextString(pWebData); // 无用数据
+  strValue = GetNextString(pWebData); // TD1指数的当前值
   dValue = atof(strValue.GetBuffer());
   return dValue;
 }
 
-CString CCrweberIndex::GetNextString(CWebDataPtr pWebDataReceived) {
+CString CCrweberIndex::GetNextString(CWebDataPtr pWebData) {
   bool fFound = false;
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebDataReceived->m_pCurrentPos != '>') {
-        pWebDataReceived->IncreaseCurrentPos();
+  while ((*pWebData->m_pCurrentPos != 0x000) && !fFound) {
+    if (*pWebData->m_pCurrentPos == '<') { // 无用配置字符
+      while (*pWebData->m_pCurrentPos != '>') {
+        pWebData->IncreaseCurrentPos();
       }
-      pWebDataReceived->IncreaseCurrentPos();
-      while ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x00d)
-             || (*pWebDataReceived->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
-        pWebDataReceived->IncreaseCurrentPos();
+      pWebData->IncreaseCurrentPos();
+      while ((*pWebData->m_pCurrentPos == 0x00a) || (*pWebData->m_pCurrentPos == 0x00d)
+             || (*pWebData->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+        pWebData->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
-    ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
+  if (*pWebData->m_pCurrentPos == 0x000) { // 读到结尾处了
+    ASSERT(pWebData->m_lCurrentPos >= pWebData->m_lBufferLength);
     return _T("");
   }
-  while (*pWebDataReceived->m_pCurrentPos != '<') {
-    if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
-    pWebDataReceived->IncreaseCurrentPos();
+  while (*pWebData->m_pCurrentPos != '<') {
+    if (*pWebData->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebData->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+    pWebData->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;
   CString str;

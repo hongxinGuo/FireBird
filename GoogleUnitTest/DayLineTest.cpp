@@ -477,4 +477,35 @@ namespace StockAnalysisTest {
     dayLine.SetLastClose(100);
     EXPECT_TRUE(dayLine.IsActive());
   }
+
+  TEST(CDayLineTest, TestLoadDayLine) {
+    CDayLine id, id2;
+    CSetDayLine setDayLine;
+    id.SetDay(19900101);
+    id.SetMarket(__SHANGHAI_MARKET__);
+    id.SetStockCode(_T("sh600000"));
+    id.SetStockName(_T("ÆÖ·¢ÒøÐÐ"));
+    id.SetLastClose(1010);
+    id.SetOpen(1100);
+    id.SetHigh(1200);
+    id.SetLow(1000);
+    id.SetClose(1150);
+    id.SetVolume(100000);
+    id.SetAmount(100000000);
+    setDayLine.m_strFilter = _T("[Day] = 19900101");
+    setDayLine.Open();
+    setDayLine.AddNew();
+    id.SaveData(setDayLine);
+    setDayLine.Update();
+    setDayLine.Close();
+
+    setDayLine.Open();
+    id2.LoadData(setDayLine);
+    EXPECT_EQ(id.GetDay(), id2.GetDay());
+    EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
+    EXPECT_EQ(id.GetOpen(), id2.GetOpen());
+
+    setDayLine.Delete();
+    setDayLine.Close();
+  }
 }

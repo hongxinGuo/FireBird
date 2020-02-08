@@ -35,30 +35,43 @@ namespace StockAnalysisTest {
 
   TEST(CRTDataTest, TestTengxunRTDataActive) {
     CRTData id;
-    EXPECT_FALSE(id.CheckNeteaseRTDataActive());
+    EXPECT_FALSE(id.CheckTengxunRTDataActive());
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;
-    tm_.tm_mday = 7; // 2019年11月7日是星期四。
+    tm_.tm_mday = 27; // 2019年11月27日是星期三。
     tm_.tm_hour = 12;
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
+    tm_.tm_year = 2019 - 1900;
+    tm_.tm_mon = 10;
+    tm_.tm_mday = 7; // 2019年11月7日是星期三。
+    tm_.tm_hour = 12;
+    tm_.tm_min = 0;
+    tm_.tm_sec = 0;
+    time_t tt2 = mktime(&tm_);
     gl_ChinaStockMarket.__TEST_SetLocalTime(tt);
+    id.SetTransactionTime(tt2);
+    EXPECT_FALSE(id.IsValidTime());
+    EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";
+    id.SetOpen(10);
+    EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "无效时间";
+    id.SetOpen(0);
     id.SetTransactionTime(tt);
     EXPECT_TRUE(id.IsValidTime());
-    EXPECT_FALSE(id.CheckNeteaseRTDataActive());
+    EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零";
     id.SetOpen(10);
-    EXPECT_TRUE(id.CheckNeteaseRTDataActive());
+    EXPECT_TRUE(id.CheckTengxunRTDataActive());
     id.SetOpen(0);
     id.SetVolume(10);
-    EXPECT_TRUE(id.CheckNeteaseRTDataActive());
+    EXPECT_TRUE(id.CheckTengxunRTDataActive());
     id.SetVolume(0);
     id.SetHigh(10);
-    EXPECT_TRUE(id.CheckNeteaseRTDataActive());
+    EXPECT_TRUE(id.CheckTengxunRTDataActive());
     id.SetHigh(0);
     id.SetLow(10);
-    EXPECT_TRUE(id.CheckNeteaseRTDataActive());
+    EXPECT_TRUE(id.CheckTengxunRTDataActive());
   }
 
   struct TengxunRTData {
@@ -74,7 +87,7 @@ namespace StockAnalysisTest {
   // 无错误数据
   TengxunRTData Data1(0, _T("v_sh600000=\"1~浦发银行~600000~12.45~11.96~12.05~920308~515001~405306~12.44~938~12.43~535~12.42~435~12.41~784~12.40~1167~12.45~494~12.46~9397~12.47~5156~12.48~7473~12.49~5513~~20191011155858~0.49~4.10~12.45~12.00~12.45/920308/1131441679~920308~113144~0.33~6.15~~12.45~12.00~3.76~3498.92~3654.33~0.79~13.16~10.76~2.63~-24176~12.29~5.69~6.54~~~0.73~113144.17~0.00~0~~GP-A~31.75~~2.81\";\n"));
   // 无错误
-  TengxunRTData Data2(1, _T("v_sh600601=\"1~方正科技~600601~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
+  TengxunRTData Data2(1, _T("v_sz000001=\"51~方正科技~000001~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
   // 所有的数量皆为零
   TengxunRTData Data3(2, _T("v_sh600601=\"1~方正科技~600601~0~0~0~0~0~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
   // 出现负值
@@ -252,7 +265,7 @@ namespace StockAnalysisTest {
     case 1:
     EXPECT_TRUE(fSucceed); // 没有错误
     EXPECT_EQ(m_lStringLength, m_pTengxunWebRTData->GetCurrentPos());
-    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601"));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sz000001"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("方正科技"));
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);

@@ -9,26 +9,15 @@ namespace StockAnalysisTest {
   class CCrweberIndexMarketTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestCase() { // 本测试类的初始化函数
+    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestCase() {
       gl_CrweberIndexMarket.SetDatabaseLoaded(false);
       gl_CrweberIndexMarket.SetPermitResetMarket(true);
       gl_CrweberIndexMarket.SetReadyToRun(true);
       gl_CrweberIndexMarket.SetResetMarket(true);
       gl_CrweberIndexMarket.SetNewestUpdateDay(0);
-    }
-
-    virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-      EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 0);
-      EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
-      EXPECT_TRUE(gl_CrweberIndexMarket.IsReadyToRun());
-      EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
     }
 
     virtual void TearDown(void) override {
@@ -81,5 +70,20 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
     gl_CrweberIndexMarket.SetDatabaseLoaded(false);
     EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+  }
+
+  TEST_F(CCrweberIndexMarketTest, TestSchedulingTaskPer1Minute) {
+    EXPECT_TRUE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(60, 90000));
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+    gl_CrweberIndexMarket.SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    EXPECT_FALSE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(59, 90000)) << "差一秒未到执行时间";
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+    gl_CrweberIndexMarket.SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    EXPECT_TRUE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(1, 90000));
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+  }
+
+  TEST_F(CCrweberIndexMarketTest, TestTaskProcessWebRTDataGetFromCrweberdotcom) {
+    EXPECT_TRUE(gl_CrweberIndexMarket.TaskProcessWebRTDataGetFromCrweberdotcom()) << "目前没有数据，只是简单运行一下";
   }
 }
