@@ -30,7 +30,7 @@ void CCrweberIndexMarket::Reset(void) {
 }
 
 bool CCrweberIndexMarket::SchedulingTask(void) {
-  CVirtualMarket::SchedulingTask(); // 调用基类调度函数，完成共同任务
+  CalculateTime();
 
   static time_t s_timeLast = 0;
   const long lCurrentTime = GetTime();

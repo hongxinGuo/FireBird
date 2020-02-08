@@ -35,11 +35,12 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CVirtualMarket::SchedulingTask(void) {
-  CalculateTime();
+  ASSERT(0); // 不允许调用基类调度函数。
   return true;
 }
 
 void CVirtualMarket::ResetMarket(void) {
+  ASSERT(0); // 不允许调用基类重置市场函数。
 }
 
 void CVirtualMarket::CalculateTime(void) noexcept {
@@ -147,7 +148,7 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
     m_fPermitResetMarket = true;
     CString str;
     str = m_strMarketId + _T("重置系统重置标识");
-    TRACE(_T("%s\n"), str);
+    TRACE(_T("%S \n"), str.GetBuffer());
     gl_systemMessage.PushInformationMessage(str);
   }
 }
