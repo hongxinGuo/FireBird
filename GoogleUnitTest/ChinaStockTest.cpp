@@ -1223,4 +1223,13 @@ namespace StockAnalysisTest {
     id.SetUnknownVolume(10000);
     EXPECT_TRUE(id.IsVolumeConsistence());
   }
+
+  TEST_F(CChinaStockTest, TestReportDayLineDownLoaded) {
+    CChinaStock id;
+    id.SetStockCode(_T("sh600008"));
+    id.ReportDayLineDownLoaded();
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+    CString str = gl_systemMessage.PopDayLineInfoMessage();
+    EXPECT_STREQ(str, _T("sh600008日线下载完成."));
+  }
 }

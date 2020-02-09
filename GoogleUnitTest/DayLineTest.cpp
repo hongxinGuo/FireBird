@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetTotalValue(), 0);
     CString str = _T("3.13e+11");
     dl.SetTotalValue(str.GetBuffer());
-    EXPECT_DOUBLE_EQ(dl.GetTotalValue(), 3.13e+11);
+    EXPECT_DOUBLE_EQ((double)(dl.GetTotalValue()), 3.13e+11);
   }
 
   TEST(CDayLineTest, TestGetCurrentValue) {
@@ -133,7 +133,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetCurrentValue(), 0);
     CString str = _T("3.15e+11");
     dl.SetCurrentValue(str.GetBuffer());
-    EXPECT_DOUBLE_EQ(dl.GetCurrentValue(), 3.15e+11);
+    EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
   }
 
   TEST(CDayLineTest, TestGetRelativeStrong) {
@@ -481,7 +481,7 @@ namespace StockAnalysisTest {
   TEST(CDayLineTest, TestLoadDayLine) {
     CDayLine id, id2;
     CSetDayLine setDayLine;
-    id.SetDay(19900101);
+    id.SetDay(__CHINA_MARKET_BEGIN_DAY__);
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600000"));
     id.SetStockName(_T("ÆÖ·¢ÒøÐÐ"));

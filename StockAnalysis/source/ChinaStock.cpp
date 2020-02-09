@@ -181,7 +181,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   pTestPos = m_pDayLineBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDayLineEndDay() == 19900101) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+    if (GetDayLineEndDay() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
