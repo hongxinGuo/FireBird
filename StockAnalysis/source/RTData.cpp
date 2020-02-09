@@ -93,46 +93,6 @@ void CRTData::Dump(CDumpContext& dc) const {
 
 #endif //_DEBUG
 
-/////////////////////////////////////////////////////////////////////////////////
-//
-//
-// 参数:
-//		data : 另一个实时数据单位.
-//
-//
-/////////////////////////////////////////////////////////////////////////////////
-bool CRTData::SetData(CRTData& data) {
-  m_time = data.m_time;
-  m_wMarket = data.m_wMarket;
-  m_strStockCode = data.m_strStockCode;
-  m_strStockName = data.m_strStockName;
-  m_lLastClose = data.m_lLastClose;
-  m_lOpen = data.m_lOpen;
-  m_lHigh = data.m_lHigh;
-  m_lLow = data.m_lLow;
-  m_lNew = data.m_lNew;
-  m_lBuy = data.m_lBuy;
-  m_lSell = data.m_lSell;
-  m_lHighLimit = data.m_lHighLimit;
-  m_lLowLimit = data.m_lLowLimit;
-
-  if (data.m_llVolume != 0) {
-    m_llVolume = data.m_llVolume;
-    m_llAmount = data.m_llAmount;
-  }
-  m_llCurrentValue = data.m_llCurrentValue;
-  m_llTotalValue = data.m_llTotalValue;
-
-  for (int i = 0; i < 5; i++) {
-    m_lPBuy.at(i) = data.m_lPBuy.at(i);
-    m_lVBuy.at(i) = data.m_lVBuy.at(i);
-    m_lPSell.at(i) = data.m_lPSell.at(i);
-    m_lVSell.at(i) = data.m_lVSell.at(i);
-  }
-
-  return(true);
-}
-
 bool CRTData::Compare(CRTDataPtr pRTData) {
   time_t ttDiff = m_time - pRTData->GetTransactionTime();
   if (ttDiff != 0) { TRACE("交易时间不匹配: %d\n", ttDiff); }

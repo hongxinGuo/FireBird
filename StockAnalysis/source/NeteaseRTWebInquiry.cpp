@@ -55,7 +55,6 @@ void CNeteaseRTWebInquiry::InquireNextWebData(void) {
 
 CString CNeteaseRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
-  gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(str);
   return str;
 }
 

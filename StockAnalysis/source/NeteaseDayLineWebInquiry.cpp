@@ -32,6 +32,7 @@ void CNeteaseDayLineWebInquiry::InquireNextWebData(void) {
     sprintf_s(buffer2, "%8d", gl_ChinaStockMarket.GetDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
+    gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
     SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
     StartReadingThread();
   }

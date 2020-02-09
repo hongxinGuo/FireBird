@@ -136,7 +136,6 @@ public:
   CRTData(void);
 
   void Reset(void);
-  bool SetData(CRTData& data);
 
   bool Compare(CRTDataPtr pRTData);
 

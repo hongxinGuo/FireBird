@@ -1,6 +1,8 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"WebData.h"
 
 namespace StockAnalysisTest {
@@ -23,6 +25,7 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
 
   public:

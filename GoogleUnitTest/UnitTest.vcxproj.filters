@@ -13,9 +13,6 @@
     <Filter Include="Test源文件\辅助类和函数">
       <UniqueIdentifier>{566c913d-459e-4291-9c8c-53a5a9848abf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\网络通信">
-      <UniqueIdentifier>{9ad59fd7-ab56-494b-8c6a-b7f5b4e8014a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\Windows界面">
       <UniqueIdentifier>{a4a49057-7948-4a2b-b695-24e24be21424}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="Test源文件\China Stock Market\实现类\RTData">
       <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\China Stock Market\网络通信">
+      <UniqueIdentifier>{9ad59fd7-ab56-494b-8c6a-b7f5b4e8014a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,13 +97,13 @@
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
+      <Filter>Test源文件\China Stock Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="SinaRTWebInquiryTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
+      <Filter>Test源文件\China Stock Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="TengxunRTWebInquiryTest.cpp">
-      <Filter>Test源文件\网络通信</Filter>
+      <Filter>Test源文件\China Stock Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp">
       <Filter>Test源文件\China Stock Market</Filter>
@@ -143,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="WebDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="WebInquirerTest.cpp">
+      <Filter>Test源文件\网络数据提取器</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp">
+      <Filter>Test源文件\China Stock Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

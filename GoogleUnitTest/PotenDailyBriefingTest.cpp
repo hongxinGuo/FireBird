@@ -3,6 +3,43 @@
 #include"PotenDailyBriefing.h"
 
 namespace StockAnalysisTest {
+  TEST(CPotenDailyBriefingTest, TestReset) {
+    CPotenDailyBriefing id;
+    EXPECT_FALSE(id.IsTodayUpdated());
+    id.SetTodayUpdated(true);
+    id.Reset();
+    EXPECT_FALSE(id.IsTodayUpdated());
+  }
+
+  TEST(CPotenDailyBriefingTest, TestIsTodayDataUpdated) {
+    CPotenDailyBriefing id;
+    EXPECT_FALSE(id.IsTodayUpdated());
+    id.SetTodayUpdated(true);
+    EXPECT_TRUE(id.IsTodayUpdated());
+    id.SetTodayUpdated(false);
+    EXPECT_FALSE(id.IsTodayUpdated());
+  }
+
+  TEST(CPotenDailyBriefingTest, TestGetCurrentDataTime) {
+    CPotenDailyBriefing id;
+    EXPECT_EQ(id.GetCurrentDataTime(), 0);
+    id.SetNewestDataTime(20190101);
+    EXPECT_EQ(id.GetCurrentDataTime(), 20190101);
+  }
+
+  TEST(CPotenDailyBriefingTest, TestGetDay) {
+    CPotenDailyBriefing id;
+    EXPECT_EQ(id.GetDay(), 0);
+    id.SetDay(20190101);
+    EXPECT_EQ(id.GetDay(), 20190101);
+  }
+
+  TEST(CPotenDailyBriefingTest, TestGetSet) {
+    CPotenDailyBriefing id;
+    id.m_dTD3C = 1;
+    EXPECT_DOUBLE_EQ(id.GetTD3C(), 1);
+  }
+
   TEST(CPotenDailyBriefingTest, TestConvertStringToTime) {
     CString str = _T("04/11/2018");
     CPotenDailyBriefing id;

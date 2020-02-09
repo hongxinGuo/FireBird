@@ -27,6 +27,7 @@ namespace StockAnalysisTest {
       gl_CrweberIndexMarket.SetReadyToRun(true);
       gl_CrweberIndexMarket.SetResetMarket(true);
       gl_CrweberIndexMarket.SetNewestUpdateDay(0);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
 
@@ -41,6 +42,9 @@ namespace StockAnalysisTest {
     long l = gl_systemMessage.GetInformationDequeSize();
     gl_CrweberIndexMarket.ResetMarket();
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1);
+    CString str = gl_systemMessage.PopInformationMessage();
+    CString strLeft = str.Left(35);
+    EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间："));
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {

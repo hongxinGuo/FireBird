@@ -104,8 +104,9 @@ CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
 bool CVirtualWebInquiry::GetWebData(void) {
   if (!IsReadingWebData()) {
     InquireNextWebData();
+    return true;
   }
-  return true;
+  else return false;
 }
 
 bool CVirtualWebInquiry::ReportStatus(long lNumberOfData) {

@@ -14,11 +14,13 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
+      EXPECT_FALSE(gl_VirtualWebInquiry.IsReadingWebData());
     }
 
     virtual void TearDown(void) override {
       // clearup
       gl_VirtualWebInquiry.SetInquiringString(_T(""));
+      gl_VirtualWebInquiry.SetReadingWebData(false);
     }
   public:
   };
@@ -31,6 +33,11 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_VirtualWebInquiry.GetBufferAddr(), gl_VirtualWebInquiry.GetCurrentPosPtr());
     EXPECT_FALSE(gl_VirtualWebInquiry.IsReadingWebData());
     EXPECT_FALSE(gl_VirtualWebInquiry.IsReportStatus());
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestGetWebData) {
+    gl_VirtualWebInquiry.SetReadingWebData(true);
+    EXPECT_FALSE(gl_VirtualWebInquiry.GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");
   }
 
   TEST_F(CVirtualWebInquiryTest, TestTransferWebDataToQueueData) {

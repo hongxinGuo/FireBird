@@ -641,6 +641,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
   int i = 0;
   char buffer[8];
   CString strStockCode, strRight;
+
   while (i < lLength) {
     strncpy_s(buffer, p, 7);
     p += 8;
@@ -660,7 +661,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
       return false;
     }
   }
-  return false;
+  return true;
 }
 
 CString CChinaMarket::GetNextInquiringStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock) {

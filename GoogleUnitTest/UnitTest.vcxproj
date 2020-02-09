@@ -64,6 +64,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
+    <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
     <ClCompile Include="CrweberIndexWebInquiryTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="VirtualWebInquiryTest.cpp" />
+    <ClCompile Include="WebInquirerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">

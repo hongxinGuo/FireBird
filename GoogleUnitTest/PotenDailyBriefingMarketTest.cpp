@@ -9,18 +9,8 @@ namespace StockAnalysisTest {
   class CPotenDailyBriefingMarketTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestCase() { // 本测试类的初始化函数
-      ASSERT_FALSE(gl_fNormalMode);
-    }
-
-    static void TearDownTestCase() {
-      gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
-      gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
-      gl_PotenDailyBriefingMarket.SetReadyToRun(true);
-      gl_PotenDailyBriefingMarket.SetResetMarket(true);
-    }
-
     virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
@@ -28,10 +18,17 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsReadyToRun());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
 
     virtual void TearDown(void) override {
       // clearup
+      gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
+      gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
+      gl_PotenDailyBriefingMarket.SetReadyToRun(true);
+      gl_PotenDailyBriefingMarket.SetResetMarket(true);
+      gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20180411);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
 
@@ -66,5 +63,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsResetMarket());
     gl_PotenDailyBriefingMarket.SetResetMarket(true);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestSetNewestUpdateDay) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
+    gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20190101);
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20190101);
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestResetMarket) {
+    gl_PotenDailyBriefingMarket.ResetMarket();
+    CString str = gl_systemMessage.PopInformationMessage();
+    CString strLeft = str.Left(29);
+    EXPECT_STREQ(strLeft, _T("重置poten.com于美东标准时间："));
   }
 }

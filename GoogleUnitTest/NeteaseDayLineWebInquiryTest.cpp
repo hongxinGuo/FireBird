@@ -15,6 +15,10 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_NeteaseDayLineWebData.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
   }
 
+  TEST(NeteaseWebDayLineDataTest, TestReportStatus) {
+    EXPECT_TRUE(m_NeteaseDayLineWebData.ReportStatus(1));
+  }
+
   TEST(NeteaseWebDayLineDataTest, TestSetDownLoadingStockCode) {
     EXPECT_STREQ(m_NeteaseDayLineWebData.GetDownLoadingStockCode(), _T(""));
     m_NeteaseDayLineWebData.SetDownLoadingStockCode(_T("1000001"));
