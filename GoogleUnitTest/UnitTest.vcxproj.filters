@@ -150,6 +150,9 @@
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp">
       <Filter>Test源文件\China Stock Market</Filter>
     </ClCompile>
+    <ClCompile Include="NeteaseRTWebInquiryTest.cpp">
+      <Filter>Test源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

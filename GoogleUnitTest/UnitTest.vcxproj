@@ -75,6 +75,7 @@
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
+    <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />

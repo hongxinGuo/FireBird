@@ -50,6 +50,8 @@ public:
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
+  CString GetConnection(void) noexcept { return m_strConnection; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);

@@ -13,6 +13,7 @@ namespace StockAnalysisTest {
   TEST(NeteaseWebDayLineDataTest, TestInitialize) {
     EXPECT_STREQ(m_NeteaseDayLineWebData.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
     EXPECT_STREQ(m_NeteaseDayLineWebData.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
+    EXPECT_STREQ(m_NeteaseDayLineWebData.GetConnection(), _T("NeteaseDayLine"));
   }
 
   TEST(NeteaseWebDayLineDataTest, TestReportStatus) {
