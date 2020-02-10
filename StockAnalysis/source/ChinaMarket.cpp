@@ -1027,11 +1027,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerHour(lSecondNumber, lCurrentTime);
   SchedulingTaskPer5Minutes(lSecondNumber, lCurrentTime);
-  SchedulingTaskPer1Minute(lSecondNumber, lCurrentTime);
+  SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
-
-  TaskCheckStartReceivingData(lCurrentTime);
-  TaskCheckMarketOpen(lCurrentTime);
 
   if (s_iCountDownProcessWebRTData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
@@ -1081,7 +1078,8 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   if (i5MinuteCounter < 0) {
     i5MinuteCounter = 299;
 
-    SaveTempDataIntoDB(lCurrentTime);
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("五分钟调度执行中。。。"));
+    TaskSaveTempDataIntoDB(lCurrentTime);
 
     return true;
   } // 每五分钟一次的任务
@@ -1090,7 +1088,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   }
 }
 
-void CChinaMarket::SaveTempDataIntoDB(long lCurrentTime) {
+void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
   if (m_fSystemReady) {
     if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
@@ -1100,11 +1098,14 @@ void CChinaMarket::SaveTempDataIntoDB(long lCurrentTime) {
         gl_systemMessage.PushInformationMessage(str);
         UpdateTempRTData();
       }
+      else gl_systemMessage.PushInnerSystemInformationMessage(_T("时间不对"));
     }
+    else gl_systemMessage.PushInnerSystemInformationMessage(_T("尚未开市"));
   }
+  else gl_systemMessage.PushInnerSystemInformationMessage(_T("系统尚未准备好"));
 }
 
-bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime) {
+bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
@@ -1114,6 +1115,9 @@ bool CChinaMarket::SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTim
 
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
+
+    // 判断是否开始正常收集数据
+    TaskCheckStartReceivingData(lCurrentTime);
 
     // 判断中国股票市场开市状态
     TaskCheckMarketOpen(lCurrentTime);
@@ -1193,7 +1197,7 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
   if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
     m_fMarketOpened = false;
   }
-  else if ((lCurrentTime > 92900) && (lCurrentTime < 150300)) m_fMarketOpened = true;
+  else if ((lCurrentTime > 92800) && (lCurrentTime < 150300)) m_fMarketOpened = true;
   else m_fMarketOpened = false;
 
   return m_fMarketOpened;
@@ -1243,8 +1247,9 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
   if (SystemReady() && m_fSaveRTData) {
     AfxBeginThread(ThreadSaveRTData, nullptr);
+    return true;
   }
-  return true;
+  else return false;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1292,7 +1297,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     // 判断是否存储日线库和股票代码库
     if ((m_iDayLineNeedSave > 0)) {
       m_fSaveDayLine = true;
-      gl_ChinaStockMarket.SaveHistoryDayLineData();
+      gl_ChinaStockMarket.SaveDayLineData();
     }
     TaskUpdateStockCodeDB();
     return true;
@@ -1411,7 +1416,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 //  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SaveHistoryDayLineData(void) {
+bool CChinaMarket::SaveDayLineData(void) {
   CString str;
   strTransferSharedPtr* pTransfer = nullptr;
 
@@ -1421,7 +1426,7 @@ bool CChinaMarket::SaveHistoryDayLineData(void) {
         if (pStock->HaveNewDayLineData()) {
           pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
           pTransfer->m_pStock = pStock;
-          AfxBeginThread(ThreadSaveHistoryDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+          AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
         }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
@@ -1636,7 +1641,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStock(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
-          pStock->LoadAndCalculateTempInfo(setDayLineToday);
+          pStock->LoadTempInfo(setDayLineToday);
         }
         setDayLineToday.MoveNext();
       }

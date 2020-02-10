@@ -231,7 +231,7 @@ public:
   bool SaveDayLine(void); // 存储日线历史数据
   void UpdateDayLineStartEndDay(void);
   void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
-  void LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday);
+  void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   bool LoadDayLineAndDayLineInfo(void); // 此函数加载
   bool LoadDayLine(CSetDayLine& setDayLine);

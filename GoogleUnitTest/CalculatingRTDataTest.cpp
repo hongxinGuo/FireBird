@@ -159,7 +159,7 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_CASE_P(TestRTData, CStockTest2, testing::Values(&RT1, &RT2, &RT3,
-                                                                   &RT4, &RT5, &RT6, &RT7, &RT8));
+                                                                   &RT4, &RT5, &RT6, &RT7, &RT8, &RT9, &RT10));
 
   TEST_P(CStockTest2, TestRTData) {
     EXPECT_TRUE(m_stock.IsVolumeConsistence());

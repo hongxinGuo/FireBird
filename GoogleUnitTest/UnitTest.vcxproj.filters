@@ -298,9 +298,6 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -329,6 +326,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTDataContainer.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
   </ItemGroup>

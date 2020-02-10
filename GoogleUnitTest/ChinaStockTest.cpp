@@ -704,13 +704,17 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestHaveNewDayLineData) {
     CChinaStock stock;
     EXPECT_FALSE(stock.HaveNewDayLineData());
+    EXPECT_EQ(stock.GetDayLineSize(), 0);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetDay(20200101);
     stock.StoreDayLine(pDayLine);
+    EXPECT_EQ(stock.GetDayLineSize(), 1);
     stock.SetDayLineEndDay(20200101);
     EXPECT_FALSE(stock.HaveNewDayLineData());
     stock.SetDayLineEndDay(20191231);
     EXPECT_TRUE(stock.HaveNewDayLineData());
+    stock.ClearDayLineContainer();
+    EXPECT_EQ(stock.GetDayLineSize(), 0);
   }
 
   TEST_F(CChinaStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
@@ -1231,5 +1235,26 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
     EXPECT_STREQ(str, _T("sh600008日线下载完成."));
+  }
+
+  TEST_F(CChinaStockTest, TestStoreDayLine) {
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+    for (int i = 0; i < 10; i++) {
+      pDayLine = make_shared<CDayLine>();
+      pDayLine->SetDay(19900101 + i);
+      pDayLine->SetClose(10);
+      pDayLine->SetLastClose(10);
+      vDayLine.push_back(pDayLine);
+    }
+    EXPECT_EQ(vDayLine.size(), 10);
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsDayLineLoaded());
+    stock.StoreDayLine(vDayLine);
+    EXPECT_EQ(stock.GetDayLineSize(), 10);
+    for (int i = 0; i < 10; i++) {
+      EXPECT_EQ(stock.GetDayLine(i)->GetDay(), 19900101 + 9 - i);
+    }
+    EXPECT_TRUE(stock.IsDayLineLoaded());
   }
 }

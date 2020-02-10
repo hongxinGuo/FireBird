@@ -52,7 +52,7 @@ public:
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
-  bool SchedulingTaskPer1Minute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
+  bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
   bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
   bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
@@ -133,7 +133,7 @@ public:
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool SaveHistoryDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+  bool SaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
   bool UpdateOptionDB(void);
@@ -199,7 +199,7 @@ public:
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
 
-  void SaveTempDataIntoDB(long lCurrentTime);
+  void TaskSaveTempDataIntoDB(long lCurrentTime);
 
   // 状态反馈
   bool IsUsingSinaRTDataReceiver(void) noexcept { return m_fUsingSinaRTDataReceiver; }

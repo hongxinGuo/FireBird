@@ -158,7 +158,7 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadPotenDailyBriefing.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadSinaRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj" />
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSavDayLine.obj" />
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveDayLine.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj" />
     <Object Include="..\StockAnalysis\x64\Debug\ThreadStatus.obj" />

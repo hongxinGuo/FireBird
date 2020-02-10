@@ -598,9 +598,9 @@ namespace StockAnalysisTest {
     tm tm_;
     tm_.tm_wday = 1;
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(92900));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckMarketOpen(92800));
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(92901));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(92801));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckMarketOpen(150259));
     EXPECT_TRUE(gl_ChinaStockMarket.IsMarketOpened());

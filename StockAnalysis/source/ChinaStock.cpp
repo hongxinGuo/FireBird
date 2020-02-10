@@ -489,7 +489,7 @@ void CChinaStock::SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo) {
 // 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
-void CChinaStock::LoadAndCalculateTempInfo(CSetDayLineToday& setDayLineToday) {
+void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
   m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume);
 
   m_lTransactionNumber = atol(setDayLineToday.m_TransactionNumber);

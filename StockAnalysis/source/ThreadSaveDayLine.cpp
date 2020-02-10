@@ -13,7 +13,7 @@
 #include"ChinaMarket.h"
 #include"TransferSharedPtr.h"
 
-UINT ThreadSaveHistoryDayLineOfOneStock(LPVOID pParam) {
+UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
   // 传递过来的为携带智能指针的结构（智能指针无法经由pParam直接传递过来）
   CChinaStockPtr pStock;
   CString str;
