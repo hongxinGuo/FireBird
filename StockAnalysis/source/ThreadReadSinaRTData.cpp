@@ -9,6 +9,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"ChinaMarket.h"
+#include"WebInquirer.h"
 
 UINT ThreadReadSinaRTData(LPVOID pParam) {
   CSinaRTWebInquiry* pSinaRTWebData = (CSinaRTWebInquiry*)pParam;

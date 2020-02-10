@@ -853,6 +853,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
     CChinaStockPtr pStock = make_shared<CChinaStock>();
+    CChinaStock stock;
 
     pStock->SetHavingFirstRTData(true);
     pStock->SetMarket(__SHANGHAI_MARKET__);
@@ -949,6 +950,50 @@ namespace StockAnalysisTest {
     EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
     EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
     setDayLineToday.Close();
+
+    setDayLineToday.Open();
+    stock.LoadTempInfo(setDayLineToday);
+    setDayLineToday.Close();
+
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
+    EXPECT_EQ(stock.GetMarket(), 0);
+    EXPECT_STREQ(stock.GetStockCode(), _T(""));
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    EXPECT_EQ(stock.GetOpen(), 0);
+    EXPECT_EQ(stock.GetHigh(), 0);
+    EXPECT_EQ(stock.GetLow(), 0);
+    EXPECT_EQ(stock.GetNew(), 0);
+    EXPECT_EQ(stock.GetVolume(), pStock->GetVolume());
+    EXPECT_EQ(stock.GetAmount(), 0);
+    EXPECT_EQ(stock.GetUpDown(), 0);
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0);
+    EXPECT_EQ(stock.GetCurrentValue(), 0);
+    EXPECT_EQ(stock.GetTotalValue(), 0);
+
+    EXPECT_EQ(stock.GetLastSavedVolume(), pStock->GetVolume());
+
+    EXPECT_EQ(stock.GetAttackBuyAbove200000(), pStock->GetAttackBuyAbove200000());
+    EXPECT_EQ(stock.GetAttackBuyBelow200000(), pStock->GetAttackBuyBelow200000());
+    EXPECT_EQ(stock.GetAttackBuyBelow50000(), pStock->GetAttackBuyBelow50000());
+    EXPECT_EQ(stock.GetAttackBuyVolume(), pStock->GetAttackBuyVolume());
+    EXPECT_EQ(stock.GetAttackSellAbove200000(), pStock->GetAttackSellAbove200000());
+    EXPECT_EQ(stock.GetAttackSellBelow200000(), pStock->GetAttackSellBelow200000());
+    EXPECT_EQ(stock.GetAttackSellBelow50000(), pStock->GetAttackSellBelow50000());
+    EXPECT_EQ(stock.GetAttackSellVolume(), pStock->GetAttackSellVolume());
+
+    EXPECT_EQ(stock.GetOrdinaryBuyVolume(), pStock->GetOrdinaryBuyVolume());
+    EXPECT_EQ(stock.GetOrdinarySellVolume(), pStock->GetOrdinarySellVolume());
+    EXPECT_EQ(stock.GetCancelBuyVolume(), pStock->GetCancelBuyVolume());
+    EXPECT_EQ(stock.GetCancelSellVolume(), pStock->GetCancelSellVolume());
+    EXPECT_EQ(stock.GetStrongBuyVolume(), pStock->GetStrongBuyVolume());
+    EXPECT_EQ(stock.GetStrongSellVolume(), pStock->GetStrongSellVolume());
+    EXPECT_EQ(stock.GetUnknownVolume(), pStock->GetUnknownVolume());
+
+    EXPECT_EQ(stock.GetTransactionNumber(), pStock->GetTransactionNumber());
+    EXPECT_EQ(stock.GetTransactionNumberAbove200000(), pStock->GetTransactionNumberAbove200000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
   }
 
   TEST_F(CChinaStockTest, TestSaveDayLine) {

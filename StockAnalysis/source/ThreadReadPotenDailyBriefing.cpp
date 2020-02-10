@@ -6,9 +6,10 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#include"ChinaMarket.h"
+//#include"ChinaMarket.h"
 #include "Thread.h"
 #include"VirtualWebInquiry.h"
+#include"WebInquirer.h"
 
 UINT ThreadReadPotenDailyBriefing(LPVOID pParam) {
   CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData = (CPotenDailyBriefingWebInquiry*)(pParam);

@@ -511,8 +511,8 @@ void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
   m_lAttackSellBelow50000 = atoll(setDayLineToday.m_AttackSellBelow50000);
   m_lAttackSellBelow200000 = atoll(setDayLineToday.m_AttackSellBelow200000);
   m_lAttackSellAbove200000 = atoll(setDayLineToday.m_AttackSellAbove200000);
-  SetVolume(atoll(setDayLineToday.m_Volume));
-  SetLastSavedVolume(atoll(setDayLineToday.m_Volume));
+  m_llVolume = atoll(setDayLineToday.m_Volume);
+  m_llLastSavedVolume = atoll(setDayLineToday.m_Volume);
 }
 
 bool CChinaStock::LoadDayLineAndDayLineInfo(void) {

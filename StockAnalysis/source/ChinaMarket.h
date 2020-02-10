@@ -2,21 +2,15 @@
 
 #include"stdafx.h"
 #include"globedef.h"
-
-#include"CrweberIndex.h"
+#include"Accessory.h"
+#include"Semaphore.h"
 
 #include"VirtualMarket.h"
 
 #include"RTDataContainer.h"
-#include"QueueWebData.h"
-#include"PriorityQueueRTData.h"
 
 #include "ChinaStock.h"
-#include"SetStockCode.h"
 
-#include"WebInquirer.h"
-
-#include"Semaphore.h"
 using namespace MyAccessory;
 
 using namespace std;
@@ -243,7 +237,7 @@ public:
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }
   void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
 
-  void SetRecordRTData(void);
+  void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
 private:

@@ -5,7 +5,6 @@
 #include"globedef.h"
 #include"Thread.h"
 
-#include"Accessory.h"
 #include"TransferSharedPtr.h"
 
 #include"WebInquirer.h"
@@ -131,15 +130,6 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
   CVirtualMarket::Dump(dc);
 }
 #endif //_DEBUG
-
-void CChinaMarket::SetRecordRTData(void) {
-  if (m_fSaveRTData) {
-    m_fSaveRTData = false;
-  }
-  else {
-    m_fSaveRTData = true;
-  }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

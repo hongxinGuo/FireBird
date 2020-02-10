@@ -675,7 +675,8 @@ void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnRecordRtData() {
   // TODO: Add your command handler code here
-  gl_ChinaStockMarket.SetRecordRTData();
+  if (gl_ChinaStockMarket.IsRecordingRTData()) gl_ChinaStockMarket.SetRecordRTData(false);
+  else gl_ChinaStockMarket.SetRecordRTData(true);
 }
 
 void CMainFrame::OnUpdateRecordRtData(CCmdUI* pCmdUI) {

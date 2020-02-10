@@ -9,7 +9,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
-#include"ChinaMarket.h"
+#include"WebInquirer.h"
 
 UINT ThreadReadTengxunRTData(LPVOID pParam) {
   CTengxunRTWebInquiry* pTengxunRTWebData = (CTengxunRTWebInquiry*)pParam;

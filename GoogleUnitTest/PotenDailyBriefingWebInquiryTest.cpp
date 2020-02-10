@@ -1,5 +1,5 @@
 #include"pch.h"
-#include"ChinaMarket.h"
+#include"WebInquirer.h"
 
 #include"RTData.h"
 
