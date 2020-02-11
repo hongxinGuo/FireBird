@@ -795,16 +795,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 19900302);
   }
 
-  TEST_F(CChinaMarketTest, TestGetReadingSinaRTDataTime) {
-    time_t tt = 1010101010;
-    gl_ChinaStockMarket.SetReadingSinaRTDataTime(tt);
-    EXPECT_EQ(gl_ChinaStockMarket.GetReadingSinaRTDataTime(), tt);
+  TEST_F(CChinaMarketTest, TestGetStockCodeForInquiringSinaRTData) {
+    gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(_T("sh601919"));
+    EXPECT_EQ(gl_ChinaStockMarket.GetStockCodeForInquiringSinaRTData(), _T("sh601919"));
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingNeteaseDayLineDataTime) {
-    time_t tt = 1010101010;
-    gl_ChinaStockMarket.SetReadingNeteaseDayLineDataTime(tt);
-    EXPECT_EQ(gl_ChinaStockMarket.GetReadingNeteaseDayLineDataTime(), tt);
+    gl_ChinaStockMarket.SetStockCodeForInquiringNeteaseDayLine(_T("0600000"));
+    EXPECT_EQ(gl_ChinaStockMarket.GetStockCodeForInquiringNeteaseDayLine(), _T("0600000"));
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingTengxunRTDataTime) {

@@ -174,12 +174,12 @@ public:
   size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  void SetReadingSinaRTDataTime(clock_t tt) noexcept { m_ReadingSinaRTDataTime = tt; }
-  clock_t GetReadingSinaRTDataTime(void) noexcept { return m_ReadingSinaRTDataTime; }
+  void SetStockCodeForInquiringSinaRTData(CString strStockCode) noexcept { m_strStockCodeForInquiringSinaRTData = strStockCode; }
+  CString GetStockCodeForInquiringSinaRTData(void) noexcept { return m_strStockCodeForInquiringSinaRTData; }
   void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
   clock_t GetReadingTengxunRTDataTime(void) noexcept { return m_ReadingTengxunRTDataTime; }
-  void SetReadingNeteaseDayLineDataTime(clock_t tt) noexcept { m_ReadingNeteaseDayLineDataTime = tt; }
-  clock_t GetReadingNeteaseDayLineDataTime(void) noexcept { return m_ReadingNeteaseDayLineDataTime; }
+  void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) noexcept { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+  CString GetStockCodeForInquiringNeteaseDayLine(void) noexcept { return m_strStockCodeForInquiringNeteaseDayLine; }
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
@@ -307,9 +307,9 @@ protected:
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量
-  atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
-  atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  atomic<clock_t> m_ReadingNeteaseDayLineDataTime; // 每次读取网易日线历史数据的时间
+  CString m_strStockCodeForInquiringSinaRTData;
+  clock_t m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
+  CString m_strStockCodeForInquiringNeteaseDayLine;
 
   // 更新股票代码数据库标识
   atomic_bool m_fUpdateStockCodeDB;

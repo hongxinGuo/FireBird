@@ -452,22 +452,16 @@ void CMainFrame::UpdateStatus(void) {
     gl_ChinaStockMarket.SetCurrentEditStockChanged(false);
   }
   // 显示新浪实时数据读取时间（单位为毫秒）
-  char buffer[30];
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingSinaRTDataTime());
-  str = buffer;
-  str += _T("ms");
-  m_wndStatusBar.SetPaneText(4, (LPCTSTR)str);
+  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_ChinaStockMarket.GetStockCodeForInquiringSinaRTData());
 
   // 显示活跃股票总数
+  char buffer[30];
   sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetTotalActiveStock());
   str = buffer;
   m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
 
   // 显示网易日线历史数据读取时间（单位为毫秒）
-  sprintf_s(buffer, "%d", gl_ChinaStockMarket.GetReadingNeteaseDayLineDataTime());
-  str = buffer;
-  str += _T("ms");
-  m_wndStatusBar.SetPaneText(6, (LPCTSTR)str);
+  m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_ChinaStockMarket.GetStockCodeForInquiringNeteaseDayLine());
 
   //更新时间
   m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_ChinaStockMarket.GetTimeString());
@@ -661,7 +655,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-}
+  }
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
