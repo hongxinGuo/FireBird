@@ -132,7 +132,7 @@ long CVirtualMarket::GetNextDay(long lDay, long lTimeSpanDays) noexcept {
   return (lNewDay);
 }
 
-CString CVirtualMarket::GetTimeString(void) {
+CString CVirtualMarket::GetLocalTimeString(void) {
   char buffer[30];
   tm tmLocal;
 

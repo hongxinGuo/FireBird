@@ -464,7 +464,7 @@ void CMainFrame::UpdateStatus(void) {
   m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_ChinaStockMarket.GetStockCodeForInquiringNeteaseDayLine());
 
   //更新时间
-  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_ChinaStockMarket.GetTimeString());
+  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_ChinaStockMarket.GetLocalTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -655,7 +655,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
   else pCmdUI->Enable(true);
 #endif
-  }
+}
 
 void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here

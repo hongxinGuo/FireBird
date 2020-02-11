@@ -35,7 +35,7 @@ void CSinaRTWebInquiry::InquireNextWebData(void) {
   else { // 开市时使用今日活跃股票池
     strMiddle = GetNextInquiringStr(iInquiringNumber, true);
   }
-  gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(strMiddle.Left(8));
+  gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(strMiddle.Left(8)); // 只提取第一个股票代码
   CreateTotalInquiringString(strMiddle);
 
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）

@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
     CString str;
     str = buffer;
 
-    EXPECT_EQ(str.Compare(gl_VirtualMarket.GetTimeString()), 0);
+    EXPECT_EQ(str.Compare(gl_VirtualMarket.GetLocalTimeString()), 0);
 
     sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
     str = buffer;

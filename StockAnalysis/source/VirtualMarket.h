@@ -39,7 +39,7 @@ public:
   bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept;
   long GetNextDay(long lDay, long lTimeSpanDays = 1) noexcept;
 
-  CString GetTimeString(void); // 得到本地时间的字符串
+  CString GetLocalTimeString(void); // 得到本地时间的字符串
   CString GetMarketTimeString(void); // 得到本市场时间的字符串
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
