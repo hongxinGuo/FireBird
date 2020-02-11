@@ -1001,7 +1001,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CDayLine id;
     CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
-    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
     gl_ChinaStockMarket.__TEST_SetMarketDay(20190101);
 
     for (int i = 0; i < 10; i++) {
@@ -1030,7 +1030,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLine();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
 
     setDayLine.m_strFilter = _T("[Day] = 21101201");
     setDayLine.Open();
@@ -1171,7 +1171,7 @@ namespace StockAnalysisTest {
     pStock->UpdateDayLineStartEndDay();
     EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900102);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay2) {
@@ -1207,7 +1207,7 @@ namespace StockAnalysisTest {
     pStock->UpdateDayLineStartEndDay();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {

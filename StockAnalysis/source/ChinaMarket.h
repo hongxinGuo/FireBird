@@ -57,11 +57,13 @@ public:
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
-  bool TaskUpdateStockCodeDB(void);
+  bool TaskCheckDayLineDB(void);
   bool TaskCheckStartReceivingData(long lCurrentTime);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskResetMarketAgain(long lCurrentTime);
+
+  bool TaskUpdateStockCodeSet(void);
 
   bool TaskShowCurrentTransaction(void);
 
@@ -155,8 +157,8 @@ public:
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsUpdateStockCodeDB(void);
-  void ClearUpdateStockCodeDBFlag(void);
+  bool IsDayLineDBUpdated(void);
+  void ClearDayLineDBUpdatedFlag(void);
 
   long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
   void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
@@ -240,6 +242,9 @@ public:
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
+  void SetUpdateStockCodeSet(bool fFlag) noexcept { m_fUpdateStockCode = fFlag; }
+  bool IsUpdateStockCodeSet(void) noexcept { bool fFlag = m_fUpdateStockCode; return fFlag; }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -302,6 +307,9 @@ protected:
   atomic<clock_t> m_ReadingSinaRTDataTime; // 每次读取新浪实时数据的时间
   atomic<clock_t> m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
   atomic<clock_t> m_ReadingNeteaseDayLineDataTime; // 每次读取网易日线历史数据的时间
+
+  // 更新股票代码数据库标识
+  atomic_bool m_fUpdateStockCode;
 
   // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量

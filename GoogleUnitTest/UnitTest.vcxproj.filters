@@ -153,6 +153,9 @@
     <ClCompile Include="NeteaseRTWebInquiryTest.cpp">
       <Filter>Test源文件\China Stock Market\网络通信</Filter>
     </ClCompile>
+    <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp">
+      <Filter>Test源文件\China Stock Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

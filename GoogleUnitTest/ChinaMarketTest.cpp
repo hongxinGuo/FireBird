@@ -88,14 +88,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestClearUpdateStockCodeDBFlag) {
-    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
     for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
       CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(i);
       pStock->SetDayLineDBUpdated(true);
     }
-    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
-    gl_ChinaStockMarket.ClearUpdateStockCodeDBFlag();
-    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
+    gl_ChinaStockMarket.ClearDayLineDBUpdatedFlag();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaMarketTest, TestGetTengxunInquiringStockStr) {
@@ -637,9 +637,9 @@ namespace StockAnalysisTest {
     tm tm_;
     tm_.tm_wday = 1;
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91259));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91159));
     EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91300));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91200));
     EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113500));
     EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
@@ -677,16 +677,16 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetDayLineNeedSaveNumber(1);
     gl_ChinaStockMarket.SetDayLineNeedProcessNumber(1);
     gl_ChinaStockMarket.SetDayLineNeedUpdateNumber(1);
-    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    gl_ChinaStockMarket.TaskCheckDayLineDB();
     EXPECT_TRUE(gl_ChinaStockMarket.IsSaveDayLine());
     gl_ChinaStockMarket.SetDayLineNeedProcessNumber(0);
-    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    gl_ChinaStockMarket.TaskCheckDayLineDB();
     EXPECT_TRUE(gl_ChinaStockMarket.IsSaveDayLine());
     gl_ChinaStockMarket.SetDayLineNeedSaveNumber(0);
-    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    gl_ChinaStockMarket.TaskCheckDayLineDB();
     EXPECT_TRUE(gl_ChinaStockMarket.IsSaveDayLine());
     gl_ChinaStockMarket.SetDayLineNeedUpdateNumber(0);
-    gl_ChinaStockMarket.TaskUpdateStockCodeDB();
+    gl_ChinaStockMarket.TaskCheckDayLineDB();
     EXPECT_FALSE(gl_ChinaStockMarket.IsSaveDayLine());
   }
 

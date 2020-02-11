@@ -84,6 +84,7 @@
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
     <ClCompile Include="QueueRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
+    <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />

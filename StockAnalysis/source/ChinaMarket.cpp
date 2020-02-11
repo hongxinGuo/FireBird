@@ -469,14 +469,14 @@ bool CChinaMarket::IsStock(CString strStockCode) {
   }
 }
 
-bool CChinaMarket::IsUpdateStockCodeDB(void) {
+bool CChinaMarket::IsDayLineDBUpdated(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineDBUpdated()) return true;
   }
   return false;
 }
 
-void CChinaMarket::ClearUpdateStockCodeDBFlag(void) {
+void CChinaMarket::ClearDayLineDBUpdatedFlag(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     pStock->SetDayLineDBUpdated(false);
   }
@@ -543,6 +543,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
     CRTDataPtr pRTData = gl_RTDataContainer.PopSinaRTData();
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
+      continue;
     }
     if (pRTData->IsActive()) { // 此实时数据有效？
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
@@ -1122,6 +1123,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskClearChoicedRTDataSet(lCurrentTime);
 
+    TaskUpdateStockCodeSet();
+    TaskCheckDayLineDB();
+
     return true;
   } // 每一分钟一次的任务
   else {
@@ -1151,7 +1155,7 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   return false;
 }
 
-bool CChinaMarket::TaskUpdateStockCodeDB(void) {
+bool CChinaMarket::TaskCheckDayLineDB(void) {
   if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
     if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("日线历史数据处理过程中程序有瑕疵"));
@@ -1161,10 +1165,10 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
     CString str;
     str = _T("日线历史数据更新完毕");
     gl_systemMessage.PushInformationMessage(str);
-    if (IsUpdateStockCodeDB()) {
+    if (IsDayLineDBUpdated()) {
       // 更新股票池数据库
-      AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
-      ClearUpdateStockCodeDBFlag();
+      SetUpdateStockCodeSet(true);
+      ClearDayLineDBUpdatedFlag();
     }
   }
   return true;
@@ -1175,7 +1179,7 @@ bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
     m_fStartReceivingData = false;
     return(m_fStartReceivingData);
   }
-  else if ((lCurrentTime < 91300) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+  else if ((lCurrentTime < 91200) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
     m_fStartReceivingData = false;
 
     return(m_fStartReceivingData);
@@ -1220,6 +1224,14 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
     }
   }
   return true;
+}
+
+bool CChinaMarket::TaskUpdateStockCodeSet(void) {
+  if (IsUpdateStockCodeSet()) {
+    AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
+    SetUpdateStockCodeSet(false);
+  }
+  return false;
 }
 
 bool CChinaMarket::TaskShowCurrentTransaction(void) {
@@ -1292,7 +1304,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
       m_fSaveDayLine = true;
       gl_ChinaStockMarket.SaveDayLineData();
     }
-    TaskUpdateStockCodeDB();
+    TaskCheckDayLineDB();
     return true;
   } // 每十秒钟一次的任务
   else {
