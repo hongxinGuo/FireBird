@@ -55,7 +55,6 @@ CChinaMarket::~CChinaMarket() {
 }
 
 void CChinaMarket::ResetMarket(void) {
-  Reset();
   TRACE(_T("重置中国股市\n"));
   CString str = _T("重置中国股市于北京标准时间：");
   str += GetMarketTimeString();
@@ -64,6 +63,7 @@ void CChinaMarket::ResetMarket(void) {
          || gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1);
   }
+  Reset();
   LoadStockCodeDB();
   LoadOptionDB();
 }
@@ -1020,6 +1020,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
 
+  // 判断是否开始正常收集数据
+  TaskCheckStartReceivingData(lCurrentTime);
+
   if (s_iCountDownProcessWebRTData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
@@ -1106,9 +1109,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
 
-    // 判断是否开始正常收集数据
-    TaskCheckStartReceivingData(lCurrentTime);
-
     // 判断中国股票市场开市状态
     TaskCheckMarketOpen(lCurrentTime);
 
@@ -1175,8 +1175,9 @@ bool CChinaMarket::TaskCheckStartReceivingData(long lCurrentTime) {
     m_fStartReceivingData = false;
     return(m_fStartReceivingData);
   }
-  else if ((lCurrentTime < 91400) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
+  else if ((lCurrentTime < 91300) || (lCurrentTime > 150630) || ((lCurrentTime > 113500) && (lCurrentTime < 125500))) { //下午三点六分三十秒市场交易结束（为了保证最后一个临时数据的存储）
     m_fStartReceivingData = false;
+
     return(m_fStartReceivingData);
   }
   else m_fStartReceivingData = true;
@@ -1187,7 +1188,9 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
   if (!IsWorkingDay()) { //周六或者周日闭市。结构tm用0--6表示星期日至星期六
     m_fMarketOpened = false;
   }
-  else if ((lCurrentTime > 92800) && (lCurrentTime < 150300)) m_fMarketOpened = true;
+  else if ((lCurrentTime > 92800) && (lCurrentTime < 150300)) {
+    m_fMarketOpened = true;
+  }
   else m_fMarketOpened = false;
 
   return m_fMarketOpened;
@@ -1197,7 +1200,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 91300) && (lCurrentTime <= 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
+    if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       m_fSystemReady = false;
     }

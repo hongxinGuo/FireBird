@@ -11,8 +11,6 @@ using namespace std;
 class CDayLine final : public CObject {
 public:
   CDayLine();
-  CDayLine(CDayLine&);
-  void operator=(CDayLine&);
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
   bool SaveData(CSetDayLine& setDayLine);
@@ -36,13 +34,10 @@ public:
   void SetStockName(CString str) { m_strStockName = str; }
 
   long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(char* buffer) { m_lLastClose = static_cast<long>(GetValue(buffer)); }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(char* buffer) { m_lOpen = static_cast<long>(GetValue(buffer)); }
   void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
   long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(char* buffer) { m_lHigh = static_cast<long>(GetValue(buffer)); }
   void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
   long GetLow(void) noexcept { return m_lLow; }
   void SetLow(char* buffer) { m_lLow = static_cast<long>(GetValue(buffer)); }
@@ -149,46 +144,46 @@ protected:
   long m_lClose; // 收盘价
 
   // 以下数值是实际值
-  double			m_dUpDown;						// 涨跌额
-  double      m_dUpDownRate;
-  double			m_dChangeHandRate;			// 换手率
-  INT64	      m_llVolume;							// 成交量,单位:股
-  INT64		    m_llAmount;							// 成交金额,单位:元/万元（大盘）
-  INT64	      m_llTotalValue;					// 总市值。单位：万元
-  INT64       m_llCurrentValue;				// 流通市值。单位：万元
+  double m_dUpDown;	// 涨跌额
+  double m_dUpDownRate;
+  double m_dChangeHandRate;	// 换手率
+  INT64 m_llVolume;	// 成交量,单位:股
+  INT64	m_llAmount;	// 成交金额,单位:元/万元（大盘）
+  INT64	m_llTotalValue;	// 总市值。单位：万元
+  INT64 m_llCurrentValue; // 流通市值。单位：万元
 
-  long			  m_lOrdinaryBuyVolume;     // 向上买入。成交价接近或等于卖一，但不超过。单位：股
-  long			  m_lAttackBuyVolume;		    // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
-  long			  m_lStrongBuyVolume;		    // 向上强力买入,成交价超过之前的卖二报价。
-  long			  m_lOrdinarySellVolume;
-  long			  m_lAttackSellVolume;			// 向下卖出，低于买一价但高于买二价
-  long			  m_lStrongSellVolume;		  // 向下强力卖出,成交价低于之前的买二报价
-  long			  m_lUnknownVolume;
-  long			  m_lCancelBuyVolume;		    // 买单撤单量
-  long			  m_lCancelSellVolume;			// 卖单撤单量
-  double      m_dRelativeStrong;        // 相对强弱
+  long m_lOrdinaryBuyVolume; // 向上买入。成交价接近或等于卖一，但不超过。单位：股
+  long m_lAttackBuyVolume; // 向上进攻性买入，成交价超过卖一价格但不超过卖二价。这个成交数量包括了m_lStrongBuyVolume。
+  long m_lStrongBuyVolume; // 向上强力买入,成交价超过之前的卖二报价。
+  long m_lOrdinarySellVolume;
+  long m_lAttackSellVolume; // 向下卖出，低于买一价但高于买二价
+  long m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
+  long m_lUnknownVolume;
+  long m_lCancelBuyVolume; // 买单撤单量
+  long m_lCancelSellVolume; // 卖单撤单量
+  double m_dRelativeStrong; // 相对强弱
 
-  long        m_lTransactionNumber;
-  long        m_lTransactionNumberBelow5000;
-  long        m_lTransactionNumberBelow50000;
-  long        m_lTransactionNumberBelow200000;
-  long        m_lTransactionNumberAbove200000;
+  long m_lTransactionNumber;
+  long m_lTransactionNumberBelow5000;
+  long m_lTransactionNumberBelow50000;
+  long m_lTransactionNumberBelow200000;
+  long m_lTransactionNumberAbove200000;
 
-  long			  m_lAttackBuyBelow50000;
-  long			  m_lAttackBuyBelow200000;
-  long			  m_lAttackBuyAbove200000;
-  long			  m_lAttackSellBelow50000;
-  long			  m_lAttackSellBelow200000;
-  long			  m_lAttackSellAbove200000;
+  long m_lAttackBuyBelow50000;
+  long m_lAttackBuyBelow200000;
+  long m_lAttackBuyAbove200000;
+  long m_lAttackSellBelow50000;
+  long m_lAttackSellBelow200000;
+  long m_lAttackSellAbove200000;
 
 public:
   // don't need to save
-  double      m_d3DayRS;
-  double			m_d5DayRS;
-  double			m_d10DayRS;
-  double			m_d30DayRS;
-  double			m_d60DayRS;
-  double			m_d120DayRS;
+  double m_d3DayRS;
+  double m_d5DayRS;
+  double m_d10DayRS;
+  double m_d30DayRS;
+  double m_d60DayRS;
+  double m_d120DayRS;
 };
 
 typedef shared_ptr<CDayLine> CDayLinePtr;

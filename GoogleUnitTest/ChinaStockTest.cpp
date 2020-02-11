@@ -1302,4 +1302,74 @@ namespace StockAnalysisTest {
     }
     EXPECT_TRUE(stock.IsDayLineLoaded());
   }
+
+  TEST_F(CChinaStockTest, TestSaveCalculatedInfo) {
+    CChinaStock stock;
+
+    stock.SetTransactionTime(FormatToTTime(19900101));
+    stock.SetMarket(__SHANGHAI_MARKET__);
+    stock.SetStockCode(_T("sh600601"));
+    stock.SetTransactionNumber(1);
+    stock.SetTransactionNumberBelow5000(2);
+    stock.SetTransactionNumberBelow50000(3);
+    stock.SetTransactionNumberBelow200000(4);
+    stock.SetTransactionNumberAbove200000(5);
+
+    stock.SetCancelBuyVolume(6);
+    stock.SetCancelSellVolume(7);
+    stock.SetAttackBuyVolume(8);
+    stock.SetAttackSellVolume(9);
+    stock.SetStrongBuyVolume(10);
+    stock.SetStrongSellVolume(11);
+    stock.SetUnknownVolume(12);
+    stock.SetOrdinaryBuyVolume(13);
+    stock.SetOrdinarySellVolume(14);
+    stock.SetAttackBuyBelow50000(15);
+    stock.SetAttackBuyBelow200000(16);
+    stock.SetAttackBuyAbove200000(17);
+    stock.SetAttackSellBelow50000(18);
+    stock.SetAttackBuyBelow200000(19);
+    stock.SetAttackBuyAbove200000(20);
+
+    CSetDayLineInfo setDayLineInfo;
+    setDayLineInfo.Open();
+    setDayLineInfo.AddNew();
+    stock.SaveCalculatedInfo(setDayLineInfo);
+    setDayLineInfo.Update();
+    setDayLineInfo.Close();
+
+    CDayLine dayLine;
+    setDayLineInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
+    setDayLineInfo.Open();
+    dayLine.LoadData(setDayLineInfo);
+    setDayLineInfo.Close();
+    EXPECT_EQ(dayLine.GetTime(), 0);
+    EXPECT_STREQ(dayLine.GetStockCode(), _T(""));
+    EXPECT_EQ(dayLine.GetMarket(), 0);
+    EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());
+    EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stock.GetTransactionNumberBelow5000());
+    EXPECT_EQ(dayLine.GetTransactionNumberBelow50000(), stock.GetTransactionNumberBelow50000());
+    EXPECT_EQ(dayLine.GetTransactionNumberBelow200000(), stock.GetTransactionNumberBelow200000());
+    EXPECT_EQ(dayLine.GetTransactionNumberAbove200000(), stock.GetTransactionNumberAbove200000());
+    EXPECT_EQ(dayLine.GetCancelBuyVolume(), stock.GetCancelBuyVolume());
+    EXPECT_EQ(dayLine.GetCancelSellVolume(), stock.GetCancelSellVolume());
+    EXPECT_EQ(dayLine.GetAttackBuyVolume(), stock.GetAttackBuyVolume());
+    EXPECT_EQ(dayLine.GetAttackSellVolume(), stock.GetAttackSellVolume());
+    EXPECT_EQ(dayLine.GetStrongBuyVolume(), stock.GetStrongBuyVolume());
+    EXPECT_EQ(dayLine.GetStrongSellVolume(), stock.GetStrongSellVolume());
+    EXPECT_EQ(dayLine.GetUnknownVolume(), stock.GetUnknownVolume());
+    EXPECT_EQ(dayLine.GetOrdinaryBuyVolume(), stock.GetOrdinaryBuyVolume());
+    EXPECT_EQ(dayLine.GetOrdinarySellVolume(), stock.GetOrdinarySellVolume());
+    EXPECT_EQ(dayLine.GetAttackBuyBelow50000(), stock.GetAttackBuyBelow50000());
+    EXPECT_EQ(dayLine.GetAttackBuyBelow200000(), stock.GetAttackBuyBelow200000());
+    EXPECT_EQ(dayLine.GetAttackBuyAbove200000(), stock.GetAttackBuyAbove200000());
+    EXPECT_EQ(dayLine.GetAttackSellBelow50000(), stock.GetAttackSellBelow50000());
+    EXPECT_EQ(dayLine.GetAttackSellBelow200000(), stock.GetAttackSellBelow200000());
+    EXPECT_EQ(dayLine.GetAttackSellAbove200000(), stock.GetAttackSellAbove200000());
+  }
+
+  TEST_F(CChinaStockTest, TestProcessRTData) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
+  }
 }

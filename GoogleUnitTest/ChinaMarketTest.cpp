@@ -552,8 +552,8 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetResetMarket(false);
     gl_ChinaStockMarket.TaskResetMarket(91259);
     EXPECT_FALSE(gl_ChinaStockMarket.IsResetMarket());
-    gl_ChinaStockMarket.TaskResetMarket(91401);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsResetMarket());
+    gl_ChinaStockMarket.TaskResetMarket(91400);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
     gl_ChinaStockMarket.TaskResetMarket(91300);
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
@@ -602,6 +602,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsRTDataSetCleared());
   }
 
+  TEST_F(CChinaMarketTest, TestIsCurrentEditStockChanged) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
+    gl_ChinaStockMarket.SetCurrentEditStockChanged(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
+    gl_ChinaStockMarket.SetCurrentEditStockChanged(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
+  }
+
   TEST_F(CChinaMarketTest, TestCheckMarketOpen) {
     tm tm_;
     tm_.tm_wday = 1;
@@ -629,9 +637,9 @@ namespace StockAnalysisTest {
     tm tm_;
     tm_.tm_wday = 1;
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91359));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91259));
     EXPECT_FALSE(gl_ChinaStockMarket.IsStartReceivingData());
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91400));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(91300));
     EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskCheckStartReceivingData(113500));
     EXPECT_TRUE(gl_ChinaStockMarket.IsStartReceivingData());

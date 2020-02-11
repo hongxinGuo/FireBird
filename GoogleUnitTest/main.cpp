@@ -8,6 +8,14 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include<CodeCoverage/CodeCoverage.h>
+#pragma managed(push, off)
+ExcludeSourceFromCodeCoverage(Exclude1, L"\\SSD500\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.cpp");
+ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.cpp");
+ExcludeSourceFromCodeCoverage(Exclude3, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.h");
+ExcludeSourceFromCodeCoverage(Exclude4, L"std::bool::*");
+#pragma managed(pop)
+
 #include"EnvironmentSetUp.h"
 
 using namespace StockAnalysisTest;

@@ -7,94 +7,6 @@ CDayLine::CDayLine() : CObject() {
   Reset();
 }
 
-CDayLine::CDayLine(CDayLine& oneDl) {
-  m_time = oneDl.m_time;
-  m_lDay = oneDl.m_lDay;
-  m_wMarket = oneDl.m_wMarket;
-  m_lLastClose = oneDl.m_lLastClose;
-  m_lOpen = oneDl.m_lOpen;
-  m_lHigh = oneDl.m_lHigh;
-  m_lLow = oneDl.m_lLow;
-  m_lClose = oneDl.m_lClose;
-  m_llVolume = oneDl.m_llVolume;
-  m_llAmount = oneDl.m_llAmount;
-  m_dUpDown = oneDl.m_dUpDown;
-  m_dUpDownRate = oneDl.m_dUpDownRate;
-  m_dChangeHandRate = oneDl.m_dChangeHandRate;
-  m_llTotalValue = oneDl.m_llTotalValue;
-  m_llCurrentValue = oneDl.m_llCurrentValue;
-  m_lTransactionNumber = oneDl.m_lTransactionNumber;
-  m_lTransactionNumberBelow5000 = oneDl.m_lTransactionNumberBelow5000;
-  m_lTransactionNumberBelow50000 = oneDl.m_lTransactionNumberBelow50000;
-  m_lTransactionNumberBelow200000 = oneDl.m_lTransactionNumberBelow200000;
-  m_lTransactionNumberAbove200000 = oneDl.m_lTransactionNumberAbove200000;
-  m_lAttackBuyVolume = oneDl.m_lAttackBuyVolume;
-  m_lStrongBuyVolume = oneDl.m_lStrongBuyVolume;
-  m_lAttackSellVolume = oneDl.m_lAttackSellVolume;
-  m_lStrongSellVolume = oneDl.m_lStrongSellVolume;
-  m_lUnknownVolume = oneDl.m_lUnknownVolume;
-  m_lCancelBuyVolume = oneDl.m_lCancelBuyVolume;
-  m_lCancelSellVolume = oneDl.m_lCancelSellVolume;
-  m_dRelativeStrong = oneDl.m_dRelativeStrong;
-  m_lOrdinaryBuyVolume = oneDl.m_lOrdinaryBuyVolume;
-  m_lAttackBuyBelow50000 = oneDl.m_lAttackBuyBelow50000;
-  m_lAttackBuyBelow200000 = oneDl.m_lAttackBuyBelow200000;
-  m_lAttackBuyAbove200000 = oneDl.m_lAttackBuyAbove200000;
-  m_lOrdinarySellVolume = oneDl.m_lOrdinarySellVolume;
-  m_lAttackSellBelow50000 = oneDl.m_lAttackSellBelow50000;
-  m_lAttackSellBelow200000 = oneDl.m_lAttackSellBelow200000;
-  m_lAttackSellAbove200000 = oneDl.m_lAttackSellAbove200000;
-  m_d3DayRS = oneDl.m_d3DayRS;
-  m_d5DayRS = oneDl.m_d5DayRS;
-  m_d10DayRS = oneDl.m_d10DayRS;
-  m_d30DayRS = oneDl.m_d30DayRS;
-  m_d60DayRS = oneDl.m_d60DayRS;
-  m_d120DayRS = oneDl.m_d120DayRS;
-}
-
-void CDayLine::operator =(CDayLine& oneDl) {
-  m_lDay = oneDl.m_lDay;
-  m_lLastClose = oneDl.m_lLastClose;
-  m_lOpen = oneDl.m_lOpen;
-  m_lHigh = oneDl.m_lHigh;
-  m_lLow = oneDl.m_lLow;
-  m_lClose = oneDl.m_lClose;
-  m_llVolume = oneDl.m_llVolume;
-  m_llAmount = oneDl.m_llAmount;
-  m_dUpDown = oneDl.m_dUpDown;
-  m_dUpDownRate = oneDl.m_dUpDownRate;
-  m_dChangeHandRate = oneDl.m_dChangeHandRate;
-  m_llTotalValue = oneDl.m_llTotalValue;
-  m_llCurrentValue = oneDl.m_llCurrentValue;
-  m_lTransactionNumber = oneDl.m_lTransactionNumber;
-  m_lTransactionNumberBelow5000 = oneDl.m_lTransactionNumberBelow5000;
-  m_lTransactionNumberBelow50000 = oneDl.m_lTransactionNumberBelow50000;
-  m_lTransactionNumberBelow200000 = oneDl.m_lTransactionNumberBelow200000;
-  m_lTransactionNumberAbove200000 = oneDl.m_lTransactionNumberAbove200000;
-  m_lAttackBuyVolume = oneDl.m_lAttackBuyVolume;
-  m_lStrongBuyVolume = oneDl.m_lStrongBuyVolume;
-  m_lAttackSellVolume = oneDl.m_lAttackSellVolume;
-  m_lStrongSellVolume = oneDl.m_lStrongSellVolume;
-  m_lUnknownVolume = oneDl.m_lUnknownVolume;
-  m_lCancelBuyVolume = oneDl.m_lCancelBuyVolume;
-  m_lCancelSellVolume = oneDl.m_lCancelSellVolume;
-  m_dRelativeStrong = oneDl.m_dRelativeStrong;
-  m_lOrdinaryBuyVolume = oneDl.m_lOrdinaryBuyVolume;
-  m_lAttackBuyBelow50000 = oneDl.m_lAttackBuyBelow50000;
-  m_lAttackBuyBelow200000 = oneDl.m_lAttackBuyBelow200000;
-  m_lAttackBuyAbove200000 = oneDl.m_lAttackBuyAbove200000;
-  m_lOrdinarySellVolume = oneDl.m_lOrdinarySellVolume;
-  m_lAttackSellBelow50000 = oneDl.m_lAttackSellBelow50000;
-  m_lAttackSellBelow200000 = oneDl.m_lAttackSellBelow200000;
-  m_lAttackSellAbove200000 = oneDl.m_lAttackSellAbove200000;
-  m_d3DayRS = oneDl.m_d3DayRS;
-  m_d5DayRS = oneDl.m_d5DayRS;
-  m_d10DayRS = oneDl.m_d10DayRS;
-  m_d30DayRS = oneDl.m_d30DayRS;
-  m_d60DayRS = oneDl.m_d60DayRS;
-  m_d120DayRS = oneDl.m_d120DayRS;
-}
-
 bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
   ASSERT(setDayLineInfo.IsOpen());
   m_lTransactionNumber = atol(setDayLineInfo.m_TransactionNumber);
@@ -125,6 +37,8 @@ void CDayLine::Reset(void) {
   m_lDay = 0;		// 类型
   m_time = 0;
   m_wMarket = 0;
+  m_strStockCode = _T("");
+  m_strStockName = _T("");
   m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0;							// 收盘价
   m_llVolume = 0;
   m_llAmount = 0;
