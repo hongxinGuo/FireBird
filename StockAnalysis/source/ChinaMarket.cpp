@@ -106,6 +106,8 @@ void CChinaMarket::Reset(void) {
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
   m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
 
+  m_fUpdateStockCodeDB = false;
+
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
   m_iDayLineNeedUpdate = 0;
@@ -1123,7 +1125,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskClearChoicedRTDataSet(lCurrentTime);
 
-    TaskUpdateStockCodeSet();
+    TaskUpdateStockCodeDB();
+    TaskUpdateOptionDB();
+
     TaskCheckDayLineDB();
 
     return true;
@@ -1167,7 +1171,7 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
     gl_systemMessage.PushInformationMessage(str);
     if (IsDayLineDBUpdated()) {
       // 更新股票池数据库
-      SetUpdateStockCodeSet(true);
+      SetUpdateStockCodeDB(true);
       ClearDayLineDBUpdatedFlag();
     }
   }
@@ -1226,12 +1230,20 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
   return true;
 }
 
-bool CChinaMarket::TaskUpdateStockCodeSet(void) {
-  if (IsUpdateStockCodeSet()) {
+bool CChinaMarket::TaskUpdateStockCodeDB(void) {
+  if (IsUpdateStockCodeDB()) {
     AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
-    SetUpdateStockCodeSet(false);
+    SetUpdateStockCodeDB(false);
   }
-  return false;
+  return true;
+}
+
+bool CChinaMarket::TaskUpdateOptionDB(void) {
+  if (IsUpdateOptionDB()) {
+    AfxBeginThread(ThreadUpdateOptionDB, nullptr);
+    SetUpdateOptionDB(false);
+  }
+  return true;
 }
 
 bool CChinaMarket::TaskShowCurrentTransaction(void) {

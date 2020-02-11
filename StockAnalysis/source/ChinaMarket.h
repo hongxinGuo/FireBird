@@ -63,7 +63,8 @@ public:
   bool TaskResetMarket(long lCurrentTime);
   bool TaskResetMarketAgain(long lCurrentTime);
 
-  bool TaskUpdateStockCodeSet(void);
+  bool TaskUpdateStockCodeDB(void);
+  bool TaskUpdateOptionDB(void);
 
   bool TaskShowCurrentTransaction(void);
 
@@ -242,8 +243,10 @@ public:
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
-  void SetUpdateStockCodeSet(bool fFlag) noexcept { m_fUpdateStockCode = fFlag; }
-  bool IsUpdateStockCodeSet(void) noexcept { bool fFlag = m_fUpdateStockCode; return fFlag; }
+  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
+  bool IsUpdateStockCodeDB(void) noexcept { bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
+  void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
+  bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
 
 private:
   // 初始化
@@ -309,7 +312,8 @@ protected:
   atomic<clock_t> m_ReadingNeteaseDayLineDataTime; // 每次读取网易日线历史数据的时间
 
   // 更新股票代码数据库标识
-  atomic_bool m_fUpdateStockCode;
+  atomic_bool m_fUpdateStockCodeDB;
+  atomic_bool m_fUpdateOptionDB;
 
   // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量

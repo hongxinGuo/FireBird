@@ -36,7 +36,7 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
     gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
-    gl_ChinaStockMarket.UpdateOptionDB(); // 更新选项数据库
+    gl_ChinaStockMarket.SetUpdateOptionDB(true); // 更新选项数据库
     // 显示花费的时间
     time(&tEnd);
     const long tDiffer = tEnd - tStart;
