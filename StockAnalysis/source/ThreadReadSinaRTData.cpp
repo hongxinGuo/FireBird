@@ -22,6 +22,6 @@ UINT ThreadReadSinaRTData(LPVOID pParam) {
       gl_WebInquirer.PushSinaRTData(pWebDataReceived);
     }
   }
-
+  ASSERT(!pSinaRTWebData->IsReadingWebData());
   return 1;
 }

@@ -20,6 +20,6 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
       gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
     }
   }
-
+  ASSERT(!pNeteaseRTWebData->IsReadingWebData());
   return 3;
 }

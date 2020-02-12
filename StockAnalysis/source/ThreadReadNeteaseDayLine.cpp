@@ -26,6 +26,6 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
   }
-
+  ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
   return 4; // 此线程正常返回值为4
 }

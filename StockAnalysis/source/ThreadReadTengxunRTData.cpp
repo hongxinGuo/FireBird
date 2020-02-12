@@ -22,6 +22,6 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
       gl_WebInquirer.PushTengxunRTData(pWebDataReceived);
     }
   }
-
+  ASSERT(!pTengxunRTWebData->IsReadingWebData());
   return 2;
 }
