@@ -49,6 +49,138 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(rtData.GetStockCode(), _T("sh600000"));
   }
 
+  TEST(CRTDataTest, TestIsActive) {
+    CRTData rtData;
+    EXPECT_FALSE(rtData.IsActive());
+    rtData.SetActive(true);
+    EXPECT_TRUE(rtData.IsActive());
+    rtData.SetActive(false);
+    EXPECT_FALSE(rtData.IsActive());
+  }
+
+  TEST(CRTDataTest, TestGetTransactionTime) {
+    CRTData rtData;
+    EXPECT_FALSE(rtData.GetTransactionTime());
+    rtData.SetTransactionTime(true);
+    EXPECT_TRUE(rtData.GetTransactionTime());
+    rtData.SetTransactionTime(false);
+    EXPECT_FALSE(rtData.GetTransactionTime());
+  }
+
+  TEST(CRTDataTest, TestGetMarket) {
+    CRTData rtData;
+    rtData.SetMarket(__SHANGHAI_MARKET__);
+    EXPECT_EQ(rtData.GetMarket(), __SHANGHAI_MARKET__);
+  }
+
+  TEST(CRTDataTest, TestGetLastClose) {
+    CRTData rtData;
+    rtData.SetLastClose(1010);
+    EXPECT_EQ(rtData.GetLastClose(), 1010);
+  }
+
+  TEST(CRTDataTest, TestGetOpen) {
+    CRTData rtData;
+    rtData.SetOpen(20202);
+    EXPECT_EQ(rtData.GetOpen(), 20202);
+  }
+
+  TEST(CRTDataTest, TestGetHigh) {
+    CRTData rtData;
+    rtData.SetHigh(30303);
+    EXPECT_EQ(rtData.GetHigh(), 30303);
+  }
+
+  TEST(CRTDataTest, TestGetLow) {
+    CRTData rtData;
+    rtData.SetLow(40404);
+    EXPECT_EQ(rtData.GetLow(), 40404);
+  }
+
+  TEST(CRTDataTest, TestGetNew) {
+    CRTData rtData;
+    rtData.SetNew(50505);
+    EXPECT_EQ(rtData.GetNew(), 50505);
+  }
+
+  TEST(CRTDataTest, TestGetAmount) {
+    CRTData rtData;
+    rtData.SetAmount(60606);
+    EXPECT_EQ(rtData.GetAmount(), 60606);
+  }
+
+  TEST(CRTDataTest, TestGetVolume) {
+    CRTData rtData;
+    rtData.SetVolume(70707);
+    EXPECT_EQ(rtData.GetVolume(), 70707);
+  }
+
+  TEST(CRTDataTest, TestGetTotalValue) {
+    CRTData rtData;
+    rtData.SetTotalValue(88);
+    EXPECT_EQ(rtData.GetTotalValue(), 88);
+  }
+
+  TEST(CRTDataTest, TestGetCurrentValue) {
+    CRTData rtData;
+    rtData.SetCurrentValue(999);
+    EXPECT_EQ(rtData.GetCurrentValue(), 999);
+  }
+
+  TEST(CRTDataTest, TestGetBuy) {
+    CRTData rtData;
+    rtData.SetBuy(1111);
+    EXPECT_EQ(rtData.GetBuy(), 1111);
+  }
+
+  TEST(CRTDataTest, TestGetSell) {
+    CRTData rtData;
+    rtData.SetSell(2222);
+    EXPECT_EQ(rtData.GetSell(), 2222);
+  }
+
+  TEST(CRTDataTest, TestGetHighLimit) {
+    CRTData rtData;
+    rtData.SetHighLimit(4444);
+    EXPECT_EQ(rtData.GetHighLimit(), 4444);
+  }
+
+  TEST(CRTDataTest, TestGetLowLimit) {
+    CRTData rtData;
+    rtData.SetLowLimit(5555);
+    EXPECT_EQ(rtData.GetLowLimit(), 5555);
+  }
+
+  TEST(CRTDataTest, TestGetPBuy) {
+    CRTData rtData;
+    for (int i = 0; i < 5; i++) {
+      rtData.SetPBuy(i, i + 10201);
+      EXPECT_TRUE(rtData.GetPBuy(i), i + 10201);
+    }
+  }
+
+  TEST(CRTDataTest, TestGetVBuy) {
+    CRTData rtData;
+    for (int i = 0; i < 5; i++) {
+      rtData.SetVBuy(i, i + 10101);
+      EXPECT_TRUE(rtData.GetVBuy(i), i + 10101);
+    }
+  }
+  TEST(CRTDataTest, TestGetPSell) {
+    CRTData rtData;
+    for (int i = 0; i < 5; i++) {
+      rtData.SetPSell(i, i + 30101);
+      EXPECT_TRUE(rtData.GetPSell(i), i + 30101);
+    }
+  }
+  TEST(CRTDataTest, TestGetVSell) {
+    CRTData rtData;
+    for (int i = 0; i < 5; i++) {
+      rtData.SetVSell(i, i + 50101);
+      EXPECT_TRUE(rtData.GetVSell(i), i + 50101);
+    }
+  }
+
   TEST(CRTDataTest, TestIsDataTimeAtCurrentDay) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -68,7 +200,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.IsValidTime());
   }
 
-  TEST(CRTDataTest, TestCheckSinaRTDataActive) {
+  TEST(CRTDataTest, TestCheckSinaRTDataMarket) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;

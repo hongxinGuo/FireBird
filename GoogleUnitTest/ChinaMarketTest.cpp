@@ -795,6 +795,11 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ChinaStockMarket.GetRelativeStrongEndDay(), 19900302);
   }
 
+  TEST_F(CChinaMarketTest, TestGetNewestTransactionTime) {
+    gl_ChinaStockMarket.SetNewestTransactionTime(10101010);
+    EXPECT_EQ(gl_ChinaStockMarket.GetNewestTransactionTime(), 10101010);
+  }
+
   TEST_F(CChinaMarketTest, TestGetStockCodeForInquiringSinaRTData) {
     gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(_T("sh601919"));
     EXPECT_EQ(gl_ChinaStockMarket.GetStockCodeForInquiringSinaRTData(), _T("sh601919"));

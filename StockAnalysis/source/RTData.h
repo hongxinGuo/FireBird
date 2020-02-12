@@ -216,6 +216,7 @@ public:
   void SetVSell(int iIndex, long lValue) { m_lVSell.at(iIndex) = lValue; }
 
   bool IsActive(void) noexcept { return m_fActive; }
+  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool CheckNeteaseRTDataActive(void);
   bool CheckSinaRTDataActive(void);
   bool CheckTengxunRTDataActive(void);

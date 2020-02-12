@@ -59,7 +59,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     if (exception->m_dwError == 404) {
       TRACE(_T("Error Code 404\n"));
     }
-
+    SetReadingWebData(false);
     TRACE(_T("%s net error\n"), m_strConnection.GetBuffer());
     return false;
   }

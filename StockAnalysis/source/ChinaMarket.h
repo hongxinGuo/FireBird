@@ -204,6 +204,7 @@ public:
   bool IsUsingTengxunRTDataReceiver(void) noexcept { return m_fUsingTengxunRTDataReceiver; }
 
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
+  void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
   bool IsStartReceivingData(void) noexcept { return m_fStartReceivingData; }
