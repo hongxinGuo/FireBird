@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.ClearChoicedRTDataQueue();
       gl_ChinaStockMarket.SetResetMarket(true);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
@@ -543,6 +544,21 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsRecordingRTData());
   }
 
+  TEST_F(CChinaMarketTest, TestSetUpdateStockCodeDB) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+    gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateStockCodeDB());
+  }
+  TEST_F(CChinaMarketTest, TestSetUpdateOptionDB) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateOptionDB());
+    gl_ChinaStockMarket.SetUpdateOptionDB(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateOptionDB());
+    gl_ChinaStockMarket.SetUpdateOptionDB(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateOptionDB());
+  }
+
   TEST_F(CChinaMarketTest, TestTaskResetMarket) {
     tm tm_;
     tm_.tm_wday = 1; // 星期一
@@ -554,9 +570,11 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.IsResetMarket());
     gl_ChinaStockMarket.TaskResetMarket(91400);
     EXPECT_FALSE(gl_ChinaStockMarket.IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
+    gl_ChinaStockMarket.SetSystemReady(true);
     gl_ChinaStockMarket.TaskResetMarket(91300);
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
+    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
@@ -588,6 +606,9 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
+    gl_ChinaStockMarket.SetResetMarket(false);
+    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_ChinaStockMarket.SetPermitResetMarket(true);
     EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(92500));
     EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
@@ -848,6 +869,22 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
   }
 
+  TEST_F(CChinaMarketTest, TestIsInvalidNeteaseRTData) {
+    CWebDataPtr pWebDataReceived;
+    pWebDataReceived = make_shared<CWebData>();
+    CString str = _T("_ntes_quote_callback({ });");
+    pWebDataReceived->m_pDataBuffer = new char[50];
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_TRUE(gl_ChinaStockMarket.IsInvalidNeteaseRTData(pWebDataReceived));
+    str = _T("_ntes_quote_callback({});");
+    strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
+    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->ResetCurrentPos();
+    EXPECT_FALSE(gl_ChinaStockMarket.IsInvalidNeteaseRTData(pWebDataReceived));
+  }
+
   TEST_F(CChinaMarketTest, TestIsValidNeteaseRTDataPrefix) {
     CWebDataPtr pWebDataReceived;
     pWebDataReceived = make_shared<CWebData>();
@@ -882,9 +919,18 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
   }
 
+  TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {
+    EXPECT_EQ(gl_ChinaStockMarket.GetChoicedRTDataSize(), 0);
+    CRTDataPtr pRTData = make_shared<CRTData>();
+    gl_ChinaStockMarket.StoreChoiceRTData(pRTData);
+    EXPECT_EQ(gl_ChinaStockMarket.GetChoicedRTDataSize(), 1);
+    gl_ChinaStockMarket.ClearChoicedRTDataQueue();
+    EXPECT_EQ(gl_ChinaStockMarket.GetChoicedRTDataSize(), 0);
+  }
+
   TEST_F(CChinaMarketTest, TestSchedulingTaskPerHour) {
     EXPECT_TRUE(gl_ChinaStockMarket.SchedulingTaskPerHour(3600, 10100));
-    EXPECT_FALSE(gl_ChinaStockMarket.SchedulingTaskPerHour(3599, 19000)) << _T("前面那个将计数器重置，此此调用尚差一秒，故而返回假");
+    EXPECT_FALSE(gl_ChinaStockMarket.SchedulingTaskPerHour(3599, 19000)) << _T("前面那个将计数器重置，此调用尚差一秒，故而返回假");
     EXPECT_TRUE(gl_ChinaStockMarket.SchedulingTaskPerHour(1, 10100));
   }
 }

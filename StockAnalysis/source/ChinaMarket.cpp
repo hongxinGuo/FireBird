@@ -1069,7 +1069,6 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   if (i5MinuteCounter < 0) {
     i5MinuteCounter = 299;
 
-    gl_systemMessage.PushInnerSystemInformationMessage(_T("五分钟调度执行中。。。"));
     TaskSaveTempDataIntoDB(lCurrentTime);
 
     return true;
@@ -1089,11 +1088,8 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
         gl_systemMessage.PushInformationMessage(str);
         UpdateTempRTData();
       }
-      else gl_systemMessage.PushInnerSystemInformationMessage(_T("时间不对"));
     }
-    else gl_systemMessage.PushInnerSystemInformationMessage(_T("尚未开市"));
   }
-  else gl_systemMessage.PushInnerSystemInformationMessage(_T("系统尚未准备好"));
 }
 
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
@@ -1834,7 +1830,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
   }
   setOption.m_pDatabase->CommitTrans();
   setOption.Close();
-  return false;
+  return true;
 }
 
 void CChinaMarket::LoadOptionDB(void) {
@@ -1881,5 +1877,5 @@ bool CChinaMarket::UpdateTempRTData(void) {
     AfxBeginThread(ThreadSaveTempRTData, nullptr);
   }
 
-  return false;
+  return true;
 }

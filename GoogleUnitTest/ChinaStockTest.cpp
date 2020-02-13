@@ -788,6 +788,29 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 10.01);
   }
 
+  TEST_F(CChinaStockTest, TestLoadStockCodeDB) {
+    CSetStockCode setStockCode;
+    CChinaStock stock;
+    setStockCode.m_strSort = _T("[ID]");
+    setStockCode.Open();
+    stock.LoadStockCodeDB(setStockCode);
+    EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
+    EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOed);
+    EXPECT_EQ(stock.GetDayLineStartDay(), setStockCode.m_DayLineStartDay);
+    EXPECT_EQ(stock.GetDayLineEndDay(), setStockCode.m_DayLineEndDay);
+    setStockCode.Close();
+    gl_ChinaStockMarket.CalculateTime();
+    stock.SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
+    long lCurrentDay = gl_ChinaStockMarket.GetDay();
+    setStockCode.Open();
+    stock.LoadStockCodeDB(setStockCode);
+    EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
+    EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOed);
+    EXPECT_EQ(stock.GetDayLineStartDay(), setStockCode.m_DayLineStartDay);
+    EXPECT_EQ(stock.GetDayLineEndDay(), lCurrentDay);
+    setStockCode.Close();
+  }
+
   TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
     CChinaStock id;
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
@@ -835,6 +858,28 @@ namespace StockAnalysisTest {
     stock.SetGuadan(10000, 10000);
     EXPECT_TRUE(stock.HaveGuadan(10000));
     EXPECT_EQ(stock.GetGuadan(10000), 10000);
+  }
+
+  TEST_F(CChinaStockTest, TestCheckCurrentRTData) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.CheckCurrentRTData());
+    stock.SetOrdinaryBuyVolume(-1);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
+    stock.SetOrdinaryBuyVolume(0);
+    stock.SetOrdinarySellVolume(-1);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
+    stock.SetAttackBuyVolume(-1);
+    stock.SetOrdinarySellVolume(0);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
+    stock.SetAttackBuyVolume(0);
+    stock.SetAttackSellVolume(-1);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
+    stock.SetStrongBuyVolume(-1);
+    stock.SetAttackSellVolume(0);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
+    stock.SetStrongBuyVolume(0);
+    stock.SetStrongSellVolume(-1);
+    EXPECT_FALSE(stock.CheckCurrentRTData());
   }
 
   TEST_F(CChinaStockTest, TestClearRTDataDeque) {

@@ -27,7 +27,6 @@ void CTengxunRTWebInquiry::InquireNextWebData(void) {
   else { // 开市时使用今日活跃股票池
     strMiddle = GetNextInquiringStr(900, false); // 目前暂时还是使用全部股票池
   }
-
   CreateTotalInquiringString(strMiddle);
   SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   StartReadingThread();
