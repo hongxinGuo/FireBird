@@ -155,7 +155,7 @@ namespace StockAnalysisTest {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPBuy(i, i + 10201);
-      EXPECT_TRUE(rtData.GetPBuy(i), i + 10201);
+      EXPECT_EQ(rtData.GetPBuy(i), i + 10201);
     }
   }
 
@@ -163,21 +163,21 @@ namespace StockAnalysisTest {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVBuy(i, i + 10101);
-      EXPECT_TRUE(rtData.GetVBuy(i), i + 10101);
+      EXPECT_EQ(rtData.GetVBuy(i), i + 10101);
     }
   }
   TEST(CRTDataTest, TestGetPSell) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPSell(i, i + 30101);
-      EXPECT_TRUE(rtData.GetPSell(i), i + 30101);
+      EXPECT_EQ(rtData.GetPSell(i), i + 30101);
     }
   }
   TEST(CRTDataTest, TestGetVSell) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVSell(i, i + 50101);
-      EXPECT_TRUE(rtData.GetVSell(i), i + 50101);
+      EXPECT_EQ(rtData.GetVSell(i), i + 50101);
     }
   }
 

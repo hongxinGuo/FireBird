@@ -47,6 +47,18 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间："));
   }
 
+  TEST_F(CCrweberIndexMarketTest, TestMaintainDatabase) {
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(10000));
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(11000));
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    EXPECT_TRUE(gl_CrweberIndexMarket.TaskMaintainDatabase(10001));
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
+    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(11001)) << _T("标识为假时永远不执行");
+  }
+
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {
     EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
@@ -61,6 +73,23 @@ namespace StockAnalysisTest {
     gl_CrweberIndexMarket.TaskResetMarket(10000);
     EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
+  }
+
+  TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDay) {
+    gl_CrweberIndexMarket.SetNewestDatabaseDay();
+
+    CSetCrweberIndex setCrweberIndex;
+    long lDay = 0;
+
+    setCrweberIndex.m_strSort = _T("[Day]");
+    setCrweberIndex.Open();
+    if (!setCrweberIndex.IsEOF()) {
+      setCrweberIndex.MoveLast();
+      lDay = setCrweberIndex.m_Day;
+    }
+    setCrweberIndex.Close();
+
+    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestDatabaseDay(), lDay);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDay) {

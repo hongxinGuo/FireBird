@@ -85,6 +85,7 @@ namespace StockAnalysisTest {
     id.m_dHANDY_TC_1YEAR = 33;
     id.m_dHANDY_TC_3YEAR = 34;
 
+    setCrweberIndex.m_strFilter = _T("[Day] = 20000101");
     setCrweberIndex.Open();
     setCrweberIndex.m_pDatabase->BeginTrans();
     while (!setCrweberIndex.IsEOF()) {

@@ -16,18 +16,25 @@ public:
   virtual void ResetMarket(void) override;
   void Reset(void);
 
+  bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
+  bool TaskMaintainDatabase(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
   bool LoadDatabase(void);
   bool SaveDatabase(void);
+  bool SetNewestDatabaseDay(void);
   bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
   long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }
   void SetNewestUpdateDay(long lDay) noexcept { m_lNewestUpdatedDay = lDay; }
+  long GetNewestDatabaseDay(void) noexcept { return m_lNewestDatabaseDay; }
+
+  bool IsMaintainDatabase(void) noexcept { return m_fMaintainDatabase; }
+  void SetMaintainDatabase(bool fFlag) noexcept { m_fMaintainDatabase = fFlag; }
 
 protected:
   vector<CCrweberIndexPtr> m_vCrweberIndex; // crweber.com网站上的油运指数
@@ -37,6 +44,7 @@ protected:
 
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUpdated;
+  bool m_fMaintainDatabase;
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;
 };

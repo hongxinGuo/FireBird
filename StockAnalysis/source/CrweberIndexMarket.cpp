@@ -23,6 +23,7 @@ CCrweberIndexMarket::~CCrweberIndexMarket() {
 void CCrweberIndexMarket::Reset(void) {
   m_fDataBaseLoaded = false;
   m_fTodayDataUpdated = true;
+  m_fMaintainDatabase = true;
   m_lNewestDatabaseDay = 0;
   m_lNewestUpdatedDay = 0;
   // 重置此全局变量
@@ -36,8 +37,8 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > s_timeLast + 60) {
-    SchedulingTaskPer1Minute(GetLocalTime() - s_timeLast, lCurrentTime);
+  if (GetLocalTime() > s_timeLast) {
+    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
   }
 
@@ -51,10 +52,17 @@ void CCrweberIndexMarket::ResetMarket(void) {
   gl_systemMessage.PushInformationMessage(str);
 }
 
+bool CCrweberIndexMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
+  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+  return true;
+}
+
 bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   TaskResetMarket(lCurrentTime);
+
+  TaskMaintainDatabase(lCurrentTime);
 
   // 自动查询crweber.com
   i1MinuteCounter -= lSecond;
@@ -66,8 +74,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
         gl_WebInquirer.GetCrweberIndexData();
       }
       else {
-        LoadDatabase();
-        SaveDatabase();
+        SetNewestDatabaseDay();
         m_fDataBaseLoaded = true;
       }
     }
@@ -76,6 +83,16 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   else {
     return false;
   }
+}
+
+bool CCrweberIndexMarket::TaskMaintainDatabase(long lCurrentTime) {
+  if ((lCurrentTime > 10000) && (lCurrentTime < 11000) && m_fMaintainDatabase) {
+    m_fMaintainDatabase = false;
+    LoadDatabase();
+    SaveDatabase();
+    return true;
+  }
+  return false;
 }
 
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
@@ -144,10 +161,12 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
   CSetCrweberIndex setCrweberIndex;
 
   setCrweberIndex.Open();
+  setCrweberIndex.m_pDatabase->BeginTrans();
   while (!setCrweberIndex.IsEOF()) {
     setCrweberIndex.Delete();
     setCrweberIndex.MoveNext();
   }
+  setCrweberIndex.m_pDatabase->CommitTrans();
   setCrweberIndex.Close();
 
   setCrweberIndex.Open();
@@ -160,6 +179,21 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
   setCrweberIndex.m_pDatabase->CommitTrans();
   setCrweberIndex.Close();
 
+  return true;
+}
+
+bool CCrweberIndexMarket::SetNewestDatabaseDay(void) {
+  CSetCrweberIndex setCrweberIndex;
+
+  setCrweberIndex.m_strSort = _T("[Day]");
+  setCrweberIndex.Open();
+  if (!setCrweberIndex.IsEOF()) {
+    setCrweberIndex.MoveLast();
+    if (m_lNewestDatabaseDay < setCrweberIndex.m_Day) {
+      m_lNewestDatabaseDay = setCrweberIndex.m_Day;
+    }
+  }
+  setCrweberIndex.Close();
   return true;
 }
 
