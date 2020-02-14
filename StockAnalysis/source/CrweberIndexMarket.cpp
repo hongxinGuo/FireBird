@@ -67,7 +67,6 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
       }
       else {
         LoadDatabase();
-        m_lNewestDatabaseDay = m_vCrweberIndex.at(m_vCrweberIndex.size() - 1)->m_lDay;
         SaveDatabase();
         m_fDataBaseLoaded = true;
       }
@@ -122,13 +121,14 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
 bool CCrweberIndexMarket::LoadDatabase(void) {
   CSetCrweberIndex setCrweberIndex;
   int i = 0;
+  m_vCrweberIndex.resize(10000);
+  for (auto pCrweber : m_vCrweberIndex) pCrweber = nullptr;
 
   setCrweberIndex.m_strSort = _T("[Day]");
   setCrweberIndex.Open();
   while (!setCrweberIndex.IsEOF()) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
     pCrweberIndex->LoadData(setCrweberIndex);
-    m_vCrweberIndex.resize(i + 1);
     m_vCrweberIndex[i] = pCrweberIndex;
     if (m_lNewestDatabaseDay < pCrweberIndex->m_lDay) {
       i++;
@@ -153,7 +153,9 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
   setCrweberIndex.Open();
   setCrweberIndex.m_pDatabase->BeginTrans();
   for (auto pCrweberIndex : m_vCrweberIndex) {
-    pCrweberIndex->AppendData(setCrweberIndex);
+    if (pCrweberIndex != nullptr) {
+      pCrweberIndex->AppendData(setCrweberIndex);
+    }
   }
   setCrweberIndex.m_pDatabase->CommitTrans();
   setCrweberIndex.Close();
@@ -169,7 +171,6 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CCrweberIndexMarket::SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex) {
   CSetCrweberIndex setIndex;
-  setIndex.m_strFilter = _T("[ID] = 1");
 
   setIndex.Open();
   setIndex.m_pDatabase->BeginTrans();
