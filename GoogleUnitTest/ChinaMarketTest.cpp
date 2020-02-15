@@ -12,6 +12,10 @@ namespace StockAnalysisTest {
   class CChinaMarketTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestCase(void) {
+      EXPECT_TRUE(true);
+      ASSERT_FALSE(gl_fNormalMode);
+    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.CalculateTime();

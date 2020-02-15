@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(Index.GetHANDY_3YEAR(), 0);
   }
 
-  TEST(CrwberTest, TestLoadData) {
+  TEST(CrweberTest, TestLoadData) {
     CSetCrweberIndex setCrweberIndex;
     CCrweberIndex id, id2;
     id.m_lDay = 20000101;

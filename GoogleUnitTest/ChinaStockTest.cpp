@@ -788,6 +788,28 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetCurrentGuadanTransactionPrice(), 10.01);
   }
 
+  TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
+    CSetStockCode setStockCode;
+    CChinaStock stock, stock2;
+    stock.SetStockCode(_T("sh400000")); // 这个必须用未曾使用过的股票代码，已利于随后删除
+    stock.SetOffset(13000);
+    stock.SetMarket(__SHANGHAI_MARKET__);
+    stock.SetStockName(_T("未使用过"));
+    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
+    stock.SetDayLineStartDay(19900101);
+    setStockCode.Open();
+    stock.AppendStockCodeDB(setStockCode);
+    setStockCode.Close();
+
+    setStockCode.m_strFilter = _T("[StockCode] = 'sh400000'");
+    setStockCode.Open();
+    EXPECT_EQ(setStockCode.m_IPOed, __STOCK_IPOED__);
+    EXPECT_EQ(setStockCode.m_StockCode, _T("sh400000"));
+    setStockCode.Delete();
+    setStockCode.Close();
+  }
+
   TEST_F(CChinaStockTest, TestLoadStockCodeDB) {
     CSetStockCode setStockCode;
     CChinaStock stock;

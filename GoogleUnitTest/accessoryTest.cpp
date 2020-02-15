@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lDay2, 20000105);
   }
 
-  TEST(AssessoryTest, TestFormatToTTime) {
+  TEST(AccessoryTest, TestFormatToTTime) {
     tm tm_;
     tm_.tm_year = 2000 - 1900;
     tm_.tm_mon = 0;

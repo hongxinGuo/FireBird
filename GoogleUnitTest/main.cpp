@@ -10,10 +10,13 @@
 
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
-ExcludeSourceFromCodeCoverage(Exclude1, L"\\SSD500\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.cpp");
+//ExcludeSourceFromCodeCoverage(Exclude1, L"\\SSD500\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.cpp");
 ExcludeSourceFromCodeCoverage(Exclude2, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.cpp");
 ExcludeSourceFromCodeCoverage(Exclude3, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\GoogleUnitTest\\*.h");
 ExcludeSourceFromCodeCoverage(Exclude4, L"std::bool::*");
+//ExcludeSourceFromCodeCoverage(Exclude5, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\packages\\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\\build\\native\\include\\gtest\\*.h");
+//ExcludeSourceFromCodeCoverage(Exclude6, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\packages\\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\\build\\native\\include\\gtest\\internal\\*.h");
+//ExcludeSourceFromCodeCoverage(Exclude7, L"C:\\users\\hxguo\\source\\repos\\StockAnalysis\\packages\\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.3\\build\\native\\include\\gtest\\internal\\custom\\*.h");
 #pragma managed(pop)
 
 #include"EnvironmentSetUp.h"

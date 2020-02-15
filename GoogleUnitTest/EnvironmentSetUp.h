@@ -23,7 +23,7 @@ namespace StockAnalysisTest {
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
-      // 初始话活跃股票标识
+      // 初始化活跃股票标识
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_fNormalMode);
       CSetStockCode setStockCode;

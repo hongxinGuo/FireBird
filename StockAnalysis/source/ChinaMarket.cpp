@@ -41,7 +41,6 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   }
   m_strMarketId = _T("中国股票市场");
   m_lTimeZoneOffset = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
-  CalculateTime();
   m_fSaveRTData = false; // 此存储实时数据标识，用于存储供测试函数用的实时数据。目前任务已经完成。
   Reset();
 }
@@ -69,6 +68,7 @@ void CChinaMarket::ResetMarket(void) {
 }
 
 void CChinaMarket::Reset(void) {
+  CalculateTime(); // 初始化市场时间
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_fLoadedSelectedStock = false;
@@ -80,11 +80,7 @@ void CChinaMarket::Reset(void) {
 
   m_ttNewestTransactionTime = 0;
 
-  time_t ttime;
-  time(&ttime);
-  tm tm_;
-  localtime_s(&tm_, &ttime);
-  if (tm_.tm_hour >= 15) { // 中国股票市场已经闭市
+  if (m_tmMarket.tm_hour >= 15) { // 中国股票市场已经闭市
     m_fTodayStockProcessed = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
   else m_fTodayStockProcessed = false;
@@ -1194,6 +1190,11 @@ bool CChinaMarket::TaskCheckMarketOpen(long lCurrentTime) {
   return m_fMarketOpened;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 此任务必须每分钟调度一次，因其实现机制采用了
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
   // 九点十三分重启系统
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
