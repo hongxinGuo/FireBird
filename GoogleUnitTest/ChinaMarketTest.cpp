@@ -377,20 +377,40 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
     CString str;
     CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(0);
-    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+    EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
+    long lDay = pStock->GetDayLineEndDay();
+    pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
+    pStock->SetDayLineNeedUpdate(false);
     pStock = gl_ChinaStockMarket.GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
     EXPECT_TRUE(str.GetLength() > 0);
-    EXPECT_STREQ(str, _T("0600000")); // 测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线
-    pStock = gl_ChinaStockMarket.GetStock(0);
-    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+    EXPECT_STREQ(str, _T("0600001")) << _T("第一个股票已设置为无需查询日线历史数据");
     pStock = gl_ChinaStockMarket.GetStock(1);
+    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+    pStock = gl_ChinaStockMarket.GetStock(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-
+    pStock->SetIPOStatus(__STOCK_NULL__);
+    str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
+    EXPECT_TRUE(str.GetLength() > 0);
+    EXPECT_STREQ(str, _T("0600003")) << _T("第三个股票设置为无效股票");
+    pStock = gl_ChinaStockMarket.GetStock(3);
+    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+    pStock = gl_ChinaStockMarket.GetStock(4);
+    pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
+    EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
+    str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
+    EXPECT_TRUE(str.GetLength() > 0);
+    EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
+    pStock = gl_ChinaStockMarket.GetStock(5);
+    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+    pStock = gl_ChinaStockMarket.GetStock(4);
+    EXPECT_FALSE(pStock->IsDayLineNeedUpdate()) << _T("标识在查询下载股票时更新了");
     // 恢复原状
+    pStock = gl_ChinaStockMarket.GetStock(0);
+    pStock->SetDayLineEndDay(lDay);
     for (int i = 0; i < 12000; i++) {
       pStock = gl_ChinaStockMarket.GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) {
@@ -495,6 +515,12 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.SetCurrentStock(pStock2);
     EXPECT_TRUE(gl_ChinaStockMarket.IsCurrentStockChanged());
     EXPECT_TRUE(pStock2->IsRecordRTData());
+    gl_ChinaStockMarket.SetCurrentStock(_T("sh600000"));
+    EXPECT_STREQ(gl_ChinaStockMarket.GetCurrentStock()->GetStockCode(), _T("sh600000"));
+  }
+
+  TEST_F(CChinaMarketTest, TestClearDayLineContainer) {
+    EXPECT_TRUE(gl_ChinaStockMarket.ClearDayLineContainer());
   }
 
   TEST_F(CChinaMarketTest, TestMarketReady) {
@@ -516,6 +542,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
+  }
+
+  TEST_F(CChinaMarketTest, TestIsDayLineNeedSaving) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineNeedSaving());
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(0);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineNeedSaving());
+    pStock->SetDayLineNeedSaving(false);
   }
 
   TEST_F(CChinaMarketTest, TestIsDayLineNeedUpdate) {

@@ -24,7 +24,7 @@ public:
 
   bool LoadDatabase(void);
   bool SaveDatabase(void);
-  bool SetNewestDatabaseDay(void);
+  bool GetNewestDatabaseDayFromDB(void);
   bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }

@@ -74,7 +74,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
         gl_WebInquirer.GetCrweberIndexData();
       }
       else {
-        SetNewestDatabaseDay();
+        GetNewestDatabaseDayFromDB();
         m_fDataBaseLoaded = true;
       }
     }
@@ -182,7 +182,7 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
   return true;
 }
 
-bool CCrweberIndexMarket::SetNewestDatabaseDay(void) {
+bool CCrweberIndexMarket::GetNewestDatabaseDayFromDB(void) {
   CSetCrweberIndex setCrweberIndex;
 
   setCrweberIndex.m_strSort = _T("[Day]");

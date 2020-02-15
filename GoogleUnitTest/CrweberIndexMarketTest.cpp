@@ -76,7 +76,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDay) {
-    gl_CrweberIndexMarket.SetNewestDatabaseDay();
+    gl_CrweberIndexMarket.Reset();
+    gl_CrweberIndexMarket.GetNewestDatabaseDayFromDB();
 
     CSetCrweberIndex setCrweberIndex;
     long lDay = 0;

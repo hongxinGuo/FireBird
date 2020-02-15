@@ -1020,6 +1020,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
   // 判断是否开始正常收集数据
   TaskCheckStartReceivingData(lCurrentTime);
+  // 判断中国股票市场开市状态
+  TaskCheckMarketOpen(lCurrentTime);
 
   if (s_iCountDownProcessWebRTData <= 0) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
@@ -1102,9 +1104,6 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskResetMarket(lCurrentTime);
     TaskResetMarketAgain(lCurrentTime);
-
-    // 判断中国股票市场开市状态
-    TaskCheckMarketOpen(lCurrentTime);
 
     // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
     TaskSetCheckActiveStockFlag(lCurrentTime);
