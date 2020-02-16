@@ -25,7 +25,7 @@ namespace StockAnalysisTest {
 
   TEST(SinaWebRTDataTest, TestGetInquiringStr) {
     gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
-    CString str = m_SinaRTWebData.GetNextInquiringStr(900, false);
+    CString str = m_SinaRTWebData.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
     EXPECT_STREQ(str2, _T("sh600000,"));
   }

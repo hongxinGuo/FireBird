@@ -23,7 +23,7 @@ public:
   virtual bool ReportStatus(long lNumberOfData);
   // 下列为继承类必须实现的几个功能函数，完成具体任务。
   virtual bool PrepareNextInquiringStr(void) { ASSERT(0); return true; }
-  virtual CString GetNextInquiringStr(long, bool) { ASSERT(0); return _T(""); }// 申请下一个查询用字符串
+  virtual CString GetNextInquiringMiddleStr(long, bool) { ASSERT(0); return _T(""); }// 申请下一个查询用字符串
   virtual void StartReadingThread(void) { ASSERT(0); } // 调用网络读取线程。
 
   // 以下为实现函数

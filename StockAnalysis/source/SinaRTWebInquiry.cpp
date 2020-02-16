@@ -24,7 +24,7 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckActiveStock() || !gl_ChinaStockMarket.SystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
     iTotalInquiringStocks += iInquiringNumber;
-    strMiddle = GetNextInquiringStr(iInquiringNumber, false);
+    strMiddle = GetNextInquiringMiddleStr(iInquiringNumber, false);
     if (iTotalInquiringStocks > gl_ChinaStockMarket.GetTotalStock() * 3) {
       if (!gl_ChinaStockMarket.SystemReady()) { // 如果系统尚未设置好，则显示系统准备
         gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
@@ -33,7 +33,7 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
     }
   }
   else { // 开市时使用今日活跃股票池
-    strMiddle = GetNextInquiringStr(iInquiringNumber, true);
+    strMiddle = GetNextInquiringMiddleStr(iInquiringNumber, true);
   }
   gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(strMiddle.Left(8)); // 只提取第一个股票代码
   CreateTotalInquiringString(strMiddle);
@@ -41,7 +41,7 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   return true;
 }
 
-CString CSinaRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
+CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
   return gl_ChinaStockMarket.GetSinaInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 

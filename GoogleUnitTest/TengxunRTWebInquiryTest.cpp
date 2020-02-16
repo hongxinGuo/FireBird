@@ -16,7 +16,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(TengxunWebRTDataTest, TestGetNextInquiryStr) {
-    CString str = m_TengxunRTWebInquiry.GetNextInquiringStr(1, false);
+    CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
     EXPECT_STREQ(str, _T("sh600000"));
   }
 

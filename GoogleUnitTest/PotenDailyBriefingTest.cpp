@@ -1,9 +1,23 @@
 #include "pch.h"
 
+#include"globedef.h"
+
 #include"PotenDailyBriefing.h"
 
 namespace StockAnalysisTest {
-  TEST(CPotenDailyBriefingTest, TestReset) {
+  class CPotenDailyBriefingTest : public ::testing::Test
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  };
+
+  TEST_F(CPotenDailyBriefingTest, TestReset) {
     CPotenDailyBriefing id;
     EXPECT_FALSE(id.IsTodayUpdated());
     id.SetTodayUpdated(true);
@@ -11,7 +25,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(id.IsTodayUpdated());
   }
 
-  TEST(CPotenDailyBriefingTest, TestIsTodayDataUpdated) {
+  TEST_F(CPotenDailyBriefingTest, TestIsTodayDataUpdated) {
     CPotenDailyBriefing id;
     EXPECT_FALSE(id.IsTodayUpdated());
     id.SetTodayUpdated(true);
@@ -20,33 +34,33 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(id.IsTodayUpdated());
   }
 
-  TEST(CPotenDailyBriefingTest, TestGetCurrentDataTime) {
+  TEST_F(CPotenDailyBriefingTest, TestGetCurrentDataTime) {
     CPotenDailyBriefing id;
     EXPECT_EQ(id.GetCurrentDataTime(), 0);
     id.SetNewestDataTime(20190101);
     EXPECT_EQ(id.GetCurrentDataTime(), 20190101);
   }
 
-  TEST(CPotenDailyBriefingTest, TestGetDay) {
+  TEST_F(CPotenDailyBriefingTest, TestGetDay) {
     CPotenDailyBriefing id;
     EXPECT_EQ(id.GetDay(), 0);
     id.SetDay(20190101);
     EXPECT_EQ(id.GetDay(), 20190101);
   }
 
-  TEST(CPotenDailyBriefingTest, TestGetSet) {
+  TEST_F(CPotenDailyBriefingTest, TestGetSet) {
     CPotenDailyBriefing id;
     id.m_dTD3C = 1;
     EXPECT_DOUBLE_EQ(id.GetTD3C(), 1);
   }
 
-  TEST(CPotenDailyBriefingTest, TestConvertStringToTime) {
+  TEST_F(CPotenDailyBriefingTest, TestConvertStringToTime) {
     CString str = _T("04/11/2018");
     CPotenDailyBriefing id;
     EXPECT_EQ(id.ConvertStringToTime(str), 20180411);
   }
 
-  TEST(CPotenDailyBriefingTest, TestGetOneValue) {
+  TEST_F(CPotenDailyBriefingTest, TestGetOneValue) {
     CPotenDailyBriefing id;
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("7,600")), 7600);
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("(7,600)")), -7600);
@@ -54,7 +68,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetOneValue(_T("(7,600")), -7600);
   }
 
-  TEST(CPotenDailyBriefingTest, TestLoadData) {
+  TEST_F(CPotenDailyBriefingTest, TestLoadData) {
     CPotenDailyBriefing id, id2;
     CSetPotenDailyBriefing setPoten;
 
