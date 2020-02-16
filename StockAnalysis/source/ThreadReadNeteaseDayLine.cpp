@@ -24,10 +24,11 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
 
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
   if (pNeteaseDayLineWebData->ReadWebData(/*siDelayTime*/ 200, 30, 30)) {
+    ASSERT(!pNeteaseDayLineWebData->IsReadingWebData()); //必须将此断言放在最前面。因多线程模式下，此标识可能被别的线程所更改。
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     pStock = gl_ChinaStockMarket.GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
-    ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
+    //ASSERT(!pNeteaseDayLineWebData->IsReadingWebData()); // TransferNeteaseDayLineWebDataToBuffer耗时较长，导致此断言可能出错。
   }
   else ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
   return 4; // 此线程正常返回值为4
