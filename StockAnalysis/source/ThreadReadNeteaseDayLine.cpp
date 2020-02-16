@@ -20,12 +20,15 @@
 
 UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
   CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData = (CNeteaseDayLineWebInquiry*)pParam;
+  CChinaStockPtr pStock = nullptr;
 
+  ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
   if (pNeteaseDayLineWebData->ReadWebData(/*siDelayTime*/ 200, 30, 30)) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    pStock = gl_ChinaStockMarket.GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
+    ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
   }
-  ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
+  else ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
   return 4; // 此线程正常返回值为4
 }

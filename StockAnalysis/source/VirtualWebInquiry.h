@@ -73,7 +73,7 @@ protected:
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
-  atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
+  bool m_fReadingWebData; // 接收实时数据线程是否执行标识
 
   bool m_fReportStatus; //
 

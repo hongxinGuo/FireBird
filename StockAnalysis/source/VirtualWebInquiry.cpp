@@ -30,6 +30,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   CInternetSession session;
   m_pFile = nullptr;
   bool fDone = false;
+  bool fStatus = true;
   m_pCurrentReadPos = GetBufferAddr();
 
   try {
@@ -59,18 +60,17 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     if (exception->m_dwError == 404) {
       TRACE(_T("Error Code 404\n"));
     }
-    SetReadingWebData(false);
     TRACE(_T("%s net error\n"), m_strConnection.GetBuffer());
-    return false;
+    fStatus = false;;
   }
   if (m_pFile) m_pFile->Close();
   if (m_pFile) {
     delete m_pFile;
     m_pFile = nullptr;
   }
-  SetReadingWebData(false);
 
-  return true;
+  SetReadingWebData(false);
+  return fStatus;
 }
 
 bool CVirtualWebInquiry::ReadDataFromWebOnce(void) {

@@ -20,6 +20,14 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("sh600000"));
   }
 
+  TEST(TengxunWebRTDataTest, TestPrepareNextInquiringStr) {
+    gl_ChinaStockMarket.SetSystemReady(true);
+    EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringStr());
+    CString str = m_TengxunRTWebInquiry.GetInquiringString();
+    EXPECT_STREQ(str.Left(21), _T("http://qt.gtimg.cn/q="));
+    gl_ChinaStockMarket.SetSystemReady(false);
+  }
+
   TEST(TengxunWebRTDataTest, TestReportStatus) {
     EXPECT_TRUE(m_TengxunRTWebInquiry.ReportStatus(1));
   }
