@@ -14,7 +14,7 @@ CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
 CTengxunRTWebInquiry::~CTengxunRTWebInquiry() {
 }
 
-void CTengxunRTWebInquiry::InquireNextWebData(void) {
+bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
   ASSERT(gl_ChinaStockMarket.SystemReady());
 
@@ -28,8 +28,7 @@ void CTengxunRTWebInquiry::InquireNextWebData(void) {
     strMiddle = GetNextInquiringStr(900, false); // 目前暂时还是使用全部股票池
   }
   CreateTotalInquiringString(strMiddle);
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
+  return true;
 }
 
 CString CTengxunRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {
@@ -37,6 +36,7 @@ CString CTengxunRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipU
 }
 
 void CTengxunRTWebInquiry::StartReadingThread(void) {
+  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   AfxBeginThread(ThreadReadTengxunRTData, this);
 }
 

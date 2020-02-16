@@ -18,7 +18,7 @@ CPotenDailyBriefingWebInquiry::CPotenDailyBriefingWebInquiry() : CVirtualWebInqu
 CPotenDailyBriefingWebInquiry::~CPotenDailyBriefingWebInquiry() {
 }
 
-void CPotenDailyBriefingWebInquiry::InquireNextWebData(void) {
+bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
   m_lInquiringDay = gl_PotenDailyBriefingMarket.GetNewestUpdateDay();
   CString strMiddle = _T("");
   char buffer[50];
@@ -29,11 +29,9 @@ void CPotenDailyBriefingWebInquiry::InquireNextWebData(void) {
   sprintf_s(buffer, _T("%02d/%02d/%04d"), month, day, year);
   strMiddle = buffer;
   CreateTotalInquiringString(strMiddle);
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
   TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDay);
+  return true;
 }
-
 void CPotenDailyBriefingWebInquiry::StartReadingThread(void) {
   AfxBeginThread(ThreadReadPotenDailyBriefing, this);
 }

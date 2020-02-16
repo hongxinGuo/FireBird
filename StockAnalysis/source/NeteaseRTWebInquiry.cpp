@@ -38,7 +38,7 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
   return true;
 }
 
-void CNeteaseRTWebInquiry::InquireNextWebData(void) {
+bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
@@ -50,8 +50,7 @@ void CNeteaseRTWebInquiry::InquireNextWebData(void) {
   }
   CreateTotalInquiringString(strMiddle);
 
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
+  return true;
 }
 
 CString CNeteaseRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {

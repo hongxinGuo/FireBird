@@ -14,7 +14,7 @@ CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
 CSinaRTWebInquiry::~CSinaRTWebInquiry() {
 }
 
-void CSinaRTWebInquiry::InquireNextWebData(void) {
+bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   CRTDataPtr pRTData = nullptr;
   static int iTotalInquiringStocks = 0;
   const int iInquiringNumber = 850;
@@ -38,8 +38,7 @@ void CSinaRTWebInquiry::InquireNextWebData(void) {
   gl_ChinaStockMarket.SetStockCodeForInquiringSinaRTData(strMiddle.Left(8)); // 只提取第一个股票代码
   CreateTotalInquiringString(strMiddle);
 
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
+  return true;
 }
 
 CString CSinaRTWebInquiry::GetNextInquiringStr(long lTotalNumber, bool fSkipUnactiveStock) {

@@ -20,7 +20,7 @@ CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-void CNeteaseDayLineWebInquiry::InquireNextWebData(void) {
+bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
   char buffer2[200];
 
@@ -34,9 +34,10 @@ void CNeteaseDayLineWebInquiry::InquireNextWebData(void) {
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
     gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
-    SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-    StartReadingThread();
+
+    return true;
   }
+  return false;
 }
 
 void CNeteaseDayLineWebInquiry::StartReadingThread(void) {

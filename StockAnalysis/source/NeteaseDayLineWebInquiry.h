@@ -7,7 +7,7 @@ public:
   CNeteaseDayLineWebInquiry();
   ~CNeteaseDayLineWebInquiry();
 
-  virtual void InquireNextWebData(void) override;
+  virtual bool PrepareNextInquiringStr(void) override;
   virtual void StartReadingThread(void) override;
 
   void SetDownLoadingStockCode(CString strStockCode);

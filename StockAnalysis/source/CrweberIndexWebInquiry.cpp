@@ -16,12 +16,11 @@ CCrweberIndexWebInquiry::CCrweberIndexWebInquiry() : CVirtualWebInquiry() {
 CCrweberIndexWebInquiry::~CCrweberIndexWebInquiry() {
 }
 
-void CCrweberIndexWebInquiry::InquireNextWebData(void) {
+bool CCrweberIndexWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
   CreateTotalInquiringString(strMiddle);
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
-  StartReadingThread();
+  return true;
 }
 
 void CCrweberIndexWebInquiry::StartReadingThread(void) {

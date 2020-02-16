@@ -32,7 +32,6 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CChinaStockTest, TestInitialize) {
-    ASSERT_FALSE(gl_fNormalMode);
     CChinaStock id;
     EXPECT_EQ(id.GetMarket(), 0);
     EXPECT_STREQ(id.GetStockCode(), _T(""));

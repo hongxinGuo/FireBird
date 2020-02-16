@@ -103,7 +103,9 @@ CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
 //////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::GetWebData(void) {
   if (!IsReadingWebData()) {
-    InquireNextWebData();
+    PrepareNextInquiringStr();
+    SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
+    StartReadingThread();
     return true;
   }
   else return false;

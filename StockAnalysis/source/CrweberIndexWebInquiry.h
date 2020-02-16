@@ -8,6 +8,6 @@ public:
   CCrweberIndexWebInquiry();
   ~CCrweberIndexWebInquiry();
 
-  virtual void InquireNextWebData(void) override;
+  virtual bool PrepareNextInquiringStr(void) override;
   virtual void StartReadingThread(void) override;
 };
