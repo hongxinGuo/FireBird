@@ -385,6 +385,7 @@ namespace StockAnalysisTest {
     long lDay = pStock->GetDayLineEndDay();
     pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
     pStock->SetDayLineNeedUpdate(false);
+    pStock->SetDayLineEndDay(lDay); // 恢复原状
     pStock = gl_ChinaStockMarket.GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(2);
@@ -396,18 +397,22 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+    long lIPOStatus = pStock->GetIPOStatus();
     pStock->SetIPOStatus(__STOCK_NULL__);
     str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
     EXPECT_TRUE(str.GetLength() > 0);
     EXPECT_STREQ(str, _T("0600003")) << _T("第三个股票设置为无效股票");
+    pStock->SetIPOStatus(lIPOStatus); // 恢复原状
     pStock = gl_ChinaStockMarket.GetStock(3);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(4);
+    lDay = pStock->GetDayLineEndDay();
     pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     str = gl_ChinaStockMarket.CreateNeteaseDayLineInquiringStr();
     EXPECT_TRUE(str.GetLength() > 0);
     EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
+    pStock->SetDayLineEndDay(lDay); // 恢复原状。
     pStock = gl_ChinaStockMarket.GetStock(5);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_ChinaStockMarket.GetStock(4);

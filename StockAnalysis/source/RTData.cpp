@@ -93,17 +93,6 @@ void CRTData::Dump(CDumpContext& dc) const {
 
 #endif //_DEBUG
 
-bool CRTData::Compare(CRTDataPtr pRTData) {
-  time_t ttDiff = m_time - pRTData->GetTransactionTime();
-  if (ttDiff != 0) { TRACE("交易时间不匹配: %d\n", ttDiff); }
-  if (ttDiff != 0) {
-    if (m_llVolume != pRTData->GetVolume()) {
-      TRACE("成交股数不匹配: %d\n", m_llVolume - pRTData->GetVolume());
-    }
-  }
-  return false;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取新浪制式实时数据，返回值是所读数据是否出现格式错误。

@@ -9,7 +9,26 @@
 #include"SinaRTWebInquiry.h"
 
 namespace StockAnalysisTest {
-  TEST(CStockRTDataTest, TestInitialize) {
+  class CStockRTDataTest : public ::testing::Test
+  {
+  protected:
+    static void SetUpTestCase() { // 本测试类的初始化函数
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    static void TearDownTestCase() {
+    }
+
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  };
+
+  TEST_F(CStockRTDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     CRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
@@ -34,7 +53,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(RTData.IsActive());
   }
 
-  TEST(CRTDataTest, TestGetDatasource) {
+  TEST_F(CStockRTDataTest, TestGetDatasource) {
     CRTData rtData;
     EXPECT_EQ(rtData.GetDataSource(), __INVALID_RT_WEB_DATA__);
     EXPECT_FALSE(rtData.IsValidDataSource());
@@ -43,13 +62,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(rtData.IsValidDataSource());
   }
 
-  TEST(CRTDataTest, TestGetStockCode) {
+  TEST_F(CStockRTDataTest, TestGetStockCode) {
     CRTData rtData;
     rtData.SetStockCode(_T("sh600000"));
     EXPECT_STREQ(rtData.GetStockCode(), _T("sh600000"));
   }
 
-  TEST(CRTDataTest, TestIsActive) {
+  TEST_F(CStockRTDataTest, TestIsActive) {
     CRTData rtData;
     EXPECT_FALSE(rtData.IsActive());
     rtData.SetActive(true);
@@ -58,7 +77,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(rtData.IsActive());
   }
 
-  TEST(CRTDataTest, TestGetTransactionTime) {
+  TEST_F(CStockRTDataTest, TestGetTransactionTime) {
     CRTData rtData;
     EXPECT_FALSE(rtData.GetTransactionTime());
     rtData.SetTransactionTime(true);
@@ -67,91 +86,91 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(rtData.GetTransactionTime());
   }
 
-  TEST(CRTDataTest, TestGetMarket) {
+  TEST_F(CStockRTDataTest, TestGetMarket) {
     CRTData rtData;
     rtData.SetMarket(__SHANGHAI_MARKET__);
     EXPECT_EQ(rtData.GetMarket(), __SHANGHAI_MARKET__);
   }
 
-  TEST(CRTDataTest, TestGetLastClose) {
+  TEST_F(CStockRTDataTest, TestGetLastClose) {
     CRTData rtData;
     rtData.SetLastClose(1010);
     EXPECT_EQ(rtData.GetLastClose(), 1010);
   }
 
-  TEST(CRTDataTest, TestGetOpen) {
+  TEST_F(CStockRTDataTest, TestGetOpen) {
     CRTData rtData;
     rtData.SetOpen(20202);
     EXPECT_EQ(rtData.GetOpen(), 20202);
   }
 
-  TEST(CRTDataTest, TestGetHigh) {
+  TEST_F(CStockRTDataTest, TestGetHigh) {
     CRTData rtData;
     rtData.SetHigh(30303);
     EXPECT_EQ(rtData.GetHigh(), 30303);
   }
 
-  TEST(CRTDataTest, TestGetLow) {
+  TEST_F(CStockRTDataTest, TestGetLow) {
     CRTData rtData;
     rtData.SetLow(40404);
     EXPECT_EQ(rtData.GetLow(), 40404);
   }
 
-  TEST(CRTDataTest, TestGetNew) {
+  TEST_F(CStockRTDataTest, TestGetNew) {
     CRTData rtData;
     rtData.SetNew(50505);
     EXPECT_EQ(rtData.GetNew(), 50505);
   }
 
-  TEST(CRTDataTest, TestGetAmount) {
+  TEST_F(CStockRTDataTest, TestGetAmount) {
     CRTData rtData;
     rtData.SetAmount(60606);
     EXPECT_EQ(rtData.GetAmount(), 60606);
   }
 
-  TEST(CRTDataTest, TestGetVolume) {
+  TEST_F(CStockRTDataTest, TestGetVolume) {
     CRTData rtData;
     rtData.SetVolume(70707);
     EXPECT_EQ(rtData.GetVolume(), 70707);
   }
 
-  TEST(CRTDataTest, TestGetTotalValue) {
+  TEST_F(CStockRTDataTest, TestGetTotalValue) {
     CRTData rtData;
     rtData.SetTotalValue(88);
     EXPECT_EQ(rtData.GetTotalValue(), 88);
   }
 
-  TEST(CRTDataTest, TestGetCurrentValue) {
+  TEST_F(CStockRTDataTest, TestGetCurrentValue) {
     CRTData rtData;
     rtData.SetCurrentValue(999);
     EXPECT_EQ(rtData.GetCurrentValue(), 999);
   }
 
-  TEST(CRTDataTest, TestGetBuy) {
+  TEST_F(CStockRTDataTest, TestGetBuy) {
     CRTData rtData;
     rtData.SetBuy(1111);
     EXPECT_EQ(rtData.GetBuy(), 1111);
   }
 
-  TEST(CRTDataTest, TestGetSell) {
+  TEST_F(CStockRTDataTest, TestGetSell) {
     CRTData rtData;
     rtData.SetSell(2222);
     EXPECT_EQ(rtData.GetSell(), 2222);
   }
 
-  TEST(CRTDataTest, TestGetHighLimit) {
+  TEST_F(CStockRTDataTest, TestGetHighLimit) {
     CRTData rtData;
     rtData.SetHighLimit(4444);
     EXPECT_EQ(rtData.GetHighLimit(), 4444);
   }
 
-  TEST(CRTDataTest, TestGetLowLimit) {
+  TEST_F(CStockRTDataTest, TestGetLowLimit) {
     CRTData rtData;
     rtData.SetLowLimit(5555);
     EXPECT_EQ(rtData.GetLowLimit(), 5555);
   }
 
-  TEST(CRTDataTest, TestGetPBuy) {
+  TEST_F(CStockRTDataTest, TestGetPBuy) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPBuy(i, i + 10201);
@@ -159,21 +178,21 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CRTDataTest, TestGetVBuy) {
+  TEST_F(CStockRTDataTest, TestGetVBuy) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVBuy(i, i + 10101);
       EXPECT_EQ(rtData.GetVBuy(i), i + 10101);
     }
   }
-  TEST(CRTDataTest, TestGetPSell) {
+  TEST_F(CStockRTDataTest, TestGetPSell) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPSell(i, i + 30101);
       EXPECT_EQ(rtData.GetPSell(i), i + 30101);
     }
   }
-  TEST(CRTDataTest, TestGetVSell) {
+  TEST_F(CStockRTDataTest, TestGetVSell) {
     CRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVSell(i, i + 50101);
@@ -181,7 +200,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CRTDataTest, TestIsDataTimeAtCurrentDay) {
+  TEST_F(CStockRTDataTest, TestIsDataTimeAtCurrentDay) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;
@@ -200,7 +219,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.IsValidTime());
   }
 
-  TEST(CRTDataTest, TestCheckSinaRTDataMarket) {
+  TEST_F(CStockRTDataTest, TestCheckSinaRTDataMarket) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;
@@ -219,7 +238,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.CheckSinaRTDataActive());
   }
 
-  TEST(CRTDataTest, TestMapNeteaseSymbolToIndex) {
+  TEST_F(CStockRTDataTest, TestMapNeteaseSymbolToIndex) {
     CRTData rtData;
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("time")), 1);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("code")), 2);
@@ -1657,7 +1676,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST(CRTDataTest, TestSaveData) {
+  TEST_F(CStockRTDataTest, TestSaveData) {
     CSetRealTimeData setRTData;
     CRTDataPtr pRTData = make_shared<CRTData>();
     time_t tt = FormatToTTime(21101123);
@@ -1717,7 +1736,7 @@ namespace StockAnalysisTest {
     setRTData.Close();
   }
 
-  TEST(CRTDataTest, TestLoadData) {
+  TEST_F(CStockRTDataTest, TestLoadData) {
     CSetRealTimeData setRTData;
     CRTDataPtr pRTData = make_shared<CRTData>();
     CRTData id;
