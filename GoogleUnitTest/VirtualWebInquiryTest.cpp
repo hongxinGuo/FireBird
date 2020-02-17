@@ -105,4 +105,10 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_VirtualWebInquiry.GetCurrentPos(), 0);
     EXPECT_EQ(gl_VirtualWebInquiry.GetCurrentPosPtr(), gl_VirtualWebInquiry.GetBufferAddr());
   }
+
+  TEST_F(CVirtualWebInquiryTest, TestGetInquiringNumber) {
+    EXPECT_EQ(gl_VirtualWebInquiry.GetInquiringNumber(), 500) << _T("Ä¬ÈÏÖµÎª500");
+    gl_VirtualWebInquiry.SetInquiringNumber(800);
+    EXPECT_EQ(gl_VirtualWebInquiry.GetInquiringNumber(), 800);
+  }
 }

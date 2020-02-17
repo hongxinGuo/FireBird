@@ -28,6 +28,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringPrefix(), _T("http://qt.gtimg.cn/q="));
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringSuffix(), _T(""));
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetConnection(), _T("TengxunRT"));
+    EXPECT_EQ(m_TengxunRTWebInquiry.GetInquiringNumber(), 900) << _T("ÌÚÑ¶Ä¬ÈÏÖµ");
   }
 
   TEST_F(CTengxunWebRTDataTest, TestGetNextInquiryStr) {

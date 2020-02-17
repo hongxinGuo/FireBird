@@ -30,6 +30,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
     EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringSuffix(), _T(""));
     EXPECT_FALSE(m_SinaRTWebData.IsReportStatus());
+    EXPECT_EQ(m_SinaRTWebData.GetInquiringNumber(), 850) << _T("ÐÂÀËÄ¬ÈÏÖµ");
   }
 
   TEST_F(CSinaWebRTDataTest, TestStartReadingThread) {
