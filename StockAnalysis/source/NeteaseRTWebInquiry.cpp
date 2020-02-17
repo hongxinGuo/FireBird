@@ -41,7 +41,7 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
-  ASSERT(gl_ChinaStockMarket.SystemReady());
+  ASSERT(gl_ChinaStockMarket.IsSystemReady());
   // 申请下一批次股票实时数据
   strMiddle = GetNextInquiringMiddleStr(600, false); // 目前还是使用全部股票池
   CreateTotalInquiringString(strMiddle);

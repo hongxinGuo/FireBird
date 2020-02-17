@@ -131,6 +131,15 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 }
 #endif //_DEBUG
 
+bool CChinaMarket::CheckMarketReady(void) noexcept {
+  if (!m_fSystemReady) {
+    if (m_llRTDataReceived > m_lTotalStock * 3) {
+      m_fSystemReady = true;
+    }
+  }
+  return m_fSystemReady;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 初始化所有可能的股票代码池，只被CChinaMarket的初始函数调用一次。
@@ -515,7 +524,7 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 }
 
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
-  ASSERT(SystemReady());
+  ASSERT(IsSystemReady());
   if (m_iDayLineNeedUpdate > 0) {
     // 抓取日线数据.
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
@@ -587,7 +596,7 @@ CString CChinaMarket::GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnac
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  ASSERT(SystemReady());
+  ASSERT(IsSystemReady());
   return GetNextInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber, fSkipUnactiveStock);
 }
 
@@ -595,7 +604,7 @@ CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipU
   CString str = _T("");
   CString strStockCode, strRight6, strLeft2, strPrefix;
 
-  ASSERT(SystemReady());
+  ASSERT(IsSystemReady());
   if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
   strStockCode = m_vChinaMarketAStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
   IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
@@ -939,7 +948,7 @@ bool CChinaMarket::SchedulingTask(void) {
     TaskGetRTDataFromWeb();
     TaskProcessWebRTDataGetFromSinaServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fStartReceivingData && SystemReady()) m_iCountDownSlowReadingRTData = 300; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fStartReceivingData && IsSystemReady()) m_iCountDownSlowReadingRTData = 300; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -951,7 +960,7 @@ bool CChinaMarket::SchedulingTask(void) {
   }
 
   // 系统准备好了之后需要完成的各项工作
-  if (SystemReady()) {
+  if (IsSystemReady()) {
     if (!m_fTodayTempDataLoaded) { // 此工作仅进行一次。
       LoadTodayTempDB();
       m_fTodayTempDataLoaded = true;
@@ -976,7 +985,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
     gl_WebInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
 
-  if (SystemReady()) {
+  if (IsSystemReady()) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
     // 网易实时数据有时还发送没有要求过的股票，不知为何。
     if (IsUsingNeteaseRTDataReceiver()) {
@@ -1035,7 +1044,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   // 此计算任务要在DistributeRTDataReceivedFromWebToProperStock之后执行，以防止出现同步问题。
-  if (SystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+  if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
       TaskProcessRTData();
@@ -1140,7 +1149,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   if ((lCurrentTime >= 150300) && !IsTodayStockProcessed()) {
-    if (SystemReady()) {
+    if (IsSystemReady()) {
       AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
       SetTodayStockProcessedFlag(true);
       return true;
@@ -1257,7 +1266,7 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 }
 
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
-  if (SystemReady() && m_fSaveRTData) {
+  if (IsSystemReady() && m_fSaveRTData) {
     AfxBeginThread(ThreadSaveRTData, nullptr);
     return true;
   }

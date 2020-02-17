@@ -18,7 +18,7 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
-  ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(gl_ChinaStockMarket.IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   int i;
   long lDay = FormatToDay(gl_ChinaStockMarket.GetNewestTransactionTime());

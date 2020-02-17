@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = nullptr;
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
@@ -534,9 +534,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestMarketReady) {
     gl_ChinaStockMarket.SetSystemReady(true);
-    EXPECT_TRUE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
     gl_ChinaStockMarket.SetSystemReady(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
   }
 
   TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
@@ -617,7 +617,7 @@ namespace StockAnalysisTest {
     gl_ChinaStockMarket.TaskResetMarket(91300);
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
@@ -640,20 +640,20 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1;
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(92459));
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(93001));
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     gl_ChinaStockMarket.SetResetMarket(false);
     gl_ChinaStockMarket.SetSystemReady(false);
     gl_ChinaStockMarket.SetPermitResetMarket(true);
     EXPECT_TRUE(gl_ChinaStockMarket.TaskResetMarketAgain(92500));
-    EXPECT_FALSE(gl_ChinaStockMarket.SystemReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_FALSE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
   }
@@ -975,5 +975,36 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.SchedulingTaskPerHour(3600, 10100));
     EXPECT_FALSE(gl_ChinaStockMarket.SchedulingTaskPerHour(3599, 19000)) << _T("前面那个将计数器重置，此调用尚差一秒，故而返回假");
     EXPECT_TRUE(gl_ChinaStockMarket.SchedulingTaskPerHour(1, 10100));
+  }
+
+  TEST_F(CChinaMarketTest, TestGetRTDataReceived) {
+    gl_ChinaStockMarket.SetRTDataReceived(101010);
+    EXPECT_EQ(gl_ChinaStockMarket.GetRTDataReceived(), 101010);
+    gl_ChinaStockMarket.SetRTDataReceived(1010101010);
+    EXPECT_EQ(gl_ChinaStockMarket.GetRTDataReceived(), 1010101010);
+  }
+
+  TEST_F(CChinaMarketTest, TestCheckMarketReady) {
+    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_ChinaStockMarket.SetRTDataReceived(0);
+    EXPECT_TRUE(gl_ChinaStockMarket.CheckMarketReady());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
+    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_ChinaStockMarket.SetRTDataReceived(0);
+    gl_ChinaStockMarket.SetSystemReady(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.CheckMarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
+    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_ChinaStockMarket.SetRTDataReceived(0);
+    gl_ChinaStockMarket.SetSystemReady(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.CheckMarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
+    gl_ChinaStockMarket.SetRTDataReceived(gl_ChinaStockMarket.GetTotalStock() * 3);
+    EXPECT_FALSE(gl_ChinaStockMarket.CheckMarketReady());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
+    gl_ChinaStockMarket.SetRTDataReceived(gl_ChinaStockMarket.GetTotalStock() * 3 + 1);
+    EXPECT_TRUE(gl_ChinaStockMarket.CheckMarketReady());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
+    gl_ChinaStockMarket.SetSystemReady(false);
   }
 }

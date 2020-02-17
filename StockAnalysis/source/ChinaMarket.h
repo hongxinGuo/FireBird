@@ -122,7 +122,7 @@ public:
 
   long GetMinLineOffset(CChinaStock sID, time_t Time);
 
-  bool SystemReady(void) noexcept { return m_fSystemReady; }
+  bool IsSystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
@@ -252,6 +252,9 @@ public:
   bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
 
   INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
+  void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
+
+  bool CheckMarketReady(void) noexcept;
 
 private:
   // ≥ı ºªØ
