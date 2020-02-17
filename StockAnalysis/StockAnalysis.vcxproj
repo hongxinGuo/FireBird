@@ -153,6 +153,9 @@
       <GenerateMapFile>false</GenerateMapFile>
       <AssemblyDebug>false</AssemblyDebug>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+      <HeapReserveSize>128</HeapReserveSize>
+      <StackReserveSize>128</StackReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

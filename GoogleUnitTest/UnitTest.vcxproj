@@ -212,7 +212,7 @@
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
-      <SupportJustMyCode>false</SupportJustMyCode>
+      <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAsManaged>false</CompileAsManaged>
@@ -233,6 +233,9 @@
       </IgnoreSpecificDefaultLibraries>
       <AssemblyDebug>false</AssemblyDebug>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+      <HeapReserveSize>128</HeapReserveSize>
+      <StackReserveSize>128</StackReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
