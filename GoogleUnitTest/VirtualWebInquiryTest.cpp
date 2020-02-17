@@ -83,7 +83,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_VirtualWebInquiry.GetByteReaded(), 20000);
   }
 
-  TEST_F(CVirtualWebInquiryTest, TestGetInquiringStr) {
+  TEST_F(CVirtualWebInquiryTest, TestGetInquiringString) {
     EXPECT_STREQ(gl_VirtualWebInquiry.GetInquiringString(), _T(""));
     gl_VirtualWebInquiry.SetInquiringString(_T("abcdefg"));
     EXPECT_STREQ(gl_VirtualWebInquiry.GetInquiringString(), _T("abcdefg"));

@@ -30,7 +30,6 @@ CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 }
 
 void CTengxunRTWebInquiry::StartReadingThread(void) {
-  SetReadingWebData(true);  // 在此先设置一次，以防重入（线程延迟导致）
   AfxBeginThread(ThreadReadTengxunRTData, this);
 }
 

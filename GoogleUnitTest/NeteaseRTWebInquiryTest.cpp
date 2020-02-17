@@ -22,22 +22,14 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.CalculateTime();
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
-      gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
-      gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
-      gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
+
       EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_ChinaStockMarket.ClearChoicedRTDataQueue();
-      gl_ChinaStockMarket.SetResetMarket(true);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
-      gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
-      gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
-      gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_ChinaStockMarket.SetCurrentStockChanged(false);
     }
   };
 
@@ -52,6 +44,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestGetNextInquiryMiddleStr) {
+    gl_ChinaStockMarket.SetSystemReady(true);
     CString str = m_NeteaseRTWebData.GetNextInquiringMiddleStr(1, false); // 得到第一个股票字符串
     EXPECT_STREQ(str, _T("0600000"));
   }

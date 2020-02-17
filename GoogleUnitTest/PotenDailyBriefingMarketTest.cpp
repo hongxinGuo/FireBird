@@ -11,7 +11,6 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
       EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
