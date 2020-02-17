@@ -29,4 +29,12 @@ namespace StockAnalysisTest {
     m_NeteaseDayLineWebData.SetDownLoadingStockCode(_T("2600001"));
     EXPECT_STREQ(m_NeteaseDayLineWebData.GetDownLoadingStockCode(), _T("2600001"));
   }
+
+  TEST(NeteaseWebDayLineDataTest, TestPrepareNextInquiringStr) {
+    gl_ChinaStockMarket.SetSystemReady(true);
+    if (m_NeteaseDayLineWebData.PrepareNextInquiringStr()) {
+      CString str = m_NeteaseDayLineWebData.GetInquiringString();
+      EXPECT_STREQ(str.Left(54), _T("http://quotes.money.163.com/service/chddata.html?code="));
+    }
+  }
 }

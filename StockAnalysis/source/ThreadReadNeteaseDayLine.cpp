@@ -28,7 +28,7 @@ UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     pStock = gl_ChinaStockMarket.GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
-    //ASSERT(!pNeteaseDayLineWebData->IsReadingWebData()); // TransferNeteaseDayLineWebDataToBuffer耗时较长，导致此断言可能出错。
+    //ASSERT(!pNeteaseDayLineWebData->IsReadingWebData()); // TransferNeteaseDayLineWebDataToBuffer耗时较长，导致放在此处的此断言可能出错。
   }
   else ASSERT(!pNeteaseDayLineWebData->IsReadingWebData());
   return 4; // 此线程正常返回值为4

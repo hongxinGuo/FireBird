@@ -57,13 +57,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestPrepareNextInquiringStr) {
-    gl_ChinaStockMarket.SetSystemReady(false);
-    EXPECT_TRUE(m_NeteaseRTWebData.PrepareNextInquiringStr());
-    CString str = m_NeteaseRTWebData.GetInquiringString();
-    EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
     gl_ChinaStockMarket.SetSystemReady(true);
     EXPECT_TRUE(m_NeteaseRTWebData.PrepareNextInquiringStr());
-    str = m_NeteaseRTWebData.GetInquiringString();
+    CString str = m_NeteaseRTWebData.GetInquiringString();
     EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
   }
 }

@@ -591,8 +591,9 @@ CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipU
 
 CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString str = _T("");
-
   CString strStockCode, strRight6, strLeft2, strPrefix;
+
+  ASSERT(SystemReady());
   if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
   strStockCode = m_vChinaMarketAStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
   IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
