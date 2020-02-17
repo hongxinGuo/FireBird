@@ -17,6 +17,7 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsReadyToRun());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
+      gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
 
@@ -27,6 +28,7 @@ namespace StockAnalysisTest {
       gl_PotenDailyBriefingMarket.SetReadyToRun(true);
       gl_PotenDailyBriefingMarket.SetResetMarket(true);
       gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20180411);
+      gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
@@ -70,10 +72,30 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20190101);
   }
 
+  TEST_F(CPotenDailyBriefingMarketTest, TestSetNewestDatabaseDay) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 0);
+    gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(20190101);
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 20190101);
+  }
+
   TEST_F(CPotenDailyBriefingMarketTest, TestResetMarket) {
     gl_PotenDailyBriefingMarket.ResetMarket();
     CString str = gl_systemMessage.PopInformationMessage();
     CString strLeft = str.Left(29);
     EXPECT_STREQ(strLeft, _T("重置poten.com于美东标准时间："));
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestLoadDatabase) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetDatabaseSize(), 0);
+    gl_PotenDailyBriefingMarket.LoadDatabase();
+    EXPECT_GT(gl_PotenDailyBriefingMarket.GetDatabaseSize(), 0);
+    EXPECT_GT(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestUpdateStatus) {
+    gl_PotenDailyBriefingMarket.LoadDatabase();
+    gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(20180411);
+    gl_PotenDailyBriefingMarket.UpdateStatus();
+    EXPECT_GT(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 20180411);
   }
 }

@@ -251,6 +251,8 @@ public:
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
   bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
 
+  INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -262,6 +264,8 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CChinaStockPtr> m_vStockChoice; // 自选股票池
+
+  INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
   queue<CRTDataPtr> m_qRTData;
   bool m_fSaveRTData;

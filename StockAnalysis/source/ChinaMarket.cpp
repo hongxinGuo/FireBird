@@ -71,6 +71,8 @@ void CChinaMarket::Reset(void) {
   CalculateTime(); // 初始化市场时间
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
+  m_llRTDataReceived = 0;
+
   m_fLoadedSelectedStock = false;
   m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
@@ -706,6 +708,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
     while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
       CRTDataPtr pRTData = make_shared<CRTData>();
       if (pRTData->ReadSinaData(pWebDataReceived)) {
+        m_llRTDataReceived++;
         gl_RTDataContainer.PushSinaRTData(pRTData); // 将此实时数据指针存入实时数据队列
       }
       else return false;  // 后面的数据出问题，抛掉不用。
