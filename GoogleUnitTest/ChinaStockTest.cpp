@@ -16,11 +16,16 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {
       // clearup
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
   };
 
@@ -1204,7 +1209,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
+      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000 + 2);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
       pid->SetStockName(_T("首创股份"));
@@ -1228,7 +1233,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(20800100);
     ASSERT(!gl_fNormalMode);
     pStock->UpdateDayLineStartEndDay();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000);
+    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900102);
     EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
   }

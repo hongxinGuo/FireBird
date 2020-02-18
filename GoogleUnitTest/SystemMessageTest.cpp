@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST(SystemMessageTest, TestInitialize) {
+  TEST_F(SystemMessageTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();
     CSystemMessage systemMessage; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST(SystemMessageTest, TestGetInformationDequeSize) {
+  TEST_F(SystemMessageTest, TestGetInformationDequeSize) {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
     gl_systemMessage.PushInformationMessage(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetDayLineInfoDequeSize) {
+  TEST_F(SystemMessageTest, TestGetDayLineInfoDequeSize) {
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
     gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
@@ -60,7 +60,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetFindDequeSize) {
+  TEST_F(SystemMessageTest, TestGetFindDequeSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_systemMessage.GetTransactionDequeSize(), 0);
     gl_systemMessage.PushTransactionMessage(_T("TEST"));
@@ -70,7 +70,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetCancelSellDequeSize) {
+  TEST_F(SystemMessageTest, TestGetCancelSellDequeSize) {
     EXPECT_EQ(gl_systemMessage.GetCancelSellDequeSize(), 0);
     gl_systemMessage.PushCancelSellMessage(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetCancelSellDequeSize(), 1);
@@ -79,7 +79,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetCancelBuyDequeSize) {
+  TEST_F(SystemMessageTest, TestGetCancelBuyDequeSize) {
     EXPECT_EQ(gl_systemMessage.GetCancelBuyDequeSize(), 0);
     gl_systemMessage.PushCancelBuyMessage(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetCancelBuyDequeSize(), 1);
@@ -88,7 +88,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST(SystemMessageTest, TestGetTrace2DequeSize) {
+  TEST_F(SystemMessageTest, TestGetTrace2DequeSize) {
     EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 0);
     gl_systemMessage.PushTrace2Message(_T("TEST"));
     EXPECT_EQ(gl_systemMessage.GetTrace2DequeSize(), 1);

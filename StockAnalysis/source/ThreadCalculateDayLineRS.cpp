@@ -19,7 +19,7 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (lToday >= gl_ChinaStockMarket.GetDay()) return(true);
+  if (lToday > gl_ChinaStockMarket.GetDay()) return(true);
 
   time_t tStart = 0, tEnd = 0;
   time(&tStart);

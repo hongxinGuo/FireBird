@@ -16,11 +16,9 @@ namespace StockAnalysisTest {
     static void SetUpTestCase(void) {
       EXPECT_TRUE(true);
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
     }
     static void TearDownTestCase(void) {
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-      EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -30,7 +28,13 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
       gl_ChinaStockMarket.SetSystemReady(true); // 测试市场时，默认系统已经准备好
+      gl_ChinaStockMarket.SetPermitResetMarket(true);
+      gl_ChinaStockMarket.SetCheckActiveStock(true);
       EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
+
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {
@@ -43,7 +47,17 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_ChinaStockMarket.SetCurrentStockChanged(false);
+      gl_ChinaStockMarket.SetPermitResetMarket(true);
+      gl_ChinaStockMarket.SetCheckActiveStock(true);
       gl_ChinaStockMarket.SetSystemReady(true); // 离开此测试时，默认系统已准备好。
+      for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(i);
+        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+      }
+
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
   };
 
@@ -72,7 +86,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 12000; i++) {
       pStock = gl_ChinaStockMarket.GetStock(i);
       EXPECT_EQ(pStock->GetOffset(), i);
-      EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+      EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
       EXPECT_FALSE(pStock->IsDayLineNeedProcess());
       EXPECT_FALSE(pStock->IsDayLineNeedSaving());
       if ((pStock->GetStockCode() >= _T("sh000000")) && (pStock->GetStockCode() <= _T("sh000999"))) {
@@ -575,9 +589,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
     for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
       pStock = gl_ChinaStockMarket.GetStock(i);
-      pStock->SetDayLineNeedUpdate(false);
+      if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false);
     }
     EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineNeedUpdate());
+    for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
+      pStock = gl_ChinaStockMarket.GetStock(i);
+      pStock->SetDayLineNeedUpdate(true);
+    }
   }
 
   TEST_F(CChinaMarketTest, TestIsLoadSelectedStock) {
@@ -899,11 +917,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TesstIsCheckActiveStock) {
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCheckActiveStock());
-    gl_ChinaStockMarket.SetCheckActiveStock(true);
     EXPECT_TRUE(gl_ChinaStockMarket.IsCheckActiveStock());
     gl_ChinaStockMarket.SetCheckActiveStock(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCheckActiveStock());
+    gl_ChinaStockMarket.SetCheckActiveStock(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsCheckActiveStock());
   }
 
   TEST_F(CChinaMarketTest, TestGetTotalActiveStock) {
