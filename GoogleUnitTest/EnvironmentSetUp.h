@@ -7,6 +7,7 @@
 #include"ChinaStock.h"
 
 #include"SetStockCode.h"
+#include"WebInquirer.h"
 
 namespace StockAnalysisTest {
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
@@ -51,6 +52,7 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
   };
 }

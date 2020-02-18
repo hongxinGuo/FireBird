@@ -55,6 +55,10 @@ public:
   long GetInquiringNumber(void) noexcept { return m_lInquiringNumber; }
   void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
 
+  long GetReadingThreadNumber(void) noexcept { return m_lReadingThreadNumber; }
+  void SetReadingthreadNumber(long lValue) noexcept { m_lReadingThreadNumber = lValue; }
+  bool IsReadingWebThreadRunning(void) noexcept { if (m_lReadingThreadNumber > 0) return true; else return false; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
@@ -81,6 +85,8 @@ protected:
   bool m_fReportStatus; //
 
   long m_lInquiringNumber; // 每次查询数量
+
+  static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数
 
   CString m_strConnection;
 };

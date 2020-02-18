@@ -19,6 +19,8 @@
 
 #include"Thread.h"
 
+#include"WebInquirer.h"
+
 using namespace std;
 #include<string>
 #include<thread>
@@ -126,6 +128,8 @@ CMainFrame::~CMainFrame() {
   if (gl_ChinaStockMarket.IsUpdateStockCodeDB()) {
     gl_ChinaStockMarket.UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
+
+  //while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
 
   TRACE("finally exited\n");
 }

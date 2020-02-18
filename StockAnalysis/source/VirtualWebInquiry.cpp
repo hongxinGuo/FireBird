@@ -8,6 +8,8 @@
 
 #include"VirtualWebInquiry.h"
 
+atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // 当前执行网络读取线程数
+
 CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
   m_pCurrentPos = m_buffer;
@@ -34,7 +36,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fDone = false;
   bool fStatus = true;
   m_pCurrentReadPos = GetBufferAddr();
-
+  m_lReadingThreadNumber++;
   try {
     ASSERT(IsReadingWebData());
     SetByteReaded(0);
@@ -70,7 +72,8 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     delete m_pFile;
     m_pFile = nullptr;
   }
-
+  m_lReadingThreadNumber--;
+  ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);
   return fStatus;
 }
