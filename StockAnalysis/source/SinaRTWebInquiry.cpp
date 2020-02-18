@@ -23,9 +23,9 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   // 申请下一批次股票实时数据
   if (gl_ChinaStockMarket.IsCheckActiveStock() || !gl_ChinaStockMarket.IsSystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
     strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, false);
-    if (gl_ChinaStockMarket.CheckMarketReady()) {
-      ASSERT(gl_ChinaStockMarket.IsSystemReady());
-      gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
+    if (!gl_ChinaStockMarket.IsSystemReady()) {
+      gl_ChinaStockMarket.CheckMarketReady();
+      if (gl_ChinaStockMarket.IsSystemReady()) gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
     }
   }
   else { // 开市时使用今日活跃股票池

@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"ChinaStock.h"
 #include"PotenDailyBriefingMarket.h"
+#include"WebInquirer.h"
 
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。
 namespace StockAnalysisTest {
@@ -30,6 +31,7 @@ namespace StockAnalysisTest {
       gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20180411);
       gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
   };
 

@@ -5,6 +5,7 @@
 #include"ChinaStock.h"
 
 #include"SetStockCode.h"
+#include"WebInquirer.h"
 
 using namespace std;
 #include<memory>
@@ -15,6 +16,9 @@ namespace StockAnalysisTest {
     static void SetUpTestCase(void) {
       EXPECT_TRUE(true);
       ASSERT_FALSE(gl_fNormalMode);
+    }
+    static void TearDownTestCase(void) {
+      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
