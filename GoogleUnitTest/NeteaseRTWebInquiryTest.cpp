@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.SetSystemReady(false);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }

@@ -233,8 +233,10 @@
       </IgnoreSpecificDefaultLibraries>
       <AssemblyDebug>false</AssemblyDebug>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
-      <HeapReserveSize>128</HeapReserveSize>
-      <StackReserveSize>128</StackReserveSize>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Bscmake>

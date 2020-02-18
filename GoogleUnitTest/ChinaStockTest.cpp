@@ -1391,6 +1391,7 @@ namespace StockAnalysisTest {
     stock.SetAttackBuyAbove200000(20);
 
     CSetDayLineInfo setDayLineInfo;
+    setDayLineInfo.m_strFilter = _T("[ID] = 1");
     setDayLineInfo.Open();
     setDayLineInfo.AddNew();
     stock.SaveCalculatedInfo(setDayLineInfo);

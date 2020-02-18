@@ -14,6 +14,23 @@
 #include"SystemMessage.h"
 
 namespace StockAnalysisTest {
+  class SystemMessageTest : public ::testing::Test
+  {
+  protected:
+    virtual void SetUp(void) override {
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+    }
+  };
+
   TEST(SystemMessageTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     long l = gl_systemMessage.GetInformationDequeSize();

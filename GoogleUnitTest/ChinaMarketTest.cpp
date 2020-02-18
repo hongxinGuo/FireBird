@@ -16,9 +16,11 @@ namespace StockAnalysisTest {
     static void SetUpTestCase(void) {
       EXPECT_TRUE(true);
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
     }
     static void TearDownTestCase(void) {
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
+      EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -27,6 +29,7 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
       gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
+      gl_ChinaStockMarket.SetSystemReady(true); // 测试市场时，默认系统已经准备好
       EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     }
 
@@ -40,6 +43,7 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_ChinaStockMarket.SetCurrentStockChanged(false);
+      gl_ChinaStockMarket.SetSystemReady(true); // 离开此测试时，默认系统已准备好。
     }
   };
 
@@ -47,7 +51,7 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = nullptr;
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
-    EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());
+    EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
@@ -303,6 +307,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetNeteaseInquiringStockStr) {
     CChinaStockPtr pStock = nullptr;
+    gl_ChinaStockMarket.SetSystemReady(true);
     gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
     CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(900, false);
     EXPECT_EQ(gl_ChinaStockMarket.GetNeteaseRTDataInquiringIndex(), 899);
@@ -642,6 +647,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestTaskResetMarketAgain) {
     tm tm_;
     tm_.tm_wday = 1;
+    gl_ChinaStockMarket.SetSystemReady(false);
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_FALSE(gl_ChinaStockMarket.IsSystemReady());

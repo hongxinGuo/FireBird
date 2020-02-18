@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       gl_ChinaStockMarket.CalculateTime();
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
-
+      m_NeteaseDayLineWebData.ResetDownLoadingStockCode();
       EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
     }
 
@@ -26,7 +26,9 @@ namespace StockAnalysisTest {
       gl_ChinaStockMarket.SetResetMarket(true);
       gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      gl_ChinaStockMarket.SetSystemReady(false);
       gl_ChinaStockMarket.SetCurrentStockChanged(false);
+      m_NeteaseDayLineWebData.ResetDownLoadingStockCode();
     }
   };
 
@@ -60,5 +62,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
+    gl_ChinaStockMarket.SetSystemReady(false);
   }
 }

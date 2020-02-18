@@ -19,6 +19,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.SetSystemReady(false);
       gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
     }
   public:
