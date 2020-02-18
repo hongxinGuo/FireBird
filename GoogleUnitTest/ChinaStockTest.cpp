@@ -16,6 +16,8 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      pStock = nullptr;
+      gl_ChinaStockMarket.CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -23,10 +25,18 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+      if (pStock != nullptr) {
+        pStock->SetDayLineDBUpdated(false);
+        pStock = nullptr;
+      }
     }
+
+  protected:
+    CChinaStockPtr pStock;
   };
 
   TEST_F(CChinaStockTest, TestInitialize) {
@@ -835,7 +845,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
     id.SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
     id.SetCheckingDayLineStatus();
-    EXPECT_FALSE(id.IsDayLineNeedUpdate());
+    EXPECT_FALSE(id.IsDayLineNeedUpdate()) << id.GetDayLineEndDay() << gl_ChinaStockMarket.GetDay();
     id.SetDayLineNeedUpdate(true);
     id.SetDayLineEndDay(gl_ChinaStockMarket.GetLastTradeDay());
     id.SetCheckingDayLineStatus();
@@ -916,7 +926,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
-    CChinaStockPtr pStock = make_shared<CChinaStock>();
+    pStock = make_shared<CChinaStock>();
     CChinaStock stock;
 
     pStock->SetHavingFirstRTData(true);
@@ -1064,7 +1074,7 @@ namespace StockAnalysisTest {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CDayLine id;
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
     gl_ChinaStockMarket.__TEST_SetMarketDay(20190101);
 
@@ -1137,7 +1147,8 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CDayLinePtr pDayLine = nullptr;
     CChinaStock id;
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1205,7 +1216,8 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay) {
     CDayLinePtr pid;
     CChinaStock id;
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1241,7 +1253,8 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay2) {
     CDayLinePtr pid;
     CChinaStock id;
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
+
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1271,11 +1284,11 @@ namespace StockAnalysisTest {
     pStock->UpdateDayLineStartEndDay();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
-    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {
-    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
     EXPECT_FALSE(pStock->IsActive());
     CString strStockName = pStock->GetStockName();
     WORD wMarket = pStock->GetMarket();
