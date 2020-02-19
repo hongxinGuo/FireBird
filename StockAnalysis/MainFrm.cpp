@@ -605,21 +605,15 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     break;
     case 33: // PAGE UP
       // last stock
-    pStock = gl_ChinaStockMarket.GetCurrentStock();
-    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-    if (lIndex > 0) lIndex--;
-    pStock = gl_ChinaStockMarket.GetStock(lIndex);
-    gl_ChinaStockMarket.SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
+    if (gl_ChinaStockMarket.GetCurrentStock() != nullptr) {
+      gl_ChinaStockMarket.ChangeCurrentStockToPrevStock();
+    }
     break;
     case 34: // PAGE DOWN
       // next stock
-    pStock = gl_ChinaStockMarket.GetCurrentStock();
-    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-    if (lIndex < gl_ChinaStockMarket.GetTotalActiveStock()) lIndex++;
-    pStock = gl_ChinaStockMarket.GetStock(lIndex);
-    gl_ChinaStockMarket.SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
+    if (gl_ChinaStockMarket.GetCurrentStock() != nullptr) {
+      gl_ChinaStockMarket.ChangeCurrentStockToNextStock();
+    }
     break;
     default:
     break;
@@ -665,7 +659,7 @@ void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
   ASSERT(gl_fExitingCalculatingRS == false);
   gl_fExitingCalculatingRS = true;
-}
+  }
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here

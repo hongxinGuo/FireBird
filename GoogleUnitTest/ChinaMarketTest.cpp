@@ -1023,4 +1023,21 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
     gl_ChinaStockMarket.SetSystemReady(false);
   }
+
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock) {
+    gl_ChinaStockMarket.SetCurrentStock(gl_ChinaStockMarket.GetStock(0));
+    gl_ChinaStockMarket.ChangeCurrentStockToNextStock();
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock()->GetOffset(), 1);
+    gl_ChinaStockMarket.SetCurrentStock(gl_ChinaStockMarket.GetStock(11998)); // 这个股票是中证煤炭
+    gl_ChinaStockMarket.ChangeCurrentStockToNextStock();
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock()->GetOffset(), 0) << _T("中证煤炭后的为空，然后就转到最前面的浦发银行了");
+  }
+
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock) {
+    gl_ChinaStockMarket.SetCurrentStock(gl_ChinaStockMarket.GetStock(1)); // 选取退市的邯郸钢铁
+    gl_ChinaStockMarket.ChangeCurrentStockToPrevStock();
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
+    gl_ChinaStockMarket.ChangeCurrentStockToPrevStock();
+    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
+  }
 }

@@ -259,6 +259,9 @@ public:
 
   bool CheckMarketReady(void) noexcept;
 
+  bool ChangeCurrentStockToNextStock(void);
+  bool ChangeCurrentStockToPrevStock(void);
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。

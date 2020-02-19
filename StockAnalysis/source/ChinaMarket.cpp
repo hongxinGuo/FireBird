@@ -140,6 +140,46 @@ bool CChinaMarket::CheckMarketReady(void) noexcept {
   return m_fSystemReady;
 }
 
+bool CChinaMarket::ChangeCurrentStockToNextStock(void) {
+  ASSERT(m_pCurrentStock != nullptr);
+  long lIndex = m_pCurrentStock->GetOffset();
+  CChinaStockPtr pStock = m_pCurrentStock;
+  bool fFound = false;
+  int i = 1;
+  while (!fFound) {
+    if ((lIndex + i) < 12000) {
+      pStock = gl_ChinaStockMarket.GetStock(lIndex + i);
+    }
+    else {
+      pStock = gl_ChinaStockMarket.GetStock(lIndex + i - 12000);
+    }
+    if (pStock->GetIPOStatus() != 0) fFound = true;
+    i++;
+  }
+  SetCurrentStock(pStock);
+  return true;
+}
+
+bool CChinaMarket::ChangeCurrentStockToPrevStock(void) {
+  ASSERT(m_pCurrentStock != nullptr);
+  long lIndex = m_pCurrentStock->GetOffset();
+  CChinaStockPtr pStock = m_pCurrentStock;
+  bool fFound = false;
+  int i = 1;
+  while (!fFound) {
+    if ((lIndex - i) >= 0) {
+      pStock = gl_ChinaStockMarket.GetStock(lIndex - i);
+    }
+    else {
+      pStock = gl_ChinaStockMarket.GetStock(lIndex + 12000 - i);
+    }
+    if (pStock->GetIPOStatus() != 0) fFound = true;
+    i++;
+  }
+  SetCurrentStock(pStock);
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 初始化所有可能的股票代码池，只被CChinaMarket的初始函数调用一次。
@@ -1057,7 +1097,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   TaskShowCurrentTransaction();
 
   // 装载当前股票日线数据
-  //TaskLoadCurrentStockDayLine();
+  TaskLoadCurrentStockDayLine();
 
   return true;
 }
@@ -1431,7 +1471,6 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
     m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
-    AfxBeginThread(ThreadLoadDayLine, 0);
   }
 }
 
