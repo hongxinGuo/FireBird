@@ -82,7 +82,7 @@ void CChinaMarket::Reset(void) {
 
   m_ttNewestTransactionTime = 0;
 
-  if (m_tmMarket.tm_hour >= 15) { // 中国股票市场已经闭市
+  if (GetTime() >= 150400) { // 中国股票市场已经闭市
     m_fTodayStockProcessed = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
   else m_fTodayStockProcessed = false;
@@ -1192,12 +1192,10 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
-  if ((lCurrentTime >= 150300) && !IsTodayStockProcessed()) {
-    if (IsSystemReady()) {
-      AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
-      SetTodayStockProcessedFlag(true);
-      return true;
-    }
+  if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed()) {
+    AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
+    SetTodayStockProcessed(true);
+    return true;
   }
   return false;
 }
@@ -1793,12 +1791,10 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
         || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
       setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
-    else if ((fabs(dHigh - dClose) < 0.0001)
-             && (((dClose / dLastClose)) > 1.095)) { // 涨停板
+    else if ((fabs(dHigh - dClose) < 0.0001) && (((dClose / dLastClose)) > 1.095)) { // 涨停板
       setDayLine.m_RelativeStrong = ConvertValueToString(100);
     }
-    else if ((fabs(dClose - dLow) < 0.0001)
-             && ((dClose / dLastClose) < 0.905)) { // 跌停板
+    else if ((fabs(dClose - dLow) < 0.0001) && ((dClose / dLastClose) < 0.905)) { // 跌停板
       setDayLine.m_RelativeStrong = ConvertValueToString(0);
     }
     else {
@@ -1819,6 +1815,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   sprintf_s(buffer, "%4d年%2d月%2d日的股票相对强度计算完成", lYear, lMonth, lDayOfMonth);
   CString strTemp;
   strTemp = buffer;
+  TRACE("处理今日相对强度\n");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);

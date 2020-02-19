@@ -23,6 +23,7 @@ UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
   int i;
   long lDay = FormatToDay(gl_ChinaStockMarket.GetNewestTransactionTime());
   i = gl_ChinaStockMarket.ProcessCurrentTradeDayStock(lDay);
+  TRACE("处理今日股票\n");
   char buffer[30];
   sprintf_s(buffer, "%d", i);
   CString str;
@@ -31,11 +32,11 @@ UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
   str += _T("个股票");
   gl_systemMessage.PushInformationMessage(str);
   gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lDay);
-  if (gl_ChinaStockMarket.GetTime() > 150300) {   // 如果中国股市闭市了
+  if (gl_ChinaStockMarket.GetTime() > 150400) {   // 如果中国股市闭市了
     gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
     gl_ChinaStockMarket.SetUpdateStockCodeDB(true);  // 更新代码。
     gl_ChinaStockMarket.SetUpdateOptionDB(true);   // 更新状态
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);  // 设置今日已处理标识
+    gl_ChinaStockMarket.SetTodayStockProcessed(true);  // 设置今日已处理标识
   }
 
   return 14;

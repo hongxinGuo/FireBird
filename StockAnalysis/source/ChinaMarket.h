@@ -129,7 +129,7 @@ public:
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
-  void SetTodayStockProcessedFlag(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
+  void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中

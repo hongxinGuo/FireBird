@@ -33,8 +33,8 @@ public:
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
-  long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }
-  void SetNewestUpdateDay(long lDay) noexcept { m_lNewestUpdatedDay = lDay; }
+  long GetCurrentInquiringDay(void) noexcept { return m_lCurrentInquiringDay; }
+  void SetCurrentInquiringDay(long lDay) noexcept { m_lCurrentInquiringDay = lDay; }
   long GetNewestDatabaseDay(void) noexcept { return m_lNewestDatabaseDay; }
   void SetNewestDatabaseDay(long lDay) noexcept { m_lNewestDatabaseDay = lDay; }
 
@@ -46,6 +46,6 @@ protected:
   bool m_fTodayDataUpdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
   map<long, bool> m_mapDataLoadedDays;
-  long m_lNewestUpdatedDay;
+  long m_lCurrentInquiringDay;
   long m_lNewestDatabaseDay;
 };

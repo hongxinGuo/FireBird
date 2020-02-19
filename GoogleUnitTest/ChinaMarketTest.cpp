@@ -41,6 +41,8 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
+      gl_ChinaStockMarket.SetUpdateOptionDB(false);
       gl_ChinaStockMarket.ClearChoicedRTDataQueue();
       gl_ChinaStockMarket.SetResetMarket(true);
       gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
@@ -558,9 +560,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);
+    gl_ChinaStockMarket.SetTodayStockProcessed(true);
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
+    gl_ChinaStockMarket.SetTodayStockProcessed(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
   }
 
@@ -799,26 +801,26 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestProcessTodayStock) {
     gl_ChinaStockMarket.SetSystemReady(false);
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    gl_ChinaStockMarket.SetTodayStockProcessed(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150359));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
     EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetSystemReady(true);
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    gl_ChinaStockMarket.SetTodayStockProcessed(true);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150359));
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetSystemReady(true);
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
-    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150259));
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    gl_ChinaStockMarket.SetTodayStockProcessed(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150359));
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
 
     tm tm_;
     tm_.tm_wday = 0; // 星期日
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
-    gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150300));
+    gl_ChinaStockMarket.SetTodayStockProcessed(false);
+    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed()) << _T("处理当日股票，不分是否是工作日，这样能够防止遗漏");
   }
 
