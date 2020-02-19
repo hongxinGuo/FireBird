@@ -15,6 +15,7 @@ UINT ThreadLoadDayLine(LPVOID) {
   ASSERT(pCurrentStock != nullptr);
   ASSERT(!pCurrentStock->IsDayLineLoaded());
 
+  pCurrentStock->ClearDayLineContainer();
   // 装入日线数据
   pCurrentStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度

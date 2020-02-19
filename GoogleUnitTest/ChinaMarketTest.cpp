@@ -16,6 +16,8 @@ namespace StockAnalysisTest {
     static void SetUpTestCase(void) {
       EXPECT_TRUE(true);
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
+      EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedUpdateNumber(), 12000);
     }
     static void TearDownTestCase(void) {
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
@@ -66,7 +68,6 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_ChinaStockMarket.IsLoadSelectedStock());
     EXPECT_TRUE(gl_ChinaStockMarket.IsSystemReady());
-    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentEditStockChanged());
     EXPECT_FALSE(gl_ChinaStockMarket.IsMarketOpened());
     EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
@@ -102,7 +103,6 @@ namespace StockAnalysisTest {
 
     EXPECT_TRUE(gl_ChinaStockMarket.IsPermitResetMarket());
     EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedProcessNumber(), 0);
-    EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedUpdateNumber(), 12000);
     EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedSaveNumber(), 0);
     EXPECT_TRUE(gl_ChinaStockMarket.IsUsingSinaRTDataReceiver());
     EXPECT_TRUE(gl_ChinaStockMarket.IsUsingTengxunRTDataReceiver());
@@ -528,14 +528,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetCurrentStock) {
-    CChinaStockPtr pStock = make_shared<CChinaStock>();
-    pStock->SetOffset(2);
-    CChinaStockPtr pStock2 = make_shared<CChinaStock>();
-    pStock->SetOffset(100);
+    CChinaStockPtr pStock = gl_ChinaStockMarket.GetStock(7);
+    CChinaStockPtr pStock2 = gl_ChinaStockMarket.GetStock(4);
 
-    EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
-    EXPECT_FALSE(gl_ChinaStockMarket.IsCurrentStockChanged());
-    EXPECT_FALSE(pStock->IsRecordRTData());
     gl_ChinaStockMarket.SetCurrentStock(pStock);
     EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), pStock);
     EXPECT_TRUE(pStock->IsRecordRTData());
@@ -563,13 +558,6 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
-    gl_ChinaStockMarket.CalculateTime();
-    if (gl_ChinaStockMarket.GetTime() > 150000) {
-      EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
-    }
-    else {
-      EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed());
-    }
     gl_ChinaStockMarket.SetTodayStockProcessedFlag(true);
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
     gl_ChinaStockMarket.SetTodayStockProcessedFlag(false);

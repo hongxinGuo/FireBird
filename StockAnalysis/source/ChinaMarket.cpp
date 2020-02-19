@@ -969,6 +969,7 @@ bool CChinaMarket::SchedulingTask(void) {
     TaskProcessWebRTDataGetFromNeteaseServer();
     TaskGetNeteaseDayLineFromWeb();
   }
+
   return true;
 }
 
@@ -1054,6 +1055,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   }
 
   TaskShowCurrentTransaction();
+
+  // 装载当前股票日线数据
+  //TaskLoadCurrentStockDayLine();
 
   return true;
 }
@@ -1426,7 +1430,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
     pStock->SetRecordRTData(true);
     m_pCurrentStock = pStock;
     m_fCurrentStockChanged = true;
-    m_pCurrentStock->SetDayLineLoaded(false);
+    m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
     AfxBeginThread(ThreadLoadDayLine, 0);
   }
 }
@@ -1520,6 +1524,15 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
       pStock->SetDayLineNeedProcess(false);
+    }
+  }
+  return true;
+}
+
+bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
+  if (m_pCurrentStock != nullptr) {
+    if (!m_pCurrentStock->IsDayLineLoaded()) {
+      AfxBeginThread(ThreadLoadDayLine, 0);
     }
   }
   return true;

@@ -77,6 +77,9 @@ public:
   // 是否所有股票的历史日线数据都查询过一遍了
   bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
+  // 装载当前股票日线任务
+  bool TaskLoadCurrentStockDayLine(void);
+
   // interface function
 public:
   // 系统状态区

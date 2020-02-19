@@ -49,6 +49,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseDayLineData* pData = GetParam();
       m_pStock = gl_ChinaStockMarket.GetStock(pData->m_strStockCode);
+      m_pStock->SetDayLineLoaded(false);
       m_pStock->SetDayLineNeedProcess(true);
       if (m_pStock->GetIPOStatus() != __STOCK_NULL__) m_pStock->SetDayLineEndDay(gl_ChinaStockMarket.GetDay());
       m_iCount = pData->m_iCount;

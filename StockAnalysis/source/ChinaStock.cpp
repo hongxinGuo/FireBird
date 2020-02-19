@@ -518,11 +518,10 @@ void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
 bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
   CSetDayLine setDayLine;
   CSetDayLineInfo setDayLineInfo;
-  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
 
   // 装入DayLine数据
   setDayLine.m_strFilter = _T("[StockCode] = '");
-  setDayLine.m_strFilter += pCurrentStock->GetStockCode();
+  setDayLine.m_strFilter += GetStockCode();
   setDayLine.m_strFilter += _T("'");
   setDayLine.m_strSort = _T("[Day]");
   setDayLine.Open();
@@ -531,7 +530,7 @@ bool CChinaStock::LoadDayLineAndDayLineInfo(void) {
 
   // 装入DayLineInfo数据
   setDayLineInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineInfo.m_strFilter += pCurrentStock->GetStockCode();
+  setDayLineInfo.m_strFilter += GetStockCode();
   setDayLineInfo.m_strFilter += _T("'");
   setDayLineInfo.m_strSort = _T("[Day]");
   setDayLineInfo.Open();
