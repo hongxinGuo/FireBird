@@ -95,4 +95,8 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_PotenDailyBriefingMarket.GetDatabaseSize(), 0);
     EXPECT_GT(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
   }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerMinute) {
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPerMinute(60, 10000));
+  }
 }
