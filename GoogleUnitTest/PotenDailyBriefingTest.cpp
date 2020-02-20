@@ -71,8 +71,12 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingTest, TestLoadData) {
     CPotenDailyBriefing id, id2;
     CSetPotenDailyBriefing setPoten;
+    long lDay = gl_PotenDailyBriefingMarket.GetDay();
+    char buffer[30];
+    sprintf_s(buffer, "%08d", lDay);
+    CString strDay = buffer;
 
-    setPoten.m_strFilter = _T("[Day] = 20300101");
+    setPoten.m_strFilter = _T("[Day] = ") + strDay;
     setPoten.Open();
     setPoten.m_pDatabase->BeginTrans();
     while (!setPoten.IsEOF()) {
@@ -82,7 +86,7 @@ namespace StockAnalysisTest {
     setPoten.m_pDatabase->CommitTrans();
     setPoten.Close();
 
-    id.m_lDay = 20300101;
+    id.m_lDay = lDay;
     id.m_dTD3C = 1;
     id.m_dTD9 = 2;
     id.m_dTD20 = 3;
@@ -135,7 +139,7 @@ namespace StockAnalysisTest {
     setPoten.m_pDatabase->CommitTrans();
     setPoten.Close();
 
-    setPoten.m_strFilter = _T("[Day] = 20300101");
+    setPoten.m_strFilter = _T("[Day] = ") + strDay;
     setPoten.Open();
     EXPECT_DOUBLE_EQ(atof(setPoten.m_VLCC_TD3C), id.m_dTD3C);
     EXPECT_DOUBLE_EQ(atof(setPoten.m_SUEZMAX_TD20), id.m_dTD20);

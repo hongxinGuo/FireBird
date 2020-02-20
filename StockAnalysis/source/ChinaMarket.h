@@ -77,6 +77,9 @@ public:
   // 是否所有股票的历史日线数据都查询过一遍了
   bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
+  // 装载当前股票日线任务
+  bool TaskLoadCurrentStockDayLine(void);
+
   // interface function
 public:
   // 系统状态区
@@ -122,11 +125,11 @@ public:
 
   long GetMinLineOffset(CChinaStock sID, time_t Time);
 
-  bool SystemReady(void) noexcept { return m_fSystemReady; }
+  bool IsSystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
-  void SetTodayStockProcessedFlag(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
+  void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
   // 数据库读取存储操作
   bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -251,6 +254,14 @@ public:
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
   bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
 
+  INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
+  void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
+
+  bool CheckMarketReady(void) noexcept;
+
+  bool ChangeCurrentStockToNextStock(void);
+  bool ChangeCurrentStockToPrevStock(void);
+
 private:
   // 初始化
   bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
@@ -262,6 +273,8 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CChinaStockPtr> m_vStockChoice; // 自选股票池
+
+  INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
   queue<CRTDataPtr> m_qRTData;
   bool m_fSaveRTData;

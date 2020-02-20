@@ -41,7 +41,6 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-  ASSERT(IsReadingWebData());
   AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
 }
 

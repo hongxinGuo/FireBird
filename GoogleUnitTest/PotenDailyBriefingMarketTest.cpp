@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"ChinaStock.h"
 #include"PotenDailyBriefingMarket.h"
+#include"WebInquirer.h"
 
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。
 namespace StockAnalysisTest {
@@ -11,13 +12,14 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
-      EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
+      EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
+      EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 0);
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsReadyToRun());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
+      gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
 
@@ -27,14 +29,17 @@ namespace StockAnalysisTest {
       gl_PotenDailyBriefingMarket.SetPermitResetMarket(true);
       gl_PotenDailyBriefingMarket.SetReadyToRun(true);
       gl_PotenDailyBriefingMarket.SetResetMarket(true);
-      gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20180411);
+      gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(20180411);
+      gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(0);
+      gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
   };
 
   TEST_F(CPotenDailyBriefingMarketTest, TestInitialize) {
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
-    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
   }
 
@@ -65,10 +70,16 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
   }
 
-  TEST_F(CPotenDailyBriefingMarketTest, TestSetNewestUpdateDay) {
-    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20180411);
-    gl_PotenDailyBriefingMarket.SetNewestUpdateDay(20190101);
-    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestUpdateDay(), 20190101);
+  TEST_F(CPotenDailyBriefingMarketTest, TestSetCurrentInquiringDay) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
+    gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(20190101);
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20190101);
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestSetNewestDatabaseDay) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 0);
+    gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(20190101);
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 20190101);
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestResetMarket) {
@@ -76,5 +87,12 @@ namespace StockAnalysisTest {
     CString str = gl_systemMessage.PopInformationMessage();
     CString strLeft = str.Left(29);
     EXPECT_STREQ(strLeft, _T("重置poten.com于美东标准时间："));
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestLoadDatabase) {
+    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetDatabaseSize(), 0);
+    gl_PotenDailyBriefingMarket.LoadDatabase();
+    EXPECT_GT(gl_PotenDailyBriefingMarket.GetDatabaseSize(), 0);
+    EXPECT_GT(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
   }
 }

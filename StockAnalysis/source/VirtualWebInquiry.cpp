@@ -8,6 +8,8 @@
 
 #include"VirtualWebInquiry.h"
 
+atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // 当前执行网络读取线程数
+
 CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
   m_pCurrentPos = m_buffer;
@@ -18,6 +20,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
   m_strInquire = _T("");
   m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // 接收实时数据线程是否执行标识
+
+  m_lInquiringNumber = 500; // 每次查询数量默认值为500
 
 #ifdef DEBUG
   m_fReportStatus = false;
@@ -32,13 +36,13 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fDone = false;
   bool fStatus = true;
   m_pCurrentReadPos = GetBufferAddr();
+  m_lReadingThreadNumber++;
+  ASSERT(IsReadingWebData());
+  ASSERT(m_pFile == nullptr);
+  ASSERT(m_lCurrentByteRead == 0);
 
   try {
-    ASSERT(IsReadingWebData());
     SetByteReaded(0);
-    ASSERT(m_pFile == nullptr);
-    ASSERT(m_lCurrentByteRead == 0);
-    ASSERT(m_pCurrentReadPos == m_buffer);
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
@@ -68,7 +72,8 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     delete m_pFile;
     m_pFile = nullptr;
   }
-
+  m_lReadingThreadNumber--;
+  ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);
   return fStatus;
 }

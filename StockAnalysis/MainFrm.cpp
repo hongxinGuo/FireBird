@@ -19,6 +19,8 @@
 
 #include"Thread.h"
 
+#include"WebInquirer.h"
+
 using namespace std;
 #include<string>
 #include<thread>
@@ -126,6 +128,8 @@ CMainFrame::~CMainFrame() {
   if (gl_ChinaStockMarket.IsUpdateStockCodeDB()) {
     gl_ChinaStockMarket.UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
+
+  while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
 
   TRACE("finally exited\n");
 }
@@ -490,14 +494,14 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 
 void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
-  if (gl_ChinaStockMarket.SystemReady()) {
+  if (gl_ChinaStockMarket.IsSystemReady()) {
     AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
   }
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_ChinaStockMarket.SystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
+  if (gl_ChinaStockMarket.IsSystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     pCmdUI->Enable(true);
   }
   else pCmdUI->Enable(false);
@@ -505,7 +509,7 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_ChinaStockMarket.SystemReady()) {
+  if (gl_ChinaStockMarket.IsSystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
       pCmdUI->Enable(false);
     }
@@ -601,21 +605,15 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     break;
     case 33: // PAGE UP
       // last stock
-    pStock = gl_ChinaStockMarket.GetCurrentStock();
-    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-    if (lIndex > 0) lIndex--;
-    pStock = gl_ChinaStockMarket.GetStock(lIndex);
-    gl_ChinaStockMarket.SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
+    if (gl_ChinaStockMarket.GetCurrentStock() != nullptr) {
+      gl_ChinaStockMarket.ChangeCurrentStockToPrevStock();
+    }
     break;
     case 34: // PAGE DOWN
       // next stock
-    pStock = gl_ChinaStockMarket.GetCurrentStock();
-    gl_ChinaStockMarket.GetStockIndex(pStock->GetStockCode(), lIndex);
-    if (lIndex < gl_ChinaStockMarket.GetTotalActiveStock()) lIndex++;
-    pStock = gl_ChinaStockMarket.GetStock(lIndex);
-    gl_ChinaStockMarket.SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
+    if (gl_ChinaStockMarket.GetCurrentStock() != nullptr) {
+      gl_ChinaStockMarket.ChangeCurrentStockToNextStock();
+    }
     break;
     default:
     break;
@@ -661,7 +659,7 @@ void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
   ASSERT(gl_fExitingCalculatingRS == false);
   gl_fExitingCalculatingRS = true;
-}
+  }
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here

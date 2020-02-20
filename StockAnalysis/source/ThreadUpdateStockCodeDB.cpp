@@ -4,6 +4,7 @@
 #include"ChinaMarket.h"
 
 #include"Thread.h"
+#include"TransferSharedPtr.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -20,4 +21,10 @@ UINT ThreadUpdateStockCodeDB(LPVOID) {
 UINT ThreadUpdateOptionDB(LPVOID) {
   gl_ChinaStockMarket.UpdateOptionDB();
   return 20;
+}
+
+UINT ThreadSavePotenData(LPVOID) {
+  gl_PotenDailyBriefingMarket.SaveCurrentData();
+
+  return 21;
 }

@@ -9,7 +9,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadSaveRTData(LPVOID) {
-  ASSERT(gl_ChinaStockMarket.SystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(gl_ChinaStockMarket.IsSystemReady()); // 调用本工作线程时必须设置好市场。
   gl_ChinaStockMarket.SaveRTData();
   return 19;
 }

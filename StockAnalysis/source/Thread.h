@@ -44,3 +44,5 @@ UINT ThreadUpdateStockCodeDB(LPVOID); // 此线程返回值为18
 UINT ThreadSaveRTData(LPVOID); // 此线程返回值为19
 // 更新选项数据库
 UINT ThreadUpdateOptionDB(LPVOID); // 此线程返回值为20
+// 存储Poten.com新的数据
+UINT ThreadSavePotenData(LPVOID); // 此线程返回值为21

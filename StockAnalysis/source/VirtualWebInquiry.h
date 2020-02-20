@@ -52,6 +52,13 @@ public:
 
   CString GetConnection(void) noexcept { return m_strConnection; }
 
+  long GetInquiringNumber(void) noexcept { return m_lInquiringNumber; }
+  void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
+
+  long GetReadingThreadNumber(void) noexcept { return m_lReadingThreadNumber; }
+  void SetReadingthreadNumber(long lValue) noexcept { m_lReadingThreadNumber = lValue; }
+  bool IsReadingWebThreadRunning(void) noexcept { if (m_lReadingThreadNumber > 0) return true; else return false; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
@@ -73,9 +80,13 @@ protected:
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
-  bool m_fReadingWebData; // 接收实时数据线程是否执行标识
+  atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
 
   bool m_fReportStatus; //
+
+  long m_lInquiringNumber; // 每次查询数量
+
+  static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数
 
   CString m_strConnection;
 };

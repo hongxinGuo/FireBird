@@ -48,6 +48,8 @@ public:
   void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
 
+  bool IsReadingWebThreadRunning(void) noexcept { return m_SinaRTWebInquiry.IsReadingWebThreadRunning(); }
+
 protected:
   CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
   CTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
