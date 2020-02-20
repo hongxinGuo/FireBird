@@ -15,7 +15,6 @@ namespace StockAnalysisTest {
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
       EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
-      EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 0);
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsReadyToRun());
       EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
@@ -30,7 +29,6 @@ namespace StockAnalysisTest {
       gl_PotenDailyBriefingMarket.SetReadyToRun(true);
       gl_PotenDailyBriefingMarket.SetResetMarket(true);
       gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(20180411);
-      gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(0);
       gl_PotenDailyBriefingMarket.ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
@@ -74,12 +72,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
     gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(20190101);
     EXPECT_EQ(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20190101);
-  }
-
-  TEST_F(CPotenDailyBriefingMarketTest, TestSetNewestDatabaseDay) {
-    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 0);
-    gl_PotenDailyBriefingMarket.SetNewestDatabaseDay(20190101);
-    EXPECT_EQ(gl_PotenDailyBriefingMarket.GetNewestDatabaseDay(), 20190101);
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestResetMarket) {
