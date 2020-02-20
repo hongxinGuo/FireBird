@@ -3,6 +3,8 @@
 #include"WebInquirer.h"
 #include "PotenDailyBriefingMarket.h"
 
+#include"Thread.h"
+
 CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
@@ -19,9 +21,10 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
 }
 
 void CPotenDailyBriefingMarket::Reset(void) {
+  m_pDataToSaved = nullptr;
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
-  m_lNewestUpdatedDay = 20180411; //
+  m_lCurrentInquiringDay = 20180411; //
   m_lNewestDatabaseDay = 0;
   for (long l = 20180411; l <= GetDay(); l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
@@ -41,7 +44,7 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > (s_timeLast)) {
+  if (GetLocalTime() > (s_timeLast + 10)) {
     SchedulingTaskPerSecond(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
     return true;
@@ -62,17 +65,9 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
   if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
     ProcessData();
     if (m_fDataBaseLoaded) {
-      if ((m_lNewestUpdatedDay <= GetDay())) {
+      if ((m_lCurrentInquiringDay <= GetDay())) {
         gl_WebInquirer.GetPotenDailyBriefingData();
         SetNextInquiringDay();
-      }
-      else {
-        if ((m_lNewestUpdatedDay > m_lNewestDatabaseDay)) {
-          SaveDatabase();
-          UpdateStatus();
-        }
-        gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
-        m_fTodayDataUpdated = true;
       }
     }
     else {
@@ -86,13 +81,12 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurr
 
 bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
   // 九点重启系统
-  if (IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime >= 90000) && (lCurrentTime <= 93000)) { // 九点重启本市场
-      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-      SetPermitResetMarket(false); // 今天不再允许重启系统。
-    }
+  if (IsPermitResetMarket() && (lCurrentTime >= 90000) && (lCurrentTime <= 93000)) { // 九点重启本市场
+    SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+    SetPermitResetMarket(false); // 今天不再允许重启系统。
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::LoadDatabase(void) {
@@ -107,8 +101,8 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     if (setPotenDailyBriefing.m_Day > m_lNewestDatabaseDay) {
       m_lNewestDatabaseDay = setPotenDailyBriefing.m_Day;
     }
-    if (setPotenDailyBriefing.m_Day > m_lNewestUpdatedDay) {
-      m_lNewestUpdatedDay = GetNextDay(setPotenDailyBriefing.m_Day);
+    if (setPotenDailyBriefing.m_Day > m_lCurrentInquiringDay) {
+      m_lCurrentInquiringDay = GetNextDay(setPotenDailyBriefing.m_Day);
     }
     setPotenDailyBriefing.MoveNext();
   }
@@ -125,9 +119,18 @@ bool CPotenDailyBriefingMarket::ProcessData(void) {
       CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
       if (pPotenDailyBriefing->ReadData(pWebData)) {
         pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
-        TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
+        if ((pPotenDailyBriefing->GetDay() > m_lNewestDatabaseDay) || !m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay())) {
+          ASSERT(m_pDataToSaved == nullptr);
+          m_pDataToSaved = pPotenDailyBriefing;
+          AfxBeginThread(ThreadSavePotenData, nullptr);
+          TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
+          gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
+          m_lNewestDatabaseDay = pPotenDailyBriefing->GetDay();
+          if(pPotenDailyBriefing->GetDay() == GetDay()) m_fTodayDataUpdated = true;
+          m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
+          m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
+        }
         ASSERT(pPotenDailyBriefing->m_lDay >= m_lNewestDatabaseDay);
-        m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
       }
       else {
         TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetDay());
@@ -140,35 +143,24 @@ bool CPotenDailyBriefingMarket::ProcessData(void) {
   return true;
 }
 
-bool CPotenDailyBriefingMarket::SaveDatabase(void) {
+bool CPotenDailyBriefingMarket::SaveCurrentData(void) {
+  ASSERT(m_pDataToSaved != nullptr);
   CSetPotenDailyBriefing setPotenDailyBriefing;
   setPotenDailyBriefing.Open();
   setPotenDailyBriefing.m_pDatabase->BeginTrans();
-  for (auto pPotenDailyBriefing : m_vPotenDailyBriefing) {
-    if (pPotenDailyBriefing->m_lDay > m_lNewestDatabaseDay) {
-      pPotenDailyBriefing->AppendData(setPotenDailyBriefing);
-    }
-  }
+  m_pDataToSaved->AppendData(setPotenDailyBriefing);
   setPotenDailyBriefing.m_pDatabase->CommitTrans();
   setPotenDailyBriefing.Close();
-  return true;
-}
-
-bool CPotenDailyBriefingMarket::UpdateStatus(void) {
-  for (auto pPotenDailyBriefing : m_vPotenDailyBriefing) {
-    if (pPotenDailyBriefing->m_lDay > m_lNewestDatabaseDay) {
-      m_lNewestDatabaseDay = pPotenDailyBriefing->m_lDay;
-    }
-  }
+  m_pDataToSaved = nullptr;
 
   return true;
 }
 
 void CPotenDailyBriefingMarket::SetNextInquiringDay(void) {
   long lNextInquiringDay = 0;
-  long year = m_lNewestUpdatedDay / 10000;
-  long month = m_lNewestUpdatedDay / 100 - year * 100;
-  long day = m_lNewestUpdatedDay - year * 10000 - month * 100;
+  long year = m_lCurrentInquiringDay / 10000;
+  long month = m_lCurrentInquiringDay / 100 - year * 100;
+  long day = m_lCurrentInquiringDay - year * 10000 - month * 100;
   CTime today(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
   do {
@@ -176,5 +168,5 @@ void CPotenDailyBriefingMarket::SetNextInquiringDay(void) {
     lNextInquiringDay = today.GetYear() * 10000 + today.GetMonth() * 100 + today.GetDay();
   } while ((lNextInquiringDay <= GetDay()) && m_mapDataLoadedDays.at(lNextInquiringDay));
 
-  SetNewestUpdateDay(lNextInquiringDay);
+  SetCurrentInquiringDay(lNextInquiringDay);
 }
