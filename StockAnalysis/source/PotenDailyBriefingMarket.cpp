@@ -15,17 +15,16 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   m_strMarketId = _T("Poten.com");
   m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
   CalculateTime();
-  m_fTodayDataUpdated = false;
 
   Reset();
 }
 
 void CPotenDailyBriefingMarket::Reset(void) {
+  m_fTodayDataUpdated = false;
   m_pDataToSaved = nullptr;
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
   m_lCurrentInquiringDay = 20180411; //
-  m_lNewestDatabaseDay = 0;
   for (long l = 20180411; l <= GetDay(); l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
     if (!IsWorkingDay(l)) {
@@ -44,7 +43,7 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
   const long lCurrentTime = GetTime();
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > (s_timeLast + 10)) {
+  if (GetLocalTime() > (s_timeLast)) {
     SchedulingTaskPerSecond(GetLocalTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetLocalTime();
     return true;
@@ -60,23 +59,47 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  TaskResetMarket(lCurrentTime);
+  SchedulingTaskPerMinute(lSecond, lCurrentTime);
+  SchedulingTaskPer10Second(lSecond, lCurrentTime);
 
-  if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
-    ProcessData();
-    if (m_fDataBaseLoaded) {
-      if ((m_lCurrentInquiringDay <= GetDay())) {
-        gl_WebInquirer.GetPotenDailyBriefingData();
-        SetNextInquiringDay();
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) {
+  static int s_i10SeocndCounter = 9;
+
+  s_i10SeocndCounter -= lSecond;
+  if (s_i10SeocndCounter < 0) {
+    s_i10SeocndCounter = 9;
+
+    if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
+      ProcessData();
+      if (m_fDataBaseLoaded) {
+        if ((m_lCurrentInquiringDay <= GetDay())) {
+          gl_WebInquirer.GetPotenDailyBriefingData();
+          SetNextInquiringDay();
+        }
       }
-    }
-    else {
-      LoadDatabase();
-      m_fDataBaseLoaded = true;
+      else {
+        LoadDatabase();
+        m_fDataBaseLoaded = true;
+      }
     }
   }
 
   return true;
+}
+
+bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
+  static int s_i1MinuteCounter = 59;
+
+  s_i1MinuteCounter -= lSecond;
+  if (s_i1MinuteCounter < 0) {
+    s_i1MinuteCounter = 59;
+    TaskResetMarket(lCurrentTime);
+    return true;
+  }
+  else return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
@@ -98,9 +121,6 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
     m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
-    if (setPotenDailyBriefing.m_Day > m_lNewestDatabaseDay) {
-      m_lNewestDatabaseDay = setPotenDailyBriefing.m_Day;
-    }
     if (setPotenDailyBriefing.m_Day > m_lCurrentInquiringDay) {
       m_lCurrentInquiringDay = GetNextDay(setPotenDailyBriefing.m_Day);
     }
@@ -119,18 +139,15 @@ bool CPotenDailyBriefingMarket::ProcessData(void) {
       CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
       if (pPotenDailyBriefing->ReadData(pWebData)) {
         pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
-        if ((pPotenDailyBriefing->GetDay() > m_lNewestDatabaseDay) || !m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay())) {
+        if ((pPotenDailyBriefing->GetDay() >= m_lCurrentInquiringDay) || !m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay())) {
           ASSERT(m_pDataToSaved == nullptr);
           m_pDataToSaved = pPotenDailyBriefing;
           AfxBeginThread(ThreadSavePotenData, nullptr);
           TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
           gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
-          m_lNewestDatabaseDay = pPotenDailyBriefing->GetDay();
-          if(pPotenDailyBriefing->GetDay() == GetDay()) m_fTodayDataUpdated = true;
-          m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
+          m_mapDataLoadedDays[pPotenDailyBriefing->GetDay()] = true;
           m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
         }
-        ASSERT(pPotenDailyBriefing->m_lDay >= m_lNewestDatabaseDay);
       }
       else {
         TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetDay());
@@ -140,6 +157,10 @@ bool CPotenDailyBriefingMarket::ProcessData(void) {
       TRACE(_T("没有%d日的poten数据\n"), pWebData->m_lTime / 1000000);
     }
   }
+
+  if (m_lCurrentInquiringDay > GetDay()) m_fTodayDataUpdated = true;
+  else m_fTodayDataUpdated = false;
+
   return true;
 }
 

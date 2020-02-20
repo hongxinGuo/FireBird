@@ -172,7 +172,7 @@ bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerHour(lSecond, lCurrentTime);
   SchedulingTaskPer5Minute(lSecond, lCurrentTime);
-  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+  SchedulingTaskPerMinute(lSecond, lCurrentTime);
   SchedulingTaskPer10Second(lSecond, lCurrentTime);
 
   return true;
@@ -190,7 +190,7 @@ bool CVirtualMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) 
   }
 }
 
-bool CVirtualMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
+bool CVirtualMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   m_i1MinuteCounter -= lSecond;
   if (m_i1MinuteCounter < 0) {

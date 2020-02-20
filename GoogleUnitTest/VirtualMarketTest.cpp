@@ -181,10 +181,10 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerSecond(90000));
   }
 
-  TEST_F(CVirtualMarketTest, TestSchedulingTaskPer1Minute) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer1Minute(60, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer1Minute(59, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer1Minute(1, 12010));
+  TEST_F(CVirtualMarketTest, TestSchedulingTaskPerMinute) {
+    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerMinute(60, 10000));
+    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPerMinute(59, 12000));
+    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerMinute(1, 12010));
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPer10Second) {
