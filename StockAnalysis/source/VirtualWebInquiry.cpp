@@ -37,12 +37,12 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fStatus = true;
   m_pCurrentReadPos = GetBufferAddr();
   m_lReadingThreadNumber++;
+  ASSERT(IsReadingWebData());
+  ASSERT(m_pFile == nullptr);
+  ASSERT(m_lCurrentByteRead == 0);
+
   try {
-    ASSERT(IsReadingWebData());
     SetByteReaded(0);
-    ASSERT(m_pFile == nullptr);
-    ASSERT(m_lCurrentByteRead == 0);
-    ASSERT(m_pCurrentReadPos == m_buffer);
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(lFirstDelayTime); // ·þÎñÆ÷ÑÓ³ÙlStartDelayTimeºÁÃë¼´¿É¡£
     while (!fDone) {

@@ -14,7 +14,6 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestCase(void) {
-      EXPECT_TRUE(true);
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_ChinaStockMarket.GetCurrentStock(), nullptr);
       EXPECT_EQ(gl_ChinaStockMarket.GetDayLineNeedUpdateNumber(), 12000);

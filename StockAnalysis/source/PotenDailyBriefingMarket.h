@@ -23,12 +23,9 @@ public:
   void Reset(void);
 
   bool LoadDatabase(void);
-  bool SaveDatabase(void);
-
-  bool UpdateStatus(void);
+  bool SaveCurrentData(void);
 
   void SetNextInquiringDay(void);
-
   bool ProcessData(void);
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
@@ -42,6 +39,7 @@ public:
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
 
 protected:
+  CPotenDailyBriefingPtr m_pDataToSaved;
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUpdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;

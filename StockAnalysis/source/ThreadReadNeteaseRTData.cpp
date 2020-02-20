@@ -15,11 +15,12 @@ UINT ThreadReadNeteaseRTData(LPVOID pParam) {
   CNeteaseRTWebInquiry* pNeteaseRTWebData = (CNeteaseRTWebInquiry*)pParam;
 
   if (pNeteaseRTWebData->ReadWebData(100, 30, 30)) {
+    ASSERT(!pNeteaseRTWebData->IsReadingWebData());
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
     }
   }
-  ASSERT(!pNeteaseRTWebData->IsReadingWebData());
+  else ASSERT(!pNeteaseRTWebData->IsReadingWebData());
   return 3;
 }

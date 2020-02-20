@@ -17,11 +17,12 @@ UINT ThreadReadTengxunRTData(LPVOID pParam) {
   // 腾讯实时数据库的读取时间，以下列数字比较合适，再快的话，可能会出现丢帧现象。
   // 完全克服的话，还需要使用其他方法来确定服务器是否发送结束，目前的方法只是读不到了就认为结束了。
   if (pTengxunRTWebData->ReadWebData(100, 30, 20)) {
+    ASSERT(!pTengxunRTWebData->IsReadingWebData());
     CWebDataPtr pWebDataReceived = pTengxunRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushTengxunRTData(pWebDataReceived);
     }
   }
-  ASSERT(!pTengxunRTWebData->IsReadingWebData());
+  else ASSERT(!pTengxunRTWebData->IsReadingWebData());
   return 2;
 }
