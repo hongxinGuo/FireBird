@@ -4,7 +4,7 @@
 #include"VirtualMarket.h"
 
 namespace StockAnalysisTest {
-  CVirtualMarket gl_VirtualMarket;
+  CVirtualMarket s_VirtualMarket;
 
   class CVirtualMarketTest : public ::testing::Test
   {
@@ -12,9 +12,9 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_VirtualMarket.SetPermitResetMarket(true);
-      gl_VirtualMarket.SetReadyToRun(true);
-      gl_VirtualMarket.SetResetMarket(true);
+      s_VirtualMarket.SetPermitResetMarket(true);
+      s_VirtualMarket.SetReadyToRun(true);
+      s_VirtualMarket.SetResetMarket(true);
     }
 
     virtual void TearDown(void) override {
@@ -24,19 +24,19 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CVirtualMarketTest, TestIsReadyToRun) {
-    EXPECT_TRUE(gl_VirtualMarket.IsReadyToRun());
-    gl_VirtualMarket.SetReadyToRun(false);
-    EXPECT_FALSE(gl_VirtualMarket.IsReadyToRun());
-    gl_VirtualMarket.SetReadyToRun(true);
-    EXPECT_TRUE(gl_VirtualMarket.IsReadyToRun());
+    EXPECT_TRUE(s_VirtualMarket.IsReadyToRun());
+    s_VirtualMarket.SetReadyToRun(false);
+    EXPECT_FALSE(s_VirtualMarket.IsReadyToRun());
+    s_VirtualMarket.SetReadyToRun(true);
+    EXPECT_TRUE(s_VirtualMarket.IsReadyToRun());
   }
 
   TEST_F(CVirtualMarketTest, TestIsPermitResetMarket) {
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket()) << "PermitResetMarket should be true\n";
-    gl_VirtualMarket.SetPermitResetMarket(false);
-    EXPECT_FALSE(gl_VirtualMarket.IsPermitResetMarket());
-    gl_VirtualMarket.SetPermitResetMarket(true);
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
+    EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket()) << "PermitResetMarket should be true\n";
+    s_VirtualMarket.SetPermitResetMarket(false);
+    EXPECT_FALSE(s_VirtualMarket.IsPermitResetMarket());
+    s_VirtualMarket.SetPermitResetMarket(true);
+    EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket());
   }
 
   TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
@@ -44,36 +44,36 @@ namespace StockAnalysisTest {
     time_t ttime;
     tm tm_, tmLocal;
     time(&ttime);
-    gl_VirtualMarket.CalculateTime();
-    EXPECT_EQ(ttime, gl_VirtualMarket.GetLocalTime());
-    EXPECT_EQ(ttime - gl_VirtualMarket.GetTimeZoneOffset(), gl_VirtualMarket.GetMarketTime());
+    s_VirtualMarket.CalculateTime();
+    EXPECT_EQ(ttime, s_VirtualMarket.GetLocalTime());
+    EXPECT_EQ(ttime - s_VirtualMarket.GetTimeZoneOffset(), s_VirtualMarket.GetMarketTime());
     localtime_s(&tmLocal, &ttime);
-    ttime -= gl_VirtualMarket.GetTimeZoneOffset();
+    ttime -= s_VirtualMarket.GetTimeZoneOffset();
     gmtime_s(&tm_, &ttime);
     long lTimeZone;
     _get_timezone(&lTimeZone);
-    gl_VirtualMarket.CalculateLastTradeDay();
-    long lTime = gl_VirtualMarket.GetTime();
-    EXPECT_EQ(gl_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
+    s_VirtualMarket.CalculateLastTradeDay();
+    long lTime = s_VirtualMarket.GetTime();
+    EXPECT_EQ(s_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
 
     long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(gl_VirtualMarket.GetDay(), day);
-    EXPECT_EQ(gl_VirtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
-    EXPECT_EQ(gl_VirtualMarket.GetDayOfMonth(), tm_.tm_mday);
-    EXPECT_EQ(gl_VirtualMarket.GetYear(), tm_.tm_year + 1900);
+    EXPECT_EQ(s_VirtualMarket.GetDay(), day);
+    EXPECT_EQ(s_VirtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
+    EXPECT_EQ(s_VirtualMarket.GetDayOfMonth(), tm_.tm_mday);
+    EXPECT_EQ(s_VirtualMarket.GetYear(), tm_.tm_year + 1900);
 
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
-    EXPECT_EQ(gl_VirtualMarket.GetTime(), time);
+    EXPECT_EQ(s_VirtualMarket.GetTime(), time);
     char buffer[30];
     sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     CString str;
     str = buffer;
 
-    EXPECT_EQ(str.Compare(gl_VirtualMarket.GetLocalTimeString()), 0);
+    EXPECT_EQ(str.Compare(s_VirtualMarket.GetLocalTimeString()), 0);
 
     sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
     str = buffer;
-    EXPECT_EQ(str.Compare(gl_VirtualMarket.GetMarketTimeString()), 0);
+    EXPECT_EQ(str.Compare(s_VirtualMarket.GetMarketTimeString()), 0);
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
     }
     gmtime_s(&tm_, &ttime);
     long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(gl_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+    EXPECT_EQ(s_VirtualMarket.GetLastTradeDay(), LastTradeDay);
   }
 
   TEST_F(CVirtualMarketTest, TestGetLastTradeDay) {
@@ -102,8 +102,8 @@ namespace StockAnalysisTest {
       ttime += i * 60 * 60 * 24;
       gmtime_s(&tm2, &ttime);
       tm_ = tm2;
-      gl_VirtualMarket.__TEST_SetMarketTime(ttime);
-      gl_VirtualMarket.__TEST_SetMarketTM(tm2);
+      s_VirtualMarket.__TEST_SetMarketTime(ttime);
+      s_VirtualMarket.__TEST_SetMarketTM(tm2);
 
       switch (tm_.tm_wday) {
       case 1: // 星期一
@@ -120,32 +120,55 @@ namespace StockAnalysisTest {
       }
       gmtime_s(&tm_, &ttime);
       long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-      EXPECT_EQ(gl_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+      EXPECT_EQ(s_VirtualMarket.GetLastTradeDay(), LastTradeDay);
     }
   }
 
   TEST_F(CVirtualMarketTest, TestIsWorkingDay) {
     CTime time1(2019, 11, 25, 0, 0, 0); // 此日为星期一
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(time1));
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(20191125));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(time1));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(20191125));
     CTime time2(2019, 11, 26, 0, 0, 0); // 此日为星期二
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(time2));
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(20191126));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(time2));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(20191126));
     CTime time3(2019, 11, 27, 0, 0, 0); // 此日为星期三
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(time3));
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(20191127));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(time3));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(20191127));
     CTime time4(2019, 11, 28, 0, 0, 0); // 此日为星期四
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(time4));
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(20191128));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(time4));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(20191128));
     CTime time5(2019, 11, 29, 0, 0, 0); // 此日为星期五
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(time5));
-    EXPECT_TRUE(gl_VirtualMarket.IsWorkingDay(20191129));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(time5));
+    EXPECT_TRUE(s_VirtualMarket.IsWorkingDay(20191129));
     CTime time6(2019, 11, 30, 0, 0, 0); // 此日为星期六
-    EXPECT_FALSE(gl_VirtualMarket.IsWorkingDay(time6));
-    EXPECT_FALSE(gl_VirtualMarket.IsWorkingDay(20191130));
+    EXPECT_FALSE(s_VirtualMarket.IsWorkingDay(time6));
+    EXPECT_FALSE(s_VirtualMarket.IsWorkingDay(20191130));
     CTime time7(2019, 12, 1, 0, 0, 0); // 此日为星期日
-    EXPECT_FALSE(gl_VirtualMarket.IsWorkingDay(time7));
-    EXPECT_FALSE(gl_VirtualMarket.IsWorkingDay(20191201));
+    EXPECT_FALSE(s_VirtualMarket.IsWorkingDay(time7));
+    EXPECT_FALSE(s_VirtualMarket.IsWorkingDay(20191201));
+  }
+
+  TEST_F(CVirtualMarketTest, TestIsEarlyThen) {
+    EXPECT_TRUE(s_VirtualMarket.IsEarlyThen(20200101, 20200115, 13));
+    EXPECT_FALSE(s_VirtualMarket.IsEarlyThen(20200101, 20200115, 14));
+    EXPECT_TRUE(s_VirtualMarket.IsEarlyThen(20200115, 20200201, 16));
+    EXPECT_FALSE(s_VirtualMarket.IsEarlyThen(20200115, 20200201, 17));
+    EXPECT_TRUE(s_VirtualMarket.IsEarlyThen(20191101, 20200115, 74));
+    EXPECT_FALSE(s_VirtualMarket.IsEarlyThen(20191101, 20200115, 75));
+  }
+
+  TEST_F(CVirtualMarketTest, TestGetNextDay) {
+    EXPECT_EQ(s_VirtualMarket.GetNextDay(20200101, 1), 20200102);
+    EXPECT_EQ(s_VirtualMarket.GetNextDay(20200101, 11), 20200112);
+    EXPECT_EQ(s_VirtualMarket.GetNextDay(20201231, 1), 20210101);
+    EXPECT_EQ(s_VirtualMarket.GetNextDay(20201221, 14), 20210104);
+  }
+
+  TEST_F(CVirtualMarketTest, TestGetPrevDay) {
+    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200102, 1), 20200101);
+    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200112, 10), 20200102);
+    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200102, 11), 20191222);
+    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200202, 11), 20200122);
   }
 
   TEST_F(CVirtualMarketTest, TestGetDayOfWeek) {
@@ -153,53 +176,53 @@ namespace StockAnalysisTest {
     time_t ttime;
     tm tm_;
     time(&ttime);
-    ttime -= gl_VirtualMarket.GetTimeZoneOffset();
+    ttime -= s_VirtualMarket.GetTimeZoneOffset();
     gmtime_s(&tm_, &ttime);
 
-    gl_VirtualMarket.CalculateTime();
-    EXPECT_EQ(gl_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
+    s_VirtualMarket.CalculateTime();
+    EXPECT_EQ(s_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
   }
 
   TEST_F(CVirtualMarketTest, TestTaskResetMarketFlagAtMidnight) { // 这个其实是测试的CVirtualMarket类中的函数。
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
-    gl_VirtualMarket.SetPermitResetMarket(false);
-    gl_VirtualMarket.TaskResetMarketFlagAtMidnight(0);
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
-    gl_VirtualMarket.SetPermitResetMarket(false);
-    gl_VirtualMarket.TaskResetMarketFlagAtMidnight(1501);
-    EXPECT_FALSE(gl_VirtualMarket.IsPermitResetMarket());
-    gl_VirtualMarket.TaskResetMarketFlagAtMidnight(1500);
-    EXPECT_TRUE(gl_VirtualMarket.IsPermitResetMarket());
+    EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket());
+    s_VirtualMarket.SetPermitResetMarket(false);
+    s_VirtualMarket.TaskResetMarketFlagAtMidnight(0);
+    EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket());
+    s_VirtualMarket.SetPermitResetMarket(false);
+    s_VirtualMarket.TaskResetMarketFlagAtMidnight(1501);
+    EXPECT_FALSE(s_VirtualMarket.IsPermitResetMarket());
+    s_VirtualMarket.TaskResetMarketFlagAtMidnight(1500);
+    EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket());
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTask) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTask()) << "第一次调用时，内部时间初值为0，故而返回真";
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTask()) << "第二次调用时，内部时间已经设置为当前时间了，间隔不超过一秒，故而返回假";
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTask()) << "第一次调用时，内部时间初值为0，故而返回真";
+    EXPECT_FALSE(s_VirtualMarket.SchedulingTask()) << "第二次调用时，内部时间已经设置为当前时间了，间隔不超过一秒，故而返回假";
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPerSecond) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerSecond(90000));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPerSecond(90000));
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPerMinute) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerMinute(60, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPerMinute(59, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerMinute(1, 12010));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPerMinute(60, 10000));
+    EXPECT_FALSE(s_VirtualMarket.SchedulingTaskPerMinute(59, 12000));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPerMinute(1, 12010));
   }
 
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPer10Second) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer10Second(10, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer10Second(9, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer10Second(1, 12010));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPer10Second(10, 10000));
+    EXPECT_FALSE(s_VirtualMarket.SchedulingTaskPer10Second(9, 12000));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPer10Second(1, 12010));
   }
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPer5Minute) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer5Minute(300, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPer5Minute(299, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPer5Minute(1, 12010));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPer5Minute(300, 10000));
+    EXPECT_FALSE(s_VirtualMarket.SchedulingTaskPer5Minute(299, 12000));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPer5Minute(1, 12010));
   }
   TEST_F(CVirtualMarketTest, TestSchedulingTaskPerHour) {
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerHour(3600, 10000));
-    EXPECT_FALSE(gl_VirtualMarket.SchedulingTaskPerHour(3599, 12000));
-    EXPECT_TRUE(gl_VirtualMarket.SchedulingTaskPerHour(1, 12010));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPerHour(3600, 10000));
+    EXPECT_FALSE(s_VirtualMarket.SchedulingTaskPerHour(3599, 12000));
+    EXPECT_TRUE(s_VirtualMarket.SchedulingTaskPerHour(1, 12010));
   }
 }

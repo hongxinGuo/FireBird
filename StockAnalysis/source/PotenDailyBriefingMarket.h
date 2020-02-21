@@ -27,8 +27,10 @@ public:
   bool LoadDatabase(void);
   bool SaveCurrentData(void);
 
-  void SetNextInquiringDay(void);
+  void ChoiceNextInquiringDay(void);
   bool ProcessData(void);
+  bool CheckTodayDataUpdated(void);
+  bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
@@ -37,6 +39,9 @@ public:
 
   long GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
+
+public:
+  void __TEST_SetLoadedDay(long lDay, bool fFlag) noexcept { m_mapDataLoadedDays[lDay] = fFlag; }
 
 protected:
   CPotenDailyBriefingPtr m_pDataToSaved;

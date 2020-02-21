@@ -1750,9 +1750,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
 
-  for (j = 0; j < 30; j++) pch[j] = 0x000;
-
-  _ltoa_s(lDay, pch, 10);
+  sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
   setDayLine.m_strSort = _T("[UpDownRate]");
   setDayLine.m_strFilter = _T("[Day] =");
@@ -1760,6 +1758,9 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   setDayLine.Open();
   if (setDayLine.IsEOF()) { // 数据集为空，表明此日没有交易
     setDayLine.Close();
+    CString str = strDay;
+    str += _T("日数据集为空，没有计算相对强度");
+    gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
   setDayLine.m_pDatabase->BeginTrans();
