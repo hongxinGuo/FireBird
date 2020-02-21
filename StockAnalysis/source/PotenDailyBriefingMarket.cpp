@@ -71,32 +71,68 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCu
   s_i10SeocndCounter -= lSecond;
   if (s_i10SeocndCounter < 0) {
     s_i10SeocndCounter = 9;
+    TaskLoadDataBase();
 
-    if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing())) {
-      ProcessData();
-
-      CheckTodayDataUpdated();
-      if (m_fDataBaseLoaded) {
-        if ((m_lCurrentInquiringDay <= GetDay())) {
-          gl_WebInquirer.GetPotenDailyBriefingData();
-          ChoiceNextInquiringDay();
-        }
-      }
-      else {
-        LoadDatabase();
-        m_fDataBaseLoaded = true;
-      }
-    }
+    TaskProcessData();
+    TaskCheckTodayDataUpdated();
+    TaskInquiringData();
   }
 
   return true;
 }
 
-bool CPotenDailyBriefingMarket::CheckTodayDataUpdated(void) {
+bool CPotenDailyBriefingMarket::TaskProcessData(void) {
+  if ((!m_fTodayDataUpdated) && (!gl_WebInquirer.IsReadingPotenDailyBriefing()) && m_fDataBaseLoaded) {
+    long lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
+    for (int i = 0; i < lTotal; i++) {
+      CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
+      if (pWebData->GetBufferLength() > 40 * 1024) { // 从poten.com读取的数据大小如果低于40KB时，其没有实际内容，无需处理
+        CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
+        if (pPotenDailyBriefing->ReadData(pWebData)) {
+          pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
+          if (!m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay())) {
+            ASSERT(m_pDataToSaved == nullptr);
+            m_pDataToSaved = pPotenDailyBriefing;
+            AfxBeginThread(ThreadSavePotenData, nullptr);
+            TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
+            gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
+            m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
+            m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
+          }
+        }
+        else {
+          TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetDay());
+        }
+      }
+      else {
+        TRACE(_T("没有%d日的poten数据\n"), pWebData->m_lTime / 1000000);
+      }
+    }
+  }
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::TaskCheckTodayDataUpdated(void) {
   if (m_lCurrentInquiringDay > GetDay()) m_fTodayDataUpdated = true;
   else m_fTodayDataUpdated = false;
 
   return m_fTodayDataUpdated;
+}
+
+bool CPotenDailyBriefingMarket::TaskInquiringData(void) {
+  if (!m_fTodayDataUpdated && !gl_WebInquirer.IsReadingPotenDailyBriefing() && m_fDataBaseLoaded) {
+    gl_WebInquirer.GetPotenDailyBriefingData();
+    ChoiceNextInquiringDay();
+  }
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::TaskLoadDataBase(void) {
+  if (!m_fDataBaseLoaded) {
+    LoadDatabase();
+    m_fDataBaseLoaded = true;
+  }
+  return true;
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
@@ -113,7 +149,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurr
 
 bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
   // 九点重启系统
-  if (IsPermitResetMarket() && (lCurrentTime >= 90000) && (lCurrentTime <= 93000)) { // 九点重启本市场
+  if (IsPermitResetMarket() && (lCurrentTime >= 10000) && (lCurrentTime <= 13000)) { // 九点重启本市场
     SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
     SetPermitResetMarket(false); // 今天不再允许重启系统。
     return true;
@@ -130,42 +166,12 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
     m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
-    if (setPotenDailyBriefing.m_Day > m_lCurrentInquiringDay) {
+    if (setPotenDailyBriefing.m_Day >= m_lCurrentInquiringDay) {
       m_lCurrentInquiringDay = GetNextDay(setPotenDailyBriefing.m_Day);
     }
     setPotenDailyBriefing.MoveNext();
   }
   setPotenDailyBriefing.Close();
-
-  return true;
-}
-
-bool CPotenDailyBriefingMarket::ProcessData(void) {
-  long lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
-  for (int i = 0; i < lTotal; i++) {
-    CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
-    if (pWebData->GetBufferLength() > 40 * 1024) { // 从poten.com读取的数据大小如果低于40KB时，其没有实际内容，无需处理
-      CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
-      if (pPotenDailyBriefing->ReadData(pWebData)) {
-        pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
-        if (!m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay())) {
-          ASSERT(m_pDataToSaved == nullptr);
-          m_pDataToSaved = pPotenDailyBriefing;
-          AfxBeginThread(ThreadSavePotenData, nullptr);
-          TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
-          gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
-          m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
-          m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
-        }
-      }
-      else {
-        TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetDay());
-      }
-    }
-    else {
-      TRACE(_T("没有%d日的poten数据\n"), pWebData->m_lTime / 1000000);
-    }
-  }
 
   return true;
 }

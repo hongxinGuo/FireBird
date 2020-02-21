@@ -24,12 +24,15 @@ public:
   bool TaskResetMarket(long lCurrentTime);
   void Reset(void);
 
+  bool TaskProcessData(void);
+  bool TaskCheckTodayDataUpdated(void);
+  bool TaskInquiringData(void);
+  bool TaskLoadDataBase(void);
+
   bool LoadDatabase(void);
   bool SaveCurrentData(void);
 
   void ChoiceNextInquiringDay(void);
-  bool ProcessData(void);
-  bool CheckTodayDataUpdated(void);
   bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }
   void SetTodayDataUpdated(bool fFlag) noexcept { m_fTodayDataUpdated = fFlag; }
 

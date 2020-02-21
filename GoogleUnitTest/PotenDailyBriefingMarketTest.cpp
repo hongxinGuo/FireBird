@@ -46,16 +46,16 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingMarketTest, TestTaskResetMarket) {
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
-    gl_PotenDailyBriefingMarket.TaskResetMarket(85959);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(5959);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
-    gl_PotenDailyBriefingMarket.TaskResetMarket(93001);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(13001);
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
-    gl_PotenDailyBriefingMarket.TaskResetMarket(90000);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(10000);
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
     gl_PotenDailyBriefingMarket.SetPermitResetMarket(true); // 重置此标识
-    gl_PotenDailyBriefingMarket.TaskResetMarket(93000);
+    gl_PotenDailyBriefingMarket.TaskResetMarket(13000);
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsPermitResetMarket());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsResetMarket());
 
@@ -73,10 +73,10 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingMarketTest, TestCheckTodayDataUpdated) {
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
     gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetNextDay(gl_PotenDailyBriefingMarket.GetDay()));
-    EXPECT_TRUE(gl_PotenDailyBriefingMarket.CheckTodayDataUpdated());
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
     gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetDay());
-    EXPECT_FALSE(gl_PotenDailyBriefingMarket.CheckTodayDataUpdated());
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
   }
 

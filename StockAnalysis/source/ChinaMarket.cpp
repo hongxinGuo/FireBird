@@ -1150,7 +1150,7 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即先执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   i1MinuteCounter -= lSecondNumber;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59; // 重置计数器
