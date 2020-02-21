@@ -31,6 +31,7 @@ public:
   bool ProcessData(void);
   bool CheckTodayDataUpdated(void);
   bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }
+  void SetTodayDataUpdated(bool fFlag) noexcept { m_fTodayDataUpdated = fFlag; }
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }

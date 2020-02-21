@@ -13,7 +13,7 @@ using namespace std;
 // 此线程由系统在收市后于15:05自动唤醒，每日只执行一次
 //
 //
-//由于存在周六和周日，故而当前交易日并不一定就是当前日期，而可能时周五
+//由于存在周六和周日，故而当前交易日并不一定就是当前日期，而可能是周五
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
   str += buffer;
   str += _T("个股票");
   gl_systemMessage.PushInformationMessage(str);
-  gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lDay);
+  AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lDay, THREAD_PRIORITY_LOWEST);
   if (gl_ChinaStockMarket.GetTime() > 150400) {   // 如果中国股市闭市了
     gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
     gl_ChinaStockMarket.SetUpdateStockCodeDB(true);  // 更新代码。
