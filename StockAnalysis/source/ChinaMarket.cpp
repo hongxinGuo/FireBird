@@ -1150,7 +1150,7 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
+  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即先执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
   i1MinuteCounter -= lSecondNumber;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59; // 重置计数器
@@ -1735,6 +1735,7 @@ bool CChinaMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
+  gl_systemMessage.PushDayLineInfoMessage(_T("开始计算相对强度"));
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
@@ -1742,7 +1743,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   CString strSQL;
   CString strDay;
   char  pch[30];
-  int iStockNumber = 0, j = 0;
+  int iStockNumber = 0;
   CTime ctTime;
   CSetDayLine setDayLine;
   const long lYear = lDay / 10000;
@@ -1750,9 +1751,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
   char buffer[100];
 
-  for (j = 0; j < 30; j++) pch[j] = 0x000;
-
-  _ltoa_s(lDay, pch, 10);
+  sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
   setDayLine.m_strSort = _T("[UpDownRate]");
   setDayLine.m_strFilter = _T("[Day] =");
@@ -1760,6 +1759,9 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   setDayLine.Open();
   if (setDayLine.IsEOF()) { // 数据集为空，表明此日没有交易
     setDayLine.Close();
+    CString str = strDay;
+    str += _T("日数据集为空，没有计算相对强度");
+    gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
   setDayLine.m_pDatabase->BeginTrans();

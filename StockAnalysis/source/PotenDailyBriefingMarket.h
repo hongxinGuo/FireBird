@@ -24,11 +24,17 @@ public:
   bool TaskResetMarket(long lCurrentTime);
   void Reset(void);
 
+  bool TaskProcessData(void);
+  bool TaskCheckTodayDataUpdated(void);
+  bool TaskInquiringData(void);
+  bool TaskLoadDataBase(void);
+
   bool LoadDatabase(void);
   bool SaveCurrentData(void);
 
-  void SetNextInquiringDay(void);
-  bool ProcessData(void);
+  void ChoiceNextInquiringDay(void);
+  bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }
+  void SetTodayDataUpdated(bool fFlag) noexcept { m_fTodayDataUpdated = fFlag; }
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
@@ -37,6 +43,9 @@ public:
 
   long GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
+
+public:
+  void __TEST_SetLoadedDay(long lDay, bool fFlag) noexcept { m_mapDataLoadedDays[lDay] = fFlag; }
 
 protected:
   CPotenDailyBriefingPtr m_pDataToSaved;

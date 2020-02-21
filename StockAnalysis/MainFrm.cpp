@@ -659,7 +659,7 @@ void CMainFrame::OnAbortBuindingRS() {
   // TODO: Add your command handler code here
   ASSERT(gl_fExitingCalculatingRS == false);
   gl_fExitingCalculatingRS = true;
-  }
+}
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
