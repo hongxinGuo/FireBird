@@ -76,9 +76,9 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCu
     TaskProcessData();
     TaskCheckTodayDataUpdated();
     TaskInquiringData();
+    return true;
   }
-
-  return true;
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskProcessData(void) {
@@ -98,6 +98,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
             gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
             m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
             m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
+            ChoiceNextInquiringDay();
           }
         }
         else {
@@ -108,31 +109,42 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
         TRACE(_T("没有%d日的poten数据\n"), pWebData->m_lTime / 1000000);
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskCheckTodayDataUpdated(void) {
-  if (m_lCurrentInquiringDay > GetDay()) m_fTodayDataUpdated = true;
-  else m_fTodayDataUpdated = false;
+  if (!m_fTodayDataUpdated) {
+    if (m_lCurrentInquiringDay > GetDay()) {
+      m_fTodayDataUpdated = true;
+    }
+    else if ((m_lCurrentInquiringDay == GetDay()) && (!gl_PotenDailyBriefingMarket.IsWorkingDay())) {
+      m_fTodayDataUpdated = true;
+    }
+    else m_fTodayDataUpdated = false;
 
-  return m_fTodayDataUpdated;
+    if (m_fTodayDataUpdated) gl_systemMessage.PushInformationMessage(_T("Poten数据接收完毕"));
+    return true;
+  }
+  else return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskInquiringData(void) {
   if (!m_fTodayDataUpdated && !gl_WebInquirer.IsReadingPotenDailyBriefing() && m_fDataBaseLoaded) {
     gl_WebInquirer.GetPotenDailyBriefingData();
-    ChoiceNextInquiringDay();
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskLoadDataBase(void) {
   if (!m_fDataBaseLoaded) {
     LoadDatabase();
     m_fDataBaseLoaded = true;
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {

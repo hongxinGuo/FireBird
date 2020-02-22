@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualMarketTest, TestGetPrevDay) {
-    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200102, 1), 20200101);
+    EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200102), 20200101);
     EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200112, 10), 20200102);
     EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200102, 11), 20191222);
     EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200202, 11), 20200122);

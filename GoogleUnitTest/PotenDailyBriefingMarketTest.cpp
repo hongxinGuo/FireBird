@@ -75,9 +75,49 @@ namespace StockAnalysisTest {
     gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetNextDay(gl_PotenDailyBriefingMarket.GetDay()));
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(false);
     gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetDay());
-    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
+    if (gl_PotenDailyBriefingMarket.IsWorkingDay()) {
+      EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
+      EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+    }
+    else {
+      EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated()) << _T("周末无数据");
+      EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated()) << _T("周末无数据");
+    }
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(false);
+    gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetPrevDay(gl_PotenDailyBriefingMarket.GetDay()));
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
     EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(true);
+    gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetNextDay(gl_PotenDailyBriefingMarket.GetDay()));
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
+    gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetDay());
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
+    gl_PotenDailyBriefingMarket.SetCurrentInquiringDay(gl_PotenDailyBriefingMarket.GetPrevDay(gl_PotenDailyBriefingMarket.GetDay()));
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsTodayDataUpdated());
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskCheckTodayDataUpdated());
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(false);
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestTaskLoadDatabase) {
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.TaskLoadDataBase());
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.IsDatabaseLoaded());
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskLoadDataBase());
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestTaskInquiringData) {
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(true);
+    EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing()) << _T("此标识无法设置，故而永远为假");
+    gl_PotenDailyBriefingMarket.SetDatabaseLoaded(true);
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskInquiringData());
+    gl_PotenDailyBriefingMarket.SetTodayDataUpdated(false);
+    gl_PotenDailyBriefingMarket.SetDatabaseLoaded(false);
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.TaskInquiringData());
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestSetCurrentInquiringDay) {
