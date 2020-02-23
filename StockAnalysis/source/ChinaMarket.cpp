@@ -994,9 +994,9 @@ bool CChinaMarket::SchedulingTask(void) {
   m_iCountDownSlowReadingRTData--;
 
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > s_timeLast) {
-    SchedulingTaskPerSecond(GetLocalTime() - s_timeLast);
-    s_timeLast = GetLocalTime();
+  if (GetMarketTime() > s_timeLast) {
+    SchedulingTaskPerSecond(GetMarketTime() - s_timeLast);
+    s_timeLast = GetMarketTime();
   }
 
   // 系统准备好了之后需要完成的各项工作

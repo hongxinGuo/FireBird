@@ -43,9 +43,9 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 bool CVirtualMarket::SchedulingTask(void) {
   CalculateTime();
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetLocalTime() > m_timeLast) {
-    SchedulingTaskPerSecond(GetLocalTime() - m_timeLast);
-    m_timeLast = GetLocalTime();
+  if (GetMarketTime() > m_timeLast) {
+    SchedulingTaskPerSecond(GetMarketTime() - m_timeLast);
+    m_timeLast = GetMarketTime();
     return true;
   }
   else return false;
