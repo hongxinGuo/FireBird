@@ -42,6 +42,8 @@ public:
 
   CString GetLocalTimeString(void); // 得到本地时间的字符串
   CString GetMarketTimeString(void); // 得到本市场时间的字符串
+  CString GetDayString(long lDay);
+  CString GetMarketDayString(void);
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
   void CalculateLastTradeDay(void) noexcept;

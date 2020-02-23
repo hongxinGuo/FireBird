@@ -209,7 +209,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_ChinaStockMarket.__TEST_SetLocalTime(tt);
+    gl_ChinaStockMarket.__TEST_SetMarketTime(tt);
     CRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.IsValidTime());
@@ -217,6 +217,9 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(data.IsValidTime());
     data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
     EXPECT_FALSE(data.IsValidTime());
+
+    data.SetTransactionTime(tt + 1);
+    EXPECT_FALSE(data.IsValidTime()) << _T("数据有问题：成交时间晚于当前时间");
   }
 
   TEST_F(CStockRTDataTest, TestCheckSinaRTDataMarket) {
@@ -228,7 +231,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_ChinaStockMarket.__TEST_SetLocalTime(tt);
+    gl_ChinaStockMarket.__TEST_SetMarketTime(tt);
     CRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.CheckSinaRTDataActive());

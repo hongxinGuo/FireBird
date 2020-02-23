@@ -1592,7 +1592,9 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   long iCount = 0;
 
   CString str;
-  str = _T("开始处理最新交易日的实时数据");
+  str = _T("开始处理");
+  str += GetDayString(lCurrentTradeDay);
+  str += _T("日的实时数据");
   gl_systemMessage.PushInformationMessage(str);
 
   // 存储当前交易日的数据
@@ -1646,7 +1648,9 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayLineInfo.m_pDatabase->CommitTrans();
   setDayLineInfo.Close();
 
-  gl_systemMessage.PushInformationMessage(_T("最新交易日实时数据处理完毕"));
+  str = GetDayString(lCurrentTradeDay);
+  str += _T("日实时数据处理完毕");
+  gl_systemMessage.PushInformationMessage(str);
   return iCount;
 }
 

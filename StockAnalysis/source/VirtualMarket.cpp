@@ -165,6 +165,19 @@ CString CVirtualMarket::GetMarketTimeString(void) {
   return(str);
 }
 
+CString CVirtualMarket::GetDayString(long lDay) {
+  char buffer[30];
+
+  sprintf_s(buffer, "%08d", lDay);
+  CString str;
+  str = buffer;
+  return(str);
+}
+
+CString CVirtualMarket::GetMarketDayString(void) {
+  return GetDayString(m_lMarketToday);
+}
+
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
   // 午夜过后重置各种标识
   if (lCurrentTime <= 1500 && !IsPermitResetMarket()) {  // 在零点到零点十五分，重置系统标识
