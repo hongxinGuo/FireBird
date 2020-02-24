@@ -57,6 +57,11 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_CrweberIndexMarket.IsMaintainDatabase());
     EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
     EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(11001)) << _T("标识为假时永远不执行");
+
+    gl_CrweberIndexMarket.SetMaintainDatabase(true);
+    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    gl_CrweberIndexMarket.SetMaintainDatabase(false);
+    EXPECT_FALSE(gl_CrweberIndexMarket.IsMaintainDatabase());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {

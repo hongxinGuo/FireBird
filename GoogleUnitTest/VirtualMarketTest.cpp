@@ -171,6 +171,47 @@ namespace StockAnalysisTest {
     EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200202, 11), 20200122);
   }
 
+  TEST_F(CVirtualMarketTest, TestGetLocalTimeString) {
+    s_VirtualMarket.CalculateTime();
+
+    time_t tLocal;
+    time(&tLocal);
+    tm tmLocal;
+    char buffer[30];
+    CString str;
+
+    localtime_s(&tmLocal, &tLocal);
+    sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+    str = buffer;
+    EXPECT_STREQ(s_VirtualMarket.GetLocalTimeString(), str);
+  }
+
+  TEST_F(CVirtualMarketTest, TestGetMarketTimeString) {
+    s_VirtualMarket.CalculateTime();
+
+    tm tmMarket;
+    time_t tMarket = s_VirtualMarket.GetMarketTime();
+    gmtime_s(&tmMarket, &tMarket);
+    char buffer[30];
+    CString str;
+
+    sprintf_s(buffer, "%02d:%02d:%02d ", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+    str = buffer;
+    EXPECT_STREQ(s_VirtualMarket.GetMarketTimeString(), str);
+  }
+
+  TEST_F(CVirtualMarketTest, TestGetDayString) {
+    char buffer[30];
+    sprintf_s(buffer, "%08d", 20200202);
+    CString str;
+    str = buffer;
+    EXPECT_STREQ(s_VirtualMarket.GetDayString(20200202), str);
+
+    sprintf_s(buffer, "%08d", s_VirtualMarket.GetDay());
+    str = buffer;
+    EXPECT_STREQ(s_VirtualMarket.GetMarketDayString(), str);
+  }
+
   TEST_F(CVirtualMarketTest, TestGetDayOfWeek) {
     ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;

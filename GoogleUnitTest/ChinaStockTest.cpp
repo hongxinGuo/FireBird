@@ -1072,11 +1072,131 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
   }
 
-  TEST_F(CChinaStockTest, TestSaveDayLine) {
+  TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
     CSetDayLine setDayLine;
     CDayLinePtr pid;
     CDayLine id;
     pStock = gl_ChinaStockMarket.GetStock(_T("sh600011"));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
+    gl_ChinaStockMarket.__TEST_SetMarketDay(21900101);
+
+    pid = make_shared<CDayLine>();
+    pid->SetDay(21900101);
+    pid->SetMarket(__SHANGHAI_MARKET__);
+    pid->SetStockCode(_T("sh600011"));
+    pid->SetStockName(_T("首创股份"));
+    pid->SetLastClose(34235345);
+    pid->SetOpen(1000000);
+    pid->SetHigh(45234543);
+    pid->SetLow(3452345);
+    pid->SetClose(452435);
+    pid->SetVolume(34523454);
+    pid->SetAmount(3245235345);
+    pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+    pid->SetUpDownRate(123.45);
+    pid->SetTotalValue(234523452345);
+    pid->SetCurrentValue(234145345245);
+    pid->SetChangeHandRate(54.321);
+    pid->SetRelativeStrong(14.5);
+    pStock->StoreDayLine(pid);
+
+    pStock->SetDayLineEndDay(21890101);
+    pStock->SetStockCode(_T("sh600011"));
+    ASSERT(!gl_fNormalMode);
+    pStock->SaveDayLine();
+    EXPECT_EQ(pStock->GetDayLineEndDay(), 21900101);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsDayLineDBUpdated());
+
+    pStock->SetTransactionTime(FormatToTTime(21900101));
+    pStock->SetTransactionNumber(1);
+    pStock->SetTransactionNumberBelow5000(2);
+    pStock->SetTransactionNumberBelow50000(3);
+    pStock->SetTransactionNumberBelow200000(4);
+    pStock->SetTransactionNumberAbove200000(5);
+
+    pStock->SetCancelBuyVolume(6);
+    pStock->SetCancelSellVolume(7);
+    pStock->SetAttackBuyVolume(8);
+    pStock->SetAttackSellVolume(9);
+    pStock->SetStrongBuyVolume(10);
+    pStock->SetStrongSellVolume(11);
+    pStock->SetUnknownVolume(12);
+    pStock->SetOrdinaryBuyVolume(13);
+    pStock->SetOrdinarySellVolume(14);
+    pStock->SetAttackBuyBelow50000(15);
+    pStock->SetAttackBuyBelow200000(16);
+    pStock->SetAttackBuyAbove200000(17);
+    pStock->SetAttackSellBelow50000(18);
+    pStock->SetAttackBuyBelow200000(19);
+    pStock->SetAttackBuyAbove200000(20);
+    pStock->SetAttackSellBelow200000(21);
+    pStock->SetAttackSellAbove200000(22);
+
+    CSetDayLineInfo setDayLineInfo;
+    setDayLineInfo.m_strFilter = _T("[ID] = 1");
+    setDayLineInfo.Open();
+    setDayLineInfo.m_pDatabase->BeginTrans();
+    setDayLineInfo.AddNew();
+    pStock->SaveCalculatedInfo(setDayLineInfo);
+    setDayLineInfo.Update();
+    setDayLineInfo.m_pDatabase->CommitTrans();
+    setDayLineInfo.Close();
+
+    pStock->LoadDayLineAndDayLineInfo();
+
+    CDayLinePtr pDayLine;
+    pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
+
+    EXPECT_EQ(pDayLine->GetTime(), 0);
+    EXPECT_STREQ(pDayLine->GetStockCode(), _T("sh600011"));
+    EXPECT_EQ(pDayLine->GetMarket(), 1);
+    EXPECT_EQ(pDayLine->GetTransactionNumber(), pStock->GetTransactionNumber());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberAbove200000(), pStock->GetTransactionNumberAbove200000());
+    EXPECT_EQ(pDayLine->GetCancelBuyVolume(), pStock->GetCancelBuyVolume());
+    EXPECT_EQ(pDayLine->GetCancelSellVolume(), pStock->GetCancelSellVolume());
+    EXPECT_EQ(pDayLine->GetAttackBuyVolume(), pStock->GetAttackBuyVolume());
+    EXPECT_EQ(pDayLine->GetAttackSellVolume(), pStock->GetAttackSellVolume());
+    EXPECT_EQ(pDayLine->GetStrongBuyVolume(), pStock->GetStrongBuyVolume());
+    EXPECT_EQ(pDayLine->GetStrongSellVolume(), pStock->GetStrongSellVolume());
+    EXPECT_EQ(pDayLine->GetUnknownVolume(), pStock->GetUnknownVolume());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolume(), pStock->GetOrdinaryBuyVolume());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolume(), pStock->GetOrdinarySellVolume());
+    EXPECT_EQ(pDayLine->GetAttackBuyBelow50000(), pStock->GetAttackBuyBelow50000());
+    EXPECT_EQ(pDayLine->GetAttackBuyBelow200000(), pStock->GetAttackBuyBelow200000());
+    EXPECT_EQ(pDayLine->GetAttackBuyAbove200000(), pStock->GetAttackBuyAbove200000());
+    EXPECT_EQ(pDayLine->GetAttackSellBelow50000(), pStock->GetAttackSellBelow50000());
+    EXPECT_EQ(pDayLine->GetAttackSellBelow200000(), pStock->GetAttackSellBelow200000());
+    EXPECT_EQ(pDayLine->GetAttackSellAbove200000(), pStock->GetAttackSellAbove200000());
+
+    setDayLine.m_strFilter = _T("[Day] = 21900101");
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    while (!setDayLine.IsEOF()) {
+      setDayLine.Delete();
+      setDayLine.MoveNext();
+    }
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+
+    setDayLineInfo.m_strFilter = _T("[Day] = 21900101");
+    setDayLineInfo.Open();
+    setDayLineInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineInfo.IsEOF()) {
+      setDayLineInfo.Delete();
+      setDayLineInfo.MoveNext();
+    }
+    setDayLineInfo.m_pDatabase->CommitTrans();
+    setDayLineInfo.Close();
+  }
+
+  TEST_F(CChinaStockTest, TestSaveDayLine) {
+    CSetDayLine setDayLine;
+    CDayLinePtr pid;
+    CDayLine id;
+    pStock = gl_ChinaStockMarket.GetStock(_T("sh600016"));
     EXPECT_FALSE(gl_ChinaStockMarket.IsDayLineDBUpdated());
     gl_ChinaStockMarket.__TEST_SetMarketDay(20190101);
 
@@ -1084,7 +1204,7 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDay(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStockCode(_T("sh600011"));
+      pid->SetStockCode(_T("sh600016"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1102,7 +1222,7 @@ namespace StockAnalysisTest {
       pStock->StoreDayLine(pid);
     }
     pStock->SetDayLineEndDay(10190101);
-    pStock->SetStockCode(_T("sh600011"));
+    pStock->SetStockCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLine();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
