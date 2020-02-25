@@ -186,6 +186,21 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(s_VirtualMarket.GetLocalTimeString(), str);
   }
 
+  TEST_F(CVirtualMarketTest, TestGetLocalDayTimeString) {
+    s_VirtualMarket.CalculateTime();
+
+    time_t tLocal;
+    time(&tLocal);
+    tm tmLocal;
+    char buffer[100];
+    CString str;
+
+    localtime_s(&tmLocal, &tLocal);
+    sprintf_s(buffer, "%04dƒÍ%02d‘¬%02d»’ %02d:%02d:%02d ", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+    str = buffer;
+    EXPECT_STREQ(s_VirtualMarket.GetLocalDayTimeString(), str);
+  }
+
   TEST_F(CVirtualMarketTest, TestGetMarketTimeString) {
     s_VirtualMarket.CalculateTime();
 

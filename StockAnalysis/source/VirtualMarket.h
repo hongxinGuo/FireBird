@@ -41,6 +41,7 @@ public:
   long GetPrevDay(long lDay, long lTimeSpanDays = 1) noexcept;
 
   CString GetLocalTimeString(void); // 得到本地时间的字符串
+  CString GetLocalDayTimeString(void);
   CString GetMarketTimeString(void); // 得到本市场时间的字符串
   CString GetDayString(long lDay);
   CString GetMarketDayString(void);

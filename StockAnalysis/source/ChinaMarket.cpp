@@ -1140,7 +1140,7 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
       if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
         CString str;
         str = _T("存储临时数据");
-        gl_systemMessage.PushInformationMessage(str);
+        gl_systemMessage.PushDayLineInfoMessage(str);
         UpdateTempRTData();
       }
     }

@@ -1150,6 +1150,20 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pDayLine->GetTime(), 0);
     EXPECT_STREQ(pDayLine->GetStockCode(), _T("sh600011"));
     EXPECT_EQ(pDayLine->GetMarket(), 1);
+    EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
+    EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
+    EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
+    EXPECT_EQ(pDayLine->GetLow(), pid->GetLow());
+    EXPECT_EQ(pDayLine->GetClose(), pid->GetClose());
+    EXPECT_EQ(pDayLine->GetVolume(), pid->GetVolume());
+    EXPECT_EQ(pDayLine->GetAmount(), pid->GetAmount());
+    EXPECT_EQ(pDayLine->GetUpDown(), pid->GetUpDown());
+    EXPECT_EQ(pDayLine->GetUpDownRate(), pid->GetUpDownRate());
+    EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
+    EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
+    EXPECT_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
+    EXPECT_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
+
     EXPECT_EQ(pDayLine->GetTransactionNumber(), pStock->GetTransactionNumber());
     EXPECT_EQ(pDayLine->GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
     EXPECT_EQ(pDayLine->GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());

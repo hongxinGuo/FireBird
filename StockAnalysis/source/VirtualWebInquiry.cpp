@@ -61,10 +61,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   }
   catch (CInternetException * exception) {
     m_dwWebErrorCode = exception->m_dwError;
-    if (exception->m_dwError == 404) {
-      TRACE(_T("Error Code 404\n"));
-    }
-    TRACE(_T("%s net error\n"), m_strConnection.GetBuffer());
+    TRACE(_T("%s net error, Error Code %d\n"), m_strConnection.GetBuffer(), exception->m_dwError);
     fStatus = false;;
   }
   if (m_pFile) m_pFile->Close();

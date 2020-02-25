@@ -154,6 +154,17 @@ CString CVirtualMarket::GetLocalTimeString(void) {
   return(str);
 }
 
+CString CVirtualMarket::GetLocalDayTimeString(void) {
+  char buffer[100];
+  tm tmLocal;
+
+  localtime_s(&tmLocal, &sm_tLocal);
+  sprintf_s(buffer, "%04dƒÍ%02d‘¬%02d»’ %02d:%02d:%02d ", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+  CString str;
+  str = buffer;
+  return(str);
+}
+
 CString CVirtualMarket::GetMarketTimeString(void) {
   char buffer[30];
   tm tmMarket;

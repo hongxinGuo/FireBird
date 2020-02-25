@@ -71,14 +71,28 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCu
   s_i10SeocndCounter -= lSecond;
   if (s_i10SeocndCounter < 0) {
     s_i10SeocndCounter = 9;
+    return true;
+  }
+  return false;
+}
+
+bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
+  static int s_i1MinuteCounter = 59;
+
+  s_i1MinuteCounter -= lSecond;
+  if (s_i1MinuteCounter < 0) {
+    s_i1MinuteCounter = 59;
+    TaskResetMarket(lCurrentTime);
+
     TaskLoadDataBase();
 
     TaskProcessData();
     TaskCheckTodayDataUpdated();
     TaskInquiringData();
+
     return true;
   }
-  return false;
+  else return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskProcessData(void) {
@@ -154,18 +168,6 @@ bool CPotenDailyBriefingMarket::TaskLoadDataBase(void) {
     return true;
   }
   return false;
-}
-
-bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
-  static int s_i1MinuteCounter = 59;
-
-  s_i1MinuteCounter -= lSecond;
-  if (s_i1MinuteCounter < 0) {
-    s_i1MinuteCounter = 59;
-    TaskResetMarket(lCurrentTime);
-    return true;
-  }
-  else return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
