@@ -43,6 +43,7 @@ public:
   CString GetLocalTimeString(void); // 得到本地时间的字符串
   CString GetLocalDayTimeString(void);
   CString GetMarketTimeString(void); // 得到本市场时间的字符串
+  CString GetMarketDayTimeString(void);
   CString GetDayString(long lDay);
   CString GetMarketDayString(void);
 

@@ -176,6 +176,17 @@ CString CVirtualMarket::GetMarketTimeString(void) {
   return(str);
 }
 
+CString CVirtualMarket::GetMarketDayTimeString(void) {
+  char buffer[100];
+  tm tmMarket;
+
+  gmtime_s(&tmMarket, &m_tMarket);
+  sprintf_s(buffer, "%04dÄê%02dÔÂ%02dÈÕ %02d:%02d:%02d ", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+  CString str;
+  str = buffer;
+  return(str);
+}
+
 CString CVirtualMarket::GetDayString(long lDay) {
   char buffer[30];
 
