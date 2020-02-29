@@ -140,8 +140,20 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_PotenDailyBriefingMarket.GetCurrentInquiringDay(), 20180411);
   }
 
+  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerSecond) {
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPerSecond(1, 10000));
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPer10Second) {
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPer10Second(10, 10000));
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.SchedulingTaskPer10Second(9, 11000));
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPer10Second(1, 11000));
+  }
+
   TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerMinute) {
     EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPerMinute(60, 10000));
+    EXPECT_FALSE(gl_PotenDailyBriefingMarket.SchedulingTaskPerMinute(59, 11000));
+    EXPECT_TRUE(gl_PotenDailyBriefingMarket.SchedulingTaskPerMinute(1, 11000));
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestChoiceNextInquiringDay) {

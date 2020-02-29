@@ -321,10 +321,11 @@ CString CCrweberIndex::GetNextString(CWebDataPtr pWebData) {
     ASSERT(pWebData->m_lCurrentPos >= pWebData->m_lBufferLength);
     return _T("");
   }
-  while (*pWebData->m_pCurrentPos != '<') {
+  while ((*pWebData->m_pCurrentPos != '<') && (*pWebData->m_pCurrentPos != 0x000)) {
     if (*pWebData->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebData->m_pCurrentPos; // Å×µô¶ººÅ£¬¶ººÅµ¼ÖÂatofº¯ÊýÎÞ·¨Ë³Àû×ª»¯×Ö·û´®
     pWebData->IncreaseCurrentPos();
   }
+  ASSERT(pWebData->m_lCurrentPos <= pWebData->m_lBufferLength);
   buffer[iBufferCount] = 0x000;
   CString str;
   str = buffer;

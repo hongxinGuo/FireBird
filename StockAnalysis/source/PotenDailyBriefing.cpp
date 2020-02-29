@@ -388,11 +388,13 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
     ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
     return _T("");
   }
-  while (*pWebDataReceived->m_pCurrentPos != '<') {
+  while ((*pWebDataReceived->m_pCurrentPos != '<') && (*pWebDataReceived->m_pCurrentPos != 0x000)) {
     if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // Å×µô¶ººÅ£¬¶ººÅµ¼ÖÂatofº¯ÊýÎÞ·¨Ë³Àû×ª»¯×Ö·û´®
     pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;
+  ASSERT(pWebDataReceived->m_lCurrentPos <= pWebDataReceived->m_lBufferLength);
+
   CString str;
   str = buffer;
   return str;

@@ -57,14 +57,6 @@ CStockAnalysisApp theApp;
 // CStockAnalysisApp 初始化
 
 BOOL CStockAnalysisApp::InitInstance() {
-#ifndef DEBUG
-  // 非调试状态下只允许运行一个实例
-  if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
-    //找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
-    return false;
-  }
-#endif // DEBUG
-
   ASSERT(gl_fNormalMode == false);
   gl_fNormalMode = true; // 实际系统，测试状态为假。
   ASSERT(gl_fTestMode);

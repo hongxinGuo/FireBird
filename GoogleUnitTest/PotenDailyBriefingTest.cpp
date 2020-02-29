@@ -194,4 +194,66 @@ namespace StockAnalysisTest {
 
     setPoten.Close();
   }
+
+  struct PotenNextString {
+    PotenNextString(long lIndex, CString str, CString strProcessed) {
+      m_id = lIndex;
+      m_strInput = str;
+      m_strProcessed = strProcessed;
+    }
+  public:
+    long m_id;
+    CString m_strInput;
+    CString m_strProcessed;
+  };
+
+  PotenNextString PotenNextStringData1(1, _T("<abcde>abcde<"), _T("abcde"));
+  PotenNextString PotenNextStringData2(2, _T("<abcde>\nabcde<"), _T("abcde"));
+  PotenNextString PotenNextStringData3(3, _T("<abcde>\rabcde<"), _T("abcde"));
+  PotenNextString PotenNextStringData4(4, _T("<abcde> abcde<"), _T("abcde"));
+  PotenNextString PotenNextStringData5(5, _T("<abcde>\nabcde"), _T("abcde"));
+  PotenNextString PotenNextStringData6(6, _T("<abcde>\rabcde"), _T("abcde"));
+  PotenNextString PotenNextStringData7(7, _T("<abcde> abcde"), _T("abcde"));
+  PotenNextString PotenNextStringData8(8, _T("<abcde>\rab,cde"), _T("abcde"));
+  PotenNextString PotenNextStringData9(9, _T("<abcde>\nabc,de<"), _T("abcde"));
+  PotenNextString PotenNextStringData10(10, _T("<abcde>"), _T(""));
+
+  class PotenNextStringTest : public testing::TestWithParam<PotenNextString*> {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT(!gl_fNormalMode);
+      PotenNextString* NextString = GetParam();
+      m_lId = NextString->m_id;
+      m_strInput = NextString->m_strInput;
+      m_strProcessed = NextString->m_strProcessed;
+      m_WebDataPtr = make_shared<CWebData>();
+      m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
+      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
+      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
+      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->ResetCurrentPos();
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  public:
+    long m_lId;
+    CString m_strInput;
+    CString m_strProcessed;
+    CWebDataPtr m_WebDataPtr;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestPotenNextString, PotenNextStringTest,
+                          testing::Values(&PotenNextStringData1, &PotenNextStringData2, &PotenNextStringData3
+                                          , &PotenNextStringData4, &PotenNextStringData5, &PotenNextStringData6
+                                          , &PotenNextStringData7, &PotenNextStringData8, &PotenNextStringData9
+                                          , &PotenNextStringData10
+                          ));
+
+  TEST_P(PotenNextStringTest, TestPotenNextString) {
+    CPotenDailyBriefing Index;
+
+    CString strInput = Index.GetNextString(m_WebDataPtr);
+    EXPECT_STREQ(strInput, m_strProcessed);
+  }
 }

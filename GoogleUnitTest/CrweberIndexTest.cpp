@@ -7,7 +7,19 @@ using namespace std;
 #include<string>
 
 namespace StockAnalysisTest {
-  TEST(CrweberTest, TestInitialize) {
+  class CrweberIndexTest : public ::testing::Test
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  };
+
+  TEST_F(CrweberIndexTest, TestInitialize) {
     CCrweberIndex Index;
     EXPECT_FALSE(Index.IsTodayUpdated());
     Index.SetNewestDataTime(20191101);
@@ -46,7 +58,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(Index.GetHANDY_3YEAR(), 0);
   }
 
-  TEST(CrweberTest, TestLoadData) {
+  TEST_F(CrweberIndexTest, TestLoadData) {
     CSetCrweberIndex setCrweberIndex;
     CCrweberIndex id, id2;
     id.m_lDay = 20000101;
@@ -158,7 +170,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id2.m_dTD1, 30.0);
   }
 
-  TEST(CrweberIndexTest, TestIsDataChanged) {
+  TEST_F(CrweberIndexTest, TestIsDataChanged) {
     CCrweberIndex id, id2;
     id.m_lDay = 20000101;
     id.m_dTD1 = 1.0;
@@ -262,7 +274,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(id.IsDataChanged(CrweberIndex));
   }
 
-  TEST(CrweberIndexTest, TestGetMonthOfYear) {
+  TEST_F(CrweberIndexTest, TestGetMonthOfYear) {
     CCrweberIndex Index;
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("January")), 1);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("February")), 2);
@@ -359,5 +371,67 @@ namespace StockAnalysisTest {
     default:
     EXPECT_EQ(lTime, m_lTime - lMonth * 100 + gl_CrweberIndexMarket.GetMonthOfYear() * 100);
     }
+  }
+
+  struct CrweberIndexNextString {
+    CrweberIndexNextString(long lIndex, CString str, CString strProcessed) {
+      m_id = lIndex;
+      m_strInput = str;
+      m_strProcessed = strProcessed;
+    }
+  public:
+    long m_id;
+    CString m_strInput;
+    CString m_strProcessed;
+  };
+
+  CrweberIndexNextString CrweberIndexNextStringData1(1, _T("<abcde>abcde<"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData2(2, _T("<abcde>\nabcde<"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData3(3, _T("<abcde>\rabcde<"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData4(4, _T("<abcde> abcde<"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData5(5, _T("<abcde>\nabcde"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData6(6, _T("<abcde>\rabcde"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData7(7, _T("<abcde> abcde"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData8(8, _T("<abcde>\rab,cde"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData9(9, _T("<abcde>\nabc,de<"), _T("abcde"));
+  CrweberIndexNextString CrweberIndexNextStringData10(10, _T("<abcde>"), _T(""));
+
+  class CrweberIndexNextStringTest : public testing::TestWithParam<CrweberIndexNextString*> {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT(!gl_fNormalMode);
+      CrweberIndexNextString* NextString = GetParam();
+      m_lId = NextString->m_id;
+      m_strInput = NextString->m_strInput;
+      m_strProcessed = NextString->m_strProcessed;
+      m_WebDataPtr = make_shared<CWebData>();
+      m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
+      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
+      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
+      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->ResetCurrentPos();
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  public:
+    long m_lId;
+    CString m_strInput;
+    CString m_strProcessed;
+    CWebDataPtr m_WebDataPtr;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestCrweberIndexNextString, CrweberIndexNextStringTest,
+                          testing::Values(&CrweberIndexNextStringData1, &CrweberIndexNextStringData2, &CrweberIndexNextStringData3
+                                          , &CrweberIndexNextStringData4, &CrweberIndexNextStringData5, &CrweberIndexNextStringData6
+                                          , &CrweberIndexNextStringData7, &CrweberIndexNextStringData8, &CrweberIndexNextStringData9
+                                          , &CrweberIndexNextStringData10
+                          ));
+
+  TEST_P(CrweberIndexNextStringTest, TestCrweberIndexNextString) {
+    CCrweberIndex Index;
+
+    CString strInput = Index.GetNextString(m_WebDataPtr);
+    EXPECT_STREQ(strInput, m_strProcessed);
   }
 }

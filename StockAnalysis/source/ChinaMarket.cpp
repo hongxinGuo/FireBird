@@ -1739,7 +1739,6 @@ bool CChinaMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
-  gl_systemMessage.PushDayLineInfoMessage(_T("开始计算相对强度"));
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
