@@ -1192,7 +1192,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
-  if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed()) {
+  if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
     AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
     SetTodayStockProcessed(true);
     return true;

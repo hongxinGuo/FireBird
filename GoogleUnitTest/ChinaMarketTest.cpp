@@ -799,6 +799,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestProcessTodayStock) {
+    tm tm_;
+    tm_.tm_wday = 1; // 星期一
+    gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
     gl_ChinaStockMarket.SetSystemReady(false);
     gl_ChinaStockMarket.SetTodayStockProcessed(false);
     EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150359));
@@ -815,12 +818,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
     EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed());
 
-    tm tm_;
     tm_.tm_wday = 0; // 星期日
     gl_ChinaStockMarket.__TEST_SetMarketTM(tm_);
     gl_ChinaStockMarket.SetTodayStockProcessed(false);
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
-    EXPECT_TRUE(gl_ChinaStockMarket.IsTodayStockProcessed()) << _T("处理当日股票，不分是否是工作日，这样能够防止遗漏");
+    EXPECT_FALSE(gl_ChinaStockMarket.TaskProcessTodayStock(150400));
+    EXPECT_FALSE(gl_ChinaStockMarket.IsTodayStockProcessed()) << _T("休息日不处理");
   }
 
   TEST_F(CChinaMarketTest, TestSetCheckActiveStockFlag) {
