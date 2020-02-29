@@ -434,4 +434,66 @@ namespace StockAnalysisTest {
     CString strInput = Index.GetNextString(m_WebDataPtr);
     EXPECT_STREQ(strInput, m_strProcessed);
   }
+
+  struct CrweberIndexGetOneValue {
+    CrweberIndexGetOneValue(long lIndex, CString str, double dValue) {
+      m_id = lIndex;
+      m_strInput = str;
+      m_dValue = dValue;
+    }
+  public:
+    long m_id;
+    CString m_strInput;
+    double m_dValue;
+  };
+
+  CrweberIndexGetOneValue CrweberIndexGetOneValueData1(1, _T("<abcde>abcde<abc>abc<abc>abc<dec>11,105"), 11105);
+  CrweberIndexGetOneValue CrweberIndexGetOneValueData2(2, _T("<abcde>abcde<abc>abc<abc>abc<dec>11.105"), 11.105);
+  CrweberIndexGetOneValue CrweberIndexGetOneValueData3(3, _T("<abcde>SUEMAX<abc>abc<abc>abc<dec>11,1.05"), 111.05);
+  /* CrweberIndexGetOneValue CrweberIndexGetOneValueData4(4, _T("<abcde> abcde<"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData5(5, _T("<abcde>\nabcde"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData6(6, _T("<abcde>\rabcde"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData7(7, _T("<abcde> abcde"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData8(8, _T("<abcde>\rab,cde"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData9(9, _T("<abcde>\nabc,de<"), _T("abcde"));
+   CrweberIndexGetOneValue CrweberIndexGetOneValueData10(10, _T("<abcde>"), _T(""));
+   */
+  class CrweberIndexGetOneValueTest : public testing::TestWithParam<CrweberIndexGetOneValue*> {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT(!gl_fNormalMode);
+      CrweberIndexGetOneValue* GetOneValue = GetParam();
+      m_lId = GetOneValue->m_id;
+      m_strInput = GetOneValue->m_strInput;
+      m_dValue = GetOneValue->m_dValue;
+      m_WebDataPtr = make_shared<CWebData>();
+      m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
+      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
+      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
+      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->ResetCurrentPos();
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  public:
+    long m_lId;
+    CString m_strInput;
+    double m_dValue;
+    CWebDataPtr m_WebDataPtr;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestCrweberIndexGetOneValue, CrweberIndexGetOneValueTest,
+                          testing::Values(&CrweberIndexGetOneValueData1, &CrweberIndexGetOneValueData2, &CrweberIndexGetOneValueData3
+                                          //  , &CrweberIndexGetOneValueData4, &CrweberIndexGetOneValueData5, &CrweberIndexGetOneValueData6
+                                           // , &CrweberIndexGetOneValueData7, &CrweberIndexGetOneValueData8, &CrweberIndexGetOneValueData9
+                                          //  , &CrweberIndexGetOneValueData10
+                          ));
+
+  TEST_P(CrweberIndexGetOneValueTest, TestCrweberIndexGetOneValue) {
+    CCrweberIndex Index;
+
+    double dValue = Index.GetOneValue(m_WebDataPtr);
+    EXPECT_DOUBLE_EQ(m_dValue, dValue);
+  }
 }

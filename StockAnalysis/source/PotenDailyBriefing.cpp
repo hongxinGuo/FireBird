@@ -304,7 +304,7 @@ bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString 
   do {
     strNoUse = GetNextString(pWebDataReceived); // 抛掉4个没用字符串
     strHead = strNoUse.Left(str.GetLength());
-    if (strHead.Compare(str) == 0) fFound = true;
+    if (strHead.Compare(str) == 0) return true;
     if (pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength()) return false;
   } while (!fFound);
   return true;
@@ -374,6 +374,10 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
   while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
     if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
       while (*pWebDataReceived->m_pCurrentPos != '>') {
+        if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+          ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
+          return _T("");
+        }
         pWebDataReceived->IncreaseCurrentPos();
       }
       pWebDataReceived->IncreaseCurrentPos();

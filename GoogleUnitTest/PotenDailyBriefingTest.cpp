@@ -256,4 +256,70 @@ namespace StockAnalysisTest {
     CString strInput = Index.GetNextString(m_WebDataPtr);
     EXPECT_STREQ(strInput, m_strProcessed);
   }
+
+  struct PotenSkipOverString {
+    PotenSkipOverString(long lIndex, CString str, CString strTest, bool fFound) {
+      m_id = lIndex;
+      m_strInput = str;
+      m_strTest = strTest;
+      m_fFound = fFound;
+    }
+  public:
+    long m_id;
+    CString m_strInput;
+    CString m_strTest;
+    bool m_fFound;
+  };
+
+  PotenSkipOverString PotenSkipOverStringData1(1, _T("<abcde>abcde<ab>VLCC"), _T("abcde"), true);
+  PotenSkipOverString PotenSkipOverStringData2(2, _T("<abcde>\nabcde<abc>abc"), _T("abcde"), true);
+  PotenSkipOverString PotenSkipOverStringData3(3, _T("<abcde>\rabcde<>SUEZ"), _T("abce"), false);
+  PotenSkipOverString PotenSkipOverStringData4(4, _T("<abcde> abcd<"), _T("abcde"), false);
+  PotenSkipOverString PotenSkipOverStringData5(5, _T("<abcde>\nabcde"), _T("abcde"), true);
+  PotenSkipOverString PotenSkipOverStringData6(6, _T("<abcde>\rabcde"), _T("abcde"), true);
+  /*   PotenSkipOverString PotenSkipOverStringData7(7, _T("<abcde> abcde"), _T("abcde"));
+  PotenSkipOverString PotenSkipOverStringData8(8, _T("<abcde>\rab,cde"), _T("abcde"));
+  PotenSkipOverString PotenSkipOverStringData9(9, _T("<abcde>\nabc,de<"), _T("abcde"));
+  PotenSkipOverString PotenSkipOverStringData10(10, _T("<abcde>"), _T(""));
+  */
+  class PotenSkipOverStringTest : public testing::TestWithParam<PotenSkipOverString*> {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT(!gl_fNormalMode);
+      PotenSkipOverString* SkipOverString = GetParam();
+      m_lId = SkipOverString->m_id;
+      m_strInput = SkipOverString->m_strInput;
+      m_strTest = SkipOverString->m_strTest;
+      m_fFound = SkipOverString->m_fFound;
+      m_WebDataPtr = make_shared<CWebData>();
+      m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
+      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
+      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
+      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->ResetCurrentPos();
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  public:
+    long m_lId;
+    CString m_strInput;
+    CString m_strTest;
+    bool m_fFound;
+    CWebDataPtr m_WebDataPtr;
+  };
+
+  INSTANTIATE_TEST_CASE_P(TestPotenSkipOverString, PotenSkipOverStringTest,
+                          testing::Values(&PotenSkipOverStringData1, &PotenSkipOverStringData2, &PotenSkipOverStringData3
+                                          , &PotenSkipOverStringData4, &PotenSkipOverStringData5, &PotenSkipOverStringData6
+                                          //    , &PotenSkipOverStringData7, &PotenSkipOverStringData8, &PotenSkipOverStringData9
+                                           //   , &PotenSkipOverStringData10
+                          ));
+
+  TEST_P(PotenSkipOverStringTest, TestPotenSkipOverString) {
+    CPotenDailyBriefing Index;
+
+    bool fFound = Index.SkipOverStrings(m_WebDataPtr, m_strTest);
+    EXPECT_TRUE(fFound == m_fFound);
+  }
 }
