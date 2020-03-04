@@ -40,6 +40,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ChinaStockMarket.SetRTDataSetCleared(false);
       gl_ChinaStockMarket.SetUpdateStockCodeDB(false);
       gl_ChinaStockMarket.SetUpdateOptionDB(false);
       gl_ChinaStockMarket.ClearChoicedRTDataQueue();
@@ -616,6 +617,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ChinaStockMarket.IsUpdateOptionDB());
     gl_ChinaStockMarket.SetUpdateOptionDB(false);
     EXPECT_FALSE(gl_ChinaStockMarket.IsUpdateOptionDB());
+  }
+
+  TEST_F(CChinaMarketTest, TestSetRTDataSetCleared) {
+    EXPECT_FALSE(gl_ChinaStockMarket.IsRTDataSetCleared());
+    gl_ChinaStockMarket.SetRTDataSetCleared(true);
+    EXPECT_TRUE(gl_ChinaStockMarket.IsRTDataSetCleared());
+    gl_ChinaStockMarket.SetRTDataSetCleared(false);
+    EXPECT_FALSE(gl_ChinaStockMarket.IsRTDataSetCleared());
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarket) {

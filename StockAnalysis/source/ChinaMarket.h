@@ -11,7 +11,7 @@
 
 #include "ChinaStock.h"
 
-using namespace MyAccessory;
+using namespace MyLib;
 
 using namespace std;
 #include<vector>
@@ -215,6 +215,7 @@ public:
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
   void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
   bool IsRTDataSetCleared(void) noexcept { return m_fRTDataSetCleared; }
+  void SetRTDataSetCleared(bool fFlag) noexcept { m_fRTDataSetCleared = fFlag; }
 
   int GetCountDownSlowReadingRTData(void) noexcept { return m_iCountDownSlowReadingRTData; }
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }

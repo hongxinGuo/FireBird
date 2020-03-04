@@ -12,7 +12,7 @@ using namespace std;
 #include<mutex>
 #include<condition_variable>
 
-namespace MyAccessory {
+namespace MyLib {
   class Semaphore
   {
   public:
@@ -20,7 +20,7 @@ namespace MyAccessory {
     Semaphore(const Semaphore&) = delete;
     Semaphore& operator=(const Semaphore&) = delete;
 
-    void SetMaxCount(long lCount = 1) { m_count = lCount; }
+    void SetMaxCount(long lCount = 1) { ASSERT(lCount >= 1); m_count = lCount; } // 最大共存数不允许小于1
     long GetMaxCount(void) { return m_count; }
 
     void Signal() {
