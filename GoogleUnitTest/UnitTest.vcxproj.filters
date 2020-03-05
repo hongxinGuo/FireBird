@@ -166,9 +166,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -337,5 +334,8 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveDayLine.obj">
       <Filter>dependency</Filter>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

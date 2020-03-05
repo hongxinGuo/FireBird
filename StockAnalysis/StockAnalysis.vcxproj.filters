@@ -392,12 +392,6 @@
     <ClCompile Include="source\ThreadSaveDayLine.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">
@@ -431,7 +425,7 @@
     <None Include="res\StockAnalysis.rc2">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="packages.config" />
     <None Include="..\readme.md" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

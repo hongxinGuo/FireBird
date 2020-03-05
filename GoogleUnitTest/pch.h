@@ -7,5 +7,6 @@
 #define __PCH_H__
 
 #include"gtest/gtest.h"
+#include"gmock/gmock.h"
 
 #endif
