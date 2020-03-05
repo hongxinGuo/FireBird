@@ -1196,7 +1196,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
-    thread thread1(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread thread1(ThreadProcessCurrentTradeDayStock);
     thread1.detach();
     SetTodayStockProcessed(true);
     return true;
@@ -1282,7 +1282,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
   if (IsUpdateStockCodeDB()) {
-    thread thread1(ThreadUpdateStockCodeDB, nullptr);
+    thread thread1(ThreadUpdateStockCodeDB);
     thread1.detach();
     SetUpdateStockCodeDB(false);
   }
@@ -1291,7 +1291,7 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
   if (IsUpdateOptionDB()) {
-    thread thread1(ThreadUpdateOptionDB, nullptr);
+    thread thread1(ThreadUpdateOptionDB);
     thread1.detach();
     SetUpdateOptionDB(false);
   }
@@ -1315,7 +1315,7 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
   if (IsSystemReady() && m_fSaveRTData) {
-    thread thread1(ThreadSaveRTData, nullptr);
+    thread thread1(ThreadSaveRTData);
     thread1.detach();
     return true;
   }
@@ -1577,7 +1577,7 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
   if (m_pCurrentStock != nullptr) {
     if (!m_pCurrentStock->IsDayLineLoaded()) {
-      thread thread1(ThreadLoadDayLine, nullptr);
+      thread thread1(ThreadLoadDayLine);
       thread1.detach();
     }
   }
@@ -1737,7 +1737,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 }
 
 bool CChinaMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
-  thread thread1(ThreadCalculateDayLineRS, (LPVOID)lStartCalculatingDay);
+  thread thread1(ThreadCalculateDayLineRS, lStartCalculatingDay);
   thread1.detach();
   return true;
 }
@@ -1951,7 +1951,7 @@ void CChinaMarket::LoadOptionDB(void) {
 bool CChinaMarket::UpdateTempRTData(void) {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
-    thread thread1(ThreadSaveTempRTData, nullptr);
+    thread thread1(ThreadSaveTempRTData);
     thread1.detach();
   }
 

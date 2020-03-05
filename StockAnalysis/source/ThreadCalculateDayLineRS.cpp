@@ -12,7 +12,7 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
+UINT ThreadCalculateDayLineRS(long startCalculatingDay) {
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
   long lToday = (long)startCalculatingDay;
 
@@ -29,7 +29,7 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
   do {
     if (gl_ChinaStockMarket.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      thread thread_calculateRS(ThreadCalculateThisDayRS, (LPVOID)lToday);
+      thread thread_calculateRS(ThreadCalculateThisDayRS, lToday);
       thread_calculateRS.detach();
     }
     ctCurrent += oneDay;
@@ -70,14 +70,11 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCalculateThisDayRS(LPVOID thisDay) {
-  long lToday;
-
+UINT ThreadCalculateThisDayRS(long thisDay) {
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
   gl_SemaphoreCalculateDayLineRS.Wait();
   if (!gl_ExitingSystem && !gl_fExitingCalculatingRS) {
-    lToday = (long)thisDay;
-    gl_ChinaStockMarket.CalculateOneDayRelativeStrong(lToday);  // 调用实际执行函数
+    gl_ChinaStockMarket.CalculateOneDayRelativeStrong(thisDay);  // 调用实际执行函数
   }
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
   gl_SemaphoreCalculateDayLineRS.Signal();

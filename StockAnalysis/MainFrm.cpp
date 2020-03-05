@@ -489,14 +489,14 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateTodayRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  thread thread1(ThreadCalculateDayLineRS, (LPVOID)(gl_ChinaStockMarket.GetDay()));
+  thread thread1(ThreadCalculateDayLineRS, gl_ChinaStockMarket.GetDay());
   thread1.detach();
 }
 
 void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.IsSystemReady()) {
-    thread thread1(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread thread1(ThreadProcessCurrentTradeDayStock);
     thread1.detach();
   }
 }

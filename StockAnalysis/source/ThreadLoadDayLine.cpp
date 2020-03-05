@@ -10,7 +10,7 @@
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadLoadDayLine(LPVOID) {
+UINT ThreadLoadDayLine(void) {
   CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
   ASSERT(pCurrentStock != nullptr);
   ASSERT(!pCurrentStock->IsDayLineLoaded());

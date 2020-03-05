@@ -14,7 +14,7 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
+UINT ThreadProcessCurrentTradeDayStock(void) {
   ASSERT(gl_ChinaStockMarket.IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   char buffer[30];
@@ -29,7 +29,7 @@ UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
     str += buffer;
     str += _T("个股票");
     gl_systemMessage.PushInformationMessage(str);
-    thread thread_calculateRS(ThreadCalculateThisDayRS, (LPVOID)lDay);
+    thread thread_calculateRS(ThreadCalculateThisDayRS, lDay);
     thread_calculateRS.detach();
     if (gl_ChinaStockMarket.GetTime() > 150400) {   // 如果中国股市闭市了
       gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
