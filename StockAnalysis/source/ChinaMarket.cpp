@@ -1759,10 +1759,6 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   int iStockNumber = 0;
   CTime ctTime;
   CSetDayLine setDayLine;
-  const long lYear = lDay / 10000;
-  const long lMonth = lDay / 100 - lYear * 100;
-  const long lDayOfMonth = lDay - lYear * 10000 - lMonth * 100;
-  char buffer[100];
 
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
@@ -1827,9 +1823,9 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   vIndex.clear();
   vRelativeStrong.clear();
 
-  sprintf_s(buffer, "%4d年%2d月%2d日的股票相对强度计算完成", lYear, lMonth, lDayOfMonth);
+  CString strDay2 = GetDayString(lDay);
   CString strTemp;
-  strTemp = buffer;
+  strTemp = strDay2 + _T("的股票相对强度计算完成");
   TRACE("处理今日相对强度\n");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 

@@ -6,7 +6,16 @@
 #include"accessory.h"
 
 namespace StockAnalysisTest {
-  TEST(AccessoryTest, TestGetDefaultSchemaAnalysis) {
+  class AccessoryTest : public ::testing::Test {
+    virtual void SetUp(void) override {
+    }
+    virtual void TearDown(void) override {
+      gl_fNormalMode = false;
+      gl_fTestMode = true;
+    }
+  };
+
+  TEST_F(AccessoryTest, TestGetDefaultSchemaAnalysis) {
     EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
     EXPECT_STREQ(GetDefaultSchemaConnect(), _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"));
     EXPECT_TRUE(gl_fTestMode);
@@ -18,7 +27,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_fTestMode);
   }
 
-  TEST(AccessoryTest, TestFormatToDay) {
+  TEST_F(AccessoryTest, TestFormatToDay) {
     tm tm_, tm_2;
     tm_.tm_year = 2000 - 1900;
     tm_.tm_mon = 0;
@@ -34,7 +43,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lDay2, 20000105);
   }
 
-  TEST(AccessoryTest, TestFormatToTTime) {
+  TEST_F(AccessoryTest, TestFormatToTTime) {
     tm tm_;
     tm_.tm_year = 2000 - 1900;
     tm_.tm_mon = 0;

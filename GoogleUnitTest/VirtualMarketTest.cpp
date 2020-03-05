@@ -230,12 +230,16 @@ namespace StockAnalysisTest {
 
   TEST_F(CVirtualMarketTest, TestGetDayString) {
     char buffer[30];
-    sprintf_s(buffer, "%08d", 20200202);
+    sprintf_s(buffer, "%4d年%2d月%2d日", 2020, 02, 02);
     CString str;
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetDayString(20200202), str);
 
-    sprintf_s(buffer, "%08d", s_VirtualMarket.GetDay());
+    long lDay = s_VirtualMarket.GetDay();
+    long year = lDay / 10000;
+    long month = lDay / 100 - year * 100;
+    long day = lDay - year * 10000 - month * 100;
+    sprintf_s(buffer, "%4d年%2d月%2d日", year, month, day);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetMarketDayString(), str);
   }

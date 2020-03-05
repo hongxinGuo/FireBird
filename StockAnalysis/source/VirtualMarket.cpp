@@ -189,8 +189,11 @@ CString CVirtualMarket::GetMarketDayTimeString(void) {
 
 CString CVirtualMarket::GetDayString(long lDay) {
   char buffer[30];
+  long year = lDay / 10000;
+  long month = lDay / 100 - year * 100;
+  long day = lDay - year * 10000 - month * 100;
 
-  sprintf_s(buffer, "%08d", lDay);
+  sprintf_s(buffer, "%4dÄê%2dÔÂ%2dÈÕ", year, month, day);
   CString str;
   str = buffer;
   return(str);
