@@ -5,6 +5,9 @@
 #include"Thread.h"
 #include "TengxunRTWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://qt.gtimg.cn/q=");
   m_strWebDataInquireSuffix = _T("");
@@ -31,7 +34,8 @@ CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 }
 
 void CTengxunRTWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadTengxunRTData, this);
+  thread thread1(ThreadReadTengxunRTData, this);
+  thread1.detach();
 }
 
 bool CTengxunRTWebInquiry::ReportStatus(long lNumberOfData) {

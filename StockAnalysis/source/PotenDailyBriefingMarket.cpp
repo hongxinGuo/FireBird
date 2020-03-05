@@ -5,6 +5,9 @@
 
 #include"Thread.h"
 
+using namespace std;
+#include<thread>
+
 CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
@@ -110,7 +113,8 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
             ASSERT(m_pDataToSaved == nullptr);
             fGetData = true;
             m_pDataToSaved = pPotenDailyBriefing;
-            AfxBeginThread(ThreadSavePotenData, nullptr);
+            thread thread1(ThreadSavePotenData, nullptr);
+            thread1.detach();
             TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
             gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
             m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;

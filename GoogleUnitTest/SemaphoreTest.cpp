@@ -8,7 +8,17 @@ using namespace MyLib;
 namespace StockAnalysisTest {
   Semaphore s_TestSemaphore(10);
 
-  TEST(SemaphoreTest, TestSetMaxCount) {
+  class SemaphoreTest : public ::testing::Test
+  {
+  protected:
+    virtual void SetUp(void) override {
+    }
+    virtual void TearDown(void) override {
+      s_TestSemaphore.SetMaxCount(10);
+    }
+  };
+
+  TEST_F(SemaphoreTest, TestSetMaxCount) {
     EXPECT_EQ(s_TestSemaphore.GetMaxCount(), 10);
     s_TestSemaphore.SetMaxCount(5);
     EXPECT_EQ(s_TestSemaphore.GetMaxCount(), 5);

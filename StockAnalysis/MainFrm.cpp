@@ -489,13 +489,15 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateTodayRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)(gl_ChinaStockMarket.GetDay()));
+  thread thread1(ThreadCalculateDayLineRS, (LPVOID)(gl_ChinaStockMarket.GetDay()));
+  thread1.detach();
 }
 
 void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_ChinaStockMarket.IsSystemReady()) {
-    AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread thread1(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread1.detach();
   }
 }
 
@@ -638,7 +640,6 @@ void CMainFrame::OnBuildResetMarket() {
 void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-#ifndef DEBUG
   if ((gl_ChinaStockMarket.GetTime() > 83000) && (gl_ChinaStockMarket.GetTime() < 93000)) {
     pCmdUI->Enable(false);
   }
@@ -648,11 +649,6 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   else {
     pCmdUI->Enable(true);
   }
-#else
-  // 调试状态下永远允许执行
-  if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(false);
-  else pCmdUI->Enable(true);
-#endif
 }
 
 void CMainFrame::OnAbortBuindingRS() {

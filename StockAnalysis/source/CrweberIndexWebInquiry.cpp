@@ -7,6 +7,9 @@
 
 #include "CrweberIndexWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CCrweberIndexWebInquiry::CCrweberIndexWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://www.crweber.com");
   m_strWebDataInquireSuffix = _T("");
@@ -24,5 +27,6 @@ bool CCrweberIndexWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CCrweberIndexWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadCrweberIndex, this);
+  thread thread1(ThreadReadCrweberIndex, this);
+  thread1.detach();
 }

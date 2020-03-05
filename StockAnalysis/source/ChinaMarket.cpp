@@ -17,6 +17,9 @@
 #include"SetOption.h"
 #include"SetCrweberIndex.h"
 
+using namespace std;
+#include<thread>
+
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
@@ -1193,7 +1196,8 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
-    AfxBeginThread(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread thread1(ThreadProcessCurrentTradeDayStock, nullptr);
+    thread1.detach();
     SetTodayStockProcessed(true);
     return true;
   }
@@ -1278,7 +1282,8 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
   if (IsUpdateStockCodeDB()) {
-    AfxBeginThread(ThreadUpdateStockCodeDB, nullptr);
+    thread thread1(ThreadUpdateStockCodeDB, nullptr);
+    thread1.detach();
     SetUpdateStockCodeDB(false);
   }
   return true;
@@ -1286,7 +1291,8 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
   if (IsUpdateOptionDB()) {
-    AfxBeginThread(ThreadUpdateOptionDB, nullptr);
+    thread thread1(ThreadUpdateOptionDB, nullptr);
+    thread1.detach();
     SetUpdateOptionDB(false);
   }
   return true;
@@ -1309,7 +1315,8 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
   if (IsSystemReady() && m_fSaveRTData) {
-    AfxBeginThread(ThreadSaveRTData, nullptr);
+    thread thread1(ThreadSaveRTData, nullptr);
+    thread1.detach();
     return true;
   }
   else return false;
@@ -1488,7 +1495,8 @@ bool CChinaMarket::SaveDayLineData(void) {
         if (pStock->HaveNewDayLineData()) {
           pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
           pTransfer->m_pStock = pStock;
-          AfxBeginThread(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer, THREAD_PRIORITY_LOWEST);
+          thread thread1(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer);
+          thread1.detach();
         }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
@@ -1569,7 +1577,8 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
   if (m_pCurrentStock != nullptr) {
     if (!m_pCurrentStock->IsDayLineLoaded()) {
-      AfxBeginThread(ThreadLoadDayLine, 0);
+      thread thread1(ThreadLoadDayLine, nullptr);
+      thread1.detach();
     }
   }
   return true;
@@ -1728,7 +1737,8 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 }
 
 bool CChinaMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
-  AfxBeginThread(ThreadCalculateDayLineRS, (LPVOID)lStartCalculatingDay);
+  thread thread1(ThreadCalculateDayLineRS, (LPVOID)lStartCalculatingDay);
+  thread1.detach();
   return true;
 }
 
@@ -1941,7 +1951,8 @@ void CChinaMarket::LoadOptionDB(void) {
 bool CChinaMarket::UpdateTempRTData(void) {
   if (!gl_ThreadStatus.IsSavingTempData()) {
     gl_ThreadStatus.SetSavingTempData(true);
-    AfxBeginThread(ThreadSaveTempRTData, nullptr);
+    thread thread1(ThreadSaveTempRTData, nullptr);
+    thread1.detach();
   }
 
   return true;

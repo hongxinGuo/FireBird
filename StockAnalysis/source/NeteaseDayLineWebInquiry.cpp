@@ -5,6 +5,9 @@
 
 #include "NeteaseDayLineWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
@@ -41,7 +44,8 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadNeteaseDayLine, (LPVOID)this);
+  thread thread1(ThreadReadNeteaseDayLine, (LPVOID)this);
+  thread1.detach();
 }
 
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {

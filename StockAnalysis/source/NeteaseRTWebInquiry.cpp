@@ -23,6 +23,9 @@
 #include"Thread.h"
 #include "NeteaseRTWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
@@ -56,5 +59,6 @@ CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool 
 }
 
 void CNeteaseRTWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadNeteaseRTData, this);
+  thread thread1(ThreadReadNeteaseRTData, this);
+  thread1.detach();
 }

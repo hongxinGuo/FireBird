@@ -7,6 +7,9 @@
 
 #include "PotenDailyBriefingWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CPotenDailyBriefingWebInquiry::CPotenDailyBriefingWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://energy.poten.com/poten-daily-briefing-webpage-");
   m_strWebDataInquireSuffix = _T("");
@@ -33,5 +36,6 @@ bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
   return true;
 }
 void CPotenDailyBriefingWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadPotenDailyBriefing, this);
+  thread thread1(ThreadReadPotenDailyBriefing, this);
+  thread1.detach();
 }

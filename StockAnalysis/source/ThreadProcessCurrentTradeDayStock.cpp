@@ -4,6 +4,9 @@
 #include"ChinaMarket.h"
 #include"Thread.h"
 
+using namespace std;
+#include<thread>
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 此线程由系统在收市后于15:05自动唤醒，每日只执行一次
@@ -26,7 +29,8 @@ UINT ThreadProcessCurrentTradeDayStock(LPVOID) {
     str += buffer;
     str += _T("个股票");
     gl_systemMessage.PushInformationMessage(str);
-    AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lDay, THREAD_PRIORITY_LOWEST);
+    thread thread_calculateRS(ThreadCalculateThisDayRS, (LPVOID)lDay);
+    thread_calculateRS.detach();
     if (gl_ChinaStockMarket.GetTime() > 150400) {   // 如果中国股市闭市了
       gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
       gl_ChinaStockMarket.SetUpdateStockCodeDB(true);  // 更新代码。

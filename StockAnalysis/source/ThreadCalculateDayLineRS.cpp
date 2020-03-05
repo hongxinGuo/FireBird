@@ -9,6 +9,9 @@
 #include"ChinaMarket.h"
 #include"Thread.h"
 
+using namespace std;
+#include<thread>
+
 UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
   long lToday = (long)startCalculatingDay;
@@ -26,7 +29,8 @@ UINT ThreadCalculateDayLineRS(LPVOID startCalculatingDay) {
   do {
     if (gl_ChinaStockMarket.IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      AfxBeginThread(ThreadCalculateThisDayRS, (LPVOID)lToday, THREAD_PRIORITY_LOWEST);
+      thread thread_calculateRS(ThreadCalculateThisDayRS, (LPVOID)lToday);
+      thread_calculateRS.detach();
     }
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();

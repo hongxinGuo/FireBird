@@ -5,6 +5,9 @@
 
 #include "SinaRTWebInquiry.h"
 
+using namespace std;
+#include<thread>
+
 CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
@@ -42,7 +45,8 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSk
 }
 
 void CSinaRTWebInquiry::StartReadingThread(void) {
-  AfxBeginThread(ThreadReadSinaRTData, this);
+  thread thread1(ThreadReadSinaRTData, this);
+  thread1.detach();
 }
 
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) {
