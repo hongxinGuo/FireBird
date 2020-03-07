@@ -61,6 +61,10 @@ BOOL CStockAnalysisApp::InitInstance() {
   // 非调试状态下只允许运行一个实例
   if (FindWindow(nullptr, "StockAnalysis1 - StockAnalysis")) {
     //找顶层窗口。这种方法不太稳妥，当程序运行后可能会改变顶层窗口的名称，导致判断失误
+    MessageBox(nullptr,
+               "Only one instance can run!",
+               "FireBird Stock Analysis Warnning:",
+               MB_OK | MB_ICONEXCLAMATION);
     return false;
   }
 #endif // DEBUG
