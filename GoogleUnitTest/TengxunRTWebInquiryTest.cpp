@@ -14,13 +14,13 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_ChinaStockMarket.SetSystemReady(false);
-      gl_ChinaStockMarket.ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSystemReady(false);
+      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
     }
   public:
   };
@@ -33,17 +33,17 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CTengxunWebRTDataTest, TestGetNextInquiryStr) {
-    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
     EXPECT_STREQ(str, _T("sh600000"));
   }
 
   TEST_F(CTengxunWebRTDataTest, TestPrepareNextInquiringStr) {
-    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_TengxunRTWebInquiry.GetInquiringString();
     EXPECT_STREQ(str.Left(21), _T("http://qt.gtimg.cn/q="));
-    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_pChinaStockMarket->SetSystemReady(false);
   }
 
   TEST_F(CTengxunWebRTDataTest, TestReportStatus) {

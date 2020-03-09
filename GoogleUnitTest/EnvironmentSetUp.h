@@ -3,23 +3,33 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
 #include"SetStockCode.h"
 #include"WebInquirer.h"
 
+using namespace std;
+#include<memory>
+
 namespace StockAnalysisTest {
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
+    TestEnvironment(void) {
+      gl_pChinaStockMarket = make_shared<CChinaMarket>();
+      gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
+      gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+    }
     virtual ~TestEnvironment() {
     }
 
     virtual void SetUp(void) override {
       CChinaStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
-      for (int i = 0; i < gl_ChinaStockMarket.GetTotalStock(); i++) {
-        pStock = gl_ChinaStockMarket.GetStock(i);
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        pStock = gl_pChinaStockMarket->GetStock(i);
         pStock->SetDayLineEndDay(-1);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -30,7 +40,7 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
-        pStock = gl_ChinaStockMarket.GetStock(setStockCode.m_StockCode);
+        pStock = gl_pChinaStockMarket->GetStock(setStockCode.m_StockCode);
         EXPECT_FALSE(pStock->IsActive());
         pStock->SetIPOStatus(setStockCode.m_IPOed);
         pStock->SetMarket(setStockCode.m_StockType);
@@ -43,13 +53,13 @@ namespace StockAnalysisTest {
         }
         if (setStockCode.m_IPOed == __STOCK_IPOED__) {
           pStock->SetActive(true);
-          gl_ChinaStockMarket.IncreaseActiveStockNumber();
+          gl_pChinaStockMarket->IncreaseActiveStockNumber();
         }
         setStockCode.MoveNext();
       }
       setStockCode.Close();
-      EXPECT_GT(gl_ChinaStockMarket.GetTotalActiveStock(), 0);
-      gl_ChinaStockMarket.SetSystemReady(true);
+      EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
+      gl_pChinaStockMarket->SetSystemReady(true);
     }
 
     virtual void TearDown(void) override {

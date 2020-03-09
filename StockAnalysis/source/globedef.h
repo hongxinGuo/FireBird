@@ -60,11 +60,11 @@ extern bool gl_fExitingCalculatingRS; // 用于通知工作线程退出的信号
 extern bool gl_fNormalMode; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 extern bool gl_fTestMode; // 是否设置了gl_fTestMode标识，默认为真。系统在启动时需要设置此标识为假。（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
-extern vector<CVirtualMarket*> gl_vMarket; // 各市场指针的容器，只用于执行各市场的SchedulingTask
+extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 // 各市场唯一的实例
-extern CPotenDailyBriefingMarket gl_PotenDailyBriefingMarket;
-extern CCrweberIndexMarket gl_CrweberIndexMarket;
-class CChinaMarket;
+extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
+extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
-extern CChinaMarket gl_ChinaStockMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
+class CChinaMarket;
+extern shared_ptr<CChinaMarket> gl_pChinaStockMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

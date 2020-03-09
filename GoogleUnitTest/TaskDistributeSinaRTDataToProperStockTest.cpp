@@ -40,10 +40,10 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      pStock = gl_ChinaStockMarket.GetStock(pData->m_strStockCode);
+      pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
       pStock->ClearRTDataDeque();
       pStock->SetTransactionTime(10101010);
-      gl_ChinaStockMarket.SetNewestTransactionTime(10101010);
+      gl_pChinaStockMarket->SetNewestTransactionTime(10101010);
       pRTData = make_shared<CRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
       pRTData->SetStockCode(pData->m_strStockCode);
@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
     CString strMessage, strRight;
     gl_RTDataContainer.PushSinaRTData(pRTData);
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 1);
-    EXPECT_TRUE(gl_ChinaStockMarket.TaskDistributeSinaRTDataToProperStock());
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeSinaRTDataToProperStock());
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     switch (m_iCount) {
@@ -81,13 +81,13 @@ namespace StockAnalysisTest {
     case 2:
     break;
     case 3:
-    EXPECT_EQ(gl_ChinaStockMarket.GetNewestTransactionTime(), 10101020);
+    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), 10101020);
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime(), 10101020);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     break;
     case 4:
-    EXPECT_EQ(gl_ChinaStockMarket.GetNewestTransactionTime(), 10101020);
+    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), 10101020);
     //EXPECT_FALSE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime(), 10101020);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);

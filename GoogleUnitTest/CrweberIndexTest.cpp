@@ -288,9 +288,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("October")), 10);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("November")), 11);
     EXPECT_EQ(Index.GetMonthOfTheYear(_T("December")), 12);
-    EXPECT_EQ(Index.GetMonthOfTheYear(_T("DEcmber")), gl_CrweberIndexMarket.GetMonthOfYear());
-    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Junuary")), gl_CrweberIndexMarket.GetMonthOfYear());
-    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Febrary")), gl_CrweberIndexMarket.GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("DEcmber")), gl_pCrweberIndexMarket->GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Junuary")), gl_pCrweberIndexMarket->GetMonthOfYear());
+    EXPECT_EQ(Index.GetMonthOfTheYear(_T("Febrary")), gl_pCrweberIndexMarket->GetMonthOfYear());
   }
 
   struct CrweberIndexTime {
@@ -369,7 +369,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lTime, m_lTime);
     break;
     default:
-    EXPECT_EQ(lTime, m_lTime - lMonth * 100 + gl_CrweberIndexMarket.GetMonthOfYear() * 100);
+    EXPECT_EQ(lTime, m_lTime - lMonth * 100 + gl_pCrweberIndexMarket->GetMonthOfYear() * 100);
     }
   }
 

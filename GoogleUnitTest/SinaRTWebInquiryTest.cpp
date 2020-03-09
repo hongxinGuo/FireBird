@@ -16,12 +16,12 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
+      gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
+      gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
     }
   public:
   };
@@ -40,14 +40,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CSinaWebRTDataTest, TestGetNextInquiringMIddleStr) {
-    gl_ChinaStockMarket.ResetSinaRTDataInquiringIndex();
+    gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
     CString str = m_SinaRTWebData.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
     EXPECT_STREQ(str2, _T("sh600000,"));
   }
 
   TEST_F(CSinaWebRTDataTest, TestPrepareInquiringStr) {
-    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_TRUE(m_SinaRTWebData.PrepareNextInquiringStr());
     CString str = m_SinaRTWebData.GetInquiringString();
     EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh600000"));

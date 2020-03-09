@@ -15,14 +15,14 @@ using namespace std;
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadProcessCurrentTradeDayStock(void) {
-  ASSERT(gl_ChinaStockMarket.IsSystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(gl_pChinaStockMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   char buffer[30];
   CString str;
   int i;
-  long lDay = FormatToDay(gl_ChinaStockMarket.GetNewestTransactionTime());
-  if (lDay == gl_ChinaStockMarket.GetDay()) {
-    i = gl_ChinaStockMarket.ProcessCurrentTradeDayStock(lDay);
+  long lDay = FormatToDay(gl_pChinaStockMarket->GetNewestTransactionTime());
+  if (lDay == gl_pChinaStockMarket->GetDay()) {
+    i = gl_pChinaStockMarket->ProcessCurrentTradeDayStock(lDay);
     TRACE("处理今日股票\n");
     sprintf_s(buffer, "%d", i);
     str = _T("今日处理了");
@@ -31,11 +31,11 @@ UINT ThreadProcessCurrentTradeDayStock(void) {
     gl_systemMessage.PushInformationMessage(str);
     thread thread_calculateRS(ThreadCalculateThisDayRS, lDay);
     thread_calculateRS.detach();
-    if (gl_ChinaStockMarket.GetTime() > 150400) {   // 如果中国股市闭市了
-      gl_ChinaStockMarket.SetRelativeStrongEndDay(gl_ChinaStockMarket.GetDay());
-      gl_ChinaStockMarket.SetUpdateStockCodeDB(true);  // 更新代码。
-      gl_ChinaStockMarket.SetUpdateOptionDB(true);   // 更新状态
-      gl_ChinaStockMarket.SetTodayStockProcessed(true);  // 设置今日已处理标识
+    if (gl_pChinaStockMarket->GetTime() > 150400) {   // 如果中国股市闭市了
+      gl_pChinaStockMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetDay());
+      gl_pChinaStockMarket->SetUpdateStockCodeDB(true);  // 更新代码。
+      gl_pChinaStockMarket->SetUpdateOptionDB(true);   // 更新状态
+      gl_pChinaStockMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
     }
   }
   return 14;

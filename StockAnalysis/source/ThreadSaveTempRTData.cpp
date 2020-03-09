@@ -10,12 +10,12 @@
 #include"ChinaMarket.h"
 
 UINT ThreadSaveTempRTData(void) {
-  ASSERT(gl_ChinaStockMarket.IsSystemReady()); // 调用本工作线程时必须设置好市场。
+  ASSERT(gl_pChinaStockMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 此两个工作线程互斥
 
   gl_ThreadStatus.SetSavingTempData(true);
 
-  gl_ChinaStockMarket.UpdateTodayTempDB();
+  gl_pChinaStockMarket->UpdateTodayTempDB();
 
   ASSERT(!gl_ThreadStatus.IsCalculatingRTData()); // 再次确认一下
   gl_ThreadStatus.SetSavingTempData(false);

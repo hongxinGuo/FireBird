@@ -14,17 +14,17 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadUpdateStockCodeDB(void) {
   //
-  gl_ChinaStockMarket.UpdateStockCodeDB();
+  gl_pChinaStockMarket->UpdateStockCodeDB();
   return 18;
 }
 
 UINT ThreadUpdateOptionDB(void) {
-  gl_ChinaStockMarket.UpdateOptionDB();
+  gl_pChinaStockMarket->UpdateOptionDB();
   return 20;
 }
 
 UINT ThreadSavePotenData(void) {
-  gl_PotenDailyBriefingMarket.SaveCurrentData();
+  gl_pPotenDailyBriefingMarket->SaveCurrentData();
 
   return 21;
 }

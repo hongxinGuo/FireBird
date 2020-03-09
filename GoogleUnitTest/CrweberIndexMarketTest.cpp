@@ -11,36 +11,36 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_CrweberIndexMarket.SetDatabaseLoaded(false);
-      gl_CrweberIndexMarket.SetPermitResetMarket(true);
-      gl_CrweberIndexMarket.SetReadyToRun(true);
-      gl_CrweberIndexMarket.SetResetMarket(true);
-      gl_CrweberIndexMarket.SetNewestUpdateDay(0);
+      gl_pCrweberIndexMarket->SetDatabaseLoaded(false);
+      gl_pCrweberIndexMarket->SetPermitResetMarket(true);
+      gl_pCrweberIndexMarket->SetReadyToRun(true);
+      gl_pCrweberIndexMarket->SetResetMarket(true);
+      gl_pCrweberIndexMarket->SetNewestUpdateDay(0);
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_CrweberIndexMarket.SetDatabaseLoaded(false);
-      gl_CrweberIndexMarket.SetPermitResetMarket(true);
-      gl_CrweberIndexMarket.SetReadyToRun(true);
-      gl_CrweberIndexMarket.SetResetMarket(true);
-      gl_CrweberIndexMarket.SetNewestUpdateDay(0);
+      gl_pCrweberIndexMarket->SetDatabaseLoaded(false);
+      gl_pCrweberIndexMarket->SetPermitResetMarket(true);
+      gl_pCrweberIndexMarket->SetReadyToRun(true);
+      gl_pCrweberIndexMarket->SetResetMarket(true);
+      gl_pCrweberIndexMarket->SetNewestUpdateDay(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
 
   TEST_F(CCrweberIndexMarketTest, TestInitialize) {
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 0);
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
-    EXPECT_EQ(gl_CrweberIndexMarket.GetTimeZoneOffset(), 0);
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 0);
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetTimeZoneOffset(), 0);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestResetMarket) {
     long l = gl_systemMessage.GetInformationDequeSize();
-    gl_CrweberIndexMarket.ResetMarket();
+    gl_pCrweberIndexMarket->ResetMarket();
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1);
     CString str = gl_systemMessage.PopInformationMessage();
     CString strLeft = str.Left(35);
@@ -48,41 +48,41 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CCrweberIndexMarketTest, TestMaintainDatabase) {
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
-    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(10000));
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
-    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(11000));
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
-    EXPECT_TRUE(gl_CrweberIndexMarket.TaskMaintainDatabase(10001));
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsMaintainDatabase());
-    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
-    EXPECT_FALSE(gl_CrweberIndexMarket.TaskMaintainDatabase(11001)) << _T("标识为假时永远不执行");
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10000));
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(11000));
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001));
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
+    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(11001)) << _T("标识为假时永远不执行");
 
-    gl_CrweberIndexMarket.SetMaintainDatabase(true);
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsMaintainDatabase());
-    gl_CrweberIndexMarket.SetMaintainDatabase(false);
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsMaintainDatabase());
+    gl_pCrweberIndexMarket->SetMaintainDatabase(true);
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    gl_pCrweberIndexMarket->SetMaintainDatabase(false);
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsMaintainDatabase());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
-    gl_CrweberIndexMarket.SetResetMarket(false);
-    gl_CrweberIndexMarket.TaskResetMarket(9999);
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsPermitResetMarket());
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
-    gl_CrweberIndexMarket.TaskResetMarket(13001);
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsResetMarket());
-    gl_CrweberIndexMarket.SetPermitResetMarket(true);
-    gl_CrweberIndexMarket.TaskResetMarket(10000);
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsPermitResetMarket());
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsResetMarket());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
+    gl_pCrweberIndexMarket->SetResetMarket(false);
+    gl_pCrweberIndexMarket->TaskResetMarket(9999);
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
+    gl_pCrweberIndexMarket->TaskResetMarket(13001);
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
+    gl_pCrweberIndexMarket->SetPermitResetMarket(true);
+    gl_pCrweberIndexMarket->TaskResetMarket(10000);
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDay) {
-    gl_CrweberIndexMarket.Reset();
-    gl_CrweberIndexMarket.GetNewestDatabaseDayFromDB();
+    gl_pCrweberIndexMarket->Reset();
+    gl_pCrweberIndexMarket->GetNewestDatabaseDayFromDB();
 
     CSetCrweberIndex setCrweberIndex;
     long lDay = 0;
@@ -95,35 +95,35 @@ namespace StockAnalysisTest {
     }
     setCrweberIndex.Close();
 
-    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestDatabaseDay(), lDay);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestDatabaseDay(), lDay);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDay) {
-    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 0);
-    gl_CrweberIndexMarket.SetNewestUpdateDay(20201220);
-    EXPECT_EQ(gl_CrweberIndexMarket.GetNewestUpdateDay(), 20201220);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 0);
+    gl_pCrweberIndexMarket->SetNewestUpdateDay(20201220);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 20201220);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetDatabaseLoaded) {
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-    gl_CrweberIndexMarket.SetDatabaseLoaded(true);
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-    gl_CrweberIndexMarket.SetDatabaseLoaded(false);
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    gl_pCrweberIndexMarket->SetDatabaseLoaded(true);
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    gl_pCrweberIndexMarket->SetDatabaseLoaded(false);
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSchedulingTaskPer1Minute) {
-    EXPECT_TRUE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(60, 90000));
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-    gl_CrweberIndexMarket.SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
-    EXPECT_FALSE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(59, 90000)) << "差一秒未到执行时间";
-    EXPECT_FALSE(gl_CrweberIndexMarket.IsDatabaseLoaded());
-    gl_CrweberIndexMarket.SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
-    EXPECT_TRUE(gl_CrweberIndexMarket.SchedulingTaskPer1Minute(1, 90000));
-    EXPECT_TRUE(gl_CrweberIndexMarket.IsDatabaseLoaded());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(60, 90000));
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    EXPECT_FALSE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(59, 90000)) << "差一秒未到执行时间";
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(1, 90000));
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskProcessWebRTDataGetFromCrweberdotcom) {
-    EXPECT_TRUE(gl_CrweberIndexMarket.TaskProcessWebRTDataGetFromCrweberdotcom()) << "目前没有数据，只是简单运行一下";
+    EXPECT_TRUE(gl_pCrweberIndexMarket->TaskProcessWebRTDataGetFromCrweberdotcom()) << "目前没有数据，只是简单运行一下";
   }
 }

@@ -13,6 +13,10 @@
 #include "StockAnalysisDoc.h"
 #include "StockAnalysisView.h"
 
+#include"ChinaMarket.h"
+#include"CrweberIndexMarket.h"
+#include"PotenDailyBriefingMarket.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -68,6 +72,10 @@ BOOL CStockAnalysisApp::InitInstance() {
     return false;
   }
 #endif // DEBUG
+
+  gl_pChinaStockMarket = make_shared<CChinaMarket>();
+  gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
+  gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
 
   ASSERT(gl_fNormalMode == false);
   gl_fNormalMode = true; // 实际系统，测试状态为假。

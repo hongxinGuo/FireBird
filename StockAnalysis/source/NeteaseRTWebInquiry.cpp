@@ -45,7 +45,7 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
-  ASSERT(gl_ChinaStockMarket.IsSystemReady());
+  ASSERT(gl_pChinaStockMarket->IsSystemReady());
   // 申请下一批次股票实时数据
   strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, false); // 目前还是使用全部股票池
   CreateTotalInquiringString(strMiddle);
@@ -54,7 +54,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str = gl_ChinaStockMarket.GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
+  CString str = gl_pChinaStockMarket->GetNeteaseInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
   return str;
 }
 

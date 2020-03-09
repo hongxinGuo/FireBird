@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingTest, TestLoadData) {
     CPotenDailyBriefing id, id2;
     CSetPotenDailyBriefing setPoten;
-    long lDay = gl_PotenDailyBriefingMarket.GetDay();
+    long lDay = gl_pPotenDailyBriefingMarket->GetDay();
     char buffer[30];
     sprintf_s(buffer, "%08d", lDay);
     CString strDay = buffer;

@@ -55,3 +55,5 @@ protected:
   map<long, bool> m_mapDataLoadedDays;
   long m_lCurrentInquiringDay;
 };
+
+typedef shared_ptr<CPotenDailyBriefingMarket> CPotenDailyBriefingMarketPtr;

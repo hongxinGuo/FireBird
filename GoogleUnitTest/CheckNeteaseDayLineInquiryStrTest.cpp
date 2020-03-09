@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
                           ));
 
   TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
-    bool fSucceed = gl_ChinaStockMarket.CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
+    bool fSucceed = gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);

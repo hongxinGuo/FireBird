@@ -966,7 +966,7 @@ bool CRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
   pWebDataReceived->IncreaseCurrentPos();
   strStockCode = strHeader;
   strStockCode += bufferStockCode;
-  if (gl_ChinaStockMarket.GetStock(strStockCode) == nullptr) {
+  if (gl_pChinaStockMarket->GetStock(strStockCode) == nullptr) {
     return false;
   }
   return true;
@@ -1196,10 +1196,10 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::IsValidTime(void) {
-  if (m_time < (gl_ChinaStockMarket.GetMarketTime() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+  if (m_time < (gl_pChinaStockMarket->GetMarketTime() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
-  else if (m_time > gl_ChinaStockMarket.GetMarketTime()) {
+  else if (m_time > gl_pChinaStockMarket->GetMarketTime()) {
     return false;
   }
   else  return true;

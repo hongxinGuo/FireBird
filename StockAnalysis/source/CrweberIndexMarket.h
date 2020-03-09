@@ -48,3 +48,5 @@ protected:
   long m_lNewestUpdatedDay;
   long m_lNewestDatabaseDay;
 };
+
+typedef shared_ptr<CCrweberIndexMarket> CCrweberIndexMarketPtr;

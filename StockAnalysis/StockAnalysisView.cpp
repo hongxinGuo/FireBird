@@ -108,8 +108,8 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart
 }
 
 bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
-  if (gl_ChinaStockMarket.GetTotalActiveStock() > 0) {
-    pStock = gl_ChinaStockMarket.GetStock(0); // 600000
+  if (gl_pChinaStockMarket->GetTotalActiveStock() > 0) {
+    pStock = gl_pChinaStockMarket->GetStock(0); // 600000
   }
   else return false;
 
@@ -134,7 +134,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   CPoint ptCurrent;
 
   CChinaStockPtr pStock;
-  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
   int iGraphYEnd2 = iGraphYEnd + 100;
@@ -149,7 +149,7 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
   crBefore = pdc->SetBkColor(crYellow);
-  pStock = gl_ChinaStockMarket.GetCurrentStock();
+  pStock = gl_pChinaStockMarket->GetCurrentStock();
 
   ppen = pdc->SelectObject(&penRed);
   ptCurrent.x = iTextStart - 5;
@@ -202,7 +202,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPoint ptCurrent;
-  CChinaStockPtr pCurrentStock = gl_ChinaStockMarket.GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   if (pCurrentStock == nullptr) return;
   if (!pCurrentStock->IsDayLineLoaded()) return;
@@ -292,8 +292,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
 
   CRect rect;
   GetClientRect(&rect);
-  if (gl_ChinaStockMarket.GetCurrentStock() == nullptr) return;
-  if (!gl_ChinaStockMarket.GetCurrentStock()->IsDayLineLoaded()) return;
+  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) return;
+  if (!gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded()) return;
 
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data

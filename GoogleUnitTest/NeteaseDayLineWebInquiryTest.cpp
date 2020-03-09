@@ -15,19 +15,19 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_ChinaStockMarket.CalculateTime();
-      gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
+      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
       m_NeteaseDayLineWebData.ResetDownLoadingStockCode();
-      EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_ChinaStockMarket.SetResetMarket(true);
-      gl_ChinaStockMarket.ResetNeteaseDayLineDataInquiringIndex();
+      gl_pChinaStockMarket->SetResetMarket(true);
+      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_ChinaStockMarket.SetSystemReady(false);
-      gl_ChinaStockMarket.SetCurrentStockChanged(false);
+      gl_pChinaStockMarket->SetSystemReady(false);
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebData.ResetDownLoadingStockCode();
     }
   };
@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CNeteaseWebDayLineDataTest, TestPrepareNextInquiringStr) {
     CString str;
-    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
       if (m_NeteaseDayLineWebData.PrepareNextInquiringStr()) {
         str = m_NeteaseDayLineWebData.GetInquiringString();
@@ -62,6 +62,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
-    gl_ChinaStockMarket.SetSystemReady(false);
+    gl_pChinaStockMarket->SetSystemReady(false);
   }
 }

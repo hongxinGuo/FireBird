@@ -2,6 +2,9 @@
 
 #include"stdafx.h"
 
+using namespace std;
+#include<memory>
+
 class CVirtualMarket : public CObject {
 public:
   CVirtualMarket(void);
@@ -88,3 +91,5 @@ private:
   int m_i10SecondCounter;  // 一分钟一次的计数器
   time_t m_timeLast;
 };
+
+typedef shared_ptr<CVirtualMarket> CVirtualMarketPtr;

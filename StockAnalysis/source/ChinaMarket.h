@@ -339,3 +339,5 @@ protected:
 
 private:
 };
+
+typedef shared_ptr<CChinaMarket> CChinaMarketPtr;

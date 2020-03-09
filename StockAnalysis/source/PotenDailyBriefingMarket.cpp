@@ -146,7 +146,7 @@ bool CPotenDailyBriefingMarket::TaskCheckTodayDataUpdated(void) {
     if (m_lCurrentInquiringDay > GetDay()) {
       m_fTodayDataUpdated = true;
     }
-    else if ((m_lCurrentInquiringDay == GetDay()) && (!gl_PotenDailyBriefingMarket.IsWorkingDay())) {
+    else if ((m_lCurrentInquiringDay == GetDay()) && (!gl_pPotenDailyBriefingMarket->IsWorkingDay())) {
       m_fTodayDataUpdated = true;
     }
     else m_fTodayDataUpdated = false;

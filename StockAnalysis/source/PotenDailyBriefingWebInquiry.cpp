@@ -22,7 +22,7 @@ CPotenDailyBriefingWebInquiry::~CPotenDailyBriefingWebInquiry() {
 }
 
 bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
-  m_lInquiringDay = gl_PotenDailyBriefingMarket.GetCurrentInquiringDay();
+  m_lInquiringDay = gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay();
   CString strMiddle = _T("");
   char buffer[50];
   long year = m_lInquiringDay / 10000;

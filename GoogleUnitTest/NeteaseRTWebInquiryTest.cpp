@@ -16,16 +16,16 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_ChinaStockMarket.CalculateTime();
-      gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
 
-      EXPECT_TRUE(gl_ChinaStockMarket.IsResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_ChinaStockMarket.SetSystemReady(false);
-      gl_ChinaStockMarket.ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSystemReady(false);
+      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
@@ -42,13 +42,13 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestGetNextInquiryMiddleStr) {
-    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_NeteaseRTWebData.GetNextInquiringMiddleStr(1, false); // 得到第一个股票字符串
     EXPECT_STREQ(str, _T("0600000"));
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestPrepareNextInquiringStr) {
-    gl_ChinaStockMarket.SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_TRUE(m_NeteaseRTWebData.PrepareNextInquiringStr());
     CString str = m_NeteaseRTWebData.GetInquiringString();
     EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));
