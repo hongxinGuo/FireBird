@@ -17,6 +17,8 @@
 #include"CrweberIndexMarket.h"
 #include"PotenDailyBriefingMarket.h"
 
+#include"WebInquirer.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -73,9 +75,11 @@ BOOL CStockAnalysisApp::InitInstance() {
   }
 #endif // DEBUG
 
-  gl_pChinaStockMarket = make_shared<CChinaMarket>();
-  gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
-  gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+  // 所有全局智能指针皆在此处生成
+  if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CChinaMarket>();
+  if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
+  if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+  gl_WebInquirer.Initialize();
 
   ASSERT(gl_fNormalMode == false);
   gl_fNormalMode = true; // 实际系统，测试状态为假。

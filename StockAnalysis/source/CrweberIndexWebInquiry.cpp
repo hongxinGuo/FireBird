@@ -27,6 +27,6 @@ bool CCrweberIndexWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CCrweberIndexWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadCrweberIndex, this);
-  thread1.detach();
+  thread threadReading(ThreadReadCrweberIndex, this);
+  threadReading.detach();
 }
