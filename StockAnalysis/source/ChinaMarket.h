@@ -28,12 +28,12 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CRTDataContainer gl_RTDataContainer;
 
-class CChinaMarket final : public CVirtualMarket
+class CChinaMarket : public CVirtualMarket
 {
 public:
   // 只能有一个实例
   CChinaMarket(void);
-  ~CChinaMarket(void);
+  virtual ~CChinaMarket(void);
   virtual void ResetMarket(void) override;
   void Reset(void);
 

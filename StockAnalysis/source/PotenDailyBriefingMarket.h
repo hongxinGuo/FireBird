@@ -10,10 +10,10 @@ using namespace std;
 #include<vector>
 #include<map>
 
-class CPotenDailyBriefingMarket final : public CVirtualMarket {
+class CPotenDailyBriefingMarket : public CVirtualMarket {
 public:
   CPotenDailyBriefingMarket(void);
-  ~CPotenDailyBriefingMarket(void);
+  virtual ~CPotenDailyBriefingMarket(void);
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void) override;

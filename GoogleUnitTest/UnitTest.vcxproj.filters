@@ -168,6 +168,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Object Include="..\StockAnalysis\x64\Debug\Accessory.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -175,6 +178,9 @@
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ChinaMarket.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ChinaStock.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\CrweberIndex.obj">
@@ -219,10 +225,16 @@
     <Object Include="..\StockAnalysis\x64\Debug\PriorityQueueRTData.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\QueueWebData.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\RTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\RTDataContainer.obj">
       <Filter>dependency</Filter>
     </Object>
     <Object Include="..\StockAnalysis\x64\Debug\SetChoicedStock.obj">
@@ -303,6 +315,12 @@
     <Object Include="..\StockAnalysis\x64\Debug\ThreadReadTengxunRTData.obj">
       <Filter>dependency</Filter>
     </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveDayLine.obj">
+      <Filter>dependency</Filter>
+    </Object>
+    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveRTData.obj">
+      <Filter>dependency</Filter>
+    </Object>
     <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveTempRTData.obj">
       <Filter>dependency</Filter>
     </Object>
@@ -321,23 +339,5 @@
     <Object Include="..\StockAnalysis\x64\Debug\WebInquirer.obj">
       <Filter>dependency</Filter>
     </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\QueueRTData.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ChinaStock.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\RTDataContainer.obj">
-      <Filter>dependency</Filter>
-    </Object>
-    <Object Include="..\StockAnalysis\x64\Debug\ThreadSaveDayLine.obj">
-      <Filter>dependency</Filter>
-    </Object>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

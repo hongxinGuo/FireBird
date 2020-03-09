@@ -19,16 +19,20 @@
 
 extern int gl_cMaxSavingOneDayLineThreads;
 
-class CWebInquirer final : public CObject {
+class CWebInquirer : public CObject {
 public:
-  bool GetSinaRTData(void) { return m_SinaRTWebInquiry.GetWebData(); }
-  bool GetTengxunRTData(void) { return m_TengxunRTWebInquiry.GetWebData(); }
-  bool GetNeteaseRTData(void) { return m_NeteaseRTWebInquiry.GetWebData(); }
+  CWebInquirer(void);
+  virtual ~CWebInquirer(void);
+
+public:
+  bool GetSinaRTData(void) { return m_pSinaRTWebInquiry->GetWebData(); }
+  bool GetTengxunRTData(void) { return m_pTengxunRTWebInquiry->GetWebData(); }
+  bool GetNeteaseRTData(void) { return m_pNeteaseRTWebInquiry->GetWebData(); }
   bool GetNeteaseDayLineData(void);
-  bool GetCrweberIndexData(void) { return m_CrweberIndexWebInquiry.GetWebData(); }
-  bool IsReadingCrweberIndex(void) { return m_CrweberIndexWebInquiry.IsReadingWebData(); }
-  bool GetPotenDailyBriefingData(void) { return m_PotenDailyBriefingWebInquiry.GetWebData(); }
-  bool IsReadingPotenDailyBriefing(void) { return m_PotenDailyBriefingWebInquiry.IsReadingWebData(); }
+  bool GetCrweberIndexData(void) { return m_pCrweberIndexWebInquiry->GetWebData(); }
+  bool IsReadingCrweberIndex(void) { return m_pCrweberIndexWebInquiry->IsReadingWebData(); }
+  bool GetPotenDailyBriefingData(void) { return m_pPotenDailyBriefingWebInquiry->GetWebData(); }
+  bool IsReadingPotenDailyBriefing(void) { return m_pPotenDailyBriefingWebInquiry->IsReadingWebData(); }
 
 public:
   long GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetWebDataSize(); }
@@ -48,20 +52,20 @@ public:
   void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
 
-  bool IsReadingWebThreadRunning(void) noexcept { return m_SinaRTWebInquiry.IsReadingWebThreadRunning(); }
+  bool IsReadingWebThreadRunning(void) noexcept { return m_pSinaRTWebInquiry->IsReadingWebThreadRunning(); }
 
 protected:
-  CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
-  CTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
-  CNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 网易实时数据采集
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquirySecond; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryThird; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryFourth; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiryFifth; // 网易日线历史数据
-  CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquirySixth; // 网易日线历史数据
-  CCrweberIndexWebInquiry m_CrweberIndexWebInquiry; // crweber.com上的每日油运指数
-  CPotenDailyBriefingWebInquiry m_PotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
+  CSinaRTWebInquiryPtr m_pSinaRTWebInquiry; // 新浪实时数据采集
+  CTengxunRTWebInquiryPtr m_pTengxunRTWebInquiry; // 腾讯实时数据采集
+  CNeteaseRTWebInquiryPtr m_pNeteaseRTWebInquiry; // 网易实时数据采集
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquiry; // 网易日线历史数据
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquirySecond; // 网易日线历史数据
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquiryThird; // 网易日线历史数据
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquiryFourth; // 网易日线历史数据
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquiryFifth; // 网易日线历史数据
+  CNeteaseDayLineWebInquiryPtr m_pNeteaseDayLineWebInquirySixth; // 网易日线历史数据
+  CCrweberIndexWebInquiryPtr m_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
+  CPotenDailyBriefingWebInquiryPtr m_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
 
   CQueueWebData m_qSinaRTWebData; // 新浪网络数据暂存队列
   CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列

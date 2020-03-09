@@ -11,7 +11,7 @@ using namespace std;
 class CVirtualWebInquiry : public CObject {
 public:
   CVirtualWebInquiry();
-  ~CVirtualWebInquiry() {}
+  virtual ~CVirtualWebInquiry() {}
 
   bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
   bool ReadDataFromWebOnce(void);
@@ -90,3 +90,5 @@ protected:
 
   CString m_strConnection;
 };
+
+typedef shared_ptr<CVirtualWebInquiry> CVirtualWebInquiryPtr;

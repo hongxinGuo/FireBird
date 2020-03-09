@@ -2,13 +2,15 @@
 
 #include "VirtualWebInquiry.h"
 
-class CTengxunRTWebInquiry final : public CVirtualWebInquiry {
+class CTengxunRTWebInquiry : public CVirtualWebInquiry {
 public:
   CTengxunRTWebInquiry();
-  ~CTengxunRTWebInquiry();
+  virtual ~CTengxunRTWebInquiry();
 
   virtual bool PrepareNextInquiringStr(void) override;
   virtual CString GetNextInquiringMiddleStr(long lTotalNubmer = 900, bool fSkipUnactiveStock = true) override;
   virtual void StartReadingThread(void) override;
   virtual bool ReportStatus(long lNumberOfData) override;
 };
+
+typedef shared_ptr<CTengxunRTWebInquiry> CTengxunRTWebInquiryPtr;

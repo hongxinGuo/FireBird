@@ -2,10 +2,10 @@
 
 #include "VirtualWebInquiry.h"
 
-class CNeteaseDayLineWebInquiry final : public CVirtualWebInquiry {
+class CNeteaseDayLineWebInquiry : public CVirtualWebInquiry {
 public:
   CNeteaseDayLineWebInquiry();
-  ~CNeteaseDayLineWebInquiry();
+  virtual ~CNeteaseDayLineWebInquiry();
 
   virtual bool PrepareNextInquiringStr(void) override;
   virtual void StartReadingThread(void) override;
@@ -17,3 +17,5 @@ public:
 private:
   CString m_strDownLoadingStockCode;
 };
+
+typedef shared_ptr<CNeteaseDayLineWebInquiry> CNeteaseDayLineWebInquiryPtr;

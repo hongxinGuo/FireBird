@@ -2,12 +2,14 @@
 
 #include"VirtualWebInquiry.h"
 
-class CCrweberIndexWebInquiry final : public CVirtualWebInquiry
+class CCrweberIndexWebInquiry : public CVirtualWebInquiry
 {
 public:
   CCrweberIndexWebInquiry();
-  ~CCrweberIndexWebInquiry();
+  virtual ~CCrweberIndexWebInquiry();
 
   virtual bool PrepareNextInquiringStr(void) override;
   virtual void StartReadingThread(void) override;
 };
+
+typedef shared_ptr<CCrweberIndexWebInquiry> CCrweberIndexWebInquiryPtr;

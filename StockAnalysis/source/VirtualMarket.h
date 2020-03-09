@@ -5,7 +5,7 @@
 class CVirtualMarket : public CObject {
 public:
   CVirtualMarket(void);
-  ~CVirtualMarket(void);
+  virtual ~CVirtualMarket(void);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
