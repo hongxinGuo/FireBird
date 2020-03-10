@@ -11,9 +11,7 @@
 #include"globedef.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadNeteaseRTData(LPVOID pParam) {
-  CNeteaseRTWebInquiry* pNeteaseRTWebData = (CNeteaseRTWebInquiry*)pParam;
-
+UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData) {
   if (pNeteaseRTWebData->ReadWebData(100, 30, 30)) {
     ASSERT(!pNeteaseRTWebData->IsReadingWebData());
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();

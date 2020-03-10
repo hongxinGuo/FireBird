@@ -5,8 +5,6 @@
 #include"globedef.h"
 #include"Thread.h"
 
-#include"TransferSharedPtr.h"
-
 #include"WebInquirer.h"
 
 #include"ChinaStock.h"
@@ -1489,15 +1487,12 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SaveDayLineData(void) {
   CString str;
-  strTransferSharedPtr* pTransfer = nullptr;
 
   for (auto pStock : m_vChinaMarketAStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->GetDayLineSize() > 0) {
         if (pStock->HaveNewDayLineData()) {
-          pTransfer = new strTransferSharedPtr; // 此处生成，由线程负责delete
-          pTransfer->m_pStock = pStock;
-          thread thread1(ThreadSaveDayLineOfOneStock, (LPVOID)pTransfer);
+          thread thread1(ThreadSaveDayLineOfOneStock, pStock);
           thread1.detach();
         }
       }

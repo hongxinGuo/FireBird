@@ -126,9 +126,6 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
-    <ClInclude Include="source\TransferSharedPtr.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\PriorityQueueRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>

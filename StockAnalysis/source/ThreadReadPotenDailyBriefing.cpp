@@ -11,8 +11,7 @@
 #include"VirtualWebInquiry.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadPotenDailyBriefing(LPVOID pParam) {
-  CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData = (CPotenDailyBriefingWebInquiry*)(pParam);
+UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData) {
   if (pPotenDailyBriefingWebData->ReadWebData(500, 50, 30)) {
     CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {

@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h" />
+    <ClInclude Include="MockVirtualWebInquiry.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

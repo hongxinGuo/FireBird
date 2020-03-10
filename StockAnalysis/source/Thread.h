@@ -1,7 +1,15 @@
 #pragma once
 
 #include"stdafx.h"
-#include<thread>
+
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+#include"NeteaseDayLineWebInquiry.h"
+#include"NeteaseRTWebInquiry.h"
+#include"PotenDailyBriefingWebInquiry.h"
+#include"CrweberIndexWebInquiry.h"
+
+#include"ChinaStock.h"
 
 // 各工作线程声明
 // 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。
@@ -11,17 +19,17 @@
 // 网络读取任务
 
 // 读取新浪实时数据线程。网址：http://hq.sinajs.cn/list=
-UINT ThreadReadSinaRTData(LPVOID pParam);    // 此工作线程返回值为1，参数为pSinaWebRTData
+UINT ThreadReadSinaRTData(CSinaRTWebInquiry* pSinaRTWebData);    // 此工作线程返回值为1，参数为pSinaWebRTData
 // 读取腾讯实时数据线程。网址：http://qt.gtimg.cn/q=
-UINT ThreadReadTengxunRTData(LPVOID pParam);    // 此工作线程返回值为2，参数为pTengxunWebRTData
+UINT ThreadReadTengxunRTData(CTengxunRTWebInquiry* pTengxunRTWebData);    // 此工作线程返回值为2，参数为pTengxunWebRTData
 // 读取网易实时数据线程，网址：http://api.money.126.net/data/feed/
-UINT ThreadReadNeteaseRTData(LPVOID pParam); // 此线程返回值为3，参数为pNeteaseWebRTData
+UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData); // 此线程返回值为3，参数为pNeteaseWebRTData
 // 读取网易日线历史数据线程, pParam为调用此线程的变量的指针。网址：http://quotes.money.163.com/service/chddata.html?code=
-UINT ThreadReadNeteaseDayLine(LPVOID pParam);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
+UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData);      // 此工作线程返回值为4，参数为pNeteaseWebDayLineData
 // 读取crweber.com网站上的油运指数线程。网址：http://www.crweber.com
-UINT ThreadReadCrweberIndex(LPVOID pParam); // 此工作线程返回值为5，参数为pCrweberIndexWebData
+UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
 // 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
-UINT ThreadReadPotenDailyBriefing(LPVOID pParam); // 此工作线程返回值为6.
+UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData); // 此工作线程返回值为6.
 // 数据库处理任务
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
@@ -33,7 +41,7 @@ UINT ThreadSaveTempRTData(void);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
 UINT ThreadProcessCurrentTradeDayStock(void);     // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
-UINT ThreadSaveDayLineOfOneStock(LPVOID pParam); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
+UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
 // 从数据库中读取日线历史数据线程
 UINT ThreadLoadDayLine(void);        // 此工作线程返回值为16
 // 维护日线数据库线程（尚未实现）

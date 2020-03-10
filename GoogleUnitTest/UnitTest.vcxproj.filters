@@ -46,6 +46,9 @@
     <Filter Include="Test源文件\China Stock Market\Stock">
       <UniqueIdentifier>{0c83be19-9f25-4eab-b2a9-a61810981f64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类">
+      <UniqueIdentifier>{b1bffc53-3e6e-4ff3-b8f2-6d8ed4fa392e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -165,6 +168,9 @@
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
       <Filter>Test源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MockVirtualWebInquiry.h">
+      <Filter>Mock类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,8 +13,7 @@
 #include"VirtualWebInquiry.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadCrweberIndex(LPVOID pParam) {
-  CCrweberIndexWebInquiry* pCrweberIndexWebData = (CCrweberIndexWebInquiry*)(pParam);
+UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData) {
   if (pCrweberIndexWebData->ReadWebData(500, 50, 30)) {
     CWebDataPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {

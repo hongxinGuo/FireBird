@@ -13,18 +13,14 @@
 #include"ChinaMarket.h"
 #include"TransferSharedPtr.h"
 
-UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
+UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock) {
   // 传递过来的为携带智能指针的结构（智能指针无法经由pParam直接传递过来）
-  CChinaStockPtr pStock;
   CString str;
-  strTransferSharedPtr* pTransfer = nullptr;
   bool fDataSaved = false;
 
   gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();
   gl_SaveOneStockDayLine.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
-  pTransfer = static_cast<strTransferSharedPtr*>(pParam);
   if (!gl_ExitingSystem) {
-    pStock = pTransfer->m_pStock;
     fDataSaved = pStock->SaveDayLine();
     pStock->SetDayLineLoaded(false);
     pStock->ClearDayLineContainer();
@@ -33,8 +29,6 @@ UINT ThreadSaveDayLineOfOneStock(LPVOID pParam) {
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }
-  delete pTransfer;
-  pTransfer = nullptr;
   gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
   gl_SaveOneStockDayLine.Signal();
 

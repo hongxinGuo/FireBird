@@ -31,7 +31,7 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 }
 
 bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
-  CInternetSession session;
+  CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
   bool fDone = false;
   bool fStatus = true;

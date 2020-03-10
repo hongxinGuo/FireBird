@@ -44,7 +44,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadNeteaseDayLine, (LPVOID)this);
+  thread thread1(ThreadReadNeteaseDayLine, this);
   thread1.detach();
 }
 

@@ -256,7 +256,6 @@
     <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebInquiry.h" />
     <ClInclude Include="source\TengxunRTWebInquiry.h" />
-    <ClInclude Include="source\TransferSharedPtr.h" />
     <ClInclude Include="source\VirtualWebInquiry.h" />
     <ClInclude Include="source\Thread.h" />
     <ClInclude Include="source\DayLine.h" />

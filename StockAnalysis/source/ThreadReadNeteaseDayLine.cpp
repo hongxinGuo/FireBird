@@ -18,8 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #include"ChinaMarket.h"
 
-UINT ThreadReadNeteaseDayLine(LPVOID pParam) {
-  CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData = (CNeteaseDayLineWebInquiry*)pParam;
+UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData) {
   CChinaStockPtr pStock = nullptr;
 
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());

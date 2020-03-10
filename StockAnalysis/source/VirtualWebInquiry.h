@@ -14,7 +14,7 @@ public:
   virtual ~CVirtualWebInquiry() {}
 
   bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
-  bool ReadDataFromWebOnce(void);
+  virtual bool ReadDataFromWebOnce(void);
   CWebDataPtr TransferWebDataToQueueData(void);
 
   // 唯一的公共接口函数

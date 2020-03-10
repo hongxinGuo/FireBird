@@ -5,7 +5,11 @@
 
 #include"globedef.h"
 
-#include"VirtualWebInquiry.h"
+#include"MockVirtualWebInquiry.h"
+using namespace Testing;
+using namespace testing;
+
+//#include"VirtualWebInquiry.h"
 
 namespace StockAnalysisTest {
   class CVirtualWebInquiryTest : public ::testing::Test {
@@ -20,9 +24,10 @@ namespace StockAnalysisTest {
       // clearup
       m_VirtualWebInquiry.SetInquiringString(_T(""));
       m_VirtualWebInquiry.SetReadingWebData(false);
+      m_VirtualWebInquiry.SetReadingthreadNumber(0);
     }
   public:
-    CVirtualWebInquiry m_VirtualWebInquiry;
+    CMockVirtualWebInquiry m_VirtualWebInquiry;
   };
   TEST_F(CVirtualWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T(""));
@@ -35,9 +40,47 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
   }
 
+  TEST_F(CVirtualWebInquiryTest, TestReadWebData) {
+    m_VirtualWebInquiry.SetReadingWebData(true);
+    EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData(100, 20)) << "没有正确的网址";
+    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+    EXPECT_CALL(m_VirtualWebInquiry, ReadDataFromWebOnce())
+      .Times(8)
+      .WillOnce(Return(false))
+      .WillOnce(Return(false))
+      .WillOnce(Return(true))
+      .WillOnce(Return(false))
+      .WillOnce(Return(true))
+      .WillRepeatedly(Return(false));
+    m_VirtualWebInquiry.SetReadingWebData(true);
+    m_VirtualWebInquiry.SetInquiringString(_T("http://www.crweber.com"));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
+    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+  }
+
   TEST_F(CVirtualWebInquiryTest, TestGetWebData) {
     m_VirtualWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_VirtualWebInquiry.GetWebData()) << _T("目前只测试当正在读取网络数据的情况.此基类不允许调用GetWebData()函数");
+
+    m_VirtualWebInquiry.SetReadingWebData(false);
+    EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
+      .WillOnce(Return(false));
+    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
+      .Times(0);
+    EXPECT_FALSE(m_VirtualWebInquiry.GetWebData());
+
+    m_VirtualWebInquiry.SetReadingWebData(false);
+    EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
+      .WillOnce(Return(true));
+    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
+      .Times(1);
+    EXPECT_TRUE(m_VirtualWebInquiry.GetWebData());
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestStartReadingThread) {
+    EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
+      .Times(1);
+    m_VirtualWebInquiry.StartReadingThread();
   }
 
   TEST_F(CVirtualWebInquiryTest, TestTransferWebDataToQueueData) {
