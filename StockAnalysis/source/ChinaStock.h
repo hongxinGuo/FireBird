@@ -39,10 +39,10 @@ class CChinaStock;
 typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
 // 证券名称数据包
-class CChinaStock final : public CObject {
+class CChinaStock : public CObject {
 public:
   CChinaStock(void);
-  ~CChinaStock(void);
+  virtual ~CChinaStock(void);
   void Reset(void);
 
 public:

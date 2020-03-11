@@ -4,7 +4,6 @@
 #include"ChinaMarket.h"
 
 #include"Thread.h"
-#include"TransferSharedPtr.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -25,6 +24,5 @@ UINT ThreadUpdateOptionDB(void) {
 
 UINT ThreadSavePotenData(void) {
   gl_pPotenDailyBriefingMarket->SaveCurrentData();
-
   return 21;
 }

@@ -3,15 +3,17 @@
 
 #include"ChinaMarket.h"
 
-#include"SinaRTWebInquiry.h"
+#include"MockSinaRTWebInquiry.h"
 
 using namespace std;
 #include<atomic>
 
-static CSinaRTWebInquiry m_SinaRTWebData; // 新浪实时数据采集
+using namespace Testing;
+
+static CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
 
 namespace StockAnalysisTest {
-  class CSinaWebRTDataTest : public ::testing::Test {
+  class CSinaRTWebInquiryTest : public ::testing::Test {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -26,35 +28,44 @@ namespace StockAnalysisTest {
   public:
   };
 
-  TEST_F(CSinaWebRTDataTest, TestInitialize) {
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
-    EXPECT_STREQ(m_SinaRTWebData.GetInquiringStringSuffix(), _T(""));
-    EXPECT_FALSE(m_SinaRTWebData.IsReportStatus());
-    EXPECT_EQ(m_SinaRTWebData.GetInquiringNumber(), 850) << _T("新浪默认值");
+  TEST_F(CSinaRTWebInquiryTest, TestInitialize) {
+    EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringPrefix(), _T("http://hq.sinajs.cn/list="));
+    EXPECT_STREQ(m_SinaRTWebInquiry.GetInquiringStringSuffix(), _T(""));
+    EXPECT_FALSE(m_SinaRTWebInquiry.IsReportStatus());
+    EXPECT_EQ(m_SinaRTWebInquiry.GetInquiringNumber(), 850) << _T("新浪默认值");
   }
 
-  TEST_F(CSinaWebRTDataTest, TestStartReadingThread) {
-    EXPECT_FALSE(m_SinaRTWebData.IsReadingWebData());
-    EXPECT_EQ(m_SinaRTWebData.GetByteReaded(), 0);
-    // 线程无法测试，故只测试初始状态。
+  TEST_F(CSinaRTWebInquiryTest, TestStartReadingThread) {
+    EXPECT_FALSE(m_SinaRTWebInquiry.IsReadingWebData());
+    EXPECT_EQ(m_SinaRTWebInquiry.GetByteReaded(), 0);
   }
 
-  TEST_F(CSinaWebRTDataTest, TestGetNextInquiringMIddleStr) {
+  TEST_F(CSinaRTWebInquiryTest, TestGetWebData) {
+    m_SinaRTWebInquiry.SetReadingWebData(true);
+    EXPECT_FALSE(m_SinaRTWebInquiry.GetWebData());
+    m_SinaRTWebInquiry.SetReadingWebData(false);
+    EXPECT_CALL(m_SinaRTWebInquiry, StartReadingThread)
+      .Times(1);
+    m_SinaRTWebInquiry.GetWebData();
+    EXPECT_TRUE(m_SinaRTWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+  }
+
+  TEST_F(CSinaRTWebInquiryTest, TestGetNextInquiringMIddleStr) {
     gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
-    CString str = m_SinaRTWebData.GetNextInquiringMiddleStr(900, false);
+    CString str = m_SinaRTWebInquiry.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
     EXPECT_STREQ(str2, _T("sh600000,"));
   }
 
-  TEST_F(CSinaWebRTDataTest, TestPrepareInquiringStr) {
+  TEST_F(CSinaRTWebInquiryTest, TestPrepareInquiringStr) {
     gl_pChinaStockMarket->SetSystemReady(false);
-    EXPECT_TRUE(m_SinaRTWebData.PrepareNextInquiringStr());
-    CString str = m_SinaRTWebData.GetInquiringString();
+    EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
+    CString str = m_SinaRTWebInquiry.GetInquiringString();
     EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh600000"));
     EXPECT_STREQ(str.Right(8), _T("sh600849")) << _T("每次申请850个股票");
   }
 
-  TEST_F(CSinaWebRTDataTest, TestReportStatus) {
-    EXPECT_TRUE(m_SinaRTWebData.ReportStatus(1));
+  TEST_F(CSinaRTWebInquiryTest, TestReportStatus) {
+    EXPECT_TRUE(m_SinaRTWebInquiry.ReportStatus(1));
   }
 }

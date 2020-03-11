@@ -11,10 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 
 #include"ChinaMarket.h"
-#include"TransferSharedPtr.h"
 
 UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock) {
-  // 传递过来的为携带智能指针的结构（智能指针无法经由pParam直接传递过来）
   CString str;
   bool fDataSaved = false;
 

@@ -2,14 +2,15 @@
 #include"pch.h"
 
 #include"ChinaMarket.h"
-#include"TengxunRTWebInquiry.h"
+#include"MockTengxunRTWebInquiry.h"
 
 using namespace std;
+using namespace Testing;
 
-static CTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
+static CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
 
 namespace StockAnalysisTest {
-  class CTengxunWebRTDataTest : public ::testing::Test {
+  class CTengxunRTWebInquiryTest : public ::testing::Test {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -25,20 +26,30 @@ namespace StockAnalysisTest {
   public:
   };
 
-  TEST_F(CTengxunWebRTDataTest, TestInitialize) {
+  TEST_F(CTengxunRTWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringPrefix(), _T("http://qt.gtimg.cn/q="));
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetInquiringStringSuffix(), _T(""));
     EXPECT_STREQ(m_TengxunRTWebInquiry.GetConnection(), _T("TengxunRT"));
     EXPECT_EQ(m_TengxunRTWebInquiry.GetInquiringNumber(), 900) << _T("腾讯默认值");
   }
 
-  TEST_F(CTengxunWebRTDataTest, TestGetNextInquiryStr) {
+  TEST_F(CTengxunRTWebInquiryTest, TestGetWebData) {
+    m_TengxunRTWebInquiry.SetReadingWebData(true);
+    EXPECT_FALSE(m_TengxunRTWebInquiry.GetWebData());
+    m_TengxunRTWebInquiry.SetReadingWebData(false);
+    EXPECT_CALL(m_TengxunRTWebInquiry, StartReadingThread)
+      .Times(1);
+    m_TengxunRTWebInquiry.GetWebData();
+    EXPECT_TRUE(m_TengxunRTWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
+  }
+
+  TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
     gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
     EXPECT_STREQ(str, _T("sh600000"));
   }
 
-  TEST_F(CTengxunWebRTDataTest, TestPrepareNextInquiringStr) {
+  TEST_F(CTengxunRTWebInquiryTest, TestPrepareNextInquiringStr) {
     gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_TengxunRTWebInquiry.GetInquiringString();
@@ -46,7 +57,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetSystemReady(false);
   }
 
-  TEST_F(CTengxunWebRTDataTest, TestReportStatus) {
+  TEST_F(CTengxunRTWebInquiryTest, TestReportStatus) {
     EXPECT_TRUE(m_TengxunRTWebInquiry.ReportStatus(1));
   }
 }

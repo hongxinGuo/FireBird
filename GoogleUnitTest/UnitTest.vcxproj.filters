@@ -172,6 +172,27 @@
     <ClInclude Include="MockVirtualWebInquiry.h">
       <Filter>Mock类</Filter>
     </ClInclude>
+    <ClInclude Include="MockSinaRTWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockNeteaseRTWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTengxunRTWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockChinaStock.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockPotenDailyBriefingWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCrweberIndexWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

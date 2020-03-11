@@ -108,6 +108,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h" />
+    <ClInclude Include="MockChinaStock.h" />
+    <ClInclude Include="MockCrweberIndexWebInquiry.h" />
+    <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
+    <ClInclude Include="MockNeteaseRTWebInquiry.h" />
+    <ClInclude Include="MockPotenDailyBriefingWebInquiry.h" />
+    <ClInclude Include="MockSinaRTWebInquiry.h" />
+    <ClInclude Include="MockTengxunRTWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />
   </ItemGroup>
   <ItemGroup>
