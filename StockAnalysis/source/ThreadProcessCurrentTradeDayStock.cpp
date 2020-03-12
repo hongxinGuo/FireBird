@@ -14,7 +14,7 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadProcessCurrentTradeDayStock(void) {
+UINT ThreadProcessTodayStock(void) {
   ASSERT(gl_pChinaStockMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   char buffer[30];

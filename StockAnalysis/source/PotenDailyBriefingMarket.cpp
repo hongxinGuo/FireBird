@@ -113,8 +113,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
             ASSERT(m_pDataToSaved == nullptr);
             fGetData = true;
             m_pDataToSaved = pPotenDailyBriefing;
-            thread threadSaveData(ThreadSavePotenData);
-            threadSaveData.detach();
+            RunningThreadSavePotenData();
             TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetDay());
             gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
             m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
@@ -138,6 +137,12 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
     ChoiceNextInquiringDay();
   }
 
+  return true;
+}
+
+bool CPotenDailyBriefingMarket::RunningThreadSavePotenData(void) {
+  thread threadSaveData(ThreadSavePotenData);
+  threadSaveData.detach();
   return true;
 }
 

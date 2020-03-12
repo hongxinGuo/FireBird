@@ -1203,13 +1203,6 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   return false;
 }
 
-bool CChinaMarket::RunningThreadProcessTodayStock(void) {
-  thread thread1(ThreadProcessCurrentTradeDayStock);
-  thread1.detach();
-
-  return true;
-}
-
 bool CChinaMarket::TaskCheckDayLineDB(void) {
   if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
     if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
@@ -1288,8 +1281,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
   if (IsUpdateStockCodeDB()) {
-    thread thread1(ThreadUpdateStockCodeDB);
-    thread1.detach();
+    RunningThreadUpdateStockCodeDB();
     SetUpdateStockCodeDB(false);
   }
   return true;
@@ -1297,8 +1289,7 @@ bool CChinaMarket::TaskUpdateStockCodeDB(void) {
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
   if (IsUpdateOptionDB()) {
-    thread thread1(ThreadUpdateOptionDB);
-    thread1.detach();
+    RunningThreadUpdateOptionDB();
     SetUpdateOptionDB(false);
   }
   return true;
@@ -1325,13 +1316,6 @@ bool CChinaMarket::TaskSaveChoicedRTData(void) {
     return true;
   }
   else return false;
-}
-
-bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
-  thread thread1(ThreadSaveRTData);
-  thread1.detach();
-
-  return true;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1504,8 +1488,7 @@ bool CChinaMarket::SaveDayLineData(void) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->GetDayLineSize() > 0) {
         if (pStock->HaveNewDayLineData()) {
-          thread thread1(ThreadSaveDayLineOfOneStock, pStock);
-          thread1.detach();
+          RunningThreadSaveDayLineOfOneStock(pStock);
         }
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
@@ -1586,10 +1569,64 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
   if (m_pCurrentStock != nullptr) {
     if (!m_pCurrentStock->IsDayLineLoaded()) {
-      thread thread1(ThreadLoadDayLine);
+      thread thread1(ThreadLoadDayLine, m_pCurrentStock);
       thread1.detach();
     }
   }
+  return true;
+}
+
+bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
+  thread thread1(ThreadSaveRTData);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadProcessTodayStock(void) {
+  thread thread1(ThreadProcessTodayStock);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadCalculateRelativeStrong(long lStartCalculatingDay) {
+  thread thread1(ThreadCalculateDayLineRS, lStartCalculatingDay);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadCalculateThisDayRS(long lThisDay) {
+  thread thread_calculateRS(ThreadCalculateThisDayRS, lThisDay);
+  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadSaveTempRTData(void) {
+  thread thread1(ThreadSaveTempRTData);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock) {
+  thread thread1(ThreadSaveDayLineOfOneStock, pStock);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock) {
+  thread thread1(ThreadLoadDayLine, pCurrentStock);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadUpdateStockCodeDB(void) {
+  thread thread1(ThreadUpdateStockCodeDB);
+  thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadUpdateOptionDB(void) {
+  thread thread1(ThreadUpdateOptionDB);
+  thread1.detach();
   return true;
 }
 
@@ -1742,18 +1779,6 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   }
   setDayLineToday.Close();
 
-  return true;
-}
-
-bool CChinaMarket::RunningThreadCalculateRelativeStrong(long lStartCalculatingDay) {
-  thread thread1(ThreadCalculateDayLineRS, lStartCalculatingDay);
-  thread1.detach();
-  return true;
-}
-
-bool CChinaMarket::RunningThreadCalculateThisDayRS(long lThisDay) {
-  thread thread_calculateRS(ThreadCalculateThisDayRS, lThisDay);
-  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
@@ -1965,11 +1990,5 @@ bool CChinaMarket::UpdateTempRTData(void) {
     gl_ThreadStatus.SetSavingTempData(true);
   }
 
-  return true;
-}
-
-bool CChinaMarket::RunningThreadSaveTempRTData(void) {
-  thread thread1(ThreadSaveTempRTData);
-  thread1.detach();
   return true;
 }

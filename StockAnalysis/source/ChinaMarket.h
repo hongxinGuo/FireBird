@@ -86,6 +86,10 @@ public:
   bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
   bool RunningThreadCalculateThisDayRS(long lThisDay);
   bool RunningThreadSaveTempRTData(void);
+  bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
+  bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
+  bool RunningThreadUpdateStockCodeDB(void);
+  bool RunningThreadUpdateOptionDB(void);
 
   // interface function
 public:

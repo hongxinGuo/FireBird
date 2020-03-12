@@ -479,7 +479,7 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 }
 
 void CMainFrame::CalculateTodayRelativeStrong(void) {
-  gl_pChinaStockMarket->CalculateRelativeStrong(gl_pChinaStockMarket->GetDay());
+  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(gl_pChinaStockMarket->GetDay());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -623,7 +623,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->CalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
+  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
