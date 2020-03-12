@@ -80,6 +80,13 @@ public:
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockDayLine(void);
 
+  // 各工作线程调用包裹函数
+  bool RunningThreadSaveChoicedRTData(void);
+  bool RunningThreadProcessTodayStock(void);
+  bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
+  bool RunningThreadCalculateThisDayRS(long lThisDay);
+  bool RunningThreadSaveTempRTData(void);
+
   // interface function
 public:
   // 系统状态区
@@ -149,7 +156,6 @@ public:
   bool IsDayLineNeedSaving(void);
 
   long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
-  bool CalculateRelativeStrong(long lStartCalculatingDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }

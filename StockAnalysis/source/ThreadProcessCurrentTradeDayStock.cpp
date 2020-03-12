@@ -29,8 +29,7 @@ UINT ThreadProcessCurrentTradeDayStock(void) {
     str += buffer;
     str += _T("个股票");
     gl_systemMessage.PushInformationMessage(str);
-    thread thread_calculateRS(ThreadCalculateThisDayRS, lDay);
-    thread_calculateRS.detach();
+    gl_pChinaStockMarket->RunningThreadCalculateThisDayRS(lDay);
     if (gl_pChinaStockMarket->GetTime() > 150400) {   // 如果中国股市闭市了
       gl_pChinaStockMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetDay());
       gl_pChinaStockMarket->SetUpdateStockCodeDB(true);  // 更新代码。

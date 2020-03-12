@@ -59,7 +59,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
   ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRtData)
-  ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRtData)
+  ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -267,7 +267,7 @@ bool CMainFrame::ResetMarket(void) {
       pMarket->SetResetMarket(false);
     }
   }
-  return false;
+  return true;
 }
 
 bool CMainFrame::IsNeedResetMarket(void) {
@@ -402,9 +402,6 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-
-  CString str;
-
   ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   // 重启系统在此处执行，容易调用各重置函数
   if (IsNeedResetMarket()) {
@@ -417,8 +414,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   UpdateStatus();
 
   if (gl_fTestMode) {
-    str = _T("警告：使用了Test驱动");
-    gl_systemMessage.PushInformationMessage(str);
+    gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
   }
 
   CMDIFrameWndEx::OnTimer(nIDEvent);
@@ -470,6 +466,10 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
     gl_ExitingSystem = true; // 提示各工作线程中途退出
   }
 
+  SysCallOnSysCommand(nID, lParam);
+}
+
+void CMainFrame::SysCallOnSysCommand(UINT nID, LPARAM lParam) {
   CMDIFrameWndEx::OnSysCommand(nID, lParam);
 }
 
@@ -490,30 +490,33 @@ void CMainFrame::OnProcessTodayStock() {
 }
 
 void CMainFrame::ProcessTodayStock() {
-  thread thread1(ThreadProcessCurrentTradeDayStock);
-  thread1.detach();
+  gl_pChinaStockMarket->RunningThreadProcessTodayStock();
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_pChinaStockMarket->IsSystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
-    pCmdUI->Enable(true);
+    SysCallCmdUIEnable(pCmdUI, true);
   }
-  else pCmdUI->Enable(false);
+  else SysCallCmdUIEnable(pCmdUI, false);
+}
+
+void CMainFrame::SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) {
+  pCmdUI->Enable(fFlag);
 }
 
 void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_pChinaStockMarket->IsSystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
-      pCmdUI->Enable(false);
+      SysCallCmdUIEnable(pCmdUI, false);
     }
     else {
-      pCmdUI->Enable(true);
+      SysCallCmdUIEnable(pCmdUI, true);
     }
   }
   else {
-    pCmdUI->Enable(false);
+    SysCallCmdUIEnable(pCmdUI, false);
   }
 }
 
@@ -634,13 +637,13 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
   if ((gl_pChinaStockMarket->GetTime() > 83000) && (gl_pChinaStockMarket->GetTime() < 93000)) {
-    pCmdUI->Enable(false);
+    SysCallCmdUIEnable(pCmdUI, false);
   }
   else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
-    pCmdUI->Enable(false);
+    SysCallCmdUIEnable(pCmdUI, false);
   }
   else {
-    pCmdUI->Enable(true);
+    SysCallCmdUIEnable(pCmdUI, true);
   }
 }
 
@@ -662,8 +665,12 @@ void CMainFrame::OnRecordRtData() {
   else gl_pChinaStockMarket->SetRecordRTData(true);
 }
 
-void CMainFrame::OnUpdateRecordRtData(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStockMarket->IsRecordingRTData()) pCmdUI->SetCheck(true);
-  else pCmdUI->SetCheck(false);
+  if (gl_pChinaStockMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
+  else SysCallCmdUISetCheck(pCmdUI, false);
+}
+
+void CMainFrame::SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) {
+  pCmdUI->SetCheck(fFlag);
 }

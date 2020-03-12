@@ -28,13 +28,18 @@ public:
   bool SchedulingTask(void);
   void UpdateStatus(void);
 
+  // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
+public:
+  virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam);
+  virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag);
+  virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag);
   virtual void CalculateTodayRelativeStrong(void);
   virtual void ProcessTodayStock(void);
 
 public:
 
   // 重置系统（恢复系统的初始态，准备第二天继续工作。
-  virtual bool ResetMarket(void);
+  bool ResetMarket(void);
   bool IsNeedResetMarket(void);
 
   // 重写
@@ -51,18 +56,18 @@ public:
 #endif
 
 protected:
-  UINT                    m_uIdTimer;
-  long                    m_lCurrentPos;
+  UINT m_uIdTimer;
+  long m_lCurrentPos;
 
   char m_aStockCodeTemp[30];
 
 protected:  // 控件条嵌入成员
-  CMFCMenuBar       m_wndMenuBar;
-  CMFCToolBar       m_wndToolBar;
-  CMFCStatusBar     m_wndStatusBar;
+  CMFCMenuBar m_wndMenuBar;
+  CMFCToolBar m_wndToolBar;
+  CMFCStatusBar m_wndStatusBar;
   CMFCToolBarImages m_UserImages;
-  COutputWnd        m_wndOutput;
-  COutputWnd        m_wndOutput2;
+  COutputWnd m_wndOutput;
+  COutputWnd m_wndOutput2;
 
   // 生成的消息映射函数
 protected:
@@ -92,5 +97,5 @@ public:
   afx_msg void OnAbortBuindingRS();
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
   afx_msg void OnRecordRtData();
-  afx_msg void OnUpdateRecordRtData(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
 };

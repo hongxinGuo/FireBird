@@ -1196,12 +1196,18 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
-    thread thread1(ThreadProcessCurrentTradeDayStock);
-    thread1.detach();
+    RunningThreadProcessTodayStock();
     SetTodayStockProcessed(true);
     return true;
   }
   return false;
+}
+
+bool CChinaMarket::RunningThreadProcessTodayStock(void) {
+  thread thread1(ThreadProcessCurrentTradeDayStock);
+  thread1.detach();
+
+  return true;
 }
 
 bool CChinaMarket::TaskCheckDayLineDB(void) {
@@ -1315,11 +1321,17 @@ bool CChinaMarket::TaskShowCurrentTransaction(void) {
 
 bool CChinaMarket::TaskSaveChoicedRTData(void) {
   if (IsSystemReady() && m_fSaveRTData) {
-    thread thread1(ThreadSaveRTData);
-    thread1.detach();
+    RunningThreadSaveChoicedRTData();
     return true;
   }
   else return false;
+}
+
+bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
+  thread thread1(ThreadSaveRTData);
+  thread1.detach();
+
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1733,9 +1745,15 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   return true;
 }
 
-bool CChinaMarket::CalculateRelativeStrong(long lStartCalculatingDay) {
+bool CChinaMarket::RunningThreadCalculateRelativeStrong(long lStartCalculatingDay) {
   thread thread1(ThreadCalculateDayLineRS, lStartCalculatingDay);
   thread1.detach();
+  return true;
+}
+
+bool CChinaMarket::RunningThreadCalculateThisDayRS(long lThisDay) {
+  thread thread_calculateRS(ThreadCalculateThisDayRS, lThisDay);
+  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
@@ -1943,10 +1961,15 @@ void CChinaMarket::LoadOptionDB(void) {
 
 bool CChinaMarket::UpdateTempRTData(void) {
   if (!gl_ThreadStatus.IsSavingTempData()) {
+    RunningThreadSaveTempRTData();
     gl_ThreadStatus.SetSavingTempData(true);
-    thread thread1(ThreadSaveTempRTData);
-    thread1.detach();
   }
 
+  return true;
+}
+
+bool CChinaMarket::RunningThreadSaveTempRTData(void) {
+  thread thread1(ThreadSaveTempRTData);
+  thread1.detach();
   return true;
 }
