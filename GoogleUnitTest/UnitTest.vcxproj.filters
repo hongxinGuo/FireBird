@@ -164,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="MainFrmTest.cpp">
+      <Filter>Test源文件\Windows界面</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -191,6 +194,9 @@
       <Filter>Mock类</Filter>
     </ClInclude>
     <ClInclude Include="MockCrweberIndexWebInquiry.h">
+      <Filter>Mock类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockMainFrm.h">
       <Filter>Mock类</Filter>
     </ClInclude>
   </ItemGroup>

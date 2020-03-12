@@ -74,17 +74,20 @@ BOOL CStockAnalysisApp::InitInstance() {
     return false;
   }
 #endif // DEBUG
+  ASSERT(gl_fNormalMode == false);
+  gl_fNormalMode = true; // 实际系统，测试状态为假。
+  ASSERT(gl_fTestMode);
+  gl_fTestMode = false;
+
+  gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
   // 所有全局智能指针皆在此处生成
   if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CChinaMarket>();
   if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
   if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
   gl_WebInquirer.Initialize();
-
-  ASSERT(gl_fNormalMode == false);
-  gl_fNormalMode = true; // 实际系统，测试状态为假。
-  ASSERT(gl_fTestMode);
-  gl_fTestMode = false;
+  //生成市场容器Vector
+  CreateMarketContainer();
 
   // 如果一个运行在 Windows XP 上的应用程序清单指定要
   // 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -172,6 +175,13 @@ int CStockAnalysisApp::ExitInstance() {
   AfxOleTerm(FALSE);
 
   return CWinAppEx::ExitInstance();
+}
+
+bool CStockAnalysisApp::CreateMarketContainer(void) {
+  gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
+  gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
+  gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
+  return true;
 }
 
 // CStockAnalysisApp 消息处理程序

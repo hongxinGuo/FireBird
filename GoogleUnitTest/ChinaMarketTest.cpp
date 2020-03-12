@@ -9,6 +9,7 @@
 
 using namespace std;
 #include<memory>
+
 namespace StockAnalysisTest {
   class CChinaMarketTest : public ::testing::Test
   {

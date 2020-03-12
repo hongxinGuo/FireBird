@@ -43,6 +43,7 @@ namespace StockAnalysisTest {
     m_NeteaseRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseRTWebInquiry.GetWebData());
     m_NeteaseRTWebInquiry.SetReadingWebData(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_NeteaseRTWebInquiry, StartReadingThread)
       .Times(1);
     m_NeteaseRTWebInquiry.GetWebData();

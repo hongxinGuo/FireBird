@@ -81,30 +81,7 @@ CMainFrame::CMainFrame() {
 
   m_uIdTimer = 0;
 
-  gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
-
-  ASSERT(gl_fNormalMode);
-
-  //生成市场容器Vector
-  CreateMarketContainer();
-  ASSERT(!gl_fTestMode);
-  ASSERT(gl_fNormalMode);
-
-  CString str;
-  TRACE(_T("开始重置系统\n"));
-  str = _T("重置系统");
-  gl_systemMessage.PushInformationMessage(str);
-  ResetMarket();
-  TRACE(_T("重置系统结束\n"));
-
   Reset();
-}
-
-bool CMainFrame::CreateMarketContainer(void) {
-  gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
-  gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
-  gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
-  return true;
 }
 
 void CMainFrame::Reset(void) {
@@ -117,7 +94,9 @@ CMainFrame::~CMainFrame() {
 
   gl_ExitingSystem = true;
 
-  gl_pChinaStockMarket->UpdateOptionDB();
+  if (gl_pChinaStockMarket->IsUpdateOptionDB()) {
+    gl_pChinaStockMarket->UpdateOptionDB();
+  }
 
   while (gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
@@ -135,6 +114,13 @@ CMainFrame::~CMainFrame() {
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+  CString str;
+  TRACE(_T("开始重置系统\n"));
+  str = _T("重置系统");
+  gl_systemMessage.PushInformationMessage(str);
+  ResetMarket();
+  TRACE(_T("重置系统结束\n"));
+
   if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
     return -1;
 
@@ -489,16 +475,23 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
 
 void CMainFrame::OnCalculateTodayRelativeStrong() {
   // TODO: 在此添加命令处理程序代码
-  thread thread1(ThreadCalculateDayLineRS, gl_pChinaStockMarket->GetDay());
-  thread1.detach();
+  CalculateTodayRelativeStrong();
+}
+
+void CMainFrame::CalculateTodayRelativeStrong(void) {
+  gl_pChinaStockMarket->CalculateRelativeStrong(gl_pChinaStockMarket->GetDay());
 }
 
 void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
   if (gl_pChinaStockMarket->IsSystemReady()) {
-    thread thread1(ThreadProcessCurrentTradeDayStock);
-    thread1.detach();
+    ProcessTodayStock();
   }
+}
+
+void CMainFrame::ProcessTodayStock() {
+  thread thread1(ThreadProcessCurrentTradeDayStock);
+  thread1.detach();
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {

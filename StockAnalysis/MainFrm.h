@@ -26,13 +26,15 @@ public:
   // 操作
 public:
   bool SchedulingTask(void);
-  bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
   void UpdateStatus(void);
 
-private:
+  virtual void CalculateTodayRelativeStrong(void);
+  virtual void ProcessTodayStock(void);
 
-  // 重置系统（恢复系统的初始态，准备第二天继续工作。第二天上午9时由SchedulingTask调用此函数，不允许其他函数调用。
-  bool ResetMarket(void);
+public:
+
+  // 重置系统（恢复系统的初始态，准备第二天继续工作。
+  virtual bool ResetMarket(void);
   bool IsNeedResetMarket(void);
 
   // 重写

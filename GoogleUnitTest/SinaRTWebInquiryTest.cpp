@@ -44,6 +44,7 @@ namespace StockAnalysisTest {
     m_SinaRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_SinaRTWebInquiry.GetWebData());
     m_SinaRTWebInquiry.SetReadingWebData(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_SinaRTWebInquiry, StartReadingThread)
       .Times(1);
     m_SinaRTWebInquiry.GetWebData();

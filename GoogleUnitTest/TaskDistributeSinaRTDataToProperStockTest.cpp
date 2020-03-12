@@ -79,6 +79,10 @@ namespace StockAnalysisTest {
     EXPECT_GE(gl_systemMessage.GetInnerSystemInformationDequeSize(), 1) << _T("无效实时数据，报错后直接返回");
     break;
     case 2:
+    EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), 10101010);
+    EXPECT_TRUE(pStock->IsActive());
+    EXPECT_EQ(pStock->GetTransactionTime(), 10101010);
+    EXPECT_EQ(pStock->GetRTDataQueueSize(), 0);
     break;
     case 3:
     EXPECT_EQ(gl_pChinaStockMarket->GetNewestTransactionTime(), 10101020);

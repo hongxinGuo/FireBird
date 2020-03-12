@@ -24,6 +24,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
       gl_pChinaStockMarket->SetResetMarket(true);
       gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -43,6 +44,7 @@ namespace StockAnalysisTest {
     m_NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseDayLineWebInquiry.GetWebData());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_NeteaseDayLineWebInquiry, StartReadingThread)
       .Times(1);
     m_NeteaseDayLineWebInquiry.GetWebData();
