@@ -45,8 +45,13 @@ CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSk
 }
 
 void CSinaRTWebInquiry::StartReadingThread(void) {
+  RunningThreadReadSinaRTData();
+}
+
+bool CSinaRTWebInquiry::RunningThreadReadSinaRTData(void) {
   thread thread1(ThreadReadSinaRTData, this);
   thread1.detach();
+  return true;
 }
 
 bool CSinaRTWebInquiry::ReportStatus(long lNumberOfData) {

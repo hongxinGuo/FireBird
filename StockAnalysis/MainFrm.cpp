@@ -78,9 +78,7 @@ static UINT indicators[] =
 
 CMainFrame::CMainFrame() {
   // TODO: 在此添加成员初始化代码
-
   m_uIdTimer = 0;
-
   Reset();
 }
 
@@ -114,10 +112,11 @@ CMainFrame::~CMainFrame() {
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-  CString str;
   TRACE(_T("开始重置系统\n"));
-  str = _T("重置系统");
-  gl_systemMessage.PushInformationMessage(str);
+  gl_systemMessage.PushInformationMessage(_T("重置系统"));
+  ASSERT(gl_pChinaStockMarket != nullptr);
+  ASSERT(gl_pPotenDailyBriefingMarket != nullptr);
+  ASSERT(gl_pCrweberIndexMarket != nullptr);
   ResetMarket();
   TRACE(_T("重置系统结束\n"));
 
@@ -243,7 +242,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
   m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
-    CString str;
+    TRACE(_T("生成100ms时钟时失败\n"));
   }
   return 0;
 }
@@ -655,8 +654,12 @@ void CMainFrame::OnAbortBuindingRS() {
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_ThreadStatus.IsCalculatingDayLineRS()) pCmdUI->Enable(true);
-  else pCmdUI->Enable(false);
+  if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
+    SysCallCmdUIEnable(pCmdUI, true);
+  }
+  else {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
 }
 
 void CMainFrame::OnRecordRtData() {

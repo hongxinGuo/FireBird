@@ -28,8 +28,8 @@ public:
   bool SchedulingTask(void);
   void UpdateStatus(void);
 
-  // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
 public:
+  // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
   virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam);
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag);
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag);
@@ -37,7 +37,6 @@ public:
   virtual void ProcessTodayStock(void);
 
 public:
-
   // 重置系统（恢复系统的初始态，准备第二天继续工作。
   bool ResetMarket(void);
   bool IsNeedResetMarket(void);

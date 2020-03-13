@@ -22,6 +22,10 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+      gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
+      gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
+      gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
+
       gl_WebInquirer.Initialize();
     }
 

@@ -81,15 +81,15 @@ public:
   bool TaskLoadCurrentStockDayLine(void);
 
   // 各工作线程调用包裹函数
-  bool RunningThreadSaveChoicedRTData(void);
-  bool RunningThreadProcessTodayStock(void);
-  bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
-  bool RunningThreadCalculateThisDayRS(long lThisDay);
-  bool RunningThreadSaveTempRTData(void);
-  bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
-  bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
-  bool RunningThreadUpdateStockCodeDB(void);
-  bool RunningThreadUpdateOptionDB(void);
+  virtual bool RunningThreadSaveChoicedRTData(void);
+  virtual bool RunningThreadProcessTodayStock(void);
+  virtual bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
+  virtual bool RunningThreadCalculateThisDayRS(long lThisDay);
+  virtual bool RunningThreadSaveTempRTData(void);
+  virtual bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
+  virtual bool RunningThreadUpdateStockCodeDB(void);
+  virtual bool RunningThreadUpdateOptionDB(void);
 
   // interface function
 public:

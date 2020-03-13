@@ -34,6 +34,15 @@ namespace StockAnalysisTest {
   public:
   };
 
+  TEST_F(CMainFrameTest, TestIsNeedResetMarket) {
+    gl_pChinaStockMarket->SetResetMarket(false);
+    gl_pPotenDailyBriefingMarket->SetResetMarket(false);
+    gl_pCrweberIndexMarket->SetResetMarket(false);
+    EXPECT_FALSE(s_pMainFrame->IsNeedResetMarket());
+    gl_pChinaStockMarket->SetResetMarket(true);
+    EXPECT_TRUE(s_pMainFrame->IsNeedResetMarket());
+  }
+
   TEST_F(CMainFrameTest, TestOnSysCommand) {
     EXPECT_FALSE(gl_ExitingSystem);
     gl_ExitingSystem = false;
@@ -131,5 +140,27 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateRecordRTData(&cmdUI);
+  }
+
+  TEST_F(CMainFrameTest, TestOnAbortBuildingRS) {
+    gl_fExitingCalculatingRS = false;
+    s_pMainFrame->OnAbortBuindingRS();
+    EXPECT_TRUE(gl_fExitingCalculatingRS);
+
+    gl_fExitingCalculatingRS = false;
+  }
+
+  TEST_F(CMainFrameTest, TestOnUpdateAbortBuindingRS) {
+    CCmdUI cmdUI;
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
+
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
   }
 }

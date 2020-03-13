@@ -35,6 +35,7 @@ bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
   TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDay);
   return true;
 }
+
 void CPotenDailyBriefingWebInquiry::StartReadingThread(void) {
   thread thread1(ThreadReadPotenDailyBriefing, this);
   thread1.detach();
