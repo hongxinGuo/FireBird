@@ -58,7 +58,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRS)
   ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
-  ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRtData)
+  ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
   ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
 END_MESSAGE_MAP()
 
@@ -553,7 +553,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case 's':
   case 'h':
   case 'z':
-  if (m_lCurrentPos < 10) {
+  if (m_lCurrentPos < 8) {
     m_aStockCodeTemp[m_lCurrentPos] = nChar;
     m_lCurrentPos++;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;
@@ -566,7 +566,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
     pStock = gl_pChinaStockMarket->GetStock(strTemp);
     gl_pChinaStockMarket->SetCurrentStock(pStock);
     //m_fNeedUpdateTitle = true;
-    Invalidate();
+    SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
   m_lCurrentPos = 0;
@@ -583,6 +583,14 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   break;
   }
 
+  SysCallOnChar(nChar, nRepCnt, nFlags);
+}
+
+void CMainFrame::SysCallInvalidate(void) {
+  Invalidate();
+}
+
+void CMainFrame::SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
 }
 
@@ -596,27 +604,25 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   if (pCurrentStock != nullptr) {
     switch (nChar) {
     case 45: // Ins 加入自选股票
-    pStock = gl_pChinaStockMarket->GetCurrentStock();
-    pStock->SetChoiced(true);
-    gl_pChinaStockMarket->StoreChoiceStock(pStock);
+    pCurrentStock->SetChoiced(true);
+    gl_pChinaStockMarket->StoreChoiceStock(pCurrentStock);
     break;
     case 33: // PAGE UP
       // last stock
-    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
-    }
+    gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
     break;
     case 34: // PAGE DOWN
       // next stock
-    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->ChangeCurrentStockToNextStock();
-    }
+    gl_pChinaStockMarket->ChangeCurrentStockToNextStock();
     break;
     default:
     break;
     }
   }
+  SysCallOnKeyUp(nChar, nRepCnt, nFlags);
+}
 
+void CMainFrame::SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
@@ -662,7 +668,7 @@ void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   }
 }
 
-void CMainFrame::OnRecordRtData() {
+void CMainFrame::OnRecordRTData() {
   // TODO: Add your command handler code here
   if (gl_pChinaStockMarket->IsRecordingRTData()) gl_pChinaStockMarket->SetRecordRTData(false);
   else gl_pChinaStockMarket->SetRecordRTData(true);

@@ -35,11 +35,16 @@ public:
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag);
   virtual void CalculateTodayRelativeStrong(void);
   virtual void ProcessTodayStock(void);
+  virtual void SysCallInvalidate(void);
+  virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 
 public:
   // 重置系统（恢复系统的初始态，准备第二天继续工作。
   bool ResetMarket(void);
   bool IsNeedResetMarket(void);
+
+  long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
 
   // 重写
 public:
@@ -95,6 +100,6 @@ public:
   afx_msg void OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI);
   afx_msg void OnAbortBuindingRS();
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
-  afx_msg void OnRecordRtData();
+  afx_msg void OnRecordRTData();
   afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
 };

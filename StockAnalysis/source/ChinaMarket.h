@@ -232,6 +232,7 @@ public:
   void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
   void StoreChoiceStock(CChinaStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
+  long GetChoiceStockSize(void) noexcept { return m_vStockChoice.size(); }
   long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 

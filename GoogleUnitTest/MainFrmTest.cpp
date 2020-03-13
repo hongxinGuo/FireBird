@@ -108,6 +108,80 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
   }
 
+  TEST_F(CMainFrameTest, TestOnChar) {
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('s', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('s', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('h', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('h', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 2);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('6', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('6', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 3);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('0', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('0', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 4);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('1', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('1', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 5);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('8', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('8', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 6);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('7', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('7', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 7);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('2', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('2', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 8);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar(0x00d, 1, 1))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallInvalidate())
+      .Times(1);
+    s_pMainFrame->OnChar(0x00d, 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh601872"));
+  }
+
+  TEST_F(CMainFrameTest, TestOnKeyUp) {
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(34, 1, 1))
+      .Times(1);
+    s_pMainFrame->OnKeyUp(34, 1, 1);
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600001"));
+    EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(33, 1, 1))
+      .Times(1);
+    s_pMainFrame->OnKeyUp(33, 1, 1);
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600000"));
+    gl_pChinaStockMarket->GetCurrentStock()->SetChoiced(false);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(45, 1, 1))
+      .Times(1);
+    s_pMainFrame->OnKeyUp(45, 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock()->IsChoiced());
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
+  }
+
+  TEST_F(CMainFrameTest, TestOnBuildResetMarket) {
+    gl_pChinaStockMarket->SetResetMarket(false);
+    gl_pPotenDailyBriefingMarket->SetResetMarket(false);
+    gl_pCrweberIndexMarket->SetResetMarket(false);
+    s_pMainFrame->OnBuildResetMarket();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsResetMarket());
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
+  }
+
   TEST_F(CMainFrameTest, TestOnUpdateRebuildDayLineRS) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->__TEST_SetMarketTime((long)83001);
@@ -162,5 +236,13 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
 
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
+  }
+
+  TEST_F(CMainFrameTest, TestOnRecordRTData) {
+    gl_pChinaStockMarket->SetRecordRTData(false);
+    s_pMainFrame->OnRecordRTData();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsRecordingRTData());
+    s_pMainFrame->OnRecordRTData();
+    EXPECT_FALSE(gl_pChinaStockMarket->IsRecordingRTData());
   }
 }

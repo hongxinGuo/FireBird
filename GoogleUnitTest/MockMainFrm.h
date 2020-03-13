@@ -13,5 +13,8 @@ namespace Testing {
     MOCK_METHOD(void, CalculateTodayRelativeStrong, (), (override));
     MOCK_METHOD(void, SysCallCmdUIEnable, (CCmdUI* pCmdUI, bool fFlag), (override));
     MOCK_METHOD(void, SysCallCmdUISetCheck, (CCmdUI* pCmdUI, bool fFlag), (override));
+    MOCK_METHOD(void, SysCallInvalidate, (), (override));
+    MOCK_METHOD(void, SysCallOnChar, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
+    MOCK_METHOD(void, SysCallOnKeyUp, (UINT nChar, UINT nRepCnt, UINT nFlags), (override));
   };
 }
