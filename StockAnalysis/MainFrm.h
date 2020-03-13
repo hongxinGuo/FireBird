@@ -30,6 +30,8 @@ public:
 
 public:
   // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
+  virtual void SysCallOnTimer(UINT_PTR nIDEvent);
+  virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText);
   virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam);
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag);
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag);

@@ -407,15 +407,20 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
     ResetMarket();
   }
 
-  // 调用主调度函数,CMainFrame只执行更新状态任务
+  // 调用主调度函数,由各市场调度函数执行具体任务
   SchedulingTask();
 
+  //CMainFrame只执行更新状态任务
   UpdateStatus();
 
   if (gl_fTestMode) {
     gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
   }
 
+  SysCallOnTimer(nIDEvent);
+}
+
+void CMainFrame::SysCallOnTimer(UINT_PTR nIDEvent) {
   CMDIFrameWndEx::OnTimer(nIDEvent);
 }
 
@@ -427,29 +432,33 @@ void CMainFrame::UpdateStatus(void) {
   // 显示股票代码和名称
   if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
-    m_wndStatusBar.SetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
-    m_wndStatusBar.SetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
+    SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
+    SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
   if (gl_pChinaStockMarket->IsCurrentEditStockChanged()) {
     str = m_aStockCodeTemp;
-    m_wndStatusBar.SetPaneText(1, (LPCTSTR)str);
+    SysCallSetPaneText(1, (LPCTSTR)str);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
   }
   // 显示新浪实时数据读取时间（单位为毫秒）
-  m_wndStatusBar.SetPaneText(4, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData());
+  SysCallSetPaneText(4, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData());
 
   // 显示活跃股票总数
   char buffer[30];
   sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetTotalActiveStock());
   str = buffer;
-  m_wndStatusBar.SetPaneText(5, (LPCTSTR)str);
+  SysCallSetPaneText(5, (LPCTSTR)str);
 
   // 显示网易日线历史数据读取时间（单位为毫秒）
-  m_wndStatusBar.SetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
+  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
   //更新当地时间的显示
-  m_wndStatusBar.SetPaneText(7, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(7, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+}
+
+void CMainFrame::SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) {
+  m_wndStatusBar.SetPaneText(iIndex, lpszNewText);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -576,8 +585,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   if (m_lCurrentPos > 0) {
     m_lCurrentPos--;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
   }
-  gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
   break;
   default:
   break;
