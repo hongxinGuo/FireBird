@@ -420,10 +420,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   SysCallOnTimer(nIDEvent);
 }
 
-void CMainFrame::SysCallOnTimer(UINT_PTR nIDEvent) {
-  CMDIFrameWndEx::OnTimer(nIDEvent);
-}
-
 void CMainFrame::UpdateStatus(void) {
   CString str;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
@@ -457,10 +453,6 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(7, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
 }
 
-void CMainFrame::SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) {
-  m_wndStatusBar.SetPaneText(iIndex, lpszNewText);
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 当系统退出时，需要先退出工作线程。
@@ -475,10 +467,6 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   }
 
   SysCallOnSysCommand(nID, lParam);
-}
-
-void CMainFrame::SysCallOnSysCommand(UINT nID, LPARAM lParam) {
-  CMDIFrameWndEx::OnSysCommand(nID, lParam);
 }
 
 void CMainFrame::OnCalculateTodayRelativeStrong() {
@@ -507,10 +495,6 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else SysCallCmdUIEnable(pCmdUI, false);
-}
-
-void CMainFrame::SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) {
-  pCmdUI->Enable(fFlag);
 }
 
 void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
@@ -595,14 +579,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   SysCallOnChar(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::SysCallInvalidate(void) {
-  Invalidate();
-}
-
-void CMainFrame::SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags);
-}
-
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   CChinaStockPtr pStock;
@@ -629,10 +605,6 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     }
   }
   SysCallOnKeyUp(nChar, nRepCnt, nFlags);
-}
-
-void CMainFrame::SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 void CMainFrame::OnRebuildDaylineRS() {
@@ -687,8 +659,4 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   if (gl_pChinaStockMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
   else SysCallCmdUISetCheck(pCmdUI, false);
-}
-
-void CMainFrame::SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) {
-  pCmdUI->SetCheck(fFlag);
 }

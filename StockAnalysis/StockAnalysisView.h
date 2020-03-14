@@ -15,6 +15,15 @@ protected: // 仅从序列化创建
 public:
   CStockAnalysisDoc* GetDocument() const;
 
+  CRect GetClientSize(void) noexcept { return m_rectClient; }
+  bool IsShowRS(void) noexcept { return m_fShowRS; }
+  bool IsShow3DayRS(void) noexcept { return m_fShow3DayRS; }
+  bool IsShow5DayRS(void) noexcept { return m_fShow5DayRS; }
+  bool IsShow10DayRS(void) noexcept { return m_fShow10DayRS; }
+  bool IsShow30DayRS(void) noexcept { return m_fShow30DayRS; }
+  bool IsShow60DayRS(void) noexcept { return m_fShow60DayRS; }
+  bool IsShow120DayRS(void) noexcept { return m_fShow120DayRS; }
+
   // 操作
 public:
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
@@ -22,6 +31,11 @@ public:
 
   void    ShowRealtimeStockData(CDC* pdc);
   void    ShowStockDayLine(CDC* pDC);
+
+  //系统包裹函数
+public:
+  virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
+  virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
 
   // 重写
 public:

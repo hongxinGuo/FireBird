@@ -59,6 +59,7 @@ CStockAnalysisView::CStockAnalysisView() {
   // TODO: 在此处添加构造代码
   m_iCurrentShowType = 1; // 显示日线数据
   m_lCurrentPos = 0;
+  m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
 
   m_fShowRS = false;
   m_fShow3DayRS = false;;
@@ -407,7 +408,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 //////////////////////////////////////////////////////////////////////////////////
 
 void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
-  CView::OnSize(nType, cx, cy);
+  SysCallOnSize(nType, cx, cy);
 
   // TODO: 在此处添加消息处理程序代码
   m_rectClient.right = cx;
@@ -452,36 +453,36 @@ void CStockAnalysisView::OnShowRs120() {
 
 void CStockAnalysisView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow10DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow10DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow120DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow120DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow3DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow3DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow30DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow30DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow5DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow5DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow60DayRS) pCmdUI->SetCheck(1);
-  else pCmdUI->SetCheck(0);
+  if (m_fShow60DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }

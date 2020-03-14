@@ -88,6 +88,7 @@
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
+    <ClCompile Include="StockAnalysisViewTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
@@ -109,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h" />
+    <ClInclude Include="MockChinaMarket.h" />
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
     <ClInclude Include="MockMainFrm.h" />
@@ -116,6 +118,7 @@
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
     <ClInclude Include="MockPotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
+    <ClInclude Include="MockStockAnalysisView.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />
   </ItemGroup>

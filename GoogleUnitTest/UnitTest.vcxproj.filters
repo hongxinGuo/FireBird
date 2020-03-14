@@ -49,6 +49,27 @@
     <Filter Include="Mock类">
       <UniqueIdentifier>{b1bffc53-3e6e-4ff3-b8f2-6d8ed4fa392e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\网络数据提取器">
+      <UniqueIdentifier>{4523166a-02cf-4735-ae79-bd9f4e85502c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Stock Market">
+      <UniqueIdentifier>{ef6d2c8c-73e6-485a-a1c2-2a5848bd3cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Stock Market\网络通信">
+      <UniqueIdentifier>{de8581bb-ebe1-4325-bc8f-bbf11dda7374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\Windows界面">
+      <UniqueIdentifier>{175d2e97-b77f-48b4-8c0f-46f1dcea41e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\Crweber.com Market">
+      <UniqueIdentifier>{253b04cc-ce14-4a05-af1b-4137b2b72a99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\Poten Daily Briefing Market">
+      <UniqueIdentifier>{a1e3d884-a3f1-493e-89e1-3231ef62d7aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\基类">
+      <UniqueIdentifier>{eb36a23a-1556-486c-91ef-c7a08d65a00b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -167,37 +188,46 @@
     <ClCompile Include="MainFrmTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
+    <ClCompile Include="StockAnalysisViewTest.cpp">
+      <Filter>Test源文件\Windows界面</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
       <Filter>Test源文件</Filter>
     </ClInclude>
-    <ClInclude Include="MockVirtualWebInquiry.h">
-      <Filter>Mock类</Filter>
-    </ClInclude>
-    <ClInclude Include="MockSinaRTWebInquiry.h">
-      <Filter>Mock类</Filter>
+    <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
+      <Filter>Mock类\China Stock Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseRTWebInquiry.h">
-      <Filter>Mock类</Filter>
+      <Filter>Mock类\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="MockSinaRTWebInquiry.h">
+      <Filter>Mock类\China Stock Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockTengxunRTWebInquiry.h">
-      <Filter>Mock类</Filter>
+      <Filter>Mock类\China Stock Market\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
-      <Filter>Mock类</Filter>
+    <ClInclude Include="MockChinaMarket.h">
+      <Filter>Mock类\China Stock Market</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaStock.h">
-      <Filter>Mock类</Filter>
-    </ClInclude>
-    <ClInclude Include="MockPotenDailyBriefingWebInquiry.h">
-      <Filter>Mock类</Filter>
+      <Filter>Mock类\China Stock Market</Filter>
     </ClInclude>
     <ClInclude Include="MockCrweberIndexWebInquiry.h">
-      <Filter>Mock类</Filter>
+      <Filter>Mock类\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockPotenDailyBriefingWebInquiry.h">
+      <Filter>Mock类\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="MockMainFrm.h">
-      <Filter>Mock类</Filter>
+      <Filter>Mock类\Windows界面</Filter>
+    </ClInclude>
+    <ClInclude Include="MockVirtualWebInquiry.h">
+      <Filter>Mock类\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="MockStockAnalysisView.h">
+      <Filter>Mock类\Windows界面</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

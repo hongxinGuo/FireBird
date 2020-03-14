@@ -30,16 +30,16 @@ public:
 
 public:
   // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
-  virtual void SysCallOnTimer(UINT_PTR nIDEvent);
-  virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText);
-  virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam);
-  virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag);
-  virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag);
+  virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
+  virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
+  virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CMDIFrameWndEx::OnSysCommand(nID, lParam); }
+  virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
+  virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
+  virtual void SysCallInvalidate(void) { Invalidate(); }
+  virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
+  virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
   virtual void CalculateTodayRelativeStrong(void);
   virtual void ProcessTodayStock(void);
-  virtual void SysCallInvalidate(void);
-  virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-  virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 
 public:
   // 重置系统（恢复系统的初始态，准备第二天继续工作。

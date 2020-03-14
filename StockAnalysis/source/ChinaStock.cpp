@@ -983,26 +983,15 @@ bool CChinaStock::CheckCurrentRTData() {
 
 void CChinaStock::ShowCurrentTransaction() {
   // 显示当前交易情况
-  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
-  if (pCurrentStock != nullptr) {
-    if (pCurrentStock->GetStockCode().Compare(GetStockCode()) == 0) {
-      if (pCurrentStock->GetCurrentTransationVolume() > 0) {
-        pCurrentStock->ReportGuadanTransaction();
-      }
-    }
+  if (GetCurrentTransationVolume() > 0) {
+    ReportGuadanTransaction();
   }
 }
 
 void CChinaStock::ShowCurrentInformationofCancelingGuadan(void) {
   // 显示当前取消挂单的情况
-  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
-
-  if (pCurrentStock != nullptr) {
-    if (pCurrentStock->GetStockCode().Compare(GetStockCode()) == 0) {
-      pCurrentStock->ReportGuadan();
-    }
-  }
+  ReportGuadan();
 }
 
 void CChinaStock::ReportGuadanTransaction(void) {
