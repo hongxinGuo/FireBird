@@ -132,9 +132,6 @@
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp">
       <Filter>Test源文件\China Stock Market</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockTest.cpp">
-      <Filter>Test源文件\China Stock Market\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="CrweberIndexMarketTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
@@ -190,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="StockAnalysisViewTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockTest.cpp">
+      <Filter>Test源文件\China Stock Market\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,4 +10,5 @@ namespace Testing {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));
   };
+  typedef  shared_ptr<CMockNeteaseDayLineWebInquiry> CMockNeteaseDayLineWebInquiryPtr;
 }

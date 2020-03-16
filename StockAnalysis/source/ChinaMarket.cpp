@@ -443,14 +443,14 @@ long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex) {
 //
 //
 ////////////////////////////////////////////////////////////////////////
-long CChinaMarket::GetMinLineOffset(CChinaStock sID, time_t Time) {
+long CChinaMarket::GetMinLineOffset(time_t Time) {
   ASSERT(Time >= 0);
   tm tmTemp{};
   time_t t = 0;
   long lIndex = 0;
 
-  localtime_s(&tmTemp, &Time);
-  tmTemp.tm_hour = (9 - 8);			// time_t, tm使用的是国际标准时(UTC),故北京时间09：30即UTC的01：30。要减去8小时
+  gmtime_s(&tmTemp, &Time);
+  tmTemp.tm_hour = 9;
   tmTemp.tm_min = 30;
   tmTemp.tm_sec = 0;
   t = mktime(&tmTemp);

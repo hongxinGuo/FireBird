@@ -7,6 +7,9 @@
 #include"SetStockCode.h"
 #include"WebInquirer.h"
 
+#include"MockNeteaseDayLineWebInquiry.h"
+using namespace Testing;
+
 using namespace std;
 #include<memory>
 
@@ -217,6 +220,14 @@ namespace StockAnalysisTest {
     str2 = str.Left(8);
     EXPECT_EQ(str2.Compare(strCompare), 0);
     gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+  }
+
+  TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb) {
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
   }
 
   TEST_F(CChinaMarketTest, TestGetSinaInquiringStockStr2) {
@@ -452,6 +463,43 @@ namespace StockAnalysisTest {
         pStock->SetDayLineNeedUpdate(true);
       }
     }
+  }
+
+  TEST_F(CChinaMarketTest, TestGetMinLineOffset) {
+    tm tmCurrent;
+    tmCurrent.tm_year = 2020 - 1900;
+    tmCurrent.tm_mon = 1;
+    tmCurrent.tm_mday = 1;
+    tmCurrent.tm_hour = 9;
+    tmCurrent.tm_min = 0;
+    tmCurrent.tm_sec = 0;
+    time_t tMarket = mktime(&tmCurrent);
+    long lOffset = gl_pChinaStockMarket->GetMinLineOffset(tMarket);
+    EXPECT_EQ(lOffset, 0);
+    tmCurrent.tm_hour = 10;
+    tmCurrent.tm_min = 30;
+    tmCurrent.tm_sec = 59;
+    tMarket = mktime(&tmCurrent);
+    lOffset = gl_pChinaStockMarket->GetMinLineOffset(tMarket);
+    EXPECT_EQ(lOffset, 60);
+    tmCurrent.tm_hour = 12;
+    tmCurrent.tm_min = 30;
+    tmCurrent.tm_sec = 59;
+    tMarket = mktime(&tmCurrent);
+    lOffset = gl_pChinaStockMarket->GetMinLineOffset(tMarket);
+    EXPECT_EQ(lOffset, 119);
+    tmCurrent.tm_hour = 14;
+    tmCurrent.tm_min = 30;
+    tmCurrent.tm_sec = 59;
+    tMarket = mktime(&tmCurrent);
+    lOffset = gl_pChinaStockMarket->GetMinLineOffset(tMarket);
+    EXPECT_EQ(lOffset, 210);
+    tmCurrent.tm_hour = 15;
+    tmCurrent.tm_min = 30;
+    tmCurrent.tm_sec = 59;
+    tMarket = mktime(&tmCurrent);
+    lOffset = gl_pChinaStockMarket->GetMinLineOffset(tMarket);
+    EXPECT_EQ(lOffset, 239);
   }
 
   TEST_F(CChinaMarketTest, TestIsAStock) {

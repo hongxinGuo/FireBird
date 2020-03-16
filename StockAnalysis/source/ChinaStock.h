@@ -250,7 +250,7 @@ public:
 
   // 日线相对强度计算
   bool CalculateDayLineRS(void);
-  bool CalculateDayLineRS(INT64 lNumber);
+  virtual bool CalculateDayLineRS(INT64 lNumber);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);

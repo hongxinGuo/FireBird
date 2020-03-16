@@ -8,6 +8,9 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
+#include"MockChinaMarket.h"
+using namespace Testing;
+
 #include"SetStockCode.h"
 #include"WebInquirer.h"
 
@@ -19,7 +22,7 @@ namespace StockAnalysisTest {
   public:
     TestEnvironment(void) {
       // 这里重置下列全局智能指针为测试用Mock类（如果有的话）
-      gl_pChinaStockMarket = make_shared<CChinaMarket>();
+      gl_pChinaStockMarket = make_shared<CMockChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场

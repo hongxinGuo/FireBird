@@ -50,67 +50,91 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs3) {
     CCmdUI cmdUI;
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow3DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs3(&cmdUI);
     s_pStockAnalysisView->OnShowRs3();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow3DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs3(&cmdUI);
+    s_pStockAnalysisView->OnShowRs3();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow3DayRS());
   }
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs5) {
     CCmdUI cmdUI;
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow5DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs5(&cmdUI);
     s_pStockAnalysisView->OnShowRs5();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow5DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs5(&cmdUI);
+    s_pStockAnalysisView->OnShowRs5();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow5DayRS());
   }
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs10) {
     CCmdUI cmdUI;
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow10DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs10(&cmdUI);
     s_pStockAnalysisView->OnShowRs10();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow10DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs10(&cmdUI);
+    s_pStockAnalysisView->OnShowRs10();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow10DayRS());
   }
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs30) {
     CCmdUI cmdUI;
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow30DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs30(&cmdUI);
     s_pStockAnalysisView->OnShowRs30();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow30DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs30(&cmdUI);
+    s_pStockAnalysisView->OnShowRs30();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow30DayRS());
   }
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs60) {
     CCmdUI cmdUI;
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow60DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs60(&cmdUI);
     s_pStockAnalysisView->OnShowRs60();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow60DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs60(&cmdUI);
+    s_pStockAnalysisView->OnShowRs60();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow60DayRS());
   }
 
   TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs120) {
     CCmdUI cmdUI;
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow120DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs120(&cmdUI);
     s_pStockAnalysisView->OnShowRs120();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShow120DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRs120(&cmdUI);
+    s_pStockAnalysisView->OnShowRs120();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShow120DayRS());
   }
 }

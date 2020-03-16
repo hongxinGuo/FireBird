@@ -134,7 +134,7 @@ public:
   long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
   void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
-  long GetMinLineOffset(CChinaStock sID, time_t Time);
+  long GetMinLineOffset(time_t tMarket);
 
   bool IsSystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
@@ -274,9 +274,9 @@ public:
   bool ChangeCurrentStockToNextStock(void);
   bool ChangeCurrentStockToPrevStock(void);
 
-private:
+protected:
   // 初始化
-  bool CreateTotalStockContainer(void); // 此函数是构造函数的一部分，不允许单独调用。
+  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
 
 protected:
   vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
