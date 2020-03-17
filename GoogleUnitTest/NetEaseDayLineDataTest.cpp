@@ -74,10 +74,10 @@ namespace StockAnalysisTest {
     CDayLinePtr m_DayLinePtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
-                          testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-                                          &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
+                           testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+                                           &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+                                           ));
 
   TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
     INT64 lCount = 0;
@@ -191,9 +191,9 @@ namespace StockAnalysisTest {
     long m_lCountPos = 0;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
-                          testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
+                           testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
+                                           ));
 
   TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
     char buffer[30];

@@ -341,12 +341,12 @@ namespace StockAnalysisTest {
     long m_lTime;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestCrweberIndexTime, CrweberIndexTimeTest,
-                          testing::Values(&CrweberIndexTimeData1
-                                          , &CrweberIndexTimeData2, &CrweberIndexTimeData3, &CrweberIndexTimeData4, &CrweberIndexTimeData5
-                                          , &CrweberIndexTimeData6, &CrweberIndexTimeData7, &CrweberIndexTimeData8, &CrweberIndexTimeData9
-                                          , &CrweberIndexTimeData10, &CrweberIndexTimeData11, &CrweberIndexTimeData12, &CrweberIndexTimeData13
-                                          , &CrweberIndexTimeData14, &CrweberIndexTimeData15));
+  INSTANTIATE_TEST_SUITE_P(TestCrweberIndexTime, CrweberIndexTimeTest,
+                           testing::Values(&CrweberIndexTimeData1
+                                           , &CrweberIndexTimeData2, &CrweberIndexTimeData3, &CrweberIndexTimeData4, &CrweberIndexTimeData5
+                                           , &CrweberIndexTimeData6, &CrweberIndexTimeData7, &CrweberIndexTimeData8, &CrweberIndexTimeData9
+                                           , &CrweberIndexTimeData10, &CrweberIndexTimeData11, &CrweberIndexTimeData12, &CrweberIndexTimeData13
+                                           , &CrweberIndexTimeData14, &CrweberIndexTimeData15));
 
   TEST_P(CrweberIndexTimeTest, TestCrweberIndexTime) {
     CCrweberIndex Index;
@@ -421,12 +421,12 @@ namespace StockAnalysisTest {
     CWebDataPtr m_WebDataPtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestCrweberIndexNextString, CrweberIndexNextStringTest,
-                          testing::Values(&CrweberIndexNextStringData1, &CrweberIndexNextStringData2, &CrweberIndexNextStringData3
-                                          , &CrweberIndexNextStringData4, &CrweberIndexNextStringData5, &CrweberIndexNextStringData6
-                                          , &CrweberIndexNextStringData7, &CrweberIndexNextStringData8, &CrweberIndexNextStringData9
-                                          , &CrweberIndexNextStringData10
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestCrweberIndexNextString, CrweberIndexNextStringTest,
+                           testing::Values(&CrweberIndexNextStringData1, &CrweberIndexNextStringData2, &CrweberIndexNextStringData3
+                                           , &CrweberIndexNextStringData4, &CrweberIndexNextStringData5, &CrweberIndexNextStringData6
+                                           , &CrweberIndexNextStringData7, &CrweberIndexNextStringData8, &CrweberIndexNextStringData9
+                                           , &CrweberIndexNextStringData10
+                                           ));
 
   TEST_P(CrweberIndexNextStringTest, TestCrweberIndexNextString) {
     CCrweberIndex Index;
@@ -483,12 +483,12 @@ namespace StockAnalysisTest {
     CWebDataPtr m_WebDataPtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestCrweberIndexGetOneValue, CrweberIndexGetOneValueTest,
-                          testing::Values(&CrweberIndexGetOneValueData1, &CrweberIndexGetOneValueData2, &CrweberIndexGetOneValueData3
-                                          //  , &CrweberIndexGetOneValueData4, &CrweberIndexGetOneValueData5, &CrweberIndexGetOneValueData6
-                                           // , &CrweberIndexGetOneValueData7, &CrweberIndexGetOneValueData8, &CrweberIndexGetOneValueData9
-                                          //  , &CrweberIndexGetOneValueData10
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestCrweberIndexGetOneValue, CrweberIndexGetOneValueTest,
+                           testing::Values(&CrweberIndexGetOneValueData1, &CrweberIndexGetOneValueData2, &CrweberIndexGetOneValueData3
+                                           //  , &CrweberIndexGetOneValueData4, &CrweberIndexGetOneValueData5, &CrweberIndexGetOneValueData6
+                                            // , &CrweberIndexGetOneValueData7, &CrweberIndexGetOneValueData8, &CrweberIndexGetOneValueData9
+                                           //  , &CrweberIndexGetOneValueData10
+                                           ));
 
   TEST_P(CrweberIndexGetOneValueTest, TestCrweberIndexGetOneValue) {
     CCrweberIndex Index;

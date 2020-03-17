@@ -360,14 +360,14 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, NeteaseRTDataTest, testing::Values(&neteaseData1, &neteaseData2, &neteaseData3,
-                                                                                &neteaseData4, &neteaseData5, &neteaseData6, &neteaseData7,
-                                                                                &neteaseData10, &neteaseData11, &neteaseData12, &neteaseData13, &neteaseData14, &neteaseData15,
-                                                                                &neteaseData20, &neteaseData21, &neteaseData22, &neteaseData23, &neteaseData24,
-                                                                                &neteaseData30, &neteaseData31, &neteaseData32, &neteaseData33, &neteaseData34,
-                                                                                &neteaseData40, &neteaseData41, &neteaseData42, &neteaseData43, &neteaseData44,
-                                                                                &neteaseData50, &neteaseData51, &neteaseData52, &neteaseData53, &neteaseData54,
-                                                                                &neteaseData60, &neteaseData61, &neteaseData62, &neteaseData63));
+  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, NeteaseRTDataTest, testing::Values(&neteaseData1, &neteaseData2, &neteaseData3,
+                                                                                 &neteaseData4, &neteaseData5, &neteaseData6, &neteaseData7,
+                                                                                 &neteaseData10, &neteaseData11, &neteaseData12, &neteaseData13, &neteaseData14, &neteaseData15,
+                                                                                 &neteaseData20, &neteaseData21, &neteaseData22, &neteaseData23, &neteaseData24,
+                                                                                 &neteaseData30, &neteaseData31, &neteaseData32, &neteaseData33, &neteaseData34,
+                                                                                 &neteaseData40, &neteaseData41, &neteaseData42, &neteaseData43, &neteaseData44,
+                                                                                 &neteaseData50, &neteaseData51, &neteaseData52, &neteaseData53, &neteaseData54,
+                                                                                 &neteaseData60, &neteaseData61, &neteaseData62, &neteaseData63));
 
   TEST_P(NeteaseRTDataTest, TestGetNeteaseSymbolIndex) {
     CString strFormat;
@@ -664,12 +664,12 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestSinaRTData, CalculateSinaRTDataTest, testing::Values(&Data1, &Data2, &Data3,
-                                                                                   &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-                                                                                   &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-                                                                                   &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-                                                                                   &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38
-  ));
+  INSTANTIATE_TEST_SUITE_P(TestSinaRTData, CalculateSinaRTDataTest, testing::Values(&Data1, &Data2, &Data3,
+                                                                                    &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                    &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                    &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                    &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38
+                                                                                    ));
 
   TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
     bool fSucceed = m_RTData.ReadSinaData(m_pSinaWebRTData);
@@ -1489,9 +1489,9 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestReadOneValue, ReadOneValueTest,
-                          testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestReadOneValue, ReadOneValueTest,
+                           testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
+                                           ));
 
   TEST_P(ReadOneValueTest, TestReadSinaOneValue4) {
     double dTemp = 0;

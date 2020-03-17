@@ -99,8 +99,8 @@ namespace StockAnalysisTest {
     INT64 iTime;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
-                                                                                            &Data104, &Data105, &Data106));
+  INSTANTIATE_TEST_SUITE_P(TestConvertBufferToTime, ConvertBufferToTimeTest, testing::Values(&Data101, &Data102, &Data103,
+                                                                                             &Data104, &Data105, &Data106));
 
   TEST_P(ConvertBufferToTimeTest, TestConvertBufferToTime) {
     time_t tt = ConvertBufferToTime(strFormat, strBuffer.GetBuffer());
@@ -165,8 +165,8 @@ namespace StockAnalysisTest {
     long lDividend;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1,
-                                                                                                &Data2, &Data3, &Data4, &Data5));
+  INSTANTIATE_TEST_SUITE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1,
+                                                                                                 &Data2, &Data3, &Data4, &Data5));
 
   TEST_P(ConvertDoubleToStringTest, TestDouble) {
     CString str = ConvertValueToString(dValue, lDividend);
@@ -223,8 +223,8 @@ namespace StockAnalysisTest {
     long lDividend;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertLongToString, ConvertLongToStringTest, testing::Values(&Data10, &Data11,
-                                                                                            &Data12, &Data13, &Data14, &Data15));
+  INSTANTIATE_TEST_SUITE_P(TestConvertLongToString, ConvertLongToStringTest, testing::Values(&Data10, &Data11,
+                                                                                             &Data12, &Data13, &Data14, &Data15));
 
   TEST_P(ConvertLongToStringTest, TestLong) {
     CString str = ConvertValueToString(lValue, lDividend);
@@ -281,8 +281,8 @@ namespace StockAnalysisTest {
     long lDividend;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertIntegerToString, ConvertIntegerToStringTest, testing::Values(&Data20, &Data21,
-                                                                                                  &Data22, &Data23, &Data24, &Data25));
+  INSTANTIATE_TEST_SUITE_P(TestConvertIntegerToString, ConvertIntegerToStringTest, testing::Values(&Data20, &Data21,
+                                                                                                   &Data22, &Data23, &Data24, &Data25));
 
   TEST_P(ConvertIntegerToStringTest, TestInteger) {
     CString str = ConvertValueToString(iValue, lDividend);
@@ -339,8 +339,8 @@ namespace StockAnalysisTest {
     long lDividend;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestConvertINT64ToString, ConvertINT64ToStringTest, testing::Values(&Data40, &Data41,
-                                                                                              &Data42, &Data43, &Data44, &Data45));
+  INSTANTIATE_TEST_SUITE_P(TestConvertINT64ToString, ConvertINT64ToStringTest, testing::Values(&Data40, &Data41,
+                                                                                               &Data42, &Data43, &Data44, &Data45));
 
   TEST_P(ConvertINT64ToStringTest, TestINT64) {
     CString str = ConvertValueToString(iValue, lDividend);
@@ -392,10 +392,10 @@ namespace StockAnalysisTest {
     CString strValue;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestGetValue1, GetValueTest, testing::Values(&GetValueData40, &GetValueData41,
-                                                                       &GetValueData42, &GetValueData43,
-                                                                       &GetValueData44, &GetValueData45,
-                                                                       &GetValueData46, &GetValueData47));
+  INSTANTIATE_TEST_SUITE_P(TestGetValue1, GetValueTest, testing::Values(&GetValueData40, &GetValueData41,
+                                                                        &GetValueData42, &GetValueData43,
+                                                                        &GetValueData44, &GetValueData45,
+                                                                        &GetValueData46, &GetValueData47));
 
   TEST_P(GetValueTest, TestGetValue) {
     double d = GetValue(strValue);

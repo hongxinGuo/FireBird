@@ -61,6 +61,8 @@ namespace StockAnalysisTest {
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
+        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
       }
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
@@ -856,6 +858,14 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CChinaMarketTest, TestTaskProcessRTData) {
+    gl_ThreadStatus.SetRTDataNeedCalculate(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskProcessRTData());
+    gl_ThreadStatus.SetRTDataNeedCalculate(false);
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromSinaServer) {
+  }
   TEST_F(CChinaMarketTest, TestProcessTodayStock) {
     tm tm_;
     tm_.tm_wday = 1; // ÐÇÆÚÒ»

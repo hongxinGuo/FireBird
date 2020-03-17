@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true))
       .WillRepeatedly(Return(false));
     m_VirtualWebInquiry.SetReadingWebData(true);
-    m_VirtualWebInquiry.SetInquiringString(_T("http://www.crweber.com"));
+    m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
     EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
   }

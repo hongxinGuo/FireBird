@@ -243,12 +243,12 @@ namespace StockAnalysisTest {
     CWebDataPtr m_WebDataPtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestPotenNextString, PotenNextStringTest,
-                          testing::Values(&PotenNextStringData1, &PotenNextStringData2, &PotenNextStringData3
-                                          , &PotenNextStringData4, &PotenNextStringData5, &PotenNextStringData6
-                                          , &PotenNextStringData7, &PotenNextStringData8, &PotenNextStringData9
-                                          , &PotenNextStringData10
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestPotenNextString, PotenNextStringTest,
+                           testing::Values(&PotenNextStringData1, &PotenNextStringData2, &PotenNextStringData3
+                                           , &PotenNextStringData4, &PotenNextStringData5, &PotenNextStringData6
+                                           , &PotenNextStringData7, &PotenNextStringData8, &PotenNextStringData9
+                                           , &PotenNextStringData10
+                                           ));
 
   TEST_P(PotenNextStringTest, TestPotenNextString) {
     CPotenDailyBriefing Index;
@@ -309,12 +309,12 @@ namespace StockAnalysisTest {
     CWebDataPtr m_WebDataPtr;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestPotenSkipOverString, PotenSkipOverStringTest,
-                          testing::Values(&PotenSkipOverStringData1, &PotenSkipOverStringData2, &PotenSkipOverStringData3
-                                          , &PotenSkipOverStringData4, &PotenSkipOverStringData5, &PotenSkipOverStringData6
-                                          //    , &PotenSkipOverStringData7, &PotenSkipOverStringData8, &PotenSkipOverStringData9
-                                           //   , &PotenSkipOverStringData10
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestPotenSkipOverString, PotenSkipOverStringTest,
+                           testing::Values(&PotenSkipOverStringData1, &PotenSkipOverStringData2, &PotenSkipOverStringData3
+                                           , &PotenSkipOverStringData4, &PotenSkipOverStringData5, &PotenSkipOverStringData6
+                                           //    , &PotenSkipOverStringData7, &PotenSkipOverStringData8, &PotenSkipOverStringData9
+                                            //   , &PotenSkipOverStringData10
+                                           ));
 
   TEST_P(PotenSkipOverStringTest, TestPotenSkipOverString) {
     CPotenDailyBriefing Index;

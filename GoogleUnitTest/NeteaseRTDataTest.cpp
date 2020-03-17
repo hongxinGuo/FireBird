@@ -199,12 +199,12 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102, &Data103
-                                                                                         /*, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-                                                                                         &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-                                                                                         &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-                                                                                         &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
-  ));
+  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102, &Data103
+                                                                                          /*, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                          &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                          &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                          &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
+                                                                                          ));
 
   TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
     bool fSucceed = m_RTData.SecceedReadingNeteaseData(m_pNeteaseWebRTData);
@@ -414,14 +414,14 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, StockCodePrefixTest,
-                          testing::Values(&StockCodePrefixData101, &StockCodePrefixData102
-                                          , &StockCodePrefixData103, &StockCodePrefixData104, &StockCodePrefixData105,
-                                          &StockCodePrefixData106, &StockCodePrefixData107, &StockCodePrefixData108,
-                                          &StockCodePrefixData109, &StockCodePrefixData110, &StockCodePrefixData111,
-                                          &StockCodePrefixData112, &StockCodePrefixData113/*, &StockCodePrefixData114,
-                                          &StockCodePrefixData115, &StockCodePrefixData116*/
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, StockCodePrefixTest,
+                           testing::Values(&StockCodePrefixData101, &StockCodePrefixData102
+                                           , &StockCodePrefixData103, &StockCodePrefixData104, &StockCodePrefixData105,
+                                           &StockCodePrefixData106, &StockCodePrefixData107, &StockCodePrefixData108,
+                                           &StockCodePrefixData109, &StockCodePrefixData110, &StockCodePrefixData111,
+                                           &StockCodePrefixData112, &StockCodePrefixData113/*, &StockCodePrefixData114,
+                                           &StockCodePrefixData115, &StockCodePrefixData116*/
+                                           ));
 
   TEST_P(StockCodePrefixTest, TestStockCodePrefix) {
     bool fSucceed = m_RTData.ReadNeteaseStockCodePrefix(m_pNeteaseWebRTData);
@@ -525,10 +525,10 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
-                          testing::Values(&neteasedata1, &neteasedata2, &neteasedata3, &neteasedata4, &neteasedata5, &neteasedata6,
-                                          &neteasedata7
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
+                           testing::Values(&neteasedata1, &neteasedata2, &neteasedata3, &neteasedata4, &neteasedata5, &neteasedata6,
+                                           &neteasedata7
+                                           ));
 
   TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
     CString strValue;
@@ -634,11 +634,11 @@ namespace StockAnalysisTest {
     CRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeteaseRTData, GetNeteaseIndexValueRTDataTest, testing::Values(&NeteaseData101
-                                                                                             /*, &Data2, &Data3,
-                                                                                             &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-                                                                                             &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-                                                                                             &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-                                                                                             &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38*/
-  ));
+  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, GetNeteaseIndexValueRTDataTest, testing::Values(&NeteaseData101
+                                                                                              /*, &Data2, &Data3,
+                                                                                              &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                              &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                              &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                              &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38*/
+                                                                                              ));
 }

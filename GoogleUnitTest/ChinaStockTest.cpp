@@ -37,6 +37,8 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
       if (pStock != nullptr) {
         pStock->SetDayLineDBUpdated(false);
+        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
+        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
         pStock = nullptr;
       }
     }

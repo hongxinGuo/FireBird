@@ -174,9 +174,9 @@ namespace StockAnalysisTest {
     CChinaStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestGuadanData, RTDataGuadanTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
-                                                                            &Guadan5, &Guadan6, &Guadan7,
-                                                                            &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
+  INSTANTIATE_TEST_SUITE_P(TestGuadanData, RTDataGuadanTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
+                                                                             &Guadan5, &Guadan6, &Guadan7,
+                                                                             &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
 
   TEST_P(RTDataGuadanTest, TestGuadan) {
     EXPECT_FALSE(m_stock.HaveFirstRTData());
@@ -418,9 +418,9 @@ namespace StockAnalysisTest {
     CChinaStock m_stock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNeedCheck, NeedCheckTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
-                                                                        &Guadan5, &Guadan6, &Guadan7, &Guadan8,
-                                                                        &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
+  INSTANTIATE_TEST_SUITE_P(TestNeedCheck, NeedCheckTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
+                                                                         &Guadan5, &Guadan6, &Guadan7, &Guadan8,
+                                                                         &Guadan11, &Guadan12, &Guadan13, &Guadan14, &Guadan15));
 
   TEST_P(NeedCheckTest, TestNeedCheck) {
     array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };

@@ -50,7 +50,7 @@ namespace StockAnalysisTest {
       NeteaseDayLineData* pData = GetParam();
       m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
       m_pStock->SetDayLineLoaded(false);
-      m_pStock->SetDayLineNeedProcess(true);
+      if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
       if (m_pStock->GetIPOStatus() != __STOCK_NULL__) m_pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
@@ -71,10 +71,10 @@ namespace StockAnalysisTest {
     CChinaStockPtr m_pStock;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
-                          testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
-                                          &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
+                           testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
+                                           &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
+                                           ));
 
   TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
     bool fSucceed = m_pStock->ProcessNeteaseDayLineData();

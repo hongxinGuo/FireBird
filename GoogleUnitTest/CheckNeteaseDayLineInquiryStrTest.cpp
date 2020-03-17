@@ -42,9 +42,9 @@ namespace StockAnalysisTest {
     CString m_strCode;
   };
 
-  INSTANTIATE_TEST_CASE_P(TestCheckNeteaseDayLineInquiryData, CheckNeteaseDayLineInquiryStrTest,
-                          testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8
-                          ));
+  INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, CheckNeteaseDayLineInquiryStrTest,
+                           testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8
+                                           ));
 
   TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
     bool fSucceed = gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
