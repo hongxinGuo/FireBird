@@ -20,7 +20,7 @@ vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的
 #include"MockChinaMarket.h"
 using namespace Testing;
 
-// 各市场。皆为唯一实例
+// 各Mock市场。皆为唯一实例
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CMockChinaMarketPtr gl_pChinaStockMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。

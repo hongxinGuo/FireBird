@@ -59,7 +59,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     }
     *m_pCurrentReadPos = 0x000; // 最后以0x000结尾
   }
-  catch (CInternetException * exception) {
+  catch (CInternetException* exception) {
     m_dwWebErrorCode = exception->m_dwError;
     TRACE(_T("%s net error, Error Code %d\n"), m_strConnection.GetBuffer(), exception->m_dwError);
     fStatus = false;;

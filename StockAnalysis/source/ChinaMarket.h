@@ -128,6 +128,7 @@ public:
   CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
   void SetCurrentStock(CChinaStockPtr pStock);
+  void ResetCurrentStock(void);
   bool IsCurrentStockChanged(void) noexcept { return m_fCurrentStockChanged; }
   void SetCurrentStockChanged(bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
 

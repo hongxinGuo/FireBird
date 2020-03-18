@@ -11,6 +11,7 @@
 
 #include"MockNeteaseDayLineWebInquiry.h"
 using namespace Testing;
+using namespace testing;
 
 using namespace std;
 #include<memory>
@@ -599,7 +600,12 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
     EXPECT_TRUE(pStock2->IsRecordRTData());
     gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
-    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600000"));
+    pStock = gl_pChinaStockMarket->GetCurrentStock();
+    EXPECT_TRUE(pStock->IsRecordRTData());
+    EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
+    gl_pChinaStockMarket->ResetCurrentStock();
+    EXPECT_FALSE(pStock->IsRecordRTData());
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
   }
 
   TEST_F(CChinaMarketTest, TestClearDayLineContainer) {
@@ -816,7 +822,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsStartReceivingData());
   }
 
-  TEST_F(CChinaMarketTest, TestTaskUpdateStockCodeDB) {
+  TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {
     gl_pChinaStockMarket->SetSaveDayLine(true);
     gl_pChinaStockMarket->SetDayLineNeedSaveNumber(1);
     gl_pChinaStockMarket->SetDayLineNeedProcessNumber(1);
@@ -1113,6 +1119,103 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
     gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
+  }
+
+  TEST_F(CChinaMarketTest, TestSaveDayLineData) {
+    InSequence seq;
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600000"));
+    EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveDayLineOfOneStock(_))
+      .Times(1)
+      .WillOnce(Return(true));
+    gl_pChinaStockMarket->SaveDayLineData();
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveDayLineOfOneStock(_))
+      .Times(0);
+    gl_pChinaStockMarket->SaveDayLineData();
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDay(19900101);
+    pStock->SetDayLineEndDay(20000101);
+    pStock->StoreDayLine(pDayLine);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveDayLineOfOneStock(pStock))
+      .Times(0);
+    gl_pChinaStockMarket->SaveDayLineData();
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDay(gl_pChinaStockMarket->GetDay());
+    pStock->StoreDayLine(pDayLine);
+    pStock->SetDayLineNeedSaving(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveDayLineOfOneStock(_))
+      .Times(2);
+    EXPECT_TRUE(gl_pChinaStockMarket->SaveDayLineData());
+    pStock->ClearDayLineContainer();
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskLoadCurrentStockDayLine1) {
+    gl_pChinaStockMarket->ResetCurrentStock();
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadLoadDayLine(_))
+      .Times(0);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskLoadCurrentStockDayLine());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskLoadCurrentStockDayLine2) {
+    gl_pChinaStockMarket->ResetCurrentStock();
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadLoadDayLine(_))
+      .Times(0);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskLoadCurrentStockDayLine());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskLoadCurrentStockDayLine3) {
+    gl_pChinaStockMarket->ResetCurrentStock();
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadLoadDayLine(_))
+      .Times(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskLoadCurrentStockDayLine());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskUpdateStockCodeDB) {
+    gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadUpdateStockCodeDB())
+      .Times(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskUpdateStockCodeDB());
+    gl_pChinaStockMarket->SetUpdateStockCodeDB(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadUpdateStockCodeDB())
+      .Times(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskUpdateStockCodeDB());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdateStockCodeDB());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskUpdateOptionDB) {
+    gl_pChinaStockMarket->SetUpdateOptionDB(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadUpdateOptionDB())
+      .Times(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskUpdateOptionDB());
+    gl_pChinaStockMarket->SetUpdateOptionDB(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadUpdateOptionDB())
+      .Times(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskUpdateOptionDB());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdateOptionDB());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskSaveChoicedRTData) {
+    gl_pChinaStockMarket->SetSystemReady(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveChoicedRTData())
+      .Times(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskSaveChoicedRTData());
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetRecordRTData(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveChoicedRTData())
+      .Times(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskSaveChoicedRTData());
+    gl_pChinaStockMarket->SetRecordRTData(true);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveChoicedRTData())
+      .Times(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskSaveChoicedRTData());
+    gl_pChinaStockMarket->SetRecordRTData(false);
+    gl_pChinaStockMarket->SetSystemReady(false);
   }
 
   TEST_F(CChinaMarketTest, TestUpdateTempRTData) {
