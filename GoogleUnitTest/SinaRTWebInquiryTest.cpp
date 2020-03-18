@@ -10,8 +10,6 @@ using namespace std;
 
 using namespace Testing;
 
-static CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
-
 namespace StockAnalysisTest {
   class CSinaRTWebInquiryTest : public ::testing::Test {
   protected:
@@ -26,6 +24,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
     }
   public:
+    CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
   };
 
   TEST_F(CSinaRTWebInquiryTest, TestInitialize) {

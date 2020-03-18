@@ -7,8 +7,6 @@
 using namespace std;
 using namespace Testing;
 
-static CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
-
 namespace StockAnalysisTest {
   class CTengxunRTWebInquiryTest : public ::testing::Test {
   protected:
@@ -24,6 +22,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
     }
   public:
+    CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
   };
 
   TEST_F(CTengxunRTWebInquiryTest, TestInitialize) {

@@ -151,10 +151,10 @@ bool CChinaMarket::ChangeCurrentStockToNextStock(void) {
   int i = 1;
   while (!fFound) {
     if ((lIndex + i) < 12000) {
-      pStock = gl_pChinaStockMarket->GetStock(lIndex + i);
+      pStock = GetStock(lIndex + i);
     }
     else {
-      pStock = gl_pChinaStockMarket->GetStock(lIndex + i - 12000);
+      pStock = GetStock(lIndex + i - 12000);
     }
     if (pStock->GetIPOStatus() != 0) fFound = true;
     i++;
@@ -171,10 +171,10 @@ bool CChinaMarket::ChangeCurrentStockToPrevStock(void) {
   int i = 1;
   while (!fFound) {
     if ((lIndex - i) >= 0) {
-      pStock = gl_pChinaStockMarket->GetStock(lIndex - i);
+      pStock = GetStock(lIndex - i);
     }
     else {
-      pStock = gl_pChinaStockMarket->GetStock(lIndex + 12000 - i);
+      pStock = GetStock(lIndex + 12000 - i);
     }
     if (pStock->GetIPOStatus() != 0) fFound = true;
     i++;
@@ -715,7 +715,7 @@ CString CChinaMarket::GetNextInquiringMiddleStr(long& iStockIndex, CString strPo
   str += m_vChinaMarketAStock.at(iStockIndex)->GetStockCode();  // 得到第一个股票代码
   IncreaseStockInquiringIndex(iStockIndex);
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((iStockIndex < gl_pChinaStockMarket->GetTotalStock()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+  while ((iStockIndex < GetTotalStock()) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     if (fSkipUnactiveStock) StepToActiveStockIndex(iStockIndex);
     iCount++;
     str += strPostfix;
@@ -854,7 +854,7 @@ void CChinaMarket::CheckNeteaseRTData(CRTDataPtr pRTData) {
   ASSERT(pRTData->GetDataSource() == __NETEASE_RT_WEB_DATA__);
   if (pRTData->IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = gl_pChinaStockMarket->GetStock(pRTData->GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(pRTData->GetStockCode())) != nullptr) {
       if (!pStock->IsActive()) {
         str = pStock->GetStockCode();
         str += _T(" 网易实时检测到不处于活跃状态");
@@ -943,7 +943,7 @@ void CChinaMarket::CheckTengxunRTData(CRTDataPtr pRTData) {
   ASSERT(pRTData->GetDataSource() == __TENGXUN_RT_WEB_DATA__);
   if (pRTData->IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = gl_pChinaStockMarket->GetStock(pRTData->GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(pRTData->GetStockCode())) != nullptr) {
       if (!pStock->IsActive()) {
         str = pStock->GetStockCode();
         str += _T("腾讯实时检测到不处于活跃状态");
@@ -965,7 +965,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
   for (long i = 0; i < lTotalData; i++) {
     pRTData = gl_RTDataContainer.PopTengxunRTData();
     if (pRTData->IsActive()) {
-      auto pStock = gl_pChinaStockMarket->GetStock(pRTData->GetStockCode());
+      auto pStock = GetStock(pRTData->GetStockCode());
       pStock->SetTotalValue(pRTData->GetTotalValue());
       pStock->SetCurrentValue(pRTData->GetCurrentValue());
       pStock->SetHighLimit(pRTData->GetHighLimit());
@@ -1299,7 +1299,7 @@ bool CChinaMarket::TaskUpdateOptionDB(void) {
 
 bool CChinaMarket::TaskShowCurrentTransaction(void) {
   // 显示当前交易情况
-  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     if (pCurrentStock->IsRTDataCalculated()) {
@@ -1365,7 +1365,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     // 判断是否存储日线库和股票代码库
     if ((m_iDayLineNeedSave > 0)) {
       m_fSaveDayLine = true;
-      gl_pChinaStockMarket->SaveDayLineData();
+      SaveDayLineData();
     }
     TaskCheckDayLineDB();
     return true;
@@ -1824,7 +1824,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   setDayLine.m_pDatabase->BeginTrans();
   iStockNumber = 0;
   while (!setDayLine.IsEOF()) {
-    if (gl_pChinaStockMarket->IsAStock(setDayLine.m_StockCode)) {
+    if (IsAStock(setDayLine.m_StockCode)) {
       long lIndex = m_mapChinaMarketAStock.at(setDayLine.m_StockCode);
       vStock.push_back(m_vChinaMarketAStock.at(lIndex));
       vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
@@ -1912,8 +1912,8 @@ void CChinaMarket::LoadStockCodeDB(void) {
     pStock->LoadStockCodeDB(setStockCode);
     setStockCode.MoveNext();
   }
-  if (gl_pChinaStockMarket->m_iDayLineNeedUpdate > 0) {
-    int i = gl_pChinaStockMarket->m_iDayLineNeedUpdate;
+  if (m_iDayLineNeedUpdate > 0) {
+    int i = m_iDayLineNeedUpdate;
     if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
     _itoa_s(i, buffer, 10);
@@ -1937,15 +1937,15 @@ bool CChinaMarket::UpdateOptionDB(void) {
   setOption.m_pDatabase->BeginTrans();
   if (setOption.IsEOF()) {
     setOption.AddNew();
-    setOption.m_RelativeStrongEndDay = gl_pChinaStockMarket->GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = gl_pChinaStockMarket->GetRelativeStrongStartDay();
+    setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
     setOption.m_LastLoginDay = GetDay();
     setOption.Update();
   }
   else {
     setOption.Edit();
-    setOption.m_RelativeStrongEndDay = gl_pChinaStockMarket->GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = gl_pChinaStockMarket->GetRelativeStrongStartDay();
+    setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
+    setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
     setOption.m_LastLoginDay = GetDay();
     setOption.Update();
   }
@@ -1958,17 +1958,17 @@ void CChinaMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    gl_pChinaStockMarket->SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
-    gl_pChinaStockMarket->SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
-    gl_pChinaStockMarket->SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
     if (setOption.m_RelativeStrongEndDay == 0) {
-      gl_pChinaStockMarket->SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+      SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      gl_pChinaStockMarket->SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
-      if (gl_pChinaStockMarket->GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
+      SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
+      if (GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
         gl_SaveOneStockDayLine.SetMaxCount(1);
@@ -1976,16 +1976,16 @@ void CChinaMarket::LoadOptionDB(void) {
       }
     }
     if (setOption.m_RalativeStrongStartDay == 0) {
-      gl_pChinaStockMarket->SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
+      SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      gl_pChinaStockMarket->SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
+      SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
     }
     if (setOption.m_LastLoginDay == 0) {
-      gl_pChinaStockMarket->SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
+      SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      gl_pChinaStockMarket->SetLastLoginDay(setOption.m_LastLoginDay);
+      SetLastLoginDay(setOption.m_LastLoginDay);
     }
   }
 

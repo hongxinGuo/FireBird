@@ -10,8 +10,6 @@ using namespace std;
 
 using namespace Testing;
 
-static CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集
-
 namespace StockAnalysisTest {
   class CNeteaseRTWebInquiryTest : public ::testing::Test
   {
@@ -30,6 +28,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
+    CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集
   };
 
   TEST_F(CNeteaseRTWebInquiryTest, TestInitialize) {

@@ -8,8 +8,6 @@
 using namespace std;
 using namespace Testing;
 
-static CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
-
 namespace StockAnalysisTest {
   class CNeteaseDayLineWebInquiryTest : public ::testing::Test
   {
@@ -32,6 +30,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
     }
+    CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestInitialize) {
