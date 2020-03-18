@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"ChinaMarket.h" // 网易日线历史数据的读取在CChinaMarket类中。
+#include"globedef.h"
 
 #include"ChinaStock.h"
 

@@ -1,13 +1,24 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"ChinaMarket.h"
+#include"globedef.h"
 #include"ThreadStatus.h"
 
 #include"WebInquirer.h"
 
 namespace StockAnalysisTest {
-  TEST(ThreadStatusTest, TestInitialize) {
+  class ThreadStatusTest : public ::testing::Test
+  {
+  protected:
+    virtual void SetUp(void) override {
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+    }
+  };
+
+  TEST_F(ThreadStatusTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
@@ -26,7 +37,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST(ThereadStatusTest, TestIsCalculatingDayLineRS) {
+  TEST_F(ThreadStatusTest, TestIsCalculatingDayLineRS) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingDayLineRS());
@@ -34,7 +45,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
   }
 
-  TEST(ThreadStatusTest, TestIsRTDataNeedCalculate) {
+  TEST_F(ThreadStatusTest, TestIsRTDataNeedCalculate) {
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     gl_ThreadStatus.SetRTDataNeedCalculate(true);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
@@ -42,7 +53,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
   }
 
-  TEST(ThreadStatusTest, TestIsCalculatingRTData) {
+  TEST_F(ThreadStatusTest, TestIsCalculatingRTData) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     gl_ThreadStatus.SetCalculatingRTData(true);
     EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRTData());
@@ -50,7 +61,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
   }
 
-  TEST(ThreadStatusTest, TestIsSavingTempData) {
+  TEST_F(ThreadStatusTest, TestIsSavingTempData) {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     gl_ThreadStatus.SetSavingTempData(true);
     EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
@@ -58,7 +69,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
   }
 
-  TEST(ThreadStatusTest, TestIsCalculatingRS) {
+  TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
     for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
       gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
@@ -71,7 +82,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
   }
 
-  TEST(ThreadStatusTest, TestIsSavingDayLine) {
+  TEST_F(ThreadStatusTest, TestIsSavingDayLine) {
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多6个线程
       gl_ThreadStatus.IncreaseNunberOfSavingDayLineThreads();

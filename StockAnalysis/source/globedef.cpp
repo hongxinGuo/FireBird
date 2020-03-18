@@ -16,7 +16,19 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
+#ifdef __GOOGLEMOCK__
+#include"MockChinaMarket.h"
+using namespace Testing;
+
+// ¸÷ÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
+CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
+CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
+CMockChinaMarketPtr gl_pChinaStockMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
+
+#else
 // ¸÷ÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaStockMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
+
+#endif

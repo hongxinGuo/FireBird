@@ -1,6 +1,8 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -17,12 +19,12 @@ namespace StockAnalysisTest {
   class CChinaMarketTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestCase(void) {
+    static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
-    static void TearDownTestCase(void) {
+    static void TearDownTestSuite(void) {
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
     virtual void SetUp(void) override {
@@ -44,6 +46,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStockMarket->SetRTDataSetCleared(false);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
@@ -1110,5 +1113,16 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
     gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
+  }
+
+  TEST_F(CChinaMarketTest, TestUpdateTempRTData) {
+    gl_ThreadStatus.SetSavingTempData(true);
+    EXPECT_FALSE(gl_pChinaStockMarket->UpdateTempRTData());
+    gl_ThreadStatus.SetSavingTempData(false);
+    EXPECT_CALL(*gl_pChinaStockMarket, RunningThreadSaveTempRTData())
+      .Times(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->UpdateTempRTData());
+    EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
+    gl_ThreadStatus.SetSavingTempData(true);
   }
 }

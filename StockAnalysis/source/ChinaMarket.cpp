@@ -1986,9 +1986,9 @@ void CChinaMarket::LoadOptionDB(void) {
 
 bool CChinaMarket::UpdateTempRTData(void) {
   if (!gl_ThreadStatus.IsSavingTempData()) {
-    RunningThreadSaveTempRTData();
     gl_ThreadStatus.SetSavingTempData(true);
+    RunningThreadSaveTempRTData();
+    return true;
   }
-
-  return true;
+  return false;
 }

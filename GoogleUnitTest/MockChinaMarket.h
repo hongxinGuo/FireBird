@@ -6,9 +6,6 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include"MockChinaStock.h"
-using namespace Testing;
-
 namespace Testing {
   class CMockChinaMarket : public CChinaMarket {
   public:

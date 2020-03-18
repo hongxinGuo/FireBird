@@ -1,7 +1,7 @@
 #include"stdafx.h"
+#include"globedef.h"
 
 #include"Accessory.h"
-#include"ChinaMarket.h"
 #include "CrweberIndex.h"
 
 CCrweberIndex::CCrweberIndex() {
@@ -334,7 +334,7 @@ CString CCrweberIndex::GetNextString(CWebDataPtr pWebData) {
 
 bool CCrweberIndex::IsDataChanged(CCrweberIndex& CrweberIndexLast) {
   if ((GetTD1() != CrweberIndexLast.GetTD1()) ||
-    (GetTD2() != CrweberIndexLast.GetTD2()) ||
+      (GetTD2() != CrweberIndexLast.GetTD2()) ||
       (GetTD3C() != CrweberIndexLast.GetTD3C()) ||
       (GetTD5() != CrweberIndexLast.GetTD5()) ||
       (GetTD6() != CrweberIndexLast.GetTD6()) ||

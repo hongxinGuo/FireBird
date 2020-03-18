@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 // ÖĞ¹ú¹ÉÆ±ÊĞ³¡ÆğÊ¼ÈÕ
 #define __CHINA_MARKET_BEGIN_DAY__ 19900101
 
@@ -27,9 +25,12 @@ enum {
   __SHENZHEN_CHUANGYE__ = 12, // ÉîÛÚ´´Òµ°å
 };
 
+#include"stdafx.h"
+
 #include"VirtualMarket.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
+#include"ChinaMarket.h"
 
 #include"RTData.h"
 
@@ -62,9 +63,21 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ÔÚÆô¶¯Ê±Ğ
 
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
+#ifdef __GOOGLEMOCK__
+#include"MockChinaMarket.h"
+using namespace Testing;
+
 // ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
 extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
 extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-class CChinaMarket;
-extern shared_ptr<CChinaMarket> gl_pChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
+extern shared_ptr<CMockChinaMarket> gl_pChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
+
+#else
+// ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
+extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
+extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
+// ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
+extern CChinaMarketPtr gl_pChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
+
+#endif

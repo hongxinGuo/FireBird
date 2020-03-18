@@ -1,5 +1,4 @@
 #include "CrweberIndexMarket.h"
-#include"ChinaMarket.h"
 
 #include"WebInquirer.h"
 

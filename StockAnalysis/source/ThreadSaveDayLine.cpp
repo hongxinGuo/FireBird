@@ -9,8 +9,7 @@
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-
-#include"ChinaMarket.h"
+#include"globedef.h"
 
 UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock) {
   CString str;

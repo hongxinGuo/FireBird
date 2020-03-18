@@ -1,7 +1,7 @@
 #include"stdafx.h"
+#include"globedef.h"
 
 #include"Accessory.h"
-#include"ChinaMarket.h"
 #include "PotenDailyBriefing.h"
 
 CPotenDailyBriefing::CPotenDailyBriefing() {

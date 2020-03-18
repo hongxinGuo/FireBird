@@ -1,5 +1,7 @@
 #include"pch.h"
 
+#include"globedef.h"
+
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 

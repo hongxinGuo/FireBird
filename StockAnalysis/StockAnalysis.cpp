@@ -80,12 +80,18 @@ BOOL CStockAnalysisApp::InitInstance() {
   gl_fTestMode = false;
 
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
-
+#ifdef __GOOGLEMOCK__
   // 所有全局智能指针皆在此处生成
+  if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CMockChinaMarket>();
+  if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
+  if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+  gl_WebInquirer.Initialize();
+#else
   if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CChinaMarket>();
   if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
   if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
   gl_WebInquirer.Initialize();
+#endif
   //生成市场容器Vector
   CreateMarketContainer();
 

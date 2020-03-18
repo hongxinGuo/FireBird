@@ -1,6 +1,6 @@
 #include"pch.h"
 
-#include"ChinaMarket.h"
+#include"globedef.h"
 
 namespace StockAnalysisTest {
   struct CheckNeteaseDayLineInquiryStrData {

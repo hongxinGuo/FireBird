@@ -8,11 +8,11 @@ namespace StockAnalysisTest {
   class CStockDayLineTest : public ::testing::Test
   {
   protected:
-    static void SetUpTestCase() { // 本测试类的初始化函数
+    static void SetUpTestSuite() { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
     }
 
-    static void TearDownTestCase() {
+    static void TearDownTestSuite() {
     }
 
     virtual void SetUp(void) override {

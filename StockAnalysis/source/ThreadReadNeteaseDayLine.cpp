@@ -16,6 +16,7 @@
 // 此线程的正常返回值为4
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+#include"globedef.h"
 #include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData) {
