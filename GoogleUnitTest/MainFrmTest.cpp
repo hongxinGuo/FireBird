@@ -9,13 +9,11 @@ using namespace Testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
-  CMockMainFrame* s_pMainFrame;
   class CMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
-      s_pMainFrame = new CMockMainFrame;
     }
     static void TearDownTestSuite(void) {
       gl_pChinaStockMarket->SetResetMarket(true);
@@ -23,15 +21,19 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingMarket->SetResetMarket(true);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false); // 这里使用了实际的数据库，故而不允许更新
       gl_pChinaStockMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
-      delete s_pMainFrame;
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
     }
     virtual void SetUp(void) override {
+      gl_ExitingSystem = false;
+      s_pMainFrame = new CMockMainFrame;
     }
     virtual void TearDown(void) override {
+      gl_ExitingSystem = false;
+      delete s_pMainFrame;
     }
   public:
+    CMockMainFrame* s_pMainFrame;
   };
 
   TEST_F(CMainFrameTest, TestIsNeedResetMarket) {
@@ -77,7 +79,6 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMainFrameTest, TestOnSysCommand) {
-    EXPECT_FALSE(gl_ExitingSystem);
     gl_ExitingSystem = false;
     EXPECT_CALL(*s_pMainFrame, SysCallOnSysCommand)
       .Times(1);

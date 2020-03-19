@@ -368,6 +368,9 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="ChinaMarketTest2.cpp">
+      <Filter>Test源文件\China Stock Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
