@@ -11,18 +11,18 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateStockCodeDB(void) {
+UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket) {
   //
-  gl_pChinaStockMarket->UpdateStockCodeDB();
+  pMarket->UpdateStockCodeDB();
   return 18;
 }
 
-UINT ThreadUpdateOptionDB(void) {
-  gl_pChinaStockMarket->UpdateOptionDB();
+UINT ThreadUpdateOptionDB(CChinaMarket* pMarket) {
+  pMarket->UpdateOptionDB();
   return 20;
 }
 
-UINT ThreadSavePotenData(void) {
-  gl_pPotenDailyBriefingMarket->SaveCurrentData();
+UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket) {
+  pMarket->SaveCurrentData();
   return 21;
 }

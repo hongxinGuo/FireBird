@@ -141,7 +141,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
 }
 
 bool CPotenDailyBriefingMarket::RunningThreadSavePotenData(void) {
-  thread threadSaveData(ThreadSavePotenData);
+  thread threadSaveData(ThreadSavePotenData, this);
   threadSaveData.detach();
   return true;
 }

@@ -1137,14 +1137,12 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
 
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-  if (m_fSystemReady) {
-    if (m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
-      if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
-        CString str;
-        str = _T("存储临时数据");
-        gl_systemMessage.PushDayLineInfoMessage(str);
-        UpdateTempRTData();
-      }
+  if (m_fSystemReady && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+    if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
+      CString str;
+      str = _T("存储临时数据");
+      gl_systemMessage.PushDayLineInfoMessage(str);
+      UpdateTempRTData();
     }
   }
 }
@@ -1584,31 +1582,31 @@ bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
 }
 
 bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
-  thread thread1(ThreadSaveRTData);
+  thread thread1(ThreadSaveRTData, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadProcessTodayStock(void) {
-  thread thread1(ThreadProcessTodayStock);
+  thread thread1(ThreadProcessTodayStock, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadCalculateRelativeStrong(long lStartCalculatingDay) {
-  thread thread1(ThreadCalculateDayLineRS, lStartCalculatingDay);
+  thread thread1(ThreadCalculateDayLineRS, this, lStartCalculatingDay);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadCalculateThisDayRS(long lThisDay) {
-  thread thread_calculateRS(ThreadCalculateThisDayRS, lThisDay);
+  thread thread_calculateRS(ThreadCalculateThisDayRS, this, lThisDay);
   thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadSaveTempRTData(void) {
-  thread thread1(ThreadSaveTempRTData);
+  thread thread1(ThreadSaveTempRTData, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1626,13 +1624,13 @@ bool CChinaMarket::RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock) {
 }
 
 bool CChinaMarket::RunningThreadUpdateStockCodeDB(void) {
-  thread thread1(ThreadUpdateStockCodeDB);
+  thread thread1(ThreadUpdateStockCodeDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadUpdateOptionDB(void) {
-  thread thread1(ThreadUpdateOptionDB);
+  thread thread1(ThreadUpdateOptionDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

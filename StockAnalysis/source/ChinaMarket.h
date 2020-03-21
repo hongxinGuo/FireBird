@@ -221,6 +221,7 @@ public:
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
+  void SetMarketOpened(bool fFlag) noexcept { m_fMarketOpened = fFlag; }
   bool IsStartReceivingData(void) noexcept { return m_fStartReceivingData; }
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
   bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }

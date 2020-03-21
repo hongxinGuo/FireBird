@@ -10,6 +10,8 @@
 #include"CrweberIndexWebInquiry.h"
 
 #include"ChinaStock.h"
+class CChinaMarket;
+#include"PotenDailyBriefingMarket.h"
 
 // 各工作线程声明
 // 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。
@@ -33,13 +35,13 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
 // 数据库处理任务
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
-UINT ThreadCalculateDayLineRS(long startCalculatingDay); // 此工作线程返回值为11, 参数为当前最后计算日期
+UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为11, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadCalculateThisDayRS(long thisDay); // 此工作线程返回值也为12
+UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为12
 // 存储临时系统状态线程
-UINT ThreadSaveTempRTData(void);     // 此工作线程返回值为13
+UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
-UINT ThreadProcessTodayStock(void);     // 此工作线程返回值为14
+UINT ThreadProcessTodayStock(CChinaMarket* pMarket);     // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
 UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
 // 从数据库中读取日线历史数据线程
@@ -47,10 +49,10 @@ UINT ThreadLoadDayLine(CChinaStockPtr pStock);        // 此工作线程返回值为16
 // 维护日线数据库线程（尚未实现）
 UINT ThreadMaintainDayLineDataBase(void);   // 此工作线程返回值为17
 //更新股票代码数据库线程
-UINT ThreadUpdateStockCodeDB(void); // 此线程返回值为18
+UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket); // 此线程返回值为18
 //存储所选股票实时数据线程
-UINT ThreadSaveRTData(void); // 此线程返回值为19
+UINT ThreadSaveRTData(CChinaMarket* pMarket); // 此线程返回值为19
 // 更新选项数据库
-UINT ThreadUpdateOptionDB(void); // 此线程返回值为20
+UINT ThreadUpdateOptionDB(CChinaMarket* pMarket); // 此线程返回值为20
 // 存储Poten.com新的数据
-UINT ThreadSavePotenData(void); // 此线程返回值为21
+UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket); // 此线程返回值为21

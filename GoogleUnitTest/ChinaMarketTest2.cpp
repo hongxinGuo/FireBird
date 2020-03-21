@@ -33,7 +33,6 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     }
     virtual void SetUp(void) override {
-      ASSERT_FALSE(gl_fNormalMode);
       chinaMarket.CalculateTime();
       chinaMarket.ResetNeteaseRTDataInquiringIndex();
       chinaMarket.ResetNeteaseDayLineDataInquiringIndex();
@@ -42,7 +41,6 @@ namespace StockAnalysisTest {
       chinaMarket.SetSystemReady(true); // 测试市场时，默认系统已经准备好
       chinaMarket.SetPermitResetMarket(true);
       chinaMarket.SetCheckActiveStock(true);
-      EXPECT_TRUE(chinaMarket.IsResetMarket());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -52,26 +50,6 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       gl_ThreadStatus.SetSavingTempData(false);
-      chinaMarket.SetRTDataSetCleared(false);
-      chinaMarket.SetUpdateStockCodeDB(false);
-      chinaMarket.SetUpdateOptionDB(false);
-      chinaMarket.ClearChoicedRTDataQueue();
-      chinaMarket.SetResetMarket(true);
-      chinaMarket.ResetNeteaseRTDataInquiringIndex();
-      chinaMarket.ResetNeteaseDayLineDataInquiringIndex();
-      chinaMarket.ResetSinaRTDataInquiringIndex();
-      chinaMarket.ResetTengxunRTDataInquiringIndex();
-      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      chinaMarket.SetCurrentStockChanged(false);
-      chinaMarket.SetPermitResetMarket(true);
-      chinaMarket.SetCheckActiveStock(true);
-      chinaMarket.SetSystemReady(true); // 离开此测试时，默认系统已准备好。
-      for (int i = 0; i < chinaMarket.GetTotalStock(); i++) {
-        CChinaStockPtr pStock = chinaMarket.GetStock(i);
-        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
-        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
-        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
-      }
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -85,8 +63,7 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = chinaMarket.GetStock(_T("sh600000"));
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     EXPECT_CALL(chinaMarket, RunningThreadSaveDayLineOfOneStock(_))
-      .Times(0)
-      .WillOnce(Return(true));
+      .Times(0);
     chinaMarket.SaveDayLineData();
   }
 
@@ -209,5 +186,27 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(chinaMarket.TaskSaveChoicedRTData());
     chinaMarket.SetRecordRTData(false);
     chinaMarket.SetSystemReady(false);
+  }
+
+  TEST_F(CChinaMarketTest2, TestTaskSaveTempDataIntoDB) {
+    chinaMarket.SetSystemReady(true);
+    chinaMarket.SetMarketOpened(true);
+    gl_ThreadStatus.SetCalculatingRTData(false);
+    gl_ThreadStatus.SetSavingTempData(false);
+    EXPECT_CALL(chinaMarket, RunningThreadSaveTempRTData())
+      .Times(1);
+    chinaMarket.TaskSaveTempDataIntoDB(93001);
+    gl_ThreadStatus.SetSavingTempData(false);
+    EXPECT_CALL(chinaMarket, RunningThreadSaveTempRTData())
+      .Times(1);
+    chinaMarket.TaskSaveTempDataIntoDB(113559);
+    gl_ThreadStatus.SetSavingTempData(false);
+    EXPECT_CALL(chinaMarket, RunningThreadSaveTempRTData())
+      .Times(1);
+    chinaMarket.TaskSaveTempDataIntoDB(130001);
+    gl_ThreadStatus.SetSavingTempData(false);
+    EXPECT_CALL(chinaMarket, RunningThreadSaveTempRTData())
+      .Times(1);
+    chinaMarket.TaskSaveTempDataIntoDB(150559);
   }
 }
