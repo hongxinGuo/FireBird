@@ -249,8 +249,10 @@ public:
   bool HaveGuadan(INT64 lPrice);
 
   // 日线相对强度计算
-  bool CalculateDayLineRS(void);
+  bool CalculateDayLineRelativeStrong(void);
   virtual bool CalculateDayLineRS(INT64 lNumber);
+  bool CalculateDayLineRelativeStrongLogarithm(void);
+  virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
@@ -279,7 +281,7 @@ public:
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuadan(void);
-  void ReportGuadanTransaction(void);
+  virtual void ReportGuadanTransaction(void);
   void ReportGuadan(void);
 
   void PushRTData(CRTDataPtr pData);

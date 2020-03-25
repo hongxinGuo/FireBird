@@ -163,6 +163,13 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 50.50);
   }
 
+  TEST_F(CStockDayLineTest, TestGetRSLogarithm) {
+    CDayLine dl;
+    EXPECT_DOUBLE_EQ(dl.GetRSLogarithm(), 0.0);
+    dl.SetRSLogarithm(50.50);
+    EXPECT_DOUBLE_EQ(dl.GetRSLogarithm(), 50.50);
+  }
+
   TEST_F(CStockDayLineTest, TestGetTransactionNumber) {
     CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumber(), 0);

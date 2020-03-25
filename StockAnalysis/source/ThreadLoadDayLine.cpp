@@ -18,7 +18,7 @@ UINT ThreadLoadDayLine(CChinaStockPtr pStock) {
   // 装入日线数据
   pStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度
-  pStock->CalculateDayLineRS();
+  pStock->CalculateDayLineRelativeStrong();
   pStock->SetDayLineLoaded(true);
 
   return 16;
