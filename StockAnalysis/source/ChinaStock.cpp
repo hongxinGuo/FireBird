@@ -585,7 +585,7 @@ bool CChinaStock::LoadDayLineInfo(CSetDayLineInfo& setDayLineInfo) {
   return true;
 }
 
-bool CChinaStock::CalculateDayLineRS(void) {
+bool CChinaStock::CalculateDayLineRelativeStrong(void) {
   CalculateDayLineRS(3);
   CalculateDayLineRS(5);
   CalculateDayLineRS(10);
@@ -593,6 +593,50 @@ bool CChinaStock::CalculateDayLineRS(void) {
   CalculateDayLineRS(60);
   CalculateDayLineRS(120);
   return true;
+}
+
+bool CChinaStock::CalculateDayLineRelativeStrongLogarithm(void) {
+  CalculateDayLineRSLogarithm(3);
+  CalculateDayLineRSLogarithm(5);
+  CalculateDayLineRSLogarithm(10);
+  CalculateDayLineRSLogarithm(30);
+  CalculateDayLineRSLogarithm(60);
+  CalculateDayLineRSLogarithm(120);
+  return true;
+}
+
+bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vDayLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRSLogarithm();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vDayLine.at(i)->m_d3DayRSLogarithm = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vDayLine.at(i)->m_d5DayRSLogarithm = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vDayLine.at(i)->m_d10DayRSLogarithm = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vDayLine.at(i)->m_d30DayRSLogarithm = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vDayLine.at(i)->m_d60DayRSLogarithm = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vDayLine.at(i)->m_d120DayRSLogarithm = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return false;
 }
 
 bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {

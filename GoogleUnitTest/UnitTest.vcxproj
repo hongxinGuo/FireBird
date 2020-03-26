@@ -95,8 +95,6 @@
     <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StockBasicInfo.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StockCalculatedInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadCalculateDayLineRS.cpp" />
@@ -125,7 +123,8 @@
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
-    <ClCompile Include="ChinaMarketTest2.cpp" />
+    <ClCompile Include="ChinaMarketMockTest.cpp" />
+    <ClCompile Include="ChinaStockMockTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
     <ClCompile Include="CrweberIndexWebInquiryTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
@@ -205,8 +204,6 @@
     <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h" />
     <ClInclude Include="..\StockAnalysis\source\SetStockCode.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\StockBasicInfo.h" />
-    <ClInclude Include="..\StockAnalysis\source\StockCalculatedInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />

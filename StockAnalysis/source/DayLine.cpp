@@ -33,6 +33,19 @@ bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
   return true;
 }
 
+void CDayLine::CalculateRSLogarithm(long double dRS) {
+  long double dLog50 = log10((long double)50.0);
+  long double dLog100 = log10((long double)100.0);
+  long double dLog = dLog100 - dLog50;
+  if ((dRS - 50) > 0) {
+    m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
+  }
+  else if ((dRS - 50) < 0) {
+    m_dRSLogarithm = 50 - (log10(100 - dRS) - dLog50) * 50 / dLog;
+  }
+  else m_dRSLogarithm = 50;
+}
+
 void CDayLine::Reset(void) {
   m_lDay = 0;		// ÀàÐÍ
   m_time = 0;
@@ -54,10 +67,12 @@ void CDayLine::Reset(void) {
   m_lTransactionNumberAbove200000 = 0; //
 
   m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
-  m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = m_dRelativeStrong = 0;
+  m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = 0;
+  m_dRelativeStrong = m_dRSLogarithm = 0.0;
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
-  m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0;
+  m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0.0;
+  m_d3DayRSLogarithm = m_d5DayRSLogarithm = m_d10DayRSLogarithm = m_d30DayRSLogarithm = m_d60DayRSLogarithm = m_d120DayRSLogarithm = 0.0;
 }
 
 bool CDayLine::SaveData(CSetDayLine& setDayLine) {
@@ -111,6 +126,7 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
   m_llTotalValue = atoll(setDayLine.m_TotalValue);
   m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
   m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
+  CalculateRSLogarithm(m_dRelativeStrong);
   return true;
 }
 

@@ -18,6 +18,8 @@ public:
   bool LoadData(CSetDayLine& setDayLine);
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
+  void CalculateRSLogarithm(long double dRS);
+
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool IsActive(void);
 
@@ -69,6 +71,8 @@ public:
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
+  long double GetRSLogarithm(void) noexcept { return m_dRSLogarithm; }
+  void SetRSLogarithm(long double dValue) noexcept { m_dRSLogarithm = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   void SetTransactionNumber(long lValue) noexcept { m_lTransactionNumber = lValue; }
 
@@ -161,8 +165,9 @@ protected:
   long m_lUnknownVolume;
   long m_lCancelBuyVolume; // 买单撤单量
   long m_lCancelSellVolume; // 卖单撤单量
-  double m_dRelativeStrong; // 相对强弱
-
+  long double m_dRelativeStrong; // 相对强弱（最小为0， 最大为100）
+  long double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50)) )
+                          // 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50))
   long m_lTransactionNumber;
   long m_lTransactionNumberBelow5000;
   long m_lTransactionNumberBelow50000;
@@ -184,6 +189,12 @@ public:
   double m_d30DayRS;
   double m_d60DayRS;
   double m_d120DayRS;
+  double m_d3DayRSLogarithm;
+  double m_d5DayRSLogarithm;
+  double m_d10DayRSLogarithm;
+  double m_d30DayRSLogarithm;
+  double m_d60DayRSLogarithm;
+  double m_d120DayRSLogarithm;
 };
 
 typedef shared_ptr<CDayLine> CDayLinePtr;

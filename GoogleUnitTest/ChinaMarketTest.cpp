@@ -648,6 +648,14 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600000"));
+    EXPECT_FALSE(pStock->IsDayLineNeedProcess());
+    pStock->SetDayLineNeedProcess(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskProcessDayLineGetFromNeeteaseServer());
+    EXPECT_FALSE(pStock->IsDayLineNeedProcess());
+  }
+
   TEST_F(CChinaMarketTest, TestIsLoadSelectedStock) {
     EXPECT_FALSE(gl_pChinaStockMarket->IsLoadSelectedStock());
     gl_pChinaStockMarket->SetLoadSelectedStock(true);
@@ -768,18 +776,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(92801));
     EXPECT_TRUE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(150259));
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(150559));
     EXPECT_TRUE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150300));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150600));
     tm_.tm_wday = 0;
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(92859));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(92900));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150259));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150559));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150300));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150600));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
   }
 
@@ -873,8 +881,6 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetRTDataNeedCalculate(false);
   }
 
-  TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromSinaServer) {
-  }
   TEST_F(CChinaMarketTest, TestProcessTodayStock) {
     tm tm_;
     tm_.tm_wday = 1; // 星期一
@@ -1056,6 +1062,19 @@ namespace StockAnalysisTest {
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidTengxunRTData(pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromSinaServer) {
+    CString strRTData = _T("var hq_str_sh600000=\"浦发银行,10.120,9.940,10.090,10.180,9.960,10.090,10.100,42609358,428744766.000,453445,10.090,312600,10.080,173519,10.070,242800,10.060,136700,10.050,3600,10.100,3200,10.120,5100,10.130,129900,10.150,476200,10.160,2020-03-20,15:00:00,00,\";\nvar hq_str_sh600004=\"白云机场,13.010,12.900,13.300,13.350,12.990,13.300,13.320,9689808,127814773.000,4810,13.300,11100,13.290,5800,13.280,5200,13.270,10800,13.260,1600,13.320,61100,13.330,46100,13.340,114467,13.350,35000,13.360,2020-03-20,15:00:09,00,\";\nvar hq_str_sh600008=\"首创股份,3.050,3.040,3.050,3.080,3.030,3.050,3.060,22087562,67408587.000,760200,3.050,625400,3.040,570900,3.030,329000,3.020,202000,3.010,9200,3.060,112100,3.070,491897,3.080,449600,3.090,664140,3.100,2020-03-20,15:00:09,00,\";\n");
+    CWebDataPtr pData = make_shared<CWebData>();
+    pData->__TEST_SetBuffer__(strRTData);
+    gl_WebInquirer.PushSinaRTData(pData);
+    gl_pChinaStockMarket->TaskProcessWebRTDataGetFromSinaServer();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 3);
+    EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
+    for (int i = 0; i < 3; i++) {
+      CRTDataPtr pRTData = gl_RTDataContainer.PopSinaRTData();
+    }
   }
 
   TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {
