@@ -18,6 +18,8 @@ public:
   bool LoadData(CSetDayLine& setDayLine);
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
+  void CalculateRSLogarithm(long double dRS);
+
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool IsActive(void);
 

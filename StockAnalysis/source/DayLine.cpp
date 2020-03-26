@@ -33,6 +33,19 @@ bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
   return true;
 }
 
+void CDayLine::CalculateRSLogarithm(long double dRS) {
+  long double dLog50 = log10((long double)50.0);
+  long double dLog100 = log10((long double)100.0);
+  long double dLog = dLog100 - dLog50;
+  if ((dRS - 50) > 0) {
+    m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
+  }
+  else if ((dRS - 50) < 0) {
+    m_dRSLogarithm = 50 - (log10(100 - dRS) - dLog50) * 50 / dLog;
+  }
+  else m_dRSLogarithm = 50;
+}
+
 void CDayLine::Reset(void) {
   m_lDay = 0;		// ÀàÐÍ
   m_time = 0;
@@ -113,16 +126,7 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
   m_llTotalValue = atoll(setDayLine.m_TotalValue);
   m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
   m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
-  long double dLog50 = log10((long double)50.0);
-  long double dLog100 = log10((long double)100.0);
-  long double dLog = dLog100 - dLog50;
-  if ((m_dRelativeStrong - 50) > 0) {
-    m_dRSLogarithm = 50 + (log10(m_dRelativeStrong) - dLog50) * 50 / dLog;
-  }
-  else if ((m_dRelativeStrong - 50) < 0) {
-    m_dRSLogarithm = 50 - (log10(100 - m_dRelativeStrong) - dLog50) * 50 / dLog;
-  }
-  else m_dRSLogarithm = 50;
+  CalculateRSLogarithm(m_dRelativeStrong);
   return true;
 }
 
