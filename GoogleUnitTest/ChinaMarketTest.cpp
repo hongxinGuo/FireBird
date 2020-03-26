@@ -776,18 +776,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(92801));
     EXPECT_TRUE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(150259));
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskCheckMarketOpen(150559));
     EXPECT_TRUE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150300));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150600));
     tm_.tm_wday = 0;
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(92859));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(92900));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150259));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150559));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150300));
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskCheckMarketOpen(150600));
     EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
   }
 
