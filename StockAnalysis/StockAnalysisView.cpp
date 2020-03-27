@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
   ON_UPDATE_COMMAND_UI(ID_SHOW_RS30, &CStockAnalysisView::OnUpdateShowRs30)
   ON_UPDATE_COMMAND_UI(ID_SHOW_RS5, &CStockAnalysisView::OnUpdateShowRs5)
   ON_UPDATE_COMMAND_UI(ID_SHOW_RS60, &CStockAnalysisView::OnUpdateShowRs60)
+  ON_COMMAND(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnShowRsInLogarithm)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LOGARITHM, &CStockAnalysisView::OnUpdateShowRsInLogarithm)
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -68,6 +70,7 @@ CStockAnalysisView::CStockAnalysisView() {
   m_fShow30DayRS = true;
   m_fShow60DayRS = true;
   m_fShow120DayRS = true;
+  m_fShowRSInLogarithm = false;
 
   m_uIdTimer = 0;
 
@@ -485,4 +488,32 @@ void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   if (m_fShow60DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CStockAnalysisView::OnShowRsInLogarithm() {
+  // TODO: Add your command handler code here
+  if (m_fShowRSInLogarithm) {
+    m_fShowRSInLogarithm = false;
+    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrong();
+    }
+  }
+  else {
+    m_fShowRSInLogarithm = true;
+    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongLogarithm();
+    }
+  }
+}
+
+void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
+  else {
+    SysCallCmdUIEnable(pCmdUI, true);
+    if (m_fShowRSInLogarithm) SysCallCmdUISetCheck(pCmdUI, 1);
+    else SysCallCmdUISetCheck(pCmdUI, 0);
+  }
 }

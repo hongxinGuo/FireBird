@@ -23,6 +23,7 @@ public:
   bool IsShow30DayRS(void) noexcept { return m_fShow30DayRS; }
   bool IsShow60DayRS(void) noexcept { return m_fShow60DayRS; }
   bool IsShow120DayRS(void) noexcept { return m_fShow120DayRS; }
+  bool IsShowRSInLogarithm(void) noexcept { return m_fShowRSInLogarithm; }
 
   // 操作
 public:
@@ -36,6 +37,7 @@ public:
 public:
   virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
+  virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }
 
   // 重写
 public:
@@ -76,6 +78,7 @@ protected:
   bool      m_fShow30DayRS;
   bool      m_fShow60DayRS;
   bool      m_fShow120DayRS;
+  bool      m_fShowRSInLogarithm; // 使用对数坐标计算相对相对强度
 
   // 生成的消息映射函数
 protected:
@@ -99,6 +102,8 @@ public:
   afx_msg void OnUpdateShowRs30(CCmdUI* pCmdUI);
   afx_msg void OnUpdateShowRs5(CCmdUI* pCmdUI);
   afx_msg void OnUpdateShowRs60(CCmdUI* pCmdUI);
+  afx_msg void OnShowRsInLogarithm();
+  afx_msg void OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本

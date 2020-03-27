@@ -189,12 +189,6 @@ public:
   double m_d30DayRS;
   double m_d60DayRS;
   double m_d120DayRS;
-  double m_d3DayRSLogarithm;
-  double m_d5DayRSLogarithm;
-  double m_d10DayRSLogarithm;
-  double m_d30DayRSLogarithm;
-  double m_d60DayRSLogarithm;
-  double m_d120DayRSLogarithm;
 };
 
 typedef shared_ptr<CDayLine> CDayLinePtr;

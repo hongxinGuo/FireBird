@@ -615,28 +615,28 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
     }
     switch (lNumber) {
     case 3:
-    m_vDayLine.at(i)->m_d3DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
     break;
     case 5:
-    m_vDayLine.at(i)->m_d5DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
     break;
     case 10:
-    m_vDayLine.at(i)->m_d10DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
     break;
     case 30:
-    m_vDayLine.at(i)->m_d30DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
     break;
     case 60:
-    m_vDayLine.at(i)->m_d60DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
     break;
     case 120:
-    m_vDayLine.at(i)->m_d120DayRSLogarithm = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
     break;
     default:
     ASSERT(0);
     }
   }
-  return false;
+  return true;
 }
 
 bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
@@ -670,7 +670,7 @@ bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
     ASSERT(0);
     }
   }
-  return false;
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

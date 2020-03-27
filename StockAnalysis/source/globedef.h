@@ -45,15 +45,12 @@ using namespace std;
 #include<atomic>
 #include<vector>
 
-// ²âÊÔÓÃ±äÁ¿
-extern CRTDataPtr gl_TESTpRTData;
-
 extern CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 
 extern CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
 
-extern deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ
-extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ¡£
+extern deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©
+extern deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©
 
 extern atomic_bool gl_ExitingSystem; //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
 extern bool gl_fExitingCalculatingRS; // ÓÃÓÚÍ¨Öª¹¤×÷Ïß³ÌÍË³öµÄĞÅºÅ
@@ -63,21 +60,8 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ÔÚÆô¶¯Ê±Ğ
 
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
-#ifdef __GOOGLEMOCK__
-#include"MockChinaMarket.h"
-using namespace Testing;
-
-// ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
-extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
-extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
-// ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-extern shared_ptr<CMockChinaMarket> gl_pChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
-
-#else
 // ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
 extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
 extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
 extern CChinaMarketPtr gl_pChinaStockMarket; // ÊĞ³¡¡£ËùÓĞ»îÔ¾µÄ¹ÉÆ±½ÔÎ»ÓÚÆäÖĞ£¬µ¥Ò»ÊµÀı±äÁ¿£¬½öÔÊĞí´æÔÚÒ»¸öÊµÀı¡£
-
-#endif

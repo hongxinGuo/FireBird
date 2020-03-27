@@ -72,7 +72,6 @@ void CDayLine::Reset(void) {
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0.0;
-  m_d3DayRSLogarithm = m_d5DayRSLogarithm = m_d10DayRSLogarithm = m_d30DayRSLogarithm = m_d60DayRSLogarithm = m_d120DayRSLogarithm = 0.0;
 }
 
 bool CDayLine::SaveData(CSetDayLine& setDayLine) {

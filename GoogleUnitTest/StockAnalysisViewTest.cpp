@@ -137,4 +137,29 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->OnShowRs120();
     EXPECT_TRUE(s_pStockAnalysisView->IsShow120DayRS());
   }
+
+  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSInLogarithm) {
+    CCmdUI cmdUI;
+    gl_pChinaStockMarket->ResetCurrentStock();
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLogarithm());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
+    s_pStockAnalysisView->OnShowRsInLogarithm();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInLogarithm());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
+    s_pStockAnalysisView->OnShowRsInLogarithm();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLogarithm());
+  }
 }

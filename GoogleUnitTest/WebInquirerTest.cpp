@@ -8,6 +8,10 @@ namespace StockAnalysisTest {
   class CWebInquirerTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+      EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
+    }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
@@ -16,6 +20,7 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_WebInquirer.GetPotenDailyBriefingDataSize() > 0) gl_WebInquirer.PopPotenDailyBriefingData();
     }
   };
 

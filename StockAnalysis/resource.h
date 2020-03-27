@@ -78,6 +78,9 @@
 #define ID_SHOW_RS120                   32810
 #define ID_32811                        32811
 #define ID_RECORD_RT_DATA               32812
+#define ID_32813                        32813
+#define ID_32814                        32814
+#define ID_SHOW_RS_IN_LOGARITHM         32815
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -92,7 +95,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32813
+#define _APS_NEXT_COMMAND_VALUE         32816
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

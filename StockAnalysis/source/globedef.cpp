@@ -2,11 +2,12 @@
 
 #include "ChinaMarket.h"
 
-CRTDataPtr gl_TESTpRTData = nullptr;// ²âÊÔÓÃ±äÁ¿
-
 CSystemMessage gl_systemMessage; // ÏµÍ³ÏûÏ¢»ã×ÜÀà¡£´Ë±äÁ¿±ØĞë·ÅÔÚµÚÒ»Î»£¬ÆäËûÈ«¾Ö±äÁ¿³õÊ¼»¯Ê±ÓÃµ½´Ë±äÁ¿¡£
 
 CThreadStatus gl_ThreadStatus; // ÏµÍ³ÖĞµÄ¸÷ÖÖ×´Ì¬£¬±»¸÷¸ö¹¤×÷Ïß³ÌËùÊ¹ÓÃ
+
+deque<CString> gl_dequeRTStockInquire; // ÉêÇëÊµÊ±¹ÉÆ±ĞÅÏ¢µÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©
+deque<CString> gl_dequeDayLineStockInquire; // ÉêÇëÈÕÏßÀúÊ·Êı¾İµÄ¹ÉÆ±¶ÓÁĞ£¨ÉĞÎ´Ê¹ÓÃ£©
 
 atomic_bool gl_ExitingSystem = false; //  ÏµÍ³ÍË³ö±êÊ¶£¬ÓÃÓÚÖÕÖ¹ÆäËûÏß³Ì¡£
 bool gl_fExitingCalculatingRS = false; // ÓÃÓÚÍ¨Öª¹¤×÷Ïß³ÌÍË³öµÄĞÅºÅ
@@ -16,19 +17,7 @@ bool gl_fTestMode = true; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¨ÓÃÓÚÅĞ¶ÏÊÇ·ñÔÚÊµ¼ÊÏµÍ³Ö
 
 vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
-#ifdef __GOOGLEMOCK__
-#include"MockChinaMarket.h"
-using namespace Testing;
-
-// ¸÷MockÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
-CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
-CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
-CMockChinaMarketPtr gl_pChinaStockMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-
-#else
 // ¸÷ÊĞ³¡¡£½ÔÎªÎ¨Ò»ÊµÀı
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
 CChinaMarketPtr gl_pChinaStockMarket = nullptr;  // ´ËÊĞ³¡ÊµÀı±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£
-
-#endif

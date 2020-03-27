@@ -1592,4 +1592,14 @@ namespace StockAnalysisTest {
     CChinaStock stock;
     EXPECT_TRUE(stock.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
   }
+
+  TEST_F(CChinaStockTest, TestCalculateDayLineRSLogarithm) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.CalculateDayLineRSLogarithm(3));
+  }
+
+  TEST_F(CChinaStockTest, TestCalculateDayLineRS) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.CalculateDayLineRS(3));
+  }
 }

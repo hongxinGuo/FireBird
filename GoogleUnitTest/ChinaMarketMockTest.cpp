@@ -15,6 +15,7 @@
 #include"WebInquirer.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
+#include"MockChinaMarket.h"
 using namespace Testing;
 using namespace testing;
 
