@@ -14,12 +14,14 @@ UINT ThreadLoadDayLine(CChinaStockPtr pStock) {
   ASSERT(pStock != nullptr);
   ASSERT(!pStock->IsDayLineLoaded());
 
+  gl_ThreadStatus.IncreaseNumberOfRunningThread();
   pStock->ClearDayLineContainer();
   // 装入日线数据
   pStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度
   pStock->CalculateDayLineRelativeStrong();
   pStock->SetDayLineLoaded(true);
+  gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 16;
 }

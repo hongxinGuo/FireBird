@@ -27,6 +27,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
     EXPECT_EQ(gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS(), 0);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
 
     long l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -93,5 +94,19 @@ namespace StockAnalysisTest {
     }
     gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
+  }
+
+  TEST_F(ThreadStatusTest, TestIsWorkingThreadRunning) {
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
+    gl_ThreadStatus.IncreaseNumberOfRunningThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 1);
+    EXPECT_TRUE(gl_ThreadStatus.IsWorkingThreadRunning());
+    gl_ThreadStatus.DecreaseNumberOfRunningThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
+    gl_ThreadStatus.DecreaseNumberOfRunningThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
   }
 }

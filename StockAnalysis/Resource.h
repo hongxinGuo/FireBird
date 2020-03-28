@@ -88,6 +88,7 @@
 #define ID_CURRENT_DAYLINE_READING_TIME 59146
 #define ID_CURRENT_ACTIVE_STOCK         59147
 #define ID_CURRENT_TIME                 59148
+#define ID_CURRENT_RUNNING_THREAD       59149
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects

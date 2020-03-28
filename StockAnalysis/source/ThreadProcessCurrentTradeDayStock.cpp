@@ -17,6 +17,7 @@ using namespace std;
 UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
+  gl_ThreadStatus.IncreaseNumberOfRunningThread();
   char buffer[30];
   CString str;
   int i;
@@ -37,5 +38,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
     }
   }
+  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+
   return 14;
 }

@@ -21,10 +21,11 @@ namespace StockAnalysisTest {
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
-      // 这里重置下列全局智能指针为测试用Mock类（如果有的话）
-      gl_pChinaStockMarket = make_shared<CMockChinaMarket>();
+      // 下列全局智能指针为实际类
+      gl_pChinaStockMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+      EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
@@ -33,6 +34,7 @@ namespace StockAnalysisTest {
     }
 
     virtual ~TestEnvironment() {
+      while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
     }
 
     virtual void SetUp(void) override {

@@ -12,6 +12,7 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData) {
+  gl_ThreadStatus.IncreaseNumberOfRunningThread();
   if (pPotenDailyBriefingWebData->ReadWebData(500, 50, 30)) {
     CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
@@ -19,5 +20,7 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
       gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }
+  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+
   return 5;
 }

@@ -71,6 +71,7 @@ static UINT indicators[] =
   ID_CURRENT_RTDATA_READING_TIME,
   ID_CURRENT_ACTIVE_STOCK,
   ID_CURRENT_DAYLINE_READING_TIME,
+  ID_CURRENT_RUNNING_THREAD,
   ID_CURRENT_TIME,
 };
 
@@ -449,8 +450,13 @@ void CMainFrame::UpdateStatus(void) {
   // 显示网易日线历史数据读取时间（单位为毫秒）
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
+  // 更新当前工作线程数
+  sprintf_s(buffer, "%02d", gl_ThreadStatus.GetNumberOfRunningThread());
+  str = buffer;
+  SysCallSetPaneText(7, (LPCTSTR)str);
+
   //更新当地时间的显示
-  SysCallSetPaneText(7, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

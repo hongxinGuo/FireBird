@@ -19,6 +19,7 @@ CThreadStatus::CThreadStatus() {
   m_SavingTempData = false;
 
   m_SavingDayLine = 0;
+  m_NumberOfRunningThread = 0;
 }
 
 CThreadStatus::~CThreadStatus() {

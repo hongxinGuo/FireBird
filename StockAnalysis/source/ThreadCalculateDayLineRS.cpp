@@ -15,6 +15,7 @@ using namespace std;
 #include<thread>
 
 UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
+  gl_ThreadStatus.IncreaseNumberOfRunningThread();
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
   long lToday = (long)startCalculatingDay;
 
@@ -60,6 +61,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
   }
   gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
+  gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 11;
 }
@@ -73,6 +75,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
+  gl_ThreadStatus.IncreaseNumberOfRunningThread();
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
   gl_SemaphoreCalculateDayLineRS.Wait();
   if (!gl_ExitingSystem && !gl_fExitingCalculatingRS) {
@@ -80,6 +83,8 @@ UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
   }
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
   gl_SemaphoreCalculateDayLineRS.Signal();
+
+  gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 12;
 }

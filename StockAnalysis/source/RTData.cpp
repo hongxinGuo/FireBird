@@ -1011,7 +1011,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
     if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
-      TRACE(_T("未遇到正确字符'\"'"));
+      TRACE(_T("未遇到正确字符'\"'\n"));
       return false;
     }
     buffer[i] = 0x000;
@@ -1020,12 +1020,12 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
     // 跨过"\""字符
     pNeteaseWebRTData->IncreaseCurrentPos();
     if (*pNeteaseWebRTData->m_pCurrentPos != ':') {
-      TRACE(_T("未遇到正确字符':'"));
+      TRACE(_T("未遇到正确字符':'\n"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
     if (*pNeteaseWebRTData->m_pCurrentPos != ' ') {
-      TRACE(_T("未遇到正确字符' '"));
+      TRACE(_T("未遇到正确字符' '\n"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
@@ -1043,7 +1043,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
         pNeteaseWebRTData->IncreaseCurrentPos();
       }
       if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
-        TRACE(_T("未遇到正确字符'\"'"));
+        TRACE(_T("未遇到正确字符'\"'\n"));
         return false;
       }
       buffer[i] = 0x000;
