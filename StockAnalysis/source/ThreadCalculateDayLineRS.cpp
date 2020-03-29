@@ -83,7 +83,6 @@ UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
   }
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
   gl_SemaphoreCalculateDayLineRS.Signal();
-
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 12;

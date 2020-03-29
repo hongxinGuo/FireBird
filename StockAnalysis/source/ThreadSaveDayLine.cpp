@@ -29,7 +29,7 @@ UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock) {
   }
   gl_ThreadStatus.DecreaseNumberOfSavingDayLineThreads();
   gl_SaveOneStockDayLine.Signal();
-
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
+
   return 15;
 }

@@ -27,6 +27,7 @@ public:
 public:
   bool SchedulingTask(void);
   void UpdateStatus(void);
+  bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
 
 public:
   // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
@@ -35,6 +36,8 @@ public:
   virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CMDIFrameWndEx::OnSysCommand(nID, lParam); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
+  virtual void SysCallSendMessage(UINT message, WPARAM wParam, LPARAM lParam) { SendMessage(message, wParam, lParam); }
+  virtual BOOL SysCallPreTranslateMessage(MSG* pMsg) { return CMDIFrameWndEx::PreTranslateMessage(pMsg); }
   virtual void SysCallInvalidate(void) { Invalidate(); }
   virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
   virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }

@@ -22,8 +22,6 @@ public:
   virtual BOOL InitInstance();
   virtual int ExitInstance();
 
-  bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
-
   // 实现
   BOOL  m_bHiColorIcons;
 

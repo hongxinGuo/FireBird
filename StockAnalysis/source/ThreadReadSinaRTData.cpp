@@ -21,5 +21,6 @@ UINT ThreadReadSinaRTData(CSinaRTWebInquiry* pSinaRTWebData) {
     }
   }
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
+
   return 1;
 }

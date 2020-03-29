@@ -9,6 +9,12 @@ namespace StockAnalysisTest {
   class CCrweberIndexMarketTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+    }
+
+    static void TearDownTestSuite(void) {
+      while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+    }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       gl_pCrweberIndexMarket->SetDatabaseLoaded(false);

@@ -14,6 +14,7 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
+      EXPECT_EQ(gl_vMarketPtr.size(), 3);
     }
     static void TearDownTestSuite(void) {
       gl_pChinaStockMarket->SetResetMarket(true);
@@ -23,6 +24,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
+      EXPECT_EQ(gl_vMarketPtr.size(), 3);
     }
     virtual void SetUp(void) override {
       gl_ExitingSystem = false;
@@ -35,6 +37,22 @@ namespace StockAnalysisTest {
   public:
     CMockMainFrame* s_pMainFrame;
   };
+
+  TEST_F(CMainFrameTest, TestCreateMarketContainer) {
+    EXPECT_TRUE(s_pMainFrame->CreateMarketContainer());
+    EXPECT_EQ(gl_vMarketPtr.size(), 6);
+    CVirtualMarketPtr pMarket;
+    pMarket = gl_vMarketPtr.at(5);
+    gl_vMarketPtr.pop_back();
+    EXPECT_STREQ(pMarket->GetMarketID(), gl_pCrweberIndexMarket->GetMarketID());
+    pMarket = gl_vMarketPtr.at(4);
+    gl_vMarketPtr.pop_back();
+    EXPECT_STREQ(pMarket->GetMarketID(), gl_pPotenDailyBriefingMarket->GetMarketID());
+    pMarket = gl_vMarketPtr.at(3);
+    gl_vMarketPtr.pop_back();
+    EXPECT_STREQ(pMarket->GetMarketID(), gl_pChinaStockMarket->GetMarketID());
+    EXPECT_EQ(gl_vMarketPtr.size(), 3);
+  }
 
   TEST_F(CMainFrameTest, TestIsNeedResetMarket) {
     gl_pChinaStockMarket->SetResetMarket(false);
@@ -144,6 +162,34 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
 
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
+  }
+
+  TEST_F(CMainFrameTest, TestPreTranslateMessage) {
+    MSG msg;
+    msg.message = WM_KEYDOWN;
+    EXPECT_CALL(*s_pMainFrame, SysCallPreTranslateMessage(&msg))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSendMessage(_, _, _))
+      .Times(0);
+    s_pMainFrame->PreTranslateMessage(&msg);
+
+    msg.message = WM_KEYUP;
+    msg.wParam = 201;
+    msg.lParam = 102;
+    EXPECT_CALL(*s_pMainFrame, SysCallPreTranslateMessage(&msg))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSendMessage(WM_KEYUP, 201, 102))
+      .Times(1);
+    s_pMainFrame->PreTranslateMessage(&msg);
+
+    msg.message = WM_CHAR;
+    msg.wParam = 200;
+    msg.lParam = 100;
+    EXPECT_CALL(*s_pMainFrame, SysCallPreTranslateMessage(&msg))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSendMessage(WM_CHAR, 200, 100))
+      .Times(1);
+    s_pMainFrame->PreTranslateMessage(&msg);
   }
 
   TEST_F(CMainFrameTest, TestOnChar) {

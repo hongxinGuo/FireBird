@@ -108,11 +108,29 @@ CMainFrame::~CMainFrame() {
   }
 
   while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
+  while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
 
   TRACE("finally exited\n");
 }
 
+bool CMainFrame::CreateMarketContainer(void) {
+  gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
+  gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
+  gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
+  return true;
+}
+
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+  gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
+
+  if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CChinaMarket>();
+  if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
+  if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+  gl_WebInquirer.Initialize();
+
+  //生成市场容器Vector
+  CreateMarketContainer();
+
   TRACE(_T("开始重置系统\n"));
   gl_systemMessage.PushInformationMessage(_T("重置系统"));
   ASSERT(gl_pChinaStockMarket != nullptr);
@@ -527,10 +545,10 @@ void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
   // TODO: 在此添加专用代码和/或调用基类
   if ((pMsg->message == WM_CHAR) || (pMsg->message == WM_KEYUP)) {
-    SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
+    SysCallSendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
   }
 
-  return CMDIFrameWndEx::PreTranslateMessage(pMsg);
+  return SysCallPreTranslateMessage(pMsg);
 }
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {

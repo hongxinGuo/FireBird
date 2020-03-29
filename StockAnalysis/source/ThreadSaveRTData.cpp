@@ -15,5 +15,6 @@ UINT ThreadSaveRTData(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseNumberOfRunningThread();
   pMarket->SaveRTData();
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
+
   return 19;
 }

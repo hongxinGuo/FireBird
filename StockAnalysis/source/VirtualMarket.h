@@ -26,6 +26,7 @@ public:
   bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
   long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
+  CString GetMarketID(void) noexcept { return m_strMarketId; }
   time_t GetLocalTime(void) noexcept { return sm_tLocal; }
   time_t GetMarketTime(void) noexcept { return m_tMarket; }
   long GetTime(void) noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss
@@ -70,9 +71,9 @@ public:
   void __TEST_SetMarketDay(long lDay) noexcept { m_lMarketToday = lDay; }
 
 protected:
-  long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计，负值处于东十二区，正值处于西十二区）。
+  long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。
   CString m_strMarketId; // 该市场标识字符串
-  static time_t sm_tLocal; // 软件运行时的当地时间。所有的市场都是用同一个当地时间，故而为静态数据。
+  static time_t sm_tLocal; // 软件运行时的当地时间。所有的市场都使用同一个当地时间，故而为静态数据。
 
   // 以下时间日期为本市场的标准日期和时间（既非GMT时间也非软件使用时所处的当地时间，而是该市场所处地区的标准时间，如中国股市永远为东八区）。
   time_t m_tMarket; // 本市场的标准时间

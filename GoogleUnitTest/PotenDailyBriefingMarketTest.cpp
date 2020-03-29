@@ -10,6 +10,13 @@ namespace StockAnalysisTest {
   class CPotenDailyBriefingMarketTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+    }
+
+    static void TearDownTestSuite(void) {
+      while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+    }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
