@@ -47,10 +47,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
   }
 
-  TEST_F(CVirtualWebInquiryTest, TestReadWebData) {
+  TEST_F(CVirtualWebInquiryTest, TestReadWebData1) {
     m_VirtualWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData(100, 20)) << "没有正确的网址";
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestReadWebData2) {
     EXPECT_CALL(m_VirtualWebInquiry, ReadDataFromWebOnce())
       .Times(8)
       .WillOnce(Return(false))

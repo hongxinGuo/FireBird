@@ -17,9 +17,14 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
     }
     static void TearDownTestSuite(void) {
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+      gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetResetMarket(true);
       gl_pCrweberIndexMarket->SetResetMarket(true);
       gl_pPotenDailyBriefingMarket->SetResetMarket(true);
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
+      gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false); // 这里使用了实际的数据库，故而不允许更新
       gl_pChinaStockMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
       EXPECT_FALSE(gl_fNormalMode);
@@ -31,6 +36,7 @@ namespace StockAnalysisTest {
       s_pMainFrame = new CMockMainFrame;
     }
     virtual void TearDown(void) override {
+      gl_pChinaStockMarket->ClearChoiceStockContainer();
       gl_ExitingSystem = false;
       delete s_pMainFrame;
     }
@@ -65,6 +71,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CMainFrameTest, TestUpdateStatus) {
     InSequence seq;
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(4, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(5, _))
@@ -98,6 +106,8 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(8, _))
       .Times(1);
     s_pMainFrame->UpdateStatus();
+
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 
   TEST_F(CMainFrameTest, TestOnSysCommand) {
@@ -348,6 +358,8 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnKeyUp(45, 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock()->IsChoiced());
     EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
+    gl_pChinaStockMarket->ClearChoiceStockContainer();
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
   }
 
   TEST_F(CMainFrameTest, TestOnBuildResetMarket) {

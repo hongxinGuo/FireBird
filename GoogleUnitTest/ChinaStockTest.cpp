@@ -624,10 +624,20 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(false);
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-    EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() + 1);
+    if (lNumberOfStock > 0) {
+      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() + 1);
+    }
+    else {
+      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber());
+    }
     stock.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber());
+    if (lNumberOfStock > 0) {
+      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber());
+    }
+    else {
+      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() - 1);
+    }
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {

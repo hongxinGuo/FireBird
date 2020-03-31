@@ -182,9 +182,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
-    <ClCompile Include="MainFrmTest.cpp">
-      <Filter>Test源文件\Windows界面</Filter>
-    </ClCompile>
     <ClCompile Include="StockAnalysisViewTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
@@ -367,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="ChinaMarketMockTest.cpp">
       <Filter>Test源文件\China Stock Market</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrmMockTest.cpp">
+      <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -63,7 +63,8 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   catch (CInternetException* exception) {
     m_dwWebErrorCode = exception->m_dwError;
     TRACE(_T("%s net error, Error Code %d\n"), m_strConnection.GetBuffer(), exception->m_dwError);
-    fStatus = false;;
+    fStatus = false;
+    exception->Delete();
   }
   if (m_pFile != nullptr) {
     delete m_pFile;

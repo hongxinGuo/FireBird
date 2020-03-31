@@ -24,13 +24,19 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
       gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
@@ -48,6 +54,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStockMarket->SetRTDataSetCleared(false);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
@@ -59,9 +66,9 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetSinaRTDataInquiringIndex();
       gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->SetPermitResetMarket(true);
       gl_pChinaStockMarket->SetCheckActiveStock(true);
+      gl_pChinaStockMarket->SetUpdateOptionDB(false);
       gl_pChinaStockMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
@@ -73,6 +80,9 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+      //gl_pChinaStockMarket->SetCurrentStockChanged(false);
+      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
   };
 
@@ -235,6 +245,12 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(1);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+
+    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+    }
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetSinaInquiringStockStr2) {
@@ -461,14 +477,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate()) << _T("标识在查询下载股票时更新了");
+
     // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(0);
     pStock->SetDayLineEndDay(lDay);
-    for (int i = 0; i < 12000; i++) {
+    for (int i = 0; i < 6; i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
-      if (!pStock->IsDayLineNeedUpdate()) {
-        pStock->SetDayLineNeedUpdate(true);
-      }
+      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
     }
   }
 
@@ -607,6 +622,8 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->ResetCurrentStock();
     EXPECT_FALSE(pStock->IsRecordRTData());
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 
   TEST_F(CChinaMarketTest, TestClearDayLineContainer) {
@@ -650,7 +667,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestTaskProcessDayLineGetFromNeeteaseServer) {
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600666"));
     EXPECT_FALSE(pStock->IsDayLineNeedProcess());
     pStock->SetDayLineNeedProcess(true);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskProcessDayLineGetFromNeeteaseServer());
@@ -767,6 +784,15 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+  }
+
+  TEST_F(CChinaMarketTest, TestStoreChoiceStock) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
+    gl_pChinaStockMarket->StoreChoiceStock(pStock);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
+    gl_pChinaStockMarket->ClearChoiceStockContainer();
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestCheckMarketOpen) {
@@ -1087,6 +1113,60 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetChoicedRTDataSize(), 0);
   }
 
+  TEST_F(CChinaMarketTest, TestGetDayLineNeedUpdateNumber) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 6);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 7);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 17);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 16);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestGetDayLineNeedProcessNumber) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+    gl_pChinaStockMarket->SetDayLineNeedProcessNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 6);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedProcessNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 7);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedProcessNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 17);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 16);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestGetDayLineNeedSaveNumber) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 6);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedSaveNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 7);
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedSaveNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 17);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 16);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 6);
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber(6);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+  }
+
   TEST_F(CChinaMarketTest, TestSchedulingTaskPerHour) {
     EXPECT_TRUE(gl_pChinaStockMarket->SchedulingTaskPerHour(3600, 10100));
     EXPECT_FALSE(gl_pChinaStockMarket->SchedulingTaskPerHour(3599, 19000)) << _T("前面那个将计数器重置，此调用尚差一秒，故而返回假");
@@ -1131,6 +1211,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(11998)); // 这个股票是中证煤炭
     gl_pChinaStockMarket->ChangeCurrentStockToNextStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("中证煤炭后的为空，然后就转到最前面的浦发银行了");
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 
   TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock) {
@@ -1139,5 +1220,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
     gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 }

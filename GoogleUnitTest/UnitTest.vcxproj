@@ -132,7 +132,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
-    <ClCompile Include="MainFrmTest.cpp" />
+    <ClCompile Include="MainFrmMockTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />

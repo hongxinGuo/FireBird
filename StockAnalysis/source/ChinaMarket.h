@@ -235,6 +235,7 @@ public:
 
   void StoreChoiceStock(CChinaStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
   long GetChoiceStockSize(void) noexcept { return m_vStockChoice.size(); }
+  void ClearChoiceStockContainer(void) noexcept { m_vStockChoice.clear(); }
   long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
@@ -254,11 +255,11 @@ public:
   int GetDayLineNeedSaveNumber(void) { int i = m_iDayLineNeedSave; return i; }
   void SetDayLineNeedSaveNumber(int i) { m_iDayLineNeedSave = i; }
   void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { m_iDayLineNeedUpdate += iNumber; }
-  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { m_iDayLineNeedUpdate -= iNumber; }
+  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { if (m_iDayLineNeedUpdate >= iNumber) m_iDayLineNeedUpdate -= iNumber; }
   void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { m_iDayLineNeedProcess += iNumber; }
-  void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { m_iDayLineNeedProcess -= iNumber; }
+  void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { if (m_iDayLineNeedProcess >= iNumber) m_iDayLineNeedProcess -= iNumber; }
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }
-  void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave -= iNumber; }
+  void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { if (m_iDayLineNeedSave >= iNumber) m_iDayLineNeedSave -= iNumber; }
 
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }

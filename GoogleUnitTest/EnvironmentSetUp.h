@@ -34,7 +34,12 @@ namespace StockAnalysisTest {
     }
 
     virtual ~TestEnvironment() {
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
+      gl_vMarketPtr.clear();
+      gl_pChinaStockMarket = nullptr;
+      gl_pCrweberIndexMarket = nullptr;
+      gl_pPotenDailyBriefingMarket = nullptr;
     }
 
     virtual void SetUp(void) override {
@@ -72,6 +77,7 @@ namespace StockAnalysisTest {
       setStockCode.Close();
       EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
       gl_pChinaStockMarket->SetSystemReady(true);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
 
     virtual void TearDown(void) override {

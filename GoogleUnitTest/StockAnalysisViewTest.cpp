@@ -9,12 +9,18 @@ using namespace Testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
-  CMockStockAnalysisView* s_pStockAnalysisView;
   class CStockAnalysisViewTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
+    }
+
+    static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fNormalMode);
+      EXPECT_TRUE(gl_fTestMode);
+    }
+    virtual void SetUp(void) override {
       s_pStockAnalysisView = new CMockStockAnalysisView;
       EXPECT_EQ(s_pStockAnalysisView->GetClientSize().Height(), 0);
       EXPECT_EQ(s_pStockAnalysisView->GetClientSize().Width(), 0);
@@ -26,17 +32,11 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(s_pStockAnalysisView->IsShow60DayRS());
       EXPECT_TRUE(s_pStockAnalysisView->IsShow120DayRS());
     }
-
-    static void TearDownTestSuite(void) {
-      delete s_pStockAnalysisView;
-      EXPECT_FALSE(gl_fNormalMode);
-      EXPECT_TRUE(gl_fTestMode);
-    }
-    virtual void SetUp(void) override {
-    }
     virtual void TearDown(void) override {
+      delete s_pStockAnalysisView;
     }
   public:
+    CMockStockAnalysisView* s_pStockAnalysisView;
   };
 
   TEST_F(CStockAnalysisViewTest, TestOnSize) {
