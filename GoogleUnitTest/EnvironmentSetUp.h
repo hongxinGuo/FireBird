@@ -8,6 +8,7 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
+#include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
 using namespace Testing;
 
@@ -81,6 +82,7 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
   };

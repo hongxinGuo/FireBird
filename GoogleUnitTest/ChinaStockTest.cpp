@@ -767,6 +767,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetDayLineBufferLength(), str.GetLength());
     EXPECT_TRUE(stock.IsDayLineNeedProcess());
     stock.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
   }
 
   TEST_F(CChinaStockTest, TestTodayDataIsActive) {

@@ -59,6 +59,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_pChinaStockMarket->SetDayLineNeedProcessNumber(0);
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
       if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);
@@ -74,7 +75,7 @@ namespace StockAnalysisTest {
   INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,
                            testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
                                            &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-                                           ));
+                           ));
 
   TEST_P(NeteaseDayLineTest, TestProcessNeteaseDayLineData) {
     bool fSucceed = m_pStock->ProcessNeteaseDayLineData();

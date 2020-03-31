@@ -13,6 +13,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite() {
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
     }
 
     virtual void SetUp(void) override {
