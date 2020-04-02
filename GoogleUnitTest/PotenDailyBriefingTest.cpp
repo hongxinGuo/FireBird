@@ -193,6 +193,13 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.m_dLPG_VLGC44SpotTCERate, id2.m_dLPG_VLGC44SpotTCERate);
 
     setPoten.Close();
+
+    setPoten.m_strFilter = _T("[Day] = ") + strDay;
+    setPoten.Open();
+    setPoten.m_pDatabase->BeginTrans();
+    setPoten.Delete();
+    setPoten.m_pDatabase->CommitTrans();
+    setPoten.Close();
   }
 
   struct PotenNextString {
@@ -248,7 +255,7 @@ namespace StockAnalysisTest {
                                            , &PotenNextStringData4, &PotenNextStringData5, &PotenNextStringData6
                                            , &PotenNextStringData7, &PotenNextStringData8, &PotenNextStringData9
                                            , &PotenNextStringData10
-                                           ));
+                           ));
 
   TEST_P(PotenNextStringTest, TestPotenNextString) {
     CPotenDailyBriefing Index;
@@ -314,7 +321,7 @@ namespace StockAnalysisTest {
                                            , &PotenSkipOverStringData4, &PotenSkipOverStringData5, &PotenSkipOverStringData6
                                            //    , &PotenSkipOverStringData7, &PotenSkipOverStringData8, &PotenSkipOverStringData9
                                             //   , &PotenSkipOverStringData10
-                                           ));
+                           ));
 
   TEST_P(PotenSkipOverStringTest, TestPotenSkipOverString) {
     CPotenDailyBriefing Index;

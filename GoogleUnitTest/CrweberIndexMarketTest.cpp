@@ -3,6 +3,7 @@
 #include"globedef.h"
 #include"ChinaStock.h"
 #include"CrweberIndexMarket.h"
+#include"WebInquirer.h"
 
 // CVirtualMarket无法生成实例，故而其函数的测试放在这里。
 namespace StockAnalysisTest {
@@ -122,12 +123,13 @@ namespace StockAnalysisTest {
   TEST_F(CCrweberIndexMarketTest, TestSchedulingTaskPer1Minute) {
     EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(60, 90000));
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
-    gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    //gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
     EXPECT_FALSE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(59, 90000)) << "差一秒未到执行时间";
-    EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
-    gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
+    EXPECT_CALL(*gl_pCrweberIndexWebInquiry, StartReadingThread).Times(1);
     EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(1, 90000));
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
+    EXPECT_TRUE(gl_pCrweberIndexWebInquiry->IsReadingWebData()) << _T("调用Mock类时没有重置此标识\n");
+    gl_pCrweberIndexWebInquiry->SetReadingWebData(false);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskProcessWebRTDataGetFromCrweberdotcom) {

@@ -141,10 +141,15 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestLoadDatabase) {
+    CSetPotenDailyBriefing setPoten;
+
     EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetDatabaseSize(), 0);
     gl_pPotenDailyBriefingMarket->LoadDatabase();
     EXPECT_GT(gl_pPotenDailyBriefingMarket->GetDatabaseSize(), 0);
-    EXPECT_GT(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), 20180411);
+    setPoten.Open();
+    setPoten.MoveLast();
+    EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), setPoten.m_Day);
+    setPoten.Close();
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerSecond) {
@@ -158,9 +163,12 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerMinute) {
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(60, 10000));
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(59, 11000));
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(1, 11000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+    gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestChoiceNextInquiringDay) {

@@ -199,7 +199,7 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
     m_mapDataLoadedDays.at(pPotenDailyBriefing->GetDay()) = true;
     if (setPotenDailyBriefing.m_Day >= m_lCurrentInquiringDay) {
-      m_lCurrentInquiringDay = GetNextDay(setPotenDailyBriefing.m_Day);
+      m_lCurrentInquiringDay = setPotenDailyBriefing.m_Day;
     }
     setPotenDailyBriefing.MoveNext();
   }

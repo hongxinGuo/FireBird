@@ -10,14 +10,35 @@ int gl_cMaxSavingOneDayLineThreads = 4;
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
 CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
 CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
+
+#ifdef __GOOGLEMOCK__
+#include"MockNeteaseDayLineWebInquiry.h"
+#include"MockPotenDailyBriefingWebInquiry.h"
+#include"MockCrweberIndexWebInquiry.h"
+using namespace Testing;
+
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
+CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
+CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
+CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
+#else
+#include"NeteaseDayLineWebInquiry.h"
+#include"PotenDailyBriefingWebInquiry.h"
+#include"CrweberIndexWebInquiry.h"
+
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
-CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
 CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
+CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
+#endif
 
 CWebInquirer::CWebInquirer(void) {
 }
@@ -28,14 +49,25 @@ CWebInquirer::~CWebInquirer(void) {
 void CWebInquirer::Initialize(void) {
   gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
   gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+#ifdef __GOOGLEMOCK__
+  gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pNeteaseDayLineWebInquiryFourth = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pNeteaseDayLineWebInquiryFifth = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pNeteaseDayLineWebInquirySixth = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
+  gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
+#else
   gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryFourth = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryFifth = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquirySixth = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
   gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
+  gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
+#endif
 }
 
 bool CWebInquirer::GetNeteaseDayLineData(void) {

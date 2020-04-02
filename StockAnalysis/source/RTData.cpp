@@ -838,7 +838,6 @@ bool CRTData::SecceedReadingNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   long lSectionLength = 0;
   CString strTest;
 
-#ifdef DEBUG
   int i = 0;
   while ((*pTestCurrentPos != '}') && (i < 1900)) {
     bufferTest[i++] = *pTestCurrentPos++;
@@ -852,7 +851,6 @@ bool CRTData::SecceedReadingNeteaseData(CWebDataPtr pNeteaseWebRTData) {
     gl_systemMessage.PushInnerSystemInformationMessage(strTest);
     return false; // 整个数据出现错误，后面的皆抛掉
   }
-#endif //
 
   char ch = *(pSectionPos + lSectionLength - 1);
   ASSERT(ch == '}');

@@ -15,10 +15,11 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetResetMarket(true);
       gl_pCrweberIndexMarket->SetResetMarket(true);
@@ -36,6 +37,7 @@ namespace StockAnalysisTest {
       s_pMainFrame = new CMockMainFrame;
     }
     virtual void TearDown(void) override {
+      gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->ClearChoiceStockContainer();
       gl_ExitingSystem = false;
       delete s_pMainFrame;
@@ -170,8 +172,6 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false));
     s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
-
-    gl_ThreadStatus.SetCalculatingDayLineRS(false);
   }
 
   TEST_F(CMainFrameTest, TestPreTranslateMessage) {
@@ -360,6 +360,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
     gl_pChinaStockMarket->ClearChoiceStockContainer();
     EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
   }
 
   TEST_F(CMainFrameTest, TestOnBuildResetMarket) {

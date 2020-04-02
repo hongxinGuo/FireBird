@@ -9,6 +9,7 @@
 #include"ChinaStock.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
+#include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockChinaMarket.h"
 using namespace Testing;
 
@@ -31,7 +32,27 @@ namespace StockAnalysisTest {
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 
-      gl_WebInquirer.Initialize();
+      gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
+      gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+#ifdef __GOOGLEMOCK__
+      gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFourth = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFifth = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySixth = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
+      gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
+#else
+      gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFourth = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFifth = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySixth = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
+      gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
+#endif
     }
 
     virtual ~TestEnvironment() {
@@ -82,6 +103,16 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+      gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
+      gl_pPotenDailyBriefingWebInquiry = nullptr;
+      gl_pCrweberIndexWebInquiry = nullptr;
+
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }

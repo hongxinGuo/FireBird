@@ -80,11 +80,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.GetWebData());
 
     m_VirtualWebInquiry.SetReadingWebData(false);
+    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
     EXPECT_CALL(m_VirtualWebInquiry, PrepareNextInquiringStr())
       .WillOnce(Return(true));
     EXPECT_CALL(m_VirtualWebInquiry, StartReadingThread())
       .Times(1);
     EXPECT_TRUE(m_VirtualWebInquiry.GetWebData());
+    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
   }
 
   TEST_F(CVirtualWebInquiryTest, TestStartReadingThread) {

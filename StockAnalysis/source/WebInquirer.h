@@ -7,29 +7,46 @@
 #pragma once
 
 #include"globedef.h"
-
-#include"SinaRTWebInquiry.h"
-#include"TengxunRTWebInquiry.h"
-#include"NeteaseDayLineWebInquiry.h"
-#include"NeteaseRTWebInquiry.h"
-#include"CrweberIndexWebInquiry.h"
-#include"PotenDailyBriefingWebInquiry.h"
-
 #include"CrweberIndex.h"
 
 extern int gl_cMaxSavingOneDayLineThreads;
 
+#include"SinaRTWebInquiry.h"
+#include"TengxunRTWebInquiry.h"
+#include"NeteaseRTWebInquiry.h"
+
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
+
+#ifdef __GOOGLEMOCK__
+#include"MockNeteaseDayLineWebInquiry.h"
+#include"MockPotenDailyBriefingWebInquiry.h"
+#include"MockCrweberIndexWebInquiry.h"
+using namespace Testing;
+
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // 网易日线历史数据
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // 网易日线历史数据
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // 网易日线历史数据
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth; // 网易日线历史数据
+extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth; // 网易日线历史数据
+extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
+extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
+#else
+#include"NeteaseDayLineWebInquiry.h"
+#include"PotenDailyBriefingWebInquiry.h"
+#include"CrweberIndexWebInquiry.h"
+
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth; // 网易日线历史数据
-extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
+extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
+#endif
 
 class CWebInquirer : public CObject {
 public:

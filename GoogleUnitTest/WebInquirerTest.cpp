@@ -10,6 +10,10 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
+      EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
+    }
+
+    static void TearDownTestSuite(void) {
     }
 
     virtual void SetUp(void) override {
@@ -21,6 +25,7 @@ namespace StockAnalysisTest {
       // clearup
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_WebInquirer.GetPotenDailyBriefingDataSize() > 0) gl_WebInquirer.PopPotenDailyBriefingData();
+      EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
     }
   };
 
@@ -86,6 +91,7 @@ namespace StockAnalysisTest {
     CWebDataPtr pWebData = make_shared<CWebData>();
     CWebDataPtr pWebData2;
     pWebData->m_lTime = 101010;
+    EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing());
     gl_WebInquirer.PushPotenDailyBriefingData(pWebData);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);
     pWebData2 = gl_WebInquirer.PopPotenDailyBriefingData();

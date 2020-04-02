@@ -23,13 +23,13 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
-      //gl_pChinaStockMarket->SetCurrentStockChanged(false);
+      gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
@@ -239,6 +239,32 @@ namespace StockAnalysisTest {
     str2 = str.Left(8);
     EXPECT_EQ(str2.Compare(strCompare), 0);
     gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+  }
+
+  TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb) {
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySecond, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryThird, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFifth, StartReadingThread())
+      .Times(0);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySixth, StartReadingThread())
+      .Times(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(1);
+    EXPECT_TRUE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+
+    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+    }
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetSinaInquiringStockStr2) {
