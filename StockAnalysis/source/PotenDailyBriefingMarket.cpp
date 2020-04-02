@@ -62,7 +62,7 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  SchedulingTaskPerMinute(lSecond, lCurrentTime);
+  SchedulingTaskPer10Minute(lSecond, lCurrentTime);
   SchedulingTaskPer10Second(lSecond, lCurrentTime);
 
   return true;
@@ -79,12 +79,12 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCu
   return false;
 }
 
-bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
-  static int s_i1MinuteCounter = 59;
+bool CPotenDailyBriefingMarket::SchedulingTaskPer10Minute(long lSecond, long lCurrentTime) {
+  static int s_i1MinuteCounter = 599;
 
   s_i1MinuteCounter -= lSecond;
   if (s_i1MinuteCounter < 0) {
-    s_i1MinuteCounter = 59;
+    s_i1MinuteCounter = 599;
     TaskResetMarket(lCurrentTime);
 
     TaskLoadDataBase();

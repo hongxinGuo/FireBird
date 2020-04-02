@@ -219,24 +219,9 @@ bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
   //long lCurrentTime2 = GetTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
-  SchedulingTaskPerHour(lSecond, lCurrentTime);
-  SchedulingTaskPer5Minute(lSecond, lCurrentTime);
   SchedulingTaskPerMinute(lSecond, lCurrentTime);
-  SchedulingTaskPer10Second(lSecond, lCurrentTime);
 
   return true;
-}
-
-bool CVirtualMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) {
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  m_i10SecondCounter -= lSecond;
-  if (m_i10SecondCounter < 0) {
-    m_i10SecondCounter = 9; // 重置计数器
-    return true;
-  }
-  else {
-    return false;
-  }
 }
 
 bool CVirtualMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
@@ -245,30 +230,6 @@ bool CVirtualMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
   if (m_i1MinuteCounter < 0) {
     m_i1MinuteCounter = 59; // 重置计数器
     TaskResetMarketFlagAtMidnight(lCurrentTime);
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-bool CVirtualMarket::SchedulingTaskPer5Minute(long lSecond, long lCurrentTime) {
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  m_i5MinuteCounter -= lSecond;
-  if (m_i5MinuteCounter < 0) {
-    m_i5MinuteCounter = 299; // 重置计数器
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-bool CVirtualMarket::SchedulingTaskPerHour(long lSecond, long lCurrentTime) {
-  // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即现执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  m_i1HourCounter -= lSecond;
-  if (m_i1HourCounter < 0) {
-    m_i1HourCounter = 3599; // 重置计数器
     return true;
   }
   else {

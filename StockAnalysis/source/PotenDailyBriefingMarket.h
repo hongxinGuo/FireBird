@@ -20,7 +20,7 @@ public:
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Second(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPerMinute(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer10Minute(long lSecond, long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   void Reset(void);
 

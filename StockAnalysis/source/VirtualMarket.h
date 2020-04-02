@@ -20,10 +20,7 @@ public:
   virtual void ResetMarket(void);
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-  bool SchedulingTaskPer10Second(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
   bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-  bool SchedulingTaskPer5Minute(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
 
   long GetTimeZoneOffset(void) noexcept { return m_lTimeZoneOffset; }
   CString GetMarketID(void) noexcept { return m_strMarketId; }
