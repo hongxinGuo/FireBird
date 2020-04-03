@@ -28,7 +28,8 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
   m_lCurrentInquiringDay = 20180411; //
-  for (long l = 20180411; l <= GetDay(); l = GetNextDay(l)) {
+  m_lToday = GetDay();
+  for (long l = 20180411; l <= m_lToday; l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
     if (!IsWorkingDay(l)) {
       m_mapDataLoadedDays.at(l) = true; // 星期六和星期日poten.com都没有数据，故而无需查询。
@@ -62,40 +63,50 @@ void CPotenDailyBriefingMarket::ResetMarket(void) {
 }
 
 bool CPotenDailyBriefingMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  SchedulingTaskPer10Minute(lSecond, lCurrentTime);
-  SchedulingTaskPer10Second(lSecond, lCurrentTime);
+  SchedulingTaskPerHour(lSecond, lCurrentTime);
+  SchedulingTaskPerMinute(lSecond, lCurrentTime);
 
   return true;
 }
 
-bool CPotenDailyBriefingMarket::SchedulingTaskPer10Second(long lSecond, long lCurrentTime) {
-  static int s_i10SeocndCounter = 9;
-
-  s_i10SeocndCounter -= lSecond;
-  if (s_i10SeocndCounter < 0) {
-    s_i10SeocndCounter = 9;
-    return true;
-  }
-  return false;
-}
-
-bool CPotenDailyBriefingMarket::SchedulingTaskPer10Minute(long lSecond, long lCurrentTime) {
-  static int s_i1MinuteCounter = 599;
+bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurrentTime) {
+  static int s_i1MinuteCounter = 59;
 
   s_i1MinuteCounter -= lSecond;
   if (s_i1MinuteCounter < 0) {
-    s_i1MinuteCounter = 599;
+    s_i1MinuteCounter = 59;
     TaskResetMarket(lCurrentTime);
 
     TaskLoadDataBase();
 
     TaskProcessData();
+
+    if (m_lCurrentInquiringDay < m_lToday) {
+      ChoiceNextInquiringDay();
+    }
+
     TaskCheckTodayDataUpdated();
-    TaskInquiringData();
+    if (m_lCurrentInquiringDay < m_lToday) {
+      TaskInquiringData();
+    }
 
     return true;
   }
   else return false;
+}
+
+bool CPotenDailyBriefingMarket::SchedulingTaskPerHour(long lSecond, long lCurrentTime) {
+  static int s_i1MinuteCounter = 3599;
+
+  s_i1MinuteCounter -= lSecond;
+  if (s_i1MinuteCounter < 0) {
+    s_i1MinuteCounter = 3599;
+    if (m_lCurrentInquiringDay == m_lToday) {
+      TaskInquiringData();
+    }
+    return true;
+  }
+  return false;
 }
 
 bool CPotenDailyBriefingMarket::TaskProcessData(void) {
@@ -128,13 +139,6 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
         TRACE(_T("没有%d日的poten数据\n"), pWebData->m_lTime / 1000000);
       }
     }
-  }
-
-  if (m_lCurrentInquiringDay < GetDay()) {
-    ChoiceNextInquiringDay();
-  }
-  else if (fGetData) {
-    ChoiceNextInquiringDay();
   }
 
   return true;
@@ -226,7 +230,7 @@ void CPotenDailyBriefingMarket::ChoiceNextInquiringDay(void) {
 
   do {
     lNextInquiringDay = GetNextDay(lNextInquiringDay);
-  } while ((lNextInquiringDay <= GetDay()) && m_mapDataLoadedDays.at(lNextInquiringDay));
+  } while ((lNextInquiringDay < m_lToday) && m_mapDataLoadedDays.at(lNextInquiringDay));
 
   SetCurrentInquiringDay(lNextInquiringDay);
 }

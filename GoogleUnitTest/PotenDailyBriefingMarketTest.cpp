@@ -156,17 +156,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerSecond(1, 10000));
   }
 
-  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPer10Second) {
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Second(10, 10000));
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Second(9, 11000));
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Second(1, 11000));
-  }
-
-  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPer10Minute) {
+  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerMinute) {
     EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Minute(600, 10000));
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Minute(599, 11000));
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPer10Minute(1, 11000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(60, 10000));
+    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(59, 11000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(1, 11000));
     EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
     gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
   }

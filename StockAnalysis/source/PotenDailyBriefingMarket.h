@@ -19,8 +19,8 @@ public:
   virtual void ResetMarket(void) override;
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer10Second(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer10Minute(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPerMinute(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPerHour(long lSecond, long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   void Reset(void);
 
@@ -57,6 +57,7 @@ protected:
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
   map<long, bool> m_mapDataLoadedDays;
   long m_lCurrentInquiringDay;
+  long m_lToday;
 };
 
 typedef shared_ptr<CPotenDailyBriefingMarket> CPotenDailyBriefingMarketPtr;
