@@ -31,10 +31,19 @@ namespace StockAnalysisTest {
       gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
+    }
+    virtual ~TestEnvironment() {
+      while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
+      gl_vMarketPtr.clear();
+      gl_pChinaStockMarket = nullptr;
+      gl_pCrweberIndexMarket = nullptr;
+      gl_pPotenDailyBriefingMarket = nullptr;
+    }
 
+    virtual void SetUp(void) override {
+#ifdef __GOOGLEMOCK__
       gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
-#ifdef __GOOGLEMOCK__
       gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
@@ -44,6 +53,8 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 #else
+      gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
+      gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
       gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
@@ -53,18 +64,7 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 #endif
-    }
 
-    virtual ~TestEnvironment() {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr);
-      while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
-      gl_vMarketPtr.clear();
-      gl_pChinaStockMarket = nullptr;
-      gl_pCrweberIndexMarket = nullptr;
-      gl_pPotenDailyBriefingMarket = nullptr;
-    }
-
-    virtual void SetUp(void) override {
       CChinaStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
@@ -113,6 +113,7 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
 
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }

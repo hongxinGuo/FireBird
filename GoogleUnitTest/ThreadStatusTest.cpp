@@ -10,11 +10,16 @@ namespace StockAnalysisTest {
   class ThreadStatusTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    }
     virtual void SetUp(void) override {
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
     }
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
     }
   };
 

@@ -161,5 +161,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
     s_pStockAnalysisView->OnShowRsInLogarithm();
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLogarithm());
+
+    gl_pChinaStockMarket->ResetCurrentStock();
   }
 }

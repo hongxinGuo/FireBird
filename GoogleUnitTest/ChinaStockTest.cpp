@@ -18,6 +18,9 @@ namespace StockAnalysisTest {
   class CChinaStockTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+    }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
     }

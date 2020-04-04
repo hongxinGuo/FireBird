@@ -172,6 +172,9 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false));
     s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
+
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
+
   }
 
   TEST_F(CMainFrameTest, TestPreTranslateMessage) {

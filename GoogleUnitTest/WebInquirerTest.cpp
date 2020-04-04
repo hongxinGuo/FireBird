@@ -14,6 +14,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite(void) {
+      EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
     }
 
     virtual void SetUp(void) override {
