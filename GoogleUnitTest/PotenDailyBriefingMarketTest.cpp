@@ -11,15 +11,18 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
+      EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
     }
 
     static void TearDownTestSuite(void) {
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
     }
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
+      EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
       EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsDatabaseLoaded());
       EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), 20180411);
       EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsPermitResetMarket());
@@ -31,6 +34,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
       gl_pPotenDailyBriefingMarket->SetDatabaseLoaded(false);
       gl_pPotenDailyBriefingMarket->SetPermitResetMarket(true);
       gl_pPotenDailyBriefingMarket->SetReadyToRun(true);
@@ -96,18 +100,6 @@ namespace StockAnalysisTest {
     gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetPrevDay(gl_pPotenDailyBriefingMarket->GetDay()));
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
-
-    gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(true);
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetNextDay(gl_pPotenDailyBriefingMarket->GetDay()));
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetDay());
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetPrevDay(gl_pPotenDailyBriefingMarket->GetDay()));
-    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
-    gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestTaskLoadDatabase) {
@@ -120,11 +112,17 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingMarketTest, TestTaskInquiringData) {
     gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(true);
     EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing()) << _T("此标识无法设置，故而永远为假");
-    gl_pPotenDailyBriefingMarket->SetDatabaseLoaded(true);
-    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->TaskInquiringData());
     gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
     gl_pPotenDailyBriefingMarket->SetDatabaseLoaded(false);
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(0);
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->TaskInquiringData());
+    gl_pPotenDailyBriefingMarket->SetDatabaseLoaded(true);
+    EXPECT_FALSE(gl_WebInquirer.IsReadingPotenDailyBriefing()) << _T("此标识无法设置，故而永远为假");
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskInquiringData());
+    EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
+
+    gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestSetCurrentInquiringDay) {
@@ -157,10 +155,35 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerMinute) {
+    gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
+    EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
     EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(60, 10000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+    gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(59, 11000));
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerMinute(1, 11000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+    gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
+  }
+
+  TEST_F(CPotenDailyBriefingMarketTest, TestSchedulingTaskPerHour) {
+    gl_pPotenDailyBriefingMarket->SetDatabaseLoaded(true);
+    gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
+    EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData());
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(1);
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(0);
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(3600, 10000));
+    EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetDay());
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(3600, 10000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
+    gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
+    EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
+    EXPECT_FALSE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(3599, 11000));
+    EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(1, 11000));
     EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
     gl_pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
   }
