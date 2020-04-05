@@ -18,8 +18,12 @@ void CSystemDeque::Display(COutputList* pOutputList, CString strTime) {
   for (int i = 0; i < lTotal; i++) {
     str = PopMessage();
     str2 = strTime + _T(": ") + str;
-    pOutputList->AddString(str2);
+    SysCallOutputListAddString(pOutputList, str2);
   }
+}
+
+void CSystemDeque::SysCallOutputListAddString(COutputList* pOutputList, CString str) {
+  pOutputList->AddString(str);
 }
 
 void CSystemDeque::PushMessage(CString str) {

@@ -5,46 +5,36 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
   time_t tt;
   tm tm_;
   int year, month, day, hour, minute, second;
-  try {
-    sscanf_s(buffer, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-    tm_.tm_year = year - 1900;
-    tm_.tm_mon = month - 1;
-    tm_.tm_mday = day;
-    tm_.tm_hour = hour;
-    tm_.tm_min = minute;
-    tm_.tm_sec = second;
-    tm_.tm_isdst = 0;
-    tt = mktime(&tm_);
 
-    return tt;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertBufferToTime异常\n"));
-    return 0;
-  }
+  sscanf_s(buffer, strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+  tm_.tm_year = year - 1900;
+  tm_.tm_mon = month - 1;
+  tm_.tm_mday = day;
+  tm_.tm_hour = hour;
+  tm_.tm_min = minute;
+  tm_.tm_sec = second;
+  tm_.tm_isdst = 0;
+  tt = mktime(&tm_);
+
+  return tt;
 }
 
 time_t ConvertStringToTime(CString strFormat, CString strTime) {
   time_t tt;
   tm tm_;
   int year, month, day, hour, minute, second;
-  try {
-    sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
-    tm_.tm_year = year - 1900;
-    tm_.tm_mon = month - 1;
-    tm_.tm_mday = day;
-    tm_.tm_hour = hour;
-    tm_.tm_min = minute;
-    tm_.tm_sec = second;
-    tm_.tm_isdst = 0;
-    tt = mktime(&tm_);
 
-    return tt;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertBufferToTime异常\n"));
-    return 0;
-  }
+  sscanf_s(strTime.GetBuffer(), strFormat.GetBuffer(), &year, &month, &day, &hour, &minute, &second);
+  tm_.tm_year = year - 1900;
+  tm_.tm_mon = month - 1;
+  tm_.tm_mday = day;
+  tm_.tm_hour = hour;
+  tm_.tm_min = minute;
+  tm_.tm_sec = second;
+  tm_.tm_isdst = 0;
+  tt = mktime(&tm_);
+
+  return tt;
 }
 
 time_t FormatToTTime(long lDay, long lTime) {
@@ -92,15 +82,9 @@ CString ConvertValueToString(long lValue, int iDividend) {
   double d = ((double)lValue) / iDividend;
   CString str;
 
-  try {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    return str;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertValuetoString异常\n"));
-    return _T("");
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+  return str;
 }
 
 CString ConvertValueToString(int iValue, int iDividend) {
@@ -108,16 +92,10 @@ CString ConvertValueToString(int iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  try {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
 
-    return str;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertValuetoString异常\n"));
-    return _T("");
-  }
+  return str;
 }
 
 CString ConvertValueToString(INT64 iValue, int iDividend) {
@@ -125,15 +103,9 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  try {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    return str;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertValuetoString异常\n"));
-    return _T("");
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+  return str;
 }
 
 CString ConvertValueToString(double dValue, int iDividend) {
@@ -141,35 +113,9 @@ CString ConvertValueToString(double dValue, int iDividend) {
   double d = dValue / iDividend;
   CString str;
 
-  try {
-    sprintf_s(buffer, "%.3f", d);
-    str = buffer;
-    return str;
-  }
-  catch (exception&) {
-    TRACE(_T("ConvertValuetoString异常\n"));
-    return _T("");
-  }
-}
-
-double GetValue(char* buffer) {
-  try {
-    return atof(buffer);
-  }
-  catch (exception&) {
-    TRACE(_T("CDayline::SetValue exception\n"));
-    return(0.0);
-  }
-}
-
-double GetValue(CString strBuffer) {
-  try {
-    return atof(strBuffer);
-  }
-  catch (exception&) {
-    TRACE(_T("CDayline::SetValue exception\n"));
-    return(0.0);
-  }
+  sprintf_s(buffer, "%.3f", d);
+  str = buffer;
+  return str;
 }
 
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber) {

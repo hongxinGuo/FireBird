@@ -11,6 +11,6 @@ namespace Testing {
     MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));
     MOCK_METHOD(CString, GetNextInquiringMiddleStr, (long, bool), (override));
     MOCK_METHOD(void, StartReadingThread, (), (override));
-    MOCK_METHOD(bool, ReadDataFromWebOnce, (), (override));
+    MOCK_METHOD(UINT, ReadWebFile, (), (override));
   };
 }

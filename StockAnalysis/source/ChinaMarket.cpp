@@ -1035,7 +1035,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
       if (siCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
         gl_WebInquirer.GetNeteaseRTData(); // 目前不使用此功能。
-        siCountDownNeteaseNumber = 0;
+        siCountDownNeteaseNumber = 5;
       }
       else siCountDownNeteaseNumber--;
     }

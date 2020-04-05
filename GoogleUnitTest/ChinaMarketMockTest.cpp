@@ -218,4 +218,33 @@ namespace StockAnalysisTest {
       .Times(1);
     chinaMarket.TaskSaveTempDataIntoDB(150559);
   }
+
+  TEST_F(CChinaMarketMockTest, TestProcessTodayStock) {
+    tm tm_;
+    tm_.tm_wday = 1; // 星期一
+    chinaMarket.__TEST_SetMarketTM(tm_);
+    chinaMarket.SetSystemReady(false);
+    chinaMarket.SetTodayStockProcessed(false);
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150359));
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150400));
+    EXPECT_FALSE(chinaMarket.IsTodayStockProcessed());
+    chinaMarket.SetSystemReady(true);
+    chinaMarket.SetTodayStockProcessed(true);
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150359));
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150400));
+    EXPECT_TRUE(chinaMarket.IsTodayStockProcessed());
+    chinaMarket.SetSystemReady(true);
+    chinaMarket.SetTodayStockProcessed(false);
+    EXPECT_CALL(chinaMarket, RunningThreadProcessTodayStock)
+      .Times(1);
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150359));
+    EXPECT_TRUE(chinaMarket.TaskProcessTodayStock(150400));
+    EXPECT_TRUE(chinaMarket.IsTodayStockProcessed());
+
+    tm_.tm_wday = 0; // 星期日
+    chinaMarket.__TEST_SetMarketTM(tm_);
+    chinaMarket.SetTodayStockProcessed(false);
+    EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150400));
+    EXPECT_FALSE(chinaMarket.IsTodayStockProcessed()) << _T("休息日不处理");
+  }
 }

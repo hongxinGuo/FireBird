@@ -54,18 +54,43 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualWebInquiryTest, TestReadWebData2) {
-    EXPECT_CALL(m_VirtualWebInquiry, ReadDataFromWebOnce())
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(8)
-      .WillOnce(Return(false))
-      .WillOnce(Return(false))
-      .WillOnce(Return(true))
-      .WillOnce(Return(false))
-      .WillOnce(Return(true))
-      .WillRepeatedly(Return(false));
+      .WillOnce(Return(0))
+      .WillOnce(Return(0))
+      .WillOnce(Return(1024))
+      .WillOnce(Return(0))
+      .WillOnce(Return(1024))
+      .WillRepeatedly(Return(0));
     m_VirtualWebInquiry.SetReadingWebData(true);
     m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
     EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestReadDataFromWebOnce) {
+    m_VirtualWebInquiry.SetByteReaded(0);
+    m_VirtualWebInquiry.ResetCurrentPos();
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
+      .Times(1)
+      .WillOnce(Return(0));
+    EXPECT_FALSE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
+    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 0);
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
+      .Times(1)
+      .WillOnce(Return(1024));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024);
+    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 1024);
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
+      .Times(2)
+      .WillOnce(Return(1024))
+      .WillOnce(Return(128));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024 + 1024 + 128);
+    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 1024 + 1024 + 128);
   }
 
   TEST_F(CVirtualWebInquiryTest, TestGetWebData) {

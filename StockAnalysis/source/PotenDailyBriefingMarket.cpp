@@ -12,7 +12,6 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
     TRACE("Poten市场变量只允许存在一个实例\n");
-    ASSERT(0);
   }
 
   m_strMarketId = _T("Poten.com");

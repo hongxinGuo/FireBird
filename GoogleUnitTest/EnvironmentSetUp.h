@@ -8,6 +8,9 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
+#include"MockSinaRTWebInquiry.h"
+#include"MockTengxunRTWebInquiry.h"
+#include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockChinaMarket.h"
@@ -23,6 +26,11 @@ namespace StockAnalysisTest {
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
+    }
+    virtual ~TestEnvironment() {
+    }
+
+    virtual void SetUp(void) override {
       // 下列全局智能指针为实际类
       gl_pChinaStockMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
@@ -31,19 +39,10 @@ namespace StockAnalysisTest {
       gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
-    }
-    virtual ~TestEnvironment() {
-      while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
-      gl_vMarketPtr.clear();
-      gl_pChinaStockMarket = nullptr;
-      gl_pCrweberIndexMarket = nullptr;
-      gl_pPotenDailyBriefingMarket = nullptr;
-    }
-
-    virtual void SetUp(void) override {
 #ifdef __GOOGLEMOCK__
-      gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
-      gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+      gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
+      gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
+      gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
       gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
@@ -55,6 +54,7 @@ namespace StockAnalysisTest {
 #else
       gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
+      gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
       gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
@@ -104,6 +104,9 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+      gl_pSinaRTWebInquiry = nullptr;
+      gl_pTengxunRTWebInquiry = nullptr;
+      gl_pNeteaseRTWebInquiry = nullptr;
       gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
@@ -116,6 +119,11 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
+      while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
+      gl_vMarketPtr.clear();
+      gl_pChinaStockMarket = nullptr;
+      gl_pCrweberIndexMarket = nullptr;
+      gl_pPotenDailyBriefingMarket = nullptr;
     }
   };
 }

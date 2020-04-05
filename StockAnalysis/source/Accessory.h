@@ -19,8 +19,5 @@ CString ConvertValueToString(INT64 iValue, int iDividend = 1);
 CString ConvertValueToString(int ivalue, int iDividend = 1);
 CString ConvertValueToString(double dvalue, int iDividend = 1);
 
-double GetValue(char* buffer);
-double GetValue(CString strBuffer);
-
 // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber);

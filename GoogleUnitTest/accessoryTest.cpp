@@ -124,6 +124,28 @@ namespace StockAnalysisTest {
     EXPECT_EQ(tt, tt2);
   }
 
+  TEST_P(ConvertBufferToTimeTest, TestConvertStringToTime) {
+    time_t tt = ConvertStringToTime(strFormat, strBuffer);
+    time_t tt2;
+    tm tm_;
+    INT64 year = iTime / 10000000000;
+    INT64 month = iTime / 100000000 - year * 100;
+    INT64 day = iTime / 1000000 - year * 10000 - month * 100;
+    INT64 hour = iTime / 10000 - year * 1000000 - month * 10000 - day * 100;
+    INT64 minute = iTime / 100 - year * 100000000 - month * 1000000 - day * 10000 - hour * 100;
+    INT64 second = iTime - year * 10000000000 - month * 100000000 - day * 1000000 - hour * 10000 - minute * 100;
+    tm_.tm_year = year - 1900;
+    tm_.tm_mon = month - 1;
+    tm_.tm_mday = day;
+    tm_.tm_hour = hour;
+    tm_.tm_min = minute;
+    tm_.tm_sec = second;
+    tm_.tm_isdst = 0;
+    tt2 = mktime(&tm_);
+    if (iTime < 19000101000000) tt2 = iTime;
+    EXPECT_EQ(tt, tt2);
+  }
+
   struct StrConvertDoubleToString {
     StrConvertDoubleToString(double dValue, CString strValue, long lDividend) {
       m_dValue = dValue;
@@ -165,8 +187,8 @@ namespace StockAnalysisTest {
     long lDividend;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1,
-                                                                                                 &Data2, &Data3, &Data4, &Data5));
+  INSTANTIATE_TEST_SUITE_P(TestConvertDoubleToString, ConvertDoubleToStringTest, testing::Values(&Data0, &Data1, &Data2, &Data3, &Data4
+                                                                                                 , &Data5));
 
   TEST_P(ConvertDoubleToStringTest, TestDouble) {
     CString str = ConvertValueToString(dValue, lDividend);
@@ -345,62 +367,5 @@ namespace StockAnalysisTest {
   TEST_P(ConvertINT64ToStringTest, TestINT64) {
     CString str = ConvertValueToString(iValue, lDividend);
     EXPECT_STREQ(str, strValue);
-  }
-
-  struct StructGetValue {
-    StructGetValue(int iCount, double dValue, CString strValue) {
-      m_iCount = iCount;
-      m_dValue = dValue;
-      m_strValue = strValue;
-    }
-
-  public:
-    int m_iCount;
-    double m_dValue;
-    CString m_strValue;
-  };
-
-  StructGetValue GetValueData40(1, 10234, _T("10234.000"));
-  StructGetValue GetValueData41(2, -11023, _T("-11023.000"));
-  StructGetValue GetValueData42(3, 12102346, _T("12102346.000"));
-  StructGetValue GetValueData43(4, -10.234, _T("-10.234"));
-  StructGetValue GetValueData44(5, 110.234, _T("110.234"));
-  StructGetValue GetValueData45(6, -1210.235e+11, _T("-1210.235e+11"));
-  // 下面是错误输入，输出为0.0
-  StructGetValue GetValueData46(101, -121, _T("-121f0.235e+11"));
-  StructGetValue GetValueData47(102, -1210.23, _T("-1210.23.5e+11"));
-  StructGetValue GetValueData48(103, 0.0, _T("abcde"));
-
-  class GetValueTest : public::testing::TestWithParam<StructGetValue*>
-  {
-  protected:
-    virtual void SetUp(void) override {
-      ASSERT_FALSE(gl_fNormalMode);
-      StructGetValue* pData = GetParam();
-      iCount = pData->m_iCount;
-      dValue = pData->m_dValue;
-      strValue = pData->m_strValue;
-    }
-
-    virtual void TearDown(void) override {
-      // clearup
-    }
-
-  public:
-    int iCount;
-    double dValue;
-    CString strValue;
-  };
-
-  INSTANTIATE_TEST_SUITE_P(TestGetValue1, GetValueTest, testing::Values(&GetValueData40, &GetValueData41,
-                                                                        &GetValueData42, &GetValueData43,
-                                                                        &GetValueData44, &GetValueData45,
-                                                                        &GetValueData46, &GetValueData47));
-
-  TEST_P(GetValueTest, TestGetValue) {
-    double d = GetValue(strValue);
-    double d2 = GetValue(strValue.GetBuffer());
-
-    EXPECT_DOUBLE_EQ(d, dValue);
   }
 }

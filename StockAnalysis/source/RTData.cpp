@@ -192,7 +192,7 @@ bool CRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     default:
     throw exception();
     }
-    lStockCode = static_cast<long>(GetValue(buffer2));
+    lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
     strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2); // ∂¡»Î'="'
@@ -360,7 +360,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue)
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
     return false;
   }
-  llTemp = static_cast<INT64>(GetValue(buffer3));
+  llTemp = static_cast<INT64>(atof(buffer3));
   if (llTemp < 0) return false;
   if (llTemp > 0) llReturnValue = llTemp;
   return true;
@@ -379,7 +379,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
     return false;
   }
-  lTemp = static_cast<long>(GetValue(buffer3));
+  lTemp = static_cast<long>(atof(buffer3));
   if (lTemp < 0) return false;
   if (lTemp > 0) lReturnValue = lTemp;
   return true;
@@ -397,7 +397,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue)
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
     return false;
   }
-  dReturnValue = GetValue(buffer3);
+  dReturnValue = atof(buffer3);
   return true;
 }
 

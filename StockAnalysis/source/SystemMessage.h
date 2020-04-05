@@ -19,6 +19,8 @@ public:
 
   void Display(COutputList* pOutputList, CString strTime);
 
+  virtual void SysCallOutputListAddString(COutputList* pOutputList, CString str);
+
 protected:
   deque<CString> m_dequeMessage;
   mutex m_mutex;

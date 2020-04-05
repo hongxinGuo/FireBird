@@ -14,7 +14,8 @@ public:
   virtual ~CVirtualWebInquiry() {}
 
   bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
-  virtual bool ReadDataFromWebOnce(void);
+  bool ReadDataFromWebOnce(void);
+  virtual UINT ReadWebFile(void); // 无法测试，故而虚拟化后使用Mock类。
   CWebDataPtr TransferWebDataToQueueData(void);
 
   // 唯一的公共接口函数
@@ -47,6 +48,8 @@ public:
 
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
+
+  char* GetCurrentReadPos(void) noexcept { return m_pCurrentReadPos; }
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 

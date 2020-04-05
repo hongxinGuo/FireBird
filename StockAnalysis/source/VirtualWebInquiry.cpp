@@ -77,13 +77,17 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
 }
 
 bool CVirtualWebInquiry::ReadDataFromWebOnce(void) {
-  m_lCurrentByteRead = m_pFile->Read(m_pCurrentReadPos, 1024);
+  m_lCurrentByteRead = ReadWebFile();
   if (m_lCurrentByteRead > 0) {
     m_pCurrentReadPos += m_lCurrentByteRead;
     AddByteReaded(m_lCurrentByteRead);
     return true;
   }
   else return false;
+}
+
+UINT CVirtualWebInquiry::ReadWebFile(void) {
+  return m_pFile->Read(m_pCurrentReadPos, 1024);
 }
 
 CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
