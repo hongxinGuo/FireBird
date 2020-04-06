@@ -146,8 +146,14 @@
     <ClCompile Include="QueueRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
+    <ClCompile Include="SystemMessageMockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="StockAnalysisViewTest.cpp" />
+    <ClCompile Include="ThreadReadCrweberIndexTest.cpp" />
+    <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp" />
+    <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp" />
+    <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp" />
+    <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
@@ -229,6 +235,7 @@
     <ClInclude Include="MockStockAnalysisView.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />
+    <ClInclude Include="MockSystemMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

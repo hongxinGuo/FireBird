@@ -70,6 +70,15 @@
     <Filter Include="Mock类\基类">
       <UniqueIdentifier>{eb36a23a-1556-486c-91ef-c7a08d65a00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\辅助类和函数">
+      <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Stock Market\工作线程">
+      <UniqueIdentifier>{d5a11f7e-be69-45b6-be45-b364b6ba2be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\China Stock Market\工作线程">
+      <UniqueIdentifier>{0f58af1b-b4fa-46ff-9a0b-cb69b0f4ff3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -368,6 +377,24 @@
     <ClCompile Include="MainFrmMockTest.cpp">
       <Filter>Test源文件\Windows界面</Filter>
     </ClCompile>
+    <ClCompile Include="SystemMessageMockTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp">
+      <Filter>Test源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadReadCrweberIndexTest.cpp">
+      <Filter>Test源文件\Crweber.com</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp">
+      <Filter>Test源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadReadSinaRTDataTest.cpp">
+      <Filter>Test源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp">
+      <Filter>Test源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -552,6 +579,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\targetver.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockSystemMessage.h">
+      <Filter>Mock类\辅助类和函数</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

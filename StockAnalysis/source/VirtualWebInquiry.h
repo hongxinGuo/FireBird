@@ -13,7 +13,7 @@ public:
   CVirtualWebInquiry();
   virtual ~CVirtualWebInquiry() {}
 
-  bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
+  virtual bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);
   bool ReadDataFromWebOnce(void);
   virtual UINT ReadWebFile(void); // 无法测试，故而虚拟化后使用Mock类。
   CWebDataPtr TransferWebDataToQueueData(void);

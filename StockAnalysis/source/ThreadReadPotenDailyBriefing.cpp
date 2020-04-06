@@ -11,16 +11,16 @@
 #include"VirtualWebInquiry.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData) {
+UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebInquiry) {
   gl_ThreadStatus.IncreaseNumberOfRunningThread();
-  if (pPotenDailyBriefingWebData->ReadWebData(500, 50, 30)) {
-    CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebData->TransferWebDataToQueueData();
+  if (pPotenDailyBriefingWebInquiry->ReadWebData(500, 50, 30)) {
+    CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebInquiry->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
-      pWebDataReceived->m_lTime = (INT64)(pPotenDailyBriefingWebData->GetInquiringDay()) * 1000000;
+      pWebDataReceived->m_lTime = (INT64)(pPotenDailyBriefingWebInquiry->GetInquiringDay()) * 1000000;
       gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
-  return 5;
+  return 6;
 }
