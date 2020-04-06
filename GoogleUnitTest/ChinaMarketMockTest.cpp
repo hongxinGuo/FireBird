@@ -8,6 +8,8 @@
 
 #include"globedef.h"
 
+#include"Thread.h"
+
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
@@ -246,5 +248,33 @@ namespace StockAnalysisTest {
     chinaMarket.SetTodayStockProcessed(false);
     EXPECT_FALSE(chinaMarket.TaskProcessTodayStock(150400));
     EXPECT_FALSE(chinaMarket.IsTodayStockProcessed()) << _T("休息日不处理");
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadUpdateOptionDB) {
+    EXPECT_CALL(chinaMarket, UpdateOptionDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateOptionDB(&chinaMarket), 20);
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadUpdateStockCodeDB) {
+    EXPECT_CALL(chinaMarket, UpdateStockCodeDB)
+      .Times(1);
+    chinaMarket.SetSystemReady(true);
+    gl_ThreadStatus.SetCalculatingRTData(false);
+    EXPECT_EQ(ThreadUpdateStockCodeDB(&chinaMarket), 18);
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadSaveTempRTData) {
+    EXPECT_CALL(chinaMarket, UpdateTodayTempDB)
+      .Times(1);
+    chinaMarket.SetSystemReady(true);
+    EXPECT_EQ(ThreadSaveTempRTData(&chinaMarket), 13);
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadSaveRTData) {
+    EXPECT_CALL(chinaMarket, SaveRTData)
+      .Times(1);
+    chinaMarket.SetSystemReady(true);
+    EXPECT_EQ(ThreadSaveRTData(&chinaMarket), 19);
   }
 }

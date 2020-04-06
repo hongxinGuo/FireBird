@@ -9,7 +9,7 @@ using namespace Testing;
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CThreadReadPotenDailyBriefingTest : public ::testing::Test
+  class CPotenDailyBriefingThreadTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
     CMockPotenDailyBriefingWebInquiry potenDailyBriefingInquiry;
   };
 
-  TEST_F(CThreadReadPotenDailyBriefingTest, TestThreadReadPotenDailyBriefing) {
+  TEST_F(CPotenDailyBriefingThreadTest, TestThreadReadPotenDailyBriefing) {
     EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData(500, 50, 30))
       .Times(1)
       .WillOnce(Return(false));

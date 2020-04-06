@@ -144,14 +144,14 @@ public:
   void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
   // 数据库读取存储操作
-  bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
+  virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool SaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-  bool UpdateStockCodeDB(void);
+  virtual bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
-  bool UpdateOptionDB(void);
+  virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
   bool UpdateTempRTData(void);
-  bool UpdateTodayTempDB(void);
+  virtual bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
 
   bool ClearDayLineContainer(void);

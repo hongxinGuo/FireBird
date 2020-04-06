@@ -138,6 +138,7 @@
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="PotenDailyBriefingMarketMockTest.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp" />
     <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp" />
     <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
+    <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="RTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
@@ -230,6 +232,7 @@
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
+    <ClInclude Include="MockPotenDailyBriefingMarket.h" />
     <ClInclude Include="MockPotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
     <ClInclude Include="MockStockAnalysisView.h" />

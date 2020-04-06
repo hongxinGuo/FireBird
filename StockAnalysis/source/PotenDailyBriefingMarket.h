@@ -33,7 +33,7 @@ public:
   bool RunningThreadSavePotenData(void);
 
   bool LoadDatabase(void);
-  bool SaveCurrentData(void);
+  virtual bool SaveCurrentData(void);
 
   void ChoiceNextInquiringDay(void);
   bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }

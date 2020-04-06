@@ -16,13 +16,11 @@ UINT ThreadReadTengxunRTData(CTengxunRTWebInquiry* pTengxunRTWebData) {
   // 完全克服的话，还需要使用其他方法来确定服务器是否发送结束，目前的方法只是读不到了就认为结束了。
   gl_ThreadStatus.IncreaseNumberOfRunningThread();
   if (pTengxunRTWebData->ReadWebData(100, 30, 20)) {
-    ASSERT(!pTengxunRTWebData->IsReadingWebData());
     CWebDataPtr pWebDataReceived = pTengxunRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushTengxunRTData(pWebDataReceived);
     }
   }
-  else ASSERT(!pTengxunRTWebData->IsReadingWebData());
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 2;

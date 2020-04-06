@@ -14,13 +14,11 @@
 UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData) {
   gl_ThreadStatus.IncreaseNumberOfRunningThread();
   if (pNeteaseRTWebData->ReadWebData(100, 30, 30)) {
-    ASSERT(!pNeteaseRTWebData->IsReadingWebData());
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
     }
   }
-  else ASSERT(!pNeteaseRTWebData->IsReadingWebData());
   gl_ThreadStatus.DecreaseNumberOfRunningThread();
 
   return 3;

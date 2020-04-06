@@ -228,12 +228,12 @@ public:
   // 数据库的提取和存储
   void SaveBasicInfo(CSetDayLine& psetDayLine); // 存储当日基本数据
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
-  bool SaveDayLine(void); // 存储日线历史数据
+  virtual bool SaveDayLine(void); // 存储日线历史数据
   void UpdateDayLineStartEndDay(void);
   void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
   void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  bool LoadDayLineAndDayLineInfo(void); // 此函数加载
+  virtual bool LoadDayLineAndDayLineInfo(void); // 此函数加载
   bool LoadDayLine(CSetDayLine& setDayLine);
   bool LoadDayLineInfo(CSetDayLineInfo& setDayLine);
   void SaveStockCodeDB(CSetStockCode& setStockCode);

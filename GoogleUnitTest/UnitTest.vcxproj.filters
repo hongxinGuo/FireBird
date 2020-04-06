@@ -395,6 +395,12 @@
     <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp">
       <Filter>Test源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadReadTengxunRTDataTest.cpp">
+      <Filter>Test源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="PotenDailyBriefingMarketMockTest.cpp">
+      <Filter>Test源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -582,6 +588,9 @@
     </ClInclude>
     <ClInclude Include="MockSystemMessage.h">
       <Filter>Mock类\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="MockPotenDailyBriefingMarket.h">
+      <Filter>Mock类\Poten Daily Briefing Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 
 #include"pch.h"
 #include"globedef.h"
+#include"Thread.h"
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -9,6 +10,7 @@
 #include"MockChinaStock.h"
 
 using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
@@ -42,6 +44,7 @@ namespace StockAnalysisTest {
 
   protected:
     CMockChinaStockPtr pStock;
+    CMockChinaStock stock;
   };
 
   TEST_F(CChinaStockMockTest, TestCalculateDayLineRS) {
@@ -85,5 +88,49 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStock, ReportGuadanTransaction())
       .Times(1);
     pStock->ShowCurrentTransaction();
+  }
+
+  TEST_F(CChinaStockMockTest, TestThreadSaveDayLineOfOneStock) {
+    EXPECT_CALL(*pStock, SaveDayLine)
+      .Times(0);
+    pStock->SetDayLineLoaded(true);
+    pStock->SetStockCode(_T("sh601111"));
+    gl_ExitingSystem = true;
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_TRUE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+
+    EXPECT_CALL(*pStock, SaveDayLine)
+      .Times(1)
+      .WillOnce(Return(false));
+    pStock->SetDayLineLoaded(true);
+    pStock->SetStockCode(_T("sh601111"));
+    gl_ExitingSystem = false;
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_FALSE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+
+    EXPECT_CALL(*pStock, SaveDayLine)
+      .Times(1)
+      .WillOnce(Return(true));
+    pStock->SetDayLineLoaded(true);
+    pStock->SetStockCode(_T("sh601111"));
+    gl_ExitingSystem = false;
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_FALSE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
+    CString str = gl_systemMessage.PopDayLineInfoMessage();
+    EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));
+  }
+
+  TEST_F(CChinaStockMockTest, TestThreadLoadDayLine) {
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    pStock->StoreDayLine(pDayLine);
+    EXPECT_CALL(*pStock, LoadDayLineAndDayLineInfo)
+      .Times(1);
+    pStock->SetDayLineLoaded(false);
+    EXPECT_EQ(ThreadLoadDayLine(pStock), 16);
+    EXPECT_TRUE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
   }
 }

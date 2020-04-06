@@ -18,6 +18,10 @@ namespace Testing {
     MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStockPtr pCurrentStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
+    MOCK_METHOD(bool, UpdateOptionDB, (), (override));
+    MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
+    MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
+    MOCK_METHOD(bool, SaveRTData, (), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;
