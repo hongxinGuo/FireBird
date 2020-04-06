@@ -17,7 +17,7 @@ using namespace std;
 UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   gl_ThreadStatus.IncreaseNumberOfRunningThread();
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
-  long lToday = (long)startCalculatingDay;
+  long lToday = startCalculatingDay;
 
   const long year = lToday / 10000;
   const long month = lToday / 100 - year * 100;
@@ -25,7 +25,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (lToday > pMarket->GetDay()) return(true);
+  if (lToday > pMarket->GetDay()) return(0);
 
   time_t tStart = 0, tEnd = 0;
   time(&tStart);

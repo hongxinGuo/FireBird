@@ -22,6 +22,7 @@ namespace Testing {
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));
+    MOCK_METHOD(long, ProcessCurrentTradeDayStock, (long lCurrentTradeDay), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

@@ -96,7 +96,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_ExitingSystem = true;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
@@ -106,7 +106,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_ExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
@@ -116,7 +116,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_ExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), 15);
+    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -129,7 +129,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStock, LoadDayLineAndDayLineInfo)
       .Times(1);
     pStock->SetDayLineLoaded(false);
-    EXPECT_EQ(ThreadLoadDayLine(pStock), 16);
+    EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
   }

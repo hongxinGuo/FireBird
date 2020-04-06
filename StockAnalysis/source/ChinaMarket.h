@@ -160,7 +160,7 @@ public:
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
 
-  long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
+  virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateOneDayRelativeStrong(long lDay);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }

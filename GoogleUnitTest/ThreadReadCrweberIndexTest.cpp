@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(false));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), 5);
+    EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), (UINT)5);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), 5);
+    EXPECT_EQ(ThreadReadCrweberIndex(&crweberIndexInquiry), (UINT)5);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
     EXPECT_EQ(gl_WebInquirer.GetCrweberDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopCrweberData();

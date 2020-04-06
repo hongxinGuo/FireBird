@@ -253,7 +253,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketMockTest, TestThreadUpdateOptionDB) {
     EXPECT_CALL(chinaMarket, UpdateOptionDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateOptionDB(&chinaMarket), 20);
+    EXPECT_EQ(ThreadUpdateOptionDB(&chinaMarket), (UINT)20);
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadUpdateStockCodeDB) {
@@ -261,20 +261,79 @@ namespace StockAnalysisTest {
       .Times(1);
     chinaMarket.SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingRTData(false);
-    EXPECT_EQ(ThreadUpdateStockCodeDB(&chinaMarket), 18);
+    EXPECT_EQ(ThreadUpdateStockCodeDB(&chinaMarket), (UINT)18);
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadSaveTempRTData) {
     EXPECT_CALL(chinaMarket, UpdateTodayTempDB)
       .Times(1);
     chinaMarket.SetSystemReady(true);
-    EXPECT_EQ(ThreadSaveTempRTData(&chinaMarket), 13);
+    EXPECT_EQ(ThreadSaveTempRTData(&chinaMarket), (UINT)13);
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadSaveRTData) {
     EXPECT_CALL(chinaMarket, SaveRTData)
       .Times(1);
     chinaMarket.SetSystemReady(true);
-    EXPECT_EQ(ThreadSaveRTData(&chinaMarket), 19);
+    EXPECT_EQ(ThreadSaveRTData(&chinaMarket), (UINT)19);
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadProcessTodayStock) {
+    chinaMarket.CalculateTime();
+    chinaMarket.SetNewestTransactionTime(chinaMarket.GetLocalTime());
+    long lDay = FormatToDay(chinaMarket.GetNewestTransactionTime());
+    EXPECT_CALL(chinaMarket, ProcessCurrentTradeDayStock(lDay))
+      .Times(1)
+      .WillOnce(Return(4000));
+    chinaMarket.SetSystemReady(true);
+    EXPECT_EQ(ThreadProcessTodayStock(&chinaMarket), (UINT)14);
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
+    if (chinaMarket.GetTime() > 150400) {
+      EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), lDay);
+      EXPECT_TRUE(chinaMarket.IsUpdateStockCodeDB());
+      EXPECT_TRUE(chinaMarket.IsUpdateOptionDB());
+      EXPECT_TRUE(chinaMarket.IsTodayStockProcessed());
+    }
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadCalculateDayLineRS) {
+    chinaMarket.CalculateTime();
+    time_t tStart = chinaMarket.GetMarketTime() + 3600 * 24 * 7; // 从一周前开始计算
+    tm _tm;
+    gmtime_s(&_tm, &tStart);
+    long lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
+
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
+    EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(_))
+      .Times(0);
+    EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)0) << _T("未顺利执行的工作线程返回值统一为0");
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    /*
+        tStart = chinaMarket.GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
+        gmtime_s(&_tm, &tStart);
+        lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
+        gl_fExitingCalculatingRS = true;
+        gl_ThreadStatus.SetCalculatingDayLineRS(true);
+        chinaMarket.SetRelativeStrongEndDay(0);
+        chinaMarket.SetUpdateOptionDB(false);
+        EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(_))
+          .Times(5);
+        EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)11);
+        EXPECT_FALSE(chinaMarket.IsUpdateOptionDB());
+        EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), 0);
+        EXPECT_FALSE(gl_fExitingCalculatingRS);
+        EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+
+    tStart = chinaMarket.GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
+    gmtime_s(&_tm, &tStart);
+    lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
+    gl_fExitingCalculatingRS = false;
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
+    EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(_))
+      .Times(5);
+    EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)11);
+    EXPECT_TRUE(chinaMarket.IsUpdateOptionDB());
+    EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), chinaMarket.GetDay());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());*/
   }
 }
