@@ -5,7 +5,7 @@
 
 #include"PotenDailyBriefingWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockPotenDailyBriefingWebInquiry : public CPotenDailyBriefingWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));

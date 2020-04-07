@@ -6,7 +6,6 @@
 #include"globedef.h"
 
 #include"MockVirtualWebInquiry.h"
-using namespace Testing;
 using namespace testing;
 
 //#include"VirtualWebInquiry.h"

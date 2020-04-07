@@ -4,7 +4,7 @@
 #include"globedef.h"
 
 #include"MockSystemMessage.h"
-using namespace Testing;
+using namespace testing;
 using namespace testing;
 
 namespace StockAnalysisTest {

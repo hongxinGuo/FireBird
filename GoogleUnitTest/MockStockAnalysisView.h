@@ -6,7 +6,7 @@
 #include"StockAnalysisDoc.h"
 #include"StockAnalysisView.h"
 
-namespace Testing {
+namespace testing {
   class CMockStockAnalysisView : public CStockAnalysisView {
   public:
     MOCK_METHOD(void, SysCallOnSize, (UINT nType, int cx, int cy), (override));

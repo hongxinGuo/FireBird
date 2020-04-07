@@ -5,7 +5,7 @@
 
 #include"MainFrm.h"
 
-namespace Testing {
+namespace testing {
   class CMockMainFrame : public CMainFrame {
   public:
     MOCK_METHOD(void, SysCallOnTimer, (UINT_PTR nIDEvent), (override));

@@ -14,7 +14,7 @@ int gl_cMaxSavingOneDayLineThreads = 4;
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
-using namespace Testing;
+using namespace testing;
 
 CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
 CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集

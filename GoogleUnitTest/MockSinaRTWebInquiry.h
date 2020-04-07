@@ -5,7 +5,7 @@
 
 #include"SinaRTWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockSinaRTWebInquiry : public CSinaRTWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));

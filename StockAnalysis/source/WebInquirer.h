@@ -18,7 +18,7 @@ extern int gl_cMaxSavingOneDayLineThreads;
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
-using namespace Testing;
+using namespace testing;
 
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集

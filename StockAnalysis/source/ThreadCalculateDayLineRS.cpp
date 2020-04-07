@@ -25,8 +25,6 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
 
-  if (lToday > pMarket->GetDay()) return(0);
-
   time_t tStart = 0, tEnd = 0;
   time(&tStart);
   do {

@@ -12,7 +12,7 @@
 #include"WebInquirer.h"
 
 #include"MockPotenDailyBriefingMarket.h"
-using namespace Testing;
+using namespace testing;
 using namespace testing;
 
 using namespace std;

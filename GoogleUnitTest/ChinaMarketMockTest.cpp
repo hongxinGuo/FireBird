@@ -18,7 +18,6 @@
 
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
-using namespace Testing;
 using namespace testing;
 
 using namespace std;
@@ -285,6 +284,9 @@ namespace StockAnalysisTest {
     EXPECT_CALL(chinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
+    EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(lDay))
+      .Times(1)
+      .WillOnce(Return(true));
     chinaMarket.SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(&chinaMarket), (UINT)14);
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
@@ -298,31 +300,22 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketMockTest, TestThreadCalculateDayLineRS) {
     chinaMarket.CalculateTime();
-    time_t tStart = chinaMarket.GetMarketTime() + 3600 * 24 * 7; // 从一周前开始计算
+    time_t tStart = chinaMarket.GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
     tm _tm;
     gmtime_s(&_tm, &tStart);
     long lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
-
+    gl_fExitingCalculatingRS = true; // 中间被打断
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
+    chinaMarket.SetRelativeStrongEndDay(0);
+    chinaMarket.SetUpdateOptionDB(false);
     EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(_))
-      .Times(0);
-    EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)0) << _T("未顺利执行的工作线程返回值统一为0");
+      .Times(5)
+      .WillRepeatedly(Return(true));
+    EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)11);
+    EXPECT_FALSE(chinaMarket.IsUpdateOptionDB()) << _T("被打断后不设置此标识");
+    EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), 0);
+    EXPECT_FALSE(gl_fExitingCalculatingRS);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-    /*
-        tStart = chinaMarket.GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
-        gmtime_s(&_tm, &tStart);
-        lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
-        gl_fExitingCalculatingRS = true;
-        gl_ThreadStatus.SetCalculatingDayLineRS(true);
-        chinaMarket.SetRelativeStrongEndDay(0);
-        chinaMarket.SetUpdateOptionDB(false);
-        EXPECT_CALL(chinaMarket, RunningThreadCalculateThisDayRS(_))
-          .Times(5);
-        EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)11);
-        EXPECT_FALSE(chinaMarket.IsUpdateOptionDB());
-        EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), 0);
-        EXPECT_FALSE(gl_fExitingCalculatingRS);
-        EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
     tStart = chinaMarket.GetMarketTime() - 3600 * 24 * 6; // 从一周前开始计算
     gmtime_s(&_tm, &tStart);
@@ -334,6 +327,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadCalculateDayLineRS(&chinaMarket, lStartDay), (UINT)11);
     EXPECT_TRUE(chinaMarket.IsUpdateOptionDB());
     EXPECT_EQ(chinaMarket.GetRelativeStrongEndDay(), chinaMarket.GetDay());
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());*/
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
   }
 }

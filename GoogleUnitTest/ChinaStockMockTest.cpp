@@ -9,7 +9,6 @@
 
 #include"MockChinaStock.h"
 
-using namespace Testing;
 using namespace testing;
 
 namespace StockAnalysisTest {
@@ -73,7 +72,8 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(30))
       .Times(1);
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(60))
-      .Times(1);
+      .Times(1)
+      .WillOnce(Return(true));
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(120))
       .Times(1);
     pStock->CalculateDayLineRelativeStrongLogarithm();
@@ -126,7 +126,20 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockMockTest, TestThreadLoadDayLine) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pStock->StoreDayLine(pDayLine);
+    InSequence seq;
     EXPECT_CALL(*pStock, LoadDayLineAndDayLineInfo)
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(3))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(5))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(10))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(30))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(60))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRS(120))
       .Times(1);
     pStock->SetDayLineLoaded(false);
     EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);

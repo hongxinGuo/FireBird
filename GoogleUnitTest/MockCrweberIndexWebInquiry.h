@@ -5,7 +5,7 @@
 
 #include"CrweberIndexWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockCrweberIndexWebInquiry : public CCrweberIndexWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));

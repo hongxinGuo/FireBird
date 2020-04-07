@@ -6,7 +6,7 @@
 
 #include"MockCrweberIndexWebInquiry.h"
 
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   class CrweberIndexWebInquiryTest : public ::testing::Test

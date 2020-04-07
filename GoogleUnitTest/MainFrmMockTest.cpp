@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"MockMainFrm.h"
-using namespace Testing;
+using namespace testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
@@ -174,7 +174,6 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
 
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
-
   }
 
   TEST_F(CMainFrameTest, TestPreTranslateMessage) {

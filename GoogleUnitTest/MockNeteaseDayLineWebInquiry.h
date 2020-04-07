@@ -5,7 +5,7 @@
 
 #include"NeteaseDayLineWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockNeteaseDayLineWebInquiry : public CNeteaseDayLineWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));

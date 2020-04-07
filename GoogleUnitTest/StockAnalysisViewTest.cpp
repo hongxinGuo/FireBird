@@ -5,7 +5,7 @@
 #include"ChinaMarket.h"
 
 #include"MockStockAnalysisView.h"
-using namespace Testing;
+using namespace testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {

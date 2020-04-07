@@ -8,7 +8,7 @@
 
 #include"MockChinaStock.h"
 
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
@@ -35,6 +35,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
@@ -644,6 +645,7 @@ namespace StockAnalysisTest {
     else {
       EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() - 1);
     }
+    EXPECT_LE(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {

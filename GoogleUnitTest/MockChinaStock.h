@@ -5,7 +5,7 @@
 
 #include"ChinaStock.h"
 
-namespace Testing {
+namespace testing {
   class CMockChinaStock : public CChinaStock {
   public:
     MOCK_METHOD(bool, CalculateDayLineRS, (INT64 lNumber), (override));

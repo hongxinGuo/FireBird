@@ -5,7 +5,7 @@
 
 #include"NeteaseRTWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockNeteaseRTWebInquiry : public CNeteaseRTWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));

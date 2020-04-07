@@ -5,7 +5,7 @@
 
 #include"PotenDailyBriefingMarket.h"
 
-namespace Testing {
+namespace testing {
   class CMockPotenDailyBriefingMarket : public CPotenDailyBriefingMarket {
   public:
     MOCK_METHOD(bool, SaveCurrentData, (), (override));

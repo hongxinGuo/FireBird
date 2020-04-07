@@ -6,7 +6,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-namespace Testing {
+namespace testing {
   class CMockChinaMarket : public CChinaMarket {
   public:
     MOCK_METHOD(bool, RunningThreadSaveChoicedRTData, (), (override));

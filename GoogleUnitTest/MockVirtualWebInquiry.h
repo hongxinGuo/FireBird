@@ -5,7 +5,7 @@
 
 #include"VirtualWebInquiry.h"
 
-namespace Testing {
+namespace testing {
   class CMockVirtualWebInquiry : public CVirtualWebInquiry {
   public:
     MOCK_METHOD(bool, PrepareNextInquiringStr, (), (override));

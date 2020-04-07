@@ -5,7 +5,7 @@
 
 #include"MockPotenDailyBriefingWebInquiry.h"
 
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   class CPotenDailyBriefingWebInquiryTest : public ::testing::Test

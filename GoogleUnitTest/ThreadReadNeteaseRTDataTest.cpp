@@ -5,7 +5,6 @@
 
 #include"thread.h"
 
-using namespace Testing;
 using namespace testing;
 
 namespace StockAnalysisTest {

@@ -105,6 +105,8 @@ void CChinaMarket::Reset(void) {
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
   m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
+  m_iCountDownTengxunNumber = 5;
+  m_iCountDownNeteaseNumber = 5;
 
   m_fUpdateStockCodeDB = false;
 
@@ -1021,9 +1023,6 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
-  static int siCountDownTengxunNumber = 5;
-  static int siCountDownNeteaseNumber = 5;
-
   if (IsUsingSinaRTDataReceiver()) {
     gl_WebInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
@@ -1032,20 +1031,20 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
     // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
     // 网易实时数据有时还发送没有要求过的股票，不知为何。
     if (IsUsingNeteaseRTDataReceiver()) {
-      if (siCountDownNeteaseNumber <= 0) {
+      if (m_iCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
         gl_WebInquirer.GetNeteaseRTData(); // 目前不使用此功能。
-        siCountDownNeteaseNumber = 5;
+        m_iCountDownNeteaseNumber = 5;
       }
-      else siCountDownNeteaseNumber--;
+      else m_iCountDownNeteaseNumber--;
     }
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (IsUsingTengxunRTDataReceiver()) {
-      if (siCountDownTengxunNumber <= 0) {
+      if (m_iCountDownTengxunNumber <= 0) {
         gl_WebInquirer.GetTengxunRTData();// 只有当系统准备完毕后，方可执行读取腾讯实时行情数据的工作。目前不使用此功能
-        siCountDownTengxunNumber = 5;
+        m_iCountDownTengxunNumber = 5;
       }
-      else siCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
+      else m_iCountDownTengxunNumber--; // 新浪实时数据读取五次，腾讯才读取一次。因为腾讯的挂单股数采用的是每手标准，精度不够
     }
   }
   return true;

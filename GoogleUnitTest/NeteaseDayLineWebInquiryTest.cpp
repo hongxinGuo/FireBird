@@ -6,7 +6,7 @@
 #include"MockNeteaseDayLineWebInquiry.h"
 
 using namespace std;
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   class CNeteaseDayLineWebInquiryTest : public ::testing::Test

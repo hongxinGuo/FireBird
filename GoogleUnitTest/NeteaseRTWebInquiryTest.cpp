@@ -8,7 +8,7 @@
 using namespace std;
 #include<atomic>
 
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   class CNeteaseRTWebInquiryTest : public ::testing::Test

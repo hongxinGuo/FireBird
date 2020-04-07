@@ -218,6 +218,10 @@ public:
   void SetUsingNeteaseRTDataReceiver(bool fFlag) noexcept { m_fUsingNeteaseRTDataReceiver = fFlag; }
   bool IsUsingTengxunRTDataReceiver(void) noexcept { return m_fUsingTengxunRTDataReceiver; }
   void SetUsingTengxunRTDataReceiver(bool fFlag) noexcept { m_fUsingTengxunRTDataReceiver = fFlag; }
+  int GetCountDownNeteaseNumber(void) noexcept { return m_iCountDownNeteaseNumber; }
+  void SetCountDownNeteaseNumber(int iValue) noexcept { m_iCountDownNeteaseNumber = iValue; }
+  int GetCountDownTengxunNumber(void) noexcept { return m_iCountDownTengxunNumber; }
+  void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
@@ -310,6 +314,8 @@ protected:
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
+  int m_iCountDownTengxunNumber;
+  int m_iCountDownNeteaseNumber;
 
   CString m_strSinaRTDataInquiringStr;
   CString m_strTengxunRTDataInquiringStr;

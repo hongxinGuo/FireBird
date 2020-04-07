@@ -5,7 +5,7 @@
 #include"MockTengxunRTWebInquiry.h"
 
 using namespace std;
-using namespace Testing;
+using namespace testing;
 
 namespace StockAnalysisTest {
   class CTengxunRTWebInquiryTest : public ::testing::Test {
