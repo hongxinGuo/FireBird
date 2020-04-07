@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
       gl_pChinaStockMarket->ResetCurrentStock();
-      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
   };
@@ -1109,7 +1109,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetDayLineNeedUpdateNumber) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 0);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(6);
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 6);
     gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
