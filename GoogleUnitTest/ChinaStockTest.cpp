@@ -282,6 +282,20 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.GetRelativeStrong(), 10101010.0);
   }
 
+  TEST_F(CChinaStockTest, TestGetRelativeStrongIndex) {
+    CChinaStock id;
+    EXPECT_DOUBLE_EQ(id.GetRelativeStrongIndex(), 0.0);
+    id.SetRelativeStrongIndex(10101010.0);
+    EXPECT_DOUBLE_EQ(id.GetRelativeStrongIndex(), 10101010.0);
+  }
+
+  TEST_F(CChinaStockTest, TestGetRelativeStrongBackup) {
+    CChinaStock id;
+    EXPECT_DOUBLE_EQ(id.GetRelativeStrongBackup(), 0.0);
+    id.SetRelativeStrongBackup(10101010.0);
+    EXPECT_DOUBLE_EQ(id.GetRelativeStrongBackup(), 10101010.0);
+  }
+
   TEST_F(CChinaStockTest, TestGetChangeHandRate) {
     CChinaStock id;
     EXPECT_DOUBLE_EQ(id.GetChangeHandRate(), 0.0);

@@ -29,6 +29,7 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
@@ -44,6 +45,7 @@ namespace StockAnalysisTest {
       chinaMarket.SetSystemReady(true); // 测试市场时，默认系统已经准备好
       chinaMarket.SetPermitResetMarket(true);
       chinaMarket.SetCheckActiveStock(true);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -53,6 +55,7 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       gl_ThreadStatus.SetSavingTempData(false);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();

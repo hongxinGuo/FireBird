@@ -13,10 +13,12 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
 
     static void TearDownTestSuite(void) {
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
 
     virtual void SetUp(void) override {
@@ -36,6 +38,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetSystemReady(false);
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
+      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
     }
     CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };

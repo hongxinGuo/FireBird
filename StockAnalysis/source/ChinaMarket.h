@@ -162,6 +162,7 @@ public:
 
   virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
   bool CalculateOneDayRelativeStrong(long lDay);
+  double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }

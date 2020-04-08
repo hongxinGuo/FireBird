@@ -166,6 +166,19 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 50.50);
   }
 
+  TEST_F(CStockDayLineTest, TestGetRelativeStrongIndex) {
+    CDayLine dl;
+    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 0);
+    dl.SetRelativeStrongIndex(50.5023);
+    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 50.5023);
+  }
+  TEST_F(CStockDayLineTest, TestGetRelativeStrongBackup) {
+    CDayLine dl;
+    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 0);
+    dl.SetRelativeStrongBackup(50.506);
+    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 50.506);
+  }
+
   TEST_F(CStockDayLineTest, TestGetRSLogarithm) {
     CDayLine dl;
     EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 0.0);
@@ -376,6 +389,8 @@ namespace StockAnalysisTest {
     id.SetCurrentValue(234145345245);
     id.SetChangeHandRate(54.321);
     id.SetRelativeStrong(14.5);
+    id.SetRelativeStrongIndex(15.6);
+    id.SetRelativeStrongBackup(20.9);
 
     ASSERT(!gl_fNormalMode);
     setDayLine.m_strFilter = _T("[Day] = 21101101");
@@ -405,6 +420,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(atoll(setDayLine.m_CurrentValue), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), id.GetRelativeStrong());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrongIndex), id.GetRelativeStrongIndex());
+    EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrongBackup), id.GetRelativeStrongBackup());
     setDayLine.Close();
 
     EXPECT_EQ(id2.GetDay(), id.GetDay());
@@ -424,6 +441,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id2.GetCurrentValue(), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(id2.GetChangeHandRate(), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(id2.GetRelativeStrong(), id.GetRelativeStrong());
+    EXPECT_DOUBLE_EQ(id2.GetRelativeStrongIndex(), id.GetRelativeStrongIndex());
+    EXPECT_DOUBLE_EQ(id2.GetRelativeStrongBackup(), id.GetRelativeStrongBackup());
 
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
@@ -456,6 +475,8 @@ namespace StockAnalysisTest {
     id.SetCurrentValue(234145345245);
     id.SetChangeHandRate(54.321);
     id.SetRelativeStrong(14.5);
+    id.SetRelativeStrongIndex(135.6);
+    id.SetRelativeStrongBackup(120.9);
 
     ASSERT(!gl_fNormalMode);
     setDayLine.m_strFilter = _T("[Day] = 21101101");
@@ -485,6 +506,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(idLoaded.GetCurrentValue(), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(idLoaded.GetChangeHandRate(), id.GetChangeHandRate());
     EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrong(), id.GetRelativeStrong());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrongIndex(), id.GetRelativeStrongIndex());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrongBackup(), id.GetRelativeStrongBackup());
     setDayLine.Close();
 
     setDayLine.Open();

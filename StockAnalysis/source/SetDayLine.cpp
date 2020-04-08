@@ -32,7 +32,8 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
   m_TotalValue = _T("0");
   m_CurrentValue = _T("0");
   m_RelativeStrong = _T("");	//相对于总市场的强度
-  m_nFields = 18;
+  m_RelativeStrongIndex = _T("");	//相对于总市场的强度
+  m_nFields = 20;
 }
 
 CString CSetDayLine::GetDefaultConnect() {
@@ -66,6 +67,8 @@ void CSetDayLine::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
   RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
   RFX_Text(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
+  RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RelativeStrongIndex);	//相对于市场指数的强度
+  RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RelativeStrongBackup);	//相对于市场指数的强度
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLine 诊断

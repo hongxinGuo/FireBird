@@ -33,10 +33,10 @@ bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
   return true;
 }
 
-void CDayLine::CalculateRSLogarithm(long double dRS) {
-  long double dLog50 = log10((long double)50.0);
-  long double dLog100 = log10((long double)100.0);
-  long double dLog = dLog100 - dLog50;
+void CDayLine::CalculateRSLogarithm(double dRS) {
+  double dLog50 = log10(50.0);
+  double dLog100 = log10(100.0);
+  double dLog = dLog100 - dLog50;
   if ((dRS - 50) > 0) {
     m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
   }
@@ -68,7 +68,7 @@ void CDayLine::Reset(void) {
 
   m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
   m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = 0;
-  m_dRelativeStrong = m_dRSLogarithm = 0.0;
+  m_dRelativeStrong = m_dRSLogarithm = m_dRelativeStrongIndex = m_dRelativeStrongBackup = 0.0;
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0.0;
@@ -94,6 +94,8 @@ bool CDayLine::SaveData(CSetDayLine& setDayLine) {
   setDayLine.m_TotalValue = ConvertValueToString(GetTotalValue());
   setDayLine.m_CurrentValue = ConvertValueToString(GetCurrentValue());
   setDayLine.m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
+  setDayLine.m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
+  setDayLine.m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
 
   return true;
 }
@@ -125,6 +127,8 @@ bool CDayLine::LoadData(CSetDayLine& setDayLine) {
   m_llTotalValue = atoll(setDayLine.m_TotalValue);
   m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
   m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
+  m_dRelativeStrongIndex = atof(setDayLine.m_RelativeStrongIndex);
+  m_dRelativeStrongBackup = atof(setDayLine.m_RelativeStrongBackup);
   CalculateRSLogarithm(m_dRelativeStrong);
   return true;
 }

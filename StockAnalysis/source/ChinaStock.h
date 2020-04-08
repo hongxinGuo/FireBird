@@ -50,9 +50,9 @@ public:
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
-  CString GetStockCode(void) { return m_strStockCode; }
+  CString GetStockCode(void) noexcept { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
-  CString GetStockName(void) { return m_strStockName; }
+  CString GetStockName(void) noexcept { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
@@ -105,6 +105,10 @@ public:
   void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double value) noexcept { m_dRelativeStrong = value; }
+  double GetRelativeStrongIndex(void) noexcept { return m_dRelativeStrongIndex; }
+  void SetRelativeStrongIndex(double value) noexcept { m_dRelativeStrongIndex = value; }
+  double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
+  void SetRelativeStrongBackup(double value) noexcept { m_dRelativeStrongBackup = value; }
 
   INT64 GetCurrentCancelBuyVolume(void) noexcept { return m_lCurrentCanselBuyVolume; }
   INT64 GetCurrentCancelSellVolume(void) noexcept { return m_lCurrentCanselSellVolume; }
@@ -361,6 +365,8 @@ protected:
   array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
   array<long, 5> m_lVSell; // 卖盘量。单位：股
   double m_dRelativeStrong; // 单位：1%
+  double m_dRelativeStrongIndex; // 单位：1%
+  double m_dRelativeStrongBackup; // 单位：1%
 
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额

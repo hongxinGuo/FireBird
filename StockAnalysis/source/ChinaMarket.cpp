@@ -1789,7 +1789,8 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 ///////////////////////////////////////////////////////////////////////////////////
 //
 // 计算lDay的日线相对强度, lDay的格式为：YYYYMMDD,如 19990605.
-// 将日线按涨跌排列后,其相对强弱即其在队列中的位置
+// 将日线按涨跌排列后,其相对强弱即其在队列中的位置.
+// 计算m_dRelativeStrongIndex,则是使用涨跌的相对量。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
@@ -1803,6 +1804,10 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   int iStockNumber = 0;
   CTime ctTime;
   CSetDayLine setDayLine;
+  double dShanghaiIndexUpDownRate = 0;
+  double dShenzhenIndexUpDownRate = 0;
+  double dIndexUpDownRate;
+  double dRelativeStrongIndex;
 
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
@@ -1820,6 +1825,12 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   setDayLine.m_pDatabase->BeginTrans();
   iStockNumber = 0;
   while (!setDayLine.IsEOF()) {
+    if (strcmp(setDayLine.m_StockCode, _T("sh000001")) == 0) { // 上海综指
+      dShanghaiIndexUpDownRate = GetUpDownRate(setDayLine.m_Close, setDayLine.m_LastClose);
+    }
+    else if (strcmp(setDayLine.m_StockCode, _T("sz399001")) == 0) { // 深圳成指
+      dShenzhenIndexUpDownRate = GetUpDownRate(setDayLine.m_Close, setDayLine.m_LastClose);
+    }
     if (IsAStock(setDayLine.m_StockCode)) {
       long lIndex = m_mapChinaMarketAStock.at(setDayLine.m_StockCode);
       vStock.push_back(m_vChinaMarketAStock.at(lIndex));
@@ -1829,6 +1840,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
     iStockNumber++;
     setDayLine.MoveNext();
   }
+  dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
 
   setDayLine.MoveFirst();
   int iCount = 0;
@@ -1842,6 +1854,13 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
     double dLow = atof(setDayLine.m_Low);
     double dHigh = atof(setDayLine.m_High);
     double dClose = atof(setDayLine.m_Close);
+    double dUpDownRate = (dClose - dLastClose) / dLastClose;
+    if ((dUpDownRate > 0.1) || (dUpDownRate < -0.1)) dRelativeStrongIndex = 50;
+    else {
+      dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 5000 + 50;
+    }
+    setDayLine.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
+
     if (((dLow / dLastClose) < 0.88)
         || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
       setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
@@ -1870,10 +1889,17 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   CString strDay2 = GetDayString(lDay);
   CString strTemp;
   strTemp = strDay2 + _T("的股票相对强度计算完成");
-  TRACE("处理今日相对强度\n");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);
+}
+
+double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) {
+  double lastClose = atof(strLastClose);
+  if (lastClose < 0.00001) return 0;
+  double result = (atof(strClose) - lastClose) / lastClose;
+  if ((result > 0.1) || (result < -0.1)) result = 0;
+  return result;
 }
 
 bool CChinaMarket::UpdateStockCodeDB(void) {

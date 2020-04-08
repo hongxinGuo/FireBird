@@ -18,7 +18,7 @@ public:
   bool LoadData(CSetDayLine& setDayLine);
   bool LoadData(CSetDayLineInfo& setDayLineInfo);
 
-  void CalculateRSLogarithm(long double dRS);
+  void CalculateRSLogarithm(double dRS);
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool IsActive(void);
@@ -71,8 +71,12 @@ public:
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
   void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
-  long double GetRSLogarithm(void) noexcept { return m_dRSLogarithm; }
-  void SetRSLogarithm(long double dValue) noexcept { m_dRSLogarithm = dValue; }
+  double GetRelativeStrongIndex(void) noexcept { return m_dRelativeStrongIndex; }
+  void SetRelativeStrongIndex(double dValue) noexcept { m_dRelativeStrongIndex = dValue; }
+  double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
+  void SetRelativeStrongBackup(double dValue) noexcept { m_dRelativeStrongBackup = dValue; }
+  double GetRSLogarithm(void) noexcept { return m_dRSLogarithm; }
+  void SetRSLogarithm(double dValue) noexcept { m_dRSLogarithm = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   void SetTransactionNumber(long lValue) noexcept { m_lTransactionNumber = lValue; }
 
@@ -165,8 +169,10 @@ protected:
   long m_lUnknownVolume;
   long m_lCancelBuyVolume; // 买单撤单量
   long m_lCancelSellVolume; // 卖单撤单量
-  long double m_dRelativeStrong; // 相对强弱（最小为0， 最大为100）
-  long double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50)) )
+  double m_dRelativeStrong; // 相对强弱（最小为0， 最大为100）
+  double m_dRelativeStrongIndex; // 相对强弱（最小为-50， 最大为150）
+  double m_dRelativeStrongBackup; // 相对强弱（最小为0， 最大为100）
+  double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50)) )
                           // 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50))
   long m_lTransactionNumber;
   long m_lTransactionNumberBelow5000;

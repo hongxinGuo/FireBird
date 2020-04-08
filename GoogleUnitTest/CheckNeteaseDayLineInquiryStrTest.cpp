@@ -28,6 +28,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       CheckNeteaseDayLineInquiryStrData* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_strCode = pData->m_strData;
@@ -35,6 +36,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
 
   public:
@@ -44,7 +46,7 @@ namespace StockAnalysisTest {
 
   INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, CheckNeteaseDayLineInquiryStrTest,
                            testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8
-                                           ));
+                           ));
 
   TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
     bool fSucceed = gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);

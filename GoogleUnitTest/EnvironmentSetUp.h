@@ -104,6 +104,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
