@@ -153,14 +153,24 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
     s_pStockAnalysisView->OnShowRsInLogarithm();
+
     EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInLogarithm());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
       .Times(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
-    s_pStockAnalysisView->OnShowRsInLogarithm();
+    s_pStockAnalysisView->OnShowRsInLinear();
+
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLogarithm());
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
+    EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInLinear());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLinear(&cmdUI);
+    s_pStockAnalysisView->OnShowRsIndex();
 
     gl_pChinaStockMarket->ResetCurrentStock();
   }

@@ -1635,4 +1635,9 @@ namespace StockAnalysisTest {
     CChinaStock stock;
     EXPECT_TRUE(stock.CalculateDayLineRS(3));
   }
+
+  TEST_F(CChinaStockTest, TestCalculateDayLineRSIndex) {
+    CChinaStock stock;
+    EXPECT_TRUE(stock.CalculateDayLineRSIndex(3));
+  }
 }

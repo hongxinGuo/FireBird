@@ -10,6 +10,7 @@ namespace testing {
   public:
     MOCK_METHOD(bool, CalculateDayLineRS, (INT64 lNumber), (override));
     MOCK_METHOD(bool, CalculateDayLineRSLogarithm, (INT64 lNumber), (override));
+    MOCK_METHOD(bool, CalculateDayLineRSIndex, (INT64 lNumber), (override));
     MOCK_METHOD(void, ReportGuadanTransaction, (), (override));
     MOCK_METHOD(bool, SaveDayLine, (), (override));
     MOCK_METHOD(bool, LoadDayLineAndDayLineInfo, (), (override));

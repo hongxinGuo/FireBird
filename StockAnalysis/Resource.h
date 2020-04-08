@@ -37,6 +37,9 @@
 #define IDS_EDIT_MENU                   306
 #define IDS_TRACE2_TAB2                 307
 #define IDS_INNER_SYSTEM_INFORMATION_TAB2 307
+#define IDD_DIALOG_PROGRAM_OPTION       310
+#define IDC_COMBO_DISPLAY_RS            1003
+#define IDC_COMBO_OPTION_DISPLAY_RS     1003
 #define ID_PROCESS_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_TODAY_RELATIVE_STRONG 32773
@@ -81,6 +84,11 @@
 #define ID_32813                        32813
 #define ID_32814                        32814
 #define ID_SHOW_RS_IN_LOGARITHM         32815
+#define ID_32816                        32816
+#define ID_SHOW_RS_INDEX                32817
+#define ID_32818                        32818
+#define ID_SHOW_RS_IN_AG                32819
+#define ID_SHOW_RS_IN_LINEAR            32820
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -95,9 +103,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32816
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_COMMAND_VALUE         32821
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

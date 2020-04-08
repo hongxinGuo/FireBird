@@ -48,6 +48,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CChinaStockMockTest, TestCalculateDayLineRS) {
+    InSequence Seq;
     EXPECT_CALL(*pStock, CalculateDayLineRS(3))
       .Times(1);
     EXPECT_CALL(*pStock, CalculateDayLineRS(5))
@@ -64,6 +65,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockMockTest, TestCalculateDayLineRSLogarithm) {
+    InSequence Seq;
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(3))
       .Times(1);
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(5))
@@ -78,6 +80,23 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(120))
       .Times(1);
     pStock->CalculateDayLineRelativeStrongLogarithm();
+  }
+
+  TEST_F(CChinaStockMockTest, TestCalculateDayLineRSIndex) {
+    InSequence Seq;
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(5))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(10))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(30))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(60))
+      .Times(1);
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(120))
+      .Times(1);
+    pStock->CalculateDayLineRelativeStrongIndex();
   }
 
   TEST_F(CChinaStockMockTest, TestShowCurrentTransaction) {
@@ -130,17 +149,17 @@ namespace StockAnalysisTest {
     InSequence seq;
     EXPECT_CALL(*pStock, LoadDayLineAndDayLineInfo)
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(3))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(5))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(5))
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(10))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(10))
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(30))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(30))
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(60))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(60))
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(120))
+    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(120))
       .Times(1);
     pStock->SetDayLineLoaded(false);
     EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);

@@ -255,6 +255,8 @@ public:
   // 日线相对强度计算
   bool CalculateDayLineRelativeStrong(void);
   virtual bool CalculateDayLineRS(INT64 lNumber);
+  bool CalculateDayLineRelativeStrongIndex(void);
+  virtual bool CalculateDayLineRSIndex(INT64 lNumber);
   bool CalculateDayLineRelativeStrongLogarithm(void);
   virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 

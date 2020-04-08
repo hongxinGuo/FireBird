@@ -23,7 +23,9 @@ public:
   bool IsShow30DayRS(void) noexcept { return m_fShow30DayRS; }
   bool IsShow60DayRS(void) noexcept { return m_fShow60DayRS; }
   bool IsShow120DayRS(void) noexcept { return m_fShow120DayRS; }
-  bool IsShowRSInLogarithm(void) noexcept { return m_fShowRSInLogarithm; }
+  bool IsShowRSInLogarithm(void) noexcept { return (m_iShowRSOption == 2); }
+  bool IsShowRSInLinear(void) noexcept { return (m_iShowRSOption == 1); }
+  bool IsShowRSInIndex(void) noexcept { return (m_iShowRSOption == 0); }
 
   // 操作
 public:
@@ -78,7 +80,7 @@ protected:
   bool      m_fShow30DayRS;
   bool      m_fShow60DayRS;
   bool      m_fShow120DayRS;
-  bool      m_fShowRSInLogarithm; // 使用对数坐标计算相对相对强度
+  int      m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
 
   // 生成的消息映射函数
 protected:
@@ -104,6 +106,10 @@ public:
   afx_msg void OnUpdateShowRs60(CCmdUI* pCmdUI);
   afx_msg void OnShowRsInLogarithm();
   afx_msg void OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI);
+  afx_msg void OnShowRsInLinear();
+  afx_msg void OnUpdateShowRsInLinear(CCmdUI* pCmdUI);
+  afx_msg void OnShowRsIndex();
+  afx_msg void OnUpdateShowRsIndex(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本
