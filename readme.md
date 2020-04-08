@@ -1,7 +1,7 @@
 # FireBird StockAnalysis
 
 ### 声明
-Version 0.09.0已可用。
+Version 0.10.0已可用。
 
 ### 欢迎使用FireBird StockAnalysis
 FireBird StockAnalysis从网络股票行情服务器中提取实时行情和历史数据，将处理后的信息存储于数据库中。

@@ -1854,15 +1854,23 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
     double dLow = atof(setDayLine.m_Low);
     double dHigh = atof(setDayLine.m_High);
     double dClose = atof(setDayLine.m_Close);
-    double dUpDownRate = (dClose - dLastClose) / dLastClose;
-    if ((dUpDownRate > 0.1) || (dUpDownRate < -0.1)) dRelativeStrongIndex = 50;
+    double dUpDownRate = 0;
+    if (dLastClose < 0.001) {
+      dRelativeStrongIndex = 50;
+    }
     else {
-      dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 5000 + 50;
+      dUpDownRate = (dClose - dLastClose) / dLastClose;
+      if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) dRelativeStrongIndex = 50;
+      else {
+        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50;
+      }
     }
     setDayLine.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
 
-    if (((dLow / dLastClose) < 0.88)
-        || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
+    if (dLastClose < 0.001) {
+      setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+    }
+    else if (((dLow / dLastClose) < 0.88) || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
       setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if ((fabs(dHigh - dClose) < 0.0001) && (((dClose / dLastClose)) > 1.095)) { // 涨停板
@@ -1896,9 +1904,9 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
 
 double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) {
   double lastClose = atof(strLastClose);
-  if (lastClose < 0.00001) return 0;
+  if (lastClose < 0.001) return 0;
   double result = (atof(strClose) - lastClose) / lastClose;
-  if ((result > 0.1) || (result < -0.1)) result = 0;
+  if ((result > 0.11) || (result < -0.11)) result = 0;
   return result;
 }
 

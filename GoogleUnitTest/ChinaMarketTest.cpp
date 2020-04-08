@@ -1285,11 +1285,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetUpDownRate) {
-    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("10.0"), _T("0.0")), 0.0) << _T("LastClose为零时返回0");
+    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("10.0"), _T("0.0009")), 0.0) << _T("LastClose小于0.001时返回0");
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("11.0"), _T("10.0")), 0.1);
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("10.5"), _T("10.0")), 0.05);
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("9.0"), _T("10.0")), -0.1);
-    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("11.1"), _T("10.0")), 0.0) << _T("大于0.1时返回0");
-    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("8.9"), _T("10.0")), 0.0) << _T("小于-0.1时返回0");
+    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("11.11"), _T("10.0")), 0.0) << _T("大于0.11时返回0");
+    EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
   }
 }
