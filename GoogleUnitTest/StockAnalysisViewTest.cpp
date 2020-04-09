@@ -174,4 +174,59 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->ResetCurrentStock();
   }
+
+  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSInLinear) {
+    CCmdUI cmdUI;
+    gl_pChinaStockMarket->ResetCurrentStock();
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLinear(&cmdUI);
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLinear());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLinear(&cmdUI);
+    s_pStockAnalysisView->OnShowRsInLinear();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInLinear());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsInLinear(&cmdUI);
+    s_pStockAnalysisView->OnShowRsIndex();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLinear());
+
+    gl_pChinaStockMarket->ResetCurrentStock();
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSIndex) {
+    CCmdUI cmdUI;
+    gl_pChinaStockMarket->ResetCurrentStock();
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsIndex(&cmdUI);
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    s_pStockAnalysisView->SetShowRSOption(2);
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsIndex(&cmdUI);
+    s_pStockAnalysisView->OnShowRsIndex();
+    EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInIndex());
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRsIndex(&cmdUI);
+    s_pStockAnalysisView->OnShowRsInLinear();
+    EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
+
+    gl_pChinaStockMarket->ResetCurrentStock();
+  }
 }

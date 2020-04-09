@@ -74,7 +74,7 @@ CStockAnalysisView::CStockAnalysisView() {
   m_fShow30DayRS = true;
   m_fShow60DayRS = true;
   m_fShow120DayRS = true;
-  m_iShowRSOption = 3; // 默认值为指数相对强度
+  m_iShowRSOption = 0; // 默认值为指数相对强度
 
   m_uIdTimer = 0;
 
@@ -540,8 +540,8 @@ void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
 
 void CStockAnalysisView::OnShowRsIndex() {
   // TODO: Add your command handler code here
-  if (m_iShowRSOption != 3) {
-    m_iShowRSOption = 3;
+  if (m_iShowRSOption != 0) {
+    m_iShowRSOption = 0;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
       gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongIndex();
     }
@@ -555,7 +555,7 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
   }
   else {
     SysCallCmdUIEnable(pCmdUI, true);
-    if (m_iShowRSOption == 3) SysCallCmdUISetCheck(pCmdUI, 1);
+    if (m_iShowRSOption == 0) SysCallCmdUISetCheck(pCmdUI, 1);
     else SysCallCmdUISetCheck(pCmdUI, 0);
   }
 }

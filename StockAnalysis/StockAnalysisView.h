@@ -26,6 +26,7 @@ public:
   bool IsShowRSInLogarithm(void) noexcept { return (m_iShowRSOption == 2); }
   bool IsShowRSInLinear(void) noexcept { return (m_iShowRSOption == 1); }
   bool IsShowRSInIndex(void) noexcept { return (m_iShowRSOption == 0); }
+  void SetShowRSOption(int iValue) noexcept { m_iShowRSOption = iValue; }
 
   // 操作
 public:
