@@ -69,11 +69,11 @@ CStockAnalysisView::CStockAnalysisView() {
 
   m_fShowRS = false;
   m_fShow3DayRS = false;;
-  m_fShow5DayRS = true;
+  m_fShow5DayRS = false;
   m_fShow10DayRS = true;
   m_fShow30DayRS = true;
-  m_fShow60DayRS = true;
-  m_fShow120DayRS = true;
+  m_fShow60DayRS = false;
+  m_fShow120DayRS = false;
   m_iShowRSOption = 0; // 默认值为指数相对强度
 
   m_uIdTimer = 0;
@@ -204,11 +204,12 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
 void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   const COLORREF crBlack(RGB(0, 0, 0)), crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));
   const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-  CPen* ppen = nullptr, penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed1(PS_SOLID, 1, crRed);
-  CPen penRed3(PS_SOLID, 3, crRed), penGreen3(PS_SOLID, 3, crGreen), penWhite3(PS_SOLID, 3, crWhite);
-  CPen penRed2(PS_SOLID, 2, crRed), penGreen2(PS_SOLID, 2, crGreen);
-  CPen penYellow2(PS_SOLID, 2, crYellow), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
-  CPen penYellow1(PS_SOLID, 1, crYellow), penYellow3(PS_SOLID, 3, crYellow);
+  CPen* ppen = nullptr;
+  CPen penWhite1(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penWhite3(PS_SOLID, 3, crWhite);
+  CPen penRed1(PS_SOLID, 1, crRed), penRed2(PS_SOLID, 2, crRed), penRed3(PS_SOLID, 3, crRed);
+  CPen  penGreen1(PS_SOLID, 1, crGreen), penGreen2(PS_SOLID, 2, crGreen), penGreen3(PS_SOLID, 3, crGreen);
+  CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
+  CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPoint ptCurrent;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
@@ -239,7 +240,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   }
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
-    pDC->SelectObject(&penBlue2);
+    pDC->SelectObject(&penYellow2);
     pCurrentStock->ShowDayLine10RS(pDC, m_rectClient);
   }
   // 画相对强度30日均线
@@ -254,7 +255,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   }
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
-    pDC->SelectObject(&penYellow2);
+    pDC->SelectObject(&penGreen1);
     pCurrentStock->ShowDayLine120RS(pDC, m_rectClient);
   }
 

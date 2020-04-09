@@ -82,8 +82,8 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
       gl_pChinaStockMarket->ResetCurrentStock();
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
   };
 

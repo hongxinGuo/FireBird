@@ -30,9 +30,11 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     }

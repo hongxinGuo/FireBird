@@ -20,9 +20,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
