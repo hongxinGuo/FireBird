@@ -621,7 +621,7 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRSLogarithm();
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrongLogarithm();
     }
     switch (lNumber) {
     case 3:
@@ -1339,88 +1339,66 @@ void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
   }
 }
 
-bool CChinaStock::RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue) {
-  int y = rectClient.bottom - dValue * rectClient.bottom / 200;
-  pDC->LineTo(rectClient.right - 1 - 3 * i, y);
-  if (3 * i > m_vDayLine.size()) return false;
-  if (rectClient.right <= 3 * i) return false; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
-  return true;
-}
-
-void CChinaStock::ShowDayLineRS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->GetRelativeStrong() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->GetRelativeStrong())) break;
+void CChinaStock::GetRS1Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
   }
 }
 
-void CChinaStock::ShowDayLine3RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get3DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get3DayRS())) break;
+void CChinaStock::GetRSIndex1Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
   }
 }
 
-void CChinaStock::ShowDayLine5RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get5DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get5DayRS())) break;
+void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongLogarithm();
   }
 }
 
-void CChinaStock::ShowDayLine10RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get10DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get10DayRS())) break;
+void CChinaStock::GetRS3Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get3DayRS();
   }
 }
 
-void CChinaStock::ShowDayLine30RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get30DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get30DayRS())) break;
+void CChinaStock::GetRS5Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get5DayRS();
   }
 }
 
-void CChinaStock::ShowDayLine60RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get60DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get60DayRS())) break;
+void CChinaStock::GetRS10Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get10DayRS();
   }
 }
 
-void CChinaStock::ShowDayLine120RS(CDC* pDC, CRect rectClient) {
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  int i = 1;
-  it--;
-  int y = rectClient.bottom - (*it--)->Get120DayRS() * rectClient.bottom / 200;
-  pDC->MoveTo(rectClient.right - 1, y);
-  for (; it != m_vDayLine.begin(); it--, i++) {
-    if (!RSLineTo(pDC, rectClient, i, (*it)->Get120DayRS())) break;
+void CChinaStock::GetRS30Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get30DayRS();
+  }
+}
+
+void CChinaStock::GetRS60Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get60DayRS();
+  }
+}
+
+void CChinaStock::GetRS120Day(vector<double>& vRS) {
+  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
+  for (int i = 0; i < m_vDayLine.size(); i++) {
+    vRS[i] = m_vDayLine.at(i)->Get120DayRS();
   }
 }
 

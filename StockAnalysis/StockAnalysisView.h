@@ -33,11 +33,22 @@ public:
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
   bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 
-  void    ShowRealtimeStockData(CDC* pdc);
-  void    ShowStockDayLine(CDC* pDC);
+  void ShowRealtimeStockData(CDC* pdc);
+  void ShowStockDayLine(CDC* pDC);
+  void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
+  bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
+
+  void SetClientSize(CRect rect) noexcept { m_rectClient = rect; }
 
   //系统包裹函数
 public:
+  virtual CSize SysCallGetTextExtent(CDC* pDC, CString str) { return(pDC->GetTextExtent(str)); }
+  virtual BOOL SysCallTextOut(CDC* pDC, int x, int y, CString str) { return(pDC->TextOut(x, y, str)); }
+  virtual CPen* SysCallSelectObject(CDC* pDC, CPen* ppen) { return(pDC->SelectObject(ppen)); }
+  virtual CPoint SysCallMoveTo(CDC* pDC, int x, int y) { return(pDC->MoveTo(x, y)); }
+  virtual CPoint SysCallMoveTo(CDC* pDC, CPoint pt) { return(pDC->MoveTo(pt)); }
+  virtual BOOL SysCallLineTo(CDC* pDC, int x, int y) { return(pDC->LineTo(x, y)); }
+  virtual BOOL SysCallLineTo(CDC* pDC, CPoint pt) { return(pDC->LineTo(pt)); }
   virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }
@@ -82,6 +93,7 @@ protected:
   bool      m_fShow60DayRS;
   bool      m_fShow120DayRS;
   int      m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
+  vector<double> m_vRSShow;
 
   // 生成的消息映射函数
 protected:

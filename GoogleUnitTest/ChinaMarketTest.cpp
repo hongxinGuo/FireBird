@@ -20,6 +20,10 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+      }
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
@@ -71,12 +75,6 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCheckActiveStock(true);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       gl_pChinaStockMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
-      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
-        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
-        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
-        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
-        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
-      }
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -84,6 +82,13 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
+        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
+      }
     }
   };
 

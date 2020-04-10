@@ -304,14 +304,15 @@ public:
   bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
-  bool RSLineTo(CDC* pDC, CRect rectClient, int i, double dValue);
-  void ShowDayLineRS(CDC* pDC, CRect rectClient);
-  void ShowDayLine3RS(CDC* pDC, CRect rectClient);
-  void ShowDayLine5RS(CDC* pDC, CRect rectClient);
-  void ShowDayLine10RS(CDC* pDC, CRect rectClient);
-  void ShowDayLine30RS(CDC* pDC, CRect rectClient);
-  void ShowDayLine60RS(CDC* pDC, CRect rectClient);
-  void ShowDayLine120RS(CDC* pDC, CRect rectClient);
+  void GetRS1Day(vector<double>& vRS);
+  void GetRSIndex1Day(vector<double>& vRS);
+  void GetRSLogarithm1Day(vector<double>& vRS);
+  void GetRS3Day(vector<double>& vRS);
+  void GetRS5Day(vector<double>& vRS);
+  void GetRS10Day(vector<double>& vRS);
+  void GetRS30Day(vector<double>& vRS);
+  void GetRS60Day(vector<double>& vRS);
+  void GetRS120Day(vector<double>& vRS);
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }

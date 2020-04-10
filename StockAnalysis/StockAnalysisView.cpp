@@ -34,11 +34,7 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
   ON_WM_RBUTTONUP()
   ON_WM_TIMER()
   ON_WM_CREATE()
-  //  ON_WM_CHAR()
-  //  ON_WM_KEYUP()
   ON_WM_SIZE()
-  //  ON_WM_CHAR()
-  //  ON_WM_KEYUP()
   ON_COMMAND(ID_SHOW_RS3, &CStockAnalysisView::OnShowRs3)
   ON_COMMAND(ID_SHOW_RS5, &CStockAnalysisView::OnShowRs5)
   ON_COMMAND(ID_SHOW_RS10, &CStockAnalysisView::OnShowRs10)
@@ -86,7 +82,7 @@ CStockAnalysisView::~CStockAnalysisView() {
 
 bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
-  CSize sizeText = pDC->GetTextExtent(str);
+  CSize sizeText = SysCallGetTextExtent(pDC, str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
   long lStartPrice = ((long)(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
@@ -133,7 +129,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
   return true;
 }
 
-void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
+void CStockAnalysisView::ShowRealtimeStockData(CDC* pDC) {
   CString str;
   COLORREF crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0)), crYellow(RGB(255, 255, 0));;
   COLORREF crBefore;
@@ -156,49 +152,49 @@ void CStockAnalysisView::ShowRealtimeStockData(CDC* pdc) {
   int y7 = y6 + 20, y8 = y7 + 20, y9 = y8 + 30, y10 = y9 + 20, y11 = y10 + 20;
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
-  crBefore = pdc->SetBkColor(crYellow);
+  crBefore = pDC->SetBkColor(crYellow);
   pStock = gl_pChinaStockMarket->GetCurrentStock();
 
-  ppen = pdc->SelectObject(&penRed);
+  ppen = SysCallSelectObject(pDC, &penRed);
   ptCurrent.x = iTextStart - 5;
   ptCurrent.y = 0;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.y = 768;
-  pdc->LineTo(ptCurrent);
+  SysCallLineTo(pDC, ptCurrent);
   ptCurrent.x = iTextStart - 5;
   ptCurrent.y = y1 - 5;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.x = 1024;
-  pdc->LineTo(ptCurrent);
+  SysCallLineTo(pDC, ptCurrent);
   ptCurrent.x = iTextStart - 5;
   ptCurrent.y = y6 - 5;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.x = 1024;
-  pdc->LineTo(ptCurrent);
+  SysCallLineTo(pDC, ptCurrent);
   ptCurrent.x = iTextStart - 5;
   ptCurrent.y = y9 - 5;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.x = 1024;
-  pdc->LineTo(ptCurrent);
+  SysCallLineTo(pDC, ptCurrent);
   ptCurrent.x = iTextStart - 5;
   ptCurrent.y = y12 - 5;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.x = 1024;
-  pdc->LineTo(ptCurrent);
+  SysCallLineTo(pDC, ptCurrent);
   ptCurrent.x = iGuadanXBegin;
   ptCurrent.y = 0;
-  pdc->MoveTo(ptCurrent);
+  SysCallMoveTo(pDC, ptCurrent);
   ptCurrent.y = 1060;
-  pdc->LineTo(ptCurrent);
-  pdc->SelectObject(ppen);
+  SysCallLineTo(pDC, ptCurrent);
+  SysCallSelectObject(pDC, ppen);
 
   if (pCurrentStock != nullptr) {
-    ShowGuadan(pdc, pCurrentStock, 10, 10, 500);
+    ShowGuadan(pDC, pCurrentStock, 10, 10, 500);
 
     //ShowCurrentTransactionInfo(pdc, pCurrentStock, 200, 10);
   }
 
-  pdc->SelectObject(ppen);
+  SysCallSelectObject(pDC, ppen);
 }
 
 void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
@@ -220,49 +216,88 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   const long lXLow = m_rectClient.bottom;
   const long lYEnd = m_rectClient.right;
   ppen = pDC->SelectObject(&penRed1);
-  pDC->MoveTo(m_rectClient.right, m_rectClient.bottom * 3 / 4);
-  pDC->LineTo(0, m_rectClient.bottom * 3 / 4);
+  SysCallMoveTo(pDC, m_rectClient.right, m_rectClient.bottom * 3 / 4);
+  SysCallLineTo(pDC, 0, m_rectClient.bottom * 3 / 4);
 
   // 画相对强度
   if (m_fShowRS) {
     pDC->SelectObject(&penWhite1);
-    pCurrentStock->ShowDayLineRS(pDC, m_rectClient);
+    switch (m_iShowRSOption) {
+    case 0:
+    pCurrentStock->GetRSIndex1Day(m_vRSShow);
+    break;
+    case 1:
+    pCurrentStock->GetRS1Day(m_vRSShow);
+    break;
+    case 2:
+    pCurrentStock->GetRSLogarithm1Day(m_vRSShow);
+    break;
+    default:
+    // 错误
+    break;
+    }
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
-    pDC->SelectObject(&penYellow2);
-    pCurrentStock->ShowDayLine3RS(pDC, m_rectClient);
+    pDC->SelectObject(&penYellow1);
+    pCurrentStock->GetRS3Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
-    pDC->SelectObject(&penRed2);
-    pCurrentStock->ShowDayLine5RS(pDC, m_rectClient);
+    pDC->SelectObject(&penGreen1);
+    pCurrentStock->GetRS5Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
-    pDC->SelectObject(&penYellow2);
-    pCurrentStock->ShowDayLine10RS(pDC, m_rectClient);
+    pDC->SelectObject(&penRed1);
+    pCurrentStock->GetRS10Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
-    pDC->SelectObject(&penGreen2);
-    pCurrentStock->ShowDayLine30RS(pDC, m_rectClient);
+    pDC->SelectObject(&penYellow1);
+    pCurrentStock->GetRS30Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
-    pDC->SelectObject(&penWhite2);
-    pCurrentStock->ShowDayLine60RS(pDC, m_rectClient);
+    pDC->SelectObject(&penGreen1);
+    pCurrentStock->GetRS60Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
-    pDC->SelectObject(&penGreen1);
-    pCurrentStock->ShowDayLine120RS(pDC, m_rectClient);
+    pDC->SelectObject(&penRed1);
+    pCurrentStock->GetRS120Day(m_vRSShow);
+    ShowCurrentRS(pDC, m_vRSShow);
   }
 
   ////////////////////////////////////////////////////////////////画日线蜡烛线
   pCurrentStock->ShowDayLine(pDC, m_rectClient);
 
   pDC->SelectObject(ppen);
+}
+
+void CStockAnalysisView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
+  vector<double>::iterator it = vRS.end();
+  int i = 1;
+  it--;
+  int y = m_rectClient.bottom - (*it--) * m_rectClient.bottom / 200;
+  SysCallMoveTo(pDC, m_rectClient.right - 1, y);
+  for (; it != vRS.begin(); it--, i++) {
+    if (!RSLineTo(pDC, i, (*it), vRS.size())) break;
+  }
+}
+
+bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
+  int y = m_rectClient.bottom - dValue * m_rectClient.bottom / 200;
+  SysCallLineTo(pDC, m_rectClient.right - 1 - 3 * i, y);
+  if (3 * i > iSize) return false;
+  if (m_rectClient.right <= 3 * i) return false; // 画到窗口左边框为止
+  return true;
 }
 
 BOOL CStockAnalysisView::PreCreateWindow(CREATESTRUCT& cs) {

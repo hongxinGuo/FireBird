@@ -6,7 +6,6 @@
 
 #include"MockStockAnalysisView.h"
 using namespace testing;
-using namespace ::testing;
 
 namespace StockAnalysisTest {
   class CStockAnalysisViewTest : public ::testing::Test {
@@ -42,6 +41,38 @@ namespace StockAnalysisTest {
   public:
     CMockStockAnalysisView* s_pStockAnalysisView;
   };
+
+  TEST_F(CStockAnalysisViewTest, TestShowCurrentRS) {
+    CDC DC;
+    vector<double> vRS{ 5, 10, 20, 30 };
+    CRect rect(0, 0, 100, 100);
+    s_pStockAnalysisView->SetClientSize(rect);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallMoveTo(&DC, 99, 85))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallLineTo(&DC, _, _))
+      .Times(2);
+    s_pStockAnalysisView->ShowCurrentRS(&DC, vRS);
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestRSLineTo) {
+    CDC DC;
+    CRect rect(0, 0, 100, 100);
+    s_pStockAnalysisView->SetClientSize(rect);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallLineTo(&DC, 69, 75))
+      .Times(1)
+      .WillOnce(Return(TRUE));
+    EXPECT_TRUE(s_pStockAnalysisView->RSLineTo(&DC, 10, 50.0, 100));
+
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallLineTo(&DC, -21, 75))
+      .Times(1)
+      .WillOnce(Return(TRUE));
+    EXPECT_FALSE(s_pStockAnalysisView->RSLineTo(&DC, 40, 50.0, 100));
+
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallLineTo(&DC, 39, 75))
+      .Times(1)
+      .WillOnce(Return(TRUE));
+    EXPECT_FALSE(s_pStockAnalysisView->RSLineTo(&DC, 20, 50.0, 50));
+  }
 
   TEST_F(CStockAnalysisViewTest, TestOnSize) {
     EXPECT_CALL(*s_pStockAnalysisView, SysCallOnSize(1, 100, 200))

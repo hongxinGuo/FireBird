@@ -75,7 +75,7 @@ public:
   void SetRelativeStrongIndex(double dValue) noexcept { m_dRelativeStrongIndex = dValue; }
   double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
   void SetRelativeStrongBackup(double dValue) noexcept { m_dRelativeStrongBackup = dValue; }
-  double GetRSLogarithm(void) noexcept { return m_dRSLogarithm; }
+  double GetRelativeStrongLogarithm(void) noexcept { return m_dRSLogarithm; }
   void SetRSLogarithm(double dValue) noexcept { m_dRSLogarithm = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   void SetTransactionNumber(long lValue) noexcept { m_lTransactionNumber = lValue; }
