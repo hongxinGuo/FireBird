@@ -37,6 +37,10 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+      }
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -84,7 +88,6 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
-        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
         if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
         if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
@@ -268,7 +271,7 @@ namespace StockAnalysisTest {
       CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
     }
-    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
   }
 
   TEST_F(CChinaMarketTest, TestGetSinaInquiringStockStr2) {
