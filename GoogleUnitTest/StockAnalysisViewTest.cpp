@@ -179,6 +179,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
+
     gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
     EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
@@ -187,8 +188,8 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRsInLogarithm(&cmdUI);
-    s_pStockAnalysisView->OnShowRsInLogarithm();
 
+    s_pStockAnalysisView->OnShowRsInLogarithm();
     EXPECT_TRUE(s_pStockAnalysisView->IsShowRSInLogarithm());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, true))
       .Times(1);

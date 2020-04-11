@@ -41,6 +41,7 @@ namespace StockAnalysisTest {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
       }
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -97,6 +98,20 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestInitialize) {
     CChinaStockPtr pStock = nullptr;
+    for (int i = 0; i < 12000; i++) {
+      pStock = gl_pChinaStockMarket->GetStock(i);
+      EXPECT_EQ(pStock->GetOffset(), i);
+      EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
+      EXPECT_FALSE(pStock->IsDayLineNeedProcess());
+      EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+      if ((pStock->GetStockCode() >= _T("sh000000")) && (pStock->GetStockCode() <= _T("sh000999"))) {
+        EXPECT_FALSE(pStock->IsNeedProcessRTData());
+      }
+      else if ((pStock->GetStockCode() >= _T("sz399000")) && (pStock->GetStockCode() <= _T("sz399999"))) {
+        EXPECT_FALSE(pStock->IsNeedProcessRTData());
+      }
+      else EXPECT_TRUE(pStock->IsNeedProcessRTData());
+    }
     EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_pChinaStockMarket->IsLoadSelectedStock());
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
@@ -116,20 +131,6 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStockMarket->GetStock(6000);
     EXPECT_STREQ(pStock->GetStockCode(), _T("sz000000"));
     EXPECT_EQ(pStock->GetMarket(), __SHENZHEN_MARKET__);
-    for (int i = 0; i < 12000; i++) {
-      pStock = gl_pChinaStockMarket->GetStock(i);
-      EXPECT_EQ(pStock->GetOffset(), i);
-      EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
-      EXPECT_FALSE(pStock->IsDayLineNeedProcess());
-      EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-      if ((pStock->GetStockCode() >= _T("sh000000")) && (pStock->GetStockCode() <= _T("sh000999"))) {
-        EXPECT_FALSE(pStock->IsNeedProcessRTData());
-      }
-      else if ((pStock->GetStockCode() >= _T("sz399000")) && (pStock->GetStockCode() <= _T("sz399999"))) {
-        EXPECT_FALSE(pStock->IsNeedProcessRTData());
-      }
-      else EXPECT_TRUE(pStock->IsNeedProcessRTData());
-    }
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStockIndex(_T("sh600000")), 0);
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStockIndex(_T("sz000000")), 6000);
 
@@ -502,7 +503,7 @@ namespace StockAnalysisTest {
     // »Ö¸´Ô­×´
     pStock = gl_pChinaStockMarket->GetStock(0);
     pStock->SetDayLineEndDay(lDay);
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 12000; i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
     }

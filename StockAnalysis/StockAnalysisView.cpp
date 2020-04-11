@@ -209,6 +209,7 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   CPoint ptCurrent;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
+  if (m_vRSShow.size() != pCurrentStock->GetDayLineSize()) m_vRSShow.resize(pCurrentStock->GetDayLineSize());
   if (pCurrentStock == nullptr) return;
   if (!pCurrentStock->IsDayLineLoaded()) return;
 
@@ -431,7 +432,7 @@ int CStockAnalysisView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   // TODO:  在此添加您专用的创建代码
   GetClientRect(&m_rectClient);
 
-  m_uIdTimer = SetTimer(3, 1000, nullptr);     // 1000毫秒每次调度，用于显示实时股票数据。
+  m_uIdTimer = SetTimer(3, 500, nullptr);     // 500毫秒每次调度，用于显示实时股票数据。
   if (m_uIdTimer == 0) {
     CString str;
   }

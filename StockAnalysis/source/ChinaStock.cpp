@@ -1340,63 +1340,54 @@ void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
 }
 
 void CChinaStock::GetRS1Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
   }
 }
 
 void CChinaStock::GetRSIndex1Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
   }
 }
 
 void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->GetRelativeStrongLogarithm();
   }
 }
 
 void CChinaStock::GetRS3Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get3DayRS();
   }
 }
 
 void CChinaStock::GetRS5Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get5DayRS();
   }
 }
 
 void CChinaStock::GetRS10Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get10DayRS();
   }
 }
 
 void CChinaStock::GetRS30Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get30DayRS();
   }
 }
 
 void CChinaStock::GetRS60Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get60DayRS();
   }
 }
 
 void CChinaStock::GetRS120Day(vector<double>& vRS) {
-  if (vRS.size() != m_vDayLine.size()) vRS.resize(m_vDayLine.size());
   for (int i = 0; i < m_vDayLine.size(); i++) {
     vRS[i] = m_vDayLine.at(i)->Get120DayRS();
   }
