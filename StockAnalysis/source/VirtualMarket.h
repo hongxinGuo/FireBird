@@ -79,9 +79,9 @@ protected:
   long m_lMarketLastTradeDay; // 本市场的上次交易日期
   tm m_tmMarket; // 本市场时间结构
 private:
+  bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
   bool m_fPermitResetMarket; // 允许重置系统（如果不断机多日运行的话，需要每日重置系统）初始值为真。
   bool m_fResetMarket; // 重启系统标识
-  bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。
 
   int m_i1MinuteCounter;  // 一分钟一次的计数器
   int m_i5MinuteCounter;  // 一分钟一次的计数器

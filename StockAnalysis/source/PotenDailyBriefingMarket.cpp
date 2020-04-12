@@ -22,6 +22,7 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
 }
 
 void CPotenDailyBriefingMarket::Reset(void) {
+  SetReadyToRun(false); // 自2020年3月27日开始，此网址停止更新了，故而现在暂停提取数据。
   m_fTodayDataUpdated = false;
   m_pDataToSaved = nullptr;
   m_vPotenDailyBriefing.clear();

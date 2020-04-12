@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
-    TRACE("ChinaMarket市场变量只允许存在一个实例\n");
+    TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
   }
   m_strMarketId = _T("中国股票市场");
   m_lTimeZoneOffset = -8 * 3600; // 北京标准时间位于东八区，超前GMT8小时
@@ -1790,7 +1790,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 //
 // 计算lDay的日线相对强度, lDay的格式为：YYYYMMDD,如 19990605.
 // 将日线按涨跌排列后,其相对强弱即其在队列中的位置.
-// 计算m_dRelativeStrongIndex,则是使用涨跌的相对量。
+// m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
@@ -1855,18 +1855,22 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
     double dHigh = atof(setDayLine.m_High);
     double dClose = atof(setDayLine.m_Close);
     double dUpDownRate = 0;
-    if (dLastClose < 0.001) {
+    // 计算指数相对强度
+    if (dLastClose < 0.001) { // 新股上市等，昨日收盘价格为零
       dRelativeStrongIndex = 50;
     }
     else {
       dUpDownRate = (dClose - dLastClose) / dLastClose;
-      if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) dRelativeStrongIndex = 50;
+      if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) { // 除权等导致价格突变
+        dRelativeStrongIndex = 50;
+      }
       else {
-        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50;
+        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
       }
     }
     setDayLine.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
 
+    // 计算涨跌排名相对强度
     if (dLastClose < 0.001) {
       setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }

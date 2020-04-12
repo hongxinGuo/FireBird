@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsDatabaseLoaded());
       EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), 20180411);
       EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsPermitResetMarket());
-      EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsReadyToRun());
+      EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsReadyToRun()) << _T("Poten目前停止更新，故而暂缓提取其数据\n");
       EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsResetMarket());
       gl_pPotenDailyBriefingMarket->ClearDatabase();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();

@@ -11,9 +11,9 @@ CThreadStatus::CThreadStatus() {
     TRACE("系统状态只允许生成一个实例\n");
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
-  m_CounterOfCalculatingRSThreads = 0;
+  m_NumberOfCalculatingRSThreads = 0;
 
-  m_CalculateDayLineRelativeStrong = false;
+  m_CalculatingDayLineRelativeStrong = false;
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;

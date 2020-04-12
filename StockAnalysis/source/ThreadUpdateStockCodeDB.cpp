@@ -13,22 +13,22 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket) {
   //
-  gl_ThreadStatus.IncreaseNumberOfRunningThread();
+  gl_ThreadStatus.IncreaseRunningThread();
   pMarket->UpdateStockCodeDB();
-  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+  gl_ThreadStatus.DecreaseRunningThread();
   return 18;
 }
 
 UINT ThreadUpdateOptionDB(CChinaMarket* pMarket) {
-  gl_ThreadStatus.IncreaseNumberOfRunningThread();
+  gl_ThreadStatus.IncreaseRunningThread();
   pMarket->UpdateOptionDB();
-  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+  gl_ThreadStatus.DecreaseRunningThread();
   return 20;
 }
 
 UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket) {
-  gl_ThreadStatus.IncreaseNumberOfRunningThread();
+  gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SaveCurrentData();
-  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+  gl_ThreadStatus.DecreaseRunningThread();
   return 21;
 }

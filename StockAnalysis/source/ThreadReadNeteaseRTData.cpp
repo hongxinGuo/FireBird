@@ -12,14 +12,14 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData) {
-  gl_ThreadStatus.IncreaseNumberOfRunningThread();
+  gl_ThreadStatus.IncreaseRunningThread();
   if (pNeteaseRTWebData->ReadWebData(100, 30, 30)) {
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushNeteaseRTData(pWebDataReceived);
     }
   }
-  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+  gl_ThreadStatus.DecreaseRunningThread();
 
   return 3;
 }

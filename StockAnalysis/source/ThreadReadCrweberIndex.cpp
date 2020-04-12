@@ -14,14 +14,14 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData) {
-  gl_ThreadStatus.IncreaseNumberOfRunningThread();
+  gl_ThreadStatus.IncreaseRunningThread();
   if (pCrweberIndexWebData->ReadWebData(500, 50, 30)) {
     CWebDataPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushCrweberData(pWebDataReceived);
     }
   }
-  gl_ThreadStatus.DecreaseNumberOfRunningThread();
+  gl_ThreadStatus.DecreaseRunningThread();
 
   return 5;
 }
