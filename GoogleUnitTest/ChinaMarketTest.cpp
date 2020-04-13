@@ -728,6 +728,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsUpdateOptionDB());
   }
 
+  TEST_F(CChinaMarketTest, TestSetUpdateChoicedStockDB) {
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdateChoicedStockDB());
+    gl_pChinaStockMarket->SetUpdateChoicedStockDB(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUpdateChoicedStockDB());
+    gl_pChinaStockMarket->SetUpdateChoicedStockDB(false);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdateChoicedStockDB());
+  }
+
   TEST_F(CChinaMarketTest, TestSetRTDataSetCleared) {
     EXPECT_FALSE(gl_pChinaStockMarket->IsRTDataSetCleared());
     gl_pChinaStockMarket->SetRTDataSetCleared(true);
@@ -809,13 +817,31 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
   }
 
-  TEST_F(CChinaMarketTest, TestStoreChoiceStock) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
-    gl_pChinaStockMarket->StoreChoiceStock(pStock);
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
+  TEST_F(CChinaMarketTest, TestAddChoicedStock) {
+    auto pStock = gl_pChinaStockMarket->GetStock(1);
+    gl_pChinaStockMarket->AddChoicedStock(pStock);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 1);
+    pStock = gl_pChinaStockMarket->GetStock(2);
+    EXPECT_TRUE(gl_pChinaStockMarket->AddChoicedStock(pStock));
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 2);
+    pStock = gl_pChinaStockMarket->GetStock(1);
+    EXPECT_FALSE(gl_pChinaStockMarket->AddChoicedStock(pStock));
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 2);
+
+    EXPECT_TRUE(gl_pChinaStockMarket->DeleteChoicedStock(pStock));
+    pStock = gl_pChinaStockMarket->GetStock(5);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 1);
+    EXPECT_FALSE(gl_pChinaStockMarket->DeleteChoicedStock(pStock));
     gl_pChinaStockMarket->ClearChoiceStockContainer();
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestAddChoicedStock2) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 0);
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
+    gl_pChinaStockMarket->AddChoicedStock(pStock);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 1);
+    gl_pChinaStockMarket->ClearChoiceStockContainer();
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestCheckMarketOpen) {

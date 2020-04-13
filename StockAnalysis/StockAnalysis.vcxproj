@@ -353,6 +353,8 @@
     <ResourceCompile Include="StockAnalysis.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
+    <Image Include="RES\IDR_MAIN.BMP" />
     <Image Include="res\output_wnd.ico" />
     <Image Include="res\output_wnd_hc.ico" />
     <Image Include="res\StockAnalysis.ico" />

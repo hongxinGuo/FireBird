@@ -14,9 +14,11 @@
 #include"SetDayLineToday.h"
 #include"SetOption.h"
 #include"SetCrweberIndex.h"
+#include"SetChoicedStock.h"
 
 using namespace std;
 #include<thread>
+#include<algorithm>
 
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
@@ -65,6 +67,7 @@ void CChinaMarket::ResetMarket(void) {
   Reset();
   LoadStockCodeDB();
   LoadOptionDB();
+  LoadChoicedStockDB();
 }
 
 void CChinaMarket::Reset(void) {
@@ -109,6 +112,7 @@ void CChinaMarket::Reset(void) {
   m_iCountDownNeteaseNumber = 5;
 
   m_fUpdateStockCodeDB = false;
+  m_fUpdateChoicedStockDB = false;
 
   m_iDayLineNeedProcess = 0;
   m_iDayLineNeedSave = 0;
@@ -1146,6 +1150,26 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
   }
 }
 
+bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStock) {
+  auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
+  if (it == m_vChoicedStock.end()) {
+    m_vChoicedStock.push_back(pStock);
+    return true;
+  }
+  return false;
+}
+
+bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
+  auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
+  if (it == m_vChoicedStock.end()) {
+    return false;
+  }
+  else {
+    m_vChoicedStock.erase(it);
+    return true;
+  }
+}
+
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
   static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
@@ -1169,6 +1193,7 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskUpdateStockCodeDB();
     TaskUpdateOptionDB();
+    TaskUpdateChoicedStockDB();
 
     TaskCheckDayLineDB();
 
@@ -1288,6 +1313,15 @@ bool CChinaMarket::TaskUpdateOptionDB(void) {
   if (IsUpdateOptionDB()) {
     RunningThreadUpdateOptionDB();
     SetUpdateOptionDB(false);
+    return true;
+  }
+  return false;
+}
+
+bool CChinaMarket::TaskUpdateChoicedStockDB(void) {
+  if (IsUpdateChoicedStockDB()) {
+    RunningThreadUpdateChoicedStockDB();
+    SetUpdateChoicedStockDB(false);
     return true;
   }
   return false;
@@ -1468,7 +1502,7 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
   if (fSet) {
     pStock->SetRecordRTData(true);
     m_pCurrentStock = pStock;
-    m_fCurrentStockChanged = true;
+    SetCurrentStockChanged(true);
     m_pCurrentStock->SetDayLineLoaded(false); // 这里只是设置标识，实际装载日线由调度程序执行。
   }
 }
@@ -1630,6 +1664,12 @@ bool CChinaMarket::RunningThreadUpdateStockCodeDB(void) {
 
 bool CChinaMarket::RunningThreadUpdateOptionDB(void) {
   thread thread1(ThreadUpdateOptionDB, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadUpdateChoicedStockDB(void) {
+  thread thread1(ThreadUpdateChoicedStockDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -2024,6 +2064,42 @@ void CChinaMarket::LoadOptionDB(void) {
   }
 
   setOption.Close();
+}
+
+bool CChinaMarket::UpdateChoicedStockDB(void) {
+  CSetChoicedStock setChoicedStock;
+
+  setChoicedStock.Open();
+  setChoicedStock.m_pDatabase->BeginTrans();
+  while (!setChoicedStock.IsEOF()) {
+    setChoicedStock.Delete();
+    setChoicedStock.MoveNext();
+  }
+  setChoicedStock.m_pDatabase->CommitTrans();
+  setChoicedStock.m_pDatabase->BeginTrans();
+  for (auto pStock : m_vChoicedStock) {
+    setChoicedStock.AddNew();
+    setChoicedStock.m_Market = pStock->GetMarket();
+    setChoicedStock.m_StockCode = pStock->GetStockCode();
+    setChoicedStock.Update();
+  }
+  setChoicedStock.m_pDatabase->CommitTrans();
+  setChoicedStock.Close();
+
+  return true;
+}
+
+void CChinaMarket::LoadChoicedStockDB(void) {
+  CSetChoicedStock setChoicedStock;
+
+  setChoicedStock.Open();
+  // 装入股票代码数据库
+  while (!setChoicedStock.IsEOF()) {
+    CChinaStockPtr pStock = GetStock(setChoicedStock.m_StockCode);
+    m_vChoicedStock.push_back(pStock);
+    setChoicedStock.MoveNext();
+  }
+  setChoicedStock.Close();
 }
 
 bool CChinaMarket::UpdateTempRTData(void) {

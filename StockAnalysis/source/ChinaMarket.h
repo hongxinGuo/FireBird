@@ -65,6 +65,7 @@ public:
 
   bool TaskUpdateStockCodeDB(void);
   bool TaskUpdateOptionDB(void);
+  bool TaskUpdateChoicedStockDB(void);
 
   bool TaskShowCurrentTransaction(void);
 
@@ -90,6 +91,7 @@ public:
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
+  virtual bool RunningThreadUpdateChoicedStockDB(void);
 
   // interface function
 public:
@@ -150,6 +152,8 @@ public:
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
+  virtual bool UpdateChoicedStockDB(void);
+  void LoadChoicedStockDB(void);
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
@@ -240,9 +244,10 @@ public:
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
   void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-  void StoreChoiceStock(CChinaStockPtr pStock) noexcept { m_vStockChoice.push_back(pStock); }
-  long GetChoiceStockSize(void) noexcept { return m_vStockChoice.size(); }
-  void ClearChoiceStockContainer(void) noexcept { m_vStockChoice.clear(); }
+  bool AddChoicedStock(CChinaStockPtr pStock);
+  bool DeleteChoicedStock(CChinaStockPtr pStock);
+  long GetChoicedStockSize(void) noexcept { return m_vChoicedStock.size(); }
+  void ClearChoiceStockContainer(void) noexcept { m_vChoicedStock.clear(); }
   long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
@@ -275,6 +280,8 @@ public:
   bool IsUpdateStockCodeDB(void) noexcept { bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
   bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
+  void SetUpdateChoicedStockDB(bool fFlag) noexcept { m_fUpdateChoicedStockDB = fFlag; }
+  bool IsUpdateChoicedStockDB(void) noexcept { bool fFlag = m_fUpdateChoicedStockDB; return fFlag; }
 
   INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
   void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
@@ -294,7 +301,7 @@ protected:
   long m_lTotalStock; // 股票代码总数
   long m_lTotalActiveStock;	// 当天股票总数
 
-  vector<CChinaStockPtr> m_vStockChoice; // 自选股票池
+  vector<CChinaStockPtr> m_vChoicedStock; // 自选股票池
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
@@ -354,6 +361,7 @@ protected:
   // 更新股票代码数据库标识
   atomic_bool m_fUpdateStockCodeDB;
   atomic_bool m_fUpdateOptionDB;
+  bool m_fUpdateChoicedStockDB;
 
   // 网易日线历史数据读取处理和存储计数器。
   atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量

@@ -22,7 +22,6 @@ public:
 
   long m_Market;
   CString	m_StockCode;
-  CStringW	m_StockName;
 
   // 重写
     // 向导生成的虚函数重写

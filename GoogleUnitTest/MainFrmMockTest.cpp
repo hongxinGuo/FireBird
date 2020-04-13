@@ -345,25 +345,45 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMainFrameMockTest, TestOnKeyUp) {
+    EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(34, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(34, 1, 1);
     EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600001"));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
+
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(33, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(33, 1, 1);
     EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600000"));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
+
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
     gl_pChinaStockMarket->GetCurrentStock()->SetChoiced(false);
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 0);
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(45, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(45, 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentStock()->IsChoiced());
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUpdateChoicedStockDB());
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 1);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 1);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(46, 1, 1))
+      .Times(1);
+    s_pMainFrame->OnKeyUp(46, 1, 1);
+    EXPECT_FALSE(gl_pChinaStockMarket->GetCurrentStock()->IsChoiced());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUpdateChoicedStockDB());
+    EXPECT_EQ(gl_pChinaStockMarket->GetChoicedStockSize(), 0);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+
+    // »Ö¸´Ô­×´
     gl_pChinaStockMarket->ClearChoiceStockContainer();
-    EXPECT_EQ(gl_pChinaStockMarket->GetChoiceStockSize(), 0);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
+    gl_pChinaStockMarket->SetUpdateChoicedStockDB(false);
   }
 
   TEST_F(CMainFrameMockTest, TestOnBuildResetMarket) {

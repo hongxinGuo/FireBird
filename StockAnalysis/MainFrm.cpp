@@ -97,6 +97,10 @@ CMainFrame::~CMainFrame() {
     gl_pChinaStockMarket->UpdateOptionDB();
   }
 
+  if (gl_pChinaStockMarket->IsUpdateChoicedStockDB()) {
+    gl_pChinaStockMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+  }
+
   while (gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }
@@ -612,19 +616,28 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {
-    case 45: // Ins 加入自选股票
-    pCurrentStock->SetChoiced(true);
-    gl_pChinaStockMarket->StoreChoiceStock(pCurrentStock);
-    break;
     case 33: // PAGE UP
-      // last stock
+     // last stock
     gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
     break;
     case 34: // PAGE DOWN
       // next stock
     gl_pChinaStockMarket->ChangeCurrentStockToNextStock();
     break;
+    case 45: // Ins, 加入自选股票
+    pCurrentStock->SetChoiced(true);
+    if (gl_pChinaStockMarket->AddChoicedStock(pCurrentStock)) {
+      gl_pChinaStockMarket->SetUpdateChoicedStockDB(true);
+    }
+    break;
+    case 46: // delete,从自选股票池中删除
+    pCurrentStock->SetChoiced(false);
+    if (gl_pChinaStockMarket->DeleteChoicedStock(pCurrentStock)) {
+      gl_pChinaStockMarket->SetUpdateChoicedStockDB(true);
+    }
+    break;
     default:
+    // 无需处理字符，略过
     break;
     }
   }

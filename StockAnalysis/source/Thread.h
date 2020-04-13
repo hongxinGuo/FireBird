@@ -56,3 +56,5 @@ UINT ThreadSaveRTData(CChinaMarket* pMarket); // 此线程返回值为19
 UINT ThreadUpdateOptionDB(CChinaMarket* pMarket); // 此线程返回值为20
 // 存储Poten.com新的数据
 UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket); // 此线程返回值为21
+// 更新选项数据库
+UINT ThreadUpdateChoicedStockDB(CChinaMarket* pMarket); // 此线程返回值为22

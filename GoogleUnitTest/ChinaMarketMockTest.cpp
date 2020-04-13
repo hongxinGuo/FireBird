@@ -185,6 +185,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(chinaMarket.IsUpdateOptionDB());
   }
 
+  TEST_F(CChinaMarketMockTest, TestTaskUpdateChoicedStockDB) {
+    chinaMarket.SetUpdateChoicedStockDB(false);
+    EXPECT_CALL(chinaMarket, RunningThreadUpdateChoicedStockDB())
+      .Times(0);
+    EXPECT_FALSE(chinaMarket.TaskUpdateChoicedStockDB());
+    chinaMarket.SetUpdateChoicedStockDB(true);
+    EXPECT_CALL(chinaMarket, RunningThreadUpdateChoicedStockDB())
+      .Times(1);
+    EXPECT_TRUE(chinaMarket.TaskUpdateChoicedStockDB());
+    EXPECT_FALSE(chinaMarket.IsUpdateChoicedStockDB());
+  }
+
   TEST_F(CChinaMarketMockTest, TestTaskSaveChoicedRTData) {
     chinaMarket.SetSystemReady(false);
     EXPECT_CALL(chinaMarket, RunningThreadSaveChoicedRTData())
@@ -266,6 +278,13 @@ namespace StockAnalysisTest {
     chinaMarket.SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingRTData(false);
     EXPECT_EQ(ThreadUpdateStockCodeDB(&chinaMarket), (UINT)18);
+  }
+
+  TEST_F(CChinaMarketMockTest, TestThreadUpdateChoicedStockDB) {
+    EXPECT_CALL(chinaMarket, UpdateChoicedStockDB)
+      .Times(1);
+    chinaMarket.SetSystemReady(true);
+    EXPECT_EQ(ThreadUpdateChoicedStockDB(&chinaMarket), (UINT)22);
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadSaveTempRTData) {
