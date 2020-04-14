@@ -40,6 +40,9 @@ public:
 
   void SetClientSize(CRect rect) noexcept { m_rectClient = rect; }
 
+  int GetCurrentShowType(void) noexcept { return m_iCurrentShowType; }
+  void SetCurrentShowType(int iValue) noexcept { m_iCurrentShowType = iValue; }
+
   //系统包裹函数
 public:
   virtual CSize SysCallGetTextExtent(CDC* pDC, CString str) { return(pDC->GetTextExtent(str)); }
@@ -123,6 +126,10 @@ public:
   afx_msg void OnUpdateShowRsInLinear(CCmdUI* pCmdUI);
   afx_msg void OnShowRsIndex();
   afx_msg void OnUpdateShowRsIndex(CCmdUI* pCmdUI);
+  afx_msg void OnShowDayLine();
+  afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
+  afx_msg void OnShowRealTime();
+  afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本

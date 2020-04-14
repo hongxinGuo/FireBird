@@ -42,6 +42,13 @@ namespace StockAnalysisTest {
     CMockStockAnalysisView* s_pStockAnalysisView;
   };
 
+  TEST_F(CStockAnalysisViewTest, TestGetCurrentShowType) {
+    EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1) << _T("初始状态为显示日线（1）");
+    s_pStockAnalysisView->SetCurrentShowType(2);
+    EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 2);
+    s_pStockAnalysisView->SetCurrentShowType(1);
+  }
+
   TEST_F(CStockAnalysisViewTest, TestShowCurrentRS) {
     CDC DC;
     vector<double> vRS{ 5, 10, 20, 30 };
@@ -258,5 +265,44 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->OnUpdateShowRsIndex(&cmdUI);
     s_pStockAnalysisView->OnShowRsInLinear();
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestOnShowDayLine) {
+    s_pStockAnalysisView->SetCurrentShowType(2);
+    s_pStockAnalysisView->OnShowDayLine();
+    EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1);
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestOnShowRealTime) {
+    EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1);
+    s_pStockAnalysisView->OnShowRealTime();
+    EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 2);
+
+    s_pStockAnalysisView->SetCurrentShowType(1);
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowDayLine) {
+    CCmdUI cmdUI;
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowDayLine(&cmdUI);
+    s_pStockAnalysisView->SetCurrentShowType(2);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowDayLine(&cmdUI);
+
+    s_pStockAnalysisView->SetCurrentShowType(1);
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRealTime) {
+    CCmdUI cmdUI;
+    s_pStockAnalysisView->SetCurrentShowType(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
+    s_pStockAnalysisView->SetCurrentShowType(2);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
+      .Times(1);
+    s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
   }
 }

@@ -53,6 +53,10 @@ BEGIN_MESSAGE_MAP(CStockAnalysisView, CView)
   ON_UPDATE_COMMAND_UI(ID_SHOW_RS_IN_LINEAR, &CStockAnalysisView::OnUpdateShowRsInLinear)
   ON_COMMAND(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnShowRsIndex)
   ON_UPDATE_COMMAND_UI(ID_SHOW_RS_INDEX, &CStockAnalysisView::OnUpdateShowRsIndex)
+  ON_COMMAND(ID_SHOW_DAYLINE, &CStockAnalysisView::OnShowDayLine)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_DAYLINE, &CStockAnalysisView::OnUpdateShowDayLine)
+  ON_COMMAND(ID_SHOW_REALTIME, &CStockAnalysisView::OnShowRealTime)
+  ON_UPDATE_COMMAND_UI(ID_SHOW_REALTIME, &CStockAnalysisView::OnUpdateShowRealTime)
 END_MESSAGE_MAP()
 
 // CStockAnalysisView 构造/析构
@@ -595,4 +599,26 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
     if (m_iShowRSOption == 0) SysCallCmdUISetCheck(pCmdUI, 1);
     else SysCallCmdUISetCheck(pCmdUI, 0);
   }
+}
+
+void CStockAnalysisView::OnShowDayLine() {
+  // TODO: Add your command handler code here
+  m_iCurrentShowType = 1;
+}
+
+void CStockAnalysisView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_iCurrentShowType == 1) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
+}
+
+void CStockAnalysisView::OnShowRealTime() {
+  // TODO: Add your command handler code here
+  m_iCurrentShowType = 2;
+}
+
+void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (m_iCurrentShowType == 2) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }
