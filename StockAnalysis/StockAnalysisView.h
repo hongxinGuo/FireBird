@@ -35,6 +35,7 @@ public:
 
   void ShowRealtimeStockData(CDC* pdc);
   void ShowStockDayLine(CDC* pDC);
+  void Enlarge(vector<double>& vData, double dRate);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
   bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 
@@ -74,28 +75,31 @@ public:
 #endif
 
 protected:
-  void      Show(CDC* pdc);
+  void Show(CDC* pdc);
 
 protected:
-  UINT      m_uIdTimer;
-  int       m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
+  bool m_fCreateMemoryDC;
+  CDC	m_MemoryDC;
+  CBitmap	m_Bitmap;
 
-  BOOL			m_fCreateMemoryDC;
-  CDC				m_MemoryDC;
-  CBitmap		m_Bitmap;
+  CRect m_rectClient;
 
-  CRect			m_rectClient;
+  UINT m_uIdTimer;
+  int m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
 
-  long      m_lCurrentPos;
+  bool m_fShowTransactionGraph; // 显示交易具体情况的图
+  CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。
 
-  bool      m_fShowRS;
-  bool      m_fShow3DayRS;
-  bool      m_fShow5DayRS;
-  bool      m_fShow10DayRS;
-  bool      m_fShow30DayRS;
-  bool      m_fShow60DayRS;
-  bool      m_fShow120DayRS;
-  int      m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
+  long m_lCurrentPos;
+
+  bool m_fShowRS;
+  bool m_fShow3DayRS;
+  bool m_fShow5DayRS;
+  bool m_fShow10DayRS;
+  bool m_fShow30DayRS;
+  bool m_fShow60DayRS;
+  bool m_fShow120DayRS;
+  int  m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
   vector<double> m_vRSShow;
 
   // 生成的消息映射函数

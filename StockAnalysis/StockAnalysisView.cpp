@@ -259,24 +259,28 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   if (m_fShow10DayRS) {
     pDC->SelectObject(&penRed1);
     pCurrentStock->GetRS10Day(m_vRSShow);
+    Enlarge(m_vRSShow, 2.5);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
     pDC->SelectObject(&penYellow1);
     pCurrentStock->GetRS30Day(m_vRSShow);
+    Enlarge(m_vRSShow, 5);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
     pDC->SelectObject(&penGreen1);
     pCurrentStock->GetRS60Day(m_vRSShow);
+    Enlarge(m_vRSShow, 10);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
-    pDC->SelectObject(&penRed1);
+    pDC->SelectObject(&penBlue1);
     pCurrentStock->GetRS120Day(m_vRSShow);
+    Enlarge(m_vRSShow, 20);
     ShowCurrentRS(pDC, m_vRSShow);
   }
 
@@ -284,6 +288,17 @@ void CStockAnalysisView::ShowStockDayLine(CDC* pDC) {
   pCurrentStock->ShowDayLine(pDC, m_rectClient);
 
   pDC->SelectObject(ppen);
+}
+
+void CStockAnalysisView::Enlarge(vector<double>& vData, double dRate) {
+  double d = 0;
+
+  for (int i = 0; i < vData.size(); i++) {
+    d = 50 + (vData.at(i) - 50) * dRate;
+    if (d < 0) vData.at(i) = 0;
+    else if (d > 100) vData.at(i) = 100;
+    else vData.at(i) = d;
+  }
 }
 
 void CStockAnalysisView::ShowCurrentRS(CDC* pDC, vector<double>& vRS) {
@@ -336,7 +351,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
     m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
     m_MemoryDC.SetBkColor(RGB(0, 0, 0));
     m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
-    m_fCreateMemoryDC = TRUE;
+    m_fCreateMemoryDC = true;
   }
 
   CRect rect;

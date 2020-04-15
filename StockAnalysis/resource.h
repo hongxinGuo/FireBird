@@ -89,6 +89,15 @@
 #define ID_32818                        32818
 #define ID_SHOW_RS_IN_AG                32819
 #define ID_SHOW_RS_IN_LINEAR            32820
+#define ID_BUTTON32821                  32821
+#define ID_BUTTON32822                  32822
+#define ID_BUTTON32827                  32827
+#define ID_32830                        32830
+#define ID_32831                        32831
+#define ID_32832                        32832
+#define ID_SHOW_REALTIME                32833
+#define ID_SHOW_DAYLINE                 32834
+#define ID_BUTTON32836                  32836
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -103,8 +112,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32821
+#define _APS_NEXT_RESOURCE_VALUE        313
+#define _APS_NEXT_COMMAND_VALUE         32837
 #define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
