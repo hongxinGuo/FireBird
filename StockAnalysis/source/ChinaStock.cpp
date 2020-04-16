@@ -1303,8 +1303,8 @@ void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
 }
 
 void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
-  const COLORREF crBlue(RGB(0, 0, 255)), crWhite(RGB(255, 255, 255));
-  CPen penWhite1(PS_SOLID, 1, crWhite);
+  const COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0));
+  CPen penGreen1(PS_SOLID, 1, crGreen);
   long lHigh = 0;
   long lDay;
   vector<CDayLinePtr>::iterator it = m_vDayLine.end();
@@ -1325,12 +1325,17 @@ void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
   it--;
   i = 0;
   long x = 0;
-  pDC->SelectObject(&penWhite1);
+  pDC->SelectObject(&penGreen1);
   for (; it != m_vDayLine.begin(); it--) {
     x = rectClient.right - 2 - i * 3;
     y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
     pDC->MoveTo(x, y);
-    y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    if ((*it)->GetHigh() == (*it)->GetLow()) {
+      y = y - 1;
+    }
+    else {
+      y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    }
     pDC->LineTo(x, y);
     lDay = (*it)->GetDay();
     i++;

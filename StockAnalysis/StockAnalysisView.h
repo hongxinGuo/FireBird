@@ -35,7 +35,6 @@ public:
 
   void ShowRealtimeStockData(CDC* pdc);
   void ShowStockDayLine(CDC* pDC);
-  void Enlarge(vector<double>& vData, double dRate);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
   bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 

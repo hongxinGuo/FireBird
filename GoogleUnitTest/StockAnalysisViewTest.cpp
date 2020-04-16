@@ -49,17 +49,6 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestEnlarge) {
-    vector<double> vData{ 0, 100, 50, 49, 51 };
-
-    s_pStockAnalysisView->Enlarge(vData, 10);
-    EXPECT_EQ(vData.at(0), 0);
-    EXPECT_EQ(vData.at(1), 100);
-    EXPECT_EQ(vData.at(2), 50);
-    EXPECT_EQ(vData.at(3), 40);
-    EXPECT_EQ(vData.at(4), 60);
-  }
-
   TEST_F(CStockAnalysisViewTest, TestShowCurrentRS) {
     CDC DC;
     vector<double> vRS{ 5, 10, 20, 30 };

@@ -36,10 +36,10 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fDone = false;
   bool fStatus = true;
   m_pCurrentReadPos = GetBufferAddr();
+  m_lCurrentByteRead = 0;
   m_lReadingThreadNumber++;
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
-  ASSERT(m_lCurrentByteRead == 0);
 
   try {
     SetByteReaded(0);
