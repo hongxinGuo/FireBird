@@ -33,9 +33,9 @@ UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket) {
   return 21;
 }
 
-UINT ThreadUpdateChoicedStockDB(CChinaMarket* pMarket) {
+UINT ThreadAppendChoicedStockDB(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
-  pMarket->UpdateChoicedStockDB();
+  pMarket->AppendChoicedStockDB();
   gl_ThreadStatus.DecreaseRunningThread();
   return 22;
 }

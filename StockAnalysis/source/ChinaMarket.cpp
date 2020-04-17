@@ -1154,6 +1154,7 @@ bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStock) {
   auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
   if (it == m_vChoicedStock.end()) {
     m_vChoicedStock.push_back(pStock);
+    ASSERT(!pStock->IsSaveToChoicedStockDB());
     return true;
   }
   return false;
@@ -1165,6 +1166,8 @@ bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
     return false;
   }
   else {
+    (*it)->SetChoiced(false);
+    (*it)->SetSaveToChoicedStockDB(false);
     m_vChoicedStock.erase(it);
     return true;
   }
@@ -1320,8 +1323,7 @@ bool CChinaMarket::TaskUpdateOptionDB(void) {
 
 bool CChinaMarket::TaskUpdateChoicedStockDB(void) {
   if (IsUpdateChoicedStockDB()) {
-    RunningThreadUpdateChoicedStockDB();
-    SetUpdateChoicedStockDB(false);
+    RunningThreadAppendChoicedStockDB();
     return true;
   }
   return false;
@@ -1668,8 +1670,8 @@ bool CChinaMarket::RunningThreadUpdateOptionDB(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadUpdateChoicedStockDB(void) {
-  thread thread1(ThreadUpdateChoicedStockDB, this);
+bool CChinaMarket::RunningThreadAppendChoicedStockDB(void) {
+  thread thread1(ThreadAppendChoicedStockDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -2078,10 +2080,33 @@ bool CChinaMarket::UpdateChoicedStockDB(void) {
   setChoicedStock.m_pDatabase->CommitTrans();
   setChoicedStock.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChoicedStock) {
+    ASSERT(pStock->IsChoiced());
     setChoicedStock.AddNew();
     setChoicedStock.m_Market = pStock->GetMarket();
     setChoicedStock.m_StockCode = pStock->GetStockCode();
     setChoicedStock.Update();
+    pStock->SetSaveToChoicedStockDB(true);
+  }
+  setChoicedStock.m_pDatabase->CommitTrans();
+  setChoicedStock.Close();
+
+  return true;
+}
+
+bool CChinaMarket::AppendChoicedStockDB(void) {
+  CSetChoicedStock setChoicedStock;
+
+  setChoicedStock.Open();
+  setChoicedStock.m_pDatabase->BeginTrans();
+  for (auto pStock : m_vChoicedStock) {
+    ASSERT(pStock->IsChoiced());
+    if (!pStock->IsSaveToChoicedStockDB()) {
+      setChoicedStock.AddNew();
+      setChoicedStock.m_Market = pStock->GetMarket();
+      setChoicedStock.m_StockCode = pStock->GetStockCode();
+      setChoicedStock.Update();
+      pStock->SetSaveToChoicedStockDB(true);
+    }
   }
   setChoicedStock.m_pDatabase->CommitTrans();
   setChoicedStock.Close();
@@ -2096,7 +2121,12 @@ void CChinaMarket::LoadChoicedStockDB(void) {
   // 装入股票代码数据库
   while (!setChoicedStock.IsEOF()) {
     CChinaStockPtr pStock = GetStock(setChoicedStock.m_StockCode);
-    m_vChoicedStock.push_back(pStock);
+    auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
+    if (it == m_vChoicedStock.end()) {
+      m_vChoicedStock.push_back(pStock);
+    }
+    pStock->SetChoiced(true);
+    pStock->SetSaveToChoicedStockDB(true);
     setChoicedStock.MoveNext();
   }
   setChoicedStock.Close();

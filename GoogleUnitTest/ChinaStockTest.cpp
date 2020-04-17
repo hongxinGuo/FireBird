@@ -641,6 +641,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsActive());
   }
 
+  TEST_F(CChinaStockTest, TestIsSaveToChoicedStockDB) {
+    CChinaStock stock;
+    EXPECT_FALSE(stock.IsSaveToChoicedStockDB());
+    stock.SetSaveToChoicedStockDB(true);
+    EXPECT_TRUE(stock.IsSaveToChoicedStockDB());
+    stock.SetSaveToChoicedStockDB(false);
+    EXPECT_FALSE(stock.IsSaveToChoicedStockDB());
+  }
+
   TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
     CChinaStock stock;
     long lNumberOfStock = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();

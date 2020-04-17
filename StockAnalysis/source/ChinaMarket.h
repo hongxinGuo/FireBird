@@ -91,7 +91,7 @@ public:
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
-  virtual bool RunningThreadUpdateChoicedStockDB(void);
+  virtual bool RunningThreadAppendChoicedStockDB(void);
 
   // interface function
 public:
@@ -152,7 +152,8 @@ public:
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
-  virtual bool UpdateChoicedStockDB(void);
+  bool UpdateChoicedStockDB(void);
+  virtual bool AppendChoicedStockDB(void);
   void LoadChoicedStockDB(void);
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);

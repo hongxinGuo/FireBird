@@ -187,6 +187,8 @@ public:
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
+  bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
+  void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
   bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
   void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
   bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
@@ -419,6 +421,7 @@ protected:
   bool m_fRecordRTData; // 记录此股票实时数据进数据库的标识。
 
   bool m_fChoiced;// 此股票是否是自选股票.
+  bool m_fSaveToChoicedStockDB; // 是否存储至自选股票池。
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
 

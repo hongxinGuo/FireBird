@@ -346,8 +346,13 @@ void CStockAnalysisView::Show(CDC* pdc) {
 
   CRect rect;
   GetClientRect(&rect);
-  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) return;
-  if (!gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded()) return;
+  if ((gl_pChinaStockMarket->GetCurrentStock() == nullptr) || (!gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded())) {
+    pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
+    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+    m_MemoryDC.SelectObject(pOldBitmap);
+    return;
+  }
 
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data

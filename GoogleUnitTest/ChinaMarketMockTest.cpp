@@ -187,14 +187,14 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketMockTest, TestTaskUpdateChoicedStockDB) {
     chinaMarket.SetUpdateChoicedStockDB(false);
-    EXPECT_CALL(chinaMarket, RunningThreadUpdateChoicedStockDB())
+    EXPECT_CALL(chinaMarket, RunningThreadAppendChoicedStockDB())
       .Times(0);
     EXPECT_FALSE(chinaMarket.TaskUpdateChoicedStockDB());
     chinaMarket.SetUpdateChoicedStockDB(true);
-    EXPECT_CALL(chinaMarket, RunningThreadUpdateChoicedStockDB())
+    EXPECT_CALL(chinaMarket, RunningThreadAppendChoicedStockDB())
       .Times(1);
     EXPECT_TRUE(chinaMarket.TaskUpdateChoicedStockDB());
-    EXPECT_FALSE(chinaMarket.IsUpdateChoicedStockDB());
+    EXPECT_TRUE(chinaMarket.IsUpdateChoicedStockDB());
   }
 
   TEST_F(CChinaMarketMockTest, TestTaskSaveChoicedRTData) {
@@ -281,10 +281,10 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadUpdateChoicedStockDB) {
-    EXPECT_CALL(chinaMarket, UpdateChoicedStockDB)
+    EXPECT_CALL(chinaMarket, AppendChoicedStockDB)
       .Times(1);
     chinaMarket.SetSystemReady(true);
-    EXPECT_EQ(ThreadUpdateChoicedStockDB(&chinaMarket), (UINT)22);
+    EXPECT_EQ(ThreadAppendChoicedStockDB(&chinaMarket), (UINT)22);
   }
 
   TEST_F(CChinaMarketMockTest, TestThreadSaveTempRTData) {

@@ -18,10 +18,10 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStockPtr pCurrentStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
-    MOCK_METHOD(bool, RunningThreadUpdateChoicedStockDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
-    MOCK_METHOD(bool, UpdateChoicedStockDB, (), (override));
+    MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));
     MOCK_METHOD(long, ProcessCurrentTradeDayStock, (long lCurrentTradeDay), (override));

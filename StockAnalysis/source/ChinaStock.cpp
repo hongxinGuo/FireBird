@@ -94,6 +94,7 @@ void CChinaStock::Reset(void) {
   m_pDayLineBuffer = nullptr;
 
   m_fChoiced = false;
+  m_fSaveToChoicedStockDB = false;
   m_fMinLineUpdated = false;
   m_fDayLineUpdated = false;
 
