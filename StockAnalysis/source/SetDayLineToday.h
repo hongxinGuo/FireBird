@@ -47,6 +47,35 @@ public:
   CString m_TransactionNumberAbove200000;
   CString m_OrdinaryBuyVolume; // 一般性买入股数。单位：股
   CString m_OrdinarySellVolume; // 一般性卖出股数
+  CString m_OrdinaryBuyVolumeBelow5000;
+  CString m_OrdinaryBuyVolumeBelow10000;
+  CString m_OrdinaryBuyVolumeBelow20000;
+  CString m_OrdinaryBuyVolumeBelow50000;
+  CString m_OrdinaryBuyVolumeBelow100000;
+  CString m_OrdinaryBuyVolumeBelow200000;
+  CString m_OrdinaryBuyVolumeAbove200000;
+  CString m_OrdinaryBuyNumberBelow5000;
+  CString m_OrdinaryBuyNumberBelow10000;
+  CString m_OrdinaryBuyNumberBelow20000;
+  CString m_OrdinaryBuyNumberBelow50000;
+  CString m_OrdinaryBuyNumberBelow100000;
+  CString m_OrdinaryBuyNumberBelow200000;
+  CString m_OrdinaryBuyNumberAbove200000;
+  CString m_OrdinarySellVolumeBelow5000;
+  CString m_OrdinarySellVolumeBelow10000;
+  CString m_OrdinarySellVolumeBelow20000;
+  CString m_OrdinarySellVolumeBelow50000;
+  CString m_OrdinarySellVolumeBelow100000;
+  CString m_OrdinarySellVolumeBelow200000;
+  CString m_OrdinarySellVolumeAbove200000;
+  CString m_OrdinarySellNumberBelow5000;
+  CString m_OrdinarySellNumberBelow10000;
+  CString m_OrdinarySellNumberBelow20000;
+  CString m_OrdinarySellNumberBelow50000;
+  CString m_OrdinarySellNumberBelow100000;
+  CString m_OrdinarySellNumberBelow200000;
+  CString m_OrdinarySellNumberAbove200000;
+
   CString m_AttackBuyVolume;	//攻击性买盘数量
   CString m_AttackSellVolume;	//攻击性买盘数量
   CString m_StrongBuyVolume;	//强攻击性买盘数量

@@ -501,13 +501,14 @@ void CStockAnalysisView::OnDraw(CDC* pdc) {
 
 void CStockAnalysisView::Show(CDC* pdc) {
   CBitmap* pOldBitmap = nullptr;
+  COLORREF crGray(RGB(32, 32, 32));
 
   // create memory DC
   if (!m_fCreateMemoryDC) {
     m_MemoryDC.CreateCompatibleDC(pdc);
     m_Bitmap.CreateCompatibleBitmap(pdc, 1920, 1200);
-    m_MemoryDC.SetBkColor(RGB(32, 32, 32));
-    m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    //m_MemoryDC.BitBlt(0, 0, 1920, 1200, NULL, 0, 0, BLACKNESS);
+    m_MemoryDC.FillSolidRect(0, 0, 1920, 1200, crGray);
     m_fCreateMemoryDC = true;
   }
 
@@ -515,7 +516,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
   GetClientRect(&rect);
   if ((gl_pChinaStockMarket->GetCurrentStock() == nullptr) || (!gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded())) {
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-    m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+    //m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+    m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
     pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
     m_MemoryDC.SelectObject(pOldBitmap);
     return;
@@ -524,14 +526,16 @@ void CStockAnalysisView::Show(CDC* pdc) {
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-  m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  //m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowStockDayLine(&m_MemoryDC);
   pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   m_MemoryDC.SelectObject(pOldBitmap);
   break;
   case 2:	// show realtime stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
-  m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  //m_MemoryDC.BitBlt(0, 0, rect.right, rect.bottom, NULL, 0, 0, BLACKNESS);
+  m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowRealTimeData(&m_MemoryDC);
   pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   m_MemoryDC.SelectObject(pOldBitmap);

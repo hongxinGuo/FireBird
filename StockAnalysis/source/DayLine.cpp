@@ -30,6 +30,34 @@ bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
   m_lAttackSellBelow200000 = atol(setDayLineInfo.m_AttackSellBelow200000);
   m_lAttackSellAbove200000 = atol(setDayLineInfo.m_AttackSellAbove200000);
 
+  m_lOrdinaryBuyVolumeBelow5000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow5000);
+  m_lOrdinaryBuyVolumeBelow10000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow10000);
+  m_lOrdinaryBuyVolumeBelow20000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow20000);
+  m_lOrdinaryBuyVolumeBelow50000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow50000);
+  m_lOrdinaryBuyVolumeBelow100000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow100000);
+  m_lOrdinaryBuyVolumeBelow200000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow200000);
+  m_lOrdinaryBuyVolumeAbove200000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeAbove200000);
+  m_lOrdinarySellVolumeBelow5000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow5000);
+  m_lOrdinarySellVolumeBelow10000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow10000);
+  m_lOrdinarySellVolumeBelow20000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow20000);
+  m_lOrdinarySellVolumeBelow50000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow50000);
+  m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow100000);
+  m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow200000);
+  m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineInfo.m_OrdinarySellVolumeAbove200000);
+  m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow5000);
+  m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow10000);
+  m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow20000);
+  m_lOrdinaryBuyNumberBelow50000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow50000);
+  m_lOrdinaryBuyNumberBelow100000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow100000);
+  m_lOrdinaryBuyNumberBelow200000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow200000);
+  m_lOrdinaryBuyNumberAbove200000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberAbove200000);
+  m_lOrdinarySellNumberBelow5000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow5000);
+  m_lOrdinarySellNumberBelow10000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow10000);
+  m_lOrdinarySellNumberBelow20000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow20000);
+  m_lOrdinarySellNumberBelow50000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow50000);
+  m_lOrdinarySellNumberBelow100000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow100000);
+  m_lOrdinarySellNumberBelow200000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow200000);
+  m_lOrdinarySellNumberAbove200000 = atoll(setDayLineInfo.m_OrdinarySellNumberAbove200000);
   return true;
 }
 

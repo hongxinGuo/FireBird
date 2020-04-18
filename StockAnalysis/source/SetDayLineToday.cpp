@@ -34,6 +34,41 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
   m_CurrentValue = _T("");
   m_RelativeStrong = _T("");	//相对于总市场的强度
   m_TransactionNumber = _T("");
+  m_OrdinaryBuyVolumeBelow5000 = _T("");
+  m_OrdinaryBuyVolumeBelow10000 = _T("");
+  m_OrdinaryBuyVolumeBelow20000 = _T("");
+  m_OrdinaryBuyVolumeBelow50000 = _T("");
+  m_OrdinaryBuyVolumeBelow100000 = _T("");
+  m_OrdinaryBuyVolumeBelow200000 = _T("");
+  m_OrdinaryBuyVolumeAbove200000 = _T("");
+  m_OrdinaryBuyVolumeBelow5000 = _T("");
+  m_OrdinaryBuyVolumeBelow10000 = _T("");
+  m_OrdinaryBuyVolumeBelow20000 = _T("");
+  m_OrdinaryBuyVolumeBelow50000 = _T("");
+  m_OrdinaryBuyVolumeBelow100000 = _T("");
+  m_OrdinaryBuyVolumeBelow200000 = _T("");
+  m_OrdinaryBuyVolumeAbove200000 = _T("");
+  m_OrdinarySellVolumeBelow5000 = _T("");
+  m_OrdinarySellVolumeBelow10000 = _T("");
+  m_OrdinarySellVolumeBelow20000 = _T("");
+  m_OrdinarySellVolumeBelow50000 = _T("");
+  m_OrdinarySellVolumeBelow100000 = _T("");
+  m_OrdinarySellVolumeBelow200000 = _T("");
+  m_OrdinarySellVolumeAbove200000 = _T("");
+  m_OrdinaryBuyNumberBelow5000 = _T("");
+  m_OrdinaryBuyNumberBelow10000 = _T("");
+  m_OrdinaryBuyNumberBelow20000 = _T("");
+  m_OrdinaryBuyNumberBelow50000 = _T("");
+  m_OrdinaryBuyNumberBelow100000 = _T("");
+  m_OrdinaryBuyNumberBelow200000 = _T("");
+  m_OrdinaryBuyNumberAbove200000 = _T("");
+  m_OrdinarySellNumberBelow5000 = _T("");
+  m_OrdinarySellNumberBelow10000 = _T("");
+  m_OrdinarySellNumberBelow20000 = _T("");
+  m_OrdinarySellNumberBelow50000 = _T("");
+  m_OrdinarySellNumberBelow100000 = _T("");
+  m_OrdinarySellNumberBelow200000 = _T("");
+  m_OrdinarySellNumberAbove200000 = _T("");
   m_TransactionNumberBelow5000 = _T("");
   m_TransactionNumberBelow50000 = _T("");
   m_TransactionNumberBelow200000 = _T("");
@@ -53,7 +88,7 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
   m_AttackSellBelow50000 = _T("");
   m_AttackSellBelow200000 = _T("");
   m_AttackSellAbove200000 = _T("");
-  m_nFields = 38;
+  m_nFields = 66;
 }
 
 CString CSetDayLineToday::GetDefaultConnect() {
@@ -107,6 +142,34 @@ void CSetDayLineToday::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[AttackSellBelow50000]"), m_AttackSellBelow50000);
   RFX_Text(pFX, _T("[AttackSellBelow200000]"), m_AttackSellBelow200000);
   RFX_Text(pFX, _T("[AttackSellAbove200000]"), m_AttackSellAbove200000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow5000]"), m_OrdinaryBuyVolumeBelow5000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow10000]"), m_OrdinaryBuyVolumeBelow10000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow20000]"), m_OrdinaryBuyVolumeBelow20000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow50000]"), m_OrdinaryBuyVolumeBelow50000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow100000]"), m_OrdinaryBuyVolumeBelow100000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeBelow200000]"), m_OrdinaryBuyVolumeBelow200000);
+  RFX_Text(pFX, _T("[OrdinaryBuyVolumeAbove200000]"), m_OrdinaryBuyVolumeAbove200000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow5000]"), m_OrdinaryBuyNumberBelow5000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow10000]"), m_OrdinaryBuyNumberBelow10000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow20000]"), m_OrdinaryBuyNumberBelow20000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow50000]"), m_OrdinaryBuyNumberBelow50000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow100000]"), m_OrdinaryBuyNumberBelow100000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberBelow200000]"), m_OrdinaryBuyNumberBelow200000);
+  RFX_Text(pFX, _T("[OrdinaryBuyNumberAbove200000]"), m_OrdinaryBuyNumberAbove200000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow5000]"), m_OrdinarySellVolumeBelow5000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow10000]"), m_OrdinarySellVolumeBelow10000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow20000]"), m_OrdinarySellVolumeBelow20000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow50000]"), m_OrdinarySellVolumeBelow50000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow100000]"), m_OrdinarySellVolumeBelow100000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeBelow200000]"), m_OrdinarySellVolumeBelow200000);
+  RFX_Text(pFX, _T("[OrdinarySellVolumeAbove200000]"), m_OrdinarySellVolumeAbove200000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow5000]"), m_OrdinarySellNumberBelow5000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow10000]"), m_OrdinarySellNumberBelow10000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow20000]"), m_OrdinarySellNumberBelow20000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow50000]"), m_OrdinarySellNumberBelow50000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow100000]"), m_OrdinarySellNumberBelow100000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberBelow200000]"), m_OrdinarySellNumberBelow200000);
+  RFX_Text(pFX, _T("[OrdinarySellNumberAbove200000]"), m_OrdinarySellNumberAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLineToday 诊断
