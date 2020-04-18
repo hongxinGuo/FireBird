@@ -33,7 +33,10 @@ public:
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
   bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
 
-  void ShowRealtimeStockData(CDC* pdc);
+  void ShowRealTimeData(CDC* pDC);
+  void ShowRealtimeGuadan(CDC* pdc);
+  void ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
+  void ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowStockDayLine(CDC* pDC);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
   bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
@@ -52,6 +55,7 @@ public:
   virtual CPoint SysCallMoveTo(CDC* pDC, CPoint pt) { return(pDC->MoveTo(pt)); }
   virtual BOOL SysCallLineTo(CDC* pDC, int x, int y) { return(pDC->LineTo(x, y)); }
   virtual BOOL SysCallLineTo(CDC* pDC, CPoint pt) { return(pDC->LineTo(pt)); }
+  virtual void SysCallFillSolidRect(CDC* pDC, LPRECT rect, COLORREF ref) { pDC->FillSolidRect(rect, ref); }
   virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }

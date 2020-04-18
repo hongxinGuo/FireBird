@@ -35,6 +35,8 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   m_pFile = nullptr;
   bool fDone = false;
   bool fStatus = true;
+  CString str1, strLeft;
+
   m_pCurrentReadPos = GetBufferAddr();
   m_lCurrentByteRead = 0;
   m_lReadingThreadNumber++;
@@ -62,7 +64,9 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   }
   catch (CInternetException* exception) {
     m_dwWebErrorCode = exception->m_dwError;
-    TRACE(_T("%s net error, Error Code %d\n"), m_strConnection.GetBuffer(), exception->m_dwError);
+    str1 = GetInquiringString();
+    strLeft = str1.Left(20);
+    TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
     fStatus = false;
     exception->Delete();
   }

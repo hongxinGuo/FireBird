@@ -194,7 +194,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(chinaMarket, RunningThreadAppendChoicedStockDB())
       .Times(1);
     EXPECT_TRUE(chinaMarket.TaskUpdateChoicedStockDB());
-    EXPECT_TRUE(chinaMarket.IsUpdateChoicedStockDB());
+    EXPECT_TRUE(chinaMarket.IsUpdateChoicedStockDB()) << _T("自选股票更改标识设置后，就再也不重置，这样能够保证系统退出时再次更新数据库");
   }
 
   TEST_F(CChinaMarketMockTest, TestTaskSaveChoicedRTData) {

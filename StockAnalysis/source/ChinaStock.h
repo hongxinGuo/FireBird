@@ -113,6 +113,21 @@ public:
   INT64 GetCurrentCancelBuyVolume(void) noexcept { return m_lCurrentCanselBuyVolume; }
   INT64 GetCurrentCancelSellVolume(void) noexcept { return m_lCurrentCanselSellVolume; }
 
+  INT64 GetCancelBuyVolumeBelow5000(void) noexcept { return m_lCancelBuyVolumeBelow5000; }
+  INT64 GetCancelBuyVolumeBelow10000(void) noexcept { return m_lCancelBuyVolumeBelow10000; }
+  INT64 GetCancelBuyVolumeBelow20000(void) noexcept { return m_lCancelBuyVolumeBelow20000; }
+  INT64 GetCancelBuyVolumeBelow50000(void) noexcept { return m_lCancelBuyVolumeBelow50000; }
+  INT64 GetCancelBuyVolumeBelow100000(void) noexcept { return m_lCancelBuyVolumeBelow100000; }
+  INT64 GetCancelBuyVolumeBelow200000(void) noexcept { return m_lCancelBuyVolumeBelow200000; }
+  INT64 GetCancelBuyVolumeAbove200000(void) noexcept { return m_lCancelBuyVolumeAbove200000; }
+  INT64 GetCancelSellVolumeBelow5000(void) noexcept { return m_lCancelSellVolumeBelow5000; }
+  INT64 GetCancelSellVolumeBelow10000(void) noexcept { return m_lCancelSellVolumeBelow10000; }
+  INT64 GetCancelSellVolumeBelow20000(void) noexcept { return m_lCancelSellVolumeBelow20000; }
+  INT64 GetCancelSellVolumeBelow50000(void) noexcept { return m_lCancelSellVolumeBelow50000; }
+  INT64 GetCancelSellVolumeBelow100000(void) noexcept { return m_lCancelSellVolumeBelow100000; }
+  INT64 GetCancelSellVolumeBelow200000(void) noexcept { return m_lCancelSellVolumeBelow200000; }
+  INT64 GetCancelSellVolumeAbove200000(void) noexcept { return m_lCancelSellVolumeAbove200000; }
+
   int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
   void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
   INT64 GetCurrentTransationVolume(void) noexcept { return m_lCurrentGuadanTransactionVolume; }
@@ -140,6 +155,35 @@ public:
   INT64 GetTransactionNumberBelow50000(void) noexcept { return m_lTransactionNumberBelow50000; }
   INT64 GetTransactionNumberBelow200000(void) noexcept { return m_lTransactionNumberBelow200000; }
   INT64 GetTransactionNumberAbove200000(void) noexcept { return m_lTransactionNumberAbove200000; }
+
+  INT64 GetOrdinaryBuyNumberBelow5000(void) noexcept { return m_lOrdinaryBuyNumberBelow5000; }
+  INT64 GetOrdinaryBuyNumberBelow10000(void) noexcept { return m_lOrdinaryBuyNumberBelow10000; }
+  INT64 GetOrdinaryBuyNumberBelow20000(void) noexcept { return m_lOrdinaryBuyNumberBelow20000; }
+  INT64 GetOrdinaryBuyNumberBelow50000(void) noexcept { return m_lOrdinaryBuyNumberBelow50000; }
+  INT64 GetOrdinaryBuyNumberBelow100000(void) noexcept { return m_lOrdinaryBuyNumberBelow100000; }
+  INT64 GetOrdinaryBuyNumberBelow200000(void) noexcept { return m_lOrdinaryBuyNumberBelow200000; }
+  INT64 GetOrdinaryBuyNumberAbove200000(void) noexcept { return m_lOrdinaryBuyNumberAbove200000; }
+  INT64 GetOrdinarySellNumberBelow5000(void) noexcept { return m_lOrdinarySellNumberBelow5000; }
+  INT64 GetOrdinarySellNumberBelow10000(void) noexcept { return m_lOrdinarySellNumberBelow10000; }
+  INT64 GetOrdinarySellNumberBelow20000(void) noexcept { return m_lOrdinarySellNumberBelow20000; }
+  INT64 GetOrdinarySellNumberBelow50000(void) noexcept { return m_lOrdinarySellNumberBelow50000; }
+  INT64 GetOrdinarySellNumberBelow100000(void) noexcept { return m_lOrdinarySellNumberBelow100000; }
+  INT64 GetOrdinarySellNumberBelow200000(void) noexcept { return m_lOrdinarySellNumberBelow200000; }
+  INT64 GetOrdinarySellNumberAbove200000(void) noexcept { return m_lOrdinarySellNumberAbove200000; }
+  INT64 GetOrdinaryBuyVolumeBelow5000(void) noexcept { return m_lOrdinaryBuyVolumeBelow5000; }
+  INT64 GetOrdinaryBuyVolumeBelow10000(void) noexcept { return m_lOrdinaryBuyVolumeBelow10000; }
+  INT64 GetOrdinaryBuyVolumeBelow20000(void) noexcept { return m_lOrdinaryBuyVolumeBelow20000; }
+  INT64 GetOrdinaryBuyVolumeBelow50000(void) noexcept { return m_lOrdinaryBuyVolumeBelow50000; }
+  INT64 GetOrdinaryBuyVolumeBelow100000(void) noexcept { return m_lOrdinaryBuyVolumeBelow100000; }
+  INT64 GetOrdinaryBuyVolumeBelow200000(void) noexcept { return m_lOrdinaryBuyVolumeBelow200000; }
+  INT64 GetOrdinaryBuyVolumeAbove200000(void) noexcept { return m_lOrdinaryBuyVolumeAbove200000; }
+  INT64 GetOrdinarySellVolumeBelow5000(void) noexcept { return m_lOrdinarySellVolumeBelow5000; }
+  INT64 GetOrdinarySellVolumeBelow10000(void) noexcept { return m_lOrdinarySellVolumeBelow10000; }
+  INT64 GetOrdinarySellVolumeBelow20000(void) noexcept { return m_lOrdinarySellVolumeBelow20000; }
+  INT64 GetOrdinarySellVolumeBelow50000(void) noexcept { return m_lOrdinarySellVolumeBelow50000; }
+  INT64 GetOrdinarySellVolumeBelow100000(void) noexcept { return m_lOrdinarySellVolumeBelow100000; }
+  INT64 GetOrdinarySellVolumeBelow200000(void) noexcept { return m_lOrdinarySellVolumeBelow200000; }
+  INT64 GetOrdinarySellVolumeAbove200000(void) noexcept { return m_lOrdinarySellVolumeAbove200000; }
 
   INT64 GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
   INT64 GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
@@ -269,6 +313,8 @@ public:
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CRTDataPtr pRTData);
   void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
+  void CalculateOrdinaryBuyVolume(void);
+  void CalculateOrdinarySellVolume(void);
   void CalculateAttackBuy(void);
   void CalculateStrongBuy(void);
   void CalculateAttackBuyVolume(void);
@@ -285,7 +331,9 @@ public:
   void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
   void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
+  void CalculateCancelSellVolume(INT64 lCurrentCancelBuyVolume);
   void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
+  void CalculateCancelBuyVolume(INT64 lCurrentCancelBuyVolume);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuadan(void);
@@ -381,6 +429,35 @@ protected:
   INT64 m_lCurrentAttackSell;
   INT64 m_lCurrentStrongSell;
 
+  INT64 m_lOrdinaryBuyNumberBelow5000; // 本交易日低于5000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow10000; // 本交易日低于10000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow20000; // 本交易日低于20000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow50000; //
+  INT64 m_lOrdinaryBuyNumberBelow100000; // 本交易日低于100000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow200000; //
+  INT64 m_lOrdinaryBuyNumberAbove200000; //
+  INT64 m_lOrdinarySellNumberBelow5000; // 本交易日低于5000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow10000; // 本交易日低于10000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow20000; // 本交易日低于20000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow50000; //
+  INT64 m_lOrdinarySellNumberBelow100000; // 本交易日低于100000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow200000; //
+  INT64 m_lOrdinarySellNumberAbove200000; //
+  INT64 m_lOrdinaryBuyVolumeBelow5000; // 本交易日低于5000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow10000; // 本交易日低于10000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow20000; // 本交易日低于20000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow50000; //
+  INT64 m_lOrdinaryBuyVolumeBelow100000; // 本交易日低于100000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow200000; //
+  INT64 m_lOrdinaryBuyVolumeAbove200000; //
+  INT64 m_lOrdinarySellVolumeBelow5000; // 本交易日低于5000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow10000; // 本交易日低于10000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow20000; // 本交易日低于20000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow50000; //
+  INT64 m_lOrdinarySellVolumeBelow100000; // 本交易日低于100000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow200000; //
+  INT64 m_lOrdinarySellVolumeAbove200000; //
+
   // 以下为需存储项
   INT64 m_lTransactionNumber; // 本交易日的成交笔数
   INT64 m_lTransactionNumberBelow5000; // 本交易日低于5000股的成交笔数
@@ -435,6 +512,21 @@ protected:
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
   INT64 m_lCurrentCanselSellVolume;
   INT64 m_lCurrentCanselBuyVolume;
+
+  INT64 m_lCancelBuyVolumeBelow5000; // 本交易日低于5000股的撤单股数
+  INT64 m_lCancelBuyVolumeBelow10000; // 本交易日低于10000股的撤单股数
+  INT64 m_lCancelBuyVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCancelBuyVolumeBelow50000; //
+  INT64 m_lCancelBuyVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCancelBuyVolumeBelow200000; //
+  INT64 m_lCancelBuyVolumeAbove200000; //
+  INT64 m_lCancelSellVolumeBelow5000; // 本交易日低于5000股的撤单股数
+  INT64 m_lCancelSellVolumeBelow10000; // 本交易日低于10000股的撤单股数
+  INT64 m_lCancelSellVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCancelSellVolumeBelow50000; //
+  INT64 m_lCancelSellVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCancelSellVolumeBelow200000; //
+  INT64 m_lCancelSellVolumeAbove200000; //
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 

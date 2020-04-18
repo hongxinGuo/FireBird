@@ -16,6 +16,7 @@ namespace testing {
     MOCK_METHOD(CPoint, SysCallMoveTo, (CDC* pDC, CPoint pt), (override));
     MOCK_METHOD(BOOL, SysCallLineTo, (CDC* pDC, int x, int y), (override));
     MOCK_METHOD(BOOL, SysCallLineTo, (CDC* pDC, CPoint pt), (override));
+    MOCK_METHOD(void, SysCallFillSolidRect, (CDC* pDC, LPRECT rect, COLORREF ref), (override));
     MOCK_METHOD(void, SysCallOnSize, (UINT nType, int cx, int cy), (override));
     MOCK_METHOD(void, SysCallCmdUISetCheck, (CCmdUI* pCmdUI, int iCheck), (override));
     MOCK_METHOD(void, SysCallCmdUIEnable, (CCmdUI* pCmdUI, bool fEnable), (override));

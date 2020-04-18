@@ -49,6 +49,30 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
   }
 
+  TEST_F(CStockAnalysisViewTest, TestShowOrdinaryBuySell) {
+    CDC DC;
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    CRect rectArea(0, 0, 300, 300);
+
+    pStock->SetVolume(10000);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallFillSolidRect(&DC, _, _))
+      .Times(14);
+
+    s_pStockAnalysisView->ShowOrdinaryBuySell(&DC, pStock, rectArea);
+  }
+
+  TEST_F(CStockAnalysisViewTest, TestShowCanceledBuySell) {
+    CDC DC;
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    CRect rectArea(0, 0, 300, 300);
+
+    pStock->SetCancelBuyVolume(10000);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallFillSolidRect(&DC, _, _))
+      .Times(14);
+
+    s_pStockAnalysisView->ShowCanceledBuySell(&DC, pStock, rectArea);
+  }
+
   TEST_F(CStockAnalysisViewTest, TestShowCurrentRS) {
     CDC DC;
     vector<double> vRS{ 5, 10, 20, 30 };

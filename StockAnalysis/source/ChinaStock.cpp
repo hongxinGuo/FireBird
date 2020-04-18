@@ -74,6 +74,50 @@ void CChinaStock::Reset(void) {
   m_lTransactionNumberBelow200000 = 0;
   m_lTransactionNumberAbove200000 = 0;
 
+  m_lOrdinaryBuyNumberBelow5000 = 0;
+  m_lOrdinaryBuyNumberBelow10000 = 0;
+  m_lOrdinaryBuyNumberBelow20000 = 0;
+  m_lOrdinaryBuyNumberBelow50000 = 0;
+  m_lOrdinaryBuyNumberBelow100000 = 0;
+  m_lOrdinaryBuyNumberBelow200000 = 0;
+  m_lOrdinaryBuyNumberAbove200000 = 0;
+  m_lOrdinarySellNumberBelow5000 = 0;
+  m_lOrdinarySellNumberBelow10000 = 0;
+  m_lOrdinarySellNumberBelow20000 = 0;
+  m_lOrdinarySellNumberBelow50000 = 0;
+  m_lOrdinarySellNumberBelow100000 = 0;
+  m_lOrdinarySellNumberBelow200000 = 0;
+  m_lOrdinarySellNumberAbove200000 = 0;
+  m_lOrdinaryBuyVolumeBelow5000 = 0;
+  m_lOrdinaryBuyVolumeBelow10000 = 0;
+  m_lOrdinaryBuyVolumeBelow20000 = 0;
+  m_lOrdinaryBuyVolumeBelow50000 = 0;
+  m_lOrdinaryBuyVolumeBelow100000 = 0;
+  m_lOrdinaryBuyVolumeBelow200000 = 0;
+  m_lOrdinaryBuyVolumeAbove200000 = 0;
+  m_lOrdinarySellVolumeBelow5000 = 0;
+  m_lOrdinarySellVolumeBelow10000 = 0;
+  m_lOrdinarySellVolumeBelow20000 = 0;
+  m_lOrdinarySellVolumeBelow50000 = 0;
+  m_lOrdinarySellVolumeBelow100000 = 0;
+  m_lOrdinarySellVolumeBelow200000 = 0;
+  m_lOrdinarySellVolumeAbove200000 = 0;
+
+  m_lCancelBuyVolumeBelow5000 = 0;
+  m_lCancelBuyVolumeBelow10000 = 0;
+  m_lCancelBuyVolumeBelow20000 = 0;
+  m_lCancelBuyVolumeBelow50000 = 0;
+  m_lCancelBuyVolumeBelow100000 = 0;
+  m_lCancelBuyVolumeBelow200000 = 0;
+  m_lCancelBuyVolumeAbove200000 = 0;
+  m_lCancelSellVolumeBelow5000 = 0;
+  m_lCancelSellVolumeBelow10000 = 0;
+  m_lCancelSellVolumeBelow20000 = 0;
+  m_lCancelSellVolumeBelow50000 = 0;
+  m_lCancelSellVolumeBelow100000 = 0;
+  m_lCancelSellVolumeBelow200000 = 0;
+  m_lCancelSellVolumeAbove200000 = 0;
+
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
 
@@ -858,14 +902,78 @@ void CChinaStock::CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice)
   if ((m_pLastRTData->GetPSell(0) - lCurrentGuadanTransactionPrice) <= 2) { //一般性买入
     m_lOrdinaryBuyVolume += m_lCurrentGuadanTransactionVolume;
     m_nCurrentTransactionType = __ORDINARY_BUY__;
+    CalculateOrdinaryBuyVolume();
   }
   else if ((lCurrentGuadanTransactionPrice - m_pLastRTData->GetPBuy(0)) <= 2) { // 一般性卖出
     m_nCurrentTransactionType = __ORDINARY_SELL__;
     m_lOrdinarySellVolume += m_lCurrentGuadanTransactionVolume;
+    CalculateOrdinarySellVolume();
   }
   else { // 买卖混杂，不分析。
     m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
     m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+  }
+}
+
+void CChinaStock::CalculateOrdinaryBuyVolume(void) {
+  if (m_lCurrentGuadanTransactionVolume < 5000) {
+    m_lOrdinaryBuyNumberBelow5000++;
+    m_lOrdinaryBuyVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 10000) {
+    m_lOrdinaryBuyNumberBelow10000++;
+    m_lOrdinaryBuyVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 20000) {
+    m_lOrdinaryBuyNumberBelow20000++;
+    m_lOrdinaryBuyVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lOrdinaryBuyNumberBelow50000++;
+    m_lOrdinaryBuyVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 100000) {
+    m_lOrdinaryBuyNumberBelow100000++;
+    m_lOrdinaryBuyVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lOrdinaryBuyNumberBelow200000++;
+    m_lOrdinaryBuyVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume >= 200000) {
+    m_lOrdinaryBuyNumberAbove200000++;
+    m_lOrdinaryBuyVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
+  }
+}
+
+void CChinaStock::CalculateOrdinarySellVolume(void) {
+  if (m_lCurrentGuadanTransactionVolume < 5000) {
+    m_lOrdinarySellNumberBelow5000++;
+    m_lOrdinarySellVolumeBelow5000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 10000) {
+    m_lOrdinarySellNumberBelow10000++;
+    m_lOrdinarySellVolumeBelow10000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 20000) {
+    m_lOrdinarySellNumberBelow20000++;
+    m_lOrdinarySellVolumeBelow20000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 50000) {
+    m_lOrdinarySellNumberBelow50000++;
+    m_lOrdinarySellVolumeBelow50000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 100000) {
+    m_lOrdinarySellNumberBelow100000++;
+    m_lOrdinarySellVolumeBelow100000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume < 200000) {
+    m_lOrdinarySellNumberBelow200000++;
+    m_lOrdinarySellVolumeBelow200000 += m_lCurrentGuadanTransactionVolume;
+  }
+  else if (m_lCurrentGuadanTransactionVolume >= 200000) {
+    m_lOrdinarySellNumberAbove200000++;
+    m_lOrdinarySellVolumeAbove200000 += m_lCurrentGuadanTransactionVolume;
   }
 }
 
@@ -1032,8 +1140,33 @@ void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
   if (fNeedCheck.at(4 - i)) {
     if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) { // 撤单了的话
       m_lCurrentCanselSellVolume += m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
+      CalculateCancelSellVolume(m_lCurrentCanselSellVolume);
       m_lCancelSellVolume += m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
     }
+  }
+}
+
+void CChinaStock::CalculateCancelSellVolume(INT64 lCurrentCancelSellVolume) {
+  if (lCurrentCancelSellVolume < 5000) {
+    m_lCancelSellVolumeBelow5000 += lCurrentCancelSellVolume;
+  }
+  else if (lCurrentCancelSellVolume < 10000) {
+    m_lCancelSellVolumeBelow10000 += lCurrentCancelSellVolume;
+  }
+  else if (lCurrentCancelSellVolume < 20000) {
+    m_lCancelSellVolumeBelow20000 += lCurrentCancelSellVolume;
+  }
+  else if (lCurrentCancelSellVolume < 50000) {
+    m_lCancelSellVolumeBelow50000 += lCurrentCancelSellVolume;
+  }
+  else if (lCurrentCancelSellVolume < 100000) {
+    m_lCancelSellVolumeBelow100000 += lCurrentCancelSellVolume;
+  }
+  else if (lCurrentCancelSellVolume < 200000) {
+    m_lCancelSellVolumeBelow200000 += lCurrentCancelSellVolume;
+  }
+  else {
+    m_lCancelSellVolumeAbove200000 += lCurrentCancelSellVolume;
   }
 }
 
@@ -1042,8 +1175,33 @@ void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
   if (fNeedCheck.at(5 + i)) {
     if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) { // 撤单了的话
       m_lCurrentCanselBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
+      CalculateCancelBuyVolume(m_lCurrentCanselBuyVolume);
       m_lCancelBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
     }
+  }
+}
+
+void CChinaStock::CalculateCancelBuyVolume(INT64 lCurrentCancelBuyVolume) {
+  if (lCurrentCancelBuyVolume < 5000) {
+    m_lCancelBuyVolumeBelow5000 += lCurrentCancelBuyVolume;
+  }
+  else if (lCurrentCancelBuyVolume < 10000) {
+    m_lCancelBuyVolumeBelow10000 += lCurrentCancelBuyVolume;
+  }
+  else if (lCurrentCancelBuyVolume < 20000) {
+    m_lCancelBuyVolumeBelow20000 += lCurrentCancelBuyVolume;
+  }
+  else if (lCurrentCancelBuyVolume < 50000) {
+    m_lCancelBuyVolumeBelow50000 += lCurrentCancelBuyVolume;
+  }
+  else if (lCurrentCancelBuyVolume < 100000) {
+    m_lCancelBuyVolumeBelow100000 += lCurrentCancelBuyVolume;
+  }
+  else if (lCurrentCancelBuyVolume < 200000) {
+    m_lCancelBuyVolumeBelow200000 += lCurrentCancelBuyVolume;
+  }
+  else {
+    m_lCancelBuyVolumeAbove200000 += lCurrentCancelBuyVolume;
   }
 }
 
