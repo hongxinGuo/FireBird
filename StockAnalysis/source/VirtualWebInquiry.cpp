@@ -63,6 +63,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     m_pFile->Close();
   }
   catch (CInternetException* exception) {
+    if (m_pFile != nullptr) m_pFile->Close();
     m_dwWebErrorCode = exception->m_dwError;
     str1 = GetInquiringString();
     strLeft = str1.Left(20);

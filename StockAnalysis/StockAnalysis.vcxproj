@@ -253,6 +253,7 @@
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebData.h" />
     <ClInclude Include="source\SetPotenDailyBriefing.h" />
+    <ClInclude Include="source\SetStrongRSChoiced.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebInquirer.h" />
     <ClInclude Include="source\WebData.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
     <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
+    <ClCompile Include="source\SetStrongRSChoiced.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />

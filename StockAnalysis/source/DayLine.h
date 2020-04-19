@@ -90,36 +90,36 @@ public:
   void SetTransactionNumberAbove200000(long lValue) noexcept { m_lTransactionNumberAbove200000 = lValue; }
 
   long GetAttackBuyVolume(void) noexcept { return m_lAttackBuyVolume; }
-  void SetAttackBuyVolume(long fValue) noexcept { m_lAttackBuyVolume = fValue; }
+  void SetAttackBuyVolume(long lValue) noexcept { m_lAttackBuyVolume = lValue; }
   long GetStrongBuyVolume(void) noexcept { return m_lStrongBuyVolume; }
-  void SetStrongBuyVolume(long fValue) noexcept { m_lStrongBuyVolume = fValue; }
+  void SetStrongBuyVolume(long lValue) noexcept { m_lStrongBuyVolume = lValue; }
   long GetAttackSellVolume(void) noexcept { return m_lAttackSellVolume; }
-  void SetAttackSellVolume(long fValue) noexcept { m_lAttackSellVolume = fValue; }
+  void SetAttackSellVolume(long lValue) noexcept { m_lAttackSellVolume = lValue; }
   long GetStrongSellVolume(void) noexcept { return m_lStrongSellVolume; }
-  void SetStrongSellVolume(long fValue) noexcept { m_lStrongSellVolume = fValue; }
+  void SetStrongSellVolume(long lValue) noexcept { m_lStrongSellVolume = lValue; }
   long GetUnknownVolume(void) noexcept { return m_lUnknownVolume; }
-  void SetUnknownVolume(long fValue) noexcept { m_lUnknownVolume = fValue; }
+  void SetUnknownVolume(long lValue) noexcept { m_lUnknownVolume = lValue; }
   long GetCancelBuyVolume(void) noexcept { return m_lCancelBuyVolume; }
-  void SetCancelBuyVolume(long fValue) noexcept { m_lCancelBuyVolume = fValue; }
+  void SetCancelBuyVolume(long lValue) noexcept { m_lCancelBuyVolume = lValue; }
   long GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
-  void SetCancelSellVolume(long fValue) noexcept { m_lCancelSellVolume = fValue; }
+  void SetCancelSellVolume(long lValue) noexcept { m_lCancelSellVolume = lValue; }
 
   long GetOrdinaryBuyVolume(void) noexcept { return m_lOrdinaryBuyVolume; }
-  void SetOrdinaryBuyVolume(long fValue) noexcept { m_lOrdinaryBuyVolume = fValue; }
+  void SetOrdinaryBuyVolume(long lValue) noexcept { m_lOrdinaryBuyVolume = lValue; }
   long GetAttackBuyBelow50000(void) noexcept { return m_lAttackBuyBelow50000; }
-  void SetAttackBuyBelow50000(long fValue) noexcept { m_lAttackBuyBelow50000 = fValue; }
+  void SetAttackBuyBelow50000(long lValue) noexcept { m_lAttackBuyBelow50000 = lValue; }
   long GetAttackBuyBelow200000(void) noexcept { return m_lAttackBuyBelow200000; }
-  void SetAttackBuyBelow200000(long fValue) noexcept { m_lAttackBuyBelow200000 = fValue; }
+  void SetAttackBuyBelow200000(long lValue) noexcept { m_lAttackBuyBelow200000 = lValue; }
   long GetAttackBuyAbove200000(void) noexcept { return m_lAttackBuyAbove200000; }
-  void SetAttackBuyAbove200000(long fValue) noexcept { m_lAttackBuyAbove200000 = fValue; }
+  void SetAttackBuyAbove200000(long lValue) noexcept { m_lAttackBuyAbove200000 = lValue; }
   long GetOrdinarySellVolume(void) noexcept { return m_lOrdinarySellVolume; }
-  void SetOrdinarySellVolume(long fValue) noexcept { m_lOrdinarySellVolume = fValue; }
+  void SetOrdinarySellVolume(long lValue) noexcept { m_lOrdinarySellVolume = lValue; }
   long GetAttackSellBelow50000(void) noexcept { return m_lAttackSellBelow50000; }
-  void SetAttackSellBelow50000(long fValue) noexcept { m_lAttackSellBelow50000 = fValue; }
+  void SetAttackSellBelow50000(long lValue) noexcept { m_lAttackSellBelow50000 = lValue; }
   long GetAttackSellBelow200000(void) noexcept { return m_lAttackSellBelow200000; }
-  void SetAttackSellBelow200000(long fValue) noexcept { m_lAttackSellBelow200000 = fValue; }
+  void SetAttackSellBelow200000(long lValue) noexcept { m_lAttackSellBelow200000 = lValue; }
   long GetAttackSellAbove200000(void) noexcept { return m_lAttackSellAbove200000; }
-  void SetAttackSellAbove200000(long fValue) noexcept { m_lAttackSellAbove200000 = fValue; }
+  void SetAttackSellAbove200000(long lValue) noexcept { m_lAttackSellAbove200000 = lValue; }
 
   INT64 GetOrdinaryBuyNumberBelow5000(void) noexcept { return m_lOrdinaryBuyNumberBelow5000; }
   INT64 GetOrdinaryBuyNumberBelow10000(void) noexcept { return m_lOrdinaryBuyNumberBelow10000; }
@@ -180,15 +180,15 @@ public:
 
   void Set3DayRS(double dValue) noexcept { m_d3DayRS = dValue; }
   double Get3DayRS(void) noexcept { return m_d3DayRS; }
-  void Set5DayRS(double fValue) noexcept { m_d5DayRS = fValue; }
+  void Set5DayRS(double dValue) noexcept { m_d5DayRS = dValue; }
   double Get5DayRS(void) noexcept { return m_d5DayRS; }
-  void Set10DayRS(double fValue) noexcept { m_d10DayRS = fValue; }
+  void Set10DayRS(double dValue) noexcept { m_d10DayRS = dValue; }
   double Get10DayRS(void) noexcept { return m_d10DayRS; }
-  void Set30DayRS(double fValue) noexcept { m_d30DayRS = fValue; }
+  void Set30DayRS(double dValue) noexcept { m_d30DayRS = dValue; }
   double Get30DayRS(void) noexcept { return m_d30DayRS; }
-  void Set60DayRS(double fValue) noexcept { m_d60DayRS = fValue; }
+  void Set60DayRS(double dValue) noexcept { m_d60DayRS = dValue; }
   double Get60DayRS(void) noexcept { return m_d60DayRS; }
-  void Set120DayRS(double fValue) noexcept { m_d120DayRS = fValue; }
+  void Set120DayRS(double dValue) noexcept { m_d120DayRS = dValue; }
   double Get120DayRS(void) noexcept { return m_d120DayRS; }
 
 private:

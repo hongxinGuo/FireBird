@@ -18,6 +18,7 @@ public:
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer1Hour(long lSecond, long lCurrentTime);
   bool TaskMaintainDatabase(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);

@@ -40,6 +40,8 @@
 #define IDD_DIALOG_PROGRAM_OPTION       310
 #define IDC_COMBO_DISPLAY_RS            1003
 #define IDC_COMBO_OPTION_DISPLAY_RS     1003
+#define IDC_MFCCOLORBUTTON1             1004
+#define IDC_MFCCOLORBUTTON_BACKGROUND   1004
 #define ID_PROCESS_TODAY_STOCK          32771
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_TODAY_RELATIVE_STRONG 32773
@@ -98,7 +100,6 @@
 #define ID_SHOW_REALTIME                32833
 #define ID_SHOW_DAYLINE                 32834
 #define ID_BUTTON32841                  32841
-#define ID_BUTTON32842                  32842
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -113,9 +114,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        313
+#define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1004
+#define _APS_NEXT_CONTROL_VALUE         1005
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
