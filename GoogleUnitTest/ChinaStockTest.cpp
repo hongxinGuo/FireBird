@@ -771,7 +771,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.HaveNewDayLineData());
     stock.SetDayLineEndDay(20191231);
     EXPECT_TRUE(stock.HaveNewDayLineData());
-    stock.ClearDayLineContainer();
+    stock.UnloadDayLine();
     EXPECT_EQ(stock.GetDayLineSize(), 0);
   }
 
@@ -821,6 +821,16 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsTodayDataActive());
     stock.SetActive(false);
     EXPECT_FALSE(stock.IsTodayDataActive());
+  }
+
+  TEST_F(CChinaStockTest, TestIsSaveStock) {
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    CChinaStockPtr pStock2 = nullptr;
+    EXPECT_FALSE(pStock->IsSameStock(pStock2));
+    pStock2 = gl_pChinaStockMarket->GetStock(2);
+    EXPECT_FALSE(pStock->IsSameStock(pStock2));
+    pStock2 = gl_pChinaStockMarket->GetStock(1);
+    EXPECT_TRUE(pStock->IsSameStock(pStock2));
   }
 
   TEST_F(CChinaStockTest, TestIsTodayDataChanged) {

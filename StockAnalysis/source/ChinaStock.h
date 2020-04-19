@@ -381,7 +381,7 @@ public:
   // 日线历史数据
   size_t GetDayLineSize(void) { return m_vDayLine.size(); }
   bool HaveNewDayLineData(void);
-  void ClearDayLineContainer(void) noexcept { m_vDayLine.clear(); }
+  void UnloadDayLine(void) noexcept { m_vDayLine.clear(); }
   bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);

@@ -102,7 +102,7 @@ namespace StockAnalysisTest {
     chinaMarket.SaveDayLineData();
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
 
-    pStock->ClearDayLineContainer();
+    pStock->UnloadDayLine();
   }
 
   TEST_F(CChinaMarketMockTest, TestSaveDayLineData4) {
@@ -122,7 +122,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
     EXPECT_TRUE(chinaMarket.SaveDayLineData());
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
-    pStock->ClearDayLineContainer();
+    pStock->UnloadDayLine();
   }
 
   TEST_F(CChinaMarketMockTest, TestUpdateTempRTData) {

@@ -15,7 +15,7 @@ UINT ThreadLoadDayLine(CChinaStockPtr pStock) {
   ASSERT(!pStock->IsDayLineLoaded());
 
   gl_ThreadStatus.IncreaseRunningThread();
-  pStock->ClearDayLineContainer();
+  pStock->UnloadDayLine();
   // 装入日线数据
   pStock->LoadDayLineAndDayLineInfo();
   // 计算各相对强度（以指数相对强度为默认值）

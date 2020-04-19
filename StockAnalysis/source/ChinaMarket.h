@@ -161,7 +161,7 @@ public:
   virtual bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
 
-  bool ClearDayLineContainer(void);
+  bool UnloadDayLine(void);
 
   // 股票历史数据处理
   bool Choice10RSStrongStockSet(void); // 选择10日强势股票集

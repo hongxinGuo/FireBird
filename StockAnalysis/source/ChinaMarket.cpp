@@ -1559,9 +1559,9 @@ bool CChinaMarket::SaveDayLineData(void) {
   return(true);
 }
 
-bool CChinaMarket::ClearDayLineContainer(void) {
+bool CChinaMarket::UnloadDayLine(void) {
   for (auto pStock : m_vChinaMarketAStock) {
-    pStock->ClearDayLineContainer();
+    pStock->UnloadDayLine();
   }
 
   return true;
@@ -1609,6 +1609,9 @@ bool CChinaMarket::Choice10RSStrongStockSet(void) {
       if (pStock->Is10RSStrongStock()) {
         m_v10RSStrongStock.push_back(pStock);
         TRACE(_T("ÕÒµ½£º%s \n"), (LPCTSTR)pStock->GetStockCode());
+        if (!pStock->IsSameStock(m_pCurrentStock)) {
+          pStock->UnloadDayLine();
+        }
       }
     }
     if (gl_ExitingSystem) return false;

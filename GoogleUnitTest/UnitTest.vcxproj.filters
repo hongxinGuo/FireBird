@@ -401,6 +401,12 @@
     <ClCompile Include="PotenDailyBriefingMarketMockTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetStrongRSChoiced.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -591,6 +597,9 @@
     </ClInclude>
     <ClInclude Include="MockPotenDailyBriefingMarket.h">
       <Filter>Mock类\Poten Daily Briefing Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetStrongRSChoiced.h">
+      <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

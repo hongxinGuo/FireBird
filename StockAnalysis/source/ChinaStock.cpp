@@ -1499,8 +1499,8 @@ INT64 CChinaStock::GetRTDataQueueSize(void) {
 }
 
 bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
-  ASSERT(pStock != nullptr);
-  if (m_lOffsetInContainer == pStock->GetOffset()) return true;
+  if (pStock == nullptr) return false;
+  else if (m_lOffsetInContainer == pStock->GetOffset()) return true;
   else return false;
 }
 

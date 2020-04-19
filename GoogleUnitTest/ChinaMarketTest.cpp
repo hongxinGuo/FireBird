@@ -648,8 +648,8 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 
-  TEST_F(CChinaMarketTest, TestClearDayLineContainer) {
-    EXPECT_TRUE(gl_pChinaStockMarket->ClearDayLineContainer());
+  TEST_F(CChinaMarketTest, TestUnloadDayLine) {
+    EXPECT_TRUE(gl_pChinaStockMarket->UnloadDayLine());
   }
 
   TEST_F(CChinaMarketTest, TestMarketReady) {
