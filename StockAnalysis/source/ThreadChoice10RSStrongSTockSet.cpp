@@ -12,6 +12,7 @@
 UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
 
+  // Ìí¼ÓÒ»¸ö×¢ÊÍ
   pMarket->Choice10RSStrongStockSet();
 
   gl_ThreadStatus.DecreaseRunningThread();
