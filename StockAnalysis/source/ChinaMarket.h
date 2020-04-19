@@ -56,6 +56,7 @@ public:
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
+  bool TaskChoice10RSStrongStockSet(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskCheckDayLineDB(void);
   bool TaskCheckStartReceivingData(long lCurrentTime);
@@ -92,6 +93,7 @@ public:
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
+  virtual bool RunningThreadChoice10RSStrongStockSet(void);
 
   // interface function
 public:
@@ -162,6 +164,8 @@ public:
   bool ClearDayLineContainer(void);
 
   // 股票历史数据处理
+  bool Choice10RSStrongStockSet(void); // 选择10日强势股票集
+
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
 
@@ -303,6 +307,8 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CChinaStockPtr> m_vChoicedStock; // 自选股票池
+  vector<CChinaStockPtr> m_v10RSStrongStock; // 10日强势股票集
+  bool m_fIsChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 

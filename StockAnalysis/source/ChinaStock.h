@@ -334,6 +334,9 @@ public:
   bool CalculateDayLineRelativeStrongLogarithm(void);
   virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
+  // 判断10日强势股票
+  bool Is10RSStrongStock(void);
+
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CRTDataPtr pRTData);
