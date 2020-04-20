@@ -1030,6 +1030,35 @@ namespace StockAnalysisTest {
     pStock->SetStrongBuyVolume(453456);
     pStock->SetStrongSellVolume(98976);
 
+    pStock->SetOrdinaryBuyVolumeBelow5000(30);
+    pStock->SetOrdinaryBuyVolumeBelow10000(31);
+    pStock->SetOrdinaryBuyVolumeBelow20000(32);
+    pStock->SetOrdinaryBuyVolumeBelow50000(33);
+    pStock->SetOrdinaryBuyVolumeBelow100000(34);
+    pStock->SetOrdinaryBuyVolumeBelow200000(35);
+    pStock->SetOrdinaryBuyVolumeAbove200000(36);
+    pStock->SetOrdinarySellVolumeBelow5000(37);
+    pStock->SetOrdinarySellVolumeBelow10000(38);
+    pStock->SetOrdinarySellVolumeBelow20000(39);
+    pStock->SetOrdinarySellVolumeBelow50000(40);
+    pStock->SetOrdinarySellVolumeBelow100000(41);
+    pStock->SetOrdinarySellVolumeBelow200000(42);
+    pStock->SetOrdinarySellVolumeAbove200000(43);
+    pStock->SetOrdinaryBuyNumberBelow5000(44);
+    pStock->SetOrdinaryBuyNumberBelow10000(45);
+    pStock->SetOrdinaryBuyNumberBelow20000(46);
+    pStock->SetOrdinaryBuyNumberBelow50000(47);
+    pStock->SetOrdinaryBuyNumberBelow100000(48);
+    pStock->SetOrdinaryBuyNumberBelow200000(49);
+    pStock->SetOrdinaryBuyNumberAbove200000(50);
+    pStock->SetOrdinarySellNumberBelow5000(51);
+    pStock->SetOrdinarySellNumberBelow10000(52);
+    pStock->SetOrdinarySellNumberBelow20000(53);
+    pStock->SetOrdinarySellNumberBelow50000(54);
+    pStock->SetOrdinarySellNumberBelow100000(55);
+    pStock->SetOrdinarySellNumberBelow200000(56);
+    pStock->SetOrdinarySellNumberAbove200000(57);
+
     ASSERT(!gl_fNormalMode);
     ASSERT(gl_fTestMode);
     setDayLineToday.Open();
@@ -1085,6 +1114,36 @@ namespace StockAnalysisTest {
     EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
     EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
     EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
+
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow5000), pStock->GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow10000), pStock->GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow20000), pStock->GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow50000), pStock->GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow100000), pStock->GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow200000), pStock->GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeAbove200000), pStock->GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow5000), pStock->GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow10000), pStock->GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow20000), pStock->GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow50000), pStock->GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow100000), pStock->GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow200000), pStock->GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeAbove200000), pStock->GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow5000), pStock->GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow10000), pStock->GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow20000), pStock->GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow50000), pStock->GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow100000), pStock->GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow200000), pStock->GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberAbove200000), pStock->GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow5000), pStock->GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow10000), pStock->GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow20000), pStock->GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow50000), pStock->GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow100000), pStock->GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow200000), pStock->GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberAbove200000), pStock->GetOrdinarySellNumberAbove200000());
+
     setDayLineToday.Close();
 
     setDayLineToday.Open();
@@ -1130,6 +1189,35 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
     EXPECT_EQ(stock.GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
     EXPECT_EQ(stock.GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
+
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow5000(), pStock->GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow10000(), pStock->GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow20000(), pStock->GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow50000(), pStock->GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow100000(), pStock->GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow200000(), pStock->GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeAbove200000(), pStock->GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow5000(), pStock->GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow10000(), pStock->GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow20000(), pStock->GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow50000(), pStock->GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow100000(), pStock->GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow200000(), pStock->GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeAbove200000(), pStock->GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow5000(), pStock->GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow10000(), pStock->GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow20000(), pStock->GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow50000(), pStock->GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow100000(), pStock->GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow200000(), pStock->GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberAbove200000(), pStock->GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow5000(), pStock->GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow10000(), pStock->GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow20000(), pStock->GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow50000(), pStock->GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow100000(), pStock->GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow200000(), pStock->GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberAbove200000(), pStock->GetOrdinarySellNumberAbove200000());
   }
 
   TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
