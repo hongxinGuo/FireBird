@@ -1,6 +1,6 @@
-// SetDayLine.h : CSetDayLine 类的实现
+// SetDayLineBasicInfo.h : CSetDayLineBasicInfo 类的实现
 
-// CSetDayLine 实现
+// CSetDayLineBasicInfo 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -9,10 +9,10 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetDayLine.h"
-IMPLEMENT_DYNAMIC(CSetDayLine, CRecordset)
+#include "SetDayLineBasicInfo.h"
+IMPLEMENT_DYNAMIC(CSetDayLineBasicInfo, CRecordset)
 
-CSetDayLine::CSetDayLine(CDatabase* pdb)
+CSetDayLineBasicInfo::CSetDayLineBasicInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Day = 0;
@@ -36,15 +36,15 @@ CSetDayLine::CSetDayLine(CDatabase* pdb)
   m_nFields = 20;
 }
 
-CString CSetDayLine::GetDefaultConnect() {
+CString CSetDayLineBasicInfo::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetDayLine::GetDefaultSQL() {
+CString CSetDayLineBasicInfo::GetDefaultSQL() {
   return _T("[DayLine]");
 }
 
-void CSetDayLine::DoFieldExchange(CFieldExchange* pFX) {
+void CSetDayLineBasicInfo::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -71,14 +71,14 @@ void CSetDayLine::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RelativeStrongBackup);	//相对于市场指数的强度
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetDayLine 诊断
+// CSetDayLineBasicInfo 诊断
 
 #ifdef _DEBUG
-void CSetDayLine::AssertValid() const {
+void CSetDayLineBasicInfo::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetDayLine::Dump(CDumpContext& dc) const {
+void CSetDayLineBasicInfo::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

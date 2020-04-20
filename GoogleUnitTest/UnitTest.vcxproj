@@ -87,8 +87,8 @@
     <ClCompile Include="..\StockAnalysis\source\RTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetCrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetDayLineInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineBasicInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetDayLineToday.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetPotenDailyBriefing.cpp" />
@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StockAnalysis\ChildFrm.h" />
-    <ClInclude Include="..\StockAnalysis\Header.h" />
     <ClInclude Include="..\StockAnalysis\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
@@ -206,8 +205,8 @@
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetCrweberIndex.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetDayLineInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineBasicInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\SetDayLineToday.h" />
     <ClInclude Include="..\StockAnalysis\source\SetOption.h" />
     <ClInclude Include="..\StockAnalysis\source\SetPotenDailyBriefing.h" />

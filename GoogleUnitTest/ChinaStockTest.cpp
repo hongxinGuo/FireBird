@@ -472,7 +472,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestSaveTodayInfo) {
-    CSetDayLine setDayLine;
+    CSetDayLineBasicInfo setDayLineBasicInfo;
     CChinaStock id;
     long lDay = 21091101;
     time_t tt = FormatToTTime(lDay);
@@ -497,25 +497,25 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     ASSERT(gl_fTestMode);
 
-    setDayLine.m_strFilter = _T("[Day] =");
-    setDayLine.m_strFilter += strDay;
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    while (!setDayLine.IsEOF()) {
-      setDayLine.Delete();
-      setDayLine.MoveNext();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.Open();
+    setDayLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineBasicInfo.IsEOF()) {
+      setDayLineBasicInfo.Delete();
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
-    setDayLine.m_strFilter = _T("[Day] =");
-    setDayLine.m_strFilter += strDay;
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    setDayLine.AddNew();
-    id.SaveBasicInfo(setDayLine);
-    setDayLine.Update();
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.Open();
+    setDayLineBasicInfo.m_pDatabase->BeginTrans();
+    setDayLineBasicInfo.AddNew();
+    id.SaveBasicInfo(setDayLineBasicInfo);
+    setDayLineBasicInfo.Update();
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
   }
 
   TEST_F(CChinaStockTest, TestGetAttackBuyAmount) {
@@ -824,7 +824,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsSaveStock) {
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
+    pStock = gl_pChinaStockMarket->GetStock(1);
     CChinaStockPtr pStock2 = nullptr;
     EXPECT_FALSE(pStock->IsSameStock(pStock2));
     pStock2 = gl_pChinaStockMarket->GetStock(2);
@@ -1133,7 +1133,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
-    CSetDayLine setDayLine;
+    CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine id;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600011"));
@@ -1221,17 +1221,19 @@ namespace StockAnalysisTest {
     pStock->SetOrdinarySellNumberBelow200000(56);
     pStock->SetOrdinarySellNumberAbove200000(57);
 
-    CSetDayLineInfo setDayLineInfo;
-    setDayLineInfo.m_strFilter = _T("[ID] = 1");
-    setDayLineInfo.Open();
-    setDayLineInfo.m_pDatabase->BeginTrans();
-    setDayLineInfo.AddNew();
-    pStock->SaveCalculatedInfo(setDayLineInfo);
-    setDayLineInfo.Update();
-    setDayLineInfo.m_pDatabase->CommitTrans();
-    setDayLineInfo.Close();
+    CSetDayLineExtendInfo setDayLineExtendInfo;
+    setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+    setDayLineExtendInfo.Open();
+    setDayLineExtendInfo.m_pDatabase->BeginTrans();
+    setDayLineExtendInfo.AddNew();
+    pStock->SaveCalculatedInfo(setDayLineExtendInfo);
+    setDayLineExtendInfo.Update();
+    setDayLineExtendInfo.m_pDatabase->CommitTrans();
+    setDayLineExtendInfo.Close();
 
-    pStock->LoadDayLineAndDayLineInfo();
+    EXPECT_FALSE(pStock->IsDayLineLoaded());
+    pStock->LoadDayLine();
+    EXPECT_TRUE(pStock->IsDayLineLoaded());
 
     CDayLinePtr pDayLine;
     pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
@@ -1303,29 +1305,29 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow200000(), pStock->GetOrdinarySellNumberBelow200000());
     EXPECT_EQ(pDayLine->GetOrdinarySellNumberAbove200000(), pStock->GetOrdinarySellNumberAbove200000());
 
-    setDayLine.m_strFilter = _T("[Day] = 21900101");
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    while (!setDayLine.IsEOF()) {
-      setDayLine.Delete();
-      setDayLine.MoveNext();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21900101");
+    setDayLineBasicInfo.Open();
+    setDayLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineBasicInfo.IsEOF()) {
+      setDayLineBasicInfo.Delete();
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
 
-    setDayLineInfo.m_strFilter = _T("[Day] = 21900101");
-    setDayLineInfo.Open();
-    setDayLineInfo.m_pDatabase->BeginTrans();
-    while (!setDayLineInfo.IsEOF()) {
-      setDayLineInfo.Delete();
-      setDayLineInfo.MoveNext();
+    setDayLineExtendInfo.m_strFilter = _T("[Day] = 21900101");
+    setDayLineExtendInfo.Open();
+    setDayLineExtendInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineExtendInfo.IsEOF()) {
+      setDayLineExtendInfo.Delete();
+      setDayLineExtendInfo.MoveNext();
     }
-    setDayLineInfo.m_pDatabase->CommitTrans();
-    setDayLineInfo.Close();
+    setDayLineExtendInfo.m_pDatabase->CommitTrans();
+    setDayLineExtendInfo.Close();
   }
 
   TEST_F(CChinaStockTest, TestSaveDayLine) {
-    CSetDayLine setDayLine;
+    CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine id;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
@@ -1360,44 +1362,44 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
 
-    setDayLine.m_strFilter = _T("[Day] = 21101201");
-    setDayLine.Open();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
-      id.LoadData(setDayLine);
+      id.LoadData(setDayLineBasicInfo);
       pid = pStock->GetDayLine(i);
-      EXPECT_EQ(setDayLine.m_Day, pid->GetDay());
-      EXPECT_EQ(setDayLine.m_Market, pid->GetMarket());
-      EXPECT_STREQ(setDayLine.m_StockCode, pid->GetStockCode());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_LastClose) * 1000, pid->GetLastClose());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_Open) * 1000, pid->GetOpen());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_High) * 1000, pid->GetHigh());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_Low) * 1000, pid->GetLow());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_Close) * 1000, pid->GetClose());
-      EXPECT_EQ(atoll(setDayLine.m_Volume), pid->GetVolume());
-      EXPECT_EQ(atoll(setDayLine.m_Amount), pid->GetAmount());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpAndDown), pid->GetUpDown());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_UpDownRate), pid->GetUpDownRate());
-      EXPECT_EQ(atoll(setDayLine.m_TotalValue), pid->GetTotalValue());
-      EXPECT_EQ(atoll(setDayLine.m_CurrentValue), pid->GetCurrentValue());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_ChangeHandRate), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(atof(setDayLine.m_RelativeStrong), pid->GetRelativeStrong());
-      setDayLine.MoveNext();
+      EXPECT_EQ(setDayLineBasicInfo.m_Day, pid->GetDay());
+      EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
+      EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pid->GetStockCode());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * 1000, pid->GetOpen());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_High) * 1000, pid->GetHigh());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Low) * 1000, pid->GetLow());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Close) * 1000, pid->GetClose());
+      EXPECT_EQ(atoll(setDayLineBasicInfo.m_Volume), pid->GetVolume());
+      EXPECT_EQ(atoll(setDayLineBasicInfo.m_Amount), pid->GetAmount());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_UpAndDown), pid->GetUpDown());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
+      EXPECT_EQ(atoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
+      EXPECT_EQ(atoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RelativeStrong), pid->GetRelativeStrong());
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.Close();
+    setDayLineBasicInfo.Close();
 
-    setDayLine.m_strFilter = _T("[Day] = 21101201");
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    while (!setDayLine.IsEOF()) {
-      setDayLine.Delete();
-      setDayLine.MoveNext();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.Open();
+    setDayLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineBasicInfo.IsEOF()) {
+      setDayLineBasicInfo.Delete();
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
   }
 
   TEST_F(CChinaStockTest, TestLoadDayLine) {
-    CSetDayLine setDayLine;
+    CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLinePtr pDayLine = nullptr;
     CChinaStock id;
@@ -1431,9 +1433,9 @@ namespace StockAnalysisTest {
     pStock->SaveDayLine();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
 
-    setDayLine.m_strFilter = _T("[Day] = 21101201");
-    setDayLine.Open();
-    id.LoadDayLine(setDayLine);
+    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.Open();
+    id.LoadDayLineBasicInfo(setDayLineBasicInfo);
     for (int i = 0; i < 10; i++) {
       pid = id.GetDayLine(i);
       pDayLine = pStock->GetDayLine(i);
@@ -1454,17 +1456,17 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
       EXPECT_DOUBLE_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
     }
-    setDayLine.Close();
+    setDayLineBasicInfo.Close();
 
-    setDayLine.m_strFilter = _T("[Day] = 21101201");
-    setDayLine.Open();
-    setDayLine.m_pDatabase->BeginTrans();
-    while (!setDayLine.IsEOF()) {
-      setDayLine.Delete();
-      setDayLine.MoveNext();
+    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.Open();
+    setDayLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setDayLineBasicInfo.IsEOF()) {
+      setDayLineBasicInfo.Delete();
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.m_pDatabase->CommitTrans();
-    setDayLine.Close();
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
   }
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay) {
@@ -1662,19 +1664,19 @@ namespace StockAnalysisTest {
     stock.SetAttackBuyBelow200000(19);
     stock.SetAttackBuyAbove200000(20);
 
-    CSetDayLineInfo setDayLineInfo;
-    setDayLineInfo.m_strFilter = _T("[ID] = 1");
-    setDayLineInfo.Open();
-    setDayLineInfo.AddNew();
-    stock.SaveCalculatedInfo(setDayLineInfo);
-    setDayLineInfo.Update();
-    setDayLineInfo.Close();
+    CSetDayLineExtendInfo setDayLineExtendInfo;
+    setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
+    setDayLineExtendInfo.Open();
+    setDayLineExtendInfo.AddNew();
+    stock.SaveCalculatedInfo(setDayLineExtendInfo);
+    setDayLineExtendInfo.Update();
+    setDayLineExtendInfo.Close();
 
     CDayLine dayLine;
-    setDayLineInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
-    setDayLineInfo.Open();
-    dayLine.LoadData(setDayLineInfo);
-    setDayLineInfo.Close();
+    setDayLineExtendInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
+    setDayLineExtendInfo.Open();
+    dayLine.LoadData(setDayLineExtendInfo);
+    setDayLineExtendInfo.Close();
     EXPECT_EQ(dayLine.GetTime(), 0);
     EXPECT_STREQ(dayLine.GetStockCode(), _T(""));
     EXPECT_EQ(dayLine.GetMarket(), 0);

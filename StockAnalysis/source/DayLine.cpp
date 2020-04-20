@@ -7,57 +7,57 @@ CDayLine::CDayLine() : CObject() {
   Reset();
 }
 
-bool CDayLine::LoadData(CSetDayLineInfo& setDayLineInfo) {
-  ASSERT(setDayLineInfo.IsOpen());
-  m_lTransactionNumber = atol(setDayLineInfo.m_TransactionNumber);
-  m_lTransactionNumberBelow5000 = atol(setDayLineInfo.m_TransactionNumberBelow5000);
-  m_lTransactionNumberBelow50000 = atol(setDayLineInfo.m_TransactionNumberBelow50000);
-  m_lTransactionNumberBelow200000 = atol(setDayLineInfo.m_TransactionNumberBelow200000);
-  m_lTransactionNumberAbove200000 = atol(setDayLineInfo.m_TransactionNumberAbove200000);
-  m_lAttackBuyVolume = atol(setDayLineInfo.m_AttackBuyVolume);
-  m_lStrongBuyVolume = atol(setDayLineInfo.m_StrongBuyVolume);
-  m_lAttackSellVolume = atol(setDayLineInfo.m_AttackSellVolume);
-  m_lStrongSellVolume = atol(setDayLineInfo.m_StrongSellVolume);
-  m_lUnknownVolume = atol(setDayLineInfo.m_UnknownVolume);
-  m_lCancelBuyVolume = atol(setDayLineInfo.m_CancelBuyVolume);
-  m_lCancelSellVolume = atol(setDayLineInfo.m_CancelSellVolume);
-  m_lOrdinaryBuyVolume = atol(setDayLineInfo.m_OrdinaryBuyVolume);
-  m_lAttackBuyBelow50000 = atol(setDayLineInfo.m_AttackBuyBelow50000);
-  m_lAttackBuyBelow200000 = atol(setDayLineInfo.m_AttackBuyBelow200000);
-  m_lAttackBuyAbove200000 = atol(setDayLineInfo.m_AttackBuyAbove200000);
-  m_lOrdinarySellVolume = atol(setDayLineInfo.m_OrdinarySellVolume);
-  m_lAttackSellBelow50000 = atol(setDayLineInfo.m_AttackSellBelow50000);
-  m_lAttackSellBelow200000 = atol(setDayLineInfo.m_AttackSellBelow200000);
-  m_lAttackSellAbove200000 = atol(setDayLineInfo.m_AttackSellAbove200000);
+bool CDayLine::LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
+  ASSERT(setDayLineExtendInfo.IsOpen());
+  m_lTransactionNumber = atol(setDayLineExtendInfo.m_TransactionNumber);
+  m_lTransactionNumberBelow5000 = atol(setDayLineExtendInfo.m_TransactionNumberBelow5000);
+  m_lTransactionNumberBelow50000 = atol(setDayLineExtendInfo.m_TransactionNumberBelow50000);
+  m_lTransactionNumberBelow200000 = atol(setDayLineExtendInfo.m_TransactionNumberBelow200000);
+  m_lTransactionNumberAbove200000 = atol(setDayLineExtendInfo.m_TransactionNumberAbove200000);
+  m_lAttackBuyVolume = atol(setDayLineExtendInfo.m_AttackBuyVolume);
+  m_lStrongBuyVolume = atol(setDayLineExtendInfo.m_StrongBuyVolume);
+  m_lAttackSellVolume = atol(setDayLineExtendInfo.m_AttackSellVolume);
+  m_lStrongSellVolume = atol(setDayLineExtendInfo.m_StrongSellVolume);
+  m_lUnknownVolume = atol(setDayLineExtendInfo.m_UnknownVolume);
+  m_lCancelBuyVolume = atol(setDayLineExtendInfo.m_CancelBuyVolume);
+  m_lCancelSellVolume = atol(setDayLineExtendInfo.m_CancelSellVolume);
+  m_lOrdinaryBuyVolume = atol(setDayLineExtendInfo.m_OrdinaryBuyVolume);
+  m_lAttackBuyBelow50000 = atol(setDayLineExtendInfo.m_AttackBuyBelow50000);
+  m_lAttackBuyBelow200000 = atol(setDayLineExtendInfo.m_AttackBuyBelow200000);
+  m_lAttackBuyAbove200000 = atol(setDayLineExtendInfo.m_AttackBuyAbove200000);
+  m_lOrdinarySellVolume = atol(setDayLineExtendInfo.m_OrdinarySellVolume);
+  m_lAttackSellBelow50000 = atol(setDayLineExtendInfo.m_AttackSellBelow50000);
+  m_lAttackSellBelow200000 = atol(setDayLineExtendInfo.m_AttackSellBelow200000);
+  m_lAttackSellAbove200000 = atol(setDayLineExtendInfo.m_AttackSellAbove200000);
 
-  m_lOrdinaryBuyVolumeBelow5000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow5000);
-  m_lOrdinaryBuyVolumeBelow10000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow10000);
-  m_lOrdinaryBuyVolumeBelow20000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow20000);
-  m_lOrdinaryBuyVolumeBelow50000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow50000);
-  m_lOrdinaryBuyVolumeBelow100000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow100000);
-  m_lOrdinaryBuyVolumeBelow200000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeBelow200000);
-  m_lOrdinaryBuyVolumeAbove200000 = atoll(setDayLineInfo.m_OrdinaryBuyVolumeAbove200000);
-  m_lOrdinarySellVolumeBelow5000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow5000);
-  m_lOrdinarySellVolumeBelow10000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow10000);
-  m_lOrdinarySellVolumeBelow20000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow20000);
-  m_lOrdinarySellVolumeBelow50000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow50000);
-  m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow100000);
-  m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineInfo.m_OrdinarySellVolumeBelow200000);
-  m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineInfo.m_OrdinarySellVolumeAbove200000);
-  m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow5000);
-  m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow10000);
-  m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow20000);
-  m_lOrdinaryBuyNumberBelow50000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow50000);
-  m_lOrdinaryBuyNumberBelow100000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow100000);
-  m_lOrdinaryBuyNumberBelow200000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberBelow200000);
-  m_lOrdinaryBuyNumberAbove200000 = atoll(setDayLineInfo.m_OrdinaryBuyNumberAbove200000);
-  m_lOrdinarySellNumberBelow5000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow5000);
-  m_lOrdinarySellNumberBelow10000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow10000);
-  m_lOrdinarySellNumberBelow20000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow20000);
-  m_lOrdinarySellNumberBelow50000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow50000);
-  m_lOrdinarySellNumberBelow100000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow100000);
-  m_lOrdinarySellNumberBelow200000 = atoll(setDayLineInfo.m_OrdinarySellNumberBelow200000);
-  m_lOrdinarySellNumberAbove200000 = atoll(setDayLineInfo.m_OrdinarySellNumberAbove200000);
+  m_lOrdinaryBuyVolumeBelow5000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow5000);
+  m_lOrdinaryBuyVolumeBelow10000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow10000);
+  m_lOrdinaryBuyVolumeBelow20000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow20000);
+  m_lOrdinaryBuyVolumeBelow50000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow50000);
+  m_lOrdinaryBuyVolumeBelow100000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow100000);
+  m_lOrdinaryBuyVolumeBelow200000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow200000);
+  m_lOrdinaryBuyVolumeAbove200000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyVolumeAbove200000);
+  m_lOrdinarySellVolumeBelow5000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow5000);
+  m_lOrdinarySellVolumeBelow10000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow10000);
+  m_lOrdinarySellVolumeBelow20000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow20000);
+  m_lOrdinarySellVolumeBelow50000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow50000);
+  m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow100000);
+  m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow200000);
+  m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeAbove200000);
+  m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow5000);
+  m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow10000);
+  m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow20000);
+  m_lOrdinaryBuyNumberBelow50000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow50000);
+  m_lOrdinaryBuyNumberBelow100000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow100000);
+  m_lOrdinaryBuyNumberBelow200000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow200000);
+  m_lOrdinaryBuyNumberAbove200000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberAbove200000);
+  m_lOrdinarySellNumberBelow5000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow5000);
+  m_lOrdinarySellNumberBelow10000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow10000);
+  m_lOrdinarySellNumberBelow20000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow20000);
+  m_lOrdinarySellNumberBelow50000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow50000);
+  m_lOrdinarySellNumberBelow100000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow100000);
+  m_lOrdinarySellNumberBelow200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow200000);
+  m_lOrdinarySellNumberAbove200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberAbove200000);
   return true;
 }
 
@@ -102,61 +102,61 @@ void CDayLine::Reset(void) {
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0.0;
 }
 
-bool CDayLine::SaveData(CSetDayLine& setDayLine) {
-  ASSERT(setDayLine.IsOpen());
+bool CDayLine::SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
+  ASSERT(setDayLineBasicInfo.IsOpen());
 
-  setDayLine.m_Day = GetDay();
-  setDayLine.m_Market = GetMarket();
-  setDayLine.m_StockCode = GetStockCode();
-  setDayLine.m_StockName = GetStockName();
-  setDayLine.m_LastClose = ConvertValueToString(GetLastClose(), 1000);
-  setDayLine.m_High = ConvertValueToString(GetHigh(), 1000);
-  setDayLine.m_Low = ConvertValueToString(GetLow(), 1000);
-  setDayLine.m_Open = ConvertValueToString(GetOpen(), 1000);
-  setDayLine.m_Close = ConvertValueToString(GetClose(), 1000);
-  setDayLine.m_Volume = ConvertValueToString(GetVolume());
-  setDayLine.m_Amount = ConvertValueToString(GetAmount());
-  setDayLine.m_UpAndDown = ConvertValueToString(GetUpDown());
-  setDayLine.m_UpDownRate = ConvertValueToString(GetUpDownRate());
-  setDayLine.m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
-  setDayLine.m_TotalValue = ConvertValueToString(GetTotalValue());
-  setDayLine.m_CurrentValue = ConvertValueToString(GetCurrentValue());
-  setDayLine.m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
-  setDayLine.m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
-  setDayLine.m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
-
-  return true;
-}
-
-bool CDayLine::AppendData(CSetDayLine& setDayLine) {
-  ASSERT(setDayLine.IsOpen());
-  setDayLine.AddNew();
-  SaveData(setDayLine);
-  setDayLine.Update();
+  setDayLineBasicInfo.m_Day = GetDay();
+  setDayLineBasicInfo.m_Market = GetMarket();
+  setDayLineBasicInfo.m_StockCode = GetStockCode();
+  setDayLineBasicInfo.m_StockName = GetStockName();
+  setDayLineBasicInfo.m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  setDayLineBasicInfo.m_High = ConvertValueToString(GetHigh(), 1000);
+  setDayLineBasicInfo.m_Low = ConvertValueToString(GetLow(), 1000);
+  setDayLineBasicInfo.m_Open = ConvertValueToString(GetOpen(), 1000);
+  setDayLineBasicInfo.m_Close = ConvertValueToString(GetClose(), 1000);
+  setDayLineBasicInfo.m_Volume = ConvertValueToString(GetVolume());
+  setDayLineBasicInfo.m_Amount = ConvertValueToString(GetAmount());
+  setDayLineBasicInfo.m_UpAndDown = ConvertValueToString(GetUpDown());
+  setDayLineBasicInfo.m_UpDownRate = ConvertValueToString(GetUpDownRate());
+  setDayLineBasicInfo.m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
+  setDayLineBasicInfo.m_TotalValue = ConvertValueToString(GetTotalValue());
+  setDayLineBasicInfo.m_CurrentValue = ConvertValueToString(GetCurrentValue());
+  setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
+  setDayLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
+  setDayLineBasicInfo.m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
 
   return true;
 }
 
-bool CDayLine::LoadData(CSetDayLine& setDayLine) {
-  ASSERT(setDayLine.IsOpen());
-  m_lDay = setDayLine.m_Day;
-  m_wMarket = setDayLine.m_Market;
-  m_strStockCode = setDayLine.m_StockCode;
-  m_lLastClose = atof(setDayLine.m_LastClose) * 1000;
-  m_lOpen = atof(setDayLine.m_Open) * 1000;
-  m_lHigh = atof(setDayLine.m_High) * 1000;
-  m_lLow = atof(setDayLine.m_Low) * 1000;
-  m_lClose = atof(setDayLine.m_Close) * 1000;
-  m_dUpDown = atof(setDayLine.m_UpAndDown);
-  m_llVolume = atoll(setDayLine.m_Volume);
-  m_llAmount = atoll(setDayLine.m_Amount);
-  m_dUpDownRate = atof(setDayLine.m_UpDownRate);
-  m_dChangeHandRate = atof(setDayLine.m_ChangeHandRate);
-  m_llTotalValue = atoll(setDayLine.m_TotalValue);
-  m_llCurrentValue = atoll(setDayLine.m_CurrentValue);
-  m_dRelativeStrong = atof(setDayLine.m_RelativeStrong);
-  m_dRelativeStrongIndex = atof(setDayLine.m_RelativeStrongIndex);
-  m_dRelativeStrongBackup = atof(setDayLine.m_RelativeStrongBackup);
+bool CDayLine::AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
+  ASSERT(setDayLineBasicInfo.IsOpen());
+  setDayLineBasicInfo.AddNew();
+  SaveData(setDayLineBasicInfo);
+  setDayLineBasicInfo.Update();
+
+  return true;
+}
+
+bool CDayLine::LoadData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
+  ASSERT(setDayLineBasicInfo.IsOpen());
+  m_lDay = setDayLineBasicInfo.m_Day;
+  m_wMarket = setDayLineBasicInfo.m_Market;
+  m_strStockCode = setDayLineBasicInfo.m_StockCode;
+  m_lLastClose = atof(setDayLineBasicInfo.m_LastClose) * 1000;
+  m_lOpen = atof(setDayLineBasicInfo.m_Open) * 1000;
+  m_lHigh = atof(setDayLineBasicInfo.m_High) * 1000;
+  m_lLow = atof(setDayLineBasicInfo.m_Low) * 1000;
+  m_lClose = atof(setDayLineBasicInfo.m_Close) * 1000;
+  m_dUpDown = atof(setDayLineBasicInfo.m_UpAndDown);
+  m_llVolume = atoll(setDayLineBasicInfo.m_Volume);
+  m_llAmount = atoll(setDayLineBasicInfo.m_Amount);
+  m_dUpDownRate = atof(setDayLineBasicInfo.m_UpDownRate);
+  m_dChangeHandRate = atof(setDayLineBasicInfo.m_ChangeHandRate);
+  m_llTotalValue = atoll(setDayLineBasicInfo.m_TotalValue);
+  m_llCurrentValue = atoll(setDayLineBasicInfo.m_CurrentValue);
+  m_dRelativeStrong = atof(setDayLineBasicInfo.m_RelativeStrong);
+  m_dRelativeStrongIndex = atof(setDayLineBasicInfo.m_RelativeStrongIndex);
+  m_dRelativeStrongBackup = atof(setDayLineBasicInfo.m_RelativeStrongBackup);
   CalculateRSLogarithm(m_dRelativeStrong);
   return true;
 }

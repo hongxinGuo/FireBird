@@ -2,8 +2,8 @@
 
 #include"Accessory.h"
 
-#include"SetDayLine.h"
-#include"SetDayLineInfo.h"
+#include"SetDayLineBasicInfo.h"
+#include"SetDayLineExtendInfo.h"
 
 using namespace std;
 #include<memory>
@@ -13,10 +13,10 @@ public:
   CDayLine();
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(CSetDayLine& setDayLine);
-  bool AppendData(CSetDayLine& setDayLine);
-  bool LoadData(CSetDayLine& setDayLine);
-  bool LoadData(CSetDayLineInfo& setDayLineInfo);
+  bool SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo);
+  bool AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo);
+  bool LoadData(CSetDayLineBasicInfo& setDayLineBasicInfo);
+  bool LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo);
 
   void CalculateRSLogarithm(double dRS);
 

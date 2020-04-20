@@ -13,8 +13,8 @@ enum {
   __NO_TRANSACTION__ = 8
 };
 
-#include"SetDayLine.h"
-#include"SetDayLineInfo.h"
+#include"SetDayLineBasicInfo.h"
+#include"SetDayLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
 #include"SetStockCode.h"
@@ -304,16 +304,16 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 数据库的提取和存储
-  void SaveBasicInfo(CSetDayLine& psetDayLine); // 存储当日基本数据
+  void SaveBasicInfo(CSetDayLineBasicInfo& psetDayLine); // 存储当日基本数据
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   virtual bool SaveDayLine(void); // 存储日线历史数据
   void UpdateDayLineStartEndDay(void);
-  void SaveCalculatedInfo(CSetDayLineInfo& setDayLineInfo);
+  void SaveCalculatedInfo(CSetDayLineExtendInfo& setDayLineExtendInfo);
   void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  virtual bool LoadDayLineAndDayLineInfo(void); // 此函数加载
-  bool LoadDayLine(CSetDayLine& setDayLine);
-  bool LoadDayLineInfo(CSetDayLineInfo& setDayLine);
+  virtual bool LoadDayLine(void); // 此函数加载
+  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo);
+  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineBasicInfo);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
@@ -381,7 +381,7 @@ public:
   // 日线历史数据
   size_t GetDayLineSize(void) { return m_vDayLine.size(); }
   bool HaveNewDayLineData(void);
-  void UnloadDayLine(void) noexcept { m_vDayLine.clear(); }
+  void UnloadDayLine(void) noexcept { m_vDayLine.clear(); m_fDayLineLoaded = false; }
   bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);

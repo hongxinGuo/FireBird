@@ -263,12 +263,6 @@
     <ClCompile Include="..\StockAnalysis\source\SetCrweberIndex.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SetDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SetDayLineInfo.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SetDayLineToday.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -407,6 +401,12 @@
     <ClCompile Include="..\StockAnalysis\source\SetStrongRSChoiced.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineBasicInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetDayLineExtendInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -514,12 +514,6 @@
     <ClInclude Include="..\StockAnalysis\source\SetCrweberIndex.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SetDayLine.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SetDayLineInfo.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SetDayLineToday.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -565,9 +559,6 @@
     <ClInclude Include="..\StockAnalysis\ChildFrm.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\Header.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\MainFrm.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -599,6 +590,12 @@
       <Filter>Mock类\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SetStrongRSChoiced.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineBasicInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetDayLineExtendInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

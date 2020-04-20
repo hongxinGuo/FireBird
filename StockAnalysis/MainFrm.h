@@ -6,7 +6,7 @@
 
 #include "OutputWnd.h"
 
-#include"SetDayLine.h"
+#include"SetDayLineBasicInfo.h"
 #include"SetRealTimeData.h"
 #include"SetChoicedStock.h"
 #include"SetStockCode.h"

@@ -147,7 +147,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pStock->StoreDayLine(pDayLine);
     InSequence seq;
-    EXPECT_CALL(*pStock, LoadDayLineAndDayLineInfo)
+    EXPECT_CALL(*pStock, LoadDayLine)
       .Times(1);
     EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
       .Times(1);

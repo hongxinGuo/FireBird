@@ -10,7 +10,7 @@
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 
-#include"SetDayLineInfo.h"
+#include"SetDayLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetOption.h"
 #include"SetCrweberIndex.h"
@@ -1223,7 +1223,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fIsChoiced10RSStrongStockSet) {
+  if (IsSystemReady() && !m_fIsChoiced10RSStrongStockSet && lCurrentTime > 160000) {
     RunningThreadChoice10RSStrongStockSet();
     m_fIsChoiced10RSStrongStockSet = true;
     return true;
@@ -1606,12 +1606,17 @@ bool CChinaMarket::IsDayLineNeedSaving(void) {
 bool CChinaMarket::Choice10RSStrongStockSet(void) {
   for (auto pStock : m_vChinaMarketAStock) {
     if (IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
       if (pStock->Is10RSStrongStock()) {
         m_v10RSStrongStock.push_back(pStock);
         TRACE(_T("找到：%s \n"), (LPCTSTR)pStock->GetStockCode());
-        if (!pStock->IsSameStock(m_pCurrentStock)) {
-          pStock->UnloadDayLine();
-        }
+      }
+      if (!pStock->IsSameStock(m_pCurrentStock)) {
+        pStock->UnloadDayLine();
+        pStock->SetDayLineLoaded(false);
       }
     }
     if (gl_ExitingSystem) return false;
@@ -1622,6 +1627,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(void) {
   setRSStrong.m_pDatabase->BeginTrans();
   while (!setRSStrong.IsEOF()) {
     setRSStrong.Delete();
+    setRSStrong.MoveNext();
   }
   setRSStrong.m_pDatabase->CommitTrans();
   setRSStrong.m_pDatabase->BeginTrans();
@@ -1741,8 +1747,8 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
 long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   char buffer[20];
   CString strDay;
-  CSetDayLine setDayLine;
-  CSetDayLineInfo setDayLineInfo;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+  CSetDayLineExtendInfo setDayLineExtendInfo;
   long iCount = 0;
 
   CString str;
@@ -1754,17 +1760,17 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
   strDay = buffer;
-  setDayLine.m_strFilter = _T("[Day] =");
-  setDayLine.m_strFilter += strDay;
-  setDayLine.Open();
-  setDayLine.m_pDatabase->BeginTrans();
-  while (!setDayLine.IsEOF()) {
-    setDayLine.Delete();
-    setDayLine.MoveNext();
+  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.Open();
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineBasicInfo.IsEOF()) {
+    setDayLineBasicInfo.Delete();
+    setDayLineBasicInfo.MoveNext();
   }
-  setDayLine.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
 
-  setDayLine.m_pDatabase->BeginTrans();
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketAStock) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
@@ -1772,35 +1778,35 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
     iCount++;
     pStock->SetDayLineEndDay(lCurrentTradeDay);
     pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
-    setDayLine.AddNew();
-    pStock->SaveBasicInfo(setDayLine);
-    setDayLine.Update();
+    setDayLineBasicInfo.AddNew();
+    pStock->SaveBasicInfo(setDayLineBasicInfo);
+    setDayLineBasicInfo.Update();
   }
-  setDayLine.m_pDatabase->CommitTrans();
-  setDayLine.Close();
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.Close();
 
   // 存储今日生成的数据于DayLineInfo表中。
-  setDayLineInfo.m_strFilter = _T("[Day] =");
-  setDayLineInfo.m_strFilter += strDay;
-  setDayLineInfo.Open();
-  setDayLineInfo.m_pDatabase->BeginTrans();
-  while (!setDayLineInfo.IsEOF()) {
-    setDayLineInfo.Delete();
-    setDayLineInfo.MoveNext();
+  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
+  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.Open();
+  setDayLineExtendInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineExtendInfo.IsEOF()) {
+    setDayLineExtendInfo.Delete();
+    setDayLineExtendInfo.MoveNext();
   }
-  setDayLineInfo.m_pDatabase->CommitTrans();
+  setDayLineExtendInfo.m_pDatabase->CommitTrans();
 
-  setDayLineInfo.m_pDatabase->BeginTrans();
+  setDayLineExtendInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketAStock) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
       continue;
     }
-    setDayLineInfo.AddNew();
-    pStock->SaveCalculatedInfo(setDayLineInfo);
-    setDayLineInfo.Update();
+    setDayLineExtendInfo.AddNew();
+    pStock->SaveCalculatedInfo(setDayLineExtendInfo);
+    setDayLineExtendInfo.Update();
   }
-  setDayLineInfo.m_pDatabase->CommitTrans();
-  setDayLineInfo.Close();
+  setDayLineExtendInfo.m_pDatabase->CommitTrans();
+  setDayLineExtendInfo.Close();
 
   str = GetDayString(lCurrentTradeDay);
   str += _T("日实时数据处理完毕");
@@ -1898,7 +1904,7 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   char  pch[30];
   int iStockNumber = 0;
   CTime ctTime;
-  CSetDayLine setDayLine;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
   double dShanghaiIndexUpDownRate = 0;
   double dShenzhenIndexUpDownRate = 0;
   double dIndexUpDownRate;
@@ -1906,49 +1912,49 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
 
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
-  setDayLine.m_strSort = _T("[UpDownRate]");
-  setDayLine.m_strFilter = _T("[Day] =");
-  setDayLine.m_strFilter += strDay;
-  setDayLine.Open();
-  if (setDayLine.IsEOF()) { // 数据集为空，表明此日没有交易
-    setDayLine.Close();
+  setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
+  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.Open();
+  if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
+    setDayLineBasicInfo.Close();
     CString str = strDay;
     str += _T("日数据集为空，没有计算相对强度");
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
-  setDayLine.m_pDatabase->BeginTrans();
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
   iStockNumber = 0;
-  while (!setDayLine.IsEOF()) {
-    if (strcmp(setDayLine.m_StockCode, _T("sh000001")) == 0) { // 上海综指
-      dShanghaiIndexUpDownRate = GetUpDownRate(setDayLine.m_Close, setDayLine.m_LastClose);
+  while (!setDayLineBasicInfo.IsEOF()) {
+    if (strcmp(setDayLineBasicInfo.m_StockCode, _T("sh000001")) == 0) { // 上海综指
+      dShanghaiIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
     }
-    else if (strcmp(setDayLine.m_StockCode, _T("sz399001")) == 0) { // 深圳成指
-      dShenzhenIndexUpDownRate = GetUpDownRate(setDayLine.m_Close, setDayLine.m_LastClose);
+    else if (strcmp(setDayLineBasicInfo.m_StockCode, _T("sz399001")) == 0) { // 深圳成指
+      dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
     }
-    if (IsAStock(setDayLine.m_StockCode)) {
-      long lIndex = m_mapChinaMarketAStock.at(setDayLine.m_StockCode);
+    if (IsAStock(setDayLineBasicInfo.m_StockCode)) {
+      long lIndex = m_mapChinaMarketAStock.at(setDayLineBasicInfo.m_StockCode);
       vStock.push_back(m_vChinaMarketAStock.at(lIndex));
       vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
       iTotalAShare++;
     }
     iStockNumber++;
-    setDayLine.MoveNext();
+    setDayLineBasicInfo.MoveNext();
   }
   dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
 
-  setDayLine.MoveFirst();
+  setDayLineBasicInfo.MoveFirst();
   int iCount = 0;
   int iBefore = 0;
   while (iCount < vIndex.size()) { // 只计算活跃股票的相对强度
     for (int i = 0; i < vIndex.at(iCount) - iBefore; i++) { // 根据索引去更改数据库,跨过不是A股的股票
-      setDayLine.MoveNext();
+      setDayLineBasicInfo.MoveNext();
     }
-    setDayLine.Edit();
-    double dLastClose = atof(setDayLine.m_LastClose);
-    double dLow = atof(setDayLine.m_Low);
-    double dHigh = atof(setDayLine.m_High);
-    double dClose = atof(setDayLine.m_Close);
+    setDayLineBasicInfo.Edit();
+    double dLastClose = atof(setDayLineBasicInfo.m_LastClose);
+    double dLow = atof(setDayLineBasicInfo.m_Low);
+    double dHigh = atof(setDayLineBasicInfo.m_High);
+    double dClose = atof(setDayLineBasicInfo.m_Close);
     double dUpDownRate = 0;
     // 计算指数相对强度
     if (dLastClose < 0.001) { // 新股上市等，昨日收盘价格为零
@@ -1963,31 +1969,31 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
         dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
       }
     }
-    setDayLine.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
+    setDayLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
 
     // 计算涨跌排名相对强度
     if (dLastClose < 0.001) {
-      setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if (((dLow / dLastClose) < 0.88) || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
-      setDayLine.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if ((fabs(dHigh - dClose) < 0.0001) && (((dClose / dLastClose)) > 1.095)) { // 涨停板
-      setDayLine.m_RelativeStrong = ConvertValueToString(100);
+      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(100);
     }
     else if ((fabs(dClose - dLow) < 0.0001) && ((dClose / dLastClose) < 0.905)) { // 跌停板
-      setDayLine.m_RelativeStrong = ConvertValueToString(0);
+      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(0);
     }
     else {
-      setDayLine.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
     }
-    setDayLine.Update();
+    setDayLineBasicInfo.Update();
     iBefore = vIndex.at(iCount++);
-    setDayLine.MoveNext(); // 移到下一个数据。
+    setDayLineBasicInfo.MoveNext(); // 移到下一个数据。
     iBefore++; // 计数器也同时加一。
   }
-  setDayLine.m_pDatabase->CommitTrans();
-  setDayLine.Close();
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.Close();
 
   vStock.clear();
   vIndex.clear();

@@ -270,8 +270,8 @@
     <ClInclude Include="source\OneDeal.h" />
     <ClInclude Include="source\RTData.h" />
     <ClInclude Include="source\SetChoicedStock.h" />
-    <ClInclude Include="source\SetDayLine.h" />
-    <ClInclude Include="source\SetDayLineInfo.h" />
+    <ClInclude Include="source\SetDayLineBasicInfo.h" />
+    <ClInclude Include="source\SetDayLineExtendInfo.h" />
     <ClInclude Include="source\SetOption.h" />
     <ClInclude Include="source\SetRealTimeData.h" />
     <ClInclude Include="source\SetStockCode.h" />
@@ -324,11 +324,11 @@
     <ClCompile Include="source\OneDeal.cpp" />
     <ClCompile Include="source\RTData.cpp" />
     <ClCompile Include="source\SetChoicedStock.cpp" />
-    <ClCompile Include="source\SetDayLine.cpp">
+    <ClCompile Include="source\SetDayLineBasicInfo.cpp">
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">None</DebugInformationFormat>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
     </ClCompile>
-    <ClCompile Include="source\SetDayLineInfo.cpp" />
+    <ClCompile Include="source\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="source\SetOption.cpp" />
     <ClCompile Include="source\SetRealTimeData.cpp" />
     <ClCompile Include="source\SetStockCode.cpp" />
