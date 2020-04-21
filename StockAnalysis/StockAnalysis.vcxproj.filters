@@ -213,13 +213,16 @@
     <ClInclude Include="source\WebData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\SetStrongRSChoiced.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\SetDayLineBasicInfo.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\SetDayLineExtendInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetRSStrong1Stock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetRSStrong2Stock.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
@@ -386,9 +389,6 @@
     <ClCompile Include="source\ThreadSaveDayLine.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\SetStrongRSChoiced.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
@@ -396,6 +396,12 @@
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\SetDayLineExtendInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetRSStrong2Stcok.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetRSStrong1Stock.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>

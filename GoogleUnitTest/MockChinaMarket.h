@@ -19,6 +19,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadChoice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));

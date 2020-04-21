@@ -398,13 +398,16 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SetStrongRSChoiced.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SetDayLineBasicInfo.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SetDayLineExtendInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrong1Stock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrong2Stcok.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -589,13 +592,16 @@
     <ClInclude Include="MockPotenDailyBriefingMarket.h">
       <Filter>Mock类\Poten Daily Briefing Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SetStrongRSChoiced.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SetDayLineBasicInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SetDayLineExtendInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrong1Stock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrong2Stock.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

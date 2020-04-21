@@ -2,25 +2,25 @@
 #include"globedef.h"
 #include"Accessory.h"
 
-#include "SetStrongRSChoiced.h"
+#include "SetRSStrong2Stock.h"
 
-IMPLEMENT_DYNAMIC(CSetStrongRSChoiced, CRecordset)
+IMPLEMENT_DYNAMIC(CSetRSStrong2Stock, CRecordset)
 
-CSetStrongRSChoiced::CSetStrongRSChoiced(CDatabase* pdb) : CRecordset(pdb) {
+CSetRSStrong2Stock::CSetRSStrong2Stock(CDatabase* pdb) : CRecordset(pdb) {
   m_Market = 0;
   m_StockCode = "";
   m_nFields = 2;
 }
 
-CString CSetStrongRSChoiced::GetDefaultConnect() {
+CString CSetRSStrong2Stock::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetStrongRSChoiced::GetDefaultSQL() {
+CString CSetRSStrong2Stock::GetDefaultSQL() {
   return _T("[10rsabove55]");
 }
 
-void CSetStrongRSChoiced::DoFieldExchange(CFieldExchange* pFX) {
+void CSetRSStrong2Stock::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -29,14 +29,14 @@ void CSetStrongRSChoiced::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStrongRSChoiced 诊断
+// CSetRSStrong2Stock 诊断
 
 #ifdef _DEBUG
-void CSetStrongRSChoiced::AssertValid() const {
+void CSetRSStrong2Stock::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetStrongRSChoiced::Dump(CDumpContext& dc) const {
+void CSetRSStrong2Stock::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

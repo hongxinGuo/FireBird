@@ -1,10 +1,10 @@
 #pragma once
 #include <afxdb.h>
-class CSetStrongRSChoiced : public CRecordset
+class CSetRSStrong2Stock : public CRecordset
 {
 public:
-  CSetStrongRSChoiced(CDatabase* pDatabase = NULL);
-  DECLARE_DYNAMIC(CSetStrongRSChoiced)
+  CSetRSStrong2Stock(CDatabase* pDatabase = NULL);
+  DECLARE_DYNAMIC(CSetRSStrong2Stock)
 
   // 字段/参数数据
 

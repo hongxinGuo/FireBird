@@ -15,7 +15,7 @@
 #include"SetOption.h"
 #include"SetCrweberIndex.h"
 #include"SetChoicedStock.h"
-#include"SetStrongRSChoiced.h"
+#include"SetRSStrong2Stock.h"
 
 using namespace std;
 #include<thread>
@@ -80,7 +80,7 @@ void CChinaMarket::Reset(void) {
   m_fLoadedSelectedStock = false;
   m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
-  m_fIsChoiced10RSStrongStockSet = false;
+  m_fChoiced10RSStrongStockSet = false;
   m_fCurrentEditStockChanged = false;
 
   m_lTotalMarketBuy = m_lTotalMarketSell = 0;
@@ -1075,7 +1075,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
 
-  TaskChoice10RSStrongStockSet(lCurrentTime);
+  TaskChoice10RSStrong2StockSet(lCurrentTime);
 
   // 判断是否开始正常收集数据
   TaskCheckStartReceivingData(lCurrentTime);
@@ -1222,10 +1222,10 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
   }
 }
 
-bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fIsChoiced10RSStrongStockSet && lCurrentTime > 160000) {
-    RunningThreadChoice10RSStrongStockSet();
-    m_fIsChoiced10RSStrongStockSet = true;
+bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
+  if (IsSystemReady() && !m_fChoiced10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
+    RunningThreadChoice10RSStrong2StockSet();
+    m_fChoiced10RSStrongStockSet = true;
     return true;
   }
   return false;
@@ -1621,7 +1621,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(void) {
     }
     if (gl_ExitingSystem) return false;
   }
-  CSetStrongRSChoiced setRSStrong;
+  CSetRSStrong2Stock setRSStrong;
 
   setRSStrong.Open();
   setRSStrong.m_pDatabase->BeginTrans();
@@ -1729,7 +1729,7 @@ bool CChinaMarket::RunningThreadAppendChoicedStockDB(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
+bool CChinaMarket::RunningThreadChoice10RSStrong2StockSet(void) {
   thread thread1(ThreadChoice10RSStrongStockSet, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;

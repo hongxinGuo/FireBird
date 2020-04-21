@@ -93,8 +93,9 @@
     <ClCompile Include="..\StockAnalysis\source\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrong1Stock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SetStrongRSChoiced.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
@@ -211,8 +212,9 @@
     <ClInclude Include="..\StockAnalysis\source\SetOption.h" />
     <ClInclude Include="..\StockAnalysis\source\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrong1Stock.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetStockCode.h" />
-    <ClInclude Include="..\StockAnalysis\source\SetStrongRSChoiced.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\TengxunRTWebInquiry.h" />
