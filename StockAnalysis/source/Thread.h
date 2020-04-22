@@ -58,5 +58,7 @@ UINT ThreadUpdateOptionDB(CChinaMarket* pMarket); // 此线程返回值为20
 UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket); // 此线程返回值为21
 // 更新选项数据库
 UINT ThreadAppendChoicedStockDB(CChinaMarket* pMarket); // 此线程返回值为22
-// 计算10日强股票集
-UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket); // 此线程返回值为23
+// 计算10日强股票集（两次出现强势峰）
+UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为23
+// 计算10日强股票集（两个月内只出现一次强势峰）
+UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为24

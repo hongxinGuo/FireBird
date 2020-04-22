@@ -335,7 +335,8 @@ public:
   virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
   // 判断10日强势股票
-  bool Is10RSStrongStock(void);
+  bool Is10RSStrong2Stock(void);
+  bool Is10RSStrong1Stock(void);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
@@ -488,6 +489,20 @@ protected:
   INT64 m_lOrdinarySellVolumeBelow100000; // 本交易日低于100000股的成交股数
   INT64 m_lOrdinarySellVolumeBelow200000; //
   INT64 m_lOrdinarySellVolumeAbove200000; //
+  INT64 m_aOrdinaryBuy5000[240];
+  INT64 m_aOrdinaryBuy10000[240];
+  INT64 m_aOrdinaryBuy20000[240];
+  INT64 m_aOrdinaryBuy50000[240];
+  INT64 m_aOrdinaryBuy100000[240];
+  INT64 m_aOrdinaryBuy200000[240];
+  INT64 m_aOrdinaryBuyAbove200000[240];
+  INT64 m_aOrdinarySell5000[240];
+  INT64 m_aOrdinarySell10000[240];
+  INT64 m_aOrdinarySell20000[240];
+  INT64 m_aOrdinarySell50000[240];
+  INT64 m_aOrdinarySell100000[240];
+  INT64 m_aOrdinarySell200000[240];
+  INT64 m_aOrdinarySellAbove200000[240];
 
   // 以下为需存储项
   INT64 m_lTransactionNumber; // 本交易日的成交笔数

@@ -16,6 +16,7 @@
 #include"SetCrweberIndex.h"
 #include"SetChoicedStock.h"
 #include"SetRSStrong2Stock.h"
+#include"SetRSStrong1Stock.h"
 
 using namespace std;
 #include<thread>
@@ -80,7 +81,8 @@ void CChinaMarket::Reset(void) {
   m_fLoadedSelectedStock = false;
   m_fSystemReady = false;    // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
-  m_fChoiced10RSStrongStockSet = false;
+  m_fChoiced10RSStrong1StockSet = false;
+  m_fChoiced10RSStrong2StockSet = false;
   m_fCurrentEditStockChanged = false;
 
   m_lTotalMarketBuy = m_lTotalMarketSell = 0;
@@ -1075,6 +1077,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
 
+  TaskChoice10RSStrong1StockSet(lCurrentTime);
   TaskChoice10RSStrong2StockSet(lCurrentTime);
 
   // 判断是否开始正常收集数据
@@ -1222,10 +1225,19 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
   }
 }
 
+bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
+  if (IsSystemReady() && !m_fChoiced10RSStrong1StockSet && (lCurrentTime > 152000) && IsWorkingDay()) {
+    RunningThreadChoice10RSStrong1StockSet();
+    m_fChoiced10RSStrong1StockSet = true;
+    return true;
+  }
+  return false;
+}
+
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fChoiced10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
+  if (IsSystemReady() && !m_fChoiced10RSStrong2StockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
     RunningThreadChoice10RSStrong2StockSet();
-    m_fChoiced10RSStrongStockSet = true;
+    m_fChoiced10RSStrong2StockSet = true;
     return true;
   }
   return false;
@@ -1603,16 +1615,17 @@ bool CChinaMarket::IsDayLineNeedSaving(void) {
   return false;
 }
 
-bool CChinaMarket::Choice10RSStrongStockSet(void) {
+bool CChinaMarket::Choice10RSStrong2StockSet(void) {
+  vector<CChinaStockPtr> v10RSStrongStock;
+
   for (auto pStock : m_vChinaMarketAStock) {
     if (IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
         pStock->LoadDayLine();
         pStock->SetDayLineLoaded(true);
       }
-      if (pStock->Is10RSStrongStock()) {
-        m_v10RSStrongStock.push_back(pStock);
-        TRACE(_T("找到：%s \n"), (LPCTSTR)pStock->GetStockCode());
+      if (pStock->Is10RSStrong2Stock()) {
+        v10RSStrongStock.push_back(pStock);
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
         pStock->UnloadDayLine();
@@ -1621,24 +1634,65 @@ bool CChinaMarket::Choice10RSStrongStockSet(void) {
     }
     if (gl_ExitingSystem) return false;
   }
-  CSetRSStrong2Stock setRSStrong;
+  CSetRSStrong2Stock setRSStrong2;
 
-  setRSStrong.Open();
-  setRSStrong.m_pDatabase->BeginTrans();
-  while (!setRSStrong.IsEOF()) {
-    setRSStrong.Delete();
-    setRSStrong.MoveNext();
+  setRSStrong2.Open();
+  setRSStrong2.m_pDatabase->BeginTrans();
+  while (!setRSStrong2.IsEOF()) {
+    setRSStrong2.Delete();
+    setRSStrong2.MoveNext();
   }
-  setRSStrong.m_pDatabase->CommitTrans();
-  setRSStrong.m_pDatabase->BeginTrans();
-  for (auto pStock : m_v10RSStrongStock) {
-    setRSStrong.AddNew();
-    setRSStrong.m_Market = pStock->GetMarket();
-    setRSStrong.m_StockCode = pStock->GetStockCode();
-    setRSStrong.Update();
+  setRSStrong2.m_pDatabase->CommitTrans();
+  setRSStrong2.m_pDatabase->BeginTrans();
+  for (auto pStock : v10RSStrongStock) {
+    setRSStrong2.AddNew();
+    setRSStrong2.m_Market = pStock->GetMarket();
+    setRSStrong2.m_StockCode = pStock->GetStockCode();
+    setRSStrong2.Update();
   }
-  setRSStrong.m_pDatabase->CommitTrans();
-  setRSStrong.Close();
+  setRSStrong2.m_pDatabase->CommitTrans();
+  setRSStrong2.Close();
+
+  return true;
+}
+
+bool CChinaMarket::Choice10RSStrong1StockSet(void) {
+  vector<CChinaStockPtr> v10RSStrongStock;
+
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
+      if (pStock->Is10RSStrong1Stock()) {
+        v10RSStrongStock.push_back(pStock);
+      }
+      if (!pStock->IsSameStock(m_pCurrentStock)) {
+        pStock->UnloadDayLine();
+        pStock->SetDayLineLoaded(false);
+      }
+    }
+    if (gl_ExitingSystem) return false;
+  }
+  CSetRSStrong1Stock setRSStrong1;
+
+  setRSStrong1.Open();
+  setRSStrong1.m_pDatabase->BeginTrans();
+  while (!setRSStrong1.IsEOF()) {
+    setRSStrong1.Delete();
+    setRSStrong1.MoveNext();
+  }
+  setRSStrong1.m_pDatabase->CommitTrans();
+  setRSStrong1.m_pDatabase->BeginTrans();
+  for (auto pStock : v10RSStrongStock) {
+    setRSStrong1.AddNew();
+    setRSStrong1.m_Market = pStock->GetMarket();
+    setRSStrong1.m_StockCode = pStock->GetStockCode();
+    setRSStrong1.Update();
+  }
+  setRSStrong1.m_pDatabase->CommitTrans();
+  setRSStrong1.Close();
 
   return true;
 }
@@ -1730,7 +1784,13 @@ bool CChinaMarket::RunningThreadAppendChoicedStockDB(void) {
 }
 
 bool CChinaMarket::RunningThreadChoice10RSStrong2StockSet(void) {
-  thread thread1(ThreadChoice10RSStrongStockSet, this);
+  thread thread1(ThreadChoice10RSStrong2StockSet, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadChoice10RSStrong1StockSet(void) {
+  thread thread1(ThreadChoice10RSStrong1StockSet, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

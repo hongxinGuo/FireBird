@@ -781,7 +781,7 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
   return true;
 }
 
-bool CChinaStock::Is10RSStrongStock(void) {
+bool CChinaStock::Is10RSStrong2Stock(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_vRS10Day;
   int iCountFirst = 0, iCountSecond = 0;
@@ -811,6 +811,38 @@ bool CChinaStock::Is10RSStrongStock(void) {
   return false;
 }
 
+bool CChinaStock::Is10RSStrong1Stock(void) {
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+  vector<double> m_vRS10Day;
+  int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
+
+  ASSERT(m_fDayLineLoaded);
+  int iDayLineSize = GetDayLineSize();
+  if (iDayLineSize > 100) {
+    m_vRS10Day.resize(iDayLineSize);
+    CalculateDayLineRelativeStrongIndex();
+    GetRS10Day(m_vRS10Day);
+    int i = 0;
+    for (i = iDayLineSize - 1; i > iDayLineSize - 40; i--) {
+      if (m_vRS10Day.at(i) > 55) iCountFirst++;
+      if (iCountFirst >= 3) break;
+    }
+    if (iCountFirst >= 3) {
+      while (m_vRS10Day.at(i) > 53) i--;
+      for (int j = i; j > i - 80; j--) {
+        if (m_vRS10Day.at(j) > 55) iCountSecond++;
+      }
+      if (iCountSecond < 3) {
+        for (int k = i; k < iDayLineSize - 1; k++) {
+          if (m_vRS10Day.at(k) < 47) iCountThird++;
+        }
+        if (iCountThird < 3) return true;
+      }
+    }
+  }
+
+  return false;
+}
 bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vDayLine.size();

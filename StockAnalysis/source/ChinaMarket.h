@@ -56,6 +56,7 @@ public:
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
+  bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
   bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskCheckDayLineDB(void);
@@ -94,6 +95,7 @@ public:
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
+  virtual bool RunningThreadChoice10RSStrong1StockSet(void);
 
   // interface function
 public:
@@ -147,8 +149,10 @@ public:
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
   void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
 
-  bool IsChoiced10RSStrongStockSet(void) noexcept { return m_fChoiced10RSStrongStockSet; }
-  void SetChoiced10RSStrongStockSet(bool fFlag) noexcept { m_fChoiced10RSStrongStockSet = fFlag; }
+  bool IsChoiced10RSStrong1StockSet(void) noexcept { return m_fChoiced10RSStrong1StockSet; }
+  void SetChoiced10RSStrong1StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong1StockSet = fFlag; }
+  bool IsChoiced10RSStrong2StockSet(void) noexcept { return m_fChoiced10RSStrong2StockSet; }
+  void SetChoiced10RSStrong2StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong2StockSet = fFlag; }
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -167,7 +171,8 @@ public:
   bool UnloadDayLine(void);
 
   // 股票历史数据处理
-  bool Choice10RSStrongStockSet(void); // 选择10日强势股票集
+  bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
+  bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
 
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
@@ -310,13 +315,17 @@ protected:
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CChinaStockPtr> m_vChoicedStock; // 自选股票池
-  vector<CChinaStockPtr> m_v10RSStrongStock; // 10日强势股票集
-  bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
+  vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
+  vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
+  bool m_fChoiced10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
+  bool m_fChoiced10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
   queue<CRTDataPtr> m_qRTData;
   bool m_fSaveRTData;
+
+  int m_iMarketOpenOffset; // 开市的偏移量。以分钟为单位，0930 = 0，1129 = 120， 1300 = 121， 1459 = 240。
 
   bool m_fCurrentEditStockChanged;
   int m_iCountDownSlowReadingRTData; // 慢速读取实时数据计数器

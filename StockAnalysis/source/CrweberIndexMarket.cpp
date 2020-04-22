@@ -19,6 +19,7 @@ CCrweberIndexMarket::~CCrweberIndexMarket() {
 }
 
 void CCrweberIndexMarket::Reset(void) {
+  //SetReadyToRun(false); // 目前外网不稳，无法正确读取网站信息。
   m_fDataBaseLoaded = false;
   m_fTodayDataUpdated = true;
   m_fMaintainDatabase = true;
@@ -63,8 +64,21 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59;
     TaskResetMarket(lCurrentTime);
-
     TaskMaintainDatabase(lCurrentTime);
+
+    if (!gl_WebInquirer.IsReadingCrweberIndex()) {
+      TaskProcessWebRTDataGetFromCrweberdotcom();
+      if (m_fDataBaseLoaded) {
+        if (m_lNewestUpdatedDay < GetDay()) {
+          gl_WebInquirer.GetCrweberIndexData();
+        }
+      }
+      else {
+        GetNewestDatabaseDayFromDB();
+        m_fDataBaseLoaded = true;
+      }
+    }
+
     return true;
   }
   else return false;
@@ -77,16 +91,6 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 3599;
-    if (!gl_WebInquirer.IsReadingCrweberIndex()) {
-      TaskProcessWebRTDataGetFromCrweberdotcom();
-      if (m_fDataBaseLoaded) {
-        gl_WebInquirer.GetCrweberIndexData();
-      }
-      else {
-        GetNewestDatabaseDayFromDB();
-        m_fDataBaseLoaded = true;
-      }
-    }
     return true;
   }
   else {

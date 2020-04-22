@@ -120,13 +120,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
   }
 
-  TEST_F(CCrweberIndexMarketTest, TestSchedulingTaskPer1Hour) {
-    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Hour(3600, 90000));
+  TEST_F(CCrweberIndexMarketTest, TestSchedulingTaskPer1Minute) {
+    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(60, 90000));
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
     //gl_pCrweberIndexMarket->SetDatabaseLoaded(false); // 重置此标识，否则下面的函数会去读网络数据
-    EXPECT_FALSE(gl_pCrweberIndexMarket->SchedulingTaskPer1Hour(3599, 90000)) << "差一秒未到执行时间";
+    EXPECT_FALSE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(59, 90000)) << "差一秒未到执行时间";
     EXPECT_CALL(*gl_pCrweberIndexWebInquiry, StartReadingThread).Times(1);
-    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Hour(1, 90000));
+    EXPECT_TRUE(gl_pCrweberIndexMarket->SchedulingTaskPer1Minute(1, 90000));
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
     EXPECT_TRUE(gl_pCrweberIndexWebInquiry->IsReadingWebData()) << _T("调用Mock类时没有重置此标识\n");
     gl_pCrweberIndexWebInquiry->SetReadingWebData(false);

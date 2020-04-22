@@ -17,7 +17,7 @@ CString CSetRSStrong2Stock::GetDefaultConnect() {
 }
 
 CString CSetRSStrong2Stock::GetDefaultSQL() {
-  return _T("[10rsabove55]");
+  return _T("[10rs2above55]");
 }
 
 void CSetRSStrong2Stock::DoFieldExchange(CFieldExchange* pFX) {
