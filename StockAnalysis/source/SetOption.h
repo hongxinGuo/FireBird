@@ -1,4 +1,5 @@
 #pragma once
+#include"afxdb.h"
 
 class CSetOption : public CRecordset
 {

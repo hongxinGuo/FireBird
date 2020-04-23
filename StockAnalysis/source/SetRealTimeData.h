@@ -1,6 +1,7 @@
 // SetRealTimeData.h : CSetRealTimeData 的声明
 
 #pragma once
+#include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:09
 

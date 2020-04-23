@@ -488,7 +488,7 @@ bool CChinaStock::SaveDayLine(void) {
   setDayLineBasicInfo.Open();
   while (!setDayLineBasicInfo.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadData(setDayLineBasicInfo);
+    pDayLine->LoadBasicData(setDayLineBasicInfo);
     vDayLine.push_back(pDayLine);
     lCurrentPos++;
     setDayLineBasicInfo.MoveNext();
@@ -598,6 +598,21 @@ void CChinaStock::SaveCalculatedInfo(CSetDayLineExtendInfo& setDayLineExtendInfo
   setDayLineExtendInfo.m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
   setDayLineExtendInfo.m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
   setDayLineExtendInfo.m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
+
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
+  setDayLineExtendInfo.m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
+  setDayLineExtendInfo.m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
+  setDayLineExtendInfo.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -710,7 +725,7 @@ bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo
   m_vDayLine.clear();
   while (!setDayLineBasicInfo.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadData(setDayLineBasicInfo);
+    pDayLine->LoadBasicData(setDayLineBasicInfo);
     m_vDayLine.push_back(pDayLine);
     setDayLineBasicInfo.MoveNext();
   }
@@ -738,7 +753,7 @@ bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineExtendI
       pDayLine = m_vDayLine.at(iPosition);
     }
     if (pDayLine->GetDay() == setDayLineExtendInfo.m_Day) {
-      pDayLine->LoadData(setDayLineExtendInfo);
+      pDayLine->LoadEntendData(setDayLineExtendInfo);
     }
     if (m_vDayLine.size() <= (iPosition + 1)) break;
     setDayLineExtendInfo.MoveNext();

@@ -598,7 +598,7 @@ namespace StockAnalysisTest {
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
-    id2.LoadData(setDayLineBasicInfo);
+    id2.LoadBasicData(setDayLineBasicInfo);
     EXPECT_EQ(setDayLineBasicInfo.m_Day, id.GetDay());
     EXPECT_EQ(setDayLineBasicInfo.m_Market, id.GetMarket());
     EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, id.GetStockCode());
@@ -684,7 +684,7 @@ namespace StockAnalysisTest {
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
-    idLoaded.LoadData(setDayLineBasicInfo);
+    idLoaded.LoadBasicData(setDayLineBasicInfo);
     EXPECT_EQ(idLoaded.GetDay(), id.GetDay());
     EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
     EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
@@ -749,7 +749,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.Open();
-    id2.LoadData(setDayLineBasicInfo);
+    id2.LoadBasicData(setDayLineBasicInfo);
     EXPECT_EQ(id.GetDay(), id2.GetDay());
     EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());

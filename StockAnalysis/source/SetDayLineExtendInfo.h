@@ -1,5 +1,7 @@
 #pragma once
 
+#include"stdafx.h"
+
 // 代码生成在 2019年6月17日, 5:10
 
 class CSetDayLineExtendInfo : public CRecordset

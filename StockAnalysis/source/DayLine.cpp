@@ -7,7 +7,7 @@ CDayLine::CDayLine() : CObject() {
   Reset();
 }
 
-bool CDayLine::LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
+bool CDayLine::LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   ASSERT(setDayLineExtendInfo.IsOpen());
   m_lTransactionNumber = atol(setDayLineExtendInfo.m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(setDayLineExtendInfo.m_TransactionNumberBelow5000);
@@ -58,6 +58,21 @@ bool CDayLine::LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   m_lOrdinarySellNumberBelow100000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow100000);
   m_lOrdinarySellNumberBelow200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow200000);
   m_lOrdinarySellNumberAbove200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberAbove200000);
+  m_lCanceledBuyVolumeBelow5000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow5000);
+  m_lCanceledBuyVolumeBelow10000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow10000);
+  m_lCanceledBuyVolumeBelow20000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow20000);
+  m_lCanceledBuyVolumeBelow50000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow50000);
+  m_lCanceledBuyVolumeBelow100000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow100000);
+  m_lCanceledBuyVolumeBelow200000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow200000);
+  m_lCanceledBuyVolumeAbove200000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeAbove200000);
+  m_lCanceledSellVolumeBelow5000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow5000);
+  m_lCanceledSellVolumeBelow10000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow10000);
+  m_lCanceledSellVolumeBelow20000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow20000);
+  m_lCanceledSellVolumeBelow50000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow50000);
+  m_lCanceledSellVolumeBelow100000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow100000);
+  m_lCanceledSellVolumeBelow200000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeBelow200000);
+  m_lCanceledSellVolumeAbove200000 = atoll(setDayLineExtendInfo.m_CanceledSellVolumeAbove200000);
+
   return true;
 }
 
@@ -181,7 +196,7 @@ bool CDayLine::AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
   return true;
 }
 
-bool CDayLine::LoadData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
+bool CDayLine::LoadBasicData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
   ASSERT(setDayLineBasicInfo.IsOpen());
   m_lDay = setDayLineBasicInfo.m_Day;
   m_wMarket = setDayLineBasicInfo.m_Market;

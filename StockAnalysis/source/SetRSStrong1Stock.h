@@ -1,5 +1,6 @@
 #pragma once
-#include <afxdb.h>
+#include"afxdb.h"
+
 class CSetRSStrong1Stock : public CRecordset
 {
 public:

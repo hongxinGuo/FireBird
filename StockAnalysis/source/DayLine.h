@@ -15,8 +15,8 @@ public:
 
   bool SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo);
   bool AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo);
+  bool LoadBasicData(CSetDayLineBasicInfo& setDayLineBasicInfo);
+  bool LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo);
 
   void CalculateRSLogarithm(double dRS);
 

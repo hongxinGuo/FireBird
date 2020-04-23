@@ -1,6 +1,7 @@
 // SetChoicedStock.h : CSetChoicedStock 的声明
 
 #pragma once
+#include"stdafx.h"
 
 // 代码生成在 2019年5月26日, 8:15
 
