@@ -47,6 +47,7 @@ public:
   CString m_TransactionNumberAbove200000;
   CString m_OrdinaryBuyVolume; // 一般性买入股数。单位：股
   CString m_OrdinarySellVolume; // 一般性卖出股数
+
   CString m_OrdinaryBuyVolumeBelow5000;
   CString m_OrdinaryBuyVolumeBelow10000;
   CString m_OrdinaryBuyVolumeBelow20000;
@@ -76,13 +77,28 @@ public:
   CString m_OrdinarySellNumberBelow200000;
   CString m_OrdinarySellNumberAbove200000;
 
+  CString m_CanceledBuyVolumeBelow5000;
+  CString m_CanceledBuyVolumeBelow10000;
+  CString m_CanceledBuyVolumeBelow20000;
+  CString m_CanceledBuyVolumeBelow50000;
+  CString m_CanceledBuyVolumeBelow100000;
+  CString m_CanceledBuyVolumeBelow200000;
+  CString m_CanceledBuyVolumeAbove200000;
+  CString m_CanceledSellVolumeBelow5000;
+  CString m_CanceledSellVolumeBelow10000;
+  CString m_CanceledSellVolumeBelow20000;
+  CString m_CanceledSellVolumeBelow50000;
+  CString m_CanceledSellVolumeBelow100000;
+  CString m_CanceledSellVolumeBelow200000;
+  CString m_CanceledSellVolumeAbove200000;
+
   CString m_AttackBuyVolume;	//攻击性买盘数量
   CString m_AttackSellVolume;	//攻击性买盘数量
   CString m_StrongBuyVolume;	//强攻击性买盘数量
   CString m_StrongSellVolume;	//强攻击性买盘数量
   CString	m_UnknownVolume;	//未知买卖盘数量
-  CString	m_CancelBuyVolume;	//买单撤单数量
-  CString	m_CancelSellVolume;	//卖单撤单数量
+  CString	m_CanceledBuyVolume;	//买单撤单数量
+  CString	m_CanceledSellVolume;	//卖单撤单数量
   CString	m_AttackBuyBelow50000;
   CString	m_AttackBuyBelow200000;
   CString m_AttackBuyAbove200000;

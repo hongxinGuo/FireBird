@@ -67,9 +67,9 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     m_dwWebErrorCode = exception->m_dwError;
     str1 = GetInquiringString();
 
-    strLeft = str1.Left(20);
+    strLeft = str1.Left(80);
     TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
-    str1 = _T("Error Web : ") + str1 + _T("\n");
+    str1 = _T("Error Web : ") + strLeft + _T("\n");
     gl_systemMessage.PushInnerSystemInformationMessage(str1);
     fStatus = false;
     exception->Delete();

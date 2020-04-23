@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
-    pStock->SetCancelBuyVolume(10000);
+    pStock->SetCanceledBuyVolume(10000);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallFillSolidRect(&DC, _, _))
       .Times(14);
 

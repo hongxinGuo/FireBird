@@ -110,23 +110,37 @@ public:
   double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
   void SetRelativeStrongBackup(double value) noexcept { m_dRelativeStrongBackup = value; }
 
-  INT64 GetCurrentCancelBuyVolume(void) noexcept { return m_lCurrentCanselBuyVolume; }
-  INT64 GetCurrentCancelSellVolume(void) noexcept { return m_lCurrentCanselSellVolume; }
+  INT64 GetCurrentCanceledBuyVolume(void) noexcept { return m_lCurrentCanceledBuyVolume; }
+  INT64 GetCurrentCanceledSellVolume(void) noexcept { return m_lCurrentCanceledSellVolume; }
 
-  INT64 GetCancelBuyVolumeBelow5000(void) noexcept { return m_lCancelBuyVolumeBelow5000; }
-  INT64 GetCancelBuyVolumeBelow10000(void) noexcept { return m_lCancelBuyVolumeBelow10000; }
-  INT64 GetCancelBuyVolumeBelow20000(void) noexcept { return m_lCancelBuyVolumeBelow20000; }
-  INT64 GetCancelBuyVolumeBelow50000(void) noexcept { return m_lCancelBuyVolumeBelow50000; }
-  INT64 GetCancelBuyVolumeBelow100000(void) noexcept { return m_lCancelBuyVolumeBelow100000; }
-  INT64 GetCancelBuyVolumeBelow200000(void) noexcept { return m_lCancelBuyVolumeBelow200000; }
-  INT64 GetCancelBuyVolumeAbove200000(void) noexcept { return m_lCancelBuyVolumeAbove200000; }
-  INT64 GetCancelSellVolumeBelow5000(void) noexcept { return m_lCancelSellVolumeBelow5000; }
-  INT64 GetCancelSellVolumeBelow10000(void) noexcept { return m_lCancelSellVolumeBelow10000; }
-  INT64 GetCancelSellVolumeBelow20000(void) noexcept { return m_lCancelSellVolumeBelow20000; }
-  INT64 GetCancelSellVolumeBelow50000(void) noexcept { return m_lCancelSellVolumeBelow50000; }
-  INT64 GetCancelSellVolumeBelow100000(void) noexcept { return m_lCancelSellVolumeBelow100000; }
-  INT64 GetCancelSellVolumeBelow200000(void) noexcept { return m_lCancelSellVolumeBelow200000; }
-  INT64 GetCancelSellVolumeAbove200000(void) noexcept { return m_lCancelSellVolumeAbove200000; }
+  INT64 GetCanceledBuyVolumeBelow5000(void) noexcept { return m_lCanceledBuyVolumeBelow5000; }
+  INT64 GetCanceledBuyVolumeBelow10000(void) noexcept { return m_lCanceledBuyVolumeBelow10000; }
+  INT64 GetCanceledBuyVolumeBelow20000(void) noexcept { return m_lCanceledBuyVolumeBelow20000; }
+  INT64 GetCanceledBuyVolumeBelow50000(void) noexcept { return m_lCanceledBuyVolumeBelow50000; }
+  INT64 GetCanceledBuyVolumeBelow100000(void) noexcept { return m_lCanceledBuyVolumeBelow100000; }
+  INT64 GetCanceledBuyVolumeBelow200000(void) noexcept { return m_lCanceledBuyVolumeBelow200000; }
+  INT64 GetCanceledBuyVolumeAbove200000(void) noexcept { return m_lCanceledBuyVolumeAbove200000; }
+  INT64 GetCanceledSellVolumeBelow5000(void) noexcept { return m_lCanceledSellVolumeBelow5000; }
+  INT64 GetCanceledSellVolumeBelow10000(void) noexcept { return m_lCanceledSellVolumeBelow10000; }
+  INT64 GetCanceledSellVolumeBelow20000(void) noexcept { return m_lCanceledSellVolumeBelow20000; }
+  INT64 GetCanceledSellVolumeBelow50000(void) noexcept { return m_lCanceledSellVolumeBelow50000; }
+  INT64 GetCanceledSellVolumeBelow100000(void) noexcept { return m_lCanceledSellVolumeBelow100000; }
+  INT64 GetCanceledSellVolumeBelow200000(void) noexcept { return m_lCanceledSellVolumeBelow200000; }
+  INT64 GetCanceledSellVolumeAbove200000(void) noexcept { return m_lCanceledSellVolumeAbove200000; }
+  void SetCanceledBuyVolumeBelow5000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow5000 = lValue; }
+  void SetCanceledBuyVolumeBelow10000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow10000 = lValue; }
+  void SetCanceledBuyVolumeBelow20000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow20000 = lValue; }
+  void SetCanceledBuyVolumeBelow50000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow50000 = lValue; }
+  void SetCanceledBuyVolumeBelow100000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow100000 = lValue; }
+  void SetCanceledBuyVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledBuyVolumeBelow200000 = lValue; }
+  void SetCanceledBuyVolumeAbove200000(INT64 lValue) noexcept { m_lCanceledBuyVolumeAbove200000 = lValue; }
+  void SetCanceledSellVolumeBelow5000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow5000 = lValue; }
+  void SetCanceledSellVolumeBelow10000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow10000 = lValue; }
+  void SetCanceledSellVolumeBelow20000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow20000 = lValue; }
+  void SetCanceledSellVolumeBelow50000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow50000 = lValue; }
+  void SetCanceledSellVolumeBelow100000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow100000 = lValue; }
+  void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
+  void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
 
   int  GetCurrentTransactionType(void) noexcept { return m_nCurrentTransactionType; }
   void SetCurrentTransactionType(int nType) noexcept { m_nCurrentTransactionType = nType; }
@@ -147,8 +161,8 @@ public:
   INT64 GetCurrentStrongSell(void) noexcept { return m_lCurrentStrongSell; }
   INT64 GetUnknownVolume(void) noexcept { return m_lUnknownVolume; }
   INT64 GetCurrentUnknown(void) noexcept { return m_lCurrentUnknown; }
-  INT64 GetCancelBuyVolume(void) noexcept { return m_lCancelBuyVolume; }
-  INT64 GetCancelSellVolume(void) noexcept { return m_lCancelSellVolume; }
+  INT64 GetCanceledBuyVolume(void) noexcept { return m_lCanceledBuyVolume; }
+  INT64 GetCanceledSellVolume(void) noexcept { return m_lCanceledSellVolume; }
 
   INT64 GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   INT64 GetTransactionNumberBelow5000(void) noexcept { return m_lTransactionNumberBelow5000; }
@@ -234,8 +248,8 @@ public:
   void SetCurrentStrongSell(INT64 value) noexcept { m_lCurrentStrongSell = value; }
   void SetUnknownVolume(INT64 value) noexcept { m_lUnknownVolume = value; }
   void SetCurrentUnknown(INT64 value) noexcept { m_lCurrentUnknown = value; }
-  void SetCancelBuyVolume(INT64 value) noexcept { m_lCancelBuyVolume = value; }
-  void SetCancelSellVolume(INT64 value) noexcept { m_lCancelSellVolume = value; }
+  void SetCanceledBuyVolume(INT64 value) noexcept { m_lCanceledBuyVolume = value; }
+  void SetCanceledSellVolume(INT64 value) noexcept { m_lCanceledSellVolume = value; }
 
   void SetTransactionNumber(INT64 value) noexcept { m_lTransactionNumber = value; }
   void SetTransactionNumberBelow5000(INT64 value) noexcept { m_lTransactionNumberBelow5000 = value; }
@@ -363,9 +377,9 @@ public:
   void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
   void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
-  void CalculateCancelSellVolume(INT64 lCurrentCancelBuyVolume);
+  void CalculateCanceledSellVolume(INT64 lCurrentCanceledBuyVolume);
   void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
-  void CalculateCancelBuyVolume(INT64 lCurrentCancelBuyVolume);
+  void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
   void ShowCurrentInformationofCancelingGuadan(void);
@@ -519,8 +533,8 @@ protected:
   INT64 m_lStrongSellVolume; // 向下强力卖出,成交价低于之前的买二报价
   INT64 m_lUnknownVolume; // 不明状态的成交量
   INT64 m_lCurrentUnknown; // 当前成交量中的不明状态成交量
-  INT64 m_lCancelBuyVolume;	// 买单撤单量
-  INT64 m_lCancelSellVolume; // 卖单撤单量
+  INT64 m_lCanceledBuyVolume;	// 买单撤单量
+  INT64 m_lCanceledSellVolume; // 卖单撤单量
 
   INT64 m_lAttackBuyBelow50000;
   INT64 m_lAttackBuyBelow200000;
@@ -556,23 +570,23 @@ protected:
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
-  INT64 m_lCurrentCanselSellVolume;
-  INT64 m_lCurrentCanselBuyVolume;
+  INT64 m_lCurrentCanceledSellVolume;
+  INT64 m_lCurrentCanceledBuyVolume;
 
-  INT64 m_lCancelBuyVolumeBelow5000; // 本交易日低于5000股的撤单股数
-  INT64 m_lCancelBuyVolumeBelow10000; // 本交易日低于10000股的撤单股数
-  INT64 m_lCancelBuyVolumeBelow20000; // 本交易日低于20000股的撤单股数
-  INT64 m_lCancelBuyVolumeBelow50000; //
-  INT64 m_lCancelBuyVolumeBelow100000; // 本交易日低于100000股的撤单股数
-  INT64 m_lCancelBuyVolumeBelow200000; //
-  INT64 m_lCancelBuyVolumeAbove200000; //
-  INT64 m_lCancelSellVolumeBelow5000; // 本交易日低于5000股的撤单股数
-  INT64 m_lCancelSellVolumeBelow10000; // 本交易日低于10000股的撤单股数
-  INT64 m_lCancelSellVolumeBelow20000; // 本交易日低于20000股的撤单股数
-  INT64 m_lCancelSellVolumeBelow50000; //
-  INT64 m_lCancelSellVolumeBelow100000; // 本交易日低于100000股的撤单股数
-  INT64 m_lCancelSellVolumeBelow200000; //
-  INT64 m_lCancelSellVolumeAbove200000; //
+  INT64 m_lCanceledBuyVolumeBelow5000; // 本交易日低于5000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow10000; // 本交易日低于10000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow50000; //
+  INT64 m_lCanceledBuyVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow200000; //
+  INT64 m_lCanceledBuyVolumeAbove200000; //
+  INT64 m_lCanceledSellVolumeBelow5000; // 本交易日低于5000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow10000; // 本交易日低于10000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow50000; //
+  INT64 m_lCanceledSellVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow200000; //
+  INT64 m_lCanceledSellVolumeAbove200000; //
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 

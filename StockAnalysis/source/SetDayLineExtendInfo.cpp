@@ -29,8 +29,8 @@ CSetDayLineExtendInfo::CSetDayLineExtendInfo(CDatabase* pdb)
   m_OrdinaryBuyVolume = _T("0");
   m_OrdinarySellVolume = _T("0");
   m_UnknownVolume = _T("0");	//未知买卖盘数量
-  m_CancelBuyVolume = _T("0");	//买单撤单数量
-  m_CancelSellVolume = _T("0");	//卖单撤单数量
+  m_CanceledBuyVolume = _T("0");	//买单撤单数量
+  m_CanceledSellVolume = _T("0");	//卖单撤单数量
   m_AttackBuyBelow50000 = _T("0");
   m_AttackBuyBelow200000 = _T("0");
   m_AttackBuyAbove200000 = _T("0");
@@ -72,7 +72,30 @@ CSetDayLineExtendInfo::CSetDayLineExtendInfo(CDatabase* pdb)
   m_OrdinarySellNumberBelow100000 = _T("");
   m_OrdinarySellNumberBelow200000 = _T("");
   m_OrdinarySellNumberAbove200000 = _T("");
-  m_nFields = 52;
+
+  m_CanceledBuyVolumeBelow5000 = _T("");
+  m_CanceledBuyVolumeBelow10000 = _T("");
+  m_CanceledBuyVolumeBelow20000 = _T("");
+  m_CanceledBuyVolumeBelow50000 = _T("");
+  m_CanceledBuyVolumeBelow100000 = _T("");
+  m_CanceledBuyVolumeBelow200000 = _T("");
+  m_CanceledBuyVolumeAbove200000 = _T("");
+  m_CanceledBuyVolumeBelow5000 = _T("");
+  m_CanceledBuyVolumeBelow10000 = _T("");
+  m_CanceledBuyVolumeBelow20000 = _T("");
+  m_CanceledBuyVolumeBelow50000 = _T("");
+  m_CanceledBuyVolumeBelow100000 = _T("");
+  m_CanceledBuyVolumeBelow200000 = _T("");
+  m_CanceledBuyVolumeAbove200000 = _T("");
+  m_CanceledSellVolumeBelow5000 = _T("");
+  m_CanceledSellVolumeBelow10000 = _T("");
+  m_CanceledSellVolumeBelow20000 = _T("");
+  m_CanceledSellVolumeBelow50000 = _T("");
+  m_CanceledSellVolumeBelow100000 = _T("");
+  m_CanceledSellVolumeBelow200000 = _T("");
+  m_CanceledSellVolumeAbove200000 = _T("");
+
+  m_nFields = 66;
 }
 
 CString CSetDayLineExtendInfo::GetDefaultConnect() {
@@ -104,8 +127,8 @@ void CSetDayLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[OrdinaryBuyVolume]"), m_OrdinaryBuyVolume);	//强攻击性买盘数量
   RFX_Text(pFX, _T("[OrdinarySellVolume]"), m_OrdinarySellVolume);	//强攻击性买盘数量
   RFX_Text(pFX, _T("[UnknownVolume]"), m_UnknownVolume);
-  RFX_Text(pFX, _T("[CancelBuyVolume]"), m_CancelBuyVolume);
-  RFX_Text(pFX, _T("[CancelSellVolume]"), m_CancelSellVolume);
+  RFX_Text(pFX, _T("[CancelBuyVolume]"), m_CanceledBuyVolume);
+  RFX_Text(pFX, _T("[CancelSellVolume]"), m_CanceledSellVolume);
   RFX_Text(pFX, _T("[AttackBuyBelow50000]"), m_AttackBuyBelow50000);
   RFX_Text(pFX, _T("[AttackBuyBelow200000]"), m_AttackBuyBelow200000);
   RFX_Text(pFX, _T("[AttackBuyAbove200000]"), m_AttackBuyAbove200000);
@@ -140,6 +163,21 @@ void CSetDayLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[OrdinarySellNumberBelow100000]"), m_OrdinarySellNumberBelow100000);
   RFX_Text(pFX, _T("[OrdinarySellNumberBelow200000]"), m_OrdinarySellNumberBelow200000);
   RFX_Text(pFX, _T("[OrdinarySellNumberAbove200000]"), m_OrdinarySellNumberAbove200000);
+
+  RFX_Text(pFX, _T("[CanceledBuyBelow5000]"), m_CanceledBuyVolumeBelow5000);
+  RFX_Text(pFX, _T("[CanceledBuyBelow10000]"), m_CanceledBuyVolumeBelow10000);
+  RFX_Text(pFX, _T("[CanceledBuyBelow20000]"), m_CanceledBuyVolumeBelow20000);
+  RFX_Text(pFX, _T("[CanceledBuyBelow50000]"), m_CanceledBuyVolumeBelow50000);
+  RFX_Text(pFX, _T("[CanceledBuyBelow100000]"), m_CanceledBuyVolumeBelow100000);
+  RFX_Text(pFX, _T("[CanceledBuyBelow200000]"), m_CanceledBuyVolumeBelow200000);
+  RFX_Text(pFX, _T("[CanceledBuyAbove200000]"), m_CanceledBuyVolumeAbove200000);
+  RFX_Text(pFX, _T("[CanceledSellBelow5000]"), m_CanceledSellVolumeBelow5000);
+  RFX_Text(pFX, _T("[CanceledSellBelow10000]"), m_CanceledSellVolumeBelow10000);
+  RFX_Text(pFX, _T("[CanceledSellBelow20000]"), m_CanceledSellVolumeBelow20000);
+  RFX_Text(pFX, _T("[CanceledSellBelow50000]"), m_CanceledSellVolumeBelow50000);
+  RFX_Text(pFX, _T("[CanceledSellBelow100000]"), m_CanceledSellVolumeBelow100000);
+  RFX_Text(pFX, _T("[CanceledSellBelow200000]"), m_CanceledSellVolumeBelow200000);
+  RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetDayLineBasicInfo 诊断

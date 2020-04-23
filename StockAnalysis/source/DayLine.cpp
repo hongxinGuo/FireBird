@@ -19,8 +19,8 @@ bool CDayLine::LoadData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   m_lAttackSellVolume = atol(setDayLineExtendInfo.m_AttackSellVolume);
   m_lStrongSellVolume = atol(setDayLineExtendInfo.m_StrongSellVolume);
   m_lUnknownVolume = atol(setDayLineExtendInfo.m_UnknownVolume);
-  m_lCancelBuyVolume = atol(setDayLineExtendInfo.m_CancelBuyVolume);
-  m_lCancelSellVolume = atol(setDayLineExtendInfo.m_CancelSellVolume);
+  m_lCanceledBuyVolume = atol(setDayLineExtendInfo.m_CanceledBuyVolume);
+  m_lCanceledSellVolume = atol(setDayLineExtendInfo.m_CanceledSellVolume);
   m_lOrdinaryBuyVolume = atol(setDayLineExtendInfo.m_OrdinaryBuyVolume);
   m_lAttackBuyBelow50000 = atol(setDayLineExtendInfo.m_AttackBuyBelow50000);
   m_lAttackBuyBelow200000 = atol(setDayLineExtendInfo.m_AttackBuyBelow200000);
@@ -95,11 +95,55 @@ void CDayLine::Reset(void) {
   m_lTransactionNumberAbove200000 = 0; //
 
   m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
-  m_lUnknownVolume = m_lCancelBuyVolume = m_lCancelSellVolume = 0;
+  m_lUnknownVolume = m_lCanceledBuyVolume = m_lCanceledSellVolume = 0;
   m_dRelativeStrong = m_dRSLogarithm = m_dRelativeStrongIndex = m_dRelativeStrongBackup = 0.0;
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3DayRS = m_d5DayRS = m_d10DayRS = m_d30DayRS = m_d60DayRS = m_d120DayRS = 0.0;
+
+  m_lOrdinaryBuyVolumeBelow5000 = 0;
+  m_lOrdinaryBuyVolumeBelow10000 = 0;
+  m_lOrdinaryBuyVolumeBelow20000 = 0;
+  m_lOrdinaryBuyVolumeBelow50000 = 0;
+  m_lOrdinaryBuyVolumeBelow100000 = 0;
+  m_lOrdinaryBuyVolumeBelow200000 = 0;
+  m_lOrdinaryBuyVolumeAbove200000 = 0;
+  m_lOrdinarySellVolumeBelow5000 = 0;
+  m_lOrdinarySellVolumeBelow10000 = 0;
+  m_lOrdinarySellVolumeBelow20000 = 0;
+  m_lOrdinarySellVolumeBelow50000 = 0;
+  m_lOrdinarySellVolumeBelow100000 = 0;
+  m_lOrdinarySellVolumeBelow200000 = 0;
+  m_lOrdinarySellVolumeAbove200000 = 0;
+  m_lOrdinaryBuyNumberBelow5000 = 0;
+  m_lOrdinaryBuyNumberBelow10000 = 0;
+  m_lOrdinaryBuyNumberBelow20000 = 0;
+  m_lOrdinaryBuyNumberBelow50000 = 0;
+  m_lOrdinaryBuyNumberBelow100000 = 0;
+  m_lOrdinaryBuyNumberBelow200000 = 0;
+  m_lOrdinaryBuyNumberAbove200000 = 0;
+  m_lOrdinarySellNumberBelow5000 = 0;
+  m_lOrdinarySellNumberBelow10000 = 0;
+  m_lOrdinarySellNumberBelow20000 = 0;
+  m_lOrdinarySellNumberBelow50000 = 0;
+  m_lOrdinarySellNumberBelow100000 = 0;
+  m_lOrdinarySellNumberBelow200000 = 0;
+  m_lOrdinarySellNumberAbove200000 = 0;
+
+  m_lCanceledBuyVolumeBelow5000 = 0;
+  m_lCanceledBuyVolumeBelow10000 = 0;
+  m_lCanceledBuyVolumeBelow20000 = 0;
+  m_lCanceledBuyVolumeBelow50000 = 0;
+  m_lCanceledBuyVolumeBelow100000 = 0;
+  m_lCanceledBuyVolumeBelow200000 = 0;
+  m_lCanceledBuyVolumeAbove200000 = 0;
+  m_lCanceledSellVolumeBelow5000 = 0;
+  m_lCanceledSellVolumeBelow10000 = 0;
+  m_lCanceledSellVolumeBelow20000 = 0;
+  m_lCanceledSellVolumeBelow50000 = 0;
+  m_lCanceledSellVolumeBelow100000 = 0;
+  m_lCanceledSellVolumeBelow200000 = 0;
+  m_lCanceledSellVolumeAbove200000 = 0;
 }
 
 bool CDayLine::SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
