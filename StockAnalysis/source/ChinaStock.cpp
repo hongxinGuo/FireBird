@@ -1331,11 +1331,13 @@ void CChinaStock::CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedC
 
 void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
   ASSERT((i < 5) && (i >= 0));
+  INT64 iTemp = 0;
   if (fNeedCheck.at(4 - i)) {
     if (GetGuadan(m_pLastRTData->GetPSell(i)) < m_pLastRTData->GetVSell(i)) { // 撤单了的话
-      m_lCurrentCanceledSellVolume += m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
-      CalculateCanceledSellVolume(m_lCurrentCanceledSellVolume);
-      m_lCanceledSellVolume += m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
+      iTemp = m_pLastRTData->GetVSell(i) - GetGuadan(m_pLastRTData->GetPSell(i));
+      m_lCurrentCanceledSellVolume += iTemp;
+      CalculateCanceledSellVolume(iTemp);
+      m_lCanceledSellVolume += iTemp;
     }
   }
 }
@@ -1366,11 +1368,13 @@ void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCancelSellVolume) {
 
 void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
   ASSERT((i < 5) && (i >= 0));
+  INT64 iTemp = 0;
   if (fNeedCheck.at(5 + i)) {
     if (GetGuadan(m_pLastRTData->GetPBuy(i)) < m_pLastRTData->GetVBuy(i)) { // 撤单了的话
-      m_lCurrentCanceledBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
-      CalculateCanceledBuyVolume(m_lCurrentCanceledBuyVolume);
-      m_lCanceledBuyVolume += m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
+      iTemp = m_pLastRTData->GetVBuy(i) - GetGuadan(m_pLastRTData->GetPBuy(i));
+      m_lCurrentCanceledBuyVolume += iTemp;
+      CalculateCanceledBuyVolume(iTemp);
+      m_lCanceledBuyVolume += iTemp;
     }
   }
 }
