@@ -7,6 +7,7 @@
 #include"ChinaStock.h"
 
 #include"SetStockCode.h"
+#include"SetOption.h"
 #include"WebInquirer.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
@@ -1327,5 +1328,84 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("9.0"), _T("10.0")), -0.1);
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("11.11"), _T("10.0")), 0.0) << _T("大于0.11时返回0");
     EXPECT_DOUBLE_EQ(gl_pChinaStockMarket->GetUpDownRate(_T("8.89"), _T("10.0")), 0.0) << _T("小于-0.11时返回0");
+  }
+
+  TEST_F(CChinaMarketTest, TestLoadOptionDB) {
+    CSetOption setOption;
+
+    setOption.Open();
+    setOption.m_pDatabase->BeginTrans();
+    while (!setOption.IsEOF()) {
+      setOption.Delete();
+      setOption.MoveNext();
+    }
+    setOption.m_pDatabase->CommitTrans();
+    setOption.Close();
+
+    gl_pChinaStockMarket->SetRelativeStrongStartDay(20200101);
+    gl_pChinaStockMarket->SetRelativeStrongEndDay(20200202);
+    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetDay());
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19990101);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19990202);
+
+    gl_pChinaStockMarket->UpdateOptionDB();
+
+    gl_pChinaStockMarket->SetRelativeStrongStartDay(1);
+    gl_pChinaStockMarket->SetRelativeStrongEndDay(1);
+    gl_pChinaStockMarket->SetLastLoginDay(1);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(1);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(1);
+
+    gl_pChinaStockMarket->LoadOptionDB();
+
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20200101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20200202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetDay());
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
+
+    gl_pChinaStockMarket->SetRelativeStrongStartDay(20100101);
+    gl_pChinaStockMarket->SetRelativeStrongEndDay(20100202);
+    gl_pChinaStockMarket->SetLastLoginDay(20200303);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19980101);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19980202);
+
+    gl_pChinaStockMarket->UpdateOptionDB();
+
+    gl_pChinaStockMarket->SetRelativeStrongStartDay(1);
+    gl_pChinaStockMarket->SetRelativeStrongEndDay(1);
+    gl_pChinaStockMarket->SetLastLoginDay(1);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(1);
+    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(1);
+
+    gl_pChinaStockMarket->LoadOptionDB();
+
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20100101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20100202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetDay()) << _T("永远是当前日期\n");
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19980202);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
+
+    setOption.Open();
+    setOption.m_pDatabase->BeginTrans();
+    while (!setOption.IsEOF()) {
+      setOption.Delete();
+      setOption.MoveNext();
+    }
+    setOption.m_pDatabase->CommitTrans();
+    setOption.Close();
+    gl_pChinaStockMarket->LoadOptionDB();
+
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
   }
 }

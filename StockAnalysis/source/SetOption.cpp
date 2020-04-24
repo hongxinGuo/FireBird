@@ -37,7 +37,7 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[RelativeStrongEndDay]"), m_RelativeStrongEndDay);
   RFX_Long(pFX, _T("[LastLoginDay]"), m_LastLoginDay);
   RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS1);
-  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS2);
+  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS2]"), m_UpdatedDayFor10DayRS2);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ

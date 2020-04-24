@@ -56,11 +56,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CCrweberIndexMarketTest, TestMaintainDatabase) {
-    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
-    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10000));
-    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
-    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(11000));
-    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
+    gl_pCrweberIndexMarket->SetMaintainDatabase(true);
     EXPECT_TRUE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001));
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsMaintainDatabase());
     EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
@@ -76,14 +72,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
     gl_pCrweberIndexMarket->SetResetMarket(false);
-    gl_pCrweberIndexMarket->TaskResetMarket(19999);
+    gl_pCrweberIndexMarket->TaskResetMarket(39999);
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
-    gl_pCrweberIndexMarket->TaskResetMarket(23001);
+    gl_pCrweberIndexMarket->TaskResetMarket(43001);
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
     gl_pCrweberIndexMarket->SetPermitResetMarket(true);
-    gl_pCrweberIndexMarket->TaskResetMarket(20000);
+    gl_pCrweberIndexMarket->TaskResetMarket(40000);
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
   }

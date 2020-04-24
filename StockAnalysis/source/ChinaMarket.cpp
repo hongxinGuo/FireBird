@@ -2189,7 +2189,8 @@ void CChinaMarket::LoadOptionDB(void) {
     else {
       SetLastLoginDay(setOption.m_LastLoginDay);
     }
-
+    SetUpdatedDayFor10DayRS1(setOption.m_UpdatedDayFor10DayRS1);
+    SetUpdatedDayFor10DayRS2(setOption.m_UpdatedDayFor10DayRS2);
     if (setOption.m_UpdatedDayFor10DayRS1 < GetDay())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;
     if (setOption.m_UpdatedDayFor10DayRS2 < GetDay())  m_fChoiced10RSStrong2StockSet = false;

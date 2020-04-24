@@ -99,7 +99,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime
 }
 
 bool CCrweberIndexMarket::TaskMaintainDatabase(long lCurrentTime) {
-  if ((lCurrentTime > 10000) && (lCurrentTime < 11000) && m_fMaintainDatabase) {
+  if (m_fMaintainDatabase) {
     m_fMaintainDatabase = false;
     LoadDatabase();
     SaveDatabase();
@@ -109,10 +109,10 @@ bool CCrweberIndexMarket::TaskMaintainDatabase(long lCurrentTime) {
 }
 
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
-  // 九点重启系统
+  // 市场时间四点重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if (lCurrentTime >= 20000) { // 本市场时间的一点重启本市场 // 东八区本地时间为上午十时。
-      if (lCurrentTime <= 23000) {
+    if (lCurrentTime >= 40000) { // 本市场时间的一点重启本市场 // 东八区本地时间为上午十二时。
+      if (lCurrentTime <= 43000) {
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       }
       SetPermitResetMarket(false); // 今天不再允许重启系统。
