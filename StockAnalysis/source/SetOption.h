@@ -20,6 +20,8 @@ public:
   long m_RelativeStrongEndDay;
   long m_RalativeStrongStartDay;
   long m_LastLoginDay;
+  long m_UpdatedDayFor10DayRS1;
+  long m_UpdatedDayFor10DayRS2;
 
   // 重写
     // 向导生成的虚函数重写

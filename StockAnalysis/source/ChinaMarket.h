@@ -171,8 +171,8 @@ public:
   bool UnloadDayLine(void);
 
   // 股票历史数据处理
-  bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
-  bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
+  virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
+  virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
 
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
@@ -199,6 +199,10 @@ public:
   void SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
   long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
+  long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
+  void SetUpdatedDayFor10DayRS1(long lDay) noexcept { m_lUpdatedDayFor10DayRS1 = lDay; }
+  long GetUpdatedDayFor10DayRS2(void) noexcept { return m_lUpdatedDayFor10DayRS2; }
+  void SetUpdatedDayFor10DayRS2(long lDay) noexcept { m_lUpdatedDayFor10DayRS2 = lDay; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
@@ -358,6 +362,8 @@ protected:
   long m_lRelativeStrongStartDay;
   long m_lRelativeStrongEndDay;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
+  long m_lUpdatedDayFor10DayRS2;
+  long m_lUpdatedDayFor10DayRS1;
 
   vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;

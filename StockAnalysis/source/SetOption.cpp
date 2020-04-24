@@ -12,7 +12,9 @@ CSetOption::CSetOption(CDatabase* pdb)
   m_RalativeStrongStartDay = __CHINA_MARKET_BEGIN_DAY__;
   m_RelativeStrongEndDay = __CHINA_MARKET_BEGIN_DAY__;
   m_LastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
-  m_nFields = 3;
+  m_UpdatedDayFor10DayRS1 = __CHINA_MARKET_BEGIN_DAY__;
+  m_UpdatedDayFor10DayRS2 = __CHINA_MARKET_BEGIN_DAY__;
+  m_nFields = 5;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
@@ -34,6 +36,8 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[RelativeStrongStartDay]"), m_RalativeStrongStartDay);
   RFX_Long(pFX, _T("[RelativeStrongEndDay]"), m_RelativeStrongEndDay);
   RFX_Long(pFX, _T("[LastLoginDay]"), m_LastLoginDay);
+  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS1);
+  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS2);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode 诊断

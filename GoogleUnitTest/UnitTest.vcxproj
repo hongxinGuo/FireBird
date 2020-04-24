@@ -153,6 +153,7 @@
     <ClCompile Include="SystemMessageMockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="StockAnalysisViewTest.cpp" />
+    <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp" />
     <ClCompile Include="ThreadReadCrweberIndexTest.cpp" />
     <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp" />
     <ClCompile Include="ThreadReadNeteaseRTDataTest.cpp" />

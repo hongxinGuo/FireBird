@@ -297,7 +297,7 @@ void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CR
 
   double base;
   double yBase = (double)rectArea.top + rectArea.Height() / 2;
-  double dRatio = 5.0;
+  double dRatio = 2.0;
   CRect rectTop, rectBottom;
 
   if ((pStock->GetCanceledBuyVolume() == 0) && (pStock->GetAttackSellVolume() == 0)) return;

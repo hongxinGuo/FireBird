@@ -322,7 +322,7 @@ public:
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   virtual bool SaveDayLine(void); // 存储日线历史数据
   void UpdateDayLineStartEndDay(void);
-  void SaveCalculatedInfo(CSetDayLineExtendInfo& setDayLineExtendInfo);
+  void SaveEntendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo);
   void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   virtual bool LoadDayLine(void); // 此函数加载

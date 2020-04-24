@@ -76,14 +76,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
     gl_pCrweberIndexMarket->SetResetMarket(false);
-    gl_pCrweberIndexMarket->TaskResetMarket(9999);
+    gl_pCrweberIndexMarket->TaskResetMarket(19999);
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
-    gl_pCrweberIndexMarket->TaskResetMarket(13001);
+    gl_pCrweberIndexMarket->TaskResetMarket(23001);
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
     gl_pCrweberIndexMarket->SetPermitResetMarket(true);
-    gl_pCrweberIndexMarket->TaskResetMarket(10000);
+    gl_pCrweberIndexMarket->TaskResetMarket(20000);
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
   }

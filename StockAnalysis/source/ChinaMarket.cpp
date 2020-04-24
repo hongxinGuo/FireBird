@@ -95,6 +95,7 @@ void CChinaMarket::Reset(void) {
   else m_fTodayStockProcessed = false;
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
+  m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
 
@@ -1862,7 +1863,7 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
       continue;
     }
     setDayLineExtendInfo.AddNew();
-    pStock->SaveCalculatedInfo(setDayLineExtendInfo);
+    pStock->SaveEntendInfo(setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
   }
   setDayLineExtendInfo.m_pDatabase->CommitTrans();
@@ -2135,6 +2136,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
     setOption.m_LastLoginDay = GetDay();
+    setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
+    setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
     setOption.Update();
   }
   else {
@@ -2142,6 +2145,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
     setOption.m_LastLoginDay = GetDay();
+    setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
+    setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();
@@ -2156,6 +2161,8 @@ void CChinaMarket::LoadOptionDB(void) {
     SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
     SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
     SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetUpdatedDayFor10DayRS1(__CHINA_MARKET_BEGIN_DAY__);
+    SetUpdatedDayFor10DayRS2(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
     if (setOption.m_RelativeStrongEndDay == 0) {
@@ -2182,6 +2189,11 @@ void CChinaMarket::LoadOptionDB(void) {
     else {
       SetLastLoginDay(setOption.m_LastLoginDay);
     }
+
+    if (setOption.m_UpdatedDayFor10DayRS1 < GetDay())  m_fChoiced10RSStrong1StockSet = false;
+    else m_fChoiced10RSStrong1StockSet = true;
+    if (setOption.m_UpdatedDayFor10DayRS2 < GetDay())  m_fChoiced10RSStrong2StockSet = false;
+    else m_fChoiced10RSStrong2StockSet = true;
   }
 
   setOption.Close();

@@ -39,6 +39,10 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+      }
     }
     CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };

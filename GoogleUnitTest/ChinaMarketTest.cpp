@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
-        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
       }
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       ASSERT_FALSE(gl_fNormalMode);
@@ -676,6 +676,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestIsDayLineNeedUpdate) {
     CChinaStockPtr pStock = nullptr;
+    ASSERT(gl_pChinaStockMarket->GetTotalStock() == 12000);
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineNeedUpdate());
     for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
@@ -684,7 +685,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineNeedUpdate());
     for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
-      pStock->SetDayLineNeedUpdate(true);
+      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
     }
   }
 

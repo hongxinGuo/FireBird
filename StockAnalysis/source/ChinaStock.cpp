@@ -543,7 +543,7 @@ void CChinaStock::UpdateDayLineStartEndDay(void) {
   }
 }
 
-void CChinaStock::SaveCalculatedInfo(CSetDayLineExtendInfo& setDayLineExtendInfo) {
+void CChinaStock::SaveEntendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   ASSERT(setDayLineExtendInfo.IsOpen());
   setDayLineExtendInfo.m_Day = FormatToDay(m_TransactionTime);
   setDayLineExtendInfo.m_Market = m_wMarket;

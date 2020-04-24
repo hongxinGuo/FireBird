@@ -44,6 +44,7 @@ bool CDayLine::LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow100000);
   m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeBelow200000);
   m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineExtendInfo.m_OrdinarySellVolumeAbove200000);
+
   m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow5000);
   m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow10000);
   m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineExtendInfo.m_OrdinaryBuyNumberBelow20000);
@@ -58,6 +59,7 @@ bool CDayLine::LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo) {
   m_lOrdinarySellNumberBelow100000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow100000);
   m_lOrdinarySellNumberBelow200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberBelow200000);
   m_lOrdinarySellNumberAbove200000 = atoll(setDayLineExtendInfo.m_OrdinarySellNumberAbove200000);
+
   m_lCanceledBuyVolumeBelow5000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow5000);
   m_lCanceledBuyVolumeBelow10000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow10000);
   m_lCanceledBuyVolumeBelow20000 = atoll(setDayLineExtendInfo.m_CanceledBuyVolumeBelow20000);

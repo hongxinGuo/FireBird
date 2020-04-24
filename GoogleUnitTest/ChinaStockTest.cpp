@@ -1374,7 +1374,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.m_pDatabase->BeginTrans();
     setDayLineExtendInfo.AddNew();
-    pStock->SaveCalculatedInfo(setDayLineExtendInfo);
+    pStock->SaveEntendInfo(setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.m_pDatabase->CommitTrans();
     setDayLineExtendInfo.Close();
@@ -1875,7 +1875,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.AddNew();
-    stock.SaveCalculatedInfo(setDayLineExtendInfo);
+    stock.SaveEntendInfo(setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.Close();
 

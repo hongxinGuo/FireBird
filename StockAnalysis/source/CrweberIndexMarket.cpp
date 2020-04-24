@@ -111,8 +111,8 @@ bool CCrweberIndexMarket::TaskMaintainDatabase(long lCurrentTime) {
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
   // 九点重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if (lCurrentTime >= 10000) { // 本市场时间的一点重启本市场 // 东八区本地时间为上午九时。
-      if (lCurrentTime <= 13000) {
+    if (lCurrentTime >= 20000) { // 本市场时间的一点重启本市场 // 东八区本地时间为上午十时。
+      if (lCurrentTime <= 23000) {
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       }
       SetPermitResetMarket(false); // 今天不再允许重启系统。
