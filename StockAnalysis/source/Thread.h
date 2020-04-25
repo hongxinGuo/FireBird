@@ -12,6 +12,7 @@
 #include"ChinaStock.h"
 class CChinaMarket;
 #include"PotenDailyBriefingMarket.h"
+#include"CrweberIndexMarket.h"
 
 // 各工作线程声明
 // 线程无法作为类函数放入类中（无法被afxBeginThread()调用），故而各线程都只能采用全局函数形式放于此处。
@@ -32,6 +33,7 @@ UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData)
 UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
 // 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
 UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebData); // 此工作线程返回值为6.
+
 // 数据库处理任务
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
@@ -58,7 +60,13 @@ UINT ThreadUpdateOptionDB(CChinaMarket* pMarket); // 此线程返回值为20
 UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket); // 此线程返回值为21
 // 更新选项数据库
 UINT ThreadAppendChoicedStockDB(CChinaMarket* pMarket); // 此线程返回值为22
-// 计算10日强股票集（两次出现强势峰）
-UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为23
+// 存储crweber当日数据
+UINT ThreadSaveCrweberDB(CCrweberIndexMarket* pMarket, CCrweberIndexPtr pCrweberIndex); // 此线程返回值为23
+// 整理Crweber数据库
+UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket); // 此线程返回值为24
+
+//各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）
-UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为24
+UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为31
+// 计算10日强股票集（两次出现强势峰）
+UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为32

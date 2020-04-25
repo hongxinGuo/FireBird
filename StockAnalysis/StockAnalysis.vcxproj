@@ -336,6 +336,7 @@
     <ClCompile Include="source\SetStockCode.cpp" />
     <ClCompile Include="source\ChinaStock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
+    <ClCompile Include="source\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="source\ThreadSaveDayLine.cpp" />
     <ClCompile Include="source\ThreadSaveRTData.cpp" />
     <ClCompile Include="source\ThreadSaveTempRTData.cpp" />

@@ -404,6 +404,9 @@
     <ClCompile Include="source\SetRSStrong1Stock.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
+    <ClCompile Include="source\ThreadSaveCrweberDB.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

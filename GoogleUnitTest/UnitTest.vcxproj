@@ -110,6 +110,7 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadTengxunRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp" />
