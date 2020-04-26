@@ -107,4 +107,6 @@ public:
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
   afx_msg void OnRecordRTData();
   afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
+  afx_msg void OnCalculate10dayRs1();
+  afx_msg void OnCalculate10dayRs2();
 };

@@ -26,6 +26,9 @@ void CCrweberIndexMarket::Reset(void) {
   m_fMaintainDatabase = true;
   m_lNewestDatabaseDay = 0;
   m_lNewestUpdatedDay = 0;
+  LoadDatabase();
+  SaveDatabase();
+
   // 重置此全局变量
   m_CrweberIndex.Reset();
 }
@@ -65,7 +68,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59;
     TaskResetMarket(lCurrentTime);
-    TaskMaintainDatabase(lCurrentTime);
+    //TaskMaintainDatabase(lCurrentTime);
 
     if (!gl_WebInquirer.IsReadingCrweberIndex()) {
       TaskProcessWebRTDataGetFromCrweberdotcom();
@@ -99,29 +102,10 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime
   }
 }
 
-bool CCrweberIndexMarket::TaskMaintainDatabase(long lCurrentTime) {
-  if (m_fMaintainDatabase) {
-    m_fMaintainDatabase = false;
-    LoadDatabase();
-    SaveDatabase();
-
-    //RunningMaintainDB();
-    return true;
-  }
-  return false;
-}
-
-bool CCrweberIndexMarket::RunningMaintainDB(void) {
-  thread thread1(ThreadMaintainCrweberDB, this);
-  thread1.detach();
-
-  return true;
-}
-
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
   // 市场时间四点重启系统
   if (IsPermitResetMarket()) { // 如果允许重置系统
-    if (lCurrentTime >= 70000) { // 本市场时间的一点重启本市场 // 东八区本地时间为下午三时。
+    if ((lCurrentTime >= 70000) && (lCurrentTime < 71000)) { // 本市场时间的一点重启本市场 // 东八区本地时间为下午三时。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
@@ -146,14 +130,20 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
         m_CrweberIndexLast = m_CrweberIndex;
         CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>(m_CrweberIndex);
         m_vCrweberIndex.push_back(pCrweberIndex);
-        SaveCrweberIndexData(pCrweberIndex);
-        //RunningSaveCrweberDB(pCrweberIndex);
+        RunningSaveCrweberDB(pCrweberIndex);
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
         m_fTodayDataUpdated = true;
       }
     }
     else return false;  // 后面的数据出问题，抛掉不用。
   }
+  return true;
+}
+
+bool CCrweberIndexMarket::RunningMaintainDB(void) {
+  thread thread1(ThreadMaintainCrweberDB, this);
+  thread1.detach();
+
   return true;
 }
 

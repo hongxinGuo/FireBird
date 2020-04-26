@@ -60,6 +60,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
   ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
   ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
+  ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRs1)
+  ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRs2)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -696,4 +698,16 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   if (gl_pChinaStockMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
   else SysCallCmdUISetCheck(pCmdUI, false);
+}
+
+void CMainFrame::OnCalculate10dayRs1() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadChoice10RSStrong1StockSet();
+  gl_pChinaStockMarket->SetChoiced10RSStrong1StockSet(true);
+}
+
+void CMainFrame::OnCalculate10dayRs2() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadChoice10RSStrong2StockSet();
+  gl_pChinaStockMarket->SetChoiced10RSStrong2StockSet(true);
 }

@@ -70,6 +70,8 @@ void CChinaMarket::ResetMarket(void) {
   LoadStockCodeDB();
   LoadOptionDB();
   LoadChoicedStockDB();
+  Load10DayRSStrong1StockSet();
+  Load10DayRSStrong2StockSet();
 }
 
 void CChinaMarket::Reset(void) {
@@ -1944,6 +1946,42 @@ bool CChinaMarket::LoadTodayTempDB(void) {
     }
   }
   setDayLineToday.Close();
+
+  return true;
+}
+
+bool CChinaMarket::Load10DayRSStrong1StockSet(void) {
+  CSetRSStrong1Stock setRSStrong1;
+  CChinaStockPtr pStock = nullptr;
+
+  m_v10RSStrong1Stock.clear();
+  setRSStrong1.Open();
+  while (!setRSStrong1.IsEOF()) {
+    pStock = gl_pChinaStockMarket->GetStock(setRSStrong1.m_StockCode);
+    if (pStock != nullptr) {
+      m_v10RSStrong1Stock.push_back(pStock);
+    }
+    setRSStrong1.MoveNext();
+  }
+  setRSStrong1.Close();
+
+  return true;
+}
+
+bool CChinaMarket::Load10DayRSStrong2StockSet(void) {
+  CSetRSStrong2Stock setRSStrong2;
+  CChinaStockPtr pStock = nullptr;
+
+  m_v10RSStrong2Stock.clear();
+  setRSStrong2.Open();
+  while (!setRSStrong2.IsEOF()) {
+    pStock = gl_pChinaStockMarket->GetStock(setRSStrong2.m_StockCode);
+    if (pStock != nullptr) {
+      m_v10RSStrong2Stock.push_back(pStock);
+    }
+    setRSStrong2.MoveNext();
+  }
+  setRSStrong2.Close();
 
   return true;
 }

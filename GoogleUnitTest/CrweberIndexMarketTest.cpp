@@ -55,19 +55,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间："));
   }
 
-  TEST_F(CCrweberIndexMarketTest, TestMaintainDatabase) {
-    gl_pCrweberIndexMarket->SetMaintainDatabase(true);
-    EXPECT_TRUE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001));
-    EXPECT_FALSE(gl_pCrweberIndexMarket->IsMaintainDatabase());
-    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(10001)) << _T("标识为假时永远不执行");
-    EXPECT_FALSE(gl_pCrweberIndexMarket->TaskMaintainDatabase(11001)) << _T("标识为假时永远不执行");
-
-    gl_pCrweberIndexMarket->SetMaintainDatabase(true);
-    EXPECT_TRUE(gl_pCrweberIndexMarket->IsMaintainDatabase());
-    gl_pCrweberIndexMarket->SetMaintainDatabase(false);
-    EXPECT_FALSE(gl_pCrweberIndexMarket->IsMaintainDatabase());
-  }
-
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
@@ -75,10 +62,13 @@ namespace StockAnalysisTest {
     gl_pCrweberIndexMarket->TaskResetMarket(69999);
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
-    gl_pCrweberIndexMarket->SetPermitResetMarket(true);
+    gl_pCrweberIndexMarket->TaskResetMarket(71000);
+    EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
+    EXPECT_FALSE(gl_pCrweberIndexMarket->IsResetMarket());
     gl_pCrweberIndexMarket->TaskResetMarket(70000);
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
+    gl_pCrweberIndexMarket->SetPermitResetMarket(true);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDay) {

@@ -167,6 +167,8 @@ public:
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
+  bool Load10DayRSStrong1StockSet(void);
+  bool Load10DayRSStrong2StockSet(void);
 
   bool UnloadDayLine(void);
 
