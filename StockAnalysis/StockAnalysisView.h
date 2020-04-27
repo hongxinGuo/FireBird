@@ -35,7 +35,9 @@ public:
 
   void ShowRealTimeData(CDC* pDC);
   void ShowRealtimeGuadan(CDC* pdc);
+  void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
+  void ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowStockDayLine(CDC* pDC);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);

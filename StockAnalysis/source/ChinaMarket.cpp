@@ -1229,7 +1229,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fChoiced10RSStrong1StockSet && (lCurrentTime > 152000) && IsWorkingDay()) {
+  if (IsSystemReady() && !m_fChoiced10RSStrong1StockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
     RunningThreadChoice10RSStrong1StockSet();
     m_fChoiced10RSStrong1StockSet = true;
     return true;
