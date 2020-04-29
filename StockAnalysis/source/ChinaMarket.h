@@ -170,6 +170,9 @@ public:
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
 
+  bool LoadCalculatingRSOption(void);
+  void SaveCalculatingRSOption(void);
+
   bool UnloadDayLine(void);
 
   // 股票历史数据处理
@@ -313,6 +316,9 @@ public:
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
+
+public:
+  CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
 
 protected:
   vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）

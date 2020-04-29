@@ -17,6 +17,7 @@
 #include"SetChoicedStock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrong1Stock.h"
+#include"SetRSOption.h"
 
 using namespace std;
 #include<thread>
@@ -72,6 +73,7 @@ void CChinaMarket::ResetMarket(void) {
   LoadChoicedStockDB();
   Load10DayRSStrong1StockSet();
   Load10DayRSStrong2StockSet();
+  LoadCalculatingRSOption();
 }
 
 void CChinaMarket::Reset(void) {
@@ -1984,6 +1986,63 @@ bool CChinaMarket::Load10DayRSStrong2StockSet(void) {
   setRSStrong2.Close();
 
   return true;
+}
+
+bool CChinaMarket::LoadCalculatingRSOption(void) {
+  CSetRSOption setRSOption;
+
+  setRSOption.Open();
+  while (!setRSOption.IsEOF()) {
+    m_aRSStrongOption[setRSOption.m_Index].m_fActive = setRSOption.m_Active;
+    m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[0] = setRSOption.m_DayLengthFirst;
+    m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[1] = setRSOption.m_DayLengthSecond;
+    m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[2] = setRSOption.m_DayLengthThird;
+    m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[0] = atof(setRSOption.m_RSStrongFirst);
+    m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[1] = atof(setRSOption.m_RSStrongSecond);
+    m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[2] = atof(setRSOption.m_RSStrongThird);
+  }
+  setRSOption.Close();
+  return true;
+}
+
+void CChinaMarket::SaveCalculatingRSOption(void) {
+  CSetRSOption setRSOption;
+
+  setRSOption.Open();
+  setRSOption.m_pDatabase->BeginTrans();
+  while (!setRSOption.IsEOF()) {
+    setRSOption.Delete();
+    setRSOption.MoveNext();
+  }
+  setRSOption.m_pDatabase->CommitTrans();
+  setRSOption.Close();
+
+  setRSOption.Open();
+  setRSOption.m_pDatabase->BeginTrans();
+  for (int i = 0; i < 10; i++) {
+    setRSOption.AddNew();
+    setRSOption.m_Index = i;
+    setRSOption.m_Active = m_aRSStrongOption[i].m_fActive;
+    if (setRSOption.m_Active) {
+      setRSOption.m_DayLengthFirst = m_aRSStrongOption[i].m_lDayLength[0];
+      setRSOption.m_DayLengthSecond = m_aRSStrongOption[i].m_lDayLength[1];
+      setRSOption.m_DayLengthThird = m_aRSStrongOption[i].m_lDayLength[2];
+      setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[0]);
+      setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[1]);
+      setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[2]);
+    }
+    else {
+      setRSOption.m_DayLengthFirst = 0;
+      setRSOption.m_DayLengthSecond = 0;
+      setRSOption.m_DayLengthThird = 0;
+      setRSOption.m_RSStrongFirst = _T("50.000");
+      setRSOption.m_RSStrongSecond = _T("50.000");
+      setRSOption.m_RSStrongThird = _T("50.000");
+    }
+    setRSOption.Update();
+  }
+  setRSOption.m_pDatabase->CommitTrans();
+  setRSOption.Close();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

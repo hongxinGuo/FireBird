@@ -26,3 +26,18 @@ CString ConvertValueToString(double dvalue, int iDividend = 1);
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber);
 
 void ZoomIn(vector<double>& vData, double dLevel, double dRate);
+
+class CRSReference {
+public:
+  CRSReference(void) {
+    m_fActive = false;
+    for (int i = 0; i < 3; i++) {
+      m_lDayLength[i] = 0;
+      m_dRSStrong[i] = 50.0;
+    }
+  }
+public:
+  bool m_fActive;
+  long m_lDayLength[3]; // 日期长度
+  double m_dRSStrong[3]; // 正值意思为高于此值，负值意思为低于此值
+};

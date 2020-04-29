@@ -103,6 +103,8 @@ CMainFrame::~CMainFrame() {
     gl_pChinaStockMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 
+  gl_pChinaStockMarket->SaveCalculatingRSOption();
+
   while (gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }

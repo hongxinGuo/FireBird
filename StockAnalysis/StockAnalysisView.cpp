@@ -136,8 +136,8 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
 void CStockAnalysisView::ShowRealTimeData(CDC* pDC) {
   const int cFirstPosition = 0;
   const int cSecondPosition = cFirstPosition + 200;
-  const int cThirdPosition = cSecondPosition + 400;
-  CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 100, 400);
+  const int cThirdPosition = cSecondPosition + 300;
+  CRect rectBuySell(cFirstPosition, 0, cFirstPosition + 150, 400);
   CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
   CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
   CRect rectCanceledBuySell(0, 450, 300, 850);
@@ -238,28 +238,32 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rect
   rectTop.right = rectBottom.right = rectArea.right;
   rectTop.left = rectArea.left;
   rectTop.right = rectArea.left + 30;
-  rectTop.top = yBase * (1 - (double)pStock->GetOrdinaryBuyVolume() * dRatio / base);
+  rectTop.top = yBase * (1 - (double)pStock->GetUnknownVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 31;
   rectTop.right = rectArea.left + 60;
-  rectTop.top = yBase * (1 - (double)pStock->GetAttackBuyVolume() * dRatio / base);
+  rectTop.top = yBase * (1 - (double)pStock->GetOrdinaryBuyVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 61;
   rectTop.right = rectArea.left + 90;
+  rectTop.top = yBase * (1 - (double)pStock->GetAttackBuyVolume() * dRatio / base);
+  SysCallFillSolidRect(pDC, rectTop, crRed);
+  rectTop.left = rectArea.left + 91;
+  rectTop.right = rectArea.left + 120;
   rectTop.top = yBase * (1 - (double)pStock->GetStrongBuyVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
 
   rectBottom.top = yBase;
-  rectBottom.left = rectArea.left;
-  rectBottom.right = rectArea.left + 30;
-  rectBottom.bottom = yBase * (1 + (double)pStock->GetOrdinarySellVolume() * dRatio / base);
-  SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 31;
   rectBottom.right = rectArea.left + 60;
-  rectBottom.bottom = yBase * (1 + (double)pStock->GetAttackSellVolume() * dRatio / base);
+  rectBottom.bottom = yBase * (1 + (double)pStock->GetOrdinarySellVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 61;
   rectBottom.right = rectArea.left + 90;
+  rectBottom.bottom = yBase * (1 + (double)pStock->GetAttackSellVolume() * dRatio / base);
+  SysCallFillSolidRect(pDC, rectBottom, crGreen);
+  rectBottom.left = rectArea.left + 91;
+  rectBottom.right = rectArea.left + 120;
   rectBottom.bottom = yBase * (1 + (double)pStock->GetStrongSellVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }

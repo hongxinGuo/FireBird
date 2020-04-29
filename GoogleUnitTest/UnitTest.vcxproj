@@ -93,6 +93,7 @@
     <ClCompile Include="..\StockAnalysis\source\SetOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetRSOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\StockAnalysis\source\SetOption.h" />
     <ClInclude Include="..\StockAnalysis\source\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetRSOption.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRSStrong1Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetStockCode.h" />
