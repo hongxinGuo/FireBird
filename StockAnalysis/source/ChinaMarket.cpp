@@ -17,6 +17,7 @@
 #include"SetChoicedStock.h"
 #include"SetRSStrong2Stock.h"
 #include"SetRSStrong1Stock.h"
+#include"SetRSStrongStock.h"
 #include"SetRSOption.h"
 
 using namespace std;
@@ -87,6 +88,7 @@ void CChinaMarket::Reset(void) {
   m_fCurrentStockChanged = false;
   m_fChoiced10RSStrong1StockSet = false;
   m_fChoiced10RSStrong2StockSet = false;
+  m_fChoiced10RSStrongStockSet = false;
   m_fCurrentEditStockChanged = false;
 
   m_lTotalMarketBuy = m_lTotalMarketSell = 0;
@@ -106,6 +108,8 @@ void CChinaMarket::Reset(void) {
   m_fMarketOpened = false;
 
   m_fTodayTempDataLoaded = false;
+
+  m_lCurrentRSStrongIndex = 0;
 
   m_fRTDataSetCleared = false;
 
@@ -1084,6 +1088,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
   TaskChoice10RSStrong1StockSet(lCurrentTime);
   TaskChoice10RSStrong2StockSet(lCurrentTime);
+  TaskChoice10RSStrongStockSet(lCurrentTime);
 
   // 判断是否开始正常收集数据
   TaskCheckStartReceivingData(lCurrentTime);
@@ -1243,6 +1248,15 @@ bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
   if (IsSystemReady() && !m_fChoiced10RSStrong2StockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
     RunningThreadChoice10RSStrong2StockSet();
     m_fChoiced10RSStrong2StockSet = true;
+    return true;
+  }
+  return false;
+}
+
+bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
+  if (IsSystemReady() && !m_fChoiced10RSStrongStockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
+    RunningThreadChoice10RSStrongStockSet();
+    m_fChoiced10RSStrongStockSet = true;
     return true;
   }
   return false;
@@ -1629,7 +1643,7 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
         pStock->LoadDayLine();
         pStock->SetDayLineLoaded(true);
       }
-      if (pStock->Is10RSStrong2Stock()) {
+      if (pStock->Calculate10RSStrong2StockSet()) {
         v10RSStrongStock.push_back(pStock);
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
@@ -1670,7 +1684,7 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
         pStock->LoadDayLine();
         pStock->SetDayLineLoaded(true);
       }
-      if (pStock->Is10RSStrong1Stock()) {
+      if (pStock->Calculate10RSStrong1StockSet()) {
         v10RSStrongStock.push_back(pStock);
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
@@ -1700,6 +1714,61 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   setRSStrong1.Close();
 
   return true;
+}
+
+bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
+  vector<CChinaStockPtr> v10RSStrongStock;
+
+  for (auto pStock : m_vChinaMarketAStock) {
+    if (IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
+      if (pStock->Calculate10RSStrongStockSet(pRef)) {
+        v10RSStrongStock.push_back(pStock);
+      }
+      if (!pStock->IsSameStock(m_pCurrentStock)) {
+        pStock->UnloadDayLine();
+        pStock->SetDayLineLoaded(false);
+      }
+    }
+    if (gl_ExitingSystem) return false;
+  }
+
+  m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStock需要此m_lCurrentRSStrongIndex来选择正确的数据表。
+  CSetRSStrongStock setRSStrong1;
+
+  setRSStrong1.Open();
+  setRSStrong1.m_pDatabase->BeginTrans();
+  while (!setRSStrong1.IsEOF()) {
+    setRSStrong1.Delete();
+    setRSStrong1.MoveNext();
+  }
+  setRSStrong1.m_pDatabase->CommitTrans();
+  setRSStrong1.m_pDatabase->BeginTrans();
+  for (auto pStock : v10RSStrongStock) {
+    setRSStrong1.AddNew();
+    setRSStrong1.m_Market = pStock->GetMarket();
+    setRSStrong1.m_StockCode = pStock->GetStockCode();
+    setRSStrong1.Update();
+  }
+  setRSStrong1.m_pDatabase->CommitTrans();
+  setRSStrong1.Close();
+
+  return true;
+}
+
+CString CChinaMarket::GetCurrentRSStrongSQL(void) {
+  CString str = _T("[selected_rs_");
+  char buffer[10];
+
+  ASSERT((m_lCurrentRSStrongIndex >= 0) && (m_lCurrentRSStrongIndex < 10));
+  sprintf_s(buffer, "%1d", m_lCurrentRSStrongIndex);
+  str += buffer;
+  str += _T("]");
+
+  return str;
 }
 
 bool CChinaMarket::IsDayLineNeedUpdate(void) {
@@ -1797,6 +1866,16 @@ bool CChinaMarket::RunningThreadChoice10RSStrong2StockSet(void) {
 bool CChinaMarket::RunningThreadChoice10RSStrong1StockSet(void) {
   thread thread1(ThreadChoice10RSStrong1StockSet, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
+  for (int i = 0; i < 10; i++) {
+    if (m_aRSStrongOption[i].m_fActive) {
+      thread thread1(ThreadChoice10RSStrongStockSet, this, &(m_aRSStrongOption[i]), i);
+      thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+    }
+  }
   return true;
 }
 
@@ -1997,9 +2076,13 @@ bool CChinaMarket::LoadCalculatingRSOption(void) {
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[0] = setRSOption.m_DayLengthFirst;
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[1] = setRSOption.m_DayLengthSecond;
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[2] = setRSOption.m_DayLengthThird;
+    m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[0] = setRSOption.m_StrongDayLengthFirst;
+    m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[1] = setRSOption.m_StrongDayLengthSecond;
+    m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[2] = setRSOption.m_StrongDayLengthThird;
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[0] = atof(setRSOption.m_RSStrongFirst);
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[1] = atof(setRSOption.m_RSStrongSecond);
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[2] = atof(setRSOption.m_RSStrongThird);
+    setRSOption.MoveNext();
   }
   setRSOption.Close();
   return true;
@@ -2027,6 +2110,9 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
       setRSOption.m_DayLengthFirst = m_aRSStrongOption[i].m_lDayLength[0];
       setRSOption.m_DayLengthSecond = m_aRSStrongOption[i].m_lDayLength[1];
       setRSOption.m_DayLengthThird = m_aRSStrongOption[i].m_lDayLength[2];
+      setRSOption.m_StrongDayLengthFirst = m_aRSStrongOption[i].m_lStrongDayLength[0];
+      setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption[i].m_lStrongDayLength[1];
+      setRSOption.m_StrongDayLengthThird = m_aRSStrongOption[i].m_lStrongDayLength[2];
       setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[0]);
       setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[1]);
       setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[2]);

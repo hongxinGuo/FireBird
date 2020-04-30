@@ -256,6 +256,7 @@
     <ClInclude Include="source\SetRSStrong1Stock.h" />
     <ClInclude Include="source\SetPotenDailyBriefing.h" />
     <ClInclude Include="source\SetRSStrong2Stock.h" />
+    <ClInclude Include="source\SetRSStrongStock.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebInquirer.h" />
     <ClInclude Include="source\WebData.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="source\SetRSOption.cpp" />
     <ClCompile Include="source\SetRSStrong1Stock.cpp" />
     <ClCompile Include="source\SetRSStrong2Stcok.cpp" />
+    <ClCompile Include="source\SetRSStrongStock.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp" />

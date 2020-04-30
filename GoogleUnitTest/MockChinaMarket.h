@@ -21,6 +21,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, RunningThreadChoice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, RunningThreadChoice10RSStrong1StockSet, (), (override));
+    MOCK_METHOD(bool, RunningThreadChoice10RSStrongStockSet, (), (override));
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
@@ -29,6 +30,7 @@ namespace testing {
     MOCK_METHOD(long, ProcessCurrentTradeDayStock, (long lCurrentTradeDay), (override));
     MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));
+    MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

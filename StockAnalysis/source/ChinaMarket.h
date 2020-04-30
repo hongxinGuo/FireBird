@@ -58,6 +58,7 @@ public:
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
   bool TaskChoice10RSStrong1StockSet(long lCurrentTime);
   bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
+  bool TaskChoice10RSStrongStockSet(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
   bool TaskCheckDayLineDB(void);
   bool TaskCheckStartReceivingData(long lCurrentTime);
@@ -96,6 +97,7 @@ public:
   virtual bool RunningThreadAppendChoicedStockDB(void);
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
   virtual bool RunningThreadChoice10RSStrong1StockSet(void);
+  virtual bool RunningThreadChoice10RSStrongStockSet(void);
 
   // interface function
 public:
@@ -153,6 +155,8 @@ public:
   void SetChoiced10RSStrong1StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong1StockSet = fFlag; }
   bool IsChoiced10RSStrong2StockSet(void) noexcept { return m_fChoiced10RSStrong2StockSet; }
   void SetChoiced10RSStrong2StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong2StockSet = fFlag; }
+  bool IsChoiced10RSStrongStockSet(void) noexcept { return m_fChoiced10RSStrongStockSet; }
+  void SetChoiced10RSStrongStockSet(bool fFlag) noexcept { m_fChoiced10RSStrongStockSet = fFlag; }
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -178,6 +182,8 @@ public:
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
+  virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
+  CString GetCurrentRSStrongSQL(void);
 
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
@@ -319,6 +325,7 @@ protected:
 
 public:
   CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
+  long m_lCurrentRSStrongIndex;
 
 protected:
   vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
@@ -331,6 +338,7 @@ protected:
   vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
   bool m_fChoiced10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
+  bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 

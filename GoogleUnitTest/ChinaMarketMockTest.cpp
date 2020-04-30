@@ -291,6 +291,33 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(chinaMarket.IsChoiced10RSStrong1StockSet()) << _T("休息日不处理");
   }
 
+  TEST_F(CChinaMarketMockTest, TestTaskChoice10RSStrongStockSet) {
+    tm tm_;
+    tm_.tm_wday = 1; // 星期一
+    chinaMarket.__TEST_SetMarketTM(tm_);
+    chinaMarket.SetSystemReady(false);
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151000));
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151001));
+    chinaMarket.SetSystemReady(true);
+    chinaMarket.SetChoiced10RSStrongStockSet(true);
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151000));
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151001));
+    chinaMarket.SetSystemReady(true);
+    chinaMarket.SetChoiced10RSStrongStockSet(false);
+    EXPECT_CALL(chinaMarket, RunningThreadChoice10RSStrongStockSet)
+      .Times(1);
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151000));
+    EXPECT_TRUE(chinaMarket.TaskChoice10RSStrongStockSet(151001));
+    EXPECT_TRUE(chinaMarket.IsChoiced10RSStrongStockSet());
+
+    tm_.tm_wday = 0; // 星期日
+    chinaMarket.__TEST_SetMarketTM(tm_);
+    chinaMarket.SetTodayStockProcessed(false);
+    chinaMarket.SetChoiced10RSStrongStockSet(false);
+    EXPECT_FALSE(chinaMarket.TaskChoice10RSStrongStockSet(151001));
+    EXPECT_FALSE(chinaMarket.IsChoiced10RSStrongStockSet()) << _T("休息日不处理");
+  }
+
   TEST_F(CChinaMarketMockTest, TestProcessTodayStock) {
     tm tm_;
     tm_.tm_wday = 1; // 星期一

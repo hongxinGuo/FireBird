@@ -826,7 +826,7 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
   return true;
 }
 
-bool CChinaStock::Is10RSStrong2Stock(void) {
+bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_vRS10Day;
   int iCountFirst = 0, iCountSecond = 0;
@@ -856,7 +856,7 @@ bool CChinaStock::Is10RSStrong2Stock(void) {
   return false;
 }
 
-bool CChinaStock::Is10RSStrong1Stock(void) {
+bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_vRS10Day;
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
@@ -888,6 +888,115 @@ bool CChinaStock::Is10RSStrong1Stock(void) {
 
   return false;
 }
+
+bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+  vector<double> m_vRS10Day;
+  int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
+  bool fFind1 = false, fFind2 = false, fFind3 = false;
+  double dStrong1, dStrong2, dStrong3;
+  bool fFindHigh1, fFindHigh2, fFindHigh3;
+
+  if (pRef->m_dRSStrong[0] < 0) {
+    dStrong1 = -pRef->m_dRSStrong[0]; fFindHigh1 = false;
+  }
+  else { dStrong1 = pRef->m_dRSStrong[0]; fFindHigh1 = true; }
+  if (pRef->m_dRSStrong[1] < 0) {
+    dStrong2 = -pRef->m_dRSStrong[1]; fFindHigh2 = false;
+  }
+  else { dStrong2 = pRef->m_dRSStrong[1];    fFindHigh2 = true; }
+  if (pRef->m_dRSStrong[2] < 0) {
+    dStrong3 = -pRef->m_dRSStrong[2]; fFindHigh3 = false;
+  }
+  else { dStrong3 = pRef->m_dRSStrong[2]; fFindHigh3 = true; }
+
+  ASSERT(m_fDayLineLoaded);
+  int iDayLineSize = GetDayLineSize();
+  if (iDayLineSize < 100) return false;
+
+  m_vRS10Day.resize(iDayLineSize);
+  CalculateDayLineRelativeStrongIndex();
+  GetRS10Day(m_vRS10Day);
+  int i = 0, j = 0;
+
+  if (pRef->m_lDayLength[0] == 0) fFind1 = true;
+  else if (fFindHigh1) {
+    for (i = iDayLineSize - 1; i > iDayLineSize - pRef->m_lDayLength[0]; i--) {
+      if (m_vRS10Day.at(i) > dStrong1) iCountFirst++;
+      if (iCountFirst >= pRef->m_lStrongDayLength[0]) {
+        fFind1 = true;
+        break;
+      }
+    }
+  }
+  else {
+    for (i = iDayLineSize - 1; i > iDayLineSize - pRef->m_lDayLength[0]; i--) {
+      if (m_vRS10Day.at(i) < dStrong1) iCountFirst++;
+      if (iCountFirst >= pRef->m_lStrongDayLength[0]) {
+        fFind1 = true;
+        break;
+      }
+    }
+  }
+  if (!fFind1) return false;
+  if (fFindHigh1) {
+    while (m_vRS10Day.at(i) > (dStrong1 - 2)) i--;
+  }
+  else {
+    while (m_vRS10Day.at(i) < (dStrong1 + 2)) i--;
+  }
+
+  if (pRef->m_lDayLength[1] == 0) fFind2 = true;
+  else if (fFindHigh2) {
+    for (j = i; j > i - pRef->m_lDayLength[1]; j--) {
+      if (m_vRS10Day.at(j) > dStrong2) iCountSecond++;
+      if (iCountSecond > pRef->m_lStrongDayLength[1]) {
+        fFind2 = true;
+        break;
+      }
+    }
+  }
+  else {
+    for (j = i; j > i - pRef->m_lDayLength[1]; j--) {
+      if (m_vRS10Day.at(j) < dStrong2) iCountSecond++;
+      if (iCountSecond > pRef->m_lStrongDayLength[1]) {
+        fFind2 = true;
+        break;
+      }
+    }
+  }
+  if (!fFind2) return false;
+  if (fFindHigh2) {
+    while (m_vRS10Day.at(j) > (dStrong2 - 2)) j--;
+  }
+  else {
+    while (m_vRS10Day.at(j) < (dStrong2 + 2)) j--;
+  }
+
+  if (pRef->m_lDayLength[2] == 0) fFind3 = true;
+  else if (fFindHigh3) {
+    for (int k = j; k > j - pRef->m_lDayLength[2]; k--) {
+      if (m_vRS10Day.at(k) > dStrong3) iCountThird++;
+      if (iCountThird > pRef->m_lStrongDayLength[2]) {
+        fFind3 = true;
+        break;
+      }
+    }
+  }
+  else {
+    for (int k = j; k > j - pRef->m_lDayLength[2]; k--) {
+      if (m_vRS10Day.at(k) < dStrong3) iCountThird++;
+      if (iCountThird > pRef->m_lStrongDayLength[2]) {
+        fFind3 = true;
+        break;
+      }
+    }
+  }
+  if (!fFind3) return false;
+
+  return false;
+}
+
 bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vDayLine.size();

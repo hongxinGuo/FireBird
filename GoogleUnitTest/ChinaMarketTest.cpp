@@ -667,6 +667,26 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsTodayStockProcessed());
   }
 
+  TEST_F(CChinaMarketTest, TestIsChoiced10RSStrongStockSet) {
+    gl_pChinaStockMarket->SetChoiced10RSStrongStockSet(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsChoiced10RSStrongStockSet());
+    gl_pChinaStockMarket->SetChoiced10RSStrongStockSet(false);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrongStockSet());
+  }
+
+  TEST_F(CChinaMarketTest, TestIsChoiced10RSStrong1StockSet) {
+    gl_pChinaStockMarket->SetChoiced10RSStrong1StockSet(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
+    gl_pChinaStockMarket->SetChoiced10RSStrong1StockSet(false);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
+  }
+  TEST_F(CChinaMarketTest, TestIsChoiced10RSStrong2StockSet) {
+    gl_pChinaStockMarket->SetChoiced10RSStrong2StockSet(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
+    gl_pChinaStockMarket->SetChoiced10RSStrong2StockSet(false);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
+  }
+
   TEST_F(CChinaMarketTest, TestIsDayLineNeedSaving) {
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineNeedSaving());
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);

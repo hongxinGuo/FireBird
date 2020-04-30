@@ -109,4 +109,5 @@ public:
   afx_msg void OnUpdateRecordRTData(CCmdUI* pCmdUI);
   afx_msg void OnCalculate10dayRs1();
   afx_msg void OnCalculate10dayRs2();
+  afx_msg void OnCalculate10dayRs();
 };

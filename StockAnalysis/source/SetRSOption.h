@@ -13,6 +13,9 @@ public:
   long m_DayLengthFirst;
   long m_DayLengthSecond;
   long m_DayLengthThird;
+  long m_StrongDayLengthFirst;
+  long m_StrongDayLengthSecond;
+  long m_StrongDayLengthThird;
   CString m_RSStrongFirst;
   CString m_RSStrongSecond;
   CString m_RSStrongThird;

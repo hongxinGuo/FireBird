@@ -96,6 +96,7 @@
     <ClCompile Include="..\StockAnalysis\source\SetRSOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRSStrong2Stcok.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrongStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="..\StockAnalysis\source\SetRSOption.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRSStrong1Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRSStrong2Stock.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrongStock.h" />
     <ClInclude Include="..\StockAnalysis\source\SetStockCode.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />

@@ -57,7 +57,6 @@
 #define IDC_EDIT_FIRST_STRONG1          1016
 #define IDC_EDIT_SECOND_TIME_LENGTH1    1017
 #define IDC_EDIT_SECOND_STRONG1         1018
-#define IDC_EDIT_THIRD_TIME_LENGTH2     1019
 #define IDC_EDIT_THIRD_TIME_LENGTH1     1019
 #define IDC_EDIT_THIRD_STRONG1          1020
 #define ID_PROCESS_TODAY_STOCK          32771
@@ -122,6 +121,9 @@
 #define ID_32845                        32845
 #define ID_CALCULATE_10DAY_RS1          32846
 #define ID_CALCULATE_10DAY_RS2          32847
+#define ID_32848                        32848
+#define ID_32849                        32849
+#define ID_CALCULATE_10DAY_RS           32850
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -137,7 +139,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32848
+#define _APS_NEXT_COMMAND_VALUE         32851
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

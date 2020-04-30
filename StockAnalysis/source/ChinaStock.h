@@ -349,8 +349,10 @@ public:
   virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
   // 判断10日强势股票
-  bool Is10RSStrong2Stock(void);
-  bool Is10RSStrong1Stock(void);
+  bool Calculate10RSStrong1StockSet(void);
+  bool Calculate10RSStrong2StockSet(void);
+
+  bool Calculate10RSStrongStockSet(CRSReference* pRef);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);

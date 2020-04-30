@@ -419,6 +419,9 @@
     <ClCompile Include="..\StockAnalysis\source\SetRSOption.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SetRSStrongStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -614,6 +617,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SetRSOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SetRSStrongStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
