@@ -70,5 +70,5 @@ UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket); // 此线程返回值为24
 UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为31
 // 计算10日强股票集（两次出现强势峰）
 UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为32
-// 计算10日强股票集（使用外部提供的参数）
+// 计算10日强股票集（使用外部pRef提供的参数）
 UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为33
