@@ -2106,25 +2106,15 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
     setRSOption.AddNew();
     setRSOption.m_Index = i;
     setRSOption.m_Active = m_aRSStrongOption[i].m_fActive;
-    if (setRSOption.m_Active) {
-      setRSOption.m_DayLengthFirst = m_aRSStrongOption[i].m_lDayLength[0];
-      setRSOption.m_DayLengthSecond = m_aRSStrongOption[i].m_lDayLength[1];
-      setRSOption.m_DayLengthThird = m_aRSStrongOption[i].m_lDayLength[2];
-      setRSOption.m_StrongDayLengthFirst = m_aRSStrongOption[i].m_lStrongDayLength[0];
-      setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption[i].m_lStrongDayLength[1];
-      setRSOption.m_StrongDayLengthThird = m_aRSStrongOption[i].m_lStrongDayLength[2];
-      setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[0]);
-      setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[1]);
-      setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[2]);
-    }
-    else {
-      setRSOption.m_DayLengthFirst = 0;
-      setRSOption.m_DayLengthSecond = 0;
-      setRSOption.m_DayLengthThird = 0;
-      setRSOption.m_RSStrongFirst = _T("50.000");
-      setRSOption.m_RSStrongSecond = _T("50.000");
-      setRSOption.m_RSStrongThird = _T("50.000");
-    }
+    setRSOption.m_DayLengthFirst = m_aRSStrongOption[i].m_lDayLength[0];
+    setRSOption.m_DayLengthSecond = m_aRSStrongOption[i].m_lDayLength[1];
+    setRSOption.m_DayLengthThird = m_aRSStrongOption[i].m_lDayLength[2];
+    setRSOption.m_StrongDayLengthFirst = m_aRSStrongOption[i].m_lStrongDayLength[0];
+    setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption[i].m_lStrongDayLength[1];
+    setRSOption.m_StrongDayLengthThird = m_aRSStrongOption[i].m_lStrongDayLength[2];
+    setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[0]);
+    setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[1]);
+    setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[2]);
     setRSOption.Update();
   }
   setRSOption.m_pDatabase->CommitTrans();
