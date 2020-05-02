@@ -621,13 +621,19 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {
+    case 118: // F7，选择前一个股票集
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    break;
+    case 119: // F8， 选择后一个股票集
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    break;
     case 33: // PAGE UP
      // last stock
-    gl_pChinaStockMarket->ChangeCurrentStockToPrevStock();
+    gl_pChinaStockMarket->ChangeToPrevStock();
     break;
     case 34: // PAGE DOWN
       // next stock
-    gl_pChinaStockMarket->ChangeCurrentStockToNextStock();
+    gl_pChinaStockMarket->ChangeToNextStock();
     break;
     case 45: // Ins, 加入自选股票
     pCurrentStock->SetChoiced(true);

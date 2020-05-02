@@ -75,6 +75,7 @@ void CChinaMarket::ResetMarket(void) {
   Load10DayRSStrong1StockSet();
   Load10DayRSStrong2StockSet();
   LoadCalculatingRSOption();
+  Load10DayRSStrongStockDB();
 }
 
 void CChinaMarket::Reset(void) {
@@ -110,6 +111,8 @@ void CChinaMarket::Reset(void) {
   m_fTodayTempDataLoaded = false;
 
   m_lCurrentRSStrongIndex = 0;
+  m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
+  m_lCurrentSelectedPosition = 0;
 
   m_fRTDataSetCleared = false;
 
@@ -161,43 +164,92 @@ bool CChinaMarket::CheckMarketReady(void) noexcept {
   return m_fSystemReady;
 }
 
-bool CChinaMarket::ChangeCurrentStockToNextStock(void) {
+bool CChinaMarket::ChangeToNextStock(void) {
   ASSERT(m_pCurrentStock != nullptr);
   long lIndex = m_pCurrentStock->GetOffset();
   CChinaStockPtr pStock = m_pCurrentStock;
-  bool fFound = false;
-  int i = 1;
-  while (!fFound) {
-    if ((lIndex + i) < 12000) {
-      pStock = GetStock(lIndex + i);
+
+  if (m_lCurrentSelectedStockSet < 0) {
+    bool fFound = false;
+    int i = 1;
+    while (!fFound) {
+      if ((lIndex + i) < 12000) {
+        pStock = GetStock(lIndex + i);
+      }
+      else {
+        pStock = GetStock(lIndex + i - 12000);
+      }
+      if (pStock->GetIPOStatus() != 0) fFound = true;
+      i++;
+    }
+  }
+  else {
+    if (m_lCurrentSelectedPosition >= (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() - 1)) {
+      m_lCurrentSelectedPosition = 0;
+      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
     else {
-      pStock = GetStock(lIndex + i - 12000);
+      m_lCurrentSelectedPosition++;
+      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
-    if (pStock->GetIPOStatus() != 0) fFound = true;
-    i++;
+  }
+
+  SetCurrentStock(pStock);
+  return true;
+}
+
+bool CChinaMarket::ChangeToPrevStock(void) {
+  ASSERT(m_pCurrentStock != nullptr);
+  long lIndex = m_pCurrentStock->GetOffset();
+  CChinaStockPtr pStock = m_pCurrentStock;
+
+  if (m_lCurrentSelectedStockSet < 0) {
+    bool fFound = false;
+    int i = 1;
+    while (!fFound) {
+      if ((lIndex - i) >= 0) {
+        pStock = GetStock(lIndex - i);
+      }
+      else {
+        pStock = GetStock(lIndex + 12000 - i);
+      }
+      if (pStock->GetIPOStatus() != 0) fFound = true;
+      i++;
+    }
+  }
+  else {
+    if (m_lCurrentSelectedPosition == 0) {
+      m_lCurrentSelectedPosition = m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() - 1;
+      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+    }
+    else {
+      m_lCurrentSelectedPosition--;
+      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+    }
   }
   SetCurrentStock(pStock);
   return true;
 }
 
-bool CChinaMarket::ChangeCurrentStockToPrevStock(void) {
-  ASSERT(m_pCurrentStock != nullptr);
-  long lIndex = m_pCurrentStock->GetOffset();
-  CChinaStockPtr pStock = m_pCurrentStock;
-  bool fFound = false;
-  int i = 1;
-  while (!fFound) {
-    if ((lIndex - i) >= 0) {
-      pStock = GetStock(lIndex - i);
-    }
+bool CChinaMarket::ChangeToPrevStockSet(void) {
+  do {
+    if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
     else {
-      pStock = GetStock(lIndex + 12000 - i);
+      m_lCurrentSelectedStockSet = 9;
     }
-    if (pStock->GetIPOStatus() != 0) fFound = true;
-    i++;
-  }
-  SetCurrentStock(pStock);
+  } while ((m_lCurrentSelectedStockSet != -1) && (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() == 0));
+
+  return true;
+}
+
+bool CChinaMarket::ChangeToNextStockSet(void) {
+  do {
+    if (m_lCurrentSelectedStockSet == 9) m_lCurrentSelectedStockSet = -1;
+    else {
+      m_lCurrentSelectedStockSet++;
+    }
+  } while ((m_lCurrentSelectedStockSet != -1) && (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() == 0));
+
   return true;
 }
 
@@ -2119,6 +2171,23 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
   }
   setRSOption.m_pDatabase->CommitTrans();
   setRSOption.Close();
+}
+
+bool CChinaMarket::Load10DayRSStrongStockDB(void) {
+  m_lCurrentRSStrongIndex = 0;
+  CSetRSStrongStock setRSStrongStock;
+
+  for (int i = 0; i < 10; i++) {
+    m_lCurrentRSStrongIndex = i;
+    setRSStrongStock.Open();
+    while (!setRSStrongStock.IsEOF()) {
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
+      if (pStock != nullptr) m_av10RSStrongStock[m_lCurrentRSStrongIndex].push_back(pStock);
+      setRSStrongStock.MoveNext();
+    }
+    setRSStrongStock.Close();
+  }
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

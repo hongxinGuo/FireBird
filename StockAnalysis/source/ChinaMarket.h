@@ -177,6 +177,8 @@ public:
   bool LoadCalculatingRSOption(void);
   void SaveCalculatingRSOption(void);
 
+  bool Load10DayRSStrongStockDB(void);
+
   bool UnloadDayLine(void);
 
   // 股票历史数据处理
@@ -316,16 +318,16 @@ public:
 
   bool CheckMarketReady(void) noexcept;
 
-  bool ChangeCurrentStockToNextStock(void);
-  bool ChangeCurrentStockToPrevStock(void);
+  bool ChangeToNextStock(void);
+  bool ChangeToPrevStock(void);
+  bool ChangeToPrevStockSet(void);
+  bool ChangeToNextStockSet(void);
 
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
 
 public:
-  CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
-  long m_lCurrentRSStrongIndex;
 
 protected:
   vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
@@ -336,6 +338,11 @@ protected:
   vector<CChinaStockPtr> m_vChoicedStock; // 自选股票池
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
+  CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
+  vector<CChinaStockPtr> m_av10RSStrongStock[10]; // 10日选择股票集数组
+  long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
+  long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。
+  long m_lCurrentSelectedPosition; // 当前股票集的位置
   bool m_fChoiced10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
