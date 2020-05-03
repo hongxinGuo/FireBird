@@ -622,6 +622,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
     return;
   }
 
+  ASSERT(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
+  ASSERT(gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded());
   switch (m_iCurrentShowType) {
   case 1: // show day line stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);

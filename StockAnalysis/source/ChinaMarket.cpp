@@ -184,13 +184,13 @@ bool CChinaMarket::ChangeToNextStock(void) {
     }
   }
   else {
-    if (m_lCurrentSelectedPosition >= (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() - 1)) {
+    if (m_lCurrentSelectedPosition >= (m_avChoicedStock[m_lCurrentSelectedStockSet].size() - 1)) {
       m_lCurrentSelectedPosition = 0;
-      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
     else {
       m_lCurrentSelectedPosition++;
-      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
   }
 
@@ -219,12 +219,12 @@ bool CChinaMarket::ChangeToPrevStock(void) {
   }
   else {
     if (m_lCurrentSelectedPosition == 0) {
-      m_lCurrentSelectedPosition = m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() - 1;
-      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      m_lCurrentSelectedPosition = m_avChoicedStock[m_lCurrentSelectedStockSet].size() - 1;
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
     else {
       m_lCurrentSelectedPosition--;
-      pStock = m_av10RSStrongStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
     }
   }
   SetCurrentStock(pStock);
@@ -235,20 +235,22 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
   do {
     if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
     else {
-      m_lCurrentSelectedStockSet = 9;
+      m_lCurrentSelectedStockSet = c_10DayRSStockSetStart + 9;
     }
-  } while ((m_lCurrentSelectedStockSet != -1) && (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() == 0));
+    ASSERT(m_lCurrentSelectedStockSet < 20);
+  } while ((m_lCurrentSelectedStockSet != -1) && (m_avChoicedStock[m_lCurrentSelectedStockSet].size() == 0));
 
   return true;
 }
 
 bool CChinaMarket::ChangeToNextStockSet(void) {
   do {
-    if (m_lCurrentSelectedStockSet == 9) m_lCurrentSelectedStockSet = -1;
+    if (m_lCurrentSelectedStockSet == (c_10DayRSStockSetStart + 9)) m_lCurrentSelectedStockSet = -1;
     else {
       m_lCurrentSelectedStockSet++;
     }
-  } while ((m_lCurrentSelectedStockSet != -1) && (m_av10RSStrongStock[m_lCurrentSelectedStockSet].size() == 0));
+    ASSERT(m_lCurrentSelectedStockSet < 20);
+  } while ((m_lCurrentSelectedStockSet != -1) && (m_avChoicedStock[m_lCurrentSelectedStockSet].size() == 0));
 
   return true;
 }
@@ -1220,9 +1222,9 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
 }
 
 bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStock) {
-  auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
-  if (it == m_vChoicedStock.end()) {
-    m_vChoicedStock.push_back(pStock);
+  auto it = find(m_avChoicedStock[0].cbegin(), m_avChoicedStock[0].cend(), pStock);
+  if (it == m_avChoicedStock[0].end()) {
+    m_avChoicedStock[0].push_back(pStock);
     ASSERT(!pStock->IsSaveToChoicedStockDB());
     return true;
   }
@@ -1230,14 +1232,14 @@ bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStock) {
 }
 
 bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
-  auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
-  if (it == m_vChoicedStock.end()) {
+  auto it = find(m_avChoicedStock[0].cbegin(), m_avChoicedStock[0].cend(), pStock);
+  if (it == m_avChoicedStock[0].end()) {
     return false;
   }
   else {
     (*it)->SetChoiced(false);
     (*it)->SetSaveToChoicedStockDB(false);
-    m_vChoicedStock.erase(it);
+    m_avChoicedStock[0].erase(it);
     return true;
   }
 }
@@ -1648,6 +1650,15 @@ bool CChinaMarket::UnloadDayLine(void) {
   }
 
   return true;
+}
+
+CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
+  if (m_lCurrentSelectedStockSet >= 0) {
+    return m_avChoicedStock[m_lCurrentSelectedStockSet][0];
+  }
+  else {
+    return GetStock(0);
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -2182,7 +2193,7 @@ bool CChinaMarket::Load10DayRSStrongStockDB(void) {
     setRSStrongStock.Open();
     while (!setRSStrongStock.IsEOF()) {
       CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
-      if (pStock != nullptr) m_av10RSStrongStock[m_lCurrentRSStrongIndex].push_back(pStock);
+      if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStart].push_back(pStock); // 10日RS股票集起始位置为第10个。
       setRSStrongStock.MoveNext();
     }
     setRSStrongStock.Close();
@@ -2453,7 +2464,7 @@ bool CChinaMarket::UpdateChoicedStockDB(void) {
   }
   setChoicedStock.m_pDatabase->CommitTrans();
   setChoicedStock.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vChoicedStock) {
+  for (auto pStock : m_avChoicedStock[0]) {
     ASSERT(pStock->IsChoiced());
     setChoicedStock.AddNew();
     setChoicedStock.m_Market = pStock->GetMarket();
@@ -2472,7 +2483,7 @@ bool CChinaMarket::AppendChoicedStockDB(void) {
 
   setChoicedStock.Open();
   setChoicedStock.m_pDatabase->BeginTrans();
-  for (auto pStock : m_vChoicedStock) {
+  for (auto pStock : m_avChoicedStock[0]) {
     ASSERT(pStock->IsChoiced());
     if (!pStock->IsSaveToChoicedStockDB()) {
       setChoicedStock.AddNew();
@@ -2495,9 +2506,9 @@ void CChinaMarket::LoadChoicedStockDB(void) {
   // 装入股票代码数据库
   while (!setChoicedStock.IsEOF()) {
     CChinaStockPtr pStock = GetStock(setChoicedStock.m_StockCode);
-    auto it = find(m_vChoicedStock.cbegin(), m_vChoicedStock.cend(), pStock);
-    if (it == m_vChoicedStock.end()) {
-      m_vChoicedStock.push_back(pStock);
+    auto it = find(m_avChoicedStock[0].cbegin(), m_avChoicedStock[0].cend(), pStock);
+    if (it == m_avChoicedStock[0].end()) {
+      m_avChoicedStock[0].push_back(pStock);
     }
     pStock->SetChoiced(true);
     pStock->SetSaveToChoicedStockDB(true);

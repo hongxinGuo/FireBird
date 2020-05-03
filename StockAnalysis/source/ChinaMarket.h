@@ -28,6 +28,9 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CRTDataContainer gl_RTDataContainer;
 
+const int c_SelectedStockStart = 0;
+const int c_10DayRSStockSetStart = 10;
+
 class CChinaMarket : public CVirtualMarket
 {
 public:
@@ -150,6 +153,11 @@ public:
 
   bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
   void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
+
+  long GetCurrentSelectedPosition(void) noexcept { return m_lCurrentSelectedPosition; }
+  void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
+  long GetCurrentSelectedStockSet(void) noexcept { return m_lCurrentSelectedStockSet; }
+  CChinaStockPtr GetCurrentSelectedStock(void);
 
   bool IsChoiced10RSStrong1StockSet(void) noexcept { return m_fChoiced10RSStrong1StockSet; }
   void SetChoiced10RSStrong1StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong1StockSet = fFlag; }
@@ -276,8 +284,8 @@ public:
 
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
-  long GetChoicedStockSize(void) noexcept { return m_vChoicedStock.size(); }
-  void ClearChoiceStockContainer(void) noexcept { m_vChoicedStock.clear(); }
+  long GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
+  void ClearChoiceStockContainer(void) noexcept { m_avChoicedStock[0].clear(); }
   long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
@@ -335,14 +343,13 @@ protected:
   long m_lTotalStock; // 股票代码总数
   long m_lTotalActiveStock;	// 当天股票总数
 
-  vector<CChinaStockPtr> m_vChoicedStock; // 自选股票池
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
   CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
-  vector<CChinaStockPtr> m_av10RSStrongStock[10]; // 10日选择股票集数组
+  vector<CChinaStockPtr> m_avChoicedStock[20]; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集
+  long m_lCurrentSelectedPosition; // 当前股票集的位置
   long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
   long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。
-  long m_lCurrentSelectedPosition; // 当前股票集的位置
   bool m_fChoiced10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成

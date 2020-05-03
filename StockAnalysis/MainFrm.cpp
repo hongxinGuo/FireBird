@@ -623,9 +623,13 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     switch (nChar) {
     case 118: // F7，选择前一个股票集
     gl_pChinaStockMarket->ChangeToPrevStockSet();
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
     break;
     case 119: // F8， 选择后一个股票集
     gl_pChinaStockMarket->ChangeToNextStockSet();
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
     break;
     case 33: // PAGE UP
      // last stock

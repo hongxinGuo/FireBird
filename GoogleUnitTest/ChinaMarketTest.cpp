@@ -1293,6 +1293,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
     gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(0));
     gl_pChinaStockMarket->ChangeToNextStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 1);
@@ -1303,6 +1304,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
     gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(1)); // 选取退市的邯郸钢铁
     gl_pChinaStockMarket->ChangeToPrevStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
