@@ -300,6 +300,7 @@ public:
 
   int GetDayLineNeedUpdateNumber(void) { int i = m_iDayLineNeedUpdate; return i; }
   void SetDayLineNeedUpdateNumber(int i) { m_iDayLineNeedUpdate = i; }
+  void ClearDayLineNeedUpdaeStatus(void);
   int GetDayLineNeedProcessNumber(void) { int i = m_iDayLineNeedProcess; return i; }
   void SetDayLineNeedProcessNumber(int i) { m_iDayLineNeedProcess = i; }
   int GetDayLineNeedSaveNumber(void) { int i = m_iDayLineNeedSave; return i; }
@@ -338,7 +339,7 @@ protected:
 public:
 
 protected:
-  vector<CChinaStockPtr> m_vChinaMarketAStock; // 本系统允许的所有股票池（无论代码是否存在）
+  vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数
   long m_lTotalActiveStock;	// 当天股票总数

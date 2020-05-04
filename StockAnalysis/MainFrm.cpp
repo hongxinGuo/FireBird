@@ -60,9 +60,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
   ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
   ON_UPDATE_COMMAND_UI(ID_RECORD_RT_DATA, &CMainFrame::OnUpdateRecordRTData)
-  ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRs1)
-  ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRs2)
-  ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRs)
+  ON_COMMAND(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnCalculate10dayRS1)
+  ON_COMMAND(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnCalculate10dayRS2)
+  ON_COMMAND(ID_CALCULATE_10DAY_RS, &CMainFrame::OnCalculate10dayRS)
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
+  ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -71,6 +75,8 @@ static UINT indicators[] =
   ID_CURRENT_INPUT,
   ID_CURRENT_SELECT_STOCK,
   ID_CURRENT_SELECT_STOCKNAME,
+  ID_CURRENT_SELECT_STOCK_SET,
+  ID_CURRENT_SELECT_POSITION,
   ID_CURRENT_RTDATA_READING_TIME,
   ID_CURRENT_ACTIVE_STOCK,
   ID_CURRENT_DAYLINE_READING_TIME,
@@ -450,6 +456,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 void CMainFrame::UpdateStatus(void) {
   CString str;
+  char buffer[30];
+
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   //更新状态条
@@ -460,30 +468,37 @@ void CMainFrame::UpdateStatus(void) {
     SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
+  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedStockSet());
+  str = buffer;
+  SysCallSetPaneText(4, (LPCTSTR)str);
+
+  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedPosition());
+  str = buffer;
+  SysCallSetPaneText(5, (LPCTSTR)str);
+
   if (gl_pChinaStockMarket->IsCurrentEditStockChanged()) {
     str = m_aStockCodeTemp;
     SysCallSetPaneText(1, (LPCTSTR)str);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
   }
   // 显示新浪实时数据读取时间（单位为毫秒）
-  SysCallSetPaneText(4, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData());
+  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData());
 
   // 显示活跃股票总数
-  char buffer[30];
   sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetTotalActiveStock());
   str = buffer;
-  SysCallSetPaneText(5, (LPCTSTR)str);
+  SysCallSetPaneText(7, (LPCTSTR)str);
 
   // 显示网易日线历史数据读取时间（单位为毫秒）
-  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
+  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
   // 更新当前工作线程数
   sprintf_s(buffer, "%02d", gl_ThreadStatus.GetNumberOfRunningThread());
   str = buffer;
-  SysCallSetPaneText(7, (LPCTSTR)str);
+  SysCallSetPaneText(9, (LPCTSTR)str);
 
   //更新当地时间的显示
-  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(10, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -713,20 +728,49 @@ void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
   else SysCallCmdUISetCheck(pCmdUI, false);
 }
 
-void CMainFrame::OnCalculate10dayRs1() {
+void CMainFrame::OnCalculate10dayRS1() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->RunningThreadChoice10RSStrong1StockSet();
   gl_pChinaStockMarket->SetChoiced10RSStrong1StockSet(true);
 }
 
-void CMainFrame::OnCalculate10dayRs2() {
+void CMainFrame::OnCalculate10dayRS2() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->RunningThreadChoice10RSStrong2StockSet();
   gl_pChinaStockMarket->SetChoiced10RSStrong2StockSet(true);
 }
 
-void CMainFrame::OnCalculate10dayRs() {
+void CMainFrame::OnCalculate10dayRS() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->RunningThreadChoice10RSStrongStockSet();
   gl_pChinaStockMarket->SetChoiced10RSStrongStockSet(true);
+}
+
+void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
+  else SysCallCmdUIEnable(pCmdUI, true);
+}
+
+void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
+  else SysCallCmdUIEnable(pCmdUI, true);
+}
+
+void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
+  else SysCallCmdUIEnable(pCmdUI, true);
+}
+
+void CMainFrame::OnStopUpdateDayLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->ClearDayLineNeedUpdaeStatus();
 }

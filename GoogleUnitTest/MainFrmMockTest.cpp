@@ -90,6 +90,10 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(8, _))
       .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(9, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
+      .Times(1);
     s_pMainFrame->UpdateStatus();
 
     gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
@@ -100,17 +104,21 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(3, _))
       .Times(1);
-    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(1, _))
-      .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(4, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(5, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(1, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(6, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(7, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(8, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(9, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
       .Times(1);
     s_pMainFrame->UpdateStatus();
   }
@@ -456,5 +464,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsRecordingRTData());
     s_pMainFrame->OnRecordRTData();
     EXPECT_FALSE(gl_pChinaStockMarket->IsRecordingRTData());
+  }
+
+  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS1) {
   }
 }
