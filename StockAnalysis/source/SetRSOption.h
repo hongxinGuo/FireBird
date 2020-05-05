@@ -13,12 +13,15 @@ public:
   long m_DayLengthFirst;
   long m_DayLengthSecond;
   long m_DayLengthThird;
+  long m_DayLengthFourth;
   long m_StrongDayLengthFirst;
   long m_StrongDayLengthSecond;
   long m_StrongDayLengthThird;
+  long m_StrongDayLengthFourth;
   CString m_RSStrongFirst;
   CString m_RSStrongSecond;
   CString m_RSStrongThird;
+  CString m_RSStrongFourth;
 public:
   virtual CString GetDefaultConnect();	// Ä¬ÈÏÁ¬½Ó×Ö·û´®
 

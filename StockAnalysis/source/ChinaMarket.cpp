@@ -1808,38 +1808,26 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   }
 
   m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStock需要此m_lCurrentRSStrongIndex来选择正确的数据表。
-  CSetRSStrongStock setRSStrong1;
+  CSetRSStrongStock setRSStrong(iIndex);
 
-  setRSStrong1.Open();
-  setRSStrong1.m_pDatabase->BeginTrans();
-  while (!setRSStrong1.IsEOF()) {
-    setRSStrong1.Delete();
-    setRSStrong1.MoveNext();
+  setRSStrong.Open();
+  setRSStrong.m_pDatabase->BeginTrans();
+  while (!setRSStrong.IsEOF()) {
+    setRSStrong.Delete();
+    setRSStrong.MoveNext();
   }
-  setRSStrong1.m_pDatabase->CommitTrans();
-  setRSStrong1.m_pDatabase->BeginTrans();
+  setRSStrong.m_pDatabase->CommitTrans();
+  setRSStrong.m_pDatabase->BeginTrans();
   for (auto pStock : v10RSStrongStock) {
-    setRSStrong1.AddNew();
-    setRSStrong1.m_Market = pStock->GetMarket();
-    setRSStrong1.m_StockCode = pStock->GetStockCode();
-    setRSStrong1.Update();
+    setRSStrong.AddNew();
+    setRSStrong.m_Market = pStock->GetMarket();
+    setRSStrong.m_StockCode = pStock->GetStockCode();
+    setRSStrong.Update();
   }
-  setRSStrong1.m_pDatabase->CommitTrans();
-  setRSStrong1.Close();
+  setRSStrong.m_pDatabase->CommitTrans();
+  setRSStrong.Close();
 
   return true;
-}
-
-CString CChinaMarket::GetCurrentRSStrongSQL(void) {
-  CString str = _T("[selected_rs_");
-  char buffer[10];
-
-  ASSERT((m_lCurrentRSStrongIndex >= 0) && (m_lCurrentRSStrongIndex < 10));
-  sprintf_s(buffer, "%1d", m_lCurrentRSStrongIndex);
-  str += buffer;
-  str += _T("]");
-
-  return str;
 }
 
 bool CChinaMarket::IsDayLineNeedUpdate(void) {
@@ -2147,12 +2135,15 @@ bool CChinaMarket::LoadCalculatingRSOption(void) {
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[0] = setRSOption.m_DayLengthFirst;
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[1] = setRSOption.m_DayLengthSecond;
     m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[2] = setRSOption.m_DayLengthThird;
+    m_aRSStrongOption[setRSOption.m_Index].m_lDayLength[3] = setRSOption.m_DayLengthFourth;
     m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[0] = setRSOption.m_StrongDayLengthFirst;
     m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[1] = setRSOption.m_StrongDayLengthSecond;
     m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[2] = setRSOption.m_StrongDayLengthThird;
+    m_aRSStrongOption[setRSOption.m_Index].m_lStrongDayLength[3] = setRSOption.m_StrongDayLengthFourth;
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[0] = atof(setRSOption.m_RSStrongFirst);
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[1] = atof(setRSOption.m_RSStrongSecond);
     m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[2] = atof(setRSOption.m_RSStrongThird);
+    m_aRSStrongOption[setRSOption.m_Index].m_dRSStrong[3] = atof(setRSOption.m_RSStrongFourth);
     setRSOption.MoveNext();
   }
   setRSOption.Close();
@@ -2180,12 +2171,15 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
     setRSOption.m_DayLengthFirst = m_aRSStrongOption[i].m_lDayLength[0];
     setRSOption.m_DayLengthSecond = m_aRSStrongOption[i].m_lDayLength[1];
     setRSOption.m_DayLengthThird = m_aRSStrongOption[i].m_lDayLength[2];
+    setRSOption.m_DayLengthFourth = m_aRSStrongOption[i].m_lDayLength[3];
     setRSOption.m_StrongDayLengthFirst = m_aRSStrongOption[i].m_lStrongDayLength[0];
     setRSOption.m_StrongDayLengthSecond = m_aRSStrongOption[i].m_lStrongDayLength[1];
     setRSOption.m_StrongDayLengthThird = m_aRSStrongOption[i].m_lStrongDayLength[2];
+    setRSOption.m_StrongDayLengthFourth = m_aRSStrongOption[i].m_lStrongDayLength[3];
     setRSOption.m_RSStrongFirst = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[0]);
     setRSOption.m_RSStrongSecond = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[1]);
     setRSOption.m_RSStrongThird = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[2]);
+    setRSOption.m_RSStrongFourth = ConvertValueToString(m_aRSStrongOption[i].m_dRSStrong[3]);
     setRSOption.Update();
   }
   setRSOption.m_pDatabase->CommitTrans();
@@ -2193,19 +2187,25 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
 }
 
 bool CChinaMarket::Load10DayRSStrongStockDB(void) {
-  m_lCurrentRSStrongIndex = 0;
-  CSetRSStrongStock setRSStrongStock;
-
   for (int i = 0; i < 10; i++) {
     m_lCurrentRSStrongIndex = i;
-    setRSStrongStock.Open();
-    while (!setRSStrongStock.IsEOF()) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
-      if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStart].push_back(pStock); // 10日RS股票集起始位置为第10个。
-      setRSStrongStock.MoveNext();
-    }
-    setRSStrongStock.Close();
+    LoadOne10DayRSStrongStockDB(i);
   }
+  return true;
+}
+
+bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
+  m_lCurrentRSStrongIndex = lIndex;
+  CSetRSStrongStock setRSStrongStock(lIndex);
+
+  setRSStrongStock.Open();
+  while (!setRSStrongStock.IsEOF()) {
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
+    if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStart].push_back(pStock); // 10日RS股票集起始位置为第10个。
+    setRSStrongStock.MoveNext();
+  }
+  setRSStrongStock.Close();
+
   return true;
 }
 

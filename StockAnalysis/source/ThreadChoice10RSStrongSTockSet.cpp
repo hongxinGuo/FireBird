@@ -48,12 +48,20 @@ UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket) {
 UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ChoiceRSStrong.Wait();
-  gl_systemMessage.PushInformationMessage(_T("开始计算10日RS\n"));
+  CString str = _T("开始计算10日RS ");
+  char buffer[30];
+  sprintf_s(buffer, "%d", iIndex);
+  str += buffer;
+  str += _T("\n");
+  gl_systemMessage.PushInformationMessage(str);
 
   // 添加一个注释
   pMarket->Choice10RSStrongStockSet(pRef, iIndex);
 
-  gl_systemMessage.PushInformationMessage(_T("10日RS计算完毕\n"));
+  str = _T("10日RS ");
+  str += buffer;
+  str += _T("计算完毕\n");
+  gl_systemMessage.PushInformationMessage(str);
   //pMarket->SetUpdatedDayFor10DayRS1(pMarket->GetDay());
   //pMarket->SetUpdateOptionDB(true); // 更新选项数据库
   gl_ChoiceRSStrong.Signal();

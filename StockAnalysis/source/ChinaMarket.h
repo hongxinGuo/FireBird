@@ -186,6 +186,7 @@ public:
   void SaveCalculatingRSOption(void);
 
   bool Load10DayRSStrongStockDB(void);
+  bool LoadOne10DayRSStrongStockDB(long lIndex);
 
   bool UnloadDayLine(void);
 
@@ -193,7 +194,6 @@ public:
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
-  CString GetCurrentRSStrongSQL(void);
 
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);

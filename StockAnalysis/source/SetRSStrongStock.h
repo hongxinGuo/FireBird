@@ -4,7 +4,7 @@
 class CSetRSStrongStock : public CRecordset
 {
 public:
-  CSetRSStrongStock(CDatabase* pDatabase = NULL);
+  CSetRSStrongStock(long lIndex, CDatabase* pDatabase = NULL);
   DECLARE_DYNAMIC(CSetRSStrongStock)
 
   // 字段/参数数据
@@ -29,6 +29,8 @@ public:
   virtual void DoFieldExchange(CFieldExchange* pFX);	// RFX 支持
 
 // 实现
+  long m_lIndex; // 数据表索引
+
 #ifdef _DEBUG
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;

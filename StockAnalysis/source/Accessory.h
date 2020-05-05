@@ -31,7 +31,7 @@ class CRSReference {
 public:
   CRSReference(void) {
     m_fActive = false;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       m_lDayLength[i] = 0;
       m_lStrongDayLength[i] = 0;
       m_dRSStrong[i] = 50.0;
@@ -39,7 +39,7 @@ public:
   }
 public:
   bool m_fActive;
-  long m_lDayLength[3]; // 日期长度
-  long m_lStrongDayLength[3]; // 满足条件的天数
-  double m_dRSStrong[3]; // 正值意思为高于此值，负值意思为低于此值
+  long m_lDayLength[4]; // 日期长度
+  long m_lStrongDayLength[4]; // 满足条件的天数
+  double m_dRSStrong[4]; // 正值意思为高于此值，负值意思为低于此值
 };
