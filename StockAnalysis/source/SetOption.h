@@ -22,6 +22,7 @@ public:
   long m_LastLoginDay;
   long m_UpdatedDayFor10DayRS1;
   long m_UpdatedDayFor10DayRS2;
+  long m_UpdatedDayFor10DayRS;
 
   // 重写
     // 向导生成的虚函数重写

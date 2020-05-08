@@ -224,6 +224,8 @@ public:
   void SetUpdatedDayFor10DayRS1(long lDay) noexcept { m_lUpdatedDayFor10DayRS1 = lDay; }
   long GetUpdatedDayFor10DayRS2(void) noexcept { return m_lUpdatedDayFor10DayRS2; }
   void SetUpdatedDayFor10DayRS2(long lDay) noexcept { m_lUpdatedDayFor10DayRS2 = lDay; }
+  long GetUpdatedDayFor10DayRS(void) noexcept { return m_lUpdatedDayFor10DayRS; }
+  void SetUpdatedDayFor10DayRS(long lDay) noexcept { m_lUpdatedDayFor10DayRS = lDay; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
@@ -395,6 +397,7 @@ protected:
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
   long m_lUpdatedDayFor10DayRS2;
   long m_lUpdatedDayFor10DayRS1;
+  long m_lUpdatedDayFor10DayRS;
 
   vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;

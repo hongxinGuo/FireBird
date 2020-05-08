@@ -1006,7 +1006,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
   }
   if (!fFind3) return false;
 
-  if (pRef->m_lDayLength[3] == 0) return true; // 不做通盘选择
+  if (pRef->m_lDayLength[3] == 0) return true; // DayLength4为零的话，不做通盘选择
   else if (fFindHigh4) {
     for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[3]); i--) {
       if (m_vRS10Day.at(i) > dStrong4) iCountFourth++;
@@ -1482,6 +1482,9 @@ void CChinaStock::CheckSellGuadan(array<bool, 10>& fNeedCheck, int i) {
       m_lCanceledSellVolume += iTemp;
     }
   }
+  ASSERT(m_lCanceledSellVolume == (m_lCanceledSellVolumeAbove200000 + m_lCanceledSellVolumeBelow10000 + m_lCanceledSellVolumeBelow100000
+                                   + m_lCanceledSellVolumeBelow20000 + m_lCanceledSellVolumeBelow200000 + m_lCanceledSellVolumeBelow5000
+                                   + m_lCanceledSellVolumeBelow50000));
 }
 
 void CChinaStock::CalculateCanceledSellVolume(INT64 lCurrentCancelSellVolume) {
@@ -1519,6 +1522,9 @@ void CChinaStock::CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i) {
       m_lCanceledBuyVolume += iTemp;
     }
   }
+  ASSERT(m_lCanceledBuyVolume == (m_lCanceledBuyVolumeAbove200000 + m_lCanceledBuyVolumeBelow10000 + m_lCanceledBuyVolumeBelow100000
+                                  + m_lCanceledBuyVolumeBelow20000 + m_lCanceledBuyVolumeBelow200000 + m_lCanceledBuyVolumeBelow5000
+                                  + m_lCanceledBuyVolumeBelow50000));
 }
 
 void CChinaStock::CalculateCanceledBuyVolume(INT64 lCurrentCancelBuyVolume) {

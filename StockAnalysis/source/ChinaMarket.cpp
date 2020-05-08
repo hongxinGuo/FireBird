@@ -102,7 +102,7 @@ void CChinaMarket::Reset(void) {
   else m_fTodayStockProcessed = false;
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
-  m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = __CHINA_MARKET_BEGIN_DAY__;
+  m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
 
@@ -1935,6 +1935,9 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
       thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
     }
   }
+  SetUpdatedDayFor10DayRS(GetDay());
+  SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
+
   return true;
 }
 
@@ -2399,6 +2402,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_LastLoginDay = GetDay();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
+    setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
     setOption.Update();
   }
   else {
@@ -2408,6 +2412,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_LastLoginDay = GetDay();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
+    setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();
@@ -2452,10 +2457,13 @@ void CChinaMarket::LoadOptionDB(void) {
     }
     SetUpdatedDayFor10DayRS1(setOption.m_UpdatedDayFor10DayRS1);
     SetUpdatedDayFor10DayRS2(setOption.m_UpdatedDayFor10DayRS2);
+    SetUpdatedDayFor10DayRS(setOption.m_UpdatedDayFor10DayRS);
     if (setOption.m_UpdatedDayFor10DayRS1 < GetDay())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;
     if (setOption.m_UpdatedDayFor10DayRS2 < GetDay())  m_fChoiced10RSStrong2StockSet = false;
     else m_fChoiced10RSStrong2StockSet = true;
+    if (setOption.m_UpdatedDayFor10DayRS < GetDay())  m_fChoiced10RSStrongStockSet = false;
+    else m_fChoiced10RSStrongStockSet = true;
   }
 
   setOption.Close();
