@@ -307,8 +307,8 @@ public:
   void SetDayLineNeedProcessNumber(int i) { m_iDayLineNeedProcess = i; }
   int GetDayLineNeedSaveNumber(void) { int i = m_iDayLineNeedSave; return i; }
   void SetDayLineNeedSaveNumber(int i) { m_iDayLineNeedSave = i; }
-  void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { m_iDayLineNeedUpdate += iNumber; }
-  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1) { if (m_iDayLineNeedUpdate >= iNumber) m_iDayLineNeedUpdate -= iNumber; }
+  void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
+  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
   void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { m_iDayLineNeedProcess += iNumber; }
   void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) { if (m_iDayLineNeedProcess >= iNumber) m_iDayLineNeedProcess -= iNumber; }
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) { m_iDayLineNeedSave += iNumber; }

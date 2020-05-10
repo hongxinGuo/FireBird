@@ -608,5 +608,5 @@ protected:
   INT64 m_llCurrentPos;
 
 private:
-  bool m_fLoadDayLineFirst; // 测试用。防止DayLine表和DayLineInfo表装入次序出错
+  bool m_fLoadDayLineFirst; // 测试用。装入时，DayLineBasicInfo表要先于DayLineExtendInfo表
 };

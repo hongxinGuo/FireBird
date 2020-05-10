@@ -476,6 +476,7 @@ CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
   CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
+  ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false);
   switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
   case __SHANGHAI_MARKET__: // 上海市场？
@@ -1250,6 +1251,16 @@ void CChinaMarket::ClearDayLineNeedUpdaeStatus(void) {
   for (auto pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false);
   }
+}
+
+void CChinaMarket::IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
+  ASSERT(m_iDayLineNeedUpdate < 12000);
+  m_iDayLineNeedUpdate += iNumber;
+}
+
+void CChinaMarket::DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
+  ASSERT(m_iDayLineNeedUpdate > 0);
+  if (m_iDayLineNeedUpdate >= iNumber) m_iDayLineNeedUpdate -= iNumber;
 }
 
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {

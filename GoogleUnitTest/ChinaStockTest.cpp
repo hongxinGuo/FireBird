@@ -879,9 +879,10 @@ namespace StockAnalysisTest {
     setStockCode.Close();
   }
 
-  TEST_F(CChinaStockTest, TestLoadStockCodeDB) {
+  TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
     CSetStockCode setStockCode;
     CChinaStock stock;
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     setStockCode.m_strSort = _T("[ID]");
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
@@ -890,9 +891,16 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetDayLineStartDay(), setStockCode.m_DayLineStartDay);
     EXPECT_EQ(stock.GetDayLineEndDay(), setStockCode.m_DayLineEndDay);
     setStockCode.Close();
+  }
+
+  TEST_F(CChinaStockTest, TestLoadStockCodeDB2) {
+    CSetStockCode setStockCode;
+    CChinaStock stock;
+
     gl_pChinaStockMarket->CalculateTime();
     stock.SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
     long lCurrentDay = gl_pChinaStockMarket->GetDay();
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));

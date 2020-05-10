@@ -46,6 +46,7 @@ namespace StockAnalysisTest {
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->CalculateTime();
@@ -65,6 +66,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStockMarket->SetRTDataSetCleared(false);
@@ -266,7 +268,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySixth, StartReadingThread())
       .Times(0);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
-    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(1);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(10);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
 
     for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
@@ -929,6 +931,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestTaskCheckDayLineDB) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
     gl_pChinaStockMarket->SetSaveDayLine(true);
     gl_pChinaStockMarket->SetDayLineNeedSaveNumber(1);
     gl_pChinaStockMarket->SetDayLineNeedProcessNumber(1);
@@ -952,6 +955,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsUpdateStockCodeDB());
 
     gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
   }
 
   TEST_F(CChinaMarketTest, TestIncreaseNeteaseDayLineInquiringIndex) {
@@ -1181,6 +1186,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 6);
     gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber(6);
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 0);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
   }
 
   TEST_F(CChinaMarketTest, TestGetDayLineNeedProcessNumber) {
