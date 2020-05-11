@@ -934,8 +934,8 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
 
   ASSERT(m_fDayLineLoaded);
   int iDayLineSize = GetDayLineSize();
-  if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 100))
-      && (iDayLineSize < pRef->m_lDayLength[3] + 100)) return false;
+  if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
+      || (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
 
   m_vRS10Day.resize(iDayLineSize);
   CalculateDayLineRelativeStrongIndex();

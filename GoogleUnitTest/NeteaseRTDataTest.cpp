@@ -204,7 +204,7 @@ namespace StockAnalysisTest {
                                                                                           &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
                                                                                           &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
                                                                                           &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
-                                                                                          ));
+  ));
 
   TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
     bool fSucceed = m_RTData.SecceedReadingNeteaseData(m_pNeteaseWebRTData);
@@ -215,7 +215,7 @@ namespace StockAnalysisTest {
     tm_.tm_mday = 11;
     tm_.tm_hour = 15;
     tm_.tm_min = 59;
-    tm_.tm_sec = 55;
+    tm_.tm_sec = 53;
     ttime = mktime(&tm_);
     switch (m_iCount) {
     case 0:
@@ -421,7 +421,7 @@ namespace StockAnalysisTest {
                                            &StockCodePrefixData109, &StockCodePrefixData110, &StockCodePrefixData111,
                                            &StockCodePrefixData112, &StockCodePrefixData113/*, &StockCodePrefixData114,
                                            &StockCodePrefixData115, &StockCodePrefixData116*/
-                                           ));
+                           ));
 
   TEST_P(StockCodePrefixTest, TestStockCodePrefix) {
     bool fSucceed = m_RTData.ReadNeteaseStockCodePrefix(m_pNeteaseWebRTData);
@@ -528,7 +528,7 @@ namespace StockAnalysisTest {
   INSTANTIATE_TEST_SUITE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
                            testing::Values(&neteasedata1, &neteasedata2, &neteasedata3, &neteasedata4, &neteasedata5, &neteasedata6,
                                            &neteasedata7
-                                           ));
+                           ));
 
   TEST_P(ReadNeteaseOneValueTest, TestReadNeteaseOneCValue) {
     CString strValue;
@@ -640,5 +640,5 @@ namespace StockAnalysisTest {
                                                                                               &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
                                                                                               &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
                                                                                               &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38*/
-                                                                                              ));
+  ));
 }

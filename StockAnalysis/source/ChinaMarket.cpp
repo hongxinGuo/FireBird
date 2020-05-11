@@ -123,7 +123,7 @@ void CChinaMarket::Reset(void) {
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
-  m_fUsingNeteaseRTDataReceiver = false; // 不使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_iCountDownTengxunNumber = 5;
   m_iCountDownNeteaseNumber = 5;
 
@@ -861,7 +861,7 @@ void CChinaMarket::StoreChoiceRTData(CRTDataPtr pRTData) {
 //                       "ask1": 5.7, "name": "\u62db\u5546\u8f6e\u8239", "ask3": 5.72, "ask2": 5.71, "arrow": "\u2191",
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
-// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
+// 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用.（turnover即为成交金额，可以使用之。05/12/2020）
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {

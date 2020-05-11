@@ -825,6 +825,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
 //                        "time": "2019/11/04 15:59:52", "turnover": 443978974} });
 //
 // 网易实时数据缺少关键性的成交金额一项，故而无法作为基本数据，只能作为补充用。
+// （turnover即为成交金额，可以使用之。05/12/2020）
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 bool CRTData::SecceedReadingNeteaseData(CWebDataPtr pNeteaseWebRTData) {
@@ -1070,7 +1071,8 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
 
   switch (lIndex) {
-  case 1: // time
+  case 1: // time. 这个时间是实际的成交时间
+  m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
   break;
   case 2: // code
   ASSERT(strValue.GetLength() == 7);
@@ -1092,7 +1094,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   break;
   case 6: // status
   break;
-  case 7: // update
+  case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间要晚3秒钟。
   m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
   break;
   case 10: // open
@@ -1111,7 +1113,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   m_lNew = static_cast<long>(atof(strValue) * 1000);
   break;
   case 15: // volume
-  m_llVolume = atol(strValue);
+  m_llVolume = atoll(strValue);
   break;
   case 20: // bid1
   m_lPBuy[0] = static_cast<long>(atof(strValue) * 1000);
@@ -1174,9 +1176,11 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   m_lVSell[4] = atol(strValue);
   break;
   case 60: // percent
+
   case 61: // updown
   case 62: // arrow
   case 63: // turnover
+  m_llAmount = atoll(strValue);
   break;
   default:
   // 出错了
