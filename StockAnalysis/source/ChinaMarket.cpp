@@ -123,7 +123,7 @@ void CChinaMarket::Reset(void) {
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
-  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
   m_iCountDownTengxunNumber = 5;
   m_iCountDownNeteaseNumber = 0;
 
@@ -157,7 +157,7 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 
 bool CChinaMarket::CheckMarketReady(void) noexcept {
   if (!m_fSystemReady) {
-    if (m_llRTDataReceived > m_lTotalStock * 3) {
+    if (m_llRTDataReceived > m_lTotalStock * 4) {
       m_fSystemReady = true;
     }
   }
@@ -699,6 +699,54 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
+// 处理实时数据等，由SchedulingTaskPerSecond函数调用,每三秒执行一次。
+// 将实时数据暂存队列中的数据分别存放到各自股票的实时队列中。
+// 分发数据时，只分发新的（交易时间晚于之前数据的）实时数据。
+//
+// 此函数用到大量的全局变量，还是放在主线程为好。工作线程目前还是只做计算个股的挂单情况。
+//
+///////////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
+  gl_ProcessNeteaseRTDataQueue.Wait();
+  CChinaStockPtr pStock;
+  const long lTotalNumber = gl_RTDataContainer.GetNeteaseRTDataSize();
+  CString strVolume;
+
+  for (int iCount = 0; iCount < lTotalNumber; iCount++) {
+    CRTDataPtr pRTData = gl_RTDataContainer.PopNeteaseRTData();
+    if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
+      gl_systemMessage.PushInnerSystemInformationMessage(_T("网易实时数据源设置有误"));
+      continue;
+    }
+    if (pRTData->IsActive()) { // 此实时数据有效？
+      if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
+        m_ttNewestTransactionTime = pRTData->GetTransactionTime();
+      }
+      pStock = GetStock(pRTData->GetStockCode());
+      if (!pStock->IsActive()) {
+        if (pRTData->IsValidTime()) {
+          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetIPOStatus(__STOCK_IPOED__);
+        }
+      }
+      if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
+        pStock->PushRTData(pRTData); // 存储新的数据至数据池
+        if (pStock->IsRecordRTData()) {
+          StoreChoiceRTData(pRTData);
+        }
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
+      }
+    }
+  }
+  gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
+  ASSERT(gl_RTDataContainer.GetNeteaseRTDataSize() == 0); // 必须一次处理全体数据。
+  gl_ProcessNeteaseRTDataQueue.Signal();
+
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -717,10 +765,10 @@ CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipU
 }
 
 CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str = _T("");
   CString strStockCode, strRight6, strLeft2, strPrefix;
 
   ASSERT(IsSystemReady());
+  m_strNeteaseRTDataInquiringStr = _T("");
   if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
   strStockCode = m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
   IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
@@ -730,12 +778,12 @@ CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipU
     strPrefix = _T("0");
   }
   else strPrefix = _T("1");
-  str += strPrefix + strRight6;  // 得到第一个股票代码
+  m_strNeteaseRTDataInquiringStr += strPrefix + strRight6;  // 得到第一个股票代码
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((m_lNeteaseRTDataInquiringIndex < m_lTotalStock) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
     iCount++;
-    str += _T(",");
+    m_strNeteaseRTDataInquiringStr += _T(",");
     strStockCode = m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
     strRight6 = strStockCode.Right(6);
     strLeft2 = strStockCode.Left(2);
@@ -743,13 +791,13 @@ CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipU
       strPrefix = _T("0");
     }
     else strPrefix = _T("1");
-    str += strPrefix + strRight6;  // 得到第一个股票代码
+    m_strNeteaseRTDataInquiringStr += strPrefix + strRight6;  // 得到第一个股票代码
     if (m_lNeteaseRTDataInquiringIndex == 0) break;
     IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex);
   }
   if (m_lNeteaseRTDataInquiringIndex > 0) m_lNeteaseRTDataInquiringIndex--;// 退后一步，防止最后一个股票查询错误（其实不必要了）
 
-  return str;
+  return m_strNeteaseRTDataInquiringStr;
 }
 
 bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
@@ -878,17 +926,19 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       iCount = 0;
       while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CRTDataPtr pRTData = make_shared<CRTData>();
-        if (pRTData->ReadNeteaseData(pWebDataReceived)) {
-          iCount++;
-          gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
-           // 检测一下
-          CheckNeteaseRTData(pRTData);
+        if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
+          if (ValidateNeteaseRTData(pRTData)) {
+            iCount++;
+            m_llRTDataReceived++;
+            gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          }
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
-      //TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
+      TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
     }
   }
+
   return true;
 }
 
@@ -921,7 +971,7 @@ bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived) {
   return true;
 }
 
-void CChinaMarket::CheckNeteaseRTData(CRTDataPtr pRTData) {
+bool CChinaMarket::ValidateNeteaseRTData(CRTDataPtr pRTData) {
   // 检测一下
   CString str;
   ASSERT(pRTData->GetDataSource() == __NETEASE_RT_WEB_DATA__);
@@ -937,18 +987,36 @@ void CChinaMarket::CheckNeteaseRTData(CRTDataPtr pRTData) {
     else {
       str = pRTData->GetStockCode();
       str += _T(" 无效股票代码（网易实时数据）");
+      TRACE("\n无效股票代码%s\n", pRTData->GetStockCode());
+      TRACE("申请的股票集为： %s\n\n", m_strNeteaseRTDataInquiringStr);
       gl_systemMessage.PushInnerSystemInformationMessage(str);
+      return false;
     }
+    return true;
   }
+  else return false;
 }
 
-bool CChinaMarket::TaskProcessNeteaseRTData(void) {
+bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
   CRTDataPtr pRTData = nullptr;
   long lTotalData = gl_RTDataContainer.GetNeteaseRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_RTDataContainer.PopNeteaseRTData();
+    pRTData = nullptr;
+  }
+
+  return true;
+}
+
+bool CChinaMarket::TaskDiscardSinaRTData(void) {
+  CRTDataPtr pRTData = nullptr;
+  long lTotalData = gl_RTDataContainer.GetSinaRTDataSize();
+
+  for (long i = 0; i < lTotalData; i++) {
+    // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
+    pRTData = gl_RTDataContainer.PopSinaRTData();
     pRTData = nullptr;
   }
 
@@ -1156,8 +1224,13 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
     TaskDistributeSinaRTDataToProperStock();
+    // 分发网易实时数据至各相关股票中。（目前暂时不用）
+    //TaskDistributeNeteaseRTDataToProperStock();
+
     TaskProcessTengxunRTData();
-    TaskProcessNeteaseRTData();
+
+    TaskDiscardNeteaseRTData();
+    TaskDiscardSinaRTData();
     s_iCountDownProcessWebRTData = 0;
   }
   else s_iCountDownProcessWebRTData--;

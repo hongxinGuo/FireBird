@@ -5,10 +5,6 @@
 using namespace std;
 #include<queue>
 
-// 此变量用于决定使用deque还是priority_ueue来实现存储实时数据的队列。以后应该采用priority_queue来实现，这样可以实现多数据来源。
-// 目前使用deque队列存储实时数据，故此变量初始值设置为假。在测试使用priority_queue成功后，即弃用deque(此标识永远为真）。
-extern bool gl_fUsingPriorityQueue;
-
 class CPriorityQueueRTData final
 {
 public:
@@ -19,6 +15,7 @@ public:
   // 通用接口函数
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);
+  CRTDataPtr GetHead(void) { return m_priorityqueueRTStockData.top(); }
   long GetRTDataSize(void);
 
 protected:

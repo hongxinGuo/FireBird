@@ -13,6 +13,8 @@ enum {
   __NO_TRANSACTION__ = 8
 };
 
+#include"PriorityQueueRTData.h"
+
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineToday.h"
@@ -596,7 +598,8 @@ protected:
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-  queue<CRTDataPtr> m_qRTData; // 实时数据队列。
+  //queue<CRTDataPtr> m_qRTData; // 实时数据队列。
+  CPriorityQueueRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
   // 日线历史数据

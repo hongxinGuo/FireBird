@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadReadNeteaseRTDataTest, TestThreadReadNeteaseRTData) {
-    EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData(200, 30, 30))
+    EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData(150, 30, 30))
       .Times(1)
       .WillOnce(Return(false));
     NeteaseRTWebInquiry.__TESTSetBuffer(_T("testData"));
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
-    EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData(200, 30, 30))
+    EXPECT_CALL(NeteaseRTWebInquiry, ReadWebData(150, 30, 30))
       .Times(1)
       .WillOnce(Return(true));
     NeteaseRTWebInquiry.__TESTSetBuffer(_T("testData"));

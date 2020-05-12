@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringPrefix(), _T("http://api.money.126.net/data/feed/"));
     EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringSuffix(), _T(""));
     EXPECT_STREQ(m_NeteaseRTWebInquiry.GetConnection(), _T("NeteaseRT"));
-    EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 600) << _T("网易默认值");
+    EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 700) << _T("网易默认值");
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestGetWebData) {

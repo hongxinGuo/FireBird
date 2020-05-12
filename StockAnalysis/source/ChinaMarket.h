@@ -249,11 +249,14 @@ public:
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
   bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
   bool IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived);
-  void CheckNeteaseRTData(CRTDataPtr pRTData);
-  bool TaskProcessNeteaseRTData(void);
+  bool ValidateNeteaseRTData(CRTDataPtr pRTData);
+
+  bool TaskDiscardNeteaseRTData(void);
+  bool TaskDiscardSinaRTData(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
+  bool TaskDistributeNeteaseRTDataToProperStock(void);
 
   void TaskSaveTempDataIntoDB(long lCurrentTime);
 

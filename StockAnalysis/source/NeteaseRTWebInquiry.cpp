@@ -31,7 +31,7 @@ CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("NeteaseRT");
   m_fReportStatus = false;
-  m_lInquiringNumber = 600; // 网易实时数据查询默认值
+  m_lInquiringNumber = 700; // 网易实时数据查询默认值
 }
 
 CNeteaseRTWebInquiry::~CNeteaseRTWebInquiry() {
@@ -44,10 +44,13 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
 
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
+  bool fSkipUnactiveStock = true;
 
   ASSERT(gl_pChinaStockMarket->IsSystemReady());
   // 申请下一批次股票实时数据
-  strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, false); // 目前还是使用全部股票池
+  if (gl_pChinaStockMarket->IsSystemReady()) fSkipUnactiveStock = true;
+  else fSkipUnactiveStock = false;
+  strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, fSkipUnactiveStock); // 目前还是使用全部股票池
   CreateTotalInquiringString(strMiddle);
 
   return true;

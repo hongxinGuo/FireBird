@@ -1725,7 +1725,7 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::PushRTData(CRTDataPtr pData) {
-  m_qRTData.push(pData);
+  m_qRTData.PushRTData(pData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1735,13 +1735,11 @@ void CChinaStock::PushRTData(CRTDataPtr pData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CRTDataPtr CChinaStock::PopRTData(void) {
-  CRTDataPtr pData = m_qRTData.front();
-  m_qRTData.pop();
-  return pData;
+  return m_qRTData.PopRTData();
 }
 
 CRTDataPtr CChinaStock::GetRTDataAtHead(void) {
-  return m_qRTData.front();
+  return m_qRTData.GetHead();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1751,7 +1749,7 @@ CRTDataPtr CChinaStock::GetRTDataAtHead(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 INT64 CChinaStock::GetRTDataQueueSize(void) {
-  return m_qRTData.size();
+  return m_qRTData.GetRTDataSize();
 }
 
 bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
