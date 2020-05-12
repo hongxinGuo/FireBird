@@ -125,7 +125,7 @@ void CChinaMarket::Reset(void) {
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
   m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_iCountDownTengxunNumber = 5;
-  m_iCountDownNeteaseNumber = 5;
+  m_iCountDownNeteaseNumber = 0;
 
   m_fUpdateStockCodeDB = false;
   m_fUpdateChoicedStockDB = false;
@@ -878,7 +878,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       iCount = 0;
       while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CRTDataPtr pRTData = make_shared<CRTData>();
-        if (pRTData->SecceedReadingNeteaseData(pWebDataReceived)) {
+        if (pRTData->ReadNeteaseData(pWebDataReceived)) {
           iCount++;
           gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
            // 检测一下
@@ -1105,8 +1105,8 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
     if (IsUsingNeteaseRTDataReceiver()) {
       if (m_iCountDownNeteaseNumber <= 0) {
         // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_WebInquirer.GetNeteaseRTData(); // 目前不使用此功能。
-        m_iCountDownNeteaseNumber = 5;
+        gl_WebInquirer.GetNeteaseRTData();
+        m_iCountDownNeteaseNumber = 0;
       }
       else m_iCountDownNeteaseNumber--;
     }

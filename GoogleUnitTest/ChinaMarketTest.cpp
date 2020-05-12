@@ -1337,10 +1337,10 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetCountDownNeteaseNumber) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetCountDownNeteaseNumber(), 5);
+    EXPECT_EQ(gl_pChinaStockMarket->GetCountDownNeteaseNumber(), 0);
     gl_pChinaStockMarket->SetCountDownNeteaseNumber(100);
     EXPECT_EQ(gl_pChinaStockMarket->GetCountDownNeteaseNumber(), 100);
-    gl_pChinaStockMarket->SetCountDownNeteaseNumber(5);
+    gl_pChinaStockMarket->SetCountDownNeteaseNumber(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetCountDownTengxunNumber) {

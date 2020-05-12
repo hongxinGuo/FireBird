@@ -828,7 +828,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
 // （turnover即为成交金额，可以使用之。05/12/2020）
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::SecceedReadingNeteaseData(CWebDataPtr pNeteaseWebRTData) {
+bool CRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
@@ -1069,10 +1069,17 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
 
 bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
+  time_t ttTemp = 0;
 
   switch (lIndex) {
-  case 1: // time. 这个时间是实际的成交时间
-  m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  case 1: // time. 这个时间可能是实际的成交时间。需要与Update时间比较，采用较早的时间。
+  if (m_time > 0) { // 设置过？
+    ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+    if (m_time > ttTemp) m_time = ttTemp;
+  }
+  else {
+    m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  }
   break;
   case 2: // code
   ASSERT(strValue.GetLength() == 7);
@@ -1094,8 +1101,14 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   break;
   case 6: // status
   break;
-  case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间要晚3秒钟。
-  m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  case 7: // update。 这个时间估计是交易所发布此交易的时间，比实际交易时间可能要晚。采用较早的时间。
+  if (m_time > 0) { // 设置过？
+    ttTemp = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+    if (m_time > ttTemp) m_time = ttTemp;
+  }
+  else {
+    m_time = ConvertStringToTime(_T("%04d/%02d/%02d %02d:%02d:%02d"), strValue);
+  }
   break;
   case 10: // open
   m_lOpen = static_cast<long>(atof(strValue) * 1000);

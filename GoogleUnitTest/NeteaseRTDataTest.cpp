@@ -207,7 +207,7 @@ namespace StockAnalysisTest {
   ));
 
   TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
-    bool fSucceed = m_RTData.SecceedReadingNeteaseData(m_pNeteaseWebRTData);
+    bool fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     time_t ttime;
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -251,7 +251,7 @@ namespace StockAnalysisTest {
     break;
     case 1:
     EXPECT_TRUE(fSucceed); // 第一个数据没有错误
-    fSucceed = m_RTData.SecceedReadingNeteaseData(m_pNeteaseWebRTData);
+    fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
@@ -289,7 +289,7 @@ namespace StockAnalysisTest {
     break;
     case 3:
     EXPECT_TRUE(fSucceed); // 第一个数据错误
-    fSucceed = m_RTData.SecceedReadingNeteaseData(m_pNeteaseWebRTData);
+    fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601")); // 股票代码已设置
     EXPECT_EQ(m_RTData.GetHigh(), 0); // 此位置出错，没有设置。
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
