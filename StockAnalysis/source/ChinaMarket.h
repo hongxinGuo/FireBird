@@ -233,8 +233,8 @@ public:
   size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  void SetStockCodeForInquiringSinaRTData(CString strStockCode) noexcept { m_strStockCodeForInquiringSinaRTData = strStockCode; }
-  CString GetStockCodeForInquiringSinaRTData(void) noexcept { return m_strStockCodeForInquiringSinaRTData; }
+  void SetStockCodeForInquiringRTData(CString strStockCode) noexcept { m_strStockCodeForInquiringRTData = strStockCode; }
+  CString GetStockCodeForInquiringRTData(void) noexcept { return m_strStockCodeForInquiringRTData; }
   void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
   clock_t GetReadingTengxunRTDataTime(void) noexcept { return m_ReadingTengxunRTDataTime; }
   void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) noexcept { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
@@ -260,14 +260,17 @@ public:
 
   void TaskSaveTempDataIntoDB(long lCurrentTime);
 
+  void ChoiceSinaRTDataServer(void) noexcept { m_iRTDataServer = 0; }
+  void ChoiceNeteaseRTDataServer(void) noexcept { m_iRTDataServer = 1; }
+  bool IsUsingSinaRTDataServer(void) noexcept { if (m_iRTDataServer == 0) return true; else return false; }
+  bool IsUsingNeteaseRTDataServer(void) noexcept { if (m_iRTDataServer == 1) return true; else return false; }
+
   // 状态反馈
   bool IsUsingSinaRTDataReceiver(void) noexcept { return m_fUsingSinaRTDataReceiver; }
   bool IsUsingNeteaseRTDataReceiver(void) noexcept { return m_fUsingNeteaseRTDataReceiver; }
   void SetUsingNeteaseRTDataReceiver(bool fFlag) noexcept { m_fUsingNeteaseRTDataReceiver = fFlag; }
   bool IsUsingTengxunRTDataReceiver(void) noexcept { return m_fUsingTengxunRTDataReceiver; }
   void SetUsingTengxunRTDataReceiver(bool fFlag) noexcept { m_fUsingTengxunRTDataReceiver = fFlag; }
-  int GetCountDownNeteaseNumber(void) noexcept { return m_iCountDownNeteaseNumber; }
-  void SetCountDownNeteaseNumber(int iValue) noexcept { m_iCountDownNeteaseNumber = iValue; }
   int GetCountDownTengxunNumber(void) noexcept { return m_iCountDownTengxunNumber; }
   void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
@@ -378,11 +381,12 @@ protected:
 
   time_t m_ttNewestTransactionTime;
 
+  int m_iRTDataServer; // 实时数据服务器选择
+
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
   bool m_fUsingTengxunRTDataReceiver; // 使用腾讯实时数据提取器
   int m_iCountDownTengxunNumber;
-  int m_iCountDownNeteaseNumber;
 
   CString m_strSinaRTDataInquiringStr;
   CString m_strTengxunRTDataInquiringStr;
@@ -416,7 +420,7 @@ protected:
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 
   // 多线程读取之变量
-  CString m_strStockCodeForInquiringSinaRTData;
+  CString m_strStockCodeForInquiringRTData;
   clock_t m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
   CString m_strStockCodeForInquiringNeteaseDayLine;
 

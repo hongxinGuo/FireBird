@@ -142,7 +142,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataReceiver());
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingTengxunRTDataReceiver());
-    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
 
     EXPECT_EQ(gl_pChinaStockMarket->GetNeteaseDayLineDataInquiringIndex(), 0);
     EXPECT_EQ(gl_pChinaStockMarket->GetNeteaseRTDataInquiringIndex(), 0);
@@ -1051,8 +1051,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetStockCodeForInquiringSinaRTData) {
-    gl_pChinaStockMarket->SetStockCodeForInquiringSinaRTData(_T("sh601919"));
-    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData(), _T("sh601919"));
+    gl_pChinaStockMarket->SetStockCodeForInquiringRTData(_T("sh601919"));
+    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringRTData(), _T("sh601919"));
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingNeteaseDayLineDataTime) {
@@ -1229,10 +1229,9 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb) {
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
     gl_pChinaStockMarket->SetSystemReady(false);
-    gl_pChinaStockMarket->SetCountDownNeteaseNumber(5);
     gl_pChinaStockMarket->SetCountDownTengxunNumber(5);
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingTengxunRTDataReceiver());
-    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
     gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(true);
     EXPECT_CALL(*gl_pSinaRTWebInquiry, StartReadingThread).Times(1);
     EXPECT_CALL(*gl_pNeteaseRTWebInquiry, StartReadingThread).Times(0);
@@ -1243,7 +1242,6 @@ namespace StockAnalysisTest {
     gl_pSinaRTWebInquiry->SetReadingWebData(false);
 
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->SetCountDownNeteaseNumber(0);
     gl_pChinaStockMarket->SetCountDownTengxunNumber(0);
     EXPECT_CALL(*gl_pSinaRTWebInquiry, StartReadingThread).Times(1);
     EXPECT_CALL(*gl_pTengxunRTWebInquiry, StartReadingThread).Times(1);
@@ -1254,9 +1252,9 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->TaskGetRTDataFromWeb();
     EXPECT_TRUE(gl_pSinaRTWebInquiry->IsReadingWebData());
     EXPECT_TRUE(gl_pTengxunRTWebInquiry->IsReadingWebData());
-    EXPECT_TRUE(gl_pNeteaseRTWebInquiry->IsReadingWebData());
+    EXPECT_FALSE(gl_pNeteaseRTWebInquiry->IsReadingWebData());
 
-    gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(false);
+    gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(true);
     gl_pSinaRTWebInquiry->SetReadingWebData(false);
     gl_pTengxunRTWebInquiry->SetReadingWebData(false);
     gl_pNeteaseRTWebInquiry->SetReadingWebData(false);
@@ -1320,12 +1318,23 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
   }
 
+  TEST_F(CChinaMarketTest, TestChoiceSinaRTDataServer) {
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+    gl_pChinaStockMarket->ChoiceNeteaseRTDataServer();
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+    gl_pChinaStockMarket->ChoiceSinaRTDataServer();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+  }
+
   TEST_F(CChinaMarketTest, TestIsUsingNeteaseRTDataReceiver) {
-    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
-    gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
     gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(false);
     EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
+    gl_pChinaStockMarket->SetUsingNeteaseRTDataReceiver(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataReceiver());
   }
 
   TEST_F(CChinaMarketTest, TestIsUsingTengxunRTDataReceiver) {
@@ -1334,13 +1343,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsUsingTengxunRTDataReceiver());
     gl_pChinaStockMarket->SetUsingTengxunRTDataReceiver(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingTengxunRTDataReceiver());
-  }
-
-  TEST_F(CChinaMarketTest, TestGetCountDownNeteaseNumber) {
-    EXPECT_EQ(gl_pChinaStockMarket->GetCountDownNeteaseNumber(), 0);
-    gl_pChinaStockMarket->SetCountDownNeteaseNumber(100);
-    EXPECT_EQ(gl_pChinaStockMarket->GetCountDownNeteaseNumber(), 100);
-    gl_pChinaStockMarket->SetCountDownNeteaseNumber(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetCountDownTengxunNumber) {

@@ -46,11 +46,11 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
   bool fSkipUnactiveStock = true;
 
-  ASSERT(gl_pChinaStockMarket->IsSystemReady());
   // 申请下一批次股票实时数据
   if (gl_pChinaStockMarket->IsSystemReady()) fSkipUnactiveStock = true;
   else fSkipUnactiveStock = false;
   strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, fSkipUnactiveStock); // 目前还是使用全部股票池
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码
   CreateTotalInquiringString(strMiddle);
 
   return true;

@@ -482,7 +482,7 @@ void CMainFrame::UpdateStatus(void) {
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
   }
   // 显示新浪实时数据读取时间（单位为毫秒）
-  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringSinaRTData());
+  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
   sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetTotalActiveStock());

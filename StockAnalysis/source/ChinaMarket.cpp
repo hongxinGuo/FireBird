@@ -121,11 +121,12 @@ void CChinaMarket::Reset(void) {
   m_fGetRTData = true;
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
+  m_iRTDataServer = 1; // 使用新浪实时数据服务器
+
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
-  m_fUsingNeteaseRTDataReceiver = false; // 使用网易实时数据提取器
+  m_fUsingNeteaseRTDataReceiver = true; // 使用网易实时数据提取器
   m_iCountDownTengxunNumber = 5;
-  m_iCountDownNeteaseNumber = 0;
 
   m_fUpdateStockCodeDB = false;
   m_fUpdateChoicedStockDB = false;
@@ -157,8 +158,9 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 
 bool CChinaMarket::CheckMarketReady(void) noexcept {
   if (!m_fSystemReady) {
-    if (m_llRTDataReceived > m_lTotalStock * 4) {
+    if (m_llRTDataReceived > m_lTotalStock * 2) {
       m_fSystemReady = true;
+      gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
     }
   }
   return m_fSystemReady;
@@ -767,7 +769,6 @@ CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipU
 CString CChinaMarket::GetNeteaseInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString strStockCode, strRight6, strLeft2, strPrefix;
 
-  ASSERT(IsSystemReady());
   m_strNeteaseRTDataInquiringStr = _T("");
   if (fSkipUnactiveStock) StepToActiveStockIndex(m_lNeteaseRTDataInquiringIndex);
   strStockCode = m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
@@ -935,7 +936,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
-      TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
+      //TRACE(_T("ReadNetease正常结束,共接收了%d个数据\n"), iCount);
     }
   }
 
@@ -987,8 +988,8 @@ bool CChinaMarket::ValidateNeteaseRTData(CRTDataPtr pRTData) {
     else {
       str = pRTData->GetStockCode();
       str += _T(" 无效股票代码（网易实时数据）");
-      TRACE("\n无效股票代码%s\n", pRTData->GetStockCode());
-      TRACE("申请的股票集为： %s\n\n", m_strNeteaseRTDataInquiringStr);
+      TRACE("\n无效股票代码%s\n", pRTData->GetStockCode().GetBuffer());
+      TRACE("申请的股票集为： %s\n\n", m_strNeteaseRTDataInquiringStr.GetBuffer());
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       return false;
     }
@@ -1131,6 +1132,7 @@ bool CChinaMarket::SchedulingTask(void) {
   if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
     TaskProcessWebRTDataGetFromSinaServer();
+    TaskProcessWebRTDataGetFromNeteaseServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
     if (!m_fStartReceivingData && IsSystemReady()) m_iCountDownSlowReadingRTData = 300; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
@@ -1150,7 +1152,6 @@ bool CChinaMarket::SchedulingTask(void) {
       m_fTodayTempDataLoaded = true;
     }
     TaskProcessWebRTDataGetFromTengxunServer();
-    TaskProcessWebRTDataGetFromNeteaseServer();
     TaskGetNeteaseDayLineFromWeb();
   }
 
@@ -1163,21 +1164,25 @@ bool CChinaMarket::SchedulingTask(void) {
 //
 /////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetRTDataFromWeb(void) {
+  switch (m_iRTDataServer) {
+  case 0: // 使用新浪实时数据服务器
   if (IsUsingSinaRTDataReceiver()) {
     gl_WebInquirer.GetSinaRTData(); // 每400毫秒(100X4)申请一次实时数据。新浪的实时行情服务器响应时间不超过100毫秒（30-70之间），且没有出现过数据错误。
   }
+  break;
+  case 1: // 使用网易实时数据服务器
+    // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失。
+    // 网易实时数据有时还发送没有要求过的股票，不知为何。
+  if (IsUsingNeteaseRTDataReceiver()) {
+    // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
+    gl_WebInquirer.GetNeteaseRTData();
+  }
+  break;
+  default: // 错误
+  break;
+  }
 
   if (IsSystemReady()) {
-    // 网易实时数据有大量的缺失字段，且前缀后缀也有时缺失，暂时停止使用。
-    // 网易实时数据有时还发送没有要求过的股票，不知为何。
-    if (IsUsingNeteaseRTDataReceiver()) {
-      if (m_iCountDownNeteaseNumber <= 0) {
-        // 读取网易实时行情数据。估计网易实时行情与新浪的数据源相同，故而两者可互换，使用其一即可。
-        gl_WebInquirer.GetNeteaseRTData();
-        m_iCountDownNeteaseNumber = 0;
-      }
-      else m_iCountDownNeteaseNumber--;
-    }
     // 读取腾讯实时行情数据。 由于腾讯实时行情的股数精度为手，没有零股信息，导致无法与新浪实时行情数据对接（新浪精度为股），故而暂时不用
     if (IsUsingTengxunRTDataReceiver()) {
       if (m_iCountDownTengxunNumber <= 0) {
@@ -1209,6 +1214,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
 
+  CheckMarketReady(); // 检查市场是否完成初始化
+
   if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0)) {
     TaskChoice10RSStrong1StockSet(lCurrentTime);
     TaskChoice10RSStrong2StockSet(lCurrentTime);
@@ -1224,8 +1231,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
     // 将接收到的实时数据分发至各相关股票的实时数据队列中。
     // 由于有多个数据源，故而需要等待各数据源都执行一次后，方可以分发至相关股票处，故而需要每三秒执行一次，以保证各数据源至少都能提供一次数据。
     TaskDistributeSinaRTDataToProperStock();
-    // 分发网易实时数据至各相关股票中。（目前暂时不用）
-    //TaskDistributeNeteaseRTDataToProperStock();
+    // 分发网易实时数据至各相关股票中。
+    TaskDistributeNeteaseRTDataToProperStock();
 
     TaskProcessTengxunRTData();
 
