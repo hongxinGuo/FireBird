@@ -105,8 +105,8 @@ void CChinaMarket::Reset(void) {
   m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
-
   m_fMarketOpened = false;
+  m_fSaveTempData = true;
 
   m_fTodayTempDataLoaded = false;
 
@@ -121,7 +121,7 @@ void CChinaMarket::Reset(void) {
   m_fGetRTData = true;
   m_iCountDownSlowReadingRTData = 3; // 400毫秒每次
 
-  m_iRTDataServer = 1; // 使用新浪实时数据服务器
+  m_iRTDataServer = 0; // 使用新浪实时数据服务器
 
   m_fUsingSinaRTDataReceiver = true; // 使用新浪实时数据提取器
   m_fUsingTengxunRTDataReceiver = true; // 默认状态下读取腾讯实时行情
@@ -1024,6 +1024,19 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
   return true;
 }
 
+bool CChinaMarket::TaskDiscardTengxunRTData(void) {
+  CRTDataPtr pRTData = nullptr;
+  long lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
+
+  for (long i = 0; i < lTotalData; i++) {
+    // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
+    pRTData = gl_RTDataContainer.PopTengxunRTData();
+    pRTData = nullptr;
+  }
+
+  return true;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // 腾讯实时数据，如果遇到被查询股票代码为非上市时，只是简单略过，不返回数据。故而查询900个股票，返回的数据量要小于900.
@@ -1134,7 +1147,7 @@ bool CChinaMarket::SchedulingTask(void) {
     TaskProcessWebRTDataGetFromSinaServer();
     TaskProcessWebRTDataGetFromNeteaseServer();
     // 如果要求慢速读取实时数据，则设置读取速率为每分钟一次
-    if (!m_fStartReceivingData && IsSystemReady()) m_iCountDownSlowReadingRTData = 300; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
+    if (!m_fStartReceivingData && IsSystemReady()) m_iCountDownSlowReadingRTData = 3; // 完全轮询一遍后，非交易时段一分钟左右更新一次即可
     else m_iCountDownSlowReadingRTData = 3;  // 计数4次,即每400毫秒申请一次实时数据
   }
   m_iCountDownSlowReadingRTData--;
@@ -1238,6 +1251,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
     TaskDiscardNeteaseRTData();
     TaskDiscardSinaRTData();
+    TaskDiscardTengxunRTData();
     s_iCountDownProcessWebRTData = 0;
   }
   else s_iCountDownProcessWebRTData--;
@@ -1283,7 +1297,9 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
   if (i5MinuteCounter < 0) {
     i5MinuteCounter = 299;
 
-    TaskSaveTempDataIntoDB(lCurrentTime);
+    if (IsSavingTempData()) {
+      TaskSaveTempDataIntoDB(lCurrentTime);
+    }
 
     return true;
   } // 每五分钟一次的任务
@@ -2282,7 +2298,6 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
 
 bool CChinaMarket::Load10DayRSStrongStockDB(void) {
   for (int i = 0; i < 10; i++) {
-    m_lCurrentRSStrongIndex = i;
     LoadOne10DayRSStrongStockDB(i);
   }
   return true;

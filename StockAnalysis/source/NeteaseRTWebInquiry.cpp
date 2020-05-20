@@ -50,7 +50,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   if (gl_pChinaStockMarket->IsSystemReady()) fSkipUnactiveStock = true;
   else fSkipUnactiveStock = false;
   strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, fSkipUnactiveStock); // 目前还是使用全部股票池
-  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(7)); // 只提取第一个股票代码.网易代码格式为：0600000，共七个字符
   CreateTotalInquiringString(strMiddle);
 
   return true;

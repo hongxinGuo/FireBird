@@ -463,7 +463,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 // 32 : 涨跌 %
 // 33 : 最高
 // 34 : 最低
-// 35 : 价格 / 成交量（手） / 成交额
+// 35 : 价格 / 成交量（手） / 成交额（元）。 可以使用此处的数据代替36、37处的数据，这样就可以使用腾讯实时数据了。
 // 36 : 成交量（手）
 // 37 : 成交额（万）
 // 38 : 换手率
@@ -488,9 +488,10 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
   char buffer2[7];
   static char buffer3[200];
   static CString strHeader = _T("v_s");
-  long lTemp = 0;
+  long lTemp = 0, lTemp2 = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
+  float fTemp = 0.0;
   long lStockCode = 0;
 
   try {
@@ -635,14 +636,20 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
+    m_lHigh = dTemp * 1000;
     // 最低价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    // 成交价/成交量/成交金额
+    m_lLow = dTemp * 1000;
+    // 第三十五项，成交价/成交量（手）/成交金额（元）
+    // 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
     if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
       return false;
     }
+    sscanf_s(buffer3, "%f/%d/%d", &fTemp, &lTemp, &m_llAmount);
+    m_lNew = fTemp * 1000;
+    m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
     // 成交手数
     if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
       return false;
@@ -700,6 +707,7 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     }
     if (dTemp > 0.01) m_lLowLimit = static_cast<long>(dTemp * 1000);
 
+    // 后面的数据具体内容不清楚，暂时放弃解码。
     while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();
       if (*pTengxunWebRTData->m_pCurrentPos == 0x000) {

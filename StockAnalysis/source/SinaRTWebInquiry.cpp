@@ -30,7 +30,7 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   else { // 开市时使用今日活跃股票池
     strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, true);
   }
-  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码。新浪代码格式为：sh600000，共八个字符。
   CreateTotalInquiringString(strMiddle);
 
   return true;

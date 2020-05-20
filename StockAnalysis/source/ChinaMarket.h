@@ -253,6 +253,7 @@ public:
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);
+  bool TaskDiscardTengxunRTData(void);
 
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
@@ -285,6 +286,8 @@ public:
   void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
   bool IsRTDataSetCleared(void) noexcept { return m_fRTDataSetCleared; }
   void SetRTDataSetCleared(bool fFlag) noexcept { m_fRTDataSetCleared = fFlag; }
+  bool IsSavingTempData(void) noexcept { return m_fSaveTempData; }
+  void SetSavingTempData(bool fFlag) noexcept { m_fSaveTempData = fFlag; }
 
   int GetCountDownSlowReadingRTData(void) noexcept { return m_iCountDownSlowReadingRTData; }
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
@@ -377,6 +380,7 @@ protected:
   bool m_fGetRTData; // 读取实时数据标识
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
+  bool m_fSaveTempData; // 存储临时实时数据标识
   CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
   time_t m_ttNewestTransactionTime;
