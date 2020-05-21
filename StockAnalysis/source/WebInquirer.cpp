@@ -88,38 +88,31 @@ bool CWebInquirer::GetNeteaseDayLineData(void) {
   switch (gl_cMaxSavingOneDayLineThreads) {
   case 8: case 7: case 6:
   if (!gl_pNeteaseDayLineWebInquirySixth->IsReadingWebData()) {
-    TRACE("使用第六个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquirySixth->GetWebData(); // 网易日线历史数据
   }
   case 5:
   if (!gl_pNeteaseDayLineWebInquiryFifth->IsReadingWebData()) {
-    TRACE("使用第五个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquiryFifth->GetWebData();
   }
   case 4:
   if (!gl_pNeteaseDayLineWebInquiryFourth->IsReadingWebData()) {
-    TRACE("使用第四个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquiryFourth->GetWebData();
   }
   case 3:
   if (!gl_pNeteaseDayLineWebInquiryThird->IsReadingWebData()) {
-    TRACE("使用第三个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquiryThird->GetWebData();
   }
   case 2:
   if (!gl_pNeteaseDayLineWebInquirySecond->IsReadingWebData()) {
-    TRACE("使用第二个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquirySecond->GetWebData();
   }
   case 1: case 0:
   if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
-    TRACE("使用第一个日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquiry->GetWebData();
   }
   break;
   default:
   if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
-    TRACE("使用第一个默认日线历史数据查询器\n");
     gl_pNeteaseDayLineWebInquiry->GetWebData();
   }
   TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));

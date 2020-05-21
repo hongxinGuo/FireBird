@@ -13,7 +13,8 @@ static char THIS_FILE[] = __FILE__;
 void CRTData::Reset(void) {
   m_lDataSource = __INVALID_RT_WEB_DATA__;
   m_time = 0;
-  m_strStockCode = "";
+  m_strStockCode = _T("");
+  m_strStockName = _T("");
   m_wMarket = 0;
   m_lLastClose = 0;
   m_lOpen = 0;
@@ -648,11 +649,6 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
       return false;
     }
     sscanf_s(buffer3, "%f/%d/%I64d", &fTemp, &lTemp, &m_llAmount);
-    lTemp2 = static_cast<long>(fTemp * 1000);
-    if (lTemp2 != m_lNew) {
-      TRACE("腾讯实时数据%s第三十五项中最新价与前值不符\n", m_strStockCode.GetBuffer());
-      gl_systemMessage.PushInnerSystemInformationMessage("腾讯实时数据第三十五项中最新价与前值不符");
-    }
     m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
     // 成交手数
     // 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
@@ -1103,8 +1099,8 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   else str1 = _T("sz");
   m_strStockCode = str1 + strValue.Right(6);
   break;
-  case 3: // name
-  m_strStockName = strValue;
+  case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
+  //m_strStockName = strValue;
   break;
   case 4: // type
   if (strValue.Compare(_T("SH")) == 0) m_wMarket = __SHANGHAI_MARKET__;
