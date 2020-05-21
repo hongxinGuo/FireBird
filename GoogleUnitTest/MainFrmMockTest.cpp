@@ -469,7 +469,7 @@ namespace StockAnalysisTest {
   TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS1) {
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUsingSinaRealtimeDataServer) {
+  TEST_F(CMainFrameMockTest, TestOnUsingRealtimeDataServer) {
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
     s_pMainFrame->OnUsingNeteaseRealtimeDataServer();
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
