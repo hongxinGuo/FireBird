@@ -67,6 +67,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
   ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
+  ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
+  ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
+  ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
+  ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -105,6 +109,8 @@ CMainFrame::~CMainFrame() {
   if (gl_pChinaStockMarket->IsUpdateOptionDB()) {
     gl_pChinaStockMarket->UpdateOptionDB();
   }
+
+  gl_pChinaStockMarket->UpdateOptionChinaStockMarketDB();
 
   if (gl_pChinaStockMarket->IsUpdateChoicedStockDB()) {
     gl_pChinaStockMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
@@ -773,4 +779,34 @@ void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
 void CMainFrame::OnStopUpdateDayLine() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->ClearDayLineNeedUpdaeStatus();
+}
+
+void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->SetUsingNeteaseRTDataServer();
+}
+
+void CMainFrame::OnUsingSinaRealtimeDataServer() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+}
+
+void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (gl_pChinaStockMarket->IsUsingNeteaseRTDataServer()) {
+    SysCallCmdUISetCheck(pCmdUI, true);
+  }
+  else {
+    SysCallCmdUISetCheck(pCmdUI, false);
+  }
+}
+
+void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+  if (gl_pChinaStockMarket->IsUsingSinaRTDataServer()) {
+    SysCallCmdUISetCheck(pCmdUI, true);
+  }
+  else {
+    SysCallCmdUISetCheck(pCmdUI, false);
+  }
 }

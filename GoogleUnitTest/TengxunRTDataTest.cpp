@@ -215,7 +215,7 @@ namespace StockAnalysisTest {
                                                                                     &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
                                                                                     &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
                                                                                     &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40
-                                                                                    ));
+  ));
 
   TEST_P(CalculateTengxunRTDataTest, TestReadTengxunData) {
     bool fSucceed = m_RTData.ReadTengxunData(m_pTengxunWebRTData);
@@ -270,7 +270,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -337,7 +337,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     break;
     case 8:
     EXPECT_FALSE(fSucceed); // 有错误
@@ -347,7 +347,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     break;
     case 9:
@@ -358,7 +358,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     break;
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -383,7 +383,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -398,7 +398,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -414,7 +414,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -430,7 +430,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -448,7 +448,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -465,7 +465,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -483,7 +483,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -505,7 +505,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -529,7 +529,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -554,7 +554,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -581,7 +581,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), 357700);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -609,7 +609,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_RTData.GetOpen(), 3470);
     EXPECT_EQ(m_RTData.GetLastClose(), 3460);
     EXPECT_EQ(m_RTData.GetNew(), 3500);
-    EXPECT_EQ(m_RTData.GetVolume(), 8334600);
+    EXPECT_EQ(m_RTData.GetVolume(), -1);
     EXPECT_EQ(m_RTData.GetVBuy(0), 222300);
     EXPECT_EQ(m_RTData.GetPBuy(0), 3500);
     EXPECT_EQ(m_RTData.GetVBuy(1), 218900);
@@ -764,7 +764,7 @@ namespace StockAnalysisTest {
 
   INSTANTIATE_TEST_SUITE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,
                            testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
-                                           ));
+                           ));
 
   // 将字符串转换为INT64
   TEST_P(ReadTengxunOneValueTest, TestReadTengxunOneValue1) {

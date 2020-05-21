@@ -91,6 +91,7 @@
     <ClCompile Include="..\StockAnalysis\source\SetDayLineExtendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetDayLineToday.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetOption.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetOptionChinaStockMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRealTimeData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SetRSOption.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="..\StockAnalysis\source\SetDayLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\SetDayLineToday.h" />
     <ClInclude Include="..\StockAnalysis\source\SetOption.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetOptionChinaStockMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\SetPotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRealTimeData.h" />
     <ClInclude Include="..\StockAnalysis\source\SetRSOption.h" />

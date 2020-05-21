@@ -231,6 +231,9 @@
     <ClInclude Include="source\SetRSStrongStock.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\SetOptionChinaStockMarket.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -417,6 +420,9 @@
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\SetRSStrongStock.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetOptionChinaStockMarket.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>

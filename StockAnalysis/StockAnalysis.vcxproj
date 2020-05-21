@@ -252,6 +252,7 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebData.h" />
+    <ClInclude Include="source\SetOptionChinaStockMarket.h" />
     <ClInclude Include="source\SetRSOption.h" />
     <ClInclude Include="source\SetRSStrong1Stock.h" />
     <ClInclude Include="source\SetPotenDailyBriefing.h" />
@@ -306,6 +307,7 @@
     <ClCompile Include="source\RTDataContainer.cpp" />
     <ClCompile Include="source\SetCrweberIndex.cpp" />
     <ClCompile Include="source\SetDayLineToday.cpp" />
+    <ClCompile Include="source\SetOptionChinaStockMarket.cpp" />
     <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
     <ClCompile Include="source\SetRSOption.cpp" />
     <ClCompile Include="source\SetRSStrong1Stock.cpp" />

@@ -468,4 +468,47 @@ namespace StockAnalysisTest {
 
   TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS1) {
   }
+
+  TEST_F(CMainFrameMockTest, TestOnUsingSinaRealtimeDataServer) {
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    s_pMainFrame->OnUsingNeteaseRealtimeDataServer();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    s_pMainFrame->OnUsingNeteaseRealtimeDataServer();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    s_pMainFrame->OnUsingSinaRealtimeDataServer();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+    s_pMainFrame->OnUsingSinaRealtimeDataServer();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
+  }
+
+  TEST_F(CMainFrameMockTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
+    CCmdUI cmdUI;
+    gl_pChinaStockMarket->SetUsingNeteaseRTDataServer();
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
+    gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
+  }
+
+  TEST_F(CMainFrameMockTest, TestOnUpdateUsingSinaRealtimeDataServer) {
+    CCmdUI cmdUI;
+    gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
+    gl_pChinaStockMarket->SetUsingNeteaseRTDataServer();
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateUsingSinaRealtimeDataServer(&cmdUI);
+
+    //»Ö¸´³õÌ¬
+    gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+  }
 }

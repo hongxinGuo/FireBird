@@ -13,6 +13,7 @@
 #include"SetDayLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetOption.h"
+#include"SetOptionChinaStockMarket.h"
 #include"SetCrweberIndex.h"
 #include"SetChoicedStock.h"
 #include"SetRSStrong2Stock.h"
@@ -71,6 +72,7 @@ void CChinaMarket::ResetMarket(void) {
   Reset();
   LoadStockCodeDB();
   LoadOptionDB();
+  LoadOptionChinaStockMarketDB();
   LoadChoicedStockDB();
   Load10DayRSStrong1StockSet();
   Load10DayRSStrong2StockSet();
@@ -2573,6 +2575,39 @@ void CChinaMarket::LoadOptionDB(void) {
   }
 
   setOption.Close();
+}
+
+void CChinaMarket::LoadOptionChinaStockMarketDB(void) {
+  CSetOptionChinaStockMarket setOptionChinaStockMarket;
+
+  setOptionChinaStockMarket.Open();
+  if (!setOptionChinaStockMarket.IsEOF()) {
+    m_iRTDataServer = setOptionChinaStockMarket.m_RTDataServerIndex;
+  }
+  else {
+    m_iRTDataServer = 0; // 默认使用新浪实时数据服务器
+  }
+}
+
+bool CChinaMarket::UpdateOptionChinaStockMarketDB(void) {
+  CSetOptionChinaStockMarket setOptionChinaStockMarket;
+
+  setOptionChinaStockMarket.Open();
+  setOptionChinaStockMarket.m_pDatabase->BeginTrans();
+  if (setOptionChinaStockMarket.IsEOF()) {
+    setOptionChinaStockMarket.AddNew();
+    setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
+    setOptionChinaStockMarket.Update();
+  }
+  else {
+    setOptionChinaStockMarket.Edit();
+    setOptionChinaStockMarket.m_RTDataServerIndex = m_iRTDataServer;
+    setOptionChinaStockMarket.Update();
+  }
+  setOptionChinaStockMarket.m_pDatabase->CommitTrans();
+  setOptionChinaStockMarket.Close();
+
+  return true;
 }
 
 bool CChinaMarket::UpdateChoicedStockDB(void) {

@@ -114,4 +114,8 @@ public:
   afx_msg void OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI);
   afx_msg void OnUpdateCalculate10dayRS(CCmdUI* pCmdUI);
   afx_msg void OnStopUpdateDayLine();
+  afx_msg void OnUsingNeteaseRealtimeDataServer();
+  afx_msg void OnUsingSinaRealtimeDataServer();
+  afx_msg void OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
 };

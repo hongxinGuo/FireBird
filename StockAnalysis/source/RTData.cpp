@@ -244,7 +244,7 @@ bool CRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lLastClose = dTemp * 1000;
+    m_lLastClose = static_cast<long>(dTemp * 1000);
     // 读入当前价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
@@ -576,10 +576,10 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     }
     m_lOpen = static_cast<long>(dTemp * 1000);
     // 成交手数。成交股数存储实际值
+    // 不使用此处的成交量，而是使用第三十五项处的成交量。
     if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
       return false;
     }
-    m_llVolume = llTemp * 100;
     // 外盘
     if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
       return false;
@@ -636,21 +636,26 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lHigh = dTemp * 1000;
+    m_lHigh = static_cast<long>(dTemp * 1000);
     // 最低价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lLow = dTemp * 1000;
+    m_lLow = static_cast<long>(dTemp * 1000);
     // 第三十五项，成交价/成交量（手）/成交金额（元）
     // 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
     if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
       return false;
     }
-    sscanf_s(buffer3, "%f/%d/%d", &fTemp, &lTemp, &m_llAmount);
-    m_lNew = fTemp * 1000;
+    sscanf_s(buffer3, "%f/%d/%I64d", &fTemp, &lTemp, &m_llAmount);
+    lTemp2 = static_cast<long>(fTemp * 1000);
+    if (lTemp2 != m_lNew) {
+      TRACE("腾讯实时数据%s第三十五项中最新价与前值不符\n", m_strStockCode.GetBuffer());
+      gl_systemMessage.PushInnerSystemInformationMessage("腾讯实时数据第三十五项中最新价与前值不符");
+    }
     m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
     // 成交手数
+    // 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。
     if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
       return false;
     }

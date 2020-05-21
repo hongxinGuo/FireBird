@@ -173,6 +173,8 @@ public:
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
+  void LoadOptionChinaStockMarketDB(void);
+  virtual bool UpdateOptionChinaStockMarketDB(void);
   bool UpdateChoicedStockDB(void);
   virtual bool AppendChoicedStockDB(void);
   void LoadChoicedStockDB(void);
@@ -261,8 +263,8 @@ public:
 
   void TaskSaveTempDataIntoDB(long lCurrentTime);
 
-  void ChoiceSinaRTDataServer(void) noexcept { m_iRTDataServer = 0; }
-  void ChoiceNeteaseRTDataServer(void) noexcept { m_iRTDataServer = 1; }
+  void SetUsingSinaRTDataServer(void) noexcept { m_iRTDataServer = 0; }
+  void SetUsingNeteaseRTDataServer(void) noexcept { m_iRTDataServer = 1; }
   bool IsUsingSinaRTDataServer(void) noexcept { if (m_iRTDataServer == 0) return true; else return false; }
   bool IsUsingNeteaseRTDataServer(void) noexcept { if (m_iRTDataServer == 1) return true; else return false; }
 
