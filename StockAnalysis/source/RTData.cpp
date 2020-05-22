@@ -914,7 +914,7 @@ bool CRTData::CheckNeteaseRTDataActive(void) {
     m_fActive = false;
   }
   else {
-    if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) {
+    if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0) && (m_lLastClose == 0)) {
       m_fActive = false; // 网易非活跃股票的实时数据也具有所有的字段，故而在此确认其为非活跃
     }
     else m_fActive = true;
@@ -1100,7 +1100,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   m_strStockCode = str1 + strValue.Right(6);
   break;
   case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
-  //m_strStockName = strValue;
+  //m_strStockName = buffer;
   break;
   case 4: // type
   if (strValue.Compare(_T("SH")) == 0) m_wMarket = __SHANGHAI_MARKET__;
