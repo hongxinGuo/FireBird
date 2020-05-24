@@ -387,7 +387,7 @@ namespace StockAnalysisTest {
     break;
     case 3: // name
     m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
-    EXPECT_STREQ(m_RTData.GetStockName(), _T("’–…Ã¬÷¥¨"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
     break;
     case 4: //  –≥°
     m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
@@ -669,7 +669,7 @@ namespace StockAnalysisTest {
                                                                                     &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
                                                                                     &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
                                                                                     &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38
-                                                                                    ));
+  ));
 
   TEST_P(CalculateSinaRTDataTest, TestSinaRTData) {
     bool fSucceed = m_RTData.ReadSinaData(m_pSinaWebRTData);
@@ -1491,7 +1491,7 @@ namespace StockAnalysisTest {
 
   INSTANTIATE_TEST_SUITE_P(TestReadOneValue, ReadOneValueTest,
                            testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8, &rdata9
-                                           ));
+                           ));
 
   TEST_P(ReadOneValueTest, TestReadSinaOneValue4) {
     double dTemp = 0;

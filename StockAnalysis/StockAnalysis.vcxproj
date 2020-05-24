@@ -144,7 +144,6 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <SupportJustMyCode>false</SupportJustMyCode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalOptions>-d2FH4- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,7 +152,6 @@
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateMapFile>false</GenerateMapFile>
       <AssemblyDebug>false</AssemblyDebug>
-      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <HeapReserveSize>
       </HeapReserveSize>
       <StackReserveSize>
