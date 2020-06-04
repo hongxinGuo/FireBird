@@ -1062,8 +1062,6 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
           j++;
           gl_RTDataContainer.PushTengxunRTData(pRTData); // 将此实时数据指针存入实时数据队列
-            //gl_QueueSinaRTDataForSave.PushRTData(pRTData); // 同时存入待存储实时数据队列
-
             // 检测一下
           CheckTengxunRTData(pRTData);
         }
