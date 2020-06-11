@@ -304,6 +304,7 @@
       <CompileAsManaged>false</CompileAsManaged>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>

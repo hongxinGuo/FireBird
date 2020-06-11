@@ -44,6 +44,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   ASSERT(m_pFile == nullptr);
 
   try {
+    SetWebError(false);
     SetByteReaded(0);
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(lFirstDelayTime); // ·þÎñÆ÷ÑÓ³ÙlStartDelayTimeºÁÃë¼´¿É¡£
@@ -63,6 +64,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     m_pFile->Close();
   }
   catch (CInternetException* exception) {
+    SetWebError(true);
     if (m_pFile != nullptr) m_pFile->Close();
     m_dwWebErrorCode = exception->m_dwError;
     str1 = GetInquiringString();

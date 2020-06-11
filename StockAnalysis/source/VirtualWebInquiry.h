@@ -43,6 +43,9 @@ public:
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }
 
+  bool IsWebError(void) noexcept { return m_fWebError; }
+  void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
+
   void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
 
@@ -84,6 +87,7 @@ protected:
   CString m_strWebDataInquireSuffix; // 查询字符串后缀
 
   atomic_bool m_fReadingWebData; // 接收实时数据线程是否执行标识
+  atomic_bool m_fWebError; // 读取网络数据时是否出现错误标识
 
   bool m_fReportStatus; //
 

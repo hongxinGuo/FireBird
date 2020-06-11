@@ -46,11 +46,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
   }
 
+  /*
   TEST_F(CVirtualWebInquiryTest, TestReadWebData1) {
     m_VirtualWebInquiry.SetReadingWebData(true);
+    m_VirtualWebInquiry.SetInquiringString(_T("Dummy"));
     EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData(100, 20)) << "没有正确的网址";
+    EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
   }
+  */
 
   TEST_F(CVirtualWebInquiryTest, TestReadWebData2) {
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
@@ -64,6 +68,7 @@ namespace StockAnalysisTest {
     m_VirtualWebInquiry.SetReadingWebData(true);
     m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
     EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
+    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
   }
 
@@ -152,6 +157,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData());
     m_VirtualWebInquiry.SetReadingWebData(false);
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestIsWebError) {
+    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
+    m_VirtualWebInquiry.SetWebError(true);
+    EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
+    m_VirtualWebInquiry.SetWebError(false);
+    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
   }
 
   TEST_F(CVirtualWebInquiryTest, TestGetByteReaded) {
