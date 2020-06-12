@@ -59,4 +59,31 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(market.IsUpdateOptionDB());
     EXPECT_EQ(market.GetUpdatedDayFor10DayRS2(), market.GetDay());
   }
+
+  class CThreadChoice10RSStrongStockSet : public ::testing::Test
+  {
+  protected:
+    static void SetUpTestSuite(void) {
+    }
+
+    static void TearDownTestSuite(void) {
+    }
+
+    virtual void SetUp(void) override {
+    }
+
+    virtual void TearDown(void) override {
+    }
+    CMockChinaMarket market;
+    CRSReference RSReference;
+  };
+
+  TEST_F(CThreadChoice10RSStrongStockSet, TestThreadChoice10RSStrongStockSet) {
+    long lInformationSize = gl_systemMessage.GetInformationDequeSize();
+    EXPECT_CALL(market, Choice10RSStrongStockSet(&RSReference, 2))
+      .Times(1)
+      .WillOnce(Return(true));
+    EXPECT_EQ(ThreadChoice10RSStrongStockSet(&market, &RSReference, 2), (UINT)33);
+    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), lInformationSize + 2);
+  }
 }

@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
       .Times(0);
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
-    gl_ExitingSystem = true;
+    gl_fExitingSystem = true;
     EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(false));
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
-    gl_ExitingSystem = false;
+    gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
@@ -135,7 +135,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
-    gl_ExitingSystem = false;
+    gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);

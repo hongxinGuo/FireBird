@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
     }
     virtual void SetUp(void) override {
-      gl_ExitingSystem = false;
+      gl_fExitingSystem = false;
       s_pMainFrame = new CMockMainFrame;
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->ClearChoiceStockContainer();
       gl_ThreadStatus.SetCalculatingDayLineRS(false);
-      gl_ExitingSystem = false;
+      gl_fExitingSystem = false;
       delete s_pMainFrame;
     }
   public:
@@ -124,17 +124,17 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMainFrameMockTest, TestOnSysCommand) {
-    gl_ExitingSystem = false;
+    gl_fExitingSystem = false;
     EXPECT_CALL(*s_pMainFrame, SysCallOnSysCommand)
       .Times(1);
     s_pMainFrame->OnSysCommand(SC_CLOSE, 0);
-    EXPECT_TRUE(gl_ExitingSystem);
-    gl_ExitingSystem = false;
+    EXPECT_TRUE(gl_fExitingSystem);
+    gl_fExitingSystem = false;
     EXPECT_CALL(*s_pMainFrame, SysCallOnSysCommand)
       .Times(1);
     s_pMainFrame->OnSysCommand(0xFFFF ^ SC_CLOSE, 0);
-    EXPECT_FALSE(gl_ExitingSystem);
-    gl_ExitingSystem = false;
+    EXPECT_FALSE(gl_fExitingSystem);
+    gl_fExitingSystem = false;
   }
 
   TEST_F(CMainFrameMockTest, TestOnCalculateTodayRelativeStrong) {

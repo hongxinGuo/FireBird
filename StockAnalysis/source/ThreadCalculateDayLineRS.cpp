@@ -76,7 +76,7 @@ UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
   gl_SemaphoreCalculateDayLineRS.Wait();
-  if (!gl_ExitingSystem && !gl_fExitingCalculatingRS) {
+  if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
     pMarket->CalculateOneDayRelativeStrong(thisDay);  // 调用实际执行函数
   }
   gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一

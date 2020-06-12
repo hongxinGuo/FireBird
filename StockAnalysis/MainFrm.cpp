@@ -104,7 +104,7 @@ void CMainFrame::Reset(void) {
 CMainFrame::~CMainFrame() {
   if (gl_fTestMode) TRACE("使用了Test驱动\n");
 
-  gl_ExitingSystem = true;
+  gl_fExitingSystem = true;
 
   if (gl_pChinaStockMarket->IsUpdateOptionDB()) {
     gl_pChinaStockMarket->UpdateOptionDB();
@@ -517,7 +517,7 @@ void CMainFrame::UpdateStatus(void) {
 void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   if ((nID & 0Xfff0) == SC_CLOSE) { // 如果是退出系统
-    gl_ExitingSystem = true; // 提示各工作线程中途退出
+    gl_fExitingSystem = true; // 提示各工作线程中途退出
   }
 
   SysCallOnSysCommand(nID, lParam);

@@ -31,6 +31,7 @@ namespace testing {
     MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
+    MOCK_METHOD(bool, CalculateOneDayRelativeStrong, (long lDay), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

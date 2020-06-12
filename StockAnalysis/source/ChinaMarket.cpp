@@ -1751,7 +1751,7 @@ bool CChinaMarket::SaveDayLineData(void) {
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
     }
-    if (gl_ExitingSystem) {
+    if (gl_fExitingSystem) {
       break; // 如果程序正在退出，则停止存储。
     }
   }
@@ -1829,7 +1829,7 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
         pStock->SetDayLineLoaded(false);
       }
     }
-    if (gl_ExitingSystem) return false;
+    if (gl_fExitingSystem) return false;
   }
   CSetRSStrong2Stock setRSStrong2;
 
@@ -1870,7 +1870,7 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
         pStock->SetDayLineLoaded(false);
       }
     }
-    if (gl_ExitingSystem) return false;
+    if (gl_fExitingSystem) return false;
   }
   CSetRSStrong1Stock setRSStrong1;
 
@@ -1911,7 +1911,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
         pStock->SetDayLineLoaded(false);
       }
     }
-    if (gl_ExitingSystem) return false;
+    if (gl_fExitingSystem) return false;
   }
 
   m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStock需要此m_lCurrentRSStrongIndex来选择正确的数据表。
