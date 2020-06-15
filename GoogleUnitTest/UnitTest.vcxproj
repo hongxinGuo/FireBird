@@ -136,6 +136,7 @@
     <ClCompile Include="CrweberIndexWebInquiryTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
     <ClCompile Include="DayLineTest.cpp" />
+    <ClCompile Include="GuadanTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />

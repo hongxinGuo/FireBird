@@ -241,6 +241,7 @@
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="source\Guadan.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="source\PotenDailyBriefingMarket.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="source\Guadan.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="source\PotenDailyBriefing.cpp" />

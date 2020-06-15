@@ -234,6 +234,9 @@
     <ClInclude Include="source\SetOptionChinaStockMarket.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\Guadan.h">
+      <Filter>头文件\China Stock Market\实现类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -424,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="source\SetOptionChinaStockMarket.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Guadan.cpp">
+      <Filter>源文件\China Stock Market\实现类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
