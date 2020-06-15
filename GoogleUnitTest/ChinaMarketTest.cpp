@@ -669,6 +669,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsTodayStockProcessed());
   }
 
+  TEST_F(CChinaMarketTest, TestGetCurrentSelectedPosition) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 0);
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(10101010);
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 10101010);
+
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+  }
+
   TEST_F(CChinaMarketTest, TestIsChoiced10RSStrongStockSet) {
     gl_pChinaStockMarket->SetChoiced10RSStrongStockSet(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsChoiced10RSStrongStockSet());

@@ -46,6 +46,7 @@ namespace StockAnalysisTest {
       gl_ThreadStatus.SetCalculatingDayLineRS(false);
       gl_fExitingSystem = false;
       delete s_pMainFrame;
+      s_pMainFrame = nullptr;
     }
   public:
     CMockMainFrame* s_pMainFrame;
