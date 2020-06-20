@@ -173,7 +173,7 @@ bool CChinaMarket::ChangeToNextStock(void) {
   long lIndex = m_pCurrentStock->GetOffset();
   CChinaStockPtr pStock = m_pCurrentStock;
 
-  if (m_lCurrentSelectedStockSet < 0) {
+  if (IsTotalStockSetSelected()) {
     bool fFound = false;
     int i = 1;
     while (!fFound) {
@@ -188,6 +188,7 @@ bool CChinaMarket::ChangeToNextStock(void) {
     }
   }
   else {
+    ASSERT(m_avChoicedStock[m_lCurrentSelectedStockSet].size() > 0); //
     if (m_lCurrentSelectedPosition >= (m_avChoicedStock[m_lCurrentSelectedStockSet].size() - 1)) {
       m_lCurrentSelectedPosition = 0;
       pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
@@ -207,7 +208,7 @@ bool CChinaMarket::ChangeToPrevStock(void) {
   long lIndex = m_pCurrentStock->GetOffset();
   CChinaStockPtr pStock = m_pCurrentStock;
 
-  if (m_lCurrentSelectedStockSet < 0) {
+  if (IsTotalStockSetSelected()) {
     bool fFound = false;
     int i = 1;
     while (!fFound) {
@@ -222,6 +223,7 @@ bool CChinaMarket::ChangeToPrevStock(void) {
     }
   }
   else {
+    ASSERT(m_avChoicedStock[m_lCurrentSelectedStockSet].size() > 0); //
     if (m_lCurrentSelectedPosition == 0) {
       m_lCurrentSelectedPosition = m_avChoicedStock[m_lCurrentSelectedStockSet].size() - 1;
       pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
@@ -257,6 +259,12 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
   } while ((m_lCurrentSelectedStockSet != -1) && (m_avChoicedStock[m_lCurrentSelectedStockSet].size() == 0));
 
   return true;
+}
+
+long CChinaMarket::GetCurrentStockSetSize(void) {
+  if (IsTotalStockSetSelected()) return m_lTotalStock;
+  else return m_avChoicedStock[m_lCurrentSelectedStockSet].size();
+  return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

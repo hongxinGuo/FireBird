@@ -431,6 +431,12 @@
     <ClCompile Include="GuadanTest.cpp">
       <Filter>Test源文件\China Stock Market\实现类</Filter>
     </ClCompile>
+    <ClCompile Include="OneDealTest.cpp">
+      <Filter>Test源文件\China Stock Market\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp">
+      <Filter>Test源文件\China Stock Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

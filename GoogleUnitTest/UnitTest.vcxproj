@@ -145,6 +145,7 @@
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseRTDataTest.cpp" />
     <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
+    <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketMockTest.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
     <ClCompile Include="SystemMessageMockTest.cpp" />
+    <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="StockAnalysisViewTest.cpp" />
     <ClCompile Include="ThreadCalculateDayLineRSTest.cpp" />

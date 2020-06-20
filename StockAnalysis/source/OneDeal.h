@@ -33,11 +33,20 @@ public:
   COneDeal();
   ~COneDeal();
 
+  time_t GetTime(void) noexcept { return m_time; }
+  void SetTime(time_t time) noexcept { m_time = time; }
+  long GetType(void) noexcept { return m_lType; }
+  void SetType(long lType) noexcept { m_lType = lType; }
+  long GetPrice(void) noexcept { return m_lPrice; }
+  void SetPrice(long lPrice) noexcept { m_lPrice = lPrice; }
+  long GetVolume(void) noexcept { return m_lVolume; }
+  void SetVolume(long lVolume) noexcept { m_lVolume = lVolume; }
+
 protected:
-  time_t    m_time;       // 交易时间
-  long      m_lType;      // 交易类型
-  long      m_lPrice;     // 成交价格。单位：0.001元。
-  long      m_lVolume;    // 交易数量。单位：股。
+  time_t m_time;       // 交易时间
+  long m_lType;      // 交易类型
+  long m_lPrice;     // 成交价格。单位：0.001元。
+  long m_lVolume;    // 交易数量。单位：股。
 };
 
 typedef shared_ptr<COneDeal> COneDealPtr;

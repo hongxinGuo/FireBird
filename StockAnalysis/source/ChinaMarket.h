@@ -29,7 +29,7 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 extern CRTDataContainer gl_RTDataContainer;
 
 const int c_SelectedStockStart = 0;
-const int c_10DayRSStockSetStart = 10;
+const int c_10DayRSStockSetStart = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
 class CChinaMarket : public CVirtualMarket
 {
@@ -157,6 +157,7 @@ public:
   long GetCurrentSelectedPosition(void) noexcept { return m_lCurrentSelectedPosition; }
   void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
   long GetCurrentSelectedStockSet(void) noexcept { return m_lCurrentSelectedStockSet; }
+  void SetCurrentSelectedStockSet(long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
   CChinaStockPtr GetCurrentSelectedStock(void);
 
   bool IsChoiced10RSStrong1StockSet(void) noexcept { return m_fChoiced10RSStrong1StockSet; }
@@ -298,6 +299,7 @@ public:
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
   long GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
+  long GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
   void ClearChoiceStockContainer(void) noexcept { m_avChoicedStock[0].clear(); }
   long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
@@ -344,6 +346,8 @@ public:
   bool ChangeToPrevStock(void);
   bool ChangeToPrevStockSet(void);
   bool ChangeToNextStockSet(void);
+  bool IsTotalStockSetSelected(void) noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
+  long GetCurrentStockSetSize(void);
 
 protected:
   // 初始化

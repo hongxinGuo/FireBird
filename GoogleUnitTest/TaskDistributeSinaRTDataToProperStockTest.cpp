@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
   //SinaRTData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
   //SinaRTData rtData8(8, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
 
-  time_t s_tCurrentMarketTime;
+  static time_t s_tCurrentMarketTime;
 
   class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
   protected:

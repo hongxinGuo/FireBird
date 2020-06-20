@@ -21,6 +21,18 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
+      gl_pChinaStockMarket->Load10DayRSStrongStockDB(); // 装入各十日强度股票集
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(10) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(11) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(12) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(13) == 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(14) == 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(15) == 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(16) == 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(17) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(18) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(19) > 0);
+
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
@@ -68,6 +80,7 @@ namespace StockAnalysisTest {
       // clearup
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
       gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStockMarket->SetRTDataSetCleared(false);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
@@ -675,6 +688,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 10101010);
 
     gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+  }
+
+  TEST_F(CChinaMarketTest, TestGetCurrentSelectedStockSet) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(10);
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 10);
+
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
   }
 
   TEST_F(CChinaMarketTest, TestIsChoiced10RSStrongStockSet) {
@@ -1347,7 +1368,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetSystemReady(false);
   }
 
-  TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock) {
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock1) {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
     gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(0));
     gl_pChinaStockMarket->ChangeToNextStock();
@@ -1356,9 +1377,32 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->ChangeToNextStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("中证煤炭后的为空，然后就转到最前面的浦发银行了");
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
+
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
   }
 
-  TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock) {
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToNextStock2) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(10); // 10、11、12股票集中有股票
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentSelectedStock() != nullptr);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
+
+    gl_pChinaStockMarket->ChangeToPrevStock();
+    gl_pChinaStockMarket->ChangeToNextStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 0);
+    gl_pChinaStockMarket->ChangeToNextStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 1);
+    gl_pChinaStockMarket->ChangeToPrevStock();
+    gl_pChinaStockMarket->ChangeToPrevStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStockSetSize(), gl_pChinaStockMarket->GetCurrentSelectedPosition() + 1);
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
+
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
+  }
+
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
     gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(1)); // 选取退市的邯郸钢铁
     gl_pChinaStockMarket->ChangeToPrevStock();
@@ -1366,6 +1410,66 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->ChangeToPrevStock();
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+  }
+
+  TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock2) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(10); // 10、11、12股票集中有股票
+    EXPECT_TRUE(gl_pChinaStockMarket->GetCurrentSelectedStock() != nullptr);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
+
+    gl_pChinaStockMarket->ChangeToNextStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 1);
+    gl_pChinaStockMarket->ChangeToPrevStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition(), 0);
+    gl_pChinaStockMarket->ChangeToPrevStock();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedPosition() + 1, gl_pChinaStockMarket->GetCurrentStockSetSize());
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
+
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
+  }
+
+  TEST_F(CChinaMarketTest, TestChangeToPrevStockSet) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 19);
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 18);
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 12);
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 11);
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 10);
+
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
+  }
+
+  TEST_F(CChinaMarketTest, TestChangeToNextStockSet) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 10);
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 11);
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 12);
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 18);
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), 19);
+
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
+  }
+
+  TEST_F(CChinaMarketTest, TestIsTotalStockSetSelected) {
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsTotalStockSetSelected());
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsTotalStockSetSelected());
+
+    gl_pChinaStockMarket->SetCurrentSelectedStockSet(-1);
   }
 
   TEST_F(CChinaMarketTest, TestSetUsingSinaRTDataServer) {
