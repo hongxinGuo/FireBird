@@ -37,7 +37,6 @@ bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 void CPotenDailyBriefingWebInquiry::StartReadingThread(void) {
-  TRACE(_T("调用CPotenDailyBriefingWebInquiry的实际StartReadingThread函数\n"));
   thread thread1(ThreadReadPotenDailyBriefing, this);
   thread1.detach();
 }

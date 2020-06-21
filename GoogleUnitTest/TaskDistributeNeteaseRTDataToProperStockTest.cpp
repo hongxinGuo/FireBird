@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
     CRTDataPtr pRTData;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData2, TaskDistributeNeteaseRTDataToProperStockTest,
+  INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeNeteaseRTDataToProperStockTest,
                            testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5//, &Data6, &Data7, &Data8
                            ));
 

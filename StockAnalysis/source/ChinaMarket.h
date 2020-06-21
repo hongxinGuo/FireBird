@@ -28,8 +28,8 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CRTDataContainer gl_RTDataContainer;
 
-const int c_SelectedStockStart = 0;
-const int c_10DayRSStockSetStart = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
+const int c_SelectedStockStartPosition = 0;
+const int c_10DayRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
 class CChinaMarket : public CVirtualMarket
 {
@@ -364,7 +364,7 @@ protected:
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
   CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
-  vector<CChinaStockPtr> m_avChoicedStock[20]; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集
+  vector<CChinaStockPtr> m_avChoicedStock[30]; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
   long m_lCurrentSelectedPosition; // 当前股票集的位置
   long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
   long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。

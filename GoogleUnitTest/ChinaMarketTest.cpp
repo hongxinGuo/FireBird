@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(14) == 0);
       EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(15) == 0);
       EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(16) == 0);
-      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(17) > 0);
+      EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(17) == 0);
       EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(18) > 0);
       EXPECT_TRUE(gl_pChinaStockMarket->GetStockSetSize(19) > 0);
 
@@ -1196,6 +1196,68 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 3; i++) {
       CRTDataPtr pRTData = gl_RTDataContainer.PopSinaRTData();
     }
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromNeteaseServer) {
+    CString strRTData = _T("_ntes_quote_callback({\"0601872\":{\"code\": \"0601872\",\"percent\": 0.038251, \"high\": 5.72, \"askvol3\": 311970, \"askvol2\": 257996,\"askvol5\": 399200, \"askvol4\": 201000, \"price\": 5.7, \"open\": 5.53, \"bid5\": 5.65, \"bid4\": 5.66, \"bid3\": 5.67,\"bid2\": 5.68, \"bid1\": 5.69, \"low\": 5.51, \"updown\": 0.21, \"type\": \"SH\", \"symbol\": \"601872\", \"status\": 0,\"ask4\": 5.73, \"bidvol3\": 234700, \"bidvol2\": 166300, \"bidvol1\": 641291, \"update\": \"2019/11/04 15:59:54\",\"bidvol5\": 134500, \"bidvol4\": 96600, \"yestclose\": 5.49, \"askvol1\": 396789, \"ask5\": 5.74, \"volume\": 78750304,\"ask1\": 5.7, \"name\": \"\u62db\u5546\u8f6e\u8239\", \"ask3\": 5.72, \"ask2\": 5.71, \"arrow\": \"\u2191\",\"time\": \"2019/11/04 15:59:52\", \"turnover\": 443978974} });");
+    CWebDataPtr pData = make_shared<CWebData>();
+    pData->__TEST_SetBuffer__(strRTData);
+    gl_WebInquirer.PushNeteaseRTData(pData);
+    gl_pChinaStockMarket->TaskProcessWebRTDataGetFromNeteaseServer();
+    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 1);
+    EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
+    for (int i = 0; i < 1; i++) {
+      CRTDataPtr pRTData = gl_RTDataContainer.PopNeteaseRTData();
+    }
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskProcessWebRTDataGetFromTengxunServer) {
+    CString strRTData = _T("v_sz000001=\"51~平安银行~000001~15.59~15.90~15.75~1046363~518391~527971~15.58~2365~15.57~802~15.56~1855~15.55~2316~15.54~320~15.59~661~15.60~15381~15.61~3266~15.62~450~15.63~520~~20190930154003~-0.31~-1.95~15.89~15.57~15.59/1046363/1645828527~1046363~164583~0.54~11.27~~15.89~15.57~2.01~3025.36~3025.38~1.15~17.49~14.31~0.73~-12617~15.73~9.82~12.19~~~1.24~164582.85~0.00~0~~GP-A~68.91~~0.82\";\n");
+    CWebDataPtr pData = make_shared<CWebData>();
+    pData->__TEST_SetBuffer__(strRTData);
+    gl_WebInquirer.PushTengxunRTData(pData);
+    gl_pChinaStockMarket->TaskProcessWebRTDataGetFromTengxunServer();
+    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 1);
+    EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 0);
+    for (int i = 0; i < 1; i++) {
+      CRTDataPtr pRTData = gl_RTDataContainer.PopTengxunRTData();
+    }
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskDiscardNeteaseRTData) {
+    CRTDataPtr prtData1, prtData2;
+    prtData1 = make_shared<CRTData>();
+    prtData2 = make_shared<CRTData>();
+    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
+    gl_RTDataContainer.PushNeteaseRTData(prtData1);
+    gl_RTDataContainer.PushNeteaseRTData(prtData2);
+    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 2);
+    gl_pChinaStockMarket->TaskDiscardNeteaseRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskDiscardSinaRTData) {
+    CRTDataPtr prtData1, prtData2;
+    prtData1 = make_shared<CRTData>();
+    prtData2 = make_shared<CRTData>();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
+    gl_RTDataContainer.PushSinaRTData(prtData1);
+    gl_RTDataContainer.PushSinaRTData(prtData2);
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 2);
+    gl_pChinaStockMarket->TaskDiscardSinaRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskDiscardTengxunRTData) {
+    CRTDataPtr prtData1, prtData2;
+    prtData1 = make_shared<CRTData>();
+    prtData2 = make_shared<CRTData>();
+    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 0);
+    gl_RTDataContainer.PushTengxunRTData(prtData1);
+    gl_RTDataContainer.PushTengxunRTData(prtData2);
+    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 2);
+    gl_pChinaStockMarket->TaskDiscardTengxunRTData();
+    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {

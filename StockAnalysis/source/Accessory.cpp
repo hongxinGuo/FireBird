@@ -69,11 +69,11 @@ long FormatToDay(tm* ptm) {
 CString GetDefaultSchemaConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8"); // mysqlTest操作的是TestStock Schema
+    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=mysql;UID=hxguo;PASSWORD=hxguo;charset=utf8"); // mysql操作的是SmartStockData Schema
+    return _T("DSN=mysql;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是StockData Schema
   }
 }
 

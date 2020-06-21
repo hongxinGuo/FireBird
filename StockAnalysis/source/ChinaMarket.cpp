@@ -241,7 +241,7 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
   do {
     if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
     else {
-      m_lCurrentSelectedStockSet = c_10DayRSStockSetStart + 9;
+      m_lCurrentSelectedStockSet = c_10DayRSStockSetStartPosition + 9;
     }
     ASSERT(m_lCurrentSelectedStockSet < 20);
   } while ((m_lCurrentSelectedStockSet != -1) && (m_avChoicedStock[m_lCurrentSelectedStockSet].size() == 0));
@@ -251,7 +251,7 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
 
 bool CChinaMarket::ChangeToNextStockSet(void) {
   do {
-    if (m_lCurrentSelectedStockSet == (c_10DayRSStockSetStart + 9)) m_lCurrentSelectedStockSet = -1;
+    if (m_lCurrentSelectedStockSet == (c_10DayRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
     else {
       m_lCurrentSelectedStockSet++;
     }
@@ -264,7 +264,6 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
 long CChinaMarket::GetCurrentStockSetSize(void) {
   if (IsTotalStockSetSelected()) return m_lTotalStock;
   else return m_avChoicedStock[m_lCurrentSelectedStockSet].size();
-  return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -938,11 +937,10 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CRTDataPtr pRTData = make_shared<CRTData>();
         if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
-          if (ValidateNeteaseRTData(pRTData)) {
-            iCount++;
-            m_llRTDataReceived++;
-            gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
-          }
+          ValidateNeteaseRTData(pRTData);
+          iCount++;
+          m_llRTDataReceived++;
+          gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
@@ -1068,10 +1066,9 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
       while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
         CRTDataPtr pRTData = make_shared<CRTData>();
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
+          CheckTengxunRTData(pRTData); // 检测一下
           j++;
           gl_RTDataContainer.PushTengxunRTData(pRTData); // 将此实时数据指针存入实时数据队列
-            // 检测一下
-          CheckTengxunRTData(pRTData);
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
@@ -2318,7 +2315,7 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
   setRSStrongStock.Open();
   while (!setRSStrongStock.IsEOF()) {
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
-    if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStart].push_back(pStock); // 10日RS股票集起始位置为第10个。
+    if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStartPosition].push_back(pStock); // 10日RS股票集起始位置为第10个。
     setRSStrongStock.MoveNext();
   }
   setRSStrongStock.Close();
