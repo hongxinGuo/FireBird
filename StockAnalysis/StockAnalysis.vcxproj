@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
@@ -241,6 +241,20 @@
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="source\DataBase\SetChoicedStock.h" />
+    <ClInclude Include="source\DataBase\SetCrweberIndex.h" />
+    <ClInclude Include="source\DataBase\SetDayLineBasicInfo.h" />
+    <ClInclude Include="source\DataBase\SetDayLineExtendInfo.h" />
+    <ClInclude Include="source\DataBase\SetDayLineToday.h" />
+    <ClInclude Include="source\DataBase\SetOption.h" />
+    <ClInclude Include="source\DataBase\SetOptionChinaStockMarket.h" />
+    <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h" />
+    <ClInclude Include="source\DataBase\SetRealTimeData.h" />
+    <ClInclude Include="source\DataBase\SetRSOption.h" />
+    <ClInclude Include="source\DataBase\SetRSStrong1Stock.h" />
+    <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
+    <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
+    <ClInclude Include="source\DataBase\SetStockCode.h" />
     <ClInclude Include="source\Guadan.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
@@ -251,18 +265,10 @@
     <ClInclude Include="source\PriorityQueueRTData.h" />
     <ClInclude Include="source\QueueRTData.h" />
     <ClInclude Include="source\QueueWebData.h" />
-    <ClInclude Include="source\SetOptionChinaStockMarket.h" />
-    <ClInclude Include="source\SetRSOption.h" />
-    <ClInclude Include="source\SetRSStrong1Stock.h" />
-    <ClInclude Include="source\SetPotenDailyBriefing.h" />
-    <ClInclude Include="source\SetRSStrong2Stock.h" />
-    <ClInclude Include="source\SetRSStrongStock.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebInquirer.h" />
     <ClInclude Include="source\WebData.h" />
     <ClInclude Include="source\Semaphore.h" />
-    <ClInclude Include="source\SetCrweberIndex.h" />
-    <ClInclude Include="source\SetDayLineToday.h" />
     <ClInclude Include="source\SinaRTWebInquiry.h" />
     <ClInclude Include="source\TengxunRTWebInquiry.h" />
     <ClInclude Include="source\VirtualWebInquiry.h" />
@@ -272,12 +278,6 @@
     <ClInclude Include="source\ChinaMarket.h" />
     <ClInclude Include="source\OneDeal.h" />
     <ClInclude Include="source\RTData.h" />
-    <ClInclude Include="source\SetChoicedStock.h" />
-    <ClInclude Include="source\SetDayLineBasicInfo.h" />
-    <ClInclude Include="source\SetDayLineExtendInfo.h" />
-    <ClInclude Include="source\SetOption.h" />
-    <ClInclude Include="source\SetRealTimeData.h" />
-    <ClInclude Include="source\SetStockCode.h" />
     <ClInclude Include="source\ChinaStock.h" />
     <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="source\ThreadStatus.h" />
@@ -295,6 +295,20 @@
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="source\DataBase\SetChoicedStock.cpp" />
+    <ClCompile Include="source\DataBase\SetCrweberIndex.cpp" />
+    <ClCompile Include="source\DataBase\SetDayLineBasicInfo.cpp" />
+    <ClCompile Include="source\DataBase\SetDayLineExtendInfo.cpp" />
+    <ClCompile Include="source\DataBase\SetDayLineToday.cpp" />
+    <ClCompile Include="source\DataBase\SetOption.cpp" />
+    <ClCompile Include="source\DataBase\SetOptionChinaStockMarket.cpp" />
+    <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp" />
+    <ClCompile Include="source\DataBase\SetRealTimeData.cpp" />
+    <ClCompile Include="source\DataBase\SetRSOption.cpp" />
+    <ClCompile Include="source\DataBase\SetRSStrong1Stock.cpp" />
+    <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
+    <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
+    <ClCompile Include="source\DataBase\SetStockCode.cpp" />
     <ClCompile Include="source\Guadan.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\NeteaseRTWebInquiry.cpp" />
@@ -305,14 +319,6 @@
     <ClCompile Include="source\QueueRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
     <ClCompile Include="source\RTDataContainer.cpp" />
-    <ClCompile Include="source\SetCrweberIndex.cpp" />
-    <ClCompile Include="source\SetDayLineToday.cpp" />
-    <ClCompile Include="source\SetOptionChinaStockMarket.cpp" />
-    <ClCompile Include="source\SetPotenDailyBriefing.cpp" />
-    <ClCompile Include="source\SetRSOption.cpp" />
-    <ClCompile Include="source\SetRSStrong1Stock.cpp" />
-    <ClCompile Include="source\SetRSStrong2Stcok.cpp" />
-    <ClCompile Include="source\SetRSStrongStock.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp" />
@@ -331,15 +337,6 @@
     <ClCompile Include="source\ChinaMarket.cpp" />
     <ClCompile Include="source\OneDeal.cpp" />
     <ClCompile Include="source\RTData.cpp" />
-    <ClCompile Include="source\SetChoicedStock.cpp" />
-    <ClCompile Include="source\SetDayLineBasicInfo.cpp">
-      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">None</DebugInformationFormat>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLineExtendInfo.cpp" />
-    <ClCompile Include="source\SetOption.cpp" />
-    <ClCompile Include="source\SetRealTimeData.cpp" />
-    <ClCompile Include="source\SetStockCode.cpp" />
     <ClCompile Include="source\ChinaStock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="source\ThreadSaveCrweberDB.cpp" />

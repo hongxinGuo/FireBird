@@ -150,12 +150,6 @@
     <ClInclude Include="source\RTDataContainer.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\SetCrweberIndex.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetPotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\CrweberIndexWebInquiry.h">
       <Filter>头文件\Crweber.com Market</Filter>
     </ClInclude>
@@ -170,21 +164,6 @@
     </ClInclude>
     <ClInclude Include="source\PotenDailyBriefingMarket.h">
       <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetChoicedStock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetDayLineToday.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetOption.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRealTimeData.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetStockCode.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
       <Filter>头文件\China Stock Market\网络通信</Filter>
@@ -213,29 +192,50 @@
     <ClInclude Include="source\WebData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\SetDayLineBasicInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetDayLineExtendInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRSStrong1Stock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRSStrong2Stock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRSOption.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetRSStrongStock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SetOptionChinaStockMarket.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\Guadan.h">
       <Filter>头文件\China Stock Market\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetChoicedStock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetDayLineBasicInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetDayLineExtendInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetDayLineToday.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetOption.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetOptionChinaStockMarket.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetRealTimeData.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetRSOption.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetRSStrong1Stock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetRSStrong2Stock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetRSStrongStock.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetStockCode.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetCrweberIndex.h">
+      <Filter>头文件\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h">
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,27 +365,6 @@
     <ClCompile Include="source\ThreadSaveRTData.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\SetPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetChoicedStock.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLineToday.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetOption.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetRealTimeData.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetStockCode.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\VirtualMarket.cpp">
       <Filter>源文件\基类</Filter>
     </ClCompile>
@@ -404,32 +383,53 @@
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\SetDayLineBasicInfo.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetDayLineExtendInfo.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetRSStrong2Stcok.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetRSStrong1Stock.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadSaveCrweberDB.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\SetRSOption.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetRSStrongStock.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SetOptionChinaStockMarket.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\Guadan.cpp">
       <Filter>源文件\China Stock Market\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetChoicedStock.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetDayLineBasicInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetDayLineExtendInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetDayLineToday.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetOption.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetOptionChinaStockMarket.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetRealTimeData.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetRSOption.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetRSStrong1Stock.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetRSStrongStock.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetStockCode.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetCrweberIndex.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
