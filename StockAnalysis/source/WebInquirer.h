@@ -27,8 +27,6 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // ÍøÒ×ÈÕÏ
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.comÉÏµÄÓÍÔËÊı¾İ¡£
 extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.comÉÏµÄÃ¿ÈÕÓÍÔËÖ¸Êı
 #else
@@ -46,8 +44,6 @@ extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // ÍøÒ×ÈÕÏßÀúÊ
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.comÉÏµÄÓÍÔËÊı¾İ¡£
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.comÉÏµÄÃ¿ÈÕÓÍÔËÖ¸Êı
 #endif

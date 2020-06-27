@@ -276,10 +276,6 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
       .Times(1);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFifth, StartReadingThread())
-      .Times(0);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySixth, StartReadingThread())
-      .Times(0);
     EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(10);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());

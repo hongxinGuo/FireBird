@@ -47,8 +47,6 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryFourth = make_shared<CMockNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquiryFifth = make_shared<CMockNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquirySixth = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 #else
@@ -59,8 +57,6 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiryFourth = make_shared<CNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquiryFifth = make_shared<CNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquirySixth = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 #endif
@@ -113,8 +109,6 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
-      gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
-      gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
 

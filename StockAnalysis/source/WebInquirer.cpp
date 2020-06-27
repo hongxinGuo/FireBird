@@ -5,7 +5,7 @@
 
 #include"WebInquirer.h"
 
-int gl_cMaxSavingOneDayLineThreads = 4;
+int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
 
 #ifdef __GOOGLEMOCK__
 #include"MockSinaRTWebInquiry.h"
@@ -23,8 +23,6 @@ CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
-CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
-CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
 CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
 CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
 #else
@@ -42,8 +40,6 @@ CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFifth = nullptr; // 网易日线历史数据
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySixth = nullptr; // 网易日线历史数据
 CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
 CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
 #endif
@@ -63,8 +59,6 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryFourth = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiryFifth = make_shared<CMockNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquirySixth = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
   gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 #else
@@ -75,8 +69,6 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiryFourth = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiryFifth = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquirySixth = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
   gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 #endif
@@ -85,15 +77,8 @@ void CWebInquirer::Initialize(void) {
 bool CWebInquirer::GetNeteaseDayLineData(void) {
   // 抓取日线数据.
   // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+  ASSERT((gl_cMaxSavingOneDayLineThreads < 5) && (gl_cMaxSavingOneDayLineThreads > 0));
   switch (gl_cMaxSavingOneDayLineThreads) {
-  case 8: case 7: case 6:
-  if (!gl_pNeteaseDayLineWebInquirySixth->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquirySixth->GetWebData(); // 网易日线历史数据
-  }
-  case 5:
-  if (!gl_pNeteaseDayLineWebInquiryFifth->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiryFifth->GetWebData();
-  }
   case 4:
   if (!gl_pNeteaseDayLineWebInquiryFourth->IsReadingWebData()) {
     gl_pNeteaseDayLineWebInquiryFourth->GetWebData();
@@ -106,7 +91,7 @@ bool CWebInquirer::GetNeteaseDayLineData(void) {
   if (!gl_pNeteaseDayLineWebInquirySecond->IsReadingWebData()) {
     gl_pNeteaseDayLineWebInquirySecond->GetWebData();
   }
-  case 1: case 0:
+  case 1:
   if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
     gl_pNeteaseDayLineWebInquiry->GetWebData();
   }
@@ -115,7 +100,6 @@ bool CWebInquirer::GetNeteaseDayLineData(void) {
   if (!gl_pNeteaseDayLineWebInquiry->IsReadingWebData()) {
     gl_pNeteaseDayLineWebInquiry->GetWebData();
   }
-  TRACE(_T("Out of range in Get Newease DayLine Web Data\n"));
   break;
   }
   return true;
