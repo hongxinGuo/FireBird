@@ -1749,6 +1749,7 @@ bool CChinaMarket::SaveDayLineData(void) {
         if (pStock->HaveNewDayLineData()) {
           RunningThreadSaveDayLineOfOneStock(pStock);
         }
+        pStock->UnloadDayLine();
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
         CString str1 = pStock->GetStockCode();
@@ -1831,7 +1832,6 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
         pStock->UnloadDayLine();
-        pStock->SetDayLineLoaded(false);
       }
     }
     if (gl_fExitingSystem) return false;
@@ -1872,7 +1872,6 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
         pStock->UnloadDayLine();
-        pStock->SetDayLineLoaded(false);
       }
     }
     if (gl_fExitingSystem) return false;
@@ -1913,7 +1912,6 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
       }
       if (!pStock->IsSameStock(m_pCurrentStock)) {
         pStock->UnloadDayLine();
-        pStock->SetDayLineLoaded(false);
       }
     }
     if (gl_fExitingSystem) return false;
