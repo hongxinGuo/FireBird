@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
-    EXPECT_TRUE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
     EXPECT_CALL(*pStock, SaveDayLine)
@@ -137,7 +137,7 @@ namespace StockAnalysisTest {
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
-    EXPECT_TRUE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
     EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));

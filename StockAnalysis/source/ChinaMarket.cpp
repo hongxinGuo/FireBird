@@ -1749,7 +1749,7 @@ bool CChinaMarket::SaveDayLineData(void) {
         if (pStock->HaveNewDayLineData()) {
           RunningThreadSaveDayLineOfOneStock(pStock);
         }
-        pStock->UnloadDayLine();
+        else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
       }
       else { // 此种情况为有股票代码，但此代码尚未上市
         CString str1 = pStock->GetStockCode();
