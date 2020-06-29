@@ -167,9 +167,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
   CMDITabInfo mdiTabParams;
   mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...
-  mdiTabParams.m_bActiveTabCloseButton = TRUE;      // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
-  mdiTabParams.m_bTabIcons = FALSE;    // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
-  mdiTabParams.m_bAutoColor = TRUE;    // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
+  mdiTabParams.m_bActiveTabCloseButton = TRUE; // 设置为 FALSE 会将关闭按钮放置在选项卡区域的右侧
+  mdiTabParams.m_bTabIcons = FALSE; // 设置为 TRUE 将在 MDI 选项卡上启用文档图标
+  mdiTabParams.m_bAutoColor = TRUE; // 设置为 FALSE 将禁用 MDI 选项卡的自动着色
   mdiTabParams.m_bDocumentMenu = TRUE; // 在选项卡区域的右边缘启用文档菜单
   EnableMDITabbedGroups(TRUE, mdiTabParams);
 
@@ -336,16 +336,6 @@ BOOL CMainFrame::CreateDockingWindows() {
     TRACE0("未能创建输出窗口\n");
     return FALSE; // 未能创建
   }
-  /*
-  CString strOutputWnd2;
-  bNameValid = strOutputWnd2.LoadString(IDS_OUTPUT_WND2);
-  ASSERT(bNameValid);
-  if (!m_wndOutput2.Create(strOutputWnd2, this, CRect(100, 100, 200, 200), TRUE, ID_VIEW_OUTPUTWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
-  {
-    TRACE0("未能创建输出窗口\n");
-    return FALSE; // 未能创建
-  }
-  */
 
   SetDockingWindowIcons(theApp.m_bHiColorIcons);
   return TRUE;

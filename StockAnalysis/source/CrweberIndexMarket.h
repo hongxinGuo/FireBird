@@ -25,8 +25,8 @@ public:
   virtual bool RunningMaintainDB(void);
   virtual bool RunningSaveCrweberDB(CCrweberIndexPtr pCrweberIndex);
 
-  bool LoadDatabase(void);
-  bool SaveDatabase(void);
+  virtual bool LoadDatabase(void);
+  virtual bool SaveDatabase(void);
   bool GetNewestDatabaseDayFromDB(void);
   bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 

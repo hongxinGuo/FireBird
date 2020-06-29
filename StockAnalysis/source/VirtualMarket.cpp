@@ -52,7 +52,7 @@ bool CVirtualMarket::SchedulingTask(void) {
 }
 
 void CVirtualMarket::ResetMarket(void) {
-  ASSERT(0); // 不允许调用基类重置市场函数。
+  ASSERT(0); // 不允许调用基类重置市场函数。这里只是为了测试方便的原因才定义一个实现。
 }
 
 void CVirtualMarket::CalculateTime(void) noexcept {

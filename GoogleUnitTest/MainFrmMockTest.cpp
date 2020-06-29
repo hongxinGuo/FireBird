@@ -468,6 +468,99 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS1) {
+    CCmdUI cmdUI;
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
+  }
+
+  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS2) {
+    CCmdUI cmdUI;
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
+  }
+
+  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS) {
+    CCmdUI cmdUI;
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
+
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
   TEST_F(CMainFrameMockTest, TestOnUsingRealtimeDataServer) {

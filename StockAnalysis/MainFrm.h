@@ -76,7 +76,6 @@ protected:  // 控件条嵌入成员
   CMFCStatusBar m_wndStatusBar;
   CMFCToolBarImages m_UserImages;
   COutputWnd m_wndOutput;
-  COutputWnd m_wndOutput2;
 
   // 生成的消息映射函数
 protected:
