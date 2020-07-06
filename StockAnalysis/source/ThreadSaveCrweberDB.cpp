@@ -27,5 +27,5 @@ UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket) {
   gl_ThreadStatus.DecreaseRunningThread();
   gl_MaintainDB.Signal();
 
-  return 23;
+  return 24;
 }

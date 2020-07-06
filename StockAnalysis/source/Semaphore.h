@@ -20,8 +20,8 @@ namespace MyLib {
     Semaphore(const Semaphore&) = delete;
     Semaphore& operator=(const Semaphore&) = delete;
 
-    void SetMaxCount(long lCount = 1) { ASSERT(lCount >= 1); m_count = lCount; } // 最大共存数不允许小于1
-    long GetMaxCount(void) { return m_count; }
+    void SetMaxCount(long lCount = 1) noexcept { ASSERT(lCount >= 1);  m_count = lCount; } // 最大共存数不允许小于1
+    long GetMaxCount(void) noexcept { return m_count; }
 
     void Signal() {
       {

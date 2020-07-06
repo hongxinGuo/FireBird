@@ -191,9 +191,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
-    <ClCompile Include="StockAnalysisViewTest.cpp">
-      <Filter>Test源文件\Windows界面</Filter>
-    </ClCompile>
     <ClCompile Include="ChinaStockTest.cpp">
       <Filter>Test源文件\China Stock Market\Stock</Filter>
     </ClCompile>
@@ -341,18 +338,6 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockMockTest.cpp">
-      <Filter>Test源文件\China Stock Market\Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="ChinaMarketMockTest.cpp">
-      <Filter>Test源文件\China Stock Market</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrmMockTest.cpp">
-      <Filter>Test源文件\Windows界面</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemMessageMockTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
@@ -370,9 +355,6 @@
     </ClCompile>
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp">
       <Filter>Test源文件\China Stock Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="PotenDailyBriefingMarketMockTest.cpp">
-      <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp">
       <Filter>dependency</Filter>
@@ -436,6 +418,27 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="MockChinaMarketTest.cpp">
+      <Filter>Test源文件\China Stock Market</Filter>
+    </ClCompile>
+    <ClCompile Include="MockSystemMessageTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="MockMainFrmTest.cpp">
+      <Filter>Test源文件\Windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="MockStockAnalysisViewTest.cpp">
+      <Filter>Test源文件\Windows界面</Filter>
+    </ClCompile>
+    <ClCompile Include="MockPotenDailyBriefingMarketTest.cpp">
+      <Filter>Test源文件\Poten Daily Briefing</Filter>
+    </ClCompile>
+    <ClCompile Include="MockChinaStockTest.cpp">
+      <Filter>Test源文件\China Stock Market\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="MockCrweberIndexMarketTest.cpp">
+      <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -639,6 +642,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCrweberIndexMarket.h">
+      <Filter>Mock类\Crweber.com Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

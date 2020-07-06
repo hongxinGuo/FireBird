@@ -47,7 +47,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   SetByteReaded(0);
   try {
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    ASSERT(m_pFile != NULL); // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
     Sleep(lFirstDelayTime); // 服务器延迟lStartDelayTime毫秒即可。
     while (!fDone) {
       do {

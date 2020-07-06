@@ -59,14 +59,15 @@ namespace StockAnalysisTest {
   TEST_F(CVirtualWebInquiryTest, TestReadWebData2) {
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(8)
+      .WillOnce(Return(0)) //第一次返回值为0
       .WillOnce(Return(0))
+      .WillOnce(Return(1024)) //第三次返回值为非零
       .WillOnce(Return(0))
       .WillOnce(Return(1024))
-      .WillOnce(Return(0))
-      .WillOnce(Return(1024))
-      .WillRepeatedly(Return(0));
+      .WillRepeatedly(Return(0)); // 随后的三次皆为零，函数顺利返回
     m_VirtualWebInquiry.SetReadingWebData(true);
-    m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
+    m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
+    //m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
     EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());

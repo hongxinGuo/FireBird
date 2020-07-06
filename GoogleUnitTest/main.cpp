@@ -73,6 +73,7 @@ ExcludeFromCodeCoverage(CStockAnalysisView21, L"CStockAnalysisView::SysCallMoveT
 ExcludeFromCodeCoverage(CStockAnalysisView22, L"CStockAnalysisView::SysCallOnSize");
 ExcludeFromCodeCoverage(CStockAnalysisView23, L"CStockAnalysisView::SysCallSelectObject");
 ExcludeFromCodeCoverage(CStockAnalysisView24, L"CStockAnalysisView::SysCallTextOut");
+ExcludeFromCodeCoverage(CStockAnalysisView25, L"CStockAnalysisView::OnCreate");
 
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");
@@ -93,6 +94,8 @@ ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDayLine
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::RunningThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::RunningThreadUpdateOptionDB");
 
+ExcludeFromCodeCoverage(CPotenDailyBriefingMarket1, L"CPotenDailyBriefingMarket::RunningThreadSavePotenData");
+
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");
 
@@ -111,9 +114,16 @@ ExcludeFromCodeCoverage(CCrweberIndexWebInquiry1, L"CCrweberIndexWebInquiry::Sta
 ExcludeFromCodeCoverage(CNeteaseDayLineWebInquiry1, L"CNeteaseDayLineWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry1, L"CPotenDailyBriefingWebInquiry::StartReadingThread");
-ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry2, L"CPotenDailyBriefingWebInquiry::RunningThreadSavePotenData");
 
 ExcludeFromCodeCoverage(CSystemDeque1, L"CSystemDeque::SysCallOutputListAddString");
+
+ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
+ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");
+ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDayLineInfo");
+ExcludeFromCodeCoverage(CSystemMessage5, L"CSystemMessage::DisplayInformation");
+ExcludeFromCodeCoverage(CSystemMessage6, L"CSystemMessage::DisplayInnerSystemInformation");
+ExcludeFromCodeCoverage(CSystemMessage7, L"CSystemMessage::DisplayTrace2");
+ExcludeFromCodeCoverage(CSystemMessage8, L"CSystemMessage::DisplayTransaction");
 
 #pragma managed(pop)
 
