@@ -35,7 +35,7 @@ protected:
   // 结构cmpRTData定义为：
   // struct cmpRTData {
   //   bool operator () (const CRTDataPtr p1, const CRTDataPtr p2) const {
-  //     return(p1->GetTime() > p2->GetTime());
+  //     return(p1->GetFormatedMarketTime() > p2->GetFormatedMarketTime());
   //   }
   // };
   priority_queue<CRTDataPtr, vector<CRTDataPtr>, cmpRTData> m_priorityqueueRTStockData;

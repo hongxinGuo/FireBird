@@ -519,7 +519,7 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 }
 
 void CMainFrame::CalculateTodayRelativeStrong(void) {
-  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(gl_pChinaStockMarket->GetDay());
+  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(gl_pChinaStockMarket->GetFormatedMarketDay());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -685,7 +685,7 @@ void CMainFrame::OnBuildResetMarket() {
 void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-  if ((gl_pChinaStockMarket->GetTime() > 83000) && (gl_pChinaStockMarket->GetTime() < 93000)) {
+  if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaStockMarket->GetFormatedMarketTime() < 93000)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {

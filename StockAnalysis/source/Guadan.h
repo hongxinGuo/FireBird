@@ -15,7 +15,7 @@ public:
   }
 
   void SetTime(time_t t) { m_time = t; }
-  time_t GetTime(void) { return m_time; }
+  time_t GetFormatedMarketTime(void) { return m_time; }
   void SetVolume(long lVolume) { m_lVolume = lVolume; }
   long GetVolume(void) { return m_lVolume; }
   void SetStatus(long lStatus) { m_lStatus = lStatus; }

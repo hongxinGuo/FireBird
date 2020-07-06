@@ -166,7 +166,7 @@ void CDayLine::Reset(void) {
 bool CDayLine::SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo) {
   ASSERT(setDayLineBasicInfo.IsOpen());
 
-  setDayLineBasicInfo.m_Day = GetDay();
+  setDayLineBasicInfo.m_Day = GetFormatedMarketDay();
   setDayLineBasicInfo.m_Market = GetMarket();
   setDayLineBasicInfo.m_StockCode = GetStockCode();
   setDayLineBasicInfo.m_StockName = GetStockName();

@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     EXPECT_EQ(ThreadChoice10RSStrong1StockSet(&market), (UINT)31);
     EXPECT_TRUE(market.IsUpdateOptionDB());
-    EXPECT_EQ(market.GetUpdatedDayFor10DayRS1(), market.GetDay());
+    EXPECT_EQ(market.GetUpdatedDayFor10DayRS1(), market.GetFormatedMarketDay());
   }
 
   class CThreadChoice10RSStrong2StockSet : public ::testing::Test
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     EXPECT_EQ(ThreadChoice10RSStrong2StockSet(&market), (UINT)32);
     EXPECT_TRUE(market.IsUpdateOptionDB());
-    EXPECT_EQ(market.GetUpdatedDayFor10DayRS2(), market.GetDay());
+    EXPECT_EQ(market.GetUpdatedDayFor10DayRS2(), market.GetFormatedMarketDay());
   }
 
   class CThreadChoice10RSStrongStockSet : public ::testing::Test

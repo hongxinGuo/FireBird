@@ -24,9 +24,9 @@ public:
   bool IsActive(void);
 
 public:
-  long GetDay(void) noexcept { return m_lDay; }
+  long GetFormatedMarketDay(void) noexcept { return m_lDay; }
   void SetDay(long lDay) noexcept { m_lDay = lDay; }
-  time_t GetTime(void) noexcept { return m_time; }
+  time_t GetFormatedMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t t) noexcept { m_time = t; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }

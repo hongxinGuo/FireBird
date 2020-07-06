@@ -865,7 +865,7 @@ namespace StockAnalysisTest {
     stock.SetMarket(__SHANGHAI_MARKET__);
     stock.SetStockName(_T("Î´Ê¹ÓÃ¹ý"));
     stock.SetIPOStatus(__STOCK_IPOED__);
-    stock.SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
+    stock.SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     stock.SetDayLineStartDay(19900101);
     setStockCode.Open();
     stock.AppendStockCodeDB(setStockCode);
@@ -898,8 +898,8 @@ namespace StockAnalysisTest {
     CChinaStock stock;
 
     gl_pChinaStockMarket->CalculateTime();
-    stock.SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
-    long lCurrentDay = gl_pChinaStockMarket->GetDay();
+    stock.SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+    long lCurrentDay = gl_pChinaStockMarket->GetFormatedMarketDay();
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
@@ -913,9 +913,9 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
     CChinaStock id;
     EXPECT_TRUE(id.IsDayLineNeedUpdate());
-    id.SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
+    id.SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     id.SetCheckingDayLineStatus();
-    EXPECT_FALSE(id.IsDayLineNeedUpdate()) << id.GetDayLineEndDay() << gl_pChinaStockMarket->GetDay();
+    EXPECT_FALSE(id.IsDayLineNeedUpdate()) << id.GetDayLineEndDay() << gl_pChinaStockMarket->GetFormatedMarketDay();
     id.SetDayLineNeedUpdate(true);
     id.SetDayLineEndDay(gl_pChinaStockMarket->GetLastTradeDay());
     id.SetCheckingDayLineStatus();
@@ -1394,7 +1394,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine;
     pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
-    EXPECT_EQ(pDayLine->GetTime(), 0);
+    EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
     EXPECT_STREQ(pDayLine->GetStockCode(), _T("sh600011"));
     EXPECT_EQ(pDayLine->GetMarket(), 1);
     EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
@@ -1538,7 +1538,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       id.LoadBasicData(setDayLineBasicInfo);
       pid = pStock->GetDayLine(i);
-      EXPECT_EQ(setDayLineBasicInfo.m_Day, pid->GetDay());
+      EXPECT_EQ(setDayLineBasicInfo.m_Day, pid->GetFormatedMarketDay());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
       EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pid->GetStockCode());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
@@ -1610,7 +1610,7 @@ namespace StockAnalysisTest {
     for (int i = 0; i < 10; i++) {
       pid = id.GetDayLine(i);
       pDayLine = pStock->GetDayLine(i);
-      EXPECT_EQ(pDayLine->GetDay(), pid->GetDay());
+      EXPECT_EQ(pDayLine->GetFormatedMarketDay(), pid->GetFormatedMarketDay());
       EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
       EXPECT_STREQ(pDayLine->GetStockCode(), pid->GetStockCode());
       EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
@@ -1802,7 +1802,7 @@ namespace StockAnalysisTest {
     stock.StoreDayLine(vDayLine);
     EXPECT_EQ(stock.GetDayLineSize(), 10);
     for (int i = 0; i < 10; i++) {
-      EXPECT_EQ(stock.GetDayLine(i)->GetDay(), 19900101 + 9 - i);
+      EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDay(), 19900101 + 9 - i);
     }
     EXPECT_TRUE(stock.IsDayLineLoaded());
   }
@@ -1892,7 +1892,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Open();
     dayLine.LoadEntendData(setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
-    EXPECT_EQ(dayLine.GetTime(), 0);
+    EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
     EXPECT_STREQ(dayLine.GetStockCode(), _T(""));
     EXPECT_EQ(dayLine.GetMarket(), 0);
     EXPECT_EQ(dayLine.GetTransactionNumber(), stock.GetTransactionNumber());

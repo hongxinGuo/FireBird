@@ -215,8 +215,8 @@ void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {
 }
 
 bool CVirtualMarket::SchedulingTaskPerSecond(long lSecond) {
-  const long lCurrentTime = GetTime();
-  //long lCurrentTime2 = GetTime();
+  const long lCurrentTime = GetFormatedMarketTime();
+  //long lCurrentTime2 = GetFormatedMarketTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerMinute(lSecond, lCurrentTime);

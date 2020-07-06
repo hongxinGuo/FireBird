@@ -477,7 +477,7 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
     long lDay = pStock->GetDayLineEndDay();
-    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
+    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     pStock->SetDayLineNeedUpdate(false);
     pStock->SetDayLineEndDay(lDay); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(1);
@@ -501,7 +501,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
     lDay = pStock->GetDayLineEndDay();
-    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetDay());
+    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     str = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr();
     EXPECT_TRUE(str.GetLength() > 0);
@@ -1587,7 +1587,7 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->SetRelativeStrongStartDay(20200101);
     gl_pChinaStockMarket->SetRelativeStrongEndDay(20200202);
-    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetDay());
+    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19990101);
     gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19990202);
 
@@ -1603,7 +1603,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20200101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20200202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetDay());
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDay());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
@@ -1627,7 +1627,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20100101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20100202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetDay()) << _T("永远是当前日期\n");
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDay()) << _T("永远是当前日期\n");
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19980202);

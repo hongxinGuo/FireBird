@@ -164,7 +164,7 @@ void CChinaStock::ClearRTDataDeque(void) {
 
 bool CChinaStock::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > GetDayLineEndDay()) return true;
+  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) return true;
   else return false;
 }
 
@@ -231,7 +231,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
-      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetDay(), 30)) {
+      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetFormatedMarketDay(), 30)) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
       //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
@@ -262,7 +262,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   strTemp = pDayLine->GetStockCode();
   strTemp += _T("日线下载完成.");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
-  if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetDay(), gl_pChinaStockMarket->GetDay(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+  if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDay(), gl_pChinaStockMarket->GetFormatedMarketDay(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
@@ -478,7 +478,7 @@ bool CChinaStock::SaveDayLine(void) {
   bool fNeedUpdate = false;
 
   ASSERT(m_vDayLine.size() > 0);
-  ASSERT(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > m_lDayLineEndDay);
+  ASSERT(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > m_lDayLineEndDay);
 
   lSize = m_vDayLine.size();
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
@@ -495,12 +495,12 @@ bool CChinaStock::SaveDayLine(void) {
   }
   setDayLineBasicInfo.Close();
   if (vDayLine.size() == 0) {
-    SetDayLineStartDay(gl_pChinaStockMarket->GetDay());
+    SetDayLineStartDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
-    SetDayLineStartDay(vDayLine.at(0)->GetDay());
-    SetDayLineEndDay(vDayLine.at(vDayLine.size() - 1)->GetDay());
+    SetDayLineStartDay(vDayLine.at(0)->GetFormatedMarketDay());
+    SetDayLineEndDay(vDayLine.at(vDayLine.size() - 1)->GetFormatedMarketDay());
   }
 
   lSizeOfOldDayLine = lCurrentPos;
@@ -509,9 +509,9 @@ bool CChinaStock::SaveDayLine(void) {
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = m_vDayLine.at(i);
-    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetDay() < pDayLine->GetDay())) lCurrentPos++;
+    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() < pDayLine->GetFormatedMarketDay())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
-      if (vDayLine.at(lCurrentPos)->GetDay() > pDayLine->GetDay()) {
+      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() > pDayLine->GetFormatedMarketDay()) {
         pDayLine->AppendData(setDayLineBasicInfo);
         fNeedUpdate = true;
       }
@@ -533,12 +533,12 @@ bool CChinaStock::SaveDayLine(void) {
 }
 
 void CChinaStock::UpdateDayLineStartEndDay(void) {
-  if (m_vDayLine.at(0)->GetDay() < GetDayLineStartDay()) {
-    SetDayLineStartDay(m_vDayLine.at(0)->GetDay());
+  if (m_vDayLine.at(0)->GetFormatedMarketDay() < GetDayLineStartDay()) {
+    SetDayLineStartDay(m_vDayLine.at(0)->GetFormatedMarketDay());
     SetDayLineDBUpdated(true);
   }
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetDay() > GetDayLineEndDay()) {
-    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetDay());
+  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) {
+    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay());
     SetDayLineDBUpdated(true);
   }
 }
@@ -747,12 +747,12 @@ bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineExtendI
 
   while (!setDayLineExtendInfo.IsEOF()) {
     pDayLine = m_vDayLine.at(iPosition);
-    while ((pDayLine->GetDay() < setDayLineExtendInfo.m_Day)
+    while ((pDayLine->GetFormatedMarketDay() < setDayLineExtendInfo.m_Day)
            && (m_vDayLine.size() > (iPosition + 1))) {
       iPosition++;
       pDayLine = m_vDayLine.at(iPosition);
     }
-    if (pDayLine->GetDay() == setDayLineExtendInfo.m_Day) {
+    if (pDayLine->GetFormatedMarketDay() == setDayLineExtendInfo.m_Day) {
       pDayLine->LoadEntendData(setDayLineExtendInfo);
     }
     if (m_vDayLine.size() <= (iPosition + 1)) break;
@@ -1569,7 +1569,7 @@ bool CChinaStock::CheckCurrentRTData() {
     if (GetAttackSellVolume() < 0) j += 8;
     if (GetStrongBuyVolume() < 0) j += 16;
     if (GetStrongSellVolume() < 0) j += 32;
-    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetTime(), GetStockCode().GetBuffer(), j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetFormatedMarketTime(), GetStockCode().GetBuffer(), j);
     return false;
   }
   return true;
@@ -1669,7 +1669,7 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
   if (GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
-    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetDay(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetFormatedMarketDay(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
       setStockCode.m_IPOed = __STOCK_DELISTED__;
     }
     else {
@@ -1841,7 +1841,7 @@ void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
       y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
     }
     pDC->LineTo(x, y);
-    lDay = (*it)->GetDay();
+    lDay = (*it)->GetFormatedMarketDay();
     i++;
     if (3 * i > m_vDayLine.size()) break;
     if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止

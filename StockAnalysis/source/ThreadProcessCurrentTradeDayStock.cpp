@@ -22,7 +22,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   CString str;
   int i;
   long lDay = FormatToDay(pMarket->GetNewestTransactionTime());
-  if (lDay == pMarket->GetDay()) {
+  if (lDay == pMarket->GetFormatedMarketDay()) {
     i = pMarket->ProcessCurrentTradeDayStock(lDay);
     TRACE("处理今日股票\n");
     sprintf_s(buffer, "%d", i);
@@ -31,8 +31,8 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
     str += _T("个股票");
     gl_systemMessage.PushInformationMessage(str);
     pMarket->RunningThreadCalculateThisDayRS(lDay);
-    if (pMarket->GetTime() > 150400) {   // 如果中国股市闭市了
-      pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetDay());
+    if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
+      pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。
       pMarket->SetUpdateOptionDB(true);   // 更新状态
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识

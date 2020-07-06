@@ -107,7 +107,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(20000101);
     pStock->StoreDayLine(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDay(s_pchinaMarket->GetDay());
+    pDayLine->SetDay(s_pchinaMarket->GetFormatedMarketDay());
     pStock->StoreDayLine(pDayLine);
     //pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineOfOneStock(_))
@@ -353,7 +353,7 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
-    if (s_pchinaMarket->GetTime() > 150400) {
+    if (s_pchinaMarket->GetFormatedMarketTime() > 150400) {
       EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), lDay);
       EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());
       EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
@@ -389,7 +389,7 @@ namespace StockAnalysisTest {
       .Times(5);
     EXPECT_EQ(ThreadCalculateDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), s_pchinaMarket->GetDay());
+    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), s_pchinaMarket->GetFormatedMarketDay());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
   }
 

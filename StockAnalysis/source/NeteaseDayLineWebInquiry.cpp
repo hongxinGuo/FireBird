@@ -33,7 +33,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
     SetDownLoadingStockCode(strMiddle);
     gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strMiddle);
     strMiddle += _T("&start=19900101&end=");
-    sprintf_s(buffer2, "%8d", gl_pChinaStockMarket->GetDay());
+    sprintf_s(buffer2, "%8d", gl_pChinaStockMarket->GetFormatedMarketDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
     gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);

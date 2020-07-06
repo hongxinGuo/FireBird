@@ -43,9 +43,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CPotenDailyBriefingTest, TestGetDay) {
     CPotenDailyBriefing id;
-    EXPECT_EQ(id.GetDay(), 0);
+    EXPECT_EQ(id.GetFormatedMarketDay(), 0);
     id.SetDay(20190101);
-    EXPECT_EQ(id.GetDay(), 20190101);
+    EXPECT_EQ(id.GetFormatedMarketDay(), 20190101);
   }
 
   TEST_F(CPotenDailyBriefingTest, TestGetSet) {
@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingTest, TestLoadData) {
     CPotenDailyBriefing id, id2;
     CSetPotenDailyBriefing setPoten;
-    long lDay = gl_pPotenDailyBriefingMarket->GetDay();
+    long lDay = gl_pPotenDailyBriefingMarket->GetFormatedMarketDay();
     char buffer[30];
     sprintf_s(buffer, "%08d", lDay);
     CString strDay = buffer;

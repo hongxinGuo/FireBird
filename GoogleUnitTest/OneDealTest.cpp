@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
 
   TEST_F(COneDealTest, TestInitialize) {
     COneDeal oneDeal;
-    EXPECT_EQ(oneDeal.GetTime(), 0);
+    EXPECT_EQ(oneDeal.GetFormatedMarketTime(), 0);
     EXPECT_EQ(oneDeal.GetType(), 0);
     EXPECT_EQ(oneDeal.GetPrice(), 0);
     EXPECT_EQ(oneDeal.GetVolume(), 0);
@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
   TEST_F(COneDealTest, TestGetTime) {
     COneDeal oneDeal;
     oneDeal.SetTime(20202020);
-    EXPECT_EQ(oneDeal.GetTime(), 20202020);
+    EXPECT_EQ(oneDeal.GetFormatedMarketTime(), 20202020);
   }
 
   TEST_F(COneDealTest, TestGetType) {

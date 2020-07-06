@@ -98,7 +98,7 @@ void CChinaMarket::Reset(void) {
 
   m_ttNewestTransactionTime = 0;
 
-  if (GetTime() >= 150400) { // 中国股票市场已经闭市
+  if (GetFormatedMarketTime() >= 150400) { // 中国股票市场已经闭市
     m_fTodayStockProcessed = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
   else m_fTodayStockProcessed = false;
@@ -870,10 +870,12 @@ bool CChinaMarket::StepToActiveStockIndex(long& iStockIndex) {
 //
 // 由工作线程ThreadCalculatingRTDataProc调用，注意全局变量的使用
 //
+// 目前调用的方式是直接加在主线程中，不采用工作线程模式调用。
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskProcessRTData(void) {
   ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
+  ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个线程互斥
   for (auto pStock : m_vChinaMarketStock) {
     if (pStock->IsActive()) {
       pStock->ProcessRTData();
@@ -1224,7 +1226,7 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   static int s_iCountDownProcessWebRTData = 0;
-  const long lCurrentTime = GetTime();
+  const long lCurrentTime = GetFormatedMarketTime();
 
   // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
   SchedulingTaskPerHour(lSecondNumber, lCurrentTime);
@@ -1263,7 +1265,8 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
   // 计算实时数据，每秒钟一次。目前个股实时数据为每3秒钟一次更新，故而无需再快了。
   // 此计算任务要在DistributeRTDataReceivedFromWebToProperStock之后执行，以防止出现同步问题。
-  if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) { // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。
+  // 在系统存储临时数据时不能同时计算实时数据，否则容易出现同步问题。如果系统正在存储临时实时数据，则等待一秒后的下一次轮询时再计算实时数据
+  if (IsSystemReady() && !gl_ThreadStatus.IsSavingTempData() && IsTodayTempRTDataLoaded()) {
     if (gl_ThreadStatus.IsRTDataNeedCalculate()) {
       gl_ThreadStatus.SetCalculatingRTData(true);
       TaskProcessRTData();
@@ -2048,7 +2051,7 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
       thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
     }
   }
-  SetUpdatedDayFor10DayRS(GetDay());
+  SetUpdatedDayFor10DayRS(GetFormatedMarketDay());
   SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
 
   return true;
@@ -2191,7 +2194,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   // 读取今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
   if (!setDayLineToday.IsEOF()) {
-    if (setDayLineToday.m_Day == GetDay()) { // 如果是当天的行情，则载入，否则放弃
+    if (setDayLineToday.m_Day == GetFormatedMarketDay()) { // 如果是当天的行情，则载入，否则放弃
       while (!setDayLineToday.IsEOF()) {
         if ((pStock = GetStock(setDayLineToday.m_StockCode)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // 确保没有开始计算实时数据
@@ -2511,7 +2514,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.AddNew();
     setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
-    setOption.m_LastLoginDay = GetDay();
+    setOption.m_LastLoginDay = GetFormatedMarketDay();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
     setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
@@ -2521,7 +2524,7 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.Edit();
     setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
     setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
-    setOption.m_LastLoginDay = GetDay();
+    setOption.m_LastLoginDay = GetFormatedMarketDay();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
     setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
@@ -2569,11 +2572,11 @@ void CChinaMarket::LoadOptionDB(void) {
     SetUpdatedDayFor10DayRS1(setOption.m_UpdatedDayFor10DayRS1);
     SetUpdatedDayFor10DayRS2(setOption.m_UpdatedDayFor10DayRS2);
     SetUpdatedDayFor10DayRS(setOption.m_UpdatedDayFor10DayRS);
-    if (setOption.m_UpdatedDayFor10DayRS1 < GetDay())  m_fChoiced10RSStrong1StockSet = false;
+    if (setOption.m_UpdatedDayFor10DayRS1 < GetFormatedMarketDay())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;
-    if (setOption.m_UpdatedDayFor10DayRS2 < GetDay())  m_fChoiced10RSStrong2StockSet = false;
+    if (setOption.m_UpdatedDayFor10DayRS2 < GetFormatedMarketDay())  m_fChoiced10RSStrong2StockSet = false;
     else m_fChoiced10RSStrong2StockSet = true;
-    if (setOption.m_UpdatedDayFor10DayRS < GetDay())  m_fChoiced10RSStrongStockSet = false;
+    if (setOption.m_UpdatedDayFor10DayRS < GetFormatedMarketDay())  m_fChoiced10RSStrongStockSet = false;
     else m_fChoiced10RSStrongStockSet = true;
   }
 
