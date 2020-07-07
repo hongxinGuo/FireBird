@@ -329,4 +329,24 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
   }
+
+  TEST_F(CStockAnalysisViewTest, TestOnShow) {
+    CDC dc;
+    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(true);
+    s_pStockAnalysisView->SetCurrentShowType(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, ShowStockDayLine(_))
+      .Times(1);
+    s_pStockAnalysisView->Show(&dc);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
+      .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, ShowRealtimeData(_))
+      .Times(1);
+    s_pStockAnalysisView->SetCurrentShowType(2);
+    s_pStockAnalysisView->Show(&dc);
+
+    gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(false);
+  }
 }

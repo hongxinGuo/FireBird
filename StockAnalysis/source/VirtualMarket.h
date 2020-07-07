@@ -63,9 +63,9 @@ public:
   // 测试用函数
   void __TEST_SetLocalTime(time_t Time) noexcept { sm_tLocal = Time; }
   void __TEST_SetMarketTime(time_t Time) noexcept { m_tMarket = Time; }
-  void __TEST_SetMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
+  void __TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
   void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
-  void __TEST_SetMarketDay(long lDay) noexcept { m_lMarketToday = lDay; }
+  void __TEST_SetFormatedMarketDay(long lDay) noexcept { m_lMarketToday = lDay; }
 
 protected:
   long m_lTimeZoneOffset; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。

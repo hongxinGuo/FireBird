@@ -30,16 +30,17 @@ public:
 
   // 操作
 public:
+  void Show(CDC* pdc);
+  virtual void ShowStockDayLine(CDC* pDC);
+  virtual void ShowRealtimeData(CDC* pDC);
+
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
   bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart);
-
-  void ShowRealTimeData(CDC* pDC);
   void ShowRealtimeGuadan(CDC* pdc);
   void ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
   void ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea);
-  void ShowStockDayLine(CDC* pDC);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
   bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 
@@ -61,6 +62,7 @@ public:
   virtual void SysCallOnSize(UINT nType, int cx, int cy) { CView::OnSize(nType, cx, cy); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }
+  virtual void SysCallGetClientRect(LPRECT lpRect) { CView::GetClientRect(lpRect); }
 
   // 重写
 public:
@@ -78,9 +80,6 @@ public:
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;
 #endif
-
-protected:
-  void Show(CDC* pdc);
 
 protected:
   bool m_fCreateMemoryDC;

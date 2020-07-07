@@ -20,5 +20,8 @@ namespace testing {
     MOCK_METHOD(void, SysCallOnSize, (UINT nType, int cx, int cy), (override));
     MOCK_METHOD(void, SysCallCmdUISetCheck, (CCmdUI* pCmdUI, int iCheck), (override));
     MOCK_METHOD(void, SysCallCmdUIEnable, (CCmdUI* pCmdUI, bool fEnable), (override));
+    MOCK_METHOD(void, SysCallGetClientRect, (LPRECT lpRect), (override));
+    MOCK_METHOD(void, ShowStockDayLine, (CDC* pDC), (override));
+    MOCK_METHOD(void, ShowRealtimeData, (CDC* pDC), (override));
   };
 }

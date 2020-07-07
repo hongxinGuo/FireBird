@@ -74,7 +74,15 @@ ExcludeFromCodeCoverage(CStockAnalysisView21, L"CStockAnalysisView::SysCallMoveT
 ExcludeFromCodeCoverage(CStockAnalysisView22, L"CStockAnalysisView::SysCallOnSize");
 ExcludeFromCodeCoverage(CStockAnalysisView23, L"CStockAnalysisView::SysCallSelectObject");
 ExcludeFromCodeCoverage(CStockAnalysisView24, L"CStockAnalysisView::SysCallTextOut");
-ExcludeFromCodeCoverage(CStockAnalysisView25, L"CStockAnalysisView::OnCreate");
+ExcludeFromCodeCoverage(CStockAnalysisView25, L"CStockAnalysisView::SysCallGetClientRect");
+ExcludeFromCodeCoverage(CStockAnalysisView26, L"CStockAnalysisView::OnCreate");
+ExcludeFromCodeCoverage(CStockAnalysisView27, L"CStockAnalysisView::ShowAttackBuySell");
+ExcludeFromCodeCoverage(CStockAnalysisView28, L"CStockAnalysisView::ShowBuySell");
+ExcludeFromCodeCoverage(CStockAnalysisView29, L"CStockAnalysisView::ShowCurrentTransactionInfo");
+ExcludeFromCodeCoverage(CStockAnalysisView30, L"CStockAnalysisView::ShowGuadan");
+ExcludeFromCodeCoverage(CStockAnalysisView31, L"CStockAnalysisView::ShowRealtimeData");
+ExcludeFromCodeCoverage(CStockAnalysisView32, L"CStockAnalysisView::ShowRealtimeGuadan");
+ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDayLine");
 
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");

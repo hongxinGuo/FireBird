@@ -1279,7 +1279,7 @@ namespace StockAnalysisTest {
     CDayLine id;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600011"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
-    gl_pChinaStockMarket->__TEST_SetMarketDay(21900101);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketDay(21900101);
 
     pid = make_shared<CDayLine>();
     pid->SetDay(21900101);
@@ -1503,7 +1503,7 @@ namespace StockAnalysisTest {
     CDayLine id;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
-    gl_pChinaStockMarket->__TEST_SetMarketDay(20190101);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketDay(20190101);
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();

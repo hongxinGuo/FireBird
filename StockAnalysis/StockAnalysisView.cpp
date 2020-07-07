@@ -133,7 +133,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
   return true;
 }
 
-void CStockAnalysisView::ShowRealTimeData(CDC* pDC) {
+void CStockAnalysisView::ShowRealtimeData(CDC* pDC) {
   const int cFirstPosition = 0;
   const int cSecondPosition = cFirstPosition + 200;
   const int cThirdPosition = cSecondPosition + 300;
@@ -617,8 +617,10 @@ void CStockAnalysisView::Show(CDC* pdc) {
   }
 
   CRect rect;
-  GetClientRect(&rect);
-  if ((gl_pChinaStockMarket->GetCurrentStock() == nullptr) || (!gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded())) {
+  SysCallGetClientRect(&rect);
+  if ((gl_pChinaStockMarket->GetCurrentStock() != nullptr) && (gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded())) {
+  }
+  else {
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
     m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
     pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
@@ -639,7 +641,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
   case 2:	// show realtime stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
-  ShowRealTimeData(&m_MemoryDC);
+  ShowRealtimeData(&m_MemoryDC);
   pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   m_MemoryDC.SelectObject(pOldBitmap);
   break;
