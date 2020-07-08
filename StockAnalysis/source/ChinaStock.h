@@ -386,9 +386,9 @@ public:
   void CalculateCanceledBuyVolume(INT64 lCurrentCanceledBuyVolume);
   bool CheckCurrentRTData();
   void ShowCurrentTransaction(void);
-  void ShowCurrentInformationofCancelingGuadan(void);
+  void ShowCurrentInformationOfCancelingGuadan(void);
   virtual void ReportGuadanTransaction(void);
-  void ReportGuadan(void);
+  virtual void ReportGuadan(void);
 
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);

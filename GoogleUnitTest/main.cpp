@@ -103,10 +103,21 @@ ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDayLine
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::RunningThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::RunningThreadUpdateOptionDB");
 
-ExcludeFromCodeCoverage(CPotenDailyBriefingMarket1, L"CPotenDailyBriefingMarket::RunningThreadSavePotenData");
-
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");
+ExcludeFromCodeCoverage(CChinaStock3, L"CChinaStock::GetRS1Day");
+ExcludeFromCodeCoverage(CChinaStock4, L"CChinaStock::GetRS3Day");
+ExcludeFromCodeCoverage(CChinaStock5, L"CChinaStock::GetRS5Day");
+ExcludeFromCodeCoverage(CChinaStock6, L"CChinaStock::GetRS10Day");
+ExcludeFromCodeCoverage(CChinaStock7, L"CChinaStock::GetRS30Day");
+ExcludeFromCodeCoverage(CChinaStock8, L"CChinaStock::GetRS60Day");
+ExcludeFromCodeCoverage(CChinaStock9, L"CChinaStock::GetRS120Day");
+ExcludeFromCodeCoverage(CChinaStock10, L"CChinaStock::GetRSIndex1Day");
+ExcludeFromCodeCoverage(CChinaStock11, L"CChinaStock::GetRSLogarithm1Day");
+ExcludeFromCodeCoverage(CChinaStock12, L"CChinaStock::ReportGuadan");
+ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDayLine");
+
+ExcludeFromCodeCoverage(CPotenDailyBriefingMarket1, L"CPotenDailyBriefingMarket::RunningThreadSavePotenData");
 
 ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::GetNextInquiringMiddleStr");
 ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextInquiringStr");
@@ -115,6 +126,14 @@ ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingT
 
 ExcludeFromCodeCoverage(CRTData1, L"CRTData::AssertValid");
 ExcludeFromCodeCoverage(CRTData2, L"CRTData::Dump");
+
+ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
+ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");
+ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDayLineInfo");
+ExcludeFromCodeCoverage(CSystemMessage5, L"CSystemMessage::DisplayInformation");
+ExcludeFromCodeCoverage(CSystemMessage6, L"CSystemMessage::DisplayInnerSystemInformation");
+ExcludeFromCodeCoverage(CSystemMessage7, L"CSystemMessage::DisplayTrace2");
+ExcludeFromCodeCoverage(CSystemMessage8, L"CSystemMessage::DisplayTransaction");
 
 ExcludeFromCodeCoverage(CNeteaseRTWebInquiry1, L"CNeteaseRTWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CTengxunRTWebInquiry1, L"CTengxunRTWebInquiry::StartReadingThread");
@@ -126,13 +145,8 @@ ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry1, L"CPotenDailyBriefingWeb
 
 ExcludeFromCodeCoverage(CSystemDeque1, L"CSystemDeque::SysCallOutputListAddString");
 
-ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
-ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");
-ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDayLineInfo");
-ExcludeFromCodeCoverage(CSystemMessage5, L"CSystemMessage::DisplayInformation");
-ExcludeFromCodeCoverage(CSystemMessage6, L"CSystemMessage::DisplayInnerSystemInformation");
-ExcludeFromCodeCoverage(CSystemMessage7, L"CSystemMessage::DisplayTrace2");
-ExcludeFromCodeCoverage(CSystemMessage8, L"CSystemMessage::DisplayTransaction");
+ExcludeFromCodeCoverage(CWebInquiry1, L"CWebInquiry::Initialize");
+ExcludeFromCodeCoverage(CWebInquiry2, L"CWebInquiry::~CWebInquirer");
 
 #pragma managed(pop)
 

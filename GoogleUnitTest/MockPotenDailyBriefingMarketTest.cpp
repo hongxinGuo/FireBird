@@ -19,7 +19,7 @@ using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
-  class CPotenDailyBirefingMarketMockTest : public ::testing::Test
+  class CMockPotenDailyBirefingMarketTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     CMockPotenDailyBriefingMarket potenDailyBreifingMarket;
   };
 
-  TEST_F(CPotenDailyBirefingMarketMockTest, TestThreadSavePotenData) {
+  TEST_F(CMockPotenDailyBirefingMarketTest, TestThreadSavePotenData) {
     EXPECT_CALL(potenDailyBreifingMarket, SaveCurrentData)
       .Times(1);
     ThreadSavePotenData(&potenDailyBreifingMarket);

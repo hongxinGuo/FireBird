@@ -9,7 +9,7 @@ using namespace testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
-  class CMainFrameMockTest : public ::testing::Test {
+  class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
       EXPECT_FALSE(gl_fNormalMode);
@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
     CMockMainFrame* s_pMainFrame;
   };
 
-  TEST_F(CMainFrameMockTest, TestCreateMarketContainer) {
+  TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
     EXPECT_TRUE(s_pMainFrame->CreateMarketContainer());
     EXPECT_EQ(gl_vMarketPtr.size(), 6);
     CVirtualMarketPtr pMarket;
@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_vMarketPtr.size(), 3);
   }
 
-  TEST_F(CMainFrameMockTest, TestIsNeedResetMarket) {
+  TEST_F(CMockMainFrameTest, TestIsNeedResetMarket) {
     gl_pChinaStockMarket->SetResetMarket(false);
     gl_pPotenDailyBriefingMarket->SetResetMarket(false);
     gl_pCrweberIndexMarket->SetResetMarket(false);
@@ -77,7 +77,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pMainFrame->IsNeedResetMarket());
   }
 
-  TEST_F(CMainFrameMockTest, TestUpdateStatus) {
+  TEST_F(CMockMainFrameTest, TestUpdateStatus) {
     InSequence seq;
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
@@ -124,7 +124,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->UpdateStatus();
   }
 
-  TEST_F(CMainFrameMockTest, TestOnSysCommand) {
+  TEST_F(CMockMainFrameTest, TestOnSysCommand) {
     gl_fExitingSystem = false;
     EXPECT_CALL(*s_pMainFrame, SysCallOnSysCommand)
       .Times(1);
@@ -138,20 +138,20 @@ namespace StockAnalysisTest {
     gl_fExitingSystem = false;
   }
 
-  TEST_F(CMainFrameMockTest, TestOnCalculateTodayRelativeStrong) {
+  TEST_F(CMockMainFrameTest, TestOnCalculateTodayRelativeStrong) {
     EXPECT_CALL(*s_pMainFrame, CalculateTodayRelativeStrong)
       .Times(1);
     s_pMainFrame->OnCalculateTodayRelativeStrong();
   }
 
-  TEST_F(CMainFrameMockTest, TestOnProcessTodayStock) {
+  TEST_F(CMockMainFrameTest, TestOnProcessTodayStock) {
     gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(*s_pMainFrame, ProcessTodayStock)
       .Times(1);
     s_pMainFrame->OnProcessTodayStock();
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateProcessTodayStock) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateProcessTodayStock) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
@@ -163,7 +163,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateProcessTodayStock(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateCalculateTodayRelativeStrong) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRelativeStrong) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetSystemReady(false);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
@@ -186,7 +186,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestPreTranslateMessage) {
+  TEST_F(CMockMainFrameTest, TestPreTranslateMessage) {
     MSG msg;
     msg.message = WM_KEYDOWN;
     EXPECT_CALL(*s_pMainFrame, SysCallPreTranslateMessage(&msg))
@@ -214,7 +214,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->PreTranslateMessage(&msg);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnChar) {
+  TEST_F(CMockMainFrameTest, TestOnChar) {
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('s', 1, 1))
@@ -286,7 +286,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh601872"));
   }
 
-  TEST_F(CMainFrameMockTest, TestOnChar2) {
+  TEST_F(CMockMainFrameTest, TestOnChar2) {
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar(0x008, 1, 1))
@@ -353,7 +353,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600604"));
   }
 
-  TEST_F(CMainFrameMockTest, TestOnKeyUp) {
+  TEST_F(CMockMainFrameTest, TestOnKeyUp) {
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(34, 1, 1))
@@ -395,7 +395,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetUpdateChoicedStockDB(false);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnBuildResetMarket) {
+  TEST_F(CMockMainFrameTest, TestOnBuildResetMarket) {
     gl_pChinaStockMarket->SetResetMarket(false);
     gl_pPotenDailyBriefingMarket->SetResetMarket(false);
     gl_pCrweberIndexMarket->SetResetMarket(false);
@@ -405,7 +405,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateRebuildDayLineRS) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83001);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
@@ -427,7 +427,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateRebuildDaylineRS(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateRecordRTData) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateRecordRTData) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetRecordRTData(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, true))
@@ -439,7 +439,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateRecordRTData(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnAbortBuildingRS) {
+  TEST_F(CMockMainFrameTest, TestOnAbortBuildingRS) {
     gl_fExitingCalculatingRS = false;
     s_pMainFrame->OnAbortBuindingRS();
     EXPECT_TRUE(gl_fExitingCalculatingRS);
@@ -447,7 +447,7 @@ namespace StockAnalysisTest {
     gl_fExitingCalculatingRS = false;
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateAbortBuindingRS) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {
     CCmdUI cmdUI;
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
@@ -459,7 +459,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnRecordRTData) {
+  TEST_F(CMockMainFrameTest, TestOnRecordRTData) {
     gl_pChinaStockMarket->SetRecordRTData(false);
     s_pMainFrame->OnRecordRTData();
     EXPECT_TRUE(gl_pChinaStockMarket->IsRecordingRTData());
@@ -467,7 +467,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsRecordingRTData());
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS1) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS1) {
     CCmdUI cmdUI;
     long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
@@ -499,7 +499,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS2) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
     CCmdUI cmdUI;
     long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
@@ -531,7 +531,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateCalculate10dayRS) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {
     CCmdUI cmdUI;
     long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
@@ -563,7 +563,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUsingRealtimeDataServer) {
+  TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());
     s_pMainFrame->OnUsingNeteaseRealtimeDataServer();
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
@@ -579,7 +579,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsUsingNeteaseRTDataServer());
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateUsingNeteaseRealtimeDataServer) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetUsingNeteaseRTDataServer();
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, true))
@@ -591,7 +591,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateUsingNeteaseRealtimeDataServer(&cmdUI);
   }
 
-  TEST_F(CMainFrameMockTest, TestOnUpdateUsingSinaRealtimeDataServer) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateUsingSinaRealtimeDataServer) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetUsingSinaRTDataServer();
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUISetCheck(_, true))

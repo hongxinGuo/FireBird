@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CStockAnalysisViewTest : public ::testing::Test {
+  class CMockStockAnalysisViewTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
       EXPECT_FALSE(gl_fNormalMode);
@@ -42,14 +42,14 @@ namespace StockAnalysisTest {
     CMockStockAnalysisView* s_pStockAnalysisView;
   };
 
-  TEST_F(CStockAnalysisViewTest, TestGetCurrentShowType) {
+  TEST_F(CMockStockAnalysisViewTest, TestGetCurrentShowType) {
     EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1) << _T("初始状态为显示日线（1）");
     s_pStockAnalysisView->SetCurrentShowType(2);
     EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 2);
     s_pStockAnalysisView->SetCurrentShowType(1);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestShowOrdinaryBuySell) {
+  TEST_F(CMockStockAnalysisViewTest, TestShowOrdinaryBuySell) {
     CDC DC;
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
@@ -61,7 +61,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->ShowOrdinaryBuySell(&DC, pStock, rectArea);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestShowCanceledBuySell) {
+  TEST_F(CMockStockAnalysisViewTest, TestShowCanceledBuySell) {
     CDC DC;
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->ShowCanceledBuySell(&DC, pStock, rectArea);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestShowCurrentRS) {
+  TEST_F(CMockStockAnalysisViewTest, TestShowCurrentRS) {
     CDC DC;
     vector<double> vRS{ 5, 10, 20, 30 };
     CRect rect(0, 0, 100, 100);
@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->ShowCurrentRS(&DC, vRS);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestRSLineTo) {
+  TEST_F(CMockStockAnalysisViewTest, TestRSLineTo) {
     CDC DC;
     CRect rect(0, 0, 100, 100);
     s_pStockAnalysisView->SetClientSize(rect);
@@ -105,7 +105,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->RSLineTo(&DC, 20, 50.0, 50));
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnSize) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnSize) {
     EXPECT_CALL(*s_pStockAnalysisView, SysCallOnSize(1, 100, 200))
       .Times(1);
     s_pStockAnalysisView->OnSize(1, 100, 200);
@@ -114,7 +114,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(rect.Width(), 100);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs3) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs3) {
     CCmdUI cmdUI;
     EXPECT_FALSE(s_pStockAnalysisView->IsShow3DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
@@ -129,7 +129,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShow3DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs5) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs5) {
     CCmdUI cmdUI;
     EXPECT_FALSE(s_pStockAnalysisView->IsShow5DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
@@ -144,7 +144,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShow5DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs10) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs10) {
     CCmdUI cmdUI;
     EXPECT_TRUE(s_pStockAnalysisView->IsShow10DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
@@ -159,7 +159,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pStockAnalysisView->IsShow10DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs30) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs30) {
     CCmdUI cmdUI;
     EXPECT_TRUE(s_pStockAnalysisView->IsShow30DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
@@ -174,7 +174,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pStockAnalysisView->IsShow30DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs60) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs60) {
     CCmdUI cmdUI;
     EXPECT_FALSE(s_pStockAnalysisView->IsShow60DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
@@ -189,7 +189,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShow60DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRs120) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRs120) {
     CCmdUI cmdUI;
     EXPECT_FALSE(s_pStockAnalysisView->IsShow120DayRS());
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
@@ -204,7 +204,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShow120DayRS());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSInLogarithm) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSInLogarithm) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
@@ -240,7 +240,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->OnShowRsIndex();
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSInLinear) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSInLinear) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
@@ -265,7 +265,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInLinear());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRSIndex) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRSIndex) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->ResetCurrentStock();
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUIEnable(_, false))
@@ -291,13 +291,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pStockAnalysisView->IsShowRSInIndex());
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnShowDayLine) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnShowDayLine) {
     s_pStockAnalysisView->SetCurrentShowType(2);
     s_pStockAnalysisView->OnShowDayLine();
     EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnShowRealTime) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnShowRealTime) {
     EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 1);
     s_pStockAnalysisView->OnShowRealTime();
     EXPECT_EQ(s_pStockAnalysisView->GetCurrentShowType(), 2);
@@ -305,7 +305,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowDayLine) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowDayLine) {
     CCmdUI cmdUI;
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 1))
       .Times(1);
@@ -318,7 +318,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnUpdateShowRealTime) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnUpdateShowRealTime) {
     CCmdUI cmdUI;
     s_pStockAnalysisView->SetCurrentShowType(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallCmdUISetCheck(_, 0))
@@ -330,7 +330,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->OnUpdateShowRealTime(&cmdUI);
   }
 
-  TEST_F(CStockAnalysisViewTest, TestOnShow) {
+  TEST_F(CMockStockAnalysisViewTest, TestOnShow) {
     CDC dc;
     gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
     gl_pChinaStockMarket->GetCurrentStock()->SetDayLineLoaded(true);

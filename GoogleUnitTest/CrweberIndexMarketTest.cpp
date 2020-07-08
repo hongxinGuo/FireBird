@@ -51,8 +51,8 @@ namespace StockAnalysisTest {
     gl_pCrweberIndexMarket->ResetMarket();
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1);
     CString str = gl_systemMessage.PopInformationMessage();
-    CString strLeft = str.Left(35);
-    EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间："));
+    CString strLeft = str.Left(33);
+    EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间"));
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {

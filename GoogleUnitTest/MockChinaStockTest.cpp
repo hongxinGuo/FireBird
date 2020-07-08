@@ -16,7 +16,7 @@ namespace StockAnalysisTest {
   static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
   static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
 
-  class CChinaStockMockTest : public ::testing::Test
+  class CMockChinaStockTest : public ::testing::Test
   {
   protected:
     static void TearDownTestSuite(void) {
@@ -47,7 +47,7 @@ namespace StockAnalysisTest {
     CMockChinaStock stock;
   };
 
-  TEST_F(CChinaStockMockTest, TestCalculateDayLineRS) {
+  TEST_F(CMockChinaStockTest, TestCalculateDayLineRS) {
     InSequence Seq;
     EXPECT_CALL(*pStock, CalculateDayLineRS(3))
       .Times(1);
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
     pStock->CalculateDayLineRelativeStrong();
   }
 
-  TEST_F(CChinaStockMockTest, TestCalculateDayLineRSLogarithm) {
+  TEST_F(CMockChinaStockTest, TestCalculateDayLineRSLogarithm) {
     InSequence Seq;
     EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(3))
       .Times(1);
@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
     pStock->CalculateDayLineRelativeStrongLogarithm();
   }
 
-  TEST_F(CChinaStockMockTest, TestCalculateDayLineRSIndex) {
+  TEST_F(CMockChinaStockTest, TestCalculateDayLineRSIndex) {
     InSequence Seq;
     EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
       .Times(1);
@@ -99,7 +99,7 @@ namespace StockAnalysisTest {
     pStock->CalculateDayLineRelativeStrongIndex();
   }
 
-  TEST_F(CChinaStockMockTest, TestShowCurrentTransaction) {
+  TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {
     EXPECT_CALL(*pStock, ReportGuadanTransaction())
       .Times(0);
     pStock->ShowCurrentTransaction();
@@ -110,7 +110,13 @@ namespace StockAnalysisTest {
     pStock->ShowCurrentTransaction();
   }
 
-  TEST_F(CChinaStockMockTest, TestThreadSaveDayLineOfOneStock) {
+  TEST_F(CMockChinaStockTest, TestShowCurrentInformationOfCancelingGuadan) {
+    EXPECT_CALL(*pStock, ReportGuadan())
+      .Times(1);
+    pStock->ShowCurrentInformationOfCancelingGuadan();
+  }
+
+  TEST_F(CMockChinaStockTest, TestThreadSaveDayLineOfOneStock) {
     EXPECT_CALL(*pStock, SaveDayLine)
       .Times(0);
     pStock->SetDayLineLoaded(true);
@@ -143,7 +149,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));
   }
 
-  TEST_F(CChinaStockMockTest, TestThreadLoadDayLine) {
+  TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pStock->StoreDayLine(pDayLine);
     InSequence seq;

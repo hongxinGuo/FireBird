@@ -8,7 +8,7 @@ using namespace testing;
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class SystemMessageMockTest : public ::testing::Test
+  class CMockSystemMessageTest : public ::testing::Test
   {
   protected:
     virtual void SetUp(void) override {
@@ -20,7 +20,7 @@ namespace StockAnalysisTest {
     CMockSystemDeque systemDeque;
   };
 
-  TEST_F(SystemMessageMockTest, TestDisplay) {
+  TEST_F(CMockSystemMessageTest, TestDisplay) {
     COutputList outputList;
     CString strCmp = _T("20200101: first time test");
     systemDeque.PushMessage(_T("first time test"));

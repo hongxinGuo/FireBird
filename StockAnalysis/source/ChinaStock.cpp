@@ -1583,7 +1583,7 @@ void CChinaStock::ShowCurrentTransaction() {
   }
 }
 
-void CChinaStock::ShowCurrentInformationofCancelingGuadan(void) {
+void CChinaStock::ShowCurrentInformationOfCancelingGuadan(void) {
   // 显示当前取消挂单的情况
   ReportGuadan();
 }
