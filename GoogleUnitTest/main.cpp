@@ -116,8 +116,21 @@ ExcludeFromCodeCoverage(CChinaStock10, L"CChinaStock::GetRSIndex1Day");
 ExcludeFromCodeCoverage(CChinaStock11, L"CChinaStock::GetRSLogarithm1Day");
 ExcludeFromCodeCoverage(CChinaStock12, L"CChinaStock::ReportGuadan");
 ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDayLine");
+ExcludeFromCodeCoverage(CChinaStock15, L"CChinaStock::Calculate10RSStrong1StockSet");
+ExcludeFromCodeCoverage(CChinaStock16, L"CChinaStock::Calculate10RSStrong2StockSet");
+ExcludeFromCodeCoverage(CChinaStock17, L"CChinaStock::Calculate10RSStrongStockSet");
 
 ExcludeFromCodeCoverage(CPotenDailyBriefingMarket1, L"CPotenDailyBriefingMarket::RunningThreadSavePotenData");
+ExcludeFromCodeCoverage(CPotenDailyBriefingMarket2, L"CPotenDailyBriefingMarket::ShedulingTask");
+
+ExcludeFromCodeCoverage(CCrweberIndexMarket1, L"CCrweberIndexMarket::RunningThreadMaintainDB");
+ExcludeFromCodeCoverage(CCrweberIndexMarket2, L"CCrweberIndexMarket::RunningThreadSaveCrweberDB");
+ExcludeFromCodeCoverage(CCrweberIndexMarket3, L"CCrweberIndexMarket::ShedulingTaskPer1Hour");
+ExcludeFromCodeCoverage(CCrweberIndexMarket4, L"CCrweberIndexMarket::ShedulingTaskPerSecond");
+ExcludeFromCodeCoverage(CCrweberIndexMarket5, L"CCrweberIndexMarket::ShedulingTask");
+
+ExcludeFromCodeCoverage(CCrweberIndex1, L"CCrweberIndex::ReadData");
+ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
 
 ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::GetNextInquiringMiddleStr");
 ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextInquiringStr");
@@ -147,6 +160,8 @@ ExcludeFromCodeCoverage(CSystemDeque1, L"CSystemDeque::SysCallOutputListAddStrin
 
 ExcludeFromCodeCoverage(CWebInquiry1, L"CWebInquiry::Initialize");
 ExcludeFromCodeCoverage(CWebInquiry2, L"CWebInquiry::~CWebInquirer");
+
+ExcludeFromCodeCoverage(CWebInquirer1, L"CWebInquirer::Initialize");
 
 #pragma managed(pop)
 

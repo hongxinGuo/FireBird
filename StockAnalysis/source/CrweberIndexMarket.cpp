@@ -130,7 +130,7 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
         m_CrweberIndexLast = m_CrweberIndex;
         CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>(m_CrweberIndex);
         m_vCrweberIndex.push_back(pCrweberIndex);
-        RunningSaveCrweberDB(pCrweberIndex);
+        RunningThreadSaveCrweberDB(pCrweberIndex);
         gl_systemMessage.PushInformationMessage(_T("crweber油运指数已更新"));
         m_fTodayDataUpdated = true;
       }
@@ -140,14 +140,14 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   return true;
 }
 
-bool CCrweberIndexMarket::RunningMaintainDB(void) {
+bool CCrweberIndexMarket::RunningThreadMaintainDB(void) {
   thread thread1(ThreadMaintainCrweberDB, this);
   thread1.detach();
 
   return true;
 }
 
-bool CCrweberIndexMarket::RunningSaveCrweberDB(CCrweberIndexPtr pCrweberIndex) {
+bool CCrweberIndexMarket::RunningThreadSaveCrweberDB(CCrweberIndexPtr pCrweberIndex) {
   thread thread1(ThreadSaveCrweberDB, this, pCrweberIndex);
   thread1.detach();
 
