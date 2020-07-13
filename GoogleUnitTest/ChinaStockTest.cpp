@@ -21,12 +21,15 @@ namespace StockAnalysisTest {
     static void SetUpTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
     }
     virtual void SetUp(void) override {
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
       ASSERT_FALSE(gl_fNormalMode);
       pStock = nullptr;
       gl_pChinaStockMarket->CalculateTime();
@@ -37,6 +40,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
       gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
@@ -1668,12 +1672,12 @@ namespace StockAnalysisTest {
       pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600004"));
-    pStock->SetDayLineStartDay(19900102);
+    pStock->SetDayLineStartDay(19920102);
     pStock->SetDayLineEndDay(20800100);
     ASSERT(!gl_fNormalMode);
     pStock->UpdateDayLineStartEndDay();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2);
-    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900102);
+    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2) << "日线最新日期已更新";
+    EXPECT_EQ(pStock->GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__ + 2) << "日线最初日期已更新";
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
   }
 
@@ -1961,9 +1965,26 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dayLine.GetCanceledSellVolumeAbove200000(), stock.GetCanceledSellVolumeAbove200000());
   }
 
-  TEST_F(CChinaStockTest, TestProcessRTData) {
+  TEST_F(CChinaStockTest, TestProcessRTData1) {
     CChinaStock stock;
-    EXPECT_TRUE(stock.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
+    EXPECT_FALSE(stock.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
+  }
+
+  TEST_F(CChinaStockTest, TestProcessRTData2) {
+    CChinaStock stock;
+    CRTDataPtr prtData;
+    prtData = make_shared<CRTData>();
+    prtData->SetTransactionTime(10101010);
+    prtData->SetActive(true);
+    stock.PushRTData(prtData);
+
+    gl_pChinaStockMarket->SetMarketOpened(true);
+    stock.SetNeedProcessRTData(true);
+    EXPECT_TRUE(stock.ProcessRTData());
+    EXPECT_EQ(stock.GetTransactionTime(), 10101010);
+    EXPECT_TRUE(stock.IsRTDataCalculated());
+
+    gl_pChinaStockMarket->SetMarketOpened(false);
   }
 
   TEST_F(CChinaStockTest, TestCalculateDayLineRSLogarithm) {

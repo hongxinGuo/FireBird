@@ -12,7 +12,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadLoadDayLine(CChinaStockPtr pStock) {
   ASSERT(pStock != nullptr);
-  ASSERT(!pStock->IsDayLineLoaded());
 
   gl_ThreadStatus.IncreaseRunningThread();
   pStock->UnloadDayLine();
