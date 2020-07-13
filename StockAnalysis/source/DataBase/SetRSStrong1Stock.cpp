@@ -8,7 +8,7 @@ IMPLEMENT_DYNAMIC(CSetRSStrong1Stock, CRecordset)
 
 CSetRSStrong1Stock::CSetRSStrong1Stock(CDatabase* pdb) : CRecordset(pdb) {
   m_Market = 0;
-  m_StockCode = "";
+  m_StockCode = _T("");
   m_nFields = 2;
 }
 

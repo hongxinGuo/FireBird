@@ -8,6 +8,10 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#ifndef _MBCS
+#error _T("本系统使用多字符集")
+#endif
+
 // 排除外部代码
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)

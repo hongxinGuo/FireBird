@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CSetChoicedStock, CRecordset)
 
 CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb) {
   m_Market = 0;
-  m_StockCode = "";
+  m_StockCode = _T("");
   m_nFields = 2;
 }
 

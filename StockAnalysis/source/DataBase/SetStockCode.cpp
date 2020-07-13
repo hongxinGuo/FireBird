@@ -15,8 +15,8 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Counter = 0;
   m_StockType = 0;
-  m_StockCode = "";
-  m_StockName = "";
+  m_StockCode = _T("");
+  m_StockName = _T("");
   m_DayLineStartDay = __CHINA_MARKET_BEGIN_DAY__;
   m_DayLineEndDay = __CHINA_MARKET_BEGIN_DAY__;
   m_IPOed = 0;

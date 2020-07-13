@@ -10,7 +10,7 @@ CSetRSStrongStock::CSetRSStrongStock(long lIndex, CDatabase* pdb) : CRecordset(p
   ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
   m_lIndex = lIndex;
   m_Market = 0;
-  m_StockCode = "";
+  m_StockCode = _T("");
   m_nFields = 2;
 }
 
