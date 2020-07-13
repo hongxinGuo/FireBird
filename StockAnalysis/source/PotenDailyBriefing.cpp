@@ -333,7 +333,7 @@ double CPotenDailyBriefing::ConvertStringToTC(CString str) {
 long CPotenDailyBriefing::ConvertStringToTime(CString str) {
   int month, day, year;
 
-  sscanf_s(str.GetBuffer(), "%02d/%02d/%04d", &month, &day, &year);
+  sscanf_s(str.GetBuffer(), _T("%02d/%02d/%04d"), &month, &day, &year);
   return year * 10000 + month * 100 + day;
 }
 

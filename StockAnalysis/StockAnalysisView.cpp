@@ -94,7 +94,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart
   int j = 0;
 
   for (int i = iNumberOfLine; i > 0; i--) {
-    sprintf_s(buffer, "%7.2f", ((double)lStartPrice + i * 10) / 1000);
+    sprintf_s(buffer, _T("%7.2f"), ((double)lStartPrice + i * 10) / 1000);
     CString strPrice;
     str = buffer;
     long lCurrentPrice = lStartPrice + i * 10;
@@ -125,7 +125,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
   CSize sizeText = pDC->GetTextExtent(str);
   char buffer[30];
 
-  sprintf_s(buffer, "%8.3f", pStock->GetCurrentGuadanTransactionPrice());
+  sprintf_s(buffer, _T("%8.3f"), pStock->GetCurrentGuadanTransactionPrice());
   str = _T("当前挂单成交价格： ");
   str += buffer;
   pDC->TextOut(iXStart, iYStart + 10, str);

@@ -49,7 +49,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     const long min = tDiffer / 60 - hour * 60;
     const long second = tDiffer - hour * 3600 - min * 60;
     char buffer[100];
-    sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
+    sprintf_s(buffer, _T("计算股票相对强度用时%02d小时%02d分钟%02d秒"), hour, min, second);
     CString str;
     str = buffer;
     gl_systemMessage.PushInformationMessage(str);

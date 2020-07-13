@@ -464,11 +464,11 @@ void CMainFrame::UpdateStatus(void) {
     SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedStockSet());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedStockSet());
   str = buffer;
   SysCallSetPaneText(4, (LPCTSTR)str);
 
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedPosition());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedPosition());
   str = buffer;
   SysCallSetPaneText(5, (LPCTSTR)str);
 
@@ -481,7 +481,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetTotalActiveStock());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetTotalActiveStock());
   str = buffer;
   SysCallSetPaneText(7, (LPCTSTR)str);
 
@@ -489,7 +489,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
   // 更新当前工作线程数
-  sprintf_s(buffer, "%02d", gl_ThreadStatus.GetNumberOfRunningThread());
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfRunningThread());
   str = buffer;
   SysCallSetPaneText(9, (LPCTSTR)str);
 

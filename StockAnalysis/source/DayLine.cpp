@@ -252,7 +252,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
   pCurrentPos++;
   iCount++;
   buffer3[i] = 0x00;
-  sscanf_s(buffer3, "%04d-%02d-%02d", &year, &month, &day);
+  sscanf_s(buffer3, _T("%04d-%02d-%02d"), &year, &month, &day);
   tm_.tm_year = year - 1900;
   tm_.tm_mon = month - 1;
   tm_.tm_mday = day;
@@ -308,7 +308,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
 
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   if (GetOpen() == 0) {
-    //ASSERT(strcmp(buffer2, "None") == 0);
+    //ASSERT(strcmp(buffer2, _T("None") == 0);
     SetUpDown(0.0);
   }
   else SetUpDown(buffer2);

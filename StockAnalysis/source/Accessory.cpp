@@ -82,7 +82,7 @@ CString ConvertValueToString(long lValue, int iDividend) {
   double d = ((double)lValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }
@@ -92,7 +92,7 @@ CString ConvertValueToString(int iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
 
   return str;
@@ -103,7 +103,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }
@@ -113,7 +113,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
   double d = dValue / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }

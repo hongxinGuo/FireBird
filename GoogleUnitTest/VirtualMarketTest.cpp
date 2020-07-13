@@ -72,13 +72,13 @@ namespace StockAnalysisTest {
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
     EXPECT_EQ(s_VirtualMarket.GetFormatedMarketTime(), time);
     char buffer[30];
-    sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+    sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     CString str;
     str = buffer;
 
     EXPECT_EQ(str.Compare(s_VirtualMarket.GetLocalTimeString()), 0);
 
-    sprintf_s(buffer, "%02d:%02d:%02d ", tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
+    sprintf_s(buffer, _T("%02d:%02d:%02d "), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
     str = buffer;
     EXPECT_EQ(str.Compare(s_VirtualMarket.GetMarketTimeString()), 0);
 
@@ -188,7 +188,7 @@ namespace StockAnalysisTest {
     CString str;
 
     localtime_s(&tmLocal, &tLocal);
-    sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+    sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetLocalTimeString(), str);
   }
@@ -202,7 +202,7 @@ namespace StockAnalysisTest {
     CString str;
 
     localtime_s(&tmLocal, &tLocal);
-    sprintf_s(buffer, "%04d年%02d月%02d日 %02d:%02d:%02d ", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+    sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetLocalDayTimeString(), str);
   }
@@ -216,7 +216,7 @@ namespace StockAnalysisTest {
     char buffer[30];
     CString str;
 
-    sprintf_s(buffer, "%02d:%02d:%02d ", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+    sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetMarketTimeString(), str);
   }
@@ -230,14 +230,14 @@ namespace StockAnalysisTest {
     CString str;
 
     gmtime_s(&tmMarket, &tMarket);
-    sprintf_s(buffer, "%04d年%02d月%02d日 %02d:%02d:%02d ", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+    sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetMarketDayTimeString(), str);
   }
 
   TEST_F(CVirtualMarketTest, TestGetDayString) {
     char buffer[30];
-    sprintf_s(buffer, "%4d年%2d月%2d日", 2020, 02, 02);
+    sprintf_s(buffer, _T("%4d年%2d月%2d日"), 2020, 02, 02);
     CString str;
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetDayString(20200202), str);
@@ -246,7 +246,7 @@ namespace StockAnalysisTest {
     long year = lDay / 10000;
     long month = lDay / 100 - year * 100;
     long day = lDay - year * 10000 - month * 100;
-    sprintf_s(buffer, "%4d年%2d月%2d日", year, month, day);
+    sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetMarketDayString(), str);
   }

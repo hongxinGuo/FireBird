@@ -648,7 +648,7 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
       return false;
     }
-    sscanf_s(buffer3, "%f/%d/%I64d", &fTemp, &lTemp, &m_llAmount);
+    sscanf_s(buffer3, _T("%f/%d/%I64d"), &fTemp, &lTemp, &m_llAmount);
     m_llVolume = lTemp * 100; // 腾讯成交量数据单位为手（100股）。
     // 成交手数
     // 不使用此处的成交量。这里的成交量会大于第三十五处的成交量。

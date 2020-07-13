@@ -346,7 +346,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成上海指数代码
   for (int i = 0; i < 1000; i++) {
     CString str = _T("sh");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     str += buffer;
     pStock->SetStockCode(str);
@@ -362,7 +362,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成深圳主板股票代码
   for (int i = 0; i < 2000; i++) {
     CString str = _T("sz");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
@@ -377,7 +377,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成深圳中小板股票代码
   for (int i = 2000; i < 3000; i++) {
     CString str = _T("sz");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
@@ -392,7 +392,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成B股股票代码
   for (int i = 200000; i < 201000; i++) {
     CString str = _T("sz");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
@@ -407,7 +407,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成创业板股票代码
   for (int i = 300000; i < 301000; i++) {
     CString str = _T("sz");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;
@@ -422,7 +422,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   // 生成深圳指数
   for (int i = 399000; i < 400000; i++) {
     CString str = _T("sz");
-    sprintf_s(buffer, 10, "%06d", i);
+    sprintf_s(buffer, 10, _T("%06d"), i);
     pStock = make_shared<CChinaStock>();
     pStock->SetOffset(iCount);
     str += buffer;

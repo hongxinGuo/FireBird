@@ -50,7 +50,7 @@ UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, i
   gl_ChoiceRSStrong.Wait();
   CString str = _T("开始计算10日RS ");
   char buffer[30];
-  sprintf_s(buffer, "%d", iIndex);
+  sprintf_s(buffer, _T("%d"), iIndex);
   str += buffer;
   str += _T("\n");
   gl_systemMessage.PushInformationMessage(str);

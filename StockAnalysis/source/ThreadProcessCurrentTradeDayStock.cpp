@@ -24,8 +24,8 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   long lDay = FormatToDay(pMarket->GetNewestTransactionTime());
   if (lDay == pMarket->GetFormatedMarketDay()) {
     i = pMarket->ProcessCurrentTradeDayStock(lDay);
-    TRACE("处理今日股票\n");
-    sprintf_s(buffer, "%d", i);
+    TRACE(_T("处理今日股票\n"));
+    sprintf_s(buffer, _T("%d"), i);
     str = _T("今日处理了");
     str += buffer;
     str += _T("个股票");

@@ -23,7 +23,7 @@ CString CSetRSStrongStock::GetDefaultSQL() {
   char buffer[10];
 
   ASSERT((m_lIndex >= 0) && (m_lIndex < 10));
-  sprintf_s(buffer, "%1d", m_lIndex);
+  sprintf_s(buffer, _T("%1d"), m_lIndex);
   str += buffer;
   str += _T("]");
 
