@@ -1111,6 +1111,7 @@ bool CChinaStock::ProcessRTData(void) {
   CRTDataPtr pRTData;
 
   INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  if (lTotalNumber == 0) return false;
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (INT64 i = 0; i < lTotalNumber; i++) {
     pRTData = PopRTData(); // 采用同步机制获取数据

@@ -70,6 +70,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetPermitResetMarket(true);
       gl_pChinaStockMarket->SetCheckActiveStock(true);
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -78,6 +79,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);

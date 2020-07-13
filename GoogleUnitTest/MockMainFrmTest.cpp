@@ -9,6 +9,7 @@ using namespace testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
+  static CMockMainFrame* s_pMainFrame;
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
@@ -17,8 +18,10 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      s_pMainFrame = new CMockMainFrame;
     }
     static void TearDownTestSuite(void) {
+      delete s_pMainFrame;
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
@@ -36,7 +39,6 @@ namespace StockAnalysisTest {
     }
     virtual void SetUp(void) override {
       gl_fExitingSystem = false;
-      s_pMainFrame = new CMockMainFrame;
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     virtual void TearDown(void) override {
@@ -45,11 +47,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ClearChoiceStockContainer();
       gl_ThreadStatus.SetCalculatingDayLineRS(false);
       gl_fExitingSystem = false;
-      delete s_pMainFrame;
-      s_pMainFrame = nullptr;
     }
-  public:
-    CMockMainFrame* s_pMainFrame;
   };
 
   TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
@@ -604,5 +602,8 @@ namespace StockAnalysisTest {
 
     //»Ö¸´³õÌ¬
     gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+  }
+
+  TEST_F(CMockMainFrameTest, TestCalculateTodayRelativeStrong) {
   }
 }

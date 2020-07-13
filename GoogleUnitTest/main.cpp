@@ -83,6 +83,9 @@ ExcludeFromCodeCoverage(CStockAnalysisView30, L"CStockAnalysisView::ShowGuadan")
 ExcludeFromCodeCoverage(CStockAnalysisView31, L"CStockAnalysisView::ShowRealtimeData");
 ExcludeFromCodeCoverage(CStockAnalysisView32, L"CStockAnalysisView::ShowRealtimeGuadan");
 ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDayLine");
+ExcludeFromCodeCoverage(CStockAnalysisView34, L"CStockAnalysisView::OnDraw");
+ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp");
+ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
 
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");
@@ -102,6 +105,7 @@ ExcludeFromCodeCoverage(CChinaMarket11, L"CChinaMarket::RunningThreadSaveChoiced
 ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDayLineOfOneStock");
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::RunningThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::RunningThreadUpdateOptionDB");
+ExcludeFromCodeCoverage(CChinaMarket15, L"CChinaMarket::RunningThreadUpdateStockCodeDB");
 
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");

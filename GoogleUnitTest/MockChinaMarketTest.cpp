@@ -18,9 +18,8 @@
 
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
-using namespace testing;
-
 using namespace std;
+using namespace testing;
 #include<memory>
 
 namespace StockAnalysisTest {
