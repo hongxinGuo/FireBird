@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 5);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     EXPECT_TRUE(pStock->IsActive());
-    EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_TRUE(pStock->IsIPOed());
     break;
     default:
     break;

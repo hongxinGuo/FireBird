@@ -35,7 +35,7 @@ void CChinaStock::Reset(void) {
   m_lOffsetInContainer = -1;
   m_lDayLineStartDay = __CHINA_MARKET_BEGIN_DAY__; //
   m_lDayLineEndDay = __CHINA_MARKET_BEGIN_DAY__; //
-  m_lIPOed = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
+  m_lIPOStatus = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_nHand = 100;
 
   m_TransactionTime = 0;
@@ -52,7 +52,8 @@ void CChinaStock::Reset(void) {
     m_lPBuy.at(i) = m_lPSell.at(i) = 0;
     m_lVBuy.at(i) = m_lVSell.at(i) = 0;
   }
-  m_dRelativeStrong = 0;
+  m_dRealtimeRelativeStrong = 0;
+  m_dRealtimeRelativeStrongIndex = 0;
 
   m_lAttackBuyAmount = 0;
   m_lAttackSellAmount = 0;
@@ -1669,16 +1670,16 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
-  if (GetIPOStatus() == __STOCK_IPOED__) { // 如果此股票是活跃股票
+  if (IsIPOed()) { // 如果此股票是活跃股票
     if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetFormatedMarketDay(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
-      setStockCode.m_IPOed = __STOCK_DELISTED__;
+      setStockCode.m_IPOStatus = __STOCK_DELISTED__;
     }
     else {
-      setStockCode.m_IPOed = GetIPOStatus();
+      setStockCode.m_IPOStatus = GetIPOStatus();
     }
   }
   else {
-    setStockCode.m_IPOed = GetIPOStatus();
+    setStockCode.m_IPOStatus = GetIPOStatus();
   }
   setStockCode.m_DayLineStartDay = GetDayLineStartDay();
   setStockCode.m_DayLineEndDay = GetDayLineEndDay();
@@ -1694,7 +1695,7 @@ bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   SetStockCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
-  SetIPOStatus(setStockCode.m_IPOed);
+  SetIPOStatus(setStockCode.m_IPOStatus);
   SetDayLineStartDay(setStockCode.m_DayLineStartDay);
   if (GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDay(setStockCode.m_DayLineEndDay);
@@ -1709,10 +1710,10 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
   if (gl_pChinaStockMarket->GetLastTradeDay() <= GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
-  else if (GetIPOStatus() == __STOCK_NULL__) { // 无效代码不需更新日线数据
+  else if (IsNullStock()) { // 无效代码不需更新日线数据
     SetDayLineNeedUpdate(false);
   }
-  else if (GetIPOStatus() == __STOCK_DELISTED__) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
+  else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
     if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDay() != __CHINA_MARKET_BEGIN_DAY__)) {
       SetDayLineNeedUpdate(false);
     }

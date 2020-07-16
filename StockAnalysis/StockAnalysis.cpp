@@ -20,7 +20,7 @@
 #include"WebInquirer.h"
 
 #ifndef _MBCS
-#error _T("本系统使用多字符集")
+#error _T("本系统使用多字节字符集")
 #endif
 
 #ifdef _DEBUG

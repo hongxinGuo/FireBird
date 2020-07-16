@@ -183,7 +183,7 @@ bool CChinaMarket::ChangeToNextStock(void) {
       else {
         pStock = GetStock(lIndex + i - 12000);
       }
-      if (pStock->GetIPOStatus() != 0) fFound = true;
+      if (!pStock->IsNullStock()) fFound = true;
       i++;
     }
   }
@@ -218,7 +218,7 @@ bool CChinaMarket::ChangeToPrevStock(void) {
       else {
         pStock = GetStock(lIndex + 12000 - i);
       }
-      if (pStock->GetIPOStatus() != 0) fFound = true;
+      if (!pStock->IsNullStock()) fFound = true;
       i++;
     }
   }
@@ -450,17 +450,18 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
+bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
   bool fFound = false;
   int iCount = 0;
-  CString strTemp, str = _T("");
+  CString strTemp;
+  strReturn = _T("");
   while (!fFound && (iCount++ < 1000)) {
     CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
       // TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
-    else if (pStock->GetIPOStatus() == __STOCK_NULL__) {	// 尚未使用过的股票代码无需查询日线数据
+    else if (pStock->IsNullStock()) {	// 尚未使用过的股票代码无需查询日线数据
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
@@ -480,7 +481,7 @@ CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
 
   if (iCount >= 1000) { //  没有找到需要申请日线的股票
     TRACE("未找到需更新日线历史数据的股票\n");
-    return _T("");
+    return false;
   }
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
@@ -496,7 +497,7 @@ CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
   case __SHANGHAI_3BAN__: // 上海3板
   case __SHANGHAI_KECHUANG__: // 上海科创板
   case __SHANGHAI_B_SHARE__: // 上海B股
-  str += '0'; // 上海市场标识
+  strReturn += '0'; // 上海市场标识
   break;
   case __SHENZHEN_MARKET__: // 深圳市场？
   case __SHENZHEN_INDEX__: // 深圳指数
@@ -504,14 +505,14 @@ CString CChinaMarket::CreateNeteaseDayLineInquiringStr() {
   case __SHENZHEN_B_SHARE__: // 深圳B股
   case __SHENZHEN_CHUANGYE__: // 深圳创业板
   case __SHENZHEN_MAIN__: // 深圳主板
-  str += '1'; // 深圳市场标识
+  strReturn += '1'; // 深圳市场标识
   break;
   default: // 越界
   ASSERT(0);
   }
-  str += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
+  strReturn += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
   IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
-  return str;
+  return true;
 }
 
 long CChinaMarket::IncreaseStockInquiringIndex(long& lIndex) {

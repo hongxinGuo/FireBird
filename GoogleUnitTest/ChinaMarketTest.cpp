@@ -476,6 +476,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
     CString str;
+    bool fStatus = false;
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
     long lDay = pStock->GetDayLineEndDay();
@@ -486,8 +487,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-    str = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr();
-    EXPECT_TRUE(str.GetLength() > 0);
+    fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str);
+    EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("0600001")) << _T("第一个股票已设置为无需查询日线历史数据");
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
@@ -495,8 +496,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     long lIPOStatus = pStock->GetIPOStatus();
     pStock->SetIPOStatus(__STOCK_NULL__);
-    str = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr();
-    EXPECT_TRUE(str.GetLength() > 0);
+    fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str);
+    EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("0600003")) << _T("第三个股票设置为无效股票");
     pStock->SetIPOStatus(lIPOStatus); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(3);
@@ -505,8 +506,8 @@ namespace StockAnalysisTest {
     lDay = pStock->GetDayLineEndDay();
     pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
-    str = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr();
-    EXPECT_TRUE(str.GetLength() > 0);
+    fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str);
+    EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
     pStock->SetDayLineEndDay(lDay); // 恢复原状。
     pStock = gl_pChinaStockMarket->GetStock(5);
@@ -1053,12 +1054,12 @@ namespace StockAnalysisTest {
     // 股票代码数据库在全局环境设置时即已装入测试系统，故而直接测试即可。
     CChinaStockPtr pStock = nullptr;
     pStock = gl_pChinaStockMarket->GetStock(0);
-    EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_TRUE(pStock->IsIPOed());
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh600000"));
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19991110);
     EXPECT_TRUE(pStock->IsActive());
     pStock = gl_pChinaStockMarket->GetStock(1);
-    EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_DELISTED__);
+    EXPECT_TRUE(pStock->IsDelisted());
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh600001"));
     EXPECT_EQ(pStock->GetDayLineStartDay(), 19980122);
     EXPECT_EQ(pStock->GetDayLineEndDay(), 20091215);
