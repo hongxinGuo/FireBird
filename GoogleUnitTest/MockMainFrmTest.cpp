@@ -13,15 +13,17 @@ namespace StockAnalysisTest {
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
+      EXPECT_FALSE(CMFCVisualManager::GetInstance() != NULL);//
+      s_pMainFrame = new CMockMainFrame;
+      EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
+
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      s_pMainFrame = new CMockMainFrame;
     }
     static void TearDownTestSuite(void) {
-      delete s_pMainFrame;
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
@@ -36,6 +38,10 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
+      if (CMFCVisualManager::GetInstance() != NULL) {
+        delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
+      }
+      delete s_pMainFrame;
     }
     virtual void SetUp(void) override {
       gl_fExitingSystem = false;
@@ -602,8 +608,5 @@ namespace StockAnalysisTest {
 
     //恢复初态
     gl_pChinaStockMarket->SetUsingSinaRTDataServer();
-  }
-
-  TEST_F(CMockMainFrameTest, TestCalculateTodayRelativeStrong) {
   }
 }

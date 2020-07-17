@@ -623,8 +623,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
   else {
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
     m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
-    pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-    m_MemoryDC.SelectObject(pOldBitmap);
+    SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+    if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
     return;
   }
 
@@ -635,15 +635,15 @@ void CStockAnalysisView::Show(CDC* pdc) {
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowStockDayLine(&m_MemoryDC);
-  pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-  m_MemoryDC.SelectObject(pOldBitmap);
+  SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+  if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
   break;
   case 2:	// show realtime stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowRealtimeData(&m_MemoryDC);
-  pdc->BitBlt(0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
-  m_MemoryDC.SelectObject(pOldBitmap);
+  SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
+  if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
   break;
   default:
   break;

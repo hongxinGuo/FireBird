@@ -2026,4 +2026,6 @@ namespace StockAnalysisTest {
     CChinaStock stock;
     EXPECT_TRUE(stock.CalculateDayLineRSIndex(3));
   }
+
+  //TEST_F_TRAITS();
 }

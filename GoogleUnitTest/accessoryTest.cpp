@@ -379,4 +379,23 @@ namespace StockAnalysisTest {
     CString str = ConvertValueToString(iValue, lDividend);
     EXPECT_STREQ(str, strValue);
   }
+
+  class CRSReferenceTest : public ::testing::Test {
+    virtual void SetUp(void) override {
+    }
+    virtual void TearDown(void) override {
+      gl_fNormalMode = false;
+      gl_fTestMode = true;
+    }
+  };
+
+  TEST_F(CRSReferenceTest, TestInitialize) {
+    CRSReference RSReference;
+    EXPECT_FALSE(RSReference.m_fActive);
+    for (int i = 0; i < 4; i++) {
+      EXPECT_EQ(RSReference.m_lStrongDayLength[i], 0);
+      EXPECT_EQ(RSReference.m_lDayLength[i], 0);
+      EXPECT_DOUBLE_EQ(RSReference.m_dRSStrong[i], 50.0);
+    }
+  }
 }
