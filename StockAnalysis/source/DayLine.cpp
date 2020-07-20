@@ -161,6 +161,9 @@ void CDayLine::Reset(void) {
   m_lCanceledSellVolumeBelow100000 = 0;
   m_lCanceledSellVolumeBelow200000 = 0;
   m_lCanceledSellVolumeAbove200000 = 0;
+
+  m_pSetDayLineBasicInfo = nullptr;
+  m_pSetDayLineExtendInfo = nullptr;
 }
 
 bool CDayLine::SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo) {

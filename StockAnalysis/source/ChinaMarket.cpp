@@ -85,6 +85,7 @@ void CChinaMarket::Reset(void) {
   m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
 
   m_llRTDataReceived = 0;
+  m_lStockNeedUpdated = 0;
 
   m_fLoadedSelectedStock = false;
   m_fSystemReady = false;    // 市场初始状态为未设置好。
@@ -1504,8 +1505,10 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetMarket()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
-      SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-      m_fSystemReady = false;
+      if (!TooManyStocksNeedUpdated()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不再0915时重置系统，以避免更新日线函数尚在执行。
+        SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
+        m_fSystemReady = false;
+      }
     }
   }
   return true;
@@ -2490,6 +2493,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
   }
   if (m_iDayLineNeedUpdate > 0) {
     int i = m_iDayLineNeedUpdate;
+    m_lStockNeedUpdated = m_iDayLineNeedUpdate;
     if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
     _itoa_s(i, buffer, 10);

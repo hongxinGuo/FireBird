@@ -237,6 +237,18 @@
     <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h">
       <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WeekLine.h">
+      <Filter>头文件\China Stock Market\实现类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaStockHistoryData.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -430,6 +442,15 @@
     </ClCompile>
     <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStockHistoryData.cpp">
+      <Filter>源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

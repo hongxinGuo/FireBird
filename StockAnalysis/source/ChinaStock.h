@@ -24,6 +24,8 @@ enum {
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
+#include"SetWeekLineBasicInfo.h"
+#include"SetWeekLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
 #include"SetStockCode.h"
@@ -31,6 +33,7 @@ enum {
 #include"RTData.h"
 
 #include"DayLine.h"
+#include"WeekLine.h"
 #include"OneDeal.h"
 
 #include"NeteaseDayLineWebInquiry.h"
@@ -435,6 +438,8 @@ public:
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
+  // 周线相关函数
+
 #ifdef _DEBUG
   virtual	void AssertValid() const;
   virtual	void Dump(CDumpContext& dc) const;
@@ -609,6 +614,10 @@ protected:
 
   // 日线相关数据
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
+  // 周线相关数据
+  vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
+
+  //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
   char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;

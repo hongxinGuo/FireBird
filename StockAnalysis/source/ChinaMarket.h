@@ -349,6 +349,9 @@ public:
   bool IsTotalStockSetSelected(void) noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
   long GetCurrentStockSetSize(void);
 
+  void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
+  bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }
+
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
@@ -373,6 +376,8 @@ protected:
   bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
+
+  long m_lStockNeedUpdated; // 股票历史日线今日需要更新数
 
   queue<CRTDataPtr> m_qRTData;
   bool m_fSaveRTData;

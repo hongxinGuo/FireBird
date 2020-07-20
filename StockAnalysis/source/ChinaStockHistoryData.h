@@ -2,32 +2,23 @@
 
 #include"Accessory.h"
 
-#include"SetDayLineBasicInfo.h"
-#include"SetDayLineExtendInfo.h"
+#include"SetWeekLineBasicInfo.h"
+#include"SetWeekLineExtendInfo.h"
 
 using namespace std;
 #include<memory>
 
-class CDayLine final : public CObject {
+class CChinaStockHistoryData : public CObject {
 public:
-  CDayLine();
-  void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
+  CChinaStockHistoryData();
+  void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadBasicData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo);
-  void SetDayLineBasicInfoSet(CSetDayLineBasicInfo* psetDayLineBasicInfo) noexcept { m_pSetDayLineBasicInfo = psetDayLineBasicInfo; }
-  CSetDayLineBasicInfo* GetDayLineBasicInfoSet(void) noexcept { return m_pSetDayLineBasicInfo; }
-  void ClearDayLineBasicInfoSet(void) noexcept { m_pSetDayLineBasicInfo = nullptr; }
-  void SetDayLineExtendInfoSet(CSetDayLineExtendInfo* psetDayLineExtendInfo) noexcept { m_pSetDayLineExtendInfo = psetDayLineExtendInfo; }
-  CSetDayLineExtendInfo* GetDayLineExtendInfoSet(void) noexcept { return m_pSetDayLineExtendInfo; }
-  void ClearDayLineExtendInfoSet(void) noexcept { m_pSetDayLineExtendInfo = nullptr; }
+  bool SaveData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
+  bool AppendData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
+  bool LoadBasicData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
+  bool LoadEntendData(CSetWeekLineExtendInfo& setWeekLineExtendInfo);
 
   void CalculateRSLogarithm(double dRS);
-
-  bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
-  bool IsActive(void);
 
 public:
   long GetFormatedMarketDay(void) noexcept { return m_lDay; }
@@ -213,18 +204,18 @@ public:
   void SetCanceledSellVolumeBelow200000(INT64 lValue) noexcept { m_lCanceledSellVolumeBelow200000 = lValue; }
   void SetCanceledSellVolumeAbove200000(INT64 lValue) noexcept { m_lOrdinarySellVolumeAbove200000 = lValue; }
 
-  void Set3DayRS(double dValue) noexcept { m_d3DayRS = dValue; }
-  double Get3DayRS(void) noexcept { return m_d3DayRS; }
-  void Set5DayRS(double dValue) noexcept { m_d5DayRS = dValue; }
-  double Get5DayRS(void) noexcept { return m_d5DayRS; }
-  void Set10DayRS(double dValue) noexcept { m_d10DayRS = dValue; }
-  double Get10DayRS(void) noexcept { return m_d10DayRS; }
-  void Set30DayRS(double dValue) noexcept { m_d30DayRS = dValue; }
-  double Get30DayRS(void) noexcept { return m_d30DayRS; }
-  void Set60DayRS(double dValue) noexcept { m_d60DayRS = dValue; }
-  double Get60DayRS(void) noexcept { return m_d60DayRS; }
-  void Set120DayRS(double dValue) noexcept { m_d120DayRS = dValue; }
-  double Get120DayRS(void) noexcept { return m_d120DayRS; }
+  void Set3RS(double dValue) noexcept { m_d3RS = dValue; }
+  double Get3RS(void) noexcept { return m_d3RS; }
+  void Set5RS(double dValue) noexcept { m_d5RS = dValue; }
+  double Get5RS(void) noexcept { return m_d5RS; }
+  void Set10RS(double dValue) noexcept { m_d10RS = dValue; }
+  double Get10RS(void) noexcept { return m_d10RS; }
+  void Set30RS(double dValue) noexcept { m_d30RS = dValue; }
+  double Get30RS(void) noexcept { return m_d30RS; }
+  void Set60RS(double dValue) noexcept { m_d60RS = dValue; }
+  double Get60RS(void) noexcept { return m_d60RS; }
+  void Set120RS(double dValue) noexcept { m_d120RS = dValue; }
+  double Get120RS(void) noexcept { return m_d120RS; }
 
 private:
 
@@ -279,61 +270,58 @@ protected:
   long m_lAttackSellBelow200000;
   long m_lAttackSellAbove200000;
 
-  INT64 m_lOrdinaryBuyNumberBelow5000; // 本交易日低于5000股的成交笔数
-  INT64 m_lOrdinaryBuyNumberBelow10000; // 本交易日低于10000股的成交笔数
-  INT64 m_lOrdinaryBuyNumberBelow20000; // 本交易日低于20000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow5000; // 本交易周低于5000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow10000; // 本交易周低于10000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow20000; // 本交易周低于20000股的成交笔数
   INT64 m_lOrdinaryBuyNumberBelow50000; //
-  INT64 m_lOrdinaryBuyNumberBelow100000; // 本交易日低于100000股的成交笔数
+  INT64 m_lOrdinaryBuyNumberBelow100000; // 本交易周低于100000股的成交笔数
   INT64 m_lOrdinaryBuyNumberBelow200000; //
   INT64 m_lOrdinaryBuyNumberAbove200000; //
-  INT64 m_lOrdinarySellNumberBelow5000; // 本交易日低于5000股的成交笔数
-  INT64 m_lOrdinarySellNumberBelow10000; // 本交易日低于10000股的成交笔数
-  INT64 m_lOrdinarySellNumberBelow20000; // 本交易日低于20000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow5000; // 本交易周低于5000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow10000; // 本交易周低于10000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow20000; // 本交易周低于20000股的成交笔数
   INT64 m_lOrdinarySellNumberBelow50000; //
-  INT64 m_lOrdinarySellNumberBelow100000; // 本交易日低于100000股的成交笔数
+  INT64 m_lOrdinarySellNumberBelow100000; // 本交易周低于100000股的成交笔数
   INT64 m_lOrdinarySellNumberBelow200000; //
   INT64 m_lOrdinarySellNumberAbove200000; //
-  INT64 m_lOrdinaryBuyVolumeBelow5000; // 本交易日低于5000股的成交股数
-  INT64 m_lOrdinaryBuyVolumeBelow10000; // 本交易日低于10000股的成交股数
-  INT64 m_lOrdinaryBuyVolumeBelow20000; // 本交易日低于20000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow5000; // 本交易周低于5000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow10000; // 本交易周低于10000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow20000; // 本交易周低于20000股的成交股数
   INT64 m_lOrdinaryBuyVolumeBelow50000; //
-  INT64 m_lOrdinaryBuyVolumeBelow100000; // 本交易日低于100000股的成交股数
+  INT64 m_lOrdinaryBuyVolumeBelow100000; // 本交易周低于100000股的成交股数
   INT64 m_lOrdinaryBuyVolumeBelow200000; //
   INT64 m_lOrdinaryBuyVolumeAbove200000; //
-  INT64 m_lOrdinarySellVolumeBelow5000; // 本交易日低于5000股的成交股数
-  INT64 m_lOrdinarySellVolumeBelow10000; // 本交易日低于10000股的成交股数
-  INT64 m_lOrdinarySellVolumeBelow20000; // 本交易日低于20000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow5000; // 本交易周低于5000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow10000; // 本交易周低于10000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow20000; // 本交易周低于20000股的成交股数
   INT64 m_lOrdinarySellVolumeBelow50000; //
-  INT64 m_lOrdinarySellVolumeBelow100000; // 本交易日低于100000股的成交股数
+  INT64 m_lOrdinarySellVolumeBelow100000; // 本交易周低于100000股的成交股数
   INT64 m_lOrdinarySellVolumeBelow200000; //
   INT64 m_lOrdinarySellVolumeAbove200000; //
 
-  INT64 m_lCanceledBuyVolumeBelow5000; // 本交易日低于5000股的撤单股数
-  INT64 m_lCanceledBuyVolumeBelow10000; // 本交易日低于10000股的撤单股数
-  INT64 m_lCanceledBuyVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow5000; // 本交易周低于5000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow10000; // 本交易周低于10000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow20000; // 本交易周低于20000股的撤单股数
   INT64 m_lCanceledBuyVolumeBelow50000; //
-  INT64 m_lCanceledBuyVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCanceledBuyVolumeBelow100000; // 本交易周低于100000股的撤单股数
   INT64 m_lCanceledBuyVolumeBelow200000; //
   INT64 m_lCanceledBuyVolumeAbove200000; //
-  INT64 m_lCanceledSellVolumeBelow5000; // 本交易日低于5000股的撤单股数
-  INT64 m_lCanceledSellVolumeBelow10000; // 本交易日低于10000股的撤单股数
-  INT64 m_lCanceledSellVolumeBelow20000; // 本交易日低于20000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow5000; // 本交易周低于5000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow10000; // 本交易周低于10000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow20000; // 本交易周低于20000股的撤单股数
   INT64 m_lCanceledSellVolumeBelow50000; //
-  INT64 m_lCanceledSellVolumeBelow100000; // 本交易日低于100000股的撤单股数
+  INT64 m_lCanceledSellVolumeBelow100000; // 本交易周低于100000股的撤单股数
   INT64 m_lCanceledSellVolumeBelow200000; //
   INT64 m_lCanceledSellVolumeAbove200000; //
 
-  CSetDayLineBasicInfo* m_pSetDayLineBasicInfo;
-  CSetDayLineExtendInfo* m_pSetDayLineExtendInfo;
-
 public:
   // don't need to save
-  double m_d3DayRS;
-  double m_d5DayRS;
-  double m_d10DayRS;
-  double m_d30DayRS;
-  double m_d60DayRS;
-  double m_d120DayRS;
+  double m_d3RS;
+  double m_d5RS;
+  double m_d10RS;
+  double m_d30RS;
+  double m_d60RS;
+  double m_d120RS;
 };
 
-typedef shared_ptr<CDayLine> CDayLinePtr;
+typedef shared_ptr<CChinaStockHistoryData> CChinaStockHistoryDataPtr;

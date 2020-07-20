@@ -238,6 +238,7 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
@@ -255,6 +256,8 @@
     <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
     <ClInclude Include="source\DataBase\SetStockCode.h" />
+    <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h" />
+    <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="source\Guadan.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
@@ -281,6 +284,7 @@
     <ClInclude Include="source\ChinaStock.h" />
     <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="source\ThreadStatus.h" />
+    <ClInclude Include="source\WeekLine.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
@@ -292,6 +296,7 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
@@ -309,6 +314,8 @@
     <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
     <ClCompile Include="source\DataBase\SetStockCode.cpp" />
+    <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp" />
+    <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="source\Guadan.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\NeteaseRTWebInquiry.cpp" />

@@ -189,8 +189,6 @@
     <ClCompile Include="SemaphoreTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="ChinaStockTest.cpp">
       <Filter>Test源文件\China Stock Market\Stock</Filter>
     </ClCompile>
@@ -440,6 +438,18 @@
     <ClCompile Include="MockCrweberIndexMarketTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
+      <Filter>Test源文件\基类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -645,6 +655,18 @@
     </ClInclude>
     <ClInclude Include="MockCrweberIndexMarket.h">
       <Filter>Mock类\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WeekLine.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h">
+      <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

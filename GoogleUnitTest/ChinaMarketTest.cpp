@@ -810,6 +810,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+    gl_pChinaStockMarket->SetSystemReady(true);
     gl_pChinaStockMarket->SetResetMarket(false);
     gl_pChinaStockMarket->TaskResetMarket(91259);
     EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
@@ -827,6 +828,7 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 0; // 星期日
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+    gl_pChinaStockMarket->SetSystemReady(true);
     gl_pChinaStockMarket->SetResetMarket(false);
     gl_pChinaStockMarket->TaskResetMarket(91259);
     EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
@@ -835,6 +837,31 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->TaskResetMarket(91300);
     EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
+  }
+
+  TEST_F(CChinaMarketTest, TestTaskResetMarket3) {
+    tm tm_;
+    tm_.tm_wday = 1; // 星期一
+    gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetStockNeedUpdated(1001);
+    EXPECT_TRUE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+    gl_pChinaStockMarket->SetResetMarket(false);
+    gl_pChinaStockMarket->TaskResetMarket(91259);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
+    gl_pChinaStockMarket->TaskResetMarket(91400);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->TaskResetMarket(91300);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
+
+    // 恢复系统原态
+    gl_pChinaStockMarket->SetStockNeedUpdated(0);
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarketAgain) {
@@ -1653,5 +1680,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
+  }
+
+  TEST_F(CChinaMarketTest, TestTooManyStockNeedUpdated) {
+    EXPECT_FALSE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
+    gl_pChinaStockMarket->SetStockNeedUpdated(1000);
+    EXPECT_FALSE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
+    gl_pChinaStockMarket->SetStockNeedUpdated(1001);
+    EXPECT_TRUE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
+    gl_pChinaStockMarket->SetStockNeedUpdated(0);
+    EXPECT_FALSE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
   }
 }
