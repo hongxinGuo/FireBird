@@ -452,6 +452,9 @@
     <ClCompile Include="source\ChinaStockHistoryData.cpp">
       <Filter>源文件\基类</Filter>
     </ClCompile>
+    <ClCompile Include="source\WeekLine.cpp">
+      <Filter>源文件\China Stock Market\实现类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">

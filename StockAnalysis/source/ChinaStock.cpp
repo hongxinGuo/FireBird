@@ -336,25 +336,25 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::SaveBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo) {
-  ASSERT(setDayLineBasicInfo.IsOpen());
-  setDayLineBasicInfo.m_Day = FormatToDay(m_TransactionTime);
-  setDayLineBasicInfo.m_Market = m_wMarket;
-  setDayLineBasicInfo.m_StockCode = m_strStockCode;
-  setDayLineBasicInfo.m_StockName = m_strStockName;
-  setDayLineBasicInfo.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
-  setDayLineBasicInfo.m_Open = ConvertValueToString(m_lOpen, 1000);
-  setDayLineBasicInfo.m_High = ConvertValueToString(m_lHigh, 1000);
-  setDayLineBasicInfo.m_Low = ConvertValueToString(m_lLow, 1000);
-  setDayLineBasicInfo.m_Close = ConvertValueToString(m_lNew, 1000);
-  setDayLineBasicInfo.m_Volume = ConvertValueToString(m_llVolume);
-  setDayLineBasicInfo.m_Amount = ConvertValueToString(m_llAmount);
-  setDayLineBasicInfo.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
-  setDayLineBasicInfo.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-  if (m_llTotalValue != 0) setDayLineBasicInfo.m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
-  else setDayLineBasicInfo.m_ChangeHandRate = ConvertValueToString(0);
-  setDayLineBasicInfo.m_TotalValue = ConvertValueToString(m_llTotalValue);
-  setDayLineBasicInfo.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
+void CChinaStock::SaveBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+  ASSERT(psetDayLineBasicInfo->IsOpen());
+  psetDayLineBasicInfo->m_Day = FormatToDay(m_TransactionTime);
+  psetDayLineBasicInfo->m_Market = m_wMarket;
+  psetDayLineBasicInfo->m_StockCode = m_strStockCode;
+  psetDayLineBasicInfo->m_StockName = m_strStockName;
+  psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
+  psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
+  psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);
+  psetDayLineBasicInfo->m_Low = ConvertValueToString(m_lLow, 1000);
+  psetDayLineBasicInfo->m_Close = ConvertValueToString(m_lNew, 1000);
+  psetDayLineBasicInfo->m_Volume = ConvertValueToString(m_llVolume);
+  psetDayLineBasicInfo->m_Amount = ConvertValueToString(m_llAmount);
+  psetDayLineBasicInfo->m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
+  psetDayLineBasicInfo->m_UpDownRate = ConvertValueToString(m_dUpDownRate);
+  if (m_llTotalValue != 0) psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
+  else psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(0);
+  psetDayLineBasicInfo->m_TotalValue = ConvertValueToString(m_llTotalValue);
+  psetDayLineBasicInfo->m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
 
 void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
@@ -489,7 +489,7 @@ bool CChinaStock::SaveDayLine(void) {
   setDayLineBasicInfo.Open();
   while (!setDayLineBasicInfo.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(setDayLineBasicInfo);
+    pDayLine->LoadBasicData(&setDayLineBasicInfo);
     vDayLine.push_back(pDayLine);
     lCurrentPos++;
     setDayLineBasicInfo.MoveNext();
@@ -513,12 +513,12 @@ bool CChinaStock::SaveDayLine(void) {
     while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() < pDayLine->GetFormatedMarketDay())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() > pDayLine->GetFormatedMarketDay()) {
-        pDayLine->AppendData(setDayLineBasicInfo);
+        pDayLine->AppendData(&setDayLineBasicInfo);
         fNeedUpdate = true;
       }
     }
     else {
-      pDayLine->AppendData(setDayLineBasicInfo);
+      pDayLine->AppendData(&setDayLineBasicInfo);
       fNeedUpdate = true;
     }
   }
@@ -544,76 +544,76 @@ void CChinaStock::UpdateDayLineStartEndDay(void) {
   }
 }
 
-void CChinaStock::SaveEntendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo) {
-  ASSERT(setDayLineExtendInfo.IsOpen());
-  setDayLineExtendInfo.m_Day = FormatToDay(m_TransactionTime);
-  setDayLineExtendInfo.m_Market = m_wMarket;
-  setDayLineExtendInfo.m_StockCode = m_strStockCode;
-  setDayLineExtendInfo.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  setDayLineExtendInfo.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  setDayLineExtendInfo.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  setDayLineExtendInfo.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  setDayLineExtendInfo.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
+void CChinaStock::SaveExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+  ASSERT(psetDayLineExtendInfo->IsOpen());
+  psetDayLineExtendInfo->m_Day = FormatToDay(m_TransactionTime);
+  psetDayLineExtendInfo->m_Market = m_wMarket;
+  psetDayLineExtendInfo->m_StockCode = m_strStockCode;
+  psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
+  psetDayLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
+  psetDayLineExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
+  psetDayLineExtendInfo->m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
+  psetDayLineExtendInfo->m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
 
-  setDayLineExtendInfo.m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
-  setDayLineExtendInfo.m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
-  setDayLineExtendInfo.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  setDayLineExtendInfo.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  setDayLineExtendInfo.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  setDayLineExtendInfo.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  setDayLineExtendInfo.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  setDayLineExtendInfo.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  setDayLineExtendInfo.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  setDayLineExtendInfo.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  setDayLineExtendInfo.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  setDayLineExtendInfo.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  setDayLineExtendInfo.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  setDayLineExtendInfo.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  setDayLineExtendInfo.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
+  psetDayLineExtendInfo->m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
+  psetDayLineExtendInfo->m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
+  psetDayLineExtendInfo->m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
+  psetDayLineExtendInfo->m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
+  psetDayLineExtendInfo->m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
+  psetDayLineExtendInfo->m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
+  psetDayLineExtendInfo->m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
+  psetDayLineExtendInfo->m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
+  psetDayLineExtendInfo->m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
+  psetDayLineExtendInfo->m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
+  psetDayLineExtendInfo->m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
+  psetDayLineExtendInfo->m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
+  psetDayLineExtendInfo->m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
-  setDayLineExtendInfo.m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
-  setDayLineExtendInfo.m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
-  setDayLineExtendInfo.m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
-  setDayLineExtendInfo.m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
-  setDayLineExtendInfo.m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
 
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
-  setDayLineExtendInfo.m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
-  setDayLineExtendInfo.m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
-  setDayLineExtendInfo.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -702,7 +702,7 @@ bool CChinaStock::LoadDayLine(void) {
   setDayLineBasicInfo.m_strFilter += _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Day]");
   setDayLineBasicInfo.Open();
-  LoadDayLineBasicInfo(setDayLineBasicInfo);
+  LoadDayLineBasicInfo(&setDayLineBasicInfo);
   setDayLineBasicInfo.Close();
 
   // 装入DayLineInfo数据
@@ -711,24 +711,24 @@ bool CChinaStock::LoadDayLine(void) {
   setDayLineExtendInfo.m_strFilter += _T("'");
   setDayLineExtendInfo.m_strSort = _T("[Day]");
   setDayLineExtendInfo.Open();
-  LoadDayLineExtendInfo(setDayLineExtendInfo);
+  LoadDayLineExtendInfo(&setDayLineExtendInfo);
   setDayLineExtendInfo.Close();
 
   m_fDayLineLoaded = true;
   return true;
 }
 
-bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo) {
+bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   CDayLinePtr pDayLine;
 
   if (gl_fNormalMode) ASSERT(!m_fLoadDayLineFirst);
   // 装入DayLine数据
   m_vDayLine.clear();
-  while (!setDayLineBasicInfo.IsEOF()) {
+  while (!psetDayLineBasicInfo->IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(setDayLineBasicInfo);
+    pDayLine->LoadBasicData(psetDayLineBasicInfo);
     m_vDayLine.push_back(pDayLine);
-    setDayLineBasicInfo.MoveNext();
+    psetDayLineBasicInfo->MoveNext();
   }
   m_fLoadDayLineFirst = true;
   return true;
@@ -740,24 +740,24 @@ bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo) {
+bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 
   if (gl_fNormalMode) ASSERT(m_fLoadDayLineFirst);
 
-  while (!setDayLineExtendInfo.IsEOF()) {
+  while (!psetDayLineExtendInfo->IsEOF()) {
     pDayLine = m_vDayLine.at(iPosition);
-    while ((pDayLine->GetFormatedMarketDay() < setDayLineExtendInfo.m_Day)
+    while ((pDayLine->GetFormatedMarketDay() < psetDayLineExtendInfo->m_Day)
            && (m_vDayLine.size() > (iPosition + 1))) {
       iPosition++;
       pDayLine = m_vDayLine.at(iPosition);
     }
-    if (pDayLine->GetFormatedMarketDay() == setDayLineExtendInfo.m_Day) {
-      pDayLine->LoadEntendData(setDayLineExtendInfo);
+    if (pDayLine->GetFormatedMarketDay() == psetDayLineExtendInfo->m_Day) {
+      pDayLine->LoadExtendData(psetDayLineExtendInfo);
     }
     if (m_vDayLine.size() <= (iPosition + 1)) break;
-    setDayLineExtendInfo.MoveNext();
+    psetDayLineExtendInfo->MoveNext();
   }
   m_fLoadDayLineFirst = false;
   return true;

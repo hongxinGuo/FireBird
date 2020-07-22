@@ -13,10 +13,10 @@ public:
   CDayLine();
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool AppendData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadBasicData(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadEntendData(CSetDayLineExtendInfo& setDayLineExtendInfo);
+  bool SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo);
   void SetDayLineBasicInfoSet(CSetDayLineBasicInfo* psetDayLineBasicInfo) noexcept { m_pSetDayLineBasicInfo = psetDayLineBasicInfo; }
   CSetDayLineBasicInfo* GetDayLineBasicInfoSet(void) noexcept { return m_pSetDayLineBasicInfo; }
   void ClearDayLineBasicInfoSet(void) noexcept { m_pSetDayLineBasicInfo = nullptr; }

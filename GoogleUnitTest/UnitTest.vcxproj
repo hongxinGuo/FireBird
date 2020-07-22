@@ -125,6 +125,7 @@
     <ClCompile Include="..\StockAnalysis\source\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\stdafx.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
@@ -184,7 +185,7 @@
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="VirtualWebInquiryTest.cpp" />
     <ClCompile Include="WebInquirerTest.cpp" />
-    <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
+    <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">

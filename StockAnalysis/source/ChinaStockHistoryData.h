@@ -13,10 +13,10 @@ public:
   CChinaStockHistoryData();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
-  bool AppendData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
-  bool LoadBasicData(CSetWeekLineBasicInfo& setWeekLineBasicInfo);
-  bool LoadEntendData(CSetWeekLineExtendInfo& setWeekLineExtendInfo);
+  virtual bool SaveData(void) { return true; }
+  virtual bool AppendData(void) { return true; }
+  virtual bool LoadBasicData(void) { return true; }
+  virtual bool LoadEntendData(void) { return true; }
 
   void CalculateRSLogarithm(double dRS);
 

@@ -355,6 +355,7 @@
     <ClCompile Include="source\VirtualMarket.cpp" />
     <ClCompile Include="source\VirtualWebInquiry.cpp" />
     <ClCompile Include="source\WebInquirer.cpp" />
+    <ClCompile Include="source\WeekLine.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

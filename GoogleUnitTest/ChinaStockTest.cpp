@@ -541,7 +541,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     setDayLineBasicInfo.AddNew();
-    stock.SaveBasicInfo(setDayLineBasicInfo);
+    stock.SaveBasicInfo(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
@@ -1411,7 +1411,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.m_pDatabase->BeginTrans();
     setDayLineExtendInfo.AddNew();
-    pStock->SaveEntendInfo(setDayLineExtendInfo);
+    pStock->SaveExtendInfo(&setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.m_pDatabase->CommitTrans();
     setDayLineExtendInfo.Close();
@@ -1565,7 +1565,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
-      stock.LoadBasicData(setDayLineBasicInfo);
+      stock.LoadBasicData(&setDayLineBasicInfo);
       pid = pStock->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Day, pid->GetFormatedMarketDay());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
@@ -1635,7 +1635,7 @@ namespace StockAnalysisTest {
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setDayLineBasicInfo.Open();
-    stock.LoadDayLineBasicInfo(setDayLineBasicInfo);
+    stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
     for (int i = 0; i < 10; i++) {
       pid = stock.GetDayLine(i);
       pDayLine = pStock->GetDayLine(i);
@@ -1912,14 +1912,14 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.AddNew();
-    stock.SaveEntendInfo(setDayLineExtendInfo);
+    stock.SaveExtendInfo(&setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.Close();
 
     CDayLine dayLine;
     setDayLineExtendInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
     setDayLineExtendInfo.Open();
-    dayLine.LoadEntendData(setDayLineExtendInfo);
+    dayLine.LoadExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
     EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
     EXPECT_STREQ(dayLine.GetStockCode(), _T(""));

@@ -447,8 +447,13 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
-      <Filter>Test源文件\基类</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="WeekLineTest.cpp">
+      <Filter>Test源文件\China Stock Market\实现类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
+      <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -407,11 +407,11 @@ public:
 
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   virtual bool LoadDayLine(void); // 此函数加载
-  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineBasicInfo);
-  void SaveBasicInfo(CSetDayLineBasicInfo& psetDayLine); // 存储当日基本数据
+  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
+  void SaveBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
   virtual bool SaveDayLine(void); // 存储日线历史数据
-  void SaveEntendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo);
+  void SaveExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
