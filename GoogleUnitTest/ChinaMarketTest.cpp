@@ -80,9 +80,6 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
       gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStockMarket->SetRTDataSetCleared(false);
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
@@ -104,13 +101,15 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
       gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
-      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
         if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
         if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
       }
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
     }
   };
 
@@ -875,6 +874,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->TaskResetMarketAgain(92459));
     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
     EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+    EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pChinaStockMarket->TaskResetMarketAgain(93001));
     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
     EXPECT_FALSE(gl_pChinaStockMarket->IsPermitResetMarket());
@@ -1293,6 +1293,19 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetChoicedRTDataSize(), 1);
     gl_pChinaStockMarket->ClearChoicedRTDataQueue();
     EXPECT_EQ(gl_pChinaStockMarket->GetChoicedRTDataSize(), 0);
+  }
+
+  TEST_F(CChinaMarketTest, TestClearDayLineNeedUpdaeStatus) {
+    /*
+    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+      if (!gl_pChinaStockMarket->GetStock(i)->IsDayLineNeedUpdate()) gl_pChinaStockMarket->GetStock(i)->SetDayLineNeedUpdate(true);
+    }
+    */
+    gl_pChinaStockMarket->ClearDayLineNeedUpdaeStatus();
+
+    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+      EXPECT_FALSE(gl_pChinaStockMarket->GetStock(i)->IsDayLineNeedUpdate());
+    }
   }
 
   TEST_F(CChinaMarketTest, TestGetDayLineNeedUpdateNumber) {

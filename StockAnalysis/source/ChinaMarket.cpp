@@ -1505,7 +1505,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetMarket()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
-      if (!TooManyStocksNeedUpdated()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不再0915时重置系统，以避免更新日线函数尚在执行。
+      if (!TooManyStocksNeedUpdated()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         m_fSystemReady = false;
       }
@@ -1622,7 +1622,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     // 判断是否存储日线库和股票代码库
     if ((m_iDayLineNeedSave > 0)) {
       m_fSaveDayLine = true;
-      SaveDayLineData();
+      TaskSaveDayLineData();
     }
     TaskCheckDayLineDB();
     return true;
@@ -1744,13 +1744,13 @@ void CChinaMarket::ResetCurrentStock(void) {
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将日线数据存入数据库．
-//  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。
+//  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
 //
 // 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
 // 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SaveDayLineData(void) {
+bool CChinaMarket::TaskSaveDayLineData(void) {
   CString str;
 
   for (auto pStock : m_vChinaMarketStock) {

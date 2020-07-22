@@ -169,7 +169,7 @@ public:
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool SaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+  bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
