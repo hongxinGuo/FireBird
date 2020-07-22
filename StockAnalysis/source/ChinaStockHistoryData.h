@@ -16,7 +16,7 @@ public:
   virtual bool SaveData(void) { return true; }
   virtual bool AppendData(void) { return true; }
   virtual bool LoadBasicData(void) { return true; }
-  virtual bool LoadEntendData(void) { return true; }
+  virtual bool LoadExtendData(void) { return true; }
 
   void CalculateRSLogarithm(double dRS);
 

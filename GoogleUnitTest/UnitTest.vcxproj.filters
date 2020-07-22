@@ -455,6 +455,9 @@
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
+      <Filter>Test源文件\基类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

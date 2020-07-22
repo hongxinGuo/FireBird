@@ -7,15 +7,15 @@ public:
   CWeekLine();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
+  virtual bool SaveData(void);
+  virtual bool AppendData(void);
+  virtual bool LoadBasicData(void);
+  virtual bool LoadExtendData(void);
+
   bool SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
-
-  virtual bool SaveData(void) { return(SaveData(m_psetWeekLineBasicInfo)); }
-  virtual bool AppendData(void) { return(AppendData(m_psetWeekLineBasicInfo)); }
-  virtual bool LoadBasicData(void) { return(LoadBasicData(m_psetWeekLineBasicInfo)); }
-  virtual bool LoadEntendData(void) { return(LoadExtendData(m_psetWeekLineExtendInfo)); }
 
   void SetWeekLineBasicSet(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) noexcept { m_psetWeekLineBasicInfo = psetWeekLineBasicInfo; }
   void SetWeekLineExtendSet(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) noexcept { m_psetWeekLineExtendInfo = psetWeekLineExtendInfo; }

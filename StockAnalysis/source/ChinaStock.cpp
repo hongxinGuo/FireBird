@@ -803,22 +803,22 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
     }
     switch (lNumber) {
     case 3:
-    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
     break;
     case 5:
-    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
     break;
     case 10:
-    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
     break;
     case 30:
-    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
     break;
     case 60:
-    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
     break;
     case 120:
-    m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
     break;
     default:
     ASSERT(0);
@@ -1042,22 +1042,22 @@ bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
     }
     switch (lNumber) {
     case 3:
-    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
     break;
     case 5:
-    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
     break;
     case 10:
-    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
     break;
     case 30:
-    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
     break;
     case 60:
-    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
     break;
     case 120:
-    m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
     break;
     default:
     ASSERT(0);
@@ -1076,22 +1076,22 @@ bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
     }
     switch (lNumber) {
     case 3:
-    m_vDayLine.at(i)->m_d3DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
     break;
     case 5:
-    m_vDayLine.at(i)->m_d5DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
     break;
     case 10:
-    m_vDayLine.at(i)->m_d10DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
     break;
     case 30:
-    m_vDayLine.at(i)->m_d30DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
     break;
     case 60:
-    m_vDayLine.at(i)->m_d60DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
     break;
     case 120:
-    m_vDayLine.at(i)->m_d120DayRS = dTempRS / lNumber;
+    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
     break;
     default:
     ASSERT(0);
