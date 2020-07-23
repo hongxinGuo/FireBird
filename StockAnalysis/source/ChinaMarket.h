@@ -22,6 +22,7 @@ using namespace std;
 // 信号量必须声明为全局变量（为了初始化）
 extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SemaphoreCalculateDayLineRS;
+extern Semaphore gl_SemaphoreCalculateDayLine10RS; // 用于控制选择10日强势股的线程数
 extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
@@ -101,6 +102,9 @@ public:
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
   virtual bool RunningThreadChoice10RSStrong1StockSet(void);
   virtual bool RunningThreadChoice10RSStrongStockSet(void);
+  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
 
   // interface function
 public:

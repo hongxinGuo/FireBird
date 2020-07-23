@@ -55,8 +55,28 @@ long FormatToDay(time_t const tt) {
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
+long FormatToTime(time_t const tt) {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
+}
+
+INT64 FormatToDayTime(time_t const tt) {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return(((INT64)tm_.tm_year + 1900) * 10000000000 + ((INT64)tm_.tm_mon + 1) * 100000000 + (INT64)tm_.tm_mday * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
+}
+
 long FormatToDay(tm* ptm) {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
+}
+
+long FormatToTime(tm* ptm) {
+  return(ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
+}
+
+INT64 FormatToDayTime(tm* ptm) {
+  return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

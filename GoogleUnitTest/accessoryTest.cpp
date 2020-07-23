@@ -43,6 +43,38 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lDay2, 20000105);
   }
 
+  TEST_F(AccessoryTest, TestFormatToTime) {
+    tm tm_, tm_2;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 10;
+    tm_.tm_min = 20;
+    tm_.tm_sec = 30;
+    tm_2 = tm_;
+    long lTime = FormatToTime(&tm_);
+    time_t tt = mktime(&tm_2);
+    long lTime2 = FormatToTime(tt);
+    EXPECT_EQ(lTime, 102030);
+    EXPECT_EQ(lTime2, 102030);
+  }
+
+  TEST_F(AccessoryTest, TestFormatToDayTime) {
+    tm tm_, tm_2;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 10;
+    tm_.tm_min = 20;
+    tm_.tm_sec = 30;
+    tm_2 = tm_;
+    INT64 lDayTime = FormatToDayTime(&tm_);
+    time_t tt = mktime(&tm_2);
+    INT64 lDayTime2 = FormatToDayTime(tt);
+    EXPECT_EQ(lDayTime, 20000105102030);
+    EXPECT_EQ(lDayTime2, 20000105102030);
+  }
+
   TEST_F(AccessoryTest, TestFormatToTTime) {
     tm tm_;
     tm_.tm_year = 2000 - 1900;

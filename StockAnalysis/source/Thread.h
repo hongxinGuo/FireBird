@@ -72,3 +72,9 @@ UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为31
 UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为32
 // 计算10日强股票集（使用外部pRef提供的参数）
 UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为33
+// 计算股票的10日强势与否
+UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock); // 此线程返回值为34
+// 计算股票的10日强势与否1
+UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为35
+// 计算股票的10日强势与否2
+UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为36

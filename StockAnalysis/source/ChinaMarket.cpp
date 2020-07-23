@@ -31,6 +31,7 @@ Semaphore gl_ProcessSinaRTDataQueue(1);   // ÐÂÀËÊµÊ±Êý¾Ý´¦ÀíÍ¬Ê±Ö»ÔÊÐíÒ»¸öÏß³Ì´
 Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
+Semaphore gl_SemaphoreCalculateDayLine10RS(gl_cMaxCalculating10RSThreads);
 
 CRTDataContainer gl_RTDataContainer;
 CWebInquirer gl_WebInquirer;
@@ -1832,6 +1833,9 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
   for (auto pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrong2Stock(&v10RSStrongStock, pStock);
+
+    /*
     if (IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
         pStock->LoadDayLine();
@@ -1845,6 +1849,7 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
       }
     }
     if (gl_fExitingSystem) return false;
+    */
   }
   CSetRSStrong2Stock setRSStrong2;
 
@@ -1872,6 +1877,8 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
   for (auto pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrong1Stock(&v10RSStrongStock, pStock);
+    /*
     if (IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
         pStock->LoadDayLine();
@@ -1885,6 +1892,7 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
       }
     }
     if (gl_fExitingSystem) return false;
+    */
   }
   CSetRSStrong1Stock setRSStrong1;
 
@@ -1912,6 +1920,8 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
   for (auto pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrongStock(&v10RSStrongStock, pRef, pStock);
+    /*
     if (IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
         pStock->LoadDayLine();
@@ -1925,7 +1935,10 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
       }
     }
     if (gl_fExitingSystem) return false;
+    */
   }
+
+  while (gl_ThreadStatus.HowManyThreadsCalculating10RS() > 0) Sleep(1000); // µÈ´ý¹¤×÷Ïß³ÌÍê³ÉËùÓÐÈÎÎñ
 
   m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStockÐèÒª´Ëm_lCurrentRSStrongIndexÀ´Ñ¡ÔñÕýÈ·µÄÊý¾Ý±í¡£
   CSetRSStrongStock setRSStrong(iIndex);
@@ -2059,6 +2072,27 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
   SetUpdateOptionDB(true); // ¸üÐÂÑ¡ÏîÊý¾Ý¿â.´ËÊ±¼ÆËã¹¤×÷Ïß³ÌÖ»ÊÇ¸Õ¸ÕÆô¶¯£¬ÐèÒªÊ±¼äÈ¥Íê³É¡£
 
   return true;
+}
+
+bool CChinaMarket::RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrong1Stock, pv10RSStrongStock, pStock);
+  thread1.detach();
+
+  return false;
+}
+
+bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrong2Stock, pv10RSStrongStock, pStock);
+  thread1.detach();
+
+  return false;
+}
+
+bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrongStock, pv10RSStrongStock, pRef, pStock);
+  thread1.detach();
+
+  return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
