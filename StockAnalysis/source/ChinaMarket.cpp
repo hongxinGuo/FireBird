@@ -262,7 +262,7 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
   return true;
 }
 
-long CChinaMarket::GetCurrentStockSetSize(void) {
+size_t CChinaMarket::GetCurrentStockSetSize(void) {
   if (IsTotalStockSetSelected()) return m_lTotalStock;
   else return m_avChoicedStock[m_lCurrentSelectedStockSet].size();
 }
@@ -674,7 +674,7 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
   gl_ProcessSinaRTDataQueue.Wait();
   CChinaStockPtr pStock;
-  const long lTotalNumber = gl_RTDataContainer.GetSinaRTDataSize();
+  const size_t lTotalNumber = gl_RTDataContainer.GetSinaRTDataSize();
   CString strVolume;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
@@ -722,7 +722,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
   gl_ProcessNeteaseRTDataQueue.Wait();
   CChinaStockPtr pStock;
-  const long lTotalNumber = gl_RTDataContainer.GetNeteaseRTDataSize();
+  const size_t lTotalNumber = gl_RTDataContainer.GetNeteaseRTDataSize();
   CString strVolume;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
@@ -888,7 +888,7 @@ bool CChinaMarket::TaskProcessRTData(void) {
 
 bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   CWebDataPtr pWebDataReceived = nullptr;
-  long lTotalData = gl_WebInquirer.GetSinaRTDataSize();
+  size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopSinaRTData();
     pWebDataReceived->SetCurrentPos(0);
@@ -930,7 +930,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   CWebDataPtr pWebDataReceived = nullptr;
   int iCount = 0;
 
-  long lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
+  size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
     pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
@@ -1012,7 +1012,7 @@ bool CChinaMarket::ValidateNeteaseRTData(CRTDataPtr pRTData) {
 
 bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
   CRTDataPtr pRTData = nullptr;
-  long lTotalData = gl_RTDataContainer.GetNeteaseRTDataSize();
+  size_t lTotalData = gl_RTDataContainer.GetNeteaseRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -1025,7 +1025,7 @@ bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
 
 bool CChinaMarket::TaskDiscardSinaRTData(void) {
   CRTDataPtr pRTData = nullptr;
-  long lTotalData = gl_RTDataContainer.GetSinaRTDataSize();
+  size_t lTotalData = gl_RTDataContainer.GetSinaRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -1038,7 +1038,7 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
 
 bool CChinaMarket::TaskDiscardTengxunRTData(void) {
   CRTDataPtr pRTData = nullptr;
-  long lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
+  size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
@@ -1061,7 +1061,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   CWebDataPtr pWebDataReceived = nullptr;
   int j = 0;
 
-  long lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
+  size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
@@ -1124,7 +1124,7 @@ void CChinaMarket::CheckTengxunRTData(CRTDataPtr pRTData) {
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
   CRTDataPtr pRTData = nullptr;
-  long lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
+  size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
 
   for (long i = 0; i < lTotalData; i++) {
     pRTData = gl_RTDataContainer.PopTengxunRTData();
@@ -1801,7 +1801,7 @@ CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
 bool CChinaMarket::SaveRTData(void) {
   CSetRealTimeData setRTData;
   CRTDataPtr pRTData = nullptr;
-  long lTotal = m_qRTData.size();
+  size_t lTotal = m_qRTData.size();
 
   if (lTotal > 0) {
     setRTData.m_strFilter = _T("[ID] = 1");

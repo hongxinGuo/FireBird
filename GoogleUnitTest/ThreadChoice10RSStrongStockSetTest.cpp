@@ -79,7 +79,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadChoice10RSStrongStockSet, TestThreadChoice10RSStrongStockSet) {
-    long lInformationSize = gl_systemMessage.GetInformationDequeSize();
+    size_t lInformationSize = gl_systemMessage.GetInformationDequeSize();
     EXPECT_CALL(market, Choice10RSStrongStockSet(&RSReference, 2))
       .Times(1)
       .WillOnce(Return(true));

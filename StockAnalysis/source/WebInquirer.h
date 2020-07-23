@@ -67,20 +67,20 @@ public:
   bool IsReadingWebThreadRunning(void) noexcept { return gl_pSinaRTWebInquiry->IsReadingWebThreadRunning(); }
 
 public:
-  long GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetWebDataSize(); }
+  size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetWebDataSize(); }
   void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushWebData(pData); }
   CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopWebData(); }
-  long GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetWebDataSize(); }
+  size_t GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetWebDataSize(); }
   void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushWebData(pData); }
   CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopWebData(); }
-  long GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetWebDataSize(); }
+  size_t GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetWebDataSize(); }
   void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushWebData(pData); }
   CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopWebData(); }
-  long GetCrweberDataSize(void) { return m_qCrweberWebData.GetWebDataSize(); }
+  size_t GetCrweberDataSize(void) { return m_qCrweberWebData.GetWebDataSize(); }
   void PushCrweberData(CWebDataPtr pData) { m_qCrweberWebData.PushWebData(pData); }
   CWebDataPtr PopCrweberData(void) { return m_qCrweberWebData.PopWebData(); }
 
-  long GetPotenDailyBriefingDataSize(void) { return m_qPotenDailyBriefingWebData.GetWebDataSize(); }
+  size_t GetPotenDailyBriefingDataSize(void) { return m_qPotenDailyBriefingWebData.GetWebDataSize(); }
   void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
 

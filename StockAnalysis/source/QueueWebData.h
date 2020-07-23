@@ -24,7 +24,7 @@ public:
   // 通用接口函数
   void PushWebData(CWebDataPtr pData);
   CWebDataPtr PopWebData(void);
-  long GetWebDataSize(void);
+  size_t GetWebDataSize(void);
 
 protected:
   queue<CWebDataPtr> m_qWebData;

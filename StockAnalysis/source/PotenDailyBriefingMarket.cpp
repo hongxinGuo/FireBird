@@ -114,7 +114,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerHour(long lSecond, long lCurren
 bool CPotenDailyBriefingMarket::TaskProcessData(void) {
   ASSERT(!m_fTodayDataUpdated);
   if ((!gl_WebInquirer.IsReadingPotenDailyBriefing()) && m_fDataBaseLoaded) {
-    long lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
+    size_t lTotal = gl_WebInquirer.GetPotenDailyBriefingDataSize();
     for (int i = 0; i < lTotal; i++) {
       CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
       if (pWebData->GetBufferLength() > 40 * 1024) { // 从poten.com读取的数据大小如果低于40KB时，其没有实际内容，无需处理

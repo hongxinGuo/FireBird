@@ -213,7 +213,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
 
   CString str, str2;
-  long lTotal = 0;
+  size_t lTotal = 0;
   long lCurrentPos = 0;
   bool fUpdate = false;
   CString strTime = gl_pChinaStockMarket->GetLocalDayTimeString(); // 消息的前缀，使用当地时间

@@ -11,7 +11,7 @@ CQueueRTData::~CQueueRTData() {
 
 void CQueueRTData::Reset(void) {
   m_MutexAccessRTData.lock();
-  long lTotal = m_qRTStockData.size();
+  size_t lTotal = m_qRTStockData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
     m_qRTStockData.pop();
   }
@@ -33,7 +33,7 @@ CRTDataPtr CQueueRTData::PopRTData(void) {
   return pData;
 }
 
-long CQueueRTData::GetRTDataSize(void) {
+size_t CQueueRTData::GetRTDataSize(void) {
   size_t size = 0;
   m_MutexAccessRTData.lock();
   size = m_qRTStockData.size();

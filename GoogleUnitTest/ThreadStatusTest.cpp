@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
 
-    long l = gl_systemMessage.GetInformationDequeSize();
+    size_t l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1); // 系统报警队列
     for (int i = 0; i < l + 1; i++) {

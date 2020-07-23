@@ -14,13 +14,13 @@ public:
   CRTDataContainer();
   ~CRTDataContainer();
   void ResetSinaRTQueue(void) { m_qSinaRTData.Reset(); }
-  long GetSinaRTDataSize(void) { return m_qSinaRTData.GetRTDataSize(); }
+  size_t GetSinaRTDataSize(void) { return m_qSinaRTData.GetRTDataSize(); }
   void PushSinaRTData(CRTDataPtr pData) { m_qSinaRTData.PushRTData(pData); }
   CRTDataPtr PopSinaRTData(void) { return m_qSinaRTData.PopRTData(); }
-  long GetTengxunRTDataSize(void) { return m_qTengxunRTData.GetRTDataSize(); }
+  size_t GetTengxunRTDataSize(void) { return m_qTengxunRTData.GetRTDataSize(); }
   void PushTengxunRTData(CRTDataPtr pData) { m_qTengxunRTData.PushRTData(pData); }
   CRTDataPtr PopTengxunRTData(void) { return m_qTengxunRTData.PopRTData(); }
-  long GetNeteaseRTDataSize(void) { return m_qNeteaseRTData.GetRTDataSize(); }
+  size_t GetNeteaseRTDataSize(void) { return m_qNeteaseRTData.GetRTDataSize(); }
   void PushNeteaseRTData(CRTDataPtr pData) { m_qNeteaseRTData.PushRTData(pData); }
   CRTDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTData.PopRTData(); }
 

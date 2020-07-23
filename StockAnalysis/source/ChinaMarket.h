@@ -298,10 +298,10 @@ public:
 
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
-  long GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
-  long GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
+  size_t GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
+  size_t GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
   void ClearChoiceStockContainer(void) noexcept { m_avChoicedStock[0].clear(); }
-  long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
+  size_t GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
   void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
@@ -347,7 +347,7 @@ public:
   bool ChangeToPrevStockSet(void);
   bool ChangeToNextStockSet(void);
   bool IsTotalStockSetSelected(void) noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
-  long GetCurrentStockSetSize(void);
+  size_t GetCurrentStockSetSize(void);
 
   void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
   bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }

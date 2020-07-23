@@ -1,22 +1,25 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 中国股票实力数据（日线、周线等）的基类。
+// 纯虚类，不允许生成实例。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include"Accessory.h"
 
-#include"SetWeekLineBasicInfo.h"
-#include"SetWeekLineExtendInfo.h"
-
 using namespace std;
-#include<memory>
+//#include<memory>
 
 class CChinaStockHistoryData : public CObject {
 public:
   CChinaStockHistoryData();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  virtual bool SaveData(void) { return true; }
-  virtual bool AppendData(void) { return true; }
-  virtual bool LoadBasicData(void) { return true; }
-  virtual bool LoadExtendData(void) { return true; }
+  virtual bool SaveData(void) = 0;
+  virtual bool AppendData(void) = 0;
+  virtual bool LoadBasicData(void) = 0;
+  virtual bool LoadExtendData(void) = 0;
 
   void CalculateRSLogarithm(double dRS);
 

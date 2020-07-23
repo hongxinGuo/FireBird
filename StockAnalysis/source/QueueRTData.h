@@ -16,7 +16,7 @@ public:
   // 通用接口函数
   void PushRTData(CRTDataPtr pData);
   CRTDataPtr PopRTData(void);
-  long GetRTDataSize(void);
+  size_t GetRTDataSize(void);
 
 protected:
   queue<CRTDataPtr> m_qRTStockData;

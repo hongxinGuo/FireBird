@@ -7,7 +7,7 @@ CPriorityQueueRTData::~CPriorityQueueRTData() {
 }
 
 void CPriorityQueueRTData::Reset(void) {
-  long lTotal = m_priorityqueueRTStockData.size();
+  size_t lTotal = m_priorityqueueRTStockData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
     m_priorityqueueRTStockData.pop();
   }
@@ -24,6 +24,6 @@ CRTDataPtr CPriorityQueueRTData::PopRTData(void) {
   return pData;
 }
 
-long CPriorityQueueRTData::GetRTDataSize(void) {
+size_t CPriorityQueueRTData::GetRTDataSize(void) {
   return(m_priorityqueueRTStockData.size());
 }

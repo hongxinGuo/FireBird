@@ -17,7 +17,7 @@
 namespace StockAnalysisTest {
   TEST(RTDataContainerTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    long l = gl_systemMessage.GetInformationDequeSize();
+    size_t l = gl_systemMessage.GetInformationDequeSize();
     for (int i = 0; i < l; i++) {
       CString str = gl_systemMessage.PopInformationMessage(); // 清除信息队列
     }

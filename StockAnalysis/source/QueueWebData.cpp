@@ -11,7 +11,7 @@ CQueueWebData::~CQueueWebData() {
 
 void CQueueWebData::Reset(void) {
   m_MutexAccessWebData.lock();
-  long lTotal = m_qWebData.size();
+  size_t lTotal = m_qWebData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
     m_qWebData.pop();
   }
@@ -33,7 +33,7 @@ CWebDataPtr CQueueWebData::PopWebData(void) {
   return pData;
 }
 
-long CQueueWebData::GetWebDataSize(void) {
+size_t CQueueWebData::GetWebDataSize(void) {
   size_t size = 0;
   m_MutexAccessWebData.lock();
   size = m_qWebData.size();

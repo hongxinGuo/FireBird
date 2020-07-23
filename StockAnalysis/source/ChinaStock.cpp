@@ -472,7 +472,7 @@ void CChinaStock::UpdateStatus(CRTDataPtr pRTData) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveDayLine(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
-  long lSize = 0;
+  size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
@@ -833,7 +833,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   int iCountFirst = 0, iCountSecond = 0;
 
   ASSERT(m_fDayLineLoaded);
-  int iDayLineSize = GetDayLineSize();
+  size_t iDayLineSize = GetDayLineSize();
   if (iDayLineSize > 155) {
     m_vRS10Day.resize(iDayLineSize);
     CalculateDayLineRelativeStrongIndex();
@@ -863,7 +863,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
   ASSERT(m_fDayLineLoaded);
-  int iDayLineSize = GetDayLineSize();
+  size_t iDayLineSize = GetDayLineSize();
 
   if (iDayLineSize < 350) return false;
   m_vRS10Day.resize(iDayLineSize);
@@ -934,7 +934,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
   }
 
   ASSERT(m_fDayLineLoaded);
-  int iDayLineSize = GetDayLineSize();
+  size_t iDayLineSize = GetDayLineSize();
   if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
       || (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
 
