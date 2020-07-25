@@ -6,7 +6,6 @@ using namespace std;
 #include<atomic>
 
 const int gl_cMaxCalculatingRSThreads = 8;
-const int gl_cMaxCalculating10RSThreads = 8;
 
 class CThreadStatus {    // 个线程状态
 public:
@@ -34,12 +33,6 @@ public:
   void DecreaseNumberOfCalculatingRSThreads(void) noexcept { m_NumberOfCalculatingRSThreads--; } // 同时运行线程数减一
   bool IsCalculatingRS(void) noexcept { if (m_NumberOfCalculatingRSThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
   int HowManyThreadsCalculatingDayLineRS(void) noexcept { return m_NumberOfCalculatingRSThreads; }
-
-  // 并发执行计算10日强势股票的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculating10RSThreads(void) noexcept { m_NumberOfCalculating10RSThreads++; }  // 同时运行线程数加一
-  void DecreaseNumberOfCalculating10RSThreads(void) noexcept { m_NumberOfCalculating10RSThreads--; } // 同时运行线程数减一
-  bool IsCalculating10RS(void) noexcept { if (m_NumberOfCalculating10RSThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
-  int HowManyThreadsCalculating10RS(void) noexcept { return m_NumberOfCalculating10RSThreads; }
 
   void IncreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine++; }  // 同时运行线程数加一
   void DecreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine--; } // 同时运行线程数减一

@@ -31,7 +31,6 @@ Semaphore gl_ProcessSinaRTDataQueue(1);   // ĞÂÀËÊµÊ±Êı¾İ´¦ÀíÍ¬Ê±Ö»ÔÊĞíÒ»¸öÏß³Ì´
 Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
-Semaphore gl_SemaphoreCalculateDayLine10RS(gl_cMaxCalculating10RSThreads);
 
 CRTDataContainer gl_RTDataContainer;
 CWebInquirer gl_WebInquirer;
@@ -1015,7 +1014,7 @@ bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
   CRTDataPtr pRTData = nullptr;
   size_t lTotalData = gl_RTDataContainer.GetNeteaseRTDataSize();
 
-  for (long i = 0; i < lTotalData; i++) {
+  for (size_t i = 0; i < lTotalData; i++) {
     // Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
     pRTData = gl_RTDataContainer.PopNeteaseRTData();
     pRTData = nullptr;
@@ -1028,7 +1027,7 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
   CRTDataPtr pRTData = nullptr;
   size_t lTotalData = gl_RTDataContainer.GetSinaRTDataSize();
 
-  for (long i = 0; i < lTotalData; i++) {
+  for (size_t i = 0; i < lTotalData; i++) {
     // Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
     pRTData = gl_RTDataContainer.PopSinaRTData();
     pRTData = nullptr;
@@ -1041,7 +1040,7 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
   CRTDataPtr pRTData = nullptr;
   size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
 
-  for (long i = 0; i < lTotalData; i++) {
+  for (size_t i = 0; i < lTotalData; i++) {
     // Ä¿Ç°²»Ê¹ÓÃÍøÒ×ÊµÊ±Êı¾İ£¬ÕâÀïÖ»ÊÇ¼òµ¥µØÈ¡³öºóÈÓµô¡£
     pRTData = gl_RTDataContainer.PopTengxunRTData();
     pRTData = nullptr;
@@ -1063,7 +1062,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   int j = 0;
 
   size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
-  for (int i = 0; i < lTotalData; i++) {
+  for (size_t i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidTengxunRTData(pWebDataReceived)) { // ´¦ÀíÕâ21¸ö×Ö·û´®µÄº¯Êı¿ÉÒÔ·ÅÔÚÕâÀï£¬Ò²¿ÉÒÔ·ÅÔÚ×îÇ°Ãæ¡£
@@ -1127,7 +1126,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
   CRTDataPtr pRTData = nullptr;
   size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
 
-  for (long i = 0; i < lTotalData; i++) {
+  for (size_t i = 0; i < lTotalData; i++) {
     pRTData = gl_RTDataContainer.PopTengxunRTData();
     if (pRTData->IsActive()) {
       auto pStock = GetStock(pRTData->GetStockCode());
@@ -1240,9 +1239,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   CheckMarketReady(); // ¼ì²éÊĞ³¡ÊÇ·ñÍê³É³õÊ¼»¯
 
   if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0)) {
+    TaskChoice10RSStrongStockSet(lCurrentTime);
     TaskChoice10RSStrong1StockSet(lCurrentTime);
     TaskChoice10RSStrong2StockSet(lCurrentTime);
-    TaskChoice10RSStrongStockSet(lCurrentTime);
   }
 
   // ÅĞ¶ÏÊÇ·ñ¿ªÊ¼Õı³£ÊÕ¼¯Êı¾İ
@@ -1808,7 +1807,7 @@ bool CChinaMarket::SaveRTData(void) {
     setRTData.m_strFilter = _T("[ID] = 1");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
-    for (int i = 0; i < lTotal; i++) {
+    for (size_t i = 0; i < lTotal; i++) {
       pRTData = m_qRTData.front();
       m_qRTData.pop(); // Å×µô×îÇ°ÃæÕâ¸öÊı¾İ
       pRTData->AppendData(setRTData);
@@ -1851,6 +1850,8 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
     if (gl_fExitingSystem) return false;
     */
   }
+  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // µÈ´ı¹¤×÷Ïß³ÌÍê³ÉËùÓĞÈÎÎñ
+
   CSetRSStrong2Stock setRSStrong2;
 
   setRSStrong2.Open();
@@ -1894,6 +1895,8 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
     if (gl_fExitingSystem) return false;
     */
   }
+  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // µÈ´ı¹¤×÷Ïß³ÌÍê³ÉËùÓĞÈÎÎñ
+
   CSetRSStrong1Stock setRSStrong1;
 
   setRSStrong1.Open();
@@ -1938,7 +1941,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
     */
   }
 
-  while (gl_ThreadStatus.HowManyThreadsCalculating10RS() > 0) Sleep(1000); // µÈ´ı¹¤×÷Ïß³ÌÍê³ÉËùÓĞÈÎÎñ
+  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // µÈ´ı¹¤×÷Ïß³ÌÍê³ÉËùÓĞÈÎÎñ
 
   m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStockĞèÒª´Ëm_lCurrentRSStrongIndexÀ´Ñ¡ÔñÕıÈ·µÄÊı¾İ±í¡£
   CSetRSStrongStock setRSStrong(iIndex);

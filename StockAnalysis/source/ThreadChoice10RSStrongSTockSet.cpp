@@ -72,8 +72,8 @@ UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, i
 
 UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseNunberOfCalculating10RSThreads();     // 正在工作的线程数加一
-  gl_SemaphoreCalculateDayLine10RS.Wait();
+  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
+  gl_SemaphoreCalculateDayLineRS.Wait();
   if (gl_fExitingSystem) return 34;
 
   if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
@@ -88,16 +88,16 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
       pStock->UnloadDayLine();
     }
   }
-  gl_ThreadStatus.DecreaseNumberOfCalculating10RSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDayLine10RS.Signal();
+  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
+  gl_SemaphoreCalculateDayLineRS.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
   return 34;
 }
 
 UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseNunberOfCalculating10RSThreads();     // 正在工作的线程数加一
-  gl_SemaphoreCalculateDayLine10RS.Wait();
+  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
+  gl_SemaphoreCalculateDayLineRS.Wait();
   if (gl_fExitingSystem) return 35;
 
   if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
@@ -112,16 +112,16 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
       pStock->UnloadDayLine();
     }
   }
-  gl_ThreadStatus.DecreaseNumberOfCalculating10RSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDayLine10RS.Signal();
+  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
+  gl_SemaphoreCalculateDayLineRS.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
   return 35;
 }
 
 UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseNunberOfCalculating10RSThreads();     // 正在工作的线程数加一
-  gl_SemaphoreCalculateDayLine10RS.Wait();
+  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
+  gl_SemaphoreCalculateDayLineRS.Wait();
   if (gl_fExitingSystem) return 36;
 
   if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
@@ -136,8 +136,8 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
       pStock->UnloadDayLine();
     }
   }
-  gl_ThreadStatus.DecreaseNumberOfCalculating10RSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDayLine10RS.Signal();
+  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
+  gl_SemaphoreCalculateDayLineRS.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
   return 36;
 }
