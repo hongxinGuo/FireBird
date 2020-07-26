@@ -5,7 +5,7 @@
 using namespace std;
 #include<atomic>
 
-const int gl_cMaxCalculatingRSThreads = 8;
+const int cMaxBackGroundTaskThreads = 8;
 
 class CThreadStatus {    // 个线程状态
 public:
@@ -28,11 +28,15 @@ public:
   void SetSavingTempData(bool fFlag) noexcept { m_SavingTempData = fFlag; }
   bool IsSavingTempData(void) noexcept { return m_SavingTempData; }
 
-  // 并发执行计算日线相对强度的计数器，最多允许gl_cMaxCalculatingRSThreads个线程同时执行
-  void IncreaseNunberOfCalculatingRSThreads(void) noexcept { m_NumberOfCalculatingRSThreads++; }  // 同时运行线程数加一
-  void DecreaseNumberOfCalculatingRSThreads(void) noexcept { m_NumberOfCalculatingRSThreads--; } // 同时运行线程数减一
-  bool IsCalculatingRS(void) noexcept { if (m_NumberOfCalculatingRSThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
-  int HowManyThreadsCalculatingDayLineRS(void) noexcept { return m_NumberOfCalculatingRSThreads; }
+  // 生成周线历史数据
+  void SetCreateWeekLine(bool fFlag) noexcept { m_CreateWeekLine = fFlag; }
+  bool IsCreatingWeekLine(void) noexcept { return m_CreateWeekLine; }
+
+  // 并发执行计算日线相对强度的计数器，最多允许cMaxBackGroundTaskThreads个线程同时执行
+  void IncreaseBackGroundWorkingthreads(void) noexcept { m_NumberOfBackGroundWorkingThreads++; }  // 同时运行线程数加一
+  void DecreaseBackGroundWorkingthreads(void) noexcept { m_NumberOfBackGroundWorkingThreads--; } // 同时运行线程数减一
+  bool IsBackGroundthreadsWorking(void) noexcept { if (m_NumberOfBackGroundWorkingThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
+  int HowManyBackGroundThreadsWorking(void) noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
   void IncreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine++; }  // 同时运行线程数加一
   void DecreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine--; } // 同时运行线程数减一
@@ -48,11 +52,9 @@ protected:
   atomic_bool m_RTDataNeedCalculate;
   atomic_bool m_CalculatingRTData;
   atomic_bool m_SavingTempData;
+  atomic_bool m_CreateWeekLine;
 
   atomic_int m_SavingDayLine; // 存储日线历史数据的计数器
-  atomic_int m_NumberOfCalculatingRSThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
-  atomic_int m_NumberOfCalculating10RSThreads;  // 正在计算10日强势股票的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
-  atomic_int m_NumberOfCalculating10RS1Threads;  // 正在计算10日强势股票的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
-  atomic_int m_NumberOfCalculating10RS2Threads;  // 正在计算10日强势股票的线程数。目前最多同时允许gl_cMaxCalculatingRSThreads个线程
+  atomic_int m_NumberOfBackGroundWorkingThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许cMaxBackGroundTaskThreads个线程
   atomic_int m_NumberOfRunningThread; // 正在运行的工作线程数量
 };

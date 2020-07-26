@@ -107,6 +107,7 @@
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadCalculateDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadCreateWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp" />

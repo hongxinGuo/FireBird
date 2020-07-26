@@ -30,7 +30,7 @@ Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
 Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
-Semaphore gl_SemaphoreCalculateDayLineRS(gl_cMaxCalculatingRSThreads);
+Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大为8
 
 CRTDataContainer gl_RTDataContainer;
 CWebInquirer gl_WebInquirer;
@@ -65,7 +65,7 @@ void CChinaMarket::ResetMarket(void) {
   CString str = _T("重置中国股市于北京标准时间：");
   str += GetMarketTimeString();
   gl_systemMessage.PushInformationMessage(str);
-  while (gl_ThreadStatus.IsCalculatingRS() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
+  while (gl_ThreadStatus.IsBackGroundthreadsWorking() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
          || gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1);
   }
@@ -1783,6 +1783,19 @@ bool CChinaMarket::UnloadDayLine(void) {
   return true;
 }
 
+bool CChinaMarket::CreateWeekLine(void) {
+  gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
+  for (auto pStock : m_vChinaMarketStock) {
+    RunningThreadCreateWeekLineOfStock(pStock);
+  }
+  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+    Sleep(100);
+  }
+  gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));
+
+  return true;
+}
+
 CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
   if (m_lCurrentSelectedStockSet >= 0) {
     return m_avChoicedStock[m_lCurrentSelectedStockSet][0];
@@ -1850,7 +1863,10 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
     if (gl_fExitingSystem) return false;
     */
   }
-  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // 等待工作线程完成所有任务
+  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+    if (gl_fExitingSystem) return false;
+    Sleep(100); // 等待工作线程完成所有任务
+  }
 
   CSetRSStrong2Stock setRSStrong2;
 
@@ -1895,7 +1911,10 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
     if (gl_fExitingSystem) return false;
     */
   }
-  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // 等待工作线程完成所有任务
+  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+    if (gl_fExitingSystem) return false;
+    Sleep(100); // 等待工作线程完成所有任务
+  }
 
   CSetRSStrong1Stock setRSStrong1;
 
@@ -1941,7 +1960,10 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
     */
   }
 
-  while (gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS() > 0) Sleep(1000); // 等待工作线程完成所有任务
+  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+    if (gl_fExitingSystem) return false;
+    Sleep(100); // 等待工作线程完成所有任务
+  }
 
   m_lCurrentRSStrongIndex = iIndex; // CSetRSStrongStock需要此m_lCurrentRSStrongIndex来选择正确的数据表。
   CSetRSStrongStock setRSStrong(iIndex);
@@ -2091,6 +2113,20 @@ bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>
   return false;
 }
 
+bool CChinaMarket::RunningThreadCreateWeekLine(void) {
+  thread thread1(ThreadCreateWeekLine, this);
+  thread1.detach();
+
+  return true;
+}
+
+bool CChinaMarket::RunningThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
+  thread thread1(ThreadCreateWeekLineOfStock, pStock);
+  thread1.detach();
+
+  return true;
+}
+
 bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
   thread thread1(ThreadCalculate10RSStrongStock, pv10RSStrongStock, pRef, pStock);
   thread1.detach();
@@ -2142,7 +2178,7 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
     pStock->SetDayLineEndDay(lCurrentTradeDay);
     pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     setDayLineBasicInfo.AddNew();
-    pStock->SaveBasicInfo(&setDayLineBasicInfo);
+    pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
   }
   setDayLineBasicInfo.m_pDatabase->CommitTrans();
@@ -2165,7 +2201,7 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
       continue;
     }
     setDayLineExtendInfo.AddNew();
-    pStock->SaveExtendInfo(&setDayLineExtendInfo);
+    pStock->SaveTodayExtendInfo(&setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
   }
   setDayLineExtendInfo.m_pDatabase->CommitTrans();

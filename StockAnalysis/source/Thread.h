@@ -64,6 +64,10 @@ UINT ThreadAppendChoicedStockDB(CChinaMarket* pMarket); // 此线程返回值为22
 UINT ThreadSaveCrweberDB(CCrweberIndexMarket* pMarket, CCrweberIndexPtr pCrweberIndex); // 此线程返回值为23
 // 整理Crweber数据库
 UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket); // 此线程返回值为24
+// 生成周线历史数据
+UINT ThreadCreateWeekLine(CChinaMarket* pMarket); // 此线程的返回值为25
+// 生成股票的周线历史数据
+UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock); /// 此线程的返回值为26
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

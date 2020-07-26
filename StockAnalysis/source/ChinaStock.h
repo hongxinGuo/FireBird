@@ -310,6 +310,13 @@ public:
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
   // 数据库的提取和存储
+  // 日线装载函数，由工作线程ThreadLoadDayLine调用
+  virtual bool LoadDayLine(void); // 此函数加载
+  virtual bool SaveDayLine(void); // 存储日线历史数据
+  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
+  void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
+  void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   void UpdateDayLineStartEndDay(void);
   void LoadTempInfo(CSetDayLineToday& setDayLineToday);
@@ -317,6 +324,12 @@ public:
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
+  //周线历史数据存取
+  bool CreateWeekLine(void);
+  bool SaveWeekLine();
+  bool SaveWeekLineBasicInfo();
+  bool SaveWeekLineExtendInfo();
+  bool LoadWeekLine();
 
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
@@ -405,14 +418,6 @@ public:
   bool CalculateDayLineRelativeStrongLogarithm(void);
   virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
-  // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  virtual bool LoadDayLine(void); // 此函数加载
-  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
-  void SaveBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
-  virtual bool SaveDayLine(void); // 存储日线历史数据
-  void SaveExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
-
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
   void SetDayLineNeedUpdate(bool fFlag);
@@ -439,6 +444,8 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 周线相关函数
+  bool CalculatingWeekLine(void);
+  bool CreateNewWeekLine(long& lCurrentWeekDay, long& lCurrentDay, long& lCurrentPos);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

@@ -71,6 +71,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
   ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
   ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
+  ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -799,4 +801,13 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
   else {
     SysCallCmdUISetCheck(pCmdUI, false);
   }
+}
+
+void CMainFrame::OnBuildCreateWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadCreateWeekLine();
+}
+
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
 }

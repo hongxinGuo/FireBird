@@ -18,6 +18,8 @@ long FormatToDay(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
 long FormatToTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
 INT64 FormatToDayTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
 
+long GetNextMonday(long lDay); // 找到lDay的下一个星期一的数值
+
 // 用于个数据集的GetDefaultConnect()，以保持一致性。测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动。
 CString GetDefaultSchemaConnect();
 

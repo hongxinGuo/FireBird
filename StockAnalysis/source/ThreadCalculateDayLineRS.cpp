@@ -37,7 +37,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday <= pMarket->GetFormatedMarketDay()); // 计算至当前日期（包括今日）
 
-  while (gl_ThreadStatus.IsCalculatingRS()) Sleep(1); // 等待所有的工作线程结束
+  while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(1); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
     pMarket->SetRelativeStrongEndDay(pMarket->GetFormatedMarketDay());
@@ -74,13 +74,13 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
-  gl_SemaphoreCalculateDayLineRS.Wait();
+  gl_SemaphoreBackGroundTaskThreads.Wait();
+  gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
     pMarket->CalculateOneDayRelativeStrong(thisDay);  // 调用实际执行函数
   }
-  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDayLineRS.Signal();
+  gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+  gl_SemaphoreBackGroundTaskThreads.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 12;

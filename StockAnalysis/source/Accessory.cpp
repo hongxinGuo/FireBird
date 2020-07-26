@@ -79,6 +79,38 @@ INT64 FormatToDayTime(tm* ptm) {
   return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
+long GetNextMonday(long lDay) {
+  long year = lDay / 10000;
+  long month = lDay / 100 - (lDay / 10000) * 100;
+  long mday = lDay - (lDay / 100) * 100;
+  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+  const CTimeSpan oneDay(1, 0, 0, 0);
+
+  ctNext = ctCurrent;
+  switch (ctCurrent.GetDayOfWeek()) {
+  case 2: // 星期一
+  ctNext += oneDay;
+  case 3:
+  ctNext += oneDay;
+  case 4:
+  ctNext += oneDay;
+  case 5:
+  ctNext += oneDay;
+  case 6:
+  ctNext += oneDay;
+  case 7:
+  ctNext += oneDay;
+  case 1:
+  ctNext += oneDay;
+  break;
+  default: // 星期六和星期日不可能
+  break;
+  }
+  long lNextDay = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+
+  return lNextDay;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。

@@ -336,7 +336,7 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
   gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::SaveBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   psetDayLineBasicInfo->m_Day = FormatToDay(m_TransactionTime);
   psetDayLineBasicInfo->m_Market = m_wMarket;
@@ -544,7 +544,7 @@ void CChinaStock::UpdateDayLineStartEndDay(void) {
   }
 }
 
-void CChinaStock::SaveExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
   psetDayLineExtendInfo->m_Day = FormatToDay(m_TransactionTime);
   psetDayLineExtendInfo->m_Market = m_wMarket;
@@ -1720,6 +1720,99 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
   }
 }
 
+bool CChinaStock::CreateWeekLine(void) {
+  if (IsNullStock()) return true;
+  if (!IsDayLineLoaded()) {
+    LoadDayLine();
+  }
+  CalculatingWeekLine();
+
+  SaveWeekLine();
+  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
+    if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) UnloadDayLine();
+  }
+  else UnloadDayLine();
+  return true;
+}
+
+bool CChinaStock::SaveWeekLine() {
+  SaveWeekLineBasicInfo();
+  SaveWeekLineExtendInfo();
+  return true;
+}
+
+bool CChinaStock::SaveWeekLineBasicInfo() {
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  size_t lSize = 0;
+  CWeekLinePtr pWeekLine = nullptr;
+
+  ASSERT(m_vWeekLine.size() > 0);
+
+  lSize = m_vWeekLine.size();
+  setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineBasicInfo.m_strFilter += GetStockCode() + _T("'");
+  setWeekLineBasicInfo.m_strSort = _T("[Day]");
+
+  setWeekLineBasicInfo.Open();
+  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineBasicInfo.IsEOF()) {
+    setWeekLineBasicInfo.Delete();
+    setWeekLineBasicInfo.MoveNext();
+  }
+  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+  setWeekLineBasicInfo.Close();
+
+  setWeekLineBasicInfo.Open();
+  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+  for (int i = 0; i < lSize; i++) {
+    pWeekLine = m_vWeekLine.at(i);
+    pWeekLine->AppendData(&setWeekLineBasicInfo);
+  }
+  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+  setWeekLineBasicInfo.Close();
+
+  return true;
+}
+
+bool CChinaStock::SaveWeekLineExtendInfo() {
+  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+  size_t lSize = 0;
+  CWeekLinePtr pWeekLine = nullptr;
+
+  ASSERT(m_vWeekLine.size() > 0);
+
+  lSize = m_vWeekLine.size();
+  setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineExtendInfo.m_strFilter += GetStockCode() + _T("'");
+  setWeekLineExtendInfo.m_strSort = _T("[Day]");
+
+  setWeekLineExtendInfo.Open();
+  setWeekLineExtendInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineExtendInfo.IsEOF()) {
+    setWeekLineExtendInfo.Delete();
+    setWeekLineExtendInfo.MoveNext();
+  }
+  setWeekLineExtendInfo.m_pDatabase->CommitTrans();
+  setWeekLineExtendInfo.Close();
+
+  setWeekLineExtendInfo.Open();
+  setWeekLineExtendInfo.m_pDatabase->BeginTrans();
+  for (int i = 0; i < lSize; i++) {
+    pWeekLine = m_vWeekLine.at(i);
+    if (pWeekLine->GetTransactionNumber() > 0) {
+      pWeekLine->AppendData(&setWeekLineExtendInfo);
+    }
+  }
+  setWeekLineExtendInfo.m_pDatabase->CommitTrans();
+  setWeekLineExtendInfo.Close();
+
+  return true;
+}
+
+bool CChinaStock::LoadWeekLine() {
+  return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 采用同步机制存储实时数据。
@@ -1925,6 +2018,34 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
     return false;
   }
   else return true;
+}
+
+bool CChinaStock::CalculatingWeekLine(void) {
+  ASSERT(IsDayLineLoaded());
+  long lCurrentWeekDay = 0;
+  long i = 0;
+  long lCurrentPos = -1;
+  long lNewestDay = m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay();
+
+  m_vWeekLine.clear();
+  do {
+    CreateNewWeekLine(lCurrentWeekDay, i, lCurrentPos);
+  } while (i < m_vDayLine.size());
+
+  return true;
+}
+
+bool CChinaStock::CreateNewWeekLine(long& lCurrentWeekDay, long& lCurrentDayLine, long& lCurrentPos) {
+  long lNextMonDay = GetNextMonday(m_vDayLine.at(lCurrentDayLine)->GetFormatedMarketDay());
+  lCurrentPos++;
+  CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+  for (int i = 0; i < 5; i++) {
+    if (m_vDayLine.at(lCurrentDayLine)->GetFormatedMarketDay() <= m_vDayLine.at(lCurrentDayLine + 1)->GetFormatedMarketDay()) {
+    }
+  }
+  m_vWeekLine[lCurrentPos] = pWeekLine;
+
+  return true;
 }
 
 #ifdef _DEBUG

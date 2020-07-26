@@ -29,8 +29,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
-    EXPECT_EQ(gl_ThreadStatus.HowManyThreadsCalculatingDayLineRS(), 0);
+    EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+    EXPECT_EQ(gl_ThreadStatus.HowManyBackGroundThreadsWorking(), 0);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
 
@@ -76,16 +76,16 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(ThreadStatusTest, TestIsCalculatingRS) {
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
-    for (int i = 0; i < gl_cMaxCalculatingRSThreads; i++) {  // 目前采用最多8个线程
-      gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();
+    EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
+    for (int i = 0; i < cMaxBackGroundTaskThreads; i++) {  // 目前采用最多8个线程
+      gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
     }
-    for (int i = 0; i < gl_cMaxCalculatingRSThreads - 1; i++) {
-      gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
-      EXPECT_TRUE(gl_ThreadStatus.IsCalculatingRS());
+    for (int i = 0; i < cMaxBackGroundTaskThreads - 1; i++) {
+      gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
+      EXPECT_TRUE(gl_ThreadStatus.IsBackGroundthreadsWorking());
     }
-    gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads();
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRS());
+    gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
+    EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
   }
 
   TEST_F(ThreadStatusTest, TestIsSavingDayLine) {

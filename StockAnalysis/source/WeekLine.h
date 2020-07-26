@@ -13,7 +13,9 @@ public:
   virtual bool LoadExtendData(void);
 
   bool SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool SaveData(CSetWeekLineExtendInfo* psetWeekLineBasicInfo);
   bool AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
   bool LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 
