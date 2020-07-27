@@ -74,18 +74,18 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-  if (gl_fExitingSystem) return 34;
-
-  if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-    if (!pStock->IsDayLineLoaded()) {
-      pStock->LoadDayLine();
-      pStock->SetDayLineLoaded(true);
-    }
-    if (pStock->Calculate10RSStrongStockSet(pRef)) {
-      pv10RSStrongStock->push_back(pStock);
-    }
-    if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-      pStock->UnloadDayLine();
+  if (!gl_fExitingSystem) {
+    if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
+      if (pStock->Calculate10RSStrongStockSet(pRef)) {
+        pv10RSStrongStock->push_back(pStock);
+      }
+      if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
+        pStock->UnloadDayLine();
+      }
     }
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
@@ -98,18 +98,18 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-  if (gl_fExitingSystem) return 35;
-
-  if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-    if (!pStock->IsDayLineLoaded()) {
-      pStock->LoadDayLine();
-      pStock->SetDayLineLoaded(true);
-    }
-    if (pStock->Calculate10RSStrong1StockSet()) {
-      pv10RSStrongStock->push_back(pStock);
-    }
-    if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-      pStock->UnloadDayLine();
+  if (!gl_fExitingSystem) {
+    if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
+      if (pStock->Calculate10RSStrong1StockSet()) {
+        pv10RSStrongStock->push_back(pStock);
+      }
+      if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
+        pStock->UnloadDayLine();
+      }
     }
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
@@ -122,18 +122,18 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-  if (gl_fExitingSystem) return 36;
-
-  if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-    if (!pStock->IsDayLineLoaded()) {
-      pStock->LoadDayLine();
-      pStock->SetDayLineLoaded(true);
-    }
-    if (pStock->Calculate10RSStrong2StockSet()) {
-      pv10RSStrongStock->push_back(pStock);
-    }
-    if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-      pStock->UnloadDayLine();
+  if (!gl_fExitingSystem) {
+    if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
+      if (!pStock->IsDayLineLoaded()) {
+        pStock->LoadDayLine();
+        pStock->SetDayLineLoaded(true);
+      }
+      if (pStock->Calculate10RSStrong2StockSet()) {
+        pv10RSStrongStock->push_back(pStock);
+      }
+      if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
+        pStock->UnloadDayLine();
+      }
     }
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一

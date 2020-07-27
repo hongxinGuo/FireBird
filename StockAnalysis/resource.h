@@ -132,6 +132,10 @@
 #define ID_32855                        32855
 #define ID_USING_NETEASE_REALTIME_DATA_SERVER 32857
 #define ID_USING_SINA_REALTIME_DATA_SERVER 32858
+#define ID_BUILD_32859                  32859
+#define ID_BUILD_CREATE_WEEKLINE        32860
+#define ID_BUILD_32861                  32861
+#define ID_REBUILD_WEEKLINE_RS          32862
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -145,11 +149,11 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32859
+#define _APS_NEXT_COMMAND_VALUE         32863
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

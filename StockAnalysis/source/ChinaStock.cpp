@@ -1725,6 +1725,8 @@ bool CChinaStock::CreateWeekLine(void) {
   if (!IsDayLineLoaded()) {
     LoadDayLine();
   }
+  if (GetDayLineSize() <= 0) return true;
+
   CalculatingWeekLine();
 
   SaveWeekLine();
@@ -1755,15 +1757,6 @@ bool CChinaStock::SaveWeekLineBasicInfo() {
 
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineBasicInfo.IsEOF()) {
-    setWeekLineBasicInfo.Delete();
-    setWeekLineBasicInfo.MoveNext();
-  }
-  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
-  setWeekLineBasicInfo.Close();
-
-  setWeekLineBasicInfo.Open();
-  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) {
     pWeekLine = m_vWeekLine.at(i);
     pWeekLine->AppendData(&setWeekLineBasicInfo);
@@ -1788,18 +1781,9 @@ bool CChinaStock::SaveWeekLineExtendInfo() {
 
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineExtendInfo.IsEOF()) {
-    setWeekLineExtendInfo.Delete();
-    setWeekLineExtendInfo.MoveNext();
-  }
-  setWeekLineExtendInfo.m_pDatabase->CommitTrans();
-  setWeekLineExtendInfo.Close();
-
-  setWeekLineExtendInfo.Open();
-  setWeekLineExtendInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) {
     pWeekLine = m_vWeekLine.at(i);
-    if (pWeekLine->GetTransactionNumber() > 0) {
+    if (pWeekLine->GetTransactionNumber() > 0) { // 只存储有交易数据的记录。
       pWeekLine->AppendData(&setWeekLineExtendInfo);
     }
   }
@@ -2030,7 +2014,7 @@ bool CChinaStock::CalculatingWeekLine(void) {
   m_vWeekLine.clear();
   do {
     pWeekLine = CreateNewWeekLine(i);
-    m_vWeekLine[lCurrentPos++] = pWeekLine;
+    m_vWeekLine.push_back(pWeekLine);
   } while (i < m_vDayLine.size());
 
   for (int j = m_vWeekLine.size() - 1; j > 0; j--) {
@@ -2047,12 +2031,12 @@ CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
   if (lNextMonday < lNewestDay) { // 中间数据
     while (m_vDayLine.at(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
-      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos));
+      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos++));
     }
   }
   else { // 最后一组数据
     while (lCurrentDayLinePos <= (m_vDayLine.size() - 1)) {
-      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos));
+      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos++));
     }
   }
 

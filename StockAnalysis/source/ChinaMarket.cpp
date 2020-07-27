@@ -1415,7 +1415,7 @@ bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fChoiced10RSStrong1StockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
+  if (IsSystemReady() && !m_fChoiced10RSStrong1StockSet && (lCurrentTime > 151100) && IsWorkingDay()) {
     RunningThreadChoice10RSStrong1StockSet();
     m_fChoiced10RSStrong1StockSet = true;
     return true;
@@ -1424,7 +1424,7 @@ bool CChinaMarket::TaskChoice10RSStrong1StockSet(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskChoice10RSStrong2StockSet(long lCurrentTime) {
-  if (IsSystemReady() && !m_fChoiced10RSStrong2StockSet && (lCurrentTime > 151000) && IsWorkingDay()) {
+  if (IsSystemReady() && !m_fChoiced10RSStrong2StockSet && (lCurrentTime > 151200) && IsWorkingDay()) {
     RunningThreadChoice10RSStrong2StockSet();
     m_fChoiced10RSStrong2StockSet = true;
     return true;
@@ -1789,7 +1789,7 @@ bool CChinaMarket::CreateWeekLine(void) {
     RunningThreadCreateWeekLineOfStock(pStock);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
-    Sleep(100);
+    Sleep(1000);
   }
   gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));
 

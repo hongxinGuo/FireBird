@@ -240,25 +240,25 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1; // 星期一
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetSystemReady(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(true);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadChoice10RSStrong2StockSet)
       .Times(1);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     EXPECT_TRUE(s_pchinaMarket->IsChoiced10RSStrong2StockSet());
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetTodayStockProcessed(false);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     EXPECT_FALSE(s_pchinaMarket->IsChoiced10RSStrong2StockSet()) << _T("休息日不处理");
   }
 
@@ -267,25 +267,25 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1; // 星期一
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetSystemReady(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(true);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadChoice10RSStrong1StockSet)
       .Times(1);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     EXPECT_TRUE(s_pchinaMarket->IsChoiced10RSStrong1StockSet());
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetTodayStockProcessed(false);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     EXPECT_FALSE(s_pchinaMarket->IsChoiced10RSStrong1StockSet()) << _T("休息日不处理");
   }
 

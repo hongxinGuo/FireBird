@@ -23,9 +23,7 @@ UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
-  if (gl_fExitingSystem) return 26;
-
-  pStock->CreateWeekLine();
+  if (!gl_fExitingSystem) pStock->CreateWeekLine();
 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
   gl_SemaphoreBackGroundTaskThreads.Signal();
