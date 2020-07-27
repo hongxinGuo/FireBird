@@ -30,7 +30,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
     str += buffer;
     str += _T("个股票");
     gl_systemMessage.PushInformationMessage(str);
-    pMarket->RunningThreadCalculateThisDayRS(lDay);
+    pMarket->RunningThreadBuildThisDayRS(lDay);
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
       pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。

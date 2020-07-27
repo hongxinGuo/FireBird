@@ -2022,29 +2022,44 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 
 bool CChinaStock::CalculatingWeekLine(void) {
   ASSERT(IsDayLineLoaded());
-  long lCurrentWeekDay = 0;
+  ASSERT(m_vDayLine.size() > 0);
   long i = 0;
-  long lCurrentPos = -1;
-  long lNewestDay = m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay();
+  long lCurrentPos = 0;
+  CWeekLinePtr pWeekLine = nullptr;
 
   m_vWeekLine.clear();
   do {
-    CreateNewWeekLine(lCurrentWeekDay, i, lCurrentPos);
+    pWeekLine = CreateNewWeekLine(i);
+    m_vWeekLine[lCurrentPos++] = pWeekLine;
   } while (i < m_vDayLine.size());
+
+  for (int j = m_vWeekLine.size() - 1; j > 0; j--) {
+    m_vWeekLine.at(j)->SetLastClose(m_vWeekLine.at(j - 1)->GetClose());
+  }
 
   return true;
 }
 
-bool CChinaStock::CreateNewWeekLine(long& lCurrentWeekDay, long& lCurrentDayLine, long& lCurrentPos) {
-  long lNextMonDay = GetNextMonday(m_vDayLine.at(lCurrentDayLine)->GetFormatedMarketDay());
-  lCurrentPos++;
+CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
+  ASSERT(m_vDayLine.size() > 0);
+  long lNextMonday = GetNextMonday(m_vDayLine.at(lCurrentDayLinePos)->GetFormatedMarketDay());
+  long lNewestDay = m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay();
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-  for (int i = 0; i < 5; i++) {
-    if (m_vDayLine.at(lCurrentDayLine)->GetFormatedMarketDay() <= m_vDayLine.at(lCurrentDayLine + 1)->GetFormatedMarketDay()) {
+  if (lNextMonday < lNewestDay) { // 中间数据
+    while (m_vDayLine.at(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
+      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos));
     }
   }
-  m_vWeekLine[lCurrentPos] = pWeekLine;
+  else { // 最后一组数据
+    while (lCurrentDayLinePos <= (m_vDayLine.size() - 1)) {
+      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos));
+    }
+  }
 
+  return pWeekLine;
+}
+
+bool CChinaStock::BuildWeekLineRS(void) {
   return true;
 }
 

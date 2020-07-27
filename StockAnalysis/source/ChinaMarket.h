@@ -90,8 +90,8 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
-  virtual bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
-  virtual bool RunningThreadCalculateThisDayRS(long lThisDay);
+  virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
+  virtual bool RunningThreadBuildThisDayRS(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
   virtual bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
@@ -106,6 +106,7 @@ public:
   virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
   virtual bool RunningThreadCreateWeekLine(void);
   virtual bool RunningThreadCreateWeekLineOfStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadBuildWeekLineRS(void);
   // interface function
 public:
   // 系统状态区
@@ -208,7 +209,8 @@ public:
   bool IsDayLineNeedSaving(void);
 
   virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
-  virtual bool CalculateOneDayRelativeStrong(long lDay);
+  virtual bool BuildOneDayRelativeStrong(long lDay);
+  virtual bool BuildWeekLineRS(void);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }

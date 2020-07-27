@@ -79,29 +79,43 @@ INT64 FormatToDayTime(tm* ptm) {
   return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
+const static CTimeSpan s_1Day(1, 0, 0, 0);
+const static CTimeSpan s_2Day(2, 0, 0, 0);
+const static CTimeSpan s_3Day(3, 0, 0, 0);
+const static CTimeSpan s_4Day(4, 0, 0, 0);
+const static CTimeSpan s_5Day(5, 0, 0, 0);
+const static CTimeSpan s_6Day(6, 0, 0, 0);
+const static CTimeSpan s_7Day(7, 0, 0, 0);
+
 long GetNextMonday(long lDay) {
   long year = lDay / 10000;
   long month = lDay / 100 - (lDay / 10000) * 100;
   long mday = lDay - (lDay / 100) * 100;
   CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
-  const CTimeSpan oneDay(1, 0, 0, 0);
 
   ctNext = ctCurrent;
   switch (ctCurrent.GetDayOfWeek()) {
   case 2: // 星期一
-  ctNext += oneDay;
+  ctNext += s_7Day;
+  break;
   case 3:
-  ctNext += oneDay;
+  ctNext += s_6Day;
+  break;
   case 4:
-  ctNext += oneDay;
+  ctNext += s_5Day;
+  break;
   case 5:
-  ctNext += oneDay;
+  ctNext += s_4Day;
+  break;
   case 6:
-  ctNext += oneDay;
+  ctNext += s_3Day;
+  break;
   case 7:
-  ctNext += oneDay;
+  ctNext += s_2Day;
+  break;
   case 1:
-  ctNext += oneDay;
+  ctNext += s_1Day;
+  break;
   break;
   default: // 星期六和星期日不可能
   break;

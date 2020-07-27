@@ -25,7 +25,7 @@ UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket) {
   gl_ChoiceRSStrong.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
-  return 32;
+  return 102;
 }
 
 UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket) {
@@ -42,7 +42,7 @@ UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket) {
   gl_ChoiceRSStrong.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
-  return 31;
+  return 101;
 }
 
 UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex) {
@@ -67,7 +67,7 @@ UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, i
   gl_ChoiceRSStrong.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
-  return 33;
+  return 103;
 }
 
 UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
@@ -91,7 +91,7 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
-  return 34;
+  return 104;
 }
 
 UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
@@ -115,7 +115,7 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
-  return 35;
+  return 105;
 }
 
 UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
@@ -139,5 +139,5 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
-  return 36;
+  return 106;
 }

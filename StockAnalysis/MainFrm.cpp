@@ -73,6 +73,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
   ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
   ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
+  ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
+  ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -521,7 +523,7 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 }
 
 void CMainFrame::CalculateTodayRelativeStrong(void) {
-  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(gl_pChinaStockMarket->GetFormatedMarketDay());
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDay());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -674,7 +676,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DAY__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -809,5 +811,14 @@ void CMainFrame::OnBuildCreateWeekLine() {
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnRebuildWeekLineRS() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineRS();
+}
+
+void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
 }

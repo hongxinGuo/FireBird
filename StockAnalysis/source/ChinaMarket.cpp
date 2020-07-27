@@ -2026,14 +2026,14 @@ bool CChinaMarket::RunningThreadProcessTodayStock(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadCalculateRelativeStrong(long lStartCalculatingDay) {
-  thread thread1(ThreadCalculateDayLineRS, this, lStartCalculatingDay);
+bool CChinaMarket::RunningThreadBuildDayLineRS(long lStartCalculatingDay) {
+  thread thread1(ThreadBuildDayLineRS, this, lStartCalculatingDay);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
-bool CChinaMarket::RunningThreadCalculateThisDayRS(long lThisDay) {
-  thread thread_calculateRS(ThreadCalculateThisDayRS, this, lThisDay);
+bool CChinaMarket::RunningThreadBuildThisDayRS(long lThisDay) {
+  thread thread_calculateRS(ThreadBuildThisDayRS, this, lThisDay);
   thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -2122,6 +2122,13 @@ bool CChinaMarket::RunningThreadCreateWeekLine(void) {
 
 bool CChinaMarket::RunningThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
   thread thread1(ThreadCreateWeekLineOfStock, pStock);
+  thread1.detach();
+
+  return true;
+}
+
+bool CChinaMarket::RunningThreadBuildWeekLineRS(void) {
+  thread thread1(ThreadBuildWeekLineRS, this);
   thread1.detach();
 
   return true;
@@ -2411,7 +2418,7 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
 // m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
+bool CChinaMarket::BuildOneDayRelativeStrong(long lDay) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
@@ -2522,6 +2529,10 @@ bool CChinaMarket::CalculateOneDayRelativeStrong(long lDay) {
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);
+}
+
+bool CChinaMarket::BuildWeekLineRS(void) {
+  return true;
 }
 
 double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) {

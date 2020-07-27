@@ -354,7 +354,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(lDay))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildThisDayRS(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(lDay))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildThisDayRS(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -393,10 +393,10 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     s_pchinaMarket->SetRelativeStrongEndDay(0);
     s_pchinaMarket->SetUpdateOptionDB(false);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildThisDayRS(_))
       .Times(5)
       .WillRepeatedly(Return(true));
-    EXPECT_EQ(ThreadCalculateDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), 0);
     EXPECT_FALSE(gl_fExitingCalculatingRS);
@@ -407,9 +407,9 @@ namespace StockAnalysisTest {
     lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
     gl_fExitingCalculatingRS = false;
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildThisDayRS(_))
       .Times(5);
-    EXPECT_EQ(ThreadCalculateDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), s_pchinaMarket->GetFormatedMarketDay());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());

@@ -33,3 +33,23 @@ UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
 
   return 26;
 }
+
+UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket) {
+  pMarket->BuildWeekLineRS();
+
+  return 27;
+}
+
+UINT ThreadBuildWeekLineRSOfStock(CChinaStockPtr pStock) {
+  gl_ThreadStatus.IncreaseRunningThread();
+  gl_SemaphoreBackGroundTaskThreads.Wait();
+  gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
+
+  pStock->BuildWeekLineRS();
+
+  gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
+  gl_SemaphoreBackGroundTaskThreads.Signal();
+  gl_ThreadStatus.DecreaseRunningThread();
+
+  return 28;
+}

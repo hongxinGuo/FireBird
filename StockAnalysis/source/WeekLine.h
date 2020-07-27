@@ -22,6 +22,8 @@ public:
   void SetWeekLineBasicSet(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) noexcept { m_psetWeekLineBasicInfo = psetWeekLineBasicInfo; }
   void SetWeekLineExtendSet(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) noexcept { m_psetWeekLineExtendInfo = psetWeekLineExtendInfo; }
 
+  bool CreateWeekLine(CDayLinePtr pDayLine);
+
   void Set3WeekRS(double dValue) noexcept { Set3RS(dValue); }
   double Get3WeekRS(void) noexcept { return Get3RS(); }
   void Set5WeekRS(double dValue) noexcept { Set5RS(dValue); }

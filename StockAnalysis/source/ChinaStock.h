@@ -445,7 +445,8 @@ public:
 
   // 周线相关函数
   bool CalculatingWeekLine(void);
-  bool CreateNewWeekLine(long& lCurrentWeekDay, long& lCurrentDay, long& lCurrentPos);
+  CWeekLinePtr CreateNewWeekLine(long& lCurrentDay);
+  bool BuildWeekLineRS(void);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;

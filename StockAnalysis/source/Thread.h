@@ -37,9 +37,9 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
 // 数据库处理任务
 
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
-UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为11, 参数为当前最后计算日期
+UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为11, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为12
+UINT ThreadBuildThisDayRS(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为12
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
@@ -68,17 +68,21 @@ UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket); // 此线程返回值为24
 UINT ThreadCreateWeekLine(CChinaMarket* pMarket); // 此线程的返回值为25
 // 生成股票的周线历史数据
 UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock); /// 此线程的返回值为26
+// 重新生成周线相对强度数据
+UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket); // 此线程的返回值为27
+// 生成股票的相对强队数据
+UINT ThreadBuildWeekLineRSOfStock(CChinaStockPtr pStock); // 此线程的返回值为28
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）
-UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为31
+UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket); // 此线程返回值为101
 // 计算10日强股票集（两次出现强势峰）
-UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为32
+UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket); // 此线程返回值为102
 // 计算10日强股票集（使用外部pRef提供的参数）
-UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为33
+UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex); // 此线程返回值为103
 // 计算股票的10日强势与否
-UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock); // 此线程返回值为34
+UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock); // 此线程返回值为104
 // 计算股票的10日强势与否1
-UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为35
+UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为105
 // 计算股票的10日强势与否2
-UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为36
+UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock); // 此线程返回值为105
