@@ -2032,8 +2032,14 @@ bool CChinaMarket::RunningThreadBuildDayLineRS(long lStartCalculatingDay) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildThisDayRS(long lThisDay) {
-  thread thread_calculateRS(ThreadBuildThisDayRS, this, lThisDay);
+bool CChinaMarket::RunningThreadBuildDayLineRSOfDay(long lThisDay) {
+  thread thread_calculateRS(ThreadBuildDayLineRSOfDay, this, lThisDay);
+  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadBuildWeekLineRSOfDay(long lThisDay) {
+  thread thread_calculateRS(ThreadBuildWeekLineRSOfDay, this, lThisDay);
   thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -2128,7 +2134,7 @@ bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock) {
 }
 
 bool CChinaMarket::RunningThreadBuildWeekLineRS(void) {
-  thread thread1(ThreadBuildWeekLineRS, this);
+  thread thread1(ThreadBuildWeekLineRS, this, __CHINA_MARKET_BEGIN_DAY__);
   thread1.detach();
 
   return true;
@@ -2418,7 +2424,7 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
 // m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildOneDayRelativeStrong(long lDay) {
+bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
@@ -2525,7 +2531,7 @@ bool CChinaMarket::BuildOneDayRelativeStrong(long lDay) {
 
   CString strDay2 = GetDayString(lDay);
   CString strTemp;
-  strTemp = strDay2 + _T("的股票相对强度计算完成");
+  strTemp = strDay2 + _T("的股票日线相对强度计算完成");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);
@@ -2533,6 +2539,117 @@ bool CChinaMarket::BuildOneDayRelativeStrong(long lDay) {
 
 bool CChinaMarket::BuildWeekLineRS(void) {
   return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// 计算lDay的周线相对强度, lDay的格式为：YYYYMMDD,如 19990605.
+// 将周线按涨跌排列后,其相对强弱即其在队列中的位置.
+// m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
+//
+//////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
+  vector<CChinaStockPtr> vStock;
+  vector<int> vIndex;
+  vector<double> vRelativeStrong;
+  int iTotalAShare = 0;
+  CString strSQL;
+  CString strDay;
+  char  pch[30];
+  int iStockNumber = 0;
+  CTime ctTime;
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  double dShanghaiIndexUpDownRate = 0;
+  double dShenzhenIndexUpDownRate = 0;
+  double dIndexUpDownRate;
+  double dRelativeStrongIndex;
+
+  sprintf_s(pch, _T("%08d"), lDay);
+  strDay = pch;
+  setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
+  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.Open();
+  if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
+    setWeekLineBasicInfo.Close();
+    CString str = strDay;
+    str += _T("日数据集为空，没有计算相对强度");
+    gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
+    return false;
+  }
+  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+  iStockNumber = 0;
+  while (!setWeekLineBasicInfo.IsEOF()) {
+    if (strcmp(setWeekLineBasicInfo.m_StockCode, _T("sh000001")) == 0) { // 上海综指
+      dShanghaiIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
+    }
+    else if (strcmp(setWeekLineBasicInfo.m_StockCode, _T("sz399001")) == 0) { // 深圳成指
+      dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
+    }
+    if (IsAStock(setWeekLineBasicInfo.m_StockCode)) {
+      long lIndex = m_mapChinaMarketAStock.at(setWeekLineBasicInfo.m_StockCode);
+      vStock.push_back(m_vChinaMarketStock.at(lIndex));
+      vIndex.push_back(iStockNumber); // 将A股的索引记录在容器中。
+      iTotalAShare++;
+    }
+    iStockNumber++;
+    setWeekLineBasicInfo.MoveNext();
+  }
+  dIndexUpDownRate = (dShanghaiIndexUpDownRate + dShenzhenIndexUpDownRate) / 2;
+
+  setWeekLineBasicInfo.MoveFirst();
+  int iCount = 0;
+  int iBefore = 0;
+  while (iCount < vIndex.size()) { // 只计算活跃股票的相对强度
+    for (int i = 0; i < vIndex.at(iCount) - iBefore; i++) { // 根据索引去更改数据库,跨过不是A股的股票
+      setWeekLineBasicInfo.MoveNext();
+    }
+    setWeekLineBasicInfo.Edit();
+    double dLastClose = atof(setWeekLineBasicInfo.m_LastClose);
+    double dLow = atof(setWeekLineBasicInfo.m_Low);
+    double dHigh = atof(setWeekLineBasicInfo.m_High);
+    double dClose = atof(setWeekLineBasicInfo.m_Close);
+    double dUpDownRate = 0;
+    // 计算指数相对强度
+    if (dLastClose < 0.001) { // 新股上市等，昨日收盘价格为零
+      dRelativeStrongIndex = 50;
+    }
+    else {
+      dUpDownRate = (dClose - dLastClose) / dLastClose;
+      if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) { // 除权等导致价格突变
+        dRelativeStrongIndex = 50;
+      }
+      else {
+        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
+      }
+    }
+    setWeekLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
+
+    // 计算涨跌排名相对强度
+    if (dLastClose < 0.001) {
+      setWeekLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+    }
+    else {
+      setWeekLineBasicInfo.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+    }
+    setWeekLineBasicInfo.Update();
+    iBefore = vIndex.at(iCount++);
+    setWeekLineBasicInfo.MoveNext(); // 移到下一个数据。
+    iBefore++; // 计数器也同时加一。
+  }
+  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+  setWeekLineBasicInfo.Close();
+
+  vStock.clear();
+  vIndex.clear();
+  vRelativeStrong.clear();
+
+  CString strDay2 = GetDayString(lDay);
+  CString strTemp;
+  strTemp = strDay2 + _T("的股票周线相对强度计算完成");
+  gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
+
+  return(true);
 }
 
 double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) {

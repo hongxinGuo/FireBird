@@ -263,6 +263,7 @@ bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
   else m_lHigh = m_lHigh > pDayLine->GetHigh() ? m_lHigh : pDayLine->GetHigh();
   if (m_lLow == 0) m_lLow = pDayLine->GetLow();
   else m_lLow = m_lLow < pDayLine->GetLow() ? m_lLow : pDayLine->GetLow();
+  m_dUpDown = (double)(m_lClose - m_lLastClose) / 1000;
 
   m_llVolume += pDayLine->GetVolume();
   m_llAmount += pDayLine->GetAmount();

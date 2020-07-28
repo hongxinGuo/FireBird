@@ -117,12 +117,50 @@ long GetNextMonday(long lDay) {
   ctNext += s_1Day;
   break;
   break;
-  default: // 星期六和星期日不可能
+  default: // 不可能
   break;
   }
   long lNextDay = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
 
   return lNextDay;
+}
+
+long GetPrevMonday(long lDay) {
+  long year = lDay / 10000;
+  long month = lDay / 100 - (lDay / 10000) * 100;
+  long mday = lDay - (lDay / 100) * 100;
+  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+
+  ctNext = ctCurrent;
+  switch (ctCurrent.GetDayOfWeek()) {
+  case 2: // 星期一
+  ctNext -= s_7Day;
+  break;
+  case 3: // 星期二
+  ctNext -= s_1Day;
+  break;
+  case 4: // 星期三
+  ctNext -= s_2Day;
+  break;
+  case 5: // 星期四
+  ctNext -= s_3Day;
+  break;
+  case 6:
+  ctNext -= s_4Day;
+  break;
+  case 7: // 星期六
+  ctNext -= s_5Day;
+  break;
+  case 1: // 星期日
+  ctNext -= s_6Day;
+  break;
+  break;
+  default: // 不可能
+  break;
+  }
+  long lPrevMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+
+  return lPrevMonday;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

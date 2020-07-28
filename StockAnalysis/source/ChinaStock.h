@@ -452,7 +452,6 @@ public:
   bool CalculatingWeekLine(void);
   CWeekLinePtr CreateNewWeekLine(long& lCurrentDay);
   bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { m_vWeekLine.push_back(pWeekLine); return true; }
-  bool BuildWeekLineRS(void);
   bool IsWeekLineLoaded(void) noexcept { return m_fWeekLineLoaded; }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_fWeekLineLoaded = fFlag; }
   // 周线相对强度计算

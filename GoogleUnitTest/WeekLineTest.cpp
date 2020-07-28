@@ -759,7 +759,7 @@ namespace StockAnalysisTest {
     pDayLine->SetHigh(3030);
     pDayLine->SetLow(4040);
     pDayLine->SetLastClose(5050);
-
+    pDayLine->SetUpDown((double)(pDayLine->GetClose() - pDayLine->GetLastClose()) / 1000);
     pDayLine->SetVolume(1010101010101010);
     pDayLine->SetAmount(2020202020202020);
     pDayLine->SetCurrentValue(303030303030303);
@@ -845,6 +845,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetHigh(), pDayLine->GetHigh());
     EXPECT_EQ(weekLine.GetLow(), pDayLine->GetLow());
     EXPECT_EQ(weekLine.GetLastClose(), pDayLine->GetLastClose());
+    EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), pDayLine->GetUpDown());
 
     EXPECT_EQ(weekLine.GetVolume(), pDayLine->GetVolume());
     EXPECT_EQ(weekLine.GetAmount(), pDayLine->GetAmount());
@@ -918,6 +919,7 @@ namespace StockAnalysisTest {
     pDayLine1->SetHigh(3030);
     pDayLine1->SetLow(4040);
     pDayLine1->SetLastClose(5050);
+    pDayLine1->SetUpDown((double)(pDayLine1->GetClose() - pDayLine1->GetLastClose()) / 1000);
 
     pDayLine1->SetVolume(1010101010101010);
     pDayLine1->SetAmount(2020202020202020);
@@ -1009,6 +1011,7 @@ namespace StockAnalysisTest {
     pDayLine2->SetHigh(3030);
     pDayLine2->SetLow(4040);
     pDayLine2->SetLastClose(5050);
+    pDayLine2->SetUpDown((double)(pDayLine2->GetClose() - pDayLine2->GetLastClose()) / 1000);
 
     pDayLine2->SetVolume(1010101010101010);
     pDayLine2->SetAmount(2020202020202020);
@@ -1103,6 +1106,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetHigh(), pDayLine1->GetHigh() > pDayLine2->GetHigh() ? pDayLine1->GetHigh() : pDayLine2->GetHigh());
     EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
     EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
+    EXPECT_DOUBLE_EQ(weekLine.GetUpDown(), (double)(pDayLine2->GetClose() - pDayLine1->GetLastClose()) / 1000);
 
     EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
     EXPECT_EQ(weekLine.GetAmount(), pDayLine1->GetAmount() + pDayLine2->GetAmount());

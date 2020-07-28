@@ -261,9 +261,6 @@
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateDayLineRS.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -363,9 +360,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveCrweberDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadCalculateDayLineRSTest.cpp">
-      <Filter>Test源文件\China Stock Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="GuadanTest.cpp">
       <Filter>Test源文件\China Stock Market\实现类</Filter>
     </ClCompile>
@@ -460,6 +454,15 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadLoadWeekLine.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildDayLineRS.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLineRS.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp">
+      <Filter>Test源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

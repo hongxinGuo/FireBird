@@ -1899,6 +1899,11 @@ bool CChinaStock::SaveWeekLineBasicInfo() {
   return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 只存储有交易记录的扩展数据。对于没有信息的直接跨过。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveWeekLineExtendInfo() {
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
   size_t lSize = 0;
@@ -1915,7 +1920,7 @@ bool CChinaStock::SaveWeekLineExtendInfo() {
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) {
     pWeekLine = m_vWeekLine.at(i);
-    if (pWeekLine->GetTransactionNumber() > 0) { // 只存储有交易数据的记录。
+    if (pWeekLine->GetTransactionNumber() > 0) { // 只存储有交易记录的数据。
       pWeekLine->AppendData(&setWeekLineExtendInfo);
     }
   }
@@ -2043,6 +2048,12 @@ bool CChinaStock::IsTodayDataActive(void) {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// 判断股票数据是否有效。采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据
+// 不采用开盘价，因开盘价有可能不为零时，其他数据皆为零（停牌时即此状态）。
+//
+////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::IsTodayDataChanged(void) {
   if ((GetHigh() != 0) || (GetLow() != 0) || (GetAmount() != 0) || (GetVolume() != 0)) {
     return true;
@@ -2228,7 +2239,6 @@ CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
     }
   }
 
-  pWeekLine->SetUpDown(((double)pWeekLine->GetClose() - pWeekLine->GetOpen()) / 1000);
   if (pWeekLine->GetLastClose() > 0) {
     pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
   }
@@ -2237,10 +2247,6 @@ CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
   }
 
   return pWeekLine;
-}
-
-bool CChinaStock::BuildWeekLineRS(void) {
-  return true;
 }
 
 #ifdef _DEBUG

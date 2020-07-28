@@ -92,6 +92,23 @@ namespace StockAnalysisTest {
     EXPECT_EQ(20200720, GetNextMonday(20200719));
   }
 
+  TEST_F(AccessoryTest, TestGetPrevMonday) {
+    EXPECT_EQ(20200720, GetPrevMonday(20200721));
+    EXPECT_EQ(20200720, GetPrevMonday(20200722));
+    EXPECT_EQ(20200720, GetPrevMonday(20200723));
+    EXPECT_EQ(20200720, GetPrevMonday(20200724));
+    EXPECT_EQ(20200720, GetPrevMonday(20200725));
+    EXPECT_EQ(20200720, GetPrevMonday(20200726));
+    EXPECT_EQ(20200720, GetPrevMonday(20200727));
+    EXPECT_EQ(20200713, GetPrevMonday(20200714));
+    EXPECT_EQ(20200713, GetPrevMonday(20200715));
+    EXPECT_EQ(20200713, GetPrevMonday(20200716));
+    EXPECT_EQ(20200713, GetPrevMonday(20200717));
+    EXPECT_EQ(20200713, GetPrevMonday(20200718));
+    EXPECT_EQ(20200713, GetPrevMonday(20200719));
+    EXPECT_EQ(20200713, GetPrevMonday(20200720));
+  }
+
   TEST_F(AccessoryTest, TestFormatToTTime) {
     tm tm_;
     tm_.tm_year = 2000 - 1900;

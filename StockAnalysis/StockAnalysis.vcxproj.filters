@@ -338,9 +338,6 @@
     <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
-      <Filter>源文件\China Stock Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadLoadDayLine.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
@@ -459,6 +456,12 @@
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadLoadWeekLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadBuildWeekLineRS.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadBuildDayLineRS.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>

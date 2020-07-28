@@ -16,6 +16,10 @@ public:
   void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRelativeStrong = fFlag; }
   bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRelativeStrong; }
 
+  // 计算若干天日线相对强度与否和设置
+  void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRelativeStrong = fFlag; }
+  bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRelativeStrong; }
+
   // 实时数据需要计算与否和设置
   void SetRTDataNeedCalculate(bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
   bool IsRTDataNeedCalculate(void) noexcept { return m_RTDataNeedCalculate; }
@@ -49,6 +53,7 @@ public:
 
 protected:
   atomic_bool m_CalculatingDayLineRelativeStrong;
+  atomic_bool m_CalculatingWeekLineRelativeStrong;
   atomic_bool m_RTDataNeedCalculate;
   atomic_bool m_CalculatingRTData;
   atomic_bool m_SavingTempData;

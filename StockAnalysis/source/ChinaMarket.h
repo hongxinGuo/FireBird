@@ -91,7 +91,7 @@ public:
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
   virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
-  virtual bool RunningThreadBuildThisDayRS(long lThisDay);
+  virtual bool RunningThreadBuildDayLineRSOfDay(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
   virtual bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
@@ -107,6 +107,7 @@ public:
   virtual bool RunningThreadBuildWeekLine(void);
   virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadBuildWeekLineRS(void);
+  virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
   // interface function
 public:
   // ϵͳ״̬��
@@ -209,8 +210,9 @@ public:
   bool IsDayLineNeedSaving(void);
 
   virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
-  virtual bool BuildOneDayRelativeStrong(long lDay);
+  virtual bool BuildDayLineRSOfDay(long lDay);
   virtual bool BuildWeekLineRS(void);
+  virtual bool BuildWeekLineRSOfDay(long lDay);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
