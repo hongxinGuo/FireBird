@@ -325,11 +325,13 @@ public:
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
   //周线历史数据存取
-  bool CreateWeekLine(void);
-  bool SaveWeekLine();
+  virtual bool LoadWeekLine();
+  virtual bool SaveWeekLine();
   bool SaveWeekLineBasicInfo();
   bool SaveWeekLineExtendInfo();
-  bool LoadWeekLine();
+  bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+  bool BuildWeekLine(void);
 
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
@@ -444,9 +446,22 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 周线相关函数
+  size_t GetWeekLineSize(void) { return m_vWeekLine.size(); }
+  CWeekLinePtr GetWeekLine(long lIndex) { return m_vWeekLine.at(lIndex); }
+  void UnloadWeekLine(void) noexcept { m_vWeekLine.clear(); m_fWeekLineLoaded = false; }
   bool CalculatingWeekLine(void);
   CWeekLinePtr CreateNewWeekLine(long& lCurrentDay);
+  bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { m_vWeekLine.push_back(pWeekLine); return true; }
   bool BuildWeekLineRS(void);
+  bool IsWeekLineLoaded(void) noexcept { return m_fWeekLineLoaded; }
+  void SetWeekLineLoaded(bool fFlag) noexcept { m_fWeekLineLoaded = fFlag; }
+  // 周线相对强度计算
+  bool CalculateWeekLineRelativeStrong(void);
+  virtual bool CalculateWeekLineRS(INT64 lNumber);
+  bool CalculateWeekLineRelativeStrongIndex(void);
+  virtual bool CalculateWeekLineRSIndex(INT64 lNumber);
+  bool CalculateWeekLineRelativeStrongLogarithm(void);
+  virtual bool CalculateWeekLineRSLogarithm(INT64 lNumber);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -636,10 +651,12 @@ protected:
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
   atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
+  atomic_bool m_fWeekLineLoaded; // 是否装入了周线数据
 
   bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
 private:
   bool m_fLoadDayLineFirst; // 测试用。装入时，DayLineBasicInfo表要先于DayLineExtendInfo表
+  bool m_fLoadWeekLineFirst; // 测试用。装入时，WeekLineBasicInfo表要先于WeekLineExtendInfo表
 };

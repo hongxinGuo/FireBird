@@ -11,10 +11,15 @@ namespace testing {
     MOCK_METHOD(bool, CalculateDayLineRS, (INT64 lNumber), (override));
     MOCK_METHOD(bool, CalculateDayLineRSLogarithm, (INT64 lNumber), (override));
     MOCK_METHOD(bool, CalculateDayLineRSIndex, (INT64 lNumber), (override));
+    MOCK_METHOD(bool, CalculateWeekLineRS, (INT64 lNumber), (override));
+    MOCK_METHOD(bool, CalculateWeekLineRSLogarithm, (INT64 lNumber), (override));
+    MOCK_METHOD(bool, CalculateWeekLineRSIndex, (INT64 lNumber), (override));
     MOCK_METHOD(void, ReportGuadanTransaction, (), (override));
     MOCK_METHOD(void, ReportGuadan, (), (override));
     MOCK_METHOD(bool, SaveDayLine, (), (override));
     MOCK_METHOD(bool, LoadDayLine, (), (override));
+    MOCK_METHOD(bool, SaveWeekLine, (), (override));
+    MOCK_METHOD(bool, LoadWeekLine, (), (override));
   };
 
   typedef shared_ptr<CMockChinaStock> CMockChinaStockPtr;

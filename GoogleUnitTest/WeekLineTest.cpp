@@ -765,12 +765,12 @@ namespace StockAnalysisTest {
     pDayLine->SetCurrentValue(303030303030303);
     pDayLine->SetTotalValue(4040404040404040);
 
-    pDayLine->SetOrdinaryBuyVolume(10101010100);
-    pDayLine->SetAttackBuyVolume(10301010100);
-    pDayLine->SetStrongBuyVolume(10451010100);
-    pDayLine->SetOrdinarySellVolume(13501010100);
-    pDayLine->SetAttackSellVolume(10456010100);
-    pDayLine->SetStrongSellVolume(10567010100);
+    pDayLine->SetOrdinaryBuyVolume(101010100);
+    pDayLine->SetAttackBuyVolume(103010100);
+    pDayLine->SetStrongBuyVolume(11010100);
+    pDayLine->SetOrdinarySellVolume(13500100);
+    pDayLine->SetAttackSellVolume(10450100);
+    pDayLine->SetStrongSellVolume(105670100);
     pDayLine->SetUnknownVolume(13510100);
     pDayLine->SetCanceledBuyVolume(1034610100);
     pDayLine->SetCanceledSellVolume(105010100);
@@ -844,7 +844,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
     EXPECT_EQ(weekLine.GetHigh(), pDayLine->GetHigh());
     EXPECT_EQ(weekLine.GetLow(), pDayLine->GetLow());
-    EXPECT_EQ(weekLine.GetLastClose(), 0);
+    EXPECT_EQ(weekLine.GetLastClose(), pDayLine->GetLastClose());
 
     EXPECT_EQ(weekLine.GetVolume(), pDayLine->GetVolume());
     EXPECT_EQ(weekLine.GetAmount(), pDayLine->GetAmount());
@@ -866,6 +866,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetTransactionNumberBelow50000(), pDayLine->GetTransactionNumberBelow50000());
     EXPECT_EQ(weekLine.GetTransactionNumberBelow200000(), pDayLine->GetTransactionNumberBelow200000());
     EXPECT_EQ(weekLine.GetTransactionNumberAbove200000(), pDayLine->GetTransactionNumberAbove200000());
+
+    EXPECT_EQ(weekLine.GetAttackBuyBelow50000(), pDayLine->GetAttackBuyBelow50000());
+    EXPECT_EQ(weekLine.GetAttackBuyBelow200000(), pDayLine->GetAttackBuyBelow200000());
+    EXPECT_EQ(weekLine.GetAttackBuyAbove200000(), pDayLine->GetAttackBuyAbove200000());
+    EXPECT_EQ(weekLine.GetAttackSellBelow50000(), pDayLine->GetAttackSellBelow50000());
+    EXPECT_EQ(weekLine.GetAttackSellBelow200000(), pDayLine->GetAttackSellBelow200000());
+    EXPECT_EQ(weekLine.GetAttackSellAbove200000(), pDayLine->GetAttackSellAbove200000());
 
     EXPECT_EQ(weekLine.GetOrdinaryBuyNumberBelow5000(), pDayLine->GetOrdinaryBuyNumberBelow5000());
     EXPECT_EQ(weekLine.GetOrdinaryBuyNumberBelow10000(), pDayLine->GetOrdinaryBuyNumberBelow10000());
@@ -917,12 +924,12 @@ namespace StockAnalysisTest {
     pDayLine1->SetCurrentValue(303030303030303);
     pDayLine1->SetTotalValue(4040404040404040);
 
-    pDayLine1->SetOrdinaryBuyVolume(10101010100);
-    pDayLine1->SetAttackBuyVolume(10301010100);
-    pDayLine1->SetStrongBuyVolume(10451010100);
-    pDayLine1->SetOrdinarySellVolume(13501010100);
-    pDayLine1->SetAttackSellVolume(10456010100);
-    pDayLine1->SetStrongSellVolume(10567010100);
+    pDayLine1->SetOrdinaryBuyVolume(10101000);
+    pDayLine1->SetAttackBuyVolume(103010100);
+    pDayLine1->SetStrongBuyVolume(10451100);
+    pDayLine1->SetOrdinarySellVolume(13501100);
+    pDayLine1->SetAttackSellVolume(10456000);
+    pDayLine1->SetStrongSellVolume(10510100);
     pDayLine1->SetUnknownVolume(13510100);
     pDayLine1->SetCanceledBuyVolume(1034610100);
     pDayLine1->SetCanceledSellVolume(105010100);
@@ -1008,12 +1015,12 @@ namespace StockAnalysisTest {
     pDayLine2->SetCurrentValue(303030303030303);
     pDayLine2->SetTotalValue(4040404040404040);
 
-    pDayLine2->SetOrdinaryBuyVolume(10101010100);
-    pDayLine2->SetAttackBuyVolume(10301010100);
-    pDayLine2->SetStrongBuyVolume(10451010100);
-    pDayLine2->SetOrdinarySellVolume(13501010100);
-    pDayLine2->SetAttackSellVolume(10456010100);
-    pDayLine2->SetStrongSellVolume(10567010100);
+    pDayLine2->SetOrdinaryBuyVolume(101010100);
+    pDayLine2->SetAttackBuyVolume(10301000);
+    pDayLine2->SetStrongBuyVolume(104510100);
+    pDayLine2->SetOrdinarySellVolume(135010100);
+    pDayLine2->SetAttackSellVolume(104560100);
+    pDayLine2->SetStrongSellVolume(10510100);
     pDayLine2->SetUnknownVolume(13510100);
     pDayLine2->SetCanceledBuyVolume(1034610100);
     pDayLine2->SetCanceledSellVolume(105010100);
@@ -1095,7 +1102,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetClose(), pDayLine2->GetClose());
     EXPECT_EQ(weekLine.GetHigh(), pDayLine1->GetHigh() > pDayLine2->GetHigh() ? pDayLine1->GetHigh() : pDayLine2->GetHigh());
     EXPECT_EQ(weekLine.GetLow(), pDayLine1->GetLow() < pDayLine2->GetLow() ? pDayLine1->GetLow() : pDayLine2->GetLow());
-    EXPECT_EQ(weekLine.GetLastClose(), 0);
+    EXPECT_EQ(weekLine.GetLastClose(), pDayLine1->GetLastClose());
 
     EXPECT_EQ(weekLine.GetVolume(), pDayLine1->GetVolume() + pDayLine2->GetVolume());
     EXPECT_EQ(weekLine.GetAmount(), pDayLine1->GetAmount() + pDayLine2->GetAmount());
@@ -1117,6 +1124,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(weekLine.GetTransactionNumberBelow50000(), pDayLine1->GetTransactionNumberBelow50000() + pDayLine2->GetTransactionNumberBelow50000());
     EXPECT_EQ(weekLine.GetTransactionNumberBelow200000(), pDayLine1->GetTransactionNumberBelow200000() + pDayLine2->GetTransactionNumberBelow200000());
     EXPECT_EQ(weekLine.GetTransactionNumberAbove200000(), pDayLine1->GetTransactionNumberAbove200000() + pDayLine2->GetTransactionNumberAbove200000());
+
+    EXPECT_EQ(weekLine.GetAttackBuyBelow50000(), pDayLine1->GetAttackBuyBelow50000() + pDayLine2->GetAttackBuyBelow50000());
+    EXPECT_EQ(weekLine.GetAttackBuyBelow200000(), pDayLine1->GetAttackBuyBelow200000() + pDayLine2->GetAttackBuyBelow200000());
+    EXPECT_EQ(weekLine.GetAttackBuyAbove200000(), pDayLine1->GetAttackBuyAbove200000() + pDayLine2->GetAttackBuyAbove200000());
+    EXPECT_EQ(weekLine.GetAttackSellBelow50000(), pDayLine1->GetAttackSellBelow50000() + pDayLine2->GetAttackSellBelow50000());
+    EXPECT_EQ(weekLine.GetAttackSellBelow200000(), pDayLine1->GetAttackSellBelow200000() + pDayLine2->GetAttackSellBelow200000());
+    EXPECT_EQ(weekLine.GetAttackSellAbove200000(), pDayLine1->GetAttackSellAbove200000() + pDayLine2->GetAttackSellAbove200000());
 
     EXPECT_EQ(weekLine.GetOrdinaryBuyNumberBelow5000(), pDayLine1->GetOrdinaryBuyNumberBelow5000() + pDayLine2->GetOrdinaryBuyNumberBelow5000());
     EXPECT_EQ(weekLine.GetOrdinaryBuyNumberBelow10000(), pDayLine1->GetOrdinaryBuyNumberBelow10000() + pDayLine2->GetOrdinaryBuyNumberBelow10000());

@@ -827,6 +827,138 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
   return true;
 }
 
+bool CChinaStock::CalculateWeekLineRelativeStrong(void) {
+  CalculateWeekLineRS(3);
+  CalculateWeekLineRS(5);
+  CalculateWeekLineRS(10);
+  CalculateWeekLineRS(30);
+  CalculateWeekLineRS(60);
+  CalculateWeekLineRS(120);
+  return true;
+}
+
+bool CChinaStock::CalculateWeekLineRelativeStrongLogarithm(void) {
+  CalculateWeekLineRSLogarithm(3);
+  CalculateWeekLineRSLogarithm(5);
+  CalculateWeekLineRSLogarithm(10);
+  CalculateWeekLineRSLogarithm(30);
+  CalculateWeekLineRSLogarithm(60);
+  CalculateWeekLineRSLogarithm(120);
+  return true;
+}
+
+bool CChinaStock::CalculateWeekLineRelativeStrongIndex(void) {
+  CalculateWeekLineRSIndex(3);
+  CalculateWeekLineRSIndex(5);
+  CalculateWeekLineRSIndex(10);
+  CalculateWeekLineRSIndex(30);
+  CalculateWeekLineRSIndex(60);
+  CalculateWeekLineRSIndex(120);
+  return true;
+}
+
+bool CChinaStock::CalculateWeekLineRSLogarithm(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vWeekLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vWeekLine.at(j)->GetRelativeStrongLogarithm();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vWeekLine.at(i)->m_d3RS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vWeekLine.at(i)->m_d5RS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vWeekLine.at(i)->m_d10RS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vWeekLine.at(i)->m_d30RS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vWeekLine.at(i)->m_d60RS = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vWeekLine.at(i)->m_d120RS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return true;
+}
+
+bool CChinaStock::CalculateWeekLineRS(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vWeekLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vWeekLine.at(j)->GetRelativeStrong();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vWeekLine.at(i)->m_d3RS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vWeekLine.at(i)->m_d5RS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vWeekLine.at(i)->m_d10RS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vWeekLine.at(i)->m_d30RS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vWeekLine.at(i)->m_d60RS = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vWeekLine.at(i)->m_d120RS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return true;
+}
+
+bool CChinaStock::CalculateWeekLineRSIndex(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vWeekLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vWeekLine.at(j)->GetRelativeStrongIndex();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vWeekLine.at(i)->m_d3RS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vWeekLine.at(i)->m_d5RS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vWeekLine.at(i)->m_d10RS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vWeekLine.at(i)->m_d30RS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vWeekLine.at(i)->m_d60RS = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vWeekLine.at(i)->m_d120RS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return true;
+}
+
 bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_vRS10Day;
@@ -1720,7 +1852,7 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
   }
 }
 
-bool CChinaStock::CreateWeekLine(void) {
+bool CChinaStock::BuildWeekLine(void) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
     LoadDayLine();
@@ -1794,6 +1926,67 @@ bool CChinaStock::SaveWeekLineExtendInfo() {
 }
 
 bool CChinaStock::LoadWeekLine() {
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+
+  // 装入WeekLine数据
+  setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineBasicInfo.m_strFilter += GetStockCode();
+  setWeekLineBasicInfo.m_strFilter += _T("'");
+  setWeekLineBasicInfo.m_strSort = _T("[Day]");
+  setWeekLineBasicInfo.Open();
+  LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
+  setWeekLineBasicInfo.Close();
+
+  // 装入WeekLineInfo数据
+  setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineExtendInfo.m_strFilter += GetStockCode();
+  setWeekLineExtendInfo.m_strFilter += _T("'");
+  setWeekLineExtendInfo.m_strSort = _T("[Day]");
+  setWeekLineExtendInfo.Open();
+  LoadWeekLineExtendInfo(&setWeekLineExtendInfo);
+  setWeekLineExtendInfo.Close();
+
+  m_fWeekLineLoaded = true;
+  return true;
+}
+
+bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
+  CWeekLinePtr pWeekLine;
+
+  if (gl_fNormalMode) ASSERT(!m_fLoadWeekLineFirst);
+  // 装入WeekLine数据
+  m_vWeekLine.clear();
+  while (!psetWeekLineBasicInfo->IsEOF()) {
+    pWeekLine = make_shared<CWeekLine>();
+    pWeekLine->LoadBasicData(psetWeekLineBasicInfo);
+    m_vWeekLine.push_back(pWeekLine);
+    psetWeekLineBasicInfo->MoveNext();
+  }
+  m_fLoadWeekLineFirst = true;
+  return true;
+}
+
+bool CChinaStock::LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
+  CWeekLinePtr pWeekLine;
+  int iPosition = 0;
+
+  if (gl_fNormalMode) ASSERT(m_fLoadWeekLineFirst);
+
+  while (!psetWeekLineExtendInfo->IsEOF()) {
+    pWeekLine = m_vWeekLine.at(iPosition);
+    while ((pWeekLine->GetFormatedMarketDay() < psetWeekLineExtendInfo->m_Day)
+           && (m_vWeekLine.size() > (iPosition + 1))) {
+      iPosition++;
+      pWeekLine = m_vWeekLine.at(iPosition);
+    }
+    if (pWeekLine->GetFormatedMarketDay() == psetWeekLineExtendInfo->m_Day) {
+      pWeekLine->LoadExtendData(psetWeekLineExtendInfo);
+    }
+    if (m_vWeekLine.size() <= (iPosition + 1)) break;
+    psetWeekLineExtendInfo->MoveNext();
+  }
+  m_fLoadWeekLineFirst = false;
   return true;
 }
 
@@ -2008,7 +2201,6 @@ bool CChinaStock::CalculatingWeekLine(void) {
   ASSERT(IsDayLineLoaded());
   ASSERT(m_vDayLine.size() > 0);
   long i = 0;
-  long lCurrentPos = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   m_vWeekLine.clear();
@@ -2016,10 +2208,6 @@ bool CChinaStock::CalculatingWeekLine(void) {
     pWeekLine = CreateNewWeekLine(i);
     m_vWeekLine.push_back(pWeekLine);
   } while (i < m_vDayLine.size());
-
-  for (int j = m_vWeekLine.size() - 1; j > 0; j--) {
-    m_vWeekLine.at(j)->SetLastClose(m_vWeekLine.at(j - 1)->GetClose());
-  }
 
   return true;
 }
@@ -2038,6 +2226,14 @@ CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
     while (lCurrentDayLinePos <= (m_vDayLine.size() - 1)) {
       pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos++));
     }
+  }
+
+  pWeekLine->SetUpDown(((double)pWeekLine->GetClose() - pWeekLine->GetOpen()) / 1000);
+  if (pWeekLine->GetLastClose() > 0) {
+    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
+  }
+  else {
+    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen());
   }
 
   return pWeekLine;

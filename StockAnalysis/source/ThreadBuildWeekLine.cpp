@@ -7,11 +7,11 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadCreateWeekLine(CChinaMarket* pMarket) {
+UINT ThreadBuildWeekLine(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCreateWeekLine(true);
 
-  pMarket->CreateWeekLine();
+  pMarket->BuildWeekLine();
 
   gl_ThreadStatus.SetCreateWeekLine(false);
   gl_ThreadStatus.DecreaseRunningThread();
@@ -19,11 +19,11 @@ UINT ThreadCreateWeekLine(CChinaMarket* pMarket) {
   return 25;
 }
 
-UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
+UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
-  if (!gl_fExitingSystem) pStock->CreateWeekLine();
+  if (!gl_fExitingSystem) pStock->BuildWeekLine();
 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
   gl_SemaphoreBackGroundTaskThreads.Signal();

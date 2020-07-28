@@ -104,8 +104,8 @@ public:
   virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
   virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
   virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
-  virtual bool RunningThreadCreateWeekLine(void);
-  virtual bool RunningThreadCreateWeekLineOfStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadBuildWeekLine(void);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadBuildWeekLineRS(void);
   // interface function
 public:
@@ -198,7 +198,7 @@ public:
 
   bool UnloadDayLine(void);
 
-  bool CreateWeekLine(void);
+  bool BuildWeekLine(void);
 
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）

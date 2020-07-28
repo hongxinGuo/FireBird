@@ -105,10 +105,11 @@
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadCalculateDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadCreateWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp" />

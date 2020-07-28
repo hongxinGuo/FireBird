@@ -807,7 +807,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCreateWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadCreateWeekLine();
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine();
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {

@@ -2027,5 +2027,142 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.CalculateDayLineRSIndex(3));
   }
 
+  TEST_F(CChinaStockTest, TestSaveWeekLine) {
+    CSetWeekLineBasicInfo setWeekLineBasicInfo;
+    CWeekLinePtr pid;
+    CWeekLine stock;
+    pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketDay(20190101);
+
+    for (int i = 0; i < 10; i++) {
+      pid = make_shared<CWeekLine>();
+      pid->SetDay(21101201);
+      pid->SetMarket(__SHANGHAI_MARKET__);
+      pid->SetStockCode(_T("sh600016"));
+      pid->SetStockName(_T("首创股份"));
+      pid->SetLastClose(34235345);
+      pid->SetOpen(1000000 + i);
+      pid->SetHigh(45234543);
+      pid->SetLow(3452345);
+      pid->SetClose(452435);
+      pid->SetVolume(34523454);
+      pid->SetAmount(3245235345);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDownRate(123.45);
+      pid->SetTotalValue(234523452345);
+      pid->SetCurrentValue(234145345245);
+      pid->SetChangeHandRate(54.321);
+      pid->SetRelativeStrong(14.5);
+      pStock->StoreWeekLine(pid);
+    }
+    pStock->SetStockCode(_T("sh600016"));
+    ASSERT(!gl_fNormalMode);
+    pStock->SaveWeekLine();
+
+    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.Open();
+    for (int i = 0; i < 10; i++) {
+      stock.LoadBasicData(&setWeekLineBasicInfo);
+      pid = pStock->GetWeekLine(i);
+      EXPECT_EQ(setWeekLineBasicInfo.m_Day, pid->GetFormatedMarketDay());
+      EXPECT_EQ(setWeekLineBasicInfo.m_Market, pid->GetMarket());
+      EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, pid->GetStockCode());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, pid->GetOpen());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, pid->GetHigh());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Low) * 1000, pid->GetLow());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Close) * 1000, pid->GetClose());
+      EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Volume), pid->GetVolume());
+      EXPECT_EQ(atoll(setWeekLineBasicInfo.m_Amount), pid->GetAmount());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpAndDown), pid->GetUpDown());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_UpDownRate), pid->GetUpDownRate());
+      EXPECT_EQ(atoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
+      EXPECT_EQ(atoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrong), pid->GetRelativeStrong());
+      setWeekLineBasicInfo.MoveNext();
+    }
+    setWeekLineBasicInfo.Close();
+
+    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.Open();
+    setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setWeekLineBasicInfo.IsEOF()) {
+      setWeekLineBasicInfo.Delete();
+      setWeekLineBasicInfo.MoveNext();
+    }
+    setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+    setWeekLineBasicInfo.Close();
+  }
+
+  TEST_F(CChinaStockTest, TestLoadWeekLine) {
+    CSetWeekLineBasicInfo setWeekLineBasicInfo;
+    CWeekLinePtr pid;
+    CWeekLinePtr pWeekLine = nullptr;
+    CChinaStock stock;
+
+    pStock = gl_pChinaStockMarket->GetStock(_T("sh600010"));
+
+    for (int i = 0; i < 10; i++) {
+      pid = make_shared<CWeekLine>();
+      pid->SetDay(21101201);
+      pid->SetMarket(__SHANGHAI_MARKET__);
+      pid->SetStockCode(_T("sh600010"));
+      pid->SetStockName(_T("首创股份"));
+      pid->SetLastClose(34235345);
+      pid->SetOpen(1000000 + i);
+      pid->SetHigh(45234543);
+      pid->SetLow(3452345);
+      pid->SetClose(452435);
+      pid->SetVolume(34523454);
+      pid->SetAmount(3245235345);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDownRate(123.45);
+      pid->SetTotalValue(234523452345);
+      pid->SetCurrentValue(234145345245);
+      pid->SetChangeHandRate(54.321);
+      pid->SetRelativeStrong(14.5);
+      pStock->StoreWeekLine(pid);
+    }
+    pStock->SetStockCode(_T("sh600010"));
+    ASSERT(!gl_fNormalMode);
+    pStock->SaveWeekLine();
+
+    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.Open();
+    stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
+    for (int i = 0; i < 10; i++) {
+      pid = stock.GetWeekLine(i);
+      pWeekLine = pStock->GetWeekLine(i);
+      EXPECT_EQ(pWeekLine->GetFormatedMarketDay(), pid->GetFormatedMarketDay());
+      EXPECT_EQ(pWeekLine->GetMarket(), pid->GetMarket());
+      EXPECT_STREQ(pWeekLine->GetStockCode(), pid->GetStockCode());
+      EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
+      EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
+      EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());
+      EXPECT_EQ(pWeekLine->GetLow(), pid->GetLow());
+      EXPECT_EQ(pWeekLine->GetClose(), pid->GetClose());
+      EXPECT_EQ(pWeekLine->GetVolume(), pid->GetVolume());
+      EXPECT_EQ(pWeekLine->GetAmount(), pid->GetAmount());
+      EXPECT_DOUBLE_EQ(pWeekLine->GetUpDown(), pid->GetUpDown());
+      EXPECT_DOUBLE_EQ(pWeekLine->GetUpDownRate(), pid->GetUpDownRate());
+      EXPECT_EQ(pWeekLine->GetTotalValue(), pid->GetTotalValue());
+      EXPECT_EQ(pWeekLine->GetCurrentValue(), pid->GetCurrentValue());
+      EXPECT_DOUBLE_EQ(pWeekLine->GetChangeHandRate(), pid->GetChangeHandRate());
+      EXPECT_DOUBLE_EQ(pWeekLine->GetRelativeStrong(), pid->GetRelativeStrong());
+    }
+    setWeekLineBasicInfo.Close();
+
+    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.Open();
+    setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+    while (!setWeekLineBasicInfo.IsEOF()) {
+      setWeekLineBasicInfo.Delete();
+      setWeekLineBasicInfo.MoveNext();
+    }
+    setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+    setWeekLineBasicInfo.Close();
+  }
+
   //TEST_F_TRAITS();
 }

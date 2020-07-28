@@ -1783,10 +1783,10 @@ bool CChinaMarket::UnloadDayLine(void) {
   return true;
 }
 
-bool CChinaMarket::CreateWeekLine(void) {
+bool CChinaMarket::BuildWeekLine(void) {
   gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
   for (auto pStock : m_vChinaMarketStock) {
-    RunningThreadCreateWeekLineOfStock(pStock);
+    RunningThreadBuildWeekLineOfStock(pStock);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     Sleep(1000);
@@ -2113,15 +2113,15 @@ bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>
   return false;
 }
 
-bool CChinaMarket::RunningThreadCreateWeekLine(void) {
-  thread thread1(ThreadCreateWeekLine, this);
+bool CChinaMarket::RunningThreadBuildWeekLine(void) {
+  thread thread1(ThreadBuildWeekLine, this);
   thread1.detach();
 
   return true;
 }
 
-bool CChinaMarket::RunningThreadCreateWeekLineOfStock(CChinaStockPtr pStock) {
-  thread thread1(ThreadCreateWeekLineOfStock, pStock);
+bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock) {
+  thread thread1(ThreadBuildWeekLineOfStock, pStock);
   thread1.detach();
 
   return true;

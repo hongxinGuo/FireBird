@@ -329,7 +329,8 @@
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp" />
-    <ClCompile Include="source\ThreadCreateWeekLine.cpp" />
+    <ClCompile Include="source\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="source\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="source\ThreadCalculateDayLineRS.cpp" />
     <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp" />

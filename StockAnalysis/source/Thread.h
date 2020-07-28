@@ -65,13 +65,15 @@ UINT ThreadSaveCrweberDB(CCrweberIndexMarket* pMarket, CCrweberIndexPtr pCrweber
 // 整理Crweber数据库
 UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket); // 此线程返回值为24
 // 生成周线历史数据
-UINT ThreadCreateWeekLine(CChinaMarket* pMarket); // 此线程的返回值为25
+UINT ThreadBuildWeekLine(CChinaMarket* pMarket); // 此线程的返回值为25
 // 生成股票的周线历史数据
-UINT ThreadCreateWeekLineOfStock(CChinaStockPtr pStock); /// 此线程的返回值为26
+UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock); /// 此线程的返回值为26
 // 重新生成周线相对强度数据
 UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket); // 此线程的返回值为27
 // 生成股票的相对强队数据
 UINT ThreadBuildWeekLineRSOfStock(CChinaStockPtr pStock); // 此线程的返回值为28
+// 从数据库读取周线历史数据
+UINT ThreadLoadWeekLine(CChinaStockPtr pStock); // 此线程返回值为29
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

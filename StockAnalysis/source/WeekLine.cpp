@@ -257,16 +257,18 @@ bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
   if (m_strStockName == _T("")) m_strStockName = pDayLine->GetStockName();
 
   if (m_lOpen == 0) m_lOpen = pDayLine->GetOpen();
+  if (m_lLastClose == 0) m_lLastClose = pDayLine->GetLastClose();
+  m_lClose = pDayLine->GetClose();
   if (m_lHigh == 0) m_lHigh = pDayLine->GetHigh();
   else m_lHigh = m_lHigh > pDayLine->GetHigh() ? m_lHigh : pDayLine->GetHigh();
   if (m_lLow == 0) m_lLow = pDayLine->GetLow();
   else m_lLow = m_lLow < pDayLine->GetLow() ? m_lLow : pDayLine->GetLow();
-  m_lClose = pDayLine->GetClose();
 
   m_llVolume += pDayLine->GetVolume();
   m_llAmount += pDayLine->GetAmount();
   m_llTotalValue = pDayLine->GetTotalValue();
   m_llCurrentValue = pDayLine->GetCurrentValue();
+  m_dChangeHandRate += pDayLine->GetChangeHandRate();
 
   m_lOrdinaryBuyVolume += pDayLine->GetOrdinaryBuyVolume();
   m_lAttackBuyVolume += pDayLine->GetAttackBuyVolume();
@@ -283,6 +285,13 @@ bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
   m_lTransactionNumberBelow50000 += pDayLine->GetTransactionNumberBelow50000();
   m_lTransactionNumberBelow200000 += pDayLine->GetTransactionNumberBelow200000();
   m_lTransactionNumberAbove200000 += pDayLine->GetTransactionNumberAbove200000();
+
+  m_lAttackBuyBelow50000 += pDayLine->GetAttackBuyBelow50000();
+  m_lAttackBuyBelow200000 += pDayLine->GetAttackBuyBelow200000();
+  m_lAttackBuyAbove200000 += pDayLine->GetAttackBuyAbove200000();
+  m_lAttackSellBelow50000 += pDayLine->GetAttackSellBelow50000();
+  m_lAttackSellBelow200000 += pDayLine->GetAttackSellBelow200000();
+  m_lAttackSellAbove200000 += pDayLine->GetAttackSellAbove200000();
 
   m_lOrdinaryBuyNumberBelow5000 += pDayLine->GetOrdinaryBuyNumberBelow5000();
   m_lOrdinaryBuyNumberBelow10000 += pDayLine->GetOrdinaryBuyNumberBelow10000();
