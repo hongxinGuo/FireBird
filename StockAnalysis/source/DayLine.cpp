@@ -9,33 +9,6 @@ CDayLine::CDayLine() : CChinaStockHistoryData() {
 
 void CDayLine::Reset(void) {
   CChinaStockHistoryData::Reset();
-
-  m_psetDayLineBasicInfo = nullptr;
-  m_psetDayLineExtendInfo = nullptr;
-}
-
-bool CDayLine::SaveData(void) {
-  ASSERT(m_psetDayLineBasicInfo != nullptr);
-  ASSERT(m_psetDayLineBasicInfo->IsOpen());
-  return SaveData(m_psetDayLineBasicInfo);
-}
-
-bool CDayLine::AppendData(void) {
-  ASSERT(m_psetDayLineBasicInfo != nullptr);
-  ASSERT(m_psetDayLineBasicInfo->IsOpen());
-  return(AppendData(m_psetDayLineBasicInfo));
-}
-
-bool CDayLine::LoadBasicData(void) {
-  ASSERT(m_psetDayLineBasicInfo != nullptr);
-  ASSERT(m_psetDayLineBasicInfo->IsOpen());
-  return(LoadBasicData(m_psetDayLineBasicInfo));
-}
-
-bool CDayLine::LoadExtendData(void) {
-  ASSERT(m_psetDayLineExtendInfo != nullptr);
-  ASSERT(m_psetDayLineExtendInfo->IsOpen());
-  return(LoadExtendData(m_psetDayLineExtendInfo));
 }
 
 bool CDayLine::LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo) {

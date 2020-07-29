@@ -140,6 +140,7 @@
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
+    <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />

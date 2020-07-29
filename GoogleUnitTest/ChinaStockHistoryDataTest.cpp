@@ -562,24 +562,4 @@ namespace StockAnalysisTest {
     dl.Set120RS(10);
     EXPECT_EQ(dl.Get120RS(), 10);
   }
-
-  TEST_F(CChinaStockHistoryDataTest, TestSaveData) {
-    CChinaStockHistoryData id;
-    EXPECT_TRUE(id.SaveData());
-  }
-
-  TEST_F(CChinaStockHistoryDataTest, TestAppendData) {
-    CChinaStockHistoryData id;
-    EXPECT_TRUE(id.AppendData());
-  }
-
-  TEST_F(CChinaStockHistoryDataTest, TestLoadBasicData) {
-    CChinaStockHistoryData id;
-    EXPECT_TRUE(id.LoadBasicData());
-  }
-
-  TEST_F(CChinaStockHistoryDataTest, TestLoadExtendData) {
-    CChinaStockHistoryData id;
-    EXPECT_TRUE(id.LoadExtendData());
-  }
 }

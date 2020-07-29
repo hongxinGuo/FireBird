@@ -14,21 +14,10 @@ public:
   CDayLine();
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  virtual bool SaveData(void);
-  virtual bool AppendData(void);
-  virtual bool LoadBasicData(void);
-  virtual bool LoadExtendData(void);
-
   bool SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo);
-  void SetDayLineBasicInfoSet(CSetDayLineBasicInfo* psetDayLineBasicInfo) noexcept { m_psetDayLineBasicInfo = psetDayLineBasicInfo; }
-  CSetDayLineBasicInfo* GetDayLineBasicInfoSet(void) noexcept { return m_psetDayLineBasicInfo; }
-  void ClearDayLineBasicInfoSet(void) noexcept { m_psetDayLineBasicInfo = nullptr; }
-  void SetDayLineExtendInfoSet(CSetDayLineExtendInfo* psetDayLineExtendInfo) noexcept { m_psetDayLineExtendInfo = psetDayLineExtendInfo; }
-  CSetDayLineExtendInfo* GetDayLineExtendInfoSet(void) noexcept { return m_psetDayLineExtendInfo; }
-  void ClearDayLineExtendInfoSet(void) noexcept { m_psetDayLineExtendInfo = nullptr; }
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool IsActive(void);
@@ -48,10 +37,6 @@ public:
   double Get120DayRS(void) noexcept { return Get120RS(); }
 
 private:
-
-protected:
-  CSetDayLineBasicInfo* m_psetDayLineBasicInfo;
-  CSetDayLineExtendInfo* m_psetDayLineExtendInfo;
 };
 
 typedef shared_ptr<CDayLine> CDayLinePtr;

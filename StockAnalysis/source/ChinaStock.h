@@ -312,7 +312,7 @@ public:
   // 数据库的提取和存储
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
   virtual bool LoadDayLine(void); // 此函数加载
-  virtual bool SaveDayLine(void); // 存储日线历史数据
+  virtual bool SaveDayLineBasicInfo(void); // 存储日线历史数据
   bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
   void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据

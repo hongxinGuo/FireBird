@@ -45,7 +45,7 @@ UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
 UINT ThreadProcessTodayStock(CChinaMarket* pMarket);     // 此工作线程返回值为14
 // 存储一个股票的日线历史数据。
-UINT ThreadSaveDayLineOfOneStock(CChinaStockPtr pStock); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
+UINT ThreadSaveDayLineBasicInfoOfOneStock(CChinaStockPtr pStock); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
 // 从数据库中读取日线历史数据线程
 UINT ThreadLoadDayLine(CChinaStockPtr pStock);        // 此工作线程返回值为16
 // 维护日线数据库线程（尚未实现）

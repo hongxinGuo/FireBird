@@ -464,9 +464,10 @@ void CChinaStock::UpdateStatus(CRTDataPtr pRTData) {
 //
 //	将日线历史数据存入数据库．默认数据库为空。
 //  此函数被工作线程调用，需要注意数据同步问题。
+// 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::SaveDayLine(void) {
+bool CChinaStock::SaveDayLineBasicInfo(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;

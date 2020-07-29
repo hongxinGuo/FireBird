@@ -1324,7 +1324,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(21890101);
     pStock->SetStockCode(_T("sh600011"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLine();
+    pStock->SaveDayLineBasicInfo();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21900101);
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
 
@@ -1549,7 +1549,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(10190101);
     pStock->SetStockCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLine();
+    pStock->SaveDayLineBasicInfo();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
 
@@ -1621,7 +1621,7 @@ namespace StockAnalysisTest {
     pStock->SetStockCode(_T("sh600010"));
     pStock->SetDayLineEndDay(10190101);
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLine();
+    pStock->SaveDayLineBasicInfo();
     EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");

@@ -9,33 +9,6 @@ CWeekLine::CWeekLine() : CChinaStockHistoryData() {
 
 void CWeekLine::Reset(void) {
   CChinaStockHistoryData::Reset();
-
-  m_psetWeekLineBasicInfo = nullptr;
-  m_psetWeekLineExtendInfo = nullptr;
-}
-
-bool CWeekLine::SaveData(void) {
-  ASSERT(m_psetWeekLineBasicInfo != nullptr);
-  ASSERT(m_psetWeekLineBasicInfo->IsOpen());
-  return SaveData(m_psetWeekLineBasicInfo);
-}
-
-bool CWeekLine::AppendData(void) {
-  ASSERT(m_psetWeekLineBasicInfo != nullptr);
-  ASSERT(m_psetWeekLineBasicInfo->IsOpen());
-  return(AppendData(m_psetWeekLineBasicInfo));
-}
-
-bool CWeekLine::LoadBasicData(void) {
-  ASSERT(m_psetWeekLineBasicInfo != nullptr);
-  ASSERT(m_psetWeekLineBasicInfo->IsOpen());
-  return(LoadBasicData(m_psetWeekLineBasicInfo));
-}
-
-bool CWeekLine::LoadExtendData(void) {
-  ASSERT(m_psetWeekLineExtendInfo != nullptr);
-  ASSERT(m_psetWeekLineExtendInfo->IsOpen());
-  return(LoadExtendData(m_psetWeekLineExtendInfo));
 }
 
 bool CWeekLine::SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {

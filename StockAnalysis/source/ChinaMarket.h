@@ -93,7 +93,7 @@ public:
   virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
   virtual bool RunningThreadBuildDayLineRSOfDay(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);

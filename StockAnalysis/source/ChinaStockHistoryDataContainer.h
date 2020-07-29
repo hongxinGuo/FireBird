@@ -21,10 +21,7 @@ public:
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
   virtual bool SaveData(void) = 0;
-  virtual bool AppendData(void) = 0;
   virtual bool LoadData(void) = 0;
-  virtual bool LoadBasicData(void) = 0;
-  virtual bool LoadExtendData(void) = 0;
   virtual bool CalculatingData(void) = 0;
 
 public:
