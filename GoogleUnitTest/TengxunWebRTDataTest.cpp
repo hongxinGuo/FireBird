@@ -4,13 +4,13 @@
 
 #include"ChinaMarket.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 #include"WebData.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestTengxunInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    CRTData RTData;
+    CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CRTDataTest, TestTengxunRTDataActive) {
-    CRTData id;
+    CWebRTData id;
     EXPECT_FALSE(id.CheckTengxunRTDataActive());
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -207,7 +207,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pTengxunWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(CRTDataTest, CalculateTengxunRTDataTest, testing::Values(&Data1, &Data2, &Data3,
@@ -759,7 +759,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     CWebDataPtr m_pTengxunWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestReadTengxunOneValue, ReadTengxunOneValueTest,

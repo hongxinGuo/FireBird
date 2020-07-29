@@ -24,7 +24,7 @@ public:
   virtual bool LoadData(void) = 0;
 
 public:
-  size_t GetSize(void) { return m_vHistoryData.size(); }
+  size_t GetDataSize(void) { return m_vHistoryData.size(); }
   CChinaStockHistoryDataPtr GetData(long lIndex) { return m_vHistoryData.at(lIndex); }
   void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
   bool StoreData(CChinaStockHistoryDataPtr pData) noexcept { m_vHistoryData.push_back(pData); return true; }

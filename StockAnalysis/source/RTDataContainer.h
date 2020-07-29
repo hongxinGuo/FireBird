@@ -15,14 +15,14 @@ public:
   ~CRTDataContainer();
   void ResetSinaRTQueue(void) { m_qSinaRTData.Reset(); }
   size_t GetSinaRTDataSize(void) { return m_qSinaRTData.GetRTDataSize(); }
-  void PushSinaRTData(CRTDataPtr pData) { m_qSinaRTData.PushRTData(pData); }
-  CRTDataPtr PopSinaRTData(void) { return m_qSinaRTData.PopRTData(); }
+  void PushSinaRTData(CWebRTDataPtr pData) { m_qSinaRTData.PushRTData(pData); }
+  CWebRTDataPtr PopSinaRTData(void) { return m_qSinaRTData.PopRTData(); }
   size_t GetTengxunRTDataSize(void) { return m_qTengxunRTData.GetRTDataSize(); }
-  void PushTengxunRTData(CRTDataPtr pData) { m_qTengxunRTData.PushRTData(pData); }
-  CRTDataPtr PopTengxunRTData(void) { return m_qTengxunRTData.PopRTData(); }
+  void PushTengxunRTData(CWebRTDataPtr pData) { m_qTengxunRTData.PushRTData(pData); }
+  CWebRTDataPtr PopTengxunRTData(void) { return m_qTengxunRTData.PopRTData(); }
   size_t GetNeteaseRTDataSize(void) { return m_qNeteaseRTData.GetRTDataSize(); }
-  void PushNeteaseRTData(CRTDataPtr pData) { m_qNeteaseRTData.PushRTData(pData); }
-  CRTDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTData.PopRTData(); }
+  void PushNeteaseRTData(CWebRTDataPtr pData) { m_qNeteaseRTData.PushRTData(pData); }
+  CWebRTDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTData.PopRTData(); }
 
 protected:
   CPriorityQueueRTData m_qSinaRTData; // 新浪实时数据队列。

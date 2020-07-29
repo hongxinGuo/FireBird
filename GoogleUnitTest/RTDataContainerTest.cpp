@@ -28,25 +28,25 @@ namespace StockAnalysisTest {
   TEST(RTDataContainerTest, TestGetSinaRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_RTDataContainer.PushSinaRTData(pRTData);
-    CRTDataPtr pRTData2 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
     gl_RTDataContainer.PushSinaRTData(pRTData2);
-    CRTDataPtr pRTData3 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData3 = make_shared<CWebRTData>();
     pRTData3->SetTransactionTime(200200);
     gl_RTDataContainer.PushSinaRTData(pRTData3);
-    CRTDataPtr pRTData4 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData4 = make_shared<CWebRTData>();
     pRTData4->SetTransactionTime(200);
     gl_RTDataContainer.PushSinaRTData(pRTData4);
-    CRTDataPtr pRTData5 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData5 = make_shared<CWebRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_RTDataContainer.PushSinaRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 5);
-    CRTDataPtr p2 = gl_RTDataContainer.PopSinaRTData();
+    CWebRTDataPtr p2 = gl_RTDataContainer.PopSinaRTData();
     EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_RTDataContainer.PopSinaRTData();
@@ -68,25 +68,25 @@ namespace StockAnalysisTest {
   TEST(RTDataContainerTest, TestGetTengxunRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 0);
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_RTDataContainer.PushTengxunRTData(pRTData);
-    CRTDataPtr pRTData2 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
     gl_RTDataContainer.PushTengxunRTData(pRTData2);
-    CRTDataPtr pRTData3 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData3 = make_shared<CWebRTData>();
     pRTData3->SetTransactionTime(200200);
     gl_RTDataContainer.PushTengxunRTData(pRTData3);
-    CRTDataPtr pRTData4 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData4 = make_shared<CWebRTData>();
     pRTData4->SetTransactionTime(200);
     gl_RTDataContainer.PushTengxunRTData(pRTData4);
-    CRTDataPtr pRTData5 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData5 = make_shared<CWebRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_RTDataContainer.PushTengxunRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
     EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 5);
-    CRTDataPtr p2 = gl_RTDataContainer.PopTengxunRTData();
+    CWebRTDataPtr p2 = gl_RTDataContainer.PopTengxunRTData();
     EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_RTDataContainer.PopTengxunRTData();
@@ -108,25 +108,25 @@ namespace StockAnalysisTest {
   TEST(RTDataContainerTest, TestGetNeteaseRTDataDuqueSize) {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(100100100);
     gl_RTDataContainer.PushNeteaseRTData(pRTData);
-    CRTDataPtr pRTData2 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
     pRTData2->SetTransactionTime(200200200);
     pRTData2->SetBuy(1);
     gl_RTDataContainer.PushNeteaseRTData(pRTData2);
-    CRTDataPtr pRTData3 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData3 = make_shared<CWebRTData>();
     pRTData3->SetTransactionTime(200200);
     gl_RTDataContainer.PushNeteaseRTData(pRTData3);
-    CRTDataPtr pRTData4 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData4 = make_shared<CWebRTData>();
     pRTData4->SetTransactionTime(200);
     gl_RTDataContainer.PushNeteaseRTData(pRTData4);
-    CRTDataPtr pRTData5 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData5 = make_shared<CWebRTData>();
     pRTData5->SetTransactionTime(200200200);
     pRTData5->SetBuy(2);
     gl_RTDataContainer.PushNeteaseRTData(pRTData5);  // 这个与pRTData2的时间相同，应该位于pRTData2之后
     EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 5);
-    CRTDataPtr p2 = gl_RTDataContainer.PopNeteaseRTData();
+    CWebRTDataPtr p2 = gl_RTDataContainer.PopNeteaseRTData();
     EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 4);
     EXPECT_EQ(p2->GetTransactionTime(), 200);
     p2 = gl_RTDataContainer.PopNeteaseRTData();

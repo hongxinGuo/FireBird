@@ -19,7 +19,7 @@ CSinaRTWebInquiry::~CSinaRTWebInquiry() {
 }
 
 bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
-  CRTDataPtr pRTData = nullptr;
+  CWebRTDataPtr pRTData = nullptr;
 
   CString strMiddle = _T("");
 

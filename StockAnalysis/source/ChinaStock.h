@@ -30,11 +30,14 @@ enum {
 #include"SetRealTimeData.h"
 #include"SetStockCode.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 
 #include"DayLine.h"
 #include"WeekLine.h"
 #include"OneDeal.h"
+
+#include"WeekLineContainer.h"
+#include"DayLineContainer.h"
 
 #include"NeteaseDayLineWebInquiry.h"
 
@@ -58,7 +61,7 @@ public:
   void Reset(void);
 
 public:
-  void UpdateStatus(CRTDataPtr pRTData);
+  void UpdateStatus(CWebRTDataPtr pRTData);
 
   // 本股票各变量状态
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -348,10 +351,10 @@ public:
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
-  bool ProcessOneRTData(CRTDataPtr pRTData);
-  void CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
+  bool ProcessOneRTData(CWebRTDataPtr pRTData);
+  void CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
   void IncreaseTransactionNumber(void);
-  void CalculateOneRTData(CRTDataPtr pRTData);
+  void CalculateOneRTData(CWebRTDataPtr pRTData);
   void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
   void CalculateOrdinaryBuyVolume(void);
   void CalculateOrdinarySellVolume(void);
@@ -362,14 +365,14 @@ public:
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
   void ResetCalculatingData(void);
-  void SetLastRTData(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
-  CRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
-  void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
+  void SetLastRTData(CWebRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
+  CWebRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
+  void InitializeCalculatingRTDataEnvionment(CWebRTDataPtr pRTData);
 
-  bool AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
-  void SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
-  void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
-  void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
+  bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
+  void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
+  void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
+  void CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
   void CalculateCanceledSellVolume(INT64 lCurrentCanceledBuyVolume);
   void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
@@ -380,9 +383,9 @@ public:
   virtual void ReportGuadanTransaction(void);
   virtual void ReportGuadan(void);
 
-  void PushRTData(CRTDataPtr pData);
-  CRTDataPtr PopRTData(void);
-  CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
+  void PushRTData(CWebRTDataPtr pData);
+  CWebRTDataPtr PopRTData(void);
+  CWebRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
   INT64 GetRTDataQueueSize(void);
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
@@ -546,6 +549,8 @@ protected:
   INT64 m_lOrdinarySellVolumeBelow100000; // 本交易日低于100000股的成交股数
   INT64 m_lOrdinarySellVolumeBelow200000; //
   INT64 m_lOrdinarySellVolumeAbove200000; //
+
+  // 当日分钟数据
   INT64 m_aOrdinaryBuy5000[240];
   INT64 m_aOrdinaryBuy10000[240];
   INT64 m_aOrdinaryBuy20000[240];
@@ -601,7 +606,7 @@ protected:
 
   // 挂单的具体情况。
   map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
+  CWebRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
@@ -629,7 +634,7 @@ protected:
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-  //queue<CRTDataPtr> m_qRTData; // 实时数据队列。
+  //queue<CWebRTDataPtr> m_qRTData; // 实时数据队列。
   CPriorityQueueRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
@@ -637,6 +642,7 @@ protected:
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   // 周线相关数据
   vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
+  CWeekLineContainer m_WeekLine; // 周线容器
 
   //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区

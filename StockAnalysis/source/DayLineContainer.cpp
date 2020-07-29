@@ -24,9 +24,9 @@ bool CDayLineContainer::SaveDayLineBasicInfo(void) {
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
   bool fNeedUpdate = false;
 
-  ASSERT(GetSize() > 0);
+  ASSERT(GetDataSize() > 0);
 
-  lSize = GetSize();
+  lSize = GetDataSize();
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineBasicInfo.m_strFilter += GetData(0)->GetStockCode() + _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Day]");
@@ -63,4 +63,45 @@ bool CDayLineContainer::SaveDayLineBasicInfo(void) {
   setDayLineBasicInfo.Close();
 
   return fNeedUpdate;
+}
+
+bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
+  ASSERT(IsDataLoaded());
+  ASSERT(GetDataSize() > 0);
+  long i = 0;
+  CWeekLinePtr pWeekLine = nullptr;
+
+  vWeekLine.clear();
+  do {
+    pWeekLine = CreateNewWeekLine(i);
+    vWeekLine.push_back(pWeekLine);
+  } while (i < GetDataSize());
+
+  return true;
+}
+
+CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
+  ASSERT(GetDataSize() > 0);
+  long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDay());
+  long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDay();
+  CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+  if (lNextMonday < lNewestDay) { // 中间数据
+    while (GetData(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
+      pWeekLine->CreateWeekLine(GetData(lCurrentDayLinePos++));
+    }
+  }
+  else { // 最后一组数据
+    while (lCurrentDayLinePos <= (GetDataSize() - 1)) {
+      pWeekLine->CreateWeekLine(GetData(lCurrentDayLinePos++));
+    }
+  }
+
+  if (pWeekLine->GetLastClose() > 0) {
+    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
+  }
+  else {
+    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen());
+  }
+
+  return pWeekLine;
 }

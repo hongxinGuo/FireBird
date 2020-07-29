@@ -336,7 +336,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestReset) {
     ASSERT_FALSE(gl_fNormalMode);
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
     CChinaStock stock;
     EXPECT_EQ(stock.GetMarket(), 0);
@@ -432,7 +432,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
 
-    CRTDataPtr  pRTData = make_shared<CRTData>();
+    CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
     time_t tt;
     time(&tt);
     long lDaySource = FormatToDay(tt);
@@ -958,7 +958,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
-    CRTDataPtr pData = make_shared<CRTData>();
+    CWebRTDataPtr pData = make_shared<CWebRTData>();
     pData->SetStockCode(_T("sh600008"));
     CChinaStock stock;
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
@@ -967,7 +967,7 @@ namespace StockAnalysisTest {
     pData = stock.GetRTDataAtHead();
     EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
     EXPECT_STREQ(pData->GetStockCode(), _T("sh600008"));
-    CRTDataPtr pData2 = stock.PopRTData();
+    CWebRTDataPtr pData2 = stock.PopRTData();
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
   }
 
@@ -1003,9 +1003,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestClearRTDataDeque) {
     CChinaStock stock;
-    CRTDataPtr pRTData;
+    CWebRTDataPtr pRTData;
     for (int i = 0; i < 10; i++) {
-      pRTData = make_shared<CRTData>();
+      pRTData = make_shared<CWebRTData>();
       pRTData->SetLastClose(i);
       stock.PushRTData(pRTData);
     }
@@ -1985,8 +1985,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestProcessRTData2) {
     CChinaStock stock;
-    CRTDataPtr prtData;
-    prtData = make_shared<CRTData>();
+    CWebRTDataPtr prtData;
+    prtData = make_shared<CWebRTData>();
     prtData->SetTransactionTime(10101010);
     prtData->SetActive(true);
     stock.PushRTData(prtData);

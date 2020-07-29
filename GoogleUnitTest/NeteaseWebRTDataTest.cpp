@@ -4,13 +4,13 @@
 
 #include"ChinaMarket.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 #include"NeteaseRTWebInquiry.h"
 
 namespace StockAnalysisTest {
   TEST(CRTDataTest, TestNeteaseInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    CRTData RTData;
+    CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CRTDataTest, TestNeteaseRTDataActive) {
-    CRTData id;
+    CWebRTData id;
     EXPECT_FALSE(id.CheckNeteaseRTDataActive());
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -196,7 +196,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102, &Data103
@@ -411,7 +411,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, StockCodePrefixTest,
@@ -522,7 +522,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
@@ -631,7 +631,7 @@ namespace StockAnalysisTest {
     long m_lValue;
     CString m_strValue;
     CNeteaseRTWebInquiry m_NeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, GetNeteaseIndexValueRTDataTest, testing::Values(&NeteaseData101

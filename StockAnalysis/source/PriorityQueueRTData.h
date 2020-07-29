@@ -1,6 +1,6 @@
 #pragma once
 
-#include"RTData.h"
+#include"WebRTData.h"
 
 using namespace std;
 #include<queue>
@@ -13,15 +13,15 @@ public:
   void Reset(void);
 
   // 通用接口函数
-  void PushRTData(CRTDataPtr pData);
-  CRTDataPtr PopRTData(void);
-  CRTDataPtr GetHead(void) { return m_priorityqueueRTStockData.top(); }
+  void PushRTData(CWebRTDataPtr pData);
+  CWebRTDataPtr PopRTData(void);
+  CWebRTDataPtr GetHead(void) { return m_priorityqueueRTStockData.top(); }
   size_t GetRTDataSize(void);
 
 protected:
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。
   struct cmpRTData {
-    bool operator() (const CRTDataPtr p1, const CRTDataPtr p2) const {
+    bool operator() (const CWebRTDataPtr p1, const CWebRTDataPtr p2) const {
       // 有优先级的队列默认排列顺序是从大到小，故而从小到大排列需要使用 > 符号。
       // 相同时间的数据，先放入的数据位于后放入的数据前面。
       return(p1->GetTransactionTime() > p2->GetTransactionTime());
@@ -34,9 +34,9 @@ protected:
   // 大致为这样： priority_queue<CStockRTdataPtr, vector<CStockRTDataDataPtr>, cmpRTData> m_qRTStockData;
   // 结构cmpRTData定义为：
   // struct cmpRTData {
-  //   bool operator () (const CRTDataPtr p1, const CRTDataPtr p2) const {
+  //   bool operator () (const CWebRTDataPtr p1, const CWebRTDataPtr p2) const {
   //     return(p1->GetFormatedMarketTime() > p2->GetFormatedMarketTime());
   //   }
   // };
-  priority_queue<CRTDataPtr, vector<CRTDataPtr>, cmpRTData> m_priorityqueueRTStockData;
+  priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityqueueRTStockData;
 };

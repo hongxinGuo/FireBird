@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "globedef.h"
 #include"Accessory.h"
-#include"RTData.h"
+#include"WebRTData.h"
 #include"ChinaMarket.h"
 
 #ifdef _DEBUG
@@ -10,7 +10,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void CRTData::Reset(void) {
+void CWebRTData::Reset(void) {
   m_lDataSource = __INVALID_RT_WEB_DATA__;
   m_time = 0;
   m_strStockCode = _T("");
@@ -76,19 +76,19 @@ void CRTData::Reset(void) {
   m_mapNeteaseSymbolToIndex[_T("turnover")] = 63;
 }
 
-CRTData::CRTData(void) : CObject() {
+CWebRTData::CWebRTData(void) : CObject() {
   Reset();
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CRTData diagnostics
+// CWebRTData diagnostics
 
 #ifdef _DEBUG
-void CRTData::AssertValid() const {
+void CWebRTData::AssertValid() const {
   CObject::AssertValid();
 }
 
-void CRTData::Dump(CDumpContext& dc) const {
+void CWebRTData::Dump(CDumpContext& dc) const {
   CObject::Dump(dc);
 }
 
@@ -133,7 +133,7 @@ void CRTData::Dump(CDumpContext& dc) const {
 // 31：”15:05:32″，时间；
 // 32：”00”，  不明数据
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
+bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
   static char buffer1[100];
   char buffer2[7];
   static char buffer3[100];
@@ -341,7 +341,7 @@ bool CRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
   }
 }
 
-bool CRTData::CheckSinaRTDataActive(void) {
+bool CWebRTData::CheckSinaRTDataActive(void) {
   if (IsValidTime()) m_fActive = true;
   else m_fActive = false;
 
@@ -354,7 +354,7 @@ bool CRTData::CheckSinaRTDataActive(void) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue) {
+bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -373,7 +373,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
+bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
@@ -392,7 +392,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, long& lReturnValue) {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue) {
+bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue) {
   static char buffer3[200];
 
   if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
@@ -408,7 +408,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue)
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
+bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
   int i = 0;
   try {
     while ((*pSinaWebRTData->m_pCurrentPos != ',')) {
@@ -484,7 +484,7 @@ bool CRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
 // 腾讯实时数据中，成交量的单位为手，无法达到计算所需的精度（股），故而只能作为数据补充之用。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
+bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
   static char buffer1[200];
   char buffer2[7];
   static char buffer3[200];
@@ -726,7 +726,7 @@ bool CRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
   }
 }
 
-bool CRTData::CheckTengxunRTDataActive() {
+bool CWebRTData::CheckTengxunRTDataActive() {
   if (!IsValidTime()) { // 如果交易时间在14天前
     m_fActive = false;
   }
@@ -744,7 +744,7 @@ bool CRTData::CheckTengxunRTDataActive() {
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturnValue) {
   INT64 llTemp;
   static char buffer3[200];
 
@@ -763,7 +763,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, INT64& llReturn
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturnValue) {
   double dTemp;
   static char buffer3[200];
 
@@ -781,7 +781,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pTengxunWebRTData, double& dReturn
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnValue) {
+bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnValue) {
   long lTemp;
   static char buffer3[200];
 
@@ -800,7 +800,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturnVal
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
+bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
   int i = 0;
   try {
     while (*pWebDataReceived->m_pCurrentPos != '~') {
@@ -837,7 +837,7 @@ bool CRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
 // （turnover即为成交金额，可以使用之。05/12/2020）
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
+bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
   char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
@@ -909,7 +909,7 @@ bool CRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   }
 }
 
-bool CRTData::CheckNeteaseRTDataActive(void) {
+bool CWebRTData::CheckNeteaseRTDataActive(void) {
   if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
     m_fActive = false;
   }
@@ -922,7 +922,7 @@ bool CRTData::CheckNeteaseRTDataActive(void) {
   return m_fActive;
 }
 
-bool CRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
+bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
   CString strValue = _T("");
   char bufferStockCode[50];
   char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
@@ -980,7 +980,7 @@ bool CRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
   return true;
 }
 
-long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
+long CWebRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   long lIndex = 0;
   try {
     lIndex = m_mapNeteaseSymbolToIndex.at(strSymbol);
@@ -992,7 +992,7 @@ long CRTData::GetNeteaseSymbolIndex(CString strSymbol) {
   return lIndex;
 }
 
-bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue) {
+bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lIndex, CString& strValue) {
   char buffer[100];
   int i = 0;
   CString strIndex;
@@ -1076,7 +1076,7 @@ bool CRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lInde
   }
 }
 
-bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
+bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   CString str1, str;
   time_t ttTemp = 0;
 
@@ -1219,7 +1219,7 @@ bool CRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 // 故而十四天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CRTData::IsValidTime(void) {
+bool CWebRTData::IsValidTime(void) {
   if (m_time < (gl_pChinaStockMarket->GetMarketTime() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
@@ -1229,7 +1229,7 @@ bool CRTData::IsValidTime(void) {
   else  return true;
 }
 
-void CRTData::SaveData(CSetRealTimeData& setRTData) {
+void CWebRTData::SaveData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
 
   setRTData.m_Time = ConvertValueToString(m_time);
@@ -1270,14 +1270,14 @@ void CRTData::SaveData(CSetRealTimeData& setRTData) {
   setRTData.m_VSell5 = ConvertValueToString(GetVSell(4));
 }
 
-void CRTData::AppendData(CSetRealTimeData& setRTData) {
+void CWebRTData::AppendData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
   setRTData.AddNew();
   SaveData(setRTData);
   setRTData.Update();
 }
 
-void CRTData::LoadData(CSetRealTimeData& setRTData) {
+void CWebRTData::LoadData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
 
   m_time = atoll(setRTData.m_Time);

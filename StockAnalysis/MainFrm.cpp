@@ -10,7 +10,7 @@
 
 #include "MainFrm.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 #include"DayLine.h"
 #include"ChinaStock.h"
 #include"ChinaMarket.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include"RTData.h"
+#include"WebRTData.h"
 
 using namespace std;
 #include<queue>
@@ -14,11 +14,11 @@ public:
   void Reset(void);
 
   // 通用接口函数
-  void PushRTData(CRTDataPtr pData);
-  CRTDataPtr PopRTData(void);
+  void PushRTData(CWebRTDataPtr pData);
+  CWebRTDataPtr PopRTData(void);
   size_t GetRTDataSize(void);
 
 protected:
-  queue<CRTDataPtr> m_qRTStockData;
+  queue<CWebRTDataPtr> m_qRTStockData;
   mutex m_MutexAccessRTData;
 };

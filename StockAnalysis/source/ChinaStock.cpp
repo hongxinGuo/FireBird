@@ -157,7 +157,7 @@ void CChinaStock::Reset(void) {
 void CChinaStock::ClearRTDataDeque(void) {
   long lTotalNumber = GetRTDataQueueSize();
   for (int i = 0; i < lTotalNumber; i++) {
-    CRTDataPtr pRTData = PopRTData();
+    CWebRTDataPtr pRTData = PopRTData();
   }
 }
 
@@ -435,7 +435,7 @@ void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   setDayLineToday.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
-void CChinaStock::UpdateStatus(CRTDataPtr pRTData) {
+void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
   SetTransactionTime(pRTData->GetTransactionTime());
   SetLastClose(pRTData->GetLastClose());
   SetNew(pRTData->GetNew());
@@ -1231,7 +1231,7 @@ bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
 //
 ////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::ProcessRTData(void) {
-  CRTDataPtr pRTData;
+  CWebRTDataPtr pRTData;
 
   INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
   if (lTotalNumber == 0) return false;
@@ -1256,7 +1256,7 @@ bool CChinaStock::ProcessRTData(void) {
 // 如果是第一次计算，则只设置初始状态。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::ProcessOneRTData(CRTDataPtr pRTData) {
+bool CChinaStock::ProcessOneRTData(CWebRTDataPtr pRTData) {
   if (HaveFirstRTData()) { // 如果开始计算（第二次收到实时数据及以后）
     CalculateOneRTData(pRTData);
   }
@@ -1271,7 +1271,7 @@ bool CChinaStock::ProcessOneRTData(CRTDataPtr pRTData) {
 // 第一次收到实时数据时，只初始化系统，不计算（因为没有初始数据）
 //
 ////////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
+void CChinaStock::InitializeCalculatingRTDataEnvionment(CWebRTDataPtr pRTData) {
   SetLastRTData(pRTData);
   SetHavingFirstRTData(true);
   // 第一次挂单量无法判断买卖状态，故而设置其为无法判断。如果之前已经运行过系统，此次是开盘中途登录的，则系统存储了临时数据于数据库中，
@@ -1287,7 +1287,7 @@ void CChinaStock::InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData) {
   }
 }
 
-void CChinaStock::CalculateOneRTData(CRTDataPtr pRTData) {
+void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
   long lCurrentGuadanTransactionPrice = 0;
 
   ResetCalculatingData();
@@ -1309,7 +1309,7 @@ void CChinaStock::CalculateOneRTData(CRTDataPtr pRTData) {
   SetLastRTData(pRTData);
 }
 
-void CChinaStock::CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
+void CChinaStock::CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice) {
   IncreaseTransactionNumber();
   lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
   m_dCurrentGuadanTransactionPrice = static_cast<double>(lCurrentGuadanTransactionPrice) / 1000; // 变换成实际价格
@@ -1505,7 +1505,7 @@ void CChinaStock::ResetCalculatingData(void) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
+bool CChinaStock::AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice) {
   // 需要检查的挂单位置。顺序为：卖单4, 卖单3, ... 卖单0, 卖单0, .... 买单3, 买单4
   // 卖单买单谁在前面无所谓，但计算时需要记住此顺序。
   array<bool, 10> fNeedCheck{ true,true,true,true,true,true,true,true,true,true };
@@ -1519,7 +1519,7 @@ bool CChinaStock::AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransa
   return(true);
 }
 
-void CChinaStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
+void CChinaStock::SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck) {
   // 确定需要计算哪些挂单。一共有十个，没有受到交易影响的都要计算。
   switch (m_nCurrentTransactionType) {
   case __NO_TRANSACTION__: // 没有成交，则减少的量就是相应价位上的撤单。
@@ -1577,7 +1577,7 @@ void CChinaStock::SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT
   }
 }
 
-void CChinaStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
+void CChinaStock::SetCurrentGuadan(CWebRTDataPtr pCurrentRTData) {
   // 空位处可能是成交了，也可能是撤单了，目前不考虑这些细节，统一认为是成交了（不计算撤单）。以后再分析之。
   // 先清空当前挂单之间的挂单数量，然后填上当前量。如果有空当的话，则自然清空了。
   for (int i = pCurrentRTData->GetPBuy(4); i <= pCurrentRTData->GetPSell(4); i += 10) {
@@ -1589,7 +1589,7 @@ void CChinaStock::SetCurrentGuadan(CRTDataPtr pCurrentRTData) {
   }
 }
 
-void CChinaStock::CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
+void CChinaStock::CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck) {
   for (int i = 0; i < 5; i++) {
     CheckSellGuadan(fNeedCheck, i);
     CheckBuyGuadan(fNeedCheck, i);
@@ -1997,7 +1997,7 @@ bool CChinaStock::LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExt
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::PushRTData(CRTDataPtr pData) {
+void CChinaStock::PushRTData(CWebRTDataPtr pData) {
   m_qRTData.PushRTData(pData);
 }
 
@@ -2007,11 +2007,11 @@ void CChinaStock::PushRTData(CRTDataPtr pData) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CRTDataPtr CChinaStock::PopRTData(void) {
+CWebRTDataPtr CChinaStock::PopRTData(void) {
   return m_qRTData.PopRTData();
 }
 
-CRTDataPtr CChinaStock::GetRTDataAtHead(void) {
+CWebRTDataPtr CChinaStock::GetRTDataAtHead(void) {
   return m_qRTData.GetHead();
 }
 

@@ -148,8 +148,8 @@ ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextIn
 ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFile");
 ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
 
-ExcludeFromCodeCoverage(CRTData1, L"CRTData::AssertValid");
-ExcludeFromCodeCoverage(CRTData2, L"CRTData::Dump");
+ExcludeFromCodeCoverage(CRTData1, L"CWebRTData::AssertValid");
+ExcludeFromCodeCoverage(CRTData2, L"CWebRTData::Dump");
 
 ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
 ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");

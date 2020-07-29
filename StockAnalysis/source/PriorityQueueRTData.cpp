@@ -13,12 +13,12 @@ void CPriorityQueueRTData::Reset(void) {
   }
 }
 
-void CPriorityQueueRTData::PushRTData(CRTDataPtr pData) {
+void CPriorityQueueRTData::PushRTData(CWebRTDataPtr pData) {
   m_priorityqueueRTStockData.push(pData);
 }
 
-CRTDataPtr CPriorityQueueRTData::PopRTData(void) {
-  CRTDataPtr pData;
+CWebRTDataPtr CPriorityQueueRTData::PopRTData(void) {
+  CWebRTDataPtr pData;
   pData = m_priorityqueueRTStockData.top();
   m_priorityqueueRTStockData.pop();
   return pData;

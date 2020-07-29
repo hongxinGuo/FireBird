@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
       pStock->ClearRTDataDeque();
       pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
       gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
-      pRTData = make_shared<CRTData>();
+      pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
       pRTData->SetStockCode(pData->m_strStockCode);
       pRTData->SetActive(pData->m_fActive);
@@ -79,7 +79,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     CChinaStockPtr pStock;
-    CRTDataPtr pRTData;
+    CWebRTDataPtr pRTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeNeteaseRTDataToProperStockTest,

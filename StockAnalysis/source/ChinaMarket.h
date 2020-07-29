@@ -254,14 +254,14 @@ public:
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
-  void StoreChoiceRTData(CRTDataPtr pRTData);
+  void StoreChoiceRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
   bool IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived);
-  void CheckTengxunRTData(CRTDataPtr pRTData);
+  void CheckTengxunRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
   bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
   bool IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived);
-  bool ValidateNeteaseRTData(CRTDataPtr pRTData);
+  bool ValidateNeteaseRTData(CWebRTDataPtr pRTData);
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);
@@ -388,7 +388,7 @@ protected:
 
   long m_lStockNeedUpdated; // 股票历史日线今日需要更新数
 
-  queue<CRTDataPtr> m_qRTData;
+  queue<CWebRTDataPtr> m_qRTData;
   bool m_fSaveRTData;
 
   int m_iMarketOpenOffset; // 开市的偏移量。以分钟为单位，0930 = 0，1129 = 120， 1300 = 121， 1459 = 240。

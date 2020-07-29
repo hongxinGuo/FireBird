@@ -45,8 +45,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount; // 每次输入的数据都不一样，结果也相应的不同，故而需要进行不同的验证。使用此序列号来区分。
-    CRTData CurrentData;
-    CRTData LastData;
+    CWebRTData CurrentData;
+    CWebRTData LastData;
   };
 
   // 成交1万股@10.00
@@ -127,7 +127,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       RTData* pData = GetParam();
-      pCurrentData = make_shared<CRTData>();
+      pCurrentData = make_shared<CWebRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());
       pCurrentData->SetVolume(pData->CurrentData.GetVolume());
       for (int i = 0; i < 5; i++) {
@@ -136,7 +136,7 @@ namespace StockAnalysisTest {
         pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
         pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
-      pLastData = make_shared<CRTData>();
+      pLastData = make_shared<CWebRTData>();
       pLastData->SetAmount(pData->LastData.GetAmount());
       pLastData->SetVolume(pData->LastData.GetVolume());
       for (int i = 0; i < 5; i++) {
@@ -155,8 +155,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount;
-    CRTDataPtr pCurrentData;
-    CRTDataPtr pLastData;
+    CWebRTDataPtr pCurrentData;
+    CWebRTDataPtr pLastData;
     CChinaStock m_stock;
   };
 
@@ -348,7 +348,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestINitializeCalculatingRTDataEnvionment) {
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     CChinaStock id;
 
     id.SetUnknownVolume(100000);
@@ -371,9 +371,9 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestGetLastRTDataPtr) {
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     CChinaStock id;
-    CRTDataPtr pRTData2 = pRTData;
+    CWebRTDataPtr pRTData2 = pRTData;
 
     id.SetLastRTData(pRTData);
     EXPECT_EQ(id.GetLastRTData(), pRTData2);
@@ -381,7 +381,7 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
     CChinaStock id;
-    CRTDataPtr pLastRTData = make_shared<CRTData>();
+    CWebRTDataPtr pLastRTData = make_shared<CWebRTData>();
 
     pLastRTData->SetPSell(0, 100000);
     pLastRTData->SetPBuy(0, 99990);

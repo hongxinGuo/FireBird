@@ -282,7 +282,7 @@
     <ClInclude Include="source\globedef.h" />
     <ClInclude Include="source\ChinaMarket.h" />
     <ClInclude Include="source\OneDeal.h" />
-    <ClInclude Include="source\RTData.h" />
+    <ClInclude Include="source\WebRTData.h" />
     <ClInclude Include="source\ChinaStock.h" />
     <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="source\ThreadStatus.h" />
@@ -351,7 +351,7 @@
     <ClCompile Include="source\globedef.cpp" />
     <ClCompile Include="source\ChinaMarket.cpp" />
     <ClCompile Include="source\OneDeal.cpp" />
-    <ClCompile Include="source\RTData.cpp" />
+    <ClCompile Include="source\WebRTData.cpp" />
     <ClCompile Include="source\ChinaStock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="source\ThreadSaveCrweberDB.cpp" />

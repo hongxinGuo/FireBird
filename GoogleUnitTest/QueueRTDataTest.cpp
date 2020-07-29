@@ -23,7 +23,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CQueueRTDataTest, TestReset) {
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(1);
     gl_QueueRTData.PushRTData(pRTData);
     EXPECT_EQ(gl_QueueRTData.GetRTDataSize(), 1);
@@ -32,13 +32,13 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CQueueRTDataTest, TestPushPopData) {
-    CRTDataPtr pRTData = make_shared<CRTData>();
+    CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(1);
-    CRTDataPtr pRTData2 = make_shared<CRTData>();
+    CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
     pRTData2->SetTransactionTime(0);
     gl_QueueRTData.PushRTData(pRTData);
     gl_QueueRTData.PushRTData(pRTData2);
-    CRTDataPtr pRTData3 = gl_QueueRTData.PopRTData();
+    CWebRTDataPtr pRTData3 = gl_QueueRTData.PopRTData();
     EXPECT_EQ(pRTData3->GetTransactionTime(), 1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
   }
 }

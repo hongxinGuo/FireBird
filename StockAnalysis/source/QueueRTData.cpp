@@ -18,14 +18,14 @@ void CQueueRTData::Reset(void) {
   m_MutexAccessRTData.unlock();
 }
 
-void CQueueRTData::PushRTData(CRTDataPtr pData) {
+void CQueueRTData::PushRTData(CWebRTDataPtr pData) {
   m_MutexAccessRTData.lock();
   m_qRTStockData.push(pData);
   m_MutexAccessRTData.unlock();
 }
 
-CRTDataPtr CQueueRTData::PopRTData(void) {
-  CRTDataPtr pData;
+CWebRTDataPtr CQueueRTData::PopRTData(void) {
+  CWebRTDataPtr pData;
   m_MutexAccessRTData.lock();
   pData = m_qRTStockData.front();
   m_qRTStockData.pop();
