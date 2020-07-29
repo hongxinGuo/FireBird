@@ -123,9 +123,6 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
-    <ClInclude Include="source\PriorityQueueRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -140,12 +137,6 @@
     </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
-    <ClInclude Include="source\QueueRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="source\RTDataContainer.h">
-      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndexWebInquiry.h">
       <Filter>头文件\Crweber.com Market</Filter>
@@ -258,6 +249,15 @@
     <ClInclude Include="source\WebRTData.h">
       <Filter>头文件\China Stock Market\基础数据类</Filter>
     </ClInclude>
+    <ClInclude Include="source\WebRTDataContainer.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PriorityQueueWebRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -299,9 +299,6 @@
     <ClCompile Include="StockAnalysisView.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="source\PriorityQueueRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -310,9 +307,6 @@
     </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="source\QueueRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
@@ -387,9 +381,6 @@
       <Filter>源文件\基类</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\RTDataContainer.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadSaveDayLine.cpp">
@@ -481,6 +472,15 @@
     </ClCompile>
     <ClCompile Include="source\WebRTData.cpp">
       <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebRTDataContainer.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PriorityQueueWebRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueWebRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

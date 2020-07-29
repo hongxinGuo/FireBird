@@ -88,10 +88,10 @@ namespace StockAnalysisTest {
 
   TEST_P(TaskDistributeNeteaseRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
-    gl_RTDataContainer.PushNeteaseRTData(pRTData);
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 1);
+    gl_WebRTDataContainer.PushNeteaseData(pRTData);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeNeteaseRTDataToProperStock());
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     switch (m_iCount) {
     case 1:

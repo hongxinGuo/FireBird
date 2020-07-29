@@ -7,7 +7,7 @@
 
 #include"VirtualMarket.h"
 
-#include"RTDataContainer.h"
+#include"WebRTDataContainer.h"
 
 #include "ChinaStock.h"
 
@@ -26,7 +26,7 @@ extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
-extern CRTDataContainer gl_RTDataContainer;
+extern CWebRTDataContainer gl_WebRTDataContainer;
 
 const int c_SelectedStockStartPosition = 0;
 const int c_10DayRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）

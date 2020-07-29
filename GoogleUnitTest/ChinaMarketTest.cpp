@@ -1217,10 +1217,10 @@ namespace StockAnalysisTest {
     pData->__TEST_SetBuffer__(strRTData);
     gl_WebInquirer.PushSinaRTData(pData);
     gl_pChinaStockMarket->TaskProcessWebRTDataGetFromSinaServer();
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 3);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 3);
     EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
     for (int i = 0; i < 3; i++) {
-      CWebRTDataPtr pRTData = gl_RTDataContainer.PopSinaRTData();
+      CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopSinaData();
     }
   }
 
@@ -1230,10 +1230,10 @@ namespace StockAnalysisTest {
     pData->__TEST_SetBuffer__(strRTData);
     gl_WebInquirer.PushNeteaseRTData(pData);
     gl_pChinaStockMarket->TaskProcessWebRTDataGetFromNeteaseServer();
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 1);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
     EXPECT_EQ(gl_WebInquirer.GetNeteaseRTDataSize(), 0);
     for (int i = 0; i < 1; i++) {
-      CWebRTDataPtr pRTData = gl_RTDataContainer.PopNeteaseRTData();
+      CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
     }
   }
 
@@ -1243,10 +1243,10 @@ namespace StockAnalysisTest {
     pData->__TEST_SetBuffer__(strRTData);
     gl_WebInquirer.PushTengxunRTData(pData);
     gl_pChinaStockMarket->TaskProcessWebRTDataGetFromTengxunServer();
-    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 1);
+    EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 1);
     EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 0);
     for (int i = 0; i < 1; i++) {
-      CWebRTDataPtr pRTData = gl_RTDataContainer.PopTengxunRTData();
+      CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopTengxunData();
     }
   }
 
@@ -1254,36 +1254,36 @@ namespace StockAnalysisTest {
     CWebRTDataPtr prtData1, prtData2;
     prtData1 = make_shared<CWebRTData>();
     prtData2 = make_shared<CWebRTData>();
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
-    gl_RTDataContainer.PushNeteaseRTData(prtData1);
-    gl_RTDataContainer.PushNeteaseRTData(prtData2);
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
+    gl_WebRTDataContainer.PushNeteaseData(prtData1);
+    gl_WebRTDataContainer.PushNeteaseData(prtData2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 2);
     gl_pChinaStockMarket->TaskDiscardNeteaseRTData();
-    EXPECT_EQ(gl_RTDataContainer.GetNeteaseRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestTaskDiscardSinaRTData) {
     CWebRTDataPtr prtData1, prtData2;
     prtData1 = make_shared<CWebRTData>();
     prtData2 = make_shared<CWebRTData>();
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
-    gl_RTDataContainer.PushSinaRTData(prtData1);
-    gl_RTDataContainer.PushSinaRTData(prtData2);
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
+    gl_WebRTDataContainer.PushSinaData(prtData1);
+    gl_WebRTDataContainer.PushSinaData(prtData2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 2);
     gl_pChinaStockMarket->TaskDiscardSinaRTData();
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestTaskDiscardTengxunRTData) {
     CWebRTDataPtr prtData1, prtData2;
     prtData1 = make_shared<CWebRTData>();
     prtData2 = make_shared<CWebRTData>();
-    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 0);
-    gl_RTDataContainer.PushTengxunRTData(prtData1);
-    gl_RTDataContainer.PushTengxunRTData(prtData2);
-    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
+    gl_WebRTDataContainer.PushTengxunData(prtData1);
+    gl_WebRTDataContainer.PushTengxunData(prtData2);
+    EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 2);
     gl_pChinaStockMarket->TaskDiscardTengxunRTData();
-    EXPECT_EQ(gl_RTDataContainer.GetTengxunRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetTengxunDataSize(), 0);
   }
 
   TEST_F(CChinaMarketTest, TestStoreChoicedRTData) {

@@ -32,7 +32,7 @@ Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);
 Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // 后台工作线程数。最大为8
 
-CRTDataContainer gl_RTDataContainer;
+CWebRTDataContainer gl_WebRTDataContainer;
 CWebInquirer gl_WebInquirer;
 
 #ifdef _DEBUG
@@ -675,11 +675,11 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
   gl_ProcessSinaRTDataQueue.Wait();
   CChinaStockPtr pStock;
-  const size_t lTotalNumber = gl_RTDataContainer.GetSinaRTDataSize();
+  const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
   CString strVolume;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CWebRTDataPtr pRTData = gl_RTDataContainer.PopSinaRTData();
+    CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopSinaData();
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
       continue;
@@ -705,7 +705,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
     }
   }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-  ASSERT(gl_RTDataContainer.GetSinaRTDataSize() == 0); // 必须一次处理全体数据。
+  ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // 必须一次处理全体数据。
   gl_ProcessSinaRTDataQueue.Signal();
 
   return true;
@@ -723,11 +723,11 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
   gl_ProcessNeteaseRTDataQueue.Wait();
   CChinaStockPtr pStock;
-  const size_t lTotalNumber = gl_RTDataContainer.GetNeteaseRTDataSize();
+  const size_t lTotalNumber = gl_WebRTDataContainer.GetNeteaseDataSize();
   CString strVolume;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CWebRTDataPtr pRTData = gl_RTDataContainer.PopNeteaseRTData();
+    CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("网易实时数据源设置有误"));
       continue;
@@ -753,7 +753,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
     }
   }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
-  ASSERT(gl_RTDataContainer.GetNeteaseRTDataSize() == 0); // 必须一次处理全体数据。
+  ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // 必须一次处理全体数据。
   gl_ProcessNeteaseRTDataQueue.Signal();
 
   return true;
@@ -897,7 +897,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
       CWebRTDataPtr pRTData = make_shared<CWebRTData>();
       if (pRTData->ReadSinaData(pWebDataReceived)) {
         m_llRTDataReceived++;
-        gl_RTDataContainer.PushSinaRTData(pRTData); // 将此实时数据指针存入实时数据队列
+        gl_WebRTDataContainer.PushSinaData(pRTData); // 将此实时数据指针存入实时数据队列
       }
       else return false;  // 后面的数据出问题，抛掉不用。
     }
@@ -945,7 +945,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
           ValidateNeteaseRTData(pRTData);
           iCount++;
           m_llRTDataReceived++;
-          gl_RTDataContainer.PushNeteaseRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
@@ -1013,11 +1013,11 @@ bool CChinaMarket::ValidateNeteaseRTData(CWebRTDataPtr pRTData) {
 
 bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
-  size_t lTotalData = gl_RTDataContainer.GetNeteaseRTDataSize();
+  size_t lTotalData = gl_WebRTDataContainer.GetNeteaseDataSize();
 
   for (size_t i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-    pRTData = gl_RTDataContainer.PopNeteaseRTData();
+    pRTData = gl_WebRTDataContainer.PopNeteaseData();
     pRTData = nullptr;
   }
 
@@ -1026,11 +1026,11 @@ bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
 
 bool CChinaMarket::TaskDiscardSinaRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
-  size_t lTotalData = gl_RTDataContainer.GetSinaRTDataSize();
+  size_t lTotalData = gl_WebRTDataContainer.GetSinaDataSize();
 
   for (size_t i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-    pRTData = gl_RTDataContainer.PopSinaRTData();
+    pRTData = gl_WebRTDataContainer.PopSinaData();
     pRTData = nullptr;
   }
 
@@ -1039,11 +1039,11 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
 
 bool CChinaMarket::TaskDiscardTengxunRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
-  size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
+  size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
 
   for (size_t i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
-    pRTData = gl_RTDataContainer.PopTengxunRTData();
+    pRTData = gl_WebRTDataContainer.PopTengxunData();
     pRTData = nullptr;
   }
 
@@ -1073,7 +1073,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
           CheckTengxunRTData(pRTData); // 检测一下
           j++;
-          gl_RTDataContainer.PushTengxunRTData(pRTData); // 将此实时数据指针存入实时数据队列
+          gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
         }
         else return false;  // 后面的数据出问题，抛掉不用。
       }
@@ -1125,10 +1125,10 @@ void CChinaMarket::CheckTengxunRTData(CWebRTDataPtr pRTData) {
 
 bool CChinaMarket::TaskProcessTengxunRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
-  size_t lTotalData = gl_RTDataContainer.GetTengxunRTDataSize();
+  size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
 
   for (size_t i = 0; i < lTotalData; i++) {
-    pRTData = gl_RTDataContainer.PopTengxunRTData();
+    pRTData = gl_WebRTDataContainer.PopTengxunData();
     if (pRTData->IsActive()) {
       auto pStock = GetStock(pRTData->GetStockCode());
       pStock->SetTotalValue(pRTData->GetTotalValue());

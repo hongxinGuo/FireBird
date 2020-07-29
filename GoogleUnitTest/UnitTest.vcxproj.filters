@@ -144,12 +144,6 @@
     <ClCompile Include="VirtualWebInquiryTest.cpp">
       <Filter>Test源文件\基类</Filter>
     </ClCompile>
-    <ClCompile Include="PriorityQueueRTDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="QueueRTDataTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="QueueWebDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -228,16 +222,7 @@
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\PriorityQueueRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\QueueRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\RTDataContainer.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp">
@@ -476,6 +461,21 @@
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="PriorityQueueWebRTDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueWebRTDataTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -556,16 +556,7 @@
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\PriorityQueueRTData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\QueueRTData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\RTDataContainer.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h">
@@ -701,6 +692,15 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

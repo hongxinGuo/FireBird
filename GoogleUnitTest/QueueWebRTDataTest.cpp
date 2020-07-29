@@ -3,10 +3,10 @@
 
 #include"globedef.h"
 
-#include"QueueRTData.h"
+#include"QueueWebRTData.h"
 
 namespace StockAnalysisTest {
-  static CQueueRTData gl_QueueRTData;
+  static CQueueWebRTData gl_QueueWebRTData;
 
   class CQueueRTDataTest : public ::testing::Test
   {
@@ -18,17 +18,17 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      gl_QueueRTData.Reset();
+      gl_QueueWebRTData.Reset();
     }
   };
 
   TEST_F(CQueueRTDataTest, TestReset) {
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(1);
-    gl_QueueRTData.PushRTData(pRTData);
-    EXPECT_EQ(gl_QueueRTData.GetRTDataSize(), 1);
-    gl_QueueRTData.Reset();
-    EXPECT_EQ(gl_QueueRTData.GetRTDataSize(), 0);
+    gl_QueueWebRTData.PushData(pRTData);
+    EXPECT_EQ(gl_QueueWebRTData.GetDataSize(), 1);
+    gl_QueueWebRTData.Reset();
+    EXPECT_EQ(gl_QueueWebRTData.GetDataSize(), 0);
   }
 
   TEST_F(CQueueRTDataTest, TestPushPopData) {
@@ -36,9 +36,9 @@ namespace StockAnalysisTest {
     pRTData->SetTransactionTime(1);
     CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();
     pRTData2->SetTransactionTime(0);
-    gl_QueueRTData.PushRTData(pRTData);
-    gl_QueueRTData.PushRTData(pRTData2);
-    CWebRTDataPtr pRTData3 = gl_QueueRTData.PopRTData();
+    gl_QueueWebRTData.PushData(pRTData);
+    gl_QueueWebRTData.PushData(pRTData2);
+    CWebRTDataPtr pRTData3 = gl_QueueWebRTData.PopData();
     EXPECT_EQ(pRTData3->GetTransactionTime(), 1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
   }
 }

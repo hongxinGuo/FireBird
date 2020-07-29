@@ -1998,7 +1998,7 @@ bool CChinaStock::LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExt
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::PushRTData(CWebRTDataPtr pData) {
-  m_qRTData.PushRTData(pData);
+  m_qRTData.PushData(pData);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2008,7 +2008,7 @@ void CChinaStock::PushRTData(CWebRTDataPtr pData) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CWebRTDataPtr CChinaStock::PopRTData(void) {
-  return m_qRTData.PopRTData();
+  return m_qRTData.PopData();
 }
 
 CWebRTDataPtr CChinaStock::GetRTDataAtHead(void) {
@@ -2022,7 +2022,7 @@ CWebRTDataPtr CChinaStock::GetRTDataAtHead(void) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////
 INT64 CChinaStock::GetRTDataQueueSize(void) {
-  return m_qRTData.GetRTDataSize();
+  return m_qRTData.GetDataSize();
 }
 
 bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {

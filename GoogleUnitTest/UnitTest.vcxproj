@@ -99,10 +99,9 @@
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PriorityQueueRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\QueueRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\RTDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
@@ -130,6 +129,7 @@
     <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\stdafx.cpp" />
@@ -163,9 +163,9 @@
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
-    <ClCompile Include="PriorityQueueRTDataTest.cpp" />
+    <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
-    <ClCompile Include="QueueRTDataTest.cpp" />
+    <ClCompile Include="QueueWebRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
     <ClCompile Include="MockSystemMessageTest.cpp" />
@@ -239,10 +239,9 @@
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\PriorityQueueRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\QueueRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\RTDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
@@ -254,6 +253,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\stdafx.h" />

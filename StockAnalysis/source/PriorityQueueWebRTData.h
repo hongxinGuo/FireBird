@@ -5,18 +5,18 @@
 using namespace std;
 #include<queue>
 
-class CPriorityQueueRTData final
+class CPriorityQueueWebRTData final
 {
 public:
-  CPriorityQueueRTData();
-  ~CPriorityQueueRTData();
+  CPriorityQueueWebRTData();
+  ~CPriorityQueueWebRTData();
   void Reset(void);
 
   // 通用接口函数
-  void PushRTData(CWebRTDataPtr pData);
-  CWebRTDataPtr PopRTData(void);
-  CWebRTDataPtr GetHead(void) { return m_priorityqueueRTStockData.top(); }
-  size_t GetRTDataSize(void);
+  void PushData(CWebRTDataPtr pData);
+  CWebRTDataPtr PopData(void);
+  CWebRTDataPtr GetHead(void) { return m_priorityqueueStockData.top(); }
+  size_t GetDataSize(void);
 
 protected:
   // 需要定义下述结构，结构中重载（）运算符，定义如何确定指针的大小（按时间顺序从小到大排列,相同时间的按先后放入的顺序排列）。
@@ -38,5 +38,5 @@ protected:
   //     return(p1->GetFormatedMarketTime() > p2->GetFormatedMarketTime());
   //   }
   // };
-  priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityqueueRTStockData;
+  priority_queue<CWebRTDataPtr, vector<CWebRTDataPtr>, cmpRTData> m_priorityqueueStockData;
 };

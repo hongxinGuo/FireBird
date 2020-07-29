@@ -88,10 +88,10 @@ namespace StockAnalysisTest {
 
   TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
-    gl_RTDataContainer.PushSinaRTData(pRTData);
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 1);
+    gl_WebRTDataContainer.PushSinaData(pRTData);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeSinaRTDataToProperStock());
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     switch (m_iCount) {
     case 1:
