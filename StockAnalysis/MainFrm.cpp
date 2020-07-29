@@ -89,6 +89,7 @@ static UINT indicators[] =
   ID_CURRENT_ACTIVE_STOCK,
   ID_CURRENT_DAYLINE_READING_TIME,
   ID_CURRENT_RUNNING_THREAD,
+  ID_CURRENT_RUNNING_BACKGROUND_THREAD,
   ID_CURRENT_TIME,
 };
 
@@ -497,8 +498,13 @@ void CMainFrame::UpdateStatus(void) {
   str = buffer;
   SysCallSetPaneText(9, (LPCTSTR)str);
 
+  // 更新当前后台工作线程数
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.HowManyBackGroundThreadsWorking());
+  str = buffer;
+  SysCallSetPaneText(10, (LPCTSTR)str);
+
   //更新当地时间的显示
-  SysCallSetPaneText(10, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(11, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -60,6 +60,7 @@ public:
 public:
   void UpdateStatus(CRTDataPtr pRTData);
 
+  // 本股票各变量状态
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString GetStockCode(void) noexcept { return m_strStockCode; }
@@ -291,8 +292,6 @@ public:
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
   void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
-  bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
-  void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
 
   bool IsSameStock(CChinaStockPtr pStock);
 
@@ -303,6 +302,7 @@ public:
   bool IsNeedProcessRTData(void) noexcept { return m_fNeedProcessRTData; }
   void SetRTDataCalculated(bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
   bool IsRTDataCalculated(void) noexcept { return m_fRTDataCalculated; }
+
   void SetRecordRTData(bool fFlag) noexcept { m_fRecordRTData = fFlag; }
   bool IsRecordRTData(void) noexcept { return m_fRecordRTData; }
 
@@ -429,18 +429,17 @@ public:
   void SetDayLineNeedSaving(bool fFlag);
   bool IsDayLineNeedSavingAndClearFlag(void);
 
-  bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
-  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
   bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
   void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
   bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
   void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
 
+  // 提取网易日线历史数据各函数
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
   bool SkipNeteaseDayLineInformationHeader(void);
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
-  void StoreDayLine(vector<CDayLinePtr>& vTempDayLine);
+  void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
   void ReportDayLineDownLoaded(void);
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
@@ -652,7 +651,6 @@ protected:
   atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
   atomic_bool m_fWeekLineLoaded; // 是否装入了周线数据
 
-  bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
 private:

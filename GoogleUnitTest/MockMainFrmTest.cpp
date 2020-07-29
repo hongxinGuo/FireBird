@@ -99,6 +99,8 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
       .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(11, _))
+      .Times(1);
     s_pMainFrame->UpdateStatus();
 
     gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
@@ -124,6 +126,8 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(9, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(11, _))
       .Times(1);
     s_pMainFrame->UpdateStatus();
   }

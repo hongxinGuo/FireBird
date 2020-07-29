@@ -140,8 +140,6 @@ void CChinaStock::Reset(void) {
 
   m_fChoiced = false;
   m_fSaveToChoicedStockDB = false;
-  m_fMinLineUpdated = false;
-  m_fDayLineUpdated = false;
 
   m_fDayLineDBUpdated = false;
 
@@ -260,9 +258,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
-  strTemp = pDayLine->GetStockCode();
-  strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushDayLineInfoMessage(strTemp);
+  ReportDayLineDownLoaded();
   if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDay(), gl_pChinaStockMarket->GetFormatedMarketDay(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
@@ -316,7 +312,7 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
   gl_pChinaStockMarket->SetTotalActiveStock(gl_pChinaStockMarket->GetTotalActiveStock() + 1);
 }
 
-void CChinaStock::StoreDayLine(vector<CDayLinePtr>& vTempDayLine) {
+void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
   CDayLinePtr pDayLine = nullptr;
   m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
@@ -1863,9 +1859,15 @@ bool CChinaStock::BuildWeekLine(void) {
 
   SaveWeekLine();
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) UnloadDayLine();
+    if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
+      UnloadDayLine();
+      UnloadWeekLine();
+    }
   }
-  else UnloadDayLine();
+  else {
+    UnloadDayLine();
+    UnloadWeekLine();
+  }
   return true;
 }
 

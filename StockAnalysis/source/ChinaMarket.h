@@ -211,7 +211,6 @@ public:
 
   virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
   virtual bool BuildDayLineRSOfDay(long lDay);
-  virtual bool BuildWeekLineRS(void);
   virtual bool BuildWeekLineRSOfDay(long lDay);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 

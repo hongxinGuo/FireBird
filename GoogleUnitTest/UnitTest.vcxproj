@@ -69,6 +69,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp" />
@@ -129,6 +131,7 @@
     <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\stdafx.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
@@ -205,6 +208,7 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h" />
@@ -225,6 +229,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h" />
@@ -249,6 +254,7 @@
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
     <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\stdafx.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />

@@ -2,7 +2,7 @@
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
 //
-// 此线程调用ThreadCalculateRelativeStrongAtThisDayProc线程，最多同时生成16个线程。
+// 此线程调用ThreadBuildWeekLineRSOfDay线程，目前最多允许同时生成8个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -29,11 +29,9 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   time_t tStart = 0, tEnd = 0;
   time(&tStart);
   do {
-    if (pMarket->IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
-      // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
-      // 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-      pMarket->RunningThreadBuildWeekLineRSOfDay(lToday);
-    }
+    // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
+    // 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
+    pMarket->RunningThreadBuildWeekLineRSOfDay(lToday);
     ctCurrent += sevenDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday <= pMarket->GetFormatedMarketDay()); // 计算至当前日期（包括今日）
@@ -65,7 +63,7 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 计算给定日期的周线相对强度。使用C++11mutex和condition_variable构造的Semaphore。
+// 计算给定日期的周线相对强度。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////

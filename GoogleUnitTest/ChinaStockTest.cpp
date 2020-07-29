@@ -723,22 +723,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsChoiced());
   }
 
-  TEST_F(CChinaStockTest, TestIsMinLineUpdated) {
+  TEST_F(CChinaStockTest, TestIsDayLineDBUpdated) {
     CChinaStock stock;
-    EXPECT_FALSE(stock.IsMinLineUpdated());
-    stock.SetMinLineUpdated(true);
-    EXPECT_TRUE(stock.IsMinLineUpdated());
-    stock.SetMinLineUpdated(false);
-    EXPECT_FALSE(stock.IsMinLineUpdated());
-  }
-
-  TEST_F(CChinaStockTest, TestIsDayLineUpdated) {
-    CChinaStock stock;
-    EXPECT_FALSE(stock.IsDayLineUpdated());
-    stock.SetDayLineUpdated(true);
-    EXPECT_TRUE(stock.IsDayLineUpdated());
-    stock.SetDayLineUpdated(false);
-    EXPECT_FALSE(stock.IsDayLineUpdated());
+    EXPECT_FALSE(stock.IsDayLineDBUpdated());
+    stock.SetDayLineDBUpdated(true);
+    EXPECT_TRUE(stock.IsDayLineDBUpdated());
+    stock.SetDayLineDBUpdated(false);
+    EXPECT_FALSE(stock.IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineLoaded) {
@@ -1828,7 +1819,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(vDayLine.size(), 10);
     CChinaStock stock;
     EXPECT_FALSE(stock.IsDayLineLoaded());
-    stock.StoreDayLine(vDayLine);
+    stock.UpdateDayLine(vDayLine);
     EXPECT_EQ(stock.GetDayLineSize(), 10);
     for (int i = 0; i < 10; i++) {
       EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDay(), 19900101 + 9 - i);
