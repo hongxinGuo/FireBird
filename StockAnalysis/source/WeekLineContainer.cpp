@@ -32,6 +32,13 @@ bool CWeekLineContainer::LoadData() {
   return true;
 }
 
+bool CWeekLineContainer::SaveData(void) {
+  SaveBasicInfo();
+  SaveExtendInfo();
+
+  return true;
+}
+
 bool CWeekLineContainer::SaveBasicInfo() {
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   size_t lSize = 0;
@@ -124,5 +131,15 @@ bool CWeekLineContainer::LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExte
   }
 
   m_fLoadDataFirst = false;
+  return true;
+}
+
+bool CWeekLineContainer::StoreData(vector<CWeekLinePtr>& vWeekLine) {
+  CWeekLinePtr pWeekLine = nullptr;
+  for (int i = 0; i < vWeekLine.size(); i++) {
+    pWeekLine = vWeekLine.at(i);
+    StoreData(pWeekLine);
+  }
+
   return true;
 }

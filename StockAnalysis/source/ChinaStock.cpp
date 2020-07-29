@@ -492,14 +492,6 @@ bool CChinaStock::SaveDayLineBasicInfo(void) {
     setDayLineBasicInfo.MoveNext();
   }
   setDayLineBasicInfo.Close();
-  if (vDayLine.size() == 0) {
-    SetDayLineStartDay(gl_pChinaStockMarket->GetFormatedMarketDay());
-    SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
-  }
-  else {
-    SetDayLineStartDay(vDayLine.at(0)->GetFormatedMarketDay());
-    SetDayLineEndDay(vDayLine.at(vDayLine.size() - 1)->GetFormatedMarketDay());
-  }
 
   lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
@@ -522,22 +514,23 @@ bool CChinaStock::SaveDayLineBasicInfo(void) {
   setDayLineBasicInfo.m_pDatabase->CommitTrans();
   setDayLineBasicInfo.Close();
 
-  // 更新最新日线日期和起始日线日期
-  if (fNeedUpdate) {
-    UpdateDayLineStartEndDay();
-  }
-
   return fNeedUpdate;
 }
 
 void CChinaStock::UpdateDayLineStartEndDay(void) {
-  if (m_vDayLine.at(0)->GetFormatedMarketDay() < GetDayLineStartDay()) {
-    SetDayLineStartDay(m_vDayLine.at(0)->GetFormatedMarketDay());
-    SetDayLineDBUpdated(true);
+  if (m_vDayLine.size() == 0) {
+    SetDayLineStartDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
   }
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) {
-    SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay());
-    SetDayLineDBUpdated(true);
+  else {
+    if (m_vDayLine.at(0)->GetFormatedMarketDay() < GetDayLineStartDay()) {
+      SetDayLineStartDay(m_vDayLine.at(0)->GetFormatedMarketDay());
+      SetDayLineDBUpdated(true);
+    }
+    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) {
+      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay());
+      SetDayLineDBUpdated(true);
+    }
   }
 }
 

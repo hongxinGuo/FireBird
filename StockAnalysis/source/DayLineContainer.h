@@ -2,6 +2,7 @@
 #include"stdafx.h"
 
 #include"DayLine.h"
+#include"WeekLine.h"
 #include "ChinaStockHistoryDataContainer.h"
 
 #include"SetDayLineBasicInfo.h"
@@ -13,8 +14,16 @@ class CDayLineContainer final : public CChinaStockHistoryDataContainer {
 public:
   virtual bool SaveData(void) override;
   virtual bool LoadData(void) override;
-  virtual bool CalculatingData(void) override;
+
+  bool SaveDayLineBasicInfo(void);
 
   bool StoreData(CDayLinePtr pData) noexcept { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
   CDayLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
+
+public:
+  // ÌØÓÐº¯Êý
+  bool BuildWeekLine(vector<CWeekLinePtr>& vWeekLine);
+
+private:
+  CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 };

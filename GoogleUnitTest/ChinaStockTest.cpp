@@ -1325,8 +1325,7 @@ namespace StockAnalysisTest {
     pStock->SetStockCode(_T("sh600011"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), 21900101);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
     pStock->SetTransactionTime(FormatToTTime(21900101));
     pStock->SetTransactionNumber(1);
@@ -1550,8 +1549,7 @@ namespace StockAnalysisTest {
     pStock->SetStockCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setDayLineBasicInfo.Open();
@@ -1622,7 +1620,6 @@ namespace StockAnalysisTest {
     pStock->SetDayLineEndDay(10190101);
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), 21101201);
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setDayLineBasicInfo.Open();

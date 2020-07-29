@@ -22,7 +22,6 @@ public:
 
   virtual bool SaveData(void) = 0;
   virtual bool LoadData(void) = 0;
-  virtual bool CalculatingData(void) = 0;
 
 public:
   size_t GetSize(void) { return m_vHistoryData.size(); }
