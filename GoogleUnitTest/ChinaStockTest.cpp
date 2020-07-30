@@ -1819,7 +1819,7 @@ namespace StockAnalysisTest {
     stock.UpdateDayLine(vDayLine);
     EXPECT_EQ(stock.GetDayLineSize(), 10);
     for (int i = 0; i < 10; i++) {
-      EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDay(), 19900101 + 9 - i);
+      EXPECT_EQ(stock.GetDayLine(i)->GetFormatedMarketDay(), 19900101 + i);
     }
     EXPECT_TRUE(stock.IsDayLineLoaded());
   }

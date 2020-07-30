@@ -23,6 +23,8 @@ public:
   bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
 
+  void UpdateData(vector<CDayLinePtr>& vTempDayLine);
+
   bool StoreData(CDayLinePtr pData) noexcept { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
   CDayLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
 

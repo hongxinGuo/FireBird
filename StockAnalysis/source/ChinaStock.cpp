@@ -312,11 +312,16 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
   gl_pChinaStockMarket->SetTotalActiveStock(gl_pChinaStockMarket->GetTotalActiveStock() + 1);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 更新日线容器。
+//
+/////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
   CDayLinePtr pDayLine = nullptr;
   m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+  for (int i = 0; i < vTempDayLine.size(); i++) {
     pDayLine = vTempDayLine.at(i);
     if (pDayLine->IsActive()) {
       // 清除掉不再交易（停牌或退市后出现的）的股票日线
@@ -817,6 +822,74 @@ bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
   return true;
 }
 
+bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vDayLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return true;
+}
+
+bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
+  double dTempRS = 0;
+  const INT64 lTotalNumber = m_vDayLine.size();
+  for (INT64 i = lNumber; i < lTotalNumber; i++) {
+    dTempRS = 0;
+    for (INT64 j = i - lNumber; j < i; j++) {
+      dTempRS += m_vDayLine.at(j)->GetRelativeStrongIndex();
+    }
+    switch (lNumber) {
+    case 3:
+    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
+    break;
+    case 5:
+    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
+    break;
+    case 10:
+    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
+    break;
+    case 30:
+    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
+    break;
+    case 60:
+    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
+    break;
+    case 120:
+    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
+    break;
+    default:
+    ASSERT(0);
+    }
+  }
+  return true;
+}
+
 bool CChinaStock::CalculateWeekLineRelativeStrong(void) {
   return m_WeekLine.CalculateRelativeStrong();
 }
@@ -1031,74 +1104,6 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
   }
   if (!fFind4) return false;
 
-  return true;
-}
-
-bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
-  double dTempRS = 0;
-  const INT64 lTotalNumber = m_vDayLine.size();
-  for (INT64 i = lNumber; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    switch (lNumber) {
-    case 3:
-    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
-    break;
-    case 5:
-    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
-    break;
-    case 10:
-    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
-    break;
-    case 30:
-    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
-    break;
-    case 60:
-    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
-    break;
-    case 120:
-    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
-    break;
-    default:
-    ASSERT(0);
-    }
-  }
-  return true;
-}
-
-bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
-  double dTempRS = 0;
-  const INT64 lTotalNumber = m_vDayLine.size();
-  for (INT64 i = lNumber; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrongIndex();
-    }
-    switch (lNumber) {
-    case 3:
-    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
-    break;
-    case 5:
-    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
-    break;
-    case 10:
-    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
-    break;
-    case 30:
-    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
-    break;
-    case 60:
-    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
-    break;
-    case 120:
-    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
-    break;
-    default:
-    ASSERT(0);
-    }
-  }
   return true;
 }
 

@@ -20,8 +20,10 @@ public:
   ~CChinaStockHistoryDataContainer();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  virtual bool SaveData(void) = 0;
-  virtual bool LoadData(void) = 0;
+  virtual bool SaveData(void) { TRACE(_T("调用了基类SaveData\n")); return false; }
+  virtual bool LoadData(void) { TRACE(_T("调用了基类LoadData\n")); return false; }
+
+  void UpdateData(vector<CChinaStockHistoryDataPtr>& vTempLine);
 
 public:
   size_t GetDataSize(void) { return m_vHistoryData.size(); }

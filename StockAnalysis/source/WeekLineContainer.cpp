@@ -152,6 +152,23 @@ bool CWeekLineContainer::StoreData(vector<CWeekLinePtr>& vWeekLine) {
     pWeekLine = vWeekLine.at(i);
     StoreData(pWeekLine);
   }
+  SetDataLoaded(true);
 
   return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 更新日线容器。
+//
+/////////////////////////////////////////////////////////////////////////////////////
+void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
+  CWeekLinePtr pWeekLine = nullptr;
+  Unload(); // 清除已载入的周线数据（如果有的话）
+  // 将日线数据以时间为正序存入
+  for (int i = 0; i < vTempWeekLine.size(); i++) {
+    pWeekLine = vTempWeekLine.at(i);
+    StoreData(pWeekLine);
+  }
+  SetDataLoaded(true);
 }

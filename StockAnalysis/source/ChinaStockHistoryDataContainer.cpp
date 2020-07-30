@@ -10,6 +10,22 @@ CChinaStockHistoryDataContainer::CChinaStockHistoryDataContainer() : CObject() {
 CChinaStockHistoryDataContainer::~CChinaStockHistoryDataContainer() {
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+// 更新日线容器。
+//
+/////////////////////////////////////////////////////////////////////////////////////
+void CChinaStockHistoryDataContainer::UpdateData(vector<CChinaStockHistoryDataPtr>& vTempWeekLine) {
+  CChinaStockHistoryDataPtr pWeekLine = nullptr;
+  Unload(); // 清除已载入的周线数据（如果有的话）
+  // 将日线数据以时间为正序存入
+  for (int i = 0; i < vTempWeekLine.size(); i++) {
+    pWeekLine = vTempWeekLine.at(i);
+    StoreData(pWeekLine);
+  }
+  SetDataLoaded(true);
+}
+
 void CChinaStockHistoryDataContainer::Reset(void) {
   m_vHistoryData.clear();
 
