@@ -172,80 +172,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
   }
-
   TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pStock->StoreWeekLine(pWeekLine);
-    InSequence seq;
     EXPECT_CALL(*pStock, LoadWeekLine)
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(120))
       .Times(1);
     pStock->SetWeekLineLoaded(false);
     EXPECT_EQ(ThreadLoadWeekLine(pStock), (UINT)29);
     EXPECT_TRUE(pStock->IsWeekLineLoaded());
     EXPECT_EQ(pStock->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
-  }
-
-  TEST_F(CMockChinaStockTest, TestCalculateWeekLineRS) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRS(120))
-      .Times(1);
-    pStock->CalculateWeekLineRelativeStrong();
-  }
-
-  TEST_F(CMockChinaStockTest, TestCalculateWeekLineRSLogarithm) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(60))
-      .Times(1)
-      .WillOnce(Return(true));
-    EXPECT_CALL(*pStock, CalculateWeekLineRSLogarithm(120))
-      .Times(1);
-    pStock->CalculateWeekLineRelativeStrongLogarithm();
-  }
-
-  TEST_F(CMockChinaStockTest, TestCalculateWeekLineRSIndex) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateWeekLineRSIndex(120))
-      .Times(1);
-    pStock->CalculateWeekLineRelativeStrongIndex();
   }
 }

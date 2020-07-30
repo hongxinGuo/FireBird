@@ -448,21 +448,18 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
 
   // 周线相关函数
-  size_t GetWeekLineSize(void) { return m_vWeekLine.size(); }
-  CWeekLinePtr GetWeekLine(long lIndex) { return m_vWeekLine.at(lIndex); }
-  void UnloadWeekLine(void) noexcept { m_vWeekLine.clear(); m_fWeekLineLoaded = false; }
+  size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
+  CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
+  void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
   bool CalculatingWeekLine(void);
   CWeekLinePtr CreateNewWeekLine(long& lCurrentDay);
-  bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { m_vWeekLine.push_back(pWeekLine); return true; }
-  bool IsWeekLineLoaded(void) noexcept { return m_fWeekLineLoaded; }
-  void SetWeekLineLoaded(bool fFlag) noexcept { m_fWeekLineLoaded = fFlag; }
+  bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
+  bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
+  void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
   // 周线相对强度计算
   bool CalculateWeekLineRelativeStrong(void);
-  virtual bool CalculateWeekLineRS(INT64 lNumber);
   bool CalculateWeekLineRelativeStrongIndex(void);
-  virtual bool CalculateWeekLineRSIndex(INT64 lNumber);
   bool CalculateWeekLineRelativeStrongLogarithm(void);
-  virtual bool CalculateWeekLineRSLogarithm(INT64 lNumber);
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -642,7 +639,7 @@ protected:
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   CDayLineContainer m_DayLine; // 日线容器
   // 周线相关数据
-  vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
+  //vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
   CWeekLineContainer m_WeekLine; // 周线容器
 
   //网易日线接收处理相关数据
@@ -656,11 +653,11 @@ protected:
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
   atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
-  atomic_bool m_fWeekLineLoaded; // 是否装入了周线数据
+  //atomic_bool m_fWeekLineLoaded; // 是否装入了周线数据
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
 private:
   bool m_fLoadDayLineFirst; // 测试用。装入时，DayLineBasicInfo表要先于DayLineExtendInfo表
-  bool m_fLoadWeekLineFirst; // 测试用。装入时，WeekLineBasicInfo表要先于WeekLineExtendInfo表
+  //bool m_fLoadWeekLineFirst; // 测试用。装入时，WeekLineBasicInfo表要先于WeekLineExtendInfo表
 };

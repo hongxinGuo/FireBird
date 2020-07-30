@@ -8,7 +8,7 @@
 #include"SetWeekLineBasicInfo.h"
 #include"SetWeekLineExtendInfo.h"
 
-class CWeekLineContainer final : public CChinaStockHistoryDataContainer {
+class CWeekLineContainer : public CChinaStockHistoryDataContainer {
 public:
   virtual bool LoadData(void) override;
   virtual bool SaveData(void) override;

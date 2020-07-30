@@ -79,6 +79,9 @@
     <Filter Include="Test源文件\China Stock Market\基础数据类\WebRTData">
       <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\China Stock Market\基础数据类">
+      <UniqueIdentifier>{df9f8197-f5ce-44f4-8616-dd43700ee158}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -475,6 +478,12 @@
     </ClCompile>
     <ClCompile Include="WebRTDataContainerTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="MockWeekLineContainerTest.cpp">
+      <Filter>Test源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="MockWeekLineContainer.h">
+      <Filter>Mock类\China Stock Market\基础数据类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -153,6 +153,8 @@
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClCompile Include="MockWeekLineContainer.h" />
+    <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />

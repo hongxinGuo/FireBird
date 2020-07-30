@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class CDayLineContainer final : public CChinaStockHistoryDataContainer {
+class CDayLineContainer : public CChinaStockHistoryDataContainer {
 public:
   CDayLineContainer();
   ~CDayLineContainer();
