@@ -131,7 +131,6 @@ void CChinaStock::Reset(void) {
 
   m_fActive = false;
 
-  m_fDayLineLoaded = false;
   m_fDayLineNeedUpdate = true;
   m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
   m_fDayLineNeedSaving = false;
@@ -150,8 +149,6 @@ void CChinaStock::Reset(void) {
   m_pLastRTData = nullptr;
 
   ClearRTDataDeque();
-
-  m_fLoadDayLineFirst = false;
 }
 
 void CChinaStock::ClearRTDataDeque(void) {
@@ -162,8 +159,8 @@ void CChinaStock::ClearRTDataDeque(void) {
 }
 
 bool CChinaStock::HaveNewDayLineData(void) {
-  if (m_vDayLine.size() <= 0) return false;
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) return true;
+  if (m_DayLine.GetDataSize() <= 0) return false;
+  if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) return true;
   else return false;
 }
 
@@ -266,13 +263,13 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
 
-  m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
+  m_DayLine.Unload(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
   for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
     pDayLine = vTempDayLine.at(i);
     if (pDayLine->IsActive()) {
       // 清除掉不再交易（停牌或退市）的股票日线
-      m_vDayLine.push_back(pDayLine);
+      m_DayLine.StoreData(pDayLine);
     }
   }
   vTempDayLine.clear();
@@ -318,17 +315,7 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
-  CDayLinePtr pDayLine = nullptr;
-  m_vDayLine.clear(); // 清除已载入的日线数据（如果有的话）
-  // 将日线数据以时间为正序存入
-  for (int i = 0; i < vTempDayLine.size(); i++) {
-    pDayLine = vTempDayLine.at(i);
-    if (pDayLine->IsActive()) {
-      // 清除掉不再交易（停牌或退市后出现的）的股票日线
-      m_vDayLine.push_back(pDayLine);
-    }
-  }
-  SetDayLineLoaded(true);
+  m_DayLine.UpdateData(vTempDayLine);
 }
 
 void CChinaStock::ReportDayLineDownLoaded(void) {
@@ -473,67 +460,21 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveDayLineBasicInfo(void) {
-  CSetDayLineBasicInfo setDayLineBasicInfo;
-  size_t lSize = 0;
-  vector<CDayLinePtr> vDayLine;
-  CDayLinePtr pDayLine = nullptr;
-  long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-  bool fNeedUpdate = false;
-
-  ASSERT(m_vDayLine.size() > 0);
-  ASSERT(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > m_lDayLineEndDay);
-
-  lSize = m_vDayLine.size();
-  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineBasicInfo.m_strFilter += GetStockCode() + _T("'");
-  setDayLineBasicInfo.m_strSort = _T("[Day]");
-
-  setDayLineBasicInfo.Open();
-  while (!setDayLineBasicInfo.IsEOF()) {
-    pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(&setDayLineBasicInfo);
-    vDayLine.push_back(pDayLine);
-    lCurrentPos++;
-    setDayLineBasicInfo.MoveNext();
-  }
-  setDayLineBasicInfo.Close();
-
-  lSizeOfOldDayLine = lCurrentPos;
-  lCurrentPos = 0;
-  setDayLineBasicInfo.Open();
-  setDayLineBasicInfo.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    pDayLine = m_vDayLine.at(i);
-    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() < pDayLine->GetFormatedMarketDay())) lCurrentPos++;
-    if (lCurrentPos < lSizeOfOldDayLine) {
-      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() > pDayLine->GetFormatedMarketDay()) {
-        pDayLine->AppendData(&setDayLineBasicInfo);
-        fNeedUpdate = true;
-      }
-    }
-    else {
-      pDayLine->AppendData(&setDayLineBasicInfo);
-      fNeedUpdate = true;
-    }
-  }
-  setDayLineBasicInfo.m_pDatabase->CommitTrans();
-  setDayLineBasicInfo.Close();
-
-  return fNeedUpdate;
+  return m_DayLine.SaveDayLineBasicInfo();
 }
 
 void CChinaStock::UpdateDayLineStartEndDay(void) {
-  if (m_vDayLine.size() == 0) {
+  if (m_DayLine.GetDataSize() == 0) {
     SetDayLineStartDay(__CHINA_MARKET_BEGIN_DAY__);
     SetDayLineEndDay(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
-    if (m_vDayLine.at(0)->GetFormatedMarketDay() < GetDayLineStartDay()) {
-      SetDayLineStartDay(m_vDayLine.at(0)->GetFormatedMarketDay());
+    if (m_DayLine.GetData(0)->GetFormatedMarketDay() < GetDayLineStartDay()) {
+      SetDayLineStartDay(m_DayLine.GetData(0)->GetFormatedMarketDay());
       SetDayLineDBUpdated(true);
     }
-    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) {
-      SetDayLineEndDay(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay());
+    if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDay() > GetDayLineEndDay()) {
+      SetDayLineEndDay(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDay());
       SetDayLineDBUpdated(true);
     }
   }
@@ -688,45 +629,11 @@ void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
 }
 
 bool CChinaStock::LoadDayLine(void) {
-  CSetDayLineBasicInfo setDayLineBasicInfo;
-  CSetDayLineExtendInfo setDayLineExtendInfo;
-
-  // 装入DayLine数据
-  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineBasicInfo.m_strFilter += GetStockCode();
-  setDayLineBasicInfo.m_strFilter += _T("'");
-  setDayLineBasicInfo.m_strSort = _T("[Day]");
-  setDayLineBasicInfo.Open();
-  LoadDayLineBasicInfo(&setDayLineBasicInfo);
-  setDayLineBasicInfo.Close();
-
-  // 装入DayLineInfo数据
-  setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineExtendInfo.m_strFilter += GetStockCode();
-  setDayLineExtendInfo.m_strFilter += _T("'");
-  setDayLineExtendInfo.m_strSort = _T("[Day]");
-  setDayLineExtendInfo.Open();
-  LoadDayLineExtendInfo(&setDayLineExtendInfo);
-  setDayLineExtendInfo.Close();
-
-  m_fDayLineLoaded = true;
-  return true;
+  return m_DayLine.LoadData();
 }
 
 bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
-  CDayLinePtr pDayLine;
-
-  if (gl_fNormalMode) ASSERT(!m_fLoadDayLineFirst);
-  // 装入DayLine数据
-  m_vDayLine.clear();
-  while (!psetDayLineBasicInfo->IsEOF()) {
-    pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(psetDayLineBasicInfo);
-    m_vDayLine.push_back(pDayLine);
-    psetDayLineBasicInfo->MoveNext();
-  }
-  m_fLoadDayLineFirst = true;
-  return true;
+  return m_DayLine.LoadDayLineBasicInfo(psetDayLineBasicInfo);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -736,26 +643,7 @@ bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInf
 //
 ////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
-  CDayLinePtr pDayLine;
-  int iPosition = 0;
-
-  if (gl_fNormalMode) ASSERT(m_fLoadDayLineFirst);
-
-  while (!psetDayLineExtendInfo->IsEOF()) {
-    pDayLine = m_vDayLine.at(iPosition);
-    while ((pDayLine->GetFormatedMarketDay() < psetDayLineExtendInfo->m_Day)
-           && (m_vDayLine.size() > (iPosition + 1))) {
-      iPosition++;
-      pDayLine = m_vDayLine.at(iPosition);
-    }
-    if (pDayLine->GetFormatedMarketDay() == psetDayLineExtendInfo->m_Day) {
-      pDayLine->LoadExtendData(psetDayLineExtendInfo);
-    }
-    if (m_vDayLine.size() <= (iPosition + 1)) break;
-    psetDayLineExtendInfo->MoveNext();
-  }
-  m_fLoadDayLineFirst = false;
-  return true;
+  return m_DayLine.LoadDayLineExtendInfo(psetDayLineExtendInfo);
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrong(void) {
@@ -789,105 +677,15 @@ bool CChinaStock::CalculateDayLineRelativeStrongIndex(void) {
 }
 
 bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
-  double dTempRS = 0;
-  const INT64 lTotalNumber = m_vDayLine.size();
-  for (INT64 i = lNumber; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrongLogarithm();
-    }
-    switch (lNumber) {
-    case 3:
-    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
-    break;
-    case 5:
-    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
-    break;
-    case 10:
-    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
-    break;
-    case 30:
-    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
-    break;
-    case 60:
-    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
-    break;
-    case 120:
-    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
-    break;
-    default:
-    ASSERT(0);
-    }
-  }
-  return true;
+  return m_DayLine.CalculateRSLogarithm(lNumber);
 }
 
 bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
-  double dTempRS = 0;
-  const INT64 lTotalNumber = m_vDayLine.size();
-  for (INT64 i = lNumber; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrong();
-    }
-    switch (lNumber) {
-    case 3:
-    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
-    break;
-    case 5:
-    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
-    break;
-    case 10:
-    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
-    break;
-    case 30:
-    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
-    break;
-    case 60:
-    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
-    break;
-    case 120:
-    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
-    break;
-    default:
-    ASSERT(0);
-    }
-  }
-  return true;
+  return m_DayLine.CalculateRS(lNumber);
 }
 
 bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
-  double dTempRS = 0;
-  const INT64 lTotalNumber = m_vDayLine.size();
-  for (INT64 i = lNumber; i < lTotalNumber; i++) {
-    dTempRS = 0;
-    for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vDayLine.at(j)->GetRelativeStrongIndex();
-    }
-    switch (lNumber) {
-    case 3:
-    m_vDayLine.at(i)->m_d3RS = dTempRS / lNumber;
-    break;
-    case 5:
-    m_vDayLine.at(i)->m_d5RS = dTempRS / lNumber;
-    break;
-    case 10:
-    m_vDayLine.at(i)->m_d10RS = dTempRS / lNumber;
-    break;
-    case 30:
-    m_vDayLine.at(i)->m_d30RS = dTempRS / lNumber;
-    break;
-    case 60:
-    m_vDayLine.at(i)->m_d60RS = dTempRS / lNumber;
-    break;
-    case 120:
-    m_vDayLine.at(i)->m_d120RS = dTempRS / lNumber;
-    break;
-    default:
-    ASSERT(0);
-    }
-  }
-  return true;
+  return m_DayLine.CalculateRSIndex(lNumber);
 }
 
 bool CChinaStock::CalculateWeekLineRelativeStrong(void) {
@@ -907,7 +705,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   vector<double> m_vRS10Day;
   int iCountFirst = 0, iCountSecond = 0;
 
-  ASSERT(m_fDayLineLoaded);
+  ASSERT(m_DayLine.IsDataLoaded());
   size_t iDayLineSize = GetDayLineSize();
   if (iDayLineSize > 155) {
     m_vRS10Day.resize(iDayLineSize);
@@ -937,7 +735,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   vector<double> m_vRS10Day;
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
-  ASSERT(m_fDayLineLoaded);
+  ASSERT(m_DayLine.IsDataLoaded());
   size_t iDayLineSize = GetDayLineSize();
 
   if (iDayLineSize < 350) return false;
@@ -1008,7 +806,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
     fFindHigh4 = true;
   }
 
-  ASSERT(m_fDayLineLoaded);
+  ASSERT(m_DayLine.IsDataLoaded());
   size_t iDayLineSize = GetDayLineSize();
   if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
       || (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
@@ -1878,99 +1676,47 @@ void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
 }
 
 void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
-  const COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
-  CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
-  long lHigh = 0;
-  long lDay;
-  vector<CDayLinePtr>::iterator it = m_vDayLine.end();
-  it--;
-  int i = 0, y = 0;
-  long lLow = (*it)->GetLow();
-  for (; it != m_vDayLine.begin(); it--) {
-    if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
-    if ((*it)->GetLow() > 0) {
-      if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
-    }
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // 画到
-    else i++;
-  }
+  m_DayLine.ShowData(pDC, rectClient);
+}
 
-  it = m_vDayLine.end();
-  it--;
-  i = 0;
-  long x = 0;
-  pDC->SelectObject(&penRed1);
-  for (; it != m_vDayLine.begin(); it--) {
-    x = rectClient.right - 2 - i * 3;
-    y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-    pDC->MoveTo(x, y);
-    if ((*it)->GetHigh() == (*it)->GetLow()) {
-      y = y - 1;
-    }
-    else {
-      y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
-    }
-    pDC->LineTo(x, y);
-    lDay = (*it)->GetFormatedMarketDay();
-    i++;
-    if (3 * i > m_vDayLine.size()) break;
-    if (rectClient.right <= 3 * i) break; // 画到窗口左边框为止
-  }
+void CChinaStock::ShowWeekLine(CDC* pDC, CRect rectClient) {
+  m_WeekLine.ShowData(pDC, rectClient);
 }
 
 void CChinaStock::GetRS1Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
-  }
+  m_DayLine.GetRS1(vRS);
 }
 
 void CChinaStock::GetRSIndex1Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongIndex();
-  }
+  m_DayLine.GetRSIndex1(vRS);
 }
 
 void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->GetRelativeStrongLogarithm();
-  }
+  m_DayLine.GetRSLogarithm1(vRS);
 }
 
 void CChinaStock::GetRS3Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get3DayRS();
-  }
+  m_DayLine.GetRS3(vRS);
 }
 
 void CChinaStock::GetRS5Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get5DayRS();
-  }
+  m_DayLine.GetRS5(vRS);
 }
 
 void CChinaStock::GetRS10Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get10DayRS();
-  }
+  m_DayLine.GetRS10(vRS);
 }
 
 void CChinaStock::GetRS30Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get30DayRS();
-  }
+  m_DayLine.GetRS30(vRS);
 }
 
 void CChinaStock::GetRS60Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get60DayRS();
-  }
+  m_DayLine.GetRS60(vRS);
 }
 
 void CChinaStock::GetRS120Day(vector<double>& vRS) {
-  for (int i = 0; i < m_vDayLine.size(); i++) {
-    vRS[i] = m_vDayLine.at(i)->Get120DayRS();
-  }
+  m_DayLine.GetRS120(vRS);
 }
 
 void CChinaStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
@@ -1998,7 +1744,7 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 
 bool CChinaStock::CalculatingWeekLine(void) {
   ASSERT(IsDayLineLoaded());
-  ASSERT(m_vDayLine.size() > 0);
+  ASSERT(m_DayLine.GetDataSize() > 0);
   long i = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
@@ -2006,24 +1752,24 @@ bool CChinaStock::CalculatingWeekLine(void) {
   do {
     pWeekLine = CreateNewWeekLine(i);
     m_WeekLine.StoreData(pWeekLine);
-  } while (i < m_vDayLine.size());
+  } while (i < m_DayLine.GetDataSize());
 
   return true;
 }
 
 CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
-  ASSERT(m_vDayLine.size() > 0);
-  long lNextMonday = GetNextMonday(m_vDayLine.at(lCurrentDayLinePos)->GetFormatedMarketDay());
-  long lNewestDay = m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDay();
+  ASSERT(m_DayLine.GetDataSize() > 0);
+  long lNextMonday = GetNextMonday(m_DayLine.GetData(lCurrentDayLinePos)->GetFormatedMarketDay());
+  long lNewestDay = m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDay();
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
   if (lNextMonday < lNewestDay) { // 中间数据
-    while (m_vDayLine.at(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
-      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos++));
+    while (m_DayLine.GetData(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
+      pWeekLine->CreateWeekLine(m_DayLine.GetData(lCurrentDayLinePos++));
     }
   }
   else { // 最后一组数据
-    while (lCurrentDayLinePos <= (m_vDayLine.size() - 1)) {
-      pWeekLine->CreateWeekLine(m_vDayLine.at(lCurrentDayLinePos++));
+    while (lCurrentDayLinePos <= (m_DayLine.GetDataSize() - 1)) {
+      pWeekLine->CreateWeekLine(m_DayLine.GetData(lCurrentDayLinePos++));
     }
   }
 

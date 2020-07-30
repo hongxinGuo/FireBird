@@ -26,6 +26,48 @@ void CChinaStockHistoryDataContainer::UpdateData(vector<CChinaStockHistoryDataPt
   SetDataLoaded(true);
 }
 
+void CChinaStockHistoryDataContainer::ShowData(CDC* pDC, CRect rectClient) {
+  const COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
+  CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
+  long lHigh = 0;
+  long lDay;
+  vector<CChinaStockHistoryDataPtr>::iterator it = m_vHistoryData.end();
+  it--;
+  int i = 0, y = 0;
+  long lLow = (*it)->GetLow();
+  for (; it != m_vHistoryData.begin(); it--) {
+    if (lHigh < (*it)->GetHigh()) lHigh = (*it)->GetHigh();
+    if ((*it)->GetLow() > 0) {
+      if (lLow > (*it)->GetLow()) lLow = (*it)->GetLow();
+    }
+    if (3 * i > m_vHistoryData.size()) break;
+    if (rectClient.right <= 3 * i) break; // »­µ½
+    else i++;
+  }
+
+  it = m_vHistoryData.end();
+  it--;
+  i = 0;
+  long x = 0;
+  pDC->SelectObject(&penRed1);
+  for (; it != m_vHistoryData.begin(); it--) {
+    x = rectClient.right - 2 - i * 3;
+    y = (0.5 - (double)((*it)->GetHigh() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    pDC->MoveTo(x, y);
+    if ((*it)->GetHigh() == (*it)->GetLow()) {
+      y = y - 1;
+    }
+    else {
+      y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
+    }
+    pDC->LineTo(x, y);
+    lDay = (*it)->GetFormatedMarketDay();
+    i++;
+    if (3 * i > m_vHistoryData.size()) break;
+    if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹
+  }
+}
+
 void CChinaStockHistoryDataContainer::Reset(void) {
   m_vHistoryData.clear();
 

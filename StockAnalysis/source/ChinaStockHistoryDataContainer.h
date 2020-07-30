@@ -25,6 +25,8 @@ public:
 
   void UpdateData(vector<CChinaStockHistoryDataPtr>& vTempLine);
 
+  void ShowData(CDC* pDC, CRect rectClient);
+
 public:
   size_t GetDataSize(void) { return m_vHistoryData.size(); }
   CChinaStockHistoryDataPtr GetData(long lIndex) { return m_vHistoryData.at(lIndex); }

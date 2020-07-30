@@ -394,12 +394,13 @@ public:
 
   //日线相关函数
   // 日线历史数据
-  size_t GetDayLineSize(void) { return m_vDayLine.size(); }
+  size_t GetDayLineSize(void) { return m_DayLine.GetDataSize(); }
   bool HaveNewDayLineData(void);
-  void UnloadDayLine(void) noexcept { m_vDayLine.clear(); m_fDayLineLoaded = false; }
-  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
-  CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
+  void UnloadDayLine(void) noexcept { m_DayLine.Unload(); }
+  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { return m_DayLine.StoreData(pDayLine); }
+  CDayLinePtr GetDayLine(long lIndex) { return m_DayLine.GetData(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
+  void ShowWeekLine(CDC* pDC, CRect rectClient);
   void GetRS1Day(vector<double>& vRS);
   void GetRSIndex1Day(vector<double>& vRS);
   void GetRSLogarithm1Day(vector<double>& vRS);
@@ -434,8 +435,8 @@ public:
 
   bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
   void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-  bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
-  void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
+  bool IsDayLineLoaded(void) noexcept { return m_DayLine.IsDataLoaded(); }
+  void SetDayLineLoaded(bool fFlag) noexcept { m_DayLine.SetDataLoaded(fFlag); }
 
   // 提取网易日线历史数据各函数
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
@@ -470,7 +471,6 @@ public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
   void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
-  void __TestResetLoadDayLineFirst(void) { m_fLoadDayLineFirst = false; }
 public:
 
 protected:
@@ -636,10 +636,8 @@ protected:
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
   // 日线相关数据
-  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
   CDayLineContainer m_DayLine; // 日线容器
   // 周线相关数据
-  //vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
   CWeekLineContainer m_WeekLine; // 周线容器
 
   //网易日线接收处理相关数据
@@ -652,12 +650,8 @@ protected:
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
-  atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
-  //atomic_bool m_fWeekLineLoaded; // 是否装入了周线数据
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
 private:
-  bool m_fLoadDayLineFirst; // 测试用。装入时，DayLineBasicInfo表要先于DayLineExtendInfo表
-  //bool m_fLoadWeekLineFirst; // 测试用。装入时，WeekLineBasicInfo表要先于WeekLineExtendInfo表
 };
