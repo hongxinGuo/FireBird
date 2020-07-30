@@ -25,10 +25,10 @@ namespace StockAnalysisTest {
   TEST_F(CQueueWebDataTest, TestReset) {
     CWebDataPtr pWebData = make_shared<CWebData>();
     pWebData->m_lTime = 1;
-    gl_QueueWebData.PushWebData(pWebData);
-    EXPECT_EQ(gl_QueueWebData.GetWebDataSize(), 1);
+    gl_QueueWebData.PushData(pWebData);
+    EXPECT_EQ(gl_QueueWebData.GetDataSize(), 1);
     gl_QueueWebData.Reset();
-    EXPECT_EQ(gl_QueueWebData.GetWebDataSize(), 0);
+    EXPECT_EQ(gl_QueueWebData.GetDataSize(), 0);
   }
 
   TEST_F(CQueueWebDataTest, TestPushPopData) {
@@ -36,9 +36,9 @@ namespace StockAnalysisTest {
     pWebData->m_lTime = 1;
     CWebDataPtr pWebData2 = make_shared<CWebData>();
     pWebData2->m_lTime = 0;
-    gl_QueueWebData.PushWebData(pWebData);
-    gl_QueueWebData.PushWebData(pWebData2);
-    CWebDataPtr pWebData3 = gl_QueueWebData.PopWebData();
+    gl_QueueWebData.PushData(pWebData);
+    gl_QueueWebData.PushData(pWebData2);
+    CWebDataPtr pWebData3 = gl_QueueWebData.PopData();
     EXPECT_EQ(pWebData3->m_lTime, 1) << "无优先权的队列，与交易时间无关，按进队列的先后顺序出队列";
   }
 }

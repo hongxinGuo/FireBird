@@ -153,9 +153,6 @@
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
-    <ClCompile Include="RTDataContainerTest.cpp">
-      <Filter>Test源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="WebDataTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -475,6 +472,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="WebRTDataContainerTest.cpp">
+      <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
 namespace StockAnalysisTest {
   static CQueueWebRTData gl_QueueWebRTData;
 
-  class CQueueRTDataTest : public ::testing::Test
+  class CQueueWebRTDataTest : public ::testing::Test
   {
   protected:
     virtual void SetUp(void) override {
@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CQueueRTDataTest, TestReset) {
+  TEST_F(CQueueWebRTDataTest, TestReset) {
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(1);
     gl_QueueWebRTData.PushData(pRTData);
@@ -31,7 +31,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_QueueWebRTData.GetDataSize(), 0);
   }
 
-  TEST_F(CQueueRTDataTest, TestPushPopData) {
+  TEST_F(CQueueWebRTDataTest, TestPushPopData) {
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     pRTData->SetTransactionTime(1);
     CWebRTDataPtr pRTData2 = make_shared<CWebRTData>();

@@ -184,7 +184,7 @@
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
-    <ClCompile Include="RTDataContainerTest.cpp" />
+    <ClCompile Include="WebRTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
     <ClCompile Include="TengxunWebRTDataTest.cpp" />

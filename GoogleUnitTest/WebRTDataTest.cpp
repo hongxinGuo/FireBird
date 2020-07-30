@@ -9,7 +9,7 @@
 #include"SinaRTWebInquiry.h"
 
 namespace StockAnalysisTest {
-  class CStockRTDataTest : public ::testing::Test
+  class CStockWebRTDataTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite() { // 本测试类的初始化函数
@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CStockRTDataTest, TestInitialize) {
+  TEST_F(CStockWebRTDataTest, TestInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
     CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(RTData.IsActive());
   }
 
-  TEST_F(CStockRTDataTest, TestGetDatasource) {
+  TEST_F(CStockWebRTDataTest, TestGetDatasource) {
     CWebRTData rtData;
     EXPECT_EQ(rtData.GetDataSource(), __INVALID_RT_WEB_DATA__);
     EXPECT_FALSE(rtData.IsValidDataSource());
@@ -62,13 +62,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(rtData.IsValidDataSource());
   }
 
-  TEST_F(CStockRTDataTest, TestGetStockCode) {
+  TEST_F(CStockWebRTDataTest, TestGetStockCode) {
     CWebRTData rtData;
     rtData.SetStockCode(_T("sh600000"));
     EXPECT_STREQ(rtData.GetStockCode(), _T("sh600000"));
   }
 
-  TEST_F(CStockRTDataTest, TestIsActive) {
+  TEST_F(CStockWebRTDataTest, TestIsActive) {
     CWebRTData rtData;
     EXPECT_FALSE(rtData.IsActive());
     rtData.SetActive(true);
@@ -77,7 +77,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(rtData.IsActive());
   }
 
-  TEST_F(CStockRTDataTest, TestGetTransactionTime) {
+  TEST_F(CStockWebRTDataTest, TestGetTransactionTime) {
     CWebRTData rtData;
     EXPECT_FALSE(rtData.GetTransactionTime());
     rtData.SetTransactionTime(true);
@@ -86,91 +86,91 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(rtData.GetTransactionTime());
   }
 
-  TEST_F(CStockRTDataTest, TestGetMarket) {
+  TEST_F(CStockWebRTDataTest, TestGetMarket) {
     CWebRTData rtData;
     rtData.SetMarket(__SHANGHAI_MARKET__);
     EXPECT_EQ(rtData.GetMarket(), __SHANGHAI_MARKET__);
   }
 
-  TEST_F(CStockRTDataTest, TestGetLastClose) {
+  TEST_F(CStockWebRTDataTest, TestGetLastClose) {
     CWebRTData rtData;
     rtData.SetLastClose(1010);
     EXPECT_EQ(rtData.GetLastClose(), 1010);
   }
 
-  TEST_F(CStockRTDataTest, TestGetOpen) {
+  TEST_F(CStockWebRTDataTest, TestGetOpen) {
     CWebRTData rtData;
     rtData.SetOpen(20202);
     EXPECT_EQ(rtData.GetOpen(), 20202);
   }
 
-  TEST_F(CStockRTDataTest, TestGetHigh) {
+  TEST_F(CStockWebRTDataTest, TestGetHigh) {
     CWebRTData rtData;
     rtData.SetHigh(30303);
     EXPECT_EQ(rtData.GetHigh(), 30303);
   }
 
-  TEST_F(CStockRTDataTest, TestGetLow) {
+  TEST_F(CStockWebRTDataTest, TestGetLow) {
     CWebRTData rtData;
     rtData.SetLow(40404);
     EXPECT_EQ(rtData.GetLow(), 40404);
   }
 
-  TEST_F(CStockRTDataTest, TestGetNew) {
+  TEST_F(CStockWebRTDataTest, TestGetNew) {
     CWebRTData rtData;
     rtData.SetNew(50505);
     EXPECT_EQ(rtData.GetNew(), 50505);
   }
 
-  TEST_F(CStockRTDataTest, TestGetAmount) {
+  TEST_F(CStockWebRTDataTest, TestGetAmount) {
     CWebRTData rtData;
     rtData.SetAmount(60606);
     EXPECT_EQ(rtData.GetAmount(), 60606);
   }
 
-  TEST_F(CStockRTDataTest, TestGetVolume) {
+  TEST_F(CStockWebRTDataTest, TestGetVolume) {
     CWebRTData rtData;
     rtData.SetVolume(70707);
     EXPECT_EQ(rtData.GetVolume(), 70707);
   }
 
-  TEST_F(CStockRTDataTest, TestGetTotalValue) {
+  TEST_F(CStockWebRTDataTest, TestGetTotalValue) {
     CWebRTData rtData;
     rtData.SetTotalValue(88);
     EXPECT_EQ(rtData.GetTotalValue(), 88);
   }
 
-  TEST_F(CStockRTDataTest, TestGetCurrentValue) {
+  TEST_F(CStockWebRTDataTest, TestGetCurrentValue) {
     CWebRTData rtData;
     rtData.SetCurrentValue(999);
     EXPECT_EQ(rtData.GetCurrentValue(), 999);
   }
 
-  TEST_F(CStockRTDataTest, TestGetBuy) {
+  TEST_F(CStockWebRTDataTest, TestGetBuy) {
     CWebRTData rtData;
     rtData.SetBuy(1111);
     EXPECT_EQ(rtData.GetBuy(), 1111);
   }
 
-  TEST_F(CStockRTDataTest, TestGetSell) {
+  TEST_F(CStockWebRTDataTest, TestGetSell) {
     CWebRTData rtData;
     rtData.SetSell(2222);
     EXPECT_EQ(rtData.GetSell(), 2222);
   }
 
-  TEST_F(CStockRTDataTest, TestGetHighLimit) {
+  TEST_F(CStockWebRTDataTest, TestGetHighLimit) {
     CWebRTData rtData;
     rtData.SetHighLimit(4444);
     EXPECT_EQ(rtData.GetHighLimit(), 4444);
   }
 
-  TEST_F(CStockRTDataTest, TestGetLowLimit) {
+  TEST_F(CStockWebRTDataTest, TestGetLowLimit) {
     CWebRTData rtData;
     rtData.SetLowLimit(5555);
     EXPECT_EQ(rtData.GetLowLimit(), 5555);
   }
 
-  TEST_F(CStockRTDataTest, TestGetPBuy) {
+  TEST_F(CStockWebRTDataTest, TestGetPBuy) {
     CWebRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPBuy(i, i + 10201);
@@ -178,21 +178,21 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CStockRTDataTest, TestGetVBuy) {
+  TEST_F(CStockWebRTDataTest, TestGetVBuy) {
     CWebRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVBuy(i, i + 10101);
       EXPECT_EQ(rtData.GetVBuy(i), i + 10101);
     }
   }
-  TEST_F(CStockRTDataTest, TestGetPSell) {
+  TEST_F(CStockWebRTDataTest, TestGetPSell) {
     CWebRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetPSell(i, i + 30101);
       EXPECT_EQ(rtData.GetPSell(i), i + 30101);
     }
   }
-  TEST_F(CStockRTDataTest, TestGetVSell) {
+  TEST_F(CStockWebRTDataTest, TestGetVSell) {
     CWebRTData rtData;
     for (int i = 0; i < 5; i++) {
       rtData.SetVSell(i, i + 50101);
@@ -200,7 +200,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CStockRTDataTest, TestIsDataTimeAtCurrentDay) {
+  TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDay) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;
@@ -222,7 +222,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.IsValidTime()) << _T("数据有问题：成交时间晚于当前时间");
   }
 
-  TEST_F(CStockRTDataTest, TestCheckSinaRTDataMarket) {
+  TEST_F(CStockWebRTDataTest, TestCheckSinaRTDataMarket) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;
@@ -241,7 +241,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(data.CheckSinaRTDataActive());
   }
 
-  TEST_F(CStockRTDataTest, TestMapNeteaseSymbolToIndex) {
+  TEST_F(CStockWebRTDataTest, TestMapNeteaseSymbolToIndex) {
     CWebRTData rtData;
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("time")), 1);
     EXPECT_EQ(rtData.GetNeteaseSymbolIndex(_T("code")), 2);
@@ -1679,7 +1679,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CStockRTDataTest, TestSaveData) {
+  TEST_F(CStockWebRTDataTest, TestSaveData) {
     CSetRealTimeData setRTData;
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     time_t tt = FormatToTTime(21101123);
@@ -1739,7 +1739,7 @@ namespace StockAnalysisTest {
     setRTData.Close();
   }
 
-  TEST_F(CStockRTDataTest, TestLoadData) {
+  TEST_F(CStockWebRTDataTest, TestLoadData) {
     CSetRealTimeData setRTData;
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
     CWebRTData id;
