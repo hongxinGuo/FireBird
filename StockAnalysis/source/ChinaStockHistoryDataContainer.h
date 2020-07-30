@@ -41,6 +41,16 @@ public:
   bool CalculateRelativeStrongLogarithm(void);
   virtual bool CalculateRSLogarithm(INT64 lNumber);
 
+  void GetRS1(vector<double>& vRS);
+  void GetRSIndex1(vector<double>& vRS);
+  void GetRSLogarithm1(vector<double>& vRS);
+  void GetRS3(vector<double>& vRS);
+  void GetRS5(vector<double>& vRS);
+  void GetRS10(vector<double>& vRS);
+  void GetRS30(vector<double>& vRS);
+  void GetRS60(vector<double>& vRS);
+  void GetRS120(vector<double>& vRS);
+
 protected:
   vector<CChinaStockHistoryDataPtr> m_vHistoryData;
 

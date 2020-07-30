@@ -640,6 +640,7 @@ protected:
 
   // 日线相关数据
   vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
+  CDayLineContainer m_DayLine; // 日线容器
   // 周线相关数据
   vector<CWeekLinePtr> m_vWeekLine; // 周线数据容器
   CWeekLineContainer m_WeekLine; // 周线容器

@@ -1,11 +1,23 @@
+#include"globedef.h"
+
 #include "DayLineContainer.h"
 
+CDayLineContainer::CDayLineContainer() {
+}
+
+CDayLineContainer::~CDayLineContainer() {
+}
+
 bool CDayLineContainer::SaveData(void) {
+  SaveDayLineBasicInfo();
+
   return false;
 }
 
 bool CDayLineContainer::LoadData(void) {
-  return false;
+  LoadDayLine();
+
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -15,7 +27,6 @@ bool CDayLineContainer::LoadData(void) {
 // 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-
 bool CDayLineContainer::SaveDayLineBasicInfo(void) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   size_t lSize = 0;
@@ -63,6 +74,77 @@ bool CDayLineContainer::SaveDayLineBasicInfo(void) {
   setDayLineBasicInfo.Close();
 
   return fNeedUpdate;
+}
+
+bool CDayLineContainer::LoadDayLine(void) {
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+  CSetDayLineExtendInfo setDayLineExtendInfo;
+
+  // 装入DayLine数据
+  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineBasicInfo.m_strFilter += GetData(0)->GetStockCode();
+  setDayLineBasicInfo.m_strFilter += _T("'");
+  setDayLineBasicInfo.m_strSort = _T("[Day]");
+  setDayLineBasicInfo.Open();
+  LoadDayLineBasicInfo(&setDayLineBasicInfo);
+  setDayLineBasicInfo.Close();
+
+  // 装入DayLineInfo数据
+  setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineExtendInfo.m_strFilter += GetData(0)->GetStockCode();
+  setDayLineExtendInfo.m_strFilter += _T("'");
+  setDayLineExtendInfo.m_strSort = _T("[Day]");
+  setDayLineExtendInfo.Open();
+  LoadDayLineExtendInfo(&setDayLineExtendInfo);
+  setDayLineExtendInfo.Close();
+
+  m_fDataLoaded = true;
+  return true;
+}
+
+bool CDayLineContainer::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+  CDayLinePtr pDayLine;
+
+  if (gl_fNormalMode) ASSERT(!m_fLoadDataFirst);
+  // 装入DayLine数据
+  Unload();
+  while (!psetDayLineBasicInfo->IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadBasicData(psetDayLineBasicInfo);
+    StoreData(pDayLine);
+    psetDayLineBasicInfo->MoveNext();
+  }
+  m_fLoadDataFirst = true;
+  return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 装载DayLineInfo表必须在装载DayLine表之后。
+//
+//
+////////////////////////////////////////////////////////////////////////////
+bool CDayLineContainer::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+  CDayLinePtr pDayLine;
+  int iPosition = 0;
+
+  if (gl_fNormalMode) ASSERT(m_fLoadDataFirst);
+
+  while (!psetDayLineExtendInfo->IsEOF()) {
+    pDayLine = GetData(iPosition);
+    while ((pDayLine->GetFormatedMarketDay() < psetDayLineExtendInfo->m_Day)
+           && (GetDataSize() > (iPosition + 1))) {
+      iPosition++;
+      pDayLine = GetData(iPosition);
+    }
+    if (pDayLine->GetFormatedMarketDay() == psetDayLineExtendInfo->m_Day) {
+      pDayLine->LoadExtendData(psetDayLineExtendInfo);
+    }
+    if (GetDataSize() <= (iPosition + 1)) break;
+    psetDayLineExtendInfo->MoveNext();
+  }
+  m_fLoadDataFirst = false;
+  return true;
 }
 
 bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {

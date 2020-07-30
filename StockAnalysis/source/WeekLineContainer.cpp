@@ -7,39 +7,25 @@
 #include"SetWeekLineExtendInfo.h"
 
 bool CWeekLineContainer::LoadData() {
-  CSetWeekLineBasicInfo setWeekLineBasicInfo;
-  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+  LoadWeekLine();
 
-  // 装入WeekLine数据
-  setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setWeekLineBasicInfo.m_strFilter += m_vHistoryData.at(0)->GetStockCode();
-  setWeekLineBasicInfo.m_strFilter += _T("'");
-  setWeekLineBasicInfo.m_strSort = _T("[Day]");
-  setWeekLineBasicInfo.Open();
-  LoadBasicInfo(&setWeekLineBasicInfo);
-  setWeekLineBasicInfo.Close();
-
-  // 装入WeekLineInfo数据
-  setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setWeekLineExtendInfo.m_strFilter += m_vHistoryData.at(0)->GetStockCode();
-  setWeekLineExtendInfo.m_strFilter += _T("'");
-  setWeekLineExtendInfo.m_strSort = _T("[Day]");
-  setWeekLineExtendInfo.Open();
-  LoadExtendInfo(&setWeekLineExtendInfo);
-  setWeekLineExtendInfo.Close();
-
-  m_fDataLoaded = true;
   return true;
 }
 
 bool CWeekLineContainer::SaveData(void) {
+  SaveWeekLine();
+
+  return true;
+}
+
+bool CWeekLineContainer::SaveWeekLine(void) {
   SaveBasicInfo();
   SaveExtendInfo();
 
   return true;
 }
 
-bool CWeekLineContainer::SaveBasicInfo() {
+bool CWeekLineContainer::SaveBasicInfo(void) {
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   size_t lSize = 0;
   CWeekLinePtr pWeekLine = nullptr;
@@ -68,7 +54,7 @@ bool CWeekLineContainer::SaveBasicInfo() {
 // 只存储有交易记录的扩展数据。对于没有信息的直接跨过。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWeekLineContainer::SaveExtendInfo() {
+bool CWeekLineContainer::SaveExtendInfo(void) {
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
   size_t lSize = 0;
   CWeekLinePtr pWeekLine = nullptr;
@@ -77,7 +63,7 @@ bool CWeekLineContainer::SaveExtendInfo() {
 
   lSize = m_vHistoryData.size();
   setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setWeekLineExtendInfo.m_strFilter += m_vHistoryData.at(0)->GetStockCode() + _T("'");
+  setWeekLineExtendInfo.m_strFilter += GetData(0)->GetStockCode() + _T("'");
   setWeekLineExtendInfo.m_strSort = _T("[Day]");
 
   setWeekLineExtendInfo.Open();
@@ -91,6 +77,32 @@ bool CWeekLineContainer::SaveExtendInfo() {
   setWeekLineExtendInfo.m_pDatabase->CommitTrans();
   setWeekLineExtendInfo.Close();
 
+  return true;
+}
+
+bool CWeekLineContainer::LoadWeekLine() {
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+
+  // 装入WeekLine数据
+  setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineBasicInfo.m_strFilter += GetData(0)->GetStockCode();
+  setWeekLineBasicInfo.m_strFilter += _T("'");
+  setWeekLineBasicInfo.m_strSort = _T("[Day]");
+  setWeekLineBasicInfo.Open();
+  LoadBasicInfo(&setWeekLineBasicInfo);
+  setWeekLineBasicInfo.Close();
+
+  // 装入WeekLineInfo数据
+  setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setWeekLineExtendInfo.m_strFilter += GetData(0)->GetStockCode();
+  setWeekLineExtendInfo.m_strFilter += _T("'");
+  setWeekLineExtendInfo.m_strSort = _T("[Day]");
+  setWeekLineExtendInfo.Open();
+  LoadExtendInfo(&setWeekLineExtendInfo);
+  setWeekLineExtendInfo.Close();
+
+  m_fDataLoaded = true;
   return true;
 }
 

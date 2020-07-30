@@ -150,3 +150,57 @@ bool CChinaStockHistoryDataContainer::CalculateRSIndex(INT64 lNumber) {
   }
   return true;
 }
+
+void CChinaStockHistoryDataContainer::GetRS1(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongIndex();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRSIndex1(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongIndex();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRSLogarithm1(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongLogarithm();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS3(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get3RS();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS5(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get5RS();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS10(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get10RS();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS30(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get30RS();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS60(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get60RS();
+  }
+}
+
+void CChinaStockHistoryDataContainer::GetRS120(vector<double>& vRS) {
+  for (int i = 0; i < m_vHistoryData.size(); i++) {
+    vRS[i] = m_vHistoryData.at(i)->Get120RS();
+  }
+}

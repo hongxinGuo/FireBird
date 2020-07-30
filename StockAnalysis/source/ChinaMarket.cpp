@@ -2052,7 +2052,7 @@ bool CChinaMarket::RunningThreadSaveTempRTData(void) {
 }
 
 bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock) {
-  thread thread1(ThreadSaveDayLineBasicInfoOfOneStock, pStock);
+  thread thread1(ThreadSaveDayLineBasicInfoOfStock, pStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

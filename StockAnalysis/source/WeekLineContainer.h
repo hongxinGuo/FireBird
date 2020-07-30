@@ -13,8 +13,10 @@ public:
   virtual bool LoadData(void) override;
   virtual bool SaveData(void) override;
 
-  bool SaveBasicInfo();
-  bool SaveExtendInfo();
+  bool SaveWeekLine(void);
+  bool SaveBasicInfo(void);
+  bool SaveExtendInfo(void);
+  bool LoadWeekLine(void);
   bool LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 
