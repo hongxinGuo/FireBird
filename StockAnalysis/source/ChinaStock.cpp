@@ -42,6 +42,7 @@ void CChinaStock::Reset(void) {
   m_lLastClose = m_lOpen = 0;
   m_lHigh = m_lLow = m_lNew = 0;
   m_lHighLimit = m_lLowLimit = 0;
+  m_lHighLimit2 = m_lLowLimit2 = 0;
   m_llVolume = 0;
   m_llAmount = 0;
   m_lUpDown = 0;
@@ -910,6 +911,7 @@ bool CChinaStock::ProcessRTData(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::ProcessOneRTData(CWebRTDataPtr pRTData) {
+  CalculateHighLowLimit(pRTData);
   if (HaveFirstRTData()) { // 如果开始计算（第二次收到实时数据及以后）
     CalculateOneRTData(pRTData);
   }
@@ -917,6 +919,31 @@ bool CChinaStock::ProcessOneRTData(CWebRTDataPtr pRTData) {
     InitializeCalculatingRTDataEnvionment(pRTData);
   }
   return true;
+}
+
+void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
+  if (pRTData->GetPSell(0) == 0) { // 卖一价格为零
+    if (pRTData->GetPBuy(0) > 0) {
+      m_lHighLimit2 = pRTData->GetPBuy(0);
+      m_lLowLimit2 = pRTData->GetLastClose() - (pRTData->GetPBuy(0) - pRTData->GetLastClose());
+    }
+    else { // 买一卖一同时为零
+      m_lHighLimit2 = m_lHighLimit;
+      m_lLowLimit2 = m_lLowLimit;
+    }
+  }
+  else if (pRTData->GetPBuy(0) == 0) { // 买一价格为零
+    if (pRTData->GetPSell(0) > 0) {
+      m_lLowLimit2 = pRTData->GetPSell(0);
+      m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - pRTData->GetPSell(0));
+    }
+    else { // 买一卖一同时为零
+      m_lHighLimit2 = m_lHighLimit;
+      m_lLowLimit2 = m_lLowLimit;
+    }
+  }
+  if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
+  if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -952,7 +979,14 @@ void CChinaStock::CalculateOneRTData(CWebRTDataPtr pRTData) {
   }
   else {
     lCurrentGuadanTransactionPrice = (pRTData->GetAmount() - m_pLastRTData->GetAmount()) * 1000 / m_lCurrentGuadanTransactionVolume; // 生成比较用的价格（放大一千倍后采用长整型）
-    CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice);
+    if ((lCurrentGuadanTransactionPrice == m_lHighLimit) || (lCurrentGuadanTransactionPrice == m_lLowLimit)) { // 涨跌停板时，成交量属于未知成交量。
+      IncreaseTransactionNumber();
+      m_nCurrentTransactionType = __UNKNOWN_BUYSELL__;
+      m_lUnknownVolume += m_lCurrentGuadanTransactionVolume;
+    }
+    else {
+      CalculateOneDeal(pRTData, lCurrentGuadanTransactionPrice);
+    }
   }
 
   // 下面开始分析挂单情况
@@ -1702,6 +1736,9 @@ void CChinaStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuff
 }
 
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
+  if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
+    TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetStockCode().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
+  }
   if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
       + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
     TRACE(_T("%14Id %s股数%d\n"), FormatToDayTime(m_TransactionTime), GetStockCode().GetBuffer(), GetVolume());

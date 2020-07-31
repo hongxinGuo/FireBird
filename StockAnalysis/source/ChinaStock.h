@@ -117,6 +117,10 @@ public:
   void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
   long GetLowLimit(void) noexcept { return m_lLowLimit; }
   void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
+  long GetHighLimit2(void) noexcept { return m_lHighLimit2; }
+  void SetHighLimit2(long lValue) noexcept { m_lHighLimit2 = lValue; }
+  long GetLowLimit2(void) noexcept { return m_lLowLimit2; }
+  void SetLowLimit2(long lValue) noexcept { m_lLowLimit2 = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
@@ -352,6 +356,7 @@ public:
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
   bool ProcessOneRTData(CWebRTDataPtr pRTData);
+  void CalculateHighLowLimit(CWebRTDataPtr pRTData);
   void CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
   void IncreaseTransactionNumber(void);
   void CalculateOneRTData(CWebRTDataPtr pRTData);
@@ -492,6 +497,8 @@ protected:
   long m_lNew; // 以0.001元计的最新价
   long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
   long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+  long m_lHighLimit2; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+  long m_lLowLimit2; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
   long m_lUpDown; // 涨跌值
   double m_dUpDownRate; // 涨跌率
   INT64 m_llVolume;	// 以1股计的成交量

@@ -5,6 +5,7 @@
 
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
+#include"WebRTData.h"
 
 #include"MockChinaStock.h"
 
@@ -2135,6 +2136,60 @@ namespace StockAnalysisTest {
     }
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
+  }
+
+  TEST_F(CChinaStockTest, TestCalculateHighLowLimit1) {
+    CWebRTDataPtr pData = make_shared<CWebRTData>();
+    pData->SetLastClose(95);
+    pData->SetPBuy(0, 0);
+    pData->SetPSell(0, 90);
+    CChinaStock stock;
+    stock.SetHighLimit(110);
+    stock.SetLowLimit(80);
+    stock.CalculateHighLowLimit(pData);
+    EXPECT_EQ(stock.GetLowLimit2(), 90);
+    EXPECT_EQ(stock.GetHighLimit2(), 100);
+  }
+
+  TEST_F(CChinaStockTest, TestCalculateHighLowLimit2) {
+    CWebRTDataPtr pData = make_shared<CWebRTData>();
+    pData->SetLastClose(95);
+    pData->SetPBuy(0, 0);
+    pData->SetPSell(0, 0);
+    CChinaStock stock;
+    stock.SetHighLimit(110);
+    stock.SetLowLimit(80);
+    stock.CalculateHighLowLimit(pData);
+    EXPECT_EQ(stock.GetLowLimit2(), 80) << _T("与LowLimit值一样");
+    EXPECT_EQ(stock.GetHighLimit2(), 110) << _T("与HighLimit值一样");
+  }
+
+  TEST_F(CChinaStockTest, TestCalculateHighLowLimit3) {
+    CWebRTDataPtr pData = make_shared<CWebRTData>();
+    pData->SetLastClose(95);
+    pData->SetPBuy(0, 100);
+    pData->SetPSell(0, 0);
+    CChinaStock stock;
+    stock.SetHighLimit(110);
+    stock.SetLowLimit(80);
+    stock.CalculateHighLowLimit(pData);
+    EXPECT_EQ(stock.GetLowLimit2(), 90);
+    EXPECT_EQ(stock.GetHighLimit2(), 100);
+  }
+
+  TEST_F(CChinaStockTest, TestCalculateHighLowLimit4) {
+    CWebRTDataPtr pData = make_shared<CWebRTData>();
+    pData->SetLastClose(95);
+    pData->SetPBuy(0, 100);
+    pData->SetPSell(0, 90);
+    CChinaStock stock;
+    stock.SetHighLimit2(120);
+    stock.SetLowLimit2(70);
+    stock.SetHighLimit(0);
+    stock.SetLowLimit(0);
+    stock.CalculateHighLowLimit(pData);
+    EXPECT_EQ(stock.GetLowLimit(), 70) << _T("与LowLimit2值一样");;
+    EXPECT_EQ(stock.GetHighLimit(), 120) << _T("与HighLimit2值一样");;
   }
 
   //TEST_F_TRAITS();
