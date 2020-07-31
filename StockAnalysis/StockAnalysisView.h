@@ -31,7 +31,7 @@ public:
   // 操作
 public:
   void Show(CDC* pdc);
-  virtual void ShowStockDayLine(CDC* pDC);
+  virtual void ShowStockHistoryDataLine(CDC* pDC);
   virtual void ShowRealtimeData(CDC* pDC);
 
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
@@ -90,7 +90,10 @@ protected:
   CRect m_rectClient;
 
   UINT m_uIdTimer;
-  int m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
+  int m_iCurrentShowType;// 当前显示状态（日线、周线或实时。。。）
+
+  //当前被操作的历史数据容器
+  CChinaStockHistoryDataContainer* m_pCurrentHistoryDataContainer;
 
   bool m_fShowTransactionGraph; // 显示交易具体情况的图
   CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。
@@ -139,6 +142,8 @@ public:
   afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
   afx_msg void OnShowRealTime();
   afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
+  afx_msg void OnShowWeekLine();
+  afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本

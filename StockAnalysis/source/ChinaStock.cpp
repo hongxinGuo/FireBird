@@ -242,7 +242,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   while (m_llCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
     if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
-      TRACE(_T("%s日线数据出错\n"), pDayLine->GetStockCode().GetBuffer());
+      TRACE(_T("%s日线数据出错\n"), GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入

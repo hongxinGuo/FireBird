@@ -28,6 +28,8 @@ public:
   void ShowData(CDC* pDC, CRect rectClient);
 
 public:
+  vector<CChinaStockHistoryDataPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
+
   size_t GetDataSize(void) { return m_vHistoryData.size(); }
   CChinaStockHistoryDataPtr GetData(long lIndex) { return m_vHistoryData.at(lIndex); }
   void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }

@@ -337,7 +337,7 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
       .Times(1);
-    EXPECT_CALL(*s_pStockAnalysisView, ShowStockDayLine(_))
+    EXPECT_CALL(*s_pStockAnalysisView, ShowStockHistoryDataLine(_))
       .Times(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallBitBlt(&dc, 0, 0, _, _, _, 0, 0, SRCCOPY))
       .Times(1)
