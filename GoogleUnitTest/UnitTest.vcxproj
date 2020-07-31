@@ -152,6 +152,7 @@
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
+    <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
     <ClCompile Include="MockWeekLineContainer.h" />
     <ClCompile Include="MockWeekLineContainerTest.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
+    <ClInclude Include="MockDayLineContainer.h" />
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />

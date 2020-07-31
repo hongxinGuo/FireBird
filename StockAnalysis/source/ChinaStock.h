@@ -418,11 +418,8 @@ public:
 
   // 日线相对强度计算
   bool CalculateDayLineRelativeStrong(void);
-  virtual bool CalculateDayLineRS(INT64 lNumber);
   bool CalculateDayLineRelativeStrongIndex(void);
-  virtual bool CalculateDayLineRSIndex(INT64 lNumber);
   bool CalculateDayLineRelativeStrongLogarithm(void);
-  virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
@@ -453,7 +450,6 @@ public:
   CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
   void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
   bool CalculatingWeekLine(void);
-  CWeekLinePtr CreateNewWeekLine(long& lCurrentDay);
   bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
   bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }

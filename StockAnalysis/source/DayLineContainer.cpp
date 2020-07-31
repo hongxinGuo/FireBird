@@ -183,6 +183,8 @@ bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
 
 CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
   ASSERT(GetDataSize() > 0);
+  ASSERT(lCurrentDayLinePos < GetDataSize());
+
   long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDay());
   long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDay();
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();

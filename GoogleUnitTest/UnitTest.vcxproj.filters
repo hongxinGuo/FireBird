@@ -485,6 +485,9 @@
     <ClCompile Include="MockWeekLineContainer.h">
       <Filter>Mock类\China Stock Market\基础数据类</Filter>
     </ClCompile>
+    <ClCompile Include="MockDayLineContainerTest.cpp">
+      <Filter>Test源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -711,6 +714,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockDayLineContainer.h">
+      <Filter>Mock类\China Stock Market\基础数据类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

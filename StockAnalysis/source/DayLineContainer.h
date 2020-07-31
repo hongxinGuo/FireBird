@@ -24,6 +24,7 @@ public:
   bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
 
   void UpdateData(vector<CDayLinePtr>& vTempDayLine);
+  CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 
   bool StoreData(CDayLinePtr pData) noexcept { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
   CDayLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
@@ -33,5 +34,4 @@ public:
   bool BuildWeekLine(vector<CWeekLinePtr>& vWeekLine);
 
 private:
-  CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
 };

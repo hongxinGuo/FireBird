@@ -2000,21 +2000,6 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetMarketOpened(false);
   }
 
-  TEST_F(CChinaStockTest, TestCalculateDayLineRSLogarithm) {
-    CChinaStock stock;
-    EXPECT_TRUE(stock.CalculateDayLineRSLogarithm(3));
-  }
-
-  TEST_F(CChinaStockTest, TestCalculateDayLineRS) {
-    CChinaStock stock;
-    EXPECT_TRUE(stock.CalculateDayLineRS(3));
-  }
-
-  TEST_F(CChinaStockTest, TestCalculateDayLineRSIndex) {
-    CChinaStock stock;
-    EXPECT_TRUE(stock.CalculateDayLineRSIndex(3));
-  }
-
   TEST_F(CChinaStockTest, TestSaveWeekLine) {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     CWeekLinePtr pid;

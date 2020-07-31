@@ -647,45 +647,15 @@ bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtend
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrong(void) {
-  CalculateDayLineRS(3);
-  CalculateDayLineRS(5);
-  CalculateDayLineRS(10);
-  CalculateDayLineRS(30);
-  CalculateDayLineRS(60);
-  CalculateDayLineRS(120);
-  return true;
+  return m_DayLine.CalculateRelativeStrong();
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrongLogarithm(void) {
-  CalculateDayLineRSLogarithm(3);
-  CalculateDayLineRSLogarithm(5);
-  CalculateDayLineRSLogarithm(10);
-  CalculateDayLineRSLogarithm(30);
-  CalculateDayLineRSLogarithm(60);
-  CalculateDayLineRSLogarithm(120);
-  return true;
+  return m_DayLine.CalculateRelativeStrongLogarithm();
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrongIndex(void) {
-  CalculateDayLineRSIndex(3);
-  CalculateDayLineRSIndex(5);
-  CalculateDayLineRSIndex(10);
-  CalculateDayLineRSIndex(30);
-  CalculateDayLineRSIndex(60);
-  CalculateDayLineRSIndex(120);
-  return true;
-}
-
-bool CChinaStock::CalculateDayLineRSLogarithm(INT64 lNumber) {
-  return m_DayLine.CalculateRSLogarithm(lNumber);
-}
-
-bool CChinaStock::CalculateDayLineRS(INT64 lNumber) {
-  return m_DayLine.CalculateRS(lNumber);
-}
-
-bool CChinaStock::CalculateDayLineRSIndex(INT64 lNumber) {
-  return m_DayLine.CalculateRSIndex(lNumber);
+  return m_DayLine.CalculateRelativeStrongIndex();
 }
 
 bool CChinaStock::CalculateWeekLineRelativeStrong(void) {
@@ -1533,8 +1503,8 @@ bool CChinaStock::BuildWeekLine(void) {
   if (GetDayLineSize() <= 0) return true;
 
   CalculatingWeekLine();
-
   SaveWeekLine();
+
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
       UnloadDayLine();
@@ -1750,37 +1720,12 @@ bool CChinaStock::CalculatingWeekLine(void) {
 
   m_WeekLine.Unload();
   do {
-    pWeekLine = CreateNewWeekLine(i);
+    pWeekLine = m_DayLine.CreateNewWeekLine(i);
     m_WeekLine.StoreData(pWeekLine);
   } while (i < m_DayLine.GetDataSize());
+  m_WeekLine.SetDataLoaded(true);
 
   return true;
-}
-
-CWeekLinePtr CChinaStock::CreateNewWeekLine(long& lCurrentDayLinePos) {
-  ASSERT(m_DayLine.GetDataSize() > 0);
-  long lNextMonday = GetNextMonday(m_DayLine.GetData(lCurrentDayLinePos)->GetFormatedMarketDay());
-  long lNewestDay = m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDay();
-  CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-  if (lNextMonday < lNewestDay) { // 中间数据
-    while (m_DayLine.GetData(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
-      pWeekLine->CreateWeekLine(m_DayLine.GetData(lCurrentDayLinePos++));
-    }
-  }
-  else { // 最后一组数据
-    while (lCurrentDayLinePos <= (m_DayLine.GetDataSize() - 1)) {
-      pWeekLine->CreateWeekLine(m_DayLine.GetData(lCurrentDayLinePos++));
-    }
-  }
-
-  if (pWeekLine->GetLastClose() > 0) {
-    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetLastClose());
-  }
-  else {
-    pWeekLine->SetUpDownRate(pWeekLine->GetUpDown() * 100 * 1000 / pWeekLine->GetOpen());
-  }
-
-  return pWeekLine;
 }
 
 #ifdef _DEBUG
