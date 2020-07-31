@@ -240,37 +240,37 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lOpen = static_cast<long>(dTemp * 1000);
+    m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入前收盘价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lLastClose = static_cast<long>(dTemp * 1000);
+    m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入当前价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lNew = static_cast<long>(dTemp * 1000);
+    m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入最高价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lHigh = static_cast<long>(dTemp * 1000);
+    m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入最低价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lLow = static_cast<long>(dTemp * 1000);
+    m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入竞买价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lBuy = static_cast<long>(dTemp * 1000);
+    m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入竞卖价
     if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
       throw exception();
     }
-    m_lSell = static_cast<long>(dTemp * 1000);
+    m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
     // 读入成交股数。成交股数存储实际值
     if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
       throw exception();
@@ -289,7 +289,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
         throw exception();
       }
-      m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
+      m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
     }
     // 读入卖一--卖五的股数和价格
     for (int j = 0; j < 5; j++) {
@@ -301,7 +301,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
       if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
         throw exception();
       }
-      m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
+      m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
     }
     // 读入成交日期和时间
     if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
@@ -565,17 +565,17 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lNew = static_cast<long>(dTemp * 1000);
+    m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
     // 前收盘价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lLastClose = static_cast<long>(dTemp * 1000);
+    m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
     // 开盘价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lOpen = static_cast<long>(dTemp * 1000);
+    m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
     // 成交手数。成交股数存储实际值
     // 不使用此处的成交量，而是使用第三十五项处的成交量。
     if (!ReadTengxunOneValue(pTengxunWebRTData, llTemp)) {
@@ -595,7 +595,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
       if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
         return false;
       }
-      m_lPBuy.at(j) = static_cast<long>(dTemp * 1000);
+      m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
 
       // 买盘数量（手）
       if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
@@ -609,7 +609,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
       if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
         return false;
       }
-      m_lPSell.at(j) = static_cast<long>(dTemp * 1000);
+      m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
       // 卖盘数量（手）
       if (!ReadTengxunOneValue(pTengxunWebRTData, lTemp)) {
         return false;
@@ -637,12 +637,12 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lHigh = static_cast<long>(dTemp * 1000);
+    m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
     // 最低价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    m_lLow = static_cast<long>(dTemp * 1000);
+    m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
     // 第三十五项，成交价/成交量（手）/成交金额（元）
     // 成交量和成交金额使用此处的数据，这样就可以使用腾讯实时数据了
     if (!ReadTengxunOneValue(pTengxunWebRTData, buffer3)) {
@@ -701,12 +701,12 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    if (dTemp > 0.01) m_lHighLimit = static_cast<long>(dTemp * 1000);
+    if (dTemp > 0.01) m_lHighLimit = static_cast<long>((dTemp + 0.000001) * 1000);
     // 跌停价
     if (!ReadTengxunOneValue(pTengxunWebRTData, dTemp)) {
       return false;
     }
-    if (dTemp > 0.01) m_lLowLimit = static_cast<long>(dTemp * 1000);
+    if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 
     // 后面的数据具体内容不清楚，暂时放弃解码。
     while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
