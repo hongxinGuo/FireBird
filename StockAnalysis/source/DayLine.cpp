@@ -122,6 +122,7 @@ bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   m_lDay = psetDayLineBasicInfo->m_Day;
   m_wMarket = psetDayLineBasicInfo->m_Market;
   m_strStockCode = psetDayLineBasicInfo->m_StockCode;
+  m_strStockName = psetDayLineBasicInfo->m_StockName;
   m_lLastClose = atof(psetDayLineBasicInfo->m_LastClose) * 1000;
   m_lOpen = atof(psetDayLineBasicInfo->m_Open) * 1000;
   m_lHigh = atof(psetDayLineBasicInfo->m_High) * 1000;

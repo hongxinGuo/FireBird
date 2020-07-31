@@ -1407,7 +1407,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Close();
 
     EXPECT_FALSE(pStock->IsDayLineLoaded());
-    pStock->LoadDayLine();
+    pStock->LoadDayLine(pStock->GetStockCode());
     EXPECT_TRUE(pStock->IsDayLineLoaded());
 
     CDayLinePtr pDayLine;

@@ -8,14 +8,14 @@ CDayLineContainer::CDayLineContainer() {
 CDayLineContainer::~CDayLineContainer() {
 }
 
-bool CDayLineContainer::SaveData(void) {
-  SaveDayLineBasicInfo();
+bool CDayLineContainer::SaveData(CString strStockCode) {
+  SaveDayLineBasicInfo(strStockCode);
 
   return false;
 }
 
-bool CDayLineContainer::LoadData(void) {
-  LoadDayLine();
+bool CDayLineContainer::LoadData(CString strStockCode) {
+  LoadDayLine(strStockCode);
 
   return true;
 }
@@ -27,7 +27,7 @@ bool CDayLineContainer::LoadData(void) {
 // 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CDayLineContainer::SaveDayLineBasicInfo(void) {
+bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
@@ -39,7 +39,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(void) {
 
   lSize = GetDataSize();
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineBasicInfo.m_strFilter += GetData(0)->GetStockCode() + _T("'");
+  setDayLineBasicInfo.m_strFilter += strStockCode + _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Day]");
 
   setDayLineBasicInfo.Open();
@@ -76,13 +76,13 @@ bool CDayLineContainer::SaveDayLineBasicInfo(void) {
   return fNeedUpdate;
 }
 
-bool CDayLineContainer::LoadDayLine(void) {
+bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   CSetDayLineExtendInfo setDayLineExtendInfo;
 
   // 装入DayLine数据
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineBasicInfo.m_strFilter += GetData(0)->GetStockCode();
+  setDayLineBasicInfo.m_strFilter += strStockCode;
   setDayLineBasicInfo.m_strFilter += _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Day]");
   setDayLineBasicInfo.Open();
@@ -91,7 +91,7 @@ bool CDayLineContainer::LoadDayLine(void) {
 
   // 装入DayLineInfo数据
   setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setDayLineExtendInfo.m_strFilter += GetData(0)->GetStockCode();
+  setDayLineExtendInfo.m_strFilter += strStockCode;
   setDayLineExtendInfo.m_strFilter += _T("'");
   setDayLineExtendInfo.m_strSort = _T("[Day]");
   setDayLineExtendInfo.Open();

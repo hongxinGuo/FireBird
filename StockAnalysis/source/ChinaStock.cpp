@@ -460,7 +460,7 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveDayLineBasicInfo(void) {
-  return m_DayLine.SaveDayLineBasicInfo();
+  return m_DayLine.SaveDayLineBasicInfo(GetStockCode());
 }
 
 void CChinaStock::UpdateDayLineStartEndDay(void) {
@@ -628,8 +628,8 @@ void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
   m_lCanceledSellVolumeAbove200000 = atoll(setDayLineToday.m_CanceledSellVolumeAbove200000);
 }
 
-bool CChinaStock::LoadDayLine(void) {
-  return m_DayLine.LoadData();
+bool CChinaStock::LoadDayLine(CString strStockCode) {
+  return m_DayLine.LoadData(strStockCode);
 }
 
 bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
@@ -1498,7 +1498,7 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
 bool CChinaStock::BuildWeekLine(void) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
-    LoadDayLine();
+    LoadDayLine(GetStockCode());
   }
   if (GetDayLineSize() <= 0) return true;
 
@@ -1519,11 +1519,11 @@ bool CChinaStock::BuildWeekLine(void) {
 }
 
 bool CChinaStock::SaveWeekLine() {
-  return m_WeekLine.SaveData();
+  return m_WeekLine.SaveData(GetStockCode());
 }
 
 bool CChinaStock::SaveWeekLineBasicInfo() {
-  m_WeekLine.SaveBasicInfo();
+  m_WeekLine.SaveBasicInfo(GetStockCode());
 
   return true;
 }
@@ -1534,13 +1534,13 @@ bool CChinaStock::SaveWeekLineBasicInfo() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveWeekLineExtendInfo() {
-  m_WeekLine.SaveExtendInfo();
+  m_WeekLine.SaveExtendInfo(GetStockCode());
 
   return true;
 }
 
 bool CChinaStock::LoadWeekLine() {
-  return m_WeekLine.LoadData();
+  return m_WeekLine.LoadData(GetStockCode());
 }
 
 bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {

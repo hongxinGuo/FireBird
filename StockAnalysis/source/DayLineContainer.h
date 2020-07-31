@@ -15,11 +15,11 @@ public:
   CDayLineContainer();
   ~CDayLineContainer();
 public:
-  virtual bool SaveData(void) override;
-  virtual bool LoadData(void) override;
+  virtual bool SaveData(CString strStockCode) override;
+  virtual bool LoadData(CString strStockCode) override;
 
-  bool SaveDayLineBasicInfo(void);
-  bool LoadDayLine(void);
+  bool SaveDayLineBasicInfo(CString strStockCode);
+  bool LoadDayLine(CString strStockCode);
   bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
   bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
 

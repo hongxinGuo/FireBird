@@ -226,6 +226,7 @@ bool CWeekLine::LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
   if (m_lDay == 0) m_lDay = pDayLine->GetFormatedMarketDay();
   if (m_time == 0) m_time = pDayLine->GetFormatedMarketTime();
+  m_wMarket = pDayLine->GetMarket();
   if (m_strStockCode == _T("")) m_strStockCode = pDayLine->GetStockCode();
   if (m_strStockName == _T("")) m_strStockName = pDayLine->GetStockName();
 

@@ -77,7 +77,7 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
+        pStock->LoadDayLine(pStock->GetStockCode());
         pStock->SetDayLineLoaded(true);
       }
       if (pStock->Calculate10RSStrongStockSet(pRef)) {
@@ -101,7 +101,7 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
+        pStock->LoadDayLine(pStock->GetStockCode());
         pStock->SetDayLineLoaded(true);
       }
       if (pStock->Calculate10RSStrong1StockSet()) {
@@ -125,7 +125,7 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
       if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
+        pStock->LoadDayLine(pStock->GetStockCode());
         pStock->SetDayLineLoaded(true);
       }
       if (pStock->Calculate10RSStrong2StockSet()) {
