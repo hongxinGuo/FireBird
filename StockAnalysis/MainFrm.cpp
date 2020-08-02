@@ -5,10 +5,10 @@
 #include "StockAnalysis.h"
 
 #include "MainFrm.h"
+#include"StockAnalysisDoc.h"
+#include"StockAnalysisView.h"
 
 #include"globedef.h"
-
-#include "MainFrm.h"
 
 #include"WebRTData.h"
 #include"DayLine.h"
@@ -612,7 +612,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   if (gl_pChinaStockMarket->IsStock(strTemp)) {
     pStock = gl_pChinaStockMarket->GetStock(strTemp);
     gl_pChinaStockMarket->SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
     SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
@@ -628,6 +627,13 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   break;
   default:
   break;
+  }
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
+    CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
+    CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+    if (pView != nullptr) {
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
+    }
   }
 
   SysCallOnChar(nChar, nRepCnt, nFlags);
@@ -675,6 +681,13 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     default:
     // 无需处理字符，略过
     break;
+    }
+  }
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
+    CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
+    CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+    if (pView != nullptr) {
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
     }
   }
   SysCallOnKeyUp(nChar, nRepCnt, nFlags);

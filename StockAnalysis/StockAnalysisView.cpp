@@ -65,7 +65,7 @@ END_MESSAGE_MAP()
 
 CStockAnalysisView::CStockAnalysisView() {
   // TODO: 在此处添加构造代码
-  m_iCurrentShowType = 1; // 显示日线数据
+  m_iCurrentShowType = __SHOW_DAY_LINE_DATA__; // 显示日线数据
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetDayLineContainer();
   }
@@ -506,16 +506,13 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
     pDC->SelectObject(&penWhite1);
     switch (m_iShowRSOption) {
     case 0: // 显示相对指数的强度
-    //m_pCurrentHistoryDataContainer->GetRSIndex1(m_vRSShow);
-    pCurrentStock->GetRSIndex1Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRSIndex1(m_vRSShow);
     break;
     case 1:
-    //m_pCurrentHistoryDataContainer->GetRS1(m_vRSShow);
-    pCurrentStock->GetRS1Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS1(m_vRSShow);
     break;
     case 2:
-    //m_pCurrentHistoryDataContainer->GetRSLogarithm1(m_vRSShow);
-    pCurrentStock->GetRSLogarithm1Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRSLogarithm1(m_vRSShow);
     break;
     default:
     // 错误
@@ -526,54 +523,47 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
   // 画相对强度3日均线
   if (m_fShow3DayRS) {
     pDC->SelectObject(&penYellow1);
-    //m_pCurrentHistoryDataContainer->GetRS3(m_vRSShow);
-    pCurrentStock->GetRS3Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS3(m_vRSShow);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度5日均线
   if (m_fShow5DayRS) {
     pDC->SelectObject(&penGreen1);
-    //m_pCurrentHistoryDataContainer->GetRS5(m_vRSShow);
-    pCurrentStock->GetRS5Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS5(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 1.5);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度10日均线
   if (m_fShow10DayRS) {
     pDC->SelectObject(&penRed1);
-    //m_pCurrentHistoryDataContainer->GetRS10(m_vRSShow);
-    pCurrentStock->GetRS10Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS10(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 3);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度30日均线
   if (m_fShow30DayRS) {
     pDC->SelectObject(&penYellow1);
-    //m_pCurrentHistoryDataContainer->GetRS30(m_vRSShow);
-    pCurrentStock->GetRS30Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS30(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 3);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度60日均线
   if (m_fShow60DayRS) {
     pDC->SelectObject(&penBlue1);
-    //m_pCurrentHistoryDataContainer->GetRS60(m_vRSShow);
-    pCurrentStock->GetRS60Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS60(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 6);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度120日均线
   if (m_fShow120DayRS) {
     pDC->SelectObject(&penWhite1);
-    //m_pCurrentHistoryDataContainer->GetRS120(m_vRSShow);
-    //pCurrentStock->GetRS120Day(m_vRSShow);
+    m_pCurrentHistoryDataContainer->GetRS120(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 6);
     ShowCurrentRS(pDC, m_vRSShow);
   }
 
   ////////////////////////////////////////////////////////////////画日线蜡烛线
-  //m_pCurrentHistoryDataContainer->ShowData(pDC, m_rectClient);
-  pCurrentStock->ShowDayLine(pDC, m_rectClient);
+  m_pCurrentHistoryDataContainer->ShowData(pDC, m_rectClient);
 
   pDC->SelectObject(ppen);
 }
@@ -594,6 +584,23 @@ bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
   SysCallLineTo(pDC, m_rectClient.right - 1 - 3 * i, y);
   if (3 * i > iSize) return false;
   if (m_rectClient.right <= 3 * i) return false; // 画到窗口左边框为止
+  return true;
+}
+
+bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
+  if (pStock != nullptr) {
+    switch (m_iCurrentShowType) {
+    case __SHOW_DAY_LINE_DATA__:
+    m_pCurrentHistoryDataContainer = pStock->GetDayLineContainer();
+    break;
+    case __SHOW_WEEK_LINE_DATA__:
+    m_pCurrentHistoryDataContainer = pStock->GetWeekLineContainer();
+    break;
+    default:
+    m_pCurrentHistoryDataContainer = nullptr;
+    break;
+    }
+  }
   return true;
 }
 
@@ -646,19 +653,21 @@ void CStockAnalysisView::Show(CDC* pdc) {
   ASSERT(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
   ASSERT(gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded());
   switch (m_iCurrentShowType) {
-  case 1: // show day line stock data
+  case __SHOW_DAY_LINE_DATA__: // show day line stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowStockHistoryDataLine(&m_MemoryDC);
   SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
   break;
-  case 2:	// show realtime stock data
+  case __SHOW_REAL_TIME_DATA__:	// show realtime stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowRealtimeData(&m_MemoryDC);
   SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
+  break;
+  case __SHOW_WEEK_LINE_DATA__:
   break;
   default:
   break;
@@ -904,7 +913,7 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 
 void CStockAnalysisView::OnShowDayLine() {
   // TODO: Add your command handler code here
-  m_iCurrentShowType = 1;
+  m_iCurrentShowType = __SHOW_DAY_LINE_DATA__;
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetDayLineContainer();
   }
@@ -912,24 +921,24 @@ void CStockAnalysisView::OnShowDayLine() {
 
 void CStockAnalysisView::OnUpdateShowDayLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_iCurrentShowType == 1) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_iCurrentShowType == __SHOW_DAY_LINE_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowRealTime() {
   // TODO: Add your command handler code here
-  m_iCurrentShowType = 2;
+  m_iCurrentShowType = __SHOW_REAL_TIME_DATA__;
 }
 
 void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_iCurrentShowType == 2) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_iCurrentShowType == __SHOW_REAL_TIME_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnShowWeekLine() {
   // TODO: Add your command handler code here
-  m_iCurrentShowType = 3;
+  m_iCurrentShowType = __SHOW_WEEK_LINE_DATA__;
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetWeekLineContainer();
   }
@@ -937,4 +946,6 @@ void CStockAnalysisView::OnShowWeekLine() {
 
 void CStockAnalysisView::OnUpdateShowWeekLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
+  if (m_iCurrentShowType == __SHOW_WEEK_LINE_DATA__) SysCallCmdUISetCheck(pCmdUI, 1);
+  else SysCallCmdUISetCheck(pCmdUI, 0);
 }

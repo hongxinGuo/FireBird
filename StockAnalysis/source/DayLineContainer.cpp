@@ -80,6 +80,8 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   CSetDayLineExtendInfo setDayLineExtendInfo;
 
+  ASSERT(!m_fLoadDataFirst);
+
   // 装入DayLine数据
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineBasicInfo.m_strFilter += strStockCode;
@@ -99,6 +101,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   setDayLineExtendInfo.Close();
 
   m_fDataLoaded = true;
+  ASSERT(!m_fLoadDataFirst);
   return true;
 }
 

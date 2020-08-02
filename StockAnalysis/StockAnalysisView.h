@@ -5,6 +5,12 @@
 
 #include"ChinaStock.h"
 
+enum {
+  __SHOW_DAY_LINE_DATA__ = 1,
+  __SHOW_REAL_TIME_DATA__ = 2,
+  __SHOW_WEEK_LINE_DATA__ = 3,
+};
+
 class CStockAnalysisView : public CView
 {
 protected: // 仅从序列化创建
@@ -48,6 +54,8 @@ public:
 
   int GetCurrentShowType(void) noexcept { return m_iCurrentShowType; }
   void SetCurrentShowType(int iValue) noexcept { m_iCurrentShowType = iValue; }
+
+  bool UpdateHistoryDataContainer(CChinaStockPtr pStock);
 
   //系统包裹函数
 public:
