@@ -188,6 +188,8 @@ public:
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);
   bool LoadTodayTempDB(void);
+  bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
+  bool LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
 
@@ -200,6 +202,7 @@ public:
   bool UnloadDayLine(void);
 
   bool BuildWeekLine(void);
+  bool BuildWeekLineOfCurrentWeek(void);
 
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）

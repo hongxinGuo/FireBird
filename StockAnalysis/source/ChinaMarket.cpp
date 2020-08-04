@@ -24,6 +24,7 @@
 using namespace std;
 #include<thread>
 #include<algorithm>
+#include<set>
 
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
@@ -1797,6 +1798,110 @@ bool CChinaMarket::BuildWeekLine(void) {
   return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 使用当前日期的日线数据生成本周的周线数据。
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
+  CDayLineContainer dayLineContainer;
+  CWeekLineContainer weekLineContainer;
+  set<CString> setDayLineStockCode;
+  set<CString> setWeekLineStockCode;
+  vector<CString> vectorDayLineStockCode;
+  vector<CString> vectorWeekLineStockCode;
+  CString strStockCode;
+
+  if (!LoadDayLine(dayLineContainer, GetFormatedMarketDay())) {
+    return true; // 加载本日日线数据失败，周线数据无需处理。
+  }
+  auto pDayLineData = dayLineContainer.GetContainer();
+
+  for (int i = 0; i < pDayLineData->size(); i++) {
+    strStockCode = (*pDayLineData)[i]->GetStockCode();
+    vectorDayLineStockCode.push_back(strStockCode);
+  }
+  setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
+
+  long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
+  LoadWeekLine(weekLineContainer, lCurrentMonday);
+
+  auto pWeekLineData = weekLineContainer.GetContainer();
+
+  for (int i = 0; i < pWeekLineData->size(); i++) {
+    strStockCode = (*pWeekLineData)[i]->GetStockCode();
+    vectorWeekLineStockCode.push_back(strStockCode);
+  }
+  setWeekLineStockCode.insert(vectorWeekLineStockCode.begin(), vectorWeekLineStockCode.end());
+
+  for (int i = 0; i < pDayLineData->size(); i++) {
+    if (setWeekLineStockCode.find((*pDayLineData)[i]->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据中无本日线数据
+      // 存储此日线数据至周线数据库
+    }
+    else {
+      // 更新周线数据库
+    }
+  }
+  return true;
+}
+
+bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
+  CString strSQL;
+  CString strDay;
+  char  pch[30];
+  CTime ctTime;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+
+  sprintf_s(pch, _T("%08d"), lDay);
+  strDay = pch;
+  setDayLineBasicInfo.m_strSort = _T("[StockCode]");
+  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.Open();
+  if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
+    setDayLineBasicInfo.Close();
+    CString str = strDay;
+    str += _T("日数据集为空，无需处理周线数据");
+    gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
+    return false;
+  }
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineBasicInfo.IsEOF()) {
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadBasicData(&setDayLineBasicInfo);
+    dayLineContainer.StoreData(pDayLine);
+  }
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMondayOfWeek) {
+  CString strSQL;
+  CString strDay;
+  char  pch[30];
+  CTime ctTime;
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+
+  sprintf_s(pch, _T("%08d"), lMondayOfWeek);
+  strDay = pch;
+  setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
+  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.Open();
+  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineBasicInfo.IsEOF()) {
+    CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+    pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
+    weekLineContainer.StoreData(pWeekLine);
+  }
+  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+  setWeekLineBasicInfo.Close();
+
+  return true;
+}
+
 CChinaStockPtr CChinaMarket::GetCurrentSelectedStock(void) {
   if (m_lCurrentSelectedStockSet >= 0) {
     return m_avChoicedStock[m_lCurrentSelectedStockSet][0];
@@ -2034,14 +2139,14 @@ bool CChinaMarket::RunningThreadBuildDayLineRS(long lStartCalculatingDay) {
 }
 
 bool CChinaMarket::RunningThreadBuildDayLineRSOfDay(long lThisDay) {
-  thread thread_calculateRS(ThreadBuildDayLineRSOfDay, this, lThisDay);
-  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+  thread thread1(ThreadBuildDayLineRSOfDay, this, lThisDay);
+  thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
 bool CChinaMarket::RunningThreadBuildWeekLineRSOfDay(long lThisDay) {
-  thread thread_calculateRS(ThreadBuildWeekLineRSOfDay, this, lThisDay);
-  thread_calculateRS.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
+  thread thread1(ThreadBuildWeekLineRSOfDay, this, lThisDay);
+  thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
@@ -2603,8 +2708,6 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
     }
     setWeekLineBasicInfo.Edit();
     double dLastClose = atof(setWeekLineBasicInfo.m_LastClose);
-    double dLow = atof(setWeekLineBasicInfo.m_Low);
-    double dHigh = atof(setWeekLineBasicInfo.m_High);
     double dClose = atof(setWeekLineBasicInfo.m_Close);
     double dUpDownRate = 0;
     // 计算指数相对强度
