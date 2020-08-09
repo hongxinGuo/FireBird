@@ -659,6 +659,4 @@ protected:
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
-
-private:
 };

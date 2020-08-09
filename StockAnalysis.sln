@@ -14,12 +14,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Asan|x64 = Asan|x64
+		Asan|x86 = Asan|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Asan|x64.ActiveCfg = Asan|x64
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Asan|x64.Build.0 = Asan|x64
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Asan|x86.ActiveCfg = Asan|Win32
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Asan|x86.Build.0 = Asan|Win32
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Debug|x64.ActiveCfg = Debug|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Debug|x64.Build.0 = Debug|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Debug|x86.ActiveCfg = Debug|Win32
@@ -28,6 +34,10 @@ Global
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x64.Build.0 = Release|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x86.ActiveCfg = Release|Win32
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x86.Build.0 = Release|Win32
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Asan|x64.ActiveCfg = Asan|x64
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Asan|x64.Build.0 = Asan|x64
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Asan|x86.ActiveCfg = Asan|Win32
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Asan|x86.Build.0 = Asan|Win32
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Debug|x64.ActiveCfg = Debug|x64
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Debug|x64.Build.0 = Debug|x64
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.Debug|x86.ActiveCfg = Debug|Win32

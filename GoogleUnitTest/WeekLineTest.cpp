@@ -835,7 +835,7 @@ namespace StockAnalysisTest {
 
     weekLine.CreateWeekLine(pDayLine);
 
-    EXPECT_EQ(weekLine.GetFormatedMarketDay(), pDayLine->GetFormatedMarketDay());
+    EXPECT_EQ(weekLine.GetFormatedMarketDay(), GetCurrentMonday(pDayLine->GetFormatedMarketDay())) << "周线日期总是当周的星期一";
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
     EXPECT_STREQ(weekLine.GetStockCode(), pDayLine->GetStockCode());
     EXPECT_STREQ(weekLine.GetStockName(), pDayLine->GetStockName());

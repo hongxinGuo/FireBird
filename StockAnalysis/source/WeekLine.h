@@ -1,6 +1,9 @@
 #pragma once
 
 #include"ChinaStockHistoryData.h"
+#include"SetWeekLineInfo.h"
+#include"SetWeekLineBasicInfo.h"
+#include"SetWeekLineExtendInfo.h"
 #include"DayLine.h"
 
 class CWeekLine : public CChinaStockHistoryData {
@@ -12,6 +15,7 @@ public:
   bool SaveData(CSetWeekLineExtendInfo* psetWeekLineBasicInfo);
   bool AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+  bool LoadData(CSetWeekLineInfo* psetWeekLineInfo);
   bool LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 

@@ -21,6 +21,8 @@
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
 
+#include"SetWeekLineInfo.h"
+
 using namespace std;
 #include<thread>
 #include<algorithm>
@@ -1824,7 +1826,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
 
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
-  LoadWeekLine(weekLineContainer, lCurrentMonday);
+  LoadCurrentWeekLine(weekLineContainer);
 
   auto pWeekLineData = weekLineContainer.GetContainer();
 
@@ -1898,6 +1900,22 @@ bool CChinaMarket::LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMon
   }
   setWeekLineBasicInfo.m_pDatabase->CommitTrans();
   setWeekLineBasicInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
+  CSetWeekLineInfo setWeekLineInfo;
+
+  setWeekLineInfo.Open();
+  setWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineInfo.IsEOF()) {
+    CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+    pWeekLine->LoadData(&setWeekLineInfo);
+    weekLineContainer.StoreData(pWeekLine);
+  }
+  setWeekLineInfo.m_pDatabase->CommitTrans();
+  setWeekLineInfo.Close();
 
   return true;
 }

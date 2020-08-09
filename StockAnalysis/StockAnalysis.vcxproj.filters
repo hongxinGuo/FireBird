@@ -258,6 +258,9 @@
     <ClInclude Include="source\QueueWebRTData.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -481,6 +484,9 @@
     </ClCompile>
     <ClCompile Include="source\QueueWebRTData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -190,6 +190,7 @@ public:
   bool LoadTodayTempDB(void);
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
   bool LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
+  bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
 

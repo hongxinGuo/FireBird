@@ -128,11 +128,104 @@ bool CWeekLine::AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
   return true;
 }
 
+bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
+  ASSERT(psetWeekLineInfo->IsOpen());
+  m_lDay = psetWeekLineInfo->m_Day;
+  m_wMarket = psetWeekLineInfo->m_Market;
+  m_strStockCode = psetWeekLineInfo->m_StockCode;
+  m_strStockName = psetWeekLineInfo->m_StockName;
+  m_lLastClose = atof(psetWeekLineInfo->m_LastClose) * 1000;
+  m_lOpen = atof(psetWeekLineInfo->m_Open) * 1000;
+  m_lHigh = atof(psetWeekLineInfo->m_High) * 1000;
+  m_lLow = atof(psetWeekLineInfo->m_Low) * 1000;
+  m_lClose = atof(psetWeekLineInfo->m_Close) * 1000;
+  m_dUpDown = atof(psetWeekLineInfo->m_UpAndDown);
+  m_llVolume = atoll(psetWeekLineInfo->m_Volume);
+  m_llAmount = atoll(psetWeekLineInfo->m_Amount);
+  m_dUpDownRate = atof(psetWeekLineInfo->m_UpDownRate);
+  m_dChangeHandRate = atof(psetWeekLineInfo->m_ChangeHandRate);
+  m_llTotalValue = atoll(psetWeekLineInfo->m_TotalValue);
+  m_llCurrentValue = atoll(psetWeekLineInfo->m_CurrentValue);
+  m_dRelativeStrong = atof(psetWeekLineInfo->m_RelativeStrong);
+  m_dRelativeStrongIndex = atof(psetWeekLineInfo->m_RelativeStrongIndex);
+  m_dRelativeStrongBackup = atof(psetWeekLineInfo->m_RelativeStrongBackup);
+
+  m_lTransactionNumber = atol(psetWeekLineInfo->m_TransactionNumber);
+  m_lTransactionNumberBelow5000 = atol(psetWeekLineInfo->m_TransactionNumberBelow5000);
+  m_lTransactionNumberBelow50000 = atol(psetWeekLineInfo->m_TransactionNumberBelow50000);
+  m_lTransactionNumberBelow200000 = atol(psetWeekLineInfo->m_TransactionNumberBelow200000);
+  m_lTransactionNumberAbove200000 = atol(psetWeekLineInfo->m_TransactionNumberAbove200000);
+  m_lAttackBuyVolume = atol(psetWeekLineInfo->m_AttackBuyVolume);
+  m_lStrongBuyVolume = atol(psetWeekLineInfo->m_StrongBuyVolume);
+  m_lAttackSellVolume = atol(psetWeekLineInfo->m_AttackSellVolume);
+  m_lStrongSellVolume = atol(psetWeekLineInfo->m_StrongSellVolume);
+  m_lUnknownVolume = atol(psetWeekLineInfo->m_UnknownVolume);
+  m_lCanceledBuyVolume = atol(psetWeekLineInfo->m_CanceledBuyVolume);
+  m_lCanceledSellVolume = atol(psetWeekLineInfo->m_CanceledSellVolume);
+  m_lOrdinaryBuyVolume = atol(psetWeekLineInfo->m_OrdinaryBuyVolume);
+  m_lAttackBuyBelow50000 = atol(psetWeekLineInfo->m_AttackBuyBelow50000);
+  m_lAttackBuyBelow200000 = atol(psetWeekLineInfo->m_AttackBuyBelow200000);
+  m_lAttackBuyAbove200000 = atol(psetWeekLineInfo->m_AttackBuyAbove200000);
+  m_lOrdinarySellVolume = atol(psetWeekLineInfo->m_OrdinarySellVolume);
+  m_lAttackSellBelow50000 = atol(psetWeekLineInfo->m_AttackSellBelow50000);
+  m_lAttackSellBelow200000 = atol(psetWeekLineInfo->m_AttackSellBelow200000);
+  m_lAttackSellAbove200000 = atol(psetWeekLineInfo->m_AttackSellAbove200000);
+
+  m_lOrdinaryBuyVolumeBelow5000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow5000);
+  m_lOrdinaryBuyVolumeBelow10000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow10000);
+  m_lOrdinaryBuyVolumeBelow20000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow20000);
+  m_lOrdinaryBuyVolumeBelow50000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow50000);
+  m_lOrdinaryBuyVolumeBelow100000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow100000);
+  m_lOrdinaryBuyVolumeBelow200000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeBelow200000);
+  m_lOrdinaryBuyVolumeAbove200000 = atoll(psetWeekLineInfo->m_OrdinaryBuyVolumeAbove200000);
+  m_lOrdinarySellVolumeBelow5000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow5000);
+  m_lOrdinarySellVolumeBelow10000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow10000);
+  m_lOrdinarySellVolumeBelow20000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow20000);
+  m_lOrdinarySellVolumeBelow50000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow50000);
+  m_lOrdinarySellVolumeBelow100000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow100000);
+  m_lOrdinarySellVolumeBelow200000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeBelow200000);
+  m_lOrdinarySellVolumeAbove200000 = atoll(psetWeekLineInfo->m_OrdinarySellVolumeAbove200000);
+
+  m_lOrdinaryBuyNumberBelow5000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow5000);
+  m_lOrdinaryBuyNumberBelow10000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow10000);
+  m_lOrdinaryBuyNumberBelow20000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow20000);
+  m_lOrdinaryBuyNumberBelow50000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow50000);
+  m_lOrdinaryBuyNumberBelow100000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow100000);
+  m_lOrdinaryBuyNumberBelow200000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberBelow200000);
+  m_lOrdinaryBuyNumberAbove200000 = atoll(psetWeekLineInfo->m_OrdinaryBuyNumberAbove200000);
+  m_lOrdinarySellNumberBelow5000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow5000);
+  m_lOrdinarySellNumberBelow10000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow10000);
+  m_lOrdinarySellNumberBelow20000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow20000);
+  m_lOrdinarySellNumberBelow50000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow50000);
+  m_lOrdinarySellNumberBelow100000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow100000);
+  m_lOrdinarySellNumberBelow200000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberBelow200000);
+  m_lOrdinarySellNumberAbove200000 = atoll(psetWeekLineInfo->m_OrdinarySellNumberAbove200000);
+
+  m_lCanceledBuyVolumeBelow5000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow5000);
+  m_lCanceledBuyVolumeBelow10000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow10000);
+  m_lCanceledBuyVolumeBelow20000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow20000);
+  m_lCanceledBuyVolumeBelow50000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow50000);
+  m_lCanceledBuyVolumeBelow100000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow100000);
+  m_lCanceledBuyVolumeBelow200000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeBelow200000);
+  m_lCanceledBuyVolumeAbove200000 = atoll(psetWeekLineInfo->m_CanceledBuyVolumeAbove200000);
+  m_lCanceledSellVolumeBelow5000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow5000);
+  m_lCanceledSellVolumeBelow10000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow10000);
+  m_lCanceledSellVolumeBelow20000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow20000);
+  m_lCanceledSellVolumeBelow50000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow50000);
+  m_lCanceledSellVolumeBelow100000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow100000);
+  m_lCanceledSellVolumeBelow200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow200000);
+  m_lCanceledSellVolumeAbove200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeAbove200000);
+
+  CalculateRSLogarithm(m_dRelativeStrong);
+  return true;
+}
+
 bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   ASSERT(psetWeekLineBasicInfo->IsOpen());
   m_lDay = psetWeekLineBasicInfo->m_Day;
   m_wMarket = psetWeekLineBasicInfo->m_Market;
   m_strStockCode = psetWeekLineBasicInfo->m_StockCode;
+  m_strStockName = psetWeekLineBasicInfo->m_StockName;
   m_lLastClose = atof(psetWeekLineBasicInfo->m_LastClose) * 1000;
   m_lOpen = atof(psetWeekLineBasicInfo->m_Open) * 1000;
   m_lHigh = atof(psetWeekLineBasicInfo->m_High) * 1000;
@@ -224,7 +317,7 @@ bool CWeekLine::LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 }
 
 bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
-  if (m_lDay == 0) m_lDay = pDayLine->GetFormatedMarketDay();
+  if (m_lDay == 0) m_lDay = GetCurrentMonday(pDayLine->GetFormatedMarketDay());;
   if (m_time == 0) m_time = pDayLine->GetFormatedMarketTime();
   m_wMarket = pDayLine->GetMarket();
   if (m_strStockCode == _T("")) m_strStockCode = pDayLine->GetStockCode();
