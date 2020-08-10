@@ -172,14 +172,14 @@ void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine) {
 bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
   ASSERT(IsDataLoaded());
   ASSERT(GetDataSize() > 0);
-  long i = 0;
+  long lCurrentDayLinePos = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   vWeekLine.clear();
   do {
-    pWeekLine = CreateNewWeekLine(i);
+    pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
     vWeekLine.push_back(pWeekLine);
-  } while (i < GetDataSize());
+  } while (lCurrentDayLinePos < GetDataSize());
 
   return true;
 }
@@ -193,12 +193,12 @@ CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
   if (lNextMonday < lNewestDay) { // 中间数据
     while (GetData(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
-      pWeekLine->CreateWeekLine(GetData(lCurrentDayLinePos++));
+      pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
     }
   }
   else { // 最后一组数据
     while (lCurrentDayLinePos <= (GetDataSize() - 1)) {
-      pWeekLine->CreateWeekLine(GetData(lCurrentDayLinePos++));
+      pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
     }
   }
 

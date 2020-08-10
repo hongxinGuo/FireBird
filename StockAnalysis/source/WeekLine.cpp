@@ -409,7 +409,7 @@ bool CWeekLine::LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
   return true;
 }
 
-bool CWeekLine::CreateWeekLine(CDayLinePtr pDayLine) {
+bool CWeekLine::UpdateWeekLine(CDayLinePtr pDayLine) {
   if (m_lDay == 0) m_lDay = GetCurrentMonday(pDayLine->GetFormatedMarketDay());;
   if (m_time == 0) m_time = pDayLine->GetFormatedMarketTime();
   m_wMarket = pDayLine->GetMarket();

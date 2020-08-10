@@ -1286,6 +1286,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   // 装载当前股票日线数据
   TaskLoadCurrentStockDayLine();
 
+  // 下午三点八分开始生成周线数据
+  TaskBuildWeekLineOfCurrentWeek(lCurrentTime);
+
   return true;
 }
 
@@ -1826,7 +1829,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
 
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
-  LoadCurrentWeekWeekLine(weekLineContainer);
+  LoadCurrentWeekLine(weekLineContainer);
 
   auto pWeekLineData = weekLineContainer.GetContainer();
 
@@ -1841,7 +1844,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
     if (setWeekLineStockCode.find((*pDayLineData)[i]->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据容器中无本日线数据
        // 存储此日线数据至周线数据容器
       pWeekLine = make_shared<CWeekLine>();
-      pWeekLine->CreateWeekLine((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
+      pWeekLine->UpdateWeekLine((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
       weekLineContainer.StoreData(pWeekLine);
     }
     else {
@@ -1851,9 +1854,9 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   }
 
   // 清楚之前的周线数据
-  DeleteWeekLine(lCurrentMonday);
+  //DeleteWeekLine(lCurrentMonday);
   // 存储周线数据
-  SaveWeekLine(weekLineContainer);
+  //SaveWeekLine(weekLineContainer);
   // 存储当前周数据
   SaveCurrentWeekLine(weekLineContainer);
 
@@ -1986,7 +1989,7 @@ bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 // 装载周线的所有数据（使用CSetWeekLineInfo表）。
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::LoadCurrentWeekWeekLine(CWeekLineContainer& weekLineContainer) {
+bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
   CSetWeekLineInfo setWeekLineInfo;
 
   setWeekLineInfo.Open();
@@ -1995,6 +1998,7 @@ bool CChinaMarket::LoadCurrentWeekWeekLine(CWeekLineContainer& weekLineContainer
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pWeekLine->LoadData(&setWeekLineInfo);
     weekLineContainer.StoreData(pWeekLine);
+    setWeekLineInfo.MoveNext();
   }
   setWeekLineInfo.m_pDatabase->CommitTrans();
   setWeekLineInfo.Close();
@@ -2067,22 +2071,6 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
 
   for (auto pStock : m_vChinaMarketStock) {
     RunningThreadCalculate10RSStrong2Stock(&v10RSStrongStock, pStock);
-
-    /*
-    if (IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
-        pStock->SetDayLineLoaded(true);
-      }
-      if (pStock->Calculate10RSStrong2StockSet()) {
-        v10RSStrongStock.push_back(pStock);
-      }
-      if (!pStock->IsSameStock(m_pCurrentStock)) {
-        pStock->UnloadDayLine();
-      }
-    }
-    if (gl_fExitingSystem) return false;
-    */
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     if (gl_fExitingSystem) return false;
@@ -2116,21 +2104,6 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
 
   for (auto pStock : m_vChinaMarketStock) {
     RunningThreadCalculate10RSStrong1Stock(&v10RSStrongStock, pStock);
-    /*
-    if (IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
-        pStock->SetDayLineLoaded(true);
-      }
-      if (pStock->Calculate10RSStrong1StockSet()) {
-        v10RSStrongStock.push_back(pStock);
-      }
-      if (!pStock->IsSameStock(m_pCurrentStock)) {
-        pStock->UnloadDayLine();
-      }
-    }
-    if (gl_fExitingSystem) return false;
-    */
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     if (gl_fExitingSystem) return false;
@@ -2164,21 +2137,6 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 
   for (auto pStock : m_vChinaMarketStock) {
     RunningThreadCalculate10RSStrongStock(&v10RSStrongStock, pRef, pStock);
-    /*
-    if (IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine();
-        pStock->SetDayLineLoaded(true);
-      }
-      if (pStock->Calculate10RSStrongStockSet(pRef)) {
-        v10RSStrongStock.push_back(pStock);
-      }
-      if (!pStock->IsSameStock(m_pCurrentStock)) {
-        pStock->UnloadDayLine();
-      }
-    }
-    if (gl_fExitingSystem) return false;
-    */
   }
 
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
@@ -2233,6 +2191,14 @@ bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
     }
   }
   return true;
+}
+
+bool CChinaMarket::TaskBuildWeekLineOfCurrentWeek(long lCurrentTime) {
+  if (IsSystemReady() && (lCurrentTime >= 150800) && IsTodayStockProcessed() && IsWorkingDay()) {
+    RunningThreadBuildWeekLineOfCurrentWeek();
+    return true;
+  }
+  return false;
 }
 
 bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
@@ -2330,14 +2296,14 @@ bool CChinaMarket::RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>
   thread thread1(ThreadCalculate10RSStrong1Stock, pv10RSStrongStock, pStock);
   thread1.detach();
 
-  return false;
+  return true;
 }
 
 bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
   thread thread1(ThreadCalculate10RSStrong2Stock, pv10RSStrongStock, pStock);
   thread1.detach();
 
-  return false;
+  return true;
 }
 
 bool CChinaMarket::RunningThreadBuildWeekLine(void) {
@@ -2365,7 +2331,14 @@ bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>*
   thread thread1(ThreadCalculate10RSStrongStock, pv10RSStrongStock, pRef, pStock);
   thread1.detach();
 
-  return false;
+  return true;
+}
+
+bool CChinaMarket::RunningThreadBuildWeekLineOfCurrentWeek(void) {
+  thread thread1(ThreadBuildWeekLineOfCurrentWeek, this);
+  thread1.detach();
+
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -2390,19 +2363,15 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   str += _T("日的实时数据");
   gl_systemMessage.PushInformationMessage(str);
 
+  DeleteDayLineBasicInfo(lCurrentTradeDay);
+  DeleteDayLineExtendInfo(lCurrentTradeDay);
+
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
   strDay = buffer;
   setDayLineBasicInfo.m_strFilter = _T("[Day] =");
   setDayLineBasicInfo.m_strFilter += strDay;
   setDayLineBasicInfo.Open();
-  setDayLineBasicInfo.m_pDatabase->BeginTrans();
-  while (!setDayLineBasicInfo.IsEOF()) {
-    setDayLineBasicInfo.Delete();
-    setDayLineBasicInfo.MoveNext();
-  }
-  setDayLineBasicInfo.m_pDatabase->CommitTrans();
-
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
@@ -2418,17 +2387,10 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayLineBasicInfo.m_pDatabase->CommitTrans();
   setDayLineBasicInfo.Close();
 
-  // 存储今日生成的数据于DayLineInfo表中。
+  // 存储今日生成的数据于DayLineExtendInfo表中。
   setDayLineExtendInfo.m_strFilter = _T("[Day] =");
   setDayLineExtendInfo.m_strFilter += strDay;
   setDayLineExtendInfo.Open();
-  setDayLineExtendInfo.m_pDatabase->BeginTrans();
-  while (!setDayLineExtendInfo.IsEOF()) {
-    setDayLineExtendInfo.Delete();
-    setDayLineExtendInfo.MoveNext();
-  }
-  setDayLineExtendInfo.m_pDatabase->CommitTrans();
-
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
@@ -2445,6 +2407,55 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   str += _T("日实时数据处理完毕");
   gl_systemMessage.PushInformationMessage(str);
   return iCount;
+}
+
+bool CChinaMarket::DeleteDayLine(long lDay) {
+  DeleteDayLineBasicInfo(lDay);
+  DeleteDayLineExtendInfo(lDay);
+
+  return true;
+}
+
+bool CChinaMarket::DeleteDayLineBasicInfo(long lDay) {
+  char buffer[20];
+  CString strDay;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+
+  _ltoa_s(lDay, buffer, 10);
+  strDay = buffer;
+  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.Open();
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineBasicInfo.IsEOF()) {
+    setDayLineBasicInfo.Delete();
+    setDayLineBasicInfo.MoveNext();
+  }
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteDayLineExtendInfo(long lDay) {
+  char buffer[20];
+  CString strDay;
+  CSetDayLineExtendInfo setDayLineExtendInfo;
+
+  _ltoa_s(lDay, buffer, 10);
+  strDay = buffer;
+  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
+  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.Open();
+  setDayLineExtendInfo.m_pDatabase->BeginTrans();
+  while (!setDayLineExtendInfo.IsEOF()) {
+    setDayLineExtendInfo.Delete();
+    setDayLineExtendInfo.MoveNext();
+  }
+  setDayLineExtendInfo.m_pDatabase->CommitTrans();
+  setDayLineExtendInfo.Close();
+
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////

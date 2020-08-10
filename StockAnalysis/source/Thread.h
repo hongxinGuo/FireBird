@@ -74,6 +74,8 @@ UINT ThreadLoadWeekLine(CChinaStockPtr pStock); // 此线程返回值为29
 UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为30, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
 UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为31
+// 计算本周的周线
+UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket); // 此工作线程返回值为32
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

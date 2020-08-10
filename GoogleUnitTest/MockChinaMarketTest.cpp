@@ -453,4 +453,10 @@ namespace StockAnalysisTest {
   TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {
     EXPECT_EQ(ThreadMaintainDayLineDataBase(), (UINT)17) << "此工作线程目前没有实际动作";
   }
+
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
+      .Times(1);
+    EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pchinaMarket), (UINT)32);
+  }
 }

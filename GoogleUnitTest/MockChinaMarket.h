@@ -25,6 +25,11 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrongStock, (vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock), (override));
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong1Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong2Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLine, (), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStockPtr pStock), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDay, (long lThisDay), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));
 
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
@@ -36,6 +41,7 @@ namespace testing {
     MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
     MOCK_METHOD(bool, BuildDayLineRSOfDay, (long lDay), (override));
+    MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

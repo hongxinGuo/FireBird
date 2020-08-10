@@ -87,6 +87,9 @@ public:
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockDayLine(void);
 
+  // 生成当周周线数据
+  bool TaskBuildWeekLineOfCurrentWeek(long lCurrentTime);
+
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
@@ -108,6 +111,7 @@ public:
   virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
+  virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   // interface function
 public:
   // 系统状态区
@@ -191,13 +195,18 @@ public:
   bool LoadTodayTempDB(void);
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
-  bool DeleteWeekLine(long lMonday);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
-  bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+
+  bool DeleteWeekLine(long lMonday);
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
 
-  bool LoadCurrentWeekWeekLine(CWeekLineContainer& weekLineContainer);
+  bool DeleteDayLine(long lDay);
+  bool DeleteDayLineBasicInfo(long lDay);
+  bool DeleteDayLineExtendInfo(long lDay);
+
+  bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+  bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool DeleteCurrentWeekWeekLine(void);
 
   bool Load10DayRSStrong1StockSet(void);
@@ -212,7 +221,7 @@ public:
   bool UnloadDayLine(void);
 
   bool BuildWeekLine(void);
-  bool BuildWeekLineOfCurrentWeek(void);
+  virtual bool BuildWeekLineOfCurrentWeek(void);
 
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）

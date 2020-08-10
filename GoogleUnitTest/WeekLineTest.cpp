@@ -833,7 +833,7 @@ namespace StockAnalysisTest {
     pDayLine->SetCanceledSellVolumeBelow200000(1867723);
     pDayLine->SetCanceledSellVolumeAbove200000(1266773);
 
-    weekLine.CreateWeekLine(pDayLine);
+    weekLine.UpdateWeekLine(pDayLine);
 
     EXPECT_EQ(weekLine.GetFormatedMarketDay(), GetCurrentMonday(pDayLine->GetFormatedMarketDay())) << "周线日期总是当周的星期一";
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
@@ -1093,8 +1093,8 @@ namespace StockAnalysisTest {
     pDayLine2->SetCanceledSellVolumeBelow200000(1867723);
     pDayLine2->SetCanceledSellVolumeAbove200000(1266773);
 
-    weekLine.CreateWeekLine(pDayLine1);
-    weekLine.CreateWeekLine(pDayLine2);
+    weekLine.UpdateWeekLine(pDayLine1);
+    weekLine.UpdateWeekLine(pDayLine2);
 
     EXPECT_EQ(weekLine.GetFormatedMarketDay(), pDayLine1->GetFormatedMarketDay());
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime());
