@@ -25,23 +25,37 @@ bool CWeekLineContainer::SaveWeekLine(CString strStockCode) {
   return true;
 }
 
-bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
-  CSetWeekLineBasicInfo setWeekLineBasicInfo;
-  size_t lSize = 0;
+bool CWeekLineContainer::SaveCurrentWeekLine(void) {
+  CSetWeekLineInfo setWeekLineInfo;
   CWeekLinePtr pWeekLine = nullptr;
 
   ASSERT(m_vHistoryData.size() > 0);
 
-  lSize = m_vHistoryData.size();
+  setWeekLineInfo.Open();
+  setWeekLineInfo.m_pDatabase->BeginTrans();
+  for (auto pData : m_vHistoryData) {
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineInfo);
+  }
+  setWeekLineInfo.m_pDatabase->CommitTrans();
+  setWeekLineInfo.Close();
+
+  return true;
+}
+
+bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  CWeekLinePtr pWeekLine = nullptr;
+
+  ASSERT(m_vHistoryData.size() > 0);
+
   setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineBasicInfo.m_strFilter += strStockCode + _T("'");
   setWeekLineBasicInfo.m_strSort = _T("[Day]");
 
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) {
-    pWeekLine = GetData(i);
-    pWeekLine->AppendData(&setWeekLineBasicInfo);
+  for (auto pData : m_vHistoryData) {
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineBasicInfo);
   }
   setWeekLineBasicInfo.m_pDatabase->CommitTrans();
   setWeekLineBasicInfo.Close();
@@ -56,23 +70,18 @@ bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CWeekLineContainer::SaveExtendInfo(CString strStockCode) {
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
-  size_t lSize = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   ASSERT(m_vHistoryData.size() > 0);
 
-  lSize = m_vHistoryData.size();
   setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineExtendInfo.m_strFilter += strStockCode + _T("'");
   setWeekLineExtendInfo.m_strSort = _T("[Day]");
 
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) {
-    pWeekLine = GetData(i);
-    if (pWeekLine->GetTransactionNumber() > 0) { // 只存储有交易记录的数据。
-      pWeekLine->AppendData(&setWeekLineExtendInfo);
-    }
+  for (auto pData : m_vHistoryData) {
+    (dynamic_pointer_cast<CWeekLine>(pData))->AppendData(&setWeekLineExtendInfo);
   }
   setWeekLineExtendInfo.m_pDatabase->CommitTrans();
   setWeekLineExtendInfo.Close();
@@ -147,9 +156,7 @@ bool CWeekLineContainer::LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExte
 }
 
 bool CWeekLineContainer::StoreData(vector<CWeekLinePtr>& vWeekLine) {
-  CWeekLinePtr pWeekLine = nullptr;
-  for (int i = 0; i < vWeekLine.size(); i++) {
-    pWeekLine = vWeekLine.at(i);
+  for (auto pWeekLine : vWeekLine) {
     StoreData(pWeekLine);
   }
   SetDataLoaded(true);
@@ -163,12 +170,19 @@ bool CWeekLineContainer::StoreData(vector<CWeekLinePtr>& vWeekLine) {
 //
 /////////////////////////////////////////////////////////////////////////////////////
 void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
-  CWeekLinePtr pWeekLine = nullptr;
   Unload(); // 清除已载入的周线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = 0; i < vTempWeekLine.size(); i++) {
-    pWeekLine = vTempWeekLine.at(i);
+  for (auto pWeekLine : vTempWeekLine) {
     StoreData(pWeekLine);
   }
   SetDataLoaded(true);
+}
+
+bool CWeekLineContainer::UpdateData(CDayLinePtr pDayLine) {
+  for (auto pWeekLine : m_vHistoryData) {
+    if (strcmp(pWeekLine->GetStockCode(), pDayLine->GetStockCode()) == 0) {
+      dynamic_pointer_cast<CWeekLine>(pWeekLine)->CreateWeekLine(pDayLine);
+    }
+  }
+  return true;
 }

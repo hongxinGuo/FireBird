@@ -1826,7 +1826,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
 
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
-  LoadCurrentWeekLine(weekLineContainer);
+  LoadCurrentWeekWeekLine(weekLineContainer);
 
   auto pWeekLineData = weekLineContainer.GetContainer();
 
@@ -1836,14 +1836,28 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   }
   setWeekLineStockCode.insert(vectorWeekLineStockCode.begin(), vectorWeekLineStockCode.end());
 
+  CWeekLinePtr pWeekLine;
   for (int i = 0; i < pDayLineData->size(); i++) {
-    if (setWeekLineStockCode.find((*pDayLineData)[i]->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据中无本日线数据
-      // 存储此日线数据至周线数据库
+    if (setWeekLineStockCode.find((*pDayLineData)[i]->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据容器中无本日线数据
+       // 存储此日线数据至周线数据容器
+      pWeekLine = make_shared<CWeekLine>();
+      pWeekLine->CreateWeekLine((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
+      weekLineContainer.StoreData(pWeekLine);
     }
     else {
-      // 更新周线数据库
+      // 更新周线数据容器
+      weekLineContainer.UpdateData((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
     }
   }
+
+  // 清楚之前的周线数据
+  DeleteWeekLine(lCurrentMonday);
+  // 存储周线数据
+  SaveWeekLine(weekLineContainer);
+  // 存储当前周数据
+  SaveCurrentWeekLine(weekLineContainer);
+
+  weekLineContainer.SaveWeekLine(_T("sh600000")); // 此容器中为各股票的当周周线数据，故而股票代码只是为了减少查询时间。
   return true;
 }
 
@@ -1879,7 +1893,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
   return true;
 }
 
-bool CChinaMarket::LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMondayOfWeek) {
+bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek) {
   CString strSQL;
   CString strDay;
   char  pch[30];
@@ -1904,7 +1918,75 @@ bool CChinaMarket::LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMon
   return true;
 }
 
-bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
+bool CChinaMarket::DeleteWeekLine(long lMonday) {
+  DeleteWeekLineBasicInfo(lMonday);
+  DeleteWeekLineExtendInfo(lMonday);
+
+  return true;
+}
+bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
+  CString strSQL;
+  CString strDay;
+  char  pch[30];
+  CTime ctTime;
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+
+  sprintf_s(pch, _T("%08d"), lMonday);
+  strDay = pch;
+  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.Open();
+  setWeekLineBasicInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineBasicInfo.IsEOF()) {
+    setWeekLineBasicInfo.Delete();
+    setWeekLineBasicInfo.MoveNext();
+  }
+  setWeekLineBasicInfo.m_pDatabase->CommitTrans();
+  setWeekLineBasicInfo.Close();
+
+  return true;
+}
+bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
+  CString strSQL;
+  CString strDay;
+  char  pch[30];
+  CTime ctTime;
+  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+
+  sprintf_s(pch, _T("%08d"), lMonday);
+  strDay = pch;
+  setWeekLineExtendInfo.m_strFilter = _T("[Day] =");
+  setWeekLineExtendInfo.m_strFilter += strDay;
+  setWeekLineExtendInfo.Open();
+  setWeekLineExtendInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineExtendInfo.IsEOF()) {
+    setWeekLineExtendInfo.Delete();
+    setWeekLineExtendInfo.MoveNext();
+  }
+  setWeekLineExtendInfo.m_pDatabase->CommitTrans();
+  setWeekLineExtendInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::SaveWeekLine(CWeekLineContainer& weekLineContainer) {
+  weekLineContainer.SaveWeekLine(_T("sh600000"));
+
+  return true;
+}
+
+bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
+  weekLineContainer.SaveCurrentWeekLine();
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// 装载周线的所有数据（使用CSetWeekLineInfo表）。
+//
+///////////////////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::LoadCurrentWeekWeekLine(CWeekLineContainer& weekLineContainer) {
   CSetWeekLineInfo setWeekLineInfo;
 
   setWeekLineInfo.Open();
@@ -1913,6 +1995,21 @@ bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pWeekLine->LoadData(&setWeekLineInfo);
     weekLineContainer.StoreData(pWeekLine);
+  }
+  setWeekLineInfo.m_pDatabase->CommitTrans();
+  setWeekLineInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
+  CSetWeekLineInfo setWeekLineInfo;
+
+  setWeekLineInfo.Open();
+  setWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineInfo.IsEOF()) {
+    setWeekLineInfo.Delete();
+    setWeekLineInfo.MoveNext();
   }
   setWeekLineInfo.m_pDatabase->CommitTrans();
   setWeekLineInfo.Close();
@@ -2361,14 +2458,11 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
 bool CChinaMarket::UpdateTodayTempDB(void) {
   CSetDayLineToday setDayLineToday;
   CString str;
+
+  DeleteTodayTempDB();
+
   // 存储今日生成的数据于DayLineToday表中。
   setDayLineToday.Open();
-  setDayLineToday.m_pDatabase->BeginTrans();
-  while (!setDayLineToday.IsEOF()) {
-    setDayLineToday.Delete();
-    setDayLineToday.MoveNext();
-  }
-  setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
     if (!pStock->IsTodayDataActive()) {  // 此股票今天停牌,所有的数据皆为零,不需要存储.
@@ -2382,6 +2476,20 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
     setDayLineToday.AddNew();
     pStock->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
+  }
+  setDayLineToday.m_pDatabase->CommitTrans();
+  setDayLineToday.Close();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteTodayTempDB(void) {
+  CSetDayLineToday setDayLineToday;
+  setDayLineToday.Open();
+  setDayLineToday.m_pDatabase->BeginTrans();
+  while (!setDayLineToday.IsEOF()) {
+    setDayLineToday.Delete();
+    setDayLineToday.MoveNext();
   }
   setDayLineToday.m_pDatabase->CommitTrans();
   setDayLineToday.Close();

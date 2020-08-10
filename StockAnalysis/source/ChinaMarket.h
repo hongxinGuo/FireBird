@@ -187,10 +187,19 @@ public:
   void LoadChoicedStockDB(void);
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);
+  bool DeleteTodayTempDB(void);
   bool LoadTodayTempDB(void);
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
-  bool LoadWeekLine(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
-  bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+  bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
+  bool DeleteWeekLine(long lMonday);
+  bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
+  bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+  bool DeleteWeekLineBasicInfo(long lMonday);
+  bool DeleteWeekLineExtendInfo(long lMonday);
+
+  bool LoadCurrentWeekWeekLine(CWeekLineContainer& weekLineContainer);
+  bool DeleteCurrentWeekWeekLine(void);
+
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
 

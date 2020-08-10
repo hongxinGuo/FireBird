@@ -97,13 +97,6 @@ CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
   m_CanceledBuyVolumeBelow100000 = _T("");
   m_CanceledBuyVolumeBelow200000 = _T("");
   m_CanceledBuyVolumeAbove200000 = _T("");
-  m_CanceledBuyVolumeBelow5000 = _T("");
-  m_CanceledBuyVolumeBelow10000 = _T("");
-  m_CanceledBuyVolumeBelow20000 = _T("");
-  m_CanceledBuyVolumeBelow50000 = _T("");
-  m_CanceledBuyVolumeBelow100000 = _T("");
-  m_CanceledBuyVolumeBelow200000 = _T("");
-  m_CanceledBuyVolumeAbove200000 = _T("");
   m_CanceledSellVolumeBelow5000 = _T("");
   m_CanceledSellVolumeBelow10000 = _T("");
   m_CanceledSellVolumeBelow20000 = _T("");
@@ -120,7 +113,7 @@ CString CSetWeekLineInfo::GetDefaultConnect() {
 }
 
 CString CSetWeekLineInfo::GetDefaultSQL() {
-  return _T("[WeekLine]");
+  return _T("[CurrentWeekLine]");
 }
 
 void CSetWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {

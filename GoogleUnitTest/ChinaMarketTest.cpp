@@ -8,6 +8,8 @@
 
 #include"SetStockCode.h"
 #include"SetOption.h"
+#include"SetWeekLineInfo.h"
+
 #include"WebInquirer.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
@@ -1703,5 +1705,52 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
     gl_pChinaStockMarket->SetStockNeedUpdated(0);
     EXPECT_FALSE(gl_pChinaStockMarket->TooManyStocksNeedUpdated());
+  }
+
+  TEST_F(CChinaMarketTest, TestDeleteCurrentWeekLine) {
+    CSetWeekLineInfo setCurrentWeekLine, setCurrentWeekLine2;
+    CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+
+    pWeekLine->SetStockCode(_T("sh600000"));
+    pWeekLine->SetDay(GetCurrentMonday(20200101));
+    setCurrentWeekLine.Open();
+    setCurrentWeekLine.m_pDatabase->BeginTrans();
+    pWeekLine->AppendData(&setCurrentWeekLine);
+    setCurrentWeekLine.m_pDatabase->CommitTrans();
+    setCurrentWeekLine.Close();
+
+    setCurrentWeekLine.Open();
+    EXPECT_FALSE(setCurrentWeekLine.IsEOF());
+    setCurrentWeekLine.Close();
+
+    gl_pChinaStockMarket->DeleteCurrentWeekWeekLine();
+
+    setCurrentWeekLine2.Open();
+    EXPECT_TRUE(setCurrentWeekLine2.IsEOF());
+    setCurrentWeekLine2.Close();
+  }
+
+  TEST_F(CChinaMarketTest, TestDeleteTodayTempDB) {
+    CSetDayLineToday setDayLineToday, setDayLineToday2;
+    CString strName;
+
+    setDayLineToday.Open();
+    setDayLineToday.m_pDatabase->BeginTrans();
+    setDayLineToday.AddNew();
+    setDayLineToday.m_StockCode = _T("sh600000");
+    setDayLineToday.m_Day = 20201212;
+    setDayLineToday.Update();
+    setDayLineToday.m_pDatabase->CommitTrans();
+    setDayLineToday.Close();
+
+    setDayLineToday.Open();
+    EXPECT_FALSE(setDayLineToday.IsEOF());
+    setDayLineToday.Close();
+
+    gl_pChinaStockMarket->DeleteTodayTempDB();
+
+    setDayLineToday2.Open();
+    EXPECT_TRUE(setDayLineToday2.IsEOF());
+    setDayLineToday2.Close();
   }
 }
