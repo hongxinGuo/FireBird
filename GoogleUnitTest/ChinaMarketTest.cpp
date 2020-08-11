@@ -1846,4 +1846,35 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(setDayLineToday2.IsEOF());
     setDayLineToday2.Close();
   }
+
+  TEST_F(CChinaMarketTest, TestLoadDayLine) {
+    CDayLineContainer dayLineContainer;
+    long lDay = GetCurrentMonday(20200101);
+
+    gl_pChinaStockMarket->LoadDayLine(dayLineContainer, lDay);
+
+    CString strSQL;
+    CString strDay;
+    char  pch[30];
+    CTime ctTime;
+    CSetDayLineBasicInfo setDayLineBasicInfo;
+    CSetDayLineExtendInfo setDayLineExtendInfo;
+    CDayLinePtr pDayLine;
+    long i = 0;
+
+    sprintf_s(pch, _T("%08d"), lDay);
+    strDay = pch;
+    setDayLineBasicInfo.m_strSort = _T("[StockCode]");
+    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.Open();
+    while (!setDayLineBasicInfo.IsEOF()) {
+      pDayLine = dayLineContainer.GetData(i++);
+      EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pDayLine->GetStockCode());
+      setDayLineBasicInfo.MoveNext();
+    }
+    EXPECT_EQ(i, dayLineContainer.GetDataSize());
+    setDayLineBasicInfo.m_pDatabase->CommitTrans();
+    setDayLineBasicInfo.Close();
+  }
 }

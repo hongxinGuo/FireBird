@@ -75,6 +75,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
   ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
+  ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -839,5 +841,14 @@ void CMainFrame::OnRebuildWeekLineRS() {
 }
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnBuildCurrentWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineOfCurrentWeek();
+}
+
+void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
 }

@@ -336,7 +336,7 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_FALSE(s_pchinaMarket->TaskProcessTodayStock(150359));
     EXPECT_TRUE(s_pchinaMarket->TaskProcessTodayStock(150400));
-    EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());
+    EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed()) << _T("此标志由工作线程负责设置，故而此时尚未设置");
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);

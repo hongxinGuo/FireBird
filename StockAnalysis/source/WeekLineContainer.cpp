@@ -50,7 +50,6 @@ bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
 
   setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineBasicInfo.m_strFilter += strStockCode + _T("'");
-  setWeekLineBasicInfo.m_strSort = _T("[Day]");
 
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -76,7 +75,6 @@ bool CWeekLineContainer::SaveExtendInfo(CString strStockCode) {
 
   setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineExtendInfo.m_strFilter += strStockCode + _T("'");
-  setWeekLineExtendInfo.m_strSort = _T("[Day]");
 
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
@@ -179,9 +177,10 @@ void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 }
 
 bool CWeekLineContainer::UpdateData(CDayLinePtr pDayLine) {
-  for (auto pWeekLine : m_vHistoryData) {
-    if (strcmp(pWeekLine->GetStockCode(), pDayLine->GetStockCode()) == 0) {
-      dynamic_pointer_cast<CWeekLine>(pWeekLine)->UpdateWeekLine(pDayLine);
+  for (auto pData : m_vHistoryData) {
+    if (strcmp(pData->GetStockCode(), pDayLine->GetStockCode()) == 0) { //
+      dynamic_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pDayLine);
+      break;
     }
   }
   return true;

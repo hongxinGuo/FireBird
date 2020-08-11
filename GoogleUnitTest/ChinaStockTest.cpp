@@ -2035,6 +2035,7 @@ namespace StockAnalysisTest {
 
     setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setWeekLineBasicInfo.Open();
+    setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     for (int i = 0; i < 10; i++) {
       stock.LoadBasicData(&setWeekLineBasicInfo);
       pid = pStock->GetWeekLine(i);
@@ -2056,6 +2057,7 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrong), pid->GetRelativeStrong());
       setWeekLineBasicInfo.MoveNext();
     }
+    setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
     setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
@@ -2104,6 +2106,7 @@ namespace StockAnalysisTest {
 
     setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
     setWeekLineBasicInfo.Open();
+    setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
     for (int i = 0; i < 10; i++) {
       pid = stock.GetWeekLine(i);
@@ -2125,6 +2128,7 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(pWeekLine->GetChangeHandRate(), pid->GetChangeHandRate());
       EXPECT_DOUBLE_EQ(pWeekLine->GetRelativeStrong(), pid->GetRelativeStrong());
     }
+    setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
     setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");

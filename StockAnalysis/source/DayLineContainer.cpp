@@ -11,7 +11,7 @@ CDayLineContainer::~CDayLineContainer() {
 bool CDayLineContainer::SaveData(CString strStockCode) {
   SaveDayLineBasicInfo(strStockCode);
 
-  return false;
+  return true;
 }
 
 bool CDayLineContainer::LoadData(CString strStockCode) {

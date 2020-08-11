@@ -121,4 +121,6 @@ public:
   afx_msg void OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI);
   afx_msg void OnRebuildWeekLineRS();
   afx_msg void OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI);
+  afx_msg void OnBuildCurrentWeekLine();
+  afx_msg void OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI);
 };

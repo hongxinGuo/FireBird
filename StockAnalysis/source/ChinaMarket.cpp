@@ -1286,9 +1286,6 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   // 装载当前股票日线数据
   TaskLoadCurrentStockDayLine();
 
-  // 下午三点八分开始生成周线数据
-  TaskBuildWeekLineOfCurrentWeek(lCurrentTime);
-
   return true;
 }
 
@@ -1451,7 +1448,6 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
   if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
     RunningThreadProcessTodayStock();
-    SetTodayStockProcessed(true);
     return true;
   }
   return false;
@@ -1822,8 +1818,8 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   }
   auto pDayLineData = dayLineContainer.GetContainer();
 
-  for (int i = 0; i < pDayLineData->size(); i++) {
-    strStockCode = (*pDayLineData)[i]->GetStockCode();
+  for (auto pData : *pDayLineData) {
+    strStockCode = pData->GetStockCode();
     vectorDayLineStockCode.push_back(strStockCode);
   }
   setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
@@ -1833,34 +1829,35 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   auto pWeekLineData = weekLineContainer.GetContainer();
 
-  for (int i = 0; i < pWeekLineData->size(); i++) {
-    strStockCode = (*pWeekLineData)[i]->GetStockCode();
+  for (auto pData : *pWeekLineData) {
+    strStockCode = pData->GetStockCode();
     vectorWeekLineStockCode.push_back(strStockCode);
   }
   setWeekLineStockCode.insert(vectorWeekLineStockCode.begin(), vectorWeekLineStockCode.end());
 
   CWeekLinePtr pWeekLine;
-  for (int i = 0; i < pDayLineData->size(); i++) {
-    if (setWeekLineStockCode.find((*pDayLineData)[i]->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据容器中无本日线数据
+  for (auto pData : *pDayLineData) {
+    if (setWeekLineStockCode.find(pData->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据容器中无此日线数据
        // 存储此日线数据至周线数据容器
       pWeekLine = make_shared<CWeekLine>();
-      pWeekLine->UpdateWeekLine((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
+      pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(pData));
       weekLineContainer.StoreData(pWeekLine);
     }
     else {
       // 更新周线数据容器
-      weekLineContainer.UpdateData((dynamic_pointer_cast<CDayLine>((*pDayLineData)[i])));
+      weekLineContainer.UpdateData(dynamic_pointer_cast<CDayLine>(pData));
     }
   }
 
-  // 清楚之前的周线数据
-  //DeleteWeekLine(lCurrentMonday);
+  // 清除之前的周线数据
+  DeleteWeekLine(lCurrentMonday);
   // 存储周线数据
-  //SaveWeekLine(weekLineContainer);
+  SaveWeekLine(weekLineContainer);
+  // 清除当前周的数据
+  DeleteCurrentWeekWeekLine();
   // 存储当前周数据
   SaveCurrentWeekLine(weekLineContainer);
 
-  weekLineContainer.SaveWeekLine(_T("sh600000")); // 此容器中为各股票的当周周线数据，故而股票代码只是为了减少查询时间。
   return true;
 }
 
@@ -1870,6 +1867,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
   char  pch[30];
   CTime ctTime;
   CSetDayLineBasicInfo setDayLineBasicInfo;
+  CSetDayLineExtendInfo setDayLineExtendInfo;
 
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
@@ -1884,14 +1882,28 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
+  setDayLineExtendInfo.m_strSort = _T("[StockCode]");
+  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
+  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.Open();
+  setDayLineExtendInfo.m_pDatabase->BeginTrans();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   while (!setDayLineBasicInfo.IsEOF()) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->LoadBasicData(&setDayLineBasicInfo);
+    while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) < 0)) {
+      setDayLineExtendInfo.MoveNext();
+    }
+    if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) == 0)) {
+      pDayLine->LoadExtendData(&setDayLineExtendInfo);
+    }
     dayLineContainer.StoreData(pDayLine);
+    setDayLineBasicInfo.MoveNext();
   }
   setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineExtendInfo.m_pDatabase->CommitTrans();
   setDayLineBasicInfo.Close();
+  setDayLineExtendInfo.Close();
 
   return true;
 }
@@ -1973,7 +1985,7 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
 }
 
 bool CChinaMarket::SaveWeekLine(CWeekLineContainer& weekLineContainer) {
-  weekLineContainer.SaveWeekLine(_T("sh600000"));
+  weekLineContainer.SaveWeekLine(_T("sh600000"));// 此容器中为各股票的当周周线数据，使用股票代码只是为了减少查询时间。
 
   return true;
 }
@@ -1986,7 +1998,7 @@ bool CChinaMarket::SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //
-// 装载周线的所有数据（使用CSetWeekLineInfo表）。
+// 装载当前周周线表中的所有数据（使用CSetWeekLineInfo表）。
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
@@ -2191,14 +2203,6 @@ bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
     }
   }
   return true;
-}
-
-bool CChinaMarket::TaskBuildWeekLineOfCurrentWeek(long lCurrentTime) {
-  if (IsSystemReady() && (lCurrentTime >= 150800) && IsTodayStockProcessed() && IsWorkingDay()) {
-    RunningThreadBuildWeekLineOfCurrentWeek();
-    return true;
-  }
-  return false;
 }
 
 bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
