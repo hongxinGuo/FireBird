@@ -138,6 +138,8 @@
 #define ID_REBUILD_WEEKLINE_RS          32862
 #define ID_32863                        32863
 #define ID_SHOW_WEEKLINE                32864
+#define ID_BUILD_32865                  32865
+#define ID_BUILD_CURRENT_WEEK_LINE      32866
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -156,7 +158,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32865
+#define _APS_NEXT_COMMAND_VALUE         32867
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

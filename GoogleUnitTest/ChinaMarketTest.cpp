@@ -678,8 +678,14 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
     gl_pChinaStockMarket->SetTodayStockProcessed(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsTodayStockProcessed());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsProcessingTodayStock());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsTodayStockNotProcessed());
     gl_pChinaStockMarket->SetTodayStockProcessed(false);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsTodayStockNotProcessed());
     EXPECT_FALSE(gl_pChinaStockMarket->IsTodayStockProcessed());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsProcessingTodayStock());
+    gl_pChinaStockMarket->SetProcessingTodayStock();
+    EXPECT_TRUE(gl_pChinaStockMarket->IsProcessingTodayStock());
   }
 
   TEST_F(CChinaMarketTest, TestGetCurrentSelectedPosition) {
@@ -1874,7 +1880,6 @@ namespace StockAnalysisTest {
       setDayLineBasicInfo.MoveNext();
     }
     EXPECT_EQ(i, dayLineContainer.GetDataSize());
-    setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
   }
 }

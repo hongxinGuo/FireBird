@@ -158,8 +158,11 @@ public:
   bool IsSystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-  bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
-  void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
+  bool IsTodayStockNotProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return true; else return false; }
+  bool IsProcessingTodayStock(void) noexcept { if (m_iTodayStockProcessed == 1) return true; else return false; }
+  bool IsTodayStockProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return false; else return true; }
+  void SetProcessingTodayStock(void) noexcept { m_iTodayStockProcessed = 1; }
+  void SetTodayStockProcessed(bool fFlag) noexcept { if (fFlag) m_iTodayStockProcessed = 2; else m_iTodayStockProcessed = 0; }
 
   long GetCurrentSelectedPosition(void) noexcept { return m_lCurrentSelectedPosition; }
   void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
@@ -458,7 +461,7 @@ protected:
 
   // 系统状态区
   bool m_fSystemReady; // 市场初始态已经设置好
-  bool m_fTodayStockProcessed; // 今日是否执行了股票收盘
+  int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 

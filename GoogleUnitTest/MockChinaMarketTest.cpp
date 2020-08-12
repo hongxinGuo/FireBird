@@ -354,7 +354,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);

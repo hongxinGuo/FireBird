@@ -104,9 +104,9 @@ void CChinaMarket::Reset(void) {
   m_ttNewestTransactionTime = 0;
 
   if (GetFormatedMarketTime() >= 150400) { // 中国股票市场已经闭市
-    m_fTodayStockProcessed = true; // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
+    SetTodayStockProcessed(true); // 闭市后才执行本系统，则认为已经处理过今日股票数据了。
   }
-  else m_fTodayStockProcessed = false;
+  else SetTodayStockProcessed(false);
 
   m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
   m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
@@ -1446,7 +1446,7 @@ bool CChinaMarket::TaskChoice10RSStrongStockSet(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
-  if (IsSystemReady() && (lCurrentTime >= 150400) && !IsTodayStockProcessed() && IsWorkingDay()) {
+  if (IsSystemReady() && (lCurrentTime >= 150400) && IsTodayStockNotProcessed() && IsWorkingDay()) {
     RunningThreadProcessTodayStock();
     return true;
   }

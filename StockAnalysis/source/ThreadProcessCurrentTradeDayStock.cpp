@@ -18,6 +18,8 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   gl_ThreadStatus.IncreaseRunningThread();
+  pMarket->SetProcessingTodayStock();
+
   char buffer[30];
   CString str;
   int i;
@@ -39,6 +41,9 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。
       pMarket->SetUpdateOptionDB(true);   // 更新状态
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
+    }
+    else {
+      pMarket->SetTodayStockProcessed(false);
     }
   }
   gl_ThreadStatus.DecreaseRunningThread();
