@@ -922,10 +922,24 @@ bool CChinaStock::ProcessOneRTData(CWebRTDataPtr pRTData) {
 }
 
 void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
+  double d1, d2;
+  int iAdjust = 0;
+  int iCompare = 10;
+  int i2 = 0;
+
   if (pRTData->GetPSell(0) == 0) { // 卖一价格为零
     if (pRTData->GetPBuy(0) > 0) {
       m_lHighLimit2 = pRTData->GetPBuy(0);
-      m_lLowLimit2 = pRTData->GetLastClose() - (pRTData->GetPBuy(0) - pRTData->GetLastClose());
+      i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
+      iCompare = ((double)i2 * 100 + 10) / pRTData->GetLastClose();
+      d1 = (double)i2 * 100 / pRTData->GetLastClose();
+      if (d1 > iCompare) {
+        d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
+        if ((d1 - iCompare) > (iCompare - d2)) {
+          iAdjust = 10;
+        }
+      }
+      m_lLowLimit2 = pRTData->GetLastClose() - i2 - iAdjust;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
@@ -935,7 +949,16 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   else if (pRTData->GetPBuy(0) == 0) { // 买一价格为零
     if (pRTData->GetPSell(0) > 0) {
       m_lLowLimit2 = pRTData->GetPSell(0);
-      m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - pRTData->GetPSell(0));
+      i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
+      iCompare = ((double)i2 * 100 + 10) / pRTData->GetLastClose();
+      d1 = (double)i2 / pRTData->GetLastClose();
+      if (d1 < iCompare) {
+        d2 = (double)(i2 + 10) / pRTData->GetLastClose();
+        if ((d2 - iCompare) < (iCompare - d1)) {
+          iAdjust = 10;
+        }
+      }
+      m_lHighLimit2 = pRTData->GetLastClose() + i2 + iAdjust;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
