@@ -172,6 +172,7 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
+    <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
