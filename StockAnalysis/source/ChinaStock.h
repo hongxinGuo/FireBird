@@ -454,7 +454,7 @@ public:
   size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
   CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
   void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
-  bool CalculatingWeekLine(void);
+  bool CalculatingWeekLine(long lStartDay);
   bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
   bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }

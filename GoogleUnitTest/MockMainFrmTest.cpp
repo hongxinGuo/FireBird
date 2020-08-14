@@ -613,4 +613,22 @@ namespace StockAnalysisTest {
     //»Ö¸´³õÌ¬
     gl_pChinaStockMarket->SetUsingSinaRTDataServer();
   }
+
+  TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {
+    CCmdUI cmdUI;
+    long lTime = gl_pChinaStockMarket->GetFormatedMarketTime();
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(150959);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(151000);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(151001);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(lTime);
+  }
 }

@@ -931,15 +931,15 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
     if (pRTData->GetPBuy(0) > 0) {
       m_lHighLimit2 = pRTData->GetPBuy(0);
       i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
-      iCompare = ((double)i2 * 100 + 10) / pRTData->GetLastClose();
+      iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.3) / pRTData->GetLastClose();
       d1 = (double)i2 * 100 / pRTData->GetLastClose();
       if (d1 > iCompare) {
         d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
-        if ((d1 - iCompare) > (iCompare - d2)) {
+        if ((iCompare - d2) <= (d1 - iCompare)) {
           iAdjust = 10;
         }
       }
-      m_lLowLimit2 = pRTData->GetLastClose() - i2 - iAdjust;
+      m_lLowLimit2 = pRTData->GetLastClose() - i2 + iAdjust;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
@@ -950,11 +950,11 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
     if (pRTData->GetPSell(0) > 0) {
       m_lLowLimit2 = pRTData->GetPSell(0);
       i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
-      iCompare = ((double)i2 * 100 + 10) / pRTData->GetLastClose();
-      d1 = (double)i2 / pRTData->GetLastClose();
+      iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.3) / pRTData->GetLastClose();
+      d1 = (double)i2 * 100 / pRTData->GetLastClose();
       if (d1 < iCompare) {
-        d2 = (double)(i2 + 10) / pRTData->GetLastClose();
-        if ((d2 - iCompare) < (iCompare - d1)) {
+        d2 = (double)(i2 + 10) * 100 / pRTData->GetLastClose();
+        if ((d2 - iCompare) <= (iCompare - d1)) {
           iAdjust = 10;
         }
       }
@@ -1559,7 +1559,7 @@ bool CChinaStock::BuildWeekLine(void) {
   }
   if (GetDayLineSize() <= 0) return true;
 
-  CalculatingWeekLine();
+  CalculatingWeekLine(19900101);
   SaveWeekLine();
 
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
@@ -1774,13 +1774,16 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
   else return true;
 }
 
-bool CChinaStock::CalculatingWeekLine(void) {
+bool CChinaStock::CalculatingWeekLine(long lStartDay) {
   ASSERT(IsDayLineLoaded());
   ASSERT(m_DayLine.GetDataSize() > 0);
   long i = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   m_WeekLine.Unload();
+  while (m_DayLine.GetData(i)->GetFormatedMarketDay() < lStartDay) {
+    i++;
+  }
   do {
     pWeekLine = m_DayLine.CreateNewWeekLine(i);
     m_WeekLine.StoreData(pWeekLine);

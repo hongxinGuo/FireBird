@@ -1818,6 +1818,8 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   }
   auto pDayLineData = dayLineContainer.GetContainer();
 
+  gl_systemMessage.PushDayLineInfoMessage(_T("开始生成今日周线"));
+
   for (auto pData : *pDayLineData) {
     strStockCode = pData->GetStockCode();
     vectorDayLineStockCode.push_back(strStockCode);
@@ -1857,6 +1859,8 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   DeleteCurrentWeekWeekLine();
   // 存储当前周数据
   SaveCurrentWeekLine(weekLineContainer);
+
+  gl_systemMessage.PushDayLineInfoMessage(_T("生成今日周线任务完成"));
 
   return true;
 }
