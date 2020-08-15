@@ -218,6 +218,7 @@
     <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp" />
     <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
+    <ClCompile Include="UpdateWeekLineTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
