@@ -77,6 +77,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
   ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
   ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
+  ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -828,7 +830,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCreateWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadBuildWeekLine();
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(19900101);
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
@@ -859,4 +861,13 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   //#endif // !DEBUG
+}
+
+void CMainFrame::OnBuildRebuildCurrentWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(gl_pChinaStockMarket->GetFormatedMarketDay());
+}
+
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
 }

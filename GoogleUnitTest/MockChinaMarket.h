@@ -25,8 +25,8 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrongStock, (vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock), (override));
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong1Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong2Stock, (vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock), (override));
-    MOCK_METHOD(bool, RunningThreadBuildWeekLine, (), (override));
-    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStockPtr pStock), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLine, (long lStartDay), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStockPtr pStock, long lStartDay), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDay, (long lThisDay), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));

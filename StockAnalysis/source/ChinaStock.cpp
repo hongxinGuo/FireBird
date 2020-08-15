@@ -1552,15 +1552,16 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
   }
 }
 
-bool CChinaStock::BuildWeekLine(void) {
+bool CChinaStock::BuildWeekLine(long lStartDay) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
     LoadDayLine(GetStockCode());
   }
   if (GetDayLineSize() <= 0) return true;
 
-  CalculatingWeekLine(19900101);
-  SaveWeekLine();
+  if (CalculatingWeekLine(lStartDay)) {
+    SaveWeekLine();
+  }
 
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
@@ -1781,16 +1782,18 @@ bool CChinaStock::CalculatingWeekLine(long lStartDay) {
   CWeekLinePtr pWeekLine = nullptr;
 
   m_WeekLine.Unload();
-  while (m_DayLine.GetData(i)->GetFormatedMarketDay() < lStartDay) {
+  while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetFormatedMarketDay() < lStartDay)) {
     i++;
   }
-  do {
-    pWeekLine = m_DayLine.CreateNewWeekLine(i);
-    m_WeekLine.StoreData(pWeekLine);
-  } while (i < m_DayLine.GetDataSize());
-  m_WeekLine.SetDataLoaded(true);
-
-  return true;
+  if (i < m_DayLine.GetDataSize()) {
+    do {
+      pWeekLine = m_DayLine.CreateNewWeekLine(i);
+      m_WeekLine.StoreData(pWeekLine);
+    } while (i < m_DayLine.GetDataSize());
+    m_WeekLine.SetDataLoaded(true);
+    return true;
+  }
+  else return false;
 }
 
 #ifdef _DEBUG
