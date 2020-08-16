@@ -66,14 +66,6 @@
 #define ID_SAVE_RTDATA                  32774
 #define ID_DownLoad_DayLine             32775
 #define ID_SAVE_DAYLINE_DATA            32776
-#define ID_32777                        32777
-#define ID_32778                        32778
-#define ID_32779                        32779
-#define ID_32780                        32780
-#define ID_32781                        32781
-#define ID_32782                        32782
-#define ID_32783                        32783
-#define ID_32784                        32784
 #define ID_SHOW_ORDINARY_BUY            32785
 #define ID_SHOW_ORDINARY_SELL           32786
 #define ID_SHOW_ATTACK_BUY              32787
@@ -82,67 +74,36 @@
 #define ID_SHOW_STRONG_SELL             32790
 #define ID_SHOW_UNKNOWNBUYSELL          32791
 #define ID_REBUILD_DAYLINE_RS           32792
-#define ID_BUILD_32793                  32793
 #define ID_BUILD_RESET_SYSTEM           32794
-#define ID_BUILD_32795                  32795
-#define ID_BUILD_                       32796
 #define ID_BUILD_ABORT_BUINDING_RS      32797
-#define ID_32799                        32799
-#define ID_32800                        32800
-#define ID_32801                        32801
-#define ID_32802                        32802
-#define ID_32803                        32803
 #define ID_SHOW_RS5                     32804
 #define ID_SHOW_RS10                    32805
-#define ID_32806                        32806
 #define ID_SHOW_RS3                     32807
 #define ID_SHOW_RS30                    32808
 #define ID_SHOW_RS60                    32809
 #define ID_SHOW_RS120                   32810
-#define ID_32811                        32811
 #define ID_RECORD_RT_DATA               32812
-#define ID_32813                        32813
-#define ID_32814                        32814
 #define ID_SHOW_RS_IN_LOGARITHM         32815
-#define ID_32816                        32816
 #define ID_SHOW_RS_INDEX                32817
-#define ID_32818                        32818
 #define ID_SHOW_RS_IN_AG                32819
 #define ID_SHOW_RS_IN_LINEAR            32820
-#define ID_BUTTON32821                  32821
-#define ID_BUTTON32822                  32822
-#define ID_BUTTON32827                  32827
-#define ID_32830                        32830
-#define ID_32831                        32831
-#define ID_32832                        32832
 #define ID_SHOW_REALTIME                32833
 #define ID_SHOW_DAYLINE                 32834
 #define ID_BUTTON32841                  32841
-#define ID_32844                        32844
-#define ID_32845                        32845
 #define ID_CALCULATE_10DAY_RS1          32846
 #define ID_CALCULATE_10DAY_RS2          32847
-#define ID_32848                        32848
-#define ID_32849                        32849
 #define ID_CALCULATE_10DAY_RS           32850
-#define ID_32851                        32851
 #define ID_STOP_UPDATE_DAYLINE          32852
 #define ID_Menu                         32853
-#define ID_32854                        32854
-#define ID_32855                        32855
 #define ID_USING_NETEASE_REALTIME_DATA_SERVER 32857
 #define ID_USING_SINA_REALTIME_DATA_SERVER 32858
-#define ID_BUILD_32859                  32859
 #define ID_BUILD_CREATE_WEEKLINE        32860
-#define ID_BUILD_32861                  32861
 #define ID_REBUILD_WEEKLINE_RS          32862
-#define ID_32863                        32863
 #define ID_SHOW_WEEKLINE                32864
-#define ID_BUILD_32865                  32865
 #define ID_BUILD_CURRENT_WEEK_LINE      32866
-#define ID_BUILD_32867                  32867
-#define ID_BUILD_BUILD_CURRENT_WEEK_LINE 32868
 #define ID_BUILD_REBUILD_CURRENT_WEEK_LINE 32869
+#define ID_CALCULATING_RS_WEEKLINE      32870
+#define ID_MAINTAIN_DAYLINE             32871
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -157,11 +118,11 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32870
+#define _APS_NEXT_COMMAND_VALUE         32872
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

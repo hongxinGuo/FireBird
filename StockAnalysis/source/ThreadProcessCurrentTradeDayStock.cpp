@@ -36,6 +36,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
     pMarket->BuildDayLineRSOfDay(lDay);
     // 生成周线数据
     pMarket->BuildWeekLineOfCurrentWeek();
+    pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDay));
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
       pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。

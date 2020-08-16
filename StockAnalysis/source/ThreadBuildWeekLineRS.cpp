@@ -71,7 +71,6 @@ UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-  bool fDone = false;
   const long year = thisDay / 10000;
   const long month = thisDay / 100 - year * 100;
   const long day = thisDay - year * 10000 - month * 100;
@@ -79,17 +78,10 @@ UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
   const CTimeSpan oneDay(1, 0, 0, 0);
   long lDay = thisDay;
 
+  ASSERT(GetCurrentMonday(thisDay) == thisDay); // 确保此日期为星期一
+
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    for (int i = 0; i < 5; i++) { // 从星期一至星期五寻找周线数据。不应该存在非星期一的数据。
-      fDone = pMarket->BuildWeekLineRSOfDay(lDay);
-      if (fDone && i > 0) {
-        gl_systemMessage.PushInnerSystemInformationMessage(_T("发现周线日期不为星期一"));
-        break;
-      }
-      if (fDone) break;
-      ctCurrent += oneDay;
-      lDay = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-    }
+    pMarket->BuildWeekLineRSOfDay(lDay);
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

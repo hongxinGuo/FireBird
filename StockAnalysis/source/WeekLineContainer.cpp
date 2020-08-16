@@ -48,8 +48,7 @@ bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
 
   ASSERT(m_vHistoryData.size() > 0);
 
-  setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setWeekLineBasicInfo.m_strFilter += strStockCode + _T("'");
+  setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
 
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -73,8 +72,7 @@ bool CWeekLineContainer::SaveExtendInfo(CString strStockCode) {
 
   ASSERT(m_vHistoryData.size() > 0);
 
-  setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setWeekLineExtendInfo.m_strFilter += strStockCode + _T("'");
+  setWeekLineExtendInfo.m_strFilter = _T("[ID] = 1");
 
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
