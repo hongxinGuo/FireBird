@@ -589,7 +589,7 @@ namespace StockAnalysisTest {
     id.SetRelativeStrongBackup(20.9);
 
     ASSERT(!gl_fNormalMode);
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     id.AppendData(&setDayLineBasicInfo);
@@ -675,7 +675,7 @@ namespace StockAnalysisTest {
     id.SetRelativeStrongBackup(120.9);
 
     ASSERT(!gl_fNormalMode);
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     id.AppendData(&setDayLineBasicInfo);
@@ -741,13 +741,14 @@ namespace StockAnalysisTest {
     id.SetClose(1150);
     id.SetVolume(100000);
     id.SetAmount(100000000);
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 19900101");
+    setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.AddNew();
     id.SaveData(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
     setDayLineBasicInfo.Close();
 
+    setDayLineBasicInfo.m_strFilter = _T("StockCode = 'sh600000'");
     setDayLineBasicInfo.Open();
     id2.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDay(), id2.GetFormatedMarketDay());

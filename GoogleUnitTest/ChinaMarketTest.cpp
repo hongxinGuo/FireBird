@@ -1760,8 +1760,7 @@ namespace StockAnalysisTest {
 
     _ltoa_s(19900101, buffer, 10);
     strDay = buffer;
-    setDayLine.m_strFilter = _T("[Day] =");
-    setDayLine.m_strFilter += strDay;
+    setDayLine.m_strFilter = _T("[ID] = 1");
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
@@ -1792,12 +1791,14 @@ namespace StockAnalysisTest {
 
     pWeekLine->SetStockCode(_T("sh600000"));
     pWeekLine->SetDay(GetCurrentMonday(20200101));
+    setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
     setCurrentWeekLine.Open();
     setCurrentWeekLine.m_pDatabase->BeginTrans();
     pWeekLine->AppendData(&setCurrentWeekLine);
     setCurrentWeekLine.m_pDatabase->CommitTrans();
     setCurrentWeekLine.Close();
 
+    setCurrentWeekLine.m_strFilter = _T("");
     setCurrentWeekLine.Open();
     EXPECT_FALSE(setCurrentWeekLine.IsEOF());
     setCurrentWeekLine.Close();
@@ -1833,6 +1834,7 @@ namespace StockAnalysisTest {
     CSetDayLineToday setDayLineToday, setDayLineToday2;
     CString strName;
 
+    setDayLineToday.m_strFilter = _T("[ID] = 1");
     setDayLineToday.Open();
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
@@ -1842,6 +1844,7 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();
 
+    setDayLineToday.m_strFilter = _T("");
     setDayLineToday.Open();
     EXPECT_FALSE(setDayLineToday.IsEOF());
     setDayLineToday.Close();

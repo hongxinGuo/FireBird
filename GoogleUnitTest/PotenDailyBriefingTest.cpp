@@ -133,6 +133,7 @@ namespace StockAnalysisTest {
     id.m_dLPG_VLGC44LastSpotRate = 39;
     id.m_dLPG_VLGC44SpotTCERate = 40;
 
+    setPoten.m_strFilter = _T("[ID] = 1");
     setPoten.Open();
     setPoten.m_pDatabase->BeginTrans();
     id.AppendData(setPoten);

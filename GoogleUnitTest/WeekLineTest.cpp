@@ -588,7 +588,7 @@ namespace StockAnalysisTest {
     id.SetRelativeStrongBackup(20.9);
 
     ASSERT(!gl_fNormalMode);
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     id.AppendData(&setWeekLineBasicInfo);
@@ -674,7 +674,7 @@ namespace StockAnalysisTest {
     id.SetRelativeStrongBackup(120.9);
 
     ASSERT(!gl_fNormalMode);
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     id.AppendData(&setWeekLineBasicInfo);
@@ -729,13 +729,14 @@ namespace StockAnalysisTest {
     id.SetClose(1150);
     id.SetVolume(100000);
     id.SetAmount(100000000);
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 19900101");
+    setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.AddNew();
     id.SaveData(&setWeekLineBasicInfo);
     setWeekLineBasicInfo.Update();
     setWeekLineBasicInfo.Close();
 
+    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 19900101");
     setWeekLineBasicInfo.Open();
     id2.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDay(), id2.GetFormatedMarketDay());

@@ -2376,7 +2376,7 @@ long CChinaMarket::BuildDayLineOfDay(long lCurrentTradeDay) {
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
   strDay = buffer;
-  setDayLineBasicInfo.m_strFilter = _T("[ID] =1");
+  setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
@@ -2485,6 +2485,7 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
   DeleteTodayTempDB();
 
   // 存储今日生成的数据于DayLineToday表中。
+  setDayLineToday.m_strFilter = _T("[ID] = 1");
   setDayLineToday.Open();
   setDayLineToday.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
@@ -2626,6 +2627,7 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
   setRSOption.m_pDatabase->CommitTrans();
   setRSOption.Close();
 
+  setRSOption.m_strFilter = _T("[ID] = 1");
   setRSOption.Open();
   setRSOption.m_pDatabase->BeginTrans();
   for (int i = 0; i < 10; i++) {
@@ -2920,8 +2922,6 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     setStockCode.Delete();
     setStockCode.MoveNext();
   }
-  setStockCode.m_pDatabase->CommitTrans();
-  setStockCode.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
     pStock->AppendStockCodeDB(setStockCode);
   }
@@ -2965,6 +2965,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::UpdateOptionDB(void) {
   CSetOption setOption;
+
   setOption.Open();
   setOption.m_pDatabase->BeginTrans();
   if (setOption.IsEOF()) {

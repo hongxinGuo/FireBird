@@ -106,6 +106,7 @@ namespace StockAnalysisTest {
     }
     setCrweberIndex.m_pDatabase->CommitTrans();
     setCrweberIndex.Close();
+    setCrweberIndex.m_strFilter = _T("[ID] = 1");
     setCrweberIndex.Open();
     setCrweberIndex.m_pDatabase->BeginTrans();
     setCrweberIndex.AddNew();
@@ -157,12 +158,14 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id.m_dHANDY_TC_3YEAR, id2.m_dHANDY_TC_3YEAR);
 
     id.m_dTD1 = 30.0;
+    setCrweberIndex.m_strFilter = _T("[ID] = 1");
     setCrweberIndex.Open();
     setCrweberIndex.m_pDatabase->BeginTrans();
     id.AppendData(setCrweberIndex);
     setCrweberIndex.m_pDatabase->CommitTrans();
     setCrweberIndex.Close();
 
+    setCrweberIndex.m_strFilter = _T("[Day] = 20000101");
     setCrweberIndex.Open();
     setCrweberIndex.MoveNext();
     id2.LoadData(setCrweberIndex);
@@ -426,7 +429,7 @@ namespace StockAnalysisTest {
                                            , &CrweberIndexNextStringData4, &CrweberIndexNextStringData5, &CrweberIndexNextStringData6
                                            , &CrweberIndexNextStringData7, &CrweberIndexNextStringData8, &CrweberIndexNextStringData9
                                            , &CrweberIndexNextStringData10
-                                           ));
+                           ));
 
   TEST_P(CrweberIndexNextStringTest, TestCrweberIndexNextString) {
     CCrweberIndex Index;
@@ -488,7 +491,7 @@ namespace StockAnalysisTest {
                                            //  , &CrweberIndexGetOneValueData4, &CrweberIndexGetOneValueData5, &CrweberIndexGetOneValueData6
                                             // , &CrweberIndexGetOneValueData7, &CrweberIndexGetOneValueData8, &CrweberIndexGetOneValueData9
                                            //  , &CrweberIndexGetOneValueData10
-                                           ));
+                           ));
 
   TEST_P(CrweberIndexGetOneValueTest, TestCrweberIndexGetOneValue) {
     CCrweberIndex Index;

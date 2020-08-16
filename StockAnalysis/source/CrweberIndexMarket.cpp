@@ -185,11 +185,6 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
     setCrweberIndex.Delete();
     setCrweberIndex.MoveNext();
   }
-  setCrweberIndex.m_pDatabase->CommitTrans();
-  setCrweberIndex.Close();
-
-  setCrweberIndex.Open();
-  setCrweberIndex.m_pDatabase->BeginTrans();
   for (auto pCrweberIndex : m_vCrweberIndex) {
     if (pCrweberIndex != nullptr) {
       pCrweberIndex->AppendData(setCrweberIndex);
@@ -225,6 +220,7 @@ bool CCrweberIndexMarket::GetNewestDatabaseDayFromDB(void) {
 bool CCrweberIndexMarket::SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex) {
   CSetCrweberIndex setIndex;
 
+  setIndex.m_strFilter = _T("[ID] = 1");
   setIndex.Open();
   setIndex.m_pDatabase->BeginTrans();
   pCrweberIndex->AppendData(setIndex);

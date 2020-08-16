@@ -54,6 +54,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
 
   lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
+  setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储

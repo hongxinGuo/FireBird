@@ -1702,13 +1702,14 @@ namespace StockAnalysisTest {
       pRTData->SetPSell(i, 10010 + i * 10);
     }
 
-    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
+    setRTData.m_strFilter = _T("[ID] = 1");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
     pRTData->AppendData(setRTData);
     setRTData.m_pDatabase->CommitTrans();
     setRTData.Close();
 
+    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
     setRTData.Open();
     EXPECT_EQ(atoll(setRTData.m_Time), pRTData->GetTransactionTime());
     EXPECT_EQ(setRTData.m_Market, pRTData->GetMarket());
@@ -1763,13 +1764,14 @@ namespace StockAnalysisTest {
       pRTData->SetPSell(i, 10010 + i * 10);
     }
 
-    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
+    setRTData.m_strFilter = _T("[ID] = 1");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
     pRTData->AppendData(setRTData);
     setRTData.m_pDatabase->CommitTrans();
     setRTData.Close();
 
+    setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
     setRTData.Open();
     id.LoadData(setRTData);
     EXPECT_EQ(id.GetTransactionTime(), pRTData->GetTransactionTime());

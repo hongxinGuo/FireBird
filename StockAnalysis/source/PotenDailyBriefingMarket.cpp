@@ -215,6 +215,8 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
 bool CPotenDailyBriefingMarket::SaveCurrentData(void) {
   ASSERT(m_pDataToSaved != nullptr);
   CSetPotenDailyBriefing setPotenDailyBriefing;
+
+  setPotenDailyBriefing.m_strFilter = _T("[ID] = 1");
   setPotenDailyBriefing.Open();
   setPotenDailyBriefing.m_pDatabase->BeginTrans();
   m_pDataToSaved->AppendData(setPotenDailyBriefing);

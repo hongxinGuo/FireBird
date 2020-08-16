@@ -537,8 +537,7 @@ namespace StockAnalysisTest {
     }
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
-    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
-    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.m_strFilter = _T("[ID] = 1"); // 存储新数据时无需查询旧数据，故而使用最简单的主索引ID
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     setDayLineBasicInfo.AddNew();
@@ -888,6 +887,7 @@ namespace StockAnalysisTest {
     stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
     stock.SetDayLineStartDay(19900101);
+    setStockCode.m_strFilter = _T("[ID] = 1");
     setStockCode.Open();
     stock.AppendStockCodeDB(setStockCode);
     setStockCode.Close();
