@@ -2376,8 +2376,7 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
   strDay = buffer;
-  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
-  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.m_strFilter = _T("[ID] =1");
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
@@ -2395,8 +2394,7 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   setDayLineBasicInfo.Close();
 
   // 存储今日生成的数据于DayLineExtendInfo表中。
-  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
-  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
   for (auto pStock : m_vChinaMarketStock) {
@@ -2809,6 +2807,8 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
   double dShenzhenIndexUpDownRate = 0;
   double dIndexUpDownRate;
   double dRelativeStrongIndex;
+
+  ASSERT(GetCurrentMonday(lDay) == lDay); // 确保此日期为星期一
 
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
