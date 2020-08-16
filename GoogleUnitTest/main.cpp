@@ -8,6 +8,10 @@
 #include"stdafx.h"
 #include"pch.h"
 
+#ifndef _MBCS
+#error _T("本系统使用多字节字符集")
+#endif
+
 // 排除外部代码
 #include<CodeCoverage/CodeCoverage.h>
 #pragma managed(push, off)
@@ -83,6 +87,9 @@ ExcludeFromCodeCoverage(CStockAnalysisView30, L"CStockAnalysisView::ShowGuadan")
 ExcludeFromCodeCoverage(CStockAnalysisView31, L"CStockAnalysisView::ShowRealtimeData");
 ExcludeFromCodeCoverage(CStockAnalysisView32, L"CStockAnalysisView::ShowRealtimeGuadan");
 ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDayLine");
+ExcludeFromCodeCoverage(CStockAnalysisView34, L"CStockAnalysisView::OnDraw");
+ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp");
+ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
 
 ExcludeFromCodeCoverage(CVirtualMarket1, L"CVirtualMarket::AssertValid");
 ExcludeFromCodeCoverage(CVirtualMarket2, L"CVirtualMarket::Dump");
@@ -102,6 +109,10 @@ ExcludeFromCodeCoverage(CChinaMarket11, L"CChinaMarket::RunningThreadSaveChoiced
 ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDayLineOfOneStock");
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::RunningThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::RunningThreadUpdateOptionDB");
+ExcludeFromCodeCoverage(CChinaMarket15, L"CChinaMarket::RunningThreadUpdateStockCodeDB");
+ExcludeFromCodeCoverage(CChinaMarket16, L"CChinaMarket::RunningThreadCalculate10RSStrongStock");
+ExcludeFromCodeCoverage(CChinaMarket17, L"CChinaMarket::RunningThreadCalculate10RSStrong1Stock");
+ExcludeFromCodeCoverage(CChinaMarket18, L"CChinaMarket::RunningThreadCalculate10RSStrong2Stock");
 
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");
@@ -137,8 +148,8 @@ ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextIn
 ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFile");
 ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
 
-ExcludeFromCodeCoverage(CRTData1, L"CRTData::AssertValid");
-ExcludeFromCodeCoverage(CRTData2, L"CRTData::Dump");
+ExcludeFromCodeCoverage(CRTData1, L"CWebRTData::AssertValid");
+ExcludeFromCodeCoverage(CRTData2, L"CWebRTData::Dump");
 
 ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
 ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");

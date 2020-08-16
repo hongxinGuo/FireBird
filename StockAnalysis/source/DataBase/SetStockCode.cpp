@@ -15,11 +15,11 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Counter = 0;
   m_StockType = 0;
-  m_StockCode = "";
-  m_StockName = "";
+  m_StockCode = _T("");
+  m_StockName = _T("");
   m_DayLineStartDay = __CHINA_MARKET_BEGIN_DAY__;
   m_DayLineEndDay = __CHINA_MARKET_BEGIN_DAY__;
-  m_IPOed = 0;
+  m_IPOStatus = 0;
   m_nFields = 8;
 }
 
@@ -43,7 +43,7 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Long(pFX, _T("[DayLineStartDay]"), m_DayLineStartDay);
   RFX_Long(pFX, _T("[DayLineEndDay]"), m_DayLineEndDay);
-  RFX_Long(pFX, _T("[IPOed]"), m_IPOed);
+  RFX_Long(pFX, _T("[IPOed]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode ’Ô∂œ

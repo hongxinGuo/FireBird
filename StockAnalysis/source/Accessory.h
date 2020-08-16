@@ -10,9 +10,17 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer);
 time_t ConvertStringToTime(CString strFormat, CString strTime);
 
 // 时间转换辅助函数
-time_t FormatToTTime(long lDay, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式
+time_t FormatToTTime(long lDay, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式， 默认时间为15:00:00
 long FormatToDay(time_t tt);// 将时间转变为整型(YYYYMMDD)形式
+long FormatToTime(time_t tt); // 将时间转变为整数（HHMMSS)形式
+INT64 FormatToDayTime(time_t tt); // 将时间转变为整数（YYYYMMDDHHMMSS)形式
 long FormatToDay(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
+long FormatToTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
+INT64 FormatToDayTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
+
+long GetNextMonday(long lDay); // 找到lDay的下一个星期一的数值
+long GetPrevMonday(long lDay); // 找到lDay的上一个星期一的数值
+long GetCurrentMonday(long lDay); // 找到包含lDay的那个星期的星期一
 
 // 用于个数据集的GetDefaultConnect()，以保持一致性。测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动。
 CString GetDefaultSchemaConnect();
@@ -29,17 +37,8 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 
 class CRSReference {
 public:
-  CRSReference(void) {
-    m_fActive = false;
-    for (int i = 0; i < 4; i++) {
-      m_lDayLength[i] = 0;
-      m_lStrongDayLength[i] = 0;
-      m_dRSStrong[i] = 50.0;
-    }
-  }
-public:
-  bool m_fActive;
-  long m_lDayLength[4]; // 日期长度
-  long m_lStrongDayLength[4]; // 满足条件的天数
-  double m_dRSStrong[4]; // 正值意思为高于此值，负值意思为低于此值
+  bool m_fActive{ false };
+  long m_lDayLength[4]{ 0, 0, 0, 0 }; // 日期长度
+  long m_lStrongDayLength[4]{ 0, 0, 0, 0 }; // 满足条件的天数
+  double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
 };

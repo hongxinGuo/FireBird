@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VirtualWebInquiry.h"
-#include"RTData.h"
+#include"WebRTData.h"
 
 class CSinaRTWebInquiry : public CVirtualWebInquiry {
 public:

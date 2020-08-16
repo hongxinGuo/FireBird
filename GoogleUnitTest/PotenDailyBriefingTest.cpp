@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
     CSetPotenDailyBriefing setPoten;
     long lDay = gl_pPotenDailyBriefingMarket->GetFormatedMarketDay();
     char buffer[30];
-    sprintf_s(buffer, "%08d", lDay);
+    sprintf_s(buffer, _T("%08d"), lDay);
     CString strDay = buffer;
 
     setPoten.m_strFilter = _T("[Day] = ") + strDay;

@@ -47,12 +47,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CCrweberIndexMarketTest, TestResetMarket) {
-    long l = gl_systemMessage.GetInformationDequeSize();
+    size_t l = gl_systemMessage.GetInformationDequeSize();
+    CString strCmp = _T("重置Crweber.com于格林威治标准时间：");
     gl_pCrweberIndexMarket->ResetMarket();
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), l + 1);
     CString str = gl_systemMessage.PopInformationMessage();
-    CString strLeft = str.Left(33);
-    EXPECT_STREQ(strLeft, _T("重置Crweber.com于格林威治标准时间"));
+    //EXPECT_THAT(str, StartsWith(_T("重置Crweber.com于格林威治标准时间：")));
+    CString strLeft = str.Left(35);
+    EXPECT_STREQ(strLeft, strCmp);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestTaskResetMarket) {

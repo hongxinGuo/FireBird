@@ -47,58 +47,6 @@ namespace StockAnalysisTest {
     CMockChinaStock stock;
   };
 
-  TEST_F(CMockChinaStockTest, TestCalculateDayLineRS) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateDayLineRS(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRS(120))
-      .Times(1);
-    pStock->CalculateDayLineRelativeStrong();
-  }
-
-  TEST_F(CMockChinaStockTest, TestCalculateDayLineRSLogarithm) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(60))
-      .Times(1)
-      .WillOnce(Return(true));
-    EXPECT_CALL(*pStock, CalculateDayLineRSLogarithm(120))
-      .Times(1);
-    pStock->CalculateDayLineRelativeStrongLogarithm();
-  }
-
-  TEST_F(CMockChinaStockTest, TestCalculateDayLineRSIndex) {
-    InSequence Seq;
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(120))
-      .Times(1);
-    pStock->CalculateDayLineRelativeStrongIndex();
-  }
-
   TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {
     EXPECT_CALL(*pStock, ReportGuadanTransaction())
       .Times(0);
@@ -117,32 +65,32 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaStockTest, TestThreadSaveDayLineOfOneStock) {
-    EXPECT_CALL(*pStock, SaveDayLine)
+    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
       .Times(0);
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLine)
+    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
       .Times(1)
       .WillOnce(Return(false));
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLine)
+    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
       .Times(1)
       .WillOnce(Return(true));
     pStock->SetDayLineLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineOfOneStock(pStock), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -155,21 +103,19 @@ namespace StockAnalysisTest {
     InSequence seq;
     EXPECT_CALL(*pStock, LoadDayLine)
       .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(3))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(5))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(10))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(30))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(60))
-      .Times(1);
-    EXPECT_CALL(*pStock, CalculateDayLineRSIndex(120))
-      .Times(1);
     pStock->SetDayLineLoaded(false);
     EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
     EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
+  }
+  TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
+    CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
+    pStock->StoreWeekLine(pWeekLine);
+    EXPECT_CALL(*pStock, LoadWeekLine)
+      .Times(1);
+    pStock->SetWeekLineLoaded(false);
+    EXPECT_EQ(ThreadLoadWeekLine(pStock), (UINT)29);
+    EXPECT_TRUE(pStock->IsWeekLineLoaded());
+    EXPECT_EQ(pStock->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
   }
 }

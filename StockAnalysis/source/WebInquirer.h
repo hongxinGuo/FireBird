@@ -2,6 +2,7 @@
 //
 // 网络数据查询器。所有的网络查询皆位于此处。
 // 只有头文件。
+// WebData意指从网络上得到的原始数据。
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -67,22 +68,22 @@ public:
   bool IsReadingWebThreadRunning(void) noexcept { return gl_pSinaRTWebInquiry->IsReadingWebThreadRunning(); }
 
 public:
-  long GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetWebDataSize(); }
-  void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushWebData(pData); }
-  CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopWebData(); }
-  long GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetWebDataSize(); }
-  void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushWebData(pData); }
-  CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopWebData(); }
-  long GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetWebDataSize(); }
-  void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushWebData(pData); }
-  CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopWebData(); }
-  long GetCrweberDataSize(void) { return m_qCrweberWebData.GetWebDataSize(); }
-  void PushCrweberData(CWebDataPtr pData) { m_qCrweberWebData.PushWebData(pData); }
-  CWebDataPtr PopCrweberData(void) { return m_qCrweberWebData.PopWebData(); }
+  size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetDataSize(); }
+  void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushData(pData); }
+  CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopData(); }
+  size_t GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetDataSize(); }
+  void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushData(pData); }
+  CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopData(); }
+  size_t GetNeteaseRTDataSize(void) { return m_qNeteaseRTWebData.GetDataSize(); }
+  void PushNeteaseRTData(CWebDataPtr pData) { m_qNeteaseRTWebData.PushData(pData); }
+  CWebDataPtr PopNeteaseRTData(void) { return m_qNeteaseRTWebData.PopData(); }
+  size_t GetCrweberDataSize(void) { return m_qCrweberWebData.GetDataSize(); }
+  void PushCrweberData(CWebDataPtr pData) { m_qCrweberWebData.PushData(pData); }
+  CWebDataPtr PopCrweberData(void) { return m_qCrweberWebData.PopData(); }
 
-  long GetPotenDailyBriefingDataSize(void) { return m_qPotenDailyBriefingWebData.GetWebDataSize(); }
-  void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushWebData(pData); }
-  CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopWebData(); }
+  size_t GetPotenDailyBriefingDataSize(void) { return m_qPotenDailyBriefingWebData.GetDataSize(); }
+  void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushData(pData); }
+  CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopData(); }
 
 protected:
   CQueueWebData m_qSinaRTWebData; // 新浪网络数据暂存队列

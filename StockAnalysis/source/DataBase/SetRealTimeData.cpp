@@ -15,7 +15,7 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
   m_ID = 0;
   m_Time = _T("0");
   m_Market = 0;
-  m_StockCode = "";
+  m_StockCode = _T("");
   m_LastClose = _T("0");
   m_Open = _T("0");
   m_High = _T("0");

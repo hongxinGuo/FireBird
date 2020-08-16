@@ -13,18 +13,31 @@ enum {
   __NO_TRANSACTION__ = 8
 };
 
-#include"PriorityQueueRTData.h"
+enum {
+  __STOCK_NOT_CHECKED__ = 128, // 尚未检查过的股票代码
+  __STOCK_IPOED__ = 255, // 正常股票标识
+  __STOCK_NULL__ = 0, // 无效代码（此代码的股票不存在）
+  __STOCK_DELISTED__ = 1, // 已退市（或停牌）的股票标识
+};
+
+#include"PriorityQueueWebRTData.h"
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
+#include"SetWeekLineBasicInfo.h"
+#include"SetWeekLineExtendInfo.h"
 #include"SetDayLineToday.h"
 #include"SetRealTimeData.h"
 #include"SetStockCode.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 
 #include"DayLine.h"
+#include"WeekLine.h"
 #include"OneDeal.h"
+
+#include"WeekLineContainer.h"
+#include"DayLineContainer.h"
 
 #include"NeteaseDayLineWebInquiry.h"
 
@@ -48,8 +61,9 @@ public:
   void Reset(void);
 
 public:
-  void UpdateStatus(CRTDataPtr pRTData);
+  void UpdateStatus(CWebRTDataPtr pRTData);
 
+  // 本股票各变量状态
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString GetStockCode(void) noexcept { return m_strStockCode; }
@@ -59,12 +73,18 @@ public:
 
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
+
   long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
   void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
   long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
   void SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
-  long GetIPOStatus(void) noexcept { return m_lIPOed; }
-  void SetIPOStatus(long lValue) noexcept { m_lIPOed = lValue; }
+
+  long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
+  void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
+  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
+  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
+  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STOCK_IPOED__); }
+  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STOCK_NOT_CHECKED__); }
 
   // 基本实时数据，需要更新
   time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
@@ -97,6 +117,10 @@ public:
   void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
   long GetLowLimit(void) noexcept { return m_lLowLimit; }
   void SetLowLimit(long lValue) noexcept { m_lLowLimit = lValue; }
+  long GetHighLimit2(void) noexcept { return m_lHighLimit2; }
+  void SetHighLimit2(long lValue) noexcept { m_lHighLimit2 = lValue; }
+  long GetLowLimit2(void) noexcept { return m_lLowLimit2; }
+  void SetLowLimit2(long lValue) noexcept { m_lLowLimit2 = lValue; }
   long GetPBuy(int iIndex) { return m_lPBuy.at(iIndex); }
   long GetVBuy(int iIndex) { return m_lVBuy.at(iIndex); }
   long GetPSell(int iIndex) { return m_lPSell.at(iIndex); }
@@ -105,12 +129,10 @@ public:
   void SetVBuy(int iIndex, long value) { m_lVBuy.at(iIndex) = value; }
   void SetPSell(int iIndex, long value) { m_lPSell.at(iIndex) = value; }
   void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
-  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
-  void SetRelativeStrong(double value) noexcept { m_dRelativeStrong = value; }
-  double GetRelativeStrongIndex(void) noexcept { return m_dRelativeStrongIndex; }
-  void SetRelativeStrongIndex(double value) noexcept { m_dRelativeStrongIndex = value; }
-  double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
-  void SetRelativeStrongBackup(double value) noexcept { m_dRelativeStrongBackup = value; }
+  double GetRelativeStrong(void) noexcept { return m_dRealtimeRelativeStrong; }
+  void SetRelativeStrong(double value) noexcept { m_dRealtimeRelativeStrong = value; }
+  double GetRelativeStrongIndex(void) noexcept { return m_dRealtimeRelativeStrongIndex; }
+  void SetRelativeStrongIndex(double value) noexcept { m_dRealtimeRelativeStrongIndex = value; }
 
   INT64 GetCurrentCanceledBuyVolume(void) noexcept { return m_lCurrentCanceledBuyVolume; }
   INT64 GetCurrentCanceledSellVolume(void) noexcept { return m_lCurrentCanceledSellVolume; }
@@ -277,14 +299,6 @@ public:
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
   void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
-  bool IsMinLineUpdated(void) noexcept { return (m_fMinLineUpdated); }
-  void SetMinLineUpdated(bool fUpdate) noexcept { m_fMinLineUpdated = fUpdate; }
-  bool IsDayLineUpdated(void) noexcept { return (m_fDayLineUpdated); }
-  void SetDayLineUpdated(bool fUpdate) noexcept { m_fDayLineUpdated = fUpdate; }
-  bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
-  void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-  bool IsDayLineLoaded(void) noexcept { return m_fDayLineLoaded; }
-  void SetDayLineLoaded(bool fFlag) noexcept { m_fDayLineLoaded = fFlag; }
 
   bool IsSameStock(CChinaStockPtr pStock);
 
@@ -295,45 +309,36 @@ public:
   bool IsNeedProcessRTData(void) noexcept { return m_fNeedProcessRTData; }
   void SetRTDataCalculated(bool fFlag) noexcept { m_fRTDataCalculated = fFlag; }
   bool IsRTDataCalculated(void) noexcept { return m_fRTDataCalculated; }
+
   void SetRecordRTData(bool fFlag) noexcept { m_fRecordRTData = fFlag; }
   bool IsRecordRTData(void) noexcept { return m_fRecordRTData; }
 
   bool IsTodayDataActive(void); //采用最高价、最低价、成交量和成交额来判断，如果都为零，则认为此股今日没有有效数据。当然在m_fActive为真状态下。
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
-  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag);
-  bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
-  void SetDayLineNeedProcess(bool fFlag);
-  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
-  void SetDayLineNeedSaving(bool fFlag);
-  bool IsDayLineNeedSavingAndClearFlag(void);
-
-  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
-  bool ProcessNeteaseDayLineData(void);
-  bool SkipNeteaseDayLineInformationHeader(void);
-  void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
-  void StoreDayLine(vector<CDayLinePtr>& vTempDayLine);
-  void ReportDayLineDownLoaded(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
-
   // 数据库的提取和存储
-  void SaveBasicInfo(CSetDayLineBasicInfo& psetDayLine); // 存储当日基本数据
-  void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
-  virtual bool SaveDayLine(void); // 存储日线历史数据
-  void UpdateDayLineStartEndDay(void);
-  void SaveEntendInfo(CSetDayLineExtendInfo& setDayLineExtendInfo);
-  void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  virtual bool LoadDayLine(void); // 此函数加载
-  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo& setDayLineBasicInfo);
-  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo& setDayLineBasicInfo);
+  virtual bool LoadDayLine(CString strStockCode); // 此函数加载
+  virtual bool SaveDayLineBasicInfo(void); // 存储日线历史数据
+  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
+  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
+  void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
+  void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
+  void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
+  void UpdateDayLineStartEndDay(void);
+  void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
+  //周线历史数据存取
+  virtual bool LoadWeekLine();
+  virtual bool SaveWeekLine();
+  bool SaveWeekLineBasicInfo();
+  bool SaveWeekLineExtendInfo();
+  bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
+  bool LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
+  bool BuildWeekLine(long lStartDay = 19900101);
 
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
@@ -341,14 +346,6 @@ public:
   INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
   void SetGuadan(INT64 lPrice, INT64 lVolume) noexcept { m_mapGuadan[lPrice] = lVolume; }
   bool HaveGuadan(INT64 lPrice);
-
-  // 日线相对强度计算
-  bool CalculateDayLineRelativeStrong(void);
-  virtual bool CalculateDayLineRS(INT64 lNumber);
-  bool CalculateDayLineRelativeStrongIndex(void);
-  virtual bool CalculateDayLineRSIndex(INT64 lNumber);
-  bool CalculateDayLineRelativeStrongLogarithm(void);
-  virtual bool CalculateDayLineRSLogarithm(INT64 lNumber);
 
   // 判断10日强势股票
   bool Calculate10RSStrong1StockSet(void);
@@ -358,10 +355,11 @@ public:
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);
-  bool ProcessOneRTData(CRTDataPtr pRTData);
-  void CalculateOneDeal(CRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
+  bool ProcessOneRTData(CWebRTDataPtr pRTData);
+  void CalculateHighLowLimit(CWebRTDataPtr pRTData);
+  void CalculateOneDeal(CWebRTDataPtr pRTData, INT64 lCurrentGuadanTransactionPrice);
   void IncreaseTransactionNumber(void);
-  void CalculateOneRTData(CRTDataPtr pRTData);
+  void CalculateOneRTData(CWebRTDataPtr pRTData);
   void CalculateOrdinaryBuySell(INT64 lCurrentGuadanTransactionPrice);
   void CalculateOrdinaryBuyVolume(void);
   void CalculateOrdinarySellVolume(void);
@@ -372,14 +370,14 @@ public:
   void CalculateStrongSell(void);
   void CalculateAttackSellVolume(void);
   void ResetCalculatingData(void);
-  void SetLastRTData(CRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
-  CRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
-  void InitializeCalculatingRTDataEnvionment(CRTDataPtr pRTData);
+  void SetLastRTData(CWebRTDataPtr pLastRTData) noexcept { m_pLastRTData = pLastRTData; }
+  CWebRTDataPtr GetLastRTData(void) noexcept { return m_pLastRTData; }
+  void InitializeCalculatingRTDataEnvionment(CWebRTDataPtr pRTData);
 
-  bool AnalysisGuadan(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
-  void SelectGuadanThatNeedToCalculate(CRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
-  void SetCurrentGuadan(CRTDataPtr pCurrentRTData);
-  void CheckGuadan(CRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
+  bool AnalysisGuadan(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice);
+  void SelectGuadanThatNeedToCalculate(CWebRTDataPtr pCurrentRTData, INT64 lCurrentTransactionPrice, array<bool, 10>& fNeedCheck);
+  void SetCurrentGuadan(CWebRTDataPtr pCurrentRTData);
+  void CheckGuadan(CWebRTDataPtr pCurrentRTData, array<bool, 10>& fNeedCheck);
   void CheckSellGuadan(array<bool, 10>& fNeedCheck, int i);
   void CalculateCanceledSellVolume(INT64 lCurrentCanceledBuyVolume);
   void CheckBuyGuadan(array<bool, 10>& fNeedCheck, int i);
@@ -390,20 +388,24 @@ public:
   virtual void ReportGuadanTransaction(void);
   virtual void ReportGuadan(void);
 
-  void PushRTData(CRTDataPtr pData);
-  CRTDataPtr PopRTData(void);
-  CRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
+  void PushRTData(CWebRTDataPtr pData);
+  CWebRTDataPtr PopRTData(void);
+  CWebRTDataPtr GetRTDataAtHead(void); // 这个函数不弹出数据
   INT64 GetRTDataQueueSize(void);
   // 清空存储实时数据的队列
   void ClearRTDataDeque(void);
 
+  bool IsVolumeConsistence(void) noexcept;
+
+  //日线相关函数
   // 日线历史数据
-  size_t GetDayLineSize(void) { return m_vDayLine.size(); }
+  size_t GetDayLineSize(void) { return m_DayLine.GetDataSize(); }
   bool HaveNewDayLineData(void);
-  void UnloadDayLine(void) noexcept { m_vDayLine.clear(); m_fDayLineLoaded = false; }
-  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { m_vDayLine.push_back(pDayLine); return true; }
-  CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
+  void UnloadDayLine(void) noexcept { m_DayLine.Unload(); }
+  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { return m_DayLine.StoreData(pDayLine); }
+  CDayLinePtr GetDayLine(long lIndex) { return m_DayLine.GetData(lIndex); }
   void ShowDayLine(CDC* pDC, CRect rectClient);
+  void ShowWeekLine(CDC* pDC, CRect rectClient);
   void GetRS1Day(vector<double>& vRS);
   void GetRSIndex1Day(vector<double>& vRS);
   void GetRSLogarithm1Day(vector<double>& vRS);
@@ -419,7 +421,51 @@ public:
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
   char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
 
-  bool IsVolumeConsistence(void) noexcept;
+  // 日线相对强度计算
+  bool CalculateDayLineRelativeStrong(void);
+  bool CalculateDayLineRelativeStrongIndex(void);
+  bool CalculateDayLineRelativeStrongLogarithm(void);
+
+  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
+  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
+  void SetDayLineNeedUpdate(bool fFlag);
+  bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
+  void SetDayLineNeedProcess(bool fFlag);
+  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
+  void SetDayLineNeedSaving(bool fFlag);
+  bool IsDayLineNeedSavingAndClearFlag(void);
+
+  bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
+  void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
+  bool IsDayLineLoaded(void) noexcept { return m_DayLine.IsDataLoaded(); }
+  void SetDayLineLoaded(bool fFlag) noexcept { m_DayLine.SetDataLoaded(fFlag); }
+
+  // 提取网易日线历史数据各函数
+  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
+  bool ProcessNeteaseDayLineData(void);
+  bool SkipNeteaseDayLineInformationHeader(void);
+  void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
+  void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
+  void ReportDayLineDownLoaded(void);
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
+
+  // 周线相关函数
+  size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
+  CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
+  void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
+  bool CalculatingWeekLine(long lStartDay);
+  bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
+  bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
+  void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
+  // 周线相对强度计算
+  bool CalculateWeekLineRelativeStrong(void);
+  bool CalculateWeekLineRelativeStrongIndex(void);
+  bool CalculateWeekLineRelativeStrongLogarithm(void);
+
+  // 当前被处理历史数据容器
+  CChinaStockHistoryDataContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
+  CChinaStockHistoryDataContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
 
 #ifdef _DEBUG
   virtual	void AssertValid() const;
@@ -430,7 +476,6 @@ public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
   void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
-  void __TestResetLoadDayLineFirst(void) { m_fLoadDayLineFirst = false; }
 public:
 
 protected:
@@ -443,7 +488,7 @@ protected:
   long m_lOffsetInContainer;	// 在容器中的偏移量
   long m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
-  long m_lIPOed; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
+  long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                  // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
   short	m_nHand;	// 每手股数
 
@@ -456,6 +501,8 @@ protected:
   long m_lNew; // 以0.001元计的最新价
   long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
   long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
+  long m_lHighLimit2; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
+  long m_lLowLimit2; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
   long m_lUpDown; // 涨跌值
   double m_dUpDownRate; // 涨跌率
   INT64 m_llVolume;	// 以1股计的成交量
@@ -467,9 +514,8 @@ protected:
   array<long, 5> m_lVBuy;	// 买盘量。单位：股
   array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
   array<long, 5> m_lVSell; // 卖盘量。单位：股
-  double m_dRelativeStrong; // 单位：1%
-  double m_dRelativeStrongIndex; // 单位：1%
-  double m_dRelativeStrongBackup; // 单位：1%
+  double m_dRealtimeRelativeStrong; // 当日实时相对强度 单位：1%
+  double m_dRealtimeRelativeStrongIndex; // 当日实时相对强度（相对于指数）单位：1%
 
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额
@@ -507,6 +553,8 @@ protected:
   INT64 m_lOrdinarySellVolumeBelow100000; // 本交易日低于100000股的成交股数
   INT64 m_lOrdinarySellVolumeBelow200000; //
   INT64 m_lOrdinarySellVolumeAbove200000; //
+
+  // 当日分钟数据
   INT64 m_aOrdinaryBuy5000[240];
   INT64 m_aOrdinaryBuy10000[240];
   INT64 m_aOrdinaryBuy20000[240];
@@ -549,11 +597,6 @@ protected:
 
   INT64 m_llLastSavedVolume;
 
-  atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
-  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
-  atomic_bool m_fDayLineLoaded; // 是否装入了日线数据
-
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
@@ -564,13 +607,10 @@ protected:
   bool m_fChoiced;// 此股票是否是自选股票.
   bool m_fSaveToChoicedStockDB; // 是否存储至自选股票池。
   bool m_fMinLineUpdated; // 今天的分钟资料是否更新过.
-  bool m_fDayLineUpdated; // 今天的日线资料是否更新过.
-
-  bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 
   // 挂单的具体情况。
   map<INT64, INT64> m_mapGuadan;// 采用map结构存储挂单的具体情况。索引为价位，内容为挂单量。
-  CRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
+  CWebRTDataPtr m_pLastRTData; // 从m_qRTData读出的上一个实时数据。
   INT64 m_lCurrentGuadanTransactionVolume; // 当前挂单交易量（不是目前时间的交易量，而是实时数据队列最前面数据的时间的交易量）
   double m_dCurrentGuadanTransactionPrice; // 当前成交价格
   int m_nCurrentTransactionType; // 当前交易类型（强买、进攻型买入。。。。）
@@ -598,18 +638,25 @@ protected:
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-  //queue<CRTDataPtr> m_qRTData; // 实时数据队列。
-  CPriorityQueueRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
+  //queue<CWebRTDataPtr> m_qRTData; // 实时数据队列。
+  CPriorityQueueWebRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
-  // 日线历史数据
-  vector<CDayLinePtr>	m_vDayLine; // 日线数据容器
+  // 日线相关数据
+  CDayLineContainer m_DayLine; // 日线容器
+  // 周线相关数据
+  CWeekLineContainer m_WeekLine; // 周线容器
+
+  //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
   char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;
   char* m_pCurrentPos;
   INT64 m_llCurrentPos;
 
-private:
-  bool m_fLoadDayLineFirst; // 测试用。装入时，DayLineBasicInfo表要先于DayLineExtendInfo表
+  atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
+  atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
+  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
+
+  bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 };

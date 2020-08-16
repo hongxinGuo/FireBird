@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
       m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
-      if (m_pStock->GetIPOStatus() != __STOCK_NULL__) m_pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
@@ -110,7 +110,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
     EXPECT_TRUE(fSucceed);
     EXPECT_TRUE(m_pStock->IsDayLineLoaded());
-    EXPECT_EQ(m_pStock->GetIPOStatus(), __STOCK_DELISTED__);
+    EXPECT_TRUE(m_pStock->IsDelisted());
     break;
     case 8: // 无效股票代码，只有报头
     EXPECT_FALSE(fSucceed);

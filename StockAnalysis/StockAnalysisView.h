@@ -5,6 +5,12 @@
 
 #include"ChinaStock.h"
 
+enum {
+  __SHOW_DAY_LINE_DATA__ = 1,
+  __SHOW_REAL_TIME_DATA__ = 2,
+  __SHOW_WEEK_LINE_DATA__ = 3,
+};
+
 class CStockAnalysisView : public CView
 {
 protected: // 仅从序列化创建
@@ -31,7 +37,7 @@ public:
   // 操作
 public:
   void Show(CDC* pdc);
-  virtual void ShowStockDayLine(CDC* pDC);
+  virtual void ShowStockHistoryDataLine(CDC* pDC);
   virtual void ShowRealtimeData(CDC* pDC);
 
   bool ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd);
@@ -49,6 +55,8 @@ public:
   int GetCurrentShowType(void) noexcept { return m_iCurrentShowType; }
   void SetCurrentShowType(int iValue) noexcept { m_iCurrentShowType = iValue; }
 
+  bool UpdateHistoryDataContainer(CChinaStockPtr pStock);
+
   //系统包裹函数
 public:
   virtual CSize SysCallGetTextExtent(CDC* pDC, CString str) { return(pDC->GetTextExtent(str)); }
@@ -63,6 +71,7 @@ public:
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, int iCheck) { pCmdUI->SetCheck(iCheck); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fEnable) { pCmdUI->Enable(fEnable); }
   virtual void SysCallGetClientRect(LPRECT lpRect) { CView::GetClientRect(lpRect); }
+  virtual BOOL SysCallBitBlt(CDC* pdc, int x, int y, int nWidth, int nHeight, CDC* pSrcDC, int xSrc, int ySrc, DWORD dwRop) { return(pdc->BitBlt(x, y, nWidth, nHeight, pSrcDC, xSrc, ySrc, dwRop)); }
 
   // 重写
 public:
@@ -89,7 +98,10 @@ protected:
   CRect m_rectClient;
 
   UINT m_uIdTimer;
-  int m_iCurrentShowType;// 当前显示状态（日线或实时。。。）
+  int m_iCurrentShowType;// 当前显示状态（日线、周线或实时。。。）
+
+  //当前被操作的历史数据容器
+  CChinaStockHistoryDataContainer* m_pCurrentHistoryDataContainer;
 
   bool m_fShowTransactionGraph; // 显示交易具体情况的图
   CRect m_rectTransactionGraph; // 交易具体情况图的位置和大小。
@@ -138,6 +150,8 @@ public:
   afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
   afx_msg void OnShowRealTime();
   afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
+  afx_msg void OnShowWeekLine();
+  afx_msg void OnUpdateShowWeekLine(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // StockAnalysisView.cpp 中的调试版本

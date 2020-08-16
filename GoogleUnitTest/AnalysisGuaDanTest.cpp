@@ -43,8 +43,8 @@ namespace StockAnalysisTest {
 
   public:
     int iCount; // 每次输入的数据都不一样，结果也相应的不同，故而需要进行不同的验证。使用此序列号来区分。
-    CRTData CurrentData;
-    CRTData LastData;
+    CWebRTData CurrentData;
+    CWebRTData LastData;
     int iType;
     long lPrice;
   };
@@ -139,14 +139,14 @@ namespace StockAnalysisTest {
       for (int i = 0; i < 200; i += 10) {
         m_stock.__TestSetGuadanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
-      pCurrentData = make_shared<CRTData>();
+      pCurrentData = make_shared<CWebRTData>();
       for (int i = 0; i < 5; i++) {
         pCurrentData->SetVBuy(i, pData->CurrentData.GetVBuy(i));
         pCurrentData->SetPBuy(i, pData->CurrentData.GetPBuy(i));
         pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
         pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
-      pLastData = make_shared<CRTData>();
+      pLastData = make_shared<CWebRTData>();
       for (int i = 0; i < 5; i++) {
         pLastData->SetVBuy(i, pData->LastData.GetVBuy(i));
         pLastData->SetPBuy(i, pData->LastData.GetPBuy(i));
@@ -171,8 +171,8 @@ namespace StockAnalysisTest {
     int iCount;
     int iType;
     long lPrice;
-    CRTDataPtr pCurrentData;
-    CRTDataPtr pLastData;
+    CWebRTDataPtr pCurrentData;
+    CWebRTDataPtr pLastData;
     CChinaStock m_stock;
   };
 
@@ -382,14 +382,14 @@ namespace StockAnalysisTest {
       for (int i = 0; i < 200; i += 10) {
         m_stock.__TestSetGuadanDeque(9900 + i, 10000); // 所有的挂单量皆设置为一万股
       }
-      pCurrentData = make_shared<CRTData>();
+      pCurrentData = make_shared<CWebRTData>();
       for (int i = 0; i < 5; i++) {
         pCurrentData->SetVBuy(i, pData->CurrentData.GetVBuy(i));
         pCurrentData->SetPBuy(i, pData->CurrentData.GetPBuy(i));
         pCurrentData->SetVSell(i, pData->CurrentData.GetVSell(i));
         pCurrentData->SetPSell(i, pData->CurrentData.GetPSell(i));
       }
-      pLastData = make_shared<CRTData>();
+      pLastData = make_shared<CWebRTData>();
       for (int i = 0; i < 5; i++) {
         pLastData->SetVBuy(i, pData->LastData.GetVBuy(i));
         pLastData->SetPBuy(i, pData->LastData.GetPBuy(i));
@@ -415,8 +415,8 @@ namespace StockAnalysisTest {
     int iCount;
     int iType;
     long lPrice;
-    CRTDataPtr pCurrentData;
-    CRTDataPtr pLastData;
+    CWebRTDataPtr pCurrentData;
+    CWebRTDataPtr pLastData;
     CChinaStock m_stock;
   };
 
@@ -817,7 +817,7 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest3, TestSetCurrentGuadan) {
     CChinaStock id;
-    CRTDataPtr pCurrentRTData = make_shared<CRTData>();
+    CWebRTDataPtr pCurrentRTData = make_shared<CWebRTData>();
 
     for (int i = 0; i < 5; i++) {
       pCurrentRTData->SetPBuy(i, 10080 - i * 20);

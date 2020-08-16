@@ -9,9 +9,14 @@ using namespace testing;
 using namespace ::testing;
 
 namespace StockAnalysisTest {
+  static CMockMainFrame* s_pMainFrame;
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
+      EXPECT_FALSE(CMFCVisualManager::GetInstance() != NULL);//
+      s_pMainFrame = new CMockMainFrame;
+      EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
+
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
@@ -33,10 +38,13 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 3);
+      if (CMFCVisualManager::GetInstance() != NULL) {
+        delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
+      }
+      delete s_pMainFrame;
     }
     virtual void SetUp(void) override {
       gl_fExitingSystem = false;
-      s_pMainFrame = new CMockMainFrame;
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     virtual void TearDown(void) override {
@@ -45,11 +53,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ClearChoiceStockContainer();
       gl_ThreadStatus.SetCalculatingDayLineRS(false);
       gl_fExitingSystem = false;
-      delete s_pMainFrame;
-      s_pMainFrame = nullptr;
     }
-  public:
-    CMockMainFrame* s_pMainFrame;
   };
 
   TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
@@ -95,6 +99,8 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
       .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(11, _))
+      .Times(1);
     s_pMainFrame->UpdateStatus();
 
     gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
@@ -120,6 +126,8 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(9, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(10, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(11, _))
       .Times(1);
     s_pMainFrame->UpdateStatus();
   }
@@ -604,5 +612,23 @@ namespace StockAnalysisTest {
 
     //恢复初态
     gl_pChinaStockMarket->SetUsingSinaRTDataServer();
+  }
+
+  TEST_F(CMockMainFrameTest, TestOnUpdateBuildCurrentWeekLine) {
+    CCmdUI cmdUI;
+    long lTime = gl_pChinaStockMarket->GetFormatedMarketTime();
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(150959);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(151000);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(151001);
+    EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
+      .Times(1);
+    s_pMainFrame->OnUpdateBuildCurrentWeekLine(&cmdUI);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(lTime);
   }
 }

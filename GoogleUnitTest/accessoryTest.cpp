@@ -43,6 +43,89 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lDay2, 20000105);
   }
 
+  TEST_F(AccessoryTest, TestFormatToTime) {
+    tm tm_, tm_2;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 10;
+    tm_.tm_min = 20;
+    tm_.tm_sec = 30;
+    tm_2 = tm_;
+    long lTime = FormatToTime(&tm_);
+    time_t tt = mktime(&tm_2);
+    long lTime2 = FormatToTime(tt);
+    EXPECT_EQ(lTime, 102030);
+    EXPECT_EQ(lTime2, 102030);
+  }
+
+  TEST_F(AccessoryTest, TestFormatToDayTime) {
+    tm tm_, tm_2;
+    tm_.tm_year = 2000 - 1900;
+    tm_.tm_mon = 0;
+    tm_.tm_mday = 5;
+    tm_.tm_hour = 10;
+    tm_.tm_min = 20;
+    tm_.tm_sec = 30;
+    tm_2 = tm_;
+    INT64 lDayTime = FormatToDayTime(&tm_);
+    time_t tt = mktime(&tm_2);
+    INT64 lDayTime2 = FormatToDayTime(tt);
+    EXPECT_EQ(lDayTime, 20000105102030);
+    EXPECT_EQ(lDayTime2, 20000105102030);
+  }
+
+  TEST_F(AccessoryTest, TestGetNextMonday) {
+    EXPECT_EQ(20200727, GetNextMonday(20200720));
+    EXPECT_EQ(20200727, GetNextMonday(20200721));
+    EXPECT_EQ(20200727, GetNextMonday(20200722));
+    EXPECT_EQ(20200727, GetNextMonday(20200723));
+    EXPECT_EQ(20200727, GetNextMonday(20200724));
+    EXPECT_EQ(20200727, GetNextMonday(20200725));
+    EXPECT_EQ(20200727, GetNextMonday(20200726));
+    EXPECT_EQ(20200720, GetNextMonday(20200713));
+    EXPECT_EQ(20200720, GetNextMonday(20200714));
+    EXPECT_EQ(20200720, GetNextMonday(20200715));
+    EXPECT_EQ(20200720, GetNextMonday(20200716));
+    EXPECT_EQ(20200720, GetNextMonday(20200717));
+    EXPECT_EQ(20200720, GetNextMonday(20200718));
+    EXPECT_EQ(20200720, GetNextMonday(20200719));
+  }
+
+  TEST_F(AccessoryTest, TestGetPrevMonday) {
+    EXPECT_EQ(20200720, GetPrevMonday(20200721));
+    EXPECT_EQ(20200720, GetPrevMonday(20200722));
+    EXPECT_EQ(20200720, GetPrevMonday(20200723));
+    EXPECT_EQ(20200720, GetPrevMonday(20200724));
+    EXPECT_EQ(20200720, GetPrevMonday(20200725));
+    EXPECT_EQ(20200720, GetPrevMonday(20200726));
+    EXPECT_EQ(20200720, GetPrevMonday(20200727));
+    EXPECT_EQ(20200713, GetPrevMonday(20200714));
+    EXPECT_EQ(20200713, GetPrevMonday(20200715));
+    EXPECT_EQ(20200713, GetPrevMonday(20200716));
+    EXPECT_EQ(20200713, GetPrevMonday(20200717));
+    EXPECT_EQ(20200713, GetPrevMonday(20200718));
+    EXPECT_EQ(20200713, GetPrevMonday(20200719));
+    EXPECT_EQ(20200713, GetPrevMonday(20200720));
+  }
+
+  TEST_F(AccessoryTest, TestGetCurrentMonday) {
+    EXPECT_EQ(20200720, GetCurrentMonday(20200720));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200721));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200722));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200723));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200724));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200725));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200726));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200713));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200714));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200715));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200716));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200717));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200718));
+    EXPECT_EQ(20200713, GetCurrentMonday(20200719));
+  }
+
   TEST_F(AccessoryTest, TestFormatToTTime) {
     tm tm_;
     tm_.tm_year = 2000 - 1900;
@@ -378,5 +461,24 @@ namespace StockAnalysisTest {
   TEST_P(ConvertINT64ToStringTest, TestINT64) {
     CString str = ConvertValueToString(iValue, lDividend);
     EXPECT_STREQ(str, strValue);
+  }
+
+  class CRSReferenceTest : public ::testing::Test {
+    virtual void SetUp(void) override {
+    }
+    virtual void TearDown(void) override {
+      gl_fNormalMode = false;
+      gl_fTestMode = true;
+    }
+  };
+
+  TEST_F(CRSReferenceTest, TestInitialize) {
+    CRSReference RSReference;
+    EXPECT_FALSE(RSReference.m_fActive);
+    for (int i = 0; i < 4; i++) {
+      EXPECT_EQ(RSReference.m_lStrongDayLength[i], 0);
+      EXPECT_EQ(RSReference.m_lDayLength[i], 0);
+      EXPECT_DOUBLE_EQ(RSReference.m_dRSStrong[i], 50.0);
+    }
   }
 }

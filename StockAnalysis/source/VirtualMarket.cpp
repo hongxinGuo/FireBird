@@ -148,7 +148,7 @@ CString CVirtualMarket::GetLocalTimeString(void) {
   tm tmLocal;
 
   localtime_s(&tmLocal, &sm_tLocal);
-  sprintf_s(buffer, "%02d:%02d:%02d ", tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+  sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
   CString str;
   str = buffer;
   return(str);
@@ -159,7 +159,7 @@ CString CVirtualMarket::GetLocalDayTimeString(void) {
   tm tmLocal;
 
   localtime_s(&tmLocal, &sm_tLocal);
-  sprintf_s(buffer, "%04d年%02d月%02d日 %02d:%02d:%02d ", tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+  sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
   CString str;
   str = buffer;
   return(str);
@@ -170,7 +170,7 @@ CString CVirtualMarket::GetMarketTimeString(void) {
   tm tmMarket;
 
   gmtime_s(&tmMarket, &m_tMarket);
-  sprintf_s(buffer, "%02d:%02d:%02d ", tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+  sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
   CString str;
   str = buffer;
   return(str);
@@ -181,7 +181,7 @@ CString CVirtualMarket::GetMarketDayTimeString(void) {
   tm tmMarket;
 
   gmtime_s(&tmMarket, &m_tMarket);
-  sprintf_s(buffer, "%04d年%02d月%02d日 %02d:%02d:%02d ", tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
+  sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
   CString str;
   str = buffer;
   return(str);
@@ -193,7 +193,7 @@ CString CVirtualMarket::GetDayString(long lDay) {
   long month = lDay / 100 - year * 100;
   long day = lDay - year * 10000 - month * 100;
 
-  sprintf_s(buffer, "%4d年%2d月%2d日", year, month, day);
+  sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
   CString str;
   str = buffer;
   return(str);

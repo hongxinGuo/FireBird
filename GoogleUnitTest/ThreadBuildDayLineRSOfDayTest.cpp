@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CThreadCalculateDayLineRSTest : public ::testing::Test
+  class CThreadBuildDayLineRSOfDayTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -25,30 +25,30 @@ namespace StockAnalysisTest {
     CMockChinaMarket market;
   };
 
-  TEST_F(CThreadCalculateDayLineRSTest, TestThreadCalculateDayLineRS) {
-    EXPECT_CALL(market, CalculateOneDayRelativeStrong(20200101))
+  TEST_F(CThreadBuildDayLineRSOfDayTest, TestThreadBuildDayLineRSOfDay) {
+    EXPECT_CALL(market, BuildDayLineRSOfDay(20200101))
       .Times(1)
       .WillOnce(Return(true));
     gl_fExitingCalculatingRS = false;
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadCalculateThisDayRS(&market, 20200101), (UINT)12);
+    EXPECT_EQ(ThreadBuildDayLineRSOfDay(&market, 20200101), (UINT)12);
 
-    EXPECT_CALL(market, CalculateOneDayRelativeStrong(20200101))
+    EXPECT_CALL(market, BuildDayLineRSOfDay(20200101))
       .Times(0);
     gl_fExitingCalculatingRS = true;
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadCalculateThisDayRS(&market, 20200101), (UINT)12);
+    EXPECT_EQ(ThreadBuildDayLineRSOfDay(&market, 20200101), (UINT)12);
 
-    EXPECT_CALL(market, CalculateOneDayRelativeStrong(20200101))
+    EXPECT_CALL(market, BuildDayLineRSOfDay(20200101))
       .Times(0);
     gl_fExitingCalculatingRS = false;
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadCalculateThisDayRS(&market, 20200101), (UINT)12);
+    EXPECT_EQ(ThreadBuildDayLineRSOfDay(&market, 20200101), (UINT)12);
 
-    EXPECT_CALL(market, CalculateOneDayRelativeStrong(20200101))
+    EXPECT_CALL(market, BuildDayLineRSOfDay(20200101))
       .Times(0);
     gl_fExitingCalculatingRS = true;
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadCalculateThisDayRS(&market, 20200101), (UINT)12);
+    EXPECT_EQ(ThreadBuildDayLineRSOfDay(&market, 20200101), (UINT)12);
   }
 }

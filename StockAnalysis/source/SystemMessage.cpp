@@ -14,7 +14,7 @@ CSystemMessage::~CSystemMessage() {
 
 void CSystemDeque::Display(COutputList* pOutputList, CString strTime) {
   CString str, str2;
-  long lTotal = GetDequeSize();
+  size_t lTotal = GetDequeSize();
   for (int i = 0; i < lTotal; i++) {
     str = PopMessage();
     str2 = strTime + _T(": ") + str;
@@ -41,9 +41,9 @@ CString CSystemDeque::PopMessage(void) {
   return str;     // 只能从这里返回
 }
 
-long CSystemDeque::GetDequeSize(void) {
+size_t CSystemDeque::GetDequeSize(void) {
   m_mutex.lock();
-  const long lCount = m_dequeMessage.size();
+  const size_t lCount = m_dequeMessage.size();
   m_mutex.unlock();
   return lCount;
 }

@@ -58,12 +58,6 @@
     <Filter Include="头文件\基类">
       <UniqueIdentifier>{f63ea7c3-d856-4cac-bc80-f5f8267cb1b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\China Stock Market\实现类">
-      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\China Stock Market\实现类">
-      <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Crweber.com Market">
       <UniqueIdentifier>{fde15843-a652-49bd-b756-9bf24abc38bb}</UniqueIdentifier>
     </Filter>
@@ -76,6 +70,12 @@
     <Filter Include="源文件\Poten Daily Briefing Market">
       <UniqueIdentifier>{52662461-24bd-43ef-85a1-e88fca5a96fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\China Stock Market\基础数据类">
+      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Stock Market\基础数据类">
+      <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -85,13 +85,10 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="source\DayLine.h">
-      <Filter>头文件\China Stock Market\实现类</Filter>
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\OneDeal.h">
-      <Filter>头文件\China Stock Market\实现类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\RTData.h">
-      <Filter>头文件\China Stock Market\实现类</Filter>
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
@@ -126,9 +123,6 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件\Windows界面</Filter>
     </ClInclude>
-    <ClInclude Include="source\PriorityQueueRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
     <ClInclude Include="source\Semaphore.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -143,12 +137,6 @@
     </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
-    <ClInclude Include="source\QueueRTData.h">
-      <Filter>头文件\辅助类和函数</Filter>
-    </ClInclude>
-    <ClInclude Include="source\RTDataContainer.h">
-      <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndexWebInquiry.h">
       <Filter>头文件\Crweber.com Market</Filter>
@@ -193,7 +181,7 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Guadan.h">
-      <Filter>头文件\China Stock Market\实现类</Filter>
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetChoicedStock.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
@@ -237,19 +225,52 @@
     <ClInclude Include="source\DataBase\SetPotenDailyBriefing.h">
       <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WeekLine.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaStockHistoryData.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaStockHistoryDataContainer.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DayLineContainer.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WeekLineContainer.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebRTData.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WebRTDataContainer.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PriorityQueueWebRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\QueueWebRTData.h">
+      <Filter>头文件\辅助类和函数</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="source\DayLine.cpp">
-      <Filter>源文件\China Stock Market\实现类</Filter>
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="source\OneDeal.cpp">
-      <Filter>源文件\China Stock Market\实现类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\RTData.cpp">
-      <Filter>源文件\China Stock Market\实现类</Filter>
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="source\globedef.cpp">
       <Filter>源文件</Filter>
@@ -281,9 +302,6 @@
     <ClCompile Include="StockAnalysisView.cpp">
       <Filter>源文件\windows界面</Filter>
     </ClCompile>
-    <ClCompile Include="source\PriorityQueueRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
@@ -292,9 +310,6 @@
     </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="source\QueueRTData.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
       <Filter>源文件\Crweber.com Market</Filter>
@@ -325,9 +340,6 @@
     </ClCompile>
     <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp">
-      <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadLoadDayLine.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
@@ -374,9 +386,6 @@
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\RTDataContainer.cpp">
-      <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
     <ClCompile Include="source\ThreadSaveDayLine.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
@@ -387,7 +396,7 @@
       <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\Guadan.cpp">
-      <Filter>源文件\China Stock Market\实现类</Filter>
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="source\DataBase\SetChoicedStock.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
@@ -430,6 +439,54 @@
     </ClCompile>
     <ClCompile Include="source\DataBase\SetPotenDailyBriefing.cpp">
       <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStockHistoryData.cpp">
+      <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WeekLine.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadBuildWeekLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadLoadWeekLine.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadBuildWeekLineRS.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadBuildDayLineRS.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp">
+      <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DayLineContainer.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WeekLineContainer.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebRTData.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WebRTDataContainer.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PriorityQueueWebRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\QueueWebRTData.cpp">
+      <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

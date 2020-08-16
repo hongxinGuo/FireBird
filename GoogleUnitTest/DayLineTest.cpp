@@ -592,13 +592,13 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(setDayLineBasicInfo);
+    id.AppendData(&setDayLineBasicInfo);
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
-    id2.LoadBasicData(setDayLineBasicInfo);
+    id2.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(setDayLineBasicInfo.m_Day, id.GetFormatedMarketDay());
     EXPECT_EQ(setDayLineBasicInfo.m_Market, id.GetMarket());
     EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, id.GetStockCode());
@@ -678,13 +678,13 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(setDayLineBasicInfo);
+    id.AppendData(&setDayLineBasicInfo);
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
-    idLoaded.LoadBasicData(setDayLineBasicInfo);
+    idLoaded.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDay(), id.GetFormatedMarketDay());
     EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
     EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
@@ -744,12 +744,12 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 19900101");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.AddNew();
-    id.SaveData(setDayLineBasicInfo);
+    id.SaveData(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.Open();
-    id2.LoadBasicData(setDayLineBasicInfo);
+    id2.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDay(), id2.GetFormatedMarketDay());
     EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());

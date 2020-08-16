@@ -16,7 +16,7 @@ CSetDayLineExtendInfo::CSetDayLineExtendInfo(CDatabase* pdb)
   m_ID = 0;
   m_Day = 0;
   m_Market = 0;
-  m_StockCode = "";
+  m_StockCode = _T("");
   m_TransactionNumber = _T("0");
   m_TransactionNumberBelow5000 = _T("0"); // 本日的盘口变化数
   m_TransactionNumberBelow50000 = _T("0"); // 本日的盘口变化数

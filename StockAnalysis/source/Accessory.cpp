@@ -55,8 +55,149 @@ long FormatToDay(time_t const tt) {
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
+long FormatToTime(time_t const tt) {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
+}
+
+INT64 FormatToDayTime(time_t const tt) {
+  tm tm_;
+  localtime_s(&tm_, &tt);
+  return(((INT64)tm_.tm_year + 1900) * 10000000000 + ((INT64)tm_.tm_mon + 1) * 100000000 + (INT64)tm_.tm_mday * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
+}
+
 long FormatToDay(tm* ptm) {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
+}
+
+long FormatToTime(tm* ptm) {
+  return(ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
+}
+
+INT64 FormatToDayTime(tm* ptm) {
+  return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
+}
+
+const static CTimeSpan s_1Day(1, 0, 0, 0);
+const static CTimeSpan s_2Day(2, 0, 0, 0);
+const static CTimeSpan s_3Day(3, 0, 0, 0);
+const static CTimeSpan s_4Day(4, 0, 0, 0);
+const static CTimeSpan s_5Day(5, 0, 0, 0);
+const static CTimeSpan s_6Day(6, 0, 0, 0);
+const static CTimeSpan s_7Day(7, 0, 0, 0);
+
+long GetNextMonday(long lDay) {
+  long year = lDay / 10000;
+  long month = lDay / 100 - (lDay / 10000) * 100;
+  long mday = lDay - (lDay / 100) * 100;
+  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+
+  ctNext = ctCurrent;
+  switch (ctCurrent.GetDayOfWeek()) {
+  case 2: // 星期一
+  ctNext += s_7Day;
+  break;
+  case 3:
+  ctNext += s_6Day;
+  break;
+  case 4:
+  ctNext += s_5Day;
+  break;
+  case 5:
+  ctNext += s_4Day;
+  break;
+  case 6:
+  ctNext += s_3Day;
+  break;
+  case 7:
+  ctNext += s_2Day;
+  break;
+  case 1:
+  ctNext += s_1Day;
+  break;
+  break;
+  default: // 不可能
+  break;
+  }
+  long lNextDay = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+
+  return lNextDay;
+}
+
+long GetPrevMonday(long lDay) {
+  long year = lDay / 10000;
+  long month = lDay / 100 - (lDay / 10000) * 100;
+  long mday = lDay - (lDay / 100) * 100;
+  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+
+  ctNext = ctCurrent;
+  switch (ctCurrent.GetDayOfWeek()) {
+  case 2: // 星期一
+  ctNext -= s_7Day;
+  break;
+  case 3: // 星期二
+  ctNext -= s_1Day;
+  break;
+  case 4: // 星期三
+  ctNext -= s_2Day;
+  break;
+  case 5: // 星期四
+  ctNext -= s_3Day;
+  break;
+  case 6:
+  ctNext -= s_4Day;
+  break;
+  case 7: // 星期六
+  ctNext -= s_5Day;
+  break;
+  case 1: // 星期日
+  ctNext -= s_6Day;
+  break;
+  break;
+  default: // 不可能
+  break;
+  }
+  long lPrevMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+
+  return lPrevMonday;
+}
+
+long GetCurrentMonday(long lDay) {
+  long year = lDay / 10000;
+  long month = lDay / 100 - (lDay / 10000) * 100;
+  long mday = lDay - (lDay / 100) * 100;
+  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+
+  ctNext = ctCurrent;
+  switch (ctCurrent.GetDayOfWeek()) {
+  case 2: // 星期一
+  break;
+  case 3: // 星期二
+  ctNext -= s_1Day;
+  break;
+  case 4: // 星期三
+  ctNext -= s_2Day;
+  break;
+  case 5: // 星期四
+  ctNext -= s_3Day;
+  break;
+  case 6:
+  ctNext -= s_4Day;
+  break;
+  case 7: // 星期六
+  ctNext -= s_5Day;
+  break;
+  case 1: // 星期日
+  ctNext -= s_6Day;
+  break;
+  break;
+  default: // 不可能
+  break;
+  }
+  long lCurrentMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+
+  return lCurrentMonday;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +223,7 @@ CString ConvertValueToString(long lValue, int iDividend) {
   double d = ((double)lValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }
@@ -92,7 +233,7 @@ CString ConvertValueToString(int iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
 
   return str;
@@ -103,7 +244,7 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
   double d = ((double)iValue) / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }
@@ -113,7 +254,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
   double d = dValue / iDividend;
   CString str;
 
-  sprintf_s(buffer, "%.3f", d);
+  sprintf_s(buffer, _T("%.3f"), d);
   str = buffer;
   return str;
 }

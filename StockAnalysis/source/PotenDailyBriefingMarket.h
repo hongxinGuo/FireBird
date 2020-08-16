@@ -44,7 +44,7 @@ public:
   long GetCurrentInquiringDay(void) noexcept { return m_lCurrentInquiringDay; }
   void SetCurrentInquiringDay(long lDay) noexcept { m_lCurrentInquiringDay = lDay; }
 
-  long GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
+  size_t GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
 
 public:

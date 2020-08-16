@@ -17,8 +17,8 @@ CSetDayLineBasicInfo::CSetDayLineBasicInfo(CDatabase* pdb)
   m_ID = 0;
   m_Day = 0;
   m_Market = 0;
-  m_StockCode = "";
-  m_StockName = "";
+  m_StockCode = _T("");
+  m_StockName = _T("");
   m_LastClose = _T("0");
   m_Open = _T("0");
   m_High = _T("0");

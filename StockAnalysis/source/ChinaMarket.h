@@ -7,7 +7,7 @@
 
 #include"VirtualMarket.h"
 
-#include"RTDataContainer.h"
+#include"WebRTDataContainer.h"
 
 #include "ChinaStock.h"
 
@@ -21,12 +21,12 @@ using namespace std;
 
 // 信号量必须声明为全局变量（为了初始化）
 extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
-extern Semaphore gl_SemaphoreCalculateDayLineRS;
+extern Semaphore gl_SemaphoreBackGroundTaskThreads; // 后台工作线程数。最大为8
 extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
 extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
-extern CRTDataContainer gl_RTDataContainer;
+extern CWebRTDataContainer gl_WebRTDataContainer;
 
 const int c_SelectedStockStartPosition = 0;
 const int c_10DayRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
@@ -90,10 +90,10 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
-  virtual bool RunningThreadCalculateRelativeStrong(long lStartCalculatingDay);
-  virtual bool RunningThreadCalculateThisDayRS(long lThisDay);
+  virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
+  virtual bool RunningThreadBuildDayLineRSOfDay(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDayLineOfOneStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
@@ -101,7 +101,14 @@ public:
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
   virtual bool RunningThreadChoice10RSStrong1StockSet(void);
   virtual bool RunningThreadChoice10RSStrongStockSet(void);
-
+  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+  virtual bool RunningThreadBuildWeekLine(long lStartDay);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDay);
+  virtual bool RunningThreadBuildWeekLineRS(void);
+  virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
+  virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   // interface function
 public:
   // 系统状态区
@@ -117,7 +124,7 @@ public:
   bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
-  CString CreateNeteaseDayLineInquiringStr(void);
+  bool CreateNeteaseDayLineInquiringStr(CString& strReturn);
 
   long IncreaseStockInquiringIndex(long& lIndex);
 
@@ -151,8 +158,11 @@ public:
   bool IsSystemReady(void) noexcept { return m_fSystemReady; }
   void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
 
-  bool IsTodayStockProcessed(void) noexcept { return m_fTodayStockProcessed; }
-  void SetTodayStockProcessed(bool fFlag) noexcept { m_fTodayStockProcessed = fFlag; }
+  bool IsTodayStockNotProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return true; else return false; }
+  bool IsProcessingTodayStock(void) noexcept { if (m_iTodayStockProcessed == 1) return true; else return false; }
+  bool IsTodayStockProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return false; else return true; }
+  void SetProcessingTodayStock(void) noexcept { m_iTodayStockProcessed = 1; }
+  void SetTodayStockProcessed(bool fFlag) noexcept { if (fFlag) m_iTodayStockProcessed = 2; else m_iTodayStockProcessed = 0; }
 
   long GetCurrentSelectedPosition(void) noexcept { return m_lCurrentSelectedPosition; }
   void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
@@ -169,7 +179,7 @@ public:
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool SaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+  bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
@@ -181,7 +191,24 @@ public:
   void LoadChoicedStockDB(void);
   bool UpdateTempRTData(void);
   virtual bool UpdateTodayTempDB(void);
+  bool DeleteTodayTempDB(void);
   bool LoadTodayTempDB(void);
+  bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
+  bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
+  bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
+
+  bool DeleteWeekLine(long lMonday);
+  bool DeleteWeekLineBasicInfo(long lMonday);
+  bool DeleteWeekLineExtendInfo(long lMonday);
+
+  bool DeleteDayLine(long lDay);
+  bool DeleteDayLineBasicInfo(long lDay);
+  bool DeleteDayLineExtendInfo(long lDay);
+
+  bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+  bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
+  bool DeleteCurrentWeekWeekLine(void);
+
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
 
@@ -193,6 +220,9 @@ public:
 
   bool UnloadDayLine(void);
 
+  bool BuildWeekLine(long lStartDay);
+  virtual bool BuildWeekLineOfCurrentWeek(void);
+
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
@@ -202,7 +232,8 @@ public:
   bool IsDayLineNeedSaving(void);
 
   virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
-  virtual bool CalculateOneDayRelativeStrong(long lDay);
+  virtual bool BuildDayLineRSOfDay(long lDay);
+  virtual bool BuildWeekLineRSOfDay(long lDay);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
@@ -245,14 +276,14 @@ public:
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
-  void StoreChoiceRTData(CRTDataPtr pRTData);
+  void StoreChoiceRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
   bool IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived);
-  void CheckTengxunRTData(CRTDataPtr pRTData);
+  void CheckTengxunRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
   bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
   bool IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived);
-  bool ValidateNeteaseRTData(CRTDataPtr pRTData);
+  bool ValidateNeteaseRTData(CWebRTDataPtr pRTData);
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);
@@ -298,10 +329,10 @@ public:
 
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
-  long GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
-  long GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
+  size_t GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
+  size_t GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
   void ClearChoiceStockContainer(void) noexcept { m_avChoicedStock[0].clear(); }
-  long GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
+  size_t GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
   void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
@@ -347,7 +378,10 @@ public:
   bool ChangeToPrevStockSet(void);
   bool ChangeToNextStockSet(void);
   bool IsTotalStockSetSelected(void) noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
-  long GetCurrentStockSetSize(void);
+  size_t GetCurrentStockSetSize(void);
+
+  void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
+  bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }
 
 protected:
   // 初始化
@@ -374,7 +408,9 @@ protected:
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
-  queue<CRTDataPtr> m_qRTData;
+  long m_lStockNeedUpdated; // 股票历史日线今日需要更新数
+
+  queue<CWebRTDataPtr> m_qRTData;
   bool m_fSaveRTData;
 
   int m_iMarketOpenOffset; // 开市的偏移量。以分钟为单位，0930 = 0，1129 = 120， 1300 = 121， 1459 = 240。
@@ -425,7 +461,7 @@ protected:
 
   // 系统状态区
   bool m_fSystemReady; // 市场初始态已经设置好
-  bool m_fTodayStockProcessed; // 今日是否执行了股票收盘
+  int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
 

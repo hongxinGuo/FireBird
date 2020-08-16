@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Asan|Win32">
+      <Configuration>Asan</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Asan|x64">
+      <Configuration>Asan</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -23,7 +31,7 @@
     <ProjectGuid>{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>StockAnalysis</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -34,6 +42,14 @@
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -60,6 +76,16 @@
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <EnableASAN>true</EnableASAN>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -71,10 +97,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -94,7 +126,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -144,6 +183,7 @@
       <CompileAs>CompileAsCpp</CompileAs>
       <SupportJustMyCode>false</SupportJustMyCode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -198,6 +238,32 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -213,7 +279,40 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
-      <AdditionalOptions>-d2FH4- %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -238,6 +337,8 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\ChinaStockHistoryData.h" />
+    <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
@@ -255,15 +356,19 @@
     <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
     <ClInclude Include="source\DataBase\SetStockCode.h" />
+    <ClInclude Include="source\DataBase\SetWeekLineInfo.h" />
+    <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h" />
+    <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h" />
+    <ClInclude Include="source\DayLineContainer.h" />
     <ClInclude Include="source\Guadan.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="source\PotenDailyBriefingMarket.h" />
-    <ClInclude Include="source\RTDataContainer.h" />
+    <ClInclude Include="source\WebRTDataContainer.h" />
     <ClInclude Include="source\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="source\NeteaseRTWebInquiry.h" />
-    <ClInclude Include="source\PriorityQueueRTData.h" />
-    <ClInclude Include="source\QueueRTData.h" />
+    <ClInclude Include="source\PriorityQueueWebRTData.h" />
+    <ClInclude Include="source\QueueWebRTData.h" />
     <ClInclude Include="source\QueueWebData.h" />
     <ClInclude Include="source\VirtualMarket.h" />
     <ClInclude Include="source\WebInquirer.h" />
@@ -277,10 +382,12 @@
     <ClInclude Include="source\globedef.h" />
     <ClInclude Include="source\ChinaMarket.h" />
     <ClInclude Include="source\OneDeal.h" />
-    <ClInclude Include="source\RTData.h" />
+    <ClInclude Include="source\WebRTData.h" />
     <ClInclude Include="source\ChinaStock.h" />
     <ClInclude Include="source\SystemMessage.h" />
     <ClInclude Include="source\ThreadStatus.h" />
+    <ClInclude Include="source\WeekLine.h" />
+    <ClInclude Include="source\WeekLineContainer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StockAnalysis.h" />
     <ClInclude Include="StockAnalysisDoc.h" />
@@ -292,6 +399,8 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\ChinaStockHistoryData.cpp" />
+    <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
@@ -309,21 +418,28 @@
     <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
     <ClCompile Include="source\DataBase\SetStockCode.cpp" />
+    <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp" />
+    <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp" />
+    <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp" />
+    <ClCompile Include="source\DayLineContainer.cpp" />
     <ClCompile Include="source\Guadan.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="source\PotenDailyBriefing.cpp" />
     <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp" />
     <ClCompile Include="source\PotenDailyBriefingMarket.cpp" />
-    <ClCompile Include="source\PriorityQueueRTData.cpp" />
-    <ClCompile Include="source\QueueRTData.cpp" />
+    <ClCompile Include="source\PriorityQueueWebRTData.cpp" />
+    <ClCompile Include="source\QueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
-    <ClCompile Include="source\RTDataContainer.cpp" />
+    <ClCompile Include="source\WebRTDataContainer.cpp" />
     <ClCompile Include="source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="source\TengxunRTWebInquiry.cpp" />
+    <ClCompile Include="source\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="source\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="source\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="source\ThreadMaintainDayLineDB.cpp" />
-    <ClCompile Include="source\ThreadCalculateDayLineRS.cpp" />
+    <ClCompile Include="source\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="source\ThreadLoadDayLine.cpp" />
     <ClCompile Include="source\ThreadReadCrweberIndex.cpp" />
@@ -336,7 +452,7 @@
     <ClCompile Include="source\globedef.cpp" />
     <ClCompile Include="source\ChinaMarket.cpp" />
     <ClCompile Include="source\OneDeal.cpp" />
-    <ClCompile Include="source\RTData.cpp" />
+    <ClCompile Include="source\WebRTData.cpp" />
     <ClCompile Include="source\ChinaStock.cpp" />
     <ClCompile Include="source\SystemMessage.cpp" />
     <ClCompile Include="source\ThreadSaveCrweberDB.cpp" />
@@ -348,11 +464,15 @@
     <ClCompile Include="source\VirtualMarket.cpp" />
     <ClCompile Include="source\VirtualWebInquiry.cpp" />
     <ClCompile Include="source\WebInquirer.cpp" />
+    <ClCompile Include="source\WeekLine.cpp" />
+    <ClCompile Include="source\WeekLineContainer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StockAnalysis.cpp" />
     <ClCompile Include="StockAnalysisDoc.cpp" />

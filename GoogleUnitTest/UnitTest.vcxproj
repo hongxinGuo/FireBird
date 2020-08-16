@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Asan|Win32">
+      <Configuration>Asan</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Asan|x64">
+      <Configuration>Asan</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -21,7 +29,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{b59e4fff-9041-490e-96bf-e492c1dd7c23}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -33,11 +41,23 @@
     <CLRSupport>false</CLRSupport>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <EnableASAN>false</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'" Label="Configuration">
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CLRSupport>false</CLRSupport>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'" Label="Configuration">
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -55,10 +75,23 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
@@ -68,6 +101,8 @@
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp" />
@@ -85,7 +120,11 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp" />
@@ -94,17 +133,18 @@
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PriorityQueueRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\QueueRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\RTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\RTDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadCalculateDayLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildDayLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadLoadWeekLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp" />
@@ -122,14 +162,20 @@
     <ClCompile Include="..\StockAnalysis\source\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WebRTDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\stdafx.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
+    <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
+    <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
@@ -141,10 +187,13 @@
     <ClCompile Include="ChinaMarketTest.cpp" />
     <ClCompile Include="ChinaMarket_NeteaseDayLineTest.cpp" />
     <ClCompile Include="MockCrweberIndexMarketTest.cpp" />
+    <ClCompile Include="MockDayLineContainerTest.cpp" />
     <ClCompile Include="MockMainFrmTest.cpp" />
+    <ClCompile Include="MockWeekLineContainer.h" />
+    <ClCompile Include="MockWeekLineContainerTest.cpp" />
     <ClCompile Include="NetEaseDayLineDataTest.cpp" />
     <ClCompile Include="NeteaseDayLineWebInquiryTest.cpp" />
-    <ClCompile Include="NeteaseRTDataTest.cpp" />
+    <ClCompile Include="NeteaseWebRTDataTest.cpp" />
     <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
     <ClCompile Include="OneDealTest.cpp" />
     <ClCompile Include="pch.cpp" />
@@ -152,16 +201,16 @@
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
-    <ClCompile Include="PriorityQueueRTDataTest.cpp" />
+    <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
-    <ClCompile Include="QueueRTDataTest.cpp" />
+    <ClCompile Include="QueueWebRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
     <ClCompile Include="MockSystemMessageTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="MockStockAnalysisViewTest.cpp" />
-    <ClCompile Include="ThreadCalculateDayLineRSTest.cpp" />
+    <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp" />
     <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp" />
     <ClCompile Include="ThreadReadCrweberIndexTest.cpp" />
     <ClCompile Include="ThreadReadNeteaseDayLineTest.cpp" />
@@ -169,18 +218,20 @@
     <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp" />
     <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
+    <ClCompile Include="UpdateWeekLineTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
-    <ClCompile Include="RTDataTest.cpp" />
+    <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
     <ClCompile Include="ChinaStockTest.cpp" />
-    <ClCompile Include="RTDataContainerTest.cpp" />
+    <ClCompile Include="WebRTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
-    <ClCompile Include="TengxunRTDataTest.cpp" />
+    <ClCompile Include="TengxunWebRTDataTest.cpp" />
     <ClCompile Include="TengxunRTWebInquiryTest.cpp" />
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="VirtualWebInquiryTest.cpp" />
     <ClCompile Include="WebInquirerTest.cpp" />
+    <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
@@ -196,6 +247,8 @@
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h" />
@@ -213,7 +266,11 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h" />
@@ -222,11 +279,9 @@
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefing.h" />
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\PriorityQueueRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\QueueRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
-    <ClInclude Include="..\StockAnalysis\source\RTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\RTDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
@@ -237,6 +292,10 @@
     <ClInclude Include="..\StockAnalysis\source\VirtualWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\WebData.h" />
     <ClInclude Include="..\StockAnalysis\source\WebInquirer.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebRTData.h" />
+    <ClInclude Include="..\StockAnalysis\source\WebRTDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\WeekLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\WeekLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\stdafx.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysis.h" />
     <ClInclude Include="..\StockAnalysis\StockAnalysisDoc.h" />
@@ -247,6 +306,7 @@
     <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
+    <ClInclude Include="MockDayLineContainer.h" />
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
@@ -285,6 +345,25 @@
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <Profile>true</Profile>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -292,7 +371,56 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <BrowseInformation>false</BrowseInformation>
+      <EnablePREfast>false</EnablePREfast>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <DiagnosticsFormat>Classic</DiagnosticsFormat>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CompileAsManaged>false</CompileAsManaged>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <Profile>false</Profile>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateMapFile>false</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>NotSet</ShowProgress>
+      <OptimizeReferences>false</OptimizeReferences>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>false</AssemblyDebug>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -359,7 +487,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalOptions>-d2FH4- %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

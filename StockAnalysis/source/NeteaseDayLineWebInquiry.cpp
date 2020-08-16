@@ -28,12 +28,11 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
   char buffer2[200];
 
   // 准备网易日线数据申请格式
-  strMiddle = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr();
-  if (strMiddle.GetLength() > 0) {
+  if (gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(strMiddle)) {
     SetDownLoadingStockCode(strMiddle);
     gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strMiddle);
     strMiddle += _T("&start=19900101&end=");
-    sprintf_s(buffer2, "%8d", gl_pChinaStockMarket->GetFormatedMarketDay());
+    sprintf_s(buffer2, _T("%8d"), gl_pChinaStockMarket->GetFormatedMarketDay());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
     gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);

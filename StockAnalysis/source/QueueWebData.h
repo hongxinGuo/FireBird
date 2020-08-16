@@ -22,11 +22,11 @@ public:
   void Reset(void);
 
   // 通用接口函数
-  void PushWebData(CWebDataPtr pData);
-  CWebDataPtr PopWebData(void);
-  long GetWebDataSize(void);
+  void PushData(CWebDataPtr pData);
+  CWebDataPtr PopData(void);
+  size_t GetDataSize(void);
 
 protected:
-  queue<CWebDataPtr> m_qWebData;
-  mutex m_MutexAccessWebData;
+  queue<CWebDataPtr> m_qData;
+  mutex m_MutexAccessData;
 };

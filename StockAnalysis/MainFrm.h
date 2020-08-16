@@ -117,4 +117,12 @@ public:
   afx_msg void OnUsingSinaRealtimeDataServer();
   afx_msg void OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI);
   afx_msg void OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI);
+  afx_msg void OnBuildCreateWeekLine();
+  afx_msg void OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI);
+  afx_msg void OnRebuildWeekLineRS();
+  afx_msg void OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI);
+  afx_msg void OnBuildCurrentWeekLine();
+  afx_msg void OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI);
+  afx_msg void OnBuildRebuildCurrentWeekLine();
+  afx_msg void OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI);
 };

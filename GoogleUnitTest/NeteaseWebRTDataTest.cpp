@@ -4,13 +4,13 @@
 
 #include"ChinaMarket.h"
 
-#include"RTData.h"
+#include"WebRTData.h"
 #include"NeteaseRTWebInquiry.h"
 
 namespace StockAnalysisTest {
-  TEST(CRTDataTest, TestNeteaseInitialize) {
+  TEST(CWebRTDataTest, TestNeteaseInitialize) {
     ASSERT_FALSE(gl_fNormalMode);
-    CRTData RTData;
+    CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
@@ -33,8 +33,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(RTData.IsActive());
   }
 
-  TEST(CRTDataTest, TestNeteaseRTDataActive) {
-    CRTData id;
+  TEST(CWebRTDataTest, TestNeteaseRTDataActive) {
+    CWebRTData id;
     EXPECT_FALSE(id.CheckNeteaseRTDataActive());
     tm tm_;
     tm_.tm_year = 2019 - 1900;
@@ -154,7 +154,7 @@ namespace StockAnalysisTest {
   // 两组正确的数据
   NeteaseRTData Data141(40, _T("v_sh600601=\"1~方正科技~600601~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\nv_sh600601=\"1~方正科技~600601~3.50~3.46~3.47~83346~49036~34309~3.50~2223~3.49~2189~3.48~2093~3.47~760~3.46~1132~3.51~2224~3.52~2848~3.53~1411~3.54~2026~3.55~3577~~20191011155858~0.04~1.16~3.53~3.43~3.50 / 83346 / 29058955~83346~2906~0.38~- 123.29~~3.53~3.43~2.89~76.82~76.82~2.61~3.81~3.11~1.10~- 3689~3.49~- 14.64~139.47~~~1.12~2905.90~0.00~0~~GP - A~39.44~~0.29\";\n"));
 
-  class CalculateNeteaseRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
+  class CalculateNeteaseWebRTDataTest : public::testing::TestWithParam<NeteaseRTData*> {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -196,17 +196,17 @@ namespace StockAnalysisTest {
     char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseRTDataTest, testing::Values(&Data101, &Data102, &Data103
-                                                                                          /*, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
-                                                                                          &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
-                                                                                          &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
-                                                                                          &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
+  INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, CalculateNeteaseWebRTDataTest, testing::Values(&Data101, &Data102, &Data103
+                                                                                             /*, &Data4, &Data5, &Data6, &Data7, &Data8, &Data9, &Data10,
+                                                                                             &Data11, &Data12, &Data13, &Data14, &Data15, &Data16, &Data17, &Data18, &Data19, &Data20,
+                                                                                             &Data21, &Data22, &Data23, &Data24, &Data25, &Data26, &Data27, &Data28, &Data29, &Data30,
+                                                                                             &Data31, &Data32, &Data33, &Data34, &Data35, &Data36, &Data37, &Data38, &Data39, &Data40 */
   ));
 
-  TEST_P(CalculateNeteaseRTDataTest, TestNeteaseRTData) {
+  TEST_P(CalculateNeteaseWebRTDataTest, TestNeteaseRTData) {
     bool fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     time_t ttime;
     tm tm_;
@@ -411,7 +411,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, StockCodePrefixTest,
@@ -522,7 +522,7 @@ namespace StockAnalysisTest {
     int m_iCount;
     char* m_pData;
     CWebDataPtr m_pNeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestReadNeteaseOneValue, ReadNeteaseOneValueTest,
@@ -631,7 +631,7 @@ namespace StockAnalysisTest {
     long m_lValue;
     CString m_strValue;
     CNeteaseRTWebInquiry m_NeteaseWebRTData;
-    CRTData m_RTData;
+    CWebRTData m_RTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeteaseRTData, GetNeteaseIndexValueRTDataTest, testing::Values(&NeteaseData101

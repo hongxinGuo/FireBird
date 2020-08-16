@@ -337,13 +337,19 @@ namespace StockAnalysisTest {
     s_pStockAnalysisView->SetCurrentShowType(1);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
       .Times(1);
-    EXPECT_CALL(*s_pStockAnalysisView, ShowStockDayLine(_))
+    EXPECT_CALL(*s_pStockAnalysisView, ShowStockHistoryDataLine(_))
       .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallBitBlt(&dc, 0, 0, _, _, _, 0, 0, SRCCOPY))
+      .Times(1)
+      .WillOnce(Return(TRUE));
     s_pStockAnalysisView->Show(&dc);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallGetClientRect(_))
       .Times(1);
     EXPECT_CALL(*s_pStockAnalysisView, ShowRealtimeData(_))
       .Times(1);
+    EXPECT_CALL(*s_pStockAnalysisView, SysCallBitBlt(&dc, 0, 0, _, _, _, 0, 0, SRCCOPY))
+      .Times(1)
+      .WillOnce(Return(TRUE));
     s_pStockAnalysisView->SetCurrentShowType(2);
     s_pStockAnalysisView->Show(&dc);
 

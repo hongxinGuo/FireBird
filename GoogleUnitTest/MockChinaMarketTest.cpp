@@ -18,9 +18,8 @@
 
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockChinaMarket.h"
-using namespace testing;
-
 using namespace std;
+using namespace testing;
 #include<memory>
 
 namespace StockAnalysisTest {
@@ -66,27 +65,27 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CMockChinaMarketTest, TestSaveDayLineData1) {
+  TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData1) {
     CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineOfOneStock(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    s_pchinaMarket->SaveDayLineData();
+    s_pchinaMarket->TaskSaveDayLineData();
   }
 
-  TEST_F(CMockChinaMarketTest, TestSaveDayLineData2) {
+  TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData2) {
     CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
 
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineOfOneStock(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
-    s_pchinaMarket->SaveDayLineData();
+    s_pchinaMarket->TaskSaveDayLineData();
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
   }
 
-  TEST_F(CMockChinaMarketTest, TestSaveDayLineData3) {
+  TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
     CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
 
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
@@ -95,16 +94,16 @@ namespace StockAnalysisTest {
     pDayLine->SetDay(19900101);
     pStock->SetDayLineEndDay(20000101);
     pStock->StoreDayLine(pDayLine);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineOfOneStock(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
-    s_pchinaMarket->SaveDayLineData();
+    s_pchinaMarket->TaskSaveDayLineData();
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
 
     pStock->UnloadDayLine();
   }
 
-  TEST_F(CMockChinaMarketTest, TestSaveDayLineData4) {
+  TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData4) {
     CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
 
     pStock->SetDayLineNeedSaving(true);
@@ -116,10 +115,10 @@ namespace StockAnalysisTest {
     pDayLine->SetDay(s_pchinaMarket->GetFormatedMarketDay());
     pStock->StoreDayLine(pDayLine);
     //pStock->SetDayLineNeedSaving(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineOfOneStock(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(1);
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
-    EXPECT_TRUE(s_pchinaMarket->SaveDayLineData());
+    EXPECT_TRUE(s_pchinaMarket->TaskSaveDayLineData());
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     pStock->UnloadDayLine();
   }
@@ -241,25 +240,25 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1; // 星期一
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetSystemReady(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(true);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadChoice10RSStrong2StockSet)
       .Times(1);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151000));
-    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151200));
+    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     EXPECT_TRUE(s_pchinaMarket->IsChoiced10RSStrong2StockSet());
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetTodayStockProcessed(false);
     s_pchinaMarket->SetChoiced10RSStrong2StockSet(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong2StockSet(151201));
     EXPECT_FALSE(s_pchinaMarket->IsChoiced10RSStrong2StockSet()) << _T("休息日不处理");
   }
 
@@ -268,25 +267,25 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1; // 星期一
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetSystemReady(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(true);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     s_pchinaMarket->SetSystemReady(true);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadChoice10RSStrong1StockSet)
       .Times(1);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151000));
-    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151100));
+    EXPECT_TRUE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     EXPECT_TRUE(s_pchinaMarket->IsChoiced10RSStrong1StockSet());
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
     s_pchinaMarket->SetTodayStockProcessed(false);
     s_pchinaMarket->SetChoiced10RSStrong1StockSet(false);
-    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151001));
+    EXPECT_FALSE(s_pchinaMarket->TaskChoice10RSStrong1StockSet(151101));
     EXPECT_FALSE(s_pchinaMarket->IsChoiced10RSStrong1StockSet()) << _T("休息日不处理");
   }
 
@@ -337,7 +336,7 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_FALSE(s_pchinaMarket->TaskProcessTodayStock(150359));
     EXPECT_TRUE(s_pchinaMarket->TaskProcessTodayStock(150400));
-    EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());
+    EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed()) << _T("此标志由工作线程负责设置，故而此时尚未设置");
 
     tm_.tm_wday = 0; // 星期日
     s_pchinaMarket->__TEST_SetMarketTM(tm_);
@@ -355,7 +354,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -371,7 +370,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -394,10 +393,10 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     s_pchinaMarket->SetRelativeStrongEndDay(0);
     s_pchinaMarket->SetUpdateOptionDB(false);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDay(_))
       .Times(5)
       .WillRepeatedly(Return(true));
-    EXPECT_EQ(ThreadCalculateDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), 0);
     EXPECT_FALSE(gl_fExitingCalculatingRS);
@@ -408,9 +407,9 @@ namespace StockAnalysisTest {
     lStartDay = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
     gl_fExitingCalculatingRS = false;
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadCalculateThisDayRS(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDay(_))
       .Times(5);
-    EXPECT_EQ(ThreadCalculateDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDay), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), s_pchinaMarket->GetFormatedMarketDay());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
@@ -453,5 +452,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {
     EXPECT_EQ(ThreadMaintainDayLineDataBase(), (UINT)17) << "此工作线程目前没有实际动作";
+  }
+
+  TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
+      .Times(1);
+    EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pchinaMarket), (UINT)32);
   }
 }

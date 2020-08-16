@@ -2,7 +2,7 @@
 //
 // 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
 //
-// 此线程调用ThreadCalculateRelativeStrongAtThisDayProc线程，最多同时生成16个线程。
+// 此线程调用ThreadBuildDayLineRSOfDay线程，目前最多允许同时生成8个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
+UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
   long lToday = startCalculatingDay;
@@ -31,13 +31,13 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     if (pMarket->IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       // 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-      pMarket->RunningThreadCalculateThisDayRS(lToday);
+      pMarket->RunningThreadBuildDayLineRSOfDay(lToday);
     }
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday <= pMarket->GetFormatedMarketDay()); // 计算至当前日期（包括今日）
 
-  while (gl_ThreadStatus.IsCalculatingRS()) Sleep(1); // 等待所有的工作线程结束
+  while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
     pMarket->SetRelativeStrongEndDay(pMarket->GetFormatedMarketDay());
@@ -49,7 +49,7 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     const long min = tDiffer / 60 - hour * 60;
     const long second = tDiffer - hour * 3600 - min * 60;
     char buffer[100];
-    sprintf_s(buffer, "计算股票相对强度用时%02d小时%02d分钟%02d秒", hour, min, second);
+    sprintf_s(buffer, _T("计算股票相对强度用时%02d小时%02d分钟%02d秒"), hour, min, second);
     CString str;
     str = buffer;
     gl_systemMessage.PushInformationMessage(str);
@@ -66,21 +66,19 @@ UINT ThreadCalculateDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
-// 计算给定日期的日线相对强度。使用C++11mutex和condition_variable构造的Semaphore。
-//
-// pParam： 给定的日期（长整型）
+// 计算给定日期的日线相对强度。
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadCalculateThisDayRS(CChinaMarket* pMarket, long thisDay) {
+UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseNunberOfCalculatingRSThreads();     // 正在工作的线程数加一
-  gl_SemaphoreCalculateDayLineRS.Wait();
+  gl_SemaphoreBackGroundTaskThreads.Wait();
+  gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->CalculateOneDayRelativeStrong(thisDay);  // 调用实际执行函数
+    pMarket->BuildDayLineRSOfDay(thisDay);  // 调用实际执行函数
   }
-  gl_ThreadStatus.DecreaseNumberOfCalculatingRSThreads(); // 正在工作的线程数减一
-  gl_SemaphoreCalculateDayLineRS.Signal();
+  gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
+  gl_SemaphoreBackGroundTaskThreads.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 12;

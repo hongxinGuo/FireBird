@@ -126,14 +126,14 @@ using namespace std;
 #include<array>
 #include<map>
 
-class CRTData;
+class CWebRTData;
 
-typedef shared_ptr<CRTData> CRTDataPtr;
+typedef shared_ptr<CWebRTData> CWebRTDataPtr;
 
-class CRTData final : public CObject {
+class CWebRTData final : public CObject {
 public:
   // ≥ı ºªØ
-  CRTData(void);
+  CWebRTData(void);
 
   void Reset(void);
 

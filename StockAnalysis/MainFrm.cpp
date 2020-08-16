@@ -5,12 +5,12 @@
 #include "StockAnalysis.h"
 
 #include "MainFrm.h"
+#include"StockAnalysisDoc.h"
+#include"StockAnalysisView.h"
 
 #include"globedef.h"
 
-#include "MainFrm.h"
-
-#include"RTData.h"
+#include"WebRTData.h"
 #include"DayLine.h"
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
@@ -71,6 +71,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
   ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
   ON_UPDATE_COMMAND_UI(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingSinaRealtimeDataServer)
+  ON_COMMAND(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnBuildCreateWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_CREATE_WEEKLINE, &CMainFrame::OnUpdateBuildCreateWeekLine)
+  ON_COMMAND(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnRebuildWeekLineRS)
+  ON_UPDATE_COMMAND_UI(ID_REBUILD_WEEKLINE_RS, &CMainFrame::OnUpdateRebuildWeekLineRS)
+  ON_COMMAND(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildCurrentWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildCurrentWeekLine)
+  ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnBuildRebuildCurrentWeekLine)
+  ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -85,6 +93,7 @@ static UINT indicators[] =
   ID_CURRENT_ACTIVE_STOCK,
   ID_CURRENT_DAYLINE_READING_TIME,
   ID_CURRENT_RUNNING_THREAD,
+  ID_CURRENT_RUNNING_BACKGROUND_THREAD,
   ID_CURRENT_TIME,
 };
 
@@ -464,11 +473,11 @@ void CMainFrame::UpdateStatus(void) {
     SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedStockSet());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedStockSet());
   str = buffer;
   SysCallSetPaneText(4, (LPCTSTR)str);
 
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetCurrentSelectedPosition());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedPosition());
   str = buffer;
   SysCallSetPaneText(5, (LPCTSTR)str);
 
@@ -481,7 +490,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
-  sprintf_s(buffer, "%d", gl_pChinaStockMarket->GetTotalActiveStock());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetTotalActiveStock());
   str = buffer;
   SysCallSetPaneText(7, (LPCTSTR)str);
 
@@ -489,12 +498,17 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
   // 更新当前工作线程数
-  sprintf_s(buffer, "%02d", gl_ThreadStatus.GetNumberOfRunningThread());
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfRunningThread());
   str = buffer;
   SysCallSetPaneText(9, (LPCTSTR)str);
 
+  // 更新当前后台工作线程数
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.HowManyBackGroundThreadsWorking());
+  str = buffer;
+  SysCallSetPaneText(10, (LPCTSTR)str);
+
   //更新当地时间的显示
-  SysCallSetPaneText(10, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(11, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -519,7 +533,7 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 }
 
 void CMainFrame::CalculateTodayRelativeStrong(void) {
-  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(gl_pChinaStockMarket->GetFormatedMarketDay());
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDay());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -602,7 +616,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   if (gl_pChinaStockMarket->IsStock(strTemp)) {
     pStock = gl_pChinaStockMarket->GetStock(strTemp);
     gl_pChinaStockMarket->SetCurrentStock(pStock);
-    //m_fNeedUpdateTitle = true;
     SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
@@ -618,6 +631,13 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   break;
   default:
   break;
+  }
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
+    CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
+    CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+    if (pView != nullptr) {
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
+    }
   }
 
   SysCallOnChar(nChar, nRepCnt, nFlags);
@@ -667,12 +687,19 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     break;
     }
   }
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
+    CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
+    CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
+    if (pView != nullptr) {
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
+    }
+  }
   SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadCalculateRelativeStrong(__CHINA_MARKET_BEGIN_DAY__);
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DAY__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -799,4 +826,48 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
   else {
     SysCallCmdUISetCheck(pCmdUI, false);
   }
+}
+
+void CMainFrame::OnBuildCreateWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(19900101);
+}
+
+void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnRebuildWeekLineRS() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineRS();
+}
+
+void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnBuildCurrentWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineOfCurrentWeek();
+}
+
+void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
+//#ifndef DEBUG
+  if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 151000)) {
+    SysCallCmdUIEnable(pCmdUI, true);
+  }
+  else {
+    SysCallCmdUIEnable(pCmdUI, false);
+  }
+  //#endif // !DEBUG
+}
+
+void CMainFrame::OnBuildRebuildCurrentWeekLine() {
+  // TODO: Add your command handler code here
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(gl_pChinaStockMarket->GetFormatedMarketDay());
+}
+
+void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
+  // TODO: Add your command update UI handler code here
 }

@@ -62,7 +62,7 @@ namespace StockAnalysisTest {
       pStock->ClearRTDataDeque();
       pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
       gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
-      pRTData = make_shared<CRTData>();
+      pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
       pRTData->SetStockCode(pData->m_strStockCode);
       pRTData->SetActive(pData->m_fActive);
@@ -79,7 +79,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     CChinaStockPtr pStock;
-    CRTDataPtr pRTData;
+    CWebRTDataPtr pRTData;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
@@ -88,10 +88,10 @@ namespace StockAnalysisTest {
 
   TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
-    gl_RTDataContainer.PushSinaRTData(pRTData);
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 1);
+    gl_WebRTDataContainer.PushSinaData(pRTData);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeSinaRTDataToProperStock());
-    EXPECT_EQ(gl_RTDataContainer.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 0);
     EXPECT_TRUE(gl_ThreadStatus.IsRTDataNeedCalculate());
     switch (m_iCount) {
     case 1:
@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 5);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     EXPECT_TRUE(pStock->IsActive());
-    EXPECT_EQ(pStock->GetIPOStatus(), __STOCK_IPOED__);
+    EXPECT_TRUE(pStock->IsIPOed());
     break;
     default:
     break;
