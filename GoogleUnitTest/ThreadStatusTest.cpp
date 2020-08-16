@@ -51,6 +51,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
   }
 
+  TEST_F(ThreadStatusTest, TestIsCalculatingWeekLineRS) {
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingWeekLineRS());
+    gl_ThreadStatus.SetCalculatingWeekLineRS(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsCalculatingWeekLineRS());
+    gl_ThreadStatus.SetCalculatingWeekLineRS(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingWeekLineRS());
+  }
+
   TEST_F(ThreadStatusTest, TestIsRTDataNeedCalculate) {
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
     gl_ThreadStatus.SetRTDataNeedCalculate(true);
@@ -73,6 +81,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_ThreadStatus.IsSavingTempData());
     gl_ThreadStatus.SetSavingTempData(false);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
+  }
+
+  TEST_F(ThreadStatusTest, TestIsCreateWeekLine) {
+    EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
+    gl_ThreadStatus.SetCreatingWeekLine(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsCreatingWeekLine());
+    gl_ThreadStatus.SetCreatingWeekLine(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsCreatingWeekLine());
   }
 
   TEST_F(ThreadStatusTest, TestIsCalculatingRS) {

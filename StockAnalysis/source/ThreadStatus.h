@@ -16,7 +16,7 @@ public:
   void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRelativeStrong = fFlag; }
   bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRelativeStrong; }
 
-  // 计算若干天日线相对强度与否和设置
+  // 计算若干天周线相对强度与否和设置
   void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRelativeStrong = fFlag; }
   bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRelativeStrong; }
 
@@ -33,8 +33,8 @@ public:
   bool IsSavingTempData(void) noexcept { return m_SavingTempData; }
 
   // 生成周线历史数据
-  void SetCreateWeekLine(bool fFlag) noexcept { m_CreateWeekLine = fFlag; }
-  bool IsCreatingWeekLine(void) noexcept { return m_CreateWeekLine; }
+  void SetCreatingWeekLine(bool fFlag) noexcept { m_CreatingWeekLine = fFlag; }
+  bool IsCreatingWeekLine(void) noexcept { return m_CreatingWeekLine; }
 
   // 并发执行计算日线相对强度的计数器，最多允许cMaxBackGroundTaskThreads个线程同时执行
   void IncreaseBackGroundWorkingthreads(void) noexcept { m_NumberOfBackGroundWorkingThreads++; }  // 同时运行线程数加一
@@ -57,7 +57,7 @@ protected:
   atomic_bool m_RTDataNeedCalculate;
   atomic_bool m_CalculatingRTData;
   atomic_bool m_SavingTempData;
-  atomic_bool m_CreateWeekLine;
+  atomic_bool m_CreatingWeekLine;
 
   atomic_int m_SavingDayLine; // 存储日线历史数据的计数器
   atomic_int m_NumberOfBackGroundWorkingThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许cMaxBackGroundTaskThreads个线程

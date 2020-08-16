@@ -351,15 +351,19 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetNewestTransactionTime(s_pchinaMarket->GetLocalTime());
     long lDay = FormatToDay(s_pchinaMarket->GetNewestTransactionTime());
     s_pchinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
-    EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDay))
       .Times(1)
       .WillOnce(Return(4000));
     EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
+      .Times(1);
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDay)))
+      .Times(1)
+      .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
-    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 1);
     // 市场时间小于150400时
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), 19900101) << "没有执行修改最新相对强度日的动作";
     EXPECT_FALSE(s_pchinaMarket->IsUpdateStockCodeDB());
@@ -367,15 +371,19 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed());
 
     s_pchinaMarket->__TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
-    EXPECT_CALL(*s_pchinaMarket, ProcessCurrentTradeDayStock(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDay))
       .Times(1)
       .WillOnce(Return(4000));
     EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
       .Times(1)
       .WillOnce(Return(true));
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
+      .Times(1);
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDay)))
+      .Times(1)
+      .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
-    EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 2) << "加上上面那个数据，共两个";
     // 市场时间大于150400时
     EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDay(), lDay);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());

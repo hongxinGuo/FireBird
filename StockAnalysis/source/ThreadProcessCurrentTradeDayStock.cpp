@@ -20,18 +20,9 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SetProcessingTodayStock();
 
-  char buffer[30];
-  CString str;
-  int i;
   long lDay = FormatToDay(pMarket->GetNewestTransactionTime());
   if (lDay == pMarket->GetFormatedMarketDay()) {
-    i = pMarket->ProcessCurrentTradeDayStock(lDay);
-    TRACE(_T("处理今日股票\n"));
-    sprintf_s(buffer, _T("%d"), i);
-    str = _T("今日处理了");
-    str += buffer;
-    str += _T("个股票");
-    gl_systemMessage.PushInformationMessage(str);
+    pMarket->BuildDayLineOfDay(lDay);
     // 计算本日日线相对强度
     pMarket->BuildDayLineRSOfDay(lDay);
     // 生成周线数据

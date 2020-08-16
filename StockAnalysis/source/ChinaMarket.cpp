@@ -2357,7 +2357,7 @@ bool CChinaMarket::RunningThreadBuildWeekLineOfCurrentWeek(void) {
 // long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
+long CChinaMarket::BuildDayLineOfDay(long lCurrentTradeDay) {
   char buffer[20];
   CString strDay;
   CSetDayLineBasicInfo setDayLineBasicInfo;
@@ -2411,6 +2411,13 @@ long CChinaMarket::ProcessCurrentTradeDayStock(long lCurrentTradeDay) {
   str = GetDayString(lCurrentTradeDay);
   str += _T("日实时数据处理完毕");
   gl_systemMessage.PushInformationMessage(str);
+
+  sprintf_s(buffer, _T("%d"), iCount);
+  str = _T("今日处理了");
+  str += buffer;
+  str += _T("个股票");
+  gl_systemMessage.PushInformationMessage(str);
+
   return iCount;
 }
 

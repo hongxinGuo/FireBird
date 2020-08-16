@@ -18,7 +18,7 @@ CThreadStatus::CThreadStatus() {
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;
-  m_CreateWeekLine = false;
+  m_CreatingWeekLine = false;
 
   m_SavingDayLine = 0;
   m_NumberOfRunningThread = 0;

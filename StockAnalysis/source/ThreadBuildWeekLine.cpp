@@ -9,7 +9,7 @@ using namespace std;
 
 UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.SetCreateWeekLine(true);
+  gl_ThreadStatus.SetCreatingWeekLine(true);
 
   long lStartMonday = GetCurrentMonday(lStartDay);
 
@@ -20,7 +20,7 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
 
   pMarket->BuildWeekLine(lStartMonday);
 
-  gl_ThreadStatus.SetCreateWeekLine(false);
+  gl_ThreadStatus.SetCreatingWeekLine(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 25;

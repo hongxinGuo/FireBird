@@ -231,7 +231,7 @@ public:
   bool IsDayLineNeedUpdate(void);
   bool IsDayLineNeedSaving(void);
 
-  virtual long ProcessCurrentTradeDayStock(long lCurrentTradeDay);
+  virtual long BuildDayLineOfDay(long lCurrentTradeDay);
   virtual bool BuildDayLineRSOfDay(long lDay);
   virtual bool BuildWeekLineRSOfDay(long lDay);
   double GetUpDownRate(CString strClose, CString StrLastClose);
