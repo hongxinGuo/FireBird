@@ -460,7 +460,8 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
   int iCount = 0;
   CString strTemp;
   strReturn = _T("");
-  while (!fFound && (iCount++ < 1000)) {
+
+  while (!fFound && (iCount++ < GetTotalStock())) {
     CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
       // TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
@@ -484,7 +485,7 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
     }
   }
 
-  if (iCount >= 1000) { //  没有找到需要申请日线的股票
+  if (iCount >= GetTotalStock()) { //  没有找到需要申请日线的股票
     TRACE("未找到需更新日线历史数据的股票\n");
     return false;
   }
@@ -2194,7 +2195,6 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   for (auto pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
-      pStock->SetDayLineNeedProcess(false);
     }
   }
   return true;

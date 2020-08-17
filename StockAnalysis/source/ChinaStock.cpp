@@ -212,6 +212,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
 
   ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
+  SetDayLineNeedProcess(false); // 无论是否正确处理，都不再使用
   if (m_lDayLineBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
   }
@@ -930,16 +931,29 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   if (pRTData->GetPSell(0) == 0) { // 卖一价格为零
     if (pRTData->GetPBuy(0) > 0) {
       m_lHighLimit2 = pRTData->GetPBuy(0);
-      i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
-      iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.3) / pRTData->GetLastClose();
-      d1 = (double)i2 * 100 / pRTData->GetLastClose();
-      if (d1 > iCompare) {
-        d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
-        if ((iCompare - d2) <= (d1 - iCompare)) {
-          iAdjust = 10;
+      if (pRTData->GetLastClose() < 1200) { // 低价股？
+        m_lLowLimit2 = pRTData->GetLastClose() - (m_lHighLimit2 - pRTData->GetLastClose());
+      }
+      else {
+        i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.75) / pRTData->GetLastClose();
+        if (iCompare <= 21) {
+          if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
+            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
+          }
+          d1 = (double)i2 * 100 / pRTData->GetLastClose();
+          if (d1 > iCompare) {
+            d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
+            if ((iCompare - d2) <= (d1 - iCompare)) {
+              iAdjust = 10;
+            }
+          }
+          m_lLowLimit2 = pRTData->GetLastClose() - i2 + iAdjust;
+        }
+        else {
+          m_lLowLimit2 = m_lLowLimit;
         }
       }
-      m_lLowLimit2 = pRTData->GetLastClose() - i2 + iAdjust;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
@@ -949,22 +963,36 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   else if (pRTData->GetPBuy(0) == 0) { // 买一价格为零
     if (pRTData->GetPSell(0) > 0) {
       m_lLowLimit2 = pRTData->GetPSell(0);
-      i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
-      iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.3) / pRTData->GetLastClose();
-      d1 = (double)i2 * 100 / pRTData->GetLastClose();
-      if (d1 < iCompare) {
-        d2 = (double)(i2 + 10) * 100 / pRTData->GetLastClose();
-        if ((d2 - iCompare) <= (iCompare - d1)) {
-          iAdjust = 10;
+      if (pRTData->GetLastClose() < 1200) { // 低价股？
+        m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - m_lLowLimit2);
+      }
+      else {
+        i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.75) / pRTData->GetLastClose();
+        if (iCompare <= 21) {
+          if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
+            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
+          }
+          d1 = (double)i2 * 100 / pRTData->GetLastClose();
+          if (d1 < iCompare) {
+            d2 = (double)(i2 + 10) * 100 / pRTData->GetLastClose();
+            if ((d2 - iCompare) <= (iCompare - d1)) {
+              iAdjust = 10;
+            }
+          }
+          m_lHighLimit2 = pRTData->GetLastClose() + i2 + iAdjust;
+        }
+        else {
+          m_lHighLimit2 = m_lHighLimit;
         }
       }
-      m_lHighLimit2 = pRTData->GetLastClose() + i2 + iAdjust;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
       m_lLowLimit2 = m_lLowLimit;
     }
   }
+
   if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
   if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
 }
