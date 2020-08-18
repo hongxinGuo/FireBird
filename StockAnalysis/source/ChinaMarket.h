@@ -208,6 +208,7 @@ public:
   bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool DeleteCurrentWeekWeekLine(void);
+  bool DeleteCurrentWeekWeekLineBeforeTheDay(long lCutOffDay);
 
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);

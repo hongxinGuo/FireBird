@@ -922,6 +922,10 @@ bool CChinaStock::ProcessOneRTData(CWebRTDataPtr pRTData) {
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 中国股市的涨跌停板价格计算方法目前不知，只能靠摸索。
+
 void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   double d1, d2;
   int iAdjust = 0;
@@ -944,7 +948,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
           d1 = (double)i2 * 100 / pRTData->GetLastClose();
           if (d1 > iCompare) {
             d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
-            if ((iCompare - d2) <= (d1 - iCompare)) {
+            if ((iCompare - d2) <= (d1 - iCompare)) { // 当计算跌停价时，两边误差一样时（9.7777与10.22222），采用较小的（9.7777）。
               iAdjust = 10;
             }
           }
@@ -976,7 +980,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
           d1 = (double)i2 * 100 / pRTData->GetLastClose();
           if (d1 < iCompare) {
             d2 = (double)(i2 + 10) * 100 / pRTData->GetLastClose();
-            if ((d2 - iCompare) <= (iCompare - d1)) {
+            if ((d2 - iCompare) <= (iCompare - d1)) { // 当计算涨停价时，两边误差一样时（9.7777与10.22222），采用较大的（10.2222）。
               iAdjust = 10;
             }
           }

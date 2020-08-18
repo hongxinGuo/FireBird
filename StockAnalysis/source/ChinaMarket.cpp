@@ -1828,10 +1828,11 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
 
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
+
+  DeleteCurrentWeekWeekLineBeforeTheDay(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
   LoadCurrentWeekLine(weekLineContainer);
 
   auto pWeekLineData = weekLineContainer.GetContainer();
-
   for (auto pData : *pWeekLineData) {
     strStockCode = pData->GetStockCode();
     vectorWeekLineStockCode.push_back(strStockCode);
@@ -1858,7 +1859,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   SaveWeekLine(weekLineContainer);
   // 清除当前周的数据
   DeleteCurrentWeekWeekLine();
-  // 存储当前周数据只当前周数据表
+  // 存储当前周数据于当前周数据表
   SaveCurrentWeekLine(weekLineContainer);
 
   gl_systemMessage.PushDayLineInfoMessage(_T("生成今日周线任务完成"));
@@ -1899,7 +1900,7 @@ bool CChinaMarket::BuildCurrentWeekLineFromWeekLine(void) {
     pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
     weekLineContainer.StoreData(pWeekLine);
     setWeekLineBasicInfo.MoveNext();
-    setWeekLineExtendInfo.MoveNext(); 
+    setWeekLineExtendInfo.MoveNext();
   }
 
   SaveCurrentWeekLine(weekLineContainer);
@@ -2071,6 +2072,23 @@ bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
   setWeekLineInfo.m_pDatabase->BeginTrans();
   while (!setWeekLineInfo.IsEOF()) {
     setWeekLineInfo.Delete();
+    setWeekLineInfo.MoveNext();
+  }
+  setWeekLineInfo.m_pDatabase->CommitTrans();
+  setWeekLineInfo.Close();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDay(long lCutOffDay) {
+  CSetWeekLineInfo setWeekLineInfo;
+
+  setWeekLineInfo.Open();
+  setWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineInfo.IsEOF()) {
+    if (setWeekLineInfo.m_Day < lCutOffDay) {
+      setWeekLineInfo.Delete();
+    }
     setWeekLineInfo.MoveNext();
   }
   setWeekLineInfo.m_pDatabase->CommitTrans();
