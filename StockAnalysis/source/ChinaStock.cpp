@@ -931,7 +931,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   if (pRTData->GetPSell(0) == 0) { // 卖一价格为零
     if (pRTData->GetPBuy(0) > 0) {
       m_lHighLimit2 = pRTData->GetPBuy(0);
-      if (pRTData->GetLastClose() < 1200) { // 低价股？
+      if (pRTData->GetLastClose() < 1400) { // 低价股？
         m_lLowLimit2 = pRTData->GetLastClose() - (m_lHighLimit2 - pRTData->GetLastClose());
       }
       else {
@@ -963,7 +963,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   else if (pRTData->GetPBuy(0) == 0) { // 买一价格为零
     if (pRTData->GetPSell(0) > 0) {
       m_lLowLimit2 = pRTData->GetPSell(0);
-      if (pRTData->GetLastClose() < 1200) { // 低价股？
+      if (pRTData->GetLastClose() < 1400) { // 低价股？
         m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - m_lLowLimit2);
       }
       else {
@@ -1609,7 +1609,7 @@ bool CChinaStock::SaveWeekLine() {
 }
 
 bool CChinaStock::SaveWeekLineBasicInfo() {
-  m_WeekLine.SaveBasicInfo(GetStockCode());
+  m_WeekLine.SaveBasicInfo();
 
   return true;
 }
@@ -1620,7 +1620,7 @@ bool CChinaStock::SaveWeekLineBasicInfo() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveWeekLineExtendInfo() {
-  m_WeekLine.SaveExtendInfo(GetStockCode());
+  m_WeekLine.SaveExtendInfo();
 
   return true;
 }

@@ -853,14 +853,14 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-//#ifndef DEBUG
+#ifndef _DEBUG
   if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 151000)) {
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else {
     SysCallCmdUIEnable(pCmdUI, false);
   }
-  //#endif // !DEBUG
+#endif // !_DEBUG
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {

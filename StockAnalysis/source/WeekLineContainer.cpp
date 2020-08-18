@@ -13,14 +13,14 @@ bool CWeekLineContainer::LoadData(CString strStockCode) {
 }
 
 bool CWeekLineContainer::SaveData(CString strStockCode) {
-  SaveWeekLine(strStockCode);
+  SaveWeekLine();
 
   return true;
 }
 
-bool CWeekLineContainer::SaveWeekLine(CString strStockCode) {
-  SaveBasicInfo(strStockCode);
-  SaveExtendInfo(strStockCode);
+bool CWeekLineContainer::SaveWeekLine(void) {
+  SaveBasicInfo();
+  SaveExtendInfo();
 
   return true;
 }
@@ -39,11 +39,12 @@ bool CWeekLineContainer::SaveCurrentWeekLine(void) {
   }
   setWeekLineInfo.m_pDatabase->CommitTrans();
   setWeekLineInfo.Close();
+  TRACE("存储了%d个当前周周线数据\n", m_vHistoryData.size());
 
   return true;
 }
 
-bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
+bool CWeekLineContainer::SaveBasicInfo(void) {
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   CWeekLinePtr pWeekLine = nullptr;
 
@@ -57,6 +58,7 @@ bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
   }
   setWeekLineBasicInfo.m_pDatabase->CommitTrans();
   setWeekLineBasicInfo.Close();
+  TRACE("存储了%d个周线基本数据\n", m_vHistoryData.size());
 
   return true;
 }
@@ -66,7 +68,7 @@ bool CWeekLineContainer::SaveBasicInfo(CString strStockCode) {
 // 只存储有交易记录的扩展数据。对于没有信息的直接跨过。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CWeekLineContainer::SaveExtendInfo(CString strStockCode) {
+bool CWeekLineContainer::SaveExtendInfo(void) {
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
   CWeekLinePtr pWeekLine = nullptr;
 
@@ -80,6 +82,7 @@ bool CWeekLineContainer::SaveExtendInfo(CString strStockCode) {
   }
   setWeekLineExtendInfo.m_pDatabase->CommitTrans();
   setWeekLineExtendInfo.Close();
+  TRACE("存储了%d个周线扩展数据\n", m_vHistoryData.size());
 
   return true;
 }

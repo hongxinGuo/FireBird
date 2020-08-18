@@ -1854,14 +1854,55 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   // 清除之前的周线数据
   DeleteWeekLine(lCurrentMonday);
-  // 存储周线数据
+  // 存储周线数据值周线数据表
   SaveWeekLine(weekLineContainer);
   // 清除当前周的数据
   DeleteCurrentWeekWeekLine();
-  // 存储当前周数据
+  // 存储当前周数据只当前周数据表
   SaveCurrentWeekLine(weekLineContainer);
 
   gl_systemMessage.PushDayLineInfoMessage(_T("生成今日周线任务完成"));
+
+  return true;
+}
+
+bool CChinaMarket::BuildCurrentWeekLineFromWeekLine(void) {
+  long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
+  CSetWeekLineBasicInfo setWeekLineBasicInfo;
+  CSetWeekLineExtendInfo setWeekLineExtendInfo;
+  CString strDay;
+  char buffer[10];
+  CWeekLinePtr pWeekLine = nullptr;
+  CWeekLineContainer weekLineContainer;
+
+  DeleteCurrentWeekWeekLine();
+
+  sprintf_s(buffer, _T("%08d"), lCurrentMonday);
+  strDay = buffer;
+  setWeekLineBasicInfo.m_strFilter = _T("[Day] = ");
+  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
+  setWeekLineBasicInfo.Open();
+  setWeekLineExtendInfo.m_strFilter = _T("[Day] = ");
+  setWeekLineExtendInfo.m_strFilter += strDay;
+  setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
+  setWeekLineExtendInfo.Open();
+
+  while (!setWeekLineBasicInfo.IsEOF()) {
+    pWeekLine = make_shared<CWeekLine>();
+    pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
+    while (setWeekLineBasicInfo.m_StockCode > setWeekLineExtendInfo.m_StockCode) {
+      ASSERT(!setWeekLineExtendInfo.IsEOF());
+      setWeekLineExtendInfo.MoveNext();
+    }
+    ASSERT(setWeekLineBasicInfo.m_StockCode == setWeekLineExtendInfo.m_StockCode); // 此两个表必须具有相同的股票数
+    pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
+    weekLineContainer.StoreData(pWeekLine);
+    setWeekLineBasicInfo.MoveNext();
+    setWeekLineExtendInfo.MoveNext(); 
+  }
+
+  SaveCurrentWeekLine(weekLineContainer);
 
   return true;
 }
@@ -1990,7 +2031,7 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
 }
 
 bool CChinaMarket::SaveWeekLine(CWeekLineContainer& weekLineContainer) {
-  weekLineContainer.SaveWeekLine(_T("sh600000"));// 此容器中为各股票的当周周线数据，使用股票代码只是为了减少查询时间。
+  weekLineContainer.SaveWeekLine();// 此容器中为各股票的当周周线数据
 
   return true;
 }

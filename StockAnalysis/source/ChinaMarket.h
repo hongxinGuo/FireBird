@@ -222,6 +222,7 @@ public:
 
   bool BuildWeekLine(long lStartDay);
   virtual bool BuildWeekLineOfCurrentWeek(void);
+  virtual bool BuildCurrentWeekLineFromWeekLine(void); // 使用周线表构建当前周周线表
 
   // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）

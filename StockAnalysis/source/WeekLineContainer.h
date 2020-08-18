@@ -13,9 +13,9 @@ public:
   virtual bool LoadData(CString strStockCode) override;
   virtual bool SaveData(CString strStockCode) override;
 
-  bool SaveWeekLine(CString strStockCode);
-  bool SaveBasicInfo(CString strStockCode);
-  bool SaveExtendInfo(CString strStockCode);
+  bool SaveWeekLine(void);
+  bool SaveBasicInfo(void);
+  bool SaveExtendInfo(void);
   bool LoadWeekLine(CString strStockCode);
   bool LoadBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
