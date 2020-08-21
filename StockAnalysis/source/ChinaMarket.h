@@ -85,7 +85,7 @@ public:
   bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
   // 装载当前股票日线任务
-  bool TaskLoadCurrentStockDayLine(void);
+  bool TaskLoadCurrentStockHistoryData(void);
 
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
@@ -95,6 +95,7 @@ public:
   virtual bool RunningThreadSaveTempRTData(void);
   virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
+  virtual bool RunningThreadLoadWeekLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);

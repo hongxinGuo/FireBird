@@ -1286,7 +1286,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   TaskShowCurrentTransaction();
 
   // 装载当前股票日线数据
-  TaskLoadCurrentStockDayLine();
+  TaskLoadCurrentStockHistoryData();
 
   return true;
 }
@@ -2260,12 +2260,21 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   return true;
 }
 
-bool CChinaMarket::TaskLoadCurrentStockDayLine(void) {
-  if (m_pCurrentStock != nullptr) {
-    if (!m_pCurrentStock->IsDayLineLoaded()) {
-      RunningThreadLoadDayLine(m_pCurrentStock);
+bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
+  static int i = 0;
+  if (i <= 0) {
+    if (m_pCurrentStock != nullptr) {
+      if (!m_pCurrentStock->IsDayLineLoaded()) {
+        RunningThreadLoadDayLine(m_pCurrentStock);
+        i = 10;
+      }
+      if (!m_pCurrentStock->IsWeekLineLoaded()) {
+        RunningThreadLoadWeekLine(m_pCurrentStock);
+        i = 10;
+      }
     }
   }
+  else i--;
   return true;
 }
 
@@ -2313,6 +2322,12 @@ bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStoc
 
 bool CChinaMarket::RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock) {
   thread thread1(ThreadLoadDayLine, pCurrentStock);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CChinaMarket::RunningThreadLoadWeekLine(CChinaStockPtr pCurrentStock) {
+  thread thread1(ThreadLoadWeekLine, pCurrentStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

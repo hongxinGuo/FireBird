@@ -91,6 +91,8 @@ bool CWeekLineContainer::LoadWeekLine(CString strStockCode) {
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
+  ASSERT(!m_fLoadDataFirst);
+
   // 装入WeekLine数据
   setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineBasicInfo.m_strFilter += strStockCode;
@@ -110,6 +112,9 @@ bool CWeekLineContainer::LoadWeekLine(CString strStockCode) {
   setWeekLineExtendInfo.Close();
 
   m_fDataLoaded = true;
+
+  ASSERT(!m_fLoadDataFirst);
+
   return true;
 }
 
