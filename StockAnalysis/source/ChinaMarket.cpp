@@ -98,6 +98,7 @@ void CChinaMarket::Reset(void) {
   m_fChoiced10RSStrong2StockSet = false;
   m_fChoiced10RSStrongStockSet = false;
   m_fCurrentEditStockChanged = false;
+  m_fCalculateChoiced10RS = false;
 
   m_lTotalMarketBuy = m_lTotalMarketSell = 0;
 
@@ -1243,7 +1244,7 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
 
   CheckMarketReady(); // 检查市场是否完成初始化
 
-  if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0)) {
+  if ((GetDayLineNeedUpdateNumber() <= 0) && (GetDayLineNeedSaveNumber() <= 0) && m_fCalculateChoiced10RS) {
     TaskChoice10RSStrongStockSet(lCurrentTime);
     TaskChoice10RSStrong1StockSet(lCurrentTime);
     TaskChoice10RSStrong2StockSet(lCurrentTime);

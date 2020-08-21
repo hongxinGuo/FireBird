@@ -15,13 +15,13 @@ CChinaStockHistoryDataContainer::~CChinaStockHistoryDataContainer() {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CChinaStockHistoryDataContainer::UpdateData(vector<CChinaStockHistoryDataPtr>& vTempWeekLine) {
-  CChinaStockHistoryDataPtr pWeekLine = nullptr;
-  Unload(); // 清除已载入的周线数据（如果有的话）
+void CChinaStockHistoryDataContainer::UpdateData(vector<CChinaStockHistoryDataPtr>& vTempData) {
+  CChinaStockHistoryDataPtr pData = nullptr;
+  Unload(); // 清除已载入的数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = 0; i < vTempWeekLine.size(); i++) {
-    pWeekLine = vTempWeekLine.at(i);
-    StoreData(pWeekLine);
+  for (int i = 0; i < vTempData.size(); i++) {
+    pData = vTempData.at(i);
+    StoreData(pData);
   }
   SetDataLoaded(true);
 }

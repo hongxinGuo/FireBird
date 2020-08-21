@@ -175,6 +175,7 @@
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
+    <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStockTest.cpp" />
@@ -231,6 +232,7 @@
     <ClCompile Include="VirtualMarketTest.cpp" />
     <ClCompile Include="VirtualWebInquiryTest.cpp" />
     <ClCompile Include="WebInquirerTest.cpp" />
+    <ClCompile Include="WeekLineContainerTest.cpp" />
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>

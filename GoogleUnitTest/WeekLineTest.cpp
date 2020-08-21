@@ -565,6 +565,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CWeekLineTest, TestSaveData) {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
+    CSetWeekLineExtendInfo setWeekLineExtendInfo;
     CWeekLine id, id2;
 
     id.SetDay(21101101);
@@ -587,6 +588,72 @@ namespace StockAnalysisTest {
     id.SetRelativeStrongIndex(15.6);
     id.SetRelativeStrongBackup(20.9);
 
+    id.SetTransactionNumber(100390);
+    id.SetTransactionNumberBelow5000(10034390);
+    id.SetTransactionNumberBelow50000(10034390);
+    id.SetTransactionNumberBelow200000(10033490);
+    id.SetTransactionNumberAbove200000(10034590);
+
+    id.SetCanceledBuyVolume(6);
+    id.SetCanceledSellVolume(7);
+    id.SetAttackBuyVolume(8);
+    id.SetAttackSellVolume(9);
+    id.SetStrongBuyVolume(10);
+    id.SetStrongSellVolume(11);
+    id.SetUnknownVolume(12);
+    id.SetOrdinaryBuyVolume(13);
+    id.SetOrdinarySellVolume(14);
+    id.SetAttackBuyBelow50000(15);
+    id.SetAttackBuyBelow200000(16);
+    id.SetAttackBuyAbove200000(17);
+    id.SetAttackSellBelow50000(18);
+    id.SetAttackBuyBelow200000(19);
+    id.SetAttackBuyAbove200000(20);
+
+    id.SetOrdinaryBuyVolumeBelow5000(30);
+    id.SetOrdinaryBuyVolumeBelow10000(31);
+    id.SetOrdinaryBuyVolumeBelow20000(32);
+    id.SetOrdinaryBuyVolumeBelow50000(33);
+    id.SetOrdinaryBuyVolumeBelow100000(34);
+    id.SetOrdinaryBuyVolumeBelow200000(35);
+    id.SetOrdinaryBuyVolumeAbove200000(36);
+    id.SetOrdinarySellVolumeBelow5000(37);
+    id.SetOrdinarySellVolumeBelow10000(38);
+    id.SetOrdinarySellVolumeBelow20000(39);
+    id.SetOrdinarySellVolumeBelow50000(40);
+    id.SetOrdinarySellVolumeBelow100000(41);
+    id.SetOrdinarySellVolumeBelow200000(42);
+    id.SetOrdinarySellVolumeAbove200000(43);
+    id.SetOrdinaryBuyNumberBelow5000(44);
+    id.SetOrdinaryBuyNumberBelow10000(45);
+    id.SetOrdinaryBuyNumberBelow20000(46);
+    id.SetOrdinaryBuyNumberBelow50000(47);
+    id.SetOrdinaryBuyNumberBelow100000(48);
+    id.SetOrdinaryBuyNumberBelow200000(49);
+    id.SetOrdinaryBuyNumberAbove200000(50);
+    id.SetOrdinarySellNumberBelow5000(51);
+    id.SetOrdinarySellNumberBelow10000(52);
+    id.SetOrdinarySellNumberBelow20000(53);
+    id.SetOrdinarySellNumberBelow50000(54);
+    id.SetOrdinarySellNumberBelow100000(55);
+    id.SetOrdinarySellNumberBelow200000(56);
+    id.SetOrdinarySellNumberAbove200000(57);
+
+    id.SetCanceledBuyVolumeBelow5000(64);
+    id.SetCanceledBuyVolumeBelow10000(65);
+    id.SetCanceledBuyVolumeBelow20000(66);
+    id.SetCanceledBuyVolumeBelow50000(67);
+    id.SetCanceledBuyVolumeBelow100000(68);
+    id.SetCanceledBuyVolumeBelow200000(69);
+    id.SetCanceledBuyVolumeAbove200000(70);
+    id.SetCanceledSellVolumeBelow5000(71);
+    id.SetCanceledSellVolumeBelow10000(72);
+    id.SetCanceledSellVolumeBelow20000(73);
+    id.SetCanceledSellVolumeBelow50000(74);
+    id.SetCanceledSellVolumeBelow100000(75);
+    id.SetCanceledSellVolumeBelow200000(76);
+    id.SetCanceledSellVolumeAbove200000(77);
+
     ASSERT(!gl_fNormalMode);
     setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setWeekLineBasicInfo.Open();
@@ -594,6 +661,13 @@ namespace StockAnalysisTest {
     id.AppendData(&setWeekLineBasicInfo);
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
+
+    setWeekLineExtendInfo.m_strFilter = _T("[ID] = 1");
+    setWeekLineExtendInfo.Open();
+    setWeekLineExtendInfo.m_pDatabase->BeginTrans();
+    id.AppendData(&setWeekLineExtendInfo);
+    setWeekLineExtendInfo.m_pDatabase->CommitTrans();
+    setWeekLineExtendInfo.Close();
 
     setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setWeekLineBasicInfo.Open();
@@ -639,6 +713,76 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(id2.GetRelativeStrongIndex(), id.GetRelativeStrongIndex());
     EXPECT_DOUBLE_EQ(id2.GetRelativeStrongBackup(), id.GetRelativeStrongBackup());
 
+    setWeekLineExtendInfo.m_strFilter = _T("[Day] = 21101101");
+    setWeekLineExtendInfo.Open();
+    id2.LoadExtendData(&setWeekLineExtendInfo);
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumber), id2.GetTransactionNumber());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow5000), id2.GetTransactionNumberBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow50000), id2.GetTransactionNumberBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberBelow200000), id2.GetTransactionNumberBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_TransactionNumberAbove200000), id2.GetTransactionNumberAbove200000());
+
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolume), id2.GetCanceledBuyVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolume), id2.GetCanceledSellVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyVolume), id2.GetAttackBuyVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellVolume), id2.GetAttackSellVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_StrongBuyVolume), id2.GetStrongBuyVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_StrongSellVolume), id2.GetStrongSellVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_UnknownVolume), id2.GetUnknownVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolume), id2.GetOrdinaryBuyVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolume), id2.GetOrdinarySellVolume());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyBelow50000), id2.GetAttackBuyBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyBelow200000), id2.GetAttackBuyBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackBuyAbove200000), id2.GetAttackBuyAbove200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellBelow50000), id2.GetAttackSellBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellBelow200000), id2.GetAttackSellBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_AttackSellAbove200000), id2.GetAttackSellAbove200000());
+
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow5000), id2.GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow10000), id2.GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow20000), id2.GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow50000), id2.GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow100000), id2.GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeBelow200000), id2.GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyVolumeAbove200000), id2.GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow5000), id2.GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow10000), id2.GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow20000), id2.GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow50000), id2.GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow100000), id2.GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeBelow200000), id2.GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellVolumeAbove200000), id2.GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow5000), id2.GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow10000), id2.GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow20000), id2.GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow50000), id2.GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow100000), id2.GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberBelow200000), id2.GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinaryBuyNumberAbove200000), id2.GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow5000), id2.GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow10000), id2.GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow20000), id2.GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow50000), id2.GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow100000), id2.GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberBelow200000), id2.GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_OrdinarySellNumberAbove200000), id2.GetOrdinarySellNumberAbove200000());
+
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow5000), id2.GetCanceledBuyVolumeBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow10000), id2.GetCanceledBuyVolumeBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow20000), id2.GetCanceledBuyVolumeBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow50000), id2.GetCanceledBuyVolumeBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow100000), id2.GetCanceledBuyVolumeBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeBelow200000), id2.GetCanceledBuyVolumeBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledBuyVolumeAbove200000), id2.GetCanceledBuyVolumeAbove200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow5000), id2.GetCanceledSellVolumeBelow5000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow10000), id2.GetCanceledSellVolumeBelow10000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow20000), id2.GetCanceledSellVolumeBelow20000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow50000), id2.GetCanceledSellVolumeBelow50000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow100000), id2.GetCanceledSellVolumeBelow100000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeBelow200000), id2.GetCanceledSellVolumeBelow200000());
+    EXPECT_EQ(atoll(setWeekLineExtendInfo.m_CanceledSellVolumeAbove200000), id2.GetCanceledSellVolumeAbove200000());
+    setWeekLineExtendInfo.Close();
+
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setWeekLineBasicInfo.IsEOF()) {
@@ -647,6 +791,15 @@ namespace StockAnalysisTest {
     }
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
+
+    setWeekLineExtendInfo.Open();
+    setWeekLineExtendInfo.m_pDatabase->BeginTrans();
+    while (!setWeekLineExtendInfo.IsEOF()) {
+      setWeekLineExtendInfo.Delete();
+      setWeekLineExtendInfo.MoveNext();
+    }
+    setWeekLineExtendInfo.m_pDatabase->CommitTrans();
+    setWeekLineExtendInfo.Close();
   }
 
   TEST_F(CWeekLineTest, TestLoadData) {

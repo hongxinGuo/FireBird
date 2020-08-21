@@ -497,6 +497,12 @@
     <ClCompile Include="UpdateWeekLineTest.cpp">
       <Filter>Test源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
+    <ClCompile Include="WeekLineContainerTest.cpp">
+      <Filter>Test源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp">
+      <Filter>Test源文件\基类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

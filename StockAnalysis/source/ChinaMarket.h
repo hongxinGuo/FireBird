@@ -176,6 +176,8 @@ public:
   void SetChoiced10RSStrong2StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong2StockSet = fFlag; }
   bool IsChoiced10RSStrongStockSet(void) noexcept { return m_fChoiced10RSStrongStockSet; }
   void SetChoiced10RSStrongStockSet(bool fFlag) noexcept { m_fChoiced10RSStrongStockSet = fFlag; }
+  bool IsCalculateChoiced10RS(void) noexcept { return m_fCalculateChoiced10RS; }
+  void Setm_fCalculateChoiced10RS(bool fFlag) noexcept { m_fCalculateChoiced10RS = fFlag; }
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -407,6 +409,7 @@ protected:
   bool m_fChoiced10RSStrong1StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrong2StockSet; // 本日的10日强势股票集已计算完成
   bool m_fChoiced10RSStrongStockSet; // 本日的10日强势股票集已计算完成
+  bool m_fCalculateChoiced10RS;
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
