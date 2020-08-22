@@ -42,6 +42,7 @@ namespace testing {
     MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
     MOCK_METHOD(bool, BuildDayLineRSOfDay, (long lDay), (override));
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
+    MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDay, (long lDay), (override));
   };
 

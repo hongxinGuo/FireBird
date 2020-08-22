@@ -27,6 +27,9 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
       lCurrentMonday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
     } while (lCurrentMonday <= pMarket->GetFormatedMarketDay());
   }
+  else {
+    pMarket->DeleteWeekLine();
+  }
 
   // 清除当前周周线表
   pMarket->DeleteCurrentWeekWeekLine();

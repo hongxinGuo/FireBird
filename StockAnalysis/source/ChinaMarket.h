@@ -202,10 +202,16 @@ public:
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
 
+  bool DeleteWeekLine(void);
+  bool DeleteWeekLineBasicInfo(void);
+  bool DeleteWeekLineExtendInfo(void);
   bool DeleteWeekLine(long lMonday);
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
 
+  bool DeleteDayLine(void);
+  bool DeleteDayLineBasicInfo(void);
+  bool DeleteDayLineExtendInfo(void);
   bool DeleteDayLine(long lDay);
   bool DeleteDayLineBasicInfo(long lDay);
   bool DeleteDayLineExtendInfo(long lDay);

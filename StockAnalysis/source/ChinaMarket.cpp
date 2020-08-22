@@ -1987,12 +1987,55 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
   return true;
 }
 
+bool CChinaMarket::DeleteWeekLine(void) {
+  DeleteWeekLineBasicInfo();
+  DeleteWeekLineExtendInfo();
+
+  return true;
+}
+
 bool CChinaMarket::DeleteWeekLine(long lMonday) {
   DeleteWeekLineBasicInfo(lMonday);
   DeleteWeekLineExtendInfo(lMonday);
 
   return true;
 }
+
+bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  }
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weekline`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  }
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weeklineinfo`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+
 bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
   CString strSQL;
   CString strDay;
@@ -2015,6 +2058,7 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
 
   return true;
 }
+
 bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
   CString strSQL;
   CString strDay;
@@ -2073,16 +2117,19 @@ bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
-  CSetWeekLineInfo setWeekLineInfo;
+  CDatabase database;
 
-  setWeekLineInfo.Open();
-  setWeekLineInfo.m_pDatabase->BeginTrans();
-  while (!setWeekLineInfo.IsEOF()) {
-    setWeekLineInfo.Delete();
-    setWeekLineInfo.MoveNext();
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
   }
-  setWeekLineInfo.m_pDatabase->CommitTrans();
-  setWeekLineInfo.Close();
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`currentweekline`;"));
+  database.CommitTrans();
+  database.Close();
 
   return true;
 }
@@ -2509,6 +2556,48 @@ long CChinaMarket::BuildDayLineOfDay(long lCurrentTradeDay) {
   return iCount;
 }
 
+bool CChinaMarket::DeleteDayLine(void) {
+  DeleteDayLineBasicInfo();
+  DeleteDayLineExtendInfo();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteDayLineBasicInfo(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  }
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`dayline`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+bool CChinaMarket::DeleteDayLineExtendInfo(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  }
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`daylineinfo`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+
 bool CChinaMarket::DeleteDayLine(long lDay) {
   DeleteDayLineBasicInfo(lDay);
   DeleteDayLineExtendInfo(lDay);
@@ -2596,15 +2685,18 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 }
 
 bool CChinaMarket::DeleteTodayTempDB(void) {
-  CSetDayLineToday setDayLineToday;
-  setDayLineToday.Open();
-  setDayLineToday.m_pDatabase->BeginTrans();
-  while (!setDayLineToday.IsEOF()) {
-    setDayLineToday.Delete();
-    setDayLineToday.MoveNext();
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
   }
-  setDayLineToday.m_pDatabase->CommitTrans();
-  setDayLineToday.Close();
+  else {
+    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  }
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`today`;"));
+  database.CommitTrans();
+  database.Close();
 
   return true;
 }
