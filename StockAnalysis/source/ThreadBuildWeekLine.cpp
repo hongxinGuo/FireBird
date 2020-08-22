@@ -34,7 +34,7 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
   pMarket->BuildWeekLine(lStartMonday);
 
   // 生成新的当前周周线
-  pMarket->BuildCurrentWeekLineFromWeekLine();
+  pMarket->BuildCurrentWeekWeekLineTable();
 
   gl_ThreadStatus.SetCreatingWeekLine(false);
   gl_ThreadStatus.DecreaseRunningThread();
@@ -67,4 +67,18 @@ UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket) {
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 32;
+}
+
+UINT ThreadBuildCurrentWeekWeekLineTable(CChinaMarket* pMarket) {
+  gl_ThreadStatus.IncreaseRunningThread();
+
+  // 清除当前周周线表
+  pMarket->DeleteCurrentWeekWeekLine();
+
+  // 生成新的当前周周线
+  pMarket->BuildCurrentWeekWeekLineTable();
+
+  gl_ThreadStatus.DecreaseRunningThread();
+
+  return 33;
 }

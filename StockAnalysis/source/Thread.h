@@ -76,6 +76,8 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 
 UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为31
 // 计算本周的周线
 UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket); // 此工作线程返回值为32
+// 重建当前周的周线数据表
+UINT ThreadBuildCurrentWeekWeekLineTable(CChinaMarket* pMarket);
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

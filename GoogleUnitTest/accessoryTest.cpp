@@ -110,7 +110,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(AccessoryTest, TestGetCurrentMonday) {
-    EXPECT_EQ(20200720, GetCurrentMonday(20200720));
+    EXPECT_EQ(20200720, GetCurrentMonday(20200720)) << _T("20200720ÎªÐÇÆÚÒ»");
     EXPECT_EQ(20200720, GetCurrentMonday(20200721));
     EXPECT_EQ(20200720, GetCurrentMonday(20200722));
     EXPECT_EQ(20200720, GetCurrentMonday(20200723));

@@ -18,6 +18,7 @@ using namespace std;
 #include<map>
 #include<atomic>
 #include<queue>
+#include<set>
 
 // 信号量必须声明为全局变量（为了初始化）
 extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
@@ -110,6 +111,7 @@ public:
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
+  virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
   // interface function
 public:
   // 系统状态区
@@ -226,9 +228,10 @@ public:
 
   bool BuildWeekLine(long lStartDay);
   virtual bool BuildWeekLineOfCurrentWeek(void);
-  virtual bool BuildCurrentWeekLineFromWeekLine(void); // 使用周线表构建当前周周线表
+  bool CreateStockCodeSet(set<CString>& setStockCode, vector<CChinaStockHistoryDataPtr>* pvData);
+  virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
 
-  // 股票历史数据处理
+// 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);

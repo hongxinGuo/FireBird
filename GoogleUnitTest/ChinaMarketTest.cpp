@@ -1885,4 +1885,22 @@ namespace StockAnalysisTest {
     EXPECT_EQ(i, dayLineContainer.GetDataSize());
     setDayLineBasicInfo.Close();
   }
+
+  TEST_F(CChinaMarketTest, TestCreateStockCodeSet) {
+    vector<CChinaStockHistoryDataPtr> vData;
+    CChinaStockHistoryDataPtr pData = make_shared<CChinaStockHistoryData>();
+    pData->SetStockCode(_T("sh600000"));
+    vData.resize(2);
+    vData[0] = pData;
+    pData = make_shared<CChinaStockHistoryData>();
+    pData->SetStockCode(_T("sh600004"));
+    vData[1] = pData;
+
+    set<CString> setStockCode;
+    gl_pChinaStockMarket->CreateStockCodeSet(setStockCode, &vData);
+
+    EXPECT_TRUE(setStockCode.find(_T("sh600000")) != setStockCode.end());
+    EXPECT_TRUE(setStockCode.find(_T("sh600004")) != setStockCode.end());
+    EXPECT_FALSE(setStockCode.find(_T("sh600001")) != setStockCode.end());
+  }
 }

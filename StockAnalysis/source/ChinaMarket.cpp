@@ -1811,9 +1811,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   CWeekLineContainer weekLineContainer;
   set<CString> setDayLineStockCode;
   set<CString> setWeekLineStockCode;
-  vector<CString> vectorDayLineStockCode;
-  vector<CString> vectorWeekLineStockCode;
-  CString strStockCode;
+  long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
 
   if (!LoadDayLine(dayLineContainer, GetFormatedMarketDay())) {
     return true; // 加载本日日线数据失败，周线数据无需处理。
@@ -1822,23 +1820,11 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   gl_systemMessage.PushDayLineInfoMessage(_T("开始生成今日周线"));
 
-  for (auto pData : *pDayLineData) {
-    strStockCode = pData->GetStockCode();
-    vectorDayLineStockCode.push_back(strStockCode);
-  }
-  setDayLineStockCode.insert(vectorDayLineStockCode.begin(), vectorDayLineStockCode.end());
-
-  long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
+  CreateStockCodeSet(setDayLineStockCode, dayLineContainer.GetContainer());
 
   DeleteCurrentWeekWeekLineBeforeTheDay(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
   LoadCurrentWeekLine(weekLineContainer);
-
-  auto pWeekLineData = weekLineContainer.GetContainer();
-  for (auto pData : *pWeekLineData) {
-    strStockCode = pData->GetStockCode();
-    vectorWeekLineStockCode.push_back(strStockCode);
-  }
-  setWeekLineStockCode.insert(vectorWeekLineStockCode.begin(), vectorWeekLineStockCode.end());
+  CreateStockCodeSet(setWeekLineStockCode, weekLineContainer.GetContainer());
 
   CWeekLinePtr pWeekLine;
   for (auto pData : *pDayLineData) {
@@ -1868,7 +1854,20 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
   return true;
 }
 
-bool CChinaMarket::BuildCurrentWeekLineFromWeekLine(void) {
+bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, vector<CChinaStockHistoryDataPtr>* pvData) {
+  CString strStockCode;
+  vector<CString> vectorStockCode;
+
+  for (auto pData : *pvData) {
+    strStockCode = pData->GetStockCode();
+    vectorStockCode.push_back(strStockCode);
+  }
+  setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
+
+  return true;
+}
+
+bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDay());
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
@@ -1883,8 +1882,9 @@ bool CChinaMarket::BuildCurrentWeekLineFromWeekLine(void) {
   strDay = buffer;
   setWeekLineBasicInfo.m_strFilter = _T("[Day] = ");
   setWeekLineBasicInfo.m_strFilter += strDay;
-  setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
+  setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
   setWeekLineBasicInfo.Open();
+
   setWeekLineExtendInfo.m_strFilter = _T("[Day] = ");
   setWeekLineExtendInfo.m_strFilter += strDay;
   setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
@@ -1893,15 +1893,21 @@ bool CChinaMarket::BuildCurrentWeekLineFromWeekLine(void) {
   while (!setWeekLineBasicInfo.IsEOF()) {
     pWeekLine = make_shared<CWeekLine>();
     pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
-    while (setWeekLineBasicInfo.m_StockCode > setWeekLineExtendInfo.m_StockCode) {
-      ASSERT(!setWeekLineExtendInfo.IsEOF());
+    while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_StockCode > setWeekLineExtendInfo.m_StockCode)) {
       setWeekLineExtendInfo.MoveNext();
     }
-    ASSERT(setWeekLineBasicInfo.m_StockCode == setWeekLineExtendInfo.m_StockCode); // 此两个表必须具有相同的股票数
-    pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
-    weekLineContainer.StoreData(pWeekLine);
+    if (setWeekLineExtendInfo.IsEOF()) {
+      setWeekLineExtendInfo.MoveFirst();
+    }
+    else if (setWeekLineBasicInfo.m_StockCode == setWeekLineExtendInfo.m_StockCode) { // 由于存在事后补数据的缘故，此两个表的股票可能不是一一对应
+      pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
+      weekLineContainer.StoreData(pWeekLine);
+      setWeekLineExtendInfo.MoveNext();
+    }
+    else {
+      setWeekLineExtendInfo.MoveFirst();
+    }
     setWeekLineBasicInfo.MoveNext();
-    setWeekLineExtendInfo.MoveNext();
   }
 
   SaveCurrentWeekLine(weekLineContainer);
@@ -2418,6 +2424,13 @@ bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>*
 
 bool CChinaMarket::RunningThreadBuildWeekLineOfCurrentWeek(void) {
   thread thread1(ThreadBuildWeekLineOfCurrentWeek, this);
+  thread1.detach();
+
+  return true;
+}
+
+bool CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable(void) {
+  thread thread1(ThreadBuildCurrentWeekWeekLineTable, this);
   thread1.detach();
 
   return true;
