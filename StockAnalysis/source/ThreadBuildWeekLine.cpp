@@ -31,11 +31,10 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
     pMarket->DeleteWeekLine();
   }
 
-  // 清除当前周周线表
-  pMarket->DeleteCurrentWeekWeekLine();
-
   pMarket->BuildWeekLine(lStartMonday);
 
+  // 清除当前周周线表
+  pMarket->DeleteCurrentWeekWeekLine();
   // 生成新的当前周周线
   pMarket->BuildCurrentWeekWeekLineTable();
 

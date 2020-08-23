@@ -1988,6 +1988,7 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
 }
 
 bool CChinaMarket::DeleteWeekLine(void) {
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
   DeleteWeekLineBasicInfo();
   DeleteWeekLineExtendInfo();
 
@@ -2001,16 +2002,18 @@ bool CChinaMarket::DeleteWeekLine(long lMonday) {
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+// 采用CDatabase类直接执行sql语句，保证执行速度。
+// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
-  }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
+  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weekline`;"));
   database.CommitTrans();
@@ -2018,16 +2021,19 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 
   return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+// 采用CDatabase类直接执行sql语句，保证执行速度。
+// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
-  }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
+  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weeklineinfo`;"));
   database.CommitTrans();
@@ -2117,19 +2123,16 @@ bool CChinaMarket::LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer) {
 }
 
 bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
-  CDatabase database;
+  CSetWeekLineInfo setWeekLineInfo;
 
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  setWeekLineInfo.Open();
+  setWeekLineInfo.m_pDatabase->BeginTrans();
+  while (!setWeekLineInfo.IsEOF()) {
+    setWeekLineInfo.Delete();
+    setWeekLineInfo.MoveNext();
   }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
-
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`currentweekline`;"));
-  database.CommitTrans();
-  database.Close();
+  setWeekLineInfo.m_pDatabase->CommitTrans();
+  setWeekLineInfo.Close();
 
   return true;
 }
@@ -2563,16 +2566,18 @@ bool CChinaMarket::DeleteDayLine(void) {
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+// 采用CDatabase类直接执行sql语句，保证执行速度。
+// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DeleteDayLineBasicInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
-  }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
+  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `stockdata`.`dayline`;"));
   database.CommitTrans();
@@ -2580,16 +2585,19 @@ bool CChinaMarket::DeleteDayLineBasicInfo(void) {
 
   return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+//
+// 采用CDatabase类直接执行sql语句，保证执行速度。
+// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::DeleteDayLineExtendInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
-  }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
+  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `stockdata`.`daylineinfo`;"));
   database.CommitTrans();
@@ -2685,18 +2693,15 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 }
 
 bool CChinaMarket::DeleteTodayTempDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    database.Open(_T("mysqlTest"), FALSE, FALSE, _T("ODBC;UID=Test;PASSWORD=test;charset=utf8mb4"));
+  CSetDayLineToday setDayLineToday;
+  setDayLineToday.Open();
+  setDayLineToday.m_pDatabase->BeginTrans();
+  while (!setDayLineToday.IsEOF()) {
+    setDayLineToday.Delete();
+    setDayLineToday.MoveNext();
   }
-  else {
-    database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  }
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`today`;"));
-  database.CommitTrans();
-  database.Close();
+  setDayLineToday.m_pDatabase->CommitTrans();
+  setDayLineToday.Close();
 
   return true;
 }
@@ -3049,12 +3054,7 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
     }
     else {
       dUpDownRate = (dClose - dLastClose) / dLastClose;
-      if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) { // 除权等导致价格突变
-        dRelativeStrongIndex = 50;
-      }
-      else {
-        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
-      }
+      dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
     }
     setWeekLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
 
