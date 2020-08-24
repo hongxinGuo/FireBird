@@ -940,7 +940,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
       }
       else {
         i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.75) / pRTData->GetLastClose();
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.70) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
@@ -972,7 +972,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
       }
       else {
         i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.75) / pRTData->GetLastClose();
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.70) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);

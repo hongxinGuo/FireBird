@@ -490,9 +490,9 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
   CPoint ptCurrent;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
-  if (m_vRSShow.size() != pCurrentStock->GetDayLineSize()) m_vRSShow.resize(pCurrentStock->GetDayLineSize());
+  if (m_vRSShow.size() != m_pCurrentHistoryDataContainer->GetDataSize()) m_vRSShow.resize(m_pCurrentHistoryDataContainer->GetDataSize());
   if (pCurrentStock == nullptr) return;
-  if (!pCurrentStock->IsDayLineLoaded()) return;
+  if (!m_pCurrentHistoryDataContainer->IsDataLoaded()) return;
 
   const long lXHigh = m_rectClient.bottom / 2;
   const long lXLow = m_rectClient.bottom;
@@ -850,6 +850,7 @@ void CStockAnalysisView::OnShowRsInLogarithm() {
     m_iShowRSOption = 2;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
       gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongLogarithm();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongLogarithm();
     }
   }
 }
@@ -872,6 +873,7 @@ void CStockAnalysisView::OnShowRsInLinear() {
     m_iShowRSOption = 1;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
       gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrong();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRelativeStrong();
     }
   }
 }
@@ -894,6 +896,7 @@ void CStockAnalysisView::OnShowRsIndex() {
     m_iShowRSOption = 0;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
       gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongIndex();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRelativeStrongIndex();
     }
   }
 }

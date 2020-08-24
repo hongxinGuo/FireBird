@@ -42,8 +42,8 @@ namespace StockAnalysisTest {
   HighLowData HighLowData12("", 0, 22640, 25150, 0, 0, 27670, 22640); // 当HighLimit和LowLimit为零时，由备用的HighLimit2和LowLimit2设置之
   HighLowData HighLowData13("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
   HighLowData HighLowData14("", 0, 18290, 20320, 22350, 18290, 0, 0);
-  HighLowData HighLowData15("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
-  HighLowData HighLowData16("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
+  HighLowData HighLowData15("sh600568", 1790, 0, 1700, 1790, 1620, 0, 0);
+  HighLowData HighLowData16("sz002586", 2000, 0, 1900, 2000, 1810, 0, 0);
   HighLowData HighLowData17("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
   HighLowData HighLowData18("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
 
@@ -76,7 +76,8 @@ namespace StockAnalysisTest {
                                                                                    &HighLowData4, &HighLowData5, &HighLowData6,
                                                                                    &HighLowData7, &HighLowData8, &HighLowData9,
                                                                                    &HighLowData10, &HighLowData11, &HighLowData12,
-                                                                                   &HighLowData13, &HighLowData14));
+                                                                                   &HighLowData13, &HighLowData14, &HighLowData15,
+                                                                                   &HighLowData16));
 
   TEST_P(StockHighLlowLImitTest, HighLowTest1) {
     m_stock.CalculateHighLowLimit(pRTData);
