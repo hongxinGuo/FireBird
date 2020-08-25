@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
   HighLowData HighLowData14("", 0, 18290, 20320, 22350, 18290, 0, 0);
   HighLowData HighLowData15("sh600568", 1790, 0, 1700, 1790, 1620, 0, 0);
   HighLowData HighLowData16("sz002586", 2000, 0, 1900, 2000, 1810, 0, 0);
-  HighLowData HighLowData17("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
-  HighLowData HighLowData18("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
+  HighLowData HighLowData17("sh600145", 1580, 0, 1500, 1580, 1430, 0, 0);
+  HighLowData HighLowData18("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
 
   class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*>
   {
@@ -77,7 +77,7 @@ namespace StockAnalysisTest {
                                                                                    &HighLowData7, &HighLowData8, &HighLowData9,
                                                                                    &HighLowData10, &HighLowData11, &HighLowData12,
                                                                                    &HighLowData13, &HighLowData14, &HighLowData15,
-                                                                                   &HighLowData16));
+                                                                                   &HighLowData16, &HighLowData17, &HighLowData18));
 
   TEST_P(StockHighLlowLImitTest, HighLowTest1) {
     m_stock.CalculateHighLowLimit(pRTData);

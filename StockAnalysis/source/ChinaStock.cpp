@@ -935,12 +935,12 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   if (pRTData->GetPSell(0) == 0) { // 卖一价格为零
     if (pRTData->GetPBuy(0) > 0) {
       m_lHighLimit2 = pRTData->GetPBuy(0);
-      if (pRTData->GetLastClose() < 1400) { // 低价股？
+      if (pRTData->GetLastClose() < 1200) { // 低价股？
         m_lLowLimit2 = pRTData->GetLastClose() - (m_lHighLimit2 - pRTData->GetLastClose());
       }
       else {
         i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.70) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
@@ -967,12 +967,12 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
   else if (pRTData->GetPBuy(0) == 0) { // 买一价格为零
     if (pRTData->GetPSell(0) > 0) {
       m_lLowLimit2 = pRTData->GetPSell(0);
-      if (pRTData->GetLastClose() < 1400) { // 低价股？
+      if (pRTData->GetLastClose() < 1200) { // 低价股？
         m_lHighLimit2 = pRTData->GetLastClose() + (pRTData->GetLastClose() - m_lLowLimit2);
       }
       else {
         i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.70) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
+        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
