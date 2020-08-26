@@ -958,6 +958,8 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
           m_lLowLimit2 = m_lLowLimit;
         }
       }
+      if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
+      if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
@@ -990,15 +992,14 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
           m_lHighLimit2 = m_lHighLimit;
         }
       }
+      if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
+      if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
     }
     else { // 买一卖一同时为零
       m_lHighLimit2 = m_lHighLimit;
       m_lLowLimit2 = m_lLowLimit;
     }
   }
-
-  if (m_lHighLimit == 0) m_lHighLimit = m_lHighLimit2;
-  if (m_lLowLimit == 0) m_lLowLimit = m_lLowLimit2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

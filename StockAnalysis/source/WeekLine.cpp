@@ -424,6 +424,7 @@ bool CWeekLine::UpdateWeekLine(CDayLinePtr pDayLine) {
   if (m_lLow == 0) m_lLow = pDayLine->GetLow();
   else m_lLow = m_lLow < pDayLine->GetLow() ? m_lLow : pDayLine->GetLow();
   m_dUpDown = (double)(m_lClose - m_lLastClose) / 1000;
+  m_dUpDownRate = m_dUpDown * 100000 / m_lLastClose;
 
   m_llVolume += pDayLine->GetVolume();
   m_llAmount += pDayLine->GetAmount();
