@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
   HighLowData HighLowData18("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
   HighLowData HighLowData19("sz000572", 0, 3330, 3500, 3680, 3330, 0, 0);
   HighLowData HighLowData20("sh600543", 0, 10240, 11380, 12520, 10240, 0, 0);
-  HighLowData HighLowData21("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData21("sh603595", 0, 32530, 36140, 39750, 32530, 0, 0);
   HighLowData HighLowData22("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
   HighLowData HighLowData23("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
   HighLowData HighLowData24("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
@@ -86,7 +86,7 @@ namespace StockAnalysisTest {
                                                                                    &HighLowData10, &HighLowData11, &HighLowData12,
                                                                                    &HighLowData13, &HighLowData14, &HighLowData15,
                                                                                    &HighLowData16, &HighLowData17, &HighLowData18,
-                                                                                   &HighLowData19));
+                                                                                   &HighLowData19, &HighLowData20, &HighLowData21));
 
   TEST_P(StockHighLlowLImitTest, HighLowTest1) {
     m_stock.CalculateHighLowLimit(pRTData);
