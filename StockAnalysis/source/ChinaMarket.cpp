@@ -658,10 +658,16 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
   return(lAmount);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 抓取网易历史日线数据
+// 由于可能会抓取全部12000个日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统时才开始。
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(IsSystemReady());
-  if (m_iDayLineNeedUpdate > 0) {
-    // 抓取日线数据.
+  if ((GetFormatedMarketTime() >= 92500) && (m_iDayLineNeedUpdate > 0)) {
+    // 抓取日线数据.开始于09:25:00
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     return(gl_WebInquirer.GetNeteaseDayLineData());
   }

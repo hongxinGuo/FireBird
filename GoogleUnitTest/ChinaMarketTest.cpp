@@ -270,6 +270,30 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb) {
     gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92459); // 更新网易历史数据开始于09:25:00
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySecond, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryThird, StartReadingThread())
+      .Times(1);
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
+      .Times(1);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(10);
+    EXPECT_FALSE(gl_pChinaStockMarket->TaskGetNeteaseDayLineFromWeb());
+
+    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+      if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+    }
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+  }
+
+  TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb2) {
+    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92500); // 更新网易历史数据开始于09:25:00
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1);
