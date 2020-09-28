@@ -505,9 +505,9 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
     long lDay = pStock->GetDayLineEndDay();
-    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+    pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     pStock->SetDayLineNeedUpdate(false);
-    pStock->SetDayLineEndDay(lDay); // 恢复原状
+    pStock->SetDayLineEndDate(lDay); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(2);
@@ -529,12 +529,12 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
     lDay = pStock->GetDayLineEndDay();
-    pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+    pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str);
     EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
-    pStock->SetDayLineEndDay(lDay); // 恢复原状。
+    pStock->SetDayLineEndDate(lDay); // 恢复原状。
     pStock = gl_pChinaStockMarket->GetStock(5);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
@@ -542,7 +542,7 @@ namespace StockAnalysisTest {
 
     // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(0);
-    pStock->SetDayLineEndDay(lDay);
+    pStock->SetDayLineEndDate(lDay);
     for (int i = 0; i < 12000; i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -1662,7 +1662,7 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->SetRelativeStrongStartDay(20200101);
     gl_pChinaStockMarket->SetRelativeStrongEndDay(20200202);
-    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetFormatedMarketDate());
     gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19990101);
     gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19990202);
 
@@ -1678,7 +1678,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20200101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20200202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDay());
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDate());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
@@ -1702,7 +1702,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDay(), 20100101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDay(), 20100202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDay()) << _T("永远是当前日期\n");
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19980202);
@@ -1789,7 +1789,7 @@ namespace StockAnalysisTest {
     setDayLine.m_pDatabase->BeginTrans();
     setDayLine.AddNew();
     setDayLine.m_StockCode = _T("sh600000");
-    setDayLine.m_Day = 19900101;
+    setDayLine.m_Date = 19900101;
     setDayLine.Update();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
@@ -1849,7 +1849,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->LoadCurrentWeekLine(weekLineContainer2);
     pWeekLine = weekLineContainer2.GetData(0);
     EXPECT_STREQ(pWeekLine->GetStockCode(), _T("sh600000"));
-    EXPECT_EQ(pWeekLine->GetFormatedMarketDay(), 20191230) << "20200101之前的星期一";
+    EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), 20191230) << "20200101之前的星期一";
 
     gl_pChinaStockMarket->DeleteCurrentWeekWeekLine();
   }
@@ -1863,7 +1863,7 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
     setDayLineToday.m_StockCode = _T("sh600000");
-    setDayLineToday.m_Day = 20201212;
+    setDayLineToday.m_Date = 20201212;
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();

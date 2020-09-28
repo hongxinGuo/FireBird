@@ -21,7 +21,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   pMarket->SetProcessingTodayStock();
 
   long lDay = FormatToDay(pMarket->GetNewestTransactionTime());
-  if (lDay == pMarket->GetFormatedMarketDay()) {
+  if (lDay == pMarket->GetFormatedMarketDate()) {
     pMarket->BuildDayLineOfDay(lDay);
     // 计算本日日线相对强度
     pMarket->BuildDayLineRSOfDay(lDay);
@@ -29,7 +29,7 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
     pMarket->BuildWeekLineOfCurrentWeek();
     pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDay));
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
-      pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+      pMarket->SetRelativeStrongEndDay(gl_pChinaStockMarket->GetFormatedMarketDate());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。
       pMarket->SetUpdateOptionDB(true);   // 更新状态
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识

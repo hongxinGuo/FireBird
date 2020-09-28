@@ -85,7 +85,7 @@ bool CDayLine::LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
 bool CDayLine::SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
 
-  psetDayLineBasicInfo->m_Day = GetFormatedMarketDay();
+  psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
   psetDayLineBasicInfo->m_Market = GetMarket();
   psetDayLineBasicInfo->m_StockCode = GetStockCode();
   psetDayLineBasicInfo->m_StockName = GetStockName();
@@ -119,7 +119,7 @@ bool CDayLine::AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
 
 bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
-  m_lDay = psetDayLineBasicInfo->m_Day;
+  m_lDay = psetDayLineBasicInfo->m_Date;
   m_wMarket = psetDayLineBasicInfo->m_Market;
   m_strStockCode = psetDayLineBasicInfo->m_StockCode;
   m_strStockName = psetDayLineBasicInfo->m_StockName;

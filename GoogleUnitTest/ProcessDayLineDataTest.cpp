@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
       m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
-      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDay(gl_pChinaStockMarket->GetFormatedMarketDay());
+      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());

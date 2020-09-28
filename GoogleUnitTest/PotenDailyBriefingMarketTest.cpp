@@ -83,11 +83,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CPotenDailyBriefingMarketTest, TestCheckTodayDataUpdated) {
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetNextDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDay()));
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetNextDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDate()));
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
     gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDay());
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDate());
     if (gl_pPotenDailyBriefingMarket->IsWorkingDay()) {
       EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
       EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
@@ -97,7 +97,7 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated()) << _T("周末无数据");
     }
     gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetPrevDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDay()));
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetPrevDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDate()));
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->TaskCheckTodayDataUpdated());
     EXPECT_FALSE(gl_pPotenDailyBriefingMarket->IsTodayDataUpdated());
   }
@@ -146,7 +146,7 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_pPotenDailyBriefingMarket->GetDatabaseSize(), 0);
     setPoten.Open();
     setPoten.MoveLast();
-    EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), setPoten.m_Day);
+    EXPECT_EQ(gl_pPotenDailyBriefingMarket->GetCurrentInquiringDay(), setPoten.m_Date);
     setPoten.Close();
   }
 
@@ -176,7 +176,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(0);
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(3600, 10000));
     EXPECT_FALSE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");
-    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDay());
+    gl_pPotenDailyBriefingMarket->SetCurrentInquiringDay(gl_pPotenDailyBriefingMarket->GetFormatedMarketDate());
     EXPECT_CALL(*gl_pPotenDailyBriefingWebInquiry, StartReadingThread).Times(1);
     EXPECT_TRUE(gl_pPotenDailyBriefingMarket->SchedulingTaskPerHour(3600, 10000));
     EXPECT_TRUE(gl_pPotenDailyBriefingWebInquiry->IsReadingWebData()) << _T("预先设置的此标识，由于Mock类没有重置之，故而还保持着设置状态\n");

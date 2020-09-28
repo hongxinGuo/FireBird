@@ -10,7 +10,7 @@ CCrweberIndexMarket::CCrweberIndexMarket() {
   }
 
   m_strMarketId = _T("Crweber.com");
-  m_lTimeZoneOffset = 0; // crweber.com使用GMT。
+  m_lMarketTimeZone = 0; // crweber.com使用GMT。
   CalculateTime();
 
   Reset();
@@ -24,8 +24,8 @@ void CCrweberIndexMarket::Reset(void) {
   m_fDataBaseLoaded = false;
   m_fTodayDataUpdated = true;
   m_fMaintainDatabase = true;
-  m_lNewestDatabaseDay = 0;
-  m_lNewestUpdatedDay = 0;
+  m_lNewestDatabaseDate = 0;
+  m_lNewestUPdateDate = 0;
   LoadDatabase();
   SaveDatabase();
 
@@ -51,7 +51,7 @@ bool CCrweberIndexMarket::SchedulingTask(void) {
 void CCrweberIndexMarket::ResetMarket(void) {
   Reset();
   CString str = _T("重置Crweber.com于格林威治标准时间：");
-  str += GetMarketTimeString();
+  str += GetStringOfMarketTime();
   gl_systemMessage.PushInformationMessage(str);
 }
 
@@ -73,7 +73,7 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
     if (!gl_WebInquirer.IsReadingCrweberIndex()) {
       TaskProcessWebRTDataGetFromCrweberdotcom();
       if (m_fDataBaseLoaded) {
-        if (m_lNewestUpdatedDay < GetFormatedMarketDay()) {
+        if (m_lNewestUPdateDate < GetFormatedMarketDate()) {
           gl_WebInquirer.GetCrweberIndexData();
         }
       }
@@ -121,10 +121,10 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
     pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
     pWebData->SetCurrentPos(0);
     if (m_CrweberIndex.ReadData(pWebData)) {
-      m_lNewestUpdatedDay = m_CrweberIndex.m_lDay;
-      if (m_lNewestDatabaseDay < m_CrweberIndex.m_lDay) {
+      m_lNewestUPdateDate = m_CrweberIndex.m_lDay;
+      if (m_lNewestDatabaseDate < m_CrweberIndex.m_lDay) {
         m_fTodayDataUpdated = true;
-        m_lNewestDatabaseDay = m_CrweberIndex.m_lDay;
+        m_lNewestDatabaseDate = m_CrweberIndex.m_lDay;
       }
       if (!m_fTodayDataUpdated || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
         m_CrweberIndexLast = m_CrweberIndex;
@@ -166,9 +166,9 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
     pCrweberIndex->LoadData(setCrweberIndex);
     m_vCrweberIndex[i] = pCrweberIndex;
-    if (m_lNewestDatabaseDay < pCrweberIndex->m_lDay) {
+    if (m_lNewestDatabaseDate < pCrweberIndex->m_lDay) {
       i++;
-      m_lNewestDatabaseDay = pCrweberIndex->m_lDay;
+      m_lNewestDatabaseDate = pCrweberIndex->m_lDay;
     }
     setCrweberIndex.MoveNext();
   }
@@ -203,8 +203,8 @@ bool CCrweberIndexMarket::GetNewestDatabaseDayFromDB(void) {
   setCrweberIndex.Open();
   if (!setCrweberIndex.IsEOF()) {
     setCrweberIndex.MoveLast();
-    if (m_lNewestDatabaseDay < setCrweberIndex.m_Day) {
-      m_lNewestDatabaseDay = setCrweberIndex.m_Day;
+    if (m_lNewestDatabaseDate < setCrweberIndex.m_Date) {
+      m_lNewestDatabaseDate = setCrweberIndex.m_Date;
     }
   }
   setCrweberIndex.Close();

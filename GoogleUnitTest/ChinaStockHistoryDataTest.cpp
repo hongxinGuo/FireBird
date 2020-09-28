@@ -31,12 +31,12 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CChinaStockHistoryData dl;
     dl.SetDay(__CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(dl.GetFormatedMarketDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DAY__);
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetTime) {
     CChinaStockHistoryData dl;
-    EXPECT_EQ(dl.GetFormatedMarketDay(), 0);
+    EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
     dl.SetTime(100100100);
     EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
   }

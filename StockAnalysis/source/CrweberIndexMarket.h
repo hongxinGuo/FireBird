@@ -32,9 +32,9 @@ public:
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
-  long GetNewestUpdateDay(void) noexcept { return m_lNewestUpdatedDay; }
-  void SetNewestUpdateDay(long lDay) noexcept { m_lNewestUpdatedDay = lDay; }
-  long GetNewestDatabaseDay(void) noexcept { return m_lNewestDatabaseDay; }
+  long GetNewestUpdateDate(void) noexcept { return m_lNewestUPdateDate; }
+  void SetNewestUpdateDate(long lDate) noexcept { m_lNewestUPdateDate = lDate; }
+  long GetNewestDatabaseDate(void) noexcept { return m_lNewestDatabaseDate; }
 
   bool IsMaintainDatabase(void) noexcept { return m_fMaintainDatabase; }
   void SetMaintainDatabase(bool fFlag) noexcept { m_fMaintainDatabase = fFlag; }
@@ -48,8 +48,8 @@ protected:
   bool m_fDataBaseLoaded;
   bool m_fTodayDataUpdated;
   bool m_fMaintainDatabase;
-  long m_lNewestUpdatedDay;
-  long m_lNewestDatabaseDay;
+  long m_lNewestUPdateDate;
+  long m_lNewestDatabaseDate;
 };
 
 typedef shared_ptr<CCrweberIndexMarket> CCrweberIndexMarketPtr;

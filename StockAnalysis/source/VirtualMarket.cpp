@@ -14,16 +14,16 @@ CVirtualMarket::CVirtualMarket(void) {
 
   m_lMarketLastTradeDay = 0;
   m_lMarketTime = 0;
-  m_lMarketToday = 0;
+  m_lMarketDate = 0;
   m_tMarket = 0;
 
   m_strMarketId = _T("Warning: CVirtualMarket Called.");
-  m_lTimeZoneOffset = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
+  m_lMarketTimeZone = -8 * 3600; // 本系统默认标准时间为东八区（北京标准时间）。
 
-  m_i10SecondCounter = 9;  // 一分钟一次的计数器
+  m_i10SecondCounter = 9;  // 十秒一次的计数器
   m_i1MinuteCounter = 59;  // 一分钟一次的计数器
-  m_i5MinuteCounter = 299;  // 一分钟一次的计数器
-  m_i1HourCounter = 3599;  // 一分钟一次的计数器
+  m_i5MinuteCounter = 299;  // 五分钟一次的计数器
+  m_i1HourCounter = 3599;  // 一小时一次的计数器
   m_timeLast = 0;
 }
 
@@ -42,9 +42,11 @@ void CVirtualMarket::Dump(CDumpContext& dc) const {
 
 bool CVirtualMarket::SchedulingTask(void) {
   CalculateTime();
+
+  time_t timeDiffer = GetMarketTime() - m_timeLast;
   //根据时间，调度各项定时任务.每秒调度一次
-  if (GetMarketTime() > m_timeLast) {
-    SchedulingTaskPerSecond(GetMarketTime() - m_timeLast);
+  if (timeDiffer > 0) {
+    SchedulingTaskPerSecond(timeDiffer);
     m_timeLast = GetMarketTime();
     return true;
   }
@@ -57,9 +59,9 @@ void CVirtualMarket::ResetMarket(void) {
 
 void CVirtualMarket::CalculateTime(void) noexcept {
   time(&sm_tLocal);
-  m_tMarket = sm_tLocal - m_lTimeZoneOffset;
+  m_tMarket = sm_tLocal - m_lMarketTimeZone;
   gmtime_s(&m_tmMarket, &m_tMarket);
-  m_lMarketToday = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
+  m_lMarketDate = (m_tmMarket.tm_year + 1900) * 10000 + (m_tmMarket.tm_mon + 1) * 100 + m_tmMarket.tm_mday;
   m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
 
@@ -121,29 +123,29 @@ bool CVirtualMarket::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpaw
   return (lNewDay < lLatelyDay);
 }
 
-long CVirtualMarket::GetNextDay(long lDay, long lTimeSpanDays) noexcept {
+long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) noexcept {
   CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
-  const long year = lDay / 10000;
-  const long month = lDay / 100 - year * 100;
-  const long day = lDay - year * 10000 - month * 100;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - year * 100;
+  const long day = lDate - year * 10000 - month * 100;
   CTime ctDay(year, month, day, 12, 0, 0);
   ctDay += ts;
   long lNewDay = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
   return (lNewDay);
 }
 
-long CVirtualMarket::GetPrevDay(long lDay, long lTimeSpanDays) noexcept {
+long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
   CTimeSpan ts(lTimeSpanDays, 0, 0, 0);
-  const long year = lDay / 10000;
-  const long month = lDay / 100 - year * 100;
-  const long day = lDay - year * 10000 - month * 100;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - year * 100;
+  const long day = lDate - year * 10000 - month * 100;
   CTime ctDay(year, month, day, 12, 0, 0);
   ctDay -= ts;
   long lNewDay = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
   return (lNewDay);
 }
 
-CString CVirtualMarket::GetLocalTimeString(void) {
+CString CVirtualMarket::GetStringOfLocalTime(void) {
   char buffer[30];
   tm tmLocal;
 
@@ -154,7 +156,7 @@ CString CVirtualMarket::GetLocalTimeString(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetLocalDayTimeString(void) {
+CString CVirtualMarket::GetStringOfLocalDateTime(void) {
   char buffer[100];
   tm tmLocal;
 
@@ -165,7 +167,7 @@ CString CVirtualMarket::GetLocalDayTimeString(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetMarketTimeString(void) {
+CString CVirtualMarket::GetStringOfMarketTime(void) {
   char buffer[30];
   tm tmMarket;
 
@@ -176,7 +178,7 @@ CString CVirtualMarket::GetMarketTimeString(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetMarketDayTimeString(void) {
+CString CVirtualMarket::GetStringOfMarketDateTime(void) {
   char buffer[100];
   tm tmMarket;
 
@@ -187,7 +189,7 @@ CString CVirtualMarket::GetMarketDayTimeString(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetDayString(long lDay) {
+CString CVirtualMarket::GetStringOfDate(long lDay) {
   char buffer[30];
   long year = lDay / 10000;
   long month = lDay / 100 - year * 100;
@@ -199,8 +201,8 @@ CString CVirtualMarket::GetDayString(long lDay) {
   return(str);
 }
 
-CString CVirtualMarket::GetMarketDayString(void) {
-  return GetDayString(m_lMarketToday);
+CString CVirtualMarket::GetStringOfMarketDate(void) {
+  return GetStringOfDate(m_lMarketDate);
 }
 
 void CVirtualMarket::TaskResetMarketFlagAtMidnight(long lCurrentTime) {

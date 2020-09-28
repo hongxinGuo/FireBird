@@ -38,7 +38,7 @@ void CCrweberIndex::Reset(void) {
 }
 
 void CCrweberIndex::LoadData(CSetCrweberIndex& setCrweberIndex) {
-  m_lDay = setCrweberIndex.m_Day;
+  m_lDay = setCrweberIndex.m_Date;
   m_dTD1 = atof(setCrweberIndex.m_TD1);
   m_dTD2 = atof(setCrweberIndex.m_TD2);
   m_dTD3C = atof(setCrweberIndex.m_TD3C);
@@ -78,7 +78,7 @@ void CCrweberIndex::LoadData(CSetCrweberIndex& setCrweberIndex) {
 void CCrweberIndex::SaveData(CSetCrweberIndex& setCrweberIndex) {
   ASSERT(setCrweberIndex.IsOpen());
 
-  setCrweberIndex.m_Day = m_lDay;
+  setCrweberIndex.m_Date = m_lDay;
   setCrweberIndex.m_TD1 = ConvertValueToString(m_dTD1);
   setCrweberIndex.m_TD2 = ConvertValueToString(m_dTD2);
   setCrweberIndex.m_TD3C = ConvertValueToString(m_dTD3C);

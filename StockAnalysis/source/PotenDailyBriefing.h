@@ -27,7 +27,7 @@ public:
   long GetCurrentDataTime(void) noexcept { return m_lDay; }
 
   void SetDay(long lDay) noexcept { m_lDay = lDay; }
-  long GetFormatedMarketDay(void) noexcept { return m_lDay; }
+  long GetFormatedMarketDate(void) noexcept { return m_lDay; }
   double GetTD3C(void) noexcept { return m_dTD3C; }
   double GetTD9(void) noexcept { return m_dTD9; }
   double GetTD20(void) noexcept { return m_dTD20; }

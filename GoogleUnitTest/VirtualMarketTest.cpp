@@ -53,9 +53,9 @@ namespace StockAnalysisTest {
     time(&ttime);
     s_VirtualMarket.CalculateTime();
     EXPECT_EQ(ttime, s_VirtualMarket.GetLocalTime());
-    EXPECT_EQ(ttime - s_VirtualMarket.GetTimeZoneOffset(), s_VirtualMarket.GetMarketTime());
+    EXPECT_EQ(ttime - s_VirtualMarket.GetMarketTimeZone(), s_VirtualMarket.GetMarketTime());
     localtime_s(&tmLocal, &ttime);
-    ttime -= s_VirtualMarket.GetTimeZoneOffset();
+    ttime -= s_VirtualMarket.GetMarketTimeZone();
     gmtime_s(&tm_, &ttime);
     long lTimeZone;
     _get_timezone(&lTimeZone);
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(s_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
 
     long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(s_VirtualMarket.GetFormatedMarketDay(), day);
+    EXPECT_EQ(s_VirtualMarket.GetFormatedMarketDate(), day);
     EXPECT_EQ(s_VirtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
     EXPECT_EQ(s_VirtualMarket.GetDayOfMonth(), tm_.tm_mday);
     EXPECT_EQ(s_VirtualMarket.GetYear(), tm_.tm_year + 1900);
@@ -76,11 +76,11 @@ namespace StockAnalysisTest {
     CString str;
     str = buffer;
 
-    EXPECT_EQ(str.Compare(s_VirtualMarket.GetLocalTimeString()), 0);
+    EXPECT_EQ(str.Compare(s_VirtualMarket.GetStringOfLocalTime()), 0);
 
     sprintf_s(buffer, _T("%02d:%02d:%02d "), tm_.tm_hour, tm_.tm_min, tm_.tm_sec);
     str = buffer;
-    EXPECT_EQ(str.Compare(s_VirtualMarket.GetMarketTimeString()), 0);
+    EXPECT_EQ(str.Compare(s_VirtualMarket.GetStringOfMarketTime()), 0);
 
     switch (tm_.tm_wday) {
     case 1: // 星期一
@@ -178,7 +178,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(s_VirtualMarket.GetPrevDay(20200202, 11), 20200122);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetLocalTimeString) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfLocalTime) {
     s_VirtualMarket.CalculateTime();
 
     time_t tLocal;
@@ -190,10 +190,10 @@ namespace StockAnalysisTest {
     localtime_s(&tmLocal, &tLocal);
     sprintf_s(buffer, _T("%02d:%02d:%02d "), tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetLocalTimeString(), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfLocalTime(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetLocalDayTimeString) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfLocalDayTime) {
     s_VirtualMarket.CalculateTime();
 
     time_t tLocal = s_VirtualMarket.GetLocalTime();
@@ -204,10 +204,10 @@ namespace StockAnalysisTest {
     localtime_s(&tmLocal, &tLocal);
     sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmLocal.tm_year + 1900, tmLocal.tm_mon + 1, tmLocal.tm_mday, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetLocalDayTimeString(), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfLocalDateTime(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetMarketTimeString) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfMarketTime) {
     s_VirtualMarket.CalculateTime();
 
     tm tmMarket;
@@ -218,10 +218,10 @@ namespace StockAnalysisTest {
 
     sprintf_s(buffer, _T("%02d:%02d:%02d "), tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetMarketTimeString(), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfMarketTime(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetMarketDayTimeString) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfMarketDateTime) {
     s_VirtualMarket.CalculateTime();
 
     time_t tMarket = s_VirtualMarket.GetMarketTime();
@@ -232,23 +232,23 @@ namespace StockAnalysisTest {
     gmtime_s(&tmMarket, &tMarket);
     sprintf_s(buffer, _T("%04d年%02d月%02d日 %02d:%02d:%02d "), tmMarket.tm_year + 1900, tmMarket.tm_mon + 1, tmMarket.tm_mday, tmMarket.tm_hour, tmMarket.tm_min, tmMarket.tm_sec);
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetMarketDayTimeString(), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfMarketDateTime(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetDayString) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfDate) {
     char buffer[30];
     sprintf_s(buffer, _T("%4d年%2d月%2d日"), 2020, 02, 02);
     CString str;
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetDayString(20200202), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfDate(20200202), str);
 
-    long lDay = s_VirtualMarket.GetFormatedMarketDay();
+    long lDay = s_VirtualMarket.GetFormatedMarketDate();
     long year = lDay / 10000;
     long month = lDay / 100 - year * 100;
     long day = lDay - year * 10000 - month * 100;
     sprintf_s(buffer, _T("%4d年%2d月%2d日"), year, month, day);
     str = buffer;
-    EXPECT_STREQ(s_VirtualMarket.GetMarketDayString(), str);
+    EXPECT_STREQ(s_VirtualMarket.GetStringOfMarketDate(), str);
   }
 
   TEST_F(CVirtualMarketTest, TestGetDayOfWeek) {
@@ -256,7 +256,7 @@ namespace StockAnalysisTest {
     time_t ttime;
     tm tm_;
     time(&ttime);
-    ttime -= s_VirtualMarket.GetTimeZoneOffset();
+    ttime -= s_VirtualMarket.GetMarketTimeZone();
     gmtime_s(&tm_, &ttime);
 
     s_VirtualMarket.CalculateTime();

@@ -59,9 +59,9 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = GetData(i);
-    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() < pDayLine->GetFormatedMarketDay())) lCurrentPos++;
+    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
-      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDay() > pDayLine->GetFormatedMarketDay()) {
+      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
         pDayLine->AppendData(&setDayLineBasicInfo);
         fNeedUpdate = true;
       }
@@ -136,12 +136,12 @@ bool CDayLineContainer::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLine
 
   while (!psetDayLineExtendInfo->IsEOF()) {
     pDayLine = GetData(iPosition);
-    while ((pDayLine->GetFormatedMarketDay() < psetDayLineExtendInfo->m_Day)
+    while ((pDayLine->GetFormatedMarketDate() < psetDayLineExtendInfo->m_Date)
            && (GetDataSize() > (iPosition + 1))) {
       iPosition++;
       pDayLine = GetData(iPosition);
     }
-    if (pDayLine->GetFormatedMarketDay() == psetDayLineExtendInfo->m_Day) {
+    if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
       pDayLine->LoadExtendData(psetDayLineExtendInfo);
     }
     if (GetDataSize() <= (iPosition + 1)) break;
@@ -189,11 +189,11 @@ CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
   ASSERT(GetDataSize() > 0);
   ASSERT(lCurrentDayLinePos < GetDataSize());
 
-  long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDay());
-  long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDay();
+  long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDate());
+  long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDate();
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
   if (lNextMonday < lNewestDay) { // 中间数据
-    while (GetData(lCurrentDayLinePos)->GetFormatedMarketDay() < lNextMonday) {
+    while (GetData(lCurrentDayLinePos)->GetFormatedMarketDate() < lNextMonday) {
       pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
     }
   }

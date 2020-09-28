@@ -14,7 +14,7 @@ void CWeekLine::Reset(void) {
 bool CWeekLine::AppendData(CSetWeekLineInfo* psetWeekLineInfo) {
   ASSERT(psetWeekLineInfo->IsOpen());
   psetWeekLineInfo->AddNew();
-  psetWeekLineInfo->m_Day = GetFormatedMarketDay();
+  psetWeekLineInfo->m_Date = GetFormatedMarketDate();
   psetWeekLineInfo->m_Market = GetMarket();
   psetWeekLineInfo->m_StockCode = GetStockCode();
   psetWeekLineInfo->m_StockName = GetStockName();
@@ -107,7 +107,7 @@ bool CWeekLine::AppendData(CSetWeekLineInfo* psetWeekLineInfo) {
 bool CWeekLine::SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   ASSERT(psetWeekLineBasicInfo->IsOpen());
 
-  psetWeekLineBasicInfo->m_Day = GetFormatedMarketDay();
+  psetWeekLineBasicInfo->m_Date = GetFormatedMarketDate();
   psetWeekLineBasicInfo->m_Market = GetMarket();
   psetWeekLineBasicInfo->m_StockCode = GetStockCode();
   psetWeekLineBasicInfo->m_StockName = GetStockName();
@@ -141,7 +141,7 @@ bool CWeekLine::AppendData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
 
 bool CWeekLine::SaveData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
   ASSERT(psetWeekLineExtendInfo->IsOpen());
-  psetWeekLineExtendInfo->m_Day = m_lDay;
+  psetWeekLineExtendInfo->m_Date = m_lDay;
   psetWeekLineExtendInfo->m_Market = m_wMarket;
   psetWeekLineExtendInfo->m_StockCode = m_strStockCode;
   psetWeekLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
@@ -223,7 +223,7 @@ bool CWeekLine::AppendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 
 bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
   ASSERT(psetWeekLineInfo->IsOpen());
-  m_lDay = psetWeekLineInfo->m_Day;
+  m_lDay = psetWeekLineInfo->m_Date;
   m_wMarket = psetWeekLineInfo->m_Market;
   m_strStockCode = psetWeekLineInfo->m_StockCode;
   m_strStockName = psetWeekLineInfo->m_StockName;
@@ -315,7 +315,7 @@ bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
 
 bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   ASSERT(psetWeekLineBasicInfo->IsOpen());
-  m_lDay = psetWeekLineBasicInfo->m_Day;
+  m_lDay = psetWeekLineBasicInfo->m_Date;
   m_wMarket = psetWeekLineBasicInfo->m_Market;
   m_strStockCode = psetWeekLineBasicInfo->m_StockCode;
   m_strStockName = psetWeekLineBasicInfo->m_StockName;
@@ -410,7 +410,7 @@ bool CWeekLine::LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo) {
 }
 
 bool CWeekLine::UpdateWeekLine(CDayLinePtr pDayLine) {
-  if (m_lDay == 0) m_lDay = GetCurrentMonday(pDayLine->GetFormatedMarketDay());;
+  if (m_lDay == 0) m_lDay = GetCurrentMonday(pDayLine->GetFormatedMarketDate());;
   if (m_time == 0) m_time = pDayLine->GetFormatedMarketTime();
   m_wMarket = pDayLine->GetMarket();
   if (m_strStockCode == _T("")) m_strStockCode = pDayLine->GetStockCode();

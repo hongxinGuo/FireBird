@@ -23,7 +23,7 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;  // 索引用，自动生成。
-  long m_Day;	//成交时间，以日期表示，如20090222即2009年2月22日
+  long m_Date;	//成交时间，以日期表示，如20090222即2009年2月22日
   long m_Market;	//市场（上海，深圳）
   CString m_StockCode;	//八位股票代码
   CStringW m_StockName;	//六位股票名称   这里必须采用CStringW(Unicode)制式，否则有些中文无法显示，导致数据库无法存储

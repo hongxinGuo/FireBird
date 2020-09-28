@@ -142,12 +142,12 @@ bool CWeekLineContainer::LoadExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExte
 
   while (!psetWeekLineExtendInfo->IsEOF()) {
     pWeekLine = GetData(iPosition);
-    while ((pWeekLine->GetFormatedMarketDay() < psetWeekLineExtendInfo->m_Day)
+    while ((pWeekLine->GetFormatedMarketDate() < psetWeekLineExtendInfo->m_Date)
            && (m_vHistoryData.size() > (iPosition + 1))) {
       iPosition++;
       pWeekLine = GetData(iPosition);
     }
-    if (pWeekLine->GetFormatedMarketDay() == psetWeekLineExtendInfo->m_Day) {
+    if (pWeekLine->GetFormatedMarketDate() == psetWeekLineExtendInfo->m_Date) {
       pWeekLine->LoadExtendData(psetWeekLineExtendInfo);
     }
     if (m_vHistoryData.size() <= (iPosition + 1)) break;

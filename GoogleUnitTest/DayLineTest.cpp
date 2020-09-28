@@ -32,12 +32,12 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CDayLine dl;
     dl.SetDay(__CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(dl.GetFormatedMarketDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DAY__);
   }
 
   TEST_F(CStockDayLineTest, TestGetTime) {
     CDayLine dl;
-    EXPECT_EQ(dl.GetFormatedMarketDay(), 0);
+    EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
     dl.SetTime(100100100);
     EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
   }
@@ -599,7 +599,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
     id2.LoadBasicData(&setDayLineBasicInfo);
-    EXPECT_EQ(setDayLineBasicInfo.m_Day, id.GetFormatedMarketDay());
+    EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
     EXPECT_EQ(setDayLineBasicInfo.m_Market, id.GetMarket());
     EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, id.GetStockCode());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
@@ -620,7 +620,7 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RelativeStrongBackup), id.GetRelativeStrongBackup());
     setDayLineBasicInfo.Close();
 
-    EXPECT_EQ(id2.GetFormatedMarketDay(), id.GetFormatedMarketDay());
+    EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
     EXPECT_EQ(id2.GetMarket(), id.GetMarket());
     EXPECT_STREQ(id2.GetStockCode(), id.GetStockCode());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
@@ -685,7 +685,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
     setDayLineBasicInfo.Open();
     idLoaded.LoadBasicData(&setDayLineBasicInfo);
-    EXPECT_EQ(idLoaded.GetFormatedMarketDay(), id.GetFormatedMarketDay());
+    EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
     EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
     EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
     //EXPECT_STREQ(setDayLineBasicInfo.m_StockName, id.GetStockName());
@@ -751,7 +751,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("StockCode = 'sh600000'");
     setDayLineBasicInfo.Open();
     id2.LoadBasicData(&setDayLineBasicInfo);
-    EXPECT_EQ(id.GetFormatedMarketDay(), id2.GetFormatedMarketDay());
+    EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
     EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 

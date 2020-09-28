@@ -23,7 +23,7 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket->SetPermitResetMarket(true);
       gl_pCrweberIndexMarket->SetReadyToRun(true);
       gl_pCrweberIndexMarket->SetResetMarket(true);
-      gl_pCrweberIndexMarket->SetNewestUpdateDay(0);
+      gl_pCrweberIndexMarket->SetNewestUpdateDate(0);
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
     }
@@ -34,16 +34,16 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket->SetPermitResetMarket(true);
       gl_pCrweberIndexMarket->SetReadyToRun(true);
       gl_pCrweberIndexMarket->SetResetMarket(true);
-      gl_pCrweberIndexMarket->SetNewestUpdateDay(0);
+      gl_pCrweberIndexMarket->SetNewestUpdateDate(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };
 
   TEST_F(CCrweberIndexMarketTest, TestInitialize) {
     EXPECT_FALSE(gl_pCrweberIndexMarket->IsDatabaseLoaded());
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 0);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDate(), 0);
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsPermitResetMarket());
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetTimeZoneOffset(), 0);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetMarketTimeZone(), 0);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestResetMarket) {
@@ -84,17 +84,17 @@ namespace StockAnalysisTest {
     setCrweberIndex.Open();
     if (!setCrweberIndex.IsEOF()) {
       setCrweberIndex.MoveLast();
-      lDay = setCrweberIndex.m_Day;
+      lDay = setCrweberIndex.m_Date;
     }
     setCrweberIndex.Close();
 
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestDatabaseDay(), lDay);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestDatabaseDate(), lDay);
   }
 
-  TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDay) {
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 0);
-    gl_pCrweberIndexMarket->SetNewestUpdateDay(20201220);
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDay(), 20201220);
+  TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDate) {
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDate(), 0);
+    gl_pCrweberIndexMarket->SetNewestUpdateDate(20201220);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestUpdateDate(), 20201220);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetDatabaseLoaded) {

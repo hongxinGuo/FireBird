@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
       s_pCrweberIndexMarket->SetPermitResetMarket(true);
       s_pCrweberIndexMarket->SetReadyToRun(true);
       s_pCrweberIndexMarket->SetResetMarket(true);
-      s_pCrweberIndexMarket->SetNewestUpdateDay(0);
+      s_pCrweberIndexMarket->SetNewestUpdateDate(0);
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
     }
@@ -38,7 +38,7 @@ namespace StockAnalysisTest {
       s_pCrweberIndexMarket->SetPermitResetMarket(true);
       s_pCrweberIndexMarket->SetReadyToRun(true);
       s_pCrweberIndexMarket->SetResetMarket(true);
-      s_pCrweberIndexMarket->SetNewestUpdateDay(0);
+      s_pCrweberIndexMarket->SetNewestUpdateDate(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
   };

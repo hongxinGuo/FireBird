@@ -75,9 +75,9 @@ public:
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
   long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void SetDayLineStartDay(long lDay) noexcept { m_lDayLineStartDay = lDay; }
+  void SetDayLineStartDate(long lDay) noexcept { m_lDayLineStartDay = lDay; }
   long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
-  void SetDayLineEndDay(long lDay) noexcept { m_lDayLineEndDay = lDay; }
+  void SetDayLineEndDate(long lDay) noexcept { m_lDayLineEndDay = lDay; }
 
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }

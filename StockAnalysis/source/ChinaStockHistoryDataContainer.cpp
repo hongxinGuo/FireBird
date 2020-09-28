@@ -61,7 +61,7 @@ void CChinaStockHistoryDataContainer::ShowData(CDC* pDC, CRect rectClient) {
       y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
     }
     pDC->LineTo(x, y);
-    lDay = (*it)->GetFormatedMarketDay();
+    lDay = (*it)->GetFormatedMarketDate();
     i++;
     if (3 * i > m_vHistoryData.size()) break;
     if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹

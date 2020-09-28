@@ -510,7 +510,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(10, (LPCTSTR)str);
 
   //更新当地时间的显示
-  SysCallSetPaneText(11, (LPCTSTR)gl_pChinaStockMarket->GetLocalTimeString());
+  SysCallSetPaneText(11, (LPCTSTR)gl_pChinaStockMarket->GetStringOfLocalTime());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -535,7 +535,7 @@ void CMainFrame::OnCalculateTodayRelativeStrong() {
 }
 
 void CMainFrame::CalculateTodayRelativeStrong(void) {
-  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDay());
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -867,7 +867,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadBuildWeekLine(gl_pChinaStockMarket->GetFormatedMarketDay());
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {

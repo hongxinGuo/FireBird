@@ -27,7 +27,7 @@ public:
   void CalculateRSLogarithm(double dRS);
 
 public:
-  long GetFormatedMarketDay(void) noexcept { return m_lDay; }
+  long GetFormatedMarketDate(void) noexcept { return m_lDay; }
   void SetDay(long lDay) noexcept { m_lDay = lDay; }
   time_t GetFormatedMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t t) noexcept { m_time = t; }

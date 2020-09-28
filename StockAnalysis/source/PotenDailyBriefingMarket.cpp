@@ -15,7 +15,7 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   }
 
   m_strMarketId = _T("Poten.com");
-  m_lTimeZoneOffset = 4 * 3600; // poten.com使用美国东部标准时间
+  m_lMarketTimeZone = 4 * 3600; // poten.com使用美国东部标准时间
   CalculateTime();
 
   Reset();
@@ -28,7 +28,7 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
   m_lCurrentInquiringDay = 20180411; //
-  m_lToday = GetFormatedMarketDay();
+  m_lToday = GetFormatedMarketDate();
   for (long l = 20180411; l <= m_lToday; l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
     if (!IsWorkingDay(l)) {
@@ -58,7 +58,7 @@ bool CPotenDailyBriefingMarket::SchedulingTask(void) {
 void CPotenDailyBriefingMarket::ResetMarket(void) {
   Reset();
   CString str = _T("重置poten.com于美东标准时间：");
-  str += GetMarketTimeString();
+  str += GetStringOfMarketTime();
   gl_systemMessage.PushInformationMessage(str);
 }
 
@@ -121,19 +121,19 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
         CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
         if (pPotenDailyBriefing->ReadData(pWebData)) {
           pPotenDailyBriefing->SetDay(pWebData->m_lTime / 1000000);
-          if (!m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDay())) {
+          if (!m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate())) {
             ASSERT(m_pDataToSaved == nullptr);
             if (m_lCurrentInquiringDay == m_lToday) m_fTodayDataUpdated = true;
             m_pDataToSaved = pPotenDailyBriefing;
             RunningThreadSavePotenData();
-            TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetFormatedMarketDay());
+            TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetFormatedMarketDate());
             gl_systemMessage.PushInformationMessage(_T("Poten数据已更新"));
-            m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDay()) = true;
+            m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate()) = true;
             m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
           }
         }
         else {
-          TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetFormatedMarketDay());
+          TRACE(_T("%d日的poten数据有误\n"), pPotenDailyBriefing->GetFormatedMarketDate());
         }
       }
       else {
@@ -201,9 +201,9 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
-    m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDay()) = true;
-    if (setPotenDailyBriefing.m_Day >= m_lCurrentInquiringDay) {
-      m_lCurrentInquiringDay = setPotenDailyBriefing.m_Day;
+    m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate()) = true;
+    if (setPotenDailyBriefing.m_Date >= m_lCurrentInquiringDay) {
+      m_lCurrentInquiringDay = setPotenDailyBriefing.m_Date;
     }
     setPotenDailyBriefing.MoveNext();
   }

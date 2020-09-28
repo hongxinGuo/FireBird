@@ -18,7 +18,7 @@ public:
   // (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
   // 以同时支持 Unicode 和这些转换)。
   long m_ID;
-  long m_Day;
+  long m_Date;
   CString m_TD1;
   CString m_TD2;
   CString m_TD3C;

@@ -34,7 +34,7 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
     pMarket->RunningThreadBuildWeekLineRSOfDay(lToday);
     ctCurrent += sevenDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
-  } while (lToday <= pMarket->GetFormatedMarketDay()); // 计算至当前日期（包括今日）
+  } while (lToday <= pMarket->GetFormatedMarketDate()); // 计算至当前日期（包括今日）
 
   while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 

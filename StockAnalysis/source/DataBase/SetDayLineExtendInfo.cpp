@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CSetDayLineExtendInfo, CRecordset)
 CSetDayLineExtendInfo::CSetDayLineExtendInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_Day = 0;
+  m_Date = 0;
   m_Market = 0;
   m_StockCode = _T("");
   m_TransactionNumber = _T("0");
@@ -112,7 +112,7 @@ void CSetDayLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Long(pFX, _T("[Day]"), m_Day);
+  RFX_Long(pFX, _T("[Day]"), m_Date);
   RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
