@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
     sprintf_s(buffer, _T("%08d"), lDay);
     CString strDay = buffer;
 
-    setPoten.m_strFilter = _T("[Day] = ") + strDay;
+    setPoten.m_strFilter = _T("[Date] = ") + strDay;
     setPoten.Open();
     setPoten.m_pDatabase->BeginTrans();
     while (!setPoten.IsEOF()) {
@@ -140,7 +140,7 @@ namespace StockAnalysisTest {
     setPoten.m_pDatabase->CommitTrans();
     setPoten.Close();
 
-    setPoten.m_strFilter = _T("[Day] = ") + strDay;
+    setPoten.m_strFilter = _T("[Date] = ") + strDay;
     setPoten.Open();
     EXPECT_DOUBLE_EQ(atof(setPoten.m_VLCC_TD3C), id.m_dTD3C);
     EXPECT_DOUBLE_EQ(atof(setPoten.m_SUEZMAX_TD20), id.m_dTD20);
@@ -195,7 +195,7 @@ namespace StockAnalysisTest {
 
     setPoten.Close();
 
-    setPoten.m_strFilter = _T("[Day] = ") + strDay;
+    setPoten.m_strFilter = _T("[Date] = ") + strDay;
     setPoten.Open();
     setPoten.m_pDatabase->BeginTrans();
     setPoten.Delete();

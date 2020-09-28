@@ -40,7 +40,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   lSize = GetDataSize();
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineBasicInfo.m_strFilter += strStockCode + _T("'");
-  setDayLineBasicInfo.m_strSort = _T("[Day]");
+  setDayLineBasicInfo.m_strSort = _T("[Date]");
 
   setDayLineBasicInfo.Open();
   while (!setDayLineBasicInfo.IsEOF()) {
@@ -87,7 +87,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineBasicInfo.m_strFilter += strStockCode;
   setDayLineBasicInfo.m_strFilter += _T("'");
-  setDayLineBasicInfo.m_strSort = _T("[Day]");
+  setDayLineBasicInfo.m_strSort = _T("[Date]");
   setDayLineBasicInfo.Open();
   LoadDayLineBasicInfo(&setDayLineBasicInfo);
   setDayLineBasicInfo.Close();
@@ -96,7 +96,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
   setDayLineExtendInfo.m_strFilter += strStockCode;
   setDayLineExtendInfo.m_strFilter += _T("'");
-  setDayLineExtendInfo.m_strSort = _T("[Day]");
+  setDayLineExtendInfo.m_strSort = _T("[Date]");
   setDayLineExtendInfo.Open();
   LoadDayLineExtendInfo(&setDayLineExtendInfo);
   setDayLineExtendInfo.Close();

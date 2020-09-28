@@ -596,7 +596,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
     setDayLineBasicInfo.Open();
     id2.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
@@ -682,7 +682,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101101");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
     setDayLineBasicInfo.Open();
     idLoaded.LoadBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());

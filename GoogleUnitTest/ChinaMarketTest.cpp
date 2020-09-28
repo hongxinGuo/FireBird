@@ -1749,7 +1749,7 @@ namespace StockAnalysisTest {
 
     _ltoa_s(19900101, buffer, 10);
     strDay = buffer;
-    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter = _T("[Date] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
@@ -1757,7 +1757,7 @@ namespace StockAnalysisTest {
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 
-    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter = _T("[Date] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
     EXPECT_FALSE(setDayLine.IsEOF());
@@ -1765,7 +1765,7 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->DeleteDayLineBasicInfo(19900101);
 
-    setDayLine2.m_strFilter = _T("[Day] =");
+    setDayLine2.m_strFilter = _T("[Date] =");
     setDayLine2.m_strFilter += strDay;
     setDayLine2.Open();
     EXPECT_TRUE(setDayLine2.IsEOF());
@@ -1794,7 +1794,7 @@ namespace StockAnalysisTest {
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 
-    setDayLine.m_strFilter = _T("[Day] =");
+    setDayLine.m_strFilter = _T("[Date] =");
     setDayLine.m_strFilter += strDay;
     setDayLine.Open();
     EXPECT_FALSE(setDayLine.IsEOF());
@@ -1802,7 +1802,7 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->DeleteDayLineExtendInfo(19900101);
 
-    setDayLine2.m_strFilter = _T("[Day] =");
+    setDayLine2.m_strFilter = _T("[Date] =");
     setDayLine2.m_strFilter += strDay;
     setDayLine2.Open();
     EXPECT_TRUE(setDayLine2.IsEOF());
@@ -1898,7 +1898,7 @@ namespace StockAnalysisTest {
     sprintf_s(pch, _T("%08d"), lDay);
     strDay = pch;
     setDayLineBasicInfo.m_strSort = _T("[StockCode]");
-    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] =");
     setDayLineBasicInfo.m_strFilter += strDay;
     setDayLineBasicInfo.Open();
     while (!setDayLineBasicInfo.IsEOF()) {

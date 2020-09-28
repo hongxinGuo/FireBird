@@ -80,7 +80,7 @@ namespace StockAnalysisTest {
     CSetCrweberIndex setCrweberIndex;
     long lDay = 0;
 
-    setCrweberIndex.m_strSort = _T("[Day]");
+    setCrweberIndex.m_strSort = _T("[Date]");
     setCrweberIndex.Open();
     if (!setCrweberIndex.IsEOF()) {
       setCrweberIndex.MoveLast();

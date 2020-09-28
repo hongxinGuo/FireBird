@@ -527,7 +527,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     ASSERT(gl_fTestMode);
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] =");
     setDayLineBasicInfo.m_strFilter += strDay;
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -1496,7 +1496,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
     EXPECT_EQ(pStock->GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21900101");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21900101");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setDayLineBasicInfo.IsEOF()) {
@@ -1506,7 +1506,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
-    setDayLineExtendInfo.m_strFilter = _T("[Day] = 21900101");
+    setDayLineExtendInfo.m_strFilter = _T("[Date] = 21900101");
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.m_pDatabase->BeginTrans();
     while (!setDayLineExtendInfo.IsEOF()) {
@@ -1552,7 +1552,7 @@ namespace StockAnalysisTest {
     pStock->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
       stock.LoadBasicData(&setDayLineBasicInfo);
@@ -1577,7 +1577,7 @@ namespace StockAnalysisTest {
     }
     setDayLineBasicInfo.Close();
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setDayLineBasicInfo.IsEOF()) {
@@ -1622,7 +1622,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
     for (int i = 0; i < 10; i++) {
@@ -1647,7 +1647,7 @@ namespace StockAnalysisTest {
     }
     setDayLineBasicInfo.Close();
 
-    setDayLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setDayLineBasicInfo.IsEOF()) {
@@ -2033,7 +2033,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->SaveWeekLine();
 
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     for (int i = 0; i < 10; i++) {
@@ -2060,7 +2060,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setWeekLineBasicInfo.IsEOF()) {
@@ -2104,7 +2104,7 @@ namespace StockAnalysisTest {
     ASSERT(!gl_fNormalMode);
     pStock->SaveWeekLine();
 
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
@@ -2131,7 +2131,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();
 
-    setWeekLineBasicInfo.m_strFilter = _T("[Day] = 21101201");
+    setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setWeekLineBasicInfo.IsEOF()) {

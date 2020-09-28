@@ -195,7 +195,7 @@ bool CPotenDailyBriefingMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CPotenDailyBriefingMarket::LoadDatabase(void) {
   CSetPotenDailyBriefing setPotenDailyBriefing;
-  setPotenDailyBriefing.m_strSort = _T("[Day]");
+  setPotenDailyBriefing.m_strSort = _T("[Date]");
   setPotenDailyBriefing.Open();
   while (!setPotenDailyBriefing.IsEOF()) {
     CPotenDailyBriefingPtr pPotenDailyBriefing = make_shared<CPotenDailyBriefing>();

@@ -1886,12 +1886,12 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
   sprintf_s(buffer, _T("%08d"), lCurrentMonday);
   strDay = buffer;
-  setWeekLineBasicInfo.m_strFilter = _T("[Day] = ");
+  setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
   setWeekLineBasicInfo.m_strFilter += strDay;
   setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
   setWeekLineBasicInfo.Open();
 
-  setWeekLineExtendInfo.m_strFilter = _T("[Day] = ");
+  setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
   setWeekLineExtendInfo.m_strFilter += strDay;
   setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
   setWeekLineExtendInfo.Open();
@@ -1932,7 +1932,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
   setDayLineBasicInfo.m_strSort = _T("[StockCode]");
-  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter = _T("[Date] =");
   setDayLineBasicInfo.m_strFilter += strDay;
   setDayLineBasicInfo.Open();
   if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
@@ -1943,7 +1943,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
     return false;
   }
   setDayLineExtendInfo.m_strSort = _T("[StockCode]");
-  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
+  setDayLineExtendInfo.m_strFilter = _T("[Date] =");
   setDayLineExtendInfo.m_strFilter += strDay;
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -1978,7 +1978,7 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
   sprintf_s(pch, _T("%08d"), lMondayOfWeek);
   strDay = pch;
   setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
-  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
   setWeekLineBasicInfo.m_strFilter += strDay;
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -2057,7 +2057,7 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
 
   sprintf_s(pch, _T("%08d"), lMonday);
   strDay = pch;
-  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
   setWeekLineBasicInfo.m_strFilter += strDay;
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
@@ -2080,7 +2080,7 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
 
   sprintf_s(pch, _T("%08d"), lMonday);
   strDay = pch;
-  setWeekLineExtendInfo.m_strFilter = _T("[Day] =");
+  setWeekLineExtendInfo.m_strFilter = _T("[Date] =");
   setWeekLineExtendInfo.m_strFilter += strDay;
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
@@ -2626,7 +2626,7 @@ bool CChinaMarket::DeleteDayLineBasicInfo(long lDay) {
 
   _ltoa_s(lDay, buffer, 10);
   strDay = buffer;
-  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter = _T("[Date] =");
   setDayLineBasicInfo.m_strFilter += strDay;
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -2647,7 +2647,7 @@ bool CChinaMarket::DeleteDayLineExtendInfo(long lDay) {
 
   _ltoa_s(lDay, buffer, 10);
   strDay = buffer;
-  setDayLineExtendInfo.m_strFilter = _T("[Day] =");
+  setDayLineExtendInfo.m_strFilter = _T("[Date] =");
   setDayLineExtendInfo.m_strFilter += strDay;
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
@@ -2891,7 +2891,7 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
   setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
-  setDayLineBasicInfo.m_strFilter = _T("[Day] =");
+  setDayLineBasicInfo.m_strFilter = _T("[Date] =");
   setDayLineBasicInfo.m_strFilter += strDay;
   setDayLineBasicInfo.Open();
   if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
@@ -3013,7 +3013,7 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
   sprintf_s(pch, _T("%08d"), lDay);
   strDay = pch;
   setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
-  setWeekLineBasicInfo.m_strFilter = _T("[Day] =");
+  setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
   setWeekLineBasicInfo.m_strFilter += strDay;
   setWeekLineBasicInfo.Open();
   if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易

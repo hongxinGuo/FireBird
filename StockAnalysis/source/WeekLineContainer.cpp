@@ -97,7 +97,7 @@ bool CWeekLineContainer::LoadWeekLine(CString strStockCode) {
   setWeekLineBasicInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineBasicInfo.m_strFilter += strStockCode;
   setWeekLineBasicInfo.m_strFilter += _T("'");
-  setWeekLineBasicInfo.m_strSort = _T("[Day]");
+  setWeekLineBasicInfo.m_strSort = _T("[Date]");
   setWeekLineBasicInfo.Open();
   LoadBasicInfo(&setWeekLineBasicInfo);
   setWeekLineBasicInfo.Close();
@@ -106,7 +106,7 @@ bool CWeekLineContainer::LoadWeekLine(CString strStockCode) {
   setWeekLineExtendInfo.m_strFilter = _T("[StockCode] = '");
   setWeekLineExtendInfo.m_strFilter += strStockCode;
   setWeekLineExtendInfo.m_strFilter += _T("'");
-  setWeekLineExtendInfo.m_strSort = _T("[Day]");
+  setWeekLineExtendInfo.m_strSort = _T("[Date]");
   setWeekLineExtendInfo.Open();
   LoadExtendInfo(&setWeekLineExtendInfo);
   setWeekLineExtendInfo.Close();

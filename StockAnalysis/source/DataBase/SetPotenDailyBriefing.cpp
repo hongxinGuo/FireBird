@@ -34,7 +34,7 @@ void CSetPotenDailyBriefing::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Long(pFX, _T("[Day]"), m_Date);
+  RFX_Long(pFX, _T("[Date]"), m_Date);
   RFX_Text(pFX, _T("[VLCC_TD3C]"), m_VLCC_TD3C);
   RFX_Text(pFX, _T("[SUEZMAX_TD20]"), m_SUEZMAX_TD20);
   RFX_Text(pFX, _T("[AFRAMAX_TD9]"), m_AFRAMAX_TD9);

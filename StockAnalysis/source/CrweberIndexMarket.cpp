@@ -160,7 +160,7 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
   m_vCrweberIndex.resize(10000);
   for (auto pCrweber : m_vCrweberIndex) pCrweber = nullptr;
 
-  setCrweberIndex.m_strSort = _T("[Day]");
+  setCrweberIndex.m_strSort = _T("[Date]");
   setCrweberIndex.Open();
   while (!setCrweberIndex.IsEOF()) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
@@ -199,7 +199,7 @@ bool CCrweberIndexMarket::SaveDatabase(void) {
 bool CCrweberIndexMarket::GetNewestDatabaseDayFromDB(void) {
   CSetCrweberIndex setCrweberIndex;
 
-  setCrweberIndex.m_strSort = _T("[Day]");
+  setCrweberIndex.m_strSort = _T("[Date]");
   setCrweberIndex.Open();
   if (!setCrweberIndex.IsEOF()) {
     setCrweberIndex.MoveLast();

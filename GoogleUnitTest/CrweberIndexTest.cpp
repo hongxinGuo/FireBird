@@ -97,7 +97,7 @@ namespace StockAnalysisTest {
     id.m_dHANDY_TC_1YEAR = 33;
     id.m_dHANDY_TC_3YEAR = 34;
 
-    setCrweberIndex.m_strFilter = _T("[Day] = 20000101");
+    setCrweberIndex.m_strFilter = _T("[Date] = 20000101");
     setCrweberIndex.Open();
     setCrweberIndex.m_pDatabase->BeginTrans();
     while (!setCrweberIndex.IsEOF()) {
@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
     setCrweberIndex.m_pDatabase->CommitTrans();
     setCrweberIndex.Close();
 
-    setCrweberIndex.m_strFilter = _T("[Day] = 20000101");
+    setCrweberIndex.m_strFilter = _T("[Date] = 20000101");
     setCrweberIndex.Open();
     id2.LoadData(setCrweberIndex);
     setCrweberIndex.Close();
@@ -165,7 +165,7 @@ namespace StockAnalysisTest {
     setCrweberIndex.m_pDatabase->CommitTrans();
     setCrweberIndex.Close();
 
-    setCrweberIndex.m_strFilter = _T("[Day] = 20000101");
+    setCrweberIndex.m_strFilter = _T("[Date] = 20000101");
     setCrweberIndex.Open();
     setCrweberIndex.MoveNext();
     id2.LoadData(setCrweberIndex);
