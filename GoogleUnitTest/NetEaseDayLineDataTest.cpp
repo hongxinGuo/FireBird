@@ -8,8 +8,8 @@
 #include"DayLine.h"
 
 namespace StockAnalysisTest {
-  struct NetEaseDayLineData {
-    NetEaseDayLineData(int count, CString Data) {
+  struct NetEaseDLData {
+    NetEaseDLData(int count, CString Data) {
       m_iCount = count;
       m_strData = Data;
     }
@@ -18,31 +18,31 @@ namespace StockAnalysisTest {
     CString m_strData;
   };
 
-  NetEaseDayLineData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data2(2, _T("2019-07-23,'000001,平安银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data3(3, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data4(4, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data5(5, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data6(6, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data7(7, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data8(8, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
-  NetEaseDayLineData Data9(9, _T("2019-12-02,'000834,价值7030,3658.9802,None,None,None,3654.1602,4.82,,None,None,,\r\n"));
+  NetEaseDLData Data1(1, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data2(2, _T("2019-07-23,'000001,平安银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data3(3, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data4(4, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data5(5, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data6(6, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data7(7, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data8(8, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data9(9, _T("2019-12-02,'000834,价值7030,3658.9802,None,None,None,3654.1602,4.82,,None,None,,\r\n"));
   // 错误：时间字符串超过31个字符
-  NetEaseDayLineData Data10(10, _T("2019-abckderjddfkjdasdfjdkj07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data10(10, _T("2019-abckderjddfkjdasdfjdkj07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   // 错误：当前流通市值字符串超过31个
-  NetEaseDayLineData Data11(11, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.22912121236476736447734872e+11\r\n"));
+  NetEaseDLData Data11(11, _T("2019-07-23,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.22912121236476736447734872e+11\r\n"));
   // 日期逗号后不是单引号(')
-  NetEaseDayLineData Data12(12, _T("2019-07-23,,600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data12(12, _T("2019-07-23,,600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   // 中途遇到\n
-  NetEaseDayLineData Data13(13, _T("2019-07-23\n,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data13(13, _T("2019-07-23\n,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
   // 中途遇到\r
-  NetEaseDayLineData Data14(14, _T("2019-07-23\r,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
+  NetEaseDLData Data14(14, _T("2019-07-23\r,'600000,浦发银行,11.49,11.56,11.43,11.43,11.48,0.01,0.0638,17927898,206511000.0,3.37255403762e+11,3.229122472e+11\r\n"));
 
-  class ProcessNeteaseDayLineTest : public::testing::TestWithParam<NetEaseDayLineData*> {
+  class ProcessNeteaseDLTest : public::testing::TestWithParam<NetEaseDLData*> {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      NetEaseDayLineData* pData = GetParam();
+      NetEaseDLData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pData = new char[lLength + 1];
@@ -52,14 +52,14 @@ namespace StockAnalysisTest {
       m_pCurrentPos = m_pData;
       m_lCountPos = 0;
 
-      m_DayLine.SetAmount(-1);
-      m_DayLine.SetVolume(-1);
-      m_DayLine.SetOpen(-1);
-      m_DayLine.SetLastClose(-1);
-      m_DayLine.SetHigh(-1);
-      m_DayLine.SetLow(-1);
+      m_DL.SetAmount(-1);
+      m_DL.SetVolume(-1);
+      m_DL.SetOpen(-1);
+      m_DL.SetLastClose(-1);
+      m_DL.SetHigh(-1);
+      m_DL.SetLow(-1);
 
-      m_DayLinePtr = make_shared<CDayLine>();
+      m_DLPtr = make_shared<CDL>();
     }
 
     virtual void TearDown(void) override {
@@ -72,28 +72,28 @@ namespace StockAnalysisTest {
     char* m_pData;
     char* m_pCurrentPos;
     long m_lCountPos = 0;
-    CDayLine m_DayLine;
-    CDayLinePtr m_DayLinePtr;
+    CDL m_DL;
+    CDLPtr m_DLPtr;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, ProcessNeteaseDayLineTest,
+  INSTANTIATE_TEST_SUITE_P(TestNetEaseDLData, ProcessNeteaseDLTest,
                            testing::Values(&Data1, &Data2, &Data3, &Data4, &Data5, &Data6, &Data7, &Data8,
                                            &Data9, &Data10, &Data11, &Data12, &Data13, &Data14
-                                           ));
+                           ));
 
-  TEST_P(ProcessNeteaseDayLineTest, ProcessNeteaseDayLineData) {
+  TEST_P(ProcessNeteaseDLTest, ProcessNeteaseDLData) {
     INT64 lCount = 0;
     bool fSucceed;
-    if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pCurrentPos, lCount);
-    else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
+    if (m_iCount == 2) fSucceed = m_DLPtr->ProcessNeteaseData(_T("sz000001"), m_pCurrentPos, lCount);
+    else fSucceed = m_DLPtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
-    EXPECT_EQ(m_DayLinePtr->GetClose(), 11490);
-    EXPECT_EQ(m_DayLinePtr->GetHigh(), 11560);
-    EXPECT_EQ(m_DayLinePtr->GetLow(), 11430);
-    EXPECT_EQ(m_DayLinePtr->GetOpen(), 11430);
-    EXPECT_EQ(m_DayLinePtr->GetLastClose(), 11480);
+    EXPECT_EQ(m_DLPtr->GetClose(), 11490);
+    EXPECT_EQ(m_DLPtr->GetHigh(), 11560);
+    EXPECT_EQ(m_DLPtr->GetLow(), 11430);
+    EXPECT_EQ(m_DLPtr->GetOpen(), 11430);
+    EXPECT_EQ(m_DLPtr->GetLastClose(), 11480);
     break;
     case 2:
     EXPECT_TRUE(fSucceed);
@@ -116,14 +116,14 @@ namespace StockAnalysisTest {
     break;
     case 9:
     EXPECT_TRUE(fSucceed);
-    EXPECT_STREQ(m_DayLinePtr->GetStockName(), _T("价值7030"));
-    EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
-    EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
-    EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
-    EXPECT_EQ(m_DayLinePtr->GetLow(), 0);
-    EXPECT_EQ(m_DayLinePtr->GetOpen(), 0);
-    EXPECT_EQ(m_DayLinePtr->GetVolume(), 0);
-    EXPECT_EQ(m_DayLinePtr->GetAmount(), 0);
+    EXPECT_STREQ(m_DLPtr->GetStockName(), _T("价值7030"));
+    EXPECT_EQ(m_DLPtr->GetClose(), 3658980);
+    EXPECT_EQ(m_DLPtr->GetLastClose(), 3654160);
+    EXPECT_EQ(m_DLPtr->GetHigh(), 0);
+    EXPECT_EQ(m_DLPtr->GetLow(), 0);
+    EXPECT_EQ(m_DLPtr->GetOpen(), 0);
+    EXPECT_EQ(m_DLPtr->GetVolume(), 0);
+    EXPECT_EQ(m_DLPtr->GetAmount(), 0);
     break;
     case 10: // 时间字符串超过30个
     EXPECT_FALSE(fSucceed);
@@ -139,8 +139,8 @@ namespace StockAnalysisTest {
     }
   }
 
-  struct ReadDayLineOneValueData {
-    ReadDayLineOneValueData(int count, CString Data) {
+  struct ReadDLOneValueData {
+    ReadDLOneValueData(int count, CString Data) {
       m_iCount = count;
       m_strData = Data;
     }
@@ -150,26 +150,26 @@ namespace StockAnalysisTest {
   };
 
   // 成功
-  ReadDayLineOneValueData rdata1(1, _T("11.050,"));
+  ReadDLOneValueData rdata1(1, _T("11.050,"));
   // 小数点后两位
-  ReadDayLineOneValueData rdata2(2, _T("11.05,"));
+  ReadDLOneValueData rdata2(2, _T("11.05,"));
   // 小数点后一位
-  ReadDayLineOneValueData rdata3(3, _T("11.0,"));
+  ReadDLOneValueData rdata3(3, _T("11.0,"));
   // 小数点前出现0x00a
-  ReadDayLineOneValueData rdata4(4, _T("1\n1.050,"));
+  ReadDLOneValueData rdata4(4, _T("1\n1.050,"));
   // 小数点后出现0x00a
-  ReadDayLineOneValueData rdata5(5, _T("11.0\n50,"));
+  ReadDLOneValueData rdata5(5, _T("11.0\n50,"));
   // 缺少','
-  ReadDayLineOneValueData rdata6(6, _T("11.050"));
+  ReadDLOneValueData rdata6(6, _T("11.050"));
   // 读取小数点后三位后，放弃气候多余的数值
-  ReadDayLineOneValueData rdata7(7, _T("11.050000,"));
+  ReadDLOneValueData rdata7(7, _T("11.050000,"));
   // 0x00a出现于‘，’前。
-  ReadDayLineOneValueData rdata8(8, _T("11.05000\n,"));
+  ReadDLOneValueData rdata8(8, _T("11.05000\n,"));
 
-  class ReadDayLineOneValueTest : public::testing::TestWithParam<ReadDayLineOneValueData*> {
+  class ReadDLOneValueTest : public::testing::TestWithParam<ReadDLOneValueData*> {
   protected:
     virtual void SetUp(void) override {
-      ReadDayLineOneValueData* pData = GetParam();
+      ReadDLOneValueData* pData = GetParam();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pData = new char[lLength + 1];
@@ -193,13 +193,13 @@ namespace StockAnalysisTest {
     long m_lCountPos = 0;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestReadDayLineOneValue, ReadDayLineOneValueTest,
+  INSTANTIATE_TEST_SUITE_P(TestReadDLOneValue, ReadDLOneValueTest,
                            testing::Values(&rdata1, &rdata2, &rdata3, &rdata4, &rdata5, &rdata6, &rdata7, &rdata8
-                                           ));
+                           ));
 
-  TEST_P(ReadDayLineOneValueTest, TestReadOneValue2) {
+  TEST_P(ReadDLOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueOfNeteaseDL(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

@@ -11,11 +11,11 @@ namespace testing {
   public:
     MOCK_METHOD(bool, RunningThreadSaveChoicedRTData, (), (override));
     MOCK_METHOD(bool, RunningThreadProcessTodayStock, (), (override));
-    MOCK_METHOD(bool, RunningThreadBuildDayLineRS, (long lStartCalculatingDay), (override));
-    MOCK_METHOD(bool, RunningThreadBuildDayLineRSOfDay, (long lThisDay), (override));
+    MOCK_METHOD(bool, RunningThreadBuildDLRS, (long lStartCalculatingDay), (override));
+    MOCK_METHOD(bool, RunningThreadBuildDLRSOfDay, (long lThisDay), (override));
     MOCK_METHOD(bool, RunningThreadSaveTempRTData, (), (override));
-    MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStockPtr pStock), (override));
-    MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStockPtr pCurrentStock), (override));
+    MOCK_METHOD(bool, RunningThreadSaveDLBasicInfoOfStock, (CChinaStockPtr pStock), (override));
+    MOCK_METHOD(bool, RunningThreadLoadDL, (CChinaStockPtr pCurrentStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
@@ -36,11 +36,11 @@ namespace testing {
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));
-    MOCK_METHOD(long, BuildDayLineOfDay, (long lCurrentTradeDay), (override));
+    MOCK_METHOD(long, BuildDLOfDay, (long lCurrentTradeDay), (override));
     MOCK_METHOD(bool, Choice10RSStrong2StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrong1StockSet, (), (override));
     MOCK_METHOD(bool, Choice10RSStrongStockSet, (CRSReference* pRef, int iIndex), (override));
-    MOCK_METHOD(bool, BuildDayLineRSOfDay, (long lDate), (override));
+    MOCK_METHOD(bool, BuildDLRSOfDay, (long lDate), (override));
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDay, (long lDate), (override));

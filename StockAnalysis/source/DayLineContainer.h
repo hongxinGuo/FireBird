@@ -10,24 +10,24 @@
 
 using namespace std;
 
-class CDayLineContainer : public CChinaStockHistoryDataContainer {
+class CDLContainer : public CChinaStockHistoryDataContainer {
 public:
-  CDayLineContainer();
-  ~CDayLineContainer();
+  CDLContainer();
+  ~CDLContainer();
 public:
   virtual bool SaveData(CString strStockCode) override;
   virtual bool LoadData(CString strStockCode) override;
 
-  bool SaveDayLineBasicInfo(CString strStockCode);
-  bool LoadDayLine(CString strStockCode);
-  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
+  bool SaveDLBasicInfo(CString strStockCode);
+  bool LoadDL(CString strStockCode);
+  bool LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo);
+  bool LoadDLExtendInfo(CSetDLExtendInfo* psetDLBasicInfo);
 
-  void UpdateData(vector<CDayLinePtr>& vTempDayLine);
-  CWeekLinePtr CreateNewWeekLine(long& lCurrentDayLinePos);
+  void UpdateData(vector<CDLPtr>& vTempDL);
+  CWeekLinePtr CreateNewWeekLine(long& lCurrentDLPos);
 
-  bool StoreData(CDayLinePtr pData) noexcept { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
-  CDayLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
+  bool StoreData(CDLPtr pData) noexcept { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
+  CDLPtr GetData(long lIndex) { return dynamic_pointer_cast<CDL>(m_vHistoryData.at(lIndex)); }
 
 public:
   // ÌØÓÐº¯Êý

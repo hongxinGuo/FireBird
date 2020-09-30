@@ -22,9 +22,9 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
 
   long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
   if (lDate == pMarket->GetFormatedMarketDate()) {
-    pMarket->BuildDayLineOfDay(lDate);
+    pMarket->BuildDLOfDay(lDate);
     // 计算本日日线相对强度
-    pMarket->BuildDayLineRSOfDay(lDate);
+    pMarket->BuildDLRSOfDay(lDate);
     // 生成周线数据
     pMarket->BuildWeekLineOfCurrentWeek();
     pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDate));

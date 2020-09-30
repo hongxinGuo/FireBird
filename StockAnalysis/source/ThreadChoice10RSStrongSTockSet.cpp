@@ -76,15 +76,15 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine(pStock->GetStockCode());
-        pStock->SetDayLineLoaded(true);
+      if (!pStock->IsDLLoaded()) {
+        pStock->LoadDL(pStock->GetStockCode());
+        pStock->SetDLLoaded(true);
       }
       if (pStock->Calculate10RSStrongStockSet(pRef)) {
         pv10RSStrongStock->push_back(pStock);
       }
       if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-        pStock->UnloadDayLine();
+        pStock->UnloadDL();
       }
     }
   }
@@ -100,15 +100,15 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine(pStock->GetStockCode());
-        pStock->SetDayLineLoaded(true);
+      if (!pStock->IsDLLoaded()) {
+        pStock->LoadDL(pStock->GetStockCode());
+        pStock->SetDLLoaded(true);
       }
       if (pStock->Calculate10RSStrong1StockSet()) {
         pv10RSStrongStock->push_back(pStock);
       }
       if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-        pStock->UnloadDayLine();
+        pStock->UnloadDL();
       }
     }
   }
@@ -124,15 +124,15 @@ UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
     if (gl_pChinaStockMarket->IsAStock(pStock) && pStock->IsActive()) {
-      if (!pStock->IsDayLineLoaded()) {
-        pStock->LoadDayLine(pStock->GetStockCode());
-        pStock->SetDayLineLoaded(true);
+      if (!pStock->IsDLLoaded()) {
+        pStock->LoadDL(pStock->GetStockCode());
+        pStock->SetDLLoaded(true);
       }
       if (pStock->Calculate10RSStrong2StockSet()) {
         pv10RSStrongStock->push_back(pStock);
       }
       if (!pStock->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
-        pStock->UnloadDayLine();
+        pStock->UnloadDL();
       }
     }
   }

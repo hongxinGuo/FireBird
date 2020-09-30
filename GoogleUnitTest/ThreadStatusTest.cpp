@@ -11,15 +11,15 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
     }
     virtual void SetUp(void) override {
-      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+      EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
     }
   };
 
@@ -27,11 +27,11 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDL());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
     EXPECT_EQ(gl_ThreadStatus.HowManyBackGroundThreadsWorking(), 0);
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
 
     size_t l = gl_systemMessage.GetInformationDequeSize();
@@ -43,12 +43,12 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_systemMessage.GetInformationDequeSize(), 0);
   }
 
-  TEST_F(ThreadStatusTest, TestIsCalculatingDayLineRS) {
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-    gl_ThreadStatus.SetCalculatingDayLineRS(true);
-    EXPECT_TRUE(gl_ThreadStatus.IsCalculatingDayLineRS());
-    gl_ThreadStatus.SetCalculatingDayLineRS(false);
-    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
+  TEST_F(ThreadStatusTest, TestIsCalculatingDLRS) {
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
+    gl_ThreadStatus.SetCalculatingDLRS(true);
+    EXPECT_TRUE(gl_ThreadStatus.IsCalculatingDLRS());
+    gl_ThreadStatus.SetCalculatingDLRS(false);
+    EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDLRS());
   }
 
   TEST_F(ThreadStatusTest, TestIsCalculatingWeekLineRS) {
@@ -104,17 +104,17 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
   }
 
-  TEST_F(ThreadStatusTest, TestIsSavingDayLine) {
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多4个线程
-      gl_ThreadStatus.IncreaseSavingDayLineThreads();
+  TEST_F(ThreadStatusTest, TestIsSavingDL) {
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDL());
+    for (int i = 0; i < gl_cMaxSavingOneDLThreads; i++) {  // 目前采用最多4个线程
+      gl_ThreadStatus.IncreaseSavingDLThreads();
     }
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
-      gl_ThreadStatus.DecreaseSavingDayLineThreads();
-      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
+    for (int i = 0; i < gl_cMaxSavingOneDLThreads - 1; i++) {
+      gl_ThreadStatus.DecreaseSavingDLThreads();
+      EXPECT_TRUE(gl_ThreadStatus.IsSavingDL());
     }
-    gl_ThreadStatus.DecreaseSavingDayLineThreads();
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
+    gl_ThreadStatus.DecreaseSavingDLThreads();
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingDL());
   }
 
   TEST_F(ThreadStatusTest, TestIsWorkingThreadRunning) {

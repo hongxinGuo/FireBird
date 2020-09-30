@@ -66,7 +66,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS1, &CMainFrame::OnUpdateCalculate10dayRS1)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS2, &CMainFrame::OnUpdateCalculate10dayRS2)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_10DAY_RS, &CMainFrame::OnUpdateCalculate10dayRS)
-  ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDayLine)
+  ON_COMMAND(ID_STOP_UPDATE_DAYLINE, &CMainFrame::OnStopUpdateDL)
   ON_COMMAND(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUsingNeteaseRealtimeDataServer)
   ON_COMMAND(ID_USING_SINA_REALTIME_DATA_SERVER, &CMainFrame::OnUsingSinaRealtimeDataServer)
   ON_UPDATE_COMMAND_UI(ID_USING_NETEASE_REALTIME_DATA_SERVER, &CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer)
@@ -129,7 +129,7 @@ CMainFrame::~CMainFrame() {
 
   gl_pChinaStockMarket->SaveCalculatingRSOption();
 
-  while (gl_ThreadStatus.IsSavingDayLine()) {
+  while (gl_ThreadStatus.IsSavingDL()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }
 
@@ -497,7 +497,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(7, (LPCTSTR)str);
 
   // 显示网易日线历史数据读取时间（单位为毫秒）
-  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
+  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDL());
 
   // 更新当前工作线程数
   sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfRunningThread());
@@ -535,7 +535,7 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS(void) {
-  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDate());
+  gl_pChinaStockMarket->RunningThreadBuildDLRS(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
@@ -560,7 +560,7 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_pChinaStockMarket->IsSystemReady()) {
-    if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
+    if (gl_ThreadStatus.IsCalculatingDLRS()) {
       SysCallCmdUIEnable(pCmdUI, false);
     }
     else {
@@ -701,7 +701,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDaylineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DAY__);
+  gl_pChinaStockMarket->RunningThreadBuildDLRS(__CHINA_MARKET_BEGIN_DAY__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -717,7 +717,7 @@ void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
   if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaStockMarket->GetFormatedMarketTime() < 93000)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
-  else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
+  else if (gl_ThreadStatus.IsCalculatingDLRS()) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else {
@@ -733,7 +733,7 @@ void CMainFrame::OnAbortBuindingRS() {
 
 void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
+  if (gl_ThreadStatus.IsCalculatingDLRS()) {
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else {
@@ -773,7 +773,7 @@ void CMainFrame::OnCalculate10dayRS() {
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDLNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDLNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
@@ -781,7 +781,7 @@ void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDLNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDLNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
@@ -789,15 +789,15 @@ void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDLNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDLNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
 }
 
-void CMainFrame::OnStopUpdateDayLine() {
+void CMainFrame::OnStopUpdateDL() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->ClearDayLineNeedUpdaeStatus();
+  gl_pChinaStockMarket->ClearDLNeedUpdaeStatus();
 }
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {

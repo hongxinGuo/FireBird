@@ -9,15 +9,15 @@
 using namespace std;
 #include<memory>
 
-class CDayLine : public CChinaStockHistoryData {
+class CDL : public CChinaStockHistoryData {
 public:
-  CDayLine();
+  CDL();
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo);
+  bool SaveData(CSetDLBasicInfo* psetDLBasicInfo);
+  bool AppendData(CSetDLBasicInfo* psetDLBasicInfo);
+  bool LoadBasicData(CSetDLBasicInfo* psetDLBasicInfo);
+  bool LoadExtendData(CSetDLExtendInfo* psetDLExtendInfo);
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool IsActive(void);
@@ -39,4 +39,4 @@ public:
 private:
 };
 
-typedef shared_ptr<CDayLine> CDayLinePtr;
+typedef shared_ptr<CDL> CDLPtr;

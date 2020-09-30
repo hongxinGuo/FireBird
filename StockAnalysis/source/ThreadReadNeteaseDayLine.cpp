@@ -19,15 +19,15 @@
 #include"globedef.h"
 #include"ChinaMarket.h"
 
-UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData) {
+UINT ThreadReadNeteaseDL(CNeteaseDLWebInquiry* pNeteaseDLWebData) {
   CChinaStockPtr pStock = nullptr;
 
-  ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
+  ASSERT(pNeteaseDLWebData->IsReadingWebData());
   gl_ThreadStatus.IncreaseRunningThread();
-  if (pNeteaseDayLineWebData->ReadWebData(/*siDelayTime*/ 200, 30, 30)) {
+  if (pNeteaseDLWebData->ReadWebData(/*siDelayTime*/ 200, 30, 30)) {
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-    pStock = gl_pChinaStockMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
-    pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
+    pStock = gl_pChinaStockMarket->GetStock(pNeteaseDLWebData->GetDownLoadingStockCode());
+    pStock->TransferNeteaseDLWebDataToBuffer(pNeteaseDLWebData);
   }
   gl_ThreadStatus.DecreaseRunningThread();
 

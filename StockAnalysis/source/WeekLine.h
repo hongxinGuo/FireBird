@@ -20,7 +20,7 @@ public:
   bool LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadExtendData(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
 
-  bool UpdateWeekLine(CDayLinePtr pDayLine);
+  bool UpdateWeekLine(CDLPtr pDL);
 
   void Set3WeekRS(double dValue) noexcept { Set3RS(dValue); }
   double Get3WeekRS(void) noexcept { return Get3RS(); }

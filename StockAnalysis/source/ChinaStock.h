@@ -74,10 +74,10 @@ public:
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
-  long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
-  void SetDayLineStartDate(long lDate) noexcept { m_lDayLineStartDate = lDate; }
-  long GetDayLineEndDate(void) noexcept { return m_lDayLineEndDate; }
-  void SetDayLineEndDate(long lDate) noexcept { m_lDayLineEndDate = lDate; }
+  long GetDLStartDate(void) noexcept { return m_lDLStartDate; }
+  void SetDLStartDate(long lDate) noexcept { m_lDLStartDate = lDate; }
+  long GetDLEndDate(void) noexcept { return m_lDLEndDate; }
+  void SetDLEndDate(long lDate) noexcept { m_lDLEndDate = lDate; }
 
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -317,20 +317,20 @@ public:
   bool IsTodayDataChanged(void); // 如果最高价、最低价、成交量和成交额中有数据不为零，则返回真。
 
   // 数据库的提取和存储
-  // 日线装载函数，由工作线程ThreadLoadDayLine调用
-  virtual bool LoadDayLine(CString strStockCode); // 此函数加载
-  virtual bool SaveDayLineBasicInfo(void); // 存储日线历史数据
-  bool LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo);
-  bool LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineBasicInfo);
-  void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
-  void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
-  void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
-  void UpdateDayLineStartEndDate(void);
-  void LoadTempInfo(CSetDayLineToday& setDayLineToday);
+  // 日线装载函数，由工作线程ThreadLoadDL调用
+  virtual bool LoadDL(CString strStockCode); // 此函数加载
+  virtual bool SaveDLBasicInfo(void); // 存储日线历史数据
+  bool LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo);
+  bool LoadDLExtendInfo(CSetDLExtendInfo* psetDLBasicInfo);
+  void SaveTodayBasicInfo(CSetDLBasicInfo* psetDL); // 存储当日基本数据
+  void SaveTodayExtendInfo(CSetDLExtendInfo* psetDLExtendInfo);
+  void SaveTempInfo(CSetDLToday& setDLToday); // 存储当日计算出的数据
+  void UpdateDLStartEndDate(void);
+  void LoadTempInfo(CSetDLToday& setDLToday);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
-  void SetCheckingDayLineStatus(void);
+  void SetCheckingDLStatus(void);
   //周线历史数据存取
   virtual bool LoadWeekLine();
   virtual bool SaveWeekLine();
@@ -399,12 +399,12 @@ public:
 
   //日线相关函数
   // 日线历史数据
-  size_t GetDayLineSize(void) { return m_DayLine.GetDataSize(); }
-  bool HaveNewDayLineData(void);
-  void UnloadDayLine(void) noexcept { m_DayLine.Unload(); }
-  bool StoreDayLine(CDayLinePtr pDayLine) noexcept { return m_DayLine.StoreData(pDayLine); }
-  CDayLinePtr GetDayLine(long lIndex) { return m_DayLine.GetData(lIndex); }
-  void ShowDayLine(CDC* pDC, CRect rectClient);
+  size_t GetDLSize(void) { return m_DL.GetDataSize(); }
+  bool HaveNewDLData(void);
+  void UnloadDL(void) noexcept { m_DL.Unload(); }
+  bool StoreDL(CDLPtr pDL) noexcept { return m_DL.StoreData(pDL); }
+  CDLPtr GetDL(long lIndex) { return m_DL.GetData(lIndex); }
+  void ShowDL(CDC* pDC, CRect rectClient);
   void ShowWeekLine(CDC* pDC, CRect rectClient);
   void GetRS1Day(vector<double>& vRS);
   void GetRSIndex1Day(vector<double>& vRS);
@@ -418,37 +418,37 @@ public:
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
-  INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
-  char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
+  INT64 GetDLBufferLength(void) noexcept { return m_lDLBufferLength; }
+  char* GetDLBufferPtr(void) noexcept { return m_pDLBuffer; }
 
   // 日线相对强度计算
-  bool CalculateDayLineRS(void);
-  bool CalculateDayLineRSIndex(void);
-  bool CalculateDayLineRSLogarithm(void);
+  bool CalculateDLRS(void);
+  bool CalculateDLRSIndex(void);
+  bool CalculateDLRSLogarithm(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag);
-  bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
-  void SetDayLineNeedProcess(bool fFlag);
-  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
-  void SetDayLineNeedSaving(bool fFlag);
-  bool IsDayLineNeedSavingAndClearFlag(void);
+  bool IsDLNeedUpdate(void) noexcept { return m_fDLNeedUpdate; }
+  void SetDLNeedUpdate(bool fFlag);
+  bool IsDLNeedProcess(void) noexcept { return m_fDLNeedProcess; }
+  void SetDLNeedProcess(bool fFlag);
+  bool IsDLNeedSaving(void) noexcept { return m_fDLNeedSaving; }
+  void SetDLNeedSaving(bool fFlag);
+  bool IsDLNeedSavingAndClearFlag(void);
 
-  bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
-  void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
-  bool IsDayLineLoaded(void) noexcept { return m_DayLine.IsDataLoaded(); }
-  void SetDayLineLoaded(bool fFlag) noexcept { m_DayLine.SetDataLoaded(fFlag); }
+  bool IsDLDBUpdated(void) noexcept { return (m_fDLDBUpdated); }
+  void SetDLDBUpdated(bool fUpdate) noexcept { m_fDLDBUpdated = fUpdate; }
+  bool IsDLLoaded(void) noexcept { return m_DL.IsDataLoaded(); }
+  void SetDLLoaded(bool fFlag) noexcept { m_DL.SetDataLoaded(fFlag); }
 
   // 提取网易日线历史数据各函数
-  bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
-  bool ProcessNeteaseDayLineData(void);
-  bool SkipNeteaseDayLineInformationHeader(void);
+  bool TransferNeteaseDLWebDataToBuffer(CNeteaseDLWebInquiry* pNeteaseWebDLData);
+  bool ProcessNeteaseDLData(void);
+  bool SkipNeteaseDLInformationHeader(void);
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
-  void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
-  void ReportDayLineDownLoaded(void);
+  void UpdateDL(vector<CDLPtr>& vTempDL); // 使用新队列更新日线队列
+  void ReportDLDownLoaded(void);
   void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
+  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDLBuffer; m_llCurrentPos = 0; }
 
   // 周线相关函数
   size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
@@ -464,7 +464,7 @@ public:
   bool CalculateWeekLineRSLogarithm(void);
 
   // 当前被处理历史数据容器
-  CChinaStockHistoryDataContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
+  CChinaStockHistoryDataContainer* GetDLContainer(void) noexcept { return &m_DL; }
   CChinaStockHistoryDataContainer* GetWeekLineContainer(void) noexcept { return &m_WeekLine; }
 
 #ifdef _DEBUG
@@ -475,7 +475,7 @@ public:
 public:
   // 测试专用函数
   void __TestSetGuadanDeque(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; } // 预先设置挂单。
-  void __TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer);
+  void __TestSetDLBuffer(INT64 lBufferLength, char* pDLBuffer);
 public:
 
 protected:
@@ -486,8 +486,8 @@ protected:
   CString m_strStockName; // 股票名称
   CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
   long m_lOffsetInContainer;	// 在容器中的偏移量
-  long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-  long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
+  long m_lDLStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
+  long m_lDLEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                  // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
   short	m_nHand;	// 每手股数
@@ -643,20 +643,20 @@ protected:
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
   // 日线相关数据
-  CDayLineContainer m_DayLine; // 日线容器
+  CDLContainer m_DL; // 日线容器
   // 周线相关数据
   CWeekLineContainer m_WeekLine; // 周线容器
 
   //网易日线接收处理相关数据
-  vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  char* m_pDayLineBuffer; // 日线读取缓冲区
-  INT64 m_lDayLineBufferLength;
+  vector<char> m_vDLBuffer; // 日线读取缓冲区
+  char* m_pDLBuffer; // 日线读取缓冲区
+  INT64 m_lDLBufferLength;
   char* m_pCurrentPos;
   INT64 m_llCurrentPos;
 
-  atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
-  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
+  atomic_bool m_fDLNeedUpdate; // 日线需要更新。默认为真
+  atomic_bool m_fDLNeedProcess; // 已从网络上读取了日线历史数据，等待处理
+  atomic_bool m_fDLNeedSaving; // 日线历史数据已处理，等待存储。
 
-  bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
+  bool m_fDLDBUpdated; // 日线历史数据库更新标识
 };

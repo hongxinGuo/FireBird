@@ -10,7 +10,7 @@
 #include"globedef.h"
 #include"CrweberIndex.h"
 
-extern int gl_cMaxSavingOneDayLineThreads;
+extern int gl_cMaxSavingOneDLThreads;
 
 #ifdef __GOOGLEMOCK__
 #include"MockSinaRTWebInquiry.h"
@@ -24,10 +24,10 @@ using namespace testing;
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CMockNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // 网易日线历史数据
+extern CMockNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiry; // 网易日线历史数据
+extern CMockNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquirySecond; // 网易日线历史数据
+extern CMockNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiryThird; // 网易日线历史数据
+extern CMockNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiryFourth; // 网易日线历史数据
 extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
 extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 #else
@@ -41,10 +41,10 @@ extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquirySecond; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryThird; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiryFourth; // 网易日线历史数据
+extern CNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiry; // 网易日线历史数据
+extern CNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquirySecond; // 网易日线历史数据
+extern CNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiryThird; // 网易日线历史数据
+extern CNeteaseDLWebInquiryPtr gl_pNeteaseDLWebInquiryFourth; // 网易日线历史数据
 extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 #endif
@@ -59,7 +59,7 @@ public:
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
   bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }
-  bool GetNeteaseDayLineData(void);
+  bool GetNeteaseDLData(void);
   bool GetCrweberIndexData(void) { return gl_pCrweberIndexWebInquiry->GetWebData(); }
   bool IsReadingCrweberIndex(void) { return gl_pCrweberIndexWebInquiry->IsReadingWebData(); }
   bool GetPotenDailyBriefingData(void) { return gl_pPotenDailyBriefingWebInquiry->GetWebData(); }

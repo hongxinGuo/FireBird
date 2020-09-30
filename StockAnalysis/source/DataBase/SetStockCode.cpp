@@ -17,8 +17,8 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
   m_StockType = 0;
   m_StockCode = _T("");
   m_StockName = _T("");
-  m_DayLineStartDate = __CHINA_MARKET_BEGIN_DAY__;
-  m_DayLineEndDate = __CHINA_MARKET_BEGIN_DAY__;
+  m_DLStartDate = __CHINA_MARKET_BEGIN_DAY__;
+  m_DLEndDate = __CHINA_MARKET_BEGIN_DAY__;
   m_IPOStatus = 0;
   m_nFields = 8;
 }
@@ -41,8 +41,8 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Int(pFX, _T("[StockType]"), m_StockType);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
-  RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
-  RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
+  RFX_Long(pFX, _T("[DayLineStartDate]"), m_DLStartDate);
+  RFX_Long(pFX, _T("[DayLineEndDate]"), m_DLEndDate);
   RFX_Long(pFX, _T("[IPOed]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////

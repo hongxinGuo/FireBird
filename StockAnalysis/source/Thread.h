@@ -28,7 +28,7 @@ UINT ThreadReadTengxunRTData(CTengxunRTWebInquiry* pTengxunRTWebData);    // ´Ë¹
 // ¶ÁÈ¡ÍøÒ×ÊµÊ±Êı¾İÏß³Ì£¬ÍøÖ·£ºhttp://api.money.126.net/data/feed/
 UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData); // ´ËÏß³Ì·µ»ØÖµÎª3£¬²ÎÊıÎªpNeteaseWebRTData
 // ¶ÁÈ¡ÍøÒ×ÈÕÏßÀúÊ·Êı¾İÏß³Ì, pParamÎªµ÷ÓÃ´ËÏß³ÌµÄ±äÁ¿µÄÖ¸Õë¡£ÍøÖ·£ºhttp://quotes.money.163.com/service/chddata.html?code=
-UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData);      // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª4£¬²ÎÊıÎªpNeteaseWebDayLineData
+UINT ThreadReadNeteaseDL(CNeteaseDLWebInquiry* pNeteaseDLWebData);      // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª4£¬²ÎÊıÎªpNeteaseWebDLData
 // ¶ÁÈ¡crweber.comÍøÕ¾ÉÏµÄÓÍÔËÖ¸ÊıÏß³Ì¡£ÍøÖ·£ºhttp://www.crweber.com
 UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª5£¬²ÎÊıÎªpCrweberIndexWebData
 // ¶ÁÈ¡Poten Daily Briefing.ÍøÖ·£ºhttp://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
@@ -37,19 +37,19 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
 // Êı¾İ¿â´¦ÀíÈÎÎñ
 
 // ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDayÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
-UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª11, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
+UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDay); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª11, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
-UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª12
+UINT ThreadBuildDLRSOfDay(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª12
 // ´æ´¢ÁÙÊ±ÏµÍ³×´Ì¬Ïß³Ì
 UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª13
 // ¼ÆËãºÍ´æ´¢µ±Ç°½»Ò×ÈÕÊı¾İÏß³Ì
 UINT ThreadProcessTodayStock(CChinaMarket* pMarket);     // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª14
 // ´æ´¢Ò»¸ö¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
-UINT ThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
+UINT ThreadSaveDLBasicInfoOfStock(CChinaStockPtr pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
 // ´ÓÊı¾İ¿âÖĞ¶ÁÈ¡ÈÕÏßÀúÊ·Êı¾İÏß³Ì
-UINT ThreadLoadDayLine(CChinaStockPtr pStock);        // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
+UINT ThreadLoadDL(CChinaStockPtr pStock);        // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©
-UINT ThreadMaintainDayLineDataBase(void);   // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
+UINT ThreadMaintainDLDataBase(void);   // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
 //¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿âÏß³Ì
 UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket); // ´ËÏß³Ì·µ»ØÖµÎª18
 //´æ´¢ËùÑ¡¹ÉÆ±ÊµÊ±Êı¾İÏß³Ì

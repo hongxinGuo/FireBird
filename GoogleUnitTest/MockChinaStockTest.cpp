@@ -14,7 +14,7 @@ using namespace testing;
 namespace StockAnalysisTest {
   static CSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
   static CTengxunRTWebInquiry m_TengxunRTWebData; // 腾讯实时数据采集
-  static CNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
+  static CNeteaseDLWebInquiry m_NeteaseDLWebInquiry; // 网易日线历史数据
 
   class CMockChinaStockTest : public ::testing::Test
   {
@@ -27,18 +27,18 @@ namespace StockAnalysisTest {
       pStock = make_shared<CMockChinaStock>();
       gl_pChinaStockMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetDLInfoDequeSize() > 0) gl_systemMessage.PopDLInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+      gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetDLInfoDequeSize() > 0) gl_systemMessage.PopDLInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
@@ -64,49 +64,49 @@ namespace StockAnalysisTest {
     pStock->ShowCurrentInformationOfCancelingGuadan();
   }
 
-  TEST_F(CMockChinaStockTest, TestThreadSaveDayLineOfOneStock) {
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+  TEST_F(CMockChinaStockTest, TestThreadSaveDLOfOneStock) {
+    EXPECT_CALL(*pStock, SaveDLBasicInfo)
       .Times(0);
-    pStock->SetDayLineLoaded(true);
+    pStock->SetDLLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_TRUE(pStock->IsDayLineLoaded());
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+    EXPECT_EQ(ThreadSaveDLBasicInfoOfStock(pStock), (UINT)15);
+    EXPECT_TRUE(pStock->IsDLLoaded());
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+    EXPECT_CALL(*pStock, SaveDLBasicInfo)
       .Times(1)
       .WillOnce(Return(false));
-    pStock->SetDayLineLoaded(true);
+    pStock->SetDLLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+    EXPECT_EQ(ThreadSaveDLBasicInfoOfStock(pStock), (UINT)15);
+    EXPECT_FALSE(pStock->IsDLLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+    EXPECT_CALL(*pStock, SaveDLBasicInfo)
       .Times(1)
       .WillOnce(Return(true));
-    pStock->SetDayLineLoaded(true);
+    pStock->SetDLLoaded(true);
     pStock->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
-    CString str = gl_systemMessage.PopDayLineInfoMessage();
+    EXPECT_EQ(ThreadSaveDLBasicInfoOfStock(pStock), (UINT)15);
+    EXPECT_FALSE(pStock->IsDLLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 1);
+    CString str = gl_systemMessage.PopDLInfoMessage();
     EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));
   }
 
-  TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {
-    CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pStock->StoreDayLine(pDayLine);
+  TEST_F(CMockChinaStockTest, TestThreadLoadDL) {
+    CDLPtr pDL = make_shared<CDL>();
+    pStock->StoreDL(pDL);
     InSequence seq;
-    EXPECT_CALL(*pStock, LoadDayLine)
+    EXPECT_CALL(*pStock, LoadDL)
       .Times(1);
-    pStock->SetDayLineLoaded(false);
-    EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);
-    EXPECT_TRUE(pStock->IsDayLineLoaded());
-    EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
+    pStock->SetDLLoaded(false);
+    EXPECT_EQ(ThreadLoadDL(pStock), (UINT)16);
+    EXPECT_TRUE(pStock->IsDLLoaded());
+    EXPECT_EQ(pStock->GetDLSize(), 0) << _T("存储日线数据后清空队列\n");
   }
   TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();

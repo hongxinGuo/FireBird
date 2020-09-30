@@ -38,7 +38,7 @@ protected:
   CMFCTabCtrl	m_wndTabs;
 
   COutputList m_wndOutputInformation;
-  COutputList m_wndOutputDayLineInfo;
+  COutputList m_wndOutputDLInfo;
   COutputList m_wndOutputTransaction;
   COutputList m_wndOutputCancelSell;
   COutputList m_wndOutputCancelBuy;

@@ -8,13 +8,13 @@
 using namespace std;
 #include<thread>
 
-CNeteaseDayLineWebInquiry::CNeteaseDayLineWebInquiry() : CVirtualWebInquiry() {
+CNeteaseDLWebInquiry::CNeteaseDLWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://quotes.money.163.com/service/chddata.html?code=");
   m_strWebDataInquireSuffix = _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP");
-  m_strConnection = _T("NeteaseDayLine");
+  m_strConnection = _T("NeteaseDL");
 }
 
-CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
+CNeteaseDLWebInquiry::~CNeteaseDLWebInquiry() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -23,31 +23,31 @@ CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
+bool CNeteaseDLWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
   char buffer2[200];
 
   // 准备网易日线数据申请格式
-  if (gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(strMiddle)) {
+  if (gl_pChinaStockMarket->CreateNeteaseDLInquiringStr(strMiddle)) {
     SetDownLoadingStockCode(strMiddle);
-    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strMiddle);
+    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDL(strMiddle);
     strMiddle += _T("&start=19900101&end=");
     sprintf_s(buffer2, _T("%8d"), gl_pChinaStockMarket->GetFormatedMarketDate());
     strMiddle += buffer2;
     CreateTotalInquiringString(strMiddle);
-    gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(strMiddle);
+    gl_pChinaStockMarket->CheckValidOfNeteaseDLInquiringStr(strMiddle);
 
     return true;
   }
   return false;
 }
 
-void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadNeteaseDayLine, this);
+void CNeteaseDLWebInquiry::StartReadingThread(void) {
+  thread thread1(ThreadReadNeteaseDL, this);
   thread1.detach();
 }
 
-void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
+void CNeteaseDLWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
   char* p = strStockCode.GetBuffer();
   char cFirstChar = *p;
   CString strRight = strStockCode.Right(6);

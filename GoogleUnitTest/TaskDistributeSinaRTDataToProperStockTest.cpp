@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
       pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
       gl_ThreadStatus.SetRTDataNeedCalculate(false);
       pStock->ClearRTDataDeque();
     }
@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
     CWebRTDataPtr pRTData;
   };
 
-  INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeSinaRTDataToProperStockTest,
+  INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDLInquiryData, TaskDistributeSinaRTDataToProperStockTest,
                            testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5//, &Data6, &Data7, &Data8
                            ));
 

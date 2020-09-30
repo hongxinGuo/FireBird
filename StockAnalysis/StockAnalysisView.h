@@ -146,8 +146,8 @@ public:
   afx_msg void OnUpdateShowRsInLinear(CCmdUI* pCmdUI);
   afx_msg void OnShowRsIndex();
   afx_msg void OnUpdateShowRsIndex(CCmdUI* pCmdUI);
-  afx_msg void OnShowDayLine();
-  afx_msg void OnUpdateShowDayLine(CCmdUI* pCmdUI);
+  afx_msg void OnShowDL();
+  afx_msg void OnUpdateShowDL(CCmdUI* pCmdUI);
   afx_msg void OnShowRealTime();
   afx_msg void OnUpdateShowRealTime(CCmdUI* pCmdUI);
   afx_msg void OnShowWeekLine();

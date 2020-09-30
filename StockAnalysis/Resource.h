@@ -64,7 +64,7 @@
 #define ID_REBUILD_DAYLINE_DATABASE     32772
 #define ID_CALCULATE_TODAY_RELATIVE_STRONG 32773
 #define ID_SAVE_RTDATA                  32774
-#define ID_DownLoad_DayLine             32775
+#define ID_DownLoad_DL             32775
 #define ID_SAVE_DAYLINE_DATA            32776
 #define ID_SHOW_ORDINARY_BUY            32785
 #define ID_SHOW_ORDINARY_SELL           32786

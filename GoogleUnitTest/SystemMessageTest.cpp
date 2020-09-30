@@ -19,14 +19,14 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetDLInfoDequeSize() > 0) gl_systemMessage.PopDLInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {
       // clearup
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetDLInfoDequeSize() > 0) gl_systemMessage.PopDLInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
   };
@@ -51,12 +51,12 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("TEST"));
   }
 
-  TEST_F(SystemMessageTest, TestGetDayLineInfoDequeSize) {
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
-    gl_systemMessage.PushDayLineInfoMessage(_T("TEST"));
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
-    CString str = gl_systemMessage.PopDayLineInfoMessage();
-    EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
+  TEST_F(SystemMessageTest, TestGetDLInfoDequeSize) {
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 0);
+    gl_systemMessage.PushDLInfoMessage(_T("TEST"));
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 1);
+    CString str = gl_systemMessage.PopDLInfoMessage();
+    EXPECT_EQ(gl_systemMessage.GetDLInfoDequeSize(), 0);
     EXPECT_STREQ(str, _T("TEST"));
   }
 
