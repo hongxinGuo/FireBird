@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*pDayLine, CalculateRS1(120))
       .Times(1);
-    pDayLine->CalculateRelativeStrong();
+    pDayLine->CalculateRS();
   }
 
   TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSLogarithm) {
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(120))
       .Times(1);
-    pDayLine->CalculateRelativeStrongLogarithm();
+    pDayLine->CalculateRSLogarithm();
   }
 
   TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSIndex) {
@@ -81,6 +81,6 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*pDayLine, CalculateRSIndex1(120))
       .Times(1);
-    pDayLine->CalculateRelativeStrongIndex();
+    pDayLine->CalculateRSIndex();
   }
 }

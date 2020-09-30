@@ -649,27 +649,27 @@ bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtend
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrong(void) {
-  return m_DayLine.CalculateRelativeStrong();
+  return m_DayLine.CalculateRS();
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrongLogarithm(void) {
-  return m_DayLine.CalculateRelativeStrongLogarithm();
+  return m_DayLine.CalculateRSLogarithm();
 }
 
 bool CChinaStock::CalculateDayLineRelativeStrongIndex(void) {
-  return m_DayLine.CalculateRelativeStrongIndex();
+  return m_DayLine.CalculateRSIndex();
 }
 
 bool CChinaStock::CalculateWeekLineRelativeStrong(void) {
-  return m_WeekLine.CalculateRelativeStrong();
+  return m_WeekLine.CalculateRS();
 }
 
 bool CChinaStock::CalculateWeekLineRelativeStrongLogarithm(void) {
-  return m_WeekLine.CalculateRelativeStrongLogarithm();
+  return m_WeekLine.CalculateRSLogarithm();
 }
 
 bool CChinaStock::CalculateWeekLineRelativeStrongIndex(void) {
-  return m_WeekLine.CalculateRelativeStrongIndex();
+  return m_WeekLine.CalculateRSIndex();
 }
 
 bool CChinaStock::Calculate10RSStrong2StockSet(void) {

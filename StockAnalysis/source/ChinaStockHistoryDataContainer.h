@@ -40,11 +40,11 @@ public:
   bool IsDataLoaded(void) noexcept { return m_fDataLoaded; }
   void SetDataLoaded(bool fFlag) noexcept { m_fDataLoaded = fFlag; }
 
-  bool CalculateRelativeStrong(void);
+  bool CalculateRS(void);
   virtual bool CalculateRS1(INT64 lNumber);
-  bool CalculateRelativeStrongIndex(void);
+  bool CalculateRSIndex(void);
   virtual bool CalculateRSIndex1(INT64 lNumber);
-  bool CalculateRelativeStrongLogarithm(void);
+  bool CalculateRSLogarithm(void);
   virtual bool CalculateRSLogarithm1(INT64 lNumber);
 
   void GetRS1(vector<double>& vRS);
