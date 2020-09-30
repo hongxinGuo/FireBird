@@ -28,12 +28,12 @@ namespace StockAnalysisTest {
   TEST_F(CStockWeekLineContainerTest, TestUpdateData1) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pWeekLine->SetStockCode(_T("sh600000"));
-    pWeekLine->SetDay(20200101);
+    pWeekLine->SetDate(20200101);
     pWeekLine->SetHigh(1000);
     pWeekLine->SetLow(200);
     CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
     pWeekLine2->SetStockCode(_T("sh600001"));
-    pWeekLine2->SetDay(20200201);
+    pWeekLine2->SetDate(20200201);
     pWeekLine2->SetHigh(11000);
     pWeekLine2->SetLow(1200);
 
@@ -56,7 +56,7 @@ namespace StockAnalysisTest {
   TEST_F(CStockWeekLineContainerTest, TestUpdateData2) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetStockCode(_T("sh600000"));
-    pDayLine->SetDay(20200101);
+    pDayLine->SetDate(20200101);
     pDayLine->SetHigh(10000);
     pDayLine->SetLow(100);
     pDayLine->SetTransactionNumber(101);
@@ -80,12 +80,12 @@ namespace StockAnalysisTest {
   TEST_F(CStockWeekLineContainerTest, TestStoreData1) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pWeekLine->SetStockCode(_T("sh600000"));
-    pWeekLine->SetDay(20200101);
+    pWeekLine->SetDate(20200101);
     pWeekLine->SetHigh(1000);
     pWeekLine->SetLow(200);
     CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
     pWeekLine2->SetStockCode(_T("sh600001"));
-    pWeekLine2->SetDay(20200201);
+    pWeekLine2->SetDate(20200201);
     pWeekLine2->SetHigh(11000);
     pWeekLine2->SetLow(1200);
 

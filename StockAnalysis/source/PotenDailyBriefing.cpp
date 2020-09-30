@@ -6,7 +6,7 @@
 
 CPotenDailyBriefing::CPotenDailyBriefing() {
   m_lID = 0;
-  m_lDay = 0;
+  m_lDate = 0;
   m_dTD3C = m_dTD9 = m_dTD20 = m_dTD21 = 0;
   m_dTC1 = m_dTC2 = m_dTC5 = m_dTC14 = 0;
   m_dVLCC_TC_1YEAR = m_dSUEZMAX_TC_1YEAR = m_dAFRAMAX_TC_1YEAR = m_dLR2_TC_1YEAR = m_dLR1_TC_1YEAR = m_dMR_TC_1YEAR = m_dHANDYMAX_TC_1YEAR = 0;
@@ -29,7 +29,7 @@ void CPotenDailyBriefing::Reset(void) {
 }
 
 void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
-  m_lDay = setPotenDailyBriefing.m_Date;
+  m_lDate = setPotenDailyBriefing.m_Date;
   m_dTD3C = atof(setPotenDailyBriefing.m_VLCC_TD3C);
   m_dTD9 = atof(setPotenDailyBriefing.m_AFRAMAX_TD9);
   m_dTD20 = atof(setPotenDailyBriefing.m_SUEZMAX_TD20);
@@ -80,7 +80,7 @@ void CPotenDailyBriefing::LoadData(CSetPotenDailyBriefing& setPotenDailyBriefing
 void CPotenDailyBriefing::SaveData(CSetPotenDailyBriefing& setPotenDailyBriefing) {
   ASSERT(setPotenDailyBriefing.IsOpen());
 
-  setPotenDailyBriefing.m_Date = m_lDay;
+  setPotenDailyBriefing.m_Date = m_lDate;
   setPotenDailyBriefing.m_VLCC_TD3C = ConvertValueToString(m_dTD3C);
   setPotenDailyBriefing.m_AFRAMAX_TD9 = ConvertValueToString(m_dTD9);
   setPotenDailyBriefing.m_SUEZMAX_TD20 = ConvertValueToString(m_dTD20);

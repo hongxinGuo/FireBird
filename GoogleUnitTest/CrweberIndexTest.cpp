@@ -61,7 +61,7 @@ namespace StockAnalysisTest {
   TEST_F(CrweberIndexTest, TestLoadData) {
     CSetCrweberIndex setCrweberIndex;
     CCrweberIndex id, id2;
-    id.m_lDay = 20000101;
+    id.m_lDate = 20000101;
     id.m_dTD1 = 1.0;
     id.m_dTD2 = 2.0;
     id.m_dTD3C = 3.0;
@@ -119,7 +119,7 @@ namespace StockAnalysisTest {
     setCrweberIndex.Open();
     id2.LoadData(setCrweberIndex);
     setCrweberIndex.Close();
-    EXPECT_EQ(id.m_lDay, id2.m_lDay);
+    EXPECT_EQ(id.m_lDate, id2.m_lDate);
     EXPECT_DOUBLE_EQ(id.m_dTD1, id2.m_dTD1);
     EXPECT_DOUBLE_EQ(id.m_dTD2, id2.m_dTD2);
     EXPECT_DOUBLE_EQ(id.m_dTD3C, id2.m_dTD3C);
@@ -175,7 +175,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CrweberIndexTest, TestIsDataChanged) {
     CCrweberIndex id, id2;
-    id.m_lDay = 20000101;
+    id.m_lDate = 20000101;
     id.m_dTD1 = 1.0;
     id.m_dTD2 = 2.0;
     id.m_dTD3C = 3.0;

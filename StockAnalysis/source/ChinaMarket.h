@@ -198,7 +198,7 @@ public:
   virtual bool UpdateTodayTempDB(void);
   bool DeleteTodayTempDB(void);
   bool LoadTodayTempDB(void);
-  bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDay);
+  bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
 
@@ -212,9 +212,9 @@ public:
   bool DeleteDayLine(void);
   bool DeleteDayLineBasicInfo(void);
   bool DeleteDayLineExtendInfo(void);
-  bool DeleteDayLine(long lDay);
-  bool DeleteDayLineBasicInfo(long lDay);
-  bool DeleteDayLineExtendInfo(long lDay);
+  bool DeleteDayLine(long lDate);
+  bool DeleteDayLineBasicInfo(long lDate);
+  bool DeleteDayLineExtendInfo(long lDate);
 
   bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
@@ -246,8 +246,8 @@ public:
   bool IsDayLineNeedSaving(void);
 
   virtual long BuildDayLineOfDay(long lCurrentTradeDay);
-  virtual bool BuildDayLineRSOfDay(long lDay);
-  virtual bool BuildWeekLineRSOfDay(long lDay);
+  virtual bool BuildDayLineRSOfDay(long lDate);
+  virtual bool BuildWeekLineRSOfDay(long lDate);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
@@ -263,17 +263,17 @@ public:
   void ClearDayLineDBUpdatedFlag(void);
 
   long GetRelativeStrongStartDate(void) noexcept { return m_lRelativeStrongStartDate; }
-  void SetRelativeStrongStartDate(long lDay) noexcept { m_lRelativeStrongStartDate = lDay; }
+  void SetRelativeStrongStartDate(long lDate) noexcept { m_lRelativeStrongStartDate = lDate; }
   long GetRelativeStrongEndDate(void) noexcept { return m_lRelativeStrongEndDate; }
-  void SetRelativeStrongEndDate(long lDay) noexcept { m_lRelativeStrongEndDate = lDay; }
+  void SetRelativeStrongEndDate(long lDate) noexcept { m_lRelativeStrongEndDate = lDate; }
   long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
-  void SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
+  void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
   long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
-  void SetUpdatedDayFor10DayRS1(long lDay) noexcept { m_lUpdatedDayFor10DayRS1 = lDay; }
+  void SetUpdatedDateFor10DAyRS1(long lDate) noexcept { m_lUpdatedDayFor10DayRS1 = lDate; }
   long GetUpdatedDayFor10DayRS2(void) noexcept { return m_lUpdatedDayFor10DayRS2; }
-  void SetUpdatedDayFor10DayRS2(long lDay) noexcept { m_lUpdatedDayFor10DayRS2 = lDay; }
+  void SetUpdatedDateFor10DAyRS2(long lDate) noexcept { m_lUpdatedDayFor10DayRS2 = lDate; }
   long GetUpdatedDayFor10DayRS(void) noexcept { return m_lUpdatedDayFor10DayRS; }
-  void SetUpdatedDayFor10DayRS(long lDay) noexcept { m_lUpdatedDayFor10DayRS = lDay; }
+  void SetUpdatedDayFor10DayRS(long lDate) noexcept { m_lUpdatedDayFor10DayRS = lDate; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);

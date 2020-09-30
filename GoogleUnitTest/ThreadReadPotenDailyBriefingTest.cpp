@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(false));
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
-    potenDailyBriefingInquiry.SetInquiringDay(12345678);
+    potenDailyBriefingInquiry.SetInquiringDate(12345678);
     EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
@@ -39,7 +39,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
-    potenDailyBriefingInquiry.SetInquiringDay(12345678);
+    potenDailyBriefingInquiry.SetInquiringDate(12345678);
     EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);

@@ -436,7 +436,7 @@ namespace StockAnalysisTest {
     CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
     time_t tt;
     time(&tt);
-    long lDaySource = FormatToDay(tt);
+    long lDaySource = FormatToDate(tt);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetLastClose(10101010);
@@ -455,7 +455,7 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i * 45678);
     }
     stock.UpdateStatus(pRTData);
-    long lDayDest = FormatToDay(stock.GetTransactionTime());
+    long lDayDest = FormatToDate(stock.GetTransactionTime());
     EXPECT_EQ(lDaySource, lDayDest);
     EXPECT_EQ(stock.GetMarket(), 0);
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
@@ -504,14 +504,14 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSaveTodayInfo) {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CChinaStock stock;
-    long lDay = 21091101;
-    time_t tt = FormatToTTime(lDay);
-    CString strDay = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
+    long lDate = 21091101;
+    time_t tt = FormatToTTime(lDate);
+    CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     stock.SetMarket(__SHANGHAI_MARKET__);
     stock.SetStockCode(_T("sh600000"));
     stock.SetStockName("浦东发展");
-    stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDay()作比较
+    stock.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDate()作比较
     stock.SetLastClose(101010);
     stock.SetOpen(202020);
     stock.SetHigh(303030);
@@ -528,7 +528,7 @@ namespace StockAnalysisTest {
     ASSERT(gl_fTestMode);
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.m_strFilter += strDate;
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
     while (!setDayLineBasicInfo.IsEOF()) {
@@ -784,7 +784,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.HaveNewDayLineData());
     EXPECT_EQ(stock.GetDayLineSize(), 0);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDay(20200101);
+    pDayLine->SetDate(20200101);
     stock.StoreDayLine(pDayLine);
     EXPECT_EQ(stock.GetDayLineSize(), 1);
     stock.SetDayLineEndDate(20200101);
@@ -1303,7 +1303,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(21900101);
 
     pid = make_shared<CDayLine>();
-    pid->SetDay(21900101);
+    pid->SetDate(21900101);
     pid->SetMarket(__SHANGHAI_MARKET__);
     pid->SetStockCode(_T("sh600011"));
     pid->SetStockName(_T("首创股份"));
@@ -1527,7 +1527,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(21101201);
+      pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600016"));
       pid->SetStockName(_T("首创股份"));
@@ -1598,7 +1598,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(21101201);
+      pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600010"));
       pid->SetStockName(_T("首创股份"));
@@ -1666,7 +1666,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000 + 2);
+      pid->SetDate(__CHINA_MARKET_BEGIN_DAY__ + i * 100000 + 2);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600004"));
       pid->SetStockName(_T("白云机场"));
@@ -1703,7 +1703,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
-      pid->SetDay(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
+      pid->SetDate(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
       pid->SetStockName(_T("首创股份"));
@@ -1809,7 +1809,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine;
     for (int i = 0; i < 10; i++) {
       pDayLine = make_shared<CDayLine>();
-      pDayLine->SetDay(19900101 + i);
+      pDayLine->SetDate(19900101 + i);
       pDayLine->SetClose(10);
       pDayLine->SetLastClose(10);
       vDayLine.push_back(pDayLine);
@@ -2010,7 +2010,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
-      pid->SetDay(21101201);
+      pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600016"));
       pid->SetStockName(_T("首创股份"));
@@ -2081,7 +2081,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
-      pid->SetDay(21101201);
+      pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600010"));
       pid->SetStockName(_T("首创股份"));

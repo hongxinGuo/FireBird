@@ -20,14 +20,14 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SetProcessingTodayStock();
 
-  long lDay = FormatToDay(pMarket->GetNewestTransactionTime());
-  if (lDay == pMarket->GetFormatedMarketDate()) {
-    pMarket->BuildDayLineOfDay(lDay);
+  long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
+  if (lDate == pMarket->GetFormatedMarketDate()) {
+    pMarket->BuildDayLineOfDay(lDate);
     // 计算本日日线相对强度
-    pMarket->BuildDayLineRSOfDay(lDay);
+    pMarket->BuildDayLineRSOfDay(lDate);
     // 生成周线数据
     pMarket->BuildWeekLineOfCurrentWeek();
-    pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDay));
+    pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDate));
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
       pMarket->SetRelativeStrongEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。

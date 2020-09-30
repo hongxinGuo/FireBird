@@ -65,7 +65,7 @@ void CVirtualMarket::CalculateTime(void) noexcept {
   m_lMarketTime = m_tmMarket.tm_hour * 10000 + m_tmMarket.tm_min * 100 + m_tmMarket.tm_sec;
 }
 
-void CVirtualMarket::CalculateLastTradeDay(void) noexcept {
+void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
   time_t ttime = 0;
 
   switch (m_tmMarket.tm_wday) {
@@ -100,10 +100,10 @@ bool CVirtualMarket::IsWorkingDay(CTime timeCurrent) noexcept {
   else return true;
 }
 
-bool CVirtualMarket::IsWorkingDay(long lDay) noexcept {
-  const long year = lDay / 10000;
-  const long month = lDay / 100 - year * 100;
-  const long day = lDay - year * 10000 - month * 100;
+bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - year * 100;
+  const long day = lDate - year * 10000 - month * 100;
   CTime ct(year, month, day, 12, 0, 0);
 
   if ((ct.GetDayOfWeek() == 1) || (ct.GetDayOfWeek() == 7)) {
@@ -189,11 +189,11 @@ CString CVirtualMarket::GetStringOfMarketDateTime(void) {
   return(str);
 }
 
-CString CVirtualMarket::GetStringOfDate(long lDay) {
+CString CVirtualMarket::GetStringOfDate(long lDate) {
   char buffer[30];
-  long year = lDay / 10000;
-  long month = lDay / 100 - year * 100;
-  long day = lDay - year * 10000 - month * 100;
+  long year = lDate / 10000;
+  long month = lDate / 100 - year * 100;
+  long day = lDate - year * 10000 - month * 100;
 
   sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), year, month, day);
   CString str;

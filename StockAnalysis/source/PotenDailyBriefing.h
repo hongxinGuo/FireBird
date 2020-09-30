@@ -23,11 +23,11 @@ public:
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
   void SetTodayUpdated(bool fFlag) noexcept { m_fTodayUpdated = fFlag; }
 
-  void SetNewestDataTime(long lDay) noexcept { m_lDay = lDay; }
-  long GetCurrentDataTime(void) noexcept { return m_lDay; }
+  void SetNewestDataTime(long lDate) noexcept { m_lDate = lDate; }
+  long GetCurrentDataTime(void) noexcept { return m_lDate; }
 
-  void SetDay(long lDay) noexcept { m_lDay = lDay; }
-  long GetFormatedMarketDate(void) noexcept { return m_lDay; }
+  void SetDate(long lDate) noexcept { m_lDate = lDate; }
+  long GetFormatedMarketDate(void) noexcept { return m_lDate; }
   double GetTD3C(void) noexcept { return m_dTD3C; }
   double GetTD9(void) noexcept { return m_dTD9; }
   double GetTD20(void) noexcept { return m_dTD20; }
@@ -50,7 +50,7 @@ public:
 
 public:
   long m_lID;
-  long m_lDay;
+  long m_lDate;
   double m_dTD3C;
   double m_dTD9;
   double m_dTD20;

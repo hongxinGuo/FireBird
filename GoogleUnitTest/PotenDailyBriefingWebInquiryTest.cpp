@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      m_PotenDailyBriefingWebInquiry.SetInquiringDay(20180411);
+      m_PotenDailyBriefingWebInquiry.SetInquiringDate(20180411);
       m_PotenDailyBriefingWebInquiry.SetReadingWebData(false);
     }
 
@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
   TEST_F(CPotenDailyBriefingWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_PotenDailyBriefingWebInquiry.GetInquiringStringPrefix(), _T("http://energy.poten.com/poten-daily-briefing-webpage-"));
     EXPECT_STREQ(m_PotenDailyBriefingWebInquiry.GetInquiringStringSuffix(), _T(""));
-    EXPECT_EQ(m_PotenDailyBriefingWebInquiry.GetInquiringDay(), 20180411);
+    EXPECT_EQ(m_PotenDailyBriefingWebInquiry.GetInquiringDate(), 20180411);
   }
 
   TEST_F(CPotenDailyBriefingWebInquiryTest, TestGetWebData) {
@@ -41,12 +41,12 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CPotenDailyBriefingWebInquiryTest, TestGetInquiringDay) {
-    m_PotenDailyBriefingWebInquiry.SetInquiringDay(19901212);
-    EXPECT_EQ(m_PotenDailyBriefingWebInquiry.GetInquiringDay(), 19901212);
+    m_PotenDailyBriefingWebInquiry.SetInquiringDate(19901212);
+    EXPECT_EQ(m_PotenDailyBriefingWebInquiry.GetInquiringDate(), 19901212);
   }
 
   TEST_F(CPotenDailyBriefingWebInquiryTest, TestPrepareInquiringStr) {
-    m_PotenDailyBriefingWebInquiry.SetInquiringDay(19900101);
+    m_PotenDailyBriefingWebInquiry.SetInquiringDate(19900101);
     EXPECT_TRUE(m_PotenDailyBriefingWebInquiry.PrepareNextInquiringStr());
     CString str = _T("http://energy.poten.com/poten-daily-briefing-webpage-");
     str += _T("04/11/2018");

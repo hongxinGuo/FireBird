@@ -30,12 +30,12 @@ public:
   long GetFormatedMarketDate(void) noexcept { return m_lMarketDate; }// 得到本市场的当地日期， 格式为：yyyymmdd
   long GetDayOfWeek(void) noexcept { return m_tmMarket.tm_wday; }
   long GetMonthOfYear(void) noexcept { return m_tmMarket.tm_mon + 1; }
-  long GetDayOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
+  long GetDateOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
   long GetYear(void) noexcept { return m_tmMarket.tm_year + 1900; }
-  long GetLastTradeDay(void) noexcept { CalculateLastTradeDay(); return m_lMarketLastTradeDay; }
+  long GetLastTradeDay(void) noexcept { CalculateLastTradeDate(); return m_lMarketLastTradeDay; }
   bool IsWorkingDay(void) noexcept;
   bool IsWorkingDay(CTime timeCurrent) noexcept;
-  bool IsWorkingDay(long lDay) noexcept;
+  bool IsWorkingDay(long lDate) noexcept;
 
   bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept;
   long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
@@ -45,11 +45,11 @@ public:
   CString GetStringOfLocalDateTime(void);
   CString GetStringOfMarketTime(void); // 得到本市场时间的字符串
   CString GetStringOfMarketDateTime(void);
-  CString GetStringOfDate(long lDay);
+  CString GetStringOfDate(long lDate);
   CString GetStringOfMarketDate(void);
 
   void CalculateTime(void) noexcept;// 计算本市场的各时间
-  void CalculateLastTradeDay(void) noexcept;
+  void CalculateLastTradeDate(void) noexcept;
   void TaskResetMarketFlagAtMidnight(long lCurrentTime);
 
   bool IsReadyToRun(void) noexcept { return m_fReadyToRun; }

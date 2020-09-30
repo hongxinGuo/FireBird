@@ -121,10 +121,10 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
     pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
     pWebData->SetCurrentPos(0);
     if (m_CrweberIndex.ReadData(pWebData)) {
-      m_lNewestUPdateDate = m_CrweberIndex.m_lDay;
-      if (m_lNewestDatabaseDate < m_CrweberIndex.m_lDay) {
+      m_lNewestUPdateDate = m_CrweberIndex.m_lDate;
+      if (m_lNewestDatabaseDate < m_CrweberIndex.m_lDate) {
         m_fTodayDataUpdated = true;
-        m_lNewestDatabaseDate = m_CrweberIndex.m_lDay;
+        m_lNewestDatabaseDate = m_CrweberIndex.m_lDate;
       }
       if (!m_fTodayDataUpdated || m_CrweberIndex.IsDataChanged(m_CrweberIndexLast)) {
         m_CrweberIndexLast = m_CrweberIndex;
@@ -166,9 +166,9 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
     pCrweberIndex->LoadData(setCrweberIndex);
     m_vCrweberIndex[i] = pCrweberIndex;
-    if (m_lNewestDatabaseDate < pCrweberIndex->m_lDay) {
+    if (m_lNewestDatabaseDate < pCrweberIndex->m_lDate) {
       i++;
-      m_lNewestDatabaseDate = pCrweberIndex->m_lDay;
+      m_lNewestDatabaseDate = pCrweberIndex->m_lDate;
     }
     setCrweberIndex.MoveNext();
   }

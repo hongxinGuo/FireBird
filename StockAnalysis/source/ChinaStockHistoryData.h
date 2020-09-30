@@ -27,8 +27,8 @@ public:
   void CalculateRSLogarithm(double dRS);
 
 public:
-  long GetFormatedMarketDate(void) noexcept { return m_lDay; }
-  void SetDay(long lDay) noexcept { m_lDay = lDay; }
+  long GetFormatedMarketDate(void) noexcept { return m_lDate; }
+  void SetDate(long lDate) noexcept { m_lDate = lDate; }
   time_t GetFormatedMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t t) noexcept { m_time = t; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
@@ -227,7 +227,7 @@ private:
 
 protected:
   // need to save
-  long m_lDay; // 类型(YYYYMMDD)
+  long m_lDate; // 类型(YYYYMMDD)
   time_t m_time;
   WORD m_wMarket;
   CString m_strStockCode;

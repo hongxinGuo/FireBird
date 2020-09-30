@@ -1877,7 +1877,7 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   long lCurrentMonday = GetCurrentMonday(GetFormatedMarketDate());
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
-  CString strDay;
+  CString strDate;
   char buffer[10];
   CWeekLinePtr pWeekLine = nullptr;
   CWeekLineContainer weekLineContainer;
@@ -1885,14 +1885,14 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   DeleteCurrentWeekWeekLine();
 
   sprintf_s(buffer, _T("%08d"), lCurrentMonday);
-  strDay = buffer;
+  strDate = buffer;
   setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
-  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.m_strFilter += strDate;
   setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
   setWeekLineBasicInfo.Open();
 
   setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
-  setWeekLineExtendInfo.m_strFilter += strDay;
+  setWeekLineExtendInfo.m_strFilter += strDate;
   setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
   setWeekLineExtendInfo.Open();
 
@@ -1921,30 +1921,30 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   return true;
 }
 
-bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
+bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) {
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   CTime ctTime;
   CSetDayLineBasicInfo setDayLineBasicInfo;
   CSetDayLineExtendInfo setDayLineExtendInfo;
 
-  sprintf_s(pch, _T("%08d"), lDay);
-  strDay = pch;
+  sprintf_s(pch, _T("%08d"), lDate);
+  strDate = pch;
   setDayLineBasicInfo.m_strSort = _T("[StockCode]");
   setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.m_strFilter += strDate;
   setDayLineBasicInfo.Open();
   if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
     setDayLineBasicInfo.Close();
-    CString str = strDay;
+    CString str = strDate;
     str += _T("日数据集为空，无需处理周线数据");
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
   setDayLineExtendInfo.m_strSort = _T("[StockCode]");
   setDayLineExtendInfo.m_strFilter = _T("[Date] =");
-  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.m_strFilter += strDate;
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -1970,16 +1970,16 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDay) {
 
 bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek) {
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   CTime ctTime;
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
 
   sprintf_s(pch, _T("%08d"), lMondayOfWeek);
-  strDay = pch;
+  strDate = pch;
   setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
   setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.m_strFilter += strDate;
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
   while (!setWeekLineBasicInfo.IsEOF()) {
@@ -2050,15 +2050,15 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
 
 bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   CTime ctTime;
   CSetWeekLineBasicInfo setWeekLineBasicInfo;
 
   sprintf_s(pch, _T("%08d"), lMonday);
-  strDay = pch;
+  strDate = pch;
   setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.m_strFilter += strDate;
   setWeekLineBasicInfo.Open();
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
   while (!setWeekLineBasicInfo.IsEOF()) {
@@ -2073,15 +2073,15 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
 
 bool CChinaMarket::DeleteWeekLineExtendInfo(long lMonday) {
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   CTime ctTime;
   CSetWeekLineExtendInfo setWeekLineExtendInfo;
 
   sprintf_s(pch, _T("%08d"), lMonday);
-  strDay = pch;
+  strDate = pch;
   setWeekLineExtendInfo.m_strFilter = _T("[Date] =");
-  setWeekLineExtendInfo.m_strFilter += strDay;
+  setWeekLineExtendInfo.m_strFilter += strDate;
   setWeekLineExtendInfo.Open();
   setWeekLineExtendInfo.m_pDatabase->BeginTrans();
   while (!setWeekLineExtendInfo.IsEOF()) {
@@ -2503,7 +2503,7 @@ bool CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable(void) {
 //////////////////////////////////////////////////////////////////////////////////
 long CChinaMarket::BuildDayLineOfDay(long lCurrentTradeDay) {
   char buffer[20];
-  CString strDay;
+  CString strDate;
   CSetDayLineBasicInfo setDayLineBasicInfo;
   CSetDayLineExtendInfo setDayLineExtendInfo;
   long iCount = 0;
@@ -2519,7 +2519,7 @@ long CChinaMarket::BuildDayLineOfDay(long lCurrentTradeDay) {
 
   // 存储当前交易日的数据
   _ltoa_s(lCurrentTradeDay, buffer, 10);
-  strDay = buffer;
+  strDate = buffer;
   setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
@@ -2612,22 +2612,22 @@ bool CChinaMarket::DeleteDayLineExtendInfo(void) {
   return true;
 }
 
-bool CChinaMarket::DeleteDayLine(long lDay) {
-  DeleteDayLineBasicInfo(lDay);
-  DeleteDayLineExtendInfo(lDay);
+bool CChinaMarket::DeleteDayLine(long lDate) {
+  DeleteDayLineBasicInfo(lDate);
+  DeleteDayLineExtendInfo(lDate);
 
   return true;
 }
 
-bool CChinaMarket::DeleteDayLineBasicInfo(long lDay) {
+bool CChinaMarket::DeleteDayLineBasicInfo(long lDate) {
   char buffer[20];
-  CString strDay;
+  CString strDate;
   CSetDayLineBasicInfo setDayLineBasicInfo;
 
-  _ltoa_s(lDay, buffer, 10);
-  strDay = buffer;
+  _ltoa_s(lDate, buffer, 10);
+  strDate = buffer;
   setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.m_strFilter += strDate;
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   while (!setDayLineBasicInfo.IsEOF()) {
@@ -2640,15 +2640,15 @@ bool CChinaMarket::DeleteDayLineBasicInfo(long lDay) {
   return true;
 }
 
-bool CChinaMarket::DeleteDayLineExtendInfo(long lDay) {
+bool CChinaMarket::DeleteDayLineExtendInfo(long lDate) {
   char buffer[20];
-  CString strDay;
+  CString strDate;
   CSetDayLineExtendInfo setDayLineExtendInfo;
 
-  _ltoa_s(lDay, buffer, 10);
-  strDay = buffer;
+  _ltoa_s(lDate, buffer, 10);
+  strDate = buffer;
   setDayLineExtendInfo.m_strFilter = _T("[Date] =");
-  setDayLineExtendInfo.m_strFilter += strDay;
+  setDayLineExtendInfo.m_strFilter += strDate;
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
   while (!setDayLineExtendInfo.IsEOF()) {
@@ -2867,18 +2867,18 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算lDay的日线相对强度, lDay的格式为：YYYYMMDD,如 19990605.
+// 计算lDate的日线相对强度, lDate的格式为：YYYYMMDD,如 19990605.
 // 将日线按涨跌排列后,其相对强弱即其在队列中的位置.
 // m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
+bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
   int iTotalAShare = 0;
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   int iStockNumber = 0;
   CTime ctTime;
@@ -2888,15 +2888,15 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
   double dIndexUpDownRate;
   double dRelativeStrongIndex;
 
-  sprintf_s(pch, _T("%08d"), lDay);
-  strDay = pch;
+  sprintf_s(pch, _T("%08d"), lDate);
+  strDate = pch;
   setDayLineBasicInfo.m_strSort = _T("[UpDownRate]");
   setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-  setDayLineBasicInfo.m_strFilter += strDay;
+  setDayLineBasicInfo.m_strFilter += strDate;
   setDayLineBasicInfo.Open();
   if (setDayLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
     setDayLineBasicInfo.Close();
-    CString str = strDay;
+    CString str = strDate;
     str += _T("日数据集为空，没有计算相对强度");
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
@@ -2977,9 +2977,9 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
   vIndex.clear();
   vRelativeStrong.clear();
 
-  CString strDay2 = GetStringOfDate(lDay);
+  CString strDate2 = GetStringOfDate(lDate);
   CString strTemp;
-  strTemp = strDay2 + _T("的股票日线相对强度计算完成");
+  strTemp = strDate2 + _T("的股票日线相对强度计算完成");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);
@@ -2987,18 +2987,18 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDay) {
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算lDay的周线相对强度, lDay的格式为：YYYYMMDD,如 19990605.
+// 计算lDate的周线相对强度, lDate的格式为：YYYYMMDD,如 19990605.
 // 将周线按涨跌排列后,其相对强弱即其在队列中的位置.
 // m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
+bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRelativeStrong;
   int iTotalAShare = 0;
   CString strSQL;
-  CString strDay;
+  CString strDate;
   char  pch[30];
   int iStockNumber = 0;
   CTime ctTime;
@@ -3008,17 +3008,17 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
   double dIndexUpDownRate;
   double dRelativeStrongIndex;
 
-  ASSERT(GetCurrentMonday(lDay) == lDay); // 确保此日期为星期一
+  ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
-  sprintf_s(pch, _T("%08d"), lDay);
-  strDay = pch;
+  sprintf_s(pch, _T("%08d"), lDate);
+  strDate = pch;
   setWeekLineBasicInfo.m_strSort = _T("[UpDownRate]");
   setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
-  setWeekLineBasicInfo.m_strFilter += strDay;
+  setWeekLineBasicInfo.m_strFilter += strDate;
   setWeekLineBasicInfo.Open();
   if (setWeekLineBasicInfo.IsEOF()) { // 数据集为空，表明此日没有交易
     setWeekLineBasicInfo.Close();
-    CString str = strDay;
+    CString str = strDate;
     str += _T("日数据集为空，没有计算相对强度");
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
@@ -3083,9 +3083,9 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDay) {
   vIndex.clear();
   vRelativeStrong.clear();
 
-  CString strDay2 = GetStringOfDate(lDay);
+  CString strDate2 = GetStringOfDate(lDate);
   CString strTemp;
-  strTemp = strDay2 + _T("的股票周线相对强度计算完成");
+  strTemp = strDate2 + _T("的股票周线相对强度计算完成");
   gl_systemMessage.PushDayLineInfoMessage(strTemp);    // 采用同步机制报告信息
 
   return(true);
@@ -3185,9 +3185,9 @@ void CChinaMarket::LoadOptionDB(void) {
   if (setOption.IsEOF()) {
     SetRelativeStrongStartDate(__CHINA_MARKET_BEGIN_DAY__);
     SetRelativeStrongEndDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
-    SetUpdatedDayFor10DayRS1(__CHINA_MARKET_BEGIN_DAY__);
-    SetUpdatedDayFor10DayRS2(__CHINA_MARKET_BEGIN_DAY__);
+    SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);
+    SetUpdatedDateFor10DAyRS1(__CHINA_MARKET_BEGIN_DAY__);
+    SetUpdatedDateFor10DAyRS2(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
     if (setOption.m_RelativeStrongEndDate == 0) {
@@ -3208,13 +3208,13 @@ void CChinaMarket::LoadOptionDB(void) {
       SetRelativeStrongStartDate(setOption.m_RalativeStrongStartDate);
     }
     if (setOption.m_LastLoginDay == 0) {
-      SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
+      SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      SetLastLoginDay(setOption.m_LastLoginDay);
+      SetLastLoginDate(setOption.m_LastLoginDay);
     }
-    SetUpdatedDayFor10DayRS1(setOption.m_UpdatedDayFor10DayRS1);
-    SetUpdatedDayFor10DayRS2(setOption.m_UpdatedDayFor10DayRS2);
+    SetUpdatedDateFor10DAyRS1(setOption.m_UpdatedDayFor10DayRS1);
+    SetUpdatedDateFor10DAyRS2(setOption.m_UpdatedDayFor10DayRS2);
     SetUpdatedDayFor10DayRS(setOption.m_UpdatedDayFor10DayRS);
     if (setOption.m_UpdatedDayFor10DayRS1 < GetFormatedMarketDate())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;

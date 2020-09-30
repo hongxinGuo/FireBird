@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_fTestMode);
   }
 
-  TEST_F(AccessoryTest, TestFormatToDay) {
+  TEST_F(AccessoryTest, TestFormatToDate) {
     tm tm_, tm_2;
     tm_.tm_year = 2000 - 1900;
     tm_.tm_mon = 0;
@@ -36,11 +36,11 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     tm_2 = tm_;
-    long lDay = FormatToDay(&tm_);
+    long lDate = FormatToDate(&tm_);
     time_t tt = mktime(&tm_2);
-    long lDay2 = FormatToDay(tt);
-    EXPECT_EQ(lDay, 20000105);
-    EXPECT_EQ(lDay2, 20000105);
+    long lDate2 = FormatToDate(tt);
+    EXPECT_EQ(lDate, 20000105);
+    EXPECT_EQ(lDate2, 20000105);
   }
 
   TEST_F(AccessoryTest, TestFormatToTime) {
@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lTime2, 102030);
   }
 
-  TEST_F(AccessoryTest, TestFormatToDayTime) {
+  TEST_F(AccessoryTest, TestFormatToDateTime) {
     tm tm_, tm_2;
     tm_.tm_year = 2000 - 1900;
     tm_.tm_mon = 0;
@@ -68,11 +68,11 @@ namespace StockAnalysisTest {
     tm_.tm_min = 20;
     tm_.tm_sec = 30;
     tm_2 = tm_;
-    INT64 lDayTime = FormatToDayTime(&tm_);
+    INT64 lDateTime = FormatToDateTime(&tm_);
     time_t tt = mktime(&tm_2);
-    INT64 lDayTime2 = FormatToDayTime(tt);
-    EXPECT_EQ(lDayTime, 20000105102030);
-    EXPECT_EQ(lDayTime2, 20000105102030);
+    INT64 lDateTime2 = FormatToDateTime(tt);
+    EXPECT_EQ(lDateTime, 20000105102030);
+    EXPECT_EQ(lDateTime2, 20000105102030);
   }
 
   TEST_F(AccessoryTest, TestGetNextMonday) {
@@ -135,8 +135,8 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    long lDay = FormatToDay(tt);
-    EXPECT_EQ(lDay, 20000105);
+    long lDate = FormatToDate(tt);
+    EXPECT_EQ(lDate, 20000105);
   }
 
   TEST_F(AccessoryTest, TestEnlarge) {

@@ -6,7 +6,7 @@
 
 CCrweberIndex::CCrweberIndex() {
   m_lID = 0;
-  m_lDay = 0;
+  m_lDate = 0;
   m_dTD1 = m_dTD2 = m_dTD3C = m_dTD5 = m_dTD6 = m_dTD7 = m_dTD8 = m_dTD9 = m_dTD12 = m_dTD15 = m_dTD19 = m_dTD20
     = m_dTD21 = m_dVLCC_USGSPORE = m_dSUEZMAX_CBSUSG = 0;
   m_dTC1 = m_dTC2 = m_dTC3 = m_dTC4 = m_dTC5 = m_dTC14 = m_dCPP_USGCBS = 0;
@@ -38,7 +38,7 @@ void CCrweberIndex::Reset(void) {
 }
 
 void CCrweberIndex::LoadData(CSetCrweberIndex& setCrweberIndex) {
-  m_lDay = setCrweberIndex.m_Date;
+  m_lDate = setCrweberIndex.m_Date;
   m_dTD1 = atof(setCrweberIndex.m_TD1);
   m_dTD2 = atof(setCrweberIndex.m_TD2);
   m_dTD3C = atof(setCrweberIndex.m_TD3C);
@@ -78,7 +78,7 @@ void CCrweberIndex::LoadData(CSetCrweberIndex& setCrweberIndex) {
 void CCrweberIndex::SaveData(CSetCrweberIndex& setCrweberIndex) {
   ASSERT(setCrweberIndex.IsOpen());
 
-  setCrweberIndex.m_Date = m_lDay;
+  setCrweberIndex.m_Date = m_lDate;
   setCrweberIndex.m_TD1 = ConvertValueToString(m_dTD1);
   setCrweberIndex.m_TD2 = ConvertValueToString(m_dTD2);
   setCrweberIndex.m_TD3C = ConvertValueToString(m_dTD3C);
@@ -171,9 +171,9 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
       m_dTC5 = GetOneValue(pWebData);
       m_dTC4 = GetOneValue(pWebData);
 
-      CString strDay = ConvertValueToString(lUpdateDay, 1);
+      CString strDate = ConvertValueToString(lUpdateDay, 1);
       if (lUpdateDay > m_lLastUpdateDay) {
-        m_lDay = lUpdateDay;
+        m_lDate = lUpdateDay;
         m_lLastUpdateDay = lUpdateDay;
         m_fTodayUpdated = true;
       }

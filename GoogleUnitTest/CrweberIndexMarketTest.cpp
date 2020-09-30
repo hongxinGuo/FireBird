@@ -78,17 +78,17 @@ namespace StockAnalysisTest {
     gl_pCrweberIndexMarket->GetNewestDatabaseDayFromDB();
 
     CSetCrweberIndex setCrweberIndex;
-    long lDay = 0;
+    long lDate = 0;
 
     setCrweberIndex.m_strSort = _T("[Date]");
     setCrweberIndex.Open();
     if (!setCrweberIndex.IsEOF()) {
       setCrweberIndex.MoveLast();
-      lDay = setCrweberIndex.m_Date;
+      lDate = setCrweberIndex.m_Date;
     }
     setCrweberIndex.Close();
 
-    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestDatabaseDate(), lDay);
+    EXPECT_EQ(gl_pCrweberIndexMarket->GetNewestDatabaseDate(), lDate);
   }
 
   TEST_F(CCrweberIndexMarketTest, TestSetNewestUpdateDate) {

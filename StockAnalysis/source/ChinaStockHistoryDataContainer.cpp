@@ -30,7 +30,7 @@ void CChinaStockHistoryDataContainer::ShowData(CDC* pDC, CRect rectClient) {
   const COLORREF crBlue(RGB(0, 0, 255)), crGreen(RGB(0, 255, 0)), crWhite(RGB(255, 255, 255)), crRed(RGB(255, 0, 0));
   CPen penGreen1(PS_SOLID, 1, crGreen), penWhite1(PS_SOLID, 1, crWhite), penRed1(PS_SOLID, 1, crRed);
   long lHigh = 0;
-  long lDay;
+  long lDate;
   vector<CChinaStockHistoryDataPtr>::iterator it = m_vHistoryData.end();
   it--;
   int i = 0, y = 0;
@@ -61,7 +61,7 @@ void CChinaStockHistoryDataContainer::ShowData(CDC* pDC, CRect rectClient) {
       y = (0.5 - (double)((*it)->GetLow() - lLow) / (2 * (lHigh - lLow))) * rectClient.Height();
     }
     pDC->LineTo(x, y);
-    lDay = (*it)->GetFormatedMarketDate();
+    lDate = (*it)->GetFormatedMarketDate();
     i++;
     if (3 * i > m_vHistoryData.size()) break;
     if (rectClient.right <= 3 * i) break; // »­µ½´°¿Ú×ó±ß¿òÎªÖ¹

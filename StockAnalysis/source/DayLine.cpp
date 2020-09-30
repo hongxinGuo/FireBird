@@ -119,7 +119,7 @@ bool CDayLine::AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
 
 bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
-  m_lDay = psetDayLineBasicInfo->m_Date;
+  m_lDate = psetDayLineBasicInfo->m_Date;
   m_wMarket = psetDayLineBasicInfo->m_Market;
   m_strStockCode = psetDayLineBasicInfo->m_StockCode;
   m_strStockName = psetDayLineBasicInfo->m_StockName;
@@ -157,7 +157,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
   long i = 0;
   tm tm_;
   int year = 0, month = 0, day = 0;
-  long lDay = 0;
+  long lDate = 0;
   CString str;
   double dTemp = 0;
 
@@ -181,8 +181,8 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
   tm_.tm_sec = 0;
   tm_.tm_isdst = 0;
   SetTime(mktime(&tm_));
-  lDay = year * 10000 + month * 100 + day;
-  SetDay(lDay);
+  lDate = year * 10000 + month * 100 + day;
+  SetDate(lDate);
   //TRACE("%d %d %d\n", year, month, day);
 
   if (*pCurrentPos != 0x027) return(false); // 不是单引号(')，数据出错，放弃载入

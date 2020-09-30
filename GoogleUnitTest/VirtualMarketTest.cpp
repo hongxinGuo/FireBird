@@ -59,14 +59,14 @@ namespace StockAnalysisTest {
     gmtime_s(&tm_, &ttime);
     long lTimeZone;
     _get_timezone(&lTimeZone);
-    s_VirtualMarket.CalculateLastTradeDay();
+    s_VirtualMarket.CalculateLastTradeDate();
     long lTime = s_VirtualMarket.GetFormatedMarketTime();
     EXPECT_EQ(s_VirtualMarket.GetDayOfWeek(), tm_.tm_wday);
 
     long day = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
     EXPECT_EQ(s_VirtualMarket.GetFormatedMarketDate(), day);
     EXPECT_EQ(s_VirtualMarket.GetMonthOfYear(), tm_.tm_mon + 1);
-    EXPECT_EQ(s_VirtualMarket.GetDayOfMonth(), tm_.tm_mday);
+    EXPECT_EQ(s_VirtualMarket.GetDateOfMonth(), tm_.tm_mday);
     EXPECT_EQ(s_VirtualMarket.GetYear(), tm_.tm_year + 1900);
 
     long time = tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec;
@@ -242,16 +242,16 @@ namespace StockAnalysisTest {
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetStringOfDate(20200202), str);
 
-    long lDay = s_VirtualMarket.GetFormatedMarketDate();
-    long year = lDay / 10000;
-    long month = lDay / 100 - year * 100;
-    long day = lDay - year * 10000 - month * 100;
+    long lDate = s_VirtualMarket.GetFormatedMarketDate();
+    long year = lDate / 10000;
+    long month = lDate / 100 - year * 100;
+    long day = lDate - year * 10000 - month * 100;
     sprintf_s(buffer, _T("%4dƒÍ%2d‘¬%2d»’"), year, month, day);
     str = buffer;
     EXPECT_STREQ(s_VirtualMarket.GetStringOfMarketDate(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetDayOfWeek) {
+  TEST_F(CVirtualMarketTest, TestGetDateOfWeek) {
     ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;
     tm tm_;

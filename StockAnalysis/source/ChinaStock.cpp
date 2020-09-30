@@ -328,7 +328,7 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
-  psetDayLineBasicInfo->m_Date = FormatToDay(m_TransactionTime);
+  psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
   psetDayLineBasicInfo->m_Market = m_wMarket;
   psetDayLineBasicInfo->m_StockCode = m_strStockCode;
   psetDayLineBasicInfo->m_StockName = m_strStockName;
@@ -349,7 +349,7 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
 
 void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
-  setDayLineToday.m_Date = FormatToDay(m_TransactionTime);
+  setDayLineToday.m_Date = FormatToDate(m_TransactionTime);
   setDayLineToday.m_Market = m_wMarket;
   setDayLineToday.m_StockCode = m_strStockCode;
   setDayLineToday.m_StockName = m_strStockName;
@@ -484,7 +484,7 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 
 void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
-  psetDayLineExtendInfo->m_Date = FormatToDay(m_TransactionTime);
+  psetDayLineExtendInfo->m_Date = FormatToDate(m_TransactionTime);
   psetDayLineExtendInfo->m_Market = m_wMarket;
   psetDayLineExtendInfo->m_StockCode = m_strStockCode;
   psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
@@ -1803,7 +1803,7 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
   }
   if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
       + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-    TRACE(_T("%14Id %s股数%d\n"), FormatToDayTime(m_TransactionTime), GetStockCode().GetBuffer(), GetVolume());
+    TRACE(_T("%14Id %s股数%d\n"), FormatToDateTime(m_TransactionTime), GetStockCode().GetBuffer(), GetVolume());
     TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
           GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
     return false;

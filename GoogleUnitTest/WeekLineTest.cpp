@@ -27,10 +27,10 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CWeekLineTest, TestGetDay) {
+  TEST_F(CWeekLineTest, TestGetDate) {
     ASSERT_FALSE(gl_fNormalMode);
     CWeekLine dl;
-    dl.SetDay(__CHINA_MARKET_BEGIN_DAY__);
+    dl.SetDate(__CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DAY__);
   }
 
@@ -568,7 +568,7 @@ namespace StockAnalysisTest {
     CSetWeekLineExtendInfo setWeekLineExtendInfo;
     CWeekLine id, id2;
 
-    id.SetDay(21101101);
+    id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600008"));
     id.SetStockName(_T("首创股份"));
@@ -806,7 +806,7 @@ namespace StockAnalysisTest {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     CWeekLine id, idLoaded;
 
-    id.SetDay(21101101);
+    id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600008"));
     id.SetStockName(_T("首创股份"));
@@ -871,7 +871,7 @@ namespace StockAnalysisTest {
   TEST_F(CWeekLineTest, TestLoadWeekLine) {
     CWeekLine id, id2;
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
-    id.SetDay(__CHINA_MARKET_BEGIN_DAY__);
+    id.SetDate(__CHINA_MARKET_BEGIN_DAY__);
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600000"));
     id.SetStockName(_T("浦发银行"));
@@ -904,7 +904,7 @@ namespace StockAnalysisTest {
     CWeekLine weekLine;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetTime(100100100100);
-    pDayLine->SetDay(20200202);
+    pDayLine->SetDate(20200202);
     pDayLine->SetStockCode(_T("sh600000"));
     pDayLine->SetStockName(_T("浦发银行"));
 
@@ -1064,7 +1064,7 @@ namespace StockAnalysisTest {
     CWeekLine weekLine;
     CDayLinePtr pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
     pDayLine1->SetTime(100100100100);
-    pDayLine1->SetDay(20200727);
+    pDayLine1->SetDate(20200727);
     pDayLine1->SetStockCode(_T("sh600000"));
     pDayLine1->SetStockName(_T("浦发银行"));
 
@@ -1156,7 +1156,7 @@ namespace StockAnalysisTest {
     pDayLine1->SetCanceledSellVolumeAbove200000(1266773);
 
     pDayLine2->SetTime(100100100100);
-    pDayLine2->SetDay(20200728); // 与pDayLine1处于同一个星期中
+    pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中
     pDayLine2->SetStockCode(_T("sh600000"));
     pDayLine2->SetStockName(_T("浦发银行"));
 

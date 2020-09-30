@@ -504,10 +504,10 @@ namespace StockAnalysisTest {
     bool fStatus = false;
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
-    long lDay = pStock->GetDayLineEndDate();
+    long lDate = pStock->GetDayLineEndDate();
     pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     pStock->SetDayLineNeedUpdate(false);
-    pStock->SetDayLineEndDate(lDay); // 恢复原状
+    pStock->SetDayLineEndDate(lDate); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(2);
@@ -528,13 +528,13 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStockMarket->GetStock(3);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
-    lDay = pStock->GetDayLineEndDate();
+    lDate = pStock->GetDayLineEndDate();
     pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str);
     EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
-    pStock->SetDayLineEndDate(lDay); // 恢复原状。
+    pStock->SetDayLineEndDate(lDate); // 恢复原状。
     pStock = gl_pChinaStockMarket->GetStock(5);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
@@ -542,7 +542,7 @@ namespace StockAnalysisTest {
 
     // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(0);
-    pStock->SetDayLineEndDate(lDay);
+    pStock->SetDayLineEndDate(lDate);
     for (int i = 0; i < 12000; i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -1126,7 +1126,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetLastLoginDay) {
-    gl_pChinaStockMarket->SetLastLoginDay(19900102);
+    gl_pChinaStockMarket->SetLastLoginDate(19900102);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), 19900102);
   }
 
@@ -1662,17 +1662,17 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->SetRelativeStrongStartDate(20200101);
     gl_pChinaStockMarket->SetRelativeStrongEndDate(20200202);
-    gl_pChinaStockMarket->SetLastLoginDay(gl_pChinaStockMarket->GetFormatedMarketDate());
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19990101);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19990202);
+    gl_pChinaStockMarket->SetLastLoginDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(19990101);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(19990202);
 
     gl_pChinaStockMarket->UpdateOptionDB();
 
     gl_pChinaStockMarket->SetRelativeStrongStartDate(1);
     gl_pChinaStockMarket->SetRelativeStrongEndDate(1);
-    gl_pChinaStockMarket->SetLastLoginDay(1);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(1);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(1);
+    gl_pChinaStockMarket->SetLastLoginDate(1);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(1);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(1);
 
     gl_pChinaStockMarket->LoadOptionDB();
 
@@ -1686,17 +1686,17 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->SetRelativeStrongStartDate(20100101);
     gl_pChinaStockMarket->SetRelativeStrongEndDate(20100202);
-    gl_pChinaStockMarket->SetLastLoginDay(20200303);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(19980101);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(19980202);
+    gl_pChinaStockMarket->SetLastLoginDate(20200303);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(19980101);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(19980202);
 
     gl_pChinaStockMarket->UpdateOptionDB();
 
     gl_pChinaStockMarket->SetRelativeStrongStartDate(1);
     gl_pChinaStockMarket->SetRelativeStrongEndDate(1);
-    gl_pChinaStockMarket->SetLastLoginDay(1);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS1(1);
-    gl_pChinaStockMarket->SetUpdatedDayFor10DayRS2(1);
+    gl_pChinaStockMarket->SetLastLoginDate(1);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(1);
+    gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(1);
 
     gl_pChinaStockMarket->LoadOptionDB();
 
@@ -1739,18 +1739,18 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {
     char buffer[20];
-    CString strDay;
+    CString strDate;
 
     CSetDayLineBasicInfo setDayLine, setDayLine2;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
 
     pDayLine->SetStockCode(_T("sh600000"));
-    pDayLine->SetDay(19900101);
+    pDayLine->SetDate(19900101);
 
     _ltoa_s(19900101, buffer, 10);
-    strDay = buffer;
+    strDate = buffer;
     setDayLine.m_strFilter = _T("[Date] =");
-    setDayLine.m_strFilter += strDay;
+    setDayLine.m_strFilter += strDate;
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
     pDayLine->AppendData(&setDayLine);
@@ -1758,7 +1758,7 @@ namespace StockAnalysisTest {
     setDayLine.Close();
 
     setDayLine.m_strFilter = _T("[Date] =");
-    setDayLine.m_strFilter += strDay;
+    setDayLine.m_strFilter += strDate;
     setDayLine.Open();
     EXPECT_FALSE(setDayLine.IsEOF());
     setDayLine.Close();
@@ -1766,7 +1766,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->DeleteDayLineBasicInfo(19900101);
 
     setDayLine2.m_strFilter = _T("[Date] =");
-    setDayLine2.m_strFilter += strDay;
+    setDayLine2.m_strFilter += strDate;
     setDayLine2.Open();
     EXPECT_TRUE(setDayLine2.IsEOF());
     setDayLine2.Close();
@@ -1774,16 +1774,16 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestDeleteDayLineExtendInfo) {
     char buffer[20];
-    CString strDay;
+    CString strDate;
 
     CSetDayLineExtendInfo setDayLine, setDayLine2;
     CDayLinePtr pDayLine = make_shared<CDayLine>();
 
     pDayLine->SetStockCode(_T("sh600000"));
-    pDayLine->SetDay(19900101);
+    pDayLine->SetDate(19900101);
 
     _ltoa_s(19900101, buffer, 10);
-    strDay = buffer;
+    strDate = buffer;
     setDayLine.m_strFilter = _T("[ID] = 1");
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
@@ -1795,7 +1795,7 @@ namespace StockAnalysisTest {
     setDayLine.Close();
 
     setDayLine.m_strFilter = _T("[Date] =");
-    setDayLine.m_strFilter += strDay;
+    setDayLine.m_strFilter += strDate;
     setDayLine.Open();
     EXPECT_FALSE(setDayLine.IsEOF());
     setDayLine.Close();
@@ -1803,7 +1803,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->DeleteDayLineExtendInfo(19900101);
 
     setDayLine2.m_strFilter = _T("[Date] =");
-    setDayLine2.m_strFilter += strDay;
+    setDayLine2.m_strFilter += strDate;
     setDayLine2.Open();
     EXPECT_TRUE(setDayLine2.IsEOF());
     setDayLine2.Close();
@@ -1814,7 +1814,7 @@ namespace StockAnalysisTest {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
 
     pWeekLine->SetStockCode(_T("sh600000"));
-    pWeekLine->SetDay(GetCurrentMonday(20200101));
+    pWeekLine->SetDate(GetCurrentMonday(20200101));
     setCurrentWeekLine.m_strFilter = _T("[ID] = 1");
     setCurrentWeekLine.Open();
     setCurrentWeekLine.m_pDatabase->BeginTrans();
@@ -1840,7 +1840,7 @@ namespace StockAnalysisTest {
     CWeekLineContainer weekLineContainer, weekLineContainer2;
 
     pWeekLine->SetStockCode(_T("sh600000"));
-    pWeekLine->SetDay(GetCurrentMonday(20200101));
+    pWeekLine->SetDate(GetCurrentMonday(20200101));
     weekLineContainer.StoreData(pWeekLine);
 
     gl_pChinaStockMarket->DeleteCurrentWeekWeekLine();
@@ -1882,12 +1882,12 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestLoadDayLine) {
     CDayLineContainer dayLineContainer;
-    long lDay = GetCurrentMonday(20200101);
+    long lDate = GetCurrentMonday(20200101);
 
-    gl_pChinaStockMarket->LoadDayLine(dayLineContainer, lDay);
+    gl_pChinaStockMarket->LoadDayLine(dayLineContainer, lDate);
 
     CString strSQL;
-    CString strDay;
+    CString strDate;
     char  pch[30];
     CTime ctTime;
     CSetDayLineBasicInfo setDayLineBasicInfo;
@@ -1895,11 +1895,11 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine;
     long i = 0;
 
-    sprintf_s(pch, _T("%08d"), lDay);
-    strDay = pch;
+    sprintf_s(pch, _T("%08d"), lDate);
+    strDate = pch;
     setDayLineBasicInfo.m_strSort = _T("[StockCode]");
     setDayLineBasicInfo.m_strFilter = _T("[Date] =");
-    setDayLineBasicInfo.m_strFilter += strDay;
+    setDayLineBasicInfo.m_strFilter += strDate;
     setDayLineBasicInfo.Open();
     while (!setDayLineBasicInfo.IsEOF()) {
       pDayLine = dayLineContainer.GetData(i++);

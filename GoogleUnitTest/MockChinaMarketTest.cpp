@@ -91,7 +91,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDay(19900101);
+    pDayLine->SetDate(19900101);
     pStock->SetDayLineEndDate(20000101);
     pStock->StoreDayLine(pDayLine);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
@@ -108,11 +108,11 @@ namespace StockAnalysisTest {
 
     pStock->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDay(19900101);
+    pDayLine->SetDate(19900101);
     pStock->SetDayLineEndDate(20000101);
     pStock->StoreDayLine(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDay(s_pchinaMarket->GetFormatedMarketDate());
+    pDayLine->SetDate(s_pchinaMarket->GetFormatedMarketDate());
     pStock->StoreDayLine(pDayLine);
     //pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
@@ -349,17 +349,17 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetTodayStockProcessed(false);
     s_pchinaMarket->CalculateTime();
     s_pchinaMarket->SetNewestTransactionTime(s_pchinaMarket->GetLocalTime());
-    long lDay = FormatToDay(s_pchinaMarket->GetNewestTransactionTime());
+    long lDate = FormatToDate(s_pchinaMarket->GetNewestTransactionTime());
     s_pchinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
-    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDay)))
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -371,21 +371,21 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed());
 
     s_pchinaMarket->__TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
-    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineOfDay(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDay))
+    EXPECT_CALL(*s_pchinaMarket, BuildDayLineRSOfDay(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDay)))
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间大于150400时
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), lDay);
+    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), lDate);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());

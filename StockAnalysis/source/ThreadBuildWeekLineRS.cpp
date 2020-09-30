@@ -76,12 +76,12 @@ UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
   const long day = thisDay - year * 10000 - month * 100;
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
-  long lDay = thisDay;
+  long lDate = thisDay;
 
   ASSERT(GetCurrentMonday(thisDay) == thisDay); // 确保此日期为星期一
 
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildWeekLineRSOfDay(lDay);
+    pMarket->BuildWeekLineRSOfDay(lDate);
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

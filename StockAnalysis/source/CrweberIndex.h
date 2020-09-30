@@ -24,8 +24,8 @@ public:
   bool IsTodayUpdated(void) noexcept { return m_fTodayUpdated; }
   bool IsDataChanged(CCrweberIndex& CrweberIndexLast);
 
-  void SetNewestDataTime(long lDay) noexcept { m_lDay = lDay; }
-  long GetCurrentDataTime(void) noexcept { return m_lDay; }
+  void SetNewestDataTime(long lDate) noexcept { m_lDate = lDate; }
+  long GetCurrentDataTime(void) noexcept { return m_lDate; }
 
   double GetTD1(void) noexcept { return m_dTD1; }
   double GetTD2(void) noexcept { return m_dTD2; }
@@ -69,7 +69,7 @@ public:
 
 public:
   long m_lID;
-  long m_lDay;
+  long m_lDate;
   double m_dTD1;
   double m_dTD2;
   double m_dTD3C;

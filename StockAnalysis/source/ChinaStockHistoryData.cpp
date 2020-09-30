@@ -21,7 +21,7 @@ void CChinaStockHistoryData::CalculateRSLogarithm(double dRS) {
 }
 
 void CChinaStockHistoryData::Reset(void) {
-  m_lDay = 0;		// 类型
+  m_lDate = 0;		// 类型
   m_time = 0;
   m_wMarket = 0;
   m_strStockCode = _T("");

@@ -27,10 +27,10 @@ namespace StockAnalysisTest {
     }
   };
 
-  TEST_F(CChinaStockHistoryDataTest, TestGetDay) {
+  TEST_F(CChinaStockHistoryDataTest, TestGetDate) {
     ASSERT_FALSE(gl_fNormalMode);
     CChinaStockHistoryData dl;
-    dl.SetDay(__CHINA_MARKET_BEGIN_DAY__);
+    dl.SetDate(__CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DAY__);
   }
 

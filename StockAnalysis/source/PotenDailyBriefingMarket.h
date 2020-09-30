@@ -35,20 +35,20 @@ public:
   bool LoadDatabase(void);
   virtual bool SaveCurrentData(void);
 
-  void ChoiceNextInquiringDay(void);
+  void ChoiceNextInquiringDate(void);
   bool IsTodayDataUpdated(void) noexcept { return m_fTodayDataUpdated; }
   void SetTodayDataUpdated(bool fFlag) noexcept { m_fTodayDataUpdated = fFlag; }
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
-  long GetCurrentInquiringDay(void) noexcept { return m_lCurrentInquiringDay; }
-  void SetCurrentInquiringDay(long lDay) noexcept { m_lCurrentInquiringDay = lDay; }
+  long GetCurrentInquiringDate(void) noexcept { return m_lCurrentInquiringDay; }
+  void SetCurrentInquiringDate(long lDate) noexcept { m_lCurrentInquiringDay = lDate; }
 
   size_t GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
 
 public:
-  void __TEST_SetLoadedDay(long lDay, bool fFlag) noexcept { m_mapDataLoadedDays[lDay] = fFlag; }
+  void __TEST_SetLoadedDate(long lDate, bool fFlag) noexcept { m_mapDataLoadedDays[lDate] = fFlag; }
 
 protected:
   CPotenDailyBriefingPtr m_pDataToSaved;

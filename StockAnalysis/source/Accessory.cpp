@@ -37,11 +37,11 @@ time_t ConvertStringToTime(CString strFormat, CString strTime) {
   return tt;
 }
 
-time_t FormatToTTime(long lDay, long lTime) {
-  ASSERT(lDay > 19700000);
-  const long lYear = lDay / 10000;
-  const long lMonth = (lDay - lYear * 10000) / 100;
-  const long lD = (lDay - lYear * 10000 - lMonth * 100);
+time_t FormatToTTime(long lDate, long lTime) {
+  ASSERT(lDate > 19700000);
+  const long lYear = lDate / 10000;
+  const long lMonth = (lDate - lYear * 10000) / 100;
+  const long lD = (lDate - lYear * 10000 - lMonth * 100);
   const long lHour = lTime / 10000;
   const long lMinute = (lTime - lHour * 10000) / 100;
   const long lSecond = lTime - lHour * 10000 - lMinute * 100;
@@ -49,7 +49,7 @@ time_t FormatToTTime(long lDay, long lTime) {
   return (ct.GetTime());
 }
 
-long FormatToDay(time_t const tt) {
+long FormatToDate(time_t const tt) {
   tm tm_;
   localtime_s(&tm_, &tt);
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
@@ -61,13 +61,13 @@ long FormatToTime(time_t const tt) {
   return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 FormatToDayTime(time_t const tt) {
+INT64 FormatToDateTime(time_t const tt) {
   tm tm_;
   localtime_s(&tm_, &tt);
   return(((INT64)tm_.tm_year + 1900) * 10000000000 + ((INT64)tm_.tm_mon + 1) * 100000000 + (INT64)tm_.tm_mday * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long FormatToDay(tm* ptm) {
+long FormatToDate(tm* ptm) {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }
 
@@ -75,7 +75,7 @@ long FormatToTime(tm* ptm) {
   return(ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
-INT64 FormatToDayTime(tm* ptm) {
+INT64 FormatToDateTime(tm* ptm) {
   return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
@@ -87,10 +87,10 @@ const static CTimeSpan s_5Day(5, 0, 0, 0);
 const static CTimeSpan s_6Day(6, 0, 0, 0);
 const static CTimeSpan s_7Day(7, 0, 0, 0);
 
-long GetNextMonday(long lDay) {
-  long year = lDay / 10000;
-  long month = lDay / 100 - (lDay / 10000) * 100;
-  long mday = lDay - (lDay / 100) * 100;
+long GetNextMonday(long lDate) {
+  long year = lDate / 10000;
+  long month = lDate / 100 - (lDate / 10000) * 100;
+  long mday = lDate - (lDate / 100) * 100;
   CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
 
   ctNext = ctCurrent;
@@ -125,10 +125,10 @@ long GetNextMonday(long lDay) {
   return lNextDay;
 }
 
-long GetPrevMonday(long lDay) {
-  long year = lDay / 10000;
-  long month = lDay / 100 - (lDay / 10000) * 100;
-  long mday = lDay - (lDay / 100) * 100;
+long GetPrevMonday(long lDate) {
+  long year = lDate / 10000;
+  long month = lDate / 100 - (lDate / 10000) * 100;
+  long mday = lDate - (lDate / 100) * 100;
   CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
 
   ctNext = ctCurrent;
@@ -163,10 +163,10 @@ long GetPrevMonday(long lDay) {
   return lPrevMonday;
 }
 
-long GetCurrentMonday(long lDay) {
-  long year = lDay / 10000;
-  long month = lDay / 100 - (lDay / 10000) * 100;
-  long mday = lDay - (lDay / 100) * 100;
+long GetCurrentMonday(long lDate) {
+  long year = lDate / 10000;
+  long month = lDate / 100 - (lDate / 10000) * 100;
+  long mday = lDate - (lDate / 100) * 100;
   CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
 
   ctNext = ctCurrent;

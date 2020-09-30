@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
     CChinaStockHistoryDataContainer id;
     CChinaStockHistoryDataPtr pData = make_shared<CChinaStockHistoryData>();
     pData->SetStockCode(_T("sh600008"));
-    pData->SetDay(20202020);
+    pData->SetDate(20202020);
     id.StoreData(pData);
 
     auto pContainer = id.GetContainer();
@@ -50,11 +50,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS1) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->SetRelativeStrongIndex(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->SetRelativeStrongIndex(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -72,11 +72,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRSIndex) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->SetRelativeStrongIndex(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->SetRelativeStrongIndex(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -94,11 +94,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRSLogarithm) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->SetRSLogarithm(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->SetRSLogarithm(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -116,11 +116,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS3) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set3RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set3RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -138,11 +138,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS5) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set5RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set5RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -160,11 +160,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS10) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set10RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set10RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -182,11 +182,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS30) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set30RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set30RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -204,11 +204,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS60) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set60RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set60RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -226,11 +226,11 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestGetRS120) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->Set120RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->Set120RS(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
@@ -248,12 +248,12 @@ namespace StockAnalysisTest {
   TEST_F(CHistoryDataContainerTest, TestUpdateData1) {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
-    pHistoryData->SetDay(20200101);
+    pHistoryData->SetDate(20200101);
     pHistoryData->SetHigh(1000);
     pHistoryData->SetLow(200);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
-    pHistoryData2->SetDay(20200201);
+    pHistoryData2->SetDate(20200201);
     pHistoryData2->SetHigh(11000);
     pHistoryData2->SetLow(1200);
 
