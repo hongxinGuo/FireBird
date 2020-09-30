@@ -78,36 +78,36 @@ void CChinaStockHistoryDataContainer::Reset(void) {
 }
 
 bool CChinaStockHistoryDataContainer::CalculateRelativeStrong(void) {
-  CalculateRS(3);
-  CalculateRS(5);
-  CalculateRS(10);
-  CalculateRS(30);
-  CalculateRS(60);
-  CalculateRS(120);
+  CalculateRS1(3);
+  CalculateRS1(5);
+  CalculateRS1(10);
+  CalculateRS1(30);
+  CalculateRS1(60);
+  CalculateRS1(120);
   return true;
 }
 
 bool CChinaStockHistoryDataContainer::CalculateRelativeStrongLogarithm(void) {
-  CalculateRSLogarithm(3);
-  CalculateRSLogarithm(5);
-  CalculateRSLogarithm(10);
-  CalculateRSLogarithm(30);
-  CalculateRSLogarithm(60);
-  CalculateRSLogarithm(120);
+  CalculateRSLogarithm1(3);
+  CalculateRSLogarithm1(5);
+  CalculateRSLogarithm1(10);
+  CalculateRSLogarithm1(30);
+  CalculateRSLogarithm1(60);
+  CalculateRSLogarithm1(120);
   return true;
 }
 
 bool CChinaStockHistoryDataContainer::CalculateRelativeStrongIndex(void) {
-  CalculateRSIndex(3);
-  CalculateRSIndex(5);
-  CalculateRSIndex(10);
-  CalculateRSIndex(30);
-  CalculateRSIndex(60);
-  CalculateRSIndex(120);
+  CalculateRSIndex1(3);
+  CalculateRSIndex1(5);
+  CalculateRSIndex1(10);
+  CalculateRSIndex1(30);
+  CalculateRSIndex1(60);
+  CalculateRSIndex1(120);
   return true;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRSLogarithm(INT64 lNumber) {
+bool CChinaStockHistoryDataContainer::CalculateRSLogarithm1(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vHistoryData.size();
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -141,7 +141,7 @@ bool CChinaStockHistoryDataContainer::CalculateRSLogarithm(INT64 lNumber) {
   return true;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRS(INT64 lNumber) {
+bool CChinaStockHistoryDataContainer::CalculateRS1(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vHistoryData.size();
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
@@ -175,7 +175,7 @@ bool CChinaStockHistoryDataContainer::CalculateRS(INT64 lNumber) {
   return true;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRSIndex(INT64 lNumber) {
+bool CChinaStockHistoryDataContainer::CalculateRSIndex1(INT64 lNumber) {
   double dTempRS = 0;
   const INT64 lTotalNumber = m_vHistoryData.size();
   for (INT64 i = lNumber; i < lTotalNumber; i++) {

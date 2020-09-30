@@ -34,52 +34,52 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockWeekLineContainerTest, TestCalculateRS) {
     InSequence Seq;
-    EXPECT_CALL(*pWeekLine, CalculateRS(3))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(3))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRS(5))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(5))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRS(10))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(10))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRS(30))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(30))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRS(60))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(60))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRS(120))
+    EXPECT_CALL(*pWeekLine, CalculateRS1(120))
       .Times(1);
     pWeekLine->CalculateRelativeStrong();
   }
 
   TEST_F(CMockWeekLineContainerTest, TestCalculateRSLogarithm) {
     InSequence Seq;
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(3))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(3))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(5))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(5))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(10))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(10))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(30))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(30))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(60))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(60))
       .Times(1)
       .WillOnce(Return(true));
-    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm(120))
+    EXPECT_CALL(*pWeekLine, CalculateRSLogarithm1(120))
       .Times(1);
     pWeekLine->CalculateRelativeStrongLogarithm();
   }
 
   TEST_F(CMockWeekLineContainerTest, TestCalculateRSIndex) {
     InSequence Seq;
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(3))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(3))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(5))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(5))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(10))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(10))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(30))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(30))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(60))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(60))
       .Times(1);
-    EXPECT_CALL(*pWeekLine, CalculateRSIndex(120))
+    EXPECT_CALL(*pWeekLine, CalculateRSIndex1(120))
       .Times(1);
     pWeekLine->CalculateRelativeStrongIndex();
   }

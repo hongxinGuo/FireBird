@@ -138,7 +138,7 @@ bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   m_dRelativeStrong = atof(psetDayLineBasicInfo->m_RelativeStrong);
   m_dRelativeStrongIndex = atof(psetDayLineBasicInfo->m_RelativeStrongIndex);
   m_dRelativeStrongBackup = atof(psetDayLineBasicInfo->m_RelativeStrongBackup);
-  CalculateRSLogarithm(m_dRelativeStrong);
+  CalculateRSLogarithm1(m_dRelativeStrong);
   return true;
 }
 

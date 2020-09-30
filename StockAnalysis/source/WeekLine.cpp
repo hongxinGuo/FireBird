@@ -309,7 +309,7 @@ bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
   m_lCanceledSellVolumeBelow200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow200000);
   m_lCanceledSellVolumeAbove200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeAbove200000);
 
-  CalculateRSLogarithm(m_dRelativeStrong);
+  CalculateRSLogarithm1(m_dRelativeStrong);
   return true;
 }
 
@@ -334,7 +334,7 @@ bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   m_dRelativeStrong = atof(psetWeekLineBasicInfo->m_RelativeStrong);
   m_dRelativeStrongIndex = atof(psetWeekLineBasicInfo->m_RelativeStrongIndex);
   m_dRelativeStrongBackup = atof(psetWeekLineBasicInfo->m_RelativeStrongBackup);
-  CalculateRSLogarithm(m_dRelativeStrong);
+  CalculateRSLogarithm1(m_dRelativeStrong);
   return true;
 }
 

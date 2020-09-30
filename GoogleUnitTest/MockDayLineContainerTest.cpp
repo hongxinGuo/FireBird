@@ -34,52 +34,52 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRS) {
     InSequence Seq;
-    EXPECT_CALL(*pDayLine, CalculateRS(3))
+    EXPECT_CALL(*pDayLine, CalculateRS1(3))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRS(5))
+    EXPECT_CALL(*pDayLine, CalculateRS1(5))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRS(10))
+    EXPECT_CALL(*pDayLine, CalculateRS1(10))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRS(30))
+    EXPECT_CALL(*pDayLine, CalculateRS1(30))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRS(60))
+    EXPECT_CALL(*pDayLine, CalculateRS1(60))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRS(120))
+    EXPECT_CALL(*pDayLine, CalculateRS1(120))
       .Times(1);
     pDayLine->CalculateRelativeStrong();
   }
 
   TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSLogarithm) {
     InSequence Seq;
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(3))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(3))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(5))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(5))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(10))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(10))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(30))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(30))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(60))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(60))
       .Times(1)
       .WillOnce(Return(true));
-    EXPECT_CALL(*pDayLine, CalculateRSLogarithm(120))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(120))
       .Times(1);
     pDayLine->CalculateRelativeStrongLogarithm();
   }
 
   TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSIndex) {
     InSequence Seq;
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(3))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(3))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(5))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(5))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(10))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(10))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(30))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(30))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(60))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(60))
       .Times(1);
-    EXPECT_CALL(*pDayLine, CalculateRSIndex(120))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(120))
       .Times(1);
     pDayLine->CalculateRelativeStrongIndex();
   }

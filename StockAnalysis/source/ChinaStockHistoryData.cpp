@@ -7,7 +7,7 @@ CChinaStockHistoryData::CChinaStockHistoryData() : CObject() {
   Reset();
 }
 
-void CChinaStockHistoryData::CalculateRSLogarithm(double dRS) {
+void CChinaStockHistoryData::CalculateRSLogarithm1(double dRS) {
   double dLog50 = log10(50.0);
   double dLog100 = log10(100.0);
   double dLog = dLog100 - dLog50;

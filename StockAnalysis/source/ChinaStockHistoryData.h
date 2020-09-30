@@ -24,7 +24,7 @@ public:
   CChinaStockHistoryData();
   void Reset(void); // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  void CalculateRSLogarithm(double dRS);
+  void CalculateRSLogarithm1(double dRS);
 
 public:
   long GetFormatedMarketDate(void) noexcept { return m_lDate; }
