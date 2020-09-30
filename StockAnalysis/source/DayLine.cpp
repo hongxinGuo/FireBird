@@ -101,9 +101,9 @@ bool CDayLine::SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
   psetDayLineBasicInfo->m_TotalValue = ConvertValueToString(GetTotalValue());
   psetDayLineBasicInfo->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-  psetDayLineBasicInfo->m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
-  psetDayLineBasicInfo->m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
-  psetDayLineBasicInfo->m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
+  psetDayLineBasicInfo->m_RS = ConvertValueToString(GetRS());
+  psetDayLineBasicInfo->m_RSIndex = ConvertValueToString(GetRSIndex());
+  psetDayLineBasicInfo->m_RSBackup = ConvertValueToString(GetRSBackup());
 
   return true;
 }
@@ -135,10 +135,10 @@ bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   m_dChangeHandRate = atof(psetDayLineBasicInfo->m_ChangeHandRate);
   m_llTotalValue = atoll(psetDayLineBasicInfo->m_TotalValue);
   m_llCurrentValue = atoll(psetDayLineBasicInfo->m_CurrentValue);
-  m_dRelativeStrong = atof(psetDayLineBasicInfo->m_RelativeStrong);
-  m_dRelativeStrongIndex = atof(psetDayLineBasicInfo->m_RelativeStrongIndex);
-  m_dRelativeStrongBackup = atof(psetDayLineBasicInfo->m_RelativeStrongBackup);
-  CalculateRSLogarithm1(m_dRelativeStrong);
+  m_dRS = atof(psetDayLineBasicInfo->m_RS);
+  m_dRSIndex = atof(psetDayLineBasicInfo->m_RSIndex);
+  m_dRSBackup = atof(psetDayLineBasicInfo->m_RSBackup);
+  CalculateRSLogarithm1(m_dRS);
   return true;
 }
 

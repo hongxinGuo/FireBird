@@ -18,7 +18,7 @@ UINT ThreadLoadWeekLine(CChinaStockPtr pStock) {
   // 装入周线数据
   pStock->LoadWeekLine();
   // 计算各相对强度（以指数相对强度为默认值）
-  pStock->CalculateWeekLineRelativeStrongIndex();
+  pStock->CalculateWeekLineRSIndex();
   pStock->SetWeekLineLoaded(true);
   gl_ThreadStatus.DecreaseRunningThread();
 

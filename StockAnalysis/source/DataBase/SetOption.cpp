@@ -9,8 +9,8 @@ IMPLEMENT_DYNAMIC(CSetOption, CRecordset)
 CSetOption::CSetOption(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_RalativeStrongStartDate = __CHINA_MARKET_BEGIN_DAY__;
-  m_RelativeStrongEndDate = __CHINA_MARKET_BEGIN_DAY__;
+  m_RSStartDate = __CHINA_MARKET_BEGIN_DAY__;
+  m_RSEndDate = __CHINA_MARKET_BEGIN_DAY__;
   m_LastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
   m_UpdatedDayFor10DayRS1 = __CHINA_MARKET_BEGIN_DAY__;
   m_UpdatedDayFor10DayRS2 = __CHINA_MARKET_BEGIN_DAY__;
@@ -34,8 +34,8 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
-  RFX_Long(pFX, _T("[RelativeStrongStartDate]"), m_RalativeStrongStartDate);
-  RFX_Long(pFX, _T("[RelativeStrongEndDate]"), m_RelativeStrongEndDate);
+  RFX_Long(pFX, _T("[RelativeStrongStartDate]"), m_RSStartDate);
+  RFX_Long(pFX, _T("[RelativeStrongEndDate]"), m_RSEndDate);
   RFX_Long(pFX, _T("[LastLoginDay]"), m_LastLoginDay);
   RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS1);
   RFX_Long(pFX, _T("[UpdatedDayFor10DayRS2]"), m_UpdatedDayFor10DayRS2);

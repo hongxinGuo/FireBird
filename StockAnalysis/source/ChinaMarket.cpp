@@ -109,7 +109,7 @@ void CChinaMarket::Reset(void) {
   }
   else SetTodayStockProcessed(false);
 
-  m_lRelativeStrongEndDate = m_lRelativeStrongStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
+  m_lRSEndDate = m_lRSStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
   m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
@@ -2869,13 +2869,13 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
 //
 // 计算lDate的日线相对强度, lDate的格式为：YYYYMMDD,如 19990605.
 // 将日线按涨跌排列后,其相对强弱即其在队列中的位置.
-// m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
+// m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
-  vector<double> vRelativeStrong;
+  vector<double> vRS;
   int iTotalAShare = 0;
   CString strSQL;
   CString strDate;
@@ -2886,7 +2886,7 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
   double dShanghaiIndexUpDownRate = 0;
   double dShenzhenIndexUpDownRate = 0;
   double dIndexUpDownRate;
-  double dRelativeStrongIndex;
+  double dRSIndex;
 
   sprintf_s(pch, _T("%08d"), lDate);
   strDate = pch;
@@ -2936,34 +2936,34 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
     double dUpDownRate = 0;
     // 计算指数相对强度
     if (dLastClose < 0.001) { // 新股上市等，昨日收盘价格为零
-      dRelativeStrongIndex = 50;
+      dRSIndex = 50;
     }
     else {
       dUpDownRate = (dClose - dLastClose) / dLastClose;
       if ((dUpDownRate > 0.11) || (dUpDownRate < -0.11)) { // 除权等导致价格突变
-        dRelativeStrongIndex = 50;
+        dRSIndex = 50;
       }
       else {
-        dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
+        dRSIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
       }
     }
-    setDayLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
+    setDayLineBasicInfo.m_RSIndex = ConvertValueToString(dRSIndex);
 
     // 计算涨跌排名相对强度
     if (dLastClose < 0.001) {
-      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+      setDayLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if (((dLow / dLastClose) < 0.88) || ((dHigh / dLastClose) > 1.12)) { // 除权、新股上市等
-      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+      setDayLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else if ((fabs(dHigh - dClose) < 0.0001) && (((dClose / dLastClose)) > 1.095)) { // 涨停板
-      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(100);
+      setDayLineBasicInfo.m_RS = ConvertValueToString(100);
     }
     else if ((fabs(dClose - dLow) < 0.0001) && ((dClose / dLastClose) < 0.905)) { // 跌停板
-      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString(0);
+      setDayLineBasicInfo.m_RS = ConvertValueToString(0);
     }
     else {
-      setDayLineBasicInfo.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+      setDayLineBasicInfo.m_RS = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
     }
     setDayLineBasicInfo.Update();
     iBefore = vIndex.at(iCount++);
@@ -2975,7 +2975,7 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
 
   vStock.clear();
   vIndex.clear();
-  vRelativeStrong.clear();
+  vRS.clear();
 
   CString strDate2 = GetStringOfDate(lDate);
   CString strTemp;
@@ -2989,13 +2989,13 @@ bool CChinaMarket::BuildDayLineRSOfDay(long lDate) {
 //
 // 计算lDate的周线相对强度, lDate的格式为：YYYYMMDD,如 19990605.
 // 将周线按涨跌排列后,其相对强弱即其在队列中的位置.
-// m_dRelativeStrongIndex则是计算相对指数的涨跌强度。
+// m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
-  vector<double> vRelativeStrong;
+  vector<double> vRS;
   int iTotalAShare = 0;
   CString strSQL;
   CString strDate;
@@ -3006,7 +3006,7 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
   double dShanghaiIndexUpDownRate = 0;
   double dShenzhenIndexUpDownRate = 0;
   double dIndexUpDownRate;
-  double dRelativeStrongIndex;
+  double dRSIndex;
 
   ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
@@ -3056,20 +3056,20 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
     double dUpDownRate = 0;
     // 计算指数相对强度
     if (dLastClose < 0.001) { // 新股上市等，昨日收盘价格为零
-      dRelativeStrongIndex = 50;
+      dRSIndex = 50;
     }
     else {
       dUpDownRate = (dClose - dLastClose) / dLastClose;
-      dRelativeStrongIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
+      dRSIndex = (dUpDownRate - dIndexUpDownRate) * 500 + 50; // 以大盘涨跌为基准（50）。
     }
-    setWeekLineBasicInfo.m_RelativeStrongIndex = ConvertValueToString(dRelativeStrongIndex);
+    setWeekLineBasicInfo.m_RSIndex = ConvertValueToString(dRSIndex);
 
     // 计算涨跌排名相对强度
     if (dLastClose < 0.001) {
-      setWeekLineBasicInfo.m_RelativeStrong = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
+      setWeekLineBasicInfo.m_RS = ConvertValueToString(50); // 新股上市或者除权除息，不计算此股
     }
     else {
-      setWeekLineBasicInfo.m_RelativeStrong = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
+      setWeekLineBasicInfo.m_RS = ConvertValueToString((static_cast<double>(iCount) * 100) / iTotalAShare);
     }
     setWeekLineBasicInfo.Update();
     iBefore = vIndex.at(iCount++);
@@ -3081,7 +3081,7 @@ bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
 
   vStock.clear();
   vIndex.clear();
-  vRelativeStrong.clear();
+  vRS.clear();
 
   CString strDate2 = GetStringOfDate(lDate);
   CString strTemp;
@@ -3156,8 +3156,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
   setOption.m_pDatabase->BeginTrans();
   if (setOption.IsEOF()) {
     setOption.AddNew();
-    setOption.m_RelativeStrongEndDate = GetRelativeStrongEndDate();
-    setOption.m_RalativeStrongStartDate = GetRelativeStrongStartDate();
+    setOption.m_RSEndDate = GetRSEndDate();
+    setOption.m_RSStartDate = GetRSStartDate();
     setOption.m_LastLoginDay = GetFormatedMarketDate();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
@@ -3166,8 +3166,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
   }
   else {
     setOption.Edit();
-    setOption.m_RelativeStrongEndDate = GetRelativeStrongEndDate();
-    setOption.m_RalativeStrongStartDate = GetRelativeStrongStartDate();
+    setOption.m_RSEndDate = GetRSEndDate();
+    setOption.m_RSStartDate = GetRSStartDate();
     setOption.m_LastLoginDay = GetFormatedMarketDate();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
@@ -3183,29 +3183,29 @@ void CChinaMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    SetRelativeStrongStartDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetRelativeStrongEndDate(__CHINA_MARKET_BEGIN_DAY__);
+    SetRSStartDate(__CHINA_MARKET_BEGIN_DAY__);
+    SetRSEndDate(__CHINA_MARKET_BEGIN_DAY__);
     SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);
     SetUpdatedDateFor10DAyRS1(__CHINA_MARKET_BEGIN_DAY__);
     SetUpdatedDateFor10DAyRS2(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
-    if (setOption.m_RelativeStrongEndDate == 0) {
-      SetRelativeStrongEndDate(__CHINA_MARKET_BEGIN_DAY__);
+    if (setOption.m_RSEndDate == 0) {
+      SetRSEndDate(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      SetRelativeStrongEndDate(setOption.m_RelativeStrongEndDate);
-      if (GetRelativeStrongEndDate() > __CHINA_MARKET_BEGIN_DAY__) {
+      SetRSEndDate(setOption.m_RSEndDate);
+      if (GetRSEndDate() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
         gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }
-    if (setOption.m_RalativeStrongStartDate == 0) {
-      SetRelativeStrongStartDate(__CHINA_MARKET_BEGIN_DAY__);
+    if (setOption.m_RSStartDate == 0) {
+      SetRSStartDate(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      SetRelativeStrongStartDate(setOption.m_RalativeStrongStartDate);
+      SetRSStartDate(setOption.m_RSStartDate);
     }
     if (setOption.m_LastLoginDay == 0) {
       SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);

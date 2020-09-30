@@ -13,12 +13,12 @@ public:
   ~CThreadStatus();
 
   // 计算若干天日线相对强度与否和设置
-  void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRelativeStrong = fFlag; }
-  bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRelativeStrong; }
+  void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRS = fFlag; }
+  bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRS; }
 
   // 计算若干天周线相对强度与否和设置
-  void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRelativeStrong = fFlag; }
-  bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRelativeStrong; }
+  void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
+  bool IsCalculatingWeekLineRS(void) noexcept { return m_CalculatingWeekLineRS; }
 
   // 实时数据需要计算与否和设置
   void SetRTDataNeedCalculate(bool fFlag) noexcept { m_RTDataNeedCalculate = fFlag; }
@@ -52,8 +52,8 @@ public:
   bool IsWorkingThreadRunning(void) noexcept { if (GetNumberOfRunningThread() > 0) return true; else return false; }
 
 protected:
-  atomic_bool m_CalculatingDayLineRelativeStrong;
-  atomic_bool m_CalculatingWeekLineRelativeStrong;
+  atomic_bool m_CalculatingDayLineRS;
+  atomic_bool m_CalculatingWeekLineRS;
   atomic_bool m_RTDataNeedCalculate;
   atomic_bool m_CalculatingRTData;
   atomic_bool m_SavingTempData;

@@ -40,7 +40,7 @@ UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
   while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
-    pMarket->SetRelativeStrongEndDate(pMarket->GetFormatedMarketDate());
+    pMarket->SetRSEndDate(pMarket->GetFormatedMarketDate());
     pMarket->SetUpdateOptionDB(true); // 更新选项数据库
     // 显示花费的时间
     time(&tEnd);

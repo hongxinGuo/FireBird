@@ -30,9 +30,9 @@ bool CWeekLine::AppendData(CSetWeekLineInfo* psetWeekLineInfo) {
   psetWeekLineInfo->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
   psetWeekLineInfo->m_TotalValue = ConvertValueToString(GetTotalValue());
   psetWeekLineInfo->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-  psetWeekLineInfo->m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
-  psetWeekLineInfo->m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
-  psetWeekLineInfo->m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
+  psetWeekLineInfo->m_RS = ConvertValueToString(GetRS());
+  psetWeekLineInfo->m_RSIndex = ConvertValueToString(GetRSIndex());
+  psetWeekLineInfo->m_RSBackup = ConvertValueToString(GetRSBackup());
 
   psetWeekLineInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   psetWeekLineInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
@@ -123,9 +123,9 @@ bool CWeekLine::SaveData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   psetWeekLineBasicInfo->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
   psetWeekLineBasicInfo->m_TotalValue = ConvertValueToString(GetTotalValue());
   psetWeekLineBasicInfo->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-  psetWeekLineBasicInfo->m_RelativeStrong = ConvertValueToString(GetRelativeStrong());
-  psetWeekLineBasicInfo->m_RelativeStrongIndex = ConvertValueToString(GetRelativeStrongIndex());
-  psetWeekLineBasicInfo->m_RelativeStrongBackup = ConvertValueToString(GetRelativeStrongBackup());
+  psetWeekLineBasicInfo->m_RS = ConvertValueToString(GetRS());
+  psetWeekLineBasicInfo->m_RSIndex = ConvertValueToString(GetRSIndex());
+  psetWeekLineBasicInfo->m_RSBackup = ConvertValueToString(GetRSBackup());
 
   return true;
 }
@@ -239,9 +239,9 @@ bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
   m_dChangeHandRate = atof(psetWeekLineInfo->m_ChangeHandRate);
   m_llTotalValue = atoll(psetWeekLineInfo->m_TotalValue);
   m_llCurrentValue = atoll(psetWeekLineInfo->m_CurrentValue);
-  m_dRelativeStrong = atof(psetWeekLineInfo->m_RelativeStrong);
-  m_dRelativeStrongIndex = atof(psetWeekLineInfo->m_RelativeStrongIndex);
-  m_dRelativeStrongBackup = atof(psetWeekLineInfo->m_RelativeStrongBackup);
+  m_dRS = atof(psetWeekLineInfo->m_RS);
+  m_dRSIndex = atof(psetWeekLineInfo->m_RSIndex);
+  m_dRSBackup = atof(psetWeekLineInfo->m_RSBackup);
 
   m_lTransactionNumber = atol(psetWeekLineInfo->m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(psetWeekLineInfo->m_TransactionNumberBelow5000);
@@ -309,7 +309,7 @@ bool CWeekLine::LoadData(CSetWeekLineInfo* psetWeekLineInfo) {
   m_lCanceledSellVolumeBelow200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeBelow200000);
   m_lCanceledSellVolumeAbove200000 = atoll(psetWeekLineInfo->m_CanceledSellVolumeAbove200000);
 
-  CalculateRSLogarithm1(m_dRelativeStrong);
+  CalculateRSLogarithm1(m_dRS);
   return true;
 }
 
@@ -331,10 +331,10 @@ bool CWeekLine::LoadBasicData(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
   m_dChangeHandRate = atof(psetWeekLineBasicInfo->m_ChangeHandRate);
   m_llTotalValue = atoll(psetWeekLineBasicInfo->m_TotalValue);
   m_llCurrentValue = atoll(psetWeekLineBasicInfo->m_CurrentValue);
-  m_dRelativeStrong = atof(psetWeekLineBasicInfo->m_RelativeStrong);
-  m_dRelativeStrongIndex = atof(psetWeekLineBasicInfo->m_RelativeStrongIndex);
-  m_dRelativeStrongBackup = atof(psetWeekLineBasicInfo->m_RelativeStrongBackup);
-  CalculateRSLogarithm1(m_dRelativeStrong);
+  m_dRS = atof(psetWeekLineBasicInfo->m_RS);
+  m_dRSIndex = atof(psetWeekLineBasicInfo->m_RSIndex);
+  m_dRSBackup = atof(psetWeekLineBasicInfo->m_RSBackup);
+  CalculateRSLogarithm1(m_dRS);
   return true;
 }
 

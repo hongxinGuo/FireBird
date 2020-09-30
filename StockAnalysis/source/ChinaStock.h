@@ -129,10 +129,10 @@ public:
   void SetVBuy(int iIndex, long value) { m_lVBuy.at(iIndex) = value; }
   void SetPSell(int iIndex, long value) { m_lPSell.at(iIndex) = value; }
   void SetVSell(int iIndex, long value) { m_lVSell.at(iIndex) = value; }
-  double GetRelativeStrong(void) noexcept { return m_dRealtimeRelativeStrong; }
-  void SetRelativeStrong(double value) noexcept { m_dRealtimeRelativeStrong = value; }
-  double GetRelativeStrongIndex(void) noexcept { return m_dRealtimeRelativeStrongIndex; }
-  void SetRelativeStrongIndex(double value) noexcept { m_dRealtimeRelativeStrongIndex = value; }
+  double GetRS(void) noexcept { return m_dRealtimeRS; }
+  void SetRS(double value) noexcept { m_dRealtimeRS = value; }
+  double GetRSIndex(void) noexcept { return m_dRealtimeRSIndex; }
+  void SetRSIndex(double value) noexcept { m_dRealtimeRSIndex = value; }
 
   INT64 GetCurrentCanceledBuyVolume(void) noexcept { return m_lCurrentCanceledBuyVolume; }
   INT64 GetCurrentCanceledSellVolume(void) noexcept { return m_lCurrentCanceledSellVolume; }
@@ -422,9 +422,9 @@ public:
   char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
 
   // 日线相对强度计算
-  bool CalculateDayLineRelativeStrong(void);
-  bool CalculateDayLineRelativeStrongIndex(void);
-  bool CalculateDayLineRelativeStrongLogarithm(void);
+  bool CalculateDayLineRS(void);
+  bool CalculateDayLineRSIndex(void);
+  bool CalculateDayLineRSLogarithm(void);
 
   // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
@@ -459,9 +459,9 @@ public:
   bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
   // 周线相对强度计算
-  bool CalculateWeekLineRelativeStrong(void);
-  bool CalculateWeekLineRelativeStrongIndex(void);
-  bool CalculateWeekLineRelativeStrongLogarithm(void);
+  bool CalculateWeekLineRS(void);
+  bool CalculateWeekLineRSIndex(void);
+  bool CalculateWeekLineRSLogarithm(void);
 
   // 当前被处理历史数据容器
   CChinaStockHistoryDataContainer* GetDayLineContainer(void) noexcept { return &m_DayLine; }
@@ -514,8 +514,8 @@ protected:
   array<long, 5> m_lVBuy;	// 买盘量。单位：股
   array<long, 5> m_lPSell; // 卖盘价。单位：0.001元
   array<long, 5> m_lVSell; // 卖盘量。单位：股
-  double m_dRealtimeRelativeStrong; // 当日实时相对强度 单位：1%
-  double m_dRealtimeRelativeStrongIndex; // 当日实时相对强度（相对于指数）单位：1%
+  double m_dRealtimeRS; // 当日实时相对强度 单位：1%
+  double m_dRealtimeRSIndex; // 当日实时相对强度（相对于指数）单位：1%
 
   // 以下变量用于分析买入卖出具体情况
   INT64 m_lAttackBuyAmount; // 向上买入金额

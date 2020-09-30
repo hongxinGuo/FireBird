@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(stock.GetVSell(i), 0);
       EXPECT_EQ(stock.GetPSell(i), 0);
     }
-    EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0);
+    EXPECT_DOUBLE_EQ(stock.GetRS(), 0);
     EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0);
     EXPECT_EQ(stock.GetTotalValue(), 0);
     EXPECT_EQ(stock.GetCurrentValue(), 0);
@@ -314,18 +314,18 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CChinaStockTest, TestGetRelativeStrong) {
+  TEST_F(CChinaStockTest, TestGetRS) {
     CChinaStock stock;
-    EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 0.0);
-    stock.SetRelativeStrong(10101010.0);
-    EXPECT_DOUBLE_EQ(stock.GetRelativeStrong(), 10101010.0);
+    EXPECT_DOUBLE_EQ(stock.GetRS(), 0.0);
+    stock.SetRS(10101010.0);
+    EXPECT_DOUBLE_EQ(stock.GetRS(), 10101010.0);
   }
 
-  TEST_F(CChinaStockTest, TestGetRelativeStrongIndex) {
+  TEST_F(CChinaStockTest, TestGetRSIndex) {
     CChinaStock stock;
-    EXPECT_DOUBLE_EQ(stock.GetRelativeStrongIndex(), 0.0);
-    stock.SetRelativeStrongIndex(10101010.0);
-    EXPECT_DOUBLE_EQ(stock.GetRelativeStrongIndex(), 10101010.0);
+    EXPECT_DOUBLE_EQ(stock.GetRSIndex(), 0.0);
+    stock.SetRSIndex(10101010.0);
+    EXPECT_DOUBLE_EQ(stock.GetRSIndex(), 10101010.0);
   }
 
   TEST_F(CChinaStockTest, TestGetChangeHandRate) {
@@ -1319,7 +1319,7 @@ namespace StockAnalysisTest {
     pid->SetTotalValue(234523452345);
     pid->SetCurrentValue(234145345245);
     pid->SetChangeHandRate(54.321);
-    pid->SetRelativeStrong(14.5);
+    pid->SetRS(14.5);
     pStock->StoreDayLine(pid);
 
     pStock->SetDayLineEndDate(21890101);
@@ -1429,7 +1429,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
     EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
     EXPECT_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
-    EXPECT_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
+    EXPECT_EQ(pDayLine->GetRS(), pid->GetRS());
 
     EXPECT_EQ(pDayLine->GetTransactionNumber(), pStock->GetTransactionNumber());
     EXPECT_EQ(pDayLine->GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
@@ -1543,7 +1543,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
     pStock->SetDayLineEndDate(10190101);
@@ -1572,7 +1572,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(atoll(setDayLineBasicInfo.m_TotalValue), pid->GetTotalValue());
       EXPECT_EQ(atoll(setDayLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RelativeStrong), pid->GetRelativeStrong());
+      EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_RS), pid->GetRS());
       setDayLineBasicInfo.MoveNext();
     }
     setDayLineBasicInfo.Close();
@@ -1614,7 +1614,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600010"));
@@ -1643,7 +1643,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(pDayLine->GetTotalValue(), pid->GetTotalValue());
       EXPECT_EQ(pDayLine->GetCurrentValue(), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(pDayLine->GetRelativeStrong(), pid->GetRelativeStrong());
+      EXPECT_DOUBLE_EQ(pDayLine->GetRS(), pid->GetRS());
     }
     setDayLineBasicInfo.Close();
 
@@ -1682,7 +1682,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600004"));
@@ -1719,7 +1719,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
     pStock->SetStockCode(_T("sh600008"));
@@ -2026,7 +2026,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreWeekLine(pid);
     }
     pStock->SetStockCode(_T("sh600016"));
@@ -2054,7 +2054,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(atoll(setWeekLineBasicInfo.m_TotalValue), pid->GetTotalValue());
       EXPECT_EQ(atoll(setWeekLineBasicInfo.m_CurrentValue), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_ChangeHandRate), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrong), pid->GetRelativeStrong());
+      EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RS), pid->GetRS());
       setWeekLineBasicInfo.MoveNext();
     }
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
@@ -2097,7 +2097,7 @@ namespace StockAnalysisTest {
       pid->SetTotalValue(234523452345);
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
-      pid->SetRelativeStrong(14.5);
+      pid->SetRS(14.5);
       pStock->StoreWeekLine(pid);
     }
     pStock->SetStockCode(_T("sh600010"));
@@ -2126,7 +2126,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(pWeekLine->GetTotalValue(), pid->GetTotalValue());
       EXPECT_EQ(pWeekLine->GetCurrentValue(), pid->GetCurrentValue());
       EXPECT_DOUBLE_EQ(pWeekLine->GetChangeHandRate(), pid->GetChangeHandRate());
-      EXPECT_DOUBLE_EQ(pWeekLine->GetRelativeStrong(), pid->GetRelativeStrong());
+      EXPECT_DOUBLE_EQ(pWeekLine->GetRS(), pid->GetRS());
     }
     setWeekLineBasicInfo.m_pDatabase->CommitTrans();
     setWeekLineBasicInfo.Close();

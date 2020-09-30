@@ -849,8 +849,8 @@ void CStockAnalysisView::OnShowRsInLogarithm() {
   if (m_iShowRSOption != 2) {
     m_iShowRSOption = 2;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongLogarithm();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongLogarithm();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
     }
   }
 }
@@ -872,8 +872,8 @@ void CStockAnalysisView::OnShowRsInLinear() {
   if (m_iShowRSOption != 1) {
     m_iShowRSOption = 1;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrong();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRelativeStrong();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRS();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRS();
     }
   }
 }
@@ -895,8 +895,8 @@ void CStockAnalysisView::OnShowRsIndex() {
   if (m_iShowRSOption != 0) {
     m_iShowRSOption = 0;
     if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRelativeStrongIndex();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRelativeStrongIndex();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSIndex();
+      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRSIndex();
     }
   }
 }

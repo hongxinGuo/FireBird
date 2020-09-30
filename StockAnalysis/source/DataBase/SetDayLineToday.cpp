@@ -32,7 +32,7 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
   m_ChangeHandRate = _T("");
   m_TotalValue = _T("");
   m_CurrentValue = _T("");
-  m_RelativeStrong = _T("");	//相对于总市场的强度
+  m_RS = _T("");	//相对于总市场的强度
   m_TransactionNumber = _T("");
   m_OrdinaryBuyVolumeBelow5000 = _T("");
   m_OrdinaryBuyVolumeBelow10000 = _T("");
@@ -143,7 +143,7 @@ void CSetDayLineToday::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
   RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
   RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
-  RFX_Text(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
+  RFX_Text(pFX, _T("[RelativeStrong]"), m_RS);	//相对于总市场的强度
   RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
   RFX_Text(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
   RFX_Text(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);

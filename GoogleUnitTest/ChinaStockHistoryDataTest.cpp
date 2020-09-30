@@ -158,31 +158,31 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
   }
 
-  TEST_F(CChinaStockHistoryDataTest, TestGetRelativeStrong) {
+  TEST_F(CChinaStockHistoryDataTest, TestGetRS) {
     CChinaStockHistoryData dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 0);
-    dl.SetRelativeStrong(50.50);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 50.50);
+    EXPECT_DOUBLE_EQ(dl.GetRS(), 0);
+    dl.SetRS(50.50);
+    EXPECT_DOUBLE_EQ(dl.GetRS(), 50.50);
   }
 
-  TEST_F(CChinaStockHistoryDataTest, TestGetRelativeStrongIndex) {
+  TEST_F(CChinaStockHistoryDataTest, TestGetRSIndex) {
     CChinaStockHistoryData dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 0);
-    dl.SetRelativeStrongIndex(50.5023);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 50.5023);
+    EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 0);
+    dl.SetRSIndex(50.5023);
+    EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 50.5023);
   }
-  TEST_F(CChinaStockHistoryDataTest, TestGetRelativeStrongBackup) {
+  TEST_F(CChinaStockHistoryDataTest, TestGetRSBackup) {
     CChinaStockHistoryData dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 0);
-    dl.SetRelativeStrongBackup(50.506);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 50.506);
+    EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 0);
+    dl.SetRSBackup(50.506);
+    EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 50.506);
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetRSLogarithm) {
     CChinaStockHistoryData dl;
-    EXPECT_DOUBLE_EQ((double)dl.GetRelativeStrongLogarithm(), 0.0);
+    EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 0.0);
     dl.SetRSLogarithm(50.50);
-    EXPECT_DOUBLE_EQ((double)dl.GetRelativeStrongLogarithm(), 50.50);
+    EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 50.50);
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetTransactionNumber) {

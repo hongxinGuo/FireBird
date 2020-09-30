@@ -158,31 +158,31 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ((double)(dl.GetCurrentValue()), 3.15e+11);
   }
 
-  TEST_F(CWeekLineTest, TestGetRelativeStrong) {
+  TEST_F(CWeekLineTest, TestGetRS) {
     CWeekLine dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 0);
-    dl.SetRelativeStrong(50.50);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrong(), 50.50);
+    EXPECT_DOUBLE_EQ(dl.GetRS(), 0);
+    dl.SetRS(50.50);
+    EXPECT_DOUBLE_EQ(dl.GetRS(), 50.50);
   }
 
-  TEST_F(CWeekLineTest, TestGetRelativeStrongIndex) {
+  TEST_F(CWeekLineTest, TestGetRSIndex) {
     CWeekLine dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 0);
-    dl.SetRelativeStrongIndex(50.5023);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongIndex(), 50.5023);
+    EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 0);
+    dl.SetRSIndex(50.5023);
+    EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 50.5023);
   }
-  TEST_F(CWeekLineTest, TestGetRelativeStrongBackup) {
+  TEST_F(CWeekLineTest, TestGetRSBackup) {
     CWeekLine dl;
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 0);
-    dl.SetRelativeStrongBackup(50.506);
-    EXPECT_DOUBLE_EQ(dl.GetRelativeStrongBackup(), 50.506);
+    EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 0);
+    dl.SetRSBackup(50.506);
+    EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 50.506);
   }
 
   TEST_F(CWeekLineTest, TestGetRSLogarithm) {
     CWeekLine dl;
-    EXPECT_DOUBLE_EQ((double)dl.GetRelativeStrongLogarithm(), 0.0);
+    EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 0.0);
     dl.SetRSLogarithm(50.50);
-    EXPECT_DOUBLE_EQ((double)dl.GetRelativeStrongLogarithm(), 50.50);
+    EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 50.50);
   }
 
   TEST_F(CWeekLineTest, TestGetTransactionNumber) {
@@ -584,9 +584,9 @@ namespace StockAnalysisTest {
     id.SetTotalValue(234523452345);
     id.SetCurrentValue(234145345245);
     id.SetChangeHandRate(54.321);
-    id.SetRelativeStrong(14.5);
-    id.SetRelativeStrongIndex(15.6);
-    id.SetRelativeStrongBackup(20.9);
+    id.SetRS(14.5);
+    id.SetRSIndex(15.6);
+    id.SetRSBackup(20.9);
 
     id.SetTransactionNumber(100390);
     id.SetTransactionNumberBelow5000(10034390);
@@ -688,9 +688,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(atoll(setWeekLineBasicInfo.m_TotalValue), id.GetTotalValue());
     EXPECT_EQ(atoll(setWeekLineBasicInfo.m_CurrentValue), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_ChangeHandRate), id.GetChangeHandRate());
-    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrong), id.GetRelativeStrong());
-    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrongIndex), id.GetRelativeStrongIndex());
-    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RelativeStrongBackup), id.GetRelativeStrongBackup());
+    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RS), id.GetRS());
+    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RSIndex), id.GetRSIndex());
+    EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_RSBackup), id.GetRSBackup());
     setWeekLineBasicInfo.Close();
 
     EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
@@ -709,9 +709,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(id2.GetTotalValue(), id.GetTotalValue());
     EXPECT_EQ(id2.GetCurrentValue(), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(id2.GetChangeHandRate(), id.GetChangeHandRate());
-    EXPECT_DOUBLE_EQ(id2.GetRelativeStrong(), id.GetRelativeStrong());
-    EXPECT_DOUBLE_EQ(id2.GetRelativeStrongIndex(), id.GetRelativeStrongIndex());
-    EXPECT_DOUBLE_EQ(id2.GetRelativeStrongBackup(), id.GetRelativeStrongBackup());
+    EXPECT_DOUBLE_EQ(id2.GetRS(), id.GetRS());
+    EXPECT_DOUBLE_EQ(id2.GetRSIndex(), id.GetRSIndex());
+    EXPECT_DOUBLE_EQ(id2.GetRSBackup(), id.GetRSBackup());
 
     setWeekLineExtendInfo.m_strFilter = _T("[Date] = 21101101");
     setWeekLineExtendInfo.Open();
@@ -822,9 +822,9 @@ namespace StockAnalysisTest {
     id.SetTotalValue(234523452345);
     id.SetCurrentValue(234145345245);
     id.SetChangeHandRate(54.321);
-    id.SetRelativeStrong(14.5);
-    id.SetRelativeStrongIndex(135.6);
-    id.SetRelativeStrongBackup(120.9);
+    id.SetRS(14.5);
+    id.SetRSIndex(135.6);
+    id.SetRSBackup(120.9);
 
     ASSERT(!gl_fNormalMode);
     setWeekLineBasicInfo.m_strFilter = _T("[ID] = 1");
@@ -853,9 +853,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(idLoaded.GetTotalValue(), id.GetTotalValue());
     EXPECT_EQ(idLoaded.GetCurrentValue(), id.GetCurrentValue());
     EXPECT_DOUBLE_EQ(idLoaded.GetChangeHandRate(), id.GetChangeHandRate());
-    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrong(), id.GetRelativeStrong());
-    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrongIndex(), id.GetRelativeStrongIndex());
-    EXPECT_DOUBLE_EQ(idLoaded.GetRelativeStrongBackup(), id.GetRelativeStrongBackup());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRS(), id.GetRS());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRSIndex(), id.GetRSIndex());
+    EXPECT_DOUBLE_EQ(idLoaded.GetRSBackup(), id.GetRSBackup());
     setWeekLineBasicInfo.Close();
 
     setWeekLineBasicInfo.Open();

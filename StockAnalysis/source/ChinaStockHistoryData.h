@@ -72,13 +72,13 @@ public:
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
   void SetCurrentValue(char* buffer) { m_llCurrentValue = static_cast<INT64>(atof(buffer)); }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  double GetRelativeStrong(void) noexcept { return m_dRelativeStrong; }
-  void SetRelativeStrong(double dValue) noexcept { m_dRelativeStrong = dValue; }
-  double GetRelativeStrongIndex(void) noexcept { return m_dRelativeStrongIndex; }
-  void SetRelativeStrongIndex(double dValue) noexcept { m_dRelativeStrongIndex = dValue; }
-  double GetRelativeStrongBackup(void) noexcept { return m_dRelativeStrongBackup; }
-  void SetRelativeStrongBackup(double dValue) noexcept { m_dRelativeStrongBackup = dValue; }
-  double GetRelativeStrongLogarithm(void) noexcept { return m_dRSLogarithm; }
+  double GetRS(void) noexcept { return m_dRS; }
+  void SetRS(double dValue) noexcept { m_dRS = dValue; }
+  double GetRSIndex(void) noexcept { return m_dRSIndex; }
+  void SetRSIndex(double dValue) noexcept { m_dRSIndex = dValue; }
+  double GetRSBackup(void) noexcept { return m_dRSBackup; }
+  void SetRSBackup(double dValue) noexcept { m_dRSBackup = dValue; }
+  double GetRSLogarithm(void) noexcept { return m_dRSLogarithm; }
   void SetRSLogarithm(double dValue) noexcept { m_dRSLogarithm = dValue; }
   long GetTransactionNumber(void) noexcept { return m_lTransactionNumber; }
   void SetTransactionNumber(long lValue) noexcept { m_lTransactionNumber = lValue; }
@@ -258,11 +258,11 @@ protected:
   long m_lUnknownVolume;
   long m_lCanceledBuyVolume; // 买单撤单量
   long m_lCanceledSellVolume; // 卖单撤单量
-  double m_dRelativeStrong; // 相对强弱（最小为0， 最大为100）
-  double m_dRelativeStrongIndex; // 相对强弱（最小为-50， 最大为150）
-  double m_dRelativeStrongBackup; // 相对强弱（最小为0， 最大为100）
-  double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50)) )
-                          // 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRelativeStrong) - log(50)) * 50 / (log(100)-log(50))
+  double m_dRS; // 相对强弱（最小为0， 最大为100）
+  double m_dRSIndex; // 相对强弱（最小为-50， 最大为150）
+  double m_dRSBackup; // 相对强弱（最小为0， 最大为100）
+  double m_dRSLogarithm; // 相对强度的对数值（最小为0， 最大为100，m_dRSLogarithm = (log(m_dRS) - log(50)) * 50 / (log(100)-log(50)) )
+                          // 如果小于50， 则 m_dRSLogarithm = 100 - (log(100 - m_dRS) - log(50)) * 50 / (log(100)-log(50))
   long m_lTransactionNumber;
   long m_lTransactionNumberBelow5000;
   long m_lTransactionNumberBelow50000;

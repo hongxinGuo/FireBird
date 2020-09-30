@@ -45,7 +45,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
 
       s_pchinaMarket->SetTodayStockProcessed(false);
-      s_pchinaMarket->SetRelativeStrongEndDate(19900101);
+      s_pchinaMarket->SetRSEndDate(19900101);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       s_pchinaMarket->SetTodayStockProcessed(false);
-      s_pchinaMarket->SetRelativeStrongEndDate(19900101);
+      s_pchinaMarket->SetRSEndDate(19900101);
       s_pchinaMarket->SetUpdateOptionDB(false);
       gl_ThreadStatus.SetSavingTempData(false);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
@@ -365,7 +365,7 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间小于150400时
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), 19900101) << "没有执行修改最新相对强度日的动作";
+    EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), 19900101) << "没有执行修改最新相对强度日的动作";
     EXPECT_FALSE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed());
@@ -385,7 +385,7 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetSystemReady(true);
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间大于150400时
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), lDate);
+    EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), lDate);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());
@@ -399,14 +399,14 @@ namespace StockAnalysisTest {
     long lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
     gl_fExitingCalculatingRS = true; // 中间被打断
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
-    s_pchinaMarket->SetRelativeStrongEndDate(0);
+    s_pchinaMarket->SetRSEndDate(0);
     s_pchinaMarket->SetUpdateOptionDB(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDay(_))
       .Times(5)
       .WillRepeatedly(Return(true));
     EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDate), (UINT)11);
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), 0);
+    EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), 0);
     EXPECT_FALSE(gl_fExitingCalculatingRS);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
 
@@ -419,7 +419,7 @@ namespace StockAnalysisTest {
       .Times(5);
     EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDate), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
-    EXPECT_EQ(s_pchinaMarket->GetRelativeStrongEndDate(), s_pchinaMarket->GetFormatedMarketDate());
+    EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), s_pchinaMarket->GetFormatedMarketDate());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
   }
 

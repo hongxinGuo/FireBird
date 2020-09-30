@@ -31,8 +31,8 @@ CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
   m_ChangeHandRate = _T("0");
   m_TotalValue = _T("0");
   m_CurrentValue = _T("0");
-  m_RelativeStrong = _T("");	//相对于总市场的强度
-  m_RelativeStrongIndex = _T("");	//相对于总市场的强度
+  m_RS = _T("");	//相对于总市场的强度
+  m_RSIndex = _T("");	//相对于总市场的强度
 
   m_TransactionNumber = _T("0");
   m_TransactionNumberBelow5000 = _T("0"); // 本日的盘口变化数
@@ -138,9 +138,9 @@ void CSetWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[ChangeHandRate]"), m_ChangeHandRate);
   RFX_Text(pFX, _T("[TotalValue]"), m_TotalValue);
   RFX_Text(pFX, _T("[CurrentValue]"), m_CurrentValue);
-  RFX_Text(pFX, _T("[RelativeStrong]"), m_RelativeStrong);	//相对于总市场的强度
-  RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RelativeStrongIndex);	//相对于市场指数的强度
-  RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RelativeStrongBackup);	//相对于市场指数的强度
+  RFX_Text(pFX, _T("[RelativeStrong]"), m_RS);	//相对于总市场的强度
+  RFX_Text(pFX, _T("[RelativeStrongIndex]"), m_RSIndex);	//相对于市场指数的强度
+  RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RSBackup);	//相对于市场指数的强度
   RFX_Text(pFX, _T("[TransactionNumber]"), m_TransactionNumber);
   RFX_Text(pFX, _T("[TransactionNumberBelow5000]"), m_TransactionNumberBelow5000);
   RFX_Text(pFX, _T("[TransactionNumberBelow50000]"), m_TransactionNumberBelow50000);

@@ -113,7 +113,7 @@ bool CChinaStockHistoryDataContainer::CalculateRSLogarithm1(INT64 lNumber) {
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vHistoryData.at(j)->GetRelativeStrongLogarithm();
+      dTempRS += m_vHistoryData.at(j)->GetRSLogarithm();
     }
     switch (lNumber) {
     case 3:
@@ -147,7 +147,7 @@ bool CChinaStockHistoryDataContainer::CalculateRS1(INT64 lNumber) {
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vHistoryData.at(j)->GetRelativeStrong();
+      dTempRS += m_vHistoryData.at(j)->GetRS();
     }
     switch (lNumber) {
     case 3:
@@ -181,7 +181,7 @@ bool CChinaStockHistoryDataContainer::CalculateRSIndex1(INT64 lNumber) {
   for (INT64 i = lNumber; i < lTotalNumber; i++) {
     dTempRS = 0;
     for (INT64 j = i - lNumber; j < i; j++) {
-      dTempRS += m_vHistoryData.at(j)->GetRelativeStrongIndex();
+      dTempRS += m_vHistoryData.at(j)->GetRSIndex();
     }
     switch (lNumber) {
     case 3:
@@ -211,19 +211,19 @@ bool CChinaStockHistoryDataContainer::CalculateRSIndex1(INT64 lNumber) {
 
 void CChinaStockHistoryDataContainer::GetRS1(vector<double>& vRS) {
   for (int i = 0; i < m_vHistoryData.size(); i++) {
-    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongIndex();
+    vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
   }
 }
 
 void CChinaStockHistoryDataContainer::GetRSIndex1(vector<double>& vRS) {
   for (int i = 0; i < m_vHistoryData.size(); i++) {
-    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongIndex();
+    vRS[i] = m_vHistoryData.at(i)->GetRSIndex();
   }
 }
 
 void CChinaStockHistoryDataContainer::GetRSLogarithm1(vector<double>& vRS) {
   for (int i = 0; i < m_vHistoryData.size(); i++) {
-    vRS[i] = m_vHistoryData.at(i)->GetRelativeStrongLogarithm();
+    vRS[i] = m_vHistoryData.at(i)->GetRSLogarithm();
   }
 }
 

@@ -13,8 +13,8 @@ CThreadStatus::CThreadStatus() {
   }
   m_NumberOfBackGroundWorkingThreads = 0;
 
-  m_CalculatingDayLineRelativeStrong = false;
-  m_CalculatingWeekLineRelativeStrong = false;
+  m_CalculatingDayLineRS = false;
+  m_CalculatingWeekLineRS = false;
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;

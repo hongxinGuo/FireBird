@@ -51,11 +51,11 @@ namespace StockAnalysisTest {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
     pHistoryData->SetDate(20200101);
-    pHistoryData->SetRelativeStrongIndex(1.1);
+    pHistoryData->SetRSIndex(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
     pHistoryData2->SetDate(20200201);
-    pHistoryData2->SetRelativeStrongIndex(2.2);
+    pHistoryData2->SetRSIndex(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
     HistoryDataContainer.StoreData(pHistoryData);
@@ -73,11 +73,11 @@ namespace StockAnalysisTest {
     CChinaStockHistoryDataPtr pHistoryData = make_shared<CChinaStockHistoryData>();
     pHistoryData->SetStockCode(_T("sh600000"));
     pHistoryData->SetDate(20200101);
-    pHistoryData->SetRelativeStrongIndex(1.1);
+    pHistoryData->SetRSIndex(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
     pHistoryData2->SetStockCode(_T("sh600001"));
     pHistoryData2->SetDate(20200201);
-    pHistoryData2->SetRelativeStrongIndex(2.2);
+    pHistoryData2->SetRSIndex(2.2);
 
     CChinaStockHistoryDataContainer HistoryDataContainer;
     HistoryDataContainer.StoreData(pHistoryData);

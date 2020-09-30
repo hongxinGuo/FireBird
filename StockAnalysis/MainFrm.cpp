@@ -48,9 +48,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_WM_TIMER()
   ON_COMMAND(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnProcessTodayStock)
   ON_UPDATE_COMMAND_UI(ID_PROCESS_TODAY_STOCK, &CMainFrame::OnUpdateProcessTodayStock)
-  ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRelativeStrong)
+  ON_COMMAND(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnCalculateTodayRS)
   ON_WM_SYSCOMMAND()
-  ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRelativeStrong)
+  ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
   ON_WM_CHAR()
   ON_WM_KEYUP()
   ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
@@ -529,12 +529,12 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
   SysCallOnSysCommand(nID, lParam);
 }
 
-void CMainFrame::OnCalculateTodayRelativeStrong() {
+void CMainFrame::OnCalculateTodayRS() {
   // TODO: 在此添加命令处理程序代码
-  CalculateTodayRelativeStrong();
+  CalculateTodayRS();
 }
 
-void CMainFrame::CalculateTodayRelativeStrong(void) {
+void CMainFrame::CalculateTodayRS(void) {
   gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
@@ -557,7 +557,7 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
   else SysCallCmdUIEnable(pCmdUI, false);
 }
 
-void CMainFrame::OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
   if (gl_pChinaStockMarket->IsSystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {

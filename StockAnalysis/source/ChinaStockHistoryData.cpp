@@ -42,7 +42,7 @@ void CChinaStockHistoryData::Reset(void) {
 
   m_lAttackBuyVolume = m_lStrongBuyVolume = m_lAttackSellVolume = m_lStrongSellVolume = 0;
   m_lUnknownVolume = m_lCanceledBuyVolume = m_lCanceledSellVolume = 0;
-  m_dRelativeStrong = m_dRSLogarithm = m_dRelativeStrongIndex = m_dRelativeStrongBackup = 0.0;
+  m_dRS = m_dRSLogarithm = m_dRSIndex = m_dRSBackup = 0.0;
   m_lOrdinaryBuyVolume = m_lAttackBuyBelow50000 = m_lAttackBuyBelow200000 = m_lAttackBuyAbove200000 = 0;
   m_lOrdinarySellVolume = m_lAttackSellBelow50000 = m_lAttackSellBelow200000 = m_lAttackSellAbove200000 = 0;
   m_d3RS = m_d5RS = m_d10RS = m_d30RS = m_d60RS = m_d120RS = 0.0;

@@ -146,10 +146,10 @@ namespace StockAnalysisTest {
     gl_fExitingSystem = false;
   }
 
-  TEST_F(CMockMainFrameTest, TestOnCalculateTodayRelativeStrong) {
-    EXPECT_CALL(*s_pMainFrame, CalculateTodayRelativeStrong)
+  TEST_F(CMockMainFrameTest, TestOnCalculateTodayRS) {
+    EXPECT_CALL(*s_pMainFrame, CalculateTodayRS)
       .Times(1);
-    s_pMainFrame->OnCalculateTodayRelativeStrong();
+    s_pMainFrame->OnCalculateTodayRS();
   }
 
   TEST_F(CMockMainFrameTest, TestOnProcessTodayStock) {
@@ -171,27 +171,27 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnUpdateProcessTodayStock(&cmdUI);
   }
 
-  TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRelativeStrong) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRS) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetSystemReady(false);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
+    s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
-    s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
+    s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(false);
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
+    s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false));
-    s_pMainFrame->OnUpdateCalculateTodayRelativeStrong(&cmdUI);
+    s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
   }
 
   TEST_F(CMockMainFrameTest, TestPreTranslateMessage) {

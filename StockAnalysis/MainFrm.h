@@ -41,7 +41,7 @@ public:
   virtual void SysCallInvalidate(void) { Invalidate(); }
   virtual void SysCallOnChar(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnChar(nChar, nRepCnt, nFlags); }
   virtual void SysCallOnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) { CMDIFrameWndEx::OnKeyUp(nChar, nRepCnt, nFlags); }
-  virtual void CalculateTodayRelativeStrong(void);
+  virtual void CalculateTodayRS(void);
   virtual void ProcessTodayStock(void);
 
 public:
@@ -93,9 +93,9 @@ public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnProcessTodayStock();
   afx_msg void OnUpdateProcessTodayStock(CCmdUI* pCmdUI);
-  afx_msg void OnCalculateTodayRelativeStrong();
+  afx_msg void OnCalculateTodayRS();
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-  afx_msg void OnUpdateCalculateTodayRelativeStrong(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateCalculateTodayRS(CCmdUI* pCmdUI);
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);

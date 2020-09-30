@@ -262,10 +262,10 @@ public:
   bool IsDayLineDBUpdated(void);
   void ClearDayLineDBUpdatedFlag(void);
 
-  long GetRelativeStrongStartDate(void) noexcept { return m_lRelativeStrongStartDate; }
-  void SetRelativeStrongStartDate(long lDate) noexcept { m_lRelativeStrongStartDate = lDate; }
-  long GetRelativeStrongEndDate(void) noexcept { return m_lRelativeStrongEndDate; }
-  void SetRelativeStrongEndDate(long lDate) noexcept { m_lRelativeStrongEndDate = lDate; }
+  long GetRSStartDate(void) noexcept { return m_lRSStartDate; }
+  void SetRSStartDate(long lDate) noexcept { m_lRSStartDate = lDate; }
+  long GetRSEndDate(void) noexcept { return m_lRSEndDate; }
+  void SetRSEndDate(long lDate) noexcept { m_lRSEndDate = lDate; }
   long GetLastLoginDate(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
   long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
@@ -460,8 +460,8 @@ protected:
   long m_lNeteaseDayLineDataInquiringIndex;
 
   // Option各选项
-  long m_lRelativeStrongStartDate;
-  long m_lRelativeStrongEndDate;
+  long m_lRSStartDate;
+  long m_lRSEndDate;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
   long m_lUpdatedDayFor10DayRS2;
   long m_lUpdatedDayFor10DayRS1;

@@ -1130,14 +1130,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), 19900102);
   }
 
-  TEST_F(CChinaMarketTest, TestGetRelativeStrongStartDate) {
-    gl_pChinaStockMarket->SetRelativeStrongStartDate(19900202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), 19900202);
+  TEST_F(CChinaMarketTest, TestGetRSStartDate) {
+    gl_pChinaStockMarket->SetRSStartDate(19900202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), 19900202);
   }
 
-  TEST_F(CChinaMarketTest, TestGetRelativeStrongEndDate) {
-    gl_pChinaStockMarket->SetRelativeStrongEndDate(19900302);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), 19900302);
+  TEST_F(CChinaMarketTest, TestGetRSEndDate) {
+    gl_pChinaStockMarket->SetRSEndDate(19900302);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), 19900302);
   }
 
   TEST_F(CChinaMarketTest, TestGetNewestTransactionTime) {
@@ -1660,48 +1660,48 @@ namespace StockAnalysisTest {
     setOption.m_pDatabase->CommitTrans();
     setOption.Close();
 
-    gl_pChinaStockMarket->SetRelativeStrongStartDate(20200101);
-    gl_pChinaStockMarket->SetRelativeStrongEndDate(20200202);
+    gl_pChinaStockMarket->SetRSStartDate(20200101);
+    gl_pChinaStockMarket->SetRSEndDate(20200202);
     gl_pChinaStockMarket->SetLastLoginDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(19990101);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(19990202);
 
     gl_pChinaStockMarket->UpdateOptionDB();
 
-    gl_pChinaStockMarket->SetRelativeStrongStartDate(1);
-    gl_pChinaStockMarket->SetRelativeStrongEndDate(1);
+    gl_pChinaStockMarket->SetRSStartDate(1);
+    gl_pChinaStockMarket->SetRSEndDate(1);
     gl_pChinaStockMarket->SetLastLoginDate(1);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(1);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(1);
 
     gl_pChinaStockMarket->LoadOptionDB();
 
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), 20200101);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), 20200202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), 20200101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), 20200202);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
 
-    gl_pChinaStockMarket->SetRelativeStrongStartDate(20100101);
-    gl_pChinaStockMarket->SetRelativeStrongEndDate(20100202);
+    gl_pChinaStockMarket->SetRSStartDate(20100101);
+    gl_pChinaStockMarket->SetRSEndDate(20100202);
     gl_pChinaStockMarket->SetLastLoginDate(20200303);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(19980101);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(19980202);
 
     gl_pChinaStockMarket->UpdateOptionDB();
 
-    gl_pChinaStockMarket->SetRelativeStrongStartDate(1);
-    gl_pChinaStockMarket->SetRelativeStrongEndDate(1);
+    gl_pChinaStockMarket->SetRSStartDate(1);
+    gl_pChinaStockMarket->SetRSEndDate(1);
     gl_pChinaStockMarket->SetLastLoginDate(1);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS1(1);
     gl_pChinaStockMarket->SetUpdatedDateFor10DAyRS2(1);
 
     gl_pChinaStockMarket->LoadOptionDB();
 
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), 20100101);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), 20100202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), 20100101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), 20100202);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
@@ -1718,8 +1718,8 @@ namespace StockAnalysisTest {
     setOption.Close();
     gl_pChinaStockMarket->LoadOptionDB();
 
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());

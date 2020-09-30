@@ -39,9 +39,9 @@ public:
   CString m_ChangeHandRate; // 今日换手率
   CString m_TotalValue;	//总市值。单位：元
   CString m_CurrentValue;	//流通市值。单位：元
-  CString m_RelativeStrong;	//相对于总市场的强度
-  CString m_RelativeStrongIndex;	//相对于市场指数的强度
-  CString m_RelativeStrongBackup;	//备用数据
+  CString m_RS;	//相对于总市场的强度
+  CString m_RSIndex;	//相对于市场指数的强度
+  CString m_RSBackup;	//备用数据
 
 // 重写
   // 向导生成的虚函数重写
