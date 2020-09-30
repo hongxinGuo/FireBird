@@ -266,7 +266,7 @@ public:
   void SetRelativeStrongStartDate(long lDate) noexcept { m_lRelativeStrongStartDate = lDate; }
   long GetRelativeStrongEndDate(void) noexcept { return m_lRelativeStrongEndDate; }
   void SetRelativeStrongEndDate(long lDate) noexcept { m_lRelativeStrongEndDate = lDate; }
-  long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
+  long GetLastLoginDate(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
   long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
   void SetUpdatedDateFor10DAyRS1(long lDate) noexcept { m_lUpdatedDayFor10DayRS1 = lDate; }

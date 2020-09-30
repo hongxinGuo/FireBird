@@ -39,7 +39,7 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
 UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为11, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为12
+UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long lDate); // 此工作线程返回值也为12
 // 存储临时系统状态线程
 UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // 此工作线程返回值为13
 // 计算和存储当前交易日数据线程
@@ -73,7 +73,7 @@ UINT ThreadLoadWeekLine(CChinaStockPtr pStock); // 此线程返回值为29
 // 计算股票相对强度线程。此线程调用线程ThreadCalculateRSAtThisDay执行具体任务，最多生成8个工作线程。
 UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay); // 此工作线程返回值为30, 参数为当前最后计算日期
 // 计算给定日期股票日线相对强度线程。此线程由ThreadCalculateRelativeStrong线程调用，用于并发计算不同日期的日线相对强度，以提高效率
-UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay); // 此工作线程返回值也为31
+UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long lDate); // 此工作线程返回值也为31
 // 计算本周的周线
 UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket); // 此工作线程返回值为32
 // 重建当前周的周线数据表

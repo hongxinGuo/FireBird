@@ -27,7 +27,7 @@ void CPotenDailyBriefingMarket::Reset(void) {
   m_pDataToSaved = nullptr;
   m_vPotenDailyBriefing.clear();
   m_fDataBaseLoaded = false;
-  m_lCurrentInquiringDay = 20180411; //
+  m_lCurrentInquiringDate = 20180411; //
   m_lToday = GetFormatedMarketDate();
   for (long l = 20180411; l <= m_lToday; l = GetNextDay(l)) {
     m_mapDataLoadedDays[l] = false;
@@ -82,12 +82,12 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerMinute(long lSecond, long lCurr
     if (!m_fTodayDataUpdated) {
       TaskProcessData();
 
-      if (m_lCurrentInquiringDay < m_lToday) {
+      if (m_lCurrentInquiringDate < m_lToday) {
         ChoiceNextInquiringDate();
       }
 
       TaskCheckTodayDataUpdated();
-      if (m_lCurrentInquiringDay < m_lToday) {
+      if (m_lCurrentInquiringDate < m_lToday) {
         TaskInquiringData();
       }
     }
@@ -103,7 +103,7 @@ bool CPotenDailyBriefingMarket::SchedulingTaskPerHour(long lSecond, long lCurren
   s_i1MinuteCounter -= lSecond;
   if (s_i1MinuteCounter < 0) {
     s_i1MinuteCounter = 3599;
-    if (!m_fTodayDataUpdated && (m_lCurrentInquiringDay == m_lToday)) {
+    if (!m_fTodayDataUpdated && (m_lCurrentInquiringDate == m_lToday)) {
       TaskInquiringData();
     }
     return true;
@@ -123,7 +123,7 @@ bool CPotenDailyBriefingMarket::TaskProcessData(void) {
           pPotenDailyBriefing->SetDate(pWebData->m_lTime / 1000000);
           if (!m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate())) {
             ASSERT(m_pDataToSaved == nullptr);
-            if (m_lCurrentInquiringDay == m_lToday) m_fTodayDataUpdated = true;
+            if (m_lCurrentInquiringDate == m_lToday) m_fTodayDataUpdated = true;
             m_pDataToSaved = pPotenDailyBriefing;
             RunningThreadSavePotenData();
             TRACE(_T("处理%d日的poten数据\n"), pPotenDailyBriefing->GetFormatedMarketDate());
@@ -153,10 +153,10 @@ bool CPotenDailyBriefingMarket::RunningThreadSavePotenData(void) {
 
 bool CPotenDailyBriefingMarket::TaskCheckTodayDataUpdated(void) {
   ASSERT(!m_fTodayDataUpdated);
-  if (m_lCurrentInquiringDay > m_lToday) {
+  if (m_lCurrentInquiringDate > m_lToday) {
     m_fTodayDataUpdated = true;
   }
-  else if ((m_lCurrentInquiringDay == m_lToday) && (!gl_pPotenDailyBriefingMarket->IsWorkingDay())) {
+  else if ((m_lCurrentInquiringDate == m_lToday) && (!gl_pPotenDailyBriefingMarket->IsWorkingDay())) {
     m_fTodayDataUpdated = true;
   }
   else m_fTodayDataUpdated = false;
@@ -202,8 +202,8 @@ bool CPotenDailyBriefingMarket::LoadDatabase(void) {
     pPotenDailyBriefing->LoadData(setPotenDailyBriefing);
     m_vPotenDailyBriefing.push_back(pPotenDailyBriefing);
     m_mapDataLoadedDays.at(pPotenDailyBriefing->GetFormatedMarketDate()) = true;
-    if (setPotenDailyBriefing.m_Date >= m_lCurrentInquiringDay) {
-      m_lCurrentInquiringDay = setPotenDailyBriefing.m_Date;
+    if (setPotenDailyBriefing.m_Date >= m_lCurrentInquiringDate) {
+      m_lCurrentInquiringDate = setPotenDailyBriefing.m_Date;
     }
     setPotenDailyBriefing.MoveNext();
   }
@@ -228,11 +228,11 @@ bool CPotenDailyBriefingMarket::SaveCurrentData(void) {
 }
 
 void CPotenDailyBriefingMarket::ChoiceNextInquiringDate(void) {
-  long lNextInquiringDay = m_lCurrentInquiringDay;
+  long lNextInquiringDate = m_lCurrentInquiringDate;
 
   do {
-    lNextInquiringDay = GetNextDay(lNextInquiringDay);
-  } while ((lNextInquiringDay < m_lToday) && m_mapDataLoadedDays.at(lNextInquiringDay));
+    lNextInquiringDate = GetNextDay(lNextInquiringDate);
+  } while ((lNextInquiringDate < m_lToday) && m_mapDataLoadedDays.at(lNextInquiringDate));
 
-  SetCurrentInquiringDate(lNextInquiringDay);
+  SetCurrentInquiringDate(lNextInquiringDate);
 }

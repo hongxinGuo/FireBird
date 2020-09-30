@@ -41,8 +41,8 @@ public:
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }
   void SetDatabaseLoaded(bool fFlag) noexcept { m_fDataBaseLoaded = fFlag; }
-  long GetCurrentInquiringDate(void) noexcept { return m_lCurrentInquiringDay; }
-  void SetCurrentInquiringDate(long lDate) noexcept { m_lCurrentInquiringDay = lDate; }
+  long GetCurrentInquiringDate(void) noexcept { return m_lCurrentInquiringDate; }
+  void SetCurrentInquiringDate(long lDate) noexcept { m_lCurrentInquiringDate = lDate; }
 
   size_t GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
   void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
@@ -56,7 +56,7 @@ protected:
   bool m_fTodayDataUpdated;
   vector<CPotenDailyBriefingPtr> m_vPotenDailyBriefing;
   map<long, bool> m_mapDataLoadedDays;
-  long m_lCurrentInquiringDay;
+  long m_lCurrentInquiringDate;
   long m_lToday;
 };
 

@@ -37,7 +37,7 @@ public:
   bool IsWorkingDay(CTime timeCurrent) noexcept;
   bool IsWorkingDay(long lDate) noexcept;
 
-  bool IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept;
+  bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) noexcept;
   long GetNextDay(long lDate, long lTimeSpanDays = 1) noexcept;
   long GetPrevDay(long lDate, long lTimeSpanDays = 1) noexcept;
 

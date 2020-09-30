@@ -112,15 +112,15 @@ bool CVirtualMarket::IsWorkingDay(long lDate) noexcept {
   else return true;
 }
 
-bool CVirtualMarket::IsEarlyThen(long lEarlyDay, long lLatelyDay, long lTimeSpawnOfDays) noexcept {
+bool CVirtualMarket::IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) noexcept {
   CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
-  const long year = lEarlyDay / 10000;
-  const long month = lEarlyDay / 100 - year * 100;
-  const long day = lEarlyDay - year * 10000 - month * 100;
+  const long year = lEarlyDate / 10000;
+  const long month = lEarlyDate / 100 - year * 100;
+  const long day = lEarlyDate - year * 10000 - month * 100;
   CTime ctEarly(year, month, day, 12, 0, 0);
   ctEarly += ts;
-  long lNewDay = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
-  return (lNewDay < lLatelyDay);
+  long lNewDate = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
+  return (lNewDate < lLatelyDate);
 }
 
 long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) noexcept {

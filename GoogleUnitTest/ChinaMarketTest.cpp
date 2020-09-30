@@ -1125,9 +1125,9 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStock->IsActive());
   }
 
-  TEST_F(CChinaMarketTest, TestGetLastLoginDay) {
+  TEST_F(CChinaMarketTest, TestGetLastLoginDate) {
     gl_pChinaStockMarket->SetLastLoginDate(19900102);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), 19900102);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), 19900102);
   }
 
   TEST_F(CChinaMarketTest, TestGetRelativeStrongStartDate) {
@@ -1678,7 +1678,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), 20200101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), 20200202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDate());
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
@@ -1702,7 +1702,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), 20100101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), 20100202);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), gl_pChinaStockMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19980202);
@@ -1720,7 +1720,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongStartDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(gl_pChinaStockMarket->GetRelativeStrongEndDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
     EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), __CHINA_MARKET_BEGIN_DAY__);

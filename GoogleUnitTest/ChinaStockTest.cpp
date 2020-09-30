@@ -436,7 +436,7 @@ namespace StockAnalysisTest {
     CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
     time_t tt;
     time(&tt);
-    long lDaySource = FormatToDate(tt);
+    long lDateSource = FormatToDate(tt);
 
     pRTData->SetTransactionTime(tt);
     pRTData->SetLastClose(10101010);
@@ -455,8 +455,8 @@ namespace StockAnalysisTest {
       pRTData->SetVSell(i, i * 45678);
     }
     stock.UpdateStatus(pRTData);
-    long lDayDest = FormatToDate(stock.GetTransactionTime());
-    EXPECT_EQ(lDaySource, lDayDest);
+    long lDateDest = FormatToDate(stock.GetTransactionTime());
+    EXPECT_EQ(lDateSource, lDateDest);
     EXPECT_EQ(stock.GetMarket(), 0);
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));

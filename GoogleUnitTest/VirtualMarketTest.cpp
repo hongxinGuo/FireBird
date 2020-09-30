@@ -193,7 +193,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(s_VirtualMarket.GetStringOfLocalTime(), str);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetStringOfLocalDayTime) {
+  TEST_F(CVirtualMarketTest, TestGetStringOfLocalDateTime) {
     s_VirtualMarket.CalculateTime();
 
     time_t tLocal = s_VirtualMarket.GetLocalTime();

@@ -15,10 +15,10 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
+UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCalculatingWeekLineRS(true);
-  long lToday = GetPrevMonday(startCalculatingDay);
+  long lToday = GetPrevMonday(startCalculatingDate);
 
   const long year = lToday / 10000;
   const long month = lToday / 100 - year * 100;
@@ -67,18 +67,17 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
+UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long lDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
-  const long year = thisDay / 10000;
-  const long month = thisDay / 100 - year * 100;
-  const long day = thisDay - year * 10000 - month * 100;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - year * 100;
+  const long day = lDate - year * 10000 - month * 100;
   CTime ctCurrent(year, month, day, 12, 0, 0);
   const CTimeSpan oneDay(1, 0, 0, 0);
-  long lDate = thisDay;
 
-  ASSERT(GetCurrentMonday(thisDay) == thisDay); // 确保此日期为星期一
+  ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
     pMarket->BuildWeekLineRSOfDay(lDate);

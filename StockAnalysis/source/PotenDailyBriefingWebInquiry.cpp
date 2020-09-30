@@ -15,24 +15,24 @@ CPotenDailyBriefingWebInquiry::CPotenDailyBriefingWebInquiry() : CVirtualWebInqu
   m_strWebDataInquireSuffix = _T("");
   m_strConnection = _T("PotenDailyBriefing");
 
-  m_lInquiringDay = 20180411; //poten.com网站的最新格式从此日期之后开始，之前的格式暂时不去读取。
+  m_lInquiringDate = 20180411; //poten.com网站的最新格式从此日期之后开始，之前的格式暂时不去读取。
 }
 
 CPotenDailyBriefingWebInquiry::~CPotenDailyBriefingWebInquiry() {
 }
 
 bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
-  m_lInquiringDay = gl_pPotenDailyBriefingMarket->GetCurrentInquiringDate();
+  m_lInquiringDate = gl_pPotenDailyBriefingMarket->GetCurrentInquiringDate();
   CString strMiddle = _T("");
   char buffer[50];
-  long year = m_lInquiringDay / 10000;
-  long month = m_lInquiringDay / 100 - year * 100;
-  long day = m_lInquiringDay - year * 10000 - month * 100;
+  long year = m_lInquiringDate / 10000;
+  long month = m_lInquiringDate / 100 - year * 100;
+  long day = m_lInquiringDate - year * 10000 - month * 100;
 
   sprintf_s(buffer, _T("%02d/%02d/%04d"), month, day, year);
   strMiddle = buffer;
   CreateTotalInquiringString(strMiddle);
-  TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDay);
+  TRACE(_T("读取%08d日的poten数据\n"), m_lInquiringDate);
   return true;
 }
 

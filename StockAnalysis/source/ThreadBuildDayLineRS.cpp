@@ -14,10 +14,10 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
+UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCalculatingDayLineRS(true);
-  long lToday = startCalculatingDay;
+  long lToday = startCalculatingDate;
 
   const long year = lToday / 10000;
   const long month = lToday / 100 - year * 100;
@@ -70,12 +70,12 @@ UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long thisDay) {
+UINT ThreadBuildDayLineRSOfDay(CChinaMarket* pMarket, long lDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildDayLineRSOfDay(thisDay);  // 调用实际执行函数
+    pMarket->BuildDayLineRSOfDay(lDate);  // 调用实际执行函数
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();
