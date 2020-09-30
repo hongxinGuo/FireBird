@@ -33,8 +33,8 @@ void CChinaStock::Reset(void) {
   m_strStockCode = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
-  m_lDayLineStartDay = __CHINA_MARKET_BEGIN_DAY__; //
-  m_lDayLineEndDay = __CHINA_MARKET_BEGIN_DAY__; //
+  m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DAY__; //
+  m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DAY__; //
   m_lIPOStatus = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_nHand = 100;
 
@@ -161,7 +161,7 @@ void CChinaStock::ClearRTDataDeque(void) {
 
 bool CChinaStock::HaveNewDayLineData(void) {
   if (m_DayLine.GetDataSize() <= 0) return false;
-  if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDay()) return true;
+  if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;
 }
 
@@ -224,12 +224,12 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   pTestPos = m_pDayLineBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
   if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDayLineEndDay() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+    if (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
-      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
+      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
       //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
@@ -465,17 +465,17 @@ bool CChinaStock::SaveDayLineBasicInfo(void) {
   return m_DayLine.SaveDayLineBasicInfo(GetStockCode());
 }
 
-void CChinaStock::UpdateDayLineStartEndDay(void) {
+void CChinaStock::UpdateDayLineStartEndDate(void) {
   if (m_DayLine.GetDataSize() == 0) {
     SetDayLineStartDate(__CHINA_MARKET_BEGIN_DAY__);
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
-    if (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDay()) {
+    if (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
     }
-    if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDay()) {
+    if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
       SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
     }
@@ -1536,7 +1536,7 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
   if (IsIPOed()) { // 如果此股票是活跃股票
-    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDay(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
       setStockCode.m_IPOStatus = __STOCK_DELISTED__;
     }
     else {
@@ -1546,8 +1546,8 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   else {
     setStockCode.m_IPOStatus = GetIPOStatus();
   }
-  setStockCode.m_DayLineStartDay = GetDayLineStartDay();
-  setStockCode.m_DayLineEndDay = GetDayLineEndDay();
+  setStockCode.m_DayLineStartDate = GetDayLineStartDate();
+  setStockCode.m_DayLineEndDate = GetDayLineEndDate();
 }
 
 void CChinaStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
@@ -1561,9 +1561,9 @@ bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
-  SetDayLineStartDate(setStockCode.m_DayLineStartDay);
-  if (GetDayLineEndDay() < setStockCode.m_DayLineEndDay) { // 有时一个股票会有多个记录，以最后的日期为准。
-    SetDayLineEndDate(setStockCode.m_DayLineEndDay);
+  SetDayLineStartDate(setStockCode.m_DayLineStartDate);
+  if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
+    SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }
   SetCheckingDayLineStatus();
   return true;
@@ -1572,27 +1572,27 @@ bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
 void CChinaStock::SetCheckingDayLineStatus(void) {
   ASSERT(IsDayLineNeedUpdate());
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStockMarket->GetLastTradeDay() <= GetDayLineEndDay()) { // 最新日线数据为今日或者上一个交易日的数据。
+  if (gl_pChinaStockMarket->GetLastTradeDay() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
   else if (IsNullStock()) { // 无效代码不需更新日线数据
     SetDayLineNeedUpdate(false);
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDay() != __CHINA_MARKET_BEGIN_DAY__)) {
+    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DAY__)) {
       SetDayLineNeedUpdate(false);
     }
   }
 }
 
-bool CChinaStock::BuildWeekLine(long lStartDay) {
+bool CChinaStock::BuildWeekLine(long lStartDate) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
     LoadDayLine(GetStockCode());
   }
   if (GetDayLineSize() <= 0) return true;
 
-  if (CalculatingWeekLine(lStartDay)) {
+  if (CalculatingWeekLine(lStartDate)) {
     SaveWeekLine();
   }
 
@@ -1811,14 +1811,14 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
   else return true;
 }
 
-bool CChinaStock::CalculatingWeekLine(long lStartDay) {
+bool CChinaStock::CalculatingWeekLine(long lStartDate) {
   ASSERT(IsDayLineLoaded());
   ASSERT(m_DayLine.GetDataSize() > 0);
   long i = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   m_WeekLine.Unload();
-  while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetFormatedMarketDate() < lStartDay)) {
+  while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetFormatedMarketDate() < lStartDate)) {
     i++;
   }
   if (i < m_DayLine.GetDataSize()) {

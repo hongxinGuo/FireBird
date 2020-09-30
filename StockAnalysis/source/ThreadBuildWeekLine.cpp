@@ -7,11 +7,11 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
+UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCreatingWeekLine(true);
 
-  long lStartMonday = GetCurrentMonday(lStartDay);
+  long lStartMonday = GetCurrentMonday(lStartDate);
   long year = lStartMonday / 10000;
   long month = lStartMonday / 100 - (lStartMonday / 10000) * 100;
   long mday = lStartMonday - (lStartMonday / 100) * 100;
@@ -19,7 +19,7 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
   const CTimeSpan ts7Day(7, 0, 0, 0);
   long lCurrentMonday = lStartMonday;
 
-  if (lStartDay > 19900101) { // 目前此种情况只用于重新生成本周周线
+  if (lStartDate > 19900101) { // 目前此种情况只用于重新生成本周周线
     ASSERT(lStartMonday == GetCurrentMonday(pMarket->GetFormatedMarketDate()));
     do {
       pMarket->DeleteWeekLine(lCurrentMonday);
@@ -44,11 +44,11 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDay) {
   return 25;
 }
 
-UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDay) {
+UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
-  if (!gl_fExitingSystem) pStock->BuildWeekLine(lStartDay);
+  if (!gl_fExitingSystem) pStock->BuildWeekLine(lStartDate);
 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
   gl_SemaphoreBackGroundTaskThreads.Signal();

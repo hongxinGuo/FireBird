@@ -74,10 +74,10 @@ public:
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
-  long GetDayLineStartDay(void) noexcept { return m_lDayLineStartDay; }
-  void SetDayLineStartDate(long lDay) noexcept { m_lDayLineStartDay = lDay; }
-  long GetDayLineEndDay(void) noexcept { return m_lDayLineEndDay; }
-  void SetDayLineEndDate(long lDay) noexcept { m_lDayLineEndDay = lDay; }
+  long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
+  void SetDayLineStartDate(long lDay) noexcept { m_lDayLineStartDate = lDay; }
+  long GetDayLineEndDate(void) noexcept { return m_lDayLineEndDate; }
+  void SetDayLineEndDate(long lDay) noexcept { m_lDayLineEndDate = lDay; }
 
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -325,7 +325,7 @@ public:
   void SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLine); // 存储当日基本数据
   void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
-  void UpdateDayLineStartEndDay(void);
+  void UpdateDayLineStartEndDate(void);
   void LoadTempInfo(CSetDayLineToday& setDayLineToday);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
@@ -338,7 +338,7 @@ public:
   bool SaveWeekLineExtendInfo();
   bool LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo);
   bool LoadWeekLineExtendInfo(CSetWeekLineExtendInfo* psetWeekLineExtendInfo);
-  bool BuildWeekLine(long lStartDay = 19900101);
+  bool BuildWeekLine(long lStartDate = 19900101);
 
   // 挂单情况
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
@@ -454,7 +454,7 @@ public:
   size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
   CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
   void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
-  bool CalculatingWeekLine(long lStartDay);
+  bool CalculatingWeekLine(long lStartDate);
   bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
   bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
@@ -486,8 +486,8 @@ protected:
   CString m_strStockName; // 股票名称
   CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
   long m_lOffsetInContainer;	// 在容器中的偏移量
-  long m_lDayLineStartDay;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
-  long m_lDayLineEndDay;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
+  long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
+  long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
                  // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
   short	m_nHand;	// 每手股数

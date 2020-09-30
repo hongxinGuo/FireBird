@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
+// 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
 //
 // 此线程调用ThreadBuildDayLineRSOfDay线程，目前最多允许同时生成8个线程。
 //
@@ -40,7 +40,7 @@ UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDay) {
   while (gl_ThreadStatus.IsBackGroundthreadsWorking()) Sleep(100); // 等待所有的工作线程结束
 
   if (!gl_fExitingCalculatingRS) { // 如果顺利完成了计算任务
-    pMarket->SetRelativeStrongEndDay(pMarket->GetFormatedMarketDate());
+    pMarket->SetRelativeStrongEndDate(pMarket->GetFormatedMarketDate());
     pMarket->SetUpdateOptionDB(true); // 更新选项数据库
     // 显示花费的时间
     time(&tEnd);

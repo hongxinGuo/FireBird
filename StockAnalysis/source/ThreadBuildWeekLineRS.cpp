@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// 计算从gl_lrelativeStrongEndDay至gl_lDay的相对强度线程。
+// 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
 //
 // 此线程调用ThreadBuildWeekLineRSOfDay线程，目前最多允许同时生成8个线程。
 //

@@ -21,7 +21,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock) {
   if (!gl_fExitingSystem) {
     fDataSaved = pStock->SaveDayLineBasicInfo();
     if (fDataSaved) {
-      pStock->UpdateDayLineStartEndDay();
+      pStock->UpdateDayLineStartEndDate();
       pStock->SetDayLineDBUpdated(true);
     }
     pStock->UnloadDayLine();

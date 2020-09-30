@@ -106,8 +106,8 @@ public:
   virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
   virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
   virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
-  virtual bool RunningThreadBuildWeekLine(long lStartDay);
-  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDay);
+  virtual bool RunningThreadBuildWeekLine(long lStartDate);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate);
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
@@ -232,7 +232,7 @@ public:
 
   bool UnloadDayLine(void);
 
-  bool BuildWeekLine(long lStartDay);
+  bool BuildWeekLine(long lStartDate);
   virtual bool BuildWeekLineOfCurrentWeek(void);
   bool CreateStockCodeSet(set<CString>& setStockCode, vector<CChinaStockHistoryDataPtr>* pvData);
   virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
@@ -262,10 +262,10 @@ public:
   bool IsDayLineDBUpdated(void);
   void ClearDayLineDBUpdatedFlag(void);
 
-  long GetRelativeStrongStartDay(void) noexcept { return m_lRelativeStrongStartDay; }
-  void SetRelativeStrongStartDay(long lDay) noexcept { m_lRelativeStrongStartDay = lDay; }
-  long GetRelativeStrongEndDay(void) noexcept { return m_lRelativeStrongEndDay; }
-  void SetRelativeStrongEndDay(long lDay) noexcept { m_lRelativeStrongEndDay = lDay; }
+  long GetRelativeStrongStartDate(void) noexcept { return m_lRelativeStrongStartDate; }
+  void SetRelativeStrongStartDate(long lDay) noexcept { m_lRelativeStrongStartDate = lDay; }
+  long GetRelativeStrongEndDate(void) noexcept { return m_lRelativeStrongEndDate; }
+  void SetRelativeStrongEndDate(long lDay) noexcept { m_lRelativeStrongEndDate = lDay; }
   long GetLastLoginDay(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDay(long lDay) noexcept { m_lLastLoginDay = lDay; }
   long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
@@ -460,8 +460,8 @@ protected:
   long m_lNeteaseDayLineDataInquiringIndex;
 
   // Option各选项
-  long m_lRelativeStrongStartDay;
-  long m_lRelativeStrongEndDay;
+  long m_lRelativeStrongStartDate;
+  long m_lRelativeStrongEndDate;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
   long m_lUpdatedDayFor10DayRS2;
   long m_lUpdatedDayFor10DayRS1;

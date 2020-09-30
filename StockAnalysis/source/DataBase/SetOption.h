@@ -17,8 +17,8 @@ public:
   // (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
   // 以同时支持 Unicode 和这些转换)。
   long m_ID;
-  long m_RelativeStrongEndDay;
-  long m_RalativeStrongStartDay;
+  long m_RelativeStrongEndDate;
+  long m_RalativeStrongStartDate;
   long m_LastLoginDay;
   long m_UpdatedDayFor10DayRS1;
   long m_UpdatedDayFor10DayRS2;

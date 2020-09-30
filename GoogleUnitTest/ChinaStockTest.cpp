@@ -67,8 +67,8 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
     EXPECT_EQ(stock.GetTransactionTime(), 0);
     EXPECT_EQ(stock.GetLastClose(), 0);
@@ -99,14 +99,14 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T("abcde"));
     EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
     EXPECT_EQ(stock.GetOffset(), 1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), 20020202);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stock.IsNullStock());
     stock.Reset();
     EXPECT_EQ(stock.GetMarket(), 0);
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
   }
 
@@ -139,18 +139,18 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetOffset(), 10101);
   }
 
-  TEST_F(CChinaStockTest, TestGetDayLineEndDay) {
+  TEST_F(CChinaStockTest, TestGetDayLineEndDate) {
     CChinaStock stock;
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     stock.SetDayLineEndDate(19980101);
-    EXPECT_EQ(stock.GetDayLineEndDay(), 19980101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
   }
 
-  TEST_F(CChinaStockTest, TestGetDayLineStartDay) {
+  TEST_F(CChinaStockTest, TestGetDayLineStartDate) {
     CChinaStock stock;
-    EXPECT_EQ(stock.GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DAY__);
     stock.SetDayLineStartDate(19980101);
-    EXPECT_EQ(stock.GetDayLineStartDay(), 19980101);
+    EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetIPOStatus) {
@@ -344,7 +344,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
     stock.SetMarket(1);
     stock.SetStockCode(_T("abcde"));
@@ -356,7 +356,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T("abcde"));
     EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
     EXPECT_EQ(stock.GetOffset(), 1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), 20020202);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stock.IsNullStock());
     pRTData->SetTransactionTime(12345);
     pRTData->SetLastClose(10101010);
@@ -381,7 +381,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     EXPECT_EQ(stock.GetLastClose(), 0);
@@ -411,7 +411,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
     stock.SetMarket(1);
     stock.SetStockCode(_T("abcde"));
@@ -423,14 +423,14 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T("abcde"));
     EXPECT_STREQ(stock.GetStockName(), _T("dcba"));
     EXPECT_EQ(stock.GetOffset(), 1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), 20020202);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stock.IsNullStock());
     stock.Reset();
     EXPECT_EQ(stock.GetMarket(), 0);
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
@@ -461,7 +461,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     EXPECT_EQ(stock.GetLastClose(), 10101010);
@@ -909,8 +909,8 @@ namespace StockAnalysisTest {
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
-    EXPECT_EQ(stock.GetDayLineStartDay(), setStockCode.m_DayLineStartDay);
-    EXPECT_EQ(stock.GetDayLineEndDay(), setStockCode.m_DayLineEndDay);
+    EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
+    EXPECT_EQ(stock.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
     setStockCode.Close();
   }
 
@@ -926,8 +926,8 @@ namespace StockAnalysisTest {
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
-    EXPECT_EQ(stock.GetDayLineStartDay(), setStockCode.m_DayLineStartDay);
-    EXPECT_EQ(stock.GetDayLineEndDay(), lCurrentDay);
+    EXPECT_EQ(stock.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
+    EXPECT_EQ(stock.GetDayLineEndDate(), lCurrentDay);
     setStockCode.Close();
   }
 
@@ -936,7 +936,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     stock.SetCheckingDayLineStatus();
-    EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDay() << gl_pChinaStockMarket->GetFormatedMarketDate();
+    EXPECT_FALSE(stock.IsDayLineNeedUpdate()) << stock.GetDayLineEndDate() << gl_pChinaStockMarket->GetFormatedMarketDate();
     stock.SetDayLineNeedUpdate(true);
     stock.SetDayLineEndDate(gl_pChinaStockMarket->GetLastTradeDay());
     stock.SetCheckingDayLineStatus();
@@ -1658,7 +1658,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Close();
   }
 
-  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay) {
+  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate) {
     CDayLinePtr pid;
     CChinaStock stock;
 
@@ -1689,13 +1689,13 @@ namespace StockAnalysisTest {
     pStock->SetDayLineStartDate(19920102);
     pStock->SetDayLineEndDate(20800100);
     ASSERT(!gl_fNormalMode);
-    pStock->UpdateDayLineStartEndDay();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2) << "日线最新日期已更新";
-    EXPECT_EQ(pStock->GetDayLineStartDay(), __CHINA_MARKET_BEGIN_DAY__ + 2) << "日线最初日期已更新";
+    pStock->UpdateDayLineStartEndDate();
+    EXPECT_EQ(pStock->GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2) << "日线最新日期已更新";
+    EXPECT_EQ(pStock->GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DAY__ + 2) << "日线最初日期已更新";
     EXPECT_TRUE(gl_pChinaStockMarket->IsDayLineDBUpdated());
   }
 
-  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDay2) {
+  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
     CDayLinePtr pid;
     CChinaStock stock;
 
@@ -1726,9 +1726,9 @@ namespace StockAnalysisTest {
     pStock->SetDayLineStartDate(19900100);
     pStock->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
-    pStock->UpdateDayLineStartEndDay();
-    EXPECT_EQ(pStock->GetDayLineEndDay(), 20800102);
-    EXPECT_EQ(pStock->GetDayLineStartDay(), 19900100);
+    pStock->UpdateDayLineStartEndDate();
+    EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
+    EXPECT_EQ(pStock->GetDayLineStartDate(), 19900100);
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
   }
 

@@ -109,7 +109,7 @@ void CChinaMarket::Reset(void) {
   }
   else SetTodayStockProcessed(false);
 
-  m_lRelativeStrongEndDay = m_lRelativeStrongStartDay = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
+  m_lRelativeStrongEndDate = m_lRelativeStrongStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
   m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
 
   m_fSaveDayLine = false;
@@ -473,7 +473,7 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn) {
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
     }
-    else if (pStock->GetDayLineEndDay() >= GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+    else if (pStock->GetDayLineEndDate() >= GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex);
@@ -1794,10 +1794,10 @@ bool CChinaMarket::UnloadDayLine(void) {
   return true;
 }
 
-bool CChinaMarket::BuildWeekLine(long lStartDay) {
+bool CChinaMarket::BuildWeekLine(long lStartDate) {
   gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
   for (auto pStock : m_vChinaMarketStock) {
-    RunningThreadBuildWeekLineOfStock(pStock, lStartDay);
+    RunningThreadBuildWeekLineOfStock(pStock, lStartDate);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     Sleep(1000);
@@ -2451,14 +2451,14 @@ bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildWeekLine(long lStartDay) {
-  thread thread1(ThreadBuildWeekLine, this, lStartDay);
+bool CChinaMarket::RunningThreadBuildWeekLine(long lStartDate) {
+  thread thread1(ThreadBuildWeekLine, this, lStartDate);
   thread1.detach();
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDay) {
-  thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDay);
+bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
+  thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
   thread1.detach();
 
   return true;
@@ -3156,8 +3156,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
   setOption.m_pDatabase->BeginTrans();
   if (setOption.IsEOF()) {
     setOption.AddNew();
-    setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
+    setOption.m_RelativeStrongEndDate = GetRelativeStrongEndDate();
+    setOption.m_RalativeStrongStartDate = GetRelativeStrongStartDate();
     setOption.m_LastLoginDay = GetFormatedMarketDate();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
@@ -3166,8 +3166,8 @@ bool CChinaMarket::UpdateOptionDB(void) {
   }
   else {
     setOption.Edit();
-    setOption.m_RelativeStrongEndDay = GetRelativeStrongEndDay();
-    setOption.m_RalativeStrongStartDay = GetRelativeStrongStartDay();
+    setOption.m_RelativeStrongEndDate = GetRelativeStrongEndDate();
+    setOption.m_RalativeStrongStartDate = GetRelativeStrongStartDate();
     setOption.m_LastLoginDay = GetFormatedMarketDate();
     setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
     setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
@@ -3183,29 +3183,29 @@ void CChinaMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
-    SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    SetRelativeStrongStartDate(__CHINA_MARKET_BEGIN_DAY__);
+    SetRelativeStrongEndDate(__CHINA_MARKET_BEGIN_DAY__);
     SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
     SetUpdatedDayFor10DayRS1(__CHINA_MARKET_BEGIN_DAY__);
     SetUpdatedDayFor10DayRS2(__CHINA_MARKET_BEGIN_DAY__);
   }
   else {
-    if (setOption.m_RelativeStrongEndDay == 0) {
-      SetRelativeStrongEndDay(__CHINA_MARKET_BEGIN_DAY__);
+    if (setOption.m_RelativeStrongEndDate == 0) {
+      SetRelativeStrongEndDate(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      SetRelativeStrongEndDay(setOption.m_RelativeStrongEndDay);
-      if (GetRelativeStrongEndDay() > __CHINA_MARKET_BEGIN_DAY__) {
+      SetRelativeStrongEndDate(setOption.m_RelativeStrongEndDate);
+      if (GetRelativeStrongEndDate() > __CHINA_MARKET_BEGIN_DAY__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
         gl_SaveOneStockDayLine.SetMaxCount(1);
       }
     }
-    if (setOption.m_RalativeStrongStartDay == 0) {
-      SetRelativeStrongStartDay(__CHINA_MARKET_BEGIN_DAY__);
+    if (setOption.m_RalativeStrongStartDate == 0) {
+      SetRelativeStrongStartDate(__CHINA_MARKET_BEGIN_DAY__);
     }
     else {
-      SetRelativeStrongStartDay(setOption.m_RalativeStrongStartDay);
+      SetRelativeStrongStartDate(setOption.m_RalativeStrongStartDate);
     }
     if (setOption.m_LastLoginDay == 0) {
       SetLastLoginDay(__CHINA_MARKET_BEGIN_DAY__);
