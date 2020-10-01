@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*pDL, CalculateRS1(120))
       .Times(1);
-    pDL->CalculateRS();
+    pDL->CalculateRS0();
   }
 
   TEST_F(CMockDLContainerTest, TestCalculateDLRSLogarithm) {
@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     EXPECT_CALL(*pDL, CalculateRSLogarithm1(120))
       .Times(1);
-    pDL->CalculateRSLogarithm();
+    pDL->CalculateRSLogarithm0();
   }
 
   TEST_F(CMockDLContainerTest, TestCalculateDLRSIndex) {
@@ -81,6 +81,6 @@ namespace StockAnalysisTest {
       .Times(1);
     EXPECT_CALL(*pDL, CalculateRSIndex1(120))
       .Times(1);
-    pDL->CalculateRSIndex();
+    pDL->CalculateRSIndex0();
   }
 }

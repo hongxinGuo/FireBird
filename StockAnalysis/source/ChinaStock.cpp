@@ -649,27 +649,27 @@ bool CChinaStock::LoadDLExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
 }
 
 bool CChinaStock::CalculateDLRS(void) {
-  return m_DL.CalculateRS();
+  return m_DL.CalculateRS0();
 }
 
 bool CChinaStock::CalculateDLRSLogarithm(void) {
-  return m_DL.CalculateRSLogarithm();
+  return m_DL.CalculateRSLogarithm0();
 }
 
 bool CChinaStock::CalculateDLRSIndex(void) {
-  return m_DL.CalculateRSIndex();
+  return m_DL.CalculateRSIndex0();
 }
 
 bool CChinaStock::CalculateWeekLineRS(void) {
-  return m_WeekLine.CalculateRS();
+  return m_WeekLine.CalculateRS0();
 }
 
 bool CChinaStock::CalculateWeekLineRSLogarithm(void) {
-  return m_WeekLine.CalculateRSLogarithm();
+  return m_WeekLine.CalculateRSLogarithm0();
 }
 
 bool CChinaStock::CalculateWeekLineRSIndex(void) {
-  return m_WeekLine.CalculateRSIndex();
+  return m_WeekLine.CalculateRSIndex0();
 }
 
 bool CChinaStock::Calculate10RSStrong2StockSet(void) {

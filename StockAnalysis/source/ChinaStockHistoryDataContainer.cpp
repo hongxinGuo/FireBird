@@ -77,7 +77,7 @@ void CChinaStockHistoryDataContainer::Reset(void) {
   m_fLoadDataFirst = false;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRS(void) {
+bool CChinaStockHistoryDataContainer::CalculateRS0(void) {
   CalculateRS1(3);
   CalculateRS1(5);
   CalculateRS1(10);
@@ -87,7 +87,7 @@ bool CChinaStockHistoryDataContainer::CalculateRS(void) {
   return true;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRSLogarithm(void) {
+bool CChinaStockHistoryDataContainer::CalculateRSLogarithm0(void) {
   CalculateRSLogarithm1(3);
   CalculateRSLogarithm1(5);
   CalculateRSLogarithm1(10);
@@ -97,7 +97,7 @@ bool CChinaStockHistoryDataContainer::CalculateRSLogarithm(void) {
   return true;
 }
 
-bool CChinaStockHistoryDataContainer::CalculateRSIndex(void) {
+bool CChinaStockHistoryDataContainer::CalculateRSIndex0(void) {
   CalculateRSIndex1(3);
   CalculateRSIndex1(5);
   CalculateRSIndex1(10);
