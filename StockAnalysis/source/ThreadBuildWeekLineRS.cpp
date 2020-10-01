@@ -2,7 +2,7 @@
 //
 // 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
 //
-// 此线程调用ThreadBuildWeekLineRSOfDay线程，目前最多允许同时生成8个线程。
+// 此线程调用ThreadBuildWeekLineRSOfDate线程，目前最多允许同时生成8个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
   do {
     // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
     // 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-    pMarket->RunningThreadBuildWeekLineRSOfDay(lToday);
+    pMarket->RunningThreadBuildWeekLineRSOfDate(lToday);
     ctCurrent += sevenDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
   } while (lToday <= pMarket->GetFormatedMarketDate()); // 计算至当前日期（包括今日）
@@ -67,7 +67,7 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long lDate) {
+UINT ThreadBuildWeekLineRSOfDate(CChinaMarket* pMarket, long lDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
@@ -80,7 +80,7 @@ UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long lDate) {
   ASSERT(GetCurrentMonday(lDate) == lDate); // 确保此日期为星期一
 
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildWeekLineRSOfDay(lDate);
+    pMarket->BuildWeekLineRSOfDate(lDate);
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

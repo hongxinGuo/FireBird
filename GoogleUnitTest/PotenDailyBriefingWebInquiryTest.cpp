@@ -40,7 +40,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_PotenDailyBriefingWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
   }
 
-  TEST_F(CPotenDailyBriefingWebInquiryTest, TestGetInquiringDay) {
+  TEST_F(CPotenDailyBriefingWebInquiryTest, TestGetInquiringDate) {
     m_PotenDailyBriefingWebInquiry.SetInquiringDate(19901212);
     EXPECT_EQ(m_PotenDailyBriefingWebInquiry.GetInquiringDate(), 19901212);
   }

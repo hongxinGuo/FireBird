@@ -99,9 +99,9 @@ public:
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-  afx_msg void OnRebuildDaylineRS();
+  afx_msg void OnRebuildDLRS();
   afx_msg void OnBuildResetMarket();
-  afx_msg void OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateRebuildDLRS(CCmdUI* pCmdUI);
   afx_msg void OnAbortBuindingRS();
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
   afx_msg void OnRecordRTData();

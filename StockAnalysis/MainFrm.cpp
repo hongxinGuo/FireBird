@@ -53,9 +53,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_CALCULATE_TODAY_RELATIVE_STRONG, &CMainFrame::OnUpdateCalculateTodayRS)
   ON_WM_CHAR()
   ON_WM_KEYUP()
-  ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDaylineRS)
+  ON_COMMAND(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnRebuildDLRS)
   ON_COMMAND(ID_BUILD_RESET_SYSTEM, &CMainFrame::OnBuildResetMarket)
-  ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDaylineRS)
+  ON_UPDATE_COMMAND_UI(ID_REBUILD_DAYLINE_RS, &CMainFrame::OnUpdateRebuildDLRS)
   ON_COMMAND(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnAbortBuindingRS)
   ON_UPDATE_COMMAND_UI(ID_BUILD_ABORT_BUINDING_RS, &CMainFrame::OnUpdateAbortBuindingRS)
   ON_COMMAND(ID_RECORD_RT_DATA, &CMainFrame::OnRecordRTData)
@@ -699,9 +699,9 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   SysCallOnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CMainFrame::OnRebuildDaylineRS() {
+void CMainFrame::OnRebuildDLRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->RunningThreadBuildDLRS(__CHINA_MARKET_BEGIN_DAY__);
+  gl_pChinaStockMarket->RunningThreadBuildDLRS(__CHINA_MARKET_BEGIN_DATE__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -711,7 +711,7 @@ void CMainFrame::OnBuildResetMarket() {
   }
 }
 
-void CMainFrame::OnUpdateRebuildDaylineRS(CCmdUI* pCmdUI) {
+void CMainFrame::OnUpdateRebuildDLRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
   if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaStockMarket->GetFormatedMarketTime() < 93000)) {

@@ -31,8 +31,8 @@ namespace StockAnalysisTest {
   TEST_F(CStockDLTest, TestGetDate) {
     ASSERT_FALSE(gl_fNormalMode);
     CDL dl;
-    dl.SetDate(__CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DAY__);
+    dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
+    EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
   }
 
   TEST_F(CStockDLTest, TestGetTime) {
@@ -730,7 +730,7 @@ namespace StockAnalysisTest {
   TEST_F(CStockDLTest, TestLoadDL) {
     CDL id, id2;
     CSetDLBasicInfo setDLBasicInfo;
-    id.SetDate(__CHINA_MARKET_BEGIN_DAY__);
+    id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
     id.SetMarket(__SHANGHAI_MARKET__);
     id.SetStockCode(_T("sh600000"));
     id.SetStockName(_T("ÆÖ·¢ÒøÐÐ"));

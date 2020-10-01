@@ -12,7 +12,7 @@ CVirtualMarket::CVirtualMarket(void) {
   m_fResetMarket = true;
   m_fReadyToRun = true;
 
-  m_lMarketLastTradeDay = 0;
+  m_lMarketLastTradeDate = 0;
   m_lMarketTime = 0;
   m_lMarketDate = 0;
   m_tMarket = 0;
@@ -83,7 +83,7 @@ void CVirtualMarket::CalculateLastTradeDate(void) noexcept {
   }
   tm tm_;
   gmtime_s(&tm_, &ttime);
-  m_lMarketLastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+  m_lMarketLastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
 }
 
 bool CVirtualMarket::IsWorkingDay(void) noexcept {
@@ -130,8 +130,8 @@ long CVirtualMarket::GetNextDay(long lDate, long lTimeSpanDays) noexcept {
   const long day = lDate - year * 10000 - month * 100;
   CTime ctDay(year, month, day, 12, 0, 0);
   ctDay += ts;
-  long lNewDay = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
-  return (lNewDay);
+  long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
+  return (lNewDate);
 }
 
 long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
@@ -141,8 +141,8 @@ long CVirtualMarket::GetPrevDay(long lDate, long lTimeSpanDays) noexcept {
   const long day = lDate - year * 10000 - month * 100;
   CTime ctDay(year, month, day, 12, 0, 0);
   ctDay -= ts;
-  long lNewDay = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
-  return (lNewDay);
+  long lNewDate = ctDay.GetYear() * 10000 + ctDay.GetMonth() * 100 + ctDay.GetDay();
+  return (lNewDate);
 }
 
 CString CVirtualMarket::GetStringOfLocalTime(void) {

@@ -19,10 +19,10 @@ public:
   long m_ID;
   long m_RSEndDate;
   long m_RSStartDate;
-  long m_LastLoginDay;
-  long m_UpdatedDayFor10DayRS1;
-  long m_UpdatedDayFor10DayRS2;
-  long m_UpdatedDayFor10DayRS;
+  long m_LastLoginDate;
+  long m_UpdatedDateFor10DayRS1;
+  long m_UpdatedDateFor10DayRS2;
+  long m_UpdatedDateFor10DayRS;
 
   // 重写
     // 向导生成的虚函数重写

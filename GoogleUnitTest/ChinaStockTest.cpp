@@ -67,8 +67,8 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLStartDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLStartDate(), __CHINA_MARKET_BEGIN_DATE__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
     EXPECT_EQ(stock.GetTransactionTime(), 0);
     EXPECT_EQ(stock.GetLastClose(), 0);
@@ -106,7 +106,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
   }
 
@@ -141,14 +141,14 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestGetDLEndDate) {
     CChinaStock stock;
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     stock.SetDLEndDate(19980101);
     EXPECT_EQ(stock.GetDLEndDate(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetDLStartDate) {
     CChinaStock stock;
-    EXPECT_EQ(stock.GetDLStartDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLStartDate(), __CHINA_MARKET_BEGIN_DATE__);
     stock.SetDLStartDate(19980101);
     EXPECT_EQ(stock.GetDLStartDate(), 19980101);
   }
@@ -344,7 +344,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
     stock.SetMarket(1);
     stock.SetStockCode(_T("abcde"));
@@ -381,7 +381,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     EXPECT_EQ(stock.GetLastClose(), 0);
@@ -411,7 +411,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
     stock.SetMarket(1);
     stock.SetStockCode(_T("abcde"));
@@ -430,7 +430,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     CWebRTDataPtr  pRTData = make_shared<CWebRTData>();
@@ -461,7 +461,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetStockCode(), _T(""));
     EXPECT_STREQ(stock.GetStockName(), _T(""));
     EXPECT_EQ(stock.GetOffset(), -1);
-    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(stock.GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stock.IsNotChecked());
 
     EXPECT_EQ(stock.GetLastClose(), 10101010);
@@ -795,7 +795,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetDLSize(), 0);
   }
 
-  TEST_F(CChinaStockTest, TestIsDayNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+  TEST_F(CChinaStockTest, TestIsDLNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CChinaStock stock;
     int iNumberOfSave = gl_pChinaStockMarket->GetDLNeedSaveNumber();
     stock.SetDLNeedSaving(true);
@@ -920,14 +920,14 @@ namespace StockAnalysisTest {
 
     gl_pChinaStockMarket->CalculateTime();
     stock.SetDLEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
-    long lCurrentDay = gl_pChinaStockMarket->GetFormatedMarketDate();
+    long lCurrentDate = gl_pChinaStockMarket->GetFormatedMarketDate();
     EXPECT_TRUE(stock.IsDLNeedUpdate());
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stock.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stock.GetDLStartDate(), setStockCode.m_DLStartDate);
-    EXPECT_EQ(stock.GetDLEndDate(), lCurrentDay);
+    EXPECT_EQ(stock.GetDLEndDate(), lCurrentDate);
     setStockCode.Close();
   }
 
@@ -938,21 +938,21 @@ namespace StockAnalysisTest {
     stock.SetCheckingDLStatus();
     EXPECT_FALSE(stock.IsDLNeedUpdate()) << stock.GetDLEndDate() << gl_pChinaStockMarket->GetFormatedMarketDate();
     stock.SetDLNeedUpdate(true);
-    stock.SetDLEndDate(gl_pChinaStockMarket->GetLastTradeDay());
+    stock.SetDLEndDate(gl_pChinaStockMarket->GetLastTradeDate());
     stock.SetCheckingDLStatus();
     EXPECT_FALSE(stock.IsDLNeedUpdate());
     stock.SetDLNeedUpdate(true);
-    stock.SetDLEndDate(gl_pChinaStockMarket->GetLastTradeDay() - 1);
+    stock.SetDLEndDate(gl_pChinaStockMarket->GetLastTradeDate() - 1);
     stock.SetIPOStatus(__STOCK_NULL__);
     stock.SetCheckingDLStatus();
     EXPECT_FALSE(stock.IsDLNeedUpdate());
     stock.SetDLNeedUpdate(true);
     stock.SetIPOStatus(__STOCK_IPOED__);
-    stock.SetDLEndDate(__CHINA_MARKET_BEGIN_DAY__);
+    stock.SetDLEndDate(__CHINA_MARKET_BEGIN_DATE__);
     stock.SetCheckingDLStatus();
     EXPECT_TRUE(stock.IsDLNeedUpdate());
     stock.SetIPOStatus(__STOCK_DELISTED__);
-    stock.SetDLEndDate(__CHINA_MARKET_BEGIN_DAY__ + 1);
+    stock.SetDLEndDate(__CHINA_MARKET_BEGIN_DATE__ + 1);
     stock.SetCheckingDLStatus();
     if (gl_pChinaStockMarket->GetDayOfWeek() == 1) EXPECT_TRUE(stock.IsDLNeedUpdate());
     else EXPECT_FALSE(stock.IsDLNeedUpdate());
@@ -1666,7 +1666,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDL>();
-      pid->SetDate(__CHINA_MARKET_BEGIN_DAY__ + i * 100000 + 2);
+      pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600004"));
       pid->SetStockName(_T("白云机场"));
@@ -1690,8 +1690,8 @@ namespace StockAnalysisTest {
     pStock->SetDLEndDate(20800100);
     ASSERT(!gl_fNormalMode);
     pStock->UpdateDLStartEndDate();
-    EXPECT_EQ(pStock->GetDLEndDate(), __CHINA_MARKET_BEGIN_DAY__ + 9 * 100000 + 2) << "日线最新日期已更新";
-    EXPECT_EQ(pStock->GetDLStartDate(), __CHINA_MARKET_BEGIN_DAY__ + 2) << "日线最初日期已更新";
+    EXPECT_EQ(pStock->GetDLEndDate(), __CHINA_MARKET_BEGIN_DATE__ + 9 * 100000 + 2) << "日线最新日期已更新";
+    EXPECT_EQ(pStock->GetDLStartDate(), __CHINA_MARKET_BEGIN_DATE__ + 2) << "日线最初日期已更新";
     EXPECT_TRUE(gl_pChinaStockMarket->IsDLDBUpdated());
   }
 
@@ -1703,7 +1703,7 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDL>();
-      pid->SetDate(__CHINA_MARKET_BEGIN_DAY__ + i * 100000);
+      pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
       pid->SetStockName(_T("首创股份"));

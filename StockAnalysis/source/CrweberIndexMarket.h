@@ -27,7 +27,7 @@ public:
 
   virtual bool LoadDatabase(void);
   virtual bool SaveDatabase(void);
-  bool GetNewestDatabaseDayFromDB(void);
+  bool GetNewestDatabaseDateFromDB(void);
   virtual bool SaveCrweberIndexData(CCrweberIndexPtr pCrweberIndex);
 
   bool IsDatabaseLoaded(void) noexcept { return m_fDataBaseLoaded; }

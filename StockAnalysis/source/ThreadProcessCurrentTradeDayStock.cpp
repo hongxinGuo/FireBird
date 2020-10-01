@@ -22,12 +22,12 @@ UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
 
   long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
   if (lDate == pMarket->GetFormatedMarketDate()) {
-    pMarket->BuildDLOfDay(lDate);
+    pMarket->BuildDLOfDate(lDate);
     // 计算本日日线相对强度
-    pMarket->BuildDLRSOfDay(lDate);
+    pMarket->BuildDLRSOfDate(lDate);
     // 生成周线数据
     pMarket->BuildWeekLineOfCurrentWeek();
-    pMarket->BuildWeekLineRSOfDay(GetCurrentMonday(lDate));
+    pMarket->BuildWeekLineRSOfDate(GetCurrentMonday(lDate));
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
       pMarket->SetRSEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
       pMarket->SetUpdateStockCodeDB(true);  // 更新代码。

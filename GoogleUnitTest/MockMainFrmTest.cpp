@@ -418,21 +418,21 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83001);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDaylineRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)92959);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDaylineRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83000);
     gl_ThreadStatus.SetCalculatingDLRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDaylineRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83000);
     gl_ThreadStatus.SetCalculatingDLRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDaylineRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
   }
 
   TEST_F(CMockMainFrameTest, TestOnUpdateRecordRTData) {

@@ -17,8 +17,8 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
   m_StockType = 0;
   m_StockCode = _T("");
   m_StockName = _T("");
-  m_DLStartDate = __CHINA_MARKET_BEGIN_DAY__;
-  m_DLEndDate = __CHINA_MARKET_BEGIN_DAY__;
+  m_DLStartDate = __CHINA_MARKET_BEGIN_DATE__;
+  m_DLEndDate = __CHINA_MARKET_BEGIN_DATE__;
   m_IPOStatus = 0;
   m_nFields = 8;
 }

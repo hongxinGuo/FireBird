@@ -92,7 +92,7 @@ public:
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
   virtual bool RunningThreadBuildDLRS(long lStartCalculatingDay);
-  virtual bool RunningThreadBuildDLRSOfDay(long lThisDay);
+  virtual bool RunningThreadBuildDLRSOfDate(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
   virtual bool RunningThreadSaveDLBasicInfoOfStock(CChinaStockPtr pStock);
   virtual bool RunningThreadLoadDL(CChinaStockPtr pCurrentStock);
@@ -109,7 +109,7 @@ public:
   virtual bool RunningThreadBuildWeekLine(long lStartDate);
   virtual bool RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate);
   virtual bool RunningThreadBuildWeekLineRS(void);
-  virtual bool RunningThreadBuildWeekLineRSOfDay(long lThisDay);
+  virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
   // interface function
@@ -219,7 +219,7 @@ public:
   bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool DeleteCurrentWeekWeekLine(void);
-  bool DeleteCurrentWeekWeekLineBeforeTheDay(long lCutOffDay);
+  bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 
   bool Load10DayRSStrong1StockSet(void);
   bool Load10DayRSStrong2StockSet(void);
@@ -245,9 +245,9 @@ public:
   bool IsDLNeedUpdate(void);
   bool IsDLNeedSaving(void);
 
-  virtual long BuildDLOfDay(long lCurrentTradeDay);
-  virtual bool BuildDLRSOfDay(long lDate);
-  virtual bool BuildWeekLineRSOfDay(long lDate);
+  virtual long BuildDLOfDate(long lCurrentTradeDay);
+  virtual bool BuildDLRSOfDate(long lDate);
+  virtual bool BuildWeekLineRSOfDate(long lDate);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
@@ -268,12 +268,12 @@ public:
   void SetRSEndDate(long lDate) noexcept { m_lRSEndDate = lDate; }
   long GetLastLoginDate(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
-  long GetUpdatedDayFor10DayRS1(void) noexcept { return m_lUpdatedDayFor10DayRS1; }
-  void SetUpdatedDateFor10DAyRS1(long lDate) noexcept { m_lUpdatedDayFor10DayRS1 = lDate; }
-  long GetUpdatedDayFor10DayRS2(void) noexcept { return m_lUpdatedDayFor10DayRS2; }
-  void SetUpdatedDateFor10DAyRS2(long lDate) noexcept { m_lUpdatedDayFor10DayRS2 = lDate; }
-  long GetUpdatedDayFor10DayRS(void) noexcept { return m_lUpdatedDayFor10DayRS; }
-  void SetUpdatedDayFor10DayRS(long lDate) noexcept { m_lUpdatedDayFor10DayRS = lDate; }
+  long GetUpdatedDateFor10DayRS1(void) noexcept { return m_lUpdatedDateFor10DayRS1; }
+  void SetUpdatedDateFor10DAyRS1(long lDate) noexcept { m_lUpdatedDateFor10DayRS1 = lDate; }
+  long GetUpdatedDateFor10DayRS2(void) noexcept { return m_lUpdatedDateFor10DayRS2; }
+  void SetUpdatedDateFor10DAyRS2(long lDate) noexcept { m_lUpdatedDateFor10DayRS2 = lDate; }
+  long GetUpdatedDateFor10DayRS(void) noexcept { return m_lUpdatedDateFor10DayRS; }
+  void SetUpdatedDateFor10DayRS(long lDate) noexcept { m_lUpdatedDateFor10DayRS = lDate; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
@@ -463,9 +463,9 @@ protected:
   long m_lRSStartDate;
   long m_lRSEndDate;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
-  long m_lUpdatedDayFor10DayRS2;
-  long m_lUpdatedDayFor10DayRS1;
-  long m_lUpdatedDayFor10DayRS;
+  long m_lUpdatedDateFor10DayRS2;
+  long m_lUpdatedDateFor10DayRS1;
+  long m_lUpdatedDateFor10DayRS;
 
   vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;

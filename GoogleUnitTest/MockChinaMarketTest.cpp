@@ -351,15 +351,15 @@ namespace StockAnalysisTest {
     s_pchinaMarket->SetNewestTransactionTime(s_pchinaMarket->GetLocalTime());
     long lDate = FormatToDate(s_pchinaMarket->GetNewestTransactionTime());
     s_pchinaMarket->__TEST_SetFormatedMarketTime(130000); // 设置市场时间为小于150400，
-    EXPECT_CALL(*s_pchinaMarket, BuildDLOfDay(lDate))
+    EXPECT_CALL(*s_pchinaMarket, BuildDLOfDate(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, BuildDLRSOfDay(lDate))
+    EXPECT_CALL(*s_pchinaMarket, BuildDLRSOfDate(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDate)))
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDate(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -371,15 +371,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed());
 
     s_pchinaMarket->__TEST_SetFormatedMarketTime(150500); // 设置市场时间为大于150400，
-    EXPECT_CALL(*s_pchinaMarket, BuildDLOfDay(lDate))
+    EXPECT_CALL(*s_pchinaMarket, BuildDLOfDate(lDate))
       .Times(1)
       .WillOnce(Return(4000));
-    EXPECT_CALL(*s_pchinaMarket, BuildDLRSOfDay(lDate))
+    EXPECT_CALL(*s_pchinaMarket, BuildDLRSOfDate(lDate))
       .Times(1)
       .WillOnce(Return(true));
     EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDay(GetCurrentMonday(lDate)))
+    EXPECT_CALL(*s_pchinaMarket, BuildWeekLineRSOfDate(GetCurrentMonday(lDate)))
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
@@ -401,7 +401,7 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDLRS(true);
     s_pchinaMarket->SetRSEndDate(0);
     s_pchinaMarket->SetUpdateOptionDB(false);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDLRSOfDay(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDLRSOfDate(_))
       .Times(5)
       .WillRepeatedly(Return(true));
     EXPECT_EQ(ThreadBuildDLRS(s_pchinaMarket, lStartDate), (UINT)11);
@@ -415,7 +415,7 @@ namespace StockAnalysisTest {
     lStartDate = (_tm.tm_year + 1900) * 10000 + (_tm.tm_mon + 1) * 100 + _tm.tm_mday;
     gl_fExitingCalculatingRS = false;
     gl_ThreadStatus.SetCalculatingDLRS(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDLRSOfDay(_))
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDLRSOfDate(_))
       .Times(5);
     EXPECT_EQ(ThreadBuildDLRS(s_pchinaMarket, lStartDate), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());

@@ -18,7 +18,7 @@ CPotenDailyBriefing::CPotenDailyBriefing() {
   m_dLPG_VLGC44LastSpotRate = m_dLPG_VLGC44SpotTCERate = 0;
 
   m_fTodayUpdated = false;
-  m_lLastUpdateDay = 0;
+  m_lLastUpdateDate = 0;
 }
 
 CPotenDailyBriefing::~CPotenDailyBriefing() {

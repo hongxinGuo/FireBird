@@ -73,9 +73,9 @@ namespace StockAnalysisTest {
     gl_pCrweberIndexMarket->SetPermitResetMarket(true);
   }
 
-  TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDay) {
+  TEST_F(CCrweberIndexMarketTest, TestSetNewestDatabaseDate) {
     gl_pCrweberIndexMarket->Reset();
-    gl_pCrweberIndexMarket->GetNewestDatabaseDayFromDB();
+    gl_pCrweberIndexMarket->GetNewestDatabaseDateFromDB();
 
     CSetCrweberIndex setCrweberIndex;
     long lDate = 0;

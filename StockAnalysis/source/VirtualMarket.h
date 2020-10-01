@@ -32,7 +32,7 @@ public:
   long GetMonthOfYear(void) noexcept { return m_tmMarket.tm_mon + 1; }
   long GetDateOfMonth(void) noexcept { return m_tmMarket.tm_mday; }
   long GetYear(void) noexcept { return m_tmMarket.tm_year + 1900; }
-  long GetLastTradeDay(void) noexcept { CalculateLastTradeDate(); return m_lMarketLastTradeDay; }
+  long GetLastTradeDate(void) noexcept { CalculateLastTradeDate(); return m_lMarketLastTradeDate; }
   bool IsWorkingDay(void) noexcept;
   bool IsWorkingDay(CTime timeCurrent) noexcept;
   bool IsWorkingDay(long lDate) noexcept;
@@ -77,7 +77,7 @@ protected:
   time_t m_tMarket; // 本市场的标准时间
   long m_lMarketDate; //本市场的日期
   long m_lMarketTime; // 本市场的时间
-  long m_lMarketLastTradeDay; // 本市场的上次交易日期
+  long m_lMarketLastTradeDate; // 本市场的上次交易日期
   tm m_tmMarket; // 本市场时间结构
 
 private:

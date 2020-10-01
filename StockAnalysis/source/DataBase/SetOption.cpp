@@ -9,12 +9,12 @@ IMPLEMENT_DYNAMIC(CSetOption, CRecordset)
 CSetOption::CSetOption(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_RSStartDate = __CHINA_MARKET_BEGIN_DAY__;
-  m_RSEndDate = __CHINA_MARKET_BEGIN_DAY__;
-  m_LastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
-  m_UpdatedDayFor10DayRS1 = __CHINA_MARKET_BEGIN_DAY__;
-  m_UpdatedDayFor10DayRS2 = __CHINA_MARKET_BEGIN_DAY__;
-  m_UpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
+  m_RSStartDate = __CHINA_MARKET_BEGIN_DATE__;
+  m_RSEndDate = __CHINA_MARKET_BEGIN_DATE__;
+  m_LastLoginDate = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DayRS1 = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DayRS2 = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DayRS = __CHINA_MARKET_BEGIN_DATE__;
   m_nFields = 6;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
@@ -36,10 +36,10 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[RelativeStrongStartDate]"), m_RSStartDate);
   RFX_Long(pFX, _T("[RelativeStrongEndDate]"), m_RSEndDate);
-  RFX_Long(pFX, _T("[LastLoginDay]"), m_LastLoginDay);
-  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS1]"), m_UpdatedDayFor10DayRS1);
-  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS2]"), m_UpdatedDayFor10DayRS2);
-  RFX_Long(pFX, _T("[UpdatedDayFor10DayRS]"), m_UpdatedDayFor10DayRS);
+  RFX_Long(pFX, _T("[LastLoginDate]"), m_LastLoginDate);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS1]"), m_UpdatedDateFor10DayRS1);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS2]"), m_UpdatedDateFor10DayRS2);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS]"), m_UpdatedDateFor10DayRS);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode 诊断

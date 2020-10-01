@@ -1,7 +1,7 @@
 #pragma once
 
 // 中国股票市场起始日
-#define __CHINA_MARKET_BEGIN_DAY__ 19900101
+#define __CHINA_MARKET_BEGIN_DATE__ 19900101
 
 enum {
   __SHANGHAI_MARKET__ = 1, // 上海市场

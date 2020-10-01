@@ -39,7 +39,7 @@ UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBrie
 // ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDayÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
 UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDay); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª11, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
-UINT ThreadBuildDLRSOfDay(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª12
+UINT ThreadBuildDLRSOfDate(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª12
 // ´æ´¢ÁÙÊ±ÏµÍ³×´Ì¬Ïß³Ì
 UINT ThreadSaveTempRTData(CChinaMarket* pMarket);     // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª13
 // ¼ÆËãºÍ´æ´¢µ±Ç°½»Ò×ÈÕÊı¾İÏß³Ì
@@ -70,10 +70,10 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDate); // ´ËÏß³ÌµÄ·µ»
 UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate); /// ´ËÏß³ÌµÄ·µ»ØÖµÎª26
 // ´ÓÊı¾İ¿â¶ÁÈ¡ÖÜÏßÀúÊ·Êı¾İ
 UINT ThreadLoadWeekLine(CChinaStockPtr pStock); // ´ËÏß³Ì·µ»ØÖµÎª29
-// ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDayÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
-UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDay); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª30, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
+// ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDateÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
+UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª30, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
-UINT ThreadBuildWeekLineRSOfDay(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª31
+UINT ThreadBuildWeekLineRSOfDate(CChinaMarket* pMarket, long lDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÒ²Îª31
 // ¼ÆËã±¾ÖÜµÄÖÜÏß
 UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª32
 // ÖØ½¨µ±Ç°ÖÜµÄÖÜÏßÊı¾İ±í

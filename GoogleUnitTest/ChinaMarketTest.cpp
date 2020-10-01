@@ -1679,9 +1679,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), 20200101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), 20200202);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate());
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19990101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS1(), 19990101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19990202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS2(), 19990202);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
 
     gl_pChinaStockMarket->SetRSStartDate(20100101);
@@ -1703,9 +1703,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), 20100101);
     EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), 20100202);
     EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), gl_pChinaStockMarket->GetFormatedMarketDate()) << _T("永远是当前日期\n");
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), 19980101);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS1(), 19980101);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), 19980202);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS2(), 19980202);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
 
     setOption.Open();
@@ -1718,12 +1718,12 @@ namespace StockAnalysisTest {
     setOption.Close();
     gl_pChinaStockMarket->LoadOptionDB();
 
-    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DAY__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS1(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSStartDate(), __CHINA_MARKET_BEGIN_DATE__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetRSEndDate(), __CHINA_MARKET_BEGIN_DATE__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetLastLoginDate(), __CHINA_MARKET_BEGIN_DATE__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS1(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong1StockSet());
-    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDayFor10DayRS2(), __CHINA_MARKET_BEGIN_DAY__);
+    EXPECT_EQ(gl_pChinaStockMarket->GetUpdatedDateFor10DayRS2(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_FALSE(gl_pChinaStockMarket->IsChoiced10RSStrong2StockSet());
   }
 

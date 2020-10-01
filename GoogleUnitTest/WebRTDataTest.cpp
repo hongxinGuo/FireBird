@@ -200,7 +200,7 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDay) {
+  TEST_F(CStockWebRTDataTest, TestIsDataTimeAtCurrentDate) {
     tm tm_;
     tm_.tm_year = 2019 - 1900;
     tm_.tm_mon = 10;

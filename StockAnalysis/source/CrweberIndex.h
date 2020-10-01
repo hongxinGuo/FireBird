@@ -106,7 +106,7 @@ public:
   double m_dHANDY_TC_3YEAR;
 
   bool m_fTodayUpdated;
-  long m_lLastUpdateDay;
+  long m_lLastUpdateDate;
 
 protected:
   map<CString, long> m_mapMonth;

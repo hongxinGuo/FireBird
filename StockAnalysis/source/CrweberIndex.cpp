@@ -14,7 +14,7 @@ CCrweberIndex::CCrweberIndex() {
   m_dVLCC_TC_3YEAR = m_dSUEZMAX_TC_3YEAR = m_dAFRAMAX_TC_3YEAR = m_dPANAMAX_TC_3YEAR = m_dMR_TC_3YEAR = m_dHANDY_TC_3YEAR = 0;
 
   m_fTodayUpdated = false;
-  m_lLastUpdateDay = 0;
+  m_lLastUpdateDate = 0;
 
   m_mapMonth[_T("January")] = 1;
   m_mapMonth[_T("February")] = 2;
@@ -128,14 +128,14 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
-  long lUpdateDay = 0;
+  long lUpdateDate = 0;
 
   while (pWebData->GetCurrentPos() < pWebData->GetBufferLength()) {
     str = GetNextString(pWebData);
     strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
       strTime = GetNextString(pWebData); // 当前时间
-      lUpdateDay = ConvertStringToTime(strTime);
+      lUpdateDate = ConvertStringToTime(strTime);
 
       for (int i = 0; i < 4; i++) strNoUse = GetNextString(pWebData); // 抛掉4个没用字符串
 
@@ -171,10 +171,10 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
       m_dTC5 = GetOneValue(pWebData);
       m_dTC4 = GetOneValue(pWebData);
 
-      CString strDate = ConvertValueToString(lUpdateDay, 1);
-      if (lUpdateDay > m_lLastUpdateDay) {
-        m_lDate = lUpdateDay;
-        m_lLastUpdateDay = lUpdateDay;
+      CString strDate = ConvertValueToString(lUpdateDate, 1);
+      if (lUpdateDate > m_lLastUpdateDate) {
+        m_lDate = lUpdateDate;
+        m_lLastUpdateDate = lUpdateDate;
         m_fTodayUpdated = true;
       }
     }

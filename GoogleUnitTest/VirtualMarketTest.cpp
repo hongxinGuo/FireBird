@@ -96,11 +96,11 @@ namespace StockAnalysisTest {
     ttime -= 24 * 3600; //
     }
     gmtime_s(&tm_, &ttime);
-    long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-    EXPECT_EQ(s_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+    long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+    EXPECT_EQ(s_VirtualMarket.GetLastTradeDate(), LastTradeDate);
   }
 
-  TEST_F(CVirtualMarketTest, TestGetLastTradeDay) {
+  TEST_F(CVirtualMarketTest, TestGetLastTradeDate) {
     time_t ttime;
     tm tm_, tm2;
 
@@ -126,8 +126,8 @@ namespace StockAnalysisTest {
       ttime -= 24 * 3600; //
       }
       gmtime_s(&tm_, &ttime);
-      long LastTradeDay = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
-      EXPECT_EQ(s_VirtualMarket.GetLastTradeDay(), LastTradeDay);
+      long LastTradeDate = (tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday;
+      EXPECT_EQ(s_VirtualMarket.GetLastTradeDate(), LastTradeDate);
     }
   }
 
@@ -164,7 +164,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(s_VirtualMarket.IsEarlyThen(20191101, 20200115, 75));
   }
 
-  TEST_F(CVirtualMarketTest, TestGetNextDay) {
+  TEST_F(CVirtualMarketTest, TestGetNextDate) {
     EXPECT_EQ(s_VirtualMarket.GetNextDay(20200101, 1), 20200102);
     EXPECT_EQ(s_VirtualMarket.GetNextDay(20200101, 11), 20200112);
     EXPECT_EQ(s_VirtualMarket.GetNextDay(20201231, 1), 20210101);

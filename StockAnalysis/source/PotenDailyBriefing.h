@@ -97,7 +97,7 @@ public:
   double m_dLPG_VLGC44SpotTCERate;
 
   bool m_fTodayUpdated;
-  long m_lLastUpdateDay;
+  long m_lLastUpdateDate;
 
 protected:
 };

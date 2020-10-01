@@ -33,8 +33,8 @@ void CChinaStock::Reset(void) {
   m_strStockCode = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
-  m_lDLStartDate = __CHINA_MARKET_BEGIN_DAY__; //
-  m_lDLEndDate = __CHINA_MARKET_BEGIN_DAY__; //
+  m_lDLStartDate = __CHINA_MARKET_BEGIN_DATE__; //
+  m_lDLEndDate = __CHINA_MARKET_BEGIN_DATE__; //
   m_lIPOStatus = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_nHand = 100;
 
@@ -224,7 +224,7 @@ bool CChinaStock::ProcessNeteaseDLData(void) {
   pTestPos = m_pDLBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
   if (m_llCurrentPos == m_lDLBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDLEndDate() == __CHINA_MARKET_BEGIN_DAY__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+    if (GetDLEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
@@ -467,8 +467,8 @@ bool CChinaStock::SaveDLBasicInfo(void) {
 
 void CChinaStock::UpdateDLStartEndDate(void) {
   if (m_DL.GetDataSize() == 0) {
-    SetDLStartDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetDLEndDate(__CHINA_MARKET_BEGIN_DAY__);
+    SetDLStartDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetDLEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
     if (m_DL.GetData(0)->GetFormatedMarketDate() < GetDLStartDate()) {
@@ -1572,14 +1572,14 @@ bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
 void CChinaStock::SetCheckingDLStatus(void) {
   ASSERT(IsDLNeedUpdate());
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStockMarket->GetLastTradeDay() <= GetDLEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDLEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDLNeedUpdate(false); // 日线数据不需要更新
   }
   else if (IsNullStock()) { // 无效代码不需更新日线数据
     SetDLNeedUpdate(false);
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDLEndDate() != __CHINA_MARKET_BEGIN_DAY__)) {
+    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDLEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
       SetDLNeedUpdate(false);
     }
   }

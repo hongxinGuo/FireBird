@@ -109,8 +109,8 @@ void CChinaMarket::Reset(void) {
   }
   else SetTodayStockProcessed(false);
 
-  m_lRSEndDate = m_lRSStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DAY__;
-  m_lUpdatedDayFor10DayRS2 = m_lUpdatedDayFor10DayRS1 = m_lUpdatedDayFor10DayRS = __CHINA_MARKET_BEGIN_DAY__;
+  m_lRSEndDate = m_lRSStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DATE__;
+  m_lUpdatedDateFor10DayRS2 = m_lUpdatedDateFor10DayRS1 = m_lUpdatedDateFor10DayRS = __CHINA_MARKET_BEGIN_DATE__;
 
   m_fSaveDL = false;
   m_fMarketOpened = false;
@@ -473,7 +473,7 @@ bool CChinaMarket::CreateNeteaseDLInquiringStr(CString& strReturn) {
       // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDLDataInquiringIndex);
     }
-    else if (pStock->GetDLEndDate() >= GetLastTradeDay()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
+    else if (pStock->GetDLEndDate() >= GetLastTradeDate()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
       pStock->SetDLNeedUpdate(false); // 此股票日线资料不需要更新了。
       // TRACE("%S 日线数据本日已更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDLDataInquiringIndex);
@@ -1828,7 +1828,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   CreateStockCodeSet(setDLStockCode, dayLineContainer.GetContainer());
 
-  DeleteCurrentWeekWeekLineBeforeTheDay(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
+  DeleteCurrentWeekWeekLineBeforeTheDate(lCurrentMonday); // 从当前周周线表中清除掉本星期一之前的数据
   LoadCurrentWeekLine(weekLineContainer);
   CreateStockCodeSet(setWeekLineStockCode, weekLineContainer.GetContainer());
 
@@ -2143,13 +2143,13 @@ bool CChinaMarket::DeleteCurrentWeekWeekLine(void) {
   return true;
 }
 
-bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDay(long lCutOffDay) {
+bool CChinaMarket::DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate) {
   CSetWeekLineInfo setWeekLineInfo;
 
   setWeekLineInfo.Open();
   setWeekLineInfo.m_pDatabase->BeginTrans();
   while (!setWeekLineInfo.IsEOF()) {
-    if (setWeekLineInfo.m_Date < lCutOffDay) {
+    if (setWeekLineInfo.m_Date < lCutOffDate) {
       setWeekLineInfo.Delete();
     }
     setWeekLineInfo.MoveNext();
@@ -2358,14 +2358,14 @@ bool CChinaMarket::RunningThreadBuildDLRS(long lStartCalculatingDay) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildDLRSOfDay(long lThisDay) {
-  thread thread1(ThreadBuildDLRSOfDay, this, lThisDay);
+bool CChinaMarket::RunningThreadBuildDLRSOfDate(long lThisDay) {
+  thread thread1(ThreadBuildDLRSOfDate, this, lThisDay);
   thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildWeekLineRSOfDay(long lThisDay) {
-  thread thread1(ThreadBuildWeekLineRSOfDay, this, lThisDay);
+bool CChinaMarket::RunningThreadBuildWeekLineRSOfDate(long lThisDay) {
+  thread thread1(ThreadBuildWeekLineRSOfDate, this, lThisDay);
   thread1.detach(); // 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -2431,7 +2431,7 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
       thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
     }
   }
-  SetUpdatedDayFor10DayRS(GetFormatedMarketDate());
+  SetUpdatedDateFor10DayRS(GetFormatedMarketDate());
   SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
 
   return true;
@@ -2465,7 +2465,7 @@ bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long
 }
 
 bool CChinaMarket::RunningThreadBuildWeekLineRS(void) {
-  thread thread1(ThreadBuildWeekLineRS, this, __CHINA_MARKET_BEGIN_DAY__);
+  thread thread1(ThreadBuildWeekLineRS, this, __CHINA_MARKET_BEGIN_DATE__);
   thread1.detach();
 
   return true;
@@ -2501,7 +2501,7 @@ bool CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable(void) {
 // long lCurrentTradeDay 当前交易日。由于存在周六和周日，故而此日期并不一定就是当前日期，而可能时周五
 //
 //////////////////////////////////////////////////////////////////////////////////
-long CChinaMarket::BuildDLOfDay(long lCurrentTradeDay) {
+long CChinaMarket::BuildDLOfDate(long lCurrentTradeDay) {
   char buffer[20];
   CString strDate;
   CSetDLBasicInfo setDLBasicInfo;
@@ -2872,7 +2872,7 @@ bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
 // m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildDLRSOfDay(long lDate) {
+bool CChinaMarket::BuildDLRSOfDate(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRS;
@@ -2992,7 +2992,7 @@ bool CChinaMarket::BuildDLRSOfDay(long lDate) {
 // m_dRSIndex则是计算相对指数的涨跌强度。
 //
 //////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::BuildWeekLineRSOfDay(long lDate) {
+bool CChinaMarket::BuildWeekLineRSOfDate(long lDate) {
   vector<CChinaStockPtr> vStock;
   vector<int> vIndex;
   vector<double> vRS;
@@ -3158,20 +3158,20 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.AddNew();
     setOption.m_RSEndDate = GetRSEndDate();
     setOption.m_RSStartDate = GetRSStartDate();
-    setOption.m_LastLoginDay = GetFormatedMarketDate();
-    setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
-    setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
-    setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
+    setOption.m_LastLoginDate = GetFormatedMarketDate();
+    setOption.m_UpdatedDateFor10DayRS1 = GetUpdatedDateFor10DayRS1();
+    setOption.m_UpdatedDateFor10DayRS2 = GetUpdatedDateFor10DayRS2();
+    setOption.m_UpdatedDateFor10DayRS = GetUpdatedDateFor10DayRS();
     setOption.Update();
   }
   else {
     setOption.Edit();
     setOption.m_RSEndDate = GetRSEndDate();
     setOption.m_RSStartDate = GetRSStartDate();
-    setOption.m_LastLoginDay = GetFormatedMarketDate();
-    setOption.m_UpdatedDayFor10DayRS1 = GetUpdatedDayFor10DayRS1();
-    setOption.m_UpdatedDayFor10DayRS2 = GetUpdatedDayFor10DayRS2();
-    setOption.m_UpdatedDayFor10DayRS = GetUpdatedDayFor10DayRS();
+    setOption.m_LastLoginDate = GetFormatedMarketDate();
+    setOption.m_UpdatedDateFor10DayRS1 = GetUpdatedDateFor10DayRS1();
+    setOption.m_UpdatedDateFor10DayRS2 = GetUpdatedDateFor10DayRS2();
+    setOption.m_UpdatedDateFor10DayRS = GetUpdatedDateFor10DayRS();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();
@@ -3183,44 +3183,44 @@ void CChinaMarket::LoadOptionDB(void) {
   CSetOption setOption;
   setOption.Open();
   if (setOption.IsEOF()) {
-    SetRSStartDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetRSEndDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);
-    SetUpdatedDateFor10DAyRS1(__CHINA_MARKET_BEGIN_DAY__);
-    SetUpdatedDateFor10DAyRS2(__CHINA_MARKET_BEGIN_DAY__);
+    SetRSStartDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetRSEndDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetLastLoginDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetUpdatedDateFor10DAyRS1(__CHINA_MARKET_BEGIN_DATE__);
+    SetUpdatedDateFor10DAyRS2(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
     if (setOption.m_RSEndDate == 0) {
-      SetRSEndDate(__CHINA_MARKET_BEGIN_DAY__);
+      SetRSEndDate(__CHINA_MARKET_BEGIN_DATE__);
     }
     else {
       SetRSEndDate(setOption.m_RSEndDate);
-      if (GetRSEndDate() > __CHINA_MARKET_BEGIN_DAY__) {
+      if (GetRSEndDate() > __CHINA_MARKET_BEGIN_DATE__) {
         // 当日线历史数据库中存在旧数据时，采用单线程模式存储新数据。使用多线程模式时，MySQL会出现互斥区Exception，估计是数据库重入时发生同步问题）。
         // 故而修补数据时同时只运行一个存储线程，其他都处于休眠状态。此种问题不会出现于生成所有日线数据时，故而新建日线数据时可以使用多线程（目前为4个）。
         gl_SaveOneStockDL.SetMaxCount(1);
       }
     }
     if (setOption.m_RSStartDate == 0) {
-      SetRSStartDate(__CHINA_MARKET_BEGIN_DAY__);
+      SetRSStartDate(__CHINA_MARKET_BEGIN_DATE__);
     }
     else {
       SetRSStartDate(setOption.m_RSStartDate);
     }
-    if (setOption.m_LastLoginDay == 0) {
-      SetLastLoginDate(__CHINA_MARKET_BEGIN_DAY__);
+    if (setOption.m_LastLoginDate == 0) {
+      SetLastLoginDate(__CHINA_MARKET_BEGIN_DATE__);
     }
     else {
-      SetLastLoginDate(setOption.m_LastLoginDay);
+      SetLastLoginDate(setOption.m_LastLoginDate);
     }
-    SetUpdatedDateFor10DAyRS1(setOption.m_UpdatedDayFor10DayRS1);
-    SetUpdatedDateFor10DAyRS2(setOption.m_UpdatedDayFor10DayRS2);
-    SetUpdatedDayFor10DayRS(setOption.m_UpdatedDayFor10DayRS);
-    if (setOption.m_UpdatedDayFor10DayRS1 < GetFormatedMarketDate())  m_fChoiced10RSStrong1StockSet = false;
+    SetUpdatedDateFor10DAyRS1(setOption.m_UpdatedDateFor10DayRS1);
+    SetUpdatedDateFor10DAyRS2(setOption.m_UpdatedDateFor10DayRS2);
+    SetUpdatedDateFor10DayRS(setOption.m_UpdatedDateFor10DayRS);
+    if (setOption.m_UpdatedDateFor10DayRS1 < GetFormatedMarketDate())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;
-    if (setOption.m_UpdatedDayFor10DayRS2 < GetFormatedMarketDate())  m_fChoiced10RSStrong2StockSet = false;
+    if (setOption.m_UpdatedDateFor10DayRS2 < GetFormatedMarketDate())  m_fChoiced10RSStrong2StockSet = false;
     else m_fChoiced10RSStrong2StockSet = true;
-    if (setOption.m_UpdatedDayFor10DayRS < GetFormatedMarketDate())  m_fChoiced10RSStrongStockSet = false;
+    if (setOption.m_UpdatedDateFor10DayRS < GetFormatedMarketDate())  m_fChoiced10RSStrongStockSet = false;
     else m_fChoiced10RSStrongStockSet = true;
   }
 
