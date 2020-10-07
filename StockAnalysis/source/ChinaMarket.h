@@ -30,7 +30,7 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 extern CWebRTDataContainer gl_WebRTDataContainer;
 
 const int c_SelectedStockStartPosition = 0;
-const int c_10DayRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
+const int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
 class CChinaMarket : public CVirtualMarket
 {
@@ -221,14 +221,14 @@ public:
   bool DeleteCurrentWeekWeekLine(void);
   bool DeleteCurrentWeekWeekLineBeforeTheDate(long lCutOffDate);
 
-  bool Load10DayRSStrong1StockSet(void);
-  bool Load10DayRSStrong2StockSet(void);
+  bool Load10DaysRSStrong1StockSet(void);
+  bool Load10DaysRSStrong2StockSet(void);
 
   bool LoadCalculatingRSOption(void);
   void SaveCalculatingRSOption(void);
 
-  bool Load10DayRSStrongStockDB(void);
-  bool LoadOne10DayRSStrongStockDB(long lIndex);
+  bool Load10DaysRSStrongStockDB(void);
+  bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
   bool UnloadDL(void);
 
@@ -268,12 +268,12 @@ public:
   void SetRSEndDate(long lDate) noexcept { m_lRSEndDate = lDate; }
   long GetLastLoginDate(void) noexcept { return m_lLastLoginDay; }
   void SetLastLoginDate(long lDate) noexcept { m_lLastLoginDay = lDate; }
-  long GetUpdatedDateFor10DayRS1(void) noexcept { return m_lUpdatedDateFor10DayRS1; }
-  void SetUpdatedDateFor10DAyRS1(long lDate) noexcept { m_lUpdatedDateFor10DayRS1 = lDate; }
-  long GetUpdatedDateFor10DayRS2(void) noexcept { return m_lUpdatedDateFor10DayRS2; }
-  void SetUpdatedDateFor10DAyRS2(long lDate) noexcept { m_lUpdatedDateFor10DayRS2 = lDate; }
-  long GetUpdatedDateFor10DayRS(void) noexcept { return m_lUpdatedDateFor10DayRS; }
-  void SetUpdatedDateFor10DayRS(long lDate) noexcept { m_lUpdatedDateFor10DayRS = lDate; }
+  long GetUpdatedDateFor10DaysRS1(void) noexcept { return m_lUpdatedDateFor10DaysRS1; }
+  void SetUpdatedDateFor10DaysRS1(long lDate) noexcept { m_lUpdatedDateFor10DaysRS1 = lDate; }
+  long GetUpdatedDateFor10DaysRS2(void) noexcept { return m_lUpdatedDateFor10DaysRS2; }
+  void SetUpdatedDateFor10DaysRS2(long lDate) noexcept { m_lUpdatedDateFor10DaysRS2 = lDate; }
+  long GetUpdatedDateFor10DaysRS(void) noexcept { return m_lUpdatedDateFor10DaysRS; }
+  void SetUpdatedDateFor10DaysRS(long lDate) noexcept { m_lUpdatedDateFor10DaysRS = lDate; }
 
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
@@ -463,9 +463,9 @@ protected:
   long m_lRSStartDate;
   long m_lRSEndDate;
   long m_lLastLoginDay; // 上次登录日期。如果此日期为昨日的话，则无需下载日线历史数据
-  long m_lUpdatedDateFor10DayRS2;
-  long m_lUpdatedDateFor10DayRS1;
-  long m_lUpdatedDateFor10DayRS;
+  long m_lUpdatedDateFor10DaysRS2;
+  long m_lUpdatedDateFor10DaysRS1;
+  long m_lUpdatedDateFor10DaysRS;
 
   vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;

@@ -12,9 +12,9 @@ CSetOption::CSetOption(CDatabase* pdb)
   m_RSStartDate = __CHINA_MARKET_BEGIN_DATE__;
   m_RSEndDate = __CHINA_MARKET_BEGIN_DATE__;
   m_LastLoginDate = __CHINA_MARKET_BEGIN_DATE__;
-  m_UpdatedDateFor10DayRS1 = __CHINA_MARKET_BEGIN_DATE__;
-  m_UpdatedDateFor10DayRS2 = __CHINA_MARKET_BEGIN_DATE__;
-  m_UpdatedDateFor10DayRS = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DaysRS1 = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DaysRS2 = __CHINA_MARKET_BEGIN_DATE__;
+  m_UpdatedDateFor10DaysRS = __CHINA_MARKET_BEGIN_DATE__;
   m_nFields = 6;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
@@ -37,9 +37,9 @@ void CSetOption::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[RelativeStrongStartDate]"), m_RSStartDate);
   RFX_Long(pFX, _T("[RelativeStrongEndDate]"), m_RSEndDate);
   RFX_Long(pFX, _T("[LastLoginDate]"), m_LastLoginDate);
-  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS1]"), m_UpdatedDateFor10DayRS1);
-  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS2]"), m_UpdatedDateFor10DayRS2);
-  RFX_Long(pFX, _T("[UpdatedDateFor10DayRS]"), m_UpdatedDateFor10DayRS);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS1]"), m_UpdatedDateFor10DaysRS1);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS2]"), m_UpdatedDateFor10DaysRS2);
+  RFX_Long(pFX, _T("[UpdatedDateFor10DaysRS]"), m_UpdatedDateFor10DaysRS);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode 诊断

@@ -23,12 +23,12 @@ public:
 
   CRect GetClientSize(void) noexcept { return m_rectClient; }
   bool IsShowRS(void) noexcept { return m_fShowRS; }
-  bool IsShow3DayRS(void) noexcept { return m_fShow3DayRS; }
-  bool IsShow5DayRS(void) noexcept { return m_fShow5DayRS; }
-  bool IsShow10DayRS(void) noexcept { return m_fShow10DayRS; }
-  bool IsShow30DayRS(void) noexcept { return m_fShow30DayRS; }
-  bool IsShow60DayRS(void) noexcept { return m_fShow60DayRS; }
-  bool IsShow120DayRS(void) noexcept { return m_fShow120DayRS; }
+  bool IsShow3DaysRS(void) noexcept { return m_fShow3DaysRS; }
+  bool IsShow5DaysRS(void) noexcept { return m_fShow5DaysRS; }
+  bool IsShow10DaysRS(void) noexcept { return m_fShow10DaysRS; }
+  bool IsShow30DaysRS(void) noexcept { return m_fShow30DaysRS; }
+  bool IsShow60DaysRS(void) noexcept { return m_fShow60DaysRS; }
+  bool IsShow120DaysRS(void) noexcept { return m_fShow120DaysRS; }
   bool IsShowRSInLogarithm(void) noexcept { return (m_iShowRSOption == 2); }
   bool IsShowRSInLinear(void) noexcept { return (m_iShowRSOption == 1); }
   bool IsShowRSInIndex(void) noexcept { return (m_iShowRSOption == 0); }
@@ -109,12 +109,12 @@ protected:
   long m_lCurrentPos;
 
   bool m_fShowRS;
-  bool m_fShow3DayRS;
-  bool m_fShow5DayRS;
-  bool m_fShow10DayRS;
-  bool m_fShow30DayRS;
-  bool m_fShow60DayRS;
-  bool m_fShow120DayRS;
+  bool m_fShow3DaysRS;
+  bool m_fShow5DaysRS;
+  bool m_fShow10DaysRS;
+  bool m_fShow30DaysRS;
+  bool m_fShow60DaysRS;
+  bool m_fShow120DaysRS;
   int  m_iShowRSOption; // 显示相对相对强度的选项。1 = 线性； 2 = 对数；3 = 指数相对；
   vector<double> m_vRSShow;
 

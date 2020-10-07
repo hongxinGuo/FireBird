@@ -99,7 +99,7 @@ ExcludeFromCodeCoverage(CChinaMarket1, L"CChinaMarket::AssertValid");
 ExcludeFromCodeCoverage(CChinaMarket2, L"CChinaMarket::Dump");
 ExcludeFromCodeCoverage(CChinaMarket3, L"CChinaMarket::RunningThreadAppendChoicedStockDB");
 ExcludeFromCodeCoverage(CChinaMarket4, L"CChinaMarket::RunningThreadCalculateRS");
-ExcludeFromCodeCoverage(CChinaMarket5, L"CChinaMarket::RunningThreadCalculateThisDayRS");
+ExcludeFromCodeCoverage(CChinaMarket5, L"CChinaMarket::RunningThreadCalculateThisDaysRS");
 ExcludeFromCodeCoverage(CChinaMarket6, L"CChinaMarket::RunningThreadChoice10RSStrong1StockSet");
 ExcludeFromCodeCoverage(CChinaMarket7, L"CChinaMarket::RunningThreadChoice10RSStrong2StockSet");
 ExcludeFromCodeCoverage(CChinaMarket8, L"CChinaMarket::RunningThreadChoice10RSStrongStockSet");

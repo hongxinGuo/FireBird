@@ -78,10 +78,10 @@ void CChinaMarket::ResetMarket(void) {
   LoadOptionDB();
   LoadOptionChinaStockMarketDB();
   LoadChoicedStockDB();
-  Load10DayRSStrong1StockSet();
-  Load10DayRSStrong2StockSet();
+  Load10DaysRSStrong1StockSet();
+  Load10DaysRSStrong2StockSet();
   LoadCalculatingRSOption();
-  Load10DayRSStrongStockDB();
+  Load10DaysRSStrongStockDB();
 }
 
 void CChinaMarket::Reset(void) {
@@ -110,7 +110,7 @@ void CChinaMarket::Reset(void) {
   else SetTodayStockProcessed(false);
 
   m_lRSEndDate = m_lRSStartDate = m_lLastLoginDay = __CHINA_MARKET_BEGIN_DATE__;
-  m_lUpdatedDateFor10DayRS2 = m_lUpdatedDateFor10DayRS1 = m_lUpdatedDateFor10DayRS = __CHINA_MARKET_BEGIN_DATE__;
+  m_lUpdatedDateFor10DaysRS2 = m_lUpdatedDateFor10DaysRS1 = m_lUpdatedDateFor10DaysRS = __CHINA_MARKET_BEGIN_DATE__;
 
   m_fSaveDL = false;
   m_fMarketOpened = false;
@@ -247,7 +247,7 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
   do {
     if (m_lCurrentSelectedStockSet > -1) m_lCurrentSelectedStockSet--;
     else {
-      m_lCurrentSelectedStockSet = c_10DayRSStockSetStartPosition + 9;
+      m_lCurrentSelectedStockSet = c_10DaysRSStockSetStartPosition + 9;
     }
     ASSERT(m_lCurrentSelectedStockSet < 20);
   } while ((m_lCurrentSelectedStockSet != -1) && (m_avChoicedStock[m_lCurrentSelectedStockSet].size() == 0));
@@ -257,7 +257,7 @@ bool CChinaMarket::ChangeToPrevStockSet(void) {
 
 bool CChinaMarket::ChangeToNextStockSet(void) {
   do {
-    if (m_lCurrentSelectedStockSet == (c_10DayRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
+    if (m_lCurrentSelectedStockSet == (c_10DaysRSStockSetStartPosition + 9)) m_lCurrentSelectedStockSet = -1;
     else {
       m_lCurrentSelectedStockSet++;
     }
@@ -2431,7 +2431,7 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
       thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
     }
   }
-  SetUpdatedDateFor10DayRS(GetFormatedMarketDate());
+  SetUpdatedDateFor10DaysRS(GetFormatedMarketDate());
   SetUpdateOptionDB(true); // 更新选项数据库.此时计算工作线程只是刚刚启动，需要时间去完成。
 
   return true;
@@ -2746,7 +2746,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   return true;
 }
 
-bool CChinaMarket::Load10DayRSStrong1StockSet(void) {
+bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
   CSetRSStrong1Stock setRSStrong1;
   CChinaStockPtr pStock = nullptr;
 
@@ -2764,7 +2764,7 @@ bool CChinaMarket::Load10DayRSStrong1StockSet(void) {
   return true;
 }
 
-bool CChinaMarket::Load10DayRSStrong2StockSet(void) {
+bool CChinaMarket::Load10DaysRSStrong2StockSet(void) {
   CSetRSStrong2Stock setRSStrong2;
   CChinaStockPtr pStock = nullptr;
 
@@ -2843,21 +2843,21 @@ void CChinaMarket::SaveCalculatingRSOption(void) {
   setRSOption.Close();
 }
 
-bool CChinaMarket::Load10DayRSStrongStockDB(void) {
+bool CChinaMarket::Load10DaysRSStrongStockDB(void) {
   for (int i = 0; i < 10; i++) {
-    LoadOne10DayRSStrongStockDB(i);
+    LoadOne10DaysRSStrongStockDB(i);
   }
   return true;
 }
 
-bool CChinaMarket::LoadOne10DayRSStrongStockDB(long lIndex) {
+bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
   m_lCurrentRSStrongIndex = lIndex;
   CSetRSStrongStock setRSStrongStock(lIndex);
 
   setRSStrongStock.Open();
   while (!setRSStrongStock.IsEOF()) {
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
-    if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DayRSStockSetStartPosition].push_back(pStock); // 10日RS股票集起始位置为第10个。
+    if (pStock != nullptr) m_avChoicedStock[m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition].push_back(pStock); // 10日RS股票集起始位置为第10个。
     setRSStrongStock.MoveNext();
   }
   setRSStrongStock.Close();
@@ -3159,9 +3159,9 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_RSEndDate = GetRSEndDate();
     setOption.m_RSStartDate = GetRSStartDate();
     setOption.m_LastLoginDate = GetFormatedMarketDate();
-    setOption.m_UpdatedDateFor10DayRS1 = GetUpdatedDateFor10DayRS1();
-    setOption.m_UpdatedDateFor10DayRS2 = GetUpdatedDateFor10DayRS2();
-    setOption.m_UpdatedDateFor10DayRS = GetUpdatedDateFor10DayRS();
+    setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
+    setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
+    setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
     setOption.Update();
   }
   else {
@@ -3169,9 +3169,9 @@ bool CChinaMarket::UpdateOptionDB(void) {
     setOption.m_RSEndDate = GetRSEndDate();
     setOption.m_RSStartDate = GetRSStartDate();
     setOption.m_LastLoginDate = GetFormatedMarketDate();
-    setOption.m_UpdatedDateFor10DayRS1 = GetUpdatedDateFor10DayRS1();
-    setOption.m_UpdatedDateFor10DayRS2 = GetUpdatedDateFor10DayRS2();
-    setOption.m_UpdatedDateFor10DayRS = GetUpdatedDateFor10DayRS();
+    setOption.m_UpdatedDateFor10DaysRS1 = GetUpdatedDateFor10DaysRS1();
+    setOption.m_UpdatedDateFor10DaysRS2 = GetUpdatedDateFor10DaysRS2();
+    setOption.m_UpdatedDateFor10DaysRS = GetUpdatedDateFor10DaysRS();
     setOption.Update();
   }
   setOption.m_pDatabase->CommitTrans();
@@ -3186,8 +3186,8 @@ void CChinaMarket::LoadOptionDB(void) {
     SetRSStartDate(__CHINA_MARKET_BEGIN_DATE__);
     SetRSEndDate(__CHINA_MARKET_BEGIN_DATE__);
     SetLastLoginDate(__CHINA_MARKET_BEGIN_DATE__);
-    SetUpdatedDateFor10DAyRS1(__CHINA_MARKET_BEGIN_DATE__);
-    SetUpdatedDateFor10DAyRS2(__CHINA_MARKET_BEGIN_DATE__);
+    SetUpdatedDateFor10DaysRS1(__CHINA_MARKET_BEGIN_DATE__);
+    SetUpdatedDateFor10DaysRS2(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
     if (setOption.m_RSEndDate == 0) {
@@ -3213,14 +3213,14 @@ void CChinaMarket::LoadOptionDB(void) {
     else {
       SetLastLoginDate(setOption.m_LastLoginDate);
     }
-    SetUpdatedDateFor10DAyRS1(setOption.m_UpdatedDateFor10DayRS1);
-    SetUpdatedDateFor10DAyRS2(setOption.m_UpdatedDateFor10DayRS2);
-    SetUpdatedDateFor10DayRS(setOption.m_UpdatedDateFor10DayRS);
-    if (setOption.m_UpdatedDateFor10DayRS1 < GetFormatedMarketDate())  m_fChoiced10RSStrong1StockSet = false;
+    SetUpdatedDateFor10DaysRS1(setOption.m_UpdatedDateFor10DaysRS1);
+    SetUpdatedDateFor10DaysRS2(setOption.m_UpdatedDateFor10DaysRS2);
+    SetUpdatedDateFor10DaysRS(setOption.m_UpdatedDateFor10DaysRS);
+    if (setOption.m_UpdatedDateFor10DaysRS1 < GetFormatedMarketDate())  m_fChoiced10RSStrong1StockSet = false;
     else m_fChoiced10RSStrong1StockSet = true;
-    if (setOption.m_UpdatedDateFor10DayRS2 < GetFormatedMarketDate())  m_fChoiced10RSStrong2StockSet = false;
+    if (setOption.m_UpdatedDateFor10DaysRS2 < GetFormatedMarketDate())  m_fChoiced10RSStrong2StockSet = false;
     else m_fChoiced10RSStrong2StockSet = true;
-    if (setOption.m_UpdatedDateFor10DayRS < GetFormatedMarketDate())  m_fChoiced10RSStrongStockSet = false;
+    if (setOption.m_UpdatedDateFor10DaysRS < GetFormatedMarketDate())  m_fChoiced10RSStrongStockSet = false;
     else m_fChoiced10RSStrongStockSet = true;
   }
 

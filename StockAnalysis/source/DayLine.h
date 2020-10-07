@@ -23,18 +23,18 @@ public:
   bool IsActive(void);
 
 public:
-  void Set3DayRS(double dValue) noexcept { Set3RS(dValue); }
-  double Get3DayRS(void) noexcept { return Get3RS(); }
-  void Set5DayRS(double dValue) noexcept { Set5RS(dValue); }
-  double Get5DayRS(void) noexcept { return Get5RS(); }
-  void Set10DayRS(double dValue) noexcept { Set10RS(dValue); }
-  double Get10DayRS(void) noexcept { return Get10RS(); }
-  void Set30DayRS(double dValue) noexcept { Set30RS(dValue); }
-  double Get30DayRS(void) noexcept { return Get30RS(); }
-  void Set60DayRS(double dValue) noexcept { Set60RS(dValue); }
-  double Get60DayRS(void) noexcept { return Get60RS(); }
-  void Set120DayRS(double dValue) noexcept { Set120RS(dValue); }
-  double Get120DayRS(void) noexcept { return Get120RS(); }
+  void Set3DaysRS(double dValue) noexcept { Set3RS(dValue); }
+  double Get3DaysRS(void) noexcept { return Get3RS(); }
+  void Set5DaysRS(double dValue) noexcept { Set5RS(dValue); }
+  double Get5DaysRS(void) noexcept { return Get5RS(); }
+  void Set10DaysRS(double dValue) noexcept { Set10RS(dValue); }
+  double Get10DaysRS(void) noexcept { return Get10RS(); }
+  void Set30DaysRS(double dValue) noexcept { Set30RS(dValue); }
+  double Get30DaysRS(void) noexcept { return Get30RS(); }
+  void Set60DaysRS(double dValue) noexcept { Set60RS(dValue); }
+  double Get60DaysRS(void) noexcept { return Get60RS(); }
+  void Set120DaysRS(double dValue) noexcept { Set120RS(dValue); }
+  double Get120DaysRS(void) noexcept { return Get120RS(); }
 
 private:
 };

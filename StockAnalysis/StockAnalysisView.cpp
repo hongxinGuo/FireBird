@@ -73,12 +73,12 @@ CStockAnalysisView::CStockAnalysisView() {
   m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
 
   m_fShowRS = false;
-  m_fShow3DayRS = false;;
-  m_fShow5DayRS = false;
-  m_fShow10DayRS = true;
-  m_fShow30DayRS = true;
-  m_fShow60DayRS = false;
-  m_fShow120DayRS = false;
+  m_fShow3DaysRS = false;;
+  m_fShow5DaysRS = false;
+  m_fShow10DaysRS = true;
+  m_fShow30DaysRS = true;
+  m_fShow60DaysRS = false;
+  m_fShow120DaysRS = false;
   m_iShowRSOption = 0; // 默认值为指数相对强度
 
   m_uIdTimer = 0;
@@ -521,41 +521,41 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度3日均线
-  if (m_fShow3DayRS) {
+  if (m_fShow3DaysRS) {
     pDC->SelectObject(&penYellow1);
     m_pCurrentHistoryDataContainer->GetRS3(m_vRSShow);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度5日均线
-  if (m_fShow5DayRS) {
+  if (m_fShow5DaysRS) {
     pDC->SelectObject(&penGreen1);
     m_pCurrentHistoryDataContainer->GetRS5(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 1.5);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度10日均线
-  if (m_fShow10DayRS) {
+  if (m_fShow10DaysRS) {
     pDC->SelectObject(&penRed1);
     m_pCurrentHistoryDataContainer->GetRS10(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 3);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度30日均线
-  if (m_fShow30DayRS) {
+  if (m_fShow30DaysRS) {
     pDC->SelectObject(&penYellow1);
     m_pCurrentHistoryDataContainer->GetRS30(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 3);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度60日均线
-  if (m_fShow60DayRS) {
+  if (m_fShow60DaysRS) {
     pDC->SelectObject(&penBlue1);
     m_pCurrentHistoryDataContainer->GetRS60(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 6);
     ShowCurrentRS(pDC, m_vRSShow);
   }
   // 画相对强度120日均线
-  if (m_fShow120DayRS) {
+  if (m_fShow120DaysRS) {
     pDC->SelectObject(&penWhite1);
     m_pCurrentHistoryDataContainer->GetRS120(m_vRSShow);
     ZoomIn(m_vRSShow, 50, 6);
@@ -774,73 +774,73 @@ void CStockAnalysisView::OnSize(UINT nType, int cx, int cy) {
 
 void CStockAnalysisView::OnShowRs3() {
   // TODO: Add your command handler code here
-  if (m_fShow3DayRS) m_fShow3DayRS = false;
-  else m_fShow3DayRS = true;
+  if (m_fShow3DaysRS) m_fShow3DaysRS = false;
+  else m_fShow3DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs5() {
   // TODO: Add your command handler code here
-  if (m_fShow5DayRS) m_fShow5DayRS = false;
-  else m_fShow5DayRS = true;
+  if (m_fShow5DaysRS) m_fShow5DaysRS = false;
+  else m_fShow5DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs10() {
   // TODO: Add your command handler code here
-  if (m_fShow10DayRS) m_fShow10DayRS = false;
-  else m_fShow10DayRS = true;
+  if (m_fShow10DaysRS) m_fShow10DaysRS = false;
+  else m_fShow10DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs30() {
   // TODO: Add your command handler code here
-  if (m_fShow30DayRS) m_fShow30DayRS = false;
-  else m_fShow30DayRS = true;
+  if (m_fShow30DaysRS) m_fShow30DaysRS = false;
+  else m_fShow30DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs60() {
   // TODO: Add your command handler code here
-  if (m_fShow60DayRS) m_fShow60DayRS = false;
-  else m_fShow60DayRS = true;
+  if (m_fShow60DaysRS) m_fShow60DaysRS = false;
+  else m_fShow60DaysRS = true;
 }
 
 void CStockAnalysisView::OnShowRs120() {
   // TODO: Add your command handler code here
-  if (m_fShow120DayRS) m_fShow120DayRS = false;
-  else m_fShow120DayRS = true;
+  if (m_fShow120DaysRS) m_fShow120DaysRS = false;
+  else m_fShow120DaysRS = true;
 }
 
 void CStockAnalysisView::OnUpdateShowRs10(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow10DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow10DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs120(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow120DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow120DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs3(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow3DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow3DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs30(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow30DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow30DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs5(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow5DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow5DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 
 void CStockAnalysisView::OnUpdateShowRs60(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (m_fShow60DayRS) SysCallCmdUISetCheck(pCmdUI, 1);
+  if (m_fShow60DaysRS) SysCallCmdUISetCheck(pCmdUI, 1);
   else SysCallCmdUISetCheck(pCmdUI, 0);
 }
 

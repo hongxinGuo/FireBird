@@ -522,46 +522,46 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetOrdinarySellNumberAbove200000(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet3DayRS) {
+  TEST_F(CStockDLTest, TestGet3DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get3DayRS(), 0);
-    dl.Set3DayRS(10);
-    EXPECT_EQ(dl.Get3DayRS(), 10);
+    EXPECT_EQ(dl.Get3DaysRS(), 0);
+    dl.Set3DaysRS(10);
+    EXPECT_EQ(dl.Get3DaysRS(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet5DayRS) {
+  TEST_F(CStockDLTest, TestGet5DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get5DayRS(), 0);
-    dl.Set5DayRS(10);
-    EXPECT_EQ(dl.Get5DayRS(), 10);
+    EXPECT_EQ(dl.Get5DaysRS(), 0);
+    dl.Set5DaysRS(10);
+    EXPECT_EQ(dl.Get5DaysRS(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet10DayRS) {
+  TEST_F(CStockDLTest, TestGet10DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get10DayRS(), 0);
-    dl.Set10DayRS(10);
-    EXPECT_EQ(dl.Get10DayRS(), 10);
+    EXPECT_EQ(dl.Get10DaysRS(), 0);
+    dl.Set10DaysRS(10);
+    EXPECT_EQ(dl.Get10DaysRS(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet30DayRS) {
+  TEST_F(CStockDLTest, TestGet30DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get30DayRS(), 0);
-    dl.Set30DayRS(10);
-    EXPECT_EQ(dl.Get30DayRS(), 10);
+    EXPECT_EQ(dl.Get30DaysRS(), 0);
+    dl.Set30DaysRS(10);
+    EXPECT_EQ(dl.Get30DaysRS(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet60DayRS) {
+  TEST_F(CStockDLTest, TestGet60DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get60DayRS(), 0);
-    dl.Set60DayRS(10);
-    EXPECT_EQ(dl.Get60DayRS(), 10);
+    EXPECT_EQ(dl.Get60DaysRS(), 0);
+    dl.Set60DaysRS(10);
+    EXPECT_EQ(dl.Get60DaysRS(), 10);
   }
 
-  TEST_F(CStockDLTest, TestGet120DayRS) {
+  TEST_F(CStockDLTest, TestGet120DaysRS) {
     CDL dl;
-    EXPECT_EQ(dl.Get120DayRS(), 0);
-    dl.Set120DayRS(10);
-    EXPECT_EQ(dl.Get120DayRS(), 10);
+    EXPECT_EQ(dl.Get120DaysRS(), 0);
+    dl.Set120DaysRS(10);
+    EXPECT_EQ(dl.Get120DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestSaveData) {
