@@ -1302,7 +1302,7 @@ bool CChinaMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) 
 
   // 计算每一小时一次的任务
   i1HourCounter -= lSecondNumber;
-  if (i1HourCounter < 0) {
+  if (i1HourCounter < 0) { 
     i1HourCounter = 3599;
 
     return true;

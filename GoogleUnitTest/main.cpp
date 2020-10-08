@@ -116,13 +116,13 @@ ExcludeFromCodeCoverage(CChinaMarket18, L"CChinaMarket::RunningThreadCalculate10
 
 ExcludeFromCodeCoverage(CChinaStock1, L"CChinaStock::AssertValid");
 ExcludeFromCodeCoverage(CChinaStock2, L"CChinaStock::Dump");
-ExcludeFromCodeCoverage(CChinaStock3, L"CChinaStock::GetRS1Day");
-ExcludeFromCodeCoverage(CChinaStock4, L"CChinaStock::GetRS3Day");
-ExcludeFromCodeCoverage(CChinaStock5, L"CChinaStock::GetRS5Day");
-ExcludeFromCodeCoverage(CChinaStock6, L"CChinaStock::GetRS10Day");
-ExcludeFromCodeCoverage(CChinaStock7, L"CChinaStock::GetRS30Day");
-ExcludeFromCodeCoverage(CChinaStock8, L"CChinaStock::GetRS60Day");
-ExcludeFromCodeCoverage(CChinaStock9, L"CChinaStock::GetRS120Day");
+ExcludeFromCodeCoverage(CChinaStock3, L"CChinaStock::Get1DaysRS");
+ExcludeFromCodeCoverage(CChinaStock4, L"CChinaStock::Get3DaysRS");
+ExcludeFromCodeCoverage(CChinaStock5, L"CChinaStock::Get5DaysRS");
+ExcludeFromCodeCoverage(CChinaStock6, L"CChinaStock::Get10DaysRS");
+ExcludeFromCodeCoverage(CChinaStock7, L"CChinaStock::Get30DaysRS");
+ExcludeFromCodeCoverage(CChinaStock8, L"CChinaStock::Get60DaysRS");
+ExcludeFromCodeCoverage(CChinaStock9, L"CChinaStock::Get120DaysRS");
 ExcludeFromCodeCoverage(CChinaStock10, L"CChinaStock::GetRSIndex1Day");
 ExcludeFromCodeCoverage(CChinaStock11, L"CChinaStock::GetRSLogarithm1Day");
 ExcludeFromCodeCoverage(CChinaStock12, L"CChinaStock::ReportGuadan");

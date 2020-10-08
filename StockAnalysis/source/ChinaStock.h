@@ -406,15 +406,15 @@ public:
   CDLPtr GetDL(long lIndex) { return m_DL.GetData(lIndex); }
   void ShowDL(CDC* pDC, CRect rectClient);
   void ShowWeekLine(CDC* pDC, CRect rectClient);
-  void GetRS1Day(vector<double>& vRS);
+  void Get1DaysRS(vector<double>& vRS);
   void GetRSIndex1Day(vector<double>& vRS);
   void GetRSLogarithm1Day(vector<double>& vRS);
-  void GetRS3Day(vector<double>& vRS);
-  void GetRS5Day(vector<double>& vRS);
-  void GetRS10Day(vector<double>& vRS);
-  void GetRS30Day(vector<double>& vRS);
-  void GetRS60Day(vector<double>& vRS);
-  void GetRS120Day(vector<double>& vRS);
+  void Get3DaysRS(vector<double>& vRS);
+  void Get5DaysRS(vector<double>& vRS);
+  void Get10DaysRS(vector<double>& vRS);
+  void Get30DaysRS(vector<double>& vRS);
+  void Get60DaysRS(vector<double>& vRS);
+  void Get120DaysRS(vector<double>& vRS);
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
   char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }

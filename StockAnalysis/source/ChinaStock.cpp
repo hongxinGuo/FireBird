@@ -682,7 +682,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   if (iDLSize > 155) {
     m_v10DaysRS.resize(iDLSize);
     CalculateDLRSIndex();
-    GetRS10Day(m_v10DaysRS);
+    Get10DaysRS(m_v10DaysRS);
     int i = 0;
     for (i = iDLSize - 1; i > iDLSize - 5; i--) {
       if (m_v10DaysRS.at(i) > 55) iCountFirst++;
@@ -713,7 +713,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   if (iDLSize < 350) return false;
   m_v10DaysRS.resize(iDLSize);
   CalculateDLRSIndex();
-  GetRS10Day(m_v10DaysRS);
+  Get10DaysRS(m_v10DaysRS);
   int i = 0, j = 0;
 
   for (i = iDLSize - 1; i > iDLSize - 40; i--) {
@@ -785,7 +785,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
 
   m_v10DaysRS.resize(iDLSize);
   CalculateDLRSIndex();
-  GetRS10Day(m_v10DaysRS);
+  Get10DaysRS(m_v10DaysRS);
   int i = 0, j = 0;
 
   if (pRef->m_lDayLength[0] == 0) fFind1 = true;
@@ -1744,7 +1744,7 @@ void CChinaStock::ShowWeekLine(CDC* pDC, CRect rectClient) {
   m_WeekLine.ShowData(pDC, rectClient);
 }
 
-void CChinaStock::GetRS1Day(vector<double>& vRS) {
+void CChinaStock::Get1DaysRS(vector<double>& vRS) {
   m_DL.GetRS1(vRS);
 }
 
@@ -1756,27 +1756,27 @@ void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
   m_DL.GetRSLogarithm1(vRS);
 }
 
-void CChinaStock::GetRS3Day(vector<double>& vRS) {
+void CChinaStock::Get3DaysRS(vector<double>& vRS) {
   m_DL.GetRS3(vRS);
 }
 
-void CChinaStock::GetRS5Day(vector<double>& vRS) {
+void CChinaStock::Get5DaysRS(vector<double>& vRS) {
   m_DL.GetRS5(vRS);
 }
 
-void CChinaStock::GetRS10Day(vector<double>& vRS) {
+void CChinaStock::Get10DaysRS(vector<double>& vRS) {
   m_DL.GetRS10(vRS);
 }
 
-void CChinaStock::GetRS30Day(vector<double>& vRS) {
+void CChinaStock::Get30DaysRS(vector<double>& vRS) {
   m_DL.GetRS30(vRS);
 }
 
-void CChinaStock::GetRS60Day(vector<double>& vRS) {
+void CChinaStock::Get60DaysRS(vector<double>& vRS) {
   m_DL.GetRS60(vRS);
 }
 
-void CChinaStock::GetRS120Day(vector<double>& vRS) {
+void CChinaStock::Get120DaysRS(vector<double>& vRS) {
   m_DL.GetRS120(vRS);
 }
 
