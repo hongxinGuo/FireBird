@@ -7,7 +7,7 @@ using namespace std;
 
 class CWebData : public CObject {
 public:
-  CWebData() {
+  CWebData() noexcept {
     m_lTime = 0;
     m_pDataBuffer = nullptr;
     m_lBufferLength = 0;
@@ -26,13 +26,7 @@ public:
   long GetBufferLength(void) noexcept { return m_lBufferLength; }
   void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
 
-  void __TEST_SetBuffer__(CString strBuffer) {
-    m_pDataBuffer = new char[strBuffer.GetLength() + 1];
-    m_lBufferLength = strBuffer.GetLength();
-    char* pBuffer = strBuffer.GetBuffer();
-    for (int i = 0; i < m_lBufferLength; i++) { m_pDataBuffer[i] = pBuffer[i]; }
-    m_pDataBuffer[m_lBufferLength] = 0x000;
-  }
+  void __TEST_SetBuffer__(CString strBuffer);
 
 public:
   INT64 m_lTime; // 此数据的提取时间。格式为yyyymmddhhmmss

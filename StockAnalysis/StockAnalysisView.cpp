@@ -80,6 +80,8 @@ CStockAnalysisView::CStockAnalysisView() {
   m_fShow60DaysRS = false;
   m_fShow120DaysRS = false;
   m_iShowRSOption = 0; // 默认值为指数相对强度
+  m_fShowTransactionGraph = false;
+  m_pCurrentHistoryDataContainer = nullptr;
 
   m_uIdTimer = 0;
 

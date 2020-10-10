@@ -503,6 +503,9 @@
     <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp">
       <Filter>Test源文件\基类</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

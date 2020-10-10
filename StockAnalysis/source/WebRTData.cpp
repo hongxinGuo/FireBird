@@ -489,7 +489,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
   char buffer2[7];
   static char buffer3[200];
   static CString strHeader = _T("v_s");
-  long lTemp = 0, lTemp2 = 0;
+  long lTemp = 0;
   INT64 llTemp = 0;
   double dTemp = 0.0;
   float fTemp = 0.0;

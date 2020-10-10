@@ -30,10 +30,10 @@ public:
 public:
   vector<CChinaStockHistoryDataPtr>* GetContainer(void) noexcept { return &m_vHistoryData; }
 
-  size_t GetDataSize(void) { return m_vHistoryData.size(); }
+  size_t GetDataSize(void) noexcept { return m_vHistoryData.size(); }
   CChinaStockHistoryDataPtr GetData(long lIndex) { return m_vHistoryData.at(lIndex); }
   void Unload(void) noexcept { m_vHistoryData.clear(); m_fDataLoaded = false; }
-  bool StoreData(CChinaStockHistoryDataPtr pData) noexcept { m_vHistoryData.push_back(pData); return true; }
+  bool StoreData(CChinaStockHistoryDataPtr pData) { m_vHistoryData.push_back(pData); return true; }
 
   bool IsDatabaseTodayUpdated(void) noexcept { return (m_fDatabaseTodayUpdated); }
   void SetDatabaseTodayUpdated(bool fUpdate) noexcept { m_fDatabaseTodayUpdated = fUpdate; }

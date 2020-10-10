@@ -463,7 +463,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 void CMainFrame::UpdateStatus(void) {
   CString str;
-  char buffer[30];
+  char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
@@ -526,6 +526,7 @@ void CMainFrame::OnSysCommand(UINT nID, LPARAM lParam) {
     gl_fExitingSystem = true; // 提示各工作线程中途退出
   }
 
+  //CMDIFrameWndEx::OnSysCommand(nID, lParam);
   SysCallOnSysCommand(nID, lParam);
 }
 
@@ -648,7 +649,6 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   CChinaStockPtr pStock;
-  long lIndex = 0;
   CString strTemp;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
@@ -861,7 +861,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   }
   else {
     SysCallCmdUIEnable(pCmdUI, false);
-  }
+}
 #endif // !_DEBUG
 }
 

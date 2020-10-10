@@ -45,32 +45,32 @@ public:
   long GetHigh(void) noexcept { return m_lHigh; }
   void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
   long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(char* buffer) { m_lLow = static_cast<long>(atof(buffer)); }
+  void SetLow(char* buffer) noexcept { m_lLow = static_cast<long>(atof(buffer)); }
   void SetLow(long lValue) noexcept { m_lLow = lValue; }
   long GetClose(void) noexcept { return m_lClose; }
-  void SetClose(char* buffer) { m_lClose = static_cast<long>(atof(buffer)); }
+  void SetClose(char* buffer) noexcept { m_lClose = static_cast<long>(atof(buffer)); }
   void SetClose(long lValue) noexcept { m_lClose = lValue; }
   double GetUpDown(void) noexcept { return m_dUpDown; }
-  void SetUpDown(char* buffer) { m_dUpDown = atof(buffer); }
+  void SetUpDown(char* buffer) noexcept { m_dUpDown = atof(buffer); }
   void SetUpDown(double dValue) noexcept { m_dUpDown = dValue; }
   double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
-  void SetUpDownRate(char* buffer) { m_dUpDownRate = atof(buffer); }
+  void SetUpDownRate(char* buffer) noexcept { m_dUpDownRate = atof(buffer); }
   void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
   double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
-  void SetChangeHandRate(char* buffer) { m_dChangeHandRate = atof(buffer); }
+  void SetChangeHandRate(char* buffer) noexcept { m_dChangeHandRate = atof(buffer); }
   void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
   INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(char* buffer) { m_llVolume = static_cast<INT64>(atof(buffer)); }
+  void SetVolume(char* buffer) noexcept { m_llVolume = static_cast<INT64>(atof(buffer)); }
   void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
   INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(char* buffer) { m_llAmount = static_cast<INT64>(atof(buffer)); }
+  void SetAmount(char* buffer) noexcept { m_llAmount = static_cast<INT64>(atof(buffer)); }
   void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
 
   INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetTotalValue(char* buffer) { m_llTotalValue = static_cast<INT64>(atof(buffer)); }
+  void SetTotalValue(char* buffer) noexcept { m_llTotalValue = static_cast<INT64>(atof(buffer)); }
   void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
-  void SetCurrentValue(char* buffer) { m_llCurrentValue = static_cast<INT64>(atof(buffer)); }
+  void SetCurrentValue(char* buffer) noexcept { m_llCurrentValue = static_cast<INT64>(atof(buffer)); }
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   double GetRS(void) noexcept { return m_dRS; }
   void SetRS(double dValue) noexcept { m_dRS = dValue; }
