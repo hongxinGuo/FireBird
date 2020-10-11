@@ -1,4 +1,4 @@
-// CSetDLBasicInfo.h : CSetDLBasicInfo 的声明
+// CSetDayLineBasicInfo.h : CSetDayLineBasicInfo 的声明
 
 #pragma once
 

@@ -1,6 +1,6 @@
-// SetDLExtendInfo.h : CSetDLBasicInfo 类的实现
+// SetDayLineExtendInfo.h : CSetDayLineBasicInfo 类的实现
 
-// CSetDLExtendInfo 实现
+// CSetDayLineExtendInfo 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -9,9 +9,9 @@
 #include"Accessory.h"
 
 #include "SetDayLineExtendInfo.h"
-IMPLEMENT_DYNAMIC(CSetDLExtendInfo, CRecordset)
+IMPLEMENT_DYNAMIC(CSetDayLineExtendInfo, CRecordset)
 
-CSetDLExtendInfo::CSetDLExtendInfo(CDatabase* pdb)
+CSetDayLineExtendInfo::CSetDayLineExtendInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
@@ -98,15 +98,15 @@ CSetDLExtendInfo::CSetDLExtendInfo(CDatabase* pdb)
   m_nFields = 66;
 }
 
-CString CSetDLExtendInfo::GetDefaultConnect() {
+CString CSetDayLineExtendInfo::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetDLExtendInfo::GetDefaultSQL() {
+CString CSetDayLineExtendInfo::GetDefaultSQL() {
   return _T("[DayLineInfo]");
 }
 
-void CSetDLExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
+void CSetDayLineExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -180,14 +180,14 @@ void CSetDLExtendInfo::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetDLBasicInfo 诊断
+// CSetDayLineBasicInfo 诊断
 
 #ifdef _DEBUG
-void CSetDLExtendInfo::AssertValid() const {
+void CSetDayLineExtendInfo::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetDLExtendInfo::Dump(CDumpContext& dc) const {
+void CSetDayLineExtendInfo::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

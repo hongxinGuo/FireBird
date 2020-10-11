@@ -8,7 +8,7 @@ using namespace testing;
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CMockDLContainerTest : public ::testing::Test
+  class CMockDayLineContainerTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
@@ -21,7 +21,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      pDL = make_shared<CMockDLContainer>();
+      pDayLine = make_shared<CMockDayLineContainer>();
     }
 
     virtual void TearDown(void) override {
@@ -29,58 +29,58 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CMockDLContainerPtr pDL;
+    CMockDayLineContainerPtr pDayLine;
   };
 
-  TEST_F(CMockDLContainerTest, TestCalculateDLRS) {
+  TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRS) {
     InSequence Seq;
-    EXPECT_CALL(*pDL, CalculateRS1(3))
+    EXPECT_CALL(*pDayLine, CalculateRS1(3))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRS1(5))
+    EXPECT_CALL(*pDayLine, CalculateRS1(5))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRS1(10))
+    EXPECT_CALL(*pDayLine, CalculateRS1(10))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRS1(30))
+    EXPECT_CALL(*pDayLine, CalculateRS1(30))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRS1(60))
+    EXPECT_CALL(*pDayLine, CalculateRS1(60))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRS1(120))
+    EXPECT_CALL(*pDayLine, CalculateRS1(120))
       .Times(1);
-    pDL->CalculateRS0();
+    pDayLine->CalculateRS0();
   }
 
-  TEST_F(CMockDLContainerTest, TestCalculateDLRSLogarithm) {
+  TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSLogarithm) {
     InSequence Seq;
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(3))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(3))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(5))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(5))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(10))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(10))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(30))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(30))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(60))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(60))
       .Times(1)
       .WillOnce(Return(true));
-    EXPECT_CALL(*pDL, CalculateRSLogarithm1(120))
+    EXPECT_CALL(*pDayLine, CalculateRSLogarithm1(120))
       .Times(1);
-    pDL->CalculateRSLogarithm0();
+    pDayLine->CalculateRSLogarithm0();
   }
 
-  TEST_F(CMockDLContainerTest, TestCalculateDLRSIndex) {
+  TEST_F(CMockDayLineContainerTest, TestCalculateDayLineRSIndex) {
     InSequence Seq;
-    EXPECT_CALL(*pDL, CalculateRSIndex1(3))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(3))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSIndex1(5))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(5))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSIndex1(10))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(10))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSIndex1(30))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(30))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSIndex1(60))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(60))
       .Times(1);
-    EXPECT_CALL(*pDL, CalculateRSIndex1(120))
+    EXPECT_CALL(*pDayLine, CalculateRSIndex1(120))
       .Times(1);
-    pDL->CalculateRSIndex0();
+    pDayLine->CalculateRSIndex0();
   }
 }

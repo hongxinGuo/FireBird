@@ -43,20 +43,20 @@ namespace StockAnalysisTest {
       gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
       gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
-      gl_pNeteaseDLWebInquiry = make_shared<CMockNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquirySecond = make_shared<CMockNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquiryThird = make_shared<CMockNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquiryFourth = make_shared<CMockNeteaseDLWebInquiry>();
+      gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySecond = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryThird = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFourth = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
 #else
       gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
       gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
-      gl_pNeteaseDLWebInquiry = make_shared<CNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquirySecond = make_shared<CNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquiryThird = make_shared<CNeteaseDLWebInquiry>();
-      gl_pNeteaseDLWebInquiryFourth = make_shared<CNeteaseDLWebInquiry>();
+      gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquirySecond = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryThird = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pNeteaseDayLineWebInquiryFourth = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
       gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 #endif
@@ -65,9 +65,9 @@ namespace StockAnalysisTest {
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         pStock = gl_pChinaStockMarket->GetStock(i);
-        pStock->SetDLEndDate(-1);
-        EXPECT_TRUE(pStock->IsDLNeedUpdate());
-        //if (!pStock->IsDLNeedUpdate()) pStock->SetDLNeedUpdate(true);
+        pStock->SetDayLineEndDate(-1);
+        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+        //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
       // 初始化活跃股票标识
       EXPECT_TRUE(gl_fTestMode);
@@ -82,9 +82,9 @@ namespace StockAnalysisTest {
         pStock->SetStockCode(setStockCode.m_StockCode);
         CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
         pStock->SetStockName(str);
-        pStock->SetDLStartDate(setStockCode.m_DLStartDate);
-        if (pStock->GetDLEndDate() < setStockCode.m_DLEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
-          pStock->SetDLEndDate(setStockCode.m_DLEndDate);
+        pStock->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
+        if (pStock->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
+          pStock->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
         }
         if (setStockCode.m_IPOStatus == __STOCK_IPOED__) {
           pStock->SetActive(true);
@@ -101,19 +101,19 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
       gl_pNeteaseRTWebInquiry = nullptr;
-      gl_pNeteaseDLWebInquiry = nullptr; // 网易日线历史数据
-      gl_pNeteaseDLWebInquirySecond = nullptr; // 网易日线历史数据
-      gl_pNeteaseDLWebInquiryThird = nullptr; // 网易日线历史数据
-      gl_pNeteaseDLWebInquiryFourth = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquirySecond = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiryThird = nullptr; // 网易日线历史数据
+      gl_pNeteaseDayLineWebInquiryFourth = nullptr; // 网易日线历史数据
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
 
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
       gl_vMarketPtr.clear();

@@ -23,7 +23,7 @@ public:
   bool SaveCurrentWeekLine(void);
 
   void UpdateData(vector<CWeekLinePtr>& vTempWeekLine);
-  bool UpdateData(CDLPtr pDL);
+  bool UpdateData(CDayLinePtr pDayLine);
 
   bool StoreData(CWeekLinePtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
   CWeekLinePtr GetData(long lIndex) { return dynamic_pointer_cast<CWeekLine>(m_vHistoryData.at(lIndex)); }

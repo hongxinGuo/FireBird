@@ -125,7 +125,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       RTData* pData = GetParam();
       pCurrentData = make_shared<CWebRTData>();
       pCurrentData->SetAmount(pData->CurrentData.GetAmount());
@@ -150,7 +150,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
     }
 
   public:

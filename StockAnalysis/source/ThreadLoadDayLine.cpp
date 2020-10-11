@@ -10,16 +10,16 @@
 // 从数据库中装入相应股票的日线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadLoadDL(CChinaStockPtr pStock) {
+UINT ThreadLoadDayLine(CChinaStockPtr pStock) {
   ASSERT(pStock != nullptr);
 
   gl_ThreadStatus.IncreaseRunningThread();
-  pStock->UnloadDL();
+  pStock->UnloadDayLine();
   // 装入日线数据
-  pStock->LoadDL(pStock->GetStockCode());
+  pStock->LoadDayLine(pStock->GetStockCode());
   // 计算各相对强度（以指数相对强度为默认值）
-  pStock->CalculateDLRSIndex();
-  pStock->SetDLLoaded(true);
+  pStock->CalculateDayLineRSIndex();
+  pStock->SetDayLineLoaded(true);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 16;

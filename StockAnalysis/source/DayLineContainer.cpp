@@ -2,20 +2,20 @@
 
 #include "DayLineContainer.h"
 
-CDLContainer::CDLContainer() {
+CDayLineContainer::CDayLineContainer() {
 }
 
-CDLContainer::~CDLContainer() {
+CDayLineContainer::~CDayLineContainer() {
 }
 
-bool CDLContainer::SaveData(CString strStockCode) {
-  SaveDLBasicInfo(strStockCode);
+bool CDayLineContainer::SaveData(CString strStockCode) {
+  SaveDayLineBasicInfo(strStockCode);
 
   return true;
 }
 
-bool CDLContainer::LoadData(CString strStockCode) {
-  LoadDL(strStockCode);
+bool CDayLineContainer::LoadData(CString strStockCode) {
+  LoadDayLine(strStockCode);
 
   return true;
 }
@@ -27,96 +27,96 @@ bool CDLContainer::LoadData(CString strStockCode) {
 // 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CDLContainer::SaveDLBasicInfo(CString strStockCode) {
-  CSetDLBasicInfo setDLBasicInfo;
+bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
+  CSetDayLineBasicInfo setDayLineBasicInfo;
   size_t lSize = 0;
-  vector<CDLPtr> vDL;
-  CDLPtr pDL = nullptr;
-  long lCurrentPos = 0, lSizeOfOldDL = 0;
+  vector<CDayLinePtr> vDayLine;
+  CDayLinePtr pDayLine = nullptr;
+  long lCurrentPos = 0, lSizeOfOldDayLine = 0;
   bool fNeedUpdate = false;
 
   ASSERT(GetDataSize() > 0);
 
   lSize = GetDataSize();
-  setDLBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDLBasicInfo.m_strFilter += strStockCode + _T("'");
-  setDLBasicInfo.m_strSort = _T("[Date]");
+  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineBasicInfo.m_strFilter += strStockCode + _T("'");
+  setDayLineBasicInfo.m_strSort = _T("[Date]");
 
-  setDLBasicInfo.Open();
-  while (!setDLBasicInfo.IsEOF()) {
-    pDL = make_shared<CDayLine>();
-    pDL->LoadBasicData(&setDLBasicInfo);
-    vDL.push_back(pDL);
+  setDayLineBasicInfo.Open();
+  while (!setDayLineBasicInfo.IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadBasicData(&setDayLineBasicInfo);
+    vDayLine.push_back(pDayLine);
     lCurrentPos++;
-    setDLBasicInfo.MoveNext();
+    setDayLineBasicInfo.MoveNext();
   }
-  setDLBasicInfo.Close();
+  setDayLineBasicInfo.Close();
 
-  lSizeOfOldDL = lCurrentPos;
+  lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
-  setDLBasicInfo.m_strFilter = _T("[ID] = 1");
-  setDLBasicInfo.Open();
-  setDLBasicInfo.m_pDatabase->BeginTrans();
+  setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
+  setDayLineBasicInfo.Open();
+  setDayLineBasicInfo.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    pDL = GetData(i);
-    while ((lCurrentPos < lSizeOfOldDL) && (vDL.at(lCurrentPos)->GetFormatedMarketDate() < pDL->GetFormatedMarketDate())) lCurrentPos++;
-    if (lCurrentPos < lSizeOfOldDL) {
-      if (vDL.at(lCurrentPos)->GetFormatedMarketDate() > pDL->GetFormatedMarketDate()) {
-        pDL->AppendData(&setDLBasicInfo);
+    pDayLine = GetData(i);
+    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+    if (lCurrentPos < lSizeOfOldDayLine) {
+      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
+        pDayLine->AppendData(&setDayLineBasicInfo);
         fNeedUpdate = true;
       }
     }
     else {
-      pDL->AppendData(&setDLBasicInfo);
+      pDayLine->AppendData(&setDayLineBasicInfo);
       fNeedUpdate = true;
     }
   }
-  setDLBasicInfo.m_pDatabase->CommitTrans();
-  setDLBasicInfo.Close();
+  setDayLineBasicInfo.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo.Close();
 
   return fNeedUpdate;
 }
 
-bool CDLContainer::LoadDL(CString strStockCode) {
-  CSetDLBasicInfo setDLBasicInfo;
-  CSetDLExtendInfo setDLExtendInfo;
+bool CDayLineContainer::LoadDayLine(CString strStockCode) {
+  CSetDayLineBasicInfo setDayLineBasicInfo;
+  CSetDayLineExtendInfo setDayLineExtendInfo;
 
   ASSERT(!m_fLoadDataFirst);
 
-  // 装入DL数据
-  setDLBasicInfo.m_strFilter = _T("[StockCode] = '");
-  setDLBasicInfo.m_strFilter += strStockCode;
-  setDLBasicInfo.m_strFilter += _T("'");
-  setDLBasicInfo.m_strSort = _T("[Date]");
-  setDLBasicInfo.Open();
-  LoadDLBasicInfo(&setDLBasicInfo);
-  setDLBasicInfo.Close();
+  // 装入DayLine数据
+  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineBasicInfo.m_strFilter += strStockCode;
+  setDayLineBasicInfo.m_strFilter += _T("'");
+  setDayLineBasicInfo.m_strSort = _T("[Date]");
+  setDayLineBasicInfo.Open();
+  LoadDayLineBasicInfo(&setDayLineBasicInfo);
+  setDayLineBasicInfo.Close();
 
-  // 装入DLInfo数据
-  setDLExtendInfo.m_strFilter = _T("[StockCode] = '");
-  setDLExtendInfo.m_strFilter += strStockCode;
-  setDLExtendInfo.m_strFilter += _T("'");
-  setDLExtendInfo.m_strSort = _T("[Date]");
-  setDLExtendInfo.Open();
-  LoadDLExtendInfo(&setDLExtendInfo);
-  setDLExtendInfo.Close();
+  // 装入DayLineInfo数据
+  setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineExtendInfo.m_strFilter += strStockCode;
+  setDayLineExtendInfo.m_strFilter += _T("'");
+  setDayLineExtendInfo.m_strSort = _T("[Date]");
+  setDayLineExtendInfo.Open();
+  LoadDayLineExtendInfo(&setDayLineExtendInfo);
+  setDayLineExtendInfo.Close();
 
   m_fDataLoaded = true;
   ASSERT(!m_fLoadDataFirst);
   return true;
 }
 
-bool CDLContainer::LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo) {
-  CDLPtr pDL;
+bool CDayLineContainer::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+  CDayLinePtr pDayLine;
 
   if (gl_fNormalMode) ASSERT(!m_fLoadDataFirst);
-  // 装入DL数据
+  // 装入DayLine数据
   Unload();
-  while (!psetDLBasicInfo->IsEOF()) {
-    pDL = make_shared<CDayLine>();
-    pDL->LoadBasicData(psetDLBasicInfo);
-    StoreData(pDL);
-    psetDLBasicInfo->MoveNext();
+  while (!psetDayLineBasicInfo->IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadBasicData(psetDayLineBasicInfo);
+    StoreData(pDayLine);
+    psetDayLineBasicInfo->MoveNext();
   }
   m_fLoadDataFirst = true;
   return true;
@@ -124,28 +124,28 @@ bool CDLContainer::LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo) {
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// 装载DLInfo表必须在装载DL表之后。
+// 装载DayLineInfo表必须在装载DayLine表之后。
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CDLContainer::LoadDLExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
-  CDLPtr pDL;
+bool CDayLineContainer::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+  CDayLinePtr pDayLine;
   int iPosition = 0;
 
   if (gl_fNormalMode) ASSERT(m_fLoadDataFirst);
 
-  while (!psetDLExtendInfo->IsEOF()) {
-    pDL = GetData(iPosition);
-    while ((pDL->GetFormatedMarketDate() < psetDLExtendInfo->m_Date)
+  while (!psetDayLineExtendInfo->IsEOF()) {
+    pDayLine = GetData(iPosition);
+    while ((pDayLine->GetFormatedMarketDate() < psetDayLineExtendInfo->m_Date)
            && (GetDataSize() > (iPosition + 1))) {
       iPosition++;
-      pDL = GetData(iPosition);
+      pDayLine = GetData(iPosition);
     }
-    if (pDL->GetFormatedMarketDate() == psetDLExtendInfo->m_Date) {
-      pDL->LoadExtendData(psetDLExtendInfo);
+    if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
+      pDayLine->LoadExtendData(psetDayLineExtendInfo);
     }
     if (GetDataSize() <= (iPosition + 1)) break;
-    psetDLExtendInfo->MoveNext();
+    psetDayLineExtendInfo->MoveNext();
   }
   m_fLoadDataFirst = false;
   return true;
@@ -156,50 +156,50 @@ bool CDLContainer::LoadDLExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CDLContainer::UpdateData(vector<CDLPtr>& vTempDL) {
-  CDLPtr pDL = nullptr;
+void CDayLineContainer::UpdateData(vector<CDayLinePtr>& vTempDayLine) {
+  CDayLinePtr pDayLine = nullptr;
   Unload(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = 0; i < vTempDL.size(); i++) {
-    pDL = vTempDL.at(i);
-    if (pDL->IsActive()) {
+  for (int i = 0; i < vTempDayLine.size(); i++) {
+    pDayLine = vTempDayLine.at(i);
+    if (pDayLine->IsActive()) {
       // 清除掉不再交易（停牌或退市后出现的）的股票日线
-      StoreData(pDL);
+      StoreData(pDayLine);
     }
   }
   SetDataLoaded(true);
 }
 
-bool CDLContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
+bool CDayLineContainer::BuildWeekLine(vector<CWeekLinePtr>& vWeekLine) {
   ASSERT(IsDataLoaded());
   ASSERT(GetDataSize() > 0);
-  long lCurrentDLPos = 0;
+  long lCurrentDayLinePos = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   vWeekLine.clear();
   do {
-    pWeekLine = CreateNewWeekLine(lCurrentDLPos);
+    pWeekLine = CreateNewWeekLine(lCurrentDayLinePos);
     vWeekLine.push_back(pWeekLine);
-  } while (lCurrentDLPos < GetDataSize());
+  } while (lCurrentDayLinePos < GetDataSize());
 
   return true;
 }
 
-CWeekLinePtr CDLContainer::CreateNewWeekLine(long& lCurrentDLPos) {
+CWeekLinePtr CDayLineContainer::CreateNewWeekLine(long& lCurrentDayLinePos) {
   ASSERT(GetDataSize() > 0);
-  ASSERT(lCurrentDLPos < GetDataSize());
+  ASSERT(lCurrentDayLinePos < GetDataSize());
 
-  long lNextMonday = GetNextMonday(GetData(lCurrentDLPos)->GetFormatedMarketDate());
+  long lNextMonday = GetNextMonday(GetData(lCurrentDayLinePos)->GetFormatedMarketDate());
   long lNewestDay = GetData(GetDataSize() - 1)->GetFormatedMarketDate();
   CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
   if (lNextMonday < lNewestDay) { // 中间数据
-    while (GetData(lCurrentDLPos)->GetFormatedMarketDate() < lNextMonday) {
-      pWeekLine->UpdateWeekLine(GetData(lCurrentDLPos++));
+    while (GetData(lCurrentDayLinePos)->GetFormatedMarketDate() < lNextMonday) {
+      pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
     }
   }
   else { // 最后一组数据
-    while (lCurrentDLPos <= (GetDataSize() - 1)) {
-      pWeekLine->UpdateWeekLine(GetData(lCurrentDLPos++));
+    while (lCurrentDayLinePos <= (GetDataSize() - 1)) {
+      pWeekLine->UpdateWeekLine(GetData(lCurrentDayLinePos++));
     }
   }
 

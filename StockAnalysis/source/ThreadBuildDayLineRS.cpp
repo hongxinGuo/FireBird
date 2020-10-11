@@ -2,7 +2,7 @@
 //
 // 计算从gl_lrelativeStrongEndDate至gl_lDay的相对强度线程。
 //
-// 此线程调用ThreadBuildDLRSOfDate线程，目前最多允许同时生成8个线程。
+// 此线程调用ThreadBuildDayLineRSOfDate线程，目前最多允许同时生成8个线程。
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -14,9 +14,9 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDate) {
+UINT ThreadBuildDayLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
   gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.SetCalculatingDLRS(true);
+  gl_ThreadStatus.SetCalculatingDayLineRS(true);
   long lToday = startCalculatingDate;
 
   const long year = lToday / 10000;
@@ -31,7 +31,7 @@ UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDate) {
     if (pMarket->IsWorkingDay(ctCurrent)) { // 星期六和星期日无交易，略过
       // 调用工作线程，执行实际计算工作。 此类工作线程的优先级为最低，这样可以保证只利用CPU的空闲时间。
       // 每次调用时生成新的局部变量，启动工作线程后执行分离动作（detach），其资源由系统在工作线程执行完后进行回收。
-      pMarket->RunningThreadBuildDLRSOfDate(lToday);
+      pMarket->RunningThreadBuildDayLineRSOfDate(lToday);
     }
     ctCurrent += oneDay;
     lToday = ctCurrent.GetYear() * 10000 + ctCurrent.GetMonth() * 100 + ctCurrent.GetDay();
@@ -58,7 +58,7 @@ UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDate) {
     gl_fExitingCalculatingRS = false;// 如果是计算过程中止了，则重置中止标识。
     gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
   }
-  gl_ThreadStatus.SetCalculatingDLRS(false); // 本线程顺利退出，处于非运行状态
+  gl_ThreadStatus.SetCalculatingDayLineRS(false); // 本线程顺利退出，处于非运行状态
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 11;
@@ -70,12 +70,12 @@ UINT ThreadBuildDLRS(CChinaMarket* pMarket, long startCalculatingDate) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildDLRSOfDate(CChinaMarket* pMarket, long lDate) {
+UINT ThreadBuildDayLineRSOfDate(CChinaMarket* pMarket, long lDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem && !gl_fExitingCalculatingRS) {
-    pMarket->BuildDLRSOfDate(lDate);  // 调用实际执行函数
+    pMarket->BuildDayLineRSOfDate(lDate);  // 调用实际执行函数
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();

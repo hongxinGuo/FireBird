@@ -13,22 +13,22 @@ CThreadStatus::CThreadStatus() {
   }
   m_NumberOfBackGroundWorkingThreads = 0;
 
-  m_CalculatingDLRS = false;
+  m_CalculatingDayLineRS = false;
   m_CalculatingWeekLineRS = false;
   m_RTDataNeedCalculate = false;
   m_CalculatingRTData = false;
   m_SavingTempData = false;
   m_CreatingWeekLine = false;
 
-  m_SavingDL = 0;
+  m_SavingDayLine = 0;
   m_NumberOfRunningThread = 0;
 }
 
 CThreadStatus::~CThreadStatus() {
 }
 
-bool CThreadStatus::IsSavingDL(void) {
-  if (m_SavingDL > 0) {
+bool CThreadStatus::IsSavingDayLine(void) {
+  if (m_SavingDayLine > 0) {
     return true;
   }
   else return false;

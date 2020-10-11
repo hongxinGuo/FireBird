@@ -54,12 +54,12 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockWeekLineContainerTest, TestUpdateData2) {
-    CDLPtr pDL = make_shared<CDayLine>();
-    pDL->SetStockCode(_T("sh600000"));
-    pDL->SetDate(20200101);
-    pDL->SetHigh(10000);
-    pDL->SetLow(100);
-    pDL->SetTransactionNumber(101);
+    CDayLinePtr pDayLine = make_shared<CDayLine>();
+    pDayLine->SetStockCode(_T("sh600000"));
+    pDayLine->SetDate(20200101);
+    pDayLine->SetHigh(10000);
+    pDayLine->SetLow(100);
+    pDayLine->SetTransactionNumber(101);
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
     pWeekLine->SetStockCode(_T("sh600000"));
     pWeekLine->SetHigh(1000);
@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
     CWeekLineContainer weekLineContainer;
 
     weekLineContainer.StoreData(pWeekLine);
-    weekLineContainer.UpdateData(pDL);
+    weekLineContainer.UpdateData(pDayLine);
     CWeekLinePtr pWeekLine2 = weekLineContainer.GetData(0);
     EXPECT_EQ(pWeekLine2->GetFormatedMarketDate(), GetCurrentMonday(20200101));
     EXPECT_EQ(pWeekLine2->GetHigh(), 10000);

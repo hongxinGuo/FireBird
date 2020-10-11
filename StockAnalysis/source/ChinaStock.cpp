@@ -22,9 +22,9 @@ CChinaStock::CChinaStock() : CObject() {
 }
 
 CChinaStock::~CChinaStock(void) {
-  if (m_pDLBuffer != nullptr) {
-    delete m_pDLBuffer;
-    m_pDLBuffer = nullptr;
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
   }
 }
 
@@ -33,8 +33,8 @@ void CChinaStock::Reset(void) {
   m_strStockCode = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
-  m_lDLStartDate = __CHINA_MARKET_BEGIN_DATE__; //
-  m_lDLEndDate = __CHINA_MARKET_BEGIN_DATE__; //
+  m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
+  m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
   m_lIPOStatus = __STOCK_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_nHand = 100;
 
@@ -132,16 +132,16 @@ void CChinaStock::Reset(void) {
 
   m_fActive = false;
 
-  m_fDLNeedUpdate = true;
-  m_fDLNeedProcess = false; // 从网络上读取了日线历史数据
-  m_fDLNeedSaving = false;
-  m_lDLBufferLength = 0;
-  m_pDLBuffer = nullptr;
+  m_fDayLineNeedUpdate = true;
+  m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
+  m_fDayLineNeedSaving = false;
+  m_lDayLineBufferLength = 0;
+  m_pDayLineBuffer = nullptr;
 
   m_fChoiced = false;
   m_fSaveToChoicedStockDB = false;
 
-  m_fDLDBUpdated = false;
+  m_fDayLineDBUpdated = false;
 
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_fNeedProcessRTData = true;
@@ -159,42 +159,42 @@ void CChinaStock::ClearRTDataDeque(void) {
   }
 }
 
-bool CChinaStock::HaveNewDLData(void) {
-  if (m_DL.GetDataSize() <= 0) return false;
-  if (m_DL.GetData(m_DL.GetDataSize() - 1)->GetFormatedMarketDate() > GetDLEndDate()) return true;
+bool CChinaStock::HaveNewDayLineData(void) {
+  if (m_DayLine.GetDataSize() <= 0) return false;
+  if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;
 }
 
-void CChinaStock::SetDLNeedSaving(bool fFlag) {
+void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
-    ASSERT(!m_fDLNeedSaving);
-    m_fDLNeedSaving = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDLNeedSaveNumber();
+    ASSERT(!m_fDayLineNeedSaving);
+    m_fDayLineNeedSaving = true;
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedSaveNumber();
   }
   else {
-    ASSERT(m_fDLNeedSaving);
-    m_fDLNeedSaving = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDLNeedSaveNumber();
+    ASSERT(m_fDayLineNeedSaving);
+    m_fDayLineNeedSaving = false;
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   }
 }
 
-bool CChinaStock::IsDLNeedSavingAndClearFlag(void) {
-  bool fNeedSaveing = m_fDLNeedSaving.exchange(false);
-  if (fNeedSaveing) gl_pChinaStockMarket->DecreaseNeteaseDLNeedSaveNumber();
+bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
+  bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
+  if (fNeedSaveing) gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
-bool CChinaStock::TransferNeteaseDLWebDataToBuffer(CNeteaseDLWebInquiry* pNeteaseWebDLData) {
+bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-  char* p = pNeteaseWebDLData->GetBufferAddr();
-  if (m_pDLBuffer != nullptr) delete m_pDLBuffer;
-  m_pDLBuffer = new char[pNeteaseWebDLData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
-  char* pbuffer = m_pDLBuffer;
-  for (int i = 0; i < pNeteaseWebDLData->GetByteReaded() + 1; i++) {
+  char* p = pNeteaseWebDayLineData->GetBufferAddr();
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
+  char* pbuffer = m_pDayLineBuffer;
+  for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
     *pbuffer++ = *p++;
   }
-  m_lDLBufferLength = pNeteaseWebDLData->GetByteReaded();
-  SetDLNeedProcess(true);
+  m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
+  SetDayLineNeedProcess(true);
 
   return true;
 }
@@ -205,31 +205,31 @@ bool CChinaStock::TransferNeteaseDLWebDataToBuffer(CNeteaseDLWebInquiry* pNeteas
 // 数据制式为： 日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::ProcessNeteaseDLData(void) {
-  char* pTestPos = m_pDLBuffer;
-  vector<CDLPtr> vTempDL;
-  shared_ptr<CDayLine> pDL;
+bool CChinaStock::ProcessNeteaseDayLineData(void) {
+  char* pTestPos = m_pDayLineBuffer;
+  vector<CDayLinePtr> vTempDayLine;
+  shared_ptr<CDayLine> pDayLine;
 
-  ASSERT(m_fDLNeedProcess);
-  ASSERT(m_fDLNeedSaving == false);
-  SetDLNeedProcess(false); // 无论是否正确处理，都不再使用
-  if (m_lDLBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
+  ASSERT(m_fDayLineNeedProcess);
+  ASSERT(m_fDayLineNeedSaving == false);
+  SetDayLineNeedProcess(false); // 无论是否正确处理，都不再使用
+  if (m_lDayLineBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;
   }
 
-  ASSERT(m_pDLBuffer[m_lDLBufferLength] == 0x000); // 最后字符为增加的0x000.
+  ASSERT(m_pDayLineBuffer[m_lDayLineBufferLength] == 0x000); // 最后字符为增加的0x000.
   ResetCurrentPos();
-  if (!SkipNeteaseDLInformationHeader()) return false;
+  if (!SkipNeteaseDayLineInformationHeader()) return false;
 
-  pTestPos = m_pDLBuffer + m_llCurrentPos;
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
-  if (m_llCurrentPos == m_lDLBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDLEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
+  if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+    if (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
-      if (gl_pChinaStockMarket->IsEarlyThen(GetDLEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
+      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
         SetIPOStatus(__STOCK_DELISTED__);   // 此股票代码已经退市。
       }
       //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
@@ -238,55 +238,55 @@ bool CChinaStock::ProcessNeteaseDLData(void) {
   }
 
   CString strTemp;
-  pTestPos = m_pDLBuffer + m_llCurrentPos;
+  pTestPos = m_pDayLineBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
-  while (m_llCurrentPos < m_lDLBufferLength) {
-    pDL = make_shared<CDayLine>();
-    if (!pDL->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
+  while (m_llCurrentPos < m_lDayLineBufferLength) {
+    pDayLine = make_shared<CDayLine>();
+    if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
       TRACE(_T("%s日线数据出错\n"), GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
-      vTempDL.clear();
+      vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
-    pTestPos = m_pDLBuffer + m_llCurrentPos;
+    pTestPos = m_pDayLineBuffer + m_llCurrentPos;
     ASSERT(*pTestPos == *m_pCurrentPos);
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetTodayActive(pDL->GetMarket(), pDL->GetStockCode(), pDL->GetStockName());
+      SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
       TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode().GetBuffer());
     }
-    vTempDL.push_back(pDL); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
+    vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
-  ReportDLDownLoaded();
-  if (gl_pChinaStockMarket->IsEarlyThen(vTempDL.at(0)->GetFormatedMarketDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+  ReportDayLineDownLoaded();
+  if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
     SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
 
-  m_DL.Unload(); // 清除已载入的日线数据（如果有的话）
+  m_DayLine.Unload(); // 清除已载入的日线数据（如果有的话）
   // 将日线数据以时间为正序存入
-  for (int i = vTempDL.size() - 1; i >= 0; i--) {
-    pDL = vTempDL.at(i);
-    if (pDL->IsActive()) {
+  for (int i = vTempDayLine.size() - 1; i >= 0; i--) {
+    pDayLine = vTempDayLine.at(i);
+    if (pDayLine->IsActive()) {
       // 清除掉不再交易（停牌或退市）的股票日线
-      m_DL.StoreData(pDL);
+      m_DayLine.StoreData(pDayLine);
     }
   }
-  vTempDL.clear();
-  if (m_pDLBuffer != nullptr) {
-    delete m_pDLBuffer;
-    m_pDLBuffer = nullptr;
+  vTempDayLine.clear();
+  if (m_pDayLineBuffer != nullptr) {
+    delete m_pDayLineBuffer;
+    m_pDayLineBuffer = nullptr;
   }
-  SetDLLoaded(true);
-  SetDLNeedSaving(true); // 设置存储日线标识
+  SetDayLineLoaded(true);
+  SetDayLineNeedSaving(true); // 设置存储日线标识
 
   return true;
 }
 
-bool CChinaStock::SkipNeteaseDLInformationHeader() {
-  ASSERT(m_pCurrentPos == m_pDLBuffer);
+bool CChinaStock::SkipNeteaseDayLineInformationHeader() {
+  ASSERT(m_pCurrentPos == m_pDayLineBuffer);
   ASSERT(m_llCurrentPos == 0);
   while (*m_pCurrentPos != 0X0d) {
     if ((*m_pCurrentPos == 0x0a) || (*m_pCurrentPos == 0x000)) {
@@ -304,7 +304,7 @@ bool CChinaStock::SkipNeteaseDLInformationHeader() {
 
 void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
   SetActive(true);
-  SetDLLoaded(false);
+  SetDayLineLoaded(false);
   SetMarket(wMarket);
   SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
   if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
@@ -316,117 +316,117 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
 // 更新日线容器。
 //
 /////////////////////////////////////////////////////////////////////////////////////
-void CChinaStock::UpdateDL(vector<CDLPtr>& vTempDL) {
-  m_DL.UpdateData(vTempDL);
+void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
+  m_DayLine.UpdateData(vTempDayLine);
 }
 
-void CChinaStock::ReportDLDownLoaded(void) {
+void CChinaStock::ReportDayLineDownLoaded(void) {
   CString strTemp = GetStockCode();
   strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushDLInfoMessage(strTemp);
+  gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
-void CChinaStock::SaveTodayBasicInfo(CSetDLBasicInfo* psetDLBasicInfo) {
-  ASSERT(psetDLBasicInfo->IsOpen());
-  psetDLBasicInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDLBasicInfo->m_Market = m_wMarket;
-  psetDLBasicInfo->m_StockCode = m_strStockCode;
-  psetDLBasicInfo->m_StockName = m_strStockName;
-  psetDLBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
-  psetDLBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
-  psetDLBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);
-  psetDLBasicInfo->m_Low = ConvertValueToString(m_lLow, 1000);
-  psetDLBasicInfo->m_Close = ConvertValueToString(m_lNew, 1000);
-  psetDLBasicInfo->m_Volume = ConvertValueToString(m_llVolume);
-  psetDLBasicInfo->m_Amount = ConvertValueToString(m_llAmount);
-  psetDLBasicInfo->m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
-  psetDLBasicInfo->m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-  if (m_llTotalValue != 0) psetDLBasicInfo->m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
-  else psetDLBasicInfo->m_ChangeHandRate = ConvertValueToString(0);
-  psetDLBasicInfo->m_TotalValue = ConvertValueToString(m_llTotalValue);
-  psetDLBasicInfo->m_CurrentValue = ConvertValueToString(m_llCurrentValue);
+void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+  ASSERT(psetDayLineBasicInfo->IsOpen());
+  psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
+  psetDayLineBasicInfo->m_Market = m_wMarket;
+  psetDayLineBasicInfo->m_StockCode = m_strStockCode;
+  psetDayLineBasicInfo->m_StockName = m_strStockName;
+  psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
+  psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
+  psetDayLineBasicInfo->m_High = ConvertValueToString(m_lHigh, 1000);
+  psetDayLineBasicInfo->m_Low = ConvertValueToString(m_lLow, 1000);
+  psetDayLineBasicInfo->m_Close = ConvertValueToString(m_lNew, 1000);
+  psetDayLineBasicInfo->m_Volume = ConvertValueToString(m_llVolume);
+  psetDayLineBasicInfo->m_Amount = ConvertValueToString(m_llAmount);
+  psetDayLineBasicInfo->m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
+  psetDayLineBasicInfo->m_UpDownRate = ConvertValueToString(m_dUpDownRate);
+  if (m_llTotalValue != 0) psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
+  else psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(0);
+  psetDayLineBasicInfo->m_TotalValue = ConvertValueToString(m_llTotalValue);
+  psetDayLineBasicInfo->m_CurrentValue = ConvertValueToString(m_llCurrentValue);
 }
 
-void CChinaStock::SaveTempInfo(CSetDLToday& setDLToday) {
-  ASSERT(setDLToday.IsOpen());
-  setDLToday.m_Date = FormatToDate(m_TransactionTime);
-  setDLToday.m_Market = m_wMarket;
-  setDLToday.m_StockCode = m_strStockCode;
-  setDLToday.m_StockName = m_strStockName;
-  setDLToday.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
-  setDLToday.m_Open = ConvertValueToString(m_lOpen, 1000);
-  setDLToday.m_High = ConvertValueToString(m_lHigh, 1000);
-  setDLToday.m_Low = ConvertValueToString(m_lLow, 1000);
-  setDLToday.m_Close = ConvertValueToString(m_lNew, 1000);
-  setDLToday.m_Volume = ConvertValueToString(m_llVolume);
-  setDLToday.m_Amount = ConvertValueToString(m_llAmount);
-  setDLToday.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
-  setDLToday.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-  setDLToday.m_TotalValue = ConvertValueToString(m_llTotalValue);
-  setDLToday.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
-  setDLToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  setDLToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  setDLToday.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  setDLToday.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  setDLToday.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
-  setDLToday.m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
-  setDLToday.m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
-  setDLToday.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  setDLToday.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  setDLToday.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  setDLToday.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  setDLToday.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  setDLToday.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  setDLToday.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  setDLToday.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  setDLToday.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  setDLToday.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  setDLToday.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  setDLToday.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  setDLToday.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
-  setDLToday.m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
-  setDLToday.m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
-  setDLToday.m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
-  setDLToday.m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
-  setDLToday.m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
-  setDLToday.m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
-  setDLToday.m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
-  setDLToday.m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
-  setDLToday.m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
-  setDLToday.m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
-  setDLToday.m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
-  setDLToday.m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
-  setDLToday.m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
-  setDLToday.m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
-  setDLToday.m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
-  setDLToday.m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
-  setDLToday.m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
-  setDLToday.m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
-  setDLToday.m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
-  setDLToday.m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
-  setDLToday.m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
-  setDLToday.m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
-  setDLToday.m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
-  setDLToday.m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
-  setDLToday.m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
-  setDLToday.m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
-  setDLToday.m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
-  setDLToday.m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
+void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
+  ASSERT(setDayLineToday.IsOpen());
+  setDayLineToday.m_Date = FormatToDate(m_TransactionTime);
+  setDayLineToday.m_Market = m_wMarket;
+  setDayLineToday.m_StockCode = m_strStockCode;
+  setDayLineToday.m_StockName = m_strStockName;
+  setDayLineToday.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
+  setDayLineToday.m_Open = ConvertValueToString(m_lOpen, 1000);
+  setDayLineToday.m_High = ConvertValueToString(m_lHigh, 1000);
+  setDayLineToday.m_Low = ConvertValueToString(m_lLow, 1000);
+  setDayLineToday.m_Close = ConvertValueToString(m_lNew, 1000);
+  setDayLineToday.m_Volume = ConvertValueToString(m_llVolume);
+  setDayLineToday.m_Amount = ConvertValueToString(m_llAmount);
+  setDayLineToday.m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
+  setDayLineToday.m_UpDownRate = ConvertValueToString(m_dUpDownRate);
+  setDayLineToday.m_TotalValue = ConvertValueToString(m_llTotalValue);
+  setDayLineToday.m_CurrentValue = ConvertValueToString(m_llCurrentValue);
+  setDayLineToday.m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
+  setDayLineToday.m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
+  setDayLineToday.m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
+  setDayLineToday.m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
+  setDayLineToday.m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
+  setDayLineToday.m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
+  setDayLineToday.m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
+  setDayLineToday.m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
+  setDayLineToday.m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
+  setDayLineToday.m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
+  setDayLineToday.m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
+  setDayLineToday.m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
+  setDayLineToday.m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
+  setDayLineToday.m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
+  setDayLineToday.m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
+  setDayLineToday.m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
+  setDayLineToday.m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
+  setDayLineToday.m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
+  setDayLineToday.m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
+  setDayLineToday.m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
+  setDayLineToday.m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
+  setDayLineToday.m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
+  setDayLineToday.m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
+  setDayLineToday.m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
+  setDayLineToday.m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
+  setDayLineToday.m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
+  setDayLineToday.m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
+  setDayLineToday.m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
+  setDayLineToday.m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
+  setDayLineToday.m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
+  setDayLineToday.m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
+  setDayLineToday.m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
+  setDayLineToday.m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
+  setDayLineToday.m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
+  setDayLineToday.m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
+  setDayLineToday.m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
+  setDayLineToday.m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
+  setDayLineToday.m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
 
-  setDLToday.m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
-  setDLToday.m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
-  setDLToday.m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
-  setDLToday.m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
-  setDLToday.m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
-  setDLToday.m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
-  setDLToday.m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
-  setDLToday.m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
-  setDLToday.m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
-  setDLToday.m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
-  setDLToday.m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
-  setDLToday.m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
-  setDLToday.m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
-  setDLToday.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
+  setDayLineToday.m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
+  setDayLineToday.m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
+  setDayLineToday.m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
+  setDayLineToday.m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
+  setDayLineToday.m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
+  setDayLineToday.m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
+  setDayLineToday.m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
+  setDayLineToday.m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
+  setDayLineToday.m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
+  setDayLineToday.m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
+  setDayLineToday.m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
+  setDayLineToday.m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
+  setDayLineToday.m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
+  setDayLineToday.m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
 void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
@@ -461,97 +461,97 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 // 当存在旧日线历史数据时，本函数只是更新。
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::SaveDLBasicInfo(void) {
-  return m_DL.SaveDLBasicInfo(GetStockCode());
+bool CChinaStock::SaveDayLineBasicInfo(void) {
+  return m_DayLine.SaveDayLineBasicInfo(GetStockCode());
 }
 
-void CChinaStock::UpdateDLStartEndDate(void) {
-  if (m_DL.GetDataSize() == 0) {
-    SetDLStartDate(__CHINA_MARKET_BEGIN_DATE__);
-    SetDLEndDate(__CHINA_MARKET_BEGIN_DATE__);
+void CChinaStock::UpdateDayLineStartEndDate(void) {
+  if (m_DayLine.GetDataSize() == 0) {
+    SetDayLineStartDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
-    if (m_DL.GetData(0)->GetFormatedMarketDate() < GetDLStartDate()) {
-      SetDLStartDate(m_DL.GetData(0)->GetFormatedMarketDate());
-      SetDLDBUpdated(true);
+    if (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
+      SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
+      SetDayLineDBUpdated(true);
     }
-    if (m_DL.GetData(m_DL.GetDataSize() - 1)->GetFormatedMarketDate() > GetDLEndDate()) {
-      SetDLEndDate(m_DL.GetData(m_DL.GetDataSize() - 1)->GetFormatedMarketDate());
-      SetDLDBUpdated(true);
+    if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
+      SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate());
+      SetDayLineDBUpdated(true);
     }
   }
 }
 
-void CChinaStock::SaveTodayExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
-  ASSERT(psetDLExtendInfo->IsOpen());
-  psetDLExtendInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDLExtendInfo->m_Market = m_wMarket;
-  psetDLExtendInfo->m_StockCode = m_strStockCode;
-  psetDLExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
-  psetDLExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
-  psetDLExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
-  psetDLExtendInfo->m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
-  psetDLExtendInfo->m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
+void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+  ASSERT(psetDayLineExtendInfo->IsOpen());
+  psetDayLineExtendInfo->m_Date = FormatToDate(m_TransactionTime);
+  psetDayLineExtendInfo->m_Market = m_wMarket;
+  psetDayLineExtendInfo->m_StockCode = m_strStockCode;
+  psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
+  psetDayLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
+  psetDayLineExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
+  psetDayLineExtendInfo->m_TransactionNumberBelow200000 = ConvertValueToString(m_lTransactionNumberBelow200000);
+  psetDayLineExtendInfo->m_TransactionNumberAbove200000 = ConvertValueToString(m_lTransactionNumberAbove200000);
 
-  psetDLExtendInfo->m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
-  psetDLExtendInfo->m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
-  psetDLExtendInfo->m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
-  psetDLExtendInfo->m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
-  psetDLExtendInfo->m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
-  psetDLExtendInfo->m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
-  psetDLExtendInfo->m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
-  psetDLExtendInfo->m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
-  psetDLExtendInfo->m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
-  psetDLExtendInfo->m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
-  psetDLExtendInfo->m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
-  psetDLExtendInfo->m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
-  psetDLExtendInfo->m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
-  psetDLExtendInfo->m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
-  psetDLExtendInfo->m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolume = ConvertValueToString(m_lCanceledBuyVolume);
+  psetDayLineExtendInfo->m_CanceledSellVolume = ConvertValueToString(m_lCanceledSellVolume);
+  psetDayLineExtendInfo->m_AttackBuyVolume = ConvertValueToString(m_lAttackBuyVolume);
+  psetDayLineExtendInfo->m_AttackSellVolume = ConvertValueToString(m_lAttackSellVolume);
+  psetDayLineExtendInfo->m_StrongBuyVolume = ConvertValueToString(m_lStrongBuyVolume);
+  psetDayLineExtendInfo->m_StrongSellVolume = ConvertValueToString(m_lStrongSellVolume);
+  psetDayLineExtendInfo->m_UnknownVolume = ConvertValueToString(m_lUnknownVolume);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolume = ConvertValueToString(m_lOrdinaryBuyVolume);
+  psetDayLineExtendInfo->m_OrdinarySellVolume = ConvertValueToString(m_lOrdinarySellVolume);
+  psetDayLineExtendInfo->m_AttackBuyBelow50000 = ConvertValueToString(m_lAttackBuyBelow50000);
+  psetDayLineExtendInfo->m_AttackBuyBelow200000 = ConvertValueToString(m_lAttackBuyBelow200000);
+  psetDayLineExtendInfo->m_AttackBuyAbove200000 = ConvertValueToString(m_lAttackBuyAbove200000);
+  psetDayLineExtendInfo->m_AttackSellBelow50000 = ConvertValueToString(m_lAttackSellBelow50000);
+  psetDayLineExtendInfo->m_AttackSellBelow200000 = ConvertValueToString(m_lAttackSellBelow200000);
+  psetDayLineExtendInfo->m_AttackSellAbove200000 = ConvertValueToString(m_lAttackSellAbove200000);
 
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
-  psetDLExtendInfo->m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
-  psetDLExtendInfo->m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
-  psetDLExtendInfo->m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
-  psetDLExtendInfo->m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
-  psetDLExtendInfo->m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
-  psetDLExtendInfo->m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow5000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow5000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow10000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow10000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow20000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow20000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow50000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow50000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow100000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow100000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeBelow200000 = ConvertValueToString(m_lOrdinaryBuyVolumeBelow200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyVolumeAbove200000 = ConvertValueToString(m_lOrdinaryBuyVolumeAbove200000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow5000 = ConvertValueToString(m_lOrdinarySellVolumeBelow5000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow10000 = ConvertValueToString(m_lOrdinarySellVolumeBelow10000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow20000 = ConvertValueToString(m_lOrdinarySellVolumeBelow20000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow50000 = ConvertValueToString(m_lOrdinarySellVolumeBelow50000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow100000 = ConvertValueToString(m_lOrdinarySellVolumeBelow100000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeBelow200000 = ConvertValueToString(m_lOrdinarySellVolumeBelow200000);
+  psetDayLineExtendInfo->m_OrdinarySellVolumeAbove200000 = ConvertValueToString(m_lOrdinarySellVolumeAbove200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow5000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow5000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow10000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow10000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow20000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow20000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow50000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow50000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow100000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow100000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberBelow200000 = ConvertValueToString(m_lOrdinaryBuyNumberBelow200000);
+  psetDayLineExtendInfo->m_OrdinaryBuyNumberAbove200000 = ConvertValueToString(m_lOrdinaryBuyNumberAbove200000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow5000 = ConvertValueToString(m_lOrdinarySellNumberBelow5000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow10000 = ConvertValueToString(m_lOrdinarySellNumberBelow10000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow20000 = ConvertValueToString(m_lOrdinarySellNumberBelow20000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow50000 = ConvertValueToString(m_lOrdinarySellNumberBelow50000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow100000 = ConvertValueToString(m_lOrdinarySellNumberBelow100000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberBelow200000 = ConvertValueToString(m_lOrdinarySellNumberBelow200000);
+  psetDayLineExtendInfo->m_OrdinarySellNumberAbove200000 = ConvertValueToString(m_lOrdinarySellNumberAbove200000);
 
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
-  psetDLExtendInfo->m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
-  psetDLExtendInfo->m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
-  psetDLExtendInfo->m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
-  psetDLExtendInfo->m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow5000 = ConvertValueToString(m_lCanceledBuyVolumeBelow5000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow10000 = ConvertValueToString(m_lCanceledBuyVolumeBelow10000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow20000 = ConvertValueToString(m_lCanceledBuyVolumeBelow20000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow50000 = ConvertValueToString(m_lCanceledBuyVolumeBelow50000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow100000 = ConvertValueToString(m_lCanceledBuyVolumeBelow100000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeBelow200000 = ConvertValueToString(m_lCanceledBuyVolumeBelow200000);
+  psetDayLineExtendInfo->m_CanceledBuyVolumeAbove200000 = ConvertValueToString(m_lCanceledBuyVolumeAbove200000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow5000 = ConvertValueToString(m_lCanceledSellVolumeBelow5000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow10000 = ConvertValueToString(m_lCanceledSellVolumeBelow10000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow20000 = ConvertValueToString(m_lCanceledSellVolumeBelow20000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow50000 = ConvertValueToString(m_lCanceledSellVolumeBelow50000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow100000 = ConvertValueToString(m_lCanceledSellVolumeBelow100000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeBelow200000 = ConvertValueToString(m_lCanceledSellVolumeBelow200000);
+  psetDayLineExtendInfo->m_CanceledSellVolumeAbove200000 = ConvertValueToString(m_lCanceledSellVolumeAbove200000);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -560,104 +560,104 @@ void CChinaStock::SaveTodayExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
 // 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
-void CChinaStock::LoadTempInfo(CSetDLToday& setDLToday) {
-  m_lUnknownVolume = atoll(setDLToday.m_UnknownVolume);
+void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
+  m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume);
 
-  m_lTransactionNumber = atol(setDLToday.m_TransactionNumber);
-  m_lTransactionNumberBelow5000 = atol(setDLToday.m_TransactionNumberBelow5000);
-  m_lTransactionNumberBelow50000 = atol(setDLToday.m_TransactionNumberBelow50000);
-  m_lTransactionNumberBelow200000 = atol(setDLToday.m_TransactionNumberBelow200000);
-  m_lTransactionNumberAbove200000 = atol(setDLToday.m_TransactionNumberAbove200000);
-  m_lCanceledBuyVolume = atoll(setDLToday.m_CanceledBuyVolume);
-  m_lCanceledSellVolume = atoll(setDLToday.m_CanceledSellVolume);
-  m_lAttackBuyVolume = atoll(setDLToday.m_AttackBuyVolume);
-  m_lAttackSellVolume = atoll(setDLToday.m_AttackSellVolume);
-  m_lStrongBuyVolume = atoll(setDLToday.m_StrongBuyVolume);
-  m_lStrongSellVolume = atoll(setDLToday.m_StrongSellVolume);
-  m_lOrdinaryBuyVolume = atoll(setDLToday.m_OrdinaryBuyVolume);
-  m_lOrdinarySellVolume = atoll(setDLToday.m_OrdinarySellVolume);
-  m_lAttackBuyBelow50000 = atoll(setDLToday.m_AttackBuyBelow50000);
-  m_lAttackBuyBelow200000 = atoll(setDLToday.m_AttackBuyBelow200000);
-  m_lAttackBuyAbove200000 = atoll(setDLToday.m_AttackBuyAbove200000);
-  m_lAttackSellBelow50000 = atoll(setDLToday.m_AttackSellBelow50000);
-  m_lAttackSellBelow200000 = atoll(setDLToday.m_AttackSellBelow200000);
-  m_lAttackSellAbove200000 = atoll(setDLToday.m_AttackSellAbove200000);
-  m_llVolume = atoll(setDLToday.m_Volume);
-  m_llLastSavedVolume = atoll(setDLToday.m_Volume);
+  m_lTransactionNumber = atol(setDayLineToday.m_TransactionNumber);
+  m_lTransactionNumberBelow5000 = atol(setDayLineToday.m_TransactionNumberBelow5000);
+  m_lTransactionNumberBelow50000 = atol(setDayLineToday.m_TransactionNumberBelow50000);
+  m_lTransactionNumberBelow200000 = atol(setDayLineToday.m_TransactionNumberBelow200000);
+  m_lTransactionNumberAbove200000 = atol(setDayLineToday.m_TransactionNumberAbove200000);
+  m_lCanceledBuyVolume = atoll(setDayLineToday.m_CanceledBuyVolume);
+  m_lCanceledSellVolume = atoll(setDayLineToday.m_CanceledSellVolume);
+  m_lAttackBuyVolume = atoll(setDayLineToday.m_AttackBuyVolume);
+  m_lAttackSellVolume = atoll(setDayLineToday.m_AttackSellVolume);
+  m_lStrongBuyVolume = atoll(setDayLineToday.m_StrongBuyVolume);
+  m_lStrongSellVolume = atoll(setDayLineToday.m_StrongSellVolume);
+  m_lOrdinaryBuyVolume = atoll(setDayLineToday.m_OrdinaryBuyVolume);
+  m_lOrdinarySellVolume = atoll(setDayLineToday.m_OrdinarySellVolume);
+  m_lAttackBuyBelow50000 = atoll(setDayLineToday.m_AttackBuyBelow50000);
+  m_lAttackBuyBelow200000 = atoll(setDayLineToday.m_AttackBuyBelow200000);
+  m_lAttackBuyAbove200000 = atoll(setDayLineToday.m_AttackBuyAbove200000);
+  m_lAttackSellBelow50000 = atoll(setDayLineToday.m_AttackSellBelow50000);
+  m_lAttackSellBelow200000 = atoll(setDayLineToday.m_AttackSellBelow200000);
+  m_lAttackSellAbove200000 = atoll(setDayLineToday.m_AttackSellAbove200000);
+  m_llVolume = atoll(setDayLineToday.m_Volume);
+  m_llLastSavedVolume = atoll(setDayLineToday.m_Volume);
 
-  m_lOrdinaryBuyVolumeBelow5000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow5000);
-  m_lOrdinaryBuyVolumeBelow10000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow10000);
-  m_lOrdinaryBuyVolumeBelow20000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow20000);
-  m_lOrdinaryBuyVolumeBelow50000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow50000);
-  m_lOrdinaryBuyVolumeBelow100000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow100000);
-  m_lOrdinaryBuyVolumeBelow200000 = atoll(setDLToday.m_OrdinaryBuyVolumeBelow200000);
-  m_lOrdinaryBuyVolumeAbove200000 = atoll(setDLToday.m_OrdinaryBuyVolumeAbove200000);
-  m_lOrdinarySellVolumeBelow5000 = atoll(setDLToday.m_OrdinarySellVolumeBelow5000);
-  m_lOrdinarySellVolumeBelow10000 = atoll(setDLToday.m_OrdinarySellVolumeBelow10000);
-  m_lOrdinarySellVolumeBelow20000 = atoll(setDLToday.m_OrdinarySellVolumeBelow20000);
-  m_lOrdinarySellVolumeBelow50000 = atoll(setDLToday.m_OrdinarySellVolumeBelow50000);
-  m_lOrdinarySellVolumeBelow100000 = atoll(setDLToday.m_OrdinarySellVolumeBelow100000);
-  m_lOrdinarySellVolumeBelow200000 = atoll(setDLToday.m_OrdinarySellVolumeBelow200000);
-  m_lOrdinarySellVolumeAbove200000 = atoll(setDLToday.m_OrdinarySellVolumeAbove200000);
-  m_lOrdinaryBuyNumberBelow5000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow5000);
-  m_lOrdinaryBuyNumberBelow10000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow10000);
-  m_lOrdinaryBuyNumberBelow20000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow20000);
-  m_lOrdinaryBuyNumberBelow50000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow50000);
-  m_lOrdinaryBuyNumberBelow100000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow100000);
-  m_lOrdinaryBuyNumberBelow200000 = atoll(setDLToday.m_OrdinaryBuyNumberBelow200000);
-  m_lOrdinaryBuyNumberAbove200000 = atoll(setDLToday.m_OrdinaryBuyNumberAbove200000);
-  m_lOrdinarySellNumberBelow5000 = atoll(setDLToday.m_OrdinarySellNumberBelow5000);
-  m_lOrdinarySellNumberBelow10000 = atoll(setDLToday.m_OrdinarySellNumberBelow10000);
-  m_lOrdinarySellNumberBelow20000 = atoll(setDLToday.m_OrdinarySellNumberBelow20000);
-  m_lOrdinarySellNumberBelow50000 = atoll(setDLToday.m_OrdinarySellNumberBelow50000);
-  m_lOrdinarySellNumberBelow100000 = atoll(setDLToday.m_OrdinarySellNumberBelow100000);
-  m_lOrdinarySellNumberBelow200000 = atoll(setDLToday.m_OrdinarySellNumberBelow200000);
-  m_lOrdinarySellNumberAbove200000 = atoll(setDLToday.m_OrdinarySellNumberAbove200000);
+  m_lOrdinaryBuyVolumeBelow5000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow5000);
+  m_lOrdinaryBuyVolumeBelow10000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow10000);
+  m_lOrdinaryBuyVolumeBelow20000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow20000);
+  m_lOrdinaryBuyVolumeBelow50000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow50000);
+  m_lOrdinaryBuyVolumeBelow100000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow100000);
+  m_lOrdinaryBuyVolumeBelow200000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow200000);
+  m_lOrdinaryBuyVolumeAbove200000 = atoll(setDayLineToday.m_OrdinaryBuyVolumeAbove200000);
+  m_lOrdinarySellVolumeBelow5000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow5000);
+  m_lOrdinarySellVolumeBelow10000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow10000);
+  m_lOrdinarySellVolumeBelow20000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow20000);
+  m_lOrdinarySellVolumeBelow50000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow50000);
+  m_lOrdinarySellVolumeBelow100000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow100000);
+  m_lOrdinarySellVolumeBelow200000 = atoll(setDayLineToday.m_OrdinarySellVolumeBelow200000);
+  m_lOrdinarySellVolumeAbove200000 = atoll(setDayLineToday.m_OrdinarySellVolumeAbove200000);
+  m_lOrdinaryBuyNumberBelow5000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow5000);
+  m_lOrdinaryBuyNumberBelow10000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow10000);
+  m_lOrdinaryBuyNumberBelow20000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow20000);
+  m_lOrdinaryBuyNumberBelow50000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow50000);
+  m_lOrdinaryBuyNumberBelow100000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow100000);
+  m_lOrdinaryBuyNumberBelow200000 = atoll(setDayLineToday.m_OrdinaryBuyNumberBelow200000);
+  m_lOrdinaryBuyNumberAbove200000 = atoll(setDayLineToday.m_OrdinaryBuyNumberAbove200000);
+  m_lOrdinarySellNumberBelow5000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow5000);
+  m_lOrdinarySellNumberBelow10000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow10000);
+  m_lOrdinarySellNumberBelow20000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow20000);
+  m_lOrdinarySellNumberBelow50000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow50000);
+  m_lOrdinarySellNumberBelow100000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow100000);
+  m_lOrdinarySellNumberBelow200000 = atoll(setDayLineToday.m_OrdinarySellNumberBelow200000);
+  m_lOrdinarySellNumberAbove200000 = atoll(setDayLineToday.m_OrdinarySellNumberAbove200000);
 
-  m_lCanceledBuyVolumeBelow5000 = atoll(setDLToday.m_CanceledBuyVolumeBelow5000);
-  m_lCanceledBuyVolumeBelow10000 = atoll(setDLToday.m_CanceledBuyVolumeBelow10000);
-  m_lCanceledBuyVolumeBelow20000 = atoll(setDLToday.m_CanceledBuyVolumeBelow20000);
-  m_lCanceledBuyVolumeBelow50000 = atoll(setDLToday.m_CanceledBuyVolumeBelow50000);
-  m_lCanceledBuyVolumeBelow100000 = atoll(setDLToday.m_CanceledBuyVolumeBelow100000);
-  m_lCanceledBuyVolumeBelow200000 = atoll(setDLToday.m_CanceledBuyVolumeBelow200000);
-  m_lCanceledBuyVolumeAbove200000 = atoll(setDLToday.m_CanceledBuyVolumeAbove200000);
-  m_lCanceledSellVolumeBelow5000 = atoll(setDLToday.m_CanceledSellVolumeBelow5000);
-  m_lCanceledSellVolumeBelow10000 = atoll(setDLToday.m_CanceledSellVolumeBelow10000);
-  m_lCanceledSellVolumeBelow20000 = atoll(setDLToday.m_CanceledSellVolumeBelow20000);
-  m_lCanceledSellVolumeBelow50000 = atoll(setDLToday.m_CanceledSellVolumeBelow50000);
-  m_lCanceledSellVolumeBelow100000 = atoll(setDLToday.m_CanceledSellVolumeBelow100000);
-  m_lCanceledSellVolumeBelow200000 = atoll(setDLToday.m_CanceledSellVolumeBelow200000);
-  m_lCanceledSellVolumeAbove200000 = atoll(setDLToday.m_CanceledSellVolumeAbove200000);
+  m_lCanceledBuyVolumeBelow5000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow5000);
+  m_lCanceledBuyVolumeBelow10000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow10000);
+  m_lCanceledBuyVolumeBelow20000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow20000);
+  m_lCanceledBuyVolumeBelow50000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow50000);
+  m_lCanceledBuyVolumeBelow100000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow100000);
+  m_lCanceledBuyVolumeBelow200000 = atoll(setDayLineToday.m_CanceledBuyVolumeBelow200000);
+  m_lCanceledBuyVolumeAbove200000 = atoll(setDayLineToday.m_CanceledBuyVolumeAbove200000);
+  m_lCanceledSellVolumeBelow5000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow5000);
+  m_lCanceledSellVolumeBelow10000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow10000);
+  m_lCanceledSellVolumeBelow20000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow20000);
+  m_lCanceledSellVolumeBelow50000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow50000);
+  m_lCanceledSellVolumeBelow100000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow100000);
+  m_lCanceledSellVolumeBelow200000 = atoll(setDayLineToday.m_CanceledSellVolumeBelow200000);
+  m_lCanceledSellVolumeAbove200000 = atoll(setDayLineToday.m_CanceledSellVolumeAbove200000);
 }
 
-bool CChinaStock::LoadDL(CString strStockCode) {
-  return m_DL.LoadData(strStockCode);
+bool CChinaStock::LoadDayLine(CString strStockCode) {
+  return m_DayLine.LoadData(strStockCode);
 }
 
-bool CChinaStock::LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo) {
-  return m_DL.LoadDLBasicInfo(psetDLBasicInfo);
+bool CChinaStock::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+  return m_DayLine.LoadDayLineBasicInfo(psetDayLineBasicInfo);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// 装载DLInfo表必须在装载DL表之后。
+// 装载DayLineInfo表必须在装载DayLine表之后。
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CChinaStock::LoadDLExtendInfo(CSetDLExtendInfo* psetDLExtendInfo) {
-  return m_DL.LoadDLExtendInfo(psetDLExtendInfo);
+bool CChinaStock::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+  return m_DayLine.LoadDayLineExtendInfo(psetDayLineExtendInfo);
 }
 
-bool CChinaStock::CalculateDLRS(void) {
-  return m_DL.CalculateRS0();
+bool CChinaStock::CalculateDayLineRS(void) {
+  return m_DayLine.CalculateRS0();
 }
 
-bool CChinaStock::CalculateDLRSLogarithm(void) {
-  return m_DL.CalculateRSLogarithm0();
+bool CChinaStock::CalculateDayLineRSLogarithm(void) {
+  return m_DayLine.CalculateRSLogarithm0();
 }
 
-bool CChinaStock::CalculateDLRSIndex(void) {
-  return m_DL.CalculateRSIndex0();
+bool CChinaStock::CalculateDayLineRSIndex(void) {
+  return m_DayLine.CalculateRSIndex0();
 }
 
 bool CChinaStock::CalculateWeekLineRS(void) {
@@ -673,18 +673,18 @@ bool CChinaStock::CalculateWeekLineRSIndex(void) {
 }
 
 bool CChinaStock::Calculate10RSStrong2StockSet(void) {
-  CSetDLBasicInfo setDLBasicInfo;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_v10DaysRS;
   int iCountFirst = 0, iCountSecond = 0;
 
-  ASSERT(m_DL.IsDataLoaded());
-  size_t iDLSize = GetDLSize();
-  if (iDLSize > 155) {
-    m_v10DaysRS.resize(iDLSize);
-    CalculateDLRSIndex();
+  ASSERT(m_DayLine.IsDataLoaded());
+  size_t iDayLineSize = GetDayLineSize();
+  if (iDayLineSize > 155) {
+    m_v10DaysRS.resize(iDayLineSize);
+    CalculateDayLineRSIndex();
     Get10DaysRS(m_v10DaysRS);
     int i = 0;
-    for (i = iDLSize - 1; i > iDLSize - 5; i--) {
+    for (i = iDayLineSize - 1; i > iDayLineSize - 5; i--) {
       if (m_v10DaysRS.at(i) > 55) iCountFirst++;
       if (iCountFirst >= 3) break;
     }
@@ -703,20 +703,20 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
 }
 
 bool CChinaStock::Calculate10RSStrong1StockSet(void) {
-  CSetDLBasicInfo setDLBasicInfo;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_v10DaysRS;
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
-  ASSERT(m_DL.IsDataLoaded());
-  size_t iDLSize = GetDLSize();
+  ASSERT(m_DayLine.IsDataLoaded());
+  size_t iDayLineSize = GetDayLineSize();
 
-  if (iDLSize < 350) return false;
-  m_v10DaysRS.resize(iDLSize);
-  CalculateDLRSIndex();
+  if (iDayLineSize < 350) return false;
+  m_v10DaysRS.resize(iDayLineSize);
+  CalculateDayLineRSIndex();
   Get10DaysRS(m_v10DaysRS);
   int i = 0, j = 0;
 
-  for (i = iDLSize - 1; i > iDLSize - 40; i--) {
+  for (i = iDayLineSize - 1; i > iDayLineSize - 40; i--) {
     if (m_v10DaysRS.at(i) > 55) iCountFirst++;
     if (iCountFirst >= 3) break;
   }
@@ -738,7 +738,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
 }
 
 bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
-  CSetDLBasicInfo setDLBasicInfo;
+  CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_v10DaysRS;
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0, iCountFourth = 0;
   bool fFind1 = false, fFind2 = false, fFind3 = false, fFind4 = false;
@@ -778,19 +778,19 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
     fFindHigh4 = true;
   }
 
-  ASSERT(m_DL.IsDataLoaded());
-  size_t iDLSize = GetDLSize();
-  if ((iDLSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
-      || (iDLSize < pRef->m_lDayLength[3] + 10)) return false;
+  ASSERT(m_DayLine.IsDataLoaded());
+  size_t iDayLineSize = GetDayLineSize();
+  if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
+      || (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
 
-  m_v10DaysRS.resize(iDLSize);
-  CalculateDLRSIndex();
+  m_v10DaysRS.resize(iDayLineSize);
+  CalculateDayLineRSIndex();
   Get10DaysRS(m_v10DaysRS);
   int i = 0, j = 0;
 
   if (pRef->m_lDayLength[0] == 0) fFind1 = true;
   else if (fFindHigh1) {
-    for (i = iDLSize - 1; i > (iDLSize - pRef->m_lDayLength[0]); i--) {
+    for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[0]); i--) {
       if (m_v10DaysRS.at(i) > dStrong1) iCountFirst++;
       if (iCountFirst >= pRef->m_lStrongDayLength[0]) {
         fFind1 = true;
@@ -799,7 +799,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
     }
   }
   else {
-    for (i = iDLSize - 1; i > (iDLSize - pRef->m_lDayLength[0]); i--) {
+    for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[0]); i--) {
       if (m_v10DaysRS.at(i) < dStrong1) iCountFirst++;
       if (iCountFirst >= pRef->m_lStrongDayLength[0]) {
         fFind1 = true;
@@ -855,7 +855,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
 
   if (pRef->m_lDayLength[3] == 0) return true; // DayLength4为零的话，不做通盘选择
   else if (fFindHigh4) {
-    for (i = iDLSize - 1; i > (iDLSize - pRef->m_lDayLength[3]); i--) {
+    for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[3]); i--) {
       if (m_v10DaysRS.at(i) > dStrong4) iCountFourth++;
       if (iCountFourth >= pRef->m_lStrongDayLength[3]) {
         fFind4 = true;
@@ -864,7 +864,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
     }
   }
   else {
-    for (i = iDLSize - 1; i > (iDLSize - pRef->m_lDayLength[3]); i--) {
+    for (i = iDayLineSize - 1; i > (iDayLineSize - pRef->m_lDayLength[3]); i--) {
       if (m_v10DaysRS.at(i) < dStrong4) iCountFourth++;
       if (iCountFourth >= pRef->m_lStrongDayLength[3]) {
         fFind4 = true;
@@ -1536,7 +1536,7 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
   if (IsIPOed()) { // 如果此股票是活跃股票
-    if (gl_pChinaStockMarket->IsEarlyThen(GetDLEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
+    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
       setStockCode.m_IPOStatus = __STOCK_DELISTED__;
     }
     else {
@@ -1546,8 +1546,8 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   else {
     setStockCode.m_IPOStatus = GetIPOStatus();
   }
-  setStockCode.m_DLStartDate = GetDLStartDate();
-  setStockCode.m_DLEndDate = GetDLEndDate();
+  setStockCode.m_DayLineStartDate = GetDayLineStartDate();
+  setStockCode.m_DayLineEndDate = GetDayLineEndDate();
 }
 
 void CChinaStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
@@ -1561,36 +1561,36 @@ bool CChinaStock::LoadStockCodeDB(CSetStockCode& setStockCode) {
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
-  SetDLStartDate(setStockCode.m_DLStartDate);
-  if (GetDLEndDate() < setStockCode.m_DLEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
-    SetDLEndDate(setStockCode.m_DLEndDate);
+  SetDayLineStartDate(setStockCode.m_DayLineStartDate);
+  if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
+    SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }
-  SetCheckingDLStatus();
+  SetCheckingDayLineStatus();
   return true;
 }
 
-void CChinaStock::SetCheckingDLStatus(void) {
-  ASSERT(IsDLNeedUpdate());
+void CChinaStock::SetCheckingDayLineStatus(void) {
+  ASSERT(IsDayLineNeedUpdate());
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDLEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
-    SetDLNeedUpdate(false); // 日线数据不需要更新
+  if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+    SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
   else if (IsNullStock()) { // 无效代码不需更新日线数据
-    SetDLNeedUpdate(false);
+    SetDayLineNeedUpdate(false);
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDLEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
-      SetDLNeedUpdate(false);
+    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
+      SetDayLineNeedUpdate(false);
     }
   }
 }
 
 bool CChinaStock::BuildWeekLine(long lStartDate) {
   if (IsNullStock()) return true;
-  if (!IsDLLoaded()) {
-    LoadDL(GetStockCode());
+  if (!IsDayLineLoaded()) {
+    LoadDayLine(GetStockCode());
   }
-  if (GetDLSize() <= 0) return true;
+  if (GetDayLineSize() <= 0) return true;
 
   if (CalculatingWeekLine(lStartDate)) {
     SaveWeekLine();
@@ -1598,12 +1598,12 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
     if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
-      UnloadDL();
+      UnloadDayLine();
       UnloadWeekLine();
     }
   }
   else {
-    UnloadDL();
+    UnloadDayLine();
     UnloadWeekLine();
   }
   return true;
@@ -1710,34 +1710,34 @@ bool CChinaStock::IsTodayDataChanged(void) {
   }
 }
 
-void CChinaStock::SetDLNeedUpdate(bool fFlag) {
+void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
-    ASSERT(!m_fDLNeedUpdate);
-    m_fDLNeedUpdate = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDLNeedUpdateNumber();
+    ASSERT(!m_fDayLineNeedUpdate);
+    m_fDayLineNeedUpdate = true;
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
   }
   else {
-    ASSERT(m_fDLNeedUpdate);
-    m_fDLNeedUpdate = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDLNeedUpdateNumber();
+    ASSERT(m_fDayLineNeedUpdate);
+    m_fDayLineNeedUpdate = false;
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber();
   }
 }
 
-void CChinaStock::SetDLNeedProcess(bool fFlag) {
+void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
-    ASSERT(!m_fDLNeedProcess);
-    m_fDLNeedProcess = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDLNeedProcessNumber();
+    ASSERT(!m_fDayLineNeedProcess);
+    m_fDayLineNeedProcess = true;
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
-    ASSERT(m_fDLNeedProcess);
-    m_fDLNeedProcess = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDLNeedProcessNumber();
+    ASSERT(m_fDayLineNeedProcess);
+    m_fDayLineNeedProcess = false;
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber();
   }
 }
 
-void CChinaStock::ShowDL(CDC* pDC, CRect rectClient) {
-  m_DL.ShowData(pDC, rectClient);
+void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {
+  m_DayLine.ShowData(pDC, rectClient);
 }
 
 void CChinaStock::ShowWeekLine(CDC* pDC, CRect rectClient) {
@@ -1745,51 +1745,51 @@ void CChinaStock::ShowWeekLine(CDC* pDC, CRect rectClient) {
 }
 
 void CChinaStock::Get1DaysRS(vector<double>& vRS) {
-  m_DL.GetRS1(vRS);
+  m_DayLine.GetRS1(vRS);
 }
 
 void CChinaStock::GetRSIndex1Day(vector<double>& vRS) {
-  m_DL.GetRSIndex1(vRS);
+  m_DayLine.GetRSIndex1(vRS);
 }
 
 void CChinaStock::GetRSLogarithm1Day(vector<double>& vRS) {
-  m_DL.GetRSLogarithm1(vRS);
+  m_DayLine.GetRSLogarithm1(vRS);
 }
 
 void CChinaStock::Get3DaysRS(vector<double>& vRS) {
-  m_DL.GetRS3(vRS);
+  m_DayLine.GetRS3(vRS);
 }
 
 void CChinaStock::Get5DaysRS(vector<double>& vRS) {
-  m_DL.GetRS5(vRS);
+  m_DayLine.GetRS5(vRS);
 }
 
 void CChinaStock::Get10DaysRS(vector<double>& vRS) {
-  m_DL.GetRS10(vRS);
+  m_DayLine.GetRS10(vRS);
 }
 
 void CChinaStock::Get30DaysRS(vector<double>& vRS) {
-  m_DL.GetRS30(vRS);
+  m_DayLine.GetRS30(vRS);
 }
 
 void CChinaStock::Get60DaysRS(vector<double>& vRS) {
-  m_DL.GetRS60(vRS);
+  m_DayLine.GetRS60(vRS);
 }
 
 void CChinaStock::Get120DaysRS(vector<double>& vRS) {
-  m_DL.GetRS120(vRS);
+  m_DayLine.GetRS120(vRS);
 }
 
-void CChinaStock::__TestSetDLBuffer(INT64 lBufferLength, char* pDLBuffer) {
+void CChinaStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuffer) {
   char* p;
-  if (m_pDLBuffer != nullptr) delete m_pDLBuffer;
-  m_pDLBuffer = new char[lBufferLength + 1];
-  p = m_pDLBuffer;
+  if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
+  m_pDayLineBuffer = new char[lBufferLength + 1];
+  p = m_pDayLineBuffer;
   for (int i = 0; i < lBufferLength; i++) {
-    *p++ = pDLBuffer[i];
+    *p++ = pDayLineBuffer[i];
   }
-  m_pDLBuffer[lBufferLength] = 0x000;
-  m_lDLBufferLength = lBufferLength;
+  m_pDayLineBuffer[lBufferLength] = 0x000;
+  m_lDayLineBufferLength = lBufferLength;
 }
 
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
@@ -1812,20 +1812,20 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
 }
 
 bool CChinaStock::CalculatingWeekLine(long lStartDate) {
-  ASSERT(IsDLLoaded());
-  ASSERT(m_DL.GetDataSize() > 0);
+  ASSERT(IsDayLineLoaded());
+  ASSERT(m_DayLine.GetDataSize() > 0);
   long i = 0;
   CWeekLinePtr pWeekLine = nullptr;
 
   m_WeekLine.Unload();
-  while ((i < m_DL.GetDataSize()) && (m_DL.GetData(i)->GetFormatedMarketDate() < lStartDate)) {
+  while ((i < m_DayLine.GetDataSize()) && (m_DayLine.GetData(i)->GetFormatedMarketDate() < lStartDate)) {
     i++;
   }
-  if (i < m_DL.GetDataSize()) {
+  if (i < m_DayLine.GetDataSize()) {
     do {
-      pWeekLine = m_DL.CreateNewWeekLine(i);
+      pWeekLine = m_DayLine.CreateNewWeekLine(i);
       m_WeekLine.StoreData(pWeekLine);
-    } while (i < m_DL.GetDataSize());
+    } while (i < m_DayLine.GetDataSize());
     m_WeekLine.SetDataLoaded(true);
     return true;
   }

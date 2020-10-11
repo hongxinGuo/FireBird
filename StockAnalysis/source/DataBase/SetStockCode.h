@@ -26,8 +26,8 @@ public:
   int	m_StockType;
   CString	m_StockCode;
   CStringW m_StockName;
-  long m_DLStartDate;     // 从网易历史日线服务器上得到的初始交易日
-  long m_DLEndDate;     // 从网易历史日线服务器上得到的最新日
+  long m_DayLineStartDate;     // 从网易历史日线服务器上得到的初始交易日
+  long m_DayLineEndDate;     // 从网易历史日线服务器上得到的最新日
   long m_IPOStatus;
   // 重写
     // 向导生成的虚函数重写

@@ -47,7 +47,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
   if (!m_wndOutputInformation.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-      !m_wndOutputDLInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+      !m_wndOutputDayLineInfo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
       !m_wndOutputTransaction.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
       !m_wndOutputCancelSell.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
       !m_wndOutputCancelBuy.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
@@ -69,7 +69,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   m_wndTabs.AddTab(&m_wndOutputInformation, strTabName, (UINT)0);
   bNameValid = strTabName.LoadString(IDS_DAYLINE_INFO_TAB);
   ASSERT(bNameValid);
-  m_wndTabs.AddTab(&m_wndOutputDLInfo, strTabName, (UINT)1);
+  m_wndTabs.AddTab(&m_wndOutputDayLineInfo, strTabName, (UINT)1);
   bNameValid = strTabName.LoadString(IDS_TRANSACTION_TAB);
   ASSERT(bNameValid);
   m_wndTabs.AddTab(&m_wndOutputTransaction, strTabName, (UINT)2);
@@ -122,7 +122,7 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox) {
 
 void COutputWnd::UpdateFonts() {
   m_wndOutputInformation.SetFont(&afxGlobalData.fontRegular);
-  m_wndOutputDLInfo.SetFont(&afxGlobalData.fontRegular);
+  m_wndOutputDayLineInfo.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputTransaction.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputCancelSell.SetFont(&afxGlobalData.fontRegular);
   m_wndOutputCancelBuy.SetFont(&afxGlobalData.fontRegular);
@@ -230,14 +230,14 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
     }
   }
 
-  m_wndOutputDLInfo.TruncateList(10000);
+  m_wndOutputDayLineInfo.TruncateList(10000);
   fUpdate = false;
-  if ((lTotal = gl_systemMessage.GetDLInfoDequeSize()) > 0) {
-    lCurrentPos = m_wndOutputDLInfo.GetCurSel();
-    if (m_wndOutputDLInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
-    gl_systemMessage.DisplayDLInfo(&m_wndOutputDLInfo, strTime);
+  if ((lTotal = gl_systemMessage.GetDayLineInfoDequeSize()) > 0) {
+    lCurrentPos = m_wndOutputDayLineInfo.GetCurSel();
+    if (m_wndOutputDayLineInfo.GetCount() <= (lCurrentPos + 4)) fUpdate = true;
+    gl_systemMessage.DisplayDayLineInfo(&m_wndOutputDayLineInfo, strTime);
     if (fUpdate) {
-      m_wndOutputDLInfo.SetCurAtLastLine();
+      m_wndOutputDayLineInfo.SetCurAtLastLine();
     }
   }
 

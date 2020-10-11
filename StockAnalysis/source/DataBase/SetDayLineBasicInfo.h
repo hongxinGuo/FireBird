@@ -1,4 +1,4 @@
-// CSetDLBasicInfo.h : CSetDLBasicInfo 的声明
+// CSetDayLineBasicInfo.h : CSetDayLineBasicInfo 的声明
 
 #pragma once
 
@@ -6,11 +6,11 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-class CSetDLBasicInfo : public CRecordset
+class CSetDayLineBasicInfo : public CRecordset
 {
 public:
-  CSetDLBasicInfo(CDatabase* pDatabase = NULL);
-  DECLARE_DYNAMIC(CSetDLBasicInfo)
+  CSetDayLineBasicInfo(CDatabase* pDatabase = NULL);
+  DECLARE_DYNAMIC(CSetDayLineBasicInfo)
 
   // 字段/参数数据
 

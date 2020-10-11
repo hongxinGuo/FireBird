@@ -99,9 +99,9 @@ public:
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-  afx_msg void OnRebuildDLRS();
+  afx_msg void OnRebuildDayLineRS();
   afx_msg void OnBuildResetMarket();
-  afx_msg void OnUpdateRebuildDLRS(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI);
   afx_msg void OnAbortBuindingRS();
   afx_msg void OnUpdateAbortBuindingRS(CCmdUI* pCmdUI);
   afx_msg void OnRecordRTData();
@@ -112,7 +112,7 @@ public:
   afx_msg void OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI);
   afx_msg void OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI);
   afx_msg void OnUpdateCalculate10dayRS(CCmdUI* pCmdUI);
-  afx_msg void OnStopUpdateDL();
+  afx_msg void OnStopUpdateDayLine();
   afx_msg void OnUsingNeteaseRealtimeDataServer();
   afx_msg void OnUsingSinaRealtimeDataServer();
   afx_msg void OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI);

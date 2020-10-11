@@ -24,7 +24,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       gl_pChinaStockMarket->ResetCurrentStock();
@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetCurrentStock();
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->ClearChoiceStockContainer();
-      gl_ThreadStatus.SetCalculatingDLRS(false);
+      gl_ThreadStatus.SetCalculatingDayLineRS(false);
       gl_fExitingSystem = false;
     }
   };
@@ -174,22 +174,22 @@ namespace StockAnalysisTest {
   TEST_F(CMockMainFrameTest, TestOnUpdateCalculateTodayRS) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->SetSystemReady(false);
-    gl_ThreadStatus.SetCalculatingDLRS(false);
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_ThreadStatus.SetCalculatingDLRS(false);
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(false);
-    gl_ThreadStatus.SetCalculatingDLRS(true);
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_ThreadStatus.SetCalculatingDLRS(true);
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false));
     s_pMainFrame->OnUpdateCalculateTodayRS(&cmdUI);
   }
@@ -413,26 +413,26 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pCrweberIndexMarket->IsResetMarket());
   }
 
-  TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDLRS) {
+  TEST_F(CMockMainFrameTest, TestOnUpdateRebuildDayLineRS) {
     CCmdUI cmdUI;
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83001);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)92959);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83000);
-    gl_ThreadStatus.SetCalculatingDLRS(true);
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
     gl_pChinaStockMarket->__TEST_SetFormatedMarketTime((long)83000);
-    gl_ThreadStatus.SetCalculatingDLRS(false);
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
-    s_pMainFrame->OnUpdateRebuildDLRS(&cmdUI);
+    s_pMainFrame->OnUpdateRebuildDayLineRS(&cmdUI);
   }
 
   TEST_F(CMockMainFrameTest, TestOnUpdateRecordRTData) {
@@ -457,11 +457,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockMainFrameTest, TestOnUpdateAbortBuindingRS) {
     CCmdUI cmdUI;
-    gl_ThreadStatus.SetCalculatingDLRS(true);
+    gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
-    gl_ThreadStatus.SetCalculatingDLRS(false);
+    gl_ThreadStatus.SetCalculatingDayLineRS(false);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateAbortBuindingRS(&cmdUI);
@@ -477,98 +477,98 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS1) {
     CCmdUI cmdUI;
-    long dayLineSave = gl_pChinaStockMarket->GetDLNeedSaveNumber();
-    long dayLineUpdate = gl_pChinaStockMarket->GetDLNeedUpdateNumber();
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(dayLineUpdate);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(dayLineSave);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
   TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS2) {
     CCmdUI cmdUI;
-    long dayLineSave = gl_pChinaStockMarket->GetDLNeedSaveNumber();
-    long dayLineUpdate = gl_pChinaStockMarket->GetDLNeedUpdateNumber();
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(dayLineUpdate);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(dayLineSave);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
   TEST_F(CMockMainFrameTest, TestOnUpdateCalculate10dayRS) {
     CCmdUI cmdUI;
-    long dayLineSave = gl_pChinaStockMarket->GetDLNeedSaveNumber();
-    long dayLineUpdate = gl_pChinaStockMarket->GetDLNeedUpdateNumber();
+    long dayLineSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
+    long dayLineUpdate = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(12000);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(12000);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(0);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-    gl_pChinaStockMarket->SetDLNeedUpdateNumber(dayLineUpdate);
-    gl_pChinaStockMarket->SetDLNeedSaveNumber(dayLineSave);
+    gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(dayLineUpdate);
+    gl_pChinaStockMarket->SetDayLineNeedSaveNumber(dayLineSave);
   }
 
   TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {

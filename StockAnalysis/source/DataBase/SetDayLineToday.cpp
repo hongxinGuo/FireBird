@@ -1,6 +1,6 @@
-// SetDLToday.h : CSetDLToday 类的实现
+// SetDayLineToday.h : CSetDayLineToday 类的实现
 
-// CSetDLToday 实现
+// CSetDayLineToday 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -11,9 +11,9 @@
 
 #include "SetDayLineToday.h"
 
-IMPLEMENT_DYNAMIC(CSetDLToday, CRecordset)
+IMPLEMENT_DYNAMIC(CSetDayLineToday, CRecordset)
 
-CSetDLToday::CSetDLToday(CDatabase* pdb)
+CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
@@ -113,15 +113,15 @@ CSetDLToday::CSetDLToday(CDatabase* pdb)
   m_nFields = 80;
 }
 
-CString CSetDLToday::GetDefaultConnect() {
+CString CSetDayLineToday::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetDLToday::GetDefaultSQL() {
+CString CSetDayLineToday::GetDefaultSQL() {
   return _T("[today]");
 }
 
-void CSetDLToday::DoFieldExchange(CFieldExchange* pFX) {
+void CSetDayLineToday::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -209,14 +209,14 @@ void CSetDLToday::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[CanceledSellAbove200000]"), m_CanceledSellVolumeAbove200000);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetDLToday 诊断
+// CSetDayLineToday 诊断
 
 #ifdef _DEBUG
-void CSetDLToday::AssertValid() const {
+void CSetDayLineToday::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetDLToday::Dump(CDumpContext& dc) const {
+void CSetDayLineToday::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

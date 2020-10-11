@@ -4,11 +4,11 @@
 
 // 代码生成在 2019年6月17日, 5:10
 
-class CSetDLExtendInfo : public CRecordset
+class CSetDayLineExtendInfo : public CRecordset
 {
 public:
-  CSetDLExtendInfo(CDatabase* pDatabase = NULL);
-  DECLARE_DYNAMIC(CSetDLExtendInfo)
+  CSetDayLineExtendInfo(CDatabase* pDatabase = NULL);
+  DECLARE_DYNAMIC(CSetDayLineExtendInfo)
 
   // 字段/参数数据
 

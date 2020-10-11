@@ -6,12 +6,12 @@
 #include"DayLineContainer.h"
 
 namespace testing {
-  class CMockDLContainer : public CDLContainer {
+  class CMockDayLineContainer : public CDayLineContainer {
   public:
     MOCK_METHOD(bool, CalculateRS1, (INT64 lNumber), (override));
     MOCK_METHOD(bool, CalculateRSLogarithm1, (INT64 lNumber), (override));
     MOCK_METHOD(bool, CalculateRSIndex1, (INT64 lNumber), (override));
   };
 
-  typedef shared_ptr<CMockDLContainer> CMockDLContainerPtr;
+  typedef shared_ptr<CMockDayLineContainer> CMockDayLineContainerPtr;
 }

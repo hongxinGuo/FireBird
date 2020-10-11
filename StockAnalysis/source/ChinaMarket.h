@@ -21,7 +21,7 @@ using namespace std;
 #include<set>
 
 // 信号量必须声明为全局变量（为了初始化）
-extern Semaphore gl_SaveOneStockDL;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SemaphoreBackGroundTaskThreads; // 后台工作线程数。最大为8
 extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;
@@ -56,7 +56,7 @@ public:
 
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
-  bool TaskGetNeteaseDLFromWeb(void);
+  bool TaskGetNeteaseDayLineFromWeb(void);
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
@@ -64,7 +64,7 @@ public:
   bool TaskChoice10RSStrong2StockSet(long lCurrentTime);
   bool TaskChoice10RSStrongStockSet(long lCurrentTime);
   bool TaskProcessTodayStock(long lCurrentTime);
-  bool TaskCheckDLDB(void);
+  bool TaskCheckDayLineDB(void);
   bool TaskCheckStartReceivingData(long lCurrentTime);
   bool TaskCheckMarketOpen(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
@@ -83,7 +83,7 @@ public:
   bool TaskProcessRTData(void);
 
   // 是否所有股票的历史日线数据都查询过一遍了
-  bool TaskProcessDLGetFromNeeteaseServer(void);
+  bool TaskProcessDayLineGetFromNeeteaseServer(void);
 
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockHistoryData(void);
@@ -91,11 +91,11 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
-  virtual bool RunningThreadBuildDLRS(long lStartCalculatingDay);
-  virtual bool RunningThreadBuildDLRSOfDate(long lThisDay);
+  virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
+  virtual bool RunningThreadBuildDayLineRSOfDate(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDLBasicInfoOfStock(CChinaStockPtr pStock);
-  virtual bool RunningThreadLoadDL(CChinaStockPtr pCurrentStock);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock);
+  virtual bool RunningThreadLoadDayLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadLoadWeekLine(CChinaStockPtr pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
@@ -122,12 +122,12 @@ public:
   CString GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
   CString GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
   CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
-  bool CheckValidOfNeteaseDLInquiringStr(CString str);
+  bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
   bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
-  bool CreateNeteaseDLInquiringStr(CString& strReturn);
+  bool CreateNeteaseDayLineInquiringStr(CString& strReturn);
 
   long IncreaseStockInquiringIndex(long& lIndex);
 
@@ -184,7 +184,7 @@ public:
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
-  bool TaskSaveDLData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
+  bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
   virtual bool UpdateOptionDB(void);
@@ -198,7 +198,7 @@ public:
   virtual bool UpdateTodayTempDB(void);
   bool DeleteTodayTempDB(void);
   bool LoadTodayTempDB(void);
-  bool LoadDL(CDLContainer& dayLineContainer, long lDate);
+  bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
 
@@ -209,12 +209,12 @@ public:
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
 
-  bool DeleteDL(void);
-  bool DeleteDLBasicInfo(void);
-  bool DeleteDLExtendInfo(void);
-  bool DeleteDL(long lDate);
-  bool DeleteDLBasicInfo(long lDate);
-  bool DeleteDLExtendInfo(long lDate);
+  bool DeleteDayLine(void);
+  bool DeleteDayLineBasicInfo(void);
+  bool DeleteDayLineExtendInfo(void);
+  bool DeleteDayLine(long lDate);
+  bool DeleteDayLineBasicInfo(long lDate);
+  bool DeleteDayLineExtendInfo(long lDate);
 
   bool SaveCurrentWeekLine(CWeekLineContainer& weekLineContainer);
   bool LoadCurrentWeekLine(CWeekLineContainer& weekLineContainer);
@@ -230,7 +230,7 @@ public:
   bool Load10DaysRSStrongStockDB(void);
   bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
-  bool UnloadDL(void);
+  bool UnloadDayLine(void);
 
   bool BuildWeekLine(long lStartDate);
   virtual bool BuildWeekLineOfCurrentWeek(void);
@@ -242,11 +242,11 @@ public:
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-  bool IsDLNeedUpdate(void);
-  bool IsDLNeedSaving(void);
+  bool IsDayLineNeedUpdate(void);
+  bool IsDayLineNeedSaving(void);
 
-  virtual long BuildDLOfDate(long lCurrentTradeDay);
-  virtual bool BuildDLRSOfDate(long lDate);
+  virtual long BuildDayLineOfDate(long lCurrentTradeDay);
+  virtual bool BuildDayLineRSOfDate(long lDate);
   virtual bool BuildWeekLineRSOfDate(long lDate);
   double GetUpDownRate(CString strClose, CString StrLastClose);
 
@@ -259,8 +259,8 @@ public:
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsDLDBUpdated(void);
-  void ClearDLDBUpdatedFlag(void);
+  bool IsDayLineDBUpdated(void);
+  void ClearDayLineDBUpdatedFlag(void);
 
   long GetRSStartDate(void) noexcept { return m_lRSStartDate; }
   void SetRSStartDate(long lDate) noexcept { m_lRSStartDate = lDate; }
@@ -285,8 +285,8 @@ public:
   CString GetStockCodeForInquiringRTData(void) { return m_strStockCodeForInquiringRTData; }
   void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
   clock_t GetReadingTengxunRTDataTime(void) noexcept { return m_ReadingTengxunRTDataTime; }
-  void SetStockCodeForInquiringNeteaseDL(CString strStockCode) { m_strStockCodeForInquiringNeteaseDL = strStockCode; }
-  CString GetStockCodeForInquiringNeteaseDL(void) { return m_strStockCodeForInquiringNeteaseDL; }
+  void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
+  CString GetStockCodeForInquiringNeteaseDayLine(void) { return m_strStockCodeForInquiringNeteaseDayLine; }
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
@@ -330,8 +330,8 @@ public:
   void SetMarketOpened(bool fFlag) noexcept { m_fMarketOpened = fFlag; }
   bool IsStartReceivingData(void) noexcept { return m_fStartReceivingData; }
   bool IsGetRTData(void) noexcept { return m_fGetRTData; }
-  bool IsSaveDL(void) noexcept { return m_fSaveDL; }
-  void SetSaveDL(bool fFlag) noexcept { m_fSaveDL = fFlag; }
+  bool IsSaveDayLine(void) noexcept { return m_fSaveDayLine; }
+  void SetSaveDayLine(bool fFlag) noexcept { m_fSaveDayLine = fFlag; }
   bool IsRTDataSetCleared(void) noexcept { return m_fRTDataSetCleared; }
   void SetRTDataSetCleared(bool fFlag) noexcept { m_fRTDataSetCleared = fFlag; }
   bool IsSavingTempData(void) noexcept { return m_fSaveTempData; }
@@ -352,25 +352,25 @@ public:
   void ResetSinaRTDataInquiringIndex(void) noexcept { m_lSinaRTDataInquiringIndex = 0; }
   void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lTengxunRTDataInquiringIndex = 0; }
   void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lNeteaseRTDataInquiringIndex = 0; }
-  void ResetNeteaseDLDataInquiringIndex(void) noexcept { m_lNeteaseDLDataInquiringIndex = 0; }
+  void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lNeteaseDayLineDataInquiringIndex = 0; }
   long GetSinaRTDataInquiringIndex(void) noexcept { return m_lSinaRTDataInquiringIndex; }
   long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
   long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
-  long GetNeteaseDLDataInquiringIndex(void) noexcept { return m_lNeteaseDLDataInquiringIndex; }
+  long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
 
-  int GetDLNeedUpdateNumber(void) noexcept { const int i = m_iDLNeedUpdate; return i; }
-  void SetDLNeedUpdateNumber(int i) noexcept { m_iDLNeedUpdate = i; }
-  void ClearDLNeedUpdaeStatus(void);
-  int GetDLNeedProcessNumber(void) noexcept { const int i = m_iDLNeedProcess; return i; }
-  void SetDLNeedProcessNumber(int i) noexcept { m_iDLNeedProcess = i; }
-  int GetDLNeedSaveNumber(void) noexcept { const int i = m_iDLNeedSave; return i; }
-  void SetDLNeedSaveNumber(int i) noexcept { m_iDLNeedSave = i; }
-  void IncreaseNeteaseDLNeedUpdateNumber(int iNumber = 1);
-  void DecreaseNeteaseDLNeedUpdateNumber(int iNumber = 1);
-  void IncreaseNeteaseDLNeedProcessNumber(int iNumber = 1) noexcept { m_iDLNeedProcess += iNumber; }
-  void DecreaseNeteaseDLNeedProcessNumber(int iNumber = 1) noexcept { if (m_iDLNeedProcess >= iNumber) m_iDLNeedProcess -= iNumber; }
-  void IncreaseNeteaseDLNeedSaveNumber(int iNumber = 1) noexcept { m_iDLNeedSave += iNumber; }
-  void DecreaseNeteaseDLNeedSaveNumber(int iNumber = 1) noexcept { if (m_iDLNeedSave >= iNumber) m_iDLNeedSave -= iNumber; }
+  int GetDayLineNeedUpdateNumber(void) noexcept { const int i = m_iDayLineNeedUpdate; return i; }
+  void SetDayLineNeedUpdateNumber(int i) noexcept { m_iDayLineNeedUpdate = i; }
+  void ClearDayLineNeedUpdaeStatus(void);
+  int GetDayLineNeedProcessNumber(void) noexcept { const int i = m_iDayLineNeedProcess; return i; }
+  void SetDayLineNeedProcessNumber(int i) noexcept { m_iDayLineNeedProcess = i; }
+  int GetDayLineNeedSaveNumber(void) noexcept { const int i = m_iDayLineNeedSave; return i; }
+  void SetDayLineNeedSaveNumber(int i) noexcept { m_iDayLineNeedSave = i; }
+  void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
+  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
+  void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { m_iDayLineNeedProcess += iNumber; }
+  void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { if (m_iDayLineNeedProcess >= iNumber) m_iDayLineNeedProcess -= iNumber; }
+  void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) noexcept { m_iDayLineNeedSave += iNumber; }
+  void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) noexcept { if (m_iDayLineNeedSave >= iNumber) m_iDayLineNeedSave -= iNumber; }
 
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
@@ -435,7 +435,7 @@ protected:
   bool m_fMarketOpened; // 是否开市
   bool m_fStartReceivingData; // 是否开始接收实时数据
   bool m_fGetRTData; // 读取实时数据标识
-  bool m_fSaveDL; // 将读取的日线存入数据库标识
+  bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
   bool m_fSaveTempData; // 存储临时实时数据标识
   CChinaStockPtr m_pCurrentStock; // 当前显示的股票
@@ -452,12 +452,12 @@ protected:
   CString m_strSinaRTDataInquiringStr;
   CString m_strTengxunRTDataInquiringStr;
   CString m_strNeteaseRTDataInquiringStr;
-  CString m_strNeteaseDLDataInquiringStr;
+  CString m_strNeteaseDayLineDataInquiringStr;
 
   long m_lSinaRTDataInquiringIndex;
   long m_lTengxunRTDataInquiringIndex;
   long m_lNeteaseRTDataInquiringIndex;
-  long m_lNeteaseDLDataInquiringIndex;
+  long m_lNeteaseDayLineDataInquiringIndex;
 
   // Option各选项
   long m_lRSStartDate;
@@ -483,7 +483,7 @@ protected:
   // 多线程读取之变量
   CString m_strStockCodeForInquiringRTData;
   clock_t m_ReadingTengxunRTDataTime; // 每次读取腾讯实时数据的时间
-  CString m_strStockCodeForInquiringNeteaseDL;
+  CString m_strStockCodeForInquiringNeteaseDayLine;
 
   // 更新股票代码数据库标识
   atomic_bool m_fUpdateStockCodeDB;
@@ -491,9 +491,9 @@ protected:
   bool m_fUpdateChoicedStockDB;
 
   // 网易日线历史数据读取处理和存储计数器。
-  atomic_int m_iDLNeedUpdate; // 日线需要更新的股票数量
-  atomic_int m_iDLNeedProcess; // 日线需要处理的股票数量
-  atomic_int m_iDLNeedSave; // 日线需要存储的股票数量
+  atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
+  atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
+  atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量
 
 private:
 };

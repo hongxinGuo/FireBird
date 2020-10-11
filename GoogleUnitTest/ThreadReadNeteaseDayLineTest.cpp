@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CThreadReadNeteaseDLTest : public ::testing::Test
+  class CThreadReadNeteaseDayLineTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -22,32 +22,32 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
     }
-    CMockNeteaseDLWebInquiry NeteaseDLWebInquiry;
+    CMockNeteaseDayLineWebInquiry NeteaseDayLineWebInquiry;
   };
 
-  TEST_F(CThreadReadNeteaseDLTest, TestThreadReadNeteaseDL) {
-    EXPECT_CALL(NeteaseDLWebInquiry, ReadWebData(200, 30, 30))
+  TEST_F(CThreadReadNeteaseDayLineTest, TestThreadReadNeteaseDayLine) {
+    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
       .Times(1)
       .WillOnce(Return(false));
-    NeteaseDLWebInquiry.__TESTSetBuffer(_T("testData"));
-    NeteaseDLWebInquiry.SetDownLoadingStockCode(_T("sh600601"));
-    NeteaseDLWebInquiry.SetReadingWebData(true);
-    EXPECT_EQ(ThreadReadNeteaseDL(&NeteaseDLWebInquiry), (UINT)4);
+    NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
+    NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("sh600601"));
+    NeteaseDayLineWebInquiry.SetReadingWebData(true);
+    EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
-    EXPECT_FALSE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDLNeedProcess());
+    EXPECT_FALSE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess());
 
-    EXPECT_CALL(NeteaseDLWebInquiry, ReadWebData(200, 30, 30))
+    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
       .Times(1)
       .WillOnce(Return(true));
-    NeteaseDLWebInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadNeteaseDL(&NeteaseDLWebInquiry), (UINT)4);
+    NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
+    EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
-    EXPECT_TRUE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDLNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
+    EXPECT_TRUE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
     char buffer[30];
-    strcpy_s(buffer, gl_pChinaStockMarket->GetStock(_T("sh600601"))->GetDLBufferPtr());
+    strcpy_s(buffer, gl_pChinaStockMarket->GetStock(_T("sh600601"))->GetDayLineBufferPtr());
     CString str = buffer;
     EXPECT_STREQ(str, _T("testData"));
 
-    gl_pChinaStockMarket->GetStock(_T("sh600601"))->SetDLNeedProcess(false);
+    gl_pChinaStockMarket->GetStock(_T("sh600601"))->SetDayLineNeedProcess(false);
   }
 }

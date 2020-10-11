@@ -86,7 +86,7 @@ ExcludeFromCodeCoverage(CStockAnalysisView29, L"CStockAnalysisView::ShowCurrentT
 ExcludeFromCodeCoverage(CStockAnalysisView30, L"CStockAnalysisView::ShowGuadan");
 ExcludeFromCodeCoverage(CStockAnalysisView31, L"CStockAnalysisView::ShowRealtimeData");
 ExcludeFromCodeCoverage(CStockAnalysisView32, L"CStockAnalysisView::ShowRealtimeGuadan");
-ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDL");
+ExcludeFromCodeCoverage(CStockAnalysisView33, L"CStockAnalysisView::ShowStockDayLine");
 ExcludeFromCodeCoverage(CStockAnalysisView34, L"CStockAnalysisView::OnDraw");
 ExcludeFromCodeCoverage(CStockAnalysisView35, L"CStockAnalysisView::OnRButtonUp");
 ExcludeFromCodeCoverage(CStockAnalysisView36, L"CStockAnalysisView::Show");
@@ -103,10 +103,10 @@ ExcludeFromCodeCoverage(CChinaMarket5, L"CChinaMarket::RunningThreadCalculateThi
 ExcludeFromCodeCoverage(CChinaMarket6, L"CChinaMarket::RunningThreadChoice10RSStrong1StockSet");
 ExcludeFromCodeCoverage(CChinaMarket7, L"CChinaMarket::RunningThreadChoice10RSStrong2StockSet");
 ExcludeFromCodeCoverage(CChinaMarket8, L"CChinaMarket::RunningThreadChoice10RSStrongStockSet");
-ExcludeFromCodeCoverage(CChinaMarket9, L"CChinaMarket::RunningThreadLoadDL");
+ExcludeFromCodeCoverage(CChinaMarket9, L"CChinaMarket::RunningThreadLoadDayLine");
 ExcludeFromCodeCoverage(CChinaMarket10, L"CChinaMarket::RunningThreadProcessTodayStock");
 ExcludeFromCodeCoverage(CChinaMarket11, L"CChinaMarket::RunningThreadSaveChoicedRTData");
-ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDLOfOneStock");
+ExcludeFromCodeCoverage(CChinaMarket12, L"CChinaMarket::RunningThreadSaveDayLineOfOneStock");
 ExcludeFromCodeCoverage(CChinaMarket13, L"CChinaMarket::RunningThreadSaveTempRTData");
 ExcludeFromCodeCoverage(CChinaMarket14, L"CChinaMarket::RunningThreadUpdateOptionDB");
 ExcludeFromCodeCoverage(CChinaMarket15, L"CChinaMarket::RunningThreadUpdateStockCodeDB");
@@ -126,7 +126,7 @@ ExcludeFromCodeCoverage(CChinaStock9, L"CChinaStock::Get120DaysRS");
 ExcludeFromCodeCoverage(CChinaStock10, L"CChinaStock::GetRSIndex1Day");
 ExcludeFromCodeCoverage(CChinaStock11, L"CChinaStock::GetRSLogarithm1Day");
 ExcludeFromCodeCoverage(CChinaStock12, L"CChinaStock::ReportGuadan");
-ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDL");
+ExcludeFromCodeCoverage(CChinaStock14, L"CChinaStock::ShowDayLine");
 ExcludeFromCodeCoverage(CChinaStock15, L"CChinaStock::Calculate10RSStrong1StockSet");
 ExcludeFromCodeCoverage(CChinaStock16, L"CChinaStock::Calculate10RSStrong2StockSet");
 ExcludeFromCodeCoverage(CChinaStock17, L"CChinaStock::Calculate10RSStrongStockSet");
@@ -153,7 +153,7 @@ ExcludeFromCodeCoverage(CRTData2, L"CWebRTData::Dump");
 
 ExcludeFromCodeCoverage(CSystemMessage2, L"CSystemMessage::DisplayCancelBuy");
 ExcludeFromCodeCoverage(CSystemMessage3, L"CSystemMessage::DisplayCancelSell");
-ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDLInfo");
+ExcludeFromCodeCoverage(CSystemMessage4, L"CSystemMessage::DisplayDayLineInfo");
 ExcludeFromCodeCoverage(CSystemMessage5, L"CSystemMessage::DisplayInformation");
 ExcludeFromCodeCoverage(CSystemMessage6, L"CSystemMessage::DisplayInnerSystemInformation");
 ExcludeFromCodeCoverage(CSystemMessage7, L"CSystemMessage::DisplayTrace2");
@@ -163,7 +163,7 @@ ExcludeFromCodeCoverage(CNeteaseRTWebInquiry1, L"CNeteaseRTWebInquiry::StartRead
 ExcludeFromCodeCoverage(CTengxunRTWebInquiry1, L"CTengxunRTWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CSinaRTWebInquiry1, L"CSinaRTWebInquiry::StartReadingThread");
 ExcludeFromCodeCoverage(CCrweberIndexWebInquiry1, L"CCrweberIndexWebInquiry::StartReadingThread");
-ExcludeFromCodeCoverage(CNeteaseDLWebInquiry1, L"CNeteaseDLWebInquiry::StartReadingThread");
+ExcludeFromCodeCoverage(CNeteaseDayLineWebInquiry1, L"CNeteaseDayLineWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CPotenDailyBriefingWebInquiry1, L"CPotenDailyBriefingWebInquiry::StartReadingThread");
 

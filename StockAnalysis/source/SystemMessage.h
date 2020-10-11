@@ -37,10 +37,10 @@ public:
   size_t GetInformationDequeSize(void) { return m_SystemInformation.GetDequeSize(); }
   void DisplayInformation(COutputList* pOutputList, CString strTime) { m_SystemInformation.Display(pOutputList, strTime); }
 
-  void PushDLInfoMessage(CString str) { m_DLInformation.PushMessage(str); }
-  CString PopDLInfoMessage(void) { return m_DLInformation.PopMessage(); }
-  size_t GetDLInfoDequeSize(void) { return m_DLInformation.GetDequeSize(); }
-  void DisplayDLInfo(COutputList* pOutputList, CString strTime) { m_DLInformation.Display(pOutputList, strTime); }
+  void PushDayLineInfoMessage(CString str) { m_DayLineInformation.PushMessage(str); }
+  CString PopDayLineInfoMessage(void) { return m_DayLineInformation.PopMessage(); }
+  size_t GetDayLineInfoDequeSize(void) { return m_DayLineInformation.GetDequeSize(); }
+  void DisplayDayLineInfo(COutputList* pOutputList, CString strTime) { m_DayLineInformation.Display(pOutputList, strTime); }
 
   void PushTransactionMessage(CString str) { m_Transaction.PushMessage(str); }
   CString PopTransactionMessage(void) { return m_Transaction.PopMessage(); }
@@ -70,7 +70,7 @@ public:
 protected:
   // 信息输出队列群
   CSystemDeque m_SystemInformation;
-  CSystemDeque m_DLInformation;
+  CSystemDeque m_DayLineInformation;
   CSystemDeque m_Transaction;
   CSystemDeque m_CancelSell;
   CSystemDeque m_CancelBuy;

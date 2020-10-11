@@ -15,7 +15,7 @@ namespace StockAnalysisTest {
 
     static void TearDownTestSuite() {
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
-      EXPECT_EQ(gl_pChinaStockMarket->GetDLNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
     }
 
     virtual void SetUp(void) override {

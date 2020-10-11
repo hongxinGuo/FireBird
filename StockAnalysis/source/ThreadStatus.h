@@ -13,8 +13,8 @@ public:
   ~CThreadStatus();
 
   // 计算若干天日线相对强度与否和设置
-  void SetCalculatingDLRS(bool fFlag) noexcept { m_CalculatingDLRS = fFlag; }
-  bool IsCalculatingDLRS(void) noexcept { return m_CalculatingDLRS; }
+  void SetCalculatingDayLineRS(bool fFlag) noexcept { m_CalculatingDayLineRS = fFlag; }
+  bool IsCalculatingDayLineRS(void) noexcept { return m_CalculatingDayLineRS; }
 
   // 计算若干天周线相对强度与否和设置
   void SetCalculatingWeekLineRS(bool fFlag) noexcept { m_CalculatingWeekLineRS = fFlag; }
@@ -42,9 +42,9 @@ public:
   bool IsBackGroundthreadsWorking(void) noexcept { if (m_NumberOfBackGroundWorkingThreads > 0) return true; else return false; } // 计算日线的线程是否处于运行中
   int HowManyBackGroundThreadsWorking(void) noexcept { return m_NumberOfBackGroundWorkingThreads; }
 
-  void IncreaseSavingDLThreads(void) noexcept { m_SavingDL++; }  // 同时运行线程数加一
-  void DecreaseSavingDLThreads(void) noexcept { m_SavingDL--; } // 同时运行线程数减一
-  bool IsSavingDL(void); // 计算日线的线程是否处于运行中
+  void IncreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine++; }  // 同时运行线程数加一
+  void DecreaseSavingDayLineThreads(void) noexcept { m_SavingDayLine--; } // 同时运行线程数减一
+  bool IsSavingDayLine(void); // 计算日线的线程是否处于运行中
 
   void IncreaseRunningThread(void) noexcept { m_NumberOfRunningThread++; }
   void DecreaseRunningThread(void) noexcept { if (m_NumberOfRunningThread > 0) m_NumberOfRunningThread--; }
@@ -52,14 +52,14 @@ public:
   bool IsWorkingThreadRunning(void) noexcept { if (GetNumberOfRunningThread() > 0) return true; else return false; }
 
 protected:
-  atomic_bool m_CalculatingDLRS;
+  atomic_bool m_CalculatingDayLineRS;
   atomic_bool m_CalculatingWeekLineRS;
   atomic_bool m_RTDataNeedCalculate;
   atomic_bool m_CalculatingRTData;
   atomic_bool m_SavingTempData;
   atomic_bool m_CreatingWeekLine;
 
-  atomic_int m_SavingDL; // 存储日线历史数据的计数器
+  atomic_int m_SavingDayLine; // 存储日线历史数据的计数器
   atomic_int m_NumberOfBackGroundWorkingThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许cMaxBackGroundTaskThreads个线程
   atomic_int m_NumberOfRunningThread; // 正在运行的工作线程数量
 };
