@@ -1520,7 +1520,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSaveDayLine) {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
-    CDayLine stock;
+    CDayLine dayLine;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(20190101);
@@ -1555,7 +1555,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
-      stock.LoadBasicData(&setDayLineBasicInfo);
+      dayLine.LoadBasicData(&setDayLineBasicInfo);
       pid = pStock->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());

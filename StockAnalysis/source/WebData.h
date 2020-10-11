@@ -1,9 +1,17 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 网络通用数据包结构。
+//
+// 用于存储从网路上提取的各种原始数据。
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
 #include"stdafx.h"
 
 using namespace std;
 #include<memory>
+#include<vector>
 
 class CWebData : public CObject {
 public:
@@ -36,6 +44,9 @@ public:
   long m_lBufferLength;
   char* m_pCurrentPos; // 当前处理的位置
   long m_lCurrentPos;
+
+  // 采用vector实现所需之变量
+  vector<char> m_vDataBuffer;
 };
 
 typedef shared_ptr<CWebData> CWebDataPtr;
