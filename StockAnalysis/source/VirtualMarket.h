@@ -23,7 +23,7 @@ public:
   bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
 
   long GetMarketTimeZone(void) noexcept { return m_lMarketTimeZone; }
-  CString GetMarketID(void) noexcept { return m_strMarketId; }
+  CString GetMarketID(void) { return m_strMarketId; }
   time_t GetLocalTime(void) noexcept { return sm_tLocal; }
   time_t GetMarketTime(void) noexcept { return m_tMarket; }
   long GetFormatedMarketTime(void) noexcept { return m_lMarketTime; } //得到本市场的当地时间，格式为：hhmmss

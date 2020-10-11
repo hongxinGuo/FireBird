@@ -176,7 +176,7 @@ bool CChinaMarket::CheckMarketReady(void) noexcept {
 
 bool CChinaMarket::ChangeToNextStock(void) {
   ASSERT(m_pCurrentStock != nullptr);
-  long lIndex = m_pCurrentStock->GetOffset();
+  const long lIndex = m_pCurrentStock->GetOffset();
   CChinaStockPtr pStock = m_pCurrentStock;
 
   if (IsTotalStockSetSelected()) {
@@ -232,11 +232,11 @@ bool CChinaMarket::ChangeToPrevStock(void) {
     ASSERT(m_avChoicedStock[m_lCurrentSelectedStockSet].size() > 0); //
     if (m_lCurrentSelectedPosition == 0) {
       m_lCurrentSelectedPosition = m_avChoicedStock[m_lCurrentSelectedStockSet].size() - 1;
-      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet].at(m_lCurrentSelectedPosition);
     }
     else {
       m_lCurrentSelectedPosition--;
-      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet][m_lCurrentSelectedPosition];
+      pStock = m_avChoicedStock[m_lCurrentSelectedStockSet].at(m_lCurrentSelectedPosition);
     }
   }
   SetCurrentStock(pStock);
@@ -1302,7 +1302,7 @@ bool CChinaMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) 
 
   // 计算每一小时一次的任务
   i1HourCounter -= lSecondNumber;
-  if (i1HourCounter < 0) { 
+  if (i1HourCounter < 0) {
     i1HourCounter = 3599;
 
     return true;

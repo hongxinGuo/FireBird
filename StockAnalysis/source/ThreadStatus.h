@@ -5,7 +5,7 @@
 using namespace std;
 #include<atomic>
 
-const int cMaxBackGroundTaskThreads = 8;
+constexpr int cMaxBackGroundTaskThreads = 8;
 
 class CThreadStatus {    // ¸öÏß³Ì×´Ì¬
 public:
@@ -48,7 +48,7 @@ public:
 
   void IncreaseRunningThread(void) noexcept { m_NumberOfRunningThread++; }
   void DecreaseRunningThread(void) noexcept { if (m_NumberOfRunningThread > 0) m_NumberOfRunningThread--; }
-  int GetNumberOfRunningThread(void) noexcept { int iNumber = m_NumberOfRunningThread; return iNumber; }
+  int GetNumberOfRunningThread(void) noexcept { const int iNumber = m_NumberOfRunningThread; return iNumber; }
   bool IsWorkingThreadRunning(void) noexcept { if (GetNumberOfRunningThread() > 0) return true; else return false; }
 
 protected:

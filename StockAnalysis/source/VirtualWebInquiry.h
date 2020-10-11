@@ -36,7 +36,7 @@ public:
   // 以下为实现函数
   void CreateTotalInquiringString(CString strMIddle);
   CString GetInquiringString(void) { return m_strInquire; }
-  void SetInquiringString(CString str) noexcept { m_strInquire = str; }
+  void SetInquiringString(CString str) { m_strInquire = str; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
   char* GetBufferAddr(void) noexcept { return m_buffer; }
   long GetByteReaded(void)noexcept { return m_lByteRead; }
@@ -62,7 +62,7 @@ public:
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
-  CString GetConnection(void) noexcept { return m_strConnection; }
+  CString GetConnection(void) { return m_strConnection; }
 
   long GetInquiringNumber(void) noexcept { return m_lInquiringNumber; }
   void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }

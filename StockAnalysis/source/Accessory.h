@@ -6,17 +6,17 @@ using namespace std;
 #include<vector>
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间
-time_t ConvertBufferToTime(CString strFormat, char* buffer);
+time_t ConvertBufferToTime(CString strFormat, const char* buffer);
 time_t ConvertStringToTime(CString strFormat, CString strTime);
 
 // 时间转换辅助函数
 time_t FormatToTTime(long lDate, long lTime = 150000); // 将整型(YYYYMMDD)转变为time_t形式， 默认时间为15:00:00
-long FormatToDate(time_t tt);// 将时间转变为整型(YYYYMMDD)形式
-long FormatToTime(time_t tt); // 将时间转变为整数（HHMMSS)形式
-INT64 FormatToDateTime(time_t tt); // 将时间转变为整数（YYYYMMDDHHMMSS)形式
-long FormatToDate(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
-long FormatToTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
-INT64 FormatToDateTime(tm* ptm); // 将时间转变为整型(YYYYMMDD)形式
+long FormatToDate(time_t tt) noexcept;// 将时间转变为整型(YYYYMMDD)形式
+long FormatToTime(time_t tt) noexcept; // 将时间转变为整数（HHMMSS)形式
+INT64 FormatToDateTime(time_t tt) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)形式
+long FormatToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
+long FormatToTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
+INT64 FormatToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 
 long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值

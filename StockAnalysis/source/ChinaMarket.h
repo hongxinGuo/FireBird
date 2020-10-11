@@ -29,8 +29,8 @@ extern Semaphore gl_ProcessNeteaseRTDataQueue;
 
 extern CWebRTDataContainer gl_WebRTDataContainer;
 
-const int c_SelectedStockStartPosition = 0;
-const int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
+constexpr int c_SelectedStockStartPosition = 0;
+constexpr int c_10DaysRSStockSetStartPosition = 10; // 十日相对强度股票集起始位置（10-19为十日相对强对股票集，共十个）
 
 class CChinaMarket : public CVirtualMarket
 {
@@ -281,12 +281,12 @@ public:
   size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
   long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
 
-  void SetStockCodeForInquiringRTData(CString strStockCode) noexcept { m_strStockCodeForInquiringRTData = strStockCode; }
-  CString GetStockCodeForInquiringRTData(void) noexcept { return m_strStockCodeForInquiringRTData; }
+  void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
+  CString GetStockCodeForInquiringRTData(void) { return m_strStockCodeForInquiringRTData; }
   void SetReadingTengxunRTDataTime(clock_t tt) noexcept { m_ReadingTengxunRTDataTime = tt; }
   clock_t GetReadingTengxunRTDataTime(void) noexcept { return m_ReadingTengxunRTDataTime; }
-  void SetStockCodeForInquiringNeteaseDL(CString strStockCode) noexcept { m_strStockCodeForInquiringNeteaseDL = strStockCode; }
-  CString GetStockCodeForInquiringNeteaseDL(void) noexcept { return m_strStockCodeForInquiringNeteaseDL; }
+  void SetStockCodeForInquiringNeteaseDL(CString strStockCode) { m_strStockCodeForInquiringNeteaseDL = strStockCode; }
+  CString GetStockCodeForInquiringNeteaseDL(void) { return m_strStockCodeForInquiringNeteaseDL; }
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
@@ -358,29 +358,29 @@ public:
   long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
   long GetNeteaseDLDataInquiringIndex(void) noexcept { return m_lNeteaseDLDataInquiringIndex; }
 
-  int GetDLNeedUpdateNumber(void) { int i = m_iDLNeedUpdate; return i; }
-  void SetDLNeedUpdateNumber(int i) { m_iDLNeedUpdate = i; }
+  int GetDLNeedUpdateNumber(void) noexcept { const int i = m_iDLNeedUpdate; return i; }
+  void SetDLNeedUpdateNumber(int i) noexcept { m_iDLNeedUpdate = i; }
   void ClearDLNeedUpdaeStatus(void);
-  int GetDLNeedProcessNumber(void) { int i = m_iDLNeedProcess; return i; }
-  void SetDLNeedProcessNumber(int i) { m_iDLNeedProcess = i; }
-  int GetDLNeedSaveNumber(void) { int i = m_iDLNeedSave; return i; }
-  void SetDLNeedSaveNumber(int i) { m_iDLNeedSave = i; }
+  int GetDLNeedProcessNumber(void) noexcept { const int i = m_iDLNeedProcess; return i; }
+  void SetDLNeedProcessNumber(int i) noexcept { m_iDLNeedProcess = i; }
+  int GetDLNeedSaveNumber(void) noexcept { const int i = m_iDLNeedSave; return i; }
+  void SetDLNeedSaveNumber(int i) noexcept { m_iDLNeedSave = i; }
   void IncreaseNeteaseDLNeedUpdateNumber(int iNumber = 1);
   void DecreaseNeteaseDLNeedUpdateNumber(int iNumber = 1);
-  void IncreaseNeteaseDLNeedProcessNumber(int iNumber = 1) { m_iDLNeedProcess += iNumber; }
-  void DecreaseNeteaseDLNeedProcessNumber(int iNumber = 1) { if (m_iDLNeedProcess >= iNumber) m_iDLNeedProcess -= iNumber; }
-  void IncreaseNeteaseDLNeedSaveNumber(int iNumber = 1) { m_iDLNeedSave += iNumber; }
-  void DecreaseNeteaseDLNeedSaveNumber(int iNumber = 1) { if (m_iDLNeedSave >= iNumber) m_iDLNeedSave -= iNumber; }
+  void IncreaseNeteaseDLNeedProcessNumber(int iNumber = 1) noexcept { m_iDLNeedProcess += iNumber; }
+  void DecreaseNeteaseDLNeedProcessNumber(int iNumber = 1) noexcept { if (m_iDLNeedProcess >= iNumber) m_iDLNeedProcess -= iNumber; }
+  void IncreaseNeteaseDLNeedSaveNumber(int iNumber = 1) noexcept { m_iDLNeedSave += iNumber; }
+  void DecreaseNeteaseDLNeedSaveNumber(int iNumber = 1) noexcept { if (m_iDLNeedSave >= iNumber) m_iDLNeedSave -= iNumber; }
 
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
   void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
-  bool IsUpdateStockCodeDB(void) noexcept { bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
+  bool IsUpdateStockCodeDB(void) noexcept { const bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
-  bool IsUpdateOptionDB(void) noexcept { bool fFlag = m_fUpdateOptionDB; return fFlag; }
+  bool IsUpdateOptionDB(void) noexcept { const bool fFlag = m_fUpdateOptionDB; return fFlag; }
   void SetUpdateChoicedStockDB(bool fFlag) noexcept { m_fUpdateChoicedStockDB = fFlag; }
-  bool IsUpdateChoicedStockDB(void) noexcept { bool fFlag = m_fUpdateChoicedStockDB; return fFlag; }
+  bool IsUpdateChoicedStockDB(void) noexcept { const bool fFlag = m_fUpdateChoicedStockDB; return fFlag; }
 
   INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
   void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }

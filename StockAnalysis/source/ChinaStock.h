@@ -66,9 +66,9 @@ public:
   // 本股票各变量状态
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
-  CString GetStockCode(void) noexcept { return m_strStockCode; }
+  CString GetStockCode(void) { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
-  CString GetStockName(void) noexcept { return m_strStockName; }
+  CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
@@ -344,7 +344,7 @@ public:
   double GetCurrentGuadanTransactionPrice(void) noexcept { return m_dCurrentGuadanTransactionPrice; }
   void SetCurrentGuadanTransactionPrice(double dValue) noexcept { m_dCurrentGuadanTransactionPrice = dValue; }
   INT64 GetGuadan(INT64 lPrice) { return m_mapGuadan.at(lPrice); }
-  void SetGuadan(INT64 lPrice, INT64 lVolume) noexcept { m_mapGuadan[lPrice] = lVolume; }
+  void SetGuadan(INT64 lPrice, INT64 lVolume) { m_mapGuadan[lPrice] = lVolume; }
   bool HaveGuadan(INT64 lPrice);
 
   // 判断10日强势股票
@@ -399,10 +399,10 @@ public:
 
   //日线相关函数
   // 日线历史数据
-  size_t GetDLSize(void) { return m_DL.GetDataSize(); }
+  size_t GetDLSize(void) noexcept { return m_DL.GetDataSize(); }
   bool HaveNewDLData(void);
   void UnloadDL(void) noexcept { m_DL.Unload(); }
-  bool StoreDL(CDLPtr pDL) noexcept { return m_DL.StoreData(pDL); }
+  bool StoreDL(CDLPtr pDL) { return m_DL.StoreData(pDL); }
   CDLPtr GetDL(long lIndex) { return m_DL.GetData(lIndex); }
   void ShowDL(CDC* pDC, CRect rectClient);
   void ShowWeekLine(CDC* pDC, CRect rectClient);
@@ -451,11 +451,11 @@ public:
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDLBuffer; m_llCurrentPos = 0; }
 
   // 周线相关函数
-  size_t GetWeekLineSize(void) { return m_WeekLine.GetDataSize(); }
+  size_t GetWeekLineSize(void) noexcept { return m_WeekLine.GetDataSize(); }
   CWeekLinePtr GetWeekLine(long lIndex) { return m_WeekLine.GetData(lIndex); }
   void UnloadWeekLine(void) noexcept { m_WeekLine.Unload(); }
   bool CalculatingWeekLine(long lStartDate);
-  bool StoreWeekLine(CWeekLinePtr pWeekLine) noexcept { return m_WeekLine.StoreData(pWeekLine); }
+  bool StoreWeekLine(CWeekLinePtr pWeekLine) { return m_WeekLine.StoreData(pWeekLine); }
   bool IsWeekLineLoaded(void) noexcept { return m_WeekLine.IsDataLoaded(); }
   void SetWeekLineLoaded(bool fFlag) noexcept { m_WeekLine.SetDataLoaded(fFlag); }
   // 周线相对强度计算

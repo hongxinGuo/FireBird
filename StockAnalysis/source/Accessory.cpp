@@ -1,8 +1,8 @@
 #include"globedef.h"
 #include "Accessory.h"
 
-time_t ConvertBufferToTime(CString strFormat, char* buffer) {
-  time_t tt;
+time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
+  time_t tt{ 0 };
   tm tm_;
   int year, month, day, hour, minute, second;
 
@@ -20,7 +20,7 @@ time_t ConvertBufferToTime(CString strFormat, char* buffer) {
 }
 
 time_t ConvertStringToTime(CString strFormat, CString strTime) {
-  time_t tt;
+  time_t tt{ 0 };
   tm tm_;
   int year, month, day, hour, minute, second;
 
@@ -45,38 +45,38 @@ time_t FormatToTTime(long lDate, long lTime) {
   const long lHour = lTime / 10000;
   const long lMinute = (lTime - lHour * 10000) / 100;
   const long lSecond = lTime - lHour * 10000 - lMinute * 100;
-  CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
+  const CTime ct(lYear, lMonth, lD, lHour, lMinute, lSecond);	// 北京时间15时即UTC7时
   return (ct.GetTime());
 }
 
-long FormatToDate(time_t const tt) {
+long FormatToDate(time_t const tt) noexcept {
   tm tm_;
   localtime_s(&tm_, &tt);
   return((tm_.tm_year + 1900) * 10000 + (tm_.tm_mon + 1) * 100 + tm_.tm_mday);
 }
 
-long FormatToTime(time_t const tt) {
+long FormatToTime(time_t const tt) noexcept {
   tm tm_;
   localtime_s(&tm_, &tt);
   return(tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-INT64 FormatToDateTime(time_t const tt) {
+INT64 FormatToDateTime(time_t const tt) noexcept {
   tm tm_;
   localtime_s(&tm_, &tt);
-  return(((INT64)tm_.tm_year + 1900) * 10000000000 + ((INT64)tm_.tm_mon + 1) * 100000000 + (INT64)tm_.tm_mday * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
+  return((static_cast<INT64>(tm_.tm_year) + 1900) * 10000000000 + (static_cast<INT64>(tm_.tm_mon) + 1) * 100000000 + static_cast<INT64>(tm_.tm_mday) * 1000000 + tm_.tm_hour * 10000 + tm_.tm_min * 100 + tm_.tm_sec);
 }
 
-long FormatToDate(tm* ptm) {
+long FormatToDate(const tm* ptm) noexcept {
   return((ptm->tm_year + 1900) * 10000 + (ptm->tm_mon + 1) * 100 + ptm->tm_mday);
 }
 
-long FormatToTime(tm* ptm) {
+long FormatToTime(const tm* ptm) noexcept {
   return(ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
-INT64 FormatToDateTime(tm* ptm) {
-  return(((INT64)ptm->tm_year + 1900) * 10000000000 + ((INT64)ptm->tm_mon + 1) * 100000000 + (INT64)ptm->tm_mday * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
+INT64 FormatToDateTime(const tm* ptm) noexcept {
+  return((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 + static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
 const static CTimeSpan s_1Day(1, 0, 0, 0);
@@ -88,10 +88,11 @@ const static CTimeSpan s_6Day(6, 0, 0, 0);
 const static CTimeSpan s_7Day(7, 0, 0, 0);
 
 long GetNextMonday(long lDate) {
-  long year = lDate / 10000;
-  long month = lDate / 100 - (lDate / 10000) * 100;
-  long mday = lDate - (lDate / 100) * 100;
-  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - (lDate / 10000) * 100;
+  const long mday = lDate - (lDate / 100) * 100;
+  const CTime ctCurrent(year, month, mday, 12, 0, 0);
+  CTime ctNext;
 
   ctNext = ctCurrent;
   switch (ctCurrent.GetDayOfWeek()) {
@@ -120,16 +121,17 @@ long GetNextMonday(long lDate) {
   default: // 不可能
   break;
   }
-  long lNextDay = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+  const long lNextDay = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
 
   return lNextDay;
 }
 
 long GetPrevMonday(long lDate) {
-  long year = lDate / 10000;
-  long month = lDate / 100 - (lDate / 10000) * 100;
-  long mday = lDate - (lDate / 100) * 100;
-  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - (lDate / 10000) * 100;
+  const long mday = lDate - (lDate / 100) * 100;
+  const CTime ctCurrent(year, month, mday, 12, 0, 0);
+  CTime ctNext;
 
   ctNext = ctCurrent;
   switch (ctCurrent.GetDayOfWeek()) {
@@ -158,16 +160,17 @@ long GetPrevMonday(long lDate) {
   default: // 不可能
   break;
   }
-  long lPrevMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+  const long lPrevMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
 
   return lPrevMonday;
 }
 
 long GetCurrentMonday(long lDate) {
-  long year = lDate / 10000;
-  long month = lDate / 100 - (lDate / 10000) * 100;
-  long mday = lDate - (lDate / 100) * 100;
-  CTime ctCurrent(year, month, mday, 12, 0, 0), ctNext;
+  const long year = lDate / 10000;
+  const long month = lDate / 100 - (lDate / 10000) * 100;
+  const long mday = lDate - (lDate / 100) * 100;
+  const CTime ctCurrent(year, month, mday, 12, 0, 0);
+  CTime ctNext;
 
   ctNext = ctCurrent;
   switch (ctCurrent.GetDayOfWeek()) {
@@ -195,7 +198,7 @@ long GetCurrentMonday(long lDate) {
   default: // 不可能
   break;
   }
-  long lCurrentMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
+  const long lCurrentMonday = ctNext.GetYear() * 10000 + ctNext.GetMonth() * 100 + ctNext.GetDay();
 
   return lCurrentMonday;
 }
@@ -219,8 +222,8 @@ CString GetDefaultSchemaConnect() {
 }
 
 CString ConvertValueToString(long lValue, int iDividend) {
-  char buffer[50];
-  double d = ((double)lValue) / iDividend;
+  char buffer[50]{ 0 };
+  const double d = (static_cast<double>(lValue)) / iDividend;
   CString str;
 
   sprintf_s(buffer, _T("%.3f"), d);
@@ -229,8 +232,8 @@ CString ConvertValueToString(long lValue, int iDividend) {
 }
 
 CString ConvertValueToString(int iValue, int iDividend) {
-  char buffer[50];
-  double d = ((double)iValue) / iDividend;
+  char buffer[50]{ 0 };
+  const double d = (static_cast<double>(iValue)) / iDividend;
   CString str;
 
   sprintf_s(buffer, _T("%.3f"), d);
@@ -240,8 +243,8 @@ CString ConvertValueToString(int iValue, int iDividend) {
 }
 
 CString ConvertValueToString(INT64 iValue, int iDividend) {
-  char buffer[50];
-  double d = ((double)iValue) / iDividend;
+  char buffer[50]{ 0 };
+  const double d = (static_cast<double>(iValue)) / iDividend;
   CString str;
 
   sprintf_s(buffer, _T("%.3f"), d);
@@ -250,8 +253,8 @@ CString ConvertValueToString(INT64 iValue, int iDividend) {
 }
 
 CString ConvertValueToString(double dValue, int iDividend) {
-  char buffer[50];
-  double d = dValue / iDividend;
+  char buffer[50]{ 0 };
+  const double d = dValue / iDividend;
   CString str;
 
   sprintf_s(buffer, _T("%.3f"), d);

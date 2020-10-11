@@ -45,10 +45,10 @@ public:
   void SetCurrentInquiringDate(long lDate) noexcept { m_lCurrentInquiringDate = lDate; }
 
   size_t GetDatabaseSize(void) noexcept { return m_vPotenDailyBriefing.size(); }
-  void ClearDatabase(void) noexcept { m_vPotenDailyBriefing.resize(0); }
+  void ClearDatabase(void) { m_vPotenDailyBriefing.resize(0); }
 
 public:
-  void __TEST_SetLoadedDate(long lDate, bool fFlag) noexcept { m_mapDataLoadedDays[lDate] = fFlag; }
+  void __TEST_SetLoadedDate(long lDate, bool fFlag) { m_mapDataLoadedDays[lDate] = fFlag; }
 
 protected:
   CPotenDailyBriefingPtr m_pDataToSaved;
