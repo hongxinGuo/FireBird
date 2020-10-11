@@ -1836,12 +1836,12 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
     if (setWeekLineStockCode.find(pData->GetStockCode()) == setWeekLineStockCode.end()) { //周线数据容器中无此日线数据
        // 存储此日线数据至周线数据容器
       pWeekLine = make_shared<CWeekLine>();
-      pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDL>(pData));
+      pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(pData));
       weekLineContainer.StoreData(pWeekLine);
     }
     else {
       // 更新周线数据容器
-      weekLineContainer.UpdateData(dynamic_pointer_cast<CDL>(pData));
+      weekLineContainer.UpdateData(dynamic_pointer_cast<CDayLine>(pData));
     }
   }
 
@@ -1948,7 +1948,7 @@ bool CChinaMarket::LoadDL(CDLContainer& dayLineContainer, long lDate) {
   setDLExtendInfo.m_pDatabase->BeginTrans();
   setDLBasicInfo.m_pDatabase->BeginTrans();
   while (!setDLBasicInfo.IsEOF()) {
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->LoadBasicData(&setDLBasicInfo);
     while (!setDLExtendInfo.IsEOF() && (strcmp(setDLExtendInfo.m_StockCode, setDLBasicInfo.m_StockCode) < 0)) {
       setDLExtendInfo.MoveNext();

@@ -3,15 +3,15 @@
 #include"globedef.h"
 #include "DayLine.h"
 
-CDL::CDL() : CChinaStockHistoryData() {
+CDayLine::CDayLine() : CChinaStockHistoryData() {
   Reset();
 }
 
-void CDL::Reset(void) {
+void CDayLine::Reset(void) {
   CChinaStockHistoryData::Reset();
 }
 
-bool CDL::LoadExtendData(CSetDLExtendInfo* psetDLExtendInfo) {
+bool CDayLine::LoadExtendData(CSetDLExtendInfo* psetDLExtendInfo) {
   ASSERT(psetDLExtendInfo->IsOpen());
   m_lTransactionNumber = atol(psetDLExtendInfo->m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(psetDLExtendInfo->m_TransactionNumberBelow5000);
@@ -82,7 +82,7 @@ bool CDL::LoadExtendData(CSetDLExtendInfo* psetDLExtendInfo) {
   return true;
 }
 
-bool CDL::SaveData(CSetDLBasicInfo* psetDLBasicInfo) {
+bool CDayLine::SaveData(CSetDLBasicInfo* psetDLBasicInfo) {
   ASSERT(psetDLBasicInfo->IsOpen());
 
   psetDLBasicInfo->m_Date = GetFormatedMarketDate();
@@ -108,7 +108,7 @@ bool CDL::SaveData(CSetDLBasicInfo* psetDLBasicInfo) {
   return true;
 }
 
-bool CDL::AppendData(CSetDLBasicInfo* psetDLBasicInfo) {
+bool CDayLine::AppendData(CSetDLBasicInfo* psetDLBasicInfo) {
   ASSERT(psetDLBasicInfo->IsOpen());
   psetDLBasicInfo->AddNew();
   SaveData(psetDLBasicInfo);
@@ -117,7 +117,7 @@ bool CDL::AppendData(CSetDLBasicInfo* psetDLBasicInfo) {
   return true;
 }
 
-bool CDL::LoadBasicData(CSetDLBasicInfo* psetDLBasicInfo) {
+bool CDayLine::LoadBasicData(CSetDLBasicInfo* psetDLBasicInfo) {
   ASSERT(psetDLBasicInfo->IsOpen());
   m_lDate = psetDLBasicInfo->m_Date;
   m_wMarket = psetDLBasicInfo->m_Market;
@@ -151,7 +151,7 @@ bool CDL::LoadBasicData(CSetDLBasicInfo* psetDLBasicInfo) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CDL::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength) {
+bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength) {
   long iCount = 0;
   static char buffer2[200], buffer3[100];
   long i = 0;
@@ -189,7 +189,7 @@ bool CDL::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lL
   pCurrentPos++;
   iCount++;
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   SetStockCode(strStockCode);
   str = strStockCode.Left(2);
@@ -202,31 +202,31 @@ bool CDL::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lL
   else {
     return false;
   }
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   SetStockName(str);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
   SetClose(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
   SetHigh(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
   SetLow(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
   SetOpen(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
   SetLastClose(dTemp * 1000);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   if (GetOpen() == 0) {
     //ASSERT(strcmp(buffer2, _T("None") == 0);
     SetUpDown(0.0);
@@ -241,17 +241,17 @@ bool CDL::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lL
     SetUpDownRate(((double)(GetUpDown() * 100000.0)) / GetLastClose());
   }
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   SetChangeHandRate(buffer2);
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   SetVolume(buffer2); // 读入的是股数
 
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   SetAmount(buffer2);
 
   // 总市值的数据有两种形式，需要程序判定
-  if (!ReadOneValueOfNeteaseDL(pCurrentPos, buffer2, iCount)) return false;
+  if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   SetTotalValue(buffer2); // 总市值的单位为：元
 
   // 流通市值不是用逗号结束，故而不能使用ReadOneValueFromNeteaseDL函数
@@ -274,7 +274,7 @@ bool CDL::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lL
   return true;
 }
 
-bool CDL::IsActive(void) {
+bool CDayLine::IsActive(void) {
   if ((GetClose() != 0) && (GetLastClose() != 0)) {
     return true;
   }

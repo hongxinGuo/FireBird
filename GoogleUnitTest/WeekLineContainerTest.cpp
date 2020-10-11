@@ -54,7 +54,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockWeekLineContainerTest, TestUpdateData2) {
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->SetStockCode(_T("sh600000"));
     pDL->SetDate(20200101);
     pDL->SetHigh(10000);

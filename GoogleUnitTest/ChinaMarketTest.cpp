@@ -1742,7 +1742,7 @@ namespace StockAnalysisTest {
     CString strDate;
 
     CSetDLBasicInfo setDL, setDL2;
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
 
     pDL->SetStockCode(_T("sh600000"));
     pDL->SetDate(19900101);
@@ -1777,7 +1777,7 @@ namespace StockAnalysisTest {
     CString strDate;
 
     CSetDLExtendInfo setDL, setDL2;
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
 
     pDL->SetStockCode(_T("sh600000"));
     pDL->SetDate(19900101);

@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
       m_DL.SetHigh(-1);
       m_DL.SetLow(-1);
 
-      m_DLPtr = make_shared<CDL>();
+      m_DLPtr = make_shared<CDayLine>();
     }
 
     virtual void TearDown(void) override {
@@ -72,7 +72,7 @@ namespace StockAnalysisTest {
     char* m_pData;
     char* m_pCurrentPos;
     long m_lCountPos = 0;
-    CDL m_DL;
+    CDayLine m_DL;
     CDLPtr m_DLPtr;
   };
 
@@ -199,7 +199,7 @@ namespace StockAnalysisTest {
 
   TEST_P(ReadDLOneValueTest, TestReadOneValue2) {
     char buffer[30];
-    bool fSucceed = ReadOneValueOfNeteaseDL(m_pCurrentPos, buffer, m_lCountPos);
+    bool fSucceed = ReadOneValueOfNeteaseDayLine(m_pCurrentPos, buffer, m_lCountPos);
     CString str;
     str = buffer;
     switch (m_iCount) {

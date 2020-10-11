@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
 
     EXPECT_FALSE(pStock->IsDLNeedSaving());
     pStock->SetDLNeedSaving(true);
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->SetDate(19900101);
     pStock->SetDLEndDate(20000101);
     pStock->StoreDL(pDL);
@@ -107,11 +107,11 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
 
     pStock->SetDLNeedSaving(true);
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->SetDate(19900101);
     pStock->SetDLEndDate(20000101);
     pStock->StoreDL(pDL);
-    pDL = make_shared<CDL>();
+    pDL = make_shared<CDayLine>();
     pDL->SetDate(s_pchinaMarket->GetFormatedMarketDate());
     pStock->StoreDL(pDL);
     //pStock->SetDLNeedSaving(true);

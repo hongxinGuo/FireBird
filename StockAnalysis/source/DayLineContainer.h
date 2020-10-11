@@ -27,7 +27,7 @@ public:
   CWeekLinePtr CreateNewWeekLine(long& lCurrentDLPos);
 
   bool StoreData(CDLPtr pData) { m_vHistoryData.push_back(dynamic_pointer_cast<CChinaStockHistoryData>(pData)); return true; }
-  CDLPtr GetData(long lIndex) { return dynamic_pointer_cast<CDL>(m_vHistoryData.at(lIndex)); }
+  CDLPtr GetData(long lIndex) { return dynamic_pointer_cast<CDayLine>(m_vHistoryData.at(lIndex)); }
 
 public:
   // ÌØÓÐº¯Êý

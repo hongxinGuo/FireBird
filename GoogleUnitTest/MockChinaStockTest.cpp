@@ -98,7 +98,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaStockTest, TestThreadLoadDL) {
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pStock->StoreDL(pDL);
     InSequence seq;
     EXPECT_CALL(*pStock, LoadDL)

@@ -783,7 +783,7 @@ namespace StockAnalysisTest {
     CChinaStock stock;
     EXPECT_FALSE(stock.HaveNewDLData());
     EXPECT_EQ(stock.GetDLSize(), 0);
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->SetDate(20200101);
     stock.StoreDL(pDL);
     EXPECT_EQ(stock.GetDLSize(), 1);
@@ -1297,12 +1297,12 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestLoadDLAndDLInfo) {
     CSetDLBasicInfo setDLBasicInfo;
     CDLPtr pid;
-    CDL stock;
+    CDayLine stock;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600011"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDLDBUpdated());
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(21900101);
 
-    pid = make_shared<CDL>();
+    pid = make_shared<CDayLine>();
     pid->SetDate(21900101);
     pid->SetMarket(__SHANGHAI_MARKET__);
     pid->SetStockCode(_T("sh600011"));
@@ -1520,13 +1520,13 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSaveDL) {
     CSetDLBasicInfo setDLBasicInfo;
     CDLPtr pid;
-    CDL stock;
+    CDayLine stock;
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDLDBUpdated());
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(20190101);
 
     for (int i = 0; i < 10; i++) {
-      pid = make_shared<CDL>();
+      pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600016"));
@@ -1597,7 +1597,7 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600010"));
 
     for (int i = 0; i < 10; i++) {
-      pid = make_shared<CDL>();
+      pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600010"));
@@ -1665,7 +1665,7 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600004"));
 
     for (int i = 0; i < 10; i++) {
-      pid = make_shared<CDL>();
+      pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600004"));
@@ -1702,7 +1702,7 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
-      pid = make_shared<CDL>();
+      pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
       pid->SetStockCode(_T("sh600008"));
@@ -1808,7 +1808,7 @@ namespace StockAnalysisTest {
     vector<CDLPtr> vDL;
     CDLPtr pDL;
     for (int i = 0; i < 10; i++) {
-      pDL = make_shared<CDL>();
+      pDL = make_shared<CDayLine>();
       pDL->SetDate(19900101 + i);
       pDL->SetClose(10);
       pDL->SetLastClose(10);
@@ -1905,7 +1905,7 @@ namespace StockAnalysisTest {
     setDLExtendInfo.Update();
     setDLExtendInfo.Close();
 
-    CDL dayLine;
+    CDayLine dayLine;
     setDLExtendInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
     setDLExtendInfo.Open();
     dayLine.LoadExtendData(&setDLExtendInfo);

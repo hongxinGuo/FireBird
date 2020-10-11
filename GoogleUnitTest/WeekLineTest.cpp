@@ -902,7 +902,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CWeekLineTest, TestCreateWeekLine1) {
     CWeekLine weekLine;
-    CDLPtr pDL = make_shared<CDL>();
+    CDLPtr pDL = make_shared<CDayLine>();
     pDL->SetTime(100100100100);
     pDL->SetDate(20200202);
     pDL->SetStockCode(_T("sh600000"));
@@ -1062,7 +1062,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CWeekLineTest, TestCreateWeekLine2) {
     CWeekLine weekLine;
-    CDLPtr pDL1 = make_shared<CDL>(), pDL2 = make_shared<CDL>();
+    CDLPtr pDL1 = make_shared<CDayLine>(), pDL2 = make_shared<CDayLine>();
     pDL1->SetTime(100100100100);
     pDL1->SetDate(20200727);
     pDL1->SetStockCode(_T("sh600000"));

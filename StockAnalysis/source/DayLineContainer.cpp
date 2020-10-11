@@ -44,7 +44,7 @@ bool CDLContainer::SaveDLBasicInfo(CString strStockCode) {
 
   setDLBasicInfo.Open();
   while (!setDLBasicInfo.IsEOF()) {
-    pDL = make_shared<CDL>();
+    pDL = make_shared<CDayLine>();
     pDL->LoadBasicData(&setDLBasicInfo);
     vDL.push_back(pDL);
     lCurrentPos++;
@@ -113,7 +113,7 @@ bool CDLContainer::LoadDLBasicInfo(CSetDLBasicInfo* psetDLBasicInfo) {
   // 装入DL数据
   Unload();
   while (!psetDLBasicInfo->IsEOF()) {
-    pDL = make_shared<CDL>();
+    pDL = make_shared<CDayLine>();
     pDL->LoadBasicData(psetDLBasicInfo);
     StoreData(pDL);
     psetDLBasicInfo->MoveNext();

@@ -30,41 +30,41 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDLTest, TestGetDate) {
     ASSERT_FALSE(gl_fNormalMode);
-    CDL dl;
+    CDayLine dl;
     dl.SetDate(__CHINA_MARKET_BEGIN_DATE__);
     EXPECT_EQ(dl.GetFormatedMarketDate(), __CHINA_MARKET_BEGIN_DATE__);
   }
 
   TEST_F(CStockDLTest, TestGetTime) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetFormatedMarketDate(), 0);
     dl.SetTime(100100100);
     EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
   }
 
   TEST_F(CStockDLTest, TestGetMarket) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetMarket(), 0);
     dl.SetMarket(1);
     EXPECT_EQ(dl.GetMarket(), 1);
   }
 
   TEST_F(CStockDLTest, TestGetStockCode) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_STREQ(dl.GetStockCode(), _T(""));
     dl.SetStockCode(_T("sh600000"));
     EXPECT_STREQ(dl.GetStockCode(), _T("sh600000"));
   }
 
   TEST_F(CStockDLTest, TestGetStockName) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_STREQ(dl.GetStockName(), _T(""));
     dl.SetStockName(_T("浦东银行"));
     EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
   }
 
   TEST_F(CStockDLTest, TestGetLastClose) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetLastClose(), 0);
     dl.SetLastClose(10100);
     EXPECT_EQ(dl.GetLastClose(), 10100);
@@ -72,21 +72,21 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDLTest, TestGetOpen) {
     ASSERT_FALSE(gl_fNormalMode);
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOpen(), 0);
     dl.SetOpen(11100);
     EXPECT_EQ(dl.GetOpen(), 11100);
   }
 
   TEST_F(CStockDLTest, TestGetHigh) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetHigh(), 0);
     dl.SetHigh(11111);
     EXPECT_EQ(dl.GetHigh(), 11111);
   }
 
   TEST_F(CStockDLTest, TestGetLow) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetLow(), 0);
     dl.SetLow(22222);
     EXPECT_EQ(dl.GetLow(), 22222);
@@ -95,7 +95,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestGetClose) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetClose(), 0);
     dl.SetClose(33333);
     EXPECT_EQ(dl.GetClose(), 33333);
@@ -104,7 +104,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestGetUpDown) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetUpDown(), 0);
     dl.SetUpDown(10.020);
     EXPECT_DOUBLE_EQ(dl.GetUpDown(), 10.020);
@@ -113,7 +113,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestGetUpDownRate) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 0);
     dl.SetUpDownRate(40.40);
     EXPECT_DOUBLE_EQ(dl.GetUpDownRate(), 40.40);
@@ -123,28 +123,28 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDLTest, TestGetChangeHandRate) {
     ASSERT_FALSE(gl_fNormalMode);
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 0);
     dl.SetChangeHandRate(30.30);
     EXPECT_DOUBLE_EQ(dl.GetChangeHandRate(), 30.30);
   }
 
   TEST_F(CStockDLTest, TestGetVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetVolume(), 0);
     dl.SetVolume(100100100100100100);
     EXPECT_EQ(dl.GetVolume(), 100100100100100100);
   }
 
   TEST_F(CStockDLTest, TestGetAmount) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAmount(), 0);
     dl.SetAmount(200200200200200200);
     EXPECT_EQ(dl.GetAmount(), 200200200200200200);
   }
 
   TEST_F(CStockDLTest, TestGetTotalValue) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTotalValue(), 0);
     CString str = _T("3.13e+11");
     dl.SetTotalValue(str.GetBuffer());
@@ -152,7 +152,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestGetCurrentValue) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetCurrentValue(), 0);
     CString str = _T("3.15e+11");
     dl.SetCurrentValue(str.GetBuffer());
@@ -160,405 +160,405 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestGetRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetRS(), 0);
     dl.SetRS(50.50);
     EXPECT_DOUBLE_EQ(dl.GetRS(), 50.50);
   }
 
   TEST_F(CStockDLTest, TestGetRSIndex) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 0);
     dl.SetRSIndex(50.5023);
     EXPECT_DOUBLE_EQ(dl.GetRSIndex(), 50.5023);
   }
   TEST_F(CStockDLTest, TestGetRSBackup) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 0);
     dl.SetRSBackup(50.506);
     EXPECT_DOUBLE_EQ(dl.GetRSBackup(), 50.506);
   }
 
   TEST_F(CStockDLTest, TestGetRSLogarithm) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 0.0);
     dl.SetRSLogarithm(50.50);
     EXPECT_DOUBLE_EQ((double)dl.GetRSLogarithm(), 50.50);
   }
 
   TEST_F(CStockDLTest, TestGetTransactionNumber) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumber(), 0);
     dl.SetTransactionNumber(600600);
     EXPECT_EQ(dl.GetTransactionNumber(), 600600);
   }
 
   TEST_F(CStockDLTest, TestGetTransactionNumberBelow5000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumberBelow5000(), 0);
     dl.SetTransactionNumberBelow5000(10);
     EXPECT_EQ(dl.GetTransactionNumberBelow5000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetTransactionNumberBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumberBelow50000(), 0);
     dl.SetTransactionNumberBelow50000(10);
     EXPECT_EQ(dl.GetTransactionNumberBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetTransactionNumberBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumberBelow200000(), 0);
     dl.SetTransactionNumberBelow200000(10);
     EXPECT_EQ(dl.GetTransactionNumberBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetTransactionNumberAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetTransactionNumberAbove200000(), 0);
     dl.SetTransactionNumberAbove200000(10);
     EXPECT_EQ(dl.GetTransactionNumberAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolume(), 0);
     dl.SetOrdinaryBuyVolume(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackBuyVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackBuyVolume(), 0);
     dl.SetAttackBuyVolume(10);
     EXPECT_EQ(dl.GetAttackBuyVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetStrongBuyVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetStrongBuyVolume(), 0);
     dl.SetStrongBuyVolume(10);
     EXPECT_EQ(dl.GetStrongBuyVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetStrongSellVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetStrongSellVolume(), 0);
     dl.SetStrongSellVolume(10);
     EXPECT_EQ(dl.GetStrongSellVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackSellVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackSellVolume(), 0);
     dl.SetAttackSellVolume(10);
     EXPECT_EQ(dl.GetAttackSellVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetUnknownVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetUnknownVolume(), 0);
     dl.SetUnknownVolume(10);
     EXPECT_EQ(dl.GetUnknownVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetCanceledBuyVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetCanceledBuyVolume(), 0);
     dl.SetCanceledBuyVolume(10);
     EXPECT_EQ(dl.GetCanceledBuyVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetCanceledSellVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetCanceledSellVolume(), 0);
     dl.SetCanceledSellVolume(10);
     EXPECT_EQ(dl.GetCanceledSellVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolume) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolume(), 0);
     dl.SetOrdinarySellVolume(10);
     EXPECT_EQ(dl.GetOrdinarySellVolume(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackBuyBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackBuyBelow50000(), 0);
     dl.SetAttackBuyBelow50000(10);
     EXPECT_EQ(dl.GetAttackBuyBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackBuyBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackBuyBelow200000(), 0);
     dl.SetAttackBuyBelow200000(10);
     EXPECT_EQ(dl.GetAttackBuyBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackBuyAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackBuyAbove200000(), 0);
     dl.SetAttackBuyAbove200000(10);
     EXPECT_EQ(dl.GetAttackBuyAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackSellAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackSellAbove200000(), 0);
     dl.SetAttackSellAbove200000(10);
     EXPECT_EQ(dl.GetAttackSellAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackSellBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackSellBelow200000(), 0);
     dl.SetAttackSellBelow200000(10);
     EXPECT_EQ(dl.GetAttackSellBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetAttackSellBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetAttackSellBelow50000(), 0);
     dl.SetAttackSellBelow50000(10);
     EXPECT_EQ(dl.GetAttackSellBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow5000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow5000(), 0);
     dl.SetOrdinaryBuyVolumeBelow5000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow5000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow10000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow10000(), 0);
     dl.SetOrdinaryBuyVolumeBelow10000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow10000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow20000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow20000(), 0);
     dl.SetOrdinaryBuyVolumeBelow20000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow20000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow50000(), 0);
     dl.SetOrdinaryBuyVolumeBelow50000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow100000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow100000(), 0);
     dl.SetOrdinaryBuyVolumeBelow100000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow100000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow200000(), 0);
     dl.SetOrdinaryBuyVolumeBelow200000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyVolumeAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeAbove200000(), 0);
     dl.SetOrdinaryBuyVolumeAbove200000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyVolumeAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow5000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow5000(), 0);
     dl.SetOrdinarySellVolumeBelow5000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow5000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow10000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow10000(), 0);
     dl.SetOrdinarySellVolumeBelow10000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow10000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow20000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow20000(), 0);
     dl.SetOrdinarySellVolumeBelow20000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow20000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow50000(), 0);
     dl.SetOrdinarySellVolumeBelow50000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow100000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow100000(), 0);
     dl.SetOrdinarySellVolumeBelow100000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow100000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow200000(), 0);
     dl.SetOrdinarySellVolumeBelow200000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellVolumeAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellVolumeAbove200000(), 0);
     dl.SetOrdinarySellVolumeAbove200000(10);
     EXPECT_EQ(dl.GetOrdinarySellVolumeAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow5000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow5000(), 0);
     dl.SetOrdinaryBuyNumberBelow5000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow5000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow10000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow10000(), 0);
     dl.SetOrdinaryBuyNumberBelow10000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow10000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow20000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow20000(), 0);
     dl.SetOrdinaryBuyNumberBelow20000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow20000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow50000(), 0);
     dl.SetOrdinaryBuyNumberBelow50000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow100000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow100000(), 0);
     dl.SetOrdinaryBuyNumberBelow100000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow100000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow200000(), 0);
     dl.SetOrdinaryBuyNumberBelow200000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinaryBuyNumberAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinaryBuyNumberAbove200000(), 0);
     dl.SetOrdinaryBuyNumberAbove200000(10);
     EXPECT_EQ(dl.GetOrdinaryBuyNumberAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow5000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow5000(), 0);
     dl.SetOrdinarySellNumberBelow5000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow5000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow10000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow10000(), 0);
     dl.SetOrdinarySellNumberBelow10000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow10000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow20000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow20000(), 0);
     dl.SetOrdinarySellNumberBelow20000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow20000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow50000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow50000(), 0);
     dl.SetOrdinarySellNumberBelow50000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow50000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow100000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow100000(), 0);
     dl.SetOrdinarySellNumberBelow100000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow100000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberBelow200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow200000(), 0);
     dl.SetOrdinarySellNumberBelow200000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberBelow200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGetOrdinarySellNumberAbove200000) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.GetOrdinarySellNumberAbove200000(), 0);
     dl.SetOrdinarySellNumberAbove200000(10);
     EXPECT_EQ(dl.GetOrdinarySellNumberAbove200000(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet3DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get3DaysRS(), 0);
     dl.Set3DaysRS(10);
     EXPECT_EQ(dl.Get3DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet5DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get5DaysRS(), 0);
     dl.Set5DaysRS(10);
     EXPECT_EQ(dl.Get5DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet10DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get10DaysRS(), 0);
     dl.Set10DaysRS(10);
     EXPECT_EQ(dl.Get10DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet30DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get30DaysRS(), 0);
     dl.Set30DaysRS(10);
     EXPECT_EQ(dl.Get30DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet60DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get60DaysRS(), 0);
     dl.Set60DaysRS(10);
     EXPECT_EQ(dl.Get60DaysRS(), 10);
   }
 
   TEST_F(CStockDLTest, TestGet120DaysRS) {
-    CDL dl;
+    CDayLine dl;
     EXPECT_EQ(dl.Get120DaysRS(), 0);
     dl.Set120DaysRS(10);
     EXPECT_EQ(dl.Get120DaysRS(), 10);
@@ -566,7 +566,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDLTest, TestSaveData) {
     CSetDLBasicInfo setDLBasicInfo;
-    CDL id, id2;
+    CDayLine id, id2;
 
     id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
@@ -652,7 +652,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CStockDLTest, TestLoadData) {
     CSetDLBasicInfo setDLBasicInfo;
-    CDL id, idLoaded;
+    CDayLine id, idLoaded;
 
     id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
@@ -717,7 +717,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestIsActive) {
-    CDL dayLine;
+    CDayLine dayLine;
     EXPECT_FALSE(dayLine.IsActive());
     dayLine.SetClose(100);
     EXPECT_FALSE(dayLine.IsActive());
@@ -728,7 +728,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CStockDLTest, TestLoadDL) {
-    CDL id, id2;
+    CDayLine id, id2;
     CSetDLBasicInfo setDLBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
     id.SetMarket(__SHANGHAI_MARKET__);

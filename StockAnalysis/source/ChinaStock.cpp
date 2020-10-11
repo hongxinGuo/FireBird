@@ -208,7 +208,7 @@ bool CChinaStock::TransferNeteaseDLWebDataToBuffer(CNeteaseDLWebInquiry* pNeteas
 bool CChinaStock::ProcessNeteaseDLData(void) {
   char* pTestPos = m_pDLBuffer;
   vector<CDLPtr> vTempDL;
-  shared_ptr<CDL> pDL;
+  shared_ptr<CDayLine> pDL;
 
   ASSERT(m_fDLNeedProcess);
   ASSERT(m_fDLNeedSaving == false);
@@ -241,7 +241,7 @@ bool CChinaStock::ProcessNeteaseDLData(void) {
   pTestPos = m_pDLBuffer + m_llCurrentPos;
   ASSERT(*pTestPos == *m_pCurrentPos);
   while (m_llCurrentPos < m_lDLBufferLength) {
-    pDL = make_shared<CDL>();
+    pDL = make_shared<CDayLine>();
     if (!pDL->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
       TRACE(_T("%s日线数据出错\n"), GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
