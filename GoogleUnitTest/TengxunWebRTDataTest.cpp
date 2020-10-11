@@ -176,7 +176,7 @@ namespace StockAnalysisTest {
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pTengxunWebRTData->GetBufferAddr();
+      m_pData = m_pTengxunWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
@@ -743,7 +743,7 @@ namespace StockAnalysisTest {
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pTengxunWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pTengxunWebRTData->GetBufferAddr();
+      m_pData = m_pTengxunWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }

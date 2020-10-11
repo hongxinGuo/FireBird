@@ -903,8 +903,8 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
   size_t lTotalData = gl_WebInquirer.GetSinaRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopSinaRTData();
-    pWebDataReceived->SetCurrentPos(0);
-    while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
+    pWebDataReceived->ResetCurrentPos();
+    while (!pWebDataReceived->IsProcessedAllTheData()) {
       CWebRTDataPtr pRTData = make_shared<CWebRTData>();
       if (pRTData->ReadSinaData(pWebDataReceived)) {
         m_llRTDataReceived++;
@@ -945,7 +945,6 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   size_t lTotalData = gl_WebInquirer.GetNeteaseRTDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
-    pWebDataReceived->m_pCurrentPos = pWebDataReceived->m_pDataBuffer;
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
@@ -1079,7 +1078,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
       j = 0;
-      while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
+      while (!pWebDataReceived->IsProcessedAllTheData()) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
           CheckTengxunRTData(pRTData); // 检测一下

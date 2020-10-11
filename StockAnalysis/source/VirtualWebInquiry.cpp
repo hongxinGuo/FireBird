@@ -37,7 +37,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fStatus = true;
   CString str1, strLeft;
 
-  m_pCurrentReadPos = GetBufferAddr();
+  //m_pCurrentReadPos = __TEST_GetBufferAddr();
   m_lCurrentByteRead = 0;
   m_lReadingThreadNumber++;
   ASSERT(IsReadingWebData());
@@ -152,7 +152,7 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
-  long i;
+  long i{ 0 };
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();
   for (i = 0; i < lTotalNumber; i++) {

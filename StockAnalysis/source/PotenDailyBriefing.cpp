@@ -142,7 +142,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
   CString strValue, strTime;
   CString strNoUse;
 
-  while (pWebDataReceived->GetCurrentPos() < pWebDataReceived->GetBufferLength()) {
+  while (!pWebDataReceived->IsProcessedAllTheData()) {
     str = GetNextString(pWebDataReceived);
     strHead = str.Left(12);
     if (strHead.Compare(_T("DIRTY TANKER")) == 0) {
@@ -289,7 +289,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
       pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
     }
   }
-  pWebDataReceived->m_pCurrentPos = pWebDataReceived->GetBufferAddr();
+  pWebDataReceived->ResetCurrentPos();
   for (int i = 0; i < pWebDataReceived->m_lBufferLength; i++) {
     *pWebDataReceived->m_pCurrentPos++ = 0x000;
   }
@@ -305,7 +305,7 @@ bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString 
     strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
     strHead = strNoUse.Left(str.GetLength());
     if (strHead.Compare(str) == 0) return true;
-    if (pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength()) return false;
+    if (pWebDataReceived->IsProcessedAllTheData()) return false;
   } while (!fFound);
   return true;
 }

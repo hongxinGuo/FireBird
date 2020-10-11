@@ -20,7 +20,7 @@ namespace StockAnalysisTest {
       m_id.ResetCurrentPos();
       EXPECT_EQ(m_id.m_pCurrentPos, buffer);
       EXPECT_EQ(m_id.m_lCurrentPos, 0);
-      EXPECT_EQ(m_id.GetBufferAddr(), buffer);
+      EXPECT_EQ(m_id.__TEST_GetBufferAddr(), buffer);
       EXPECT_EQ(m_id.GetBufferLength(), 100);
     }
 
@@ -34,7 +34,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CReceivedDataTest, TestGetCurrentPos) {
     EXPECT_EQ(m_id.GetCurrentPos(), 0);
-    m_id.SetCurrentPos(5);
+    m_id.IncreaseCurrentPos(5);
     EXPECT_EQ(m_id.GetCurrentPos(), 5);
     EXPECT_EQ(m_id.m_pCurrentPos, m_id.m_pDataBuffer + 5);
   }

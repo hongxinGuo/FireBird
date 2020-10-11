@@ -130,7 +130,7 @@ namespace StockAnalysisTest {
     m_VirtualWebInquiry.__TESTSetBuffer(str);
     CWebDataPtr p = m_VirtualWebInquiry.TransferWebDataToQueueData();
     EXPECT_EQ(p->GetBufferLength(), str.GetLength());
-    char* pChar = p->GetBufferAddr();
+    char* pChar = p->__TEST_GetBufferAddr();
     CString strCompare = pChar;
     EXPECT_STREQ(strCompare, str);
 

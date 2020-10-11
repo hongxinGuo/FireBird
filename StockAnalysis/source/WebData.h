@@ -18,15 +18,17 @@ public:
     if (m_pDataBuffer != nullptr) delete m_pDataBuffer;
   }
 
+  bool IsProcessedAllTheData(void) noexcept { if (m_lCurrentPos < m_lBufferLength) return false; else return true; }
+
   long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  void SetCurrentPos(long lValue) noexcept { m_lCurrentPos = lValue; m_pCurrentPos = m_pDataBuffer + lValue; }
-  char* GetBufferAddr(void) noexcept { return m_pDataBuffer; }
   void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDataBuffer; m_lCurrentPos = 0; }
   long GetBufferLength(void) noexcept { return m_lBufferLength; }
   void SetBufferLength(long lValue) noexcept { m_lBufferLength = lValue; }
 
+  // 测试用函数
   void __TEST_SetBuffer__(CString strBuffer);
+  char* __TEST_GetBufferAddr(void) noexcept { return m_pDataBuffer; }
 
 public:
   INT64 m_lTime; // 此数据的提取时间。格式为yyyymmddhhmmss

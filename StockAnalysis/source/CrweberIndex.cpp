@@ -130,7 +130,7 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
   CString strNoUse;
   long lUpdateDate = 0;
 
-  while (pWebData->GetCurrentPos() < pWebData->GetBufferLength()) {
+  while (!pWebData->IsProcessedAllTheData()) {
     str = GetNextString(pWebData);
     strHead = str.Left(10);
     if (strHead.Compare(_T("Updated by")) == 0) {
@@ -225,7 +225,7 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
       pWebData->m_lCurrentPos = pWebData->m_lBufferLength; //
     }
   }
-  pWebData->m_pCurrentPos = pWebData->GetBufferAddr();
+  pWebData->ResetCurrentPos();
   for (int i = 0; i < pWebData->m_lBufferLength; i++) {
     *pWebData->m_pCurrentPos++ = 0x000;
   }

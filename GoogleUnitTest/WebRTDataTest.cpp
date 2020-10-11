@@ -1470,7 +1470,7 @@ namespace StockAnalysisTest {
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pSinaWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pSinaWebRTData->GetBufferAddr();
+      m_pData = m_pSinaWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }

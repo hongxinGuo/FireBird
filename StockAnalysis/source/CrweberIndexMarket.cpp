@@ -118,8 +118,7 @@ bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   long lTotalData = gl_WebInquirer.GetCrweberDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebData = gl_WebInquirer.PopCrweberData();
-    pWebData->m_pCurrentPos = pWebData->m_pDataBuffer;
-    pWebData->SetCurrentPos(0);
+    pWebData->ResetCurrentPos();
     if (m_CrweberIndex.ReadData(pWebData)) {
       m_lNewestUPdateDate = m_CrweberIndex.m_lDate;
       if (m_lNewestDatabaseDate < m_CrweberIndex.m_lDate) {

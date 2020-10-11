@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
     EXPECT_EQ(pWebData->m_lBufferLength, 8);
     char buffer[30];
-    strcpy_s(buffer, pWebData->GetBufferAddr());
+    strcpy_s(buffer, pWebData->__TEST_GetBufferAddr());
     CString str = buffer;
     EXPECT_STREQ(str, _T("testData"));
     EXPECT_EQ(pWebData->m_lTime, 12345678000000);
