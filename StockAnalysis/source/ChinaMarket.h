@@ -343,9 +343,9 @@ public:
 
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
-  size_t GetChoicedStockSize(void) noexcept { return m_avChoicedStock[0].size(); }
-  size_t GetStockSetSize(long lIndex) noexcept { return m_avChoicedStock[lIndex].size(); }
-  void ClearChoiceStockContainer(void) noexcept { m_avChoicedStock[0].clear(); }
+  size_t GetChoicedStockSize(void) { return m_avChoicedStock.at(0).size(); }
+  size_t GetStockSetSize(long lIndex) { return m_avChoicedStock.at(lIndex).size(); }
+  void ClearChoiceStockContainer(void) { m_avChoicedStock.at(0).clear(); }
   size_t GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }
 
@@ -385,7 +385,7 @@ public:
   INT64 GetRTDataReceived(void) noexcept { return m_llRTDataReceived; }
   void SetRTDataReceived(INT64 llValue) noexcept { m_llRTDataReceived = llValue; }
 
-  bool CheckMarketReady(void) noexcept;
+  bool CheckMarketReady(void);
 
   bool ChangeToNextStock(void);
   bool ChangeToPrevStock(void);
@@ -411,8 +411,8 @@ protected:
 
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
-  CRSReference m_aRSStrongOption[10]; // 用于计算RS的参数，最多十个。
-  vector<CChinaStockPtr> m_avChoicedStock[30]; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
+  vector<CRSReference> m_aRSStrongOption; // 用于计算RS的参数，最多十个。
+  vector<vector<CChinaStockPtr> > m_avChoicedStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
   long m_lCurrentSelectedPosition; // 当前股票集的位置
   long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
   long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。

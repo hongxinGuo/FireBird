@@ -8,7 +8,7 @@
 class CSetChoicedStock : public CRecordset
 {
 public:
-  CSetChoicedStock(CDatabase* pDatabase = NULL);
+  CSetChoicedStock(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetChoicedStock)
 
   // 字段/参数数据

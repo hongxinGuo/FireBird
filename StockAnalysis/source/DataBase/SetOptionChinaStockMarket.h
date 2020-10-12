@@ -4,7 +4,7 @@
 class CSetOptionChinaStockMarket : public CRecordset
 {
 public:
-  CSetOptionChinaStockMarket(CDatabase* pDatabase = NULL);
+  CSetOptionChinaStockMarket(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetOptionChinaStockMarket)
 
   // 字段/参数数据

@@ -5,7 +5,7 @@
 class CSetPotenDailyBriefing : public CRecordset
 {
 public:
-  CSetPotenDailyBriefing(CDatabase* pDatabase = NULL);
+  CSetPotenDailyBriefing(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetPotenDailyBriefing)
 
   // 字段/参数数据

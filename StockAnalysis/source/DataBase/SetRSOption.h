@@ -4,7 +4,7 @@
 class CSetRSOption : public CRecordset
 {
 public:
-  CSetRSOption(CDatabase* pDatabase = NULL);
+  CSetRSOption(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetRSOption)
 
   long m_ID;

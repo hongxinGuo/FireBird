@@ -4,7 +4,7 @@
 class CSetRSStrong1Stock : public CRecordset
 {
 public:
-  CSetRSStrong1Stock(CDatabase* pDatabase = NULL);
+  CSetRSStrong1Stock(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetRSStrong1Stock)
 
   // 字段/参数数据

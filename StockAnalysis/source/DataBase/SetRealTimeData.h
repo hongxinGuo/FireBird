@@ -8,7 +8,7 @@
 class CSetRealTimeData : public CRecordset
 {
 public:
-  CSetRealTimeData(CDatabase* pDatabase = NULL);
+  CSetRealTimeData(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetRealTimeData)
 
   // 字段/参数数据

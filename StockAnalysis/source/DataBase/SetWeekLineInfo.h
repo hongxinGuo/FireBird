@@ -9,7 +9,7 @@
 class CSetWeekLineInfo : public CRecordset
 {
 public:
-  CSetWeekLineInfo(CDatabase* pDatabase = NULL);
+  CSetWeekLineInfo(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetWeekLineInfo)
 
   // 字段/参数数据

@@ -9,7 +9,7 @@
 class CSetDayLineBasicInfo : public CRecordset
 {
 public:
-  CSetDayLineBasicInfo(CDatabase* pDatabase = NULL);
+  CSetDayLineBasicInfo(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetDayLineBasicInfo)
 
   // 字段/参数数据

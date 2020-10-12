@@ -262,7 +262,7 @@ CString ConvertValueToString(double dValue, int iDividend) {
   return str;
 }
 
-bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* not_null<buffer>, long& iReadNumber) {
+bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber) {
   int i = 0;
 
   while (*pCurrentPos != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。

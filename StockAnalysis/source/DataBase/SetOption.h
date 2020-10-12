@@ -4,7 +4,7 @@
 class CSetOption : public CRecordset
 {
 public:
-  CSetOption(CDatabase* pDatabase = NULL);
+  CSetOption(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetOption)
 
   // 字段/参数数据

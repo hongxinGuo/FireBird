@@ -7,7 +7,7 @@
 class CSetDayLineExtendInfo : public CRecordset
 {
 public:
-  CSetDayLineExtendInfo(CDatabase* pDatabase = NULL);
+  CSetDayLineExtendInfo(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetDayLineExtendInfo)
 
   // 字段/参数数据

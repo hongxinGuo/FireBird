@@ -5,7 +5,7 @@
 class CSetCrweberIndex : public CRecordset
 {
 public:
-  CSetCrweberIndex(CDatabase* pDatabase = NULL);
+  CSetCrweberIndex(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetCrweberIndex)
 
   // 字段/参数数据

@@ -8,7 +8,7 @@
 class CSetStockCode : public CRecordset
 {
 public:
-  CSetStockCode(CDatabase* pDatabase = NULL);
+  CSetStockCode(CDatabase* pDatabase = nullptr);
   DECLARE_DYNAMIC(CSetStockCode)
 
   // 字段/参数数据
