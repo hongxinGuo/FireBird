@@ -143,7 +143,7 @@ public:
   CChinaStockPtr GetStock(CString strStockCode);
   CChinaStockPtr GetStock(long lIndex);
 
-  void IncreaseActiveStockNumber(void);
+  void IncreaseActiveStockNumber(void) noexcept { m_lTotalActiveStock++; }
 
   // 得到当前显示股票
   CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
@@ -296,8 +296,8 @@ public:
   void CheckTengxunRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
   bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
-  bool IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived);
-  bool ValidateNeteaseRTData(CWebRTDataPtr pRTData);
+  bool IsValidNeteaseRTDataPrefix(const CWebDataPtr pWebDataReceived);
+  bool ValidateNeteaseRTData(const CWebRTDataPtr pRTData);
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);

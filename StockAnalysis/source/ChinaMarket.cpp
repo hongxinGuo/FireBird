@@ -986,7 +986,7 @@ bool CChinaMarket::IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived) {
   else return false;
 }
 
-bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived) {
+bool CChinaMarket::IsValidNeteaseRTDataPrefix(const CWebDataPtr pWebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
@@ -1001,7 +1001,7 @@ bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebDataPtr pWebDataReceived) {
   return true;
 }
 
-bool CChinaMarket::ValidateNeteaseRTData(CWebRTDataPtr pRTData) {
+bool CChinaMarket::ValidateNeteaseRTData(const CWebRTDataPtr pRTData) {
   // 检测一下
   CString str;
   ASSERT(pRTData->GetDataSource() == __NETEASE_RT_WEB_DATA__);
@@ -1707,10 +1707,6 @@ CChinaStockPtr CChinaMarket::GetStock(long lIndex) {
     TRACE("GetStock越界\n");
     return nullptr;
   }
-}
-
-void CChinaMarket::IncreaseActiveStockNumber(void) {
-  m_lTotalActiveStock++;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

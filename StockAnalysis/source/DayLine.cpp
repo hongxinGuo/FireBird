@@ -11,7 +11,7 @@ void CDayLine::Reset(void) {
   CChinaStockHistoryData::Reset();
 }
 
-bool CDayLine::LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+bool CDayLine::LoadExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
   m_lTransactionNumber = atol(psetDayLineExtendInfo->m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(psetDayLineExtendInfo->m_TransactionNumberBelow5000);
@@ -82,7 +82,7 @@ bool CDayLine::LoadExtendData(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   return true;
 }
 
-bool CDayLine::SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+bool CDayLine::SaveData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
 
   psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
@@ -108,7 +108,7 @@ bool CDayLine::SaveData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   return true;
 }
 
-bool CDayLine::AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+bool CDayLine::AppendData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   psetDayLineBasicInfo->AddNew();
   SaveData(psetDayLineBasicInfo);
@@ -117,7 +117,7 @@ bool CDayLine::AppendData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   return true;
 }
 
-bool CDayLine::LoadBasicData(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+bool CDayLine::LoadBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   m_lDate = psetDayLineBasicInfo->m_Date;
   m_wMarket = psetDayLineBasicInfo->m_Market;

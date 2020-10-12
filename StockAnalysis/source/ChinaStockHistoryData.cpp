@@ -8,9 +8,9 @@ CChinaStockHistoryData::CChinaStockHistoryData() : CObject() {
 }
 
 void CChinaStockHistoryData::CalculateRSLogarithm1(double dRS) {
-  double dLog50 = log10(50.0);
-  double dLog100 = log10(100.0);
-  double dLog = dLog100 - dLog50;
+  const double dLog50 = log10(50.0);
+  const double dLog100 = log10(100.0);
+  const double dLog = dLog100 - dLog50;
   if ((dRS - 50) > 0) {
     m_dRSLogarithm = 50 + (log10(dRS) - dLog50) * 50 / dLog;
   }

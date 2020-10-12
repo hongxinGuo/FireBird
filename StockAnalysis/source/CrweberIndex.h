@@ -15,7 +15,7 @@ public:
   CCrweberIndex();
   ~CCrweberIndex();
   void Reset(void);
-  void LoadData(CSetCrweberIndex& setCrweberIndex);
+  void LoadData(const CSetCrweberIndex& setCrweberIndex);
   void SaveData(CSetCrweberIndex& setCewwberIndex);
   void AppendData(CSetCrweberIndex& setCrweberIndex);
 

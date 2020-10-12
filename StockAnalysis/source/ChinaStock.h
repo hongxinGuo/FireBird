@@ -326,7 +326,7 @@ public:
   void SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo);
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   void UpdateDayLineStartEndDate(void);
-  void LoadTempInfo(CSetDayLineToday& setDayLineToday);
+  void LoadTempInfo(const CSetDayLineToday& setDayLineToday);
   void SaveStockCodeDB(CSetStockCode& setStockCode);
   void AppendStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
@@ -351,7 +351,7 @@ public:
   bool Calculate10RSStrong1StockSet(void);
   bool Calculate10RSStrong2StockSet(void);
 
-  bool Calculate10RSStrongStockSet(CRSReference* pRef);
+  bool Calculate10RSStrongStockSet(const CRSReference* pRef);
 
   // 计算实时数据各函数, 由工作线程ThreadCalculateRTData调用
   bool ProcessRTData(void);

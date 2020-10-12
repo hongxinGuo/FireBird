@@ -4,6 +4,9 @@
 #include"Accessory.h"
 #include "CrweberIndex.h"
 
+#include<gsl/gsl>
+using namespace gsl;
+
 CCrweberIndex::CCrweberIndex() {
   m_lID = 0;
   m_lDate = 0;
@@ -37,7 +40,7 @@ void CCrweberIndex::Reset(void) {
   m_fTodayUpdated = false;
 }
 
-void CCrweberIndex::LoadData(CSetCrweberIndex& setCrweberIndex) {
+void CCrweberIndex::LoadData(const CSetCrweberIndex& setCrweberIndex) {
   m_lDate = setCrweberIndex.m_Date;
   m_dTD1 = atof(setCrweberIndex.m_TD1);
   m_dTD2 = atof(setCrweberIndex.m_TD2);
@@ -252,6 +255,7 @@ double CCrweberIndex::ConvertStringToTC(CString str) {
 long CCrweberIndex::ConvertStringToTime(CString str) {
   char buffer1[20];
   char* pChar = str.GetBuffer();
+
   while (*pChar != ' ') pChar++;
   pChar++;
   int i = 0;

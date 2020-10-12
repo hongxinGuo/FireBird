@@ -8,8 +8,11 @@
 #include "ChinaStock.h"
 #include"ChinaMarket.h"
 
+#include<gsl/gsl>
+using namespace gsl;
+
 using namespace std;
-#include"string"
+#include<string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -179,7 +182,7 @@ void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
 }
 
 bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
-  bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
+  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
   if (fNeedSaveing) gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
@@ -341,7 +344,7 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
   psetDayLineBasicInfo->m_Amount = ConvertValueToString(m_llAmount);
   psetDayLineBasicInfo->m_UpAndDown = ConvertValueToString(m_lUpDown, 1000);
   psetDayLineBasicInfo->m_UpDownRate = ConvertValueToString(m_dUpDownRate);
-  if (m_llTotalValue != 0) psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString((double)100 * m_llAmount / m_llTotalValue);
+  if (m_llTotalValue != 0) psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(static_cast<double>(100) * m_llAmount / m_llTotalValue);
   else psetDayLineBasicInfo->m_ChangeHandRate = ConvertValueToString(0);
   psetDayLineBasicInfo->m_TotalValue = ConvertValueToString(m_llTotalValue);
   psetDayLineBasicInfo->m_CurrentValue = ConvertValueToString(m_llCurrentValue);
@@ -560,7 +563,7 @@ void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendIn
 // 需要同时更新总成交股数，并暂存此股数（用于计算未明情况成交量。 总成交股数在新的实时数据来临时会同步更新，故而无法用于计算）
 //
 ////////////////////////////////////////////////////////////////////////////
-void CChinaStock::LoadTempInfo(CSetDayLineToday& setDayLineToday) {
+void CChinaStock::LoadTempInfo(const CSetDayLineToday& setDayLineToday) {
   m_lUnknownVolume = atoll(setDayLineToday.m_UnknownVolume);
 
   m_lTransactionNumber = atol(setDayLineToday.m_TransactionNumber);
@@ -678,7 +681,7 @@ bool CChinaStock::Calculate10RSStrong2StockSet(void) {
   int iCountFirst = 0, iCountSecond = 0;
 
   ASSERT(m_DayLine.IsDataLoaded());
-  size_t iDayLineSize = GetDayLineSize();
+  const size_t iDayLineSize = GetDayLineSize();
   if (iDayLineSize > 155) {
     m_v10DaysRS.resize(iDayLineSize);
     CalculateDayLineRSIndex();
@@ -708,7 +711,7 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0;
 
   ASSERT(m_DayLine.IsDataLoaded());
-  size_t iDayLineSize = GetDayLineSize();
+  const size_t iDayLineSize = GetDayLineSize();
 
   if (iDayLineSize < 350) return false;
   m_v10DaysRS.resize(iDayLineSize);
@@ -737,13 +740,13 @@ bool CChinaStock::Calculate10RSStrong1StockSet(void) {
   return true;
 }
 
-bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
+bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
   CSetDayLineBasicInfo setDayLineBasicInfo;
   vector<double> m_v10DaysRS;
   int iCountFirst = 0, iCountSecond = 0, iCountThird = 0, iCountFourth = 0;
   bool fFind1 = false, fFind2 = false, fFind3 = false, fFind4 = false;
-  double dStrong1, dStrong2, dStrong3, dStrong4;
-  bool fFindHigh1, fFindHigh2, fFindHigh3, fFindHigh4;
+  double dStrong1{ 0.0 }, dStrong2{ 0.0 }, dStrong3{ 0.0 }, dStrong4{ 0.0 };
+  bool fFindHigh1{ false }, fFindHigh2{ false }, fFindHigh3{ false }, fFindHigh4{ false };
 
   if (pRef->m_dRSStrong[0] < 0) {
     dStrong1 = -pRef->m_dRSStrong[0];
@@ -779,7 +782,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(CRSReference* pRef) {
   }
 
   ASSERT(m_DayLine.IsDataLoaded());
-  size_t iDayLineSize = GetDayLineSize();
+  const size_t iDayLineSize = GetDayLineSize();
   if ((iDayLineSize < (pRef->m_lDayLength[0] + pRef->m_lDayLength[1] + pRef->m_lDayLength[2] + 10))
       || (iDayLineSize < pRef->m_lDayLength[3] + 10)) return false;
 
@@ -940,14 +943,14 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
       }
       else {
         i2 = pRTData->GetPBuy(0) - pRTData->GetLastClose();
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
+        iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
           }
-          d1 = (double)i2 * 100 / pRTData->GetLastClose();
+          d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
           if (d1 > iCompare) {
-            d2 = (double)(i2 - 10) * 100 / pRTData->GetLastClose();
+            d2 = static_cast<double>(i2 - 10) * 100 / pRTData->GetLastClose();
             if ((iCompare - d2) <= (d1 - iCompare)) { // 当计算跌停价时，两边误差一样时（9.7777与10.22222），采用较小的（9.7777）。
               iAdjust = 10;
             }
@@ -974,14 +977,14 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
       }
       else {
         i2 = pRTData->GetLastClose() - pRTData->GetPSell(0);
-        iCompare = ((double)i2 * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
+        iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
             TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
           }
-          d1 = (double)i2 * 100 / pRTData->GetLastClose();
+          d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
           if (d1 < iCompare) {
-            d2 = (double)(i2 + 10) * 100 / pRTData->GetLastClose();
+            d2 = static_cast<double>(i2 + 10) * 100 / pRTData->GetLastClose();
             if ((d2 - iCompare) <= (iCompare - d1)) { // 当计算涨停价时，两边误差一样时（9.7777与10.22222），采用较大的（10.2222）。
               iAdjust = 10;
             }
