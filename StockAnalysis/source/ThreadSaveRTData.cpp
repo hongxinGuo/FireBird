@@ -10,7 +10,7 @@
 
 #include"ChinaMarket.h"
 
-UINT ThreadSaveRTData(CChinaMarket* pMarket) {
+UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SaveRTData();

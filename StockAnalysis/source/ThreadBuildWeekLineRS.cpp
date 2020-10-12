@@ -15,7 +15,7 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
+UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCalculatingWeekLineRS(true);
   long lToday = GetPrevMonday(startCalculatingDate);
@@ -67,7 +67,7 @@ UINT ThreadBuildWeekLineRS(CChinaMarket* pMarket, long startCalculatingDate) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadBuildWeekLineRSOfDate(CChinaMarket* pMarket, long lDate) {
+UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一

@@ -299,7 +299,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
 }
 
 bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString str) {
-  bool fFound = false;
+  const const bool fFound = false;
   CString strNoUse, strHead;
   do {
     strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
@@ -312,7 +312,7 @@ bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString 
 
 double CPotenDailyBriefing::ConvertStringToTC(CString str) {
   char buffer[200];
-  int iTotal = str.GetLength();
+  const int iTotal = str.GetLength();
   int i = 0, j = 0;
 
   while (i < iTotal) {
@@ -320,7 +320,7 @@ double CPotenDailyBriefing::ConvertStringToTC(CString str) {
     i++;
   }
   buffer[j] = 0x000;
-  double abc = atof(buffer);
+  const double abc = atof(buffer);
 
   return abc;
 }
@@ -340,7 +340,7 @@ long CPotenDailyBriefing::ConvertStringToTime(CString str) {
 double CPotenDailyBriefing::GetOneValue(CString strValue) {
   double dValue = 0;
   char buffer[50];
-  long lStrLength = strValue.GetLength();
+  const long lStrLength = strValue.GetLength();
   bool fMinus = false;
   char* p = strValue.GetBuffer();
   int i = 0, j = 0;

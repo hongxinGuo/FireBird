@@ -11,7 +11,7 @@
 
 Semaphore gl_ChoiceRSStrong(1); //由于各种选择股票集的工作线程都操作日线历史数据，故而同一时间只允许一个线程执行，这样能够减少同步问题。
 
-UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket) {
+UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ChoiceRSStrong.Wait();
   gl_systemMessage.PushInformationMessage(_T("开始计算10日RS2\n"));
@@ -28,7 +28,7 @@ UINT ThreadChoice10RSStrong2StockSet(CChinaMarket* pMarket) {
   return 102;
 }
 
-UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket) {
+UINT ThreadChoice10RSStrong1StockSet(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ChoiceRSStrong.Wait();
   gl_systemMessage.PushInformationMessage(_T("开始计算10日RS1\n"));
@@ -45,7 +45,7 @@ UINT ThreadChoice10RSStrong1StockSet(CChinaMarket* pMarket) {
   return 101;
 }
 
-UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, int iIndex) {
+UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReference* pRef, int iIndex) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ChoiceRSStrong.Wait();
   CString str = _T("开始计算10日RS ");
@@ -70,7 +70,7 @@ UINT ThreadChoice10RSStrongStockSet(CChinaMarket* pMarket, CRSReference* pRef, i
   return 103;
 }
 
-UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
+UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
@@ -94,7 +94,7 @@ UINT ThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, C
   return 104;
 }
 
-UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
@@ -118,7 +118,7 @@ UINT ThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, 
   return 105;
 }
 
-UINT ThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一

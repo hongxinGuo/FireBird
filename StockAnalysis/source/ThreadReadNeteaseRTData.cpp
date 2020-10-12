@@ -11,7 +11,7 @@
 #include"globedef.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadNeteaseRTData(CNeteaseRTWebInquiry* pNeteaseRTWebData) {
+UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData) {
   gl_ThreadStatus.IncreaseRunningThread();
   if (pNeteaseRTWebData->ReadWebData(150, 30, 30)) {
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();

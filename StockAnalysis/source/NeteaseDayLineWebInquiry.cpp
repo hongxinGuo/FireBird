@@ -48,8 +48,8 @@ void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
 }
 
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
-  char* p = strStockCode.GetBuffer();
-  char cFirstChar = *p;
+  not_null<char*> p = strStockCode.GetBuffer();
+  const char cFirstChar = *p;
   CString strRight = strStockCode.Right(6);
   if (cFirstChar == '0') {
     m_strDownLoadingStockCode = _T("sh");

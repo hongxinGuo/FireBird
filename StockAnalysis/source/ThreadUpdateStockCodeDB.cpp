@@ -11,7 +11,7 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket) {
+UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket) {
   //
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->UpdateStockCodeDB();
@@ -19,21 +19,21 @@ UINT ThreadUpdateStockCodeDB(CChinaMarket* pMarket) {
   return 18;
 }
 
-UINT ThreadUpdateOptionDB(CChinaMarket* pMarket) {
+UINT ThreadUpdateOptionDB(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->UpdateOptionDB();
   gl_ThreadStatus.DecreaseRunningThread();
   return 20;
 }
 
-UINT ThreadSavePotenData(CPotenDailyBriefingMarket* pMarket) {
+UINT ThreadSavePotenData(not_null<CPotenDailyBriefingMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SaveCurrentData();
   gl_ThreadStatus.DecreaseRunningThread();
   return 21;
 }
 
-UINT ThreadAppendChoicedStockDB(CChinaMarket* pMarket) {
+UINT ThreadAppendChoicedStockDB(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->AppendChoicedStockDB();
   gl_ThreadStatus.DecreaseRunningThread();

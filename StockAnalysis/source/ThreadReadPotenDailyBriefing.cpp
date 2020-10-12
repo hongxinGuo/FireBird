@@ -11,12 +11,12 @@
 #include"VirtualWebInquiry.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadPotenDailyBriefing(CPotenDailyBriefingWebInquiry* pPotenDailyBriefingWebInquiry) {
+UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebInquiry) {
   gl_ThreadStatus.IncreaseRunningThread();
   if (pPotenDailyBriefingWebInquiry->ReadWebData(500, 50, 30)) {
     CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebInquiry->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
-      pWebDataReceived->m_lTime = (INT64)(pPotenDailyBriefingWebInquiry->GetInquiringDate()) * 1000000;
+      pWebDataReceived->m_lTime = static_cast<INT64>(pPotenDailyBriefingWebInquiry->GetInquiringDate()) * 1000000;
       gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }

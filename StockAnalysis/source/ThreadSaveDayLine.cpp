@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-UINT ThreadSaveDayLineBasicInfoOfStock(CChinaStockPtr pStock) {
+UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStockPtr> pStock) {
   CString str;
   bool fDataSaved = false;
   gl_ThreadStatus.IncreaseRunningThread();

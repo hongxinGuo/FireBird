@@ -25,7 +25,7 @@ using namespace std;
 #include<string>
 #include<thread>
 
-const int __STOCK_ANALYSIS_TIMER__ = 1;
+constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -35,9 +35,9 @@ const int __STOCK_ANALYSIS_TIMER__ = 1;
 
 IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
 
-const int  iMaxUserToolbars = 10;
-const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
-const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
+constexpr int  iMaxUserToolbars = 10;
+constexpr UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
+constexpr UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_WM_CREATE()
@@ -861,7 +861,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   }
   else {
     SysCallCmdUIEnable(pCmdUI, false);
-}
+  }
 #endif // !_DEBUG
 }
 

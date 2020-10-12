@@ -11,6 +11,9 @@
 
 #include "ChinaStock.h"
 
+#include<gsl/gsl>
+using namespace gsl;
+
 using namespace MyLib;
 
 using namespace std;
@@ -234,7 +237,7 @@ public:
 
   bool BuildWeekLine(long lStartDate);
   virtual bool BuildWeekLineOfCurrentWeek(void);
-  bool CreateStockCodeSet(set<CString>& setStockCode, vector<CChinaStockHistoryDataPtr>* pvData);
+  bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryDataPtr>*> pvData);
   virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
 
 // 股票历史数据处理

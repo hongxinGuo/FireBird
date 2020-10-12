@@ -10,9 +10,7 @@
 // 从数据库中装入相应股票的周线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadLoadWeekLine(CChinaStockPtr pStock) {
-  ASSERT(pStock != nullptr);
-
+UINT ThreadLoadWeekLine(not_null<CChinaStockPtr> pStock) {
   gl_ThreadStatus.IncreaseRunningThread();
   pStock->UnloadWeekLine();
   // 装入周线数据

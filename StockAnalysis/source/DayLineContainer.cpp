@@ -106,7 +106,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   return true;
 }
 
-bool CDayLineContainer::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
+bool CDayLineContainer::LoadDayLineBasicInfo(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   CDayLinePtr pDayLine;
 
   if (gl_fNormalMode) ASSERT(!m_fLoadDataFirst);
@@ -128,7 +128,7 @@ bool CDayLineContainer::LoadDayLineBasicInfo(CSetDayLineBasicInfo* psetDayLineBa
 //
 //
 ////////////////////////////////////////////////////////////////////////////
-bool CDayLineContainer::LoadDayLineExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
+bool CDayLineContainer::LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo) {
   CDayLinePtr pDayLine;
   int iPosition = 0;
 

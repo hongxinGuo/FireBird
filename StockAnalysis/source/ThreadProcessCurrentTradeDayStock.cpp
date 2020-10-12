@@ -14,13 +14,13 @@ using namespace std;
 //
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadProcessTodayStock(CChinaMarket* pMarket) {
+UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
   gl_ThreadStatus.IncreaseRunningThread();
   pMarket->SetProcessingTodayStock();
 
-  long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
+  const long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
   if (lDate == pMarket->GetFormatedMarketDate()) {
     pMarket->BuildDayLineOfDate(lDate);
     // 计算本日日线相对强度

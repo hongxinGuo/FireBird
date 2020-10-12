@@ -14,7 +14,7 @@ CSystemMessage::~CSystemMessage() {
 
 void CSystemDeque::Display(COutputList* pOutputList, CString strTime) {
   CString str, str2;
-  size_t lTotal = GetDequeSize();
+  const size_t lTotal = GetDequeSize();
   for (int i = 0; i < lTotal; i++) {
     str = PopMessage();
     str2 = strTime + _T(": ") + str;

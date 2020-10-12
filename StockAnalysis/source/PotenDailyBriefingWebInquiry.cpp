@@ -25,9 +25,9 @@ bool CPotenDailyBriefingWebInquiry::PrepareNextInquiringStr(void) {
   m_lInquiringDate = gl_pPotenDailyBriefingMarket->GetCurrentInquiringDate();
   CString strMiddle = _T("");
   char buffer[50];
-  long year = m_lInquiringDate / 10000;
-  long month = m_lInquiringDate / 100 - year * 100;
-  long day = m_lInquiringDate - year * 10000 - month * 100;
+  const long year = m_lInquiringDate / 10000;
+  const long month = m_lInquiringDate / 100 - year * 100;
+  const long day = m_lInquiringDate - year * 10000 - month * 100;
 
   sprintf_s(buffer, _T("%02d/%02d/%04d"), month, day, year);
   strMiddle = buffer;

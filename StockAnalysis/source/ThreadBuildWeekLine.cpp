@@ -7,7 +7,7 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDate) {
+UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCreatingWeekLine(true);
 
@@ -44,7 +44,7 @@ UINT ThreadBuildWeekLine(CChinaMarket* pMarket, long lStartDate) {
   return 25;
 }
 
-UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
+UINT ThreadBuildWeekLineOfStock(not_null<CChinaStockPtr> pStock, long lStartDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
@@ -57,7 +57,7 @@ UINT ThreadBuildWeekLineOfStock(CChinaStockPtr pStock, long lStartDate) {
   return 26;
 }
 
-UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket) {
+UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
@@ -71,7 +71,7 @@ UINT ThreadBuildWeekLineOfCurrentWeek(CChinaMarket* pMarket) {
   return 32;
 }
 
-UINT ThreadBuildCurrentWeekWeekLineTable(CChinaMarket* pMarket) {
+UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket) {
   gl_ThreadStatus.IncreaseRunningThread();
 
   // 清除当前周周线表

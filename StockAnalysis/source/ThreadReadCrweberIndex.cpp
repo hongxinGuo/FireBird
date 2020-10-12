@@ -13,7 +13,7 @@
 #include"VirtualWebInquiry.h"
 #include"WebInquirer.h"
 
-UINT ThreadReadCrweberIndex(CCrweberIndexWebInquiry* pCrweberIndexWebData) {
+UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData) {
   gl_ThreadStatus.IncreaseRunningThread();
   if (pCrweberIndexWebData->ReadWebData(1000, 100, 100)) {
     CWebDataPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();

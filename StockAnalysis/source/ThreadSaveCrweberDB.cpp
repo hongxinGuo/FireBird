@@ -5,7 +5,7 @@
 
 Semaphore gl_MaintainDB(1); // Crweber数据库只允许同时一个线程操作之。
 
-UINT ThreadSaveCrweberDB(CCrweberIndexMarket* pMarket, CCrweberIndexPtr pCrweberIndex) {
+UINT ThreadSaveCrweberDB(not_null<CCrweberIndexMarket*> pMarket, not_null<CCrweberIndexPtr> pCrweberIndex) {
   gl_MaintainDB.Wait();
   gl_ThreadStatus.IncreaseRunningThread();
 
@@ -17,7 +17,7 @@ UINT ThreadSaveCrweberDB(CCrweberIndexMarket* pMarket, CCrweberIndexPtr pCrweber
   return 23;
 }
 
-UINT ThreadMaintainCrweberDB(CCrweberIndexMarket* pMarket) {
+UINT ThreadMaintainCrweberDB(not_null<CCrweberIndexMarket*> pMarket) {
   gl_MaintainDB.Wait();
   gl_ThreadStatus.IncreaseRunningThread();
 

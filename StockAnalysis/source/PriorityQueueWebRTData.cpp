@@ -9,7 +9,7 @@ CPriorityQueueWebRTData::~CPriorityQueueWebRTData() {
 }
 
 void CPriorityQueueWebRTData::Reset(void) {
-  size_t lTotal = m_priorityqueueStockData.size();
+  const size_t lTotal = m_priorityqueueStockData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
     m_priorityqueueStockData.pop();
   }

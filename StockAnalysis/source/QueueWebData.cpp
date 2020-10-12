@@ -11,7 +11,7 @@ CQueueWebData::~CQueueWebData() {
 
 void CQueueWebData::Reset(void) {
   m_MutexAccessData.lock();
-  size_t lTotal = m_qData.size();
+  const size_t lTotal = m_qData.size();
   for (int i = 0; i < lTotal; i++) { // Çå¿Õ¶ÓÁÐ
     m_qData.pop();
   }

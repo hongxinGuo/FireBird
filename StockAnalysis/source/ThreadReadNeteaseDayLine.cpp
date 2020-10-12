@@ -19,7 +19,7 @@
 #include"globedef.h"
 #include"ChinaMarket.h"
 
-UINT ThreadReadNeteaseDayLine(CNeteaseDayLineWebInquiry* pNeteaseDayLineWebData) {
+UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData) {
   CChinaStockPtr pStock = nullptr;
 
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());

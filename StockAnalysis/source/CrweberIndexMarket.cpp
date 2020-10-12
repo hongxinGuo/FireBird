@@ -115,7 +115,7 @@ bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataPtr pWebData = nullptr;
-  long lTotalData = gl_WebInquirer.GetCrweberDataSize();
+  const long lTotalData = gl_WebInquirer.GetCrweberDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebData = gl_WebInquirer.PopCrweberData();
     pWebData->ResetCurrentPos();
@@ -164,7 +164,7 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
   while (!setCrweberIndex.IsEOF()) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
     pCrweberIndex->LoadData(setCrweberIndex);
-    m_vCrweberIndex[i] = pCrweberIndex;
+    m_vCrweberIndex.at(i) = pCrweberIndex;
     if (m_lNewestDatabaseDate < pCrweberIndex->m_lDate) {
       i++;
       m_lNewestDatabaseDate = pCrweberIndex->m_lDate;
