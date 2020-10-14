@@ -667,13 +667,14 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 抓取网易历史日线数据
-// 由于可能会抓取全部12000个日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统时才开始。
+// 由于可能会抓取全部12000个日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
+// 为了防止与重启系统发生冲突，实际执行时间延后至9:26:00。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(IsSystemReady());
-  if ((GetFormatedMarketTime() >= 92500) && (m_iDayLineNeedUpdate > 0)) {
-    // 抓取日线数据.开始于09:25:00
+  if ((GetFormatedMarketTime() >= 92600) && (m_iDayLineNeedUpdate > 0)) {
+    // 抓取日线数据.开始于09:26:00
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     return(gl_WebInquirer.GetNeteaseDayLineData());
   }
@@ -952,8 +953,8 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopNeteaseRTData();
     pWebDataReceived->ResetCurrentPos();
-    if (!IsInvalidNeteaseRTData(pWebDataReceived)) {
-      if (!IsValidNeteaseRTDataPrefix(pWebDataReceived)) return false;
+    if (!IsInvalidNeteaseRTData(*pWebDataReceived)) {
+      if (!IsValidNeteaseRTDataPrefix(*pWebDataReceived)) return false;
       iCount = 0;
       while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
@@ -972,33 +973,35 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
   return true;
 }
 
-bool CChinaMarket::IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived) {
+bool CChinaMarket::IsInvalidNeteaseRTData(CWebData& WebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback({ });"); // 此为无效股票查询到的数据格式，共26个字符
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 26);
+  strncpy_s(buffer, WebDataReceived.m_pCurrentPos, 26);
   buffer[26] = 0x000;
   CString str1 = buffer;
 
   if (str1.Compare(strInvalidStock) == 0) {
-    ASSERT(pWebDataReceived->GetBufferLength() == 26);
+    ASSERT(WebDataReceived.GetBufferLength() == 26);
     return true;
   }
   else return false;
 }
 
-bool CChinaMarket::IsValidNeteaseRTDataPrefix(const CWebDataPtr pWebDataReceived) {
+bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebData& WebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
+  strncpy_s(buffer, WebDataReceived.m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
   buffer[21] = 0x000;
   CString str1;
   str1 = buffer;
   if (strInvalidStock.Compare(str1) != 0) { // 数据格式出错
     return false;
   }
-  pWebDataReceived->IncreaseCurrentPos(21);
-  return true;
+  else {
+    WebDataReceived.IncreaseCurrentPos(21);
+    return true;
+  }
 }
 
 bool CChinaMarket::ValidateNeteaseRTData(const CWebRTDataPtr pRTData) {

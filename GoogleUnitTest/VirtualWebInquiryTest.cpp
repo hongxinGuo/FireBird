@@ -40,8 +40,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T(""));
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringSuffix(), _T(""));
     EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPos(), 0);
-    EXPECT_EQ(m_VirtualWebInquiry.GetBufferAddr(), m_VirtualWebInquiry.GetCurrentPosPtr());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
   }
@@ -184,19 +182,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T("abcdefghijk"));
     m_VirtualWebInquiry.CreateTotalInquiringString(_T("dcba"));
     EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringString(), _T("dcba"));
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestIncreaseCurentPos) {
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPos(), 0);
-    m_VirtualWebInquiry.IncreaseCurrentPos();
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPosPtr(), m_VirtualWebInquiry.GetBufferAddr() + 1);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPos(), 1);
-    m_VirtualWebInquiry.IncreaseCurrentPos(100);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPos(), 101);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPosPtr(), m_VirtualWebInquiry.GetBufferAddr() + 101);
-    m_VirtualWebInquiry.ResetCurrentPos();
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPos(), 0);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentPosPtr(), m_VirtualWebInquiry.GetBufferAddr());
   }
 
   TEST_F(CVirtualWebInquiryTest, TestGetInquiringNumber) {

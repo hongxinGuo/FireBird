@@ -27,8 +27,10 @@ public:
   // 唯一的公共接口函数
   virtual bool GetWebData(void);
 
+  void Reset(void) noexcept;
   virtual bool ReportStatus(long lNumberOfData);
-  // 下列为继承类必须实现的几个功能函数，完成具体任务。
+
+  // 下列为继承类必须实现的几个功能函数，完成具体任务。不允许调用本基类函数
   virtual bool PrepareNextInquiringStr(void) { ASSERT(0); return true; }
   virtual CString GetNextInquiringMiddleStr(long, bool) { ASSERT(0); return _T(""); }// 申请下一个查询用字符串
   virtual void StartReadingThread(void) { ASSERT(0); } // 调用网络读取线程。
@@ -52,11 +54,8 @@ public:
   bool IsWebError(void) noexcept { return m_fWebError; }
   void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
 
-  void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
+  //void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
-
-  long GetCurrentPos(void) noexcept { return m_lCurrentPos; }
-  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
 
   char* GetCurrentReadPos(void) noexcept { return m_pCurrentReadPos; }
 
@@ -99,7 +98,7 @@ protected:
 
   long m_lInquiringNumber; // 每次查询数量
 
-  static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数
+  static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数。所有的网络读取器都使用同一个变量，故而声明为静态。
 
   CString m_strConnection;
 };

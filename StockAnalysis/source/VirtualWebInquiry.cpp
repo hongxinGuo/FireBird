@@ -12,11 +12,11 @@ atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // µ±«∞÷¥––Õ¯¬Á∂¡»°œ
 
 CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
-  m_pCurrentPos = m_buffer;
-  m_lCurrentPos = 0;
   m_lByteRead = 0;
   m_pCurrentReadPos = m_buffer;
   m_lCurrentByteRead = 0;
+  m_fWebError = false;
+  m_dwWebErrorCode = 0;
   m_strInquire = _T("");
   m_strWebDataInquireMiddle = m_strWebDataInquirePrefix = m_strWebDataInquireSuffix = _T("");
   m_fReadingWebData = false; // Ω” ’ µ ± ˝æ›œﬂ≥Ã «∑Ò÷¥––±Í ∂
@@ -30,6 +30,14 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 #endif
 }
 
+void CVirtualWebInquiry::Reset(void) noexcept {
+  m_lByteRead = 0;
+  m_pCurrentReadPos = m_buffer;
+  m_lCurrentByteRead = 0;
+  m_dwWebErrorCode = 0;
+  m_fWebError = false;
+}
+
 bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session(_T("»Áπ˚¥ÀœÓŒ™ø’£¨‘Ú≤‚ ‘ ±ª·≥ˆœ÷∂œ—‘¥ÌŒÛ°£µ´≤ª”∞œÏ≤‚ ‘Ω·π˚"));
   m_pFile = nullptr;
@@ -37,12 +45,13 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   bool fStatus = true;
   CString str1, strLeft;
 
-  //m_pCurrentReadPos = __TEST_GetBufferAddr();
-  m_lCurrentByteRead = 0;
-  m_lReadingThreadNumber++;
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
 
+  m_lReadingThreadNumber++;
+
+  m_pCurrentReadPos = GetBufferAddr();
+  m_lCurrentByteRead = 0;
   SetWebError(false);
   SetByteReaded(0);
   try {
@@ -147,8 +156,6 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   }
   m_buffer[lTotalNumber] = 0x000;
   m_lByteRead = lTotalNumber;
-  m_pCurrentPos = m_buffer;
-  m_lCurrentPos = 0;
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
@@ -160,6 +167,4 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
   }
   m_buffer[lTotalNumber] = 0x000;
   m_lByteRead = lTotalNumber;
-  m_pCurrentPos = m_buffer;
-  m_lCurrentPos = 0;
 }

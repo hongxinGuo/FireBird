@@ -600,7 +600,6 @@ namespace StockAnalysisTest {
       for (int i = 0; i < m_lStringLength; i++) {
         m_pData[i] = pData->m_strData[i];
       }
-      m_NeteaseWebRTData.ResetCurrentPos();
       m_lIndex = m_RTData.GetNeteaseSymbolIndex(pData->m_strIndex);
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);

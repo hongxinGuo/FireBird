@@ -270,7 +270,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb) {
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92459); // 更新网易历史数据开始于09:25:00
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92559); // 更新网易历史数据开始于09:25:00
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1);
@@ -293,7 +293,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineFromWeb2) {
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92500); // 更新网易历史数据开始于09:25:00
+    gl_pChinaStockMarket->__TEST_SetFormatedMarketTime(92600); // 更新网易历史数据开始于09:25:00
     gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1);
@@ -1201,12 +1201,12 @@ namespace StockAnalysisTest {
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(pWebDataReceived));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
     str = _T("_ntes_quote_callback({});");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(pWebDataReceived));
+    EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
   }
 
   TEST_F(CChinaMarketTest, TestIsValidNeteaseRTDataPrefix) {
@@ -1217,12 +1217,12 @@ namespace StockAnalysisTest {
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_TRUE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(pWebDataReceived));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
     str = _T("_ntes_quo_callback({\"");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
     pWebDataReceived->m_lBufferLength = str.GetLength();
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_FALSE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(pWebDataReceived));
+    EXPECT_FALSE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
   }
 
   TEST_F(CChinaMarketTest, TestIsValidTengxunRTDataPrefix) {

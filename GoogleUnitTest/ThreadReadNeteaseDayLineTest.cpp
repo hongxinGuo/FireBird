@@ -26,6 +26,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CThreadReadNeteaseDayLineTest, TestThreadReadNeteaseDayLine) {
+    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
     EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
       .Times(1)
       .WillOnce(Return(false));
@@ -33,7 +34,7 @@ namespace StockAnalysisTest {
     NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("sh600601"));
     NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_FALSE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess());
 
     EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
@@ -41,7 +42,7 @@ namespace StockAnalysisTest {
       .WillOnce(Return(true));
     NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
     EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_TRUE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
     char buffer[30];
     strcpy_s(buffer, gl_pChinaStockMarket->GetStock(_T("sh600601"))->GetDayLineBufferPtr());

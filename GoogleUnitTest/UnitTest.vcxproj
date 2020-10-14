@@ -495,6 +495,7 @@
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
       <FunctionLevelLinking>false</FunctionLevelLinking>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>

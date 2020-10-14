@@ -298,8 +298,8 @@ public:
   bool IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived);
   void CheckTengxunRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
-  bool IsInvalidNeteaseRTData(CWebDataPtr pWebDataReceived);
-  bool IsValidNeteaseRTDataPrefix(const CWebDataPtr pWebDataReceived);
+  bool IsInvalidNeteaseRTData(CWebData& WebDataReceived);
+  bool IsValidNeteaseRTDataPrefix(CWebData& pWebDataReceived);
   bool ValidateNeteaseRTData(const CWebRTDataPtr pRTData);
 
   bool TaskDiscardNeteaseRTData(void);

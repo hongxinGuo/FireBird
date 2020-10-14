@@ -32,7 +32,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
     EXPECT_EQ(gl_ThreadStatus.HowManyBackGroundThreadsWorking(), 0);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
 
     size_t l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -118,16 +119,22 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(ThreadStatusTest, TestIsWorkingThreadRunning) {
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
     gl_ThreadStatus.IncreaseRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 1);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread + 1);
     EXPECT_TRUE(gl_ThreadStatus.IsWorkingThreadRunning());
     gl_ThreadStatus.DecreaseRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
     gl_ThreadStatus.DecreaseRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), 0);
-    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
+    if (iRunningThread <= 0) {
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
+      EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
+    }
+    else {
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread - 1);
+    }
   }
 }

@@ -174,7 +174,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
     return -1;
 
-  BOOL bNameValid;
+  BOOL bNameValid{ true };
 
   CMDITabInfo mdiTabParams;
   mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // 其他可用样式...

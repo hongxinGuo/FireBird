@@ -299,14 +299,13 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
 }
 
 bool CPotenDailyBriefing::SkipOverStrings(CWebDataPtr pWebDataReceived, CString str) {
-  const const bool fFound = false;
   CString strNoUse, strHead;
   do {
     strNoUse = GetNextString(pWebDataReceived); // Å×µô4¸öÃ»ÓÃ×Ö·û´®
     strHead = strNoUse.Left(str.GetLength());
     if (strHead.Compare(str) == 0) return true;
     if (pWebDataReceived->IsProcessedAllTheData()) return false;
-  } while (!fFound);
+  } while (true);
   return true;
 }
 
