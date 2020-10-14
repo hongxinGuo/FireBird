@@ -20,7 +20,7 @@ public:
   virtual ~CVirtualWebInquiry() {}
 
   virtual bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0); // 唯一的网络实际读取函数
-  bool ReadDataFromWebOnce(void);
+  bool ReadDataFromWebOnce(long& lCurrentByteReaded);
   virtual UINT ReadWebFile(void); // 无法测试，故而虚拟化后使用Mock类。
   CWebDataPtr TransferWebDataToQueueData(void);
 
@@ -40,7 +40,10 @@ public:
   CString GetInquiringString(void) { return m_strInquire; }
   void SetInquiringString(CString str) { m_strInquire = str; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
-  char* GetBufferAddr(void) noexcept { return m_buffer; }
+
+  char GetData(long lIndex) { return m_buffer.at(lIndex); }
+  void SetData(long lIndex, char value) { m_buffer.at(lIndex) = value; }
+
   long GetByteReaded(void)noexcept { return m_lByteRead; }
   void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
   void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
@@ -53,11 +56,6 @@ public:
 
   bool IsWebError(void) noexcept { return m_fWebError; }
   void SetWebError(bool fFlag) noexcept { m_fWebError = fFlag; }
-
-  //void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_pCurrentPos += lNumberOfChars; m_lCurrentPos += lNumberOfChars; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_buffer; m_lCurrentPos = 0; }
-
-  char* GetCurrentReadPos(void) noexcept { return m_pCurrentReadPos; }
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
@@ -79,13 +77,8 @@ protected:
   CHttpFile* m_pFile; // 网络文件指针
   DWORD m_dwWebErrorCode; //网络读取错误代码
   CString m_strInquire;// 查询所需的字符串
-  char m_buffer[2048 * 1024]; // 接收到数据的缓冲区
+  vector<char> m_buffer; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
-  char* m_pCurrentReadPos; // 当前读入字符的存入位置
-  long m_lCurrentByteRead; // 本次接收到到的字符数
-
-  char* m_pCurrentPos; // 当前处理的位置
-  long m_lCurrentPos;// 当前处理的位置
 
   CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀

@@ -72,28 +72,25 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualWebInquiryTest, TestReadDataFromWebOnce) {
+    long lCurrentByteReaded = 0;
     m_VirtualWebInquiry.SetByteReaded(0);
-    m_VirtualWebInquiry.ResetCurrentPos();
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(1)
       .WillOnce(Return(0));
-    EXPECT_FALSE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_FALSE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
     EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 0);
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(1)
       .WillOnce(Return(1024));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
     EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 1024);
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(2)
       .WillOnce(Return(1024))
       .WillOnce(Return(128));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce());
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
     EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024 + 1024 + 128);
-    EXPECT_EQ(m_VirtualWebInquiry.GetCurrentReadPos() - m_VirtualWebInquiry.GetBufferAddr(), 1024 + 1024 + 128);
   }
 
   TEST_F(CVirtualWebInquiryTest, TestGetWebData) {

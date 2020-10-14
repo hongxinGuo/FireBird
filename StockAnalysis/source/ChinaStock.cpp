@@ -189,12 +189,11 @@ bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
 
 bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
-  char* p = pNeteaseWebDayLineData->GetBufferAddr();
   if (m_pDayLineBuffer != nullptr) delete m_pDayLineBuffer;
   m_pDayLineBuffer = new char[pNeteaseWebDayLineData->GetByteReaded() + 1]; // 缓冲区需要多加一个字符长度（最后那个0x000）。
   char* pbuffer = m_pDayLineBuffer;
   for (int i = 0; i < pNeteaseWebDayLineData->GetByteReaded() + 1; i++) {
-    *pbuffer++ = *p++;
+    *pbuffer++ = pNeteaseWebDayLineData->GetData(i);
   }
   m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
   SetDayLineNeedProcess(true);

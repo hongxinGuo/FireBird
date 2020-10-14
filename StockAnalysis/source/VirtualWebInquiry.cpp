@@ -12,9 +12,8 @@ atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // µ±Ç°Ö´ÐÐÍøÂç¶ÁÈ¡Ï
 
 CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
+  m_buffer.resize(2048 * 1024);
   m_lByteRead = 0;
-  m_pCurrentReadPos = m_buffer;
-  m_lCurrentByteRead = 0;
   m_fWebError = false;
   m_dwWebErrorCode = 0;
   m_strInquire = _T("");
@@ -32,8 +31,6 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 
 void CVirtualWebInquiry::Reset(void) noexcept {
   m_lByteRead = 0;
-  m_pCurrentReadPos = m_buffer;
-  m_lCurrentByteRead = 0;
   m_dwWebErrorCode = 0;
   m_fWebError = false;
 }
@@ -50,8 +47,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
 
   m_lReadingThreadNumber++;
 
-  m_pCurrentReadPos = GetBufferAddr();
-  m_lCurrentByteRead = 0;
+  long lCurrentByteReaded = 0;
   SetWebError(false);
   SetByteReaded(0);
   try {
@@ -60,17 +56,17 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     Sleep(lFirstDelayTime); // ·þÎñÆ÷ÑÓ³ÙlStartDelayTimeºÁÃë¼´¿É¡£
     while (!fDone) {
       do {
-        ReadDataFromWebOnce();
-      } while (m_lCurrentByteRead > 0);
+        ReadDataFromWebOnce(lCurrentByteReaded);
+      } while (lCurrentByteReaded > 0);
       Sleep(lSecondDelayTime); // µÈ´ýlSecondDelayTimeºÁÃëºóÔÙ¶ÁÒ»´Î£¬È·ÈÏÃ»ÓÐÐÂÊý¾Ýºó²Å·µ»Ø¡£
-      if (!ReadDataFromWebOnce()) {
+      if (!ReadDataFromWebOnce(lCurrentByteReaded)) {
         Sleep(lThirdDelayTime); // µÈ´ýlThirdDelayTimeºÁÃëºó¶ÁµÚÈý´Î£¬È·ÈÏÃ»ÓÐÐÂÊý¾Ýºó²Å·µ»Ø£¬·ñÔò¼ÌÐø¶Á¡£
-        if (!ReadDataFromWebOnce()) {
+        if (!ReadDataFromWebOnce(lCurrentByteReaded)) {
           fDone = true;
         }
       }
     }
-    *m_pCurrentReadPos = 0x000; // ×îºóÒÔ0x000½áÎ²
+    m_buffer.at(m_lByteRead) = 0x000; // ×îºóÒÔ0x000½áÎ²
     m_pFile->Close();
   }
   catch (CInternetException* exception) {
@@ -96,27 +92,30 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   return fStatus;
 }
 
-bool CVirtualWebInquiry::ReadDataFromWebOnce(void) {
-  m_lCurrentByteRead = ReadWebFile();
-  if (m_lCurrentByteRead > 0) {
-    m_pCurrentReadPos += m_lCurrentByteRead;
-    AddByteReaded(m_lCurrentByteRead);
+bool CVirtualWebInquiry::ReadDataFromWebOnce(long& lCurrentByteReaded) {
+  lCurrentByteReaded = ReadWebFile();
+  if (lCurrentByteReaded > 0) {
+    AddByteReaded(lCurrentByteReaded);
     return true;
   }
   else return false;
 }
 
 UINT CVirtualWebInquiry::ReadWebFile(void) {
-  return m_pFile->Read(m_pCurrentReadPos, 1024);
+  char buffer[1024];
+  const UINT uByteRead = m_pFile->Read(buffer, 1024);
+  for (int i = 0; i < uByteRead; i++) {
+    m_buffer.at(m_lByteRead + i) = buffer[i];
+  }
+  return uByteRead;
 }
 
 CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
-  char* pSrc = GetBufferAddr();
   CWebDataPtr pWebDataReceived = make_shared<CWebData>();
   pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; // »º³åÇøÐèÒª¶à¼ÓÒ»¸ö×Ö·û³¤¶È£¨×îºóÄÇ¸ö0x000£©¡£
   char* pDest = pWebDataReceived->m_pDataBuffer;
   for (int i = 0; i < GetByteReaded() + 1; i++) {
-    *pDest++ = *pSrc++;
+    *pDest++ = m_buffer.at(i);
   }
   pWebDataReceived->m_lBufferLength = GetByteReaded();
   pWebDataReceived->ResetCurrentPos();
@@ -152,9 +151,9 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
   long i;
   for (i = 0; i < lTotalNumber; i++) {
-    m_buffer[i] = buffer[i];
+    m_buffer.at(i) = buffer[i];
   }
-  m_buffer[lTotalNumber] = 0x000;
+  m_buffer.at(lTotalNumber) = 0x000;
   m_lByteRead = lTotalNumber;
 }
 
@@ -163,8 +162,8 @@ void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();
   for (i = 0; i < lTotalNumber; i++) {
-    m_buffer[i] = buffer[i];
+    m_buffer.at(i) = buffer[i];
   }
-  m_buffer[lTotalNumber] = 0x000;
+  m_buffer.at(lTotalNumber) = 0x000;
   m_lByteRead = lTotalNumber;
 }
