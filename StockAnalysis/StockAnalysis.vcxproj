@@ -465,6 +465,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -533,6 +534,7 @@
       <DiagnosticsFormat>Column</DiagnosticsFormat>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

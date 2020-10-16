@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetTengxunRTDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopTengxunRTData();
-    EXPECT_EQ(pWebData->m_lBufferLength, 8);
+    EXPECT_EQ(pWebData->GetBufferLength(), 8);
     char buffer[30];
     strcpy_s(buffer, pWebData->__TEST_GetBufferAddr());
     CString str = buffer;

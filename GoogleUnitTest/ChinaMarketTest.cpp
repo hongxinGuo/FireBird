@@ -1199,12 +1199,12 @@ namespace StockAnalysisTest {
     CString str = _T("_ntes_quote_callback({ });");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
     str = _T("_ntes_quote_callback({});");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidNeteaseRTData(*pWebDataReceived));
   }
@@ -1215,12 +1215,12 @@ namespace StockAnalysisTest {
     CString str = _T("_ntes_quote_callback({\"");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_TRUE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
     str = _T("_ntes_quo_callback({\"");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_pChinaStockMarket->IsValidNeteaseRTDataPrefix(*pWebDataReceived));
   }
@@ -1231,13 +1231,13 @@ namespace StockAnalysisTest {
     CString str = _T("v_pv_none_match=\"1\";\n");
     pWebDataReceived->m_pDataBuffer = new char[50];
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidTengxunRTData(pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
     str = _T("v_pv_none_mtch=\"1\";\n");
     strcpy_s(pWebDataReceived->m_pDataBuffer, 30, (LPSTR)str.GetBuffer());
-    pWebDataReceived->m_lBufferLength = str.GetLength();
+    pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
     EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidTengxunRTData(pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);

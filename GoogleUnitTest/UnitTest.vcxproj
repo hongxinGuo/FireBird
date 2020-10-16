@@ -643,6 +643,7 @@
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <CompileAs>CompileAsCpp</CompileAs>
       <FunctionLevelLinking>false</FunctionLevelLinking>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -692,6 +693,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

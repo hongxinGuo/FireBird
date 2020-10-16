@@ -902,7 +902,7 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
     pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
-    pNeteaseWebRTData->m_lCurrentPos = lSectionBegin + lSectionLength;
+    pNeteaseWebRTData->SetCurrentPos(lSectionBegin + lSectionLength);
     ASSERT(*(pNeteaseWebRTData->m_pCurrentPos - 1) == '}');
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。

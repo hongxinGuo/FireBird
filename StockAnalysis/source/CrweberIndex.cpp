@@ -127,7 +127,7 @@ void CCrweberIndex::AppendData(CSetCrweberIndex& setCrweberIndex) {
 }
 
 bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
-  pWebData->m_lCurrentPos = 0;
+  pWebData->SetCurrentPos(0);
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
@@ -225,14 +225,14 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
       str1 = GetNextString(pWebData);
       m_dHANDY_TC_3YEAR = ConvertStringToTC(str1);
 
-      pWebData->m_lCurrentPos = pWebData->m_lBufferLength; //
+      pWebData->SetCurrentPos(pWebData->GetBufferLength()); //
     }
   }
   pWebData->ResetCurrentPos();
-  for (int i = 0; i < pWebData->m_lBufferLength; i++) {
+  for (int i = 0; i < pWebData->GetBufferLength(); i++) {
     *pWebData->m_pCurrentPos++ = 0x000;
   }
-  pWebData->m_lCurrentPos = pWebData->m_lBufferLength; //
+  pWebData->SetCurrentPos(pWebData->GetBufferLength()); //
 
   return true;
 }
@@ -322,14 +322,14 @@ CString CCrweberIndex::GetNextString(CWebDataPtr pWebData) {
     else fFound = true;
   }
   if (*pWebData->m_pCurrentPos == 0x000) { // 读到结尾处了
-    ASSERT(pWebData->m_lCurrentPos >= pWebData->m_lBufferLength);
+    ASSERT(pWebData->GetCurrentPos() >= pWebData->GetBufferLength());
     return _T("");
   }
   while ((*pWebData->m_pCurrentPos != '<') && (*pWebData->m_pCurrentPos != 0x000)) {
     if (*pWebData->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebData->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
     pWebData->IncreaseCurrentPos();
   }
-  ASSERT(pWebData->m_lCurrentPos <= pWebData->m_lBufferLength);
+  ASSERT(pWebData->GetCurrentPos() <= pWebData->GetBufferLength());
   buffer[iBufferCount] = 0x000;
   CString str;
   str = buffer;

@@ -29,6 +29,9 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 #endif
 }
 
+CVirtualWebInquiry::~CVirtualWebInquiry(void) {
+}
+
 void CVirtualWebInquiry::Reset(void) noexcept {
   m_lByteRead = 0;
   m_dwWebErrorCode = 0;
@@ -117,7 +120,7 @@ CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
   for (int i = 0; i < GetByteReaded() + 1; i++) {
     *pDest++ = m_buffer.at(i);
   }
-  pWebDataReceived->m_lBufferLength = GetByteReaded();
+  pWebDataReceived->SetBufferLength(GetByteReaded());
   pWebDataReceived->ResetCurrentPos();
   return pWebDataReceived;
 }

@@ -956,7 +956,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     if (!IsInvalidNeteaseRTData(*pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(*pWebDataReceived)) return false;
       iCount = 0;
-      while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->m_lCurrentPos >= (pWebDataReceived->m_lBufferLength - 4)))) {
+      while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
         if (pRTData->ReadNeteaseData(pWebDataReceived)) {// ¼ì²âÒ»ÏÂ
           ValidateNeteaseRTData(pRTData);

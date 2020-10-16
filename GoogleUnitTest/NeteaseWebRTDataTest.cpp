@@ -168,7 +168,7 @@ namespace StockAnalysisTest {
         m_pData[i] = pData->m_strData[i];
       }
       m_pData[m_lStringLength] = 0x000;
-      m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
+      m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);
@@ -383,7 +383,7 @@ namespace StockAnalysisTest {
         m_pData[i] = pData->m_strData[i];
       }
       m_pData[m_lStringLength] = 0x000;
-      m_pNeteaseWebRTData->m_lBufferLength = m_lStringLength;
+      m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
         m_RTData.SetPBuy(i, -1);

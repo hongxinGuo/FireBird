@@ -17,7 +17,7 @@ using namespace std;
 class CVirtualWebInquiry : public CObject {
 public:
   CVirtualWebInquiry();
-  virtual ~CVirtualWebInquiry() {}
+  virtual ~CVirtualWebInquiry(void);
 
   virtual bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0); // 唯一的网络实际读取函数
   bool ReadDataFromWebOnce(long& lCurrentByteReaded);

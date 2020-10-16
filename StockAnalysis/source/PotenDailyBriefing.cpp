@@ -137,7 +137,7 @@ void CPotenDailyBriefing::AppendData(CSetPotenDailyBriefing& setPotenDailyBriefi
 }
 
 bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
-  pWebDataReceived->m_lCurrentPos = 0;
+  pWebDataReceived->SetCurrentPos(0);
   CString str, str1, strHead = _T("");
   CString strValue, strTime;
   CString strNoUse;
@@ -286,14 +286,14 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
       str1 = GetNextString(pWebDataReceived); // "Handy, 38"
       m_dLPG_VLGC44SpotTCERate = GetOneValue(str1);
 
-      pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+      pWebDataReceived->SetCurrentPos(pWebDataReceived->GetBufferLength()); //
     }
   }
   pWebDataReceived->ResetCurrentPos();
-  for (int i = 0; i < pWebDataReceived->m_lBufferLength; i++) {
+  for (int i = 0; i < pWebDataReceived->GetBufferLength(); i++) {
     *pWebDataReceived->m_pCurrentPos++ = 0x000;
   }
-  pWebDataReceived->m_lCurrentPos = pWebDataReceived->m_lBufferLength; //
+  pWebDataReceived->SetCurrentPos(pWebDataReceived->GetBufferLength()); //
 
   return true;
 }
@@ -374,7 +374,7 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
     if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
       while (*pWebDataReceived->m_pCurrentPos != '>') {
         if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
-          ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
+          ASSERT(pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength());
           return _T("");
         }
         pWebDataReceived->IncreaseCurrentPos();
@@ -388,7 +388,7 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
     else fFound = true;
   }
   if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
-    ASSERT(pWebDataReceived->m_lCurrentPos >= pWebDataReceived->m_lBufferLength);
+    ASSERT(pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength());
     return _T("");
   }
   while ((*pWebDataReceived->m_pCurrentPos != '<') && (*pWebDataReceived->m_pCurrentPos != 0x000)) {
@@ -396,7 +396,7 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
     pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;
-  ASSERT(pWebDataReceived->m_lCurrentPos <= pWebDataReceived->m_lBufferLength);
+  ASSERT(pWebDataReceived->GetCurrentPos() <= pWebDataReceived->GetBufferLength());
 
   CString str;
   str = buffer;

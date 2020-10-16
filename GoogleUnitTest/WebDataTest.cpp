@@ -10,16 +10,15 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       EXPECT_EQ(m_id.m_pDataBuffer, nullptr);
       EXPECT_EQ(m_id.m_pCurrentPos, nullptr);
-      EXPECT_EQ(m_id.m_lCurrentPos, 0);
-      EXPECT_EQ(m_id.m_lBufferLength, 0);
-      EXPECT_EQ(m_id.m_lTime, 0);
-      EXPECT_EQ(m_id.m_lBufferLength, 0);
+      EXPECT_EQ(m_id.GetCurrentPos(), 0);
+      EXPECT_EQ(m_id.GetTime(), 0);
+      EXPECT_EQ(m_id.GetBufferLength(), 0);
       char* buffer = new char[100];
       m_id.m_pDataBuffer = buffer;
       m_id.SetBufferLength(100);
       m_id.ResetCurrentPos();
       EXPECT_EQ(m_id.m_pCurrentPos, buffer);
-      EXPECT_EQ(m_id.m_lCurrentPos, 0);
+      EXPECT_EQ(m_id.GetCurrentPos(), 0);
       EXPECT_EQ(m_id.__TEST_GetBufferAddr(), buffer);
       EXPECT_EQ(m_id.GetBufferLength(), 100);
     }
@@ -42,9 +41,9 @@ namespace StockAnalysisTest {
   TEST_F(CReceivedDataTest, TestIncreaseCurrentPos) {
     m_id.IncreaseCurrentPos();
     EXPECT_EQ(m_id.m_pCurrentPos, m_id.m_pDataBuffer + 1);
-    EXPECT_EQ(m_id.m_lCurrentPos, 1);
+    EXPECT_EQ(m_id.GetCurrentPos(), 1);
     m_id.IncreaseCurrentPos(10);
     EXPECT_EQ(m_id.m_pCurrentPos, m_id.m_pDataBuffer + 11);
-    EXPECT_EQ(m_id.m_lCurrentPos, 11);
+    EXPECT_EQ(m_id.GetCurrentPos(), 11);
   }
 }
