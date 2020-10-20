@@ -236,9 +236,8 @@ namespace StockAnalysisTest {
       m_strProcessed = NextString->m_strProcessed;
       m_WebDataPtr = make_shared<CWebData>();
       m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
-      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
-      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
-      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->SetData(m_strInput.GetBuffer(), m_strInput.GetLength(), 0);
+      m_WebDataPtr->SetData(m_strInput.GetLength(), 0x000);
       m_WebDataPtr->ResetCurrentPos();
     }
     virtual void TearDown(void) override {
@@ -301,9 +300,8 @@ namespace StockAnalysisTest {
       m_fFound = SkipOverString->m_fFound;
       m_WebDataPtr = make_shared<CWebData>();
       m_WebDataPtr->SetBufferLength(m_strInput.GetLength());
-      m_WebDataPtr->m_pDataBuffer = new char[m_strInput.GetLength() + 1];
-      strcpy_s(m_WebDataPtr->m_pDataBuffer, m_strInput.GetLength() + 1, m_strInput.GetBuffer());
-      m_WebDataPtr->m_pDataBuffer[m_strInput.GetLength()] = 0x000;
+      m_WebDataPtr->SetData(m_strInput.GetBuffer(), m_strInput.GetLength(), 0);
+      m_WebDataPtr->SetData(m_strInput.GetLength(), 0x000);
       m_WebDataPtr->ResetCurrentPos();
     }
     virtual void TearDown(void) override {

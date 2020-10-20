@@ -956,7 +956,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
     if (!IsInvalidNeteaseRTData(*pWebDataReceived)) {
       if (!IsValidNeteaseRTDataPrefix(*pWebDataReceived)) return false;
       iCount = 0;
-      while (!((*pWebDataReceived->m_pCurrentPos == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
+      while (!((pWebDataReceived->GetCurrentPosData() == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
         if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
           ValidateNeteaseRTData(pRTData);
@@ -975,8 +975,9 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
 
 bool CChinaMarket::IsInvalidNeteaseRTData(CWebData& WebDataReceived) {
   char buffer[50];
+  char* pBuffer = buffer;
   CString strInvalidStock = _T("_ntes_quote_callback({ });"); // 此为无效股票查询到的数据格式，共26个字符
-  strncpy_s(buffer, WebDataReceived.m_pCurrentPos, 26);
+  WebDataReceived.GetData(pBuffer, 26, WebDataReceived.GetCurrentPos());
   buffer[26] = 0x000;
   CString str1 = buffer;
 
@@ -991,7 +992,7 @@ bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebData& WebDataReceived) {
   char buffer[50];
   CString strInvalidStock = _T("_ntes_quote_callback("); // 此为无效股票查询到的数据格式，共22个字符
 
-  strncpy_s(buffer, WebDataReceived.m_pCurrentPos, 21); // 读入"_ntes_quote_callback("
+  WebDataReceived.GetData(buffer, 21, WebDataReceived.GetCurrentPos()); // 读入"_ntes_quote_callback("
   buffer[21] = 0x000;
   CString str1;
   str1 = buffer;
@@ -1109,9 +1110,10 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived) {
   char buffer[50];
+  char* pBuffer = buffer;
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
-  strncpy_s(buffer, pWebDataReceived->m_pCurrentPos, 21);
+  pWebDataReceived->GetData(pBuffer, 21, pWebDataReceived->GetCurrentPos());
   buffer[21] = 0x000;
   CString str1 = buffer;
 

@@ -162,12 +162,10 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
       for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);
       }
-      m_pData[m_lStringLength] = 0x000;
+      m_pNeteaseWebRTData->SetData(m_lStringLength, 0x000);
       m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
@@ -377,12 +375,10 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
       for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);
       }
-      m_pData[m_lStringLength] = 0x000;
+      m_pNeteaseWebRTData->SetData(m_lStringLength, 0x000);
       m_pNeteaseWebRTData->SetBufferLength(m_lStringLength);
       m_pNeteaseWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
@@ -505,12 +501,10 @@ namespace StockAnalysisTest {
       m_pNeteaseWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      m_pNeteaseWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pNeteaseWebRTData->m_pDataBuffer;
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pNeteaseWebRTData->SetData(i, pData->m_strData[i]);
       }
-      m_pData[lLength] = 0x000;
+      m_pNeteaseWebRTData->SetData(lLength, 0x000);
       m_pNeteaseWebRTData->ResetCurrentPos();
     }
 
