@@ -140,15 +140,16 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
   static CString strHeader = _T("var hq_str_s");
   long lStockCode = 0;
   double dTemp = 0;
-  char* pTestCurrentPos = pSinaWebRTData->m_pCurrentPos;
   char bufferTest[2000];
   CString strTest;
 
   int i = 0;
-  while ((*pTestCurrentPos != ';') && (i < 1900)) {
-    bufferTest[i++] = *pTestCurrentPos++;
+  while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (i < 1900)) {
+    bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
+    i++;
   }
-  bufferTest[i++] = *pTestCurrentPos++;
+  bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
+  i++;
   bufferTest[i] = 0x000;
   strTest = bufferTest;
   if (i >= 1900) {
@@ -160,7 +161,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 12); // 读入“var hq_str_s"
+    pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // 读入“var hq_str_s"
     buffer1[12] = 0x000;
     CString str1;
     str1 = buffer1;
@@ -169,10 +170,10 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     }
     pSinaWebRTData->IncreaseCurrentPos(12);
 
-    if (*pSinaWebRTData->m_pCurrentPos == 'h') { // 上海股票
+    if (pSinaWebRTData->GetCurrentPosData() == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pSinaWebRTData->m_pCurrentPos == 'z') {
+    else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
@@ -180,7 +181,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     }
     pSinaWebRTData->IncreaseCurrentPos();
 
-    strncpy_s(buffer2, pSinaWebRTData->m_pCurrentPos, 6);
+    pSinaWebRTData->GetData(buffer2, 6, pSinaWebRTData->GetCurrentPos());
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -196,18 +197,18 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2); // 读入'="'
+    pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // 读入'="'
     if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
       throw exception();
     }
     pSinaWebRTData->IncreaseCurrentPos(2);
-    strncpy_s(buffer1, pSinaWebRTData->m_pCurrentPos, 2);
+    pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos());
     if (buffer1[0] == '"') { // 没有数据?
       if (buffer1[1] != ';') {
         throw exception();
       }
       pSinaWebRTData->IncreaseCurrentPos(2);
-      if (*pSinaWebRTData->m_pCurrentPos != 0x00a) {
+      if (pSinaWebRTData->GetCurrentPosData() != 0x00a) {
         return false;
       }
       pSinaWebRTData->IncreaseCurrentPos();
@@ -224,11 +225,11 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     pSinaWebRTData->IncreaseCurrentPos(2);
 
     i = 2;
-    while ((*pSinaWebRTData->m_pCurrentPos != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
-      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) {
+    while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
+      if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || (pSinaWebRTData->GetCurrentPosData() == 0x000)) {
         throw exception();
       }
-      buffer1[i++] = *pSinaWebRTData->m_pCurrentPos;
+      buffer1[i++] = pSinaWebRTData->GetCurrentPosData();
       pSinaWebRTData->IncreaseCurrentPos();
     }
     buffer1[i] = 0x000;
@@ -317,9 +318,9 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
 
     // 后面的数据皆为无效数据，读至此数据的结尾处即可。
-    while (*pSinaWebRTData->m_pCurrentPos != 0x00a) { // 寻找字符'\n'（回车符）
+    while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
       pSinaWebRTData->IncreaseCurrentPos();
-      if (*pSinaWebRTData->m_pCurrentPos == 0x000) {
+      if (pSinaWebRTData->GetCurrentPosData() == 0x000) {
         throw exception();
       }
     }
@@ -411,10 +412,10 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnVal
 bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
   int i = 0;
   try {
-    while ((*pSinaWebRTData->m_pCurrentPos != ',')) {
-      if ((*pSinaWebRTData->m_pCurrentPos == 0x00a) || (*pSinaWebRTData->m_pCurrentPos == 0x000)) throw exception();
+    while ((pSinaWebRTData->GetCurrentPosData() != ',')) {
+      if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || (pSinaWebRTData->GetCurrentPosData() == 0x000)) throw exception();
       if (i > 150) throw exception();
-      buffer[i++] = *pSinaWebRTData->m_pCurrentPos;
+      buffer[i++] = pSinaWebRTData->GetCurrentPosData();
       pSinaWebRTData->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
@@ -497,7 +498,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 
   try {
     m_fActive = false;    // 初始状态为无效数据
-    strncpy_s(buffer1, pTengxunWebRTData->m_pCurrentPos, 3); // 读入“v_s"
+    pTengxunWebRTData->GetData(buffer1, 3, pTengxunWebRTData->GetCurrentPos()); // 读入“v_s"
     buffer1[3] = 0x000;
     CString str1;
     str1 = buffer1;
@@ -505,10 +506,10 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
       return false;
     }
     pTengxunWebRTData->IncreaseCurrentPos(3);
-    if (*pTengxunWebRTData->m_pCurrentPos == 'h') { // 上海股票
+    if (pTengxunWebRTData->GetCurrentPosData() == 'h') { // 上海股票
       m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
     }
-    else if (*pTengxunWebRTData->m_pCurrentPos == 'z') {
+    else if (pTengxunWebRTData->GetCurrentPosData() == 'z') {
       m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
     }
     else {
@@ -517,7 +518,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     pTengxunWebRTData->IncreaseCurrentPos();
 
     // 六位股票代码
-    strncpy_s(buffer2, pTengxunWebRTData->m_pCurrentPos, 6);
+    pTengxunWebRTData->GetData(buffer2, 6, pTengxunWebRTData->GetCurrentPos());
     buffer2[6] = 0x000;
     m_strStockCode = buffer2;
     switch (m_wMarket) {
@@ -533,7 +534,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     lStockCode = atoi(buffer2);
     pTengxunWebRTData->IncreaseCurrentPos(6);
 
-    strncpy_s(buffer1, pTengxunWebRTData->m_pCurrentPos, 2); // 读入'="'
+    pTengxunWebRTData->GetData(buffer1, 2, pTengxunWebRTData->GetCurrentPos()); // 读入'="'
     if (buffer1[0] != '=') {
       return false;
     }
@@ -709,9 +710,9 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     if (dTemp > 0.01) m_lLowLimit = static_cast<long>((dTemp + 0.000001) * 1000);
 
     // 后面的数据具体内容不清楚，暂时放弃解码。
-    while (*pTengxunWebRTData->m_pCurrentPos != 0x00a) {
+    while (pTengxunWebRTData->GetCurrentPosData() != 0x00a) {
       pTengxunWebRTData->IncreaseCurrentPos();
-      if (*pTengxunWebRTData->m_pCurrentPos == 0x000) {
+      if (pTengxunWebRTData->GetCurrentPosData() == 0x000) {
         return false;
       }
     }
@@ -803,9 +804,9 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, long& lReturn
 bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer) {
   int i = 0;
   try {
-    while (*pWebDataReceived->m_pCurrentPos != '~') {
-      if ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x000)) return false;
-      buffer[i++] = *pWebDataReceived->m_pCurrentPos;
+    while (pWebDataReceived->GetCurrentPosData() != '~') {
+      if ((pWebDataReceived->GetCurrentPosData() == 0x00a) || (pWebDataReceived->GetCurrentPosData() == 0x000)) return false;
+      buffer[i++] = pWebDataReceived->GetCurrentPosData();
       pWebDataReceived->IncreaseCurrentPos();
     }
     buffer[i] = 0x000;
@@ -840,19 +841,19 @@ bool CWebRTData::ReadTengxunOneValue(CWebDataPtr pWebDataReceived, char* buffer)
 bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   long lIndex = 0;
   CString strValue = _T("");
-  char* pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
   char bufferTest[2000];
-  char* pSectionPos = pNeteaseWebRTData->m_pCurrentPos;
   long lSectionBegin = pNeteaseWebRTData->GetCurrentPos();
   CString strStockCode = _T(" "), strHeader;
   long lSectionLength = 0;
   CString strTest;
 
   int i = 0;
-  while ((*pTestCurrentPos != '}') && (i < 1900)) {
-    bufferTest[i++] = *pTestCurrentPos++;
+  while ((pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}') && (i < 1900)) {
+    bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
+    i++;
   }
-  bufferTest[i++] = *pTestCurrentPos++;
+  bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
+  i++;
   lSectionLength = i;
   bufferTest[i] = 0x000;
   strTest = bufferTest;
@@ -862,7 +863,7 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
     return false; // 整个数据出现错误，后面的皆抛掉
   }
 
-  char ch = *(pSectionPos + lSectionLength - 1);
+  char ch = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + lSectionLength - 1);
   ASSERT(ch == '}');
   ASSERT(bufferTest[i - 1] == '}');
 
@@ -879,12 +880,12 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
       else {
         throw exception();
       }
-    } while ((lIndex != 63) && (*pNeteaseWebRTData->m_pCurrentPos != '}'));  // 读至turnover(63)或者遇到字符'}'
+    } while ((lIndex != 63) && (pNeteaseWebRTData->GetCurrentPosData() != '}'));  // 读至turnover(63)或者遇到字符'}'
     // 读过'}'就结束了
-    while (*pNeteaseWebRTData->m_pCurrentPos != '}') {
+    while (pNeteaseWebRTData->GetCurrentPosData() != '}') {
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
-    ASSERT(*pNeteaseWebRTData->m_pCurrentPos == '}');
+    ASSERT(pNeteaseWebRTData->GetCurrentPosData() == '}');
     pNeteaseWebRTData->IncreaseCurrentPos();
 
     CheckNeteaseRTDataActive();
@@ -901,9 +902,8 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 #endif // DEBUG
     m_fActive = false;
     // 跨过此错误数据，寻找下一个数据的起始处。
-    pNeteaseWebRTData->m_pCurrentPos = pSectionPos + lSectionLength;
     pNeteaseWebRTData->SetCurrentPos(lSectionBegin + lSectionLength);
-    ASSERT(*(pNeteaseWebRTData->m_pCurrentPos - 1) == '}');
+    ASSERT(pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() - 1) == '}');
     SetDataSource(__NETEASE_RT_WEB_DATA__);
     return true; // 返回真，则跨过此错误数据，继续处理。
   }
@@ -925,48 +925,48 @@ bool CWebRTData::CheckNeteaseRTDataActive(void) {
 bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
   CString strValue = _T("");
   char bufferStockCode[50];
-  char* pTestCurrentPos = pWebDataReceived->m_pCurrentPos;
   char bufferTest[30];
   bool fFind = false;
   CString strStockCode, strHeader;
   CString strTest;
 
   int i = 0;
-  while ((*pTestCurrentPos != '{') && (i < 20)) {
-    bufferTest[i++] = *pTestCurrentPos++;
+  while ((pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i) != '{') && (i < 20)) {
+    bufferTest[i] = pWebDataReceived->GetData(pWebDataReceived->GetCurrentPos() + i);
+    i++;
   }
   bufferTest[i] = 0x000;
   strTest = bufferTest;
 
   i = 0;  // 跨过前缀字符（"0601872")，直接使用其后的数据
-  if (!((*pWebDataReceived->m_pCurrentPos == '{') || (*pWebDataReceived->m_pCurrentPos == ','))) {
+  if (!((pWebDataReceived->GetCurrentPosData() == '{') || (pWebDataReceived->GetCurrentPosData() == ','))) {
     return false;
   }
   else pWebDataReceived->IncreaseCurrentPos();
-  if (*pWebDataReceived->m_pCurrentPos != '\"') {
+  if (pWebDataReceived->GetCurrentPosData() != '\"') {
     return false;
   }
   else pWebDataReceived->IncreaseCurrentPos();
-  if (*pWebDataReceived->m_pCurrentPos == '0') strHeader = _T("sh");
-  else if (*pWebDataReceived->m_pCurrentPos == '1') strHeader = _T("sz");
+  if (pWebDataReceived->GetCurrentPosData() == '0') strHeader = _T("sh");
+  else if (pWebDataReceived->GetCurrentPosData() == '1') strHeader = _T("sz");
   else {
     return false;
   }
   pWebDataReceived->IncreaseCurrentPos();
   i = 0;
   while (!fFind && (i < 13)) {
-    if (*pWebDataReceived->m_pCurrentPos == '"') {
+    if (pWebDataReceived->GetCurrentPosData() == '"') {
       fFind = true;
       bufferStockCode[i] = 0x000;
     }
     else {
-      bufferStockCode[i++] = *pWebDataReceived->m_pCurrentPos;
+      bufferStockCode[i++] = pWebDataReceived->GetCurrentPosData();
     }
     pWebDataReceived->IncreaseCurrentPos();
   }
   if (!fFind) return false;
   i = 1;
-  while ((*pWebDataReceived->m_pCurrentPos != '{') && (*pWebDataReceived->m_pCurrentPos != '"' && (i < 5))) {
+  while ((pWebDataReceived->GetCurrentPosData() != '{') && (pWebDataReceived->GetCurrentPosData() != '"' && (i < 5))) {
     i++;
     pWebDataReceived->IncreaseCurrentPos();
   }
@@ -997,28 +997,26 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
   int i = 0;
   CString strIndex;
   bool fFind = false;
-  char* pTestCurrentPos;
-  char* p = pNeteaseWebRTData->m_pCurrentPos - 1;
   char bufferTest[100];
 
   try {
-    while (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+    while (pNeteaseWebRTData->GetCurrentPosData() != '"') {
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    pTestCurrentPos = pNeteaseWebRTData->m_pCurrentPos;
-    while ((*pTestCurrentPos != '}') && (*pTestCurrentPos != ',') && (i < 99)) {
-      bufferTest[i++] = *pTestCurrentPos++;
+    while ((pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}') && (pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != ',') && (i < 99)) {
+      bufferTest[i] = pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i);
+      i++;
     }
     bufferTest[i] = 0x000;
 
     i = 0;
-    while ((*pNeteaseWebRTData->m_pCurrentPos != '"') && (*pNeteaseWebRTData->m_pCurrentPos != ':') && (*pNeteaseWebRTData->m_pCurrentPos != ',')) {
-      buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+    while ((pNeteaseWebRTData->GetCurrentPosData() != '"') && (pNeteaseWebRTData->GetCurrentPosData() != ':') && (pNeteaseWebRTData->GetCurrentPosData() != ',')) {
+      buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
-    if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+    if (pNeteaseWebRTData->GetCurrentPosData() != '"') {
       TRACE(_T("未遇到正确字符'\"'\n"));
       return false;
     }
@@ -1027,18 +1025,18 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
     if ((lIndex = GetNeteaseSymbolIndex(strIndex)) == 0) throw exception();
     // 跨过"\""字符
     pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos != ':') {
+    if (pNeteaseWebRTData->GetCurrentPosData() != ':') {
       TRACE(_T("未遇到正确字符':'\n"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
-    if (*pNeteaseWebRTData->m_pCurrentPos != ' ') {
+    if (pNeteaseWebRTData->GetCurrentPosData() != ' ') {
       TRACE(_T("未遇到正确字符' '\n"));
       return false;
     }
     pNeteaseWebRTData->IncreaseCurrentPos();
 
-    if (*pNeteaseWebRTData->m_pCurrentPos == '"') {
+    if (pNeteaseWebRTData->GetCurrentPosData() == '"') {
       fFind = true;
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
@@ -1046,11 +1044,11 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
 
     i = 0;
     if (fFind) {
-      while ((*pNeteaseWebRTData->m_pCurrentPos != '"') && (*pNeteaseWebRTData->m_pCurrentPos != ',')) {
-        buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+      while ((pNeteaseWebRTData->GetCurrentPosData() != '"') && (pNeteaseWebRTData->GetCurrentPosData() != ',')) {
+        buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
         pNeteaseWebRTData->IncreaseCurrentPos();
       }
-      if (*pNeteaseWebRTData->m_pCurrentPos != '"') {
+      if (pNeteaseWebRTData->GetCurrentPosData() != '"') {
         TRACE(_T("未遇到正确字符'\"'\n"));
         return false;
       }
@@ -1059,8 +1057,8 @@ bool CWebRTData::GetNeteaseIndexAndValue(CWebDataPtr pNeteaseWebRTData, long& lI
       pNeteaseWebRTData->IncreaseCurrentPos();
     }
     else {
-      while ((*pNeteaseWebRTData->m_pCurrentPos != ',') && (*pNeteaseWebRTData->m_pCurrentPos != '}')) {
-        buffer[i++] = *pNeteaseWebRTData->m_pCurrentPos;
+      while ((pNeteaseWebRTData->GetCurrentPosData() != ',') && (pNeteaseWebRTData->GetCurrentPosData() != '}')) {
+        buffer[i++] = pNeteaseWebRTData->GetCurrentPosData();
         pNeteaseWebRTData->IncreaseCurrentPos();
       }
       buffer[i] = 0x000;

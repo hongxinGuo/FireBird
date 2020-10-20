@@ -230,7 +230,7 @@ bool CCrweberIndex::ReadData(CWebDataPtr pWebData) {
   }
   pWebData->ResetCurrentPos();
   for (int i = 0; i < pWebData->GetBufferLength(); i++) {
-    *pWebData->m_pCurrentPos++ = 0x000;
+    pWebData->SetData(i, 0x000);
   }
   pWebData->SetCurrentPos(pWebData->GetBufferLength()); //
 
@@ -308,25 +308,25 @@ CString CCrweberIndex::GetNextString(CWebDataPtr pWebData) {
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebData->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebData->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebData->m_pCurrentPos != '>') {
+  while ((pWebData->GetCurrentPosData() != 0x000) && !fFound) {
+    if (pWebData->GetCurrentPosData() == '<') { // 无用配置字符
+      while (pWebData->GetCurrentPosData() != '>') {
         pWebData->IncreaseCurrentPos();
       }
       pWebData->IncreaseCurrentPos();
-      while ((*pWebData->m_pCurrentPos == 0x00a) || (*pWebData->m_pCurrentPos == 0x00d)
-             || (*pWebData->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+      while ((pWebData->GetCurrentPosData() == 0x00a) || (pWebData->GetCurrentPosData() == 0x00d)
+             || (pWebData->GetCurrentPosData() == ' ')) { // 跨过回车、换行和空格符
         pWebData->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebData->m_pCurrentPos == 0x000) { // 读到结尾处了
+  if (pWebData->GetCurrentPosData() == 0x000) { // 读到结尾处了
     ASSERT(pWebData->GetCurrentPos() >= pWebData->GetBufferLength());
     return _T("");
   }
-  while ((*pWebData->m_pCurrentPos != '<') && (*pWebData->m_pCurrentPos != 0x000)) {
-    if (*pWebData->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebData->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+  while ((pWebData->GetCurrentPosData() != '<') && (pWebData->GetCurrentPosData() != 0x000)) {
+    if (pWebData->GetCurrentPosData() != ',') buffer[iBufferCount++] = pWebData->GetCurrentPosData(); // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
     pWebData->IncreaseCurrentPos();
   }
   ASSERT(pWebData->GetCurrentPos() <= pWebData->GetBufferLength());

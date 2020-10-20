@@ -291,7 +291,7 @@ bool CPotenDailyBriefing::ReadData(CWebDataPtr pWebDataReceived) {
   }
   pWebDataReceived->ResetCurrentPos();
   for (int i = 0; i < pWebDataReceived->GetBufferLength(); i++) {
-    *pWebDataReceived->m_pCurrentPos++ = 0x000;
+    pWebDataReceived->SetData(i, 0x000);
   }
   pWebDataReceived->SetCurrentPos(pWebDataReceived->GetBufferLength()); //
 
@@ -370,29 +370,29 @@ CString CPotenDailyBriefing::GetNextString(CWebDataPtr pWebDataReceived) {
   char buffer[10000];
   long iBufferCount = 0;
 
-  while ((*pWebDataReceived->m_pCurrentPos != 0x000) && !fFound) {
-    if (*pWebDataReceived->m_pCurrentPos == '<') { // 无用配置字符
-      while (*pWebDataReceived->m_pCurrentPos != '>') {
-        if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+  while ((pWebDataReceived->GetCurrentPosData() != 0x000) && !fFound) {
+    if (pWebDataReceived->GetCurrentPosData() == '<') { // 无用配置字符
+      while (pWebDataReceived->GetCurrentPosData() != '>') {
+        if (pWebDataReceived->GetCurrentPosData() == 0x000) { // 读到结尾处了
           ASSERT(pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength());
           return _T("");
         }
         pWebDataReceived->IncreaseCurrentPos();
       }
       pWebDataReceived->IncreaseCurrentPos();
-      while ((*pWebDataReceived->m_pCurrentPos == 0x00a) || (*pWebDataReceived->m_pCurrentPos == 0x00d)
-             || (*pWebDataReceived->m_pCurrentPos == ' ')) { // 跨过回车、换行和空格符
+      while ((pWebDataReceived->GetCurrentPosData() == 0x00a) || (pWebDataReceived->GetCurrentPosData() == 0x00d)
+             || (pWebDataReceived->GetCurrentPosData() == ' ')) { // 跨过回车、换行和空格符
         pWebDataReceived->IncreaseCurrentPos();
       }
     }
     else fFound = true;
   }
-  if (*pWebDataReceived->m_pCurrentPos == 0x000) { // 读到结尾处了
+  if (pWebDataReceived->GetCurrentPosData() == 0x000) { // 读到结尾处了
     ASSERT(pWebDataReceived->GetCurrentPos() >= pWebDataReceived->GetBufferLength());
     return _T("");
   }
-  while ((*pWebDataReceived->m_pCurrentPos != '<') && (*pWebDataReceived->m_pCurrentPos != 0x000)) {
-    if (*pWebDataReceived->m_pCurrentPos != ',') buffer[iBufferCount++] = *pWebDataReceived->m_pCurrentPos; // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
+  while ((pWebDataReceived->GetCurrentPosData() != '<') && (pWebDataReceived->GetCurrentPosData() != 0x000)) {
+    if (pWebDataReceived->GetCurrentPosData() != ',') buffer[iBufferCount++] = pWebDataReceived->GetCurrentPosData(); // 抛掉逗号，逗号导致atof函数无法顺利转化字符串
     pWebDataReceived->IncreaseCurrentPos();
   }
   buffer[iBufferCount] = 0x000;

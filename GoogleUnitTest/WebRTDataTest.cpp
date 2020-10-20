@@ -1465,12 +1465,10 @@ namespace StockAnalysisTest {
       m_pSinaWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      //m_pSinaWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pSinaWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pSinaWebRTData->SetData(i, pData->m_strData[i]);
       }
-      m_pData[lLength] = 0x000;
+      m_pSinaWebRTData->SetData(lLength, 0x000);
       m_pSinaWebRTData->ResetCurrentPos();
     }
 
@@ -1480,7 +1478,6 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char* m_pData;
     CWebDataPtr m_pSinaWebRTData;
     CWebRTData m_RTData;
   };

@@ -175,10 +175,8 @@ namespace StockAnalysisTest {
       m_pTengxunWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       m_lStringLength = pData->m_strData.GetLength();
-      //m_pTengxunWebRTData->m_pDataBuffer = new char[m_lStringLength + 1];
-      m_pData = m_pTengxunWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < m_lStringLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);
       }
       m_pTengxunWebRTData->ResetCurrentPos();
       for (int i = 0; i < 5; i++) {
@@ -204,7 +202,6 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char* m_pData;
     long m_lStringLength;
     CWebDataPtr m_pTengxunWebRTData;
     CWebRTData m_RTData;
@@ -742,12 +739,10 @@ namespace StockAnalysisTest {
       m_pTengxunWebRTData = make_shared<CWebData>();
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
-      //m_pTengxunWebRTData->m_pDataBuffer = new char[lLength + 1];
-      m_pData = m_pTengxunWebRTData->__TEST_GetBufferAddr();
       for (int i = 0; i < lLength; i++) {
-        m_pData[i] = pData->m_strData[i];
+        m_pTengxunWebRTData->SetData(i, pData->m_strData[i]);
       }
-      m_pData[lLength] = 0x000;
+      m_pTengxunWebRTData->SetData(lLength, 0x000);
       m_pTengxunWebRTData->ResetCurrentPos();
     }
 
@@ -757,7 +752,6 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    char* m_pData;
     CWebDataPtr m_pTengxunWebRTData;
     CWebRTData m_RTData;
   };

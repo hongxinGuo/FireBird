@@ -45,7 +45,12 @@ namespace StockAnalysisTest {
     CWebDataPtr pWebData = gl_WebInquirer.PopCrweberData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);
     char buffer[30];
-    strcpy_s(buffer, pWebData->__TEST_GetBufferAddr());
+    int i = 0;
+    while ((i < 30) && (pWebData->GetData(i) != 0x000)) {
+      buffer[i] = pWebData->GetData(i);
+      i++;
+    }
+    buffer[i] = 0x000;
     CString str = buffer;
     EXPECT_STREQ(str, _T("testData"));
     EXPECT_FALSE(gl_WebInquirer.IsReadingCrweberIndex());
