@@ -115,7 +115,7 @@ UINT CVirtualWebInquiry::ReadWebFile(void) {
 
 CWebDataPtr CVirtualWebInquiry::TransferWebDataToQueueData() {
   CWebDataPtr pWebDataReceived = make_shared<CWebData>();
-  //pWebDataReceived->m_pDataBuffer = new char[GetByteReaded() + 1]; 。
+  pWebDataReceived->Resize(GetByteReaded() + 1);
   for (int i = 0; i < GetByteReaded() + 1; i++) {// 缓冲区需要多加一个字符长度（最后那个0x00)
     pWebDataReceived->SetData(i, m_buffer.at(i));
   }

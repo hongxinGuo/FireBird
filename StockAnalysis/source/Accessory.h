@@ -32,6 +32,7 @@ CString ConvertValueToString(double dvalue, int iDividend = 1);
 
 // 虽然这个函数与读取新浪实时数据的完全一样，但为了防止以后可能改变的缘故，还是分别实现。
 bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadNumber);
+bool ReadOneValueOfNeteaseDayLine2(vector<char>& pBuffer, char* buffer, INT64& lCurrentPos);
 
 void ZoomIn(vector<double>& vData, double dLevel, double dRate);
 

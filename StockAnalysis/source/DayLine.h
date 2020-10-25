@@ -23,6 +23,7 @@ public:
   bool LoadExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo);
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
+  bool ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos);
   bool IsActive(void);
 
 public:

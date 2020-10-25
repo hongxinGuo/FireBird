@@ -278,6 +278,20 @@ bool ReadOneValueOfNeteaseDayLine(char*& pCurrentPos, char* buffer, long& iReadN
   return true;
 }
 
+bool ReadOneValueOfNeteaseDayLine2(vector<char>& pBuffer, char* buffer, INT64& lCurrentPos) {
+  int i = 0;
+
+  while (pBuffer.at(lCurrentPos) != ',') { // 将下一个逗号前的字符存入缓冲区. 0x2c就是逗号。
+    if ((pBuffer.at(lCurrentPos) == 0x0d) || (pBuffer.at(lCurrentPos) == 0x00a) || (pBuffer.at(lCurrentPos) == 0x000) || (i > 100)) { // 遇到回车、换行或者字符串结束符,或者超过了100个字符
+      return false; // 数据出错，放弃载入
+    }
+    buffer[i++] = pBuffer.at(lCurrentPos++);
+  }
+  buffer[i] = 0x000;
+  lCurrentPos++;
+  return true;
+}
+
 void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
   double d = 0;
 

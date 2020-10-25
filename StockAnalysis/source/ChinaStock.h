@@ -417,9 +417,8 @@ public:
   void Get120DaysRS(vector<double>& vRS);
 
   INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
-  char* GetCurrentPosPtr(void) noexcept { return m_pCurrentPos; }
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
-  char* GetDayLineBufferPtr(void) noexcept { return m_pDayLineBuffer; }
+  //char* GetDayLineBufferPtr(void) noexcept { return m_vDayLineBuffer; }
 
   // 日线相对强度计算
   bool CalculateDayLineRS(void);
@@ -447,8 +446,8 @@ public:
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
   void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
   void ReportDayLineDownLoaded(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; m_pCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_pCurrentPos = m_pDayLineBuffer; m_llCurrentPos = 0; }
+  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
+  void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }
 
   // 周线相关函数
   size_t GetWeekLineSize(void) noexcept { return m_WeekLine.GetDataSize(); }
@@ -649,9 +648,7 @@ protected:
 
   //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  char* m_pDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength;
-  char* m_pCurrentPos;
   INT64 m_llCurrentPos;
 
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真

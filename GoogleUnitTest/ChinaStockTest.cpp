@@ -1757,17 +1757,12 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestIncreaseCurrentPos) {
     CChinaStock stock;
     INT64 l = stock.GetCurrentPos();
-    char* p = stock.GetCurrentPosPtr();
     stock.IncreaseCurrentPos();
     EXPECT_EQ(l + 1, stock.GetCurrentPos());
-    EXPECT_EQ(p + 1, stock.GetCurrentPosPtr());
     stock.IncreaseCurrentPos(10);
     EXPECT_EQ(l + 11, stock.GetCurrentPos());
-    EXPECT_EQ(p + 11, stock.GetCurrentPosPtr());
     stock.ResetCurrentPos();
     EXPECT_EQ(l, stock.GetCurrentPos());
-    EXPECT_EQ(p, stock.GetCurrentPosPtr());
-    EXPECT_EQ(p, stock.GetDayLineBufferPtr());
   }
 
   TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {

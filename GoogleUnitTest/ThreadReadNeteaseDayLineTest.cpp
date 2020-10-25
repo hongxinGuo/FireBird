@@ -44,10 +44,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadReadNeteaseDayLine(&NeteaseDayLineWebInquiry), (UINT)4);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_TRUE(gl_pChinaStockMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess()) << _T("顺利读取日线历史数据后，其需要处理的表示被设置");
-    char buffer[30];
-    strcpy_s(buffer, gl_pChinaStockMarket->GetStock(_T("sh600601"))->GetDayLineBufferPtr());
-    CString str = buffer;
-    EXPECT_STREQ(str, _T("testData"));
 
     gl_pChinaStockMarket->GetStock(_T("sh600601"))->SetDayLineNeedProcess(false);
   }
