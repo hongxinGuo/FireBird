@@ -1754,31 +1754,23 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetTotalActiveStock(lTotalActiveStock);
   }
 
-  TEST_F(CChinaStockTest, TestIncreaseCurrentPos) {
-    CChinaStock stock;
-    INT64 l = stock.GetCurrentPos();
-    stock.IncreaseCurrentPos();
-    EXPECT_EQ(l + 1, stock.GetCurrentPos());
-    stock.IncreaseCurrentPos(10);
-    EXPECT_EQ(l + 11, stock.GetCurrentPos());
-    stock.ResetCurrentPos();
-    EXPECT_EQ(l, stock.GetCurrentPos());
-  }
-
   TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {
     CChinaStock stock;
+    INT64 lCurrentPos = 0;
     CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
     stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-    stock.ResetCurrentPos();
-    EXPECT_TRUE(stock.SkipNeteaseDayLineInformationHeader());
+    EXPECT_TRUE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
+    EXPECT_EQ(lCurrentPos, str.GetLength());
     str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\n"); // 缺少\r
     stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-    stock.ResetCurrentPos();
-    EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader());
+    lCurrentPos = 0;
+    EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
+    EXPECT_EQ(lCurrentPos, str.GetLength());
     str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r"); // 缺少\n
     stock.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
-    stock.ResetCurrentPos();
-    EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader());
+    lCurrentPos = 0;
+    EXPECT_FALSE(stock.SkipNeteaseDayLineInformationHeader(lCurrentPos));
+    EXPECT_EQ(lCurrentPos, str.GetLength());
   }
 
   TEST_F(CChinaStockTest, TestIsVolumeConsisitence) {

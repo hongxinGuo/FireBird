@@ -416,10 +416,6 @@ public:
   void Get60DaysRS(vector<double>& vRS);
   void Get120DaysRS(vector<double>& vRS);
 
-  INT64 GetCurrentPos(void) noexcept { return m_llCurrentPos; }
-  INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
-  //char* GetDayLineBufferPtr(void) noexcept { return m_vDayLineBuffer; }
-
   // 日线相对强度计算
   bool CalculateDayLineRS(void);
   bool CalculateDayLineRSIndex(void);
@@ -442,12 +438,11 @@ public:
   // 提取网易日线历史数据各函数
   bool TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData);
   bool ProcessNeteaseDayLineData(void);
-  bool SkipNeteaseDayLineInformationHeader(void);
+  INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
+  bool SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos);
   void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
   void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
   void ReportDayLineDownLoaded(void);
-  void IncreaseCurrentPos(INT64 lValue = 1) noexcept { m_llCurrentPos += lValue; }
-  void ResetCurrentPos(void) noexcept { m_llCurrentPos = 0; }
 
   // 周线相关函数
   size_t GetWeekLineSize(void) noexcept { return m_WeekLine.GetDataSize(); }
@@ -594,7 +589,7 @@ protected:
   INT64 m_lAttackSellBelow200000;
   INT64 m_lAttackSellAbove200000;
 
-  INT64 m_llLastSavedVolume;
+  INT64 m_llLastSavedVolume; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 
@@ -648,8 +643,7 @@ protected:
 
   //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  INT64 m_lDayLineBufferLength;
-  INT64 m_llCurrentPos;
+  INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后那个结束符0x000）。
 
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理

@@ -148,7 +148,6 @@ void CChinaStock::Reset(void) {
 
   m_vDayLineBuffer.resize(0);
   m_lDayLineBufferLength = 0;
-  m_llCurrentPos = 0;
 
   ClearRTDataDeque();
 }
@@ -206,6 +205,7 @@ bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquir
 bool CChinaStock::ProcessNeteaseDayLineData(void) {
   vector<CDayLinePtr> vTempDayLine;
   shared_ptr<CDayLine> pDayLine;
+  INT64 lCurrentPos = 0;
 
   ASSERT(m_fDayLineNeedProcess);
   ASSERT(m_fDayLineNeedSaving == false);
@@ -215,10 +215,9 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   }
 
   ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
-  ResetCurrentPos();
-  if (!SkipNeteaseDayLineInformationHeader()) return false;
+  if (!SkipNeteaseDayLineInformationHeader(lCurrentPos)) return false;
 
-  if (m_llCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
+  if (lCurrentPos == m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
       SetIPOStatus(__STOCK_NULL__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
@@ -233,10 +232,10 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   }
 
   CString strTemp;
-  while (m_llCurrentPos < m_lDayLineBufferLength) {
+  while (lCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
     //if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
-    if (!pDayLine->ProcessNeteaseData2(GetStockCode(), m_vDayLineBuffer, m_llCurrentPos)) { // 处理一条日线数据
+    if (!pDayLine->ProcessNeteaseData2(GetStockCode(), m_vDayLineBuffer, lCurrentPos)) { // 处理一条日线数据
       TRACE(_T("%s日线数据出错\n"), GetStockCode().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
@@ -266,26 +265,29 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
       m_DayLine.StoreData(pDayLine);
     }
   }
-  vTempDayLine.clear();
+
   SetDayLineLoaded(true);
   SetDayLineNeedSaving(true); // 设置存储日线标识
-
   return true;
 }
 
-bool CChinaStock::SkipNeteaseDayLineInformationHeader() {
-  ASSERT(m_llCurrentPos == 0);
-  while (m_vDayLineBuffer.at(m_llCurrentPos) != 0X0d) {
-    if ((m_vDayLineBuffer.at(m_llCurrentPos) == 0x0a) || (m_vDayLineBuffer.at(m_llCurrentPos) == 0x000)) {
+bool CChinaStock::SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos) {
+  ASSERT(lCurrentPos == 0);
+  while (m_vDayLineBuffer.at(lCurrentPos) != 0X0d) { // 寻找\r
+    if (m_vDayLineBuffer.at(lCurrentPos) == 0x0a) {// 遇到\n
+      lCurrentPos++; // 跨过此\n
       return false;
     }
-    IncreaseCurrentPos();
+    else if (m_vDayLineBuffer.at(lCurrentPos) == 0x000) { // 遇到0x000
+      return false;
+    }
+    lCurrentPos++;
   }
-  IncreaseCurrentPos();
-  if (m_vDayLineBuffer.at(m_llCurrentPos) != 0x0a) {
+  lCurrentPos++;
+  if (m_vDayLineBuffer.at(lCurrentPos) != 0x0a) {
     return false;
   }
-  IncreaseCurrentPos();
+  lCurrentPos++;
   return true;
 }
 
