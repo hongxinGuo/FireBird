@@ -161,9 +161,6 @@ public:
 
   long GetMinLineOffset(time_t tMarket);
 
-  bool IsSystemReady(void) noexcept { return m_fSystemReady; }
-  void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
-
   bool IsTodayStockNotProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return true; else return false; }
   bool IsProcessingTodayStock(void) noexcept { if (m_iTodayStockProcessed == 1) return true; else return false; }
   bool IsTodayStockProcessed(void) noexcept { if (m_iTodayStockProcessed == 0) return false; else return true; }
@@ -479,7 +476,6 @@ protected:
   INT64 m_lTotalMarketSell; // 沪深市场中的A股向下卖出金额
 
   // 系统状态区
-  bool m_fSystemReady; // 市场初始态已经设置好
   int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。

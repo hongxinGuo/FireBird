@@ -59,6 +59,9 @@ public:
   bool IsResetMarket(void) noexcept { return m_fResetMarket; }
   void SetResetMarket(bool fFlag) noexcept { m_fResetMarket = fFlag; }
 
+  virtual bool IsSystemReady(void) noexcept { return m_fSystemReady; }
+  virtual void SetSystemReady(bool fFlag) noexcept { m_fSystemReady = fFlag; }
+
 public:
   // 测试用函数
   void __TEST_SetLocalTime(time_t Time) noexcept { sm_tLocal = Time; }
@@ -79,6 +82,9 @@ protected:
   long m_lMarketTime; // 本市场的时间
   long m_lMarketLastTradeDate; // 本市场的上次交易日期
   tm m_tmMarket; // 本市场时间结构
+
+  //系统状态区
+  bool m_fSystemReady; // 市场初始态已经设置好
 
 private:
   bool m_fReadyToRun; // 市场准备好运行标识。目前永远为真。

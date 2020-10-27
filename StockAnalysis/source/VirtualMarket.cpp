@@ -11,6 +11,7 @@ CVirtualMarket::CVirtualMarket(void) {
   m_fPermitResetMarket = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
   m_fResetMarket = true;
   m_fReadyToRun = true;
+  m_fSystemReady = true; // 默认为真
 
   m_lMarketLastTradeDate = 0;
   m_lMarketTime = 0;
