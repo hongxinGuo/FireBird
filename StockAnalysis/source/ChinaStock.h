@@ -549,20 +549,20 @@ protected:
   INT64 m_lOrdinarySellVolumeAbove200000; //
 
   // 当日分钟数据
-  INT64 m_aOrdinaryBuy5000[240];
-  INT64 m_aOrdinaryBuy10000[240];
-  INT64 m_aOrdinaryBuy20000[240];
-  INT64 m_aOrdinaryBuy50000[240];
-  INT64 m_aOrdinaryBuy100000[240];
-  INT64 m_aOrdinaryBuy200000[240];
-  INT64 m_aOrdinaryBuyAbove200000[240];
-  INT64 m_aOrdinarySell5000[240];
-  INT64 m_aOrdinarySell10000[240];
-  INT64 m_aOrdinarySell20000[240];
-  INT64 m_aOrdinarySell50000[240];
-  INT64 m_aOrdinarySell100000[240];
-  INT64 m_aOrdinarySell200000[240];
-  INT64 m_aOrdinarySellAbove200000[240];
+  array<INT64, 240> m_aOrdinaryBuy5000;
+  array<INT64, 240> m_aOrdinaryBuy10000;
+  array<INT64, 240> m_aOrdinaryBuy20000;
+  array<INT64, 240> m_aOrdinaryBuy50000;
+  array<INT64, 240> m_aOrdinaryBuy100000;
+  array<INT64, 240> m_aOrdinaryBuy200000;
+  array<INT64, 240> m_aOrdinaryBuyAbove200000;
+  array<INT64, 240> m_aOrdinarySell5000;
+  array<INT64, 240> m_aOrdinarySell10000;
+  array<INT64, 240> m_aOrdinarySell20000;
+  array<INT64, 240> m_aOrdinarySell50000;
+  array<INT64, 240> m_aOrdinarySell100000;
+  array<INT64, 240> m_aOrdinarySell200000;
+  array<INT64, 240> m_aOrdinarySellAbove200000;
 
   // 以下为需存储项
   INT64 m_lTransactionNumber; // 本交易日的成交笔数
@@ -632,7 +632,6 @@ protected:
 
   queue<COneDealPtr> m_qDeal; // 具体成交信息队列（目前尚未使用）。
 
-  //queue<CWebRTDataPtr> m_qRTData; // 实时数据队列。
   CPriorityQueueWebRTData m_qRTData; // 采用优先队列存储实时数据，这样可以保证多源。
   CCriticalSection m_RTDataLock; // 实时数据队列的同步锁
 
@@ -643,7 +642,7 @@ protected:
 
   //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
-  INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后那个结束符0x000）。
+  INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
 
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理

@@ -98,7 +98,7 @@ void CChinaMarket::Reset(void) {
   m_lStockNeedUpdated = 0;
 
   m_fLoadedSelectedStock = false;
-  m_fSystemReady = false;    // 市场初始状态为未设置好。
+  SetSystemReady(false); // 市场初始状态为未设置好。
   m_fCurrentStockChanged = false;
   m_fChoiced10RSStrong1StockSet = false;
   m_fChoiced10RSStrong2StockSet = false;
@@ -171,13 +171,13 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 #endif //_DEBUG
 
 bool CChinaMarket::CheckMarketReady(void) {
-  if (!m_fSystemReady) {
+  if (!IsSystemReady()) {
     if (m_llRTDataReceived > m_lTotalStock * 2) {
-      m_fSystemReady = true;
+      SetSystemReady(true);
       gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
     }
   }
-  return m_fSystemReady;
+  return IsSystemReady();
 }
 
 bool CChinaMarket::ChangeToNextStock(void) {
@@ -1342,7 +1342,7 @@ bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTi
 
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
   // 开市时每五分钟存储一次当前状态。这是一个备用措施，防止退出系统后就丢掉了所有的数据，不必太频繁。
-  if (m_fSystemReady && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
+  if (IsSystemReady() && m_fMarketOpened && !gl_ThreadStatus.IsCalculatingRTData()) {
     if (((lCurrentTime > 93000) && (lCurrentTime < 113600)) || ((lCurrentTime > 130000) && (lCurrentTime < 150600))) { // 存储临时数据严格按照交易时间来确定(中间休市期间和闭市后各要存储一次，故而到11:36和15:06才中止）
       CString str;
       str = _T("存储临时数据");
@@ -1528,7 +1528,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
     if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
       if (!TooManyStocksNeedUpdated()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-        m_fSystemReady = false;
+        SetSystemReady(false);
       }
     }
   }
@@ -1541,7 +1541,7 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
     if ((lCurrentTime >= 92500)) {
       if ((lCurrentTime <= 93000) && IsWorkingDay()) { // 交易日九点二十五分再次重启系统
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
-        m_fSystemReady = false;
+        SetSystemReady(false);
       }
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }

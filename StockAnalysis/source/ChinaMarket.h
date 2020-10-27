@@ -406,6 +406,7 @@ protected:
 
 public:
 
+  // 变量区
 protected:
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
@@ -445,7 +446,7 @@ protected:
 
   time_t m_ttNewestTransactionTime;
 
-  int m_iRTDataServer; // 实时数据服务器选择
+  int m_iRTDataServer; // 实时数据服务器选择.0:新浪实时数据；1：网易实时数据；2：腾讯实时数据（目前不使用）。
 
   bool m_fUsingSinaRTDataReceiver; // 使用新浪实时数据提取器
   bool m_fUsingNeteaseRTDataReceiver; // 使用网易实时数据提取器
