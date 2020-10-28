@@ -15,7 +15,7 @@ using namespace std;
 
 class CWebData : public CObject {
 public:
-  CWebData() noexcept {
+  CWebData() {
     m_lTime = 0;
     m_vDataBuffer.resize(2048 * 1024);
     m_lBufferLength = 2048 * 1024;
@@ -29,7 +29,7 @@ public:
   void IncreaseCurrentPos(long lNumberOfChars = 1) noexcept { m_lCurrentPos += lNumberOfChars; }
   void ResetCurrentPos(void) noexcept { m_lCurrentPos = 0; }
 
-  void Resize(long lSize) noexcept { m_vDataBuffer.resize(lSize); m_lBufferLength = lSize; }
+  void Resize(long lSize) { m_vDataBuffer.resize(lSize); m_lBufferLength = lSize; }
 
   INT64 GetTime(void) noexcept { return m_lTime; }
   void SetTime(INT64 lTime) noexcept { m_lTime = lTime; }

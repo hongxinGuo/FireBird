@@ -1230,13 +1230,13 @@ namespace StockAnalysisTest {
     pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
     pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidTengxunRTData(pWebDataReceived));
+    EXPECT_TRUE(gl_pChinaStockMarket->IsInvalidTengxunRTData(*pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
     str = _T("v_pv_none_mtch=\"1\";\n");
     pWebDataReceived->SetData(str.GetBuffer(), str.GetLength(), 0);
     pWebDataReceived->SetBufferLength(str.GetLength());
     pWebDataReceived->ResetCurrentPos();
-    EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidTengxunRTData(pWebDataReceived));
+    EXPECT_FALSE(gl_pChinaStockMarket->IsInvalidTengxunRTData(*pWebDataReceived));
     EXPECT_EQ(pWebDataReceived->GetCurrentPos(), 0);
   }
 

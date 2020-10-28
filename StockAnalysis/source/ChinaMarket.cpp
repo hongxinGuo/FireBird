@@ -619,14 +619,14 @@ bool CChinaMarket::IsStock(CString strStockCode) {
   }
 }
 
-bool CChinaMarket::IsDayLineDBUpdated(void) {
+bool CChinaMarket::IsDayLineDBUpdated(void) noexcept {
   for (auto pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineDBUpdated()) return true;
   }
   return false;
 }
 
-void CChinaMarket::ClearDayLineDBUpdatedFlag(void) {
+void CChinaMarket::ClearDayLineDBUpdatedFlag(void) noexcept {
   for (auto pStock : m_vChinaMarketStock) {
     pStock->SetDayLineDBUpdated(false);
   }
@@ -959,7 +959,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromNeteaseServer(void) {
       while (!((pWebDataReceived->GetCurrentPosData() == ' ') || (pWebDataReceived->GetCurrentPos() >= (pWebDataReceived->GetBufferLength() - 4)))) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
         if (pRTData->ReadNeteaseData(pWebDataReceived)) {// 检测一下
-          ValidateNeteaseRTData(pRTData);
+          ValidateNeteaseRTData(*pRTData);
           iCount++;
           m_llRTDataReceived++;
           gl_WebRTDataContainer.PushNeteaseData(pRTData); // 将此实时数据指针存入实时数据队列
@@ -1005,13 +1005,14 @@ bool CChinaMarket::IsValidNeteaseRTDataPrefix(CWebData& WebDataReceived) {
   }
 }
 
-bool CChinaMarket::ValidateNeteaseRTData(const CWebRTDataPtr pRTData) {
+bool CChinaMarket::ValidateNeteaseRTData(CWebRTData& RTData) {
   // 检测一下
   CString str;
-  ASSERT(pRTData->GetDataSource() == __NETEASE_RT_WEB_DATA__);
-  if (pRTData->IsActive()) {
+
+  ASSERT(RTData.GetDataSource() == __NETEASE_RT_WEB_DATA__);
+  if (RTData.IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = GetStock(pRTData->GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
       if (!pStock->IsActive()) {
         str = pStock->GetStockCode();
         str += _T(" 网易实时检测到不处于活跃状态");
@@ -1019,9 +1020,9 @@ bool CChinaMarket::ValidateNeteaseRTData(const CWebRTDataPtr pRTData) {
       }
     }
     else {
-      str = pRTData->GetStockCode();
+      str = RTData.GetStockCode();
       str += _T(" 无效股票代码（网易实时数据）");
-      TRACE("\n无效股票代码%s\n", pRTData->GetStockCode().GetBuffer());
+      TRACE("\n无效股票代码%s\n", RTData.GetStockCode().GetBuffer());
       TRACE("申请的股票集为： %s\n\n", m_strNeteaseRTDataInquiringStr.GetBuffer());
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       return false;
@@ -1086,12 +1087,12 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   for (size_t i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
-    if (!IsInvalidTengxunRTData(pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
+    if (!IsInvalidTengxunRTData(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
       j = 0;
       while (!pWebDataReceived->IsProcessedAllTheData()) {
         CWebRTDataPtr pRTData = make_shared<CWebRTData>();
         if (pRTData->ReadTengxunData(pWebDataReceived)) {
-          CheckTengxunRTData(pRTData); // 检测一下
+          CheckTengxunRTData(*pRTData); // 检测一下
           j++;
           gl_WebRTDataContainer.PushTengxunData(pRTData); // 将此实时数据指针存入实时数据队列
         }
@@ -1108,28 +1109,28 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
 // 当所有被查询的股票皆为非上市股票时，腾讯实时股票服务器会返回一个21个字符长的字符串：v_pv_none_match=\"1\";\n
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived) {
+bool CChinaMarket::IsInvalidTengxunRTData(CWebData& WebDataReceived) {
   char buffer[50];
   char* pBuffer = buffer;
   CString strInvalidStock = _T("v_pv_none_match=\"1\";\n"); // 此为无效股票查询到的数据格式，共21个字符
 
-  pWebDataReceived->GetData(pBuffer, 21, pWebDataReceived->GetCurrentPos());
+  WebDataReceived.GetData(pBuffer, 21, WebDataReceived.GetCurrentPos());
   buffer[21] = 0x000;
   CString str1 = buffer;
 
   if (str1.Compare(strInvalidStock) == 0) {
-    ASSERT(pWebDataReceived->GetBufferLength() == 21);
+    ASSERT(WebDataReceived.GetBufferLength() == 21);
     return true;
   }
   else return false;
 }
 
-void CChinaMarket::CheckTengxunRTData(CWebRTDataPtr pRTData) {
+void CChinaMarket::CheckTengxunRTData(CWebRTData& RTData) {
   CString str;
-  ASSERT(pRTData->GetDataSource() == __TENGXUN_RT_WEB_DATA__);
-  if (pRTData->IsActive()) {
+  ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
+  if (RTData.IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = GetStock(pRTData->GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
       if (!pStock->IsActive()) {
         str = pStock->GetStockCode();
         str += _T("腾讯实时检测到不处于活跃状态");
@@ -1137,7 +1138,7 @@ void CChinaMarket::CheckTengxunRTData(CWebRTDataPtr pRTData) {
       }
     }
     else {
-      str = pRTData->GetStockCode();
+      str = RTData.GetStockCode();
       str += _T("无效股票代码（腾讯实时数据）");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
     }
@@ -1792,7 +1793,7 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
   return(true);
 }
 
-bool CChinaMarket::UnloadDayLine(void) {
+bool CChinaMarket::UnloadDayLine(void) noexcept {
   for (auto pStock : m_vChinaMarketStock) {
     pStock->UnloadDayLine();
   }
@@ -2311,7 +2312,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   return true;
 }
 
-bool CChinaMarket::IsDayLineNeedUpdate(void) {
+bool CChinaMarket::IsDayLineNeedUpdate(void) noexcept {
   for (auto pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedUpdate()) return true;
   }
@@ -3095,7 +3096,7 @@ bool CChinaMarket::BuildWeekLineRSOfDate(long lDate) {
   return(true);
 }
 
-double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) {
+double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) noexcept {
   const double lastClose = atof(strLastClose);
   if (lastClose < 0.001) return 0;
   double result = (atof(strClose) - lastClose) / lastClose;

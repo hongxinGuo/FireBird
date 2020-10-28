@@ -61,9 +61,9 @@ public:
   bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }
   bool GetNeteaseDayLineData(void);
   bool GetCrweberIndexData(void) { return gl_pCrweberIndexWebInquiry->GetWebData(); }
-  bool IsReadingCrweberIndex(void) { return gl_pCrweberIndexWebInquiry->IsReadingWebData(); }
-  bool GetPotenDailyBriefingData(void) { return gl_pPotenDailyBriefingWebInquiry->GetWebData(); }
-  bool IsReadingPotenDailyBriefing(void) { return gl_pPotenDailyBriefingWebInquiry->IsReadingWebData(); }
+  bool IsReadingCrweberIndex(void) noexcept { return gl_pCrweberIndexWebInquiry->IsReadingWebData(); }
+  bool GetPotenDailyBriefingData(void) noexcept { return gl_pPotenDailyBriefingWebInquiry->GetWebData(); }
+  bool IsReadingPotenDailyBriefing(void)  noexcept { return gl_pPotenDailyBriefingWebInquiry->IsReadingWebData(); }
 
   bool IsReadingWebThreadRunning(void) noexcept { return gl_pSinaRTWebInquiry->IsReadingWebThreadRunning(); }
 

@@ -230,7 +230,7 @@ public:
   bool Load10DaysRSStrongStockDB(void);
   bool LoadOne10DaysRSStrongStockDB(long lIndex);
 
-  bool UnloadDayLine(void);
+  bool UnloadDayLine(void) noexcept;
 
   bool BuildWeekLine(long lStartDate);
   virtual bool BuildWeekLineOfCurrentWeek(void);
@@ -242,13 +242,13 @@ public:
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
-  bool IsDayLineNeedUpdate(void);
+  bool IsDayLineNeedUpdate(void) noexcept;
   bool IsDayLineNeedSaving(void);
 
   virtual long BuildDayLineOfDate(long lCurrentTradeDay);
   virtual bool BuildDayLineRSOfDate(long lDate);
   virtual bool BuildWeekLineRSOfDate(long lDate);
-  double GetUpDownRate(CString strClose, CString StrLastClose);
+  double GetUpDownRate(CString strClose, CString StrLastClose) noexcept;
 
   bool IsLoadSelectedStock(void) noexcept { return m_fLoadedSelectedStock; }
   void SetLoadSelectedStock(bool fLoad) noexcept { m_fLoadedSelectedStock = fLoad; }
@@ -259,8 +259,8 @@ public:
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
-  bool IsDayLineDBUpdated(void);
-  void ClearDayLineDBUpdatedFlag(void);
+  bool IsDayLineDBUpdated(void) noexcept;
+  void ClearDayLineDBUpdatedFlag(void) noexcept;
 
   long GetRSStartDate(void) noexcept { return m_lRSStartDate; }
   void SetRSStartDate(long lDate) noexcept { m_lRSStartDate = lDate; }
@@ -292,12 +292,12 @@ public:
   bool TaskProcessWebRTDataGetFromSinaServer(void);
   void StoreChoiceRTData(CWebRTDataPtr pRTData);
   bool TaskProcessWebRTDataGetFromTengxunServer(void);
-  bool IsInvalidTengxunRTData(CWebDataPtr pWebDataReceived);
-  void CheckTengxunRTData(CWebRTDataPtr pRTData);
+  bool IsInvalidTengxunRTData(CWebData& WebDataReceived);
+  void CheckTengxunRTData(CWebRTData& RTData);
   bool TaskProcessWebRTDataGetFromNeteaseServer(void);
   bool IsInvalidNeteaseRTData(CWebData& WebDataReceived);
   bool IsValidNeteaseRTDataPrefix(CWebData& pWebDataReceived);
-  bool ValidateNeteaseRTData(const CWebRTDataPtr pRTData);
+  bool ValidateNeteaseRTData(CWebRTData& RTData);
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);
