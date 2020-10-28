@@ -151,8 +151,7 @@ void CVirtualWebInquiry::CreateTotalInquiringString(CString strMiddle) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
-  long i;
-  for (i = 0; i < lTotalNumber; i++) {
+  for (long i = 0; i < lTotalNumber; i++) {
     m_buffer.at(i) = buffer[i];
   }
   m_buffer.at(lTotalNumber) = 0x000;
@@ -160,10 +159,9 @@ void CVirtualWebInquiry::__TESTSetBuffer(char* buffer, long lTotalNumber) {
 }
 
 void CVirtualWebInquiry::__TESTSetBuffer(CString str) {
-  long i{ 0 };
   long lTotalNumber = str.GetLength();
   char* buffer = str.GetBuffer();
-  for (i = 0; i < lTotalNumber; i++) {
+  for (long i = 0; i < lTotalNumber; i++) {
     m_buffer.at(i) = buffer[i];
   }
   m_buffer.at(lTotalNumber) = 0x000;

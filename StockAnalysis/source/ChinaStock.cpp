@@ -775,7 +775,7 @@ bool CChinaStock::Calculate10RSStrongStockSet(const CRSReference* pRef) {
   m_v10DaysRS.resize(iDayLineSize);
   CalculateDayLineRSIndex();
   Get10DaysRS(m_v10DaysRS);
-  size_t i = 0, j = 0;
+  int i = 0, j = 0;
 
   if (pRef->m_lDayLength[0] == 0) fFind1 = true;
   else if (fFindHigh1) {

@@ -1036,7 +1036,7 @@ bool CChinaMarket::TaskDiscardNeteaseRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
   const size_t lTotalData = gl_WebRTDataContainer.GetNeteaseDataSize();
 
-  for (size_t i = 0; i < lTotalData; i++) {
+  for (int i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_WebRTDataContainer.PopNeteaseData();
     pRTData = nullptr;
@@ -1049,7 +1049,7 @@ bool CChinaMarket::TaskDiscardSinaRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
   const size_t lTotalData = gl_WebRTDataContainer.GetSinaDataSize();
 
-  for (size_t i = 0; i < lTotalData; i++) {
+  for (int i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_WebRTDataContainer.PopSinaData();
     pRTData = nullptr;
@@ -1062,7 +1062,7 @@ bool CChinaMarket::TaskDiscardTengxunRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
   const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
 
-  for (size_t i = 0; i < lTotalData; i++) {
+  for (int i = 0; i < lTotalData; i++) {
     // 目前不使用网易实时数据，这里只是简单地取出后扔掉。
     pRTData = gl_WebRTDataContainer.PopTengxunData();
     pRTData = nullptr;
@@ -1084,7 +1084,7 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromTengxunServer(void) {
   int j = 0;
 
   const size_t lTotalData = gl_WebInquirer.GetTengxunRTDataSize();
-  for (size_t i = 0; i < lTotalData; i++) {
+  for (int i = 0; i < lTotalData; i++) {
     pWebDataReceived = gl_WebInquirer.PopTengxunRTData();
     pWebDataReceived->ResetCurrentPos();
     if (!IsInvalidTengxunRTData(*pWebDataReceived)) { // 处理这21个字符串的函数可以放在这里，也可以放在最前面。
@@ -1149,7 +1149,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
   CWebRTDataPtr pRTData = nullptr;
   const size_t lTotalData = gl_WebRTDataContainer.GetTengxunDataSize();
 
-  for (size_t i = 0; i < lTotalData; i++) {
+  for (int i = 0; i < lTotalData; i++) {
     pRTData = gl_WebRTDataContainer.PopTengxunData();
     if (pRTData->IsActive()) {
       auto pStock = GetStock(pRTData->GetStockCode());
