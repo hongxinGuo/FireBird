@@ -46,6 +46,16 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_VirtualMarket.IsPermitResetMarket());
   }
 
+  TEST_F(CVirtualMarketTest, TestMarketReady) {
+    EXPECT_TRUE(s_VirtualMarket.IsSystemReady()) << "市场基类默认为真";
+    s_VirtualMarket.SetSystemReady(true);
+    EXPECT_TRUE(s_VirtualMarket.IsSystemReady());
+    s_VirtualMarket.SetSystemReady(false);
+    EXPECT_FALSE(s_VirtualMarket.IsSystemReady());
+
+    s_VirtualMarket.SetSystemReady(true); // 恢复原态
+  }
+
   TEST_F(CVirtualMarketTest, TestCalculateMarketTime) {
     ASSERT_FALSE(gl_fNormalMode);
     time_t ttime;

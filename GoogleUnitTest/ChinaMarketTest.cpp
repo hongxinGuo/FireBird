@@ -693,10 +693,13 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestMarketReady) {
+    EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady()) << "中国股票市场默认为假, 但测试系统默认为真";
     gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
     gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
+
+    gl_pChinaStockMarket->SetSystemReady(true); // 恢复原态
   }
 
   TEST_F(CChinaMarketTest, TestIsTodayStockProcessed) {
