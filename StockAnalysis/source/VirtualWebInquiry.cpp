@@ -9,6 +9,7 @@
 #include"VirtualWebInquiry.h"
 
 atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // 当前执行网络读取线程数
+atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() {
   m_pFile = nullptr;
@@ -71,6 +72,8 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     }
     m_buffer.at(m_lByteRead) = 0x000; // 最后以0x000结尾
     m_pFile->Close();
+
+    m_lTotalByteReaded += m_lByteRead; //
   }
   catch (CInternetException* exception) {
     SetWebError(true);

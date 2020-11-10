@@ -68,6 +68,10 @@ public:
   void SetReadingthreadNumber(long lValue) noexcept { m_lReadingThreadNumber = lValue; }
   bool IsReadingWebThreadRunning(void) noexcept { if (m_lReadingThreadNumber > 0) return true; else return false; }
 
+  long GetTotalByteReaded(void) noexcept { return m_lTotalByteReaded; }
+  void SetTotalByteReaded(long lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
+  void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
@@ -92,6 +96,7 @@ protected:
   long m_lInquiringNumber; // 每次查询数量
 
   static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数。所有的网络读取器都使用同一个变量，故而声明为静态。
+  static atomic_long m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
 
   CString m_strConnection;
 };

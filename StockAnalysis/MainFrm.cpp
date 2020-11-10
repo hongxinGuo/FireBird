@@ -91,9 +91,10 @@ static UINT indicators[] =
   ID_CURRENT_SELECT_STOCKNAME,
   ID_CURRENT_SELECT_STOCK_SET,
   ID_CURRENT_SELECT_POSITION,
-  ID_CURRENT_RTDATA_READING_TIME,
+  ID_CURRENT_RTDATA_READING_STOCK,
   ID_CURRENT_ACTIVE_STOCK,
-  ID_CURRENT_DAYLINE_READING_TIME,
+  ID_CURRENT_DAYLINE_READING_STOCK,
+  ID_CURRENT_RTDATA_SIZE,
   ID_CURRENT_RUNNING_THREAD,
   ID_CURRENT_RUNNING_BACKGROUND_THREAD,
   ID_CURRENT_TIME,
@@ -110,6 +111,7 @@ CMainFrame::CMainFrame() {
 void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
   m_lCurrentPos = 0;
+  m_timeLast = 0;
 }
 
 CMainFrame::~CMainFrame() {
@@ -475,10 +477,12 @@ void CMainFrame::UpdateStatus(void) {
     SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
+  // 显示当前选择的股票
   sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedStockSet());
   str = buffer;
   SysCallSetPaneText(4, (LPCTSTR)str);
 
+  // 显示当前选择的位置
   sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedPosition());
   str = buffer;
   SysCallSetPaneText(5, (LPCTSTR)str);
@@ -488,7 +492,8 @@ void CMainFrame::UpdateStatus(void) {
     SysCallSetPaneText(1, (LPCTSTR)str);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
   }
-  // 显示新浪实时数据读取时间（单位为毫秒）
+
+  // 显示当前读取的新浪实时数据股票代码
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
@@ -496,21 +501,39 @@ void CMainFrame::UpdateStatus(void) {
   str = buffer;
   SysCallSetPaneText(7, (LPCTSTR)str);
 
-  // 显示网易日线历史数据读取时间（单位为毫秒）
+  // 显示当前读取网易日线历史的股票代码
   SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
+
+  // 更新当前抓取的实时数据大小
+  if ((gl_pChinaStockMarket->GetMarketTime() - m_timeLast) > 0) { // 每秒更新一次
+    const long lTotalByteReaded = gl_pSinaRTWebInquiry->GetTotalByteReaded();
+    if (lTotalByteReaded > 1024 * 1024) { // 1M以上的流量？
+      sprintf_s(buffer, _T("%4dM"), lTotalByteReaded / (1024 * 1024));
+    }
+    else if (lTotalByteReaded > 1024) { // 1K以上的流量？
+      sprintf_s(buffer, _T("%4dK"), lTotalByteReaded / 1024);
+    }
+    else {
+      sprintf_s(buffer, _T("%4dB"), lTotalByteReaded);
+    }
+    gl_pSinaRTWebInquiry->ClearTotalByteReaded();
+    m_timeLast = gl_pChinaStockMarket->GetMarketTime();
+    str = buffer;
+    SysCallSetPaneText(9, (LPCTSTR)str);
+  }
 
   // 更新当前工作线程数
   sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfRunningThread());
   str = buffer;
-  SysCallSetPaneText(9, (LPCTSTR)str);
+  SysCallSetPaneText(10, (LPCTSTR)str);
 
   // 更新当前后台工作线程数
   sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.HowManyBackGroundThreadsWorking());
   str = buffer;
-  SysCallSetPaneText(10, (LPCTSTR)str);
+  SysCallSetPaneText(11, (LPCTSTR)str);
 
   //更新当地时间的显示
-  SysCallSetPaneText(11, (LPCTSTR)gl_pChinaStockMarket->GetStringOfLocalTime());
+  SysCallSetPaneText(12, (LPCTSTR)gl_pChinaStockMarket->GetStringOfLocalTime());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
