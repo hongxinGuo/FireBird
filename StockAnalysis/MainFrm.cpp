@@ -514,7 +514,7 @@ void CMainFrame::UpdateStatus(void) {
       sprintf_s(buffer, _T("%4dK"), lTotalByteReaded / 1024);
     }
     else {
-      sprintf_s(buffer, _T("%4dB"), lTotalByteReaded);
+      sprintf_s(buffer, _T("%4d"), lTotalByteReaded);
     }
     gl_pSinaRTWebInquiry->ClearTotalByteReaded();
     m_timeLast = gl_pChinaStockMarket->GetMarketTime();
