@@ -49,7 +49,7 @@ static char THIS_FILE[] = __FILE__;
 
 CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   static int siInstance = 0;
-  Expects(siInstance == 0);
+
   if (++siInstance > 1) {
     TRACE(_T("ChinaMarket市场变量只允许存在一个实例\n"));
   }

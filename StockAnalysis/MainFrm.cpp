@@ -519,7 +519,7 @@ void CMainFrame::UpdateStatus(void) {
     gl_pSinaRTWebInquiry->ClearTotalByteReaded();
     m_timeLast = gl_pChinaStockMarket->GetMarketTime();
     str = buffer;
-    SysCallSetPaneText(9, (LPCTSTR)str);
+    m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
   }
 
   // 更新当前工作线程数
