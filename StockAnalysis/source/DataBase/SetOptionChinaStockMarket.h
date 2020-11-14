@@ -18,6 +18,7 @@ public:
   // 以同时支持 Unicode 和这些转换)。
   long m_ID;
   long m_RTDataServerIndex; // 实时数据服务器
+  long m_RTDataInquiryTime; // 网络实时数据轮询查询时间。默认为400毫秒
 
   // 重写
     // 向导生成的虚函数重写

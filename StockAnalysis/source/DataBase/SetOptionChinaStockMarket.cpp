@@ -10,7 +10,8 @@ CSetOptionChinaStockMarket::CSetOptionChinaStockMarket(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_RTDataServerIndex = 0; // 默认使用新浪实时数据服务器
-  m_nFields = 1;
+  m_RTDataInquiryTime = 400; // 默认查询时间为400毫秒
+  m_nFields = 2;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
@@ -30,6 +31,7 @@ void CSetOptionChinaStockMarket::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[RealTimeDataServer]"), m_RTDataServerIndex);
+  RFX_Long(pFX, _T("[RealTimeDataInquiryTime]"), m_RTDataInquiryTime);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetStockCode 诊断

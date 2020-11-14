@@ -47,7 +47,7 @@
     <ProjectGuid>{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>StockAnalysis</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
