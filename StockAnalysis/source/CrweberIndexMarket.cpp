@@ -156,8 +156,9 @@ bool CCrweberIndexMarket::RunningThreadSaveCrweberDB(CCrweberIndexPtr pCrweberIn
 bool CCrweberIndexMarket::LoadDatabase(void) {
   CSetCrweberIndex setCrweberIndex;
   int i = 0;
-  m_vCrweberIndex.resize(10000);
-  for (auto pCrweber : m_vCrweberIndex) pCrweber = nullptr;
+  int iTotal = 1000;
+  m_vCrweberIndex.resize(iTotal);
+  for (int j = 0; j < iTotal; j++) m_vCrweberIndex.at(j) = nullptr;
 
   setCrweberIndex.m_strSort = _T("[Date]");
   setCrweberIndex.Open();
@@ -165,6 +166,11 @@ bool CCrweberIndexMarket::LoadDatabase(void) {
     CCrweberIndexPtr pCrweberIndex = make_shared<CCrweberIndex>();
     pCrweberIndex->LoadData(setCrweberIndex);
     m_vCrweberIndex.at(i) = pCrweberIndex;
+    if ((i + 1) >= iTotal) {
+      iTotal += 1000;
+      m_vCrweberIndex.resize(iTotal);
+      for (int j = iTotal - 1; j > i; j--) m_vCrweberIndex.at(j) = nullptr;
+    }
     if (m_lNewestDatabaseDate < pCrweberIndex->m_lDate) {
       i++;
       m_lNewestDatabaseDate = pCrweberIndex->m_lDate;

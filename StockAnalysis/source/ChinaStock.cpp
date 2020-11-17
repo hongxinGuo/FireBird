@@ -1518,7 +1518,6 @@ void CChinaStock::ReportGuadan(void) {
 
 void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
-  setStockCode.m_Counter = GetOffset();
   setStockCode.m_StockType = GetMarket();
   setStockCode.m_StockCode = GetStockCode();
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，

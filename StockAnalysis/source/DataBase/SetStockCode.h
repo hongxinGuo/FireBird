@@ -22,7 +22,6 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  long m_Counter;
   int	m_StockType;
   CString	m_StockCode;
   CStringW m_StockName;
