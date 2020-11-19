@@ -261,6 +261,15 @@
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\DataBase\SetStakeCode.h">
+      <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SinaStakeRTWebInquiry.h">
+      <Filter>头文件\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StakeCode.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -490,6 +499,21 @@
     </ClCompile>
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetStakeCode.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadSinaStakeRTData.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SinaStakeRTWebInquiry.cpp">
+      <Filter>源文件\China Stock Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StakeCode.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSaveStakeCode.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

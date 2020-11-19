@@ -61,12 +61,12 @@ bool CCrweberIndexMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
   return true;
 }
 
-bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
+bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime) {
+  static int i1MinuteCounter = 3599;  // 一分钟一次的计数器
 
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 59;
+    i1MinuteCounter = 3599;
     TaskResetMarket(lCurrentTime);
     //TaskMaintainDatabase(lCurrentTime);
 
@@ -88,13 +88,13 @@ bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   else return false;
 }
 
-bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 3599;  // 一小时一次的计数器
+bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
+  static int i1MinuteCounter = 59;  // 一小时一次的计数器
 
   // 自动查询crweber.com
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 3599;
+    i1MinuteCounter = 59;
     return true;
   }
   else {

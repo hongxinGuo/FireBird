@@ -119,6 +119,8 @@ enum {
 #include"WebData.h"
 #include"TengxunRTWebInquiry.h"
 
+#include"StakeCode.h"
+
 #include"SetRealTimeData.h"
 
 using namespace std;
@@ -150,6 +152,9 @@ public:
   bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, INT64& llReturnValue); // 从file中读入一个长整型
   bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, double& dReturnValue); // 从file中读入一个浮点数
   bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
+
+  // 读取新浪实时数据中的证券代码
+  bool ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake);
 
   // 读取腾讯实时数据函数
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束

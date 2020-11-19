@@ -432,6 +432,131 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
   }
 }
 
+bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake) {
+  static char buffer1[100];
+  char buffer2[7];
+  static char buffer3[100];
+  static CString strHeader = _T("var hq_str_s");
+  long lStockCode = 0;
+  double dTemp = 0;
+  char bufferTest[2000];
+  CString strTest;
+
+  int i = 0;
+  while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (i < 1900)) {
+    bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
+    i++;
+  }
+  bufferTest[i] = pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos());
+  i++;
+  bufferTest[i] = 0x000;
+  strTest = bufferTest;
+  if (i >= 1900) {
+    TRACE(_T("%s\n"), strTest.GetBuffer());
+    gl_systemMessage.PushInnerSystemInformationMessage(_T("整体数据出问题，抛掉不用"));
+    gl_systemMessage.PushInnerSystemInformationMessage(strTest);
+    return false; // 整个数据出现错误，后面的皆抛掉
+  }
+
+  try {
+    m_fActive = false;    // 初始状态为无效数据
+    pSinaWebRTData->GetData(buffer1, 12, pSinaWebRTData->GetCurrentPos()); // 读入“var hq_str_s"
+    buffer1[12] = 0x000;
+    CString str1;
+    str1 = buffer1;
+    if (strHeader.Compare(str1) != 0) { // 数据格式出错
+      throw exception();
+    }
+    pSinaWebRTData->IncreaseCurrentPos(12);
+
+    if (pSinaWebRTData->GetCurrentPosData() == 'h') { // 上海股票
+      m_wMarket = __SHANGHAI_MARKET__; // 上海股票标识
+    }
+    else if (pSinaWebRTData->GetCurrentPosData() == 'z') {
+      m_wMarket = __SHENZHEN_MARKET__; // 深圳股票标识
+    }
+    else {
+      throw exception();
+    }
+    pSinaWebRTData->IncreaseCurrentPos();
+
+    pSinaWebRTData->GetData(buffer2, 6, pSinaWebRTData->GetCurrentPos());
+    buffer2[6] = 0x000;
+    m_strStockCode = buffer2;
+    switch (m_wMarket) {
+    case __SHANGHAI_MARKET__:
+    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    break;
+    case __SHENZHEN_MARKET__:
+    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    break;
+    default:
+    throw exception();
+    }
+    lStockCode = static_cast<long>(atof(buffer2));
+    pSinaWebRTData->IncreaseCurrentPos(6);
+
+    pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos()); // 读入'="'
+    if ((buffer1[0] != '=') || (buffer1[1] != '"')) {
+      throw exception();
+    }
+    pSinaWebRTData->IncreaseCurrentPos(2);
+    pSinaWebRTData->GetData(buffer1, 2, pSinaWebRTData->GetCurrentPos());
+    if (buffer1[0] == '"') { // 没有数据?
+      if (buffer1[1] != ';') {
+        throw exception();
+      }
+      pSinaWebRTData->IncreaseCurrentPos(2);
+      if (pSinaWebRTData->GetCurrentPosData() != 0x00a) {
+        return false;
+      }
+      pSinaWebRTData->IncreaseCurrentPos();
+      m_fActive = false;
+      SetDataSource(__SINA_RT_WEB_DATA__);
+      fValidStake = false;
+      return true;  // 非活跃股票没有实时数据，在此返回。
+    }
+    if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
+      throw exception();
+    }
+    if ((buffer1[1] == 0x00a) || (buffer1[1] == 0x000)) {
+      throw exception();
+    }
+    pSinaWebRTData->IncreaseCurrentPos(2);
+
+    i = 2;
+    while ((pSinaWebRTData->GetCurrentPosData() != ',') && (i < 10)) { // 读入剩下的中文名字（第一个字在buffer1中）
+      if ((pSinaWebRTData->GetCurrentPosData() == 0x00a) || (pSinaWebRTData->GetCurrentPosData() == 0x000)) {
+        throw exception();
+      }
+      buffer1[i++] = pSinaWebRTData->GetCurrentPosData();
+      pSinaWebRTData->IncreaseCurrentPos();
+    }
+    buffer1[i] = 0x000;
+    m_strStockName = buffer1; // 设置股票名称
+
+    pSinaWebRTData->IncreaseCurrentPos();
+
+    // 后面的数据皆为无效数据，读至此数据的结尾处即可。
+    while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
+      pSinaWebRTData->IncreaseCurrentPos();
+      if (pSinaWebRTData->GetCurrentPosData() == 0x000) {
+        throw exception();
+      }
+    }
+    pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'\n'
+    fValidStake = true;
+    return true;
+  }
+  catch (exception&) {
+    TRACE(_T("ReadSinaStakeData异常\n"));
+    CString str = m_strStockCode;
+    str += _T(" ReadSinaStakeData异常\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
+    return false;
+  }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 从网络文件file中读取腾讯制式实时数据，返回值是所读数据是否出现格式错误。

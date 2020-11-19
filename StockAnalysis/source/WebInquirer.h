@@ -14,6 +14,7 @@ extern int gl_cMaxSavingOneDayLineThreads;
 
 #ifdef __GOOGLEMOCK__
 #include"MockSinaRTWebInquiry.h"
+#include"MockSinaStakeRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
@@ -22,6 +23,7 @@ extern int gl_cMaxSavingOneDayLineThreads;
 using namespace testing;
 
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
+extern CMockSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
 extern CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CMockNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
@@ -32,6 +34,7 @@ extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; //
 extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 #else
 #include"SinaRTWebInquiry.h"
+#include"SinaStakeRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
@@ -39,6 +42,7 @@ extern CMockCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com
 #include"CrweberIndexWebInquiry.h"
 
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
+extern CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
@@ -57,6 +61,7 @@ public:
   void Initialize(void);
 public:
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
+  bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
   bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }
   bool GetNeteaseDayLineData(void);
@@ -71,6 +76,9 @@ public:
   size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetDataSize(); }
   void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushData(pData); }
   CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopData(); }
+  size_t GetSinaStakeRTDataSize(void) { return m_qSinaStakeRTWebData.GetDataSize(); }
+  void PushSinaStakeRTData(CWebDataPtr pData) { m_qSinaStakeRTWebData.PushData(pData); }
+  CWebDataPtr PopSinaStakeRTData(void) { return m_qSinaStakeRTWebData.PopData(); }
   size_t GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetDataSize(); }
   void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushData(pData); }
   CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopData(); }
@@ -86,7 +94,8 @@ public:
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopData(); }
 
 protected:
-  CQueueWebData m_qSinaRTWebData; // 新浪网络数据暂存队列
+  CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
+  CQueueWebData m_qSinaStakeRTWebData; // 新浪证券网络数据暂存队列
   CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列
   CQueueWebData m_qNeteaseRTWebData; // 网易网络数据暂存队列
   CQueueWebData m_qCrweberWebData; // crweber.com网络数据暂存队列

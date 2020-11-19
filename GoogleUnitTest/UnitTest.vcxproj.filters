@@ -506,6 +506,18 @@
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaStakeRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -739,8 +751,23 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
+    <ClInclude Include="MockSinaStakeRTWebInquiry.h">
+      <Filter>Mock类\China Stock Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\StakeCode.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeCode.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\StockAnalysis\source\desktop.ini">
+      <Filter>dependency</Filter>
+    </None>
   </ItemGroup>
 </Project>

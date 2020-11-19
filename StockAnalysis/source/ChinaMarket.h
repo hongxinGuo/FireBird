@@ -8,6 +8,7 @@
 #include"VirtualMarket.h"
 
 #include"WebRTDataContainer.h"
+#include"StakeCode.h"
 
 #include "ChinaStock.h"
 
@@ -60,6 +61,7 @@ public:
   // 各种任务
   bool TaskGetRTDataFromWeb(void);
   bool TaskGetNeteaseDayLineFromWeb(void);
+  bool TaskUpdateStakeCodeFromWeb(void); // 每日更新证券代码库
 
   bool TaskProcessTengxunRTData(void);  // 处理腾讯实时数据
   bool TaskSetCheckActiveStockFlag(long lCurrentTime);
@@ -81,6 +83,8 @@ public:
 
   bool TaskSaveChoicedRTData(void);
   bool TaskClearChoicedRTDataSet(long lCurrentTime);
+
+  bool TaskSaveStakeCode(void); // 存储新找到的证券代码至数据库
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);
@@ -115,6 +119,7 @@ public:
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
+  virtual bool RuningThreadSaveStakeCode(void);
   // interface function
 public:
   // 系统状态区
@@ -123,10 +128,12 @@ public:
 
   // 实时数据读取
   CString GetSinaInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString GetSinaStakeInquiringStr(long lTotalNumber);
   CString GetTengxunInquiringStockStr(long lTotalNumber, bool fSkipUnactiveStock = true);
   CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
+  CString GetNextInquiringStakeMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
   bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
@@ -187,6 +194,7 @@ public:
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
   void LoadStockCodeDB(void);
+  void LoadStakeCodeDB(void);
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
   void LoadOptionChinaStockMarketDB(void);
@@ -201,6 +209,8 @@ public:
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
+
+  bool SaveStakeCode(void);
 
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
@@ -259,6 +269,9 @@ public:
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
 
+  bool IsUpdatedStakeCode(void) noexcept { return m_fUpdatedStakeCode; }
+  void SetUpdatedStakeCode(bool fFlag) noexcept { m_fUpdatedStakeCode = fFlag; }
+
   bool IsDayLineDBUpdated(void) noexcept;
   void ClearDayLineDBUpdatedFlag(void) noexcept;
 
@@ -288,6 +301,8 @@ public:
   void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
   CString GetStockCodeForInquiringNeteaseDayLine(void) { return m_strStockCodeForInquiringNeteaseDayLine; }
 
+  bool InsertStakeCode(CWebRTDataPtr pRTData);
+
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
   void StoreChoiceRTData(CWebRTDataPtr pRTData);
@@ -298,6 +313,8 @@ public:
   bool IsInvalidNeteaseRTData(CWebData& WebDataReceived);
   bool IsValidNeteaseRTDataPrefix(CWebData& pWebDataReceived);
   bool ValidateNeteaseRTData(CWebRTData& RTData);
+
+  bool TaskGetStakeCodeGetFromSinaServer(void);
 
   bool TaskDiscardNeteaseRTData(void);
   bool TaskDiscardSinaRTData(void);
@@ -410,6 +427,12 @@ protected:
 
 // 变量区
 protected:
+  vector<CStakeCodePtr> m_vChinaMarketStake; // 本系统内所有的证券代码库（包括股票、基金、债券、期货、期权等。每日更新，皆为有效证券代码）
+  map<CString, long> m_mapChinaMarketStake; // 将所有查询到的证券代码映射为偏移量。
+  long m_lCurrentStakeCodeIndex;
+  long m_lTotalStakeCode; // 当前证券代码总数
+  long m_lTotalStakeCodeLastTime; // 上次（数据库中的）证券代码总数
+
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数
@@ -459,6 +482,7 @@ protected:
   CString m_strNeteaseDayLineDataInquiringStr;
 
   long m_lSinaRTDataInquiringIndex;
+  long m_lSinaRTDataInquiringStakeIndex;
   long m_lTengxunRTDataInquiringIndex;
   long m_lNeteaseRTDataInquiringIndex;
   long m_lNeteaseDayLineDataInquiringIndex;
@@ -482,6 +506,7 @@ protected:
   int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
+  bool m_fUpdatedStakeCode; // 今天是否执行了更新证券代码库的任务
 
   // 多线程读取之变量
   CString m_strStockCodeForInquiringRTData;

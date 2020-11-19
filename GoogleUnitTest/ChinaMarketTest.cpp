@@ -141,6 +141,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalAttackSellAmount(), 0);
     EXPECT_TRUE(gl_pChinaStockMarket->IsGetRTData());
     EXPECT_FALSE(gl_pChinaStockMarket->IsTodayTempRTDataLoaded());
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdatedStakeCode());
     EXPECT_EQ(gl_pChinaStockMarket->GetCountDownSlowReadingRTData(), 3);
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 12000);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStockMapIndexSize(), 12000);
@@ -1170,6 +1171,14 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsTodayTempRTDataLoaded());
     gl_pChinaStockMarket->SetTodayTempRTDataLoaded(false);
     EXPECT_FALSE(gl_pChinaStockMarket->IsTodayTempRTDataLoaded());
+  }
+
+  TEST_F(CChinaMarketTest, TesstIsUpdatedStakeCode) {
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdatedStakeCode());
+    gl_pChinaStockMarket->SetUpdatedStakeCode(true);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsUpdatedStakeCode());
+    gl_pChinaStockMarket->SetUpdatedStakeCode(false);
+    EXPECT_FALSE(gl_pChinaStockMarket->IsUpdatedStakeCode());
   }
 
   TEST_F(CChinaMarketTest, TesstIsCheckActiveStock) {
