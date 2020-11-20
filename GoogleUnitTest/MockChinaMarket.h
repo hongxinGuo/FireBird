@@ -30,6 +30,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));
+    MOCK_METHOD(bool, RuningThreadSaveStakeCode, (), (override));
 
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
@@ -43,6 +44,7 @@ namespace testing {
     MOCK_METHOD(bool, BuildDayLineRSOfDate, (long lDate), (override));
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
+    MOCK_METHOD(bool, SaveStakeCode, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDate, (long lDate), (override));
   };
 

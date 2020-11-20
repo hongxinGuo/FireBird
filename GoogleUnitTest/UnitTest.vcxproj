@@ -256,6 +256,7 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadSaveStakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadUpdateStockCodeDB.cpp" />

@@ -17,6 +17,8 @@ public:
 
   void SetStakeName(CString str) noexcept { m_strStakeName = str; }
 
+  void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
+
 protected:
   WORD m_wMarket;	// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
                 // 7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；

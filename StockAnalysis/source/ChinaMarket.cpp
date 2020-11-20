@@ -692,7 +692,8 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 }
 
 bool CChinaMarket::TaskUpdateStakeCodeFromWeb(void) {
-  if (!IsUpdatedStakeCode() && (((GetFormatedMarketTime() >= 113500) && (GetFormatedMarketTime() <= 125500)) || ((GetFormatedMarketTime() >= 150500)))) {
+  if (IsSystemReady() && !IsUpdatedStakeCode()
+      && (((GetFormatedMarketTime() >= 113600) && (GetFormatedMarketTime() <= 125600)) || ((GetFormatedMarketTime() >= 150600)))) {
     gl_WebInquirer.GetSinaStakeRTData();
   }
   return true;
@@ -906,29 +907,51 @@ CString CChinaMarket::GetNextInquiringMiddleStr(long& iStockIndex, CString strPo
   return str;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// 证券代码查询字符串生成器
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetNextInquiringStakeMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber) {
   CString str = _T("");
   char buffer[10];
   CString strNumber;
+  CString strMarket = _T("");
 
-  sprintf_s(buffer, _T("sh%06d"), iStockIndex);
-  strNumber = buffer;
-  str += strNumber;
+  str += CreateStakeCode(iStockIndex);
   str += strPostfix;
   iStockIndex++;
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((iStockIndex < 999999) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
+  while ((iStockIndex < 2000000) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
-    sprintf_s(buffer, _T("sh%06d"), iStockIndex);
-    strNumber = buffer;
-    str += strNumber;
+    str += CreateStakeCode(iStockIndex);
     str += strPostfix;
     iStockIndex++;
   }
 
-  if (iStockIndex >= 999999) {
+  if (iStockIndex > 1999999) {
     SetUpdatedStakeCode(true);
   }
+
+  return str;
+}
+
+CString CChinaMarket::CreateStakeCode(long lStakeIndex) {
+  CString str = _T("");
+  char buffer[10];
+  CString strNumber;
+  CString strMarket = _T("");
+  if (lStakeIndex > 999999) {
+    strMarket = _T("sz");
+    sprintf_s(buffer, _T("%06d"), lStakeIndex - 1000000);
+  }
+  else {
+    strMarket = _T("sh");
+    sprintf_s(buffer, _T("%06d"), lStakeIndex);
+  }
+  str += strMarket;
+  strNumber = buffer;
+  str += strNumber;
 
   return str;
 }
@@ -1006,6 +1029,7 @@ bool CChinaMarket::InsertStakeCode(CWebRTDataPtr pRTData) {
     CStakeCodePtr pStake = make_shared<CStakeCode>();
     pStake->SetStakeCode(pRTData->GetStockCode());
     pStake->SetStakeName(pRTData->GetStockName());
+    pStake->SetMarket(pRTData->GetMarket());
     m_vChinaMarketStake.push_back(pStake);
     m_mapChinaMarketStake[pRTData->GetStockCode()] = m_lTotalStakeCode++;
     ASSERT(m_vChinaMarketStake.size() == m_lTotalStakeCode);

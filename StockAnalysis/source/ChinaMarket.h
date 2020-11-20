@@ -134,6 +134,7 @@ public:
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
   CString GetNextInquiringStakeMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
+  CString CreateStakeCode(long lStakeIndex);
   bool StepToActiveStockIndex(long& lStockIndex);
 
   //日线历史数据读取
@@ -187,7 +188,7 @@ public:
   bool IsChoiced10RSStrongStockSet(void) noexcept { return m_fChoiced10RSStrongStockSet; }
   void SetChoiced10RSStrongStockSet(bool fFlag) noexcept { m_fChoiced10RSStrongStockSet = fFlag; }
   bool IsCalculateChoiced10RS(void) noexcept { return m_fCalculateChoiced10RS; }
-  void Setm_fCalculateChoiced10RS(bool fFlag) noexcept { m_fCalculateChoiced10RS = fFlag; }
+  void SetCalculateChoiced10RS(bool fFlag) noexcept { m_fCalculateChoiced10RS = fFlag; }
 
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
@@ -209,8 +210,7 @@ public:
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
-
-  bool SaveStakeCode(void);
+  virtual bool SaveStakeCode(void);
 
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
