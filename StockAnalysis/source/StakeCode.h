@@ -10,12 +10,12 @@ using namespace std;
 class CStakeCode : public CObject {
 public:
   void LoadStakeCodeDB(CSetStakeCode& setStakeCode);
-  void SaveToDB(CSetStakeCode& setStakeCode);
+  void SaveToStakeCodeDB(CSetStakeCode& setStakeCode);
 
-  CString GetStakeCode(void) noexcept { return m_strStakeCode; }
-  void SetStakeCode(CString str) noexcept { m_strStakeCode = str; }
+  CString GetStakeCode(void) { return m_strStakeCode; }
+  void SetStakeCode(CString str) { m_strStakeCode = str; }
 
-  void SetStakeName(CString str) noexcept { m_strStakeName = str; }
+  void SetStakeName(CString str) { m_strStakeName = str; }
 
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
 

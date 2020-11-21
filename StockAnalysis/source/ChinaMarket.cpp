@@ -1767,7 +1767,7 @@ bool CChinaMarket::SaveStakeCode(void) {
     setStakeCode.m_pDatabase->BeginTrans();
     for (long l = m_lTotalStakeCodeLastTime; l < lTotalStakeCode; l++) {
       pStake = m_vChinaMarketStake.at(l);
-      pStake->SaveToDB(setStakeCode);
+      pStake->SaveToStakeCodeDB(setStakeCode);
     }
     setStakeCode.m_pDatabase->CommitTrans();
     setStakeCode.Close();

@@ -12,7 +12,7 @@ void CStakeCode::LoadStakeCodeDB(CSetStakeCode& setStakeCode) {
   m_wMarket = setStakeCode.m_StakeType;
 }
 
-void CStakeCode::SaveToDB(CSetStakeCode& setStakeCode) {
+void CStakeCode::SaveToStakeCodeDB(CSetStakeCode& setStakeCode) {
   ASSERT(setStakeCode.IsOpen());
   setStakeCode.AddNew();
   setStakeCode.m_StakeCode = m_strStakeCode;
