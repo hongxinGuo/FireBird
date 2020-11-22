@@ -1,7 +1,7 @@
 #include"stdafx.h"
 #include"globedef.h"
 
-#include "ChinaStock.h"
+#include "ChinaStake.h"
 
 #include"WebInquirer.h"
 

@@ -3,7 +3,7 @@
 
 #include"globedef.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 
 using namespace std;
 #include<vector>
@@ -48,10 +48,10 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseDayLineData* pData = GetParam();
-      m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strStakeCode);
+      m_pStock = gl_pChinaStakeMarket->GetStock(pData->m_strStakeCode);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
-      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->SetDayLineNeedProcessNumber(0);
+      gl_pChinaStakeMarket->SetDayLineNeedProcessNumber(0);
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
       if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);

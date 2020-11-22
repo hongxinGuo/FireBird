@@ -3,7 +3,7 @@
 
 #include"globedef.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 
 namespace StockAnalysisTest {
   struct HighLowData {

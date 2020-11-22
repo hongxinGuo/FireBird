@@ -1,7 +1,7 @@
 #include"pch.h"
 
 #include"globedef.h"
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 #include"MockCrweberIndexMarket.h"
 #include"WebInquirer.h"
 #include"Thread.h"

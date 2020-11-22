@@ -20,13 +20,13 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStakeMarket->ResetTengxunRTDataInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->SetSystemReady(false);
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStakeMarket->SetSystemReady(false);
+      gl_pChinaStakeMarket->ResetTengxunRTDataInquiringIndex();
     }
   public:
     CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集
@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     m_TengxunRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_TengxunRTWebInquiry.GetWebData());
     m_TengxunRTWebInquiry.SetReadingWebData(false);
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStakeMarket->SetSystemReady(true);
     EXPECT_CALL(m_TengxunRTWebInquiry, StartReadingThread)
       .Times(1);
     m_TengxunRTWebInquiry.GetWebData();
@@ -51,17 +51,17 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStakeMarket->SetSystemReady(true);
     CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
     EXPECT_STREQ(str, _T("sh600000"));
   }
 
   TEST_F(CTengxunRTWebInquiryTest, TestPrepareNextInquiringStr) {
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStakeMarket->SetSystemReady(true);
     EXPECT_TRUE(m_TengxunRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_TengxunRTWebInquiry.GetInquiringString();
     EXPECT_STREQ(str.Left(21), _T("http://qt.gtimg.cn/q="));
-    gl_pChinaStockMarket->SetSystemReady(false);
+    gl_pChinaStakeMarket->SetSystemReady(false);
   }
 
   TEST_F(CTengxunRTWebInquiryTest, TestReportStatus) {

@@ -7,7 +7,7 @@
 
 #include"WebInquirer.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 #include"ChinaMarket.h"
 
 #include"SetDayLineExtendInfo.h"
@@ -2918,7 +2918,7 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
   m_v10RSStrong1Stock.clear();
   setRSStrong1.Open();
   while (!setRSStrong1.IsEOF()) {
-    pStock = gl_pChinaStockMarket->GetStock(setRSStrong1.m_StockCode);
+    pStock = gl_pChinaStakeMarket->GetStock(setRSStrong1.m_StockCode);
     if (pStock != nullptr) {
       m_v10RSStrong1Stock.push_back(pStock);
     }
@@ -2936,7 +2936,7 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet(void) {
   m_v10RSStrong2Stock.clear();
   setRSStrong2.Open();
   while (!setRSStrong2.IsEOF()) {
-    pStock = gl_pChinaStockMarket->GetStock(setRSStrong2.m_StockCode);
+    pStock = gl_pChinaStakeMarket->GetStock(setRSStrong2.m_StockCode);
     if (pStock != nullptr) {
       m_v10RSStrong2Stock.push_back(pStock);
     }
@@ -3021,7 +3021,7 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
   setRSStrongStock.Open();
   while (!setRSStrongStock.IsEOF()) {
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
+    CChinaStockPtr pStock = gl_pChinaStakeMarket->GetStock(setRSStrongStock.m_StockCode);
     if (pStock != nullptr) m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10日RS股票集起始位置为第10个。
     setRSStrongStock.MoveNext();
   }

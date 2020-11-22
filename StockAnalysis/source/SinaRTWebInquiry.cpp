@@ -24,20 +24,20 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据
-  if (gl_pChinaStockMarket->IsCheckActiveStock() || !gl_pChinaStockMarket->IsSystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
+  if (gl_pChinaStakeMarket->IsCheckActiveStock() || !gl_pChinaStakeMarket->IsSystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
     strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, false);
   }
   else { // 开市时使用今日活跃股票池
     strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, true);
   }
-  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码。新浪代码格式为：sh600000，共八个字符。
+  gl_pChinaStakeMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码。新浪代码格式为：sh600000，共八个字符。
   CreateTotalInquiringString(strMiddle);
 
   return true;
 }
 
 CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  return gl_pChinaStockMarket->GetSinaInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
+  return gl_pChinaStakeMarket->GetSinaInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
 }
 
 void CSinaRTWebInquiry::StartReadingThread(void) {

@@ -11,7 +11,7 @@
 #include"Thread.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 
 #include"SetStakeCode.h"
 #include"WebInquirer.h"
@@ -29,20 +29,20 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       s_pchinaMarket = new CMockChinaMarket;
       s_pchinaMarket->SetTodayStockProcessed(false);
     }
     static void TearDownTestSuite(void) {
       delete s_pchinaMarket;
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-      gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);
+      gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(0);
     }
     virtual void SetUp(void) override {
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
 
       s_pchinaMarket->SetTodayStockProcessed(false);
       s_pchinaMarket->SetRSEndDate(19900101);
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
       s_pchinaMarket->SetRSEndDate(19900101);
       s_pchinaMarket->SetUpdateOptionDB(false);
       gl_ThreadStatus.SetSavingTempData(false);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -80,9 +80,9 @@ namespace StockAnalysisTest {
     pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
     s_pchinaMarket->TaskSaveDayLineData();
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 0);
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
@@ -96,9 +96,9 @@ namespace StockAnalysisTest {
     pStock->StoreDayLine(pDayLine);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
     s_pchinaMarket->TaskSaveDayLineData();
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 0);
 
     pStock->UnloadDayLine();
   }
@@ -117,9 +117,9 @@ namespace StockAnalysisTest {
     //pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(1);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
     EXPECT_TRUE(s_pchinaMarket->TaskSaveDayLineData());
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 0);
     pStock->UnloadDayLine();
   }
 

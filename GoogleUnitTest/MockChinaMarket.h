@@ -3,7 +3,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 #include"ChinaMarket.h"
 
 namespace testing {

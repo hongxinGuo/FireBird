@@ -196,7 +196,7 @@
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
@@ -350,7 +350,7 @@
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />

@@ -5,7 +5,7 @@
 
 #include"globedef.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 #include"ChinaMarket.h"
 
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的
@@ -66,8 +66,8 @@ END_MESSAGE_MAP()
 CStockAnalysisView::CStockAnalysisView() {
   // TODO: 在此处添加构造代码
   m_iCurrentShowType = __SHOW_DAY_LINE_DATA__; // 显示日线数据
-  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetDayLineContainer();
+  if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+    m_pCurrentHistoryDataContainer = gl_pChinaStakeMarket->GetCurrentStock()->GetDayLineContainer();
   }
   m_lCurrentPos = 0;
   m_rectClient.SetRect(CPoint(0, 0), CPoint(0.0));
@@ -123,8 +123,8 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart
 }
 
 bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
-  if (gl_pChinaStockMarket->GetTotalActiveStock() > 0) {
-    pStock = gl_pChinaStockMarket->GetStock(0); // 600000
+  if (gl_pChinaStakeMarket->GetTotalActiveStock() > 0) {
+    pStock = gl_pChinaStakeMarket->GetStock(0); // 600000
   }
   else return false;
 
@@ -148,11 +148,11 @@ void CStockAnalysisView::ShowRealtimeData(CDC* pDC) {
   CRect rectOrdinaryBuySell(cSecondPosition, 0, cSecondPosition + 300, 400);
   CRect rectAttackBuySell(cThirdPosition, 0, cThirdPosition + 100, 400);
   CRect rectCanceledBuySell(0, 450, 300, 850);
-  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    ShowBuySell(pDC, gl_pChinaStockMarket->GetCurrentStock(), rectBuySell);
-    ShowOrdinaryBuySell(pDC, gl_pChinaStockMarket->GetCurrentStock(), rectOrdinaryBuySell);
-    ShowAttackBuySell(pDC, gl_pChinaStockMarket->GetCurrentStock(), rectAttackBuySell);
-    ShowCanceledBuySell(pDC, gl_pChinaStockMarket->GetCurrentStock(), rectCanceledBuySell);
+  if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+    ShowBuySell(pDC, gl_pChinaStakeMarket->GetCurrentStock(), rectBuySell);
+    ShowOrdinaryBuySell(pDC, gl_pChinaStakeMarket->GetCurrentStock(), rectOrdinaryBuySell);
+    ShowAttackBuySell(pDC, gl_pChinaStakeMarket->GetCurrentStock(), rectAttackBuySell);
+    ShowCanceledBuySell(pDC, gl_pChinaStakeMarket->GetCurrentStock(), rectCanceledBuySell);
   }
 
   //ShowRealtimeGuadan(pDC);
@@ -167,7 +167,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   CPoint ptCurrent;
 
   CChinaStockPtr pStock;
-  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
   int iGraphYEnd2 = iGraphYEnd + 100;
@@ -182,7 +182,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
   crBefore = pDC->SetBkColor(crYellow);
-  pStock = gl_pChinaStockMarket->GetCurrentStock();
+  pStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   ppen = SysCallSelectObject(pDC, &penRed);
   ptCurrent.x = iTextStart - 5;
@@ -490,7 +490,7 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPoint ptCurrent;
-  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   if (m_vRSShow.size() != m_pCurrentHistoryDataContainer->GetDataSize()) m_vRSShow.resize(m_pCurrentHistoryDataContainer->GetDataSize());
   if (pCurrentStock == nullptr) return;
@@ -642,7 +642,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
 
   CRect rect;
   SysCallGetClientRect(&rect);
-  if ((gl_pChinaStockMarket->GetCurrentStock() != nullptr) && (gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded())) {
+  if ((gl_pChinaStakeMarket->GetCurrentStock() != nullptr) && (gl_pChinaStakeMarket->GetCurrentStock()->IsDayLineLoaded())) {
   }
   else {
     pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
@@ -652,8 +652,8 @@ void CStockAnalysisView::Show(CDC* pdc) {
     return;
   }
 
-  ASSERT(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
-  ASSERT(gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded());
+  ASSERT(gl_pChinaStakeMarket->GetCurrentStock() != nullptr);
+  ASSERT(gl_pChinaStakeMarket->GetCurrentStock()->IsDayLineLoaded());
   switch (m_iCurrentShowType) {
   case __SHOW_DAY_LINE_DATA__: // show day line(or week line) stock data
   case __SHOW_WEEK_LINE_DATA__:
@@ -850,16 +850,16 @@ void CStockAnalysisView::OnShowRsInLogarithm() {
   // TODO: Add your command handler code here
   if (m_iShowRSOption != 2) {
     m_iShowRSOption = 2;
-    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
+    if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateDayLineRSLogarithm();
     }
   }
 }
 
 void CStockAnalysisView::OnUpdateShowRsInLogarithm(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) {
+  if (gl_pChinaStakeMarket->GetCurrentStock() == nullptr) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else {
@@ -873,16 +873,16 @@ void CStockAnalysisView::OnShowRsInLinear() {
   // TODO: Add your command handler code here
   if (m_iShowRSOption != 1) {
     m_iShowRSOption = 1;
-    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRS();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRS();
+    if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateDayLineRS();
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateWeekLineRS();
     }
   }
 }
 
 void CStockAnalysisView::OnUpdateShowRsInLinear(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) {
+  if (gl_pChinaStakeMarket->GetCurrentStock() == nullptr) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else {
@@ -896,16 +896,16 @@ void CStockAnalysisView::OnShowRsIndex() {
   // TODO: Add your command handler code here
   if (m_iShowRSOption != 0) {
     m_iShowRSOption = 0;
-    if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateDayLineRSIndex();
-      gl_pChinaStockMarket->GetCurrentStock()->CalculateWeekLineRSIndex();
+    if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateDayLineRSIndex();
+      gl_pChinaStakeMarket->GetCurrentStock()->CalculateWeekLineRSIndex();
     }
   }
 }
 
 void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStockMarket->GetCurrentStock() == nullptr) {
+  if (gl_pChinaStakeMarket->GetCurrentStock() == nullptr) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else {
@@ -918,8 +918,8 @@ void CStockAnalysisView::OnUpdateShowRsIndex(CCmdUI* pCmdUI) {
 void CStockAnalysisView::OnShowDayLine() {
   // TODO: Add your command handler code here
   m_iCurrentShowType = __SHOW_DAY_LINE_DATA__;
-  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetDayLineContainer();
+  if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+    m_pCurrentHistoryDataContainer = gl_pChinaStakeMarket->GetCurrentStock()->GetDayLineContainer();
   }
 }
 
@@ -943,8 +943,8 @@ void CStockAnalysisView::OnUpdateShowRealTime(CCmdUI* pCmdUI) {
 void CStockAnalysisView::OnShowWeekLine() {
   // TODO: Add your command handler code here
   m_iCurrentShowType = __SHOW_WEEK_LINE_DATA__;
-  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    m_pCurrentHistoryDataContainer = gl_pChinaStockMarket->GetCurrentStock()->GetWeekLineContainer();
+  if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
+    m_pCurrentHistoryDataContainer = gl_pChinaStakeMarket->GetCurrentStock()->GetWeekLineContainer();
   }
 }
 

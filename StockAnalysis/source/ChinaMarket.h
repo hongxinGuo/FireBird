@@ -10,7 +10,7 @@
 #include"WebRTDataContainer.h"
 #include"StakeCode.h"
 
-#include "ChinaStock.h"
+#include "ChinaStake.h"
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -361,7 +361,7 @@ public:
   bool AddChoicedStock(CChinaStockPtr pStock);
   bool DeleteChoicedStock(CChinaStockPtr pStock);
   size_t GetChoicedStockSize(void) { return m_avChoicedStock.at(0).size(); }
-  size_t GetStockSetSize(long lIndex) { return m_avChoicedStock.at(lIndex).size(); }
+  size_t GetChoicedStockSize(long lIndex) { return m_avChoicedStock.at(lIndex).size(); }
   void ClearChoiceStockContainer(void) { m_avChoicedStock.at(0).clear(); }
   size_t GetChoicedRTDataSize(void) noexcept { return m_qRTData.size(); }
   void ClearChoicedRTDataQueue(void) noexcept { while (m_qRTData.size() > 0) m_qRTData.pop(); }

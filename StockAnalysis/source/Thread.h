@@ -10,7 +10,7 @@
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 class CChinaMarket;
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"

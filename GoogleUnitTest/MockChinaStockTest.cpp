@@ -4,7 +4,7 @@
 #include"globedef.h"
 #include"Thread.h"
 
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 #include"ChinaMarket.h"
 
 #include"MockChinaStock.h"
@@ -20,12 +20,12 @@ namespace StockAnalysisTest {
   {
   protected:
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       pStock = make_shared<CMockChinaStock>();
-      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaStakeMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -33,10 +33,10 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(12000);
-      gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->SetUpdateStockCodeDB(false);
-      gl_pChinaStockMarket->SetUpdateOptionDB(false);
+      gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+      gl_pChinaStakeMarket->CalculateTime();
+      gl_pChinaStakeMarket->SetUpdateStockCodeDB(false);
+      gl_pChinaStakeMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();

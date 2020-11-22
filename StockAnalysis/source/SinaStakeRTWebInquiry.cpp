@@ -31,7 +31,7 @@ bool CSinaStakeRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CSinaStakeRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool) {
-  return gl_pChinaStockMarket->GetSinaStakeInquiringStr(lTotalNumber);
+  return gl_pChinaStakeMarket->GetSinaStakeInquiringStr(lTotalNumber);
 }
 
 void CSinaStakeRTWebInquiry::StartReadingThread(void) {

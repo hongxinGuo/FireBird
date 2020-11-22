@@ -4,7 +4,7 @@
 #include"globedef.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 
 namespace StockAnalysisTest {
 }

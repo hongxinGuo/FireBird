@@ -6,7 +6,7 @@
 #include"globedef.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStock.h"
+#include"ChinaStake.h"
 
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
@@ -32,11 +32,11 @@ namespace StockAnalysisTest {
 
     virtual void SetUp(void) override {
       // 下列全局智能指针为实际类
-      gl_pChinaStockMarket = make_shared<CChinaMarket>();
+      gl_pChinaStakeMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
-      gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
+      gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 #ifdef __GOOGLEMOCK__
@@ -65,8 +65,8 @@ namespace StockAnalysisTest {
 
       CChinaStockPtr pStock = nullptr;
       // 重置股票池状态（因已装入实际状态）
-      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
-        pStock = gl_pChinaStockMarket->GetStock(i);
+      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
+        pStock = gl_pChinaStakeMarket->GetStock(i);
         pStock->SetDayLineEndDate(-1);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
         //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
@@ -77,7 +77,7 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
-        pStock = gl_pChinaStockMarket->GetStock(setStockCode.m_StockCode);
+        pStock = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
         EXPECT_FALSE(pStock->IsActive());
         pStock->SetIPOStatus(setStockCode.m_IPOStatus);
         pStock->SetMarket(setStockCode.m_StockType);
@@ -90,20 +90,20 @@ namespace StockAnalysisTest {
         }
         if (setStockCode.m_IPOStatus == __STOCK_IPOED__) {
           pStock->SetActive(true);
-          gl_pChinaStockMarket->IncreaseActiveStockNumber();
+          gl_pChinaStakeMarket->IncreaseActiveStockNumber();
         }
         setStockCode.MoveNext();
       }
       setStockCode.Close();
-      EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
-      gl_pChinaStockMarket->SetSystemReady(true);
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_GT(gl_pChinaStakeMarket->GetTotalActiveStock(), 0);
+      gl_pChinaStakeMarket->SetSystemReady(true);
+      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
     }
 
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
-      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
       gl_pSinaRTWebInquiry = nullptr;
       gl_pSinaStakeRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
@@ -115,12 +115,12 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
 
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
       gl_vMarketPtr.clear();
-      gl_pChinaStockMarket = nullptr;
+      gl_pChinaStakeMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
     }
