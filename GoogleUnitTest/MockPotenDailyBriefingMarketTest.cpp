@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
     }
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
     virtual void SetUp(void) override {

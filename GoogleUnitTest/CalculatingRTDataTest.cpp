@@ -157,7 +157,7 @@ namespace StockAnalysisTest {
     int iCount;
     CWebRTDataPtr pCurrentData;
     CWebRTDataPtr pLastData;
-    CChinaStock m_stock;
+    CChinaStake m_stock;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestRTData, CStockTest2, testing::Values(&RT1, &RT2, &RT3,
@@ -316,7 +316,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestIncreaseTransactionNumber) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(4999);
     id.IncreaseTransactionNumber();
     EXPECT_EQ(id.GetTransactionNumber(), 1);
@@ -349,7 +349,7 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest3, TestINitializeCalculatingRTDataEnvionment) {
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-    CChinaStock id;
+    CChinaStake id;
 
     id.SetUnknownVolume(100000);
     pRTData->SetVolume(10000);
@@ -372,7 +372,7 @@ namespace StockAnalysisTest {
 
   TEST(CStockTest3, TestGetLastRTDataPtr) {
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
-    CChinaStock id;
+    CChinaStake id;
     CWebRTDataPtr pRTData2 = pRTData;
 
     id.SetLastRTData(pRTData);
@@ -380,7 +380,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateOrdinaryBuySell) {
-    CChinaStock id;
+    CChinaStake id;
     CWebRTDataPtr pLastRTData = make_shared<CWebRTData>();
 
     pLastRTData->SetPSell(0, 100000);
@@ -402,7 +402,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateOrdinaryBuyVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(1000);
     id.CalculateOrdinaryBuyVolume();
     EXPECT_EQ(id.GetOrdinaryBuyVolumeBelow5000(), 1000);
@@ -434,7 +434,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateOrdinarySellVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(1000);
     id.CalculateOrdinarySellVolume();
     EXPECT_EQ(id.GetOrdinarySellVolumeBelow5000(), 1000);
@@ -467,7 +467,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateCancelededBuyVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.CalculateCanceledBuyVolume(4000);
     EXPECT_EQ(id.GetCanceledBuyVolumeBelow5000(), 4000);
     id.CalculateCanceledBuyVolume(8000);
@@ -485,7 +485,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateCanceledSellVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.CalculateCanceledSellVolume(4000);
     EXPECT_EQ(id.GetCanceledSellVolumeBelow5000(), 4000);
     id.CalculateCanceledSellVolume(8000);
@@ -503,7 +503,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TEStCalculateAttackBuy) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuy();
     EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_BUY__);
@@ -523,7 +523,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateStrongBuy) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongBuy();
     EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_BUY__);
@@ -543,7 +543,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateAttackBuyVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackBuyVolume();
     EXPECT_EQ(id.GetAttackBuyBelow50000(), 10000);
@@ -562,7 +562,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateAttackSell) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSell();
     EXPECT_EQ(id.GetCurrentTransactionType(), __ATTACK_SELL__);
@@ -582,7 +582,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateStrongSell) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateStrongSell();
     EXPECT_EQ(id.GetCurrentTransactionType(), __STRONG_SELL__);
@@ -602,7 +602,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestCalculateAttackSellVolume) {
-    CChinaStock id;
+    CChinaStake id;
     id.SetCurrentTransationVolume(10000);
     id.CalculateAttackSellVolume();
     EXPECT_EQ(id.GetAttackSellBelow50000(), 10000);

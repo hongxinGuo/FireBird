@@ -33,10 +33,10 @@ public:
   void SetTime(time_t t) noexcept { m_time = t; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
-  CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) { m_strStockCode = str; }
-  CString GetStockName(void) { return m_strStockName; }
-  void SetStockName(CString str) { m_strStockName = str; }
+  CString GetStakeCode(void) { return m_strStakeCode; }
+  void SetStakeCode(CString str) { m_strStakeCode = str; }
+  CString GetStakeName(void) { return m_strStakeName; }
+  void SetStakeName(CString str) { m_strStakeName = str; }
 
   long GetLastClose(void) noexcept { return m_lLastClose; }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
@@ -230,8 +230,8 @@ protected:
   long m_lDate; // 类型(YYYYMMDD)
   time_t m_time;
   WORD m_wMarket;
-  CString m_strStockCode;
-  CString m_strStockName;
+  CString m_strStakeCode;
+  CString m_strStakeName;
 
   // 以下几个价格，是放大了一千倍
   long m_lLastClose; // 前收盘。单位：0.001元

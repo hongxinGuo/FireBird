@@ -10,11 +10,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
     }
 
     static void TearDownTestSuite() {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
     }
 
     virtual void SetUp(void) override {
@@ -50,16 +50,16 @@ namespace StockAnalysisTest {
 
   TEST_F(CWeekLineTest, TestGetStockCode) {
     CWeekLine dl;
-    EXPECT_STREQ(dl.GetStockCode(), _T(""));
-    dl.SetStockCode(_T("sh600000"));
-    EXPECT_STREQ(dl.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(dl.GetStakeCode(), _T(""));
+    dl.SetStakeCode(_T("sh600000"));
+    EXPECT_STREQ(dl.GetStakeCode(), _T("sh600000"));
   }
 
   TEST_F(CWeekLineTest, TestGetStockName) {
     CWeekLine dl;
-    EXPECT_STREQ(dl.GetStockName(), _T(""));
-    dl.SetStockName(_T("浦东银行"));
-    EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
+    EXPECT_STREQ(dl.GetStakeName(), _T(""));
+    dl.SetStakeName(_T("浦东银行"));
+    EXPECT_STREQ(dl.GetStakeName(), _T("浦东银行"));
   }
 
   TEST_F(CWeekLineTest, TestGetLastClose) {
@@ -570,8 +570,8 @@ namespace StockAnalysisTest {
 
     id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
-    id.SetStockCode(_T("sh600008"));
-    id.SetStockName(_T("首创股份"));
+    id.SetStakeCode(_T("sh600008"));
+    id.SetStakeName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
     id.SetHigh(45234543);
@@ -674,8 +674,8 @@ namespace StockAnalysisTest {
     id2.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetFormatedMarketDate());
     EXPECT_EQ(setWeekLineBasicInfo.m_Market, id.GetMarket());
-    EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, id.GetStockCode());
-    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
+    EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, id.GetStakeCode());
+    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStakeName());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, id.GetLastClose());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, id.GetOpen());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, id.GetHigh());
@@ -695,8 +695,8 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
     EXPECT_EQ(id2.GetMarket(), id.GetMarket());
-    EXPECT_STREQ(id2.GetStockCode(), id.GetStockCode());
-    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
+    EXPECT_STREQ(id2.GetStakeCode(), id.GetStakeCode());
+    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStakeName());
     EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
     EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
     EXPECT_DOUBLE_EQ(id2.GetHigh(), id.GetHigh());
@@ -808,8 +808,8 @@ namespace StockAnalysisTest {
 
     id.SetDate(21101101);
     id.SetMarket(__SHANGHAI_MARKET__);
-    id.SetStockCode(_T("sh600008"));
-    id.SetStockName(_T("首创股份"));
+    id.SetStakeCode(_T("sh600008"));
+    id.SetStakeName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
     id.SetHigh(45234543);
@@ -839,8 +839,8 @@ namespace StockAnalysisTest {
     idLoaded.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
     EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
-    EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
-    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
+    EXPECT_STREQ(idLoaded.GetStakeCode(), id.GetStakeCode());
+    //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStakeName());
     EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
     EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
     EXPECT_EQ(idLoaded.GetHigh(), id.GetHigh());
@@ -873,8 +873,8 @@ namespace StockAnalysisTest {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
     id.SetMarket(__SHANGHAI_MARKET__);
-    id.SetStockCode(_T("sh600000"));
-    id.SetStockName(_T("浦发银行"));
+    id.SetStakeCode(_T("sh600000"));
+    id.SetStakeName(_T("浦发银行"));
     id.SetLastClose(1010);
     id.SetOpen(1100);
     id.SetHigh(1200);
@@ -893,7 +893,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.Open();
     id2.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
-    EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
+    EXPECT_STREQ(id.GetStakeCode(), id2.GetStakeCode());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 
     setWeekLineBasicInfo.Delete();
@@ -905,8 +905,8 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetTime(100100100100);
     pDayLine->SetDate(20200202);
-    pDayLine->SetStockCode(_T("sh600000"));
-    pDayLine->SetStockName(_T("浦发银行"));
+    pDayLine->SetStakeCode(_T("sh600000"));
+    pDayLine->SetStakeName(_T("浦发银行"));
 
     pDayLine->SetOpen(1010);
     pDayLine->SetClose(2020);
@@ -991,8 +991,8 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(weekLine.GetFormatedMarketDate(), GetCurrentMonday(pDayLine->GetFormatedMarketDate())) << "周线日期总是当周的星期一";
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
-    EXPECT_STREQ(weekLine.GetStockCode(), pDayLine->GetStockCode());
-    EXPECT_STREQ(weekLine.GetStockName(), pDayLine->GetStockName());
+    EXPECT_STREQ(weekLine.GetStakeCode(), pDayLine->GetStakeCode());
+    EXPECT_STREQ(weekLine.GetStakeName(), pDayLine->GetStakeName());
 
     EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
     EXPECT_EQ(weekLine.GetClose(), pDayLine->GetClose());
@@ -1065,8 +1065,8 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
     pDayLine1->SetTime(100100100100);
     pDayLine1->SetDate(20200727);
-    pDayLine1->SetStockCode(_T("sh600000"));
-    pDayLine1->SetStockName(_T("浦发银行"));
+    pDayLine1->SetStakeCode(_T("sh600000"));
+    pDayLine1->SetStakeName(_T("浦发银行"));
 
     pDayLine1->SetOpen(1010);
     pDayLine1->SetClose(2020);
@@ -1157,8 +1157,8 @@ namespace StockAnalysisTest {
 
     pDayLine2->SetTime(100100100100);
     pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中
-    pDayLine2->SetStockCode(_T("sh600000"));
-    pDayLine2->SetStockName(_T("浦发银行"));
+    pDayLine2->SetStakeCode(_T("sh600000"));
+    pDayLine2->SetStakeName(_T("浦发银行"));
 
     pDayLine2->SetOpen(1010);
     pDayLine2->SetClose(2020);
@@ -1252,8 +1252,8 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(weekLine.GetFormatedMarketDate(), pDayLine1->GetFormatedMarketDate());
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime());
-    EXPECT_STREQ(weekLine.GetStockCode(), pDayLine1->GetStockCode());
-    EXPECT_STREQ(weekLine.GetStockName(), pDayLine1->GetStockName());
+    EXPECT_STREQ(weekLine.GetStakeCode(), pDayLine1->GetStakeCode());
+    EXPECT_STREQ(weekLine.GetStakeName(), pDayLine1->GetStakeName());
 
     EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());
     EXPECT_EQ(weekLine.GetClose(), pDayLine2->GetClose());

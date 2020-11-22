@@ -9,7 +9,7 @@
 #include"SetDayLineBasicInfo.h"
 #include"SetRealTimeData.h"
 #include"SetChoicedStock.h"
-#include"SetStockCode.h"
+#include"SetStakeCode.h"
 #include"SetOption.h"
 
 class CMainFrame : public CMDIFrameWndEx

@@ -26,7 +26,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStockPtr> pStock) {
     }
     pStock->UnloadDayLine();
     if (fDataSaved) {
-      str = pStock->GetStockCode() + _T("日线资料存储完成");
+      str = pStock->GetStakeCode() + _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }

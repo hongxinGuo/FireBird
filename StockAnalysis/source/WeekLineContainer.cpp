@@ -183,7 +183,7 @@ void CWeekLineContainer::UpdateData(vector<CWeekLinePtr>& vTempWeekLine) {
 
 bool CWeekLineContainer::UpdateData(CDayLinePtr pDayLine) {
   for (auto pData : m_vHistoryData) {
-    if (strcmp(pData->GetStockCode(), pDayLine->GetStockCode()) == 0) { //
+    if (strcmp(pData->GetStakeCode(), pDayLine->GetStakeCode()) == 0) { //
       dynamic_pointer_cast<CWeekLine>(pData)->UpdateWeekLine(pDayLine);
       break;
     }

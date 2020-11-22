@@ -1,4 +1,4 @@
-// SetStockCode.h : CSetStockCode 的声明
+// SetStakeCode.h : CSetStockCode 的声明
 
 #pragma once
 #include"afxdb.h"

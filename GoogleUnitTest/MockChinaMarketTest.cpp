@@ -13,7 +13,7 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
-#include"SetStockCode.h"
+#include"SetStakeCode.h"
 #include"WebInquirer.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite(void) {
       delete s_pchinaMarket;
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       gl_pChinaStockMarket->SetDayLineNeedSaveNumber(0);

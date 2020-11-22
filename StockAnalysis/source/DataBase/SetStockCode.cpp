@@ -1,11 +1,11 @@
-// SetStockCode.h : CSetStockCode 类的实现
+// SetStakeCode.h : CSetStockCode 类的实现
 
 // CSetStockCode 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
 #include "stdafx.h"
-#include "SetStockCode.h"
+#include "SetStakeCode.h"
 #include"globedef.h"
 #include"accessory.h"
 

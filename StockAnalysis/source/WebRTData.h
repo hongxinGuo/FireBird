@@ -179,10 +179,10 @@ public:
   void SetTransactionTime(time_t time) noexcept { m_time = time; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
-  CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) { m_strStockCode = str; }
-  CString GetStockName(void) { return m_strStockName; }
-  void SetStockName(CString str) { m_strStockName = str; }
+  CString GetStakeCode(void) { return m_strStakeCode; }
+  void SetStakeCode(CString str) { m_strStakeCode = str; }
+  CString GetStakeName(void) { return m_strStakeName; }
+  void SetStakeName(CString str) { m_strStakeName = str; }
   long GetLastClose(void) noexcept { return m_lLastClose; }
   void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
   long GetOpen(void) noexcept { return m_lOpen; }
@@ -240,8 +240,8 @@ protected:
   // Serialized data
   time_t m_time;	// 交易发生时的时间
   WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
-  CString m_strStockCode;// 证券代码, sh600001，sz002389，
-  CString m_strStockName; // 证券名称
+  CString m_strStakeCode;// 证券代码, sh600001，sz002389，
+  CString m_strStakeName; // 证券名称
   long m_lOpen;	// 今日开盘。单位：0.001元
   long m_lLastClose;// 昨日收盘。单位：0.001元
   long m_lNew; // 今日最新。单位：0.001元

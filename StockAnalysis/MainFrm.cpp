@@ -473,8 +473,8 @@ void CMainFrame::UpdateStatus(void) {
   // 显示股票代码和名称
   if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
-    SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
-    SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
+    SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStakeCode());
+    SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStakeName());
   }
 
   // 显示当前选择的股票

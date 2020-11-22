@@ -146,7 +146,7 @@ public:
   bool IsAStock(CString strStockCode); // 是否为沪深A股
   bool IsStock(CString  strStockCode);	// 是否为正确的股票代码
 
-  CString GetStockName(CString strStockCode);
+  CString GetStakeName(CString strStockCode);
 
   // 得到股票索引
   bool GetStockIndex(CString strStockCode, long& lIndex);
@@ -416,7 +416,7 @@ public:
 
 protected:
   // 初始化
-  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
+  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStock。
 
 public:
 
@@ -435,7 +435,8 @@ protected:
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
-  long m_lTotalStock; // 股票代码总数
+  long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个）。
+  long m_lTotalStake; // 证券代码总数（前12000个为股票代码总数，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数
 
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集

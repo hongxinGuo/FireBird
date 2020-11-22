@@ -9,14 +9,14 @@ namespace StockAnalysisTest {
   struct NeteaseData {
     NeteaseData(int count, CString StockCode, int iType, bool fActive, time_t tt) {
       m_iCount = count;
-      m_strStockCode = StockCode;
+      m_strStakeCode = StockCode;
       m_iSourceType = iType;
       m_fActive = fActive;
       m_tt = tt;
     }
   public:
     int m_iCount;
-    CString m_strStockCode;
+    CString m_strStakeCode;
     int m_iSourceType;
     bool m_fActive;
     time_t m_tt;
@@ -58,13 +58,13 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       NeteaseData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
+      pStock = gl_pChinaStockMarket->GetStock(pData->m_strStakeCode);
       pStock->ClearRTDataDeque();
       pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
       gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
-      pRTData->SetStockCode(pData->m_strStockCode);
+      pRTData->SetStakeCode(pData->m_strStakeCode);
       pRTData->SetActive(pData->m_fActive);
       pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
     }

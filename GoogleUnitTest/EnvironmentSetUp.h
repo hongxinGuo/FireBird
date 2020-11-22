@@ -16,7 +16,7 @@
 #include"MockChinaMarket.h"
 using namespace testing;
 
-#include"SetStockCode.h"
+#include"SetStakeCode.h"
 #include"WebInquirer.h"
 
 using namespace std;
@@ -81,9 +81,9 @@ namespace StockAnalysisTest {
         EXPECT_FALSE(pStock->IsActive());
         pStock->SetIPOStatus(setStockCode.m_IPOStatus);
         pStock->SetMarket(setStockCode.m_StockType);
-        pStock->SetStockCode(setStockCode.m_StockCode);
+        pStock->SetStakeCode(setStockCode.m_StockCode);
         CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-        pStock->SetStockName(str);
+        pStock->SetStakeName(str);
         pStock->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
         if (pStock->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
           pStock->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
@@ -115,7 +115,7 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
 
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStakeCode();
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);

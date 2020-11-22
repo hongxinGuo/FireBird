@@ -24,8 +24,8 @@ void CChinaStockHistoryData::Reset(void) {
   m_lDate = 0;		// 类型
   m_time = 0;
   m_wMarket = 0;
-  m_strStockCode = _T("");
-  m_strStockName = _T("");
+  m_strStakeCode = _T("");
+  m_strStakeName = _T("");
   m_lLastClose = m_lOpen = m_lHigh = m_lLow = m_lClose = 0; // 收盘价
   m_llVolume = 0;
   m_llAmount = 0;
