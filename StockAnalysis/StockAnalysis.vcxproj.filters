@@ -270,6 +270,12 @@
     <ClInclude Include="source\ChinaStake.h">
       <Filter>头文件\China Stock Market</Filter>
     </ClInclude>
+    <ClInclude Include="source\SectionIndex.h">
+      <Filter>头文件\China Stock Market\基础数据类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataBase\SetSectionIndex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -514,6 +520,12 @@
     </ClCompile>
     <ClCompile Include="source\ChinaStake.cpp">
       <Filter>源文件\China Stock Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SectionIndex.cpp">
+      <Filter>源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataBase\SetSectionIndex.cpp">
+      <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

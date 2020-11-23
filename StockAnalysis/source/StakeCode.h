@@ -16,6 +16,9 @@ using namespace std;
 
 class CStakeCode : public CObject {
 public:
+  CStakeCode();
+  ~CStakeCode(void);
+
   void LoadStakeCodeDB(CSetStakeCode& setStakeCode);
   void SaveToStakeCodeDB(CSetStakeCode& setStakeCode);
 

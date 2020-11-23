@@ -9,6 +9,7 @@
 
 #include"WebRTDataContainer.h"
 #include"StakeCode.h"
+#include"SectionIndex.h"
 
 #include "ChinaStake.h"
 
@@ -133,9 +134,10 @@ public:
   CString	GetNeteaseInquiringStockStr(long lTotalNumber = 700, bool fSkipUnactiveStock = true);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, bool fSkipUnactiveStock = true);
-  CString GetNextInquiringStakeMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber);
-  CString CreateStakeCode(long lStakeIndex);
   bool StepToActiveStockIndex(long& lStockIndex);
+  CString GetNextStakeInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber);
+  CString CreateStakeCode(bool fShanghaiMarket, long lStakeIndex);
+  CString GetNextActiveStakeInquiringMiddleStr(long& lStakeIndex, CString strPostfix, long lTotalNumber);
 
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn);
@@ -194,8 +196,11 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
+  void LoadSectionIndex(void);
   void LoadStockCodeDB(void);
   void LoadStakeCodeDB(void);
+  void UpdateSectionIndex(CStakeCodePtr pStakeCode);
+
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
   void LoadOptionChinaStockMarketDB(void);
@@ -427,9 +432,12 @@ protected:
 
 // 变量区
 protected:
+  vector<CSectionIndexPtr> m_vSectionIndex; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
+
   vector<CStakeCodePtr> m_vChinaMarketStake; // 本系统内所有的证券代码库（包括股票、基金、债券、期货、期权等。每日更新，皆为有效证券代码）
   map<CString, long> m_mapChinaMarketStake; // 将所有查询到的证券代码映射为偏移量。
   long m_lCurrentStakeCodeIndex;
+  long m_lCurrentStakeInquiringIndex; // 当前申请证券数据的位置
   long m_lTotalStakeCode; // 当前证券代码总数
   long m_lTotalStakeCodeLastTime; // 上次（数据库中的）证券代码总数
 

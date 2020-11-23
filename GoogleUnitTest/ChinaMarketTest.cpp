@@ -1936,4 +1936,18 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(setStockCode.find(_T("sh600004")) != setStockCode.end());
     EXPECT_FALSE(setStockCode.find(_T("sh600001")) != setStockCode.end());
   }
+
+  TEST_F(CChinaMarketTest, TestCreateStakeCode) {
+    EXPECT_STREQ(gl_pChinaStakeMarket->CreateStakeCode(true, 0), _T("sh000000"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->CreateStakeCode(true, 999999), _T("sh999999"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->CreateStakeCode(false, 0), _T("sz000000"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->CreateStakeCode(false, 999999), _T("sz999999"));
+  }
+
+  TEST_F(CChinaMarketTest, TestGetNextInquiringStakeMiddleStr) {
+    long l = 0;
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetNextStakeInquiringMiddleStr(l, _T(","), 2), _T("sh000000,sh000001"));
+    l = 1000000;
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetNextStakeInquiringMiddleStr(l, _T(","), 2), _T("sz000000,sz000001"));
+  }
 }
