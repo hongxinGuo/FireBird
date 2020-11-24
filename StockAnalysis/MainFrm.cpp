@@ -81,6 +81,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
   ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
+  ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateSectionIndex)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -904,4 +905,9 @@ void CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable() {
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
+}
+
+void CMainFrame::OnUpdateSectionIndex() {
+  // TODO: Add your command handler code here
+  gl_pChinaStakeMarket->TaskSaveSectionIndex();
 }

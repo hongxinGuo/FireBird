@@ -527,6 +527,9 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetSectionIndex.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="StakeCodeTest.cpp">
+      <Filter>Test源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

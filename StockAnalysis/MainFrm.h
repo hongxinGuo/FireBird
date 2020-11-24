@@ -128,4 +128,5 @@ public:
   afx_msg void OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI);
   afx_msg void OnBuildRebuildCurrentWeekWeeklineTable();
   afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
+  afx_msg void OnUpdateSectionIndex();
 };

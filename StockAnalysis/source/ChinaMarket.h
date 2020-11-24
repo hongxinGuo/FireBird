@@ -86,6 +86,7 @@ public:
   bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
   bool TaskSaveStakeCode(void); // 存储新找到的证券代码至数据库
+  bool TaskSaveSectionIndex(void); //
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);
@@ -120,7 +121,8 @@ public:
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
-  virtual bool RuningThreadSaveStakeCode(void);
+  virtual bool RunningThreadSaveStakeCode(void);
+  virtual bool RunningThreadSaveSectionIndex(void);
   // interface function
 public:
   // 系统状态区
@@ -200,6 +202,7 @@ public:
   void LoadStockCodeDB(void);
   void LoadStakeCodeDB(void);
   void UpdateSectionIndex(CStakeCodePtr pStakeCode);
+  void UpdateSectionIndex(CWebRTDataPtr pRTData);
 
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
@@ -216,6 +219,7 @@ public:
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
   virtual bool SaveStakeCode(void);
+  virtual bool SaveSectionIndex(void);
 
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
@@ -433,9 +437,10 @@ protected:
 // 变量区
 protected:
   vector<CSectionIndexPtr> m_vSectionIndex; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
+  bool m_fUpdateSectionIndex;
 
-  vector<CStakeCodePtr> m_vChinaMarketStake; // 本系统内所有的证券代码库（包括股票、基金、债券、期货、期权等。每日更新，皆为有效证券代码）
-  map<CString, long> m_mapChinaMarketStake; // 将所有查询到的证券代码映射为偏移量。
+  vector<CStakeCodePtr> m_vChinaMarketStakeCode; // 本系统内所有的证券代码库（包括股票、基金、债券、期货、期权等。每日更新，皆为有效证券代码）
+  map<CString, long> m_mapChinaMarketStakeCode; // 将所有查询到的证券代码映射为偏移量。
   long m_lCurrentStakeCodeIndex;
   long m_lCurrentStakeInquiringIndex; // 当前申请证券数据的位置
   long m_lTotalStakeCode; // 当前证券代码总数
@@ -443,7 +448,7 @@ protected:
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
-  long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个）。
+  long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lTotalStake; // 证券代码总数（前12000个为股票代码总数，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数
 
