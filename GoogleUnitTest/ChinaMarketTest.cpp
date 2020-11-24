@@ -151,8 +151,8 @@ namespace StockAnalysisTest {
     pStock = gl_pChinaStakeMarket->GetStock(6000);
     EXPECT_STREQ(pStock->GetStakeCode(), _T("sz000000"));
     EXPECT_EQ(pStock->GetMarket(), __SHENZHEN_MARKET__);
-    EXPECT_EQ(gl_pChinaStakeMarket->GetTotalStockIndex(_T("sh600000")), 0);
-    EXPECT_EQ(gl_pChinaStakeMarket->GetTotalStockIndex(_T("sz000000")), 6000);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetStockOffset(_T("sh600000")), 0);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetStockOffset(_T("sz000000")), 6000);
 
     EXPECT_TRUE(gl_pChinaStakeMarket->IsPermitResetMarket());
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0) << gl_pChinaStakeMarket->GetDayLineNeedProcessNumber();
@@ -274,13 +274,13 @@ namespace StockAnalysisTest {
     gl_pChinaStakeMarket->__TEST_SetFormatedMarketTime(92559); // 更新网易历史数据开始于09:25:00
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
-      .Times(1);
+      .Times(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySecond, StartReadingThread())
-      .Times(1);
+      .Times(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryThird, StartReadingThread())
-      .Times(1);
+      .Times(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
-      .Times(1);
+      .Times(0);
     EXPECT_FALSE(gl_pChinaStakeMarket->TaskGetNeteaseDayLineFromWeb());
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(10);
     EXPECT_FALSE(gl_pChinaStakeMarket->TaskGetNeteaseDayLineFromWeb());

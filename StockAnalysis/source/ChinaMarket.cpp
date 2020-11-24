@@ -65,6 +65,9 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
   CSectionIndexPtr pSectionIndex;
   for (int i = 0; i < 2000; i++) {
     pSectionIndex = make_shared<CSectionIndex>();
+    pSectionIndex->SetIndexNumber(i);
+    if (i < 1000) pSectionIndex->SetMarket(__SHANGHAI_MARKET__);
+    else pSectionIndex->SetMarket(__SHENZHEN_MARKET__);
     m_vSectionIndex.at(i) = pSectionIndex;
   }
 
@@ -90,9 +93,12 @@ void CChinaMarket::ResetMarket(void) {
     Sleep(1);
   }
   Reset();
-  LoadSectionIndex();
-  LoadStockCodeDB();
-  LoadStakeCodeDB();
+
+  ASSERT(m_vChinaMarketStock.size() == 12000);
+  ASSERT(m_mapChinaMarketAStock.size() == 12000); // 读入数据库前，要保证已经装载了预先设置的12000个股票代码
+  LoadSectionIndex(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
+  LoadStockCodeDB(); // 装入股票代码。准备修改这个数据集，在12000个股票后，加入其他的证券
+  LoadStakeCodeDB(); // 装入证券代码。这个数据库为目前活跃的证券代码
   LoadOptionDB();
   LoadOptionChinaStockMarketDB();
   LoadChoicedStockDB();
@@ -178,6 +184,11 @@ void CChinaMarket::Reset(void) {
   m_lNeteaseDayLineDataInquiringIndex = 0;
 
   m_pCurrentStock = nullptr;
+
+  m_vChinaMarketStakeCode.resize(0);
+  m_vChinaMarketStock.resize(0);
+  m_mapChinaMarketAStock.clear();
+  m_mapChinaMarketStakeCode.clear();
 
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -313,7 +324,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   CChinaStockPtr pStock = nullptr;
 
   // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
-  m_vChinaMarketStock.clear();
+  m_vChinaMarketStock.resize(0);
   m_mapChinaMarketAStock.clear();
   ASSERT(m_lTotalStock == 0);
 
@@ -1597,8 +1608,13 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskCheckDayLineDB();
 
-    TaskSaveStakeCode(); // 存储新证券代码至数据库
-    TaskSaveSectionIndex();
+    if (m_lTotalStakeCode > m_lTotalStakeCodeLastTime) { // 找到了新证券代码
+      TaskSaveStakeCode(); // 存储新证券代码至数据库
+    }
+    if (m_fUpdateSectionIndex) {
+      TaskSaveSectionIndex();
+      m_fUpdateSectionIndex = false;
+    }
 
     return true;
   } // 每一分钟一次的任务
@@ -1815,10 +1831,7 @@ bool CChinaMarket::TaskSaveStakeCode(void) {
 }
 
 bool CChinaMarket::TaskSaveSectionIndex(void) {
-  if (m_fUpdateSectionIndex) {
-    RunningThreadSaveSectionIndex();
-    m_fUpdateSectionIndex = false;
-  }
+  RunningThreadSaveSectionIndex();
   return true;
 }
 
@@ -1845,21 +1858,25 @@ bool CChinaMarket::SaveSectionIndex(void) {
 
   setSectionIndex.Open();
   setSectionIndex.m_pDatabase->BeginTrans();
-  while (setSectionIndex.IsEOF()) {
+  while (!setSectionIndex.IsEOF()) {
     setSectionIndex.Delete();
     setSectionIndex.MoveNext();
   }
   setSectionIndex.m_pDatabase->CommitTrans();
   setSectionIndex.Close();
 
+  CSectionIndexPtr pSectionIndex = nullptr;
+
   setSectionIndex.Open();
   setSectionIndex.m_pDatabase->BeginTrans();
-  for (auto& pSection : m_vSectionIndex) {
+  for (int i = 0; i < 2000; i++) {
+    pSectionIndex = m_vSectionIndex.at(i);
     setSectionIndex.AddNew();
-    setSectionIndex.m_Active = pSection->IsActive();
-    setSectionIndex.m_Market = pSection->GetMarket();
-    setSectionIndex.m_IndexNumber = pSection->GetIndexNumber();
-    setSectionIndex.m_Comment = pSection->GetComment();
+    setSectionIndex.m_ID = i;
+    setSectionIndex.m_Active = pSectionIndex->IsActive();
+    setSectionIndex.m_Market = pSectionIndex->GetMarket();
+    setSectionIndex.m_IndexNumber = pSectionIndex->GetIndexNumber();
+    setSectionIndex.m_Comment = pSectionIndex->GetComment();
     setSectionIndex.Update();
   }
   setSectionIndex.m_pDatabase->CommitTrans();
@@ -3385,17 +3402,17 @@ void CChinaMarket::LoadSectionIndex(void) {
 
   setSectionIndex.Open();
   while (!setSectionIndex.IsEOF()) {
-    if (setSectionIndex.m_Market == 1) { // 上海市场？
+    if (setSectionIndex.m_Market == __SHANGHAI_MARKET__) { // 上海市场？
       m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetActive(setSectionIndex.m_Active);
       m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetMarket(setSectionIndex.m_Market);
       m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetIndexNumber(setSectionIndex.m_IndexNumber);
       m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetComment(setSectionIndex.m_Comment);
     }
     else { // 深圳市场
-      m_vSectionIndex.at(setSectionIndex.m_IndexNumber + 1000)->SetActive(setSectionIndex.m_Active);
-      m_vSectionIndex.at(setSectionIndex.m_IndexNumber + 1000)->SetMarket(setSectionIndex.m_Market);
-      m_vSectionIndex.at(setSectionIndex.m_IndexNumber + 1000)->SetIndexNumber(setSectionIndex.m_IndexNumber);
-      m_vSectionIndex.at(setSectionIndex.m_IndexNumber + 1000)->SetComment(setSectionIndex.m_Comment);
+      m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetActive(setSectionIndex.m_Active);
+      m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetMarket(setSectionIndex.m_Market);
+      m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetIndexNumber(setSectionIndex.m_IndexNumber);
+      m_vSectionIndex.at(setSectionIndex.m_IndexNumber)->SetComment(setSectionIndex.m_Comment);
     }
     setSectionIndex.MoveNext();
   }

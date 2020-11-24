@@ -301,7 +301,7 @@ public:
   INT64 GetTotalAttackSellAmount(void);
 
   size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
-  long GetTotalStockIndex(CString str) { return m_mapChinaMarketAStock.at(str); }
+  long GetStockOffset(CString str) { return m_mapChinaMarketAStock.at(str); }
 
   void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
   CString GetStockCodeForInquiringRTData(void) { return m_strStockCodeForInquiringRTData; }
@@ -423,6 +423,9 @@ public:
   void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
   bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }
 
+  void SetUpdateSectionIndex(bool fFlag) noexcept { m_fUpdateSectionIndex = fFlag; }
+  bool IsUpdateSectionIndex(void) noexcept { return m_fUpdateSectionIndex; }
+
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStock。
@@ -437,7 +440,7 @@ protected:
 // 变量区
 protected:
   vector<CSectionIndexPtr> m_vSectionIndex; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
-  bool m_fUpdateSectionIndex;
+  bool m_fUpdateSectionIndex; // 更新SectionIndex标识
 
   vector<CStakeCodePtr> m_vChinaMarketStakeCode; // 本系统内所有的证券代码库（包括股票、基金、债券、期货、期权等。每日更新，皆为有效证券代码）
   map<CString, long> m_mapChinaMarketStakeCode; // 将所有查询到的证券代码映射为偏移量。

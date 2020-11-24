@@ -879,14 +879,14 @@ void CMainFrame::OnBuildCurrentWeekLine() {
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-#ifndef _DEBUG
+//#ifndef _DEBUG
   if ((gl_pChinaStakeMarket->GetFormatedMarketTime() > 151000)) {
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else {
     SysCallCmdUIEnable(pCmdUI, false);
   }
-#endif // !_DEBUG
+  //#endif // !_DEBUG
 }
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
@@ -909,5 +909,6 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateSectionIndex() {
   // TODO: Add your command handler code here
+  gl_pChinaStakeMarket->SetUpdateSectionIndex(true);
   gl_pChinaStakeMarket->TaskSaveSectionIndex();
 }
