@@ -5,6 +5,8 @@ CSectionIndex::CSectionIndex() : CObject() {
   m_wMarket = 0;
   m_strComment = _T("");
   m_lIndexNumber = 0;
+
+  m_fBuildStakePtr = false;
 }
 
 CSectionIndex::~CSectionIndex(void) {

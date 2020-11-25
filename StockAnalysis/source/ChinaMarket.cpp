@@ -1091,8 +1091,8 @@ bool CChinaMarket::InsertStakeCode(CWebRTDataPtr pRTData) {
     pStake->SetStakeName(pRTData->GetStakeName());
     pStake->SetMarket(pRTData->GetMarket());
     pStake->SetIPOStatus(__STOCK_NOT_CHECKED__);
-    //pStake->SetDayLineEndDate(19900101);
-    //pStake->SetDayLineStartDate(29900101);
+    pStake->SetDayLineEndDate(19900101);
+    pStake->SetDayLineStartDate(29900101);
     m_vChinaMarketStakeCode.push_back(pStake);
     m_mapChinaMarketStakeCode[pRTData->GetStakeCode()] = m_lTotalStakeCode++;
     ASSERT(m_vChinaMarketStakeCode.size() == m_lTotalStakeCode);
