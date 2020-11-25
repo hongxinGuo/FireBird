@@ -4,10 +4,10 @@
 using namespace std;
 #include<memory>
 
-class CSectionIndex : public CObject {
+class CStakeSection : public CObject {
 public:
-  CSectionIndex();
-  ~CSectionIndex(void);
+  CStakeSection();
+  ~CStakeSection(void);
 
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
@@ -31,4 +31,4 @@ protected:
   bool m_fBuildStakePtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStock中）。
 };
 
-typedef shared_ptr<CSectionIndex> CSectionIndexPtr;
+typedef shared_ptr<CStakeSection> CStakeSectionPtr;

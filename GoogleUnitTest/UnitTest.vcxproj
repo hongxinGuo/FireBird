@@ -215,8 +215,8 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetSectionIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp" />
@@ -234,10 +234,10 @@
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SectionIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadBuildDayLineRS.cpp" />
@@ -372,8 +372,8 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetSectionIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeSection.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
@@ -391,11 +391,11 @@
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
-    <ClInclude Include="..\StockAnalysis\source\SectionIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\StakeSection.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />

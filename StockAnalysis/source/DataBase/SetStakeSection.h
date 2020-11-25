@@ -5,11 +5,11 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetSectionIndex : public CRecordset
+class CSetStakeSection : public CRecordset
 {
 public:
-  CSetSectionIndex(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetSectionIndex)
+  CSetStakeSection(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetStakeSection)
 
   // 字段/参数数据
 

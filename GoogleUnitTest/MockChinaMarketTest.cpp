@@ -66,18 +66,18 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData1) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
-    EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
+    EXPECT_FALSE(pStake->IsDayLineNeedSaving());
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
     s_pchinaMarket->TaskSaveDayLineData();
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData2) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
-    EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-    pStock->SetDayLineNeedSaving(true);
+    EXPECT_FALSE(pStake->IsDayLineNeedSaving());
+    pStake->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
@@ -86,41 +86,41 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
-    EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-    pStock->SetDayLineNeedSaving(true);
+    EXPECT_FALSE(pStake->IsDayLineNeedSaving());
+    pStake->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetDate(19900101);
-    pStock->SetDayLineEndDate(20000101);
-    pStock->StoreDayLine(pDayLine);
+    pStake->SetDayLineEndDate(20000101);
+    pStake->StoreDayLine(pDayLine);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
     s_pchinaMarket->TaskSaveDayLineData();
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 0);
 
-    pStock->UnloadDayLine();
+    pStake->UnloadDayLine();
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData4) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
-    pStock->SetDayLineNeedSaving(true);
+    pStake->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetDate(19900101);
-    pStock->SetDayLineEndDate(20000101);
-    pStock->StoreDayLine(pDayLine);
+    pStake->SetDayLineEndDate(20000101);
+    pStake->StoreDayLine(pDayLine);
     pDayLine = make_shared<CDayLine>();
     pDayLine->SetDate(s_pchinaMarket->GetFormatedMarketDate());
-    pStock->StoreDayLine(pDayLine);
-    //pStock->SetDayLineNeedSaving(true);
+    pStake->StoreDayLine(pDayLine);
+    //pStake->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(1);
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 1);
     EXPECT_TRUE(s_pchinaMarket->TaskSaveDayLineData());
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedSaveNumber(), 0);
-    pStock->UnloadDayLine();
+    pStake->UnloadDayLine();
   }
 
   TEST_F(CMockChinaMarketTest, TestUpdateTempRTData) {
@@ -480,9 +480,9 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadSaveStakeCode(s_pchinaMarket), (UINT)34);
   }
 
-  TEST_F(CMockChinaMarketTest, TestThreadSaveSectionIndex) {
-    EXPECT_CALL(*s_pchinaMarket, SaveSectionIndex)
+  TEST_F(CMockChinaMarketTest, TestThreadSaveStakeSection) {
+    EXPECT_CALL(*s_pchinaMarket, SaveStakeSection)
       .Times(1);
-    EXPECT_EQ(ThreadSaveSectionIndex(s_pchinaMarket), (UINT)35);
+    EXPECT_EQ(ThreadSaveStakeSection(s_pchinaMarket), (UINT)35);
   }
 }

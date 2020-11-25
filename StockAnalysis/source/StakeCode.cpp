@@ -6,7 +6,7 @@ CStakeCode::CStakeCode() : CObject() {
   m_strStakeName = _T("");
   m_lDayLineEndDate = 19900101;
   m_lDayLineStartDate = 29900101;
-  m_lIPOStatus = __STOCK_NOT_CHECKED__;
+  m_lIPOStatus = __STAKE_NOT_CHECKED__;
   m_lOffsetInContainer = 0;
   m_nHand = 100;
 }

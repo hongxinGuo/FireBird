@@ -64,12 +64,12 @@ namespace StockAnalysisTest {
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
       if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);
       if (m_pStock->IsDayLineLoaded()) m_pStock->SetDayLineLoaded(false);
-      m_pStock->SetIPOStatus(__STOCK_IPOED__);
+      m_pStock->SetIPOStatus(__STAKE_IPOED__);
     }
 
   public:
     int m_iCount;
-    CChinaStockPtr m_pStock;
+    CChinaStakePtr m_pStock;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,

@@ -1,6 +1,6 @@
 #include"stdafx.h"
 
-#include "SetSectionIndex.h"
+#include "SetStakeSection.h"
 #include"accessory.h"
 
 // SetStakeCode.h : CSetStakeCode 类的实现
@@ -11,9 +11,9 @@
 
 #include "stdafx.h"
 
-IMPLEMENT_DYNAMIC(CSetSectionIndex, CRecordset)
+IMPLEMENT_DYNAMIC(CSetStakeSection, CRecordset)
 
-CSetSectionIndex::CSetSectionIndex(CDatabase* pdb)
+CSetStakeSection::CSetStakeSection(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Active = false;
   m_Market = 0;
@@ -22,15 +22,15 @@ CSetSectionIndex::CSetSectionIndex(CDatabase* pdb)
   m_nFields = 5;
 }
 
-CString CSetSectionIndex::GetDefaultConnect() {
+CString CSetStakeSection::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetSectionIndex::GetDefaultSQL() {
+CString CSetStakeSection::GetDefaultSQL() {
   return _T("[StakeCodeSection]");
 }
 
-void CSetSectionIndex::DoFieldExchange(CFieldExchange* pFX) {
+void CSetStakeSection::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -46,11 +46,11 @@ void CSetSectionIndex::DoFieldExchange(CFieldExchange* pFX) {
 // CSetStakeCode 诊断
 
 #ifdef _DEBUG
-void CSetSectionIndex::AssertValid() const {
+void CSetStakeSection::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetSectionIndex::Dump(CDumpContext& dc) const {
+void CSetStakeSection::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

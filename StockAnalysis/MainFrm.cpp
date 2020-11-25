@@ -25,7 +25,7 @@ using namespace std;
 #include<string>
 #include<thread>
 
-constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
+constexpr int __STAKE_ANALYSIS_TIMER__ = 1;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,7 +81,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
   ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
-  ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateSectionIndex)
+  ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStakeSection)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -294,7 +294,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   ModifyStyle(0, FWS_PREFIXTITLE);
 
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
-  m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
+  m_uIdTimer = SetTimer(__STAKE_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     TRACE(_T("生成100ms时钟时失败\n"));
   }
@@ -445,7 +445,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
+  ASSERT(nIDEvent == __STAKE_ANALYSIS_TIMER__);
   // 重启系统在此处执行，容易调用各重置函数
   if (IsNeedResetMarket()) {
     ResetMarket();
@@ -468,7 +468,7 @@ void CMainFrame::UpdateStatus(void) {
   CString str;
   char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   //更新状态条
   // 显示股票代码和名称
@@ -614,7 +614,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStockPtr pStock;
+  CChinaStakePtr pStake;
   CString strTemp;
 
   switch (nChar) {
@@ -641,8 +641,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case 0x00d: // 回车
   strTemp = m_aStockCodeTemp;
   if (gl_pChinaStakeMarket->IsStock(strTemp)) {
-    pStock = gl_pChinaStakeMarket->GetStock(strTemp);
-    gl_pChinaStakeMarket->SetCurrentStock(pStock);
+    pStake = gl_pChinaStakeMarket->GetStock(strTemp);
+    gl_pChinaStakeMarket->SetCurrentStock(pStake);
     SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
@@ -672,9 +672,9 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStockPtr pStock;
+  CChinaStakePtr pStake;
   CString strTemp;
-  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {
@@ -907,8 +907,8 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnUpdateSectionIndex() {
+void CMainFrame::OnUpdateStakeSection() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->SetUpdateSectionIndex(true);
-  gl_pChinaStakeMarket->TaskSaveSectionIndex();
+  gl_pChinaStakeMarket->SetUpdateStakeSection(true);
+  gl_pChinaStakeMarket->TaskSaveStakeSection();
 }

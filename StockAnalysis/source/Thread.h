@@ -51,9 +51,9 @@ UINT ThreadSaveTempRTData(not_null < CChinaMarket*> pMarket);     // ´Ë¹¤×÷Ïß³Ì·
 // ¼ÆËãºÍ´æ´¢µ±Ç°½»Ò×ÈÕÊı¾İÏß³Ì
 UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket);     // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª14
 // ´æ´¢Ò»¸ö¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
-UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStockPtr> pStock); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
+UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStakePtr> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª15, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
 // ´ÓÊı¾İ¿âÖĞ¶ÁÈ¡ÈÕÏßÀúÊ·Êı¾İÏß³Ì
-UINT ThreadLoadDayLine(not_null<CChinaStockPtr> pStock);        // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
+UINT ThreadLoadDayLine(not_null<CChinaStakePtr> pStake);        // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª16
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©
 UINT ThreadMaintainDayLineDataBase(void);   // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
 //¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿âÏß³Ì
@@ -73,9 +73,9 @@ UINT ThreadMaintainCrweberDB(not_null<CCrweberIndexMarket*> pMarket); // ´ËÏß³Ì·
 // Éú³ÉÖÜÏßÀúÊ·Êı¾İ
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate); // ´ËÏß³ÌµÄ·µ»ØÖµÎª25
 // Éú³É¹ÉÆ±µÄÖÜÏßÀúÊ·Êı¾İ
-UINT ThreadBuildWeekLineOfStock(not_null<CChinaStockPtr> pStock, long lStartDate); /// ´ËÏß³ÌµÄ·µ»ØÖµÎª26
+UINT ThreadBuildWeekLineOfStock(not_null<CChinaStakePtr> pStake, long lStartDate); /// ´ËÏß³ÌµÄ·µ»ØÖµÎª26
 // ´ÓÊı¾İ¿â¶ÁÈ¡ÖÜÏßÀúÊ·Êı¾İ
-UINT ThreadLoadWeekLine(not_null<CChinaStockPtr> pStock); // ´ËÏß³Ì·µ»ØÖµÎª29
+UINT ThreadLoadWeekLine(not_null<CChinaStakePtr> pStake); // ´ËÏß³Ì·µ»ØÖµÎª29
 // ¼ÆËã¹ÉÆ±Ïà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³Ìµ÷ÓÃÏß³ÌThreadCalculateRSAtThisDateÖ´ĞĞ¾ßÌåÈÎÎñ£¬×î¶àÉú³É8¸ö¹¤×÷Ïß³Ì¡£
 UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª30, ²ÎÊıÎªµ±Ç°×îºó¼ÆËãÈÕÆÚ
 // ¼ÆËã¸ø¶¨ÈÕÆÚ¹ÉÆ±ÈÕÏßÏà¶ÔÇ¿¶ÈÏß³Ì¡£´ËÏß³ÌÓÉThreadCalculateRSÏß³Ìµ÷ÓÃ£¬ÓÃÓÚ²¢·¢¼ÆËã²»Í¬ÈÕÆÚµÄÈÕÏßÏà¶ÔÇ¿¶È£¬ÒÔÌá¸ßĞ§ÂÊ
@@ -87,7 +87,7 @@ UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // ´Ë
 // ´æ´¢Ö¤È¯´úÂëÖÁÊı¾İ¿â
 UINT ThreadSaveStakeCode(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª34
 // ´æ´¢Ö¤È¯´úÂë¶ÎË÷Òı
-UINT ThreadSaveSectionIndex(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
+UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©
@@ -97,8 +97,8 @@ UINT ThreadChoice10RSStrong2StockSet(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Ê¹ÓÃÍâ²¿pRefÌá¹©µÄ²ÎÊı£©
 UINT ThreadChoice10RSStrongStockSet(not_null<CChinaMarket*> pMarket, CRSReference* pRef, int iIndex); // ´ËÏß³Ì·µ»ØÖµÎª103
 // ¼ÆËã¹ÉÆ±µÄ10ÈÕÇ¿ÊÆÓë·ñ
-UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStockPtr> pStock); // ´ËÏß³Ì·µ»ØÖµÎª104
+UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStakePtr>*> pv10RSStrongStock, CRSReference* pRef, not_null<CChinaStakePtr> pStake); // ´ËÏß³Ì·µ»ØÖµÎª104
 // ¼ÆËã¹ÉÆ±µÄ10ÈÕÇ¿ÊÆÓë·ñ1
-UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // ´ËÏß³Ì·µ»ØÖµÎª105
+UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStakePtr>*> pv10RSStrongStock, not_null<CChinaStakePtr> pStake); // ´ËÏß³Ì·µ»ØÖµÎª105
 // ¼ÆËã¹ÉÆ±µÄ10ÈÕÇ¿ÊÆÓë·ñ2
-UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStrongStock, not_null<CChinaStockPtr> pStock); // ´ËÏß³Ì·µ»ØÖµÎª105
+UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStakePtr>*> pv10RSStrongStock, not_null<CChinaStakePtr> pStake); // ´ËÏß³Ì·µ»ØÖµÎª105

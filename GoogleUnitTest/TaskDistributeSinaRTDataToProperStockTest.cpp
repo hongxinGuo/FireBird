@@ -42,14 +42,14 @@ namespace StockAnalysisTest {
   class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     static void SetUpTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
-      pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
-      pStock->SetIPOStatus(__STOCK_NULL__); // 故意将此股票状态设置为未上市。
+      CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+      pStake->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
+      pStake->SetIPOStatus(__STAKE_NULL__); // 故意将此股票状态设置为未上市。
       s_tCurrentMarketTime = gl_pChinaStakeMarket->GetMarketTime();
     }
     static void TearDownTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
-      pStock->SetActive(true);
+      CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+      pStake->SetActive(true);
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -58,9 +58,9 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      pStock = gl_pChinaStakeMarket->GetStock(pData->m_strStakeCode);
-      pStock->ClearRTDataDeque();
-      pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
+      pStake = gl_pChinaStakeMarket->GetStock(pData->m_strStakeCode);
+      pStake->ClearRTDataDeque();
+      pStake->SetTransactionTime(s_tCurrentMarketTime - 10);
       gl_pChinaStakeMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
@@ -73,12 +73,12 @@ namespace StockAnalysisTest {
       // clearup
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       gl_ThreadStatus.SetRTDataNeedCalculate(false);
-      pStock->ClearRTDataDeque();
+      pStake->ClearRTDataDeque();
     }
 
   public:
     int m_iCount;
-    CChinaStockPtr pStock;
+    CChinaStakePtr pStake;
     CWebRTDataPtr pRTData;
   };
 
@@ -99,28 +99,28 @@ namespace StockAnalysisTest {
     break;
     case 2:
     EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 10);
-    EXPECT_TRUE(pStock->IsActive());
-    EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 10);
-    EXPECT_EQ(pStock->GetRTDataQueueSize(), 0);
+    EXPECT_TRUE(pStake->IsActive());
+    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime - 10);
+    EXPECT_EQ(pStake->GetRTDataQueueSize(), 0);
     break;
     case 3:
     EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
-    EXPECT_TRUE(pStock->IsActive());
-    EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime);
-    EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
+    EXPECT_TRUE(pStake->IsActive());
+    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
     break;
     case 4:
     EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
-    //EXPECT_FALSE(pStock->IsActive());
-    EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime);
-    EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
+    //EXPECT_FALSE(pStake->IsActive());
+    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
     break;
     case 5:
     EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 5);
-    EXPECT_EQ(pStock->GetTransactionTime(), s_tCurrentMarketTime - 5);
-    EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
-    EXPECT_TRUE(pStock->IsActive());
-    EXPECT_TRUE(pStock->IsIPOed());
+    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime - 5);
+    EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
+    EXPECT_TRUE(pStake->IsActive());
+    EXPECT_TRUE(pStake->IsIPOed());
     break;
     default:
     break;

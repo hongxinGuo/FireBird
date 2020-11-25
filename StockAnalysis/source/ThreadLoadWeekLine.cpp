@@ -10,14 +10,14 @@
 // 从数据库中装入相应股票的周线数据，然后计算各相对强度
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadLoadWeekLine(not_null<CChinaStockPtr> pStock) {
+UINT ThreadLoadWeekLine(not_null<CChinaStakePtr> pStake) {
   gl_ThreadStatus.IncreaseRunningThread();
-  pStock->UnloadWeekLine();
+  pStake->UnloadWeekLine();
   // 装入周线数据
-  pStock->LoadWeekLine();
+  pStake->LoadWeekLine();
   // 计算各相对强度（以指数相对强度为默认值）
-  pStock->CalculateWeekLineRSIndex();
-  pStock->SetWeekLineLoaded(true);
+  pStake->CalculateWeekLineRSIndex();
+  pStake->SetWeekLineLoaded(true);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 29;

@@ -19,8 +19,8 @@ UINT ThreadSaveStakeCode(not_null<CChinaMarket*> pMarket) {
   return 34;
 }
 
-UINT ThreadSaveSectionIndex(not_null<CChinaMarket*> pMarket) {
-  pMarket->SaveSectionIndex();
+UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket) {
+  pMarket->SaveStakeSection();
 
   return 35;
 }

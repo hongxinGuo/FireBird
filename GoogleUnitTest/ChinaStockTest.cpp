@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
       ASSERT_FALSE(gl_fNormalMode);
-      pStock = nullptr;
+      pStake = nullptr;
       gl_pChinaStakeMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -49,16 +49,16 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
-      if (pStock != nullptr) {
-        pStock->SetDayLineDBUpdated(false);
-        if (pStock->IsDayLineNeedProcess()) pStock->SetDayLineNeedProcess(false);
-        if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
-        pStock = nullptr;
+      if (pStake != nullptr) {
+        pStake->SetDayLineDBUpdated(false);
+        if (pStake->IsDayLineNeedProcess()) pStake->SetDayLineNeedProcess(false);
+        if (pStake->IsDayLineNeedSaving()) pStake->SetDayLineNeedSaving(false);
+        pStake = nullptr;
       }
     }
 
   protected:
-    CChinaStockPtr pStock;
+    CChinaStakePtr pStake;
   };
 
   TEST_F(CChinaStockTest, TestInitialize) {
@@ -162,33 +162,33 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestIsNullStock) {
     CChinaStake stock;
-    stock.SetIPOStatus(__STOCK_NULL__);
+    stock.SetIPOStatus(__STAKE_NULL__);
     EXPECT_TRUE(stock.IsNullStock());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsNullStock());
   }
 
   TEST_F(CChinaStockTest, TestIsIPOed) {
     CChinaStake stock;
-    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.SetIPOStatus(__STAKE_IPOED__);
     EXPECT_TRUE(stock.IsIPOed());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsIPOed());
   }
 
   TEST_F(CChinaStockTest, TestIsNotChecked) {
     CChinaStake stock;
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_TRUE(stock.IsNotChecked());
-    stock.SetIPOStatus(__STOCK_DELISTED__);
+    stock.SetIPOStatus(__STAKE_DELISTED__);
     EXPECT_FALSE(stock.IsNotChecked());
   }
 
   TEST_F(CChinaStockTest, TestIsDelisted) {
     CChinaStake stock;
-    stock.SetIPOStatus(__STOCK_DELISTED__);
+    stock.SetIPOStatus(__STAKE_DELISTED__);
     EXPECT_TRUE(stock.IsDelisted());
-    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsDelisted());
   }
 
@@ -844,13 +844,13 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsSaveStock) {
-    pStock = gl_pChinaStakeMarket->GetStock(1);
-    CChinaStockPtr pStock2 = nullptr;
-    EXPECT_FALSE(pStock->IsSameStock(pStock2));
+    pStake = gl_pChinaStakeMarket->GetStock(1);
+    CChinaStakePtr pStock2 = nullptr;
+    EXPECT_FALSE(pStake->IsSameStock(pStock2));
     pStock2 = gl_pChinaStakeMarket->GetStock(2);
-    EXPECT_FALSE(pStock->IsSameStock(pStock2));
+    EXPECT_FALSE(pStake->IsSameStock(pStock2));
     pStock2 = gl_pChinaStakeMarket->GetStock(1);
-    EXPECT_TRUE(pStock->IsSameStock(pStock2));
+    EXPECT_TRUE(pStake->IsSameStock(pStock2));
   }
 
   TEST_F(CChinaStockTest, TestIsTodayDataChanged) {
@@ -884,7 +884,7 @@ namespace StockAnalysisTest {
     stock.SetOffset(13000);
     stock.SetMarket(__SHANGHAI_MARKET__);
     stock.SetStakeName(_T("未使用过"));
-    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
     stock.SetDayLineStartDate(19900101);
     setStockCode.m_strFilter = _T("[ID] = 1");
@@ -894,7 +894,7 @@ namespace StockAnalysisTest {
 
     setStockCode.m_strFilter = _T("[StockCode] = 'sh400000'");
     setStockCode.Open();
-    EXPECT_EQ(setStockCode.m_IPOStatus, __STOCK_IPOED__);
+    EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_IPOED__);
     EXPECT_EQ(setStockCode.m_StockCode, _T("sh400000"));
     setStockCode.Delete();
     setStockCode.Close();
@@ -943,15 +943,15 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(true);
     stock.SetDayLineEndDate(gl_pChinaStakeMarket->GetLastTradeDate() - 1);
-    stock.SetIPOStatus(__STOCK_NULL__);
+    stock.SetIPOStatus(__STAKE_NULL__);
     stock.SetCheckingDayLineStatus();
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STOCK_IPOED__);
+    stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
     stock.SetCheckingDayLineStatus();
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    stock.SetIPOStatus(__STOCK_DELISTED__);
+    stock.SetIPOStatus(__STAKE_DELISTED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__ + 1);
     stock.SetCheckingDayLineStatus();
     if (gl_pChinaStakeMarket->GetDayOfWeek() == 1) EXPECT_TRUE(stock.IsDayLineNeedUpdate());
@@ -1017,91 +1017,91 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
-    pStock = make_shared<CChinaStake>();
+    pStake = make_shared<CChinaStake>();
     CChinaStake stock;
 
-    pStock->SetHavingFirstRTData(true);
-    pStock->SetMarket(__SHANGHAI_MARKET__);
-    pStock->SetStakeCode(_T("sh600000"));
-    pStock->SetTransactionTime(FormatToTTime(20191101));
-    pStock->SetLastClose(101010);
-    pStock->SetOpen(202020);
-    pStock->SetHigh(303030);
-    pStock->SetLow(404040);
-    pStock->SetNew(505050);
-    pStock->SetVolume(60606060606060);
-    pStock->SetAmount(707070707070707);
-    pStock->SetUpDown(pStock->GetOpen() - pStock->GetNew());
-    pStock->SetUpDownRate((double)pStock->GetUpDown() / pStock->GetLastClose() * 100);
-    pStock->SetCurrentValue(808080808080808);
-    pStock->SetTotalValue(909090909090909);
+    pStake->SetHavingFirstRTData(true);
+    pStake->SetMarket(__SHANGHAI_MARKET__);
+    pStake->SetStakeCode(_T("sh600000"));
+    pStake->SetTransactionTime(FormatToTTime(20191101));
+    pStake->SetLastClose(101010);
+    pStake->SetOpen(202020);
+    pStake->SetHigh(303030);
+    pStake->SetLow(404040);
+    pStake->SetNew(505050);
+    pStake->SetVolume(60606060606060);
+    pStake->SetAmount(707070707070707);
+    pStake->SetUpDown(pStake->GetOpen() - pStake->GetNew());
+    pStake->SetUpDownRate((double)pStake->GetUpDown() / pStake->GetLastClose() * 100);
+    pStake->SetCurrentValue(808080808080808);
+    pStake->SetTotalValue(909090909090909);
 
-    pStock->SetTransactionNumber(123435);
-    pStock->SetTransactionNumberBelow5000(45346456);
-    pStock->SetTransactionNumberBelow50000(5698);
-    pStock->SetTransactionNumberBelow200000(67687);
-    pStock->SetTransactionNumberAbove200000(6876);
-    pStock->SetOrdinaryBuyVolume(435);
-    pStock->SetOrdinarySellVolume(560985);
-    pStock->SetAttackBuyBelow50000(54509);
-    pStock->SetAttackBuyBelow200000(45049);
-    pStock->SetAttackBuyAbove200000(34508);
-    pStock->SetAttackSellBelow50000(45896);
-    pStock->SetAttackSellBelow200000(56457);
-    pStock->SetAttackSellAbove200000(8767);
-    pStock->SetAttackBuyAmount(123456654);
-    pStock->SetAttackBuyVolume(23423534);
-    pStock->SetAttackSellAmount(4353454);
-    pStock->SetAttackSellVolume(94589489);
-    pStock->SetCanceledBuyVolume(435245);
-    pStock->SetCanceledSellVolume(45648698);
-    pStock->SetUnknownVolume(4895747);
-    pStock->SetStrongBuyVolume(453456);
-    pStock->SetStrongSellVolume(98976);
+    pStake->SetTransactionNumber(123435);
+    pStake->SetTransactionNumberBelow5000(45346456);
+    pStake->SetTransactionNumberBelow50000(5698);
+    pStake->SetTransactionNumberBelow200000(67687);
+    pStake->SetTransactionNumberAbove200000(6876);
+    pStake->SetOrdinaryBuyVolume(435);
+    pStake->SetOrdinarySellVolume(560985);
+    pStake->SetAttackBuyBelow50000(54509);
+    pStake->SetAttackBuyBelow200000(45049);
+    pStake->SetAttackBuyAbove200000(34508);
+    pStake->SetAttackSellBelow50000(45896);
+    pStake->SetAttackSellBelow200000(56457);
+    pStake->SetAttackSellAbove200000(8767);
+    pStake->SetAttackBuyAmount(123456654);
+    pStake->SetAttackBuyVolume(23423534);
+    pStake->SetAttackSellAmount(4353454);
+    pStake->SetAttackSellVolume(94589489);
+    pStake->SetCanceledBuyVolume(435245);
+    pStake->SetCanceledSellVolume(45648698);
+    pStake->SetUnknownVolume(4895747);
+    pStake->SetStrongBuyVolume(453456);
+    pStake->SetStrongSellVolume(98976);
 
-    pStock->SetOrdinaryBuyVolumeBelow5000(30);
-    pStock->SetOrdinaryBuyVolumeBelow10000(31);
-    pStock->SetOrdinaryBuyVolumeBelow20000(32);
-    pStock->SetOrdinaryBuyVolumeBelow50000(33);
-    pStock->SetOrdinaryBuyVolumeBelow100000(34);
-    pStock->SetOrdinaryBuyVolumeBelow200000(35);
-    pStock->SetOrdinaryBuyVolumeAbove200000(36);
-    pStock->SetOrdinarySellVolumeBelow5000(37);
-    pStock->SetOrdinarySellVolumeBelow10000(38);
-    pStock->SetOrdinarySellVolumeBelow20000(39);
-    pStock->SetOrdinarySellVolumeBelow50000(40);
-    pStock->SetOrdinarySellVolumeBelow100000(41);
-    pStock->SetOrdinarySellVolumeBelow200000(42);
-    pStock->SetOrdinarySellVolumeAbove200000(43);
-    pStock->SetOrdinaryBuyNumberBelow5000(44);
-    pStock->SetOrdinaryBuyNumberBelow10000(45);
-    pStock->SetOrdinaryBuyNumberBelow20000(46);
-    pStock->SetOrdinaryBuyNumberBelow50000(47);
-    pStock->SetOrdinaryBuyNumberBelow100000(48);
-    pStock->SetOrdinaryBuyNumberBelow200000(49);
-    pStock->SetOrdinaryBuyNumberAbove200000(50);
-    pStock->SetOrdinarySellNumberBelow5000(51);
-    pStock->SetOrdinarySellNumberBelow10000(52);
-    pStock->SetOrdinarySellNumberBelow20000(53);
-    pStock->SetOrdinarySellNumberBelow50000(54);
-    pStock->SetOrdinarySellNumberBelow100000(55);
-    pStock->SetOrdinarySellNumberBelow200000(56);
-    pStock->SetOrdinarySellNumberAbove200000(57);
+    pStake->SetOrdinaryBuyVolumeBelow5000(30);
+    pStake->SetOrdinaryBuyVolumeBelow10000(31);
+    pStake->SetOrdinaryBuyVolumeBelow20000(32);
+    pStake->SetOrdinaryBuyVolumeBelow50000(33);
+    pStake->SetOrdinaryBuyVolumeBelow100000(34);
+    pStake->SetOrdinaryBuyVolumeBelow200000(35);
+    pStake->SetOrdinaryBuyVolumeAbove200000(36);
+    pStake->SetOrdinarySellVolumeBelow5000(37);
+    pStake->SetOrdinarySellVolumeBelow10000(38);
+    pStake->SetOrdinarySellVolumeBelow20000(39);
+    pStake->SetOrdinarySellVolumeBelow50000(40);
+    pStake->SetOrdinarySellVolumeBelow100000(41);
+    pStake->SetOrdinarySellVolumeBelow200000(42);
+    pStake->SetOrdinarySellVolumeAbove200000(43);
+    pStake->SetOrdinaryBuyNumberBelow5000(44);
+    pStake->SetOrdinaryBuyNumberBelow10000(45);
+    pStake->SetOrdinaryBuyNumberBelow20000(46);
+    pStake->SetOrdinaryBuyNumberBelow50000(47);
+    pStake->SetOrdinaryBuyNumberBelow100000(48);
+    pStake->SetOrdinaryBuyNumberBelow200000(49);
+    pStake->SetOrdinaryBuyNumberAbove200000(50);
+    pStake->SetOrdinarySellNumberBelow5000(51);
+    pStake->SetOrdinarySellNumberBelow10000(52);
+    pStake->SetOrdinarySellNumberBelow20000(53);
+    pStake->SetOrdinarySellNumberBelow50000(54);
+    pStake->SetOrdinarySellNumberBelow100000(55);
+    pStake->SetOrdinarySellNumberBelow200000(56);
+    pStake->SetOrdinarySellNumberAbove200000(57);
 
-    pStock->SetCanceledBuyVolumeBelow5000(64);
-    pStock->SetCanceledBuyVolumeBelow10000(65);
-    pStock->SetCanceledBuyVolumeBelow20000(66);
-    pStock->SetCanceledBuyVolumeBelow50000(67);
-    pStock->SetCanceledBuyVolumeBelow100000(68);
-    pStock->SetCanceledBuyVolumeBelow200000(69);
-    pStock->SetCanceledBuyVolumeAbove200000(70);
-    pStock->SetCanceledSellVolumeBelow5000(71);
-    pStock->SetCanceledSellVolumeBelow10000(72);
-    pStock->SetCanceledSellVolumeBelow20000(73);
-    pStock->SetCanceledSellVolumeBelow50000(74);
-    pStock->SetCanceledSellVolumeBelow100000(75);
-    pStock->SetCanceledSellVolumeBelow200000(76);
-    pStock->SetCanceledSellVolumeAbove200000(77);
+    pStake->SetCanceledBuyVolumeBelow5000(64);
+    pStake->SetCanceledBuyVolumeBelow10000(65);
+    pStake->SetCanceledBuyVolumeBelow20000(66);
+    pStake->SetCanceledBuyVolumeBelow50000(67);
+    pStake->SetCanceledBuyVolumeBelow100000(68);
+    pStake->SetCanceledBuyVolumeBelow200000(69);
+    pStake->SetCanceledBuyVolumeAbove200000(70);
+    pStake->SetCanceledSellVolumeBelow5000(71);
+    pStake->SetCanceledSellVolumeBelow10000(72);
+    pStake->SetCanceledSellVolumeBelow20000(73);
+    pStake->SetCanceledSellVolumeBelow50000(74);
+    pStake->SetCanceledSellVolumeBelow100000(75);
+    pStake->SetCanceledSellVolumeBelow200000(76);
+    pStake->SetCanceledSellVolumeAbove200000(77);
 
     ASSERT(!gl_fNormalMode);
     ASSERT(gl_fTestMode);
@@ -1115,93 +1115,93 @@ namespace StockAnalysisTest {
     setDayLineToday.m_pDatabase->BeginTrans();
     setDayLineToday.AddNew();
 
-    pStock->SaveTempInfo(setDayLineToday);
+    pStake->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
     setDayLineToday.m_pDatabase->CommitTrans();
     setDayLineToday.Close();
 
     setDayLineToday.Open();
     EXPECT_EQ(setDayLineToday.m_Date, 20191101);
-    EXPECT_EQ(setDayLineToday.m_Market, pStock->GetMarket());
-    EXPECT_STREQ(setDayLineToday.m_StockCode, pStock->GetStakeCode());
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStock->GetOpen() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStock->GetHigh() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Low), (double)pStock->GetLow() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Close), (double)pStock->GetNew() / 1000);
-    EXPECT_EQ(atoll(setDayLineToday.m_Volume), pStock->GetVolume());
-    EXPECT_EQ(atoll(setDayLineToday.m_Amount), pStock->GetAmount());
-    EXPECT_EQ(atof(setDayLineToday.m_UpAndDown), (double)pStock->GetUpDown() / 1000);
-    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_UpDownRate), pStock->GetUpDownRate());
-    EXPECT_EQ(atoll(setDayLineToday.m_CurrentValue), pStock->GetCurrentValue());
-    EXPECT_EQ(atoll(setDayLineToday.m_TotalValue), pStock->GetTotalValue());
+    EXPECT_EQ(setDayLineToday.m_Market, pStake->GetMarket());
+    EXPECT_STREQ(setDayLineToday.m_StockCode, pStake->GetStakeCode());
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStake->GetLastClose() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStake->GetOpen() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStake->GetHigh() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Low), (double)pStake->GetLow() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Close), (double)pStake->GetNew() / 1000);
+    EXPECT_EQ(atoll(setDayLineToday.m_Volume), pStake->GetVolume());
+    EXPECT_EQ(atoll(setDayLineToday.m_Amount), pStake->GetAmount());
+    EXPECT_EQ(atof(setDayLineToday.m_UpAndDown), (double)pStake->GetUpDown() / 1000);
+    EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_UpDownRate), pStake->GetUpDownRate());
+    EXPECT_EQ(atoll(setDayLineToday.m_CurrentValue), pStake->GetCurrentValue());
+    EXPECT_EQ(atoll(setDayLineToday.m_TotalValue), pStake->GetTotalValue());
 
-    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyAbove200000), pStock->GetAttackBuyAbove200000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow200000), pStock->GetAttackBuyBelow200000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow50000), pStock->GetAttackBuyBelow50000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyVolume), pStock->GetAttackBuyVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackSellAbove200000), pStock->GetAttackSellAbove200000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow200000), pStock->GetAttackSellBelow200000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow50000), pStock->GetAttackSellBelow50000());
-    EXPECT_EQ(atol(setDayLineToday.m_AttackSellVolume), pStock->GetAttackSellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyAbove200000), pStake->GetAttackBuyAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow200000), pStake->GetAttackBuyBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyBelow50000), pStake->GetAttackBuyBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackBuyVolume), pStake->GetAttackBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellAbove200000), pStake->GetAttackSellAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow200000), pStake->GetAttackSellBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellBelow50000), pStake->GetAttackSellBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_AttackSellVolume), pStake->GetAttackSellVolume());
 
-    EXPECT_EQ(atol(setDayLineToday.m_OrdinaryBuyVolume), pStock->GetOrdinaryBuyVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_OrdinarySellVolume), pStock->GetOrdinarySellVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_CanceledBuyVolume), pStock->GetCanceledBuyVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_CanceledSellVolume), pStock->GetCanceledSellVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_StrongBuyVolume), pStock->GetStrongBuyVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_StrongSellVolume), pStock->GetStrongSellVolume());
-    EXPECT_EQ(atol(setDayLineToday.m_UnknownVolume), pStock->GetUnknownVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_OrdinaryBuyVolume), pStake->GetOrdinaryBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_OrdinarySellVolume), pStake->GetOrdinarySellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_CanceledBuyVolume), pStake->GetCanceledBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_CanceledSellVolume), pStake->GetCanceledSellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_StrongBuyVolume), pStake->GetStrongBuyVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_StrongSellVolume), pStake->GetStrongSellVolume());
+    EXPECT_EQ(atol(setDayLineToday.m_UnknownVolume), pStake->GetUnknownVolume());
 
-    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumber), pStock->GetTransactionNumber());
-    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberAbove200000), pStock->GetTransactionNumberAbove200000());
-    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow200000), pStock->GetTransactionNumberBelow200000());
-    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow50000), pStock->GetTransactionNumberBelow50000());
-    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow5000), pStock->GetTransactionNumberBelow5000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumber), pStake->GetTransactionNumber());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberAbove200000), pStake->GetTransactionNumberAbove200000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow200000), pStake->GetTransactionNumberBelow200000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow50000), pStake->GetTransactionNumberBelow50000());
+    EXPECT_EQ(atol(setDayLineToday.m_TransactionNumberBelow5000), pStake->GetTransactionNumberBelow5000());
 
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow5000), pStock->GetOrdinaryBuyVolumeBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow10000), pStock->GetOrdinaryBuyVolumeBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow20000), pStock->GetOrdinaryBuyVolumeBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow50000), pStock->GetOrdinaryBuyVolumeBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow100000), pStock->GetOrdinaryBuyVolumeBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow200000), pStock->GetOrdinaryBuyVolumeBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeAbove200000), pStock->GetOrdinaryBuyVolumeAbove200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow5000), pStock->GetOrdinarySellVolumeBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow10000), pStock->GetOrdinarySellVolumeBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow20000), pStock->GetOrdinarySellVolumeBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow50000), pStock->GetOrdinarySellVolumeBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow100000), pStock->GetOrdinarySellVolumeBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow200000), pStock->GetOrdinarySellVolumeBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeAbove200000), pStock->GetOrdinarySellVolumeAbove200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow5000), pStock->GetOrdinaryBuyNumberBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow10000), pStock->GetOrdinaryBuyNumberBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow20000), pStock->GetOrdinaryBuyNumberBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow50000), pStock->GetOrdinaryBuyNumberBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow100000), pStock->GetOrdinaryBuyNumberBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow200000), pStock->GetOrdinaryBuyNumberBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberAbove200000), pStock->GetOrdinaryBuyNumberAbove200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow5000), pStock->GetOrdinarySellNumberBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow10000), pStock->GetOrdinarySellNumberBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow20000), pStock->GetOrdinarySellNumberBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow50000), pStock->GetOrdinarySellNumberBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow100000), pStock->GetOrdinarySellNumberBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow200000), pStock->GetOrdinarySellNumberBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberAbove200000), pStock->GetOrdinarySellNumberAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow5000), pStake->GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow10000), pStake->GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow20000), pStake->GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow50000), pStake->GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow100000), pStake->GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeBelow200000), pStake->GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyVolumeAbove200000), pStake->GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow5000), pStake->GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow10000), pStake->GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow20000), pStake->GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow50000), pStake->GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow100000), pStake->GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeBelow200000), pStake->GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellVolumeAbove200000), pStake->GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow5000), pStake->GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow10000), pStake->GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow20000), pStake->GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow50000), pStake->GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow100000), pStake->GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberBelow200000), pStake->GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinaryBuyNumberAbove200000), pStake->GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow5000), pStake->GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow10000), pStake->GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow20000), pStake->GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow50000), pStake->GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow100000), pStake->GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberBelow200000), pStake->GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_OrdinarySellNumberAbove200000), pStake->GetOrdinarySellNumberAbove200000());
 
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow5000), pStock->GetCanceledBuyVolumeBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow10000), pStock->GetCanceledBuyVolumeBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow20000), pStock->GetCanceledBuyVolumeBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow50000), pStock->GetCanceledBuyVolumeBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow100000), pStock->GetCanceledBuyVolumeBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow200000), pStock->GetCanceledBuyVolumeBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeAbove200000), pStock->GetCanceledBuyVolumeAbove200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow5000), pStock->GetCanceledSellVolumeBelow5000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow10000), pStock->GetCanceledSellVolumeBelow10000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow20000), pStock->GetCanceledSellVolumeBelow20000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow50000), pStock->GetCanceledSellVolumeBelow50000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow100000), pStock->GetCanceledSellVolumeBelow100000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow200000), pStock->GetCanceledSellVolumeBelow200000());
-    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeAbove200000), pStock->GetCanceledSellVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow5000), pStake->GetCanceledBuyVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow10000), pStake->GetCanceledBuyVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow20000), pStake->GetCanceledBuyVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow50000), pStake->GetCanceledBuyVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow100000), pStake->GetCanceledBuyVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeBelow200000), pStake->GetCanceledBuyVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledBuyVolumeAbove200000), pStake->GetCanceledBuyVolumeAbove200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow5000), pStake->GetCanceledSellVolumeBelow5000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow10000), pStake->GetCanceledSellVolumeBelow10000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow20000), pStake->GetCanceledSellVolumeBelow20000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow50000), pStake->GetCanceledSellVolumeBelow50000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow100000), pStake->GetCanceledSellVolumeBelow100000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeBelow200000), pStake->GetCanceledSellVolumeBelow200000());
+    EXPECT_EQ(atoll(setDayLineToday.m_CanceledSellVolumeAbove200000), pStake->GetCanceledSellVolumeAbove200000());
 
     setDayLineToday.Close();
 
@@ -1217,88 +1217,88 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetHigh(), 0);
     EXPECT_EQ(stock.GetLow(), 0);
     EXPECT_EQ(stock.GetNew(), 0);
-    EXPECT_EQ(stock.GetVolume(), pStock->GetVolume());
+    EXPECT_EQ(stock.GetVolume(), pStake->GetVolume());
     EXPECT_EQ(stock.GetAmount(), 0);
     EXPECT_EQ(stock.GetUpDown(), 0);
     EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0);
     EXPECT_EQ(stock.GetCurrentValue(), 0);
     EXPECT_EQ(stock.GetTotalValue(), 0);
 
-    EXPECT_EQ(stock.GetLastSavedVolume(), pStock->GetVolume());
+    EXPECT_EQ(stock.GetLastSavedVolume(), pStake->GetVolume());
 
-    EXPECT_EQ(stock.GetAttackBuyAbove200000(), pStock->GetAttackBuyAbove200000());
-    EXPECT_EQ(stock.GetAttackBuyBelow200000(), pStock->GetAttackBuyBelow200000());
-    EXPECT_EQ(stock.GetAttackBuyBelow50000(), pStock->GetAttackBuyBelow50000());
-    EXPECT_EQ(stock.GetAttackBuyVolume(), pStock->GetAttackBuyVolume());
-    EXPECT_EQ(stock.GetAttackSellAbove200000(), pStock->GetAttackSellAbove200000());
-    EXPECT_EQ(stock.GetAttackSellBelow200000(), pStock->GetAttackSellBelow200000());
-    EXPECT_EQ(stock.GetAttackSellBelow50000(), pStock->GetAttackSellBelow50000());
-    EXPECT_EQ(stock.GetAttackSellVolume(), pStock->GetAttackSellVolume());
+    EXPECT_EQ(stock.GetAttackBuyAbove200000(), pStake->GetAttackBuyAbove200000());
+    EXPECT_EQ(stock.GetAttackBuyBelow200000(), pStake->GetAttackBuyBelow200000());
+    EXPECT_EQ(stock.GetAttackBuyBelow50000(), pStake->GetAttackBuyBelow50000());
+    EXPECT_EQ(stock.GetAttackBuyVolume(), pStake->GetAttackBuyVolume());
+    EXPECT_EQ(stock.GetAttackSellAbove200000(), pStake->GetAttackSellAbove200000());
+    EXPECT_EQ(stock.GetAttackSellBelow200000(), pStake->GetAttackSellBelow200000());
+    EXPECT_EQ(stock.GetAttackSellBelow50000(), pStake->GetAttackSellBelow50000());
+    EXPECT_EQ(stock.GetAttackSellVolume(), pStake->GetAttackSellVolume());
 
-    EXPECT_EQ(stock.GetOrdinaryBuyVolume(), pStock->GetOrdinaryBuyVolume());
-    EXPECT_EQ(stock.GetOrdinarySellVolume(), pStock->GetOrdinarySellVolume());
-    EXPECT_EQ(stock.GetCanceledBuyVolume(), pStock->GetCanceledBuyVolume());
-    EXPECT_EQ(stock.GetCanceledSellVolume(), pStock->GetCanceledSellVolume());
-    EXPECT_EQ(stock.GetStrongBuyVolume(), pStock->GetStrongBuyVolume());
-    EXPECT_EQ(stock.GetStrongSellVolume(), pStock->GetStrongSellVolume());
-    EXPECT_EQ(stock.GetUnknownVolume(), pStock->GetUnknownVolume());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolume(), pStake->GetOrdinaryBuyVolume());
+    EXPECT_EQ(stock.GetOrdinarySellVolume(), pStake->GetOrdinarySellVolume());
+    EXPECT_EQ(stock.GetCanceledBuyVolume(), pStake->GetCanceledBuyVolume());
+    EXPECT_EQ(stock.GetCanceledSellVolume(), pStake->GetCanceledSellVolume());
+    EXPECT_EQ(stock.GetStrongBuyVolume(), pStake->GetStrongBuyVolume());
+    EXPECT_EQ(stock.GetStrongSellVolume(), pStake->GetStrongSellVolume());
+    EXPECT_EQ(stock.GetUnknownVolume(), pStake->GetUnknownVolume());
 
-    EXPECT_EQ(stock.GetTransactionNumber(), pStock->GetTransactionNumber());
-    EXPECT_EQ(stock.GetTransactionNumberAbove200000(), pStock->GetTransactionNumberAbove200000());
-    EXPECT_EQ(stock.GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
-    EXPECT_EQ(stock.GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
-    EXPECT_EQ(stock.GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
+    EXPECT_EQ(stock.GetTransactionNumber(), pStake->GetTransactionNumber());
+    EXPECT_EQ(stock.GetTransactionNumberAbove200000(), pStake->GetTransactionNumberAbove200000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow200000(), pStake->GetTransactionNumberBelow200000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow50000(), pStake->GetTransactionNumberBelow50000());
+    EXPECT_EQ(stock.GetTransactionNumberBelow5000(), pStake->GetTransactionNumberBelow5000());
 
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow5000(), pStock->GetOrdinaryBuyVolumeBelow5000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow10000(), pStock->GetOrdinaryBuyVolumeBelow10000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow20000(), pStock->GetOrdinaryBuyVolumeBelow20000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow50000(), pStock->GetOrdinaryBuyVolumeBelow50000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow100000(), pStock->GetOrdinaryBuyVolumeBelow100000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow200000(), pStock->GetOrdinaryBuyVolumeBelow200000());
-    EXPECT_EQ(stock.GetOrdinaryBuyVolumeAbove200000(), pStock->GetOrdinaryBuyVolumeAbove200000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow5000(), pStock->GetOrdinarySellVolumeBelow5000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow10000(), pStock->GetOrdinarySellVolumeBelow10000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow20000(), pStock->GetOrdinarySellVolumeBelow20000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow50000(), pStock->GetOrdinarySellVolumeBelow50000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow100000(), pStock->GetOrdinarySellVolumeBelow100000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow200000(), pStock->GetOrdinarySellVolumeBelow200000());
-    EXPECT_EQ(stock.GetOrdinarySellVolumeAbove200000(), pStock->GetOrdinarySellVolumeAbove200000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow5000(), pStock->GetOrdinaryBuyNumberBelow5000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow10000(), pStock->GetOrdinaryBuyNumberBelow10000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow20000(), pStock->GetOrdinaryBuyNumberBelow20000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow50000(), pStock->GetOrdinaryBuyNumberBelow50000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow100000(), pStock->GetOrdinaryBuyNumberBelow100000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow200000(), pStock->GetOrdinaryBuyNumberBelow200000());
-    EXPECT_EQ(stock.GetOrdinaryBuyNumberAbove200000(), pStock->GetOrdinaryBuyNumberAbove200000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow5000(), pStock->GetOrdinarySellNumberBelow5000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow10000(), pStock->GetOrdinarySellNumberBelow10000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow20000(), pStock->GetOrdinarySellNumberBelow20000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow50000(), pStock->GetOrdinarySellNumberBelow50000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow100000(), pStock->GetOrdinarySellNumberBelow100000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberBelow200000(), pStock->GetOrdinarySellNumberBelow200000());
-    EXPECT_EQ(stock.GetOrdinarySellNumberAbove200000(), pStock->GetOrdinarySellNumberAbove200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow5000(), pStake->GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow10000(), pStake->GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow20000(), pStake->GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow50000(), pStake->GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow100000(), pStake->GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeBelow200000(), pStake->GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyVolumeAbove200000(), pStake->GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow5000(), pStake->GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow10000(), pStake->GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow20000(), pStake->GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow50000(), pStake->GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow100000(), pStake->GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeBelow200000(), pStake->GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(stock.GetOrdinarySellVolumeAbove200000(), pStake->GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow5000(), pStake->GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow10000(), pStake->GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow20000(), pStake->GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow50000(), pStake->GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow100000(), pStake->GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberBelow200000(), pStake->GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(stock.GetOrdinaryBuyNumberAbove200000(), pStake->GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow5000(), pStake->GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow10000(), pStake->GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow20000(), pStake->GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow50000(), pStake->GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow100000(), pStake->GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberBelow200000(), pStake->GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(stock.GetOrdinarySellNumberAbove200000(), pStake->GetOrdinarySellNumberAbove200000());
 
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow5000(), pStock->GetCanceledBuyVolumeBelow5000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow10000(), pStock->GetCanceledBuyVolumeBelow10000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow20000(), pStock->GetCanceledBuyVolumeBelow20000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow50000(), pStock->GetCanceledBuyVolumeBelow50000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow100000(), pStock->GetCanceledBuyVolumeBelow100000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow200000(), pStock->GetCanceledBuyVolumeBelow200000());
-    EXPECT_EQ(stock.GetCanceledBuyVolumeAbove200000(), pStock->GetCanceledBuyVolumeAbove200000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow5000(), pStock->GetCanceledSellVolumeBelow5000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow10000(), pStock->GetCanceledSellVolumeBelow10000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow20000(), pStock->GetCanceledSellVolumeBelow20000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow50000(), pStock->GetCanceledSellVolumeBelow50000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow100000(), pStock->GetCanceledSellVolumeBelow100000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
-    EXPECT_EQ(stock.GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow5000(), pStake->GetCanceledBuyVolumeBelow5000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow10000(), pStake->GetCanceledBuyVolumeBelow10000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow20000(), pStake->GetCanceledBuyVolumeBelow20000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow50000(), pStake->GetCanceledBuyVolumeBelow50000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow100000(), pStake->GetCanceledBuyVolumeBelow100000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeBelow200000(), pStake->GetCanceledBuyVolumeBelow200000());
+    EXPECT_EQ(stock.GetCanceledBuyVolumeAbove200000(), pStake->GetCanceledBuyVolumeAbove200000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow5000(), pStake->GetCanceledSellVolumeBelow5000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow10000(), pStake->GetCanceledSellVolumeBelow10000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow20000(), pStake->GetCanceledSellVolumeBelow20000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow50000(), pStake->GetCanceledSellVolumeBelow50000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow100000(), pStake->GetCanceledSellVolumeBelow100000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeBelow200000(), pStake->GetCanceledSellVolumeBelow200000());
+    EXPECT_EQ(stock.GetCanceledSellVolumeAbove200000(), pStake->GetCanceledSellVolumeAbove200000());
   }
 
   TEST_F(CChinaStockTest, TestLoadDayLineAndDayLineInfo) {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine stock;
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600011"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600011"));
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
     gl_pChinaStakeMarket->__TEST_SetFormatedMarketDate(21900101);
 
@@ -1320,99 +1320,99 @@ namespace StockAnalysisTest {
     pid->SetCurrentValue(234145345245);
     pid->SetChangeHandRate(54.321);
     pid->SetRS(14.5);
-    pStock->StoreDayLine(pid);
+    pStake->StoreDayLine(pid);
 
-    pStock->SetDayLineEndDate(21890101);
-    pStock->SetStakeCode(_T("sh600011"));
+    pStake->SetDayLineEndDate(21890101);
+    pStake->SetStakeCode(_T("sh600011"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLineBasicInfo();
+    pStake->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
-    pStock->SetTransactionTime(FormatToTTime(21900101));
-    pStock->SetTransactionNumber(1);
-    pStock->SetTransactionNumberBelow5000(2);
-    pStock->SetTransactionNumberBelow50000(3);
-    pStock->SetTransactionNumberBelow200000(4);
-    pStock->SetTransactionNumberAbove200000(5);
+    pStake->SetTransactionTime(FormatToTTime(21900101));
+    pStake->SetTransactionNumber(1);
+    pStake->SetTransactionNumberBelow5000(2);
+    pStake->SetTransactionNumberBelow50000(3);
+    pStake->SetTransactionNumberBelow200000(4);
+    pStake->SetTransactionNumberAbove200000(5);
 
-    pStock->SetCanceledBuyVolume(6);
-    pStock->SetCanceledSellVolume(7);
-    pStock->SetAttackBuyVolume(8);
-    pStock->SetAttackSellVolume(9);
-    pStock->SetStrongBuyVolume(10);
-    pStock->SetStrongSellVolume(11);
-    pStock->SetUnknownVolume(12);
-    pStock->SetOrdinaryBuyVolume(13);
-    pStock->SetOrdinarySellVolume(14);
-    pStock->SetAttackBuyBelow50000(15);
-    pStock->SetAttackBuyBelow200000(16);
-    pStock->SetAttackBuyAbove200000(17);
-    pStock->SetAttackSellBelow50000(18);
-    pStock->SetAttackBuyBelow200000(19);
-    pStock->SetAttackBuyAbove200000(20);
-    pStock->SetAttackSellBelow200000(21);
-    pStock->SetAttackSellAbove200000(22);
+    pStake->SetCanceledBuyVolume(6);
+    pStake->SetCanceledSellVolume(7);
+    pStake->SetAttackBuyVolume(8);
+    pStake->SetAttackSellVolume(9);
+    pStake->SetStrongBuyVolume(10);
+    pStake->SetStrongSellVolume(11);
+    pStake->SetUnknownVolume(12);
+    pStake->SetOrdinaryBuyVolume(13);
+    pStake->SetOrdinarySellVolume(14);
+    pStake->SetAttackBuyBelow50000(15);
+    pStake->SetAttackBuyBelow200000(16);
+    pStake->SetAttackBuyAbove200000(17);
+    pStake->SetAttackSellBelow50000(18);
+    pStake->SetAttackBuyBelow200000(19);
+    pStake->SetAttackBuyAbove200000(20);
+    pStake->SetAttackSellBelow200000(21);
+    pStake->SetAttackSellAbove200000(22);
 
-    pStock->SetOrdinaryBuyVolumeBelow5000(30);
-    pStock->SetOrdinaryBuyVolumeBelow10000(31);
-    pStock->SetOrdinaryBuyVolumeBelow20000(32);
-    pStock->SetOrdinaryBuyVolumeBelow50000(33);
-    pStock->SetOrdinaryBuyVolumeBelow100000(34);
-    pStock->SetOrdinaryBuyVolumeBelow200000(35);
-    pStock->SetOrdinaryBuyVolumeAbove200000(36);
-    pStock->SetOrdinarySellVolumeBelow5000(37);
-    pStock->SetOrdinarySellVolumeBelow10000(38);
-    pStock->SetOrdinarySellVolumeBelow20000(39);
-    pStock->SetOrdinarySellVolumeBelow50000(40);
-    pStock->SetOrdinarySellVolumeBelow100000(41);
-    pStock->SetOrdinarySellVolumeBelow200000(42);
-    pStock->SetOrdinarySellVolumeAbove200000(43);
-    pStock->SetOrdinaryBuyNumberBelow5000(44);
-    pStock->SetOrdinaryBuyNumberBelow10000(45);
-    pStock->SetOrdinaryBuyNumberBelow20000(46);
-    pStock->SetOrdinaryBuyNumberBelow50000(47);
-    pStock->SetOrdinaryBuyNumberBelow100000(48);
-    pStock->SetOrdinaryBuyNumberBelow200000(49);
-    pStock->SetOrdinaryBuyNumberAbove200000(50);
-    pStock->SetOrdinarySellNumberBelow5000(51);
-    pStock->SetOrdinarySellNumberBelow10000(52);
-    pStock->SetOrdinarySellNumberBelow20000(53);
-    pStock->SetOrdinarySellNumberBelow50000(54);
-    pStock->SetOrdinarySellNumberBelow100000(55);
-    pStock->SetOrdinarySellNumberBelow200000(56);
-    pStock->SetOrdinarySellNumberAbove200000(57);
+    pStake->SetOrdinaryBuyVolumeBelow5000(30);
+    pStake->SetOrdinaryBuyVolumeBelow10000(31);
+    pStake->SetOrdinaryBuyVolumeBelow20000(32);
+    pStake->SetOrdinaryBuyVolumeBelow50000(33);
+    pStake->SetOrdinaryBuyVolumeBelow100000(34);
+    pStake->SetOrdinaryBuyVolumeBelow200000(35);
+    pStake->SetOrdinaryBuyVolumeAbove200000(36);
+    pStake->SetOrdinarySellVolumeBelow5000(37);
+    pStake->SetOrdinarySellVolumeBelow10000(38);
+    pStake->SetOrdinarySellVolumeBelow20000(39);
+    pStake->SetOrdinarySellVolumeBelow50000(40);
+    pStake->SetOrdinarySellVolumeBelow100000(41);
+    pStake->SetOrdinarySellVolumeBelow200000(42);
+    pStake->SetOrdinarySellVolumeAbove200000(43);
+    pStake->SetOrdinaryBuyNumberBelow5000(44);
+    pStake->SetOrdinaryBuyNumberBelow10000(45);
+    pStake->SetOrdinaryBuyNumberBelow20000(46);
+    pStake->SetOrdinaryBuyNumberBelow50000(47);
+    pStake->SetOrdinaryBuyNumberBelow100000(48);
+    pStake->SetOrdinaryBuyNumberBelow200000(49);
+    pStake->SetOrdinaryBuyNumberAbove200000(50);
+    pStake->SetOrdinarySellNumberBelow5000(51);
+    pStake->SetOrdinarySellNumberBelow10000(52);
+    pStake->SetOrdinarySellNumberBelow20000(53);
+    pStake->SetOrdinarySellNumberBelow50000(54);
+    pStake->SetOrdinarySellNumberBelow100000(55);
+    pStake->SetOrdinarySellNumberBelow200000(56);
+    pStake->SetOrdinarySellNumberAbove200000(57);
 
-    pStock->SetCanceledBuyVolumeBelow5000(64);
-    pStock->SetCanceledBuyVolumeBelow10000(65);
-    pStock->SetCanceledBuyVolumeBelow20000(66);
-    pStock->SetCanceledBuyVolumeBelow50000(67);
-    pStock->SetCanceledBuyVolumeBelow100000(68);
-    pStock->SetCanceledBuyVolumeBelow200000(69);
-    pStock->SetCanceledBuyVolumeAbove200000(70);
-    pStock->SetCanceledSellVolumeBelow5000(71);
-    pStock->SetCanceledSellVolumeBelow10000(72);
-    pStock->SetCanceledSellVolumeBelow20000(73);
-    pStock->SetCanceledSellVolumeBelow50000(74);
-    pStock->SetCanceledSellVolumeBelow100000(75);
-    pStock->SetCanceledSellVolumeBelow200000(76);
-    pStock->SetCanceledSellVolumeAbove200000(77);
+    pStake->SetCanceledBuyVolumeBelow5000(64);
+    pStake->SetCanceledBuyVolumeBelow10000(65);
+    pStake->SetCanceledBuyVolumeBelow20000(66);
+    pStake->SetCanceledBuyVolumeBelow50000(67);
+    pStake->SetCanceledBuyVolumeBelow100000(68);
+    pStake->SetCanceledBuyVolumeBelow200000(69);
+    pStake->SetCanceledBuyVolumeAbove200000(70);
+    pStake->SetCanceledSellVolumeBelow5000(71);
+    pStake->SetCanceledSellVolumeBelow10000(72);
+    pStake->SetCanceledSellVolumeBelow20000(73);
+    pStake->SetCanceledSellVolumeBelow50000(74);
+    pStake->SetCanceledSellVolumeBelow100000(75);
+    pStake->SetCanceledSellVolumeBelow200000(76);
+    pStake->SetCanceledSellVolumeAbove200000(77);
 
     CSetDayLineExtendInfo setDayLineExtendInfo;
     setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
     setDayLineExtendInfo.Open();
     setDayLineExtendInfo.m_pDatabase->BeginTrans();
     setDayLineExtendInfo.AddNew();
-    pStock->SaveTodayExtendInfo(&setDayLineExtendInfo);
+    pStake->SaveTodayExtendInfo(&setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.m_pDatabase->CommitTrans();
     setDayLineExtendInfo.Close();
 
-    EXPECT_FALSE(pStock->IsDayLineLoaded());
-    pStock->LoadDayLine(pStock->GetStakeCode());
-    EXPECT_TRUE(pStock->IsDayLineLoaded());
+    EXPECT_FALSE(pStake->IsDayLineLoaded());
+    pStake->LoadDayLine(pStake->GetStakeCode());
+    EXPECT_TRUE(pStake->IsDayLineLoaded());
 
     CDayLinePtr pDayLine;
-    pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
+    pDayLine = pStake->GetDayLine(pStake->GetDayLineSize() - 1);
 
     EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
     EXPECT_STREQ(pDayLine->GetStakeCode(), _T("sh600011"));
@@ -1431,70 +1431,70 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pDayLine->GetChangeHandRate(), pid->GetChangeHandRate());
     EXPECT_EQ(pDayLine->GetRS(), pid->GetRS());
 
-    EXPECT_EQ(pDayLine->GetTransactionNumber(), pStock->GetTransactionNumber());
-    EXPECT_EQ(pDayLine->GetTransactionNumberBelow5000(), pStock->GetTransactionNumberBelow5000());
-    EXPECT_EQ(pDayLine->GetTransactionNumberBelow50000(), pStock->GetTransactionNumberBelow50000());
-    EXPECT_EQ(pDayLine->GetTransactionNumberBelow200000(), pStock->GetTransactionNumberBelow200000());
-    EXPECT_EQ(pDayLine->GetTransactionNumberAbove200000(), pStock->GetTransactionNumberAbove200000());
-    EXPECT_EQ(pDayLine->GetCanceledBuyVolume(), pStock->GetCanceledBuyVolume());
-    EXPECT_EQ(pDayLine->GetCanceledSellVolume(), pStock->GetCanceledSellVolume());
-    EXPECT_EQ(pDayLine->GetAttackBuyVolume(), pStock->GetAttackBuyVolume());
-    EXPECT_EQ(pDayLine->GetAttackSellVolume(), pStock->GetAttackSellVolume());
-    EXPECT_EQ(pDayLine->GetStrongBuyVolume(), pStock->GetStrongBuyVolume());
-    EXPECT_EQ(pDayLine->GetStrongSellVolume(), pStock->GetStrongSellVolume());
-    EXPECT_EQ(pDayLine->GetUnknownVolume(), pStock->GetUnknownVolume());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolume(), pStock->GetOrdinaryBuyVolume());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolume(), pStock->GetOrdinarySellVolume());
-    EXPECT_EQ(pDayLine->GetAttackBuyBelow50000(), pStock->GetAttackBuyBelow50000());
-    EXPECT_EQ(pDayLine->GetAttackBuyBelow200000(), pStock->GetAttackBuyBelow200000());
-    EXPECT_EQ(pDayLine->GetAttackBuyAbove200000(), pStock->GetAttackBuyAbove200000());
-    EXPECT_EQ(pDayLine->GetAttackSellBelow50000(), pStock->GetAttackSellBelow50000());
-    EXPECT_EQ(pDayLine->GetAttackSellBelow200000(), pStock->GetAttackSellBelow200000());
-    EXPECT_EQ(pDayLine->GetAttackSellAbove200000(), pStock->GetAttackSellAbove200000());
+    EXPECT_EQ(pDayLine->GetTransactionNumber(), pStake->GetTransactionNumber());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow5000(), pStake->GetTransactionNumberBelow5000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow50000(), pStake->GetTransactionNumberBelow50000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberBelow200000(), pStake->GetTransactionNumberBelow200000());
+    EXPECT_EQ(pDayLine->GetTransactionNumberAbove200000(), pStake->GetTransactionNumberAbove200000());
+    EXPECT_EQ(pDayLine->GetCanceledBuyVolume(), pStake->GetCanceledBuyVolume());
+    EXPECT_EQ(pDayLine->GetCanceledSellVolume(), pStake->GetCanceledSellVolume());
+    EXPECT_EQ(pDayLine->GetAttackBuyVolume(), pStake->GetAttackBuyVolume());
+    EXPECT_EQ(pDayLine->GetAttackSellVolume(), pStake->GetAttackSellVolume());
+    EXPECT_EQ(pDayLine->GetStrongBuyVolume(), pStake->GetStrongBuyVolume());
+    EXPECT_EQ(pDayLine->GetStrongSellVolume(), pStake->GetStrongSellVolume());
+    EXPECT_EQ(pDayLine->GetUnknownVolume(), pStake->GetUnknownVolume());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolume(), pStake->GetOrdinaryBuyVolume());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolume(), pStake->GetOrdinarySellVolume());
+    EXPECT_EQ(pDayLine->GetAttackBuyBelow50000(), pStake->GetAttackBuyBelow50000());
+    EXPECT_EQ(pDayLine->GetAttackBuyBelow200000(), pStake->GetAttackBuyBelow200000());
+    EXPECT_EQ(pDayLine->GetAttackBuyAbove200000(), pStake->GetAttackBuyAbove200000());
+    EXPECT_EQ(pDayLine->GetAttackSellBelow50000(), pStake->GetAttackSellBelow50000());
+    EXPECT_EQ(pDayLine->GetAttackSellBelow200000(), pStake->GetAttackSellBelow200000());
+    EXPECT_EQ(pDayLine->GetAttackSellAbove200000(), pStake->GetAttackSellAbove200000());
 
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow5000(), pStock->GetOrdinaryBuyVolumeBelow5000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow10000(), pStock->GetOrdinaryBuyVolumeBelow10000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow20000(), pStock->GetOrdinaryBuyVolumeBelow20000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow50000(), pStock->GetOrdinaryBuyVolumeBelow50000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow100000(), pStock->GetOrdinaryBuyVolumeBelow100000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow200000(), pStock->GetOrdinaryBuyVolumeBelow200000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeAbove200000(), pStock->GetOrdinaryBuyVolumeAbove200000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow5000(), pStock->GetOrdinarySellVolumeBelow5000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow10000(), pStock->GetOrdinarySellVolumeBelow10000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow20000(), pStock->GetOrdinarySellVolumeBelow20000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow50000(), pStock->GetOrdinarySellVolumeBelow50000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow100000(), pStock->GetOrdinarySellVolumeBelow100000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow200000(), pStock->GetOrdinarySellVolumeBelow200000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeAbove200000(), pStock->GetOrdinarySellVolumeAbove200000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow5000(), pStock->GetOrdinaryBuyNumberBelow5000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow10000(), pStock->GetOrdinaryBuyNumberBelow10000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow20000(), pStock->GetOrdinaryBuyNumberBelow20000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow50000(), pStock->GetOrdinaryBuyNumberBelow50000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow100000(), pStock->GetOrdinaryBuyNumberBelow100000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow200000(), pStock->GetOrdinaryBuyNumberBelow200000());
-    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberAbove200000(), pStock->GetOrdinaryBuyNumberAbove200000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow5000(), pStock->GetOrdinarySellNumberBelow5000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow10000(), pStock->GetOrdinarySellNumberBelow10000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow20000(), pStock->GetOrdinarySellNumberBelow20000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow50000(), pStock->GetOrdinarySellNumberBelow50000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow100000(), pStock->GetOrdinarySellNumberBelow100000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow200000(), pStock->GetOrdinarySellNumberBelow200000());
-    EXPECT_EQ(pDayLine->GetOrdinarySellNumberAbove200000(), pStock->GetOrdinarySellNumberAbove200000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow5000(), pStake->GetOrdinaryBuyVolumeBelow5000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow10000(), pStake->GetOrdinaryBuyVolumeBelow10000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow20000(), pStake->GetOrdinaryBuyVolumeBelow20000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow50000(), pStake->GetOrdinaryBuyVolumeBelow50000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow100000(), pStake->GetOrdinaryBuyVolumeBelow100000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeBelow200000(), pStake->GetOrdinaryBuyVolumeBelow200000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyVolumeAbove200000(), pStake->GetOrdinaryBuyVolumeAbove200000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow5000(), pStake->GetOrdinarySellVolumeBelow5000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow10000(), pStake->GetOrdinarySellVolumeBelow10000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow20000(), pStake->GetOrdinarySellVolumeBelow20000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow50000(), pStake->GetOrdinarySellVolumeBelow50000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow100000(), pStake->GetOrdinarySellVolumeBelow100000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeBelow200000(), pStake->GetOrdinarySellVolumeBelow200000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellVolumeAbove200000(), pStake->GetOrdinarySellVolumeAbove200000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow5000(), pStake->GetOrdinaryBuyNumberBelow5000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow10000(), pStake->GetOrdinaryBuyNumberBelow10000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow20000(), pStake->GetOrdinaryBuyNumberBelow20000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow50000(), pStake->GetOrdinaryBuyNumberBelow50000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow100000(), pStake->GetOrdinaryBuyNumberBelow100000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberBelow200000(), pStake->GetOrdinaryBuyNumberBelow200000());
+    EXPECT_EQ(pDayLine->GetOrdinaryBuyNumberAbove200000(), pStake->GetOrdinaryBuyNumberAbove200000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow5000(), pStake->GetOrdinarySellNumberBelow5000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow10000(), pStake->GetOrdinarySellNumberBelow10000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow20000(), pStake->GetOrdinarySellNumberBelow20000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow50000(), pStake->GetOrdinarySellNumberBelow50000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow100000(), pStake->GetOrdinarySellNumberBelow100000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberBelow200000(), pStake->GetOrdinarySellNumberBelow200000());
+    EXPECT_EQ(pDayLine->GetOrdinarySellNumberAbove200000(), pStake->GetOrdinarySellNumberAbove200000());
 
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow5000(), pStock->GetCanceledBuyVolumeBelow5000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow10000(), pStock->GetCanceledBuyVolumeBelow10000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow20000(), pStock->GetCanceledBuyVolumeBelow20000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow50000(), pStock->GetCanceledBuyVolumeBelow50000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow100000(), pStock->GetCanceledBuyVolumeBelow100000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeBelow200000(), pStock->GetCanceledBuyVolumeBelow200000());
-    EXPECT_EQ(pStock->GetCanceledBuyVolumeAbove200000(), pStock->GetCanceledBuyVolumeAbove200000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow5000(), pStock->GetCanceledSellVolumeBelow5000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow10000(), pStock->GetCanceledSellVolumeBelow10000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow20000(), pStock->GetCanceledSellVolumeBelow20000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow50000(), pStock->GetCanceledSellVolumeBelow50000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow100000(), pStock->GetCanceledSellVolumeBelow100000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeBelow200000(), pStock->GetCanceledSellVolumeBelow200000());
-    EXPECT_EQ(pStock->GetCanceledSellVolumeAbove200000(), pStock->GetCanceledSellVolumeAbove200000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow5000(), pStake->GetCanceledBuyVolumeBelow5000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow10000(), pStake->GetCanceledBuyVolumeBelow10000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow20000(), pStake->GetCanceledBuyVolumeBelow20000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow50000(), pStake->GetCanceledBuyVolumeBelow50000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow100000(), pStake->GetCanceledBuyVolumeBelow100000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeBelow200000(), pStake->GetCanceledBuyVolumeBelow200000());
+    EXPECT_EQ(pStake->GetCanceledBuyVolumeAbove200000(), pStake->GetCanceledBuyVolumeAbove200000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow5000(), pStake->GetCanceledSellVolumeBelow5000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow10000(), pStake->GetCanceledSellVolumeBelow10000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow20000(), pStake->GetCanceledSellVolumeBelow20000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow50000(), pStake->GetCanceledSellVolumeBelow50000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow100000(), pStake->GetCanceledSellVolumeBelow100000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeBelow200000(), pStake->GetCanceledSellVolumeBelow200000());
+    EXPECT_EQ(pStake->GetCanceledSellVolumeAbove200000(), pStake->GetCanceledSellVolumeAbove200000());
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21900101");
     setDayLineBasicInfo.Open();
@@ -1521,7 +1521,7 @@ namespace StockAnalysisTest {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine dayLine;
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600016"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600016"));
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
     gl_pChinaStakeMarket->__TEST_SetFormatedMarketDate(20190101);
 
@@ -1544,19 +1544,19 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreDayLine(pid);
+      pStake->StoreDayLine(pid);
     }
-    pStock->SetDayLineEndDate(10190101);
-    pStock->SetStakeCode(_T("sh600016"));
+    pStake->SetDayLineEndDate(10190101);
+    pStake->SetStakeCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLineBasicInfo();
+    pStake->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
       dayLine.LoadBasicData(&setDayLineBasicInfo);
-      pid = pStock->GetDayLine(i);
+      pid = pStake->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
       EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pid->GetStakeCode());
@@ -1594,7 +1594,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = nullptr;
     CChinaStake stock;
 
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1615,19 +1615,19 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreDayLine(pid);
+      pStake->StoreDayLine(pid);
     }
-    pStock->SetStakeCode(_T("sh600010"));
-    pStock->SetDayLineEndDate(10190101);
+    pStake->SetStakeCode(_T("sh600010"));
+    pStake->SetDayLineEndDate(10190101);
     ASSERT(!gl_fNormalMode);
-    pStock->SaveDayLineBasicInfo();
+    pStake->SaveDayLineBasicInfo();
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     stock.LoadDayLineBasicInfo(&setDayLineBasicInfo);
     for (int i = 0; i < 10; i++) {
       pid = stock.GetDayLine(i);
-      pDayLine = pStock->GetDayLine(i);
+      pDayLine = pStake->GetDayLine(i);
       EXPECT_EQ(pDayLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
       EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
       EXPECT_STREQ(pDayLine->GetStakeCode(), pid->GetStakeCode());
@@ -1662,7 +1662,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CChinaStake stock;
 
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600004"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600004"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1683,15 +1683,15 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreDayLine(pid);
+      pStake->StoreDayLine(pid);
     }
-    pStock->SetStakeCode(_T("sh600004"));
-    pStock->SetDayLineStartDate(19920102);
-    pStock->SetDayLineEndDate(20800100);
+    pStake->SetStakeCode(_T("sh600004"));
+    pStake->SetDayLineStartDate(19920102);
+    pStake->SetDayLineEndDate(20800100);
     ASSERT(!gl_fNormalMode);
-    pStock->UpdateDayLineStartEndDate();
-    EXPECT_EQ(pStock->GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__ + 9 * 100000 + 2) << "日线最新日期已更新";
-    EXPECT_EQ(pStock->GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__ + 2) << "日线最初日期已更新";
+    pStake->UpdateDayLineStartEndDate();
+    EXPECT_EQ(pStake->GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__ + 9 * 100000 + 2) << "日线最新日期已更新";
+    EXPECT_EQ(pStake->GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__ + 2) << "日线最初日期已更新";
     EXPECT_TRUE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
   }
 
@@ -1699,7 +1699,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CChinaStake stock;
 
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
@@ -1720,37 +1720,37 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreDayLine(pid);
+      pStake->StoreDayLine(pid);
     }
-    pStock->SetStakeCode(_T("sh600008"));
-    pStock->SetDayLineStartDate(19900100);
-    pStock->SetDayLineEndDate(20800102);
+    pStake->SetStakeCode(_T("sh600008"));
+    pStake->SetDayLineStartDate(19900100);
+    pStake->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
-    pStock->UpdateDayLineStartEndDate();
-    EXPECT_EQ(pStock->GetDayLineEndDate(), 20800102);
-    EXPECT_EQ(pStock->GetDayLineStartDate(), 19900100);
+    pStake->UpdateDayLineStartEndDate();
+    EXPECT_EQ(pStake->GetDayLineEndDate(), 20800102);
+    EXPECT_EQ(pStake->GetDayLineStartDate(), 19900100);
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
-    EXPECT_FALSE(pStock->IsActive());
-    CString strStockName = pStock->GetStakeName();
-    WORD wMarket = pStock->GetMarket();
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    EXPECT_FALSE(pStake->IsActive());
+    CString strStockName = pStake->GetStakeName();
+    WORD wMarket = pStake->GetMarket();
     long lTotalActiveStock = gl_pChinaStakeMarket->GetTotalActiveStock();
-    pStock->SetTodayActive(__SHENZHEN_MARKET__, _T("sh600002"), _T("梨园"));
-    EXPECT_TRUE(pStock->IsActive());
-    EXPECT_FALSE(pStock->IsDayLineLoaded());
-    EXPECT_EQ(pStock->GetMarket(), __SHENZHEN_MARKET__);
-    EXPECT_STREQ(pStock->GetStakeCode(), _T("sh600002"));
-    EXPECT_STREQ(pStock->GetStakeName(), _T("梨园"));
+    pStake->SetTodayActive(__SHENZHEN_MARKET__, _T("sh600002"), _T("梨园"));
+    EXPECT_TRUE(pStake->IsActive());
+    EXPECT_FALSE(pStake->IsDayLineLoaded());
+    EXPECT_EQ(pStake->GetMarket(), __SHENZHEN_MARKET__);
+    EXPECT_STREQ(pStake->GetStakeCode(), _T("sh600002"));
+    EXPECT_STREQ(pStake->GetStakeName(), _T("梨园"));
     EXPECT_EQ(gl_pChinaStakeMarket->GetTotalActiveStock(), lTotalActiveStock + 1);
 
     // clearup
-    pStock->SetActive(false);
-    pStock->SetMarket(wMarket);
-    pStock->SetStakeCode(_T("sh600001"));
-    pStock->SetStakeName(strStockName);
+    pStake->SetActive(false);
+    pStake->SetMarket(wMarket);
+    pStake->SetStakeCode(_T("sh600001"));
+    pStake->SetStakeName(strStockName);
     gl_pChinaStakeMarket->SetTotalActiveStock(lTotalActiveStock);
   }
 
@@ -1992,7 +1992,7 @@ namespace StockAnalysisTest {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     CWeekLinePtr pid;
     CWeekLine stock;
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600016"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600016"));
     gl_pChinaStakeMarket->__TEST_SetFormatedMarketDate(20190101);
 
     for (int i = 0; i < 10; i++) {
@@ -2014,18 +2014,18 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreWeekLine(pid);
+      pStake->StoreWeekLine(pid);
     }
-    pStock->SetStakeCode(_T("sh600016"));
+    pStake->SetStakeCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveWeekLine();
+    pStake->SaveWeekLine();
 
     setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
     setWeekLineBasicInfo.m_pDatabase->BeginTrans();
     for (int i = 0; i < 10; i++) {
       stock.LoadBasicData(&setWeekLineBasicInfo);
-      pid = pStock->GetWeekLine(i);
+      pid = pStake->GetWeekLine(i);
       EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setWeekLineBasicInfo.m_Market, pid->GetMarket());
       EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, pid->GetStakeCode());
@@ -2064,7 +2064,7 @@ namespace StockAnalysisTest {
     CWeekLinePtr pWeekLine = nullptr;
     CChinaStake stock;
 
-    pStock = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
@@ -2085,11 +2085,11 @@ namespace StockAnalysisTest {
       pid->SetCurrentValue(234145345245);
       pid->SetChangeHandRate(54.321);
       pid->SetRS(14.5);
-      pStock->StoreWeekLine(pid);
+      pStake->StoreWeekLine(pid);
     }
-    pStock->SetStakeCode(_T("sh600010"));
+    pStake->SetStakeCode(_T("sh600010"));
     ASSERT(!gl_fNormalMode);
-    pStock->SaveWeekLine();
+    pStake->SaveWeekLine();
 
     setWeekLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setWeekLineBasicInfo.Open();
@@ -2097,7 +2097,7 @@ namespace StockAnalysisTest {
     stock.LoadWeekLineBasicInfo(&setWeekLineBasicInfo);
     for (int i = 0; i < 10; i++) {
       pid = stock.GetWeekLine(i);
-      pWeekLine = pStock->GetWeekLine(i);
+      pWeekLine = pStake->GetWeekLine(i);
       EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
       EXPECT_EQ(pWeekLine->GetMarket(), pid->GetMarket());
       EXPECT_STREQ(pWeekLine->GetStakeCode(), pid->GetStakeCode());

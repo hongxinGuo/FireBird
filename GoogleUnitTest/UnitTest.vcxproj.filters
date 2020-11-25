@@ -521,14 +521,14 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SectionIndex.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetSectionIndex.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="StakeCodeTest.cpp">
       <Filter>Test源文件\China Stock Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeSection.cpp">
+      <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -775,10 +775,10 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SectionIndex.h">
+    <ClInclude Include="..\StockAnalysis\source\StakeSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetSectionIndex.h">
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

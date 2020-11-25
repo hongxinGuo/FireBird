@@ -24,7 +24,7 @@ namespace StockAnalysisTest {
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      pStock = make_shared<CMockChinaStock>();
+      pStake = make_shared<CMockChinaStock>();
       gl_pChinaStakeMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -43,55 +43,55 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CMockChinaStockPtr pStock;
+    CMockChinaStockPtr pStake;
     CMockChinaStock stock;
   };
 
   TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {
-    EXPECT_CALL(*pStock, ReportGuadanTransaction())
+    EXPECT_CALL(*pStake, ReportGuadanTransaction())
       .Times(0);
-    pStock->ShowCurrentTransaction();
-    EXPECT_EQ(pStock->GetCurrentTransationVolume(), 0);
-    pStock->SetCurrentTransationVolume(1);
-    EXPECT_CALL(*pStock, ReportGuadanTransaction())
+    pStake->ShowCurrentTransaction();
+    EXPECT_EQ(pStake->GetCurrentTransationVolume(), 0);
+    pStake->SetCurrentTransationVolume(1);
+    EXPECT_CALL(*pStake, ReportGuadanTransaction())
       .Times(1);
-    pStock->ShowCurrentTransaction();
+    pStake->ShowCurrentTransaction();
   }
 
   TEST_F(CMockChinaStockTest, TestShowCurrentInformationOfCancelingGuadan) {
-    EXPECT_CALL(*pStock, ReportGuadan())
+    EXPECT_CALL(*pStake, ReportGuadan())
       .Times(1);
-    pStock->ShowCurrentInformationOfCancelingGuadan();
+    pStake->ShowCurrentInformationOfCancelingGuadan();
   }
 
   TEST_F(CMockChinaStockTest, TestThreadSaveDayLineOfOneStock) {
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+    EXPECT_CALL(*pStake, SaveDayLineBasicInfo)
       .Times(0);
-    pStock->SetDayLineLoaded(true);
-    pStock->SetStakeCode(_T("sh601111"));
+    pStake->SetDayLineLoaded(true);
+    pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_TRUE(pStock->IsDayLineLoaded());
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_TRUE(pStake->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+    EXPECT_CALL(*pStake, SaveDayLineBasicInfo)
       .Times(1)
       .WillOnce(Return(false));
-    pStock->SetDayLineLoaded(true);
-    pStock->SetStakeCode(_T("sh601111"));
+    pStake->SetDayLineLoaded(true);
+    pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
-    EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
+    EXPECT_CALL(*pStake, SaveDayLineBasicInfo)
       .Times(1)
       .WillOnce(Return(true));
-    pStock->SetDayLineLoaded(true);
-    pStock->SetStakeCode(_T("sh601111"));
+    pStake->SetDayLineLoaded(true);
+    pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock), (UINT)15);
-    EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
     EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));
@@ -99,23 +99,23 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pStock->StoreDayLine(pDayLine);
+    pStake->StoreDayLine(pDayLine);
     InSequence seq;
-    EXPECT_CALL(*pStock, LoadDayLine)
+    EXPECT_CALL(*pStake, LoadDayLine)
       .Times(1);
-    pStock->SetDayLineLoaded(false);
-    EXPECT_EQ(ThreadLoadDayLine(pStock), (UINT)16);
-    EXPECT_TRUE(pStock->IsDayLineLoaded());
-    EXPECT_EQ(pStock->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
+    pStake->SetDayLineLoaded(false);
+    EXPECT_EQ(ThreadLoadDayLine(pStake), (UINT)16);
+    EXPECT_TRUE(pStake->IsDayLineLoaded());
+    EXPECT_EQ(pStake->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
   }
   TEST_F(CMockChinaStockTest, TestThreadLoadWeekLine) {
     CWeekLinePtr pWeekLine = make_shared<CWeekLine>();
-    pStock->StoreWeekLine(pWeekLine);
-    EXPECT_CALL(*pStock, LoadWeekLine)
+    pStake->StoreWeekLine(pWeekLine);
+    EXPECT_CALL(*pStake, LoadWeekLine)
       .Times(1);
-    pStock->SetWeekLineLoaded(false);
-    EXPECT_EQ(ThreadLoadWeekLine(pStock), (UINT)29);
-    EXPECT_TRUE(pStock->IsWeekLineLoaded());
-    EXPECT_EQ(pStock->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
+    pStake->SetWeekLineLoaded(false);
+    EXPECT_EQ(ThreadLoadWeekLine(pStake), (UINT)29);
+    EXPECT_TRUE(pStake->IsWeekLineLoaded());
+    EXPECT_EQ(pStake->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
   }
 }

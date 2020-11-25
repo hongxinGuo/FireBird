@@ -44,7 +44,7 @@ using namespace std;
 #include<mutex>
 
 class CChinaStake;
-typedef shared_ptr<CChinaStake> CChinaStockPtr;
+typedef shared_ptr<CChinaStake> CChinaStakePtr;
 
 // 证券名称数据包
 class CChinaStake : public CObject {
@@ -74,10 +74,10 @@ public:
 
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
-  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STOCK_DELISTED__); }
-  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STOCK_NULL__); }
-  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STOCK_IPOED__); }
-  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STOCK_NOT_CHECKED__); }
+  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STAKE_DELISTED__); }
+  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STAKE_NULL__); }
+  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STAKE_IPOED__); }
+  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STAKE_NOT_CHECKED__); }
 
   // 基本实时数据，需要更新
   time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
@@ -293,7 +293,7 @@ public:
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
   void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
 
-  bool IsSameStock(CChinaStockPtr pStock);
+  bool IsSameStock(CChinaStakePtr pStake);
 
   // 第一个实时数据判断和设置
   bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
@@ -476,7 +476,7 @@ protected:
   long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
   long m_lIPOStatus; // 通过网易历史日线查询，如果只有前缀信息而没有实际内容，可以确认没有实际交易。在这种情况下，新浪实时行情有数据，只是为零而已。默认情况下为已上市
-                 // 未上市（无效股票代码）为__STOCK_NULL__；正常为__STOCK_IPOED__；已通过IPO但尚未上市或退市为__STOCK_DELISTED；其他情况尚未出现，留待以后处理。
+                 // 未上市（无效股票代码）为__STAKE_NULL__；正常为__STAKE_IPOED__；已通过IPO但尚未上市或退市为__STAKE_DELISTED；其他情况尚未出现，留待以后处理。
   short	m_nHand;	// 每手股数
 
   // 实时数据,需要不断更新

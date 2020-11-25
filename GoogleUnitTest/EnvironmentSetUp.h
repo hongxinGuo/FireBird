@@ -63,13 +63,13 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
 #endif
 
-      CChinaStockPtr pStock = nullptr;
+      CChinaStakePtr pStake = nullptr;
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
-        pStock = gl_pChinaStakeMarket->GetStock(i);
-        pStock->SetDayLineEndDate(-1);
-        EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-        //if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
+        pStake = gl_pChinaStakeMarket->GetStock(i);
+        pStake->SetDayLineEndDate(-1);
+        EXPECT_TRUE(pStake->IsDayLineNeedUpdate());
+        //if (!pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(true);
       }
       // 初始化活跃股票标识
       EXPECT_TRUE(gl_fTestMode);
@@ -77,19 +77,19 @@ namespace StockAnalysisTest {
       CSetStockCode setStockCode;
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
-        pStock = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
-        EXPECT_FALSE(pStock->IsActive());
-        pStock->SetIPOStatus(setStockCode.m_IPOStatus);
-        pStock->SetMarket(setStockCode.m_StockType);
-        pStock->SetStakeCode(setStockCode.m_StockCode);
+        pStake = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
+        EXPECT_FALSE(pStake->IsActive());
+        pStake->SetIPOStatus(setStockCode.m_IPOStatus);
+        pStake->SetMarket(setStockCode.m_StockType);
+        pStake->SetStakeCode(setStockCode.m_StockCode);
         CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-        pStock->SetStakeName(str);
-        pStock->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
-        if (pStock->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
-          pStock->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
+        pStake->SetStakeName(str);
+        pStake->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
+        if (pStake->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
+          pStake->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
         }
-        if (setStockCode.m_IPOStatus == __STOCK_IPOED__) {
-          pStock->SetActive(true);
+        if (setStockCode.m_IPOStatus == __STAKE_IPOED__) {
+          pStake->SetActive(true);
           gl_pChinaStakeMarket->IncreaseActiveStockNumber();
         }
         setStockCode.MoveNext();
