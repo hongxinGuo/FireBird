@@ -282,7 +282,7 @@
     <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
-    <ClCompile Include="MockChinaStockTest.cpp" />
+    <ClCompile Include="MockChinaStakeTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
     <ClCompile Include="CrweberIndexWebInquiryTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
@@ -328,7 +328,7 @@
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
-    <ClCompile Include="ChinaStockTest.cpp" />
+    <ClCompile Include="ChinaStakeTest.cpp" />
     <ClCompile Include="WebRTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
@@ -415,7 +415,7 @@
     <ClInclude Include="..\StockAnalysis\targetver.h" />
     <ClInclude Include="EnvironmentSetUp.h" />
     <ClInclude Include="MockChinaMarket.h" />
-    <ClInclude Include="MockChinaStock.h" />
+    <ClInclude Include="MockChinaStake.h" />
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
     <ClInclude Include="MockDayLineContainer.h" />

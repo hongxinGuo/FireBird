@@ -6,7 +6,7 @@
 #include"ChinaStake.h"
 
 namespace testing {
-  class CMockChinaStock : public CChinaStake {
+  class CMockChinaStake : public CChinaStake {
   public:
     MOCK_METHOD(void, ReportGuadanTransaction, (), (override));
     MOCK_METHOD(void, ReportGuadan, (), (override));
@@ -16,5 +16,5 @@ namespace testing {
     MOCK_METHOD(bool, LoadWeekLine, (), (override));
   };
 
-  typedef shared_ptr<CMockChinaStock> CMockChinaStockPtr;
+  typedef shared_ptr<CMockChinaStake> CMockChinaStakePtr;
 }

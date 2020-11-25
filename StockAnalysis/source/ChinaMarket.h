@@ -312,6 +312,7 @@ public:
   CString GetStockCodeForInquiringNeteaseDayLine(void) { return m_strStockCodeForInquiringNeteaseDayLine; }
 
   bool InsertStakeCode(CWebRTDataPtr pRTData);
+  bool UpdateStakeContainer(CWebRTDataPtr pRTData);
 
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
@@ -429,7 +430,7 @@ public:
 
 protected:
   // 初始化
-  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStock。
+  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStake。
 
 public:
 

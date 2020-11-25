@@ -7,7 +7,7 @@
 #include"ChinaStake.h"
 #include"ChinaMarket.h"
 
-#include"MockChinaStock.h"
+#include"MockChinaStake.h"
 
 using namespace testing;
 
@@ -24,7 +24,7 @@ namespace StockAnalysisTest {
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      pStake = make_shared<CMockChinaStock>();
+      pStake = make_shared<CMockChinaStake>();
       gl_pChinaStakeMarket->CalculateTime();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -43,8 +43,8 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CMockChinaStockPtr pStake;
-    CMockChinaStock stock;
+    CMockChinaStakePtr pStake;
+    CMockChinaStake stock;
   };
 
   TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {

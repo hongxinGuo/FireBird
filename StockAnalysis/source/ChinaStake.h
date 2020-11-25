@@ -541,21 +541,21 @@ protected:
   INT64 m_lOrdinarySellVolumeBelow200000; //
   INT64 m_lOrdinarySellVolumeAbove200000; //
 
-  // 当日分钟数据
-  array<INT64, 240> m_aOrdinaryBuy5000;
-  array<INT64, 240> m_aOrdinaryBuy10000;
-  array<INT64, 240> m_aOrdinaryBuy20000;
-  array<INT64, 240> m_aOrdinaryBuy50000;
-  array<INT64, 240> m_aOrdinaryBuy100000;
-  array<INT64, 240> m_aOrdinaryBuy200000;
-  array<INT64, 240> m_aOrdinaryBuyAbove200000;
-  array<INT64, 240> m_aOrdinarySell5000;
-  array<INT64, 240> m_aOrdinarySell10000;
-  array<INT64, 240> m_aOrdinarySell20000;
-  array<INT64, 240> m_aOrdinarySell50000;
-  array<INT64, 240> m_aOrdinarySell100000;
-  array<INT64, 240> m_aOrdinarySell200000;
-  array<INT64, 240> m_aOrdinarySellAbove200000;
+  // 当日分钟数据 皆为240个（60 * 4）
+  vector<INT64> m_vOrdinaryBuy5000;
+  vector<INT64> m_vOrdinaryBuy10000;
+  vector<INT64> m_vOrdinaryBuy20000;
+  vector<INT64> m_vOrdinaryBuy50000;
+  vector<INT64> m_vOrdinaryBuy100000;
+  vector<INT64> m_vOrdinaryBuy200000;
+  vector<INT64> m_vOrdinaryBuyAbove200000;
+  vector<INT64> m_vOrdinarySell5000;
+  vector<INT64> m_vOrdinarySell10000;
+  vector<INT64> m_vOrdinarySell20000;
+  vector<INT64> m_vOrdinarySell50000;
+  vector<INT64> m_vOrdinarySell100000;
+  vector<INT64> m_vOrdinarySell200000;
+  vector<INT64> m_vOrdinarySellAbove200000;
 
   // 以下为需存储项
   INT64 m_lTransactionNumber; // 本交易日的成交笔数

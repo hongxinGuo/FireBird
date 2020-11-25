@@ -1087,8 +1087,9 @@ bool CChinaMarket::TaskGetStakeCodeGetFromSinaServer(void) {
       CWebRTDataPtr pRTData = make_shared<CWebRTData>();
       if (pRTData->ReadSinaStakeCode(pWebDataReceived, fValidStake)) {
         if (fValidStake) {
-          InsertStakeCode(pRTData);
           UpdateStakeSection(pRTData);
+          InsertStakeCode(pRTData);
+          UpdateStakeContainer(pRTData);
         }
       }
       else break;  // 后面的数据出问题，抛掉不用。
@@ -1113,6 +1114,17 @@ bool CChinaMarket::InsertStakeCode(CWebRTDataPtr pRTData) {
   }
   else {
     return false;
+  }
+}
+
+bool CChinaMarket::UpdateStakeContainer(CWebRTDataPtr pRTData) {
+  if (m_mapChinaMarketAStock.find(pRTData->GetStakeCode()) == m_mapChinaMarketAStock.end()) { // 没找到？ 不应该的
+    // Error
+    return false;
+  }
+  else {
+    m_vChinaMarketStock.at(m_mapChinaMarketAStock.at(pRTData->GetStakeCode()))->SetActive(true);
+    return true;
   }
 }
 
@@ -2873,7 +2885,10 @@ bool CChinaMarket::DeleteDayLine(void) {
 bool CChinaMarket::DeleteDayLineBasicInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1); // 退出系统
+  }
 
   database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
@@ -2893,7 +2908,10 @@ bool CChinaMarket::DeleteDayLineBasicInfo(void) {
 bool CChinaMarket::DeleteDayLineExtendInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1); // 退出系统
+  }
 
   database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
@@ -3430,6 +3448,7 @@ void CChinaMarket::LoadStakeSection(void) {
 }
 
 void CChinaMarket::CreateStakeSection(CStakeSectionPtr pStakeSection) {
+  ASSERT(!pStakeSection->IsBuildStakePtr());
   ASSERT(m_lTotalStock == 12000);
   ASSERT(m_lTotalStake >= 12000);
   CChinaStakePtr pStake = nullptr;
@@ -3441,6 +3460,7 @@ void CChinaMarket::CreateStakeSection(CStakeSectionPtr pStakeSection) {
     pStake->SetActive(false);
     pStake->SetIPOStatus(__STAKE_NOT_CHECKED__);
     pStake->SetMarket(pStakeSection->GetMarket());
+    pStake->SetNeedProcessRTData(true);
     if (pStakeSection->GetMarket() == __SHANGHAI_MARKET__) {
       strStakeCode = _T("sh");
       sprintf_s(buffer, _T("%06d"), (pStakeSection->GetIndexNumber() * 1000 + i));
@@ -3457,6 +3477,7 @@ void CChinaMarket::CreateStakeSection(CStakeSectionPtr pStakeSection) {
     m_vChinaMarketStock.push_back(pStake);
     m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStake++;
   }
+  pStakeSection->SetBuildStakePtr(true);
 }
 
 void CChinaMarket::LoadStockCodeDB(void) {
@@ -3508,12 +3529,14 @@ void CChinaMarket::UpdateStakeSection(CStakeCodePtr pStakeCode) {
   CString strCode = pStakeCode->GetStakeCode().Right(6);
   long lIndex = atoi(strCode.GetBuffer()) / 1000;
   if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
-    if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
-    m_vStakeSection.at(lIndex)->SetActive(true);
   }
   else if (strMarket.Compare(_T("sz")) == 0) {
-    if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
-    m_vStakeSection.at(lIndex + 1000)->SetActive(true);
+    lIndex += 1000;
+  }
+  if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
+  m_vStakeSection.at(lIndex)->SetActive(true);
+  if (m_fUpdateStakeSection) {
+    CreateStakeSection(m_vStakeSection.at(lIndex));
   }
 }
 
@@ -3522,12 +3545,14 @@ void CChinaMarket::UpdateStakeSection(CWebRTDataPtr pRTData) {
   CString strCode = pRTData->GetStakeCode().Right(6);
   long lIndex = atoi(strCode.GetBuffer()) / 1000;
   if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
-    if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
-    m_vStakeSection.at(lIndex)->SetActive(true);
   }
   else if (strMarket.Compare(_T("sz")) == 0) {
-    if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
-    m_vStakeSection.at(lIndex + 1000)->SetActive(true);
+    lIndex += 1000;
+  }
+  if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
+  m_vStakeSection.at(lIndex)->SetActive(true);
+  if (m_fUpdateStakeSection) {
+    CreateStakeSection(m_vStakeSection.at(lIndex));
   }
 }
 

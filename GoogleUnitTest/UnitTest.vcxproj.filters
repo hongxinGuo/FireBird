@@ -174,9 +174,6 @@
     <ClCompile Include="SemaphoreTest.cpp">
       <Filter>Test源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockTest.cpp">
-      <Filter>Test源文件\China Stock Market\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -396,9 +393,6 @@
     <ClCompile Include="MockPotenDailyBriefingMarketTest.cpp">
       <Filter>Test源文件\Poten Daily Briefing</Filter>
     </ClCompile>
-    <ClCompile Include="MockChinaStockTest.cpp">
-      <Filter>Test源文件\China Stock Market\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="MockCrweberIndexMarketTest.cpp">
       <Filter>Test源文件\Crweber.com</Filter>
     </ClCompile>
@@ -530,6 +524,12 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeSection.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="MockChinaStakeTest.cpp">
+      <Filter>Test源文件\China Stock Market\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStakeTest.cpp">
+      <Filter>Test源文件\China Stock Market\Stock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -548,9 +548,6 @@
       <Filter>Mock类\China Stock Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaMarket.h">
-      <Filter>Mock类\China Stock Market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockChinaStock.h">
       <Filter>Mock类\China Stock Market</Filter>
     </ClInclude>
     <ClInclude Include="MockCrweberIndexWebInquiry.h">
@@ -780,6 +777,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeSection.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockChinaStake.h">
+      <Filter>Mock类\China Stock Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

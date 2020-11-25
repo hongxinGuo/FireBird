@@ -7,7 +7,7 @@
 #include"ChinaMarket.h"
 #include"WebRTData.h"
 
-#include"MockChinaStock.h"
+#include"MockChinaStake.h"
 
 using namespace testing;
 
