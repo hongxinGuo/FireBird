@@ -30,7 +30,7 @@ bool CTengxunRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CTengxunRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  return gl_pChinaStakeMarket->GetTengxunInquiringStockStr(lTotalNumber, fSkipUnactiveStock);
+  return gl_pChinaStakeMarket->GetTengxunInquiringStockStr(lTotalNumber, 0, gl_pChinaStakeMarket->GetTotalStock(), fSkipUnactiveStock);
 }
 
 void CTengxunRTWebInquiry::StartReadingThread(void) {

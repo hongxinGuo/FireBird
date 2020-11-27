@@ -14,6 +14,7 @@ namespace StockAnalysisTest {
   class CSinaRTWebInquiryTest : public ::testing::Test {
   protected:
     static void SetUpTestSuite(void) {
+      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
     }
 
     static void TearDownTestSuite(void) {
@@ -23,12 +24,12 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStakeMarket->ResetSinaRTDataInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStakeMarket->ResetSinaRTDataInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
     }
   public:
     CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
@@ -58,7 +59,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestGetNextInquiringMIddleStr) {
-    gl_pChinaStakeMarket->ResetSinaRTDataInquiringIndex();
+    gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
     CString str = m_SinaRTWebInquiry.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
     EXPECT_STREQ(str2, _T("sh600000,"));
