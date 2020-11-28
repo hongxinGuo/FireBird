@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
 
   protected:
     CMockChinaStakePtr pStake;
-    CMockChinaStake stock;
+    CMockChinaStake stake;
   };
 
   TEST_F(CMockChinaStockTest, TestShowCurrentTransaction) {

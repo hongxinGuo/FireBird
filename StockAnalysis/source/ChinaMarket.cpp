@@ -3362,7 +3362,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
   // 装入股票代码数据库
   while (!setStockCode.IsEOF()) {
     CChinaStakePtr pStake = GetStock(setStockCode.m_StockCode);
-    pStake->LoadStockCodeDB(setStockCode);
+    if (pStake != nullptr) pStake->LoadStockCodeDB(setStockCode);
     setStockCode.MoveNext();
   }
   if (m_iDayLineNeedUpdate > 0) {

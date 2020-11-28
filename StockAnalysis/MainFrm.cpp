@@ -689,11 +689,11 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     gl_pChinaStakeMarket->SetCurrentStock(gl_pChinaStakeMarket->GetCurrentSelectedStock());
     break;
     case 33: // PAGE UP
-     // last stock
+     // last stake
     gl_pChinaStakeMarket->ChangeToPrevStock();
     break;
     case 34: // PAGE DOWN
-      // next stock
+      // next stake
     gl_pChinaStakeMarket->ChangeToNextStock();
     break;
     case 45: // Ins, 加入自选股票
