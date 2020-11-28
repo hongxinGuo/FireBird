@@ -141,7 +141,7 @@ public:
   CString CreateNextStakeInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber);
   CString CreateStakeCode(bool fShanghaiMarket, long lStakeIndex);
   //日线历史数据读取
-  bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition, long lStartPosition);
+  bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lStartPosition, long lEndPosition);
   long IncreaseStakeInquiringIndex(long& lIndex, long lStartPosition, long lEndPosition);
 
   bool IsAStock(CChinaStakePtr pStake); // 是否为沪深A股
@@ -350,6 +350,7 @@ public:
   void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
+  long GetTotalStake(void) noexcept { return m_lTotalStake; }
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
@@ -431,7 +432,7 @@ public:
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStake。
-  void CreateStockSet(CString strFirstStockCode);
+  void CreateStakeSection(CString strFirstStockCode, bool fProcessRTData);
 
 public:
 

@@ -25,11 +25,13 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStakeRTDAtaInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
       gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStakeRTDAtaInquiringIndex();
     }
   public:
     CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
@@ -59,13 +61,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestGetNextInquiringMIddleStr) {
-    gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
+    EXPECT_EQ(gl_pChinaStakeMarket->GetSinaStockRTDataInquiringIndex(), 0);
     CString str = m_SinaRTWebInquiry.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
     EXPECT_STREQ(str2, _T("sh600000,"));
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestPrepareInquiringStr) {
+    EXPECT_EQ(gl_pChinaStakeMarket->GetSinaStockRTDataInquiringIndex(), 0);
     gl_pChinaStakeMarket->SetSystemReady(false);
     EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_SinaRTWebInquiry.GetInquiringString();

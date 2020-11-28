@@ -320,8 +320,8 @@ public:
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   void UpdateDayLineStartEndDate(void);
   void LoadTempInfo(const CSetDayLineToday& setDayLineToday);
-  void SaveStockCodeDB(CSetStockCode& setStockCode);
-  void AppendStockCodeDB(CSetStockCode& setStockCode);
+  void SaveStakeCodeDB(CSetStockCode& setStockCode);
+  void AppendStakeCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
   //周线历史数据存取

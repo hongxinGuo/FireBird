@@ -28,7 +28,7 @@ bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
   char buffer2[200];
 
   // 准备网易日线数据申请格式
-  if (gl_pChinaStakeMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaStakeMarket->GetTotalStock(), 0)) {
+  if (gl_pChinaStakeMarket->CreateNeteaseDayLineInquiringStr(strMiddle, 0, gl_pChinaStakeMarket->GetTotalStake())) {
     SetDownLoadingStockCode(strMiddle);
     gl_pChinaStakeMarket->SetStockCodeForInquiringNeteaseDayLine(strMiddle);
     strMiddle += _T("&start=19900101&end=");

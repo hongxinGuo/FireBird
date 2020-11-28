@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       s_pchinaMarket = new CMockChinaMarket;
       s_pchinaMarket->SetTodayStockProcessed(false);
@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
       gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(0);
     }
     virtual void SetUp(void) override {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
 
       s_pchinaMarket->SetTodayStockProcessed(false);
       s_pchinaMarket->SetRSEndDate(19900101);
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
       s_pchinaMarket->SetRSEndDate(19900101);
       s_pchinaMarket->SetUpdateOptionDB(false);
       gl_ThreadStatus.SetSavingTempData(false);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();

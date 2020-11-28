@@ -33,7 +33,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+      gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
       gl_pChinaStakeMarket->CalculateTime();
       gl_pChinaStakeMarket->SetUpdateStockCodeDB(false);
       gl_pChinaStakeMarket->SetUpdateOptionDB(false);

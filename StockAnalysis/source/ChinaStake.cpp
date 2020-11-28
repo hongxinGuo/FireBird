@@ -1516,7 +1516,7 @@ void CChinaStake::ReportGuadan(void) {
   }
 }
 
-void CChinaStake::SaveStockCodeDB(CSetStockCode& setStockCode) {
+void CChinaStake::SaveStakeCodeDB(CSetStockCode& setStockCode) {
   CString str;
   setStockCode.m_StockType = GetMarket();
   setStockCode.m_StockCode = GetStakeCode();
@@ -1538,9 +1538,9 @@ void CChinaStake::SaveStockCodeDB(CSetStockCode& setStockCode) {
   setStockCode.m_DayLineEndDate = GetDayLineEndDate();
 }
 
-void CChinaStake::AppendStockCodeDB(CSetStockCode& setStockCode) {
+void CChinaStake::AppendStakeCodeDB(CSetStockCode& setStockCode) {
   setStockCode.AddNew();
-  SaveStockCodeDB(setStockCode);
+  SaveStakeCodeDB(setStockCode);
   setStockCode.Update();
 }
 

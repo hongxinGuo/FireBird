@@ -480,8 +480,8 @@ namespace StockAnalysisTest {
     long dayLineSave = gl_pChinaStakeMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
-    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
+    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(gl_pChinaStakeMarket->GetTotalStock());
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
@@ -491,7 +491,7 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS1(&cmdUI);
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
@@ -512,8 +512,8 @@ namespace StockAnalysisTest {
     long dayLineSave = gl_pChinaStakeMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
-    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
+    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(gl_pChinaStakeMarket->GetTotalStock());
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
@@ -523,7 +523,7 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS2(&cmdUI);
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
     gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);
@@ -544,8 +544,8 @@ namespace StockAnalysisTest {
     long dayLineSave = gl_pChinaStakeMarket->GetDayLineNeedSaveNumber();
     long dayLineUpdate = gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber();
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
-    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
+    gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(gl_pChinaStakeMarket->GetTotalStock());
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, false))
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
@@ -555,7 +555,7 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pMainFrame->OnUpdateCalculate10dayRS(&cmdUI);
 
-    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+    gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
     gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(0);
     EXPECT_CALL(*s_pMainFrame, SysCallCmdUIEnable(_, true))
       .Times(1);

@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
-      gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(12000);
+      gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
       gl_pChinaStakeMarket->CalculateTime();
       gl_pChinaStakeMarket->SetUpdateStockCodeDB(false);
       gl_pChinaStakeMarket->SetUpdateOptionDB(false);
@@ -699,7 +699,7 @@ namespace StockAnalysisTest {
     else {
       EXPECT_EQ(lNumberOfStock, gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber() - 1);
     }
-    EXPECT_LE(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+    EXPECT_LE(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
@@ -889,7 +889,7 @@ namespace StockAnalysisTest {
     stock.SetDayLineStartDate(19900101);
     setStockCode.m_strFilter = _T("[ID] = 1");
     setStockCode.Open();
-    stock.AppendStockCodeDB(setStockCode);
+    stock.AppendStakeCodeDB(setStockCode);
     setStockCode.Close();
 
     setStockCode.m_strFilter = _T("[StockCode] = 'sh400000'");

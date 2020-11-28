@@ -13,12 +13,12 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     }
 
     static void TearDownTestSuite(void) {
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     }
 
     virtual void SetUp(void) override {
@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
       gl_pChinaStakeMarket->ResetNeteaseDayLineDataInquiringIndex();
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       EXPECT_TRUE(gl_pChinaStakeMarket->IsResetMarket());
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     }
 
     virtual void TearDown(void) override {
@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
         CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(i);
         if (!pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(true);
       }
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     }
     CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };
@@ -55,7 +55,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseDayLineWebInquiry.GetWebData());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(false);
@@ -81,7 +81,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestPrepareNextInquiringStr) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), 12000);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
     CString str;
     gl_pChinaStakeMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
