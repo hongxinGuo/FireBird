@@ -431,6 +431,7 @@ public:
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStake。
+  void CreateStockSet(CString strFirstStockCode);
 
 public:
 
@@ -441,6 +442,7 @@ protected:
 
 // 变量区
 protected:
+  vector<CString> m_vCurrentStockSet; // 当前股票集。字符串的格式为sh600000、sz000001
   vector<CStakeSectionPtr> m_vStakeSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
   bool m_fUpdateStakeSection; // 更新StakeSection标识
 

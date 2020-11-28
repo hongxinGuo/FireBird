@@ -47,12 +47,12 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
 CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
   CString str;
   static int s_iCount = 5;
-  if (--s_iCount > 0) {
-    str = gl_pChinaStakeMarket->GetSinaStockInquiringStr(lTotalNumber, fSkipUnactiveStock); // 提取前12000个股票的实时数据
+  if (--s_iCount > 0) {// 提取前12000个股票的实时数据
+    str = gl_pChinaStakeMarket->GetSinaStockInquiringStr(lTotalNumber, fSkipUnactiveStock);
   }
-  else {
+  else {// 提取后面其他证券的实时数据
     s_iCount = 5;
-    str = gl_pChinaStakeMarket->GetSinaStakeInquiringStr(lTotalNumber, gl_pChinaStakeMarket->GetTotalStock(), fSkipUnactiveStock); // 提取后面其他证券的实时数据
+    str = gl_pChinaStakeMarket->GetSinaStakeInquiringStr(lTotalNumber, gl_pChinaStakeMarket->GetTotalStock(), fSkipUnactiveStock);
   }
 
   return str;

@@ -190,6 +190,26 @@ void CChinaMarket::Reset(void) {
   m_mapChinaMarketAStock.clear();
   m_mapChinaMarketActiveStakeCode.clear();
 
+  m_vCurrentStockSet.clear();
+  // 预设股票代码集如下
+  m_vCurrentStockSet.push_back(_T("sh600000")); // 上海主板
+  m_vCurrentStockSet.push_back(_T("sh601000")); // 上海主板
+  m_vCurrentStockSet.push_back(_T("sh603000")); // 上海三板
+  m_vCurrentStockSet.push_back(_T("sh688000")); // 上海科创板
+  m_vCurrentStockSet.push_back(_T("sh900000")); // 上海B股
+  m_vCurrentStockSet.push_back(_T("sh000000")); // 上海指数
+  m_vCurrentStockSet.push_back(_T("sz000000")); // 深圳主板
+  m_vCurrentStockSet.push_back(_T("sz001000")); // 深圳主板
+  m_vCurrentStockSet.push_back(_T("sz002000")); // 深圳中小板
+  m_vCurrentStockSet.push_back(_T("sz200000")); // 深圳B股
+  m_vCurrentStockSet.push_back(_T("sz300000")); // 深圳创业板
+  m_vCurrentStockSet.push_back(_T("sz399000")); // 深圳指数
+  // 从股票代码集数据库中读入其他股票集
+
+  //重置StakeSection
+  for (int i = 0; i < m_vStakeSection.size(); i++) {
+    m_vStakeSection.at(i)->SetBuildStakePtr(false);
+  }
   // 生成股票代码池
   CreateTotalStockContainer();
 }
@@ -328,176 +348,60 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   m_mapChinaMarketAStock.clear();
   ASSERT(m_lTotalStock == 0);
 
+  for (int i = 0; i < m_vCurrentStockSet.size(); i++) {
+    CreateStockSet(m_vCurrentStockSet.at(i));
+  }
+
+  m_lTotalStake = m_lTotalStock = m_vChinaMarketStock.size();
+  ASSERT(m_iDayLineNeedUpdate == m_lTotalStock); // 总查询股票数为总股票数（12000）。
+  ASSERT(m_lTotalStock == 12000); // 固定股票代码总数为12000个。
+  ASSERT(m_mapChinaMarketAStock.size() == 12000);
+  return true;
+}
+
+void CChinaMarket::CreateStockSet(CString strFirstStockCode) {
+  CString strCode = strFirstStockCode.Right(6);
+  CString strMarket = strFirstStockCode.Left(2);
+  CString str = _T("");
+  int iCode = atoi(strCode.GetBuffer());
+  int iMarket = 0;
+  char buffer[10];
+  CChinaStakePtr pStake = nullptr;
+
+  if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
+    iMarket = 0;
+  }
+  else if (strMarket.Compare(_T("sz")) == 0) { // 深圳市场
+    iMarket = 1000;
+  }
+  if (m_vStakeSection.at((iCode / 1000) + iMarket)->IsBuildStakePtr()) return; // 已经在证券池中建立了
   // 生成上海股票代码
-  for (int i = 600000; i < 602000; i++) {
-    CString str = _T("sh");
-    _itoa_s(i, buffer, 10);
+  for (int i = iCode; i < (iCode + 1000); i++) {
+    if (iMarket == 0) {
+      str = _T("sh");
+    }
+    else if (iMarket == 1000) {
+      str = _T("sz");
+    }
+    sprintf_s(buffer, _T("%06d"), i);
     pStake = make_shared<CChinaStake>();
     str += buffer;
     pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHANGHAI_MARKET__); // 上海主板
+    if (iMarket == 0)pStake->SetMarket(__SHANGHAI_MARKET__);
+    else pStake->SetMarket(__SHENZHEN_MARKET__);
     pStake->SetOffset(m_lTotalStock);
-    pStake->SetNeedProcessRTData(true);
+    if ((pStake->GetStakeCode() < _T("sh001000")) || (pStake->GetStakeCode() >= _T("sz399000"))) { // 沪深指数？
+      pStake->SetNeedProcessRTData(false);
+    }
+    else {
+      pStake->SetNeedProcessRTData(true);
+    }
     m_vChinaMarketStock.push_back(pStake);
     m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++; // 使用下标生成新的映射
     ASSERT(pStake->IsDayLineNeedUpdate());
     m_iDayLineNeedUpdate++;
   }
-  m_vStakeSection.at(600)->SetBuildStakePtr(true); // 已经在证券池中建立了
-  m_vStakeSection.at(601)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成三版股票代码
-  for (int i = 603000; i < 604000; i++) {
-    CString str = _T("sh");
-    _itoa_s(i, buffer, 10);
-    pStake = make_shared<CChinaStake>();
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHANGHAI_MARKET__); // 上海三板
-    pStake->SetOffset(m_lTotalStock);
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++; // 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(603)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成科创版股票代码
-  for (int i = 688000; i < 689000; i++) {
-    CString str = _T("sh");
-    _itoa_s(i, buffer, 10);
-    pStake = make_shared<CChinaStake>();
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHANGHAI_MARKET__); // 上海科创板
-    pStake->SetOffset(m_lTotalStock);
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++; // 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(688)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成B股股票代码
-  for (int i = 900000; i < 901000; i++) {
-    CString str = _T("sh");
-    _itoa_s(i, buffer, 10);
-    pStake = make_shared<CChinaStake>();
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHANGHAI_MARKET__); // 上海B股
-    pStake->SetOffset(m_lTotalStock);
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++; // 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(900)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成上海指数代码
-  for (int i = 0; i < 1000; i++) {
-    CString str = _T("sh");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHANGHAI_MARKET__); // 上海指数
-    pStake->SetOffset(m_lTotalStock);
-    pStake->SetNeedProcessRTData(false);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++; // 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(0)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  ///////////////////////////////////////////////
-  // 生成深圳主板股票代码
-  for (int i = 0; i < 2000; i++) {
-    CString str = _T("sz");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    pStake->SetOffset(m_lTotalStock);
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHENZHEN_MARKET__); // 深圳主板
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++;// 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(1000)->SetBuildStakePtr(true); // 已经在证券池中建立了
-  m_vStakeSection.at(1001)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成深圳中小板股票代码
-  for (int i = 2000; i < 3000; i++) {
-    CString str = _T("sz");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    pStake->SetOffset(m_lTotalStock);
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHENZHEN_MARKET__); // 深圳中小板
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++;// 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(1002)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成B股股票代码
-  for (int i = 200000; i < 201000; i++) {
-    CString str = _T("sz");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    pStake->SetOffset(m_lTotalStock);
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHENZHEN_MARKET__); // 深圳B股
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++;// 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(1200)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成创业板股票代码
-  for (int i = 300000; i < 301000; i++) {
-    CString str = _T("sz");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    pStake->SetOffset(m_lTotalStock);
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHENZHEN_MARKET__); // 深圳创业板
-    pStake->SetNeedProcessRTData(true);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++;// 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(1300)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  // 生成深圳指数
-  for (int i = 399000; i < 400000; i++) {
-    CString str = _T("sz");
-    sprintf_s(buffer, 10, _T("%06d"), i);
-    pStake = make_shared<CChinaStake>();
-    pStake->SetOffset(m_lTotalStock);
-    str += buffer;
-    pStake->SetStakeCode(str);
-    pStake->SetMarket(__SHENZHEN_MARKET__); // 深圳指数
-    pStake->SetNeedProcessRTData(false);
-    m_vChinaMarketStock.push_back(pStake);
-    m_mapChinaMarketAStock[pStake->GetStakeCode()] = m_lTotalStock++;// 使用下标生成新的映射
-    m_iDayLineNeedUpdate++;
-  }
-  m_vStakeSection.at(1399)->SetBuildStakePtr(true); // 已经在证券池中建立了
-
-  m_lTotalStake = m_lTotalStock = m_vChinaMarketStock.size();
-  ASSERT(m_lTotalStock == m_iDayLineNeedUpdate);
-  ASSERT(m_iDayLineNeedUpdate == m_lTotalStock); // 总查询股票数为总股票数（12000）。
-  ASSERT(m_lTotalStock == 12000); // 固定股票代码总数为12000个。
-  ASSERT(m_mapChinaMarketAStock.size() == 12000);
-  return true;
+  m_vStakeSection.at(iCode / 1000 + iMarket)->SetBuildStakePtr(true); // 已经在证券池中建立了
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3435,7 +3339,7 @@ void CChinaMarket::CreateStakeSection(CStakeSectionPtr pStakeSection) {
     pStake->SetActive(false);
     pStake->SetIPOStatus(__STAKE_NOT_CHECKED__);
     pStake->SetMarket(pStakeSection->GetMarket());
-    pStake->SetNeedProcessRTData(true);
+    pStake->SetNeedProcessRTData(false); // 其他证券无需计算实时交易情况
     if (pStakeSection->GetMarket() == __SHANGHAI_MARKET__) {
       strStakeCode = _T("sh");
       sprintf_s(buffer, _T("%06d"), (pStakeSection->GetIndexNumber() * 1000 + i));
