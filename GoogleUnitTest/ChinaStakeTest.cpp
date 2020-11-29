@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
       gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
       gl_pChinaStakeMarket->CalculateTime();
-      gl_pChinaStakeMarket->SetUpdateStockCodeDB(false);
+      gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false);
       gl_pChinaStakeMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();

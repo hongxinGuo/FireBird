@@ -13,7 +13,7 @@ namespace StockAnalysisTest {
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
-      EXPECT_FALSE(CMFCVisualManager::GetInstance() != NULL);//
+      EXPECT_TRUE(CMFCVisualManager::GetInstance() == NULL);//
       s_pMainFrame = new CMockMainFrame;
       EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
 
@@ -33,7 +33,7 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingMarket->SetResetMarket(true);
       gl_pChinaStakeMarket->SetCurrentStockChanged(false);
       gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
-      gl_pChinaStakeMarket->SetUpdateStockCodeDB(false); // 这里使用了实际的数据库，故而不允许更新
+      gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false); // 这里使用了实际的数据库，故而不允许更新
       gl_pChinaStakeMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);

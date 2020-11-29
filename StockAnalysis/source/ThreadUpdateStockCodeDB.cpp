@@ -11,10 +11,10 @@
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket) {
+UINT ThreadUpdateStakeCodeDB(not_null<CChinaMarket*> pMarket) {
   //
   gl_ThreadStatus.IncreaseRunningThread();
-  pMarket->UpdateStockCodeDB();
+  pMarket->UpdateStakeCodeDB();
   gl_ThreadStatus.DecreaseRunningThread();
   return 18;
 }

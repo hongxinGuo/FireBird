@@ -877,7 +877,7 @@ bool CChinaStake::Calculate10RSStrongStockSet(const CRSReference* pRef) {
 bool CChinaStake::ProcessRTData(void) {
   CWebRTDataPtr pRTData;
 
-  INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
+  const INT64 lTotalNumber = GetRTDataQueueSize(); //  缓存队列的长度。采用同步机制获取其数值.
   if (lTotalNumber == 0) return false;
   // 以下为计算挂单变化、股票活跃度、大单买卖情况
   for (INT64 i = 0; i < lTotalNumber; i++) {
@@ -1544,12 +1544,12 @@ void CChinaStake::AppendStakeCodeDB(CSetStockCode& setStockCode) {
   setStockCode.Update();
 }
 
-bool CChinaStake::LoadStockCodeDB(CSetStockCode& setStockCode) {
+bool CChinaStake::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   SetStakeCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStakeName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
-  SetDayLineStartDate(setStockCode.m_DayLineStartDate);
+  m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }

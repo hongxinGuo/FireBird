@@ -85,7 +85,6 @@ public:
   bool TaskSaveChoicedRTData(void);
   bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
-  bool TaskSaveStakeCode(void); // 存储新找到的证券代码至数据库
   bool TaskSaveStakeSection(void); //
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
@@ -106,7 +105,7 @@ public:
   virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStakePtr pStake);
   virtual bool RunningThreadLoadDayLine(CChinaStakePtr pCurrentStock);
   virtual bool RunningThreadLoadWeekLine(CChinaStakePtr pCurrentStock);
-  virtual bool RunningThreadUpdateStockCodeDB(void);
+  virtual bool RunningThreadUpdateStakeCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
@@ -121,7 +120,6 @@ public:
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
-  virtual bool RunningThreadSaveStakeCode(void);
   virtual bool RunningThreadSaveStakeSection(void);
   // interface function
 public:
@@ -195,12 +193,12 @@ public:
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-  virtual bool UpdateStockCodeDB(void);
+  virtual bool UpdateStakeCodeDB(void);
   void LoadStakeSection(void);
   void CreateStakeSection(CStakeSectionPtr pStakeSection);
   void LoadStockCodeDB(void);
-  void LoadActiveStakeCodeDB(void);
   void UpdateStakeSection(CStakeCodePtr pStakeCode);
+  void UpdateStakeSectionByStakeCodeDB(void);
   void UpdateStakeSection(CWebRTDataPtr pRTData);
 
   virtual bool UpdateOptionDB(void);
@@ -217,12 +215,12 @@ public:
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
-  virtual bool SaveStakeCode(void);
   virtual bool SaveStakeSection(void);
 
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
   bool DeleteWeekLineExtendInfo(void);
+  bool DeleteStakeCodeDB(void);
   bool DeleteWeekLine(long lMonday);
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
@@ -299,8 +297,8 @@ public:
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
 
-  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketAStock.size(); }
-  long GetStockOffset(CString str) { return m_mapChinaMarketAStock.at(str); }
+  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketStake.size(); }
+  long GetStockOffset(CString str) { return m_mapChinaMarketStake.at(str); }
 
   void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
   CString GetStockCodeForInquiringRTData(void) { return m_strStockCodeForInquiringRTData; }
@@ -404,8 +402,8 @@ public:
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
-  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
-  bool IsUpdateStockCodeDB(void) noexcept { const bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
+  void SetUpdateStakeCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
+  bool IsUpdateStakeCodeDB(void) noexcept { const bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
   bool IsUpdateOptionDB(void) noexcept { const bool fFlag = m_fUpdateOptionDB; return fFlag; }
   void SetUpdateChoicedStockDB(bool fFlag) noexcept { m_fUpdateChoicedStockDB = fFlag; }
@@ -454,8 +452,8 @@ protected:
   long m_lTotalStakeCode; // 当前证券代码总数
   long m_lTotalStakeCodeLastTime; // 上次（数据库中的）证券代码总数
 
-  vector<CChinaStakePtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
-  map<CString, long> m_mapChinaMarketAStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+  vector<CChinaStakePtr> m_vChinaMarketStake; // 本系统允许的所有股票池（无论代码是否存在）
+  map<CString, long> m_mapChinaMarketStake; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lTotalStake; // 证券代码总数（前12000个为股票代码，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数

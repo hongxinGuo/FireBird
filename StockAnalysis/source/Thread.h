@@ -57,7 +57,7 @@ UINT ThreadLoadDayLine(not_null<CChinaStakePtr> pStake);        // ´Ë¹¤×÷Ïß³Ì·µ»
 // Î¬»¤ÈÕÏßÊı¾İ¿âÏß³Ì£¨ÉĞÎ´ÊµÏÖ£©
 UINT ThreadMaintainDayLineDataBase(void);   // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª17
 //¸üĞÂ¹ÉÆ±´úÂëÊı¾İ¿âÏß³Ì
-UINT ThreadUpdateStockCodeDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª18
+UINT ThreadUpdateStakeCodeDB(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª18
 //´æ´¢ËùÑ¡¹ÉÆ±ÊµÊ±Êı¾İÏß³Ì
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket); // ´ËÏß³Ì·µ»ØÖµÎª19
 // ¸üĞÂÑ¡ÏîÊı¾İ¿â
@@ -84,8 +84,6 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate); /
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª32
 // ÖØ½¨µ±Ç°ÖÜµÄÖÜÏßÊı¾İ±í
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª33
-// ´æ´¢Ö¤È¯´úÂëÖÁÊı¾İ¿â
-UINT ThreadSaveStakeCode(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª34
 // ´æ´¢Ö¤È¯´úÂë¶ÎË÷Òı
 UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
 

@@ -28,7 +28,7 @@ protected:
   CString m_strComment; // 注释
 
   // 无需存储数据
-  bool m_fBuildStakePtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStock中）。
+  bool m_fBuildStakePtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStake中）。
 };
 
 typedef shared_ptr<CStakeSection> CStakeSectionPtr;

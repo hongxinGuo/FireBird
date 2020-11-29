@@ -16,7 +16,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadSaveTempRTData, (), (override));
     MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStakePtr pStake), (override));
     MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStakePtr pCurrentStock), (override));
-    MOCK_METHOD(bool, RunningThreadUpdateStockCodeDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateStakeCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, RunningThreadChoice10RSStrong2StockSet, (), (override));
@@ -30,11 +30,10 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));
-    MOCK_METHOD(bool, RunningThreadSaveStakeCode, (), (override));
     MOCK_METHOD(bool, RunningThreadSaveStakeSection, (), (override));
 
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
-    MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
+    MOCK_METHOD(bool, UpdateStakeCodeDB, (), (override));
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));
@@ -45,7 +44,6 @@ namespace testing {
     MOCK_METHOD(bool, BuildDayLineRSOfDate, (long lDate), (override));
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
-    MOCK_METHOD(bool, SaveStakeCode, (), (override));
     MOCK_METHOD(bool, SaveStakeSection, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDate, (long lDate), (override));
   };

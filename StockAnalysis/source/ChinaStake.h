@@ -322,7 +322,7 @@ public:
   void LoadTempInfo(const CSetDayLineToday& setDayLineToday);
   void SaveStakeCodeDB(CSetStockCode& setStockCode);
   void AppendStakeCodeDB(CSetStockCode& setStockCode);
-  bool LoadStockCodeDB(CSetStockCode& setStockCode);
+  bool LoadStockCodeDB(const CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
   //周线历史数据存取
   virtual bool LoadWeekLine();
