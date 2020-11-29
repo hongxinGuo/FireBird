@@ -307,14 +307,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CMainFrame::SchedulingTask(void) {
-  for (auto pVirtualMarket : gl_vMarketPtr) {
+  for (auto& pVirtualMarket : gl_vMarketPtr) {
     if (pVirtualMarket->IsReadyToRun()) pVirtualMarket->SchedulingTask();
   }
   return true;
 }
 
 bool CMainFrame::ResetMarket(void) {
-  for (auto pMarket : gl_vMarketPtr) {
+  for (auto& pMarket : gl_vMarketPtr) {
     if (pMarket->IsResetMarket()) {
       pMarket->ResetMarket();
       pMarket->SetResetMarket(false);
@@ -324,7 +324,7 @@ bool CMainFrame::ResetMarket(void) {
 }
 
 bool CMainFrame::IsNeedResetMarket(void) {
-  for (auto pMarket : gl_vMarketPtr) {
+  for (auto& pMarket : gl_vMarketPtr) {
     if (pMarket->IsResetMarket()) return true;
   }
   return false;
@@ -730,7 +730,7 @@ void CMainFrame::OnRebuildDayLineRS() {
 
 void CMainFrame::OnBuildResetMarket() {
   // TODO: Add your command handler code here
-  for (auto pMarket : gl_vMarketPtr) {
+  for (auto& pMarket : gl_vMarketPtr) {
     pMarket->SetResetMarket(true);
   }
 }

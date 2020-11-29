@@ -96,6 +96,9 @@ public:
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockHistoryData(void);
 
+  // 调整网易日线线程数任务
+  bool TaskAdjustNeteaseDayLineThreadsNumber(void);
+
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);

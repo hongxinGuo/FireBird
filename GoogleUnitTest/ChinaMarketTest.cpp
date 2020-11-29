@@ -274,11 +274,11 @@ namespace StockAnalysisTest {
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(0);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySecond, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread())
       .Times(0);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryThird, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry3, StartReadingThread())
       .Times(0);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry4, StartReadingThread())
       .Times(0);
     EXPECT_FALSE(gl_pChinaStakeMarket->TaskGetNeteaseDayLineFromWeb());
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(10);
@@ -297,11 +297,11 @@ namespace StockAnalysisTest {
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(0);
     EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry, StartReadingThread())
       .Times(1);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquirySecond, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry2, StartReadingThread())
       .Times(1);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryThird, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry3, StartReadingThread())
       .Times(1);
-    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiryFourth, StartReadingThread())
+    EXPECT_CALL(*gl_pNeteaseDayLineWebInquiry4, StartReadingThread())
       .Times(1);
     EXPECT_FALSE(gl_pChinaStakeMarket->TaskGetNeteaseDayLineFromWeb());
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(10);

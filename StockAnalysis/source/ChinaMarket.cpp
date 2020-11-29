@@ -1401,6 +1401,9 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   // 装载当前股票日线数据
   TaskLoadCurrentStockHistoryData();
 
+  // 调整读取网易日线线程数
+  TaskAdjustNeteaseDayLineThreadsNumber();
+
   return true;
 }
 
@@ -2503,6 +2506,32 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
     }
   }
   else i--;
+  return true;
+}
+
+bool CChinaMarket::TaskAdjustNeteaseDayLineThreadsNumber(void) {
+  static int s_iCount = 10;
+  static long s_lTotalByteReaded = 0;
+  long lByteReaded = gl_pSinaRTWebInquiry->GetTotalByteReaded();
+  if (lByteReaded > 800 * 1024) {
+    gl_cMaxSavingOneDayLineThreads = 4;
+    s_iCount = 10;
+    s_lTotalByteReaded = 0;
+  }
+  else if (lByteReaded > 400 * 1024) {
+    gl_cMaxSavingOneDayLineThreads = 6;
+    s_iCount = 10;
+    s_lTotalByteReaded = 0;
+  }
+  else {
+    s_lTotalByteReaded += lByteReaded;
+    s_iCount--;
+    if (s_iCount < 0) {
+      if ((s_lTotalByteReaded < 200 * 1024) && (gl_cMaxSavingOneDayLineThreads < 16)) gl_cMaxSavingOneDayLineThreads += 2;
+      s_iCount = 10;
+      s_lTotalByteReaded = 0;
+    }
+  }
   return true;
 }
 

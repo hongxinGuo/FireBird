@@ -2,6 +2,8 @@
 
 #include "ChinaMarket.h"
 
+int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
+
 CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 
 CThreadStatus gl_ThreadStatus; // 系统中的各种状态，被各个工作线程所使用
