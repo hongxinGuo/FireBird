@@ -1695,13 +1695,13 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
   }
 
-  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
+  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate3) {
     CDayLinePtr pid;
     CChinaStake stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 1; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
@@ -1723,12 +1723,49 @@ namespace StockAnalysisTest {
       pStake->StoreDayLine(pid);
     }
     pStake->SetStakeCode(_T("sh600008"));
-    pStake->SetDayLineStartDate(19900100);
+    pStake->SetDayLineStartDate(19900101);
     pStake->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
     pStake->UpdateDayLineStartEndDate();
     EXPECT_EQ(pStake->GetDayLineEndDate(), 20800102);
-    EXPECT_EQ(pStake->GetDayLineStartDate(), 19900100);
+    EXPECT_EQ(pStake->GetDayLineStartDate(), 19900101 + 100000) << _T("当起始日期为19900101时，需要更新之");
+    EXPECT_TRUE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
+  }
+
+  TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
+    CDayLinePtr pid;
+    CChinaStake stake;
+
+    pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+
+    for (int i = 1; i < 10; i++) {
+      pid = make_shared<CDayLine>();
+      pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
+      pid->SetMarket(__SHANGHAI_MARKET__);
+      pid->SetStakeCode(_T("sh600008"));
+      pid->SetStakeName(_T("首创股份"));
+      pid->SetLastClose(34235345);
+      pid->SetOpen(1000000 + i);
+      pid->SetHigh(45234543);
+      pid->SetLow(3452345);
+      pid->SetClose(452435);
+      pid->SetVolume(34523454);
+      pid->SetAmount(3245235345);
+      pid->SetUpDown(((double)pid->GetClose() - pid->GetLastClose()) / 1000);
+      pid->SetUpDownRate(123.45);
+      pid->SetTotalValue(234523452345);
+      pid->SetCurrentValue(234145345245);
+      pid->SetChangeHandRate(54.321);
+      pid->SetRS(14.5);
+      pStake->StoreDayLine(pid);
+    }
+    pStake->SetStakeCode(_T("sh600008"));
+    pStake->SetDayLineStartDate(19900102);
+    pStake->SetDayLineEndDate(20800102);
+    ASSERT(!gl_fNormalMode);
+    pStake->UpdateDayLineStartEndDate();
+    EXPECT_EQ(pStake->GetDayLineEndDate(), 20800102);
+    EXPECT_EQ(pStake->GetDayLineStartDate(), 19900102);
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
   }
 

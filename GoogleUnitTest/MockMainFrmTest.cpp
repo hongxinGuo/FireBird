@@ -13,7 +13,7 @@ namespace StockAnalysisTest {
   class CMockMainFrameTest : public ::testing::Test {
   public:
     static void SetUpTestSuite(void) {
-      EXPECT_TRUE(CMFCVisualManager::GetInstance() == NULL);//
+      EXPECT_FALSE(CMFCVisualManager::GetInstance() == NULL);//
       s_pMainFrame = new CMockMainFrame;
       EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
 

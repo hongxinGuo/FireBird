@@ -9,8 +9,6 @@ enum {
 
 #include"stdafx.h"
 
-#include"SetStakeCode.h"
-
 using namespace std;
 #include<memory>
 

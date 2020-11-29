@@ -6,7 +6,6 @@
 #include"ChinaMarket.h"
 #include"ChinaStake.h"
 
-#include"SetStakeCode.h"
 #include"SetOption.h"
 #include"SetWeekLineInfo.h"
 

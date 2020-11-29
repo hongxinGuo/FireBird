@@ -13,7 +13,6 @@
 #include"ChinaMarket.h"
 #include"ChinaStake.h"
 
-#include"SetStakeCode.h"
 #include"WebInquirer.h"
 
 #include"MockNeteaseDayLineWebInquiry.h"

@@ -258,9 +258,6 @@
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataBase\SetStakeCode.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\SinaStakeRTWebInquiry.h">
       <Filter>头文件\China Stock Market\网络通信</Filter>
     </ClInclude>
@@ -502,9 +499,6 @@
     </ClCompile>
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DataBase\SetStakeCode.cpp">
-      <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadSinaStakeRTData.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>

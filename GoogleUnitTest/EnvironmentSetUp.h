@@ -16,7 +16,6 @@
 #include"MockChinaMarket.h"
 using namespace testing;
 
-#include"SetStakeCode.h"
 #include"WebInquirer.h"
 
 using namespace std;
@@ -65,7 +64,7 @@ namespace StockAnalysisTest {
 
       CChinaStakePtr pStake = nullptr;
       // 重置股票池状态（因已装入实际状态）
-      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
+      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStake(); i++) {
         pStake = gl_pChinaStakeMarket->GetStock(i);
         pStake->SetDayLineEndDate(-1);
         EXPECT_TRUE(pStake->IsDayLineNeedUpdate());
@@ -78,7 +77,6 @@ namespace StockAnalysisTest {
       setStockCode.Open();
       while (!setStockCode.IsEOF()) {
         pStake = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
-        EXPECT_FALSE(pStake->IsActive());
         pStake->SetIPOStatus(setStockCode.m_IPOStatus);
         pStake->SetMarket(setStockCode.m_StockType);
         pStake->SetStakeCode(setStockCode.m_StockCode);
@@ -91,6 +89,9 @@ namespace StockAnalysisTest {
         if (setStockCode.m_IPOStatus == __STAKE_IPOED__) {
           pStake->SetActive(true);
           gl_pChinaStakeMarket->IncreaseActiveStockNumber();
+        }
+        else {
+          //EXPECT_FALSE(pStake->IsActive());
         }
         setStockCode.MoveNext();
       }

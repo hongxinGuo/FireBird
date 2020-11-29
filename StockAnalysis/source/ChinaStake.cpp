@@ -460,7 +460,7 @@ void CChinaStake::UpdateDayLineStartEndDate(void) {
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
-    if (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
+    if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
       SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
     }

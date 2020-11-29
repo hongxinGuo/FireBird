@@ -20,7 +20,6 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
-#include"SetStakeCode.h"
 #include"SetStakeSection.h"
 
 #include"SetWeekLineInfo.h"

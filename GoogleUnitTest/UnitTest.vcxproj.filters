@@ -506,9 +506,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaStakeRTData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveStakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -764,9 +761,6 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeCode.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h">
