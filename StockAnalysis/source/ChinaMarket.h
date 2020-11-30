@@ -96,9 +96,6 @@ public:
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockHistoryData(void);
 
-  // 调整网易日线线程数任务
-  bool TaskAdjustNeteaseDayLineThreadsNumber(void);
-
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);
@@ -198,9 +195,9 @@ public:
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStakeCodeDB(void);
   void LoadStakeSection(void);
+  void CreateStakeSet(void);
   void CreateStakeSection(CStakeSectionPtr pStakeSection);
   void LoadStockCodeDB(void);
-  void UpdateStakeSection(CStakeCodePtr pStakeCode);
   void UpdateStakeSectionByStakeCodeDB(void);
   void UpdateStakeSection(CWebRTDataPtr pRTData);
 

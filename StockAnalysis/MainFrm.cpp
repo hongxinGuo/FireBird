@@ -113,6 +113,7 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
   m_lCurrentPos = 0;
   m_timeLast = 0;
+  m_fForceSaveStakeCode = false;
 }
 
 CMainFrame::~CMainFrame() {
@@ -138,7 +139,10 @@ CMainFrame::~CMainFrame() {
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-  if (gl_pChinaStakeMarket->IsUpdateStakeCodeDB()) {
+  if (m_fForceSaveStakeCode) {
+    gl_pChinaStakeMarket->UpdateStakeCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+  }
+  else if (gl_pChinaStakeMarket->IsUpdateStakeCodeDB()) {
     gl_pChinaStakeMarket->UpdateStakeCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 

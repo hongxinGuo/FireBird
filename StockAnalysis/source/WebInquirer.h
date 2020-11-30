@@ -34,32 +34,6 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry7; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry8; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry9; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry10; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry11; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry12; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry13; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry14; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry15; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry16; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry17; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry18; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry19; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry20; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry21; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry22; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry23; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry24; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry25; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry26; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry27; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry28; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry29; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry30; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry31; // 网易日线历史数据
-extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry32; // 网易日线历史数据
 #else
 #include"SinaRTWebInquiry.h"
 #include"SinaStakeRTWebInquiry.h"
@@ -81,32 +55,6 @@ extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日线历
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry7; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry8; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry9; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry10; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry11; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry12; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry13; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry14; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry15; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry16; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry17; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry18; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry19; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry20; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry21; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry22; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry23; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry24; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry25; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry26; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry27; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry28; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry29; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry30; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry31; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry32; // 网易日线历史数据
 #endif
 
 class CWebInquirer : public CObject {

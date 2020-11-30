@@ -64,6 +64,8 @@ public:
 #endif
 
 protected:
+  bool m_fForceSaveStakeCode;
+
   UINT m_uIdTimer;
   long m_lCurrentPos;
   time_t m_timeLast;

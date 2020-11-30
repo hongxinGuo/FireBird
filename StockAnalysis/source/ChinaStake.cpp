@@ -271,6 +271,10 @@ bool CChinaStake::ProcessNeteaseDayLineData(void) {
   return true;
 }
 
+void CChinaStake::ResetTempDayLineDataBuffer(void) {
+  m_vDayLineBuffer.resize(0);
+}
+
 bool CChinaStake::SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos) {
   ASSERT(lCurrentPos == 0);
   while (m_vDayLineBuffer.at(lCurrentPos) != 0X0d) { // я╟ур\r

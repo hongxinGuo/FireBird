@@ -97,6 +97,7 @@ void CChinaMarket::ResetMarket(void) {
   ASSERT(m_mapChinaMarketStake.size() == gl_pChinaStakeMarket->GetTotalStock()); // 读入数据库前，要保证已经装载了预先设置的股票代码
   UpdateStakeSectionByStakeCodeDB();
   LoadStakeSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
+  CreateStakeSet();
   LoadStockCodeDB(); // 装入股票代码。(准备修改这个数据集，在12000个股票后，加入其他的证券)
   LoadOptionDB();
   LoadOptionChinaStockMarketDB();
@@ -932,7 +933,7 @@ bool CChinaMarket::TaskProcessRTData(void) {
   ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
   ASSERT(!gl_ThreadStatus.IsSavingTempData()); // 此两个线程互斥
   for (auto& pStake : m_vChinaMarketStake) {
-    if (pStake->IsActive() && pStake->IsNeedProcessRTData()) {
+    if (pStake->IsActive()) {
       pStake->ProcessRTData();
     }
   }
@@ -1401,9 +1402,6 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   // 装载当前股票日线数据
   TaskLoadCurrentStockHistoryData();
 
-  // 调整读取网易日线线程数
-  TaskAdjustNeteaseDayLineThreadsNumber();
-
   return true;
 }
 
@@ -1532,7 +1530,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 }
 
 bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
-  if (((lCurrentTime >= 91500) && (lCurrentTime < 92900)) || ((lCurrentTime >= 113100) && (lCurrentTime < 125900))) {
+  if (((lCurrentTime >= 91500) && (lCurrentTime < 92700))
+      || ((lCurrentTime >= 113300) && (lCurrentTime < 125900))
+      || (lCurrentTime > 150300)) {
     m_fCheckActiveStock = true;
     return true;
   }
@@ -2486,6 +2486,7 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   for (auto& pStake : m_vChinaMarketStake) {
     if (pStake->IsDayLineNeedProcess()) {
       pStake->ProcessNeteaseDayLineData();
+      pStake->ResetTempDayLineDataBuffer();
     }
   }
   return true;
@@ -2506,32 +2507,6 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
     }
   }
   else i--;
-  return true;
-}
-
-bool CChinaMarket::TaskAdjustNeteaseDayLineThreadsNumber(void) {
-  static int s_iCount = 10;
-  static long s_lTotalByteReaded = 0;
-  long lByteReaded = gl_pSinaRTWebInquiry->GetTotalByteReaded();
-  if (lByteReaded > 800 * 1024) {
-    gl_cMaxSavingOneDayLineThreads = 4;
-    s_iCount = 10;
-    s_lTotalByteReaded = 0;
-  }
-  else if (lByteReaded > 400 * 1024) {
-    gl_cMaxSavingOneDayLineThreads = 6;
-    s_iCount = 10;
-    s_lTotalByteReaded = 0;
-  }
-  else {
-    s_lTotalByteReaded += lByteReaded;
-    s_iCount--;
-    if (s_iCount < 0) {
-      if ((s_lTotalByteReaded < 200 * 1024) && (gl_cMaxSavingOneDayLineThreads < 16)) gl_cMaxSavingOneDayLineThreads += 2;
-      s_iCount = 10;
-      s_lTotalByteReaded = 0;
-    }
-  }
   return true;
 }
 
@@ -3328,19 +3303,23 @@ void CChinaMarket::LoadStakeSection(void) {
   setStakeSection.Open();
   while (!setStakeSection.IsEOF()) {
     if (!m_vStakeSection.at(setStakeSection.m_IndexNumber)->IsActive()) {
-      if (setStakeSection.m_Active) SetUpdateStakeCodeDB(true);
       m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetActive(setStakeSection.m_Active);
       m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetMarket(setStakeSection.m_Market);
       m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetIndexNumber(setStakeSection.m_IndexNumber);
       m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetComment(setStakeSection.m_Comment);
     }
-    if (m_vStakeSection.at(setStakeSection.m_IndexNumber)->IsActive() && !m_vStakeSection.at(setStakeSection.m_IndexNumber)->IsBuildStakePtr()) {
-      CreateStakeSection(m_vStakeSection.at(setStakeSection.m_IndexNumber)); // 生成新的证券段。
-      m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetBuildStakePtr(true);
-    }
     setStakeSection.MoveNext();
   }
   setStakeSection.Close();
+}
+
+void CChinaMarket::CreateStakeSet(void) {
+  for (auto& pStakeCode : m_vStakeSection) {
+    if (pStakeCode->IsActive() && !pStakeCode->IsBuildStakePtr()) {
+      CreateStakeSection(pStakeCode); // 生成新的证券段。
+      pStakeCode->SetBuildStakePtr(true);
+    }
+  }
 }
 
 void CChinaMarket::CreateStakeSection(CStakeSectionPtr pStakeSection) {
@@ -3421,22 +3400,6 @@ void CChinaMarket::UpdateStakeSectionByStakeCodeDB(void) {
   }
 
   setStockCode.Close();
-}
-
-void CChinaMarket::UpdateStakeSection(CStakeCodePtr pStakeCode) {
-  CString strMarket = pStakeCode->GetStakeCode().Left(2);
-  CString strCode = pStakeCode->GetStakeCode().Right(6);
-  long lIndex = atoi(strCode.GetBuffer()) / 1000;
-  if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
-  }
-  else if (strMarket.Compare(_T("sz")) == 0) {
-    lIndex += 1000;
-  }
-  if (!m_vStakeSection.at(lIndex)) m_fUpdateStakeSection = true;
-  m_vStakeSection.at(lIndex)->SetActive(true);
-  if (m_fUpdateStakeSection) {
-    CreateStakeSection(m_vStakeSection.at(lIndex));
-  }
 }
 
 void CChinaMarket::UpdateStakeSection(CWebRTDataPtr pRTData) {
