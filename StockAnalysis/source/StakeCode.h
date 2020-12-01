@@ -9,6 +9,8 @@ enum {
 
 #include"stdafx.h"
 
+#include"SetStakeCode.h"
+
 using namespace std;
 #include<memory>
 
@@ -16,6 +18,9 @@ class CStakeCode : public CObject {
 public:
   CStakeCode();
   ~CStakeCode(void);
+
+  void LoadStakeCodeDB(CSetStakeCode& setStakeCode);
+  void SaveToStakeCodeDB(CSetStakeCode& setStakeCode);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }

@@ -1742,13 +1742,13 @@ bool CChinaMarket::TaskSaveStakeCode(void) {
 bool CChinaMarket::SaveStakeCode(void) {
   long lTotalStakeCode = m_lTotalStakeCode;
   CSetStakeCode setStakeCode;
-  CStakeCodePtr pStake = nullptr;
+  CStakeCodePtr pStakeCode = nullptr;
   if (lTotalStakeCode > m_lTotalStakeCodeLastTime) { // 找到了新证券代码
     setStakeCode.Open();
     setStakeCode.m_pDatabase->BeginTrans();
     for (long l = m_lTotalStakeCodeLastTime; l < lTotalStakeCode; l++) {
-      pStake = m_vChinaMarketActiveStakeCode.at(l);
-      pStake->SaveToStakeCodeDB(setStakeCode);
+      pStakeCode = m_vChinaMarketActiveStakeCode.at(l);
+      pStakeCode->SaveToStakeCodeDB(setStakeCode);
     }
     setStakeCode.m_pDatabase->CommitTrans();
     setStakeCode.Close();
