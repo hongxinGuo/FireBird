@@ -1099,13 +1099,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStakeMarket->IsCheckActiveStock());
     gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(91500);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCheckActiveStock());
-    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(92859);
+    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(92659);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCheckActiveStock());
-    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(92900);
+    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(92700);
     EXPECT_FALSE(gl_pChinaStakeMarket->IsCheckActiveStock());
     gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(113059);
     EXPECT_FALSE(gl_pChinaStakeMarket->IsCheckActiveStock());
-    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(113100);
+    gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(113300);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCheckActiveStock());
     gl_pChinaStakeMarket->TaskSetCheckActiveStockFlag(125859);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCheckActiveStock());

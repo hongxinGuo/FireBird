@@ -84,6 +84,8 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate); /
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为32
 // 重建当前周的周线数据表
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为33
+// 存储证券代码至数据库
+UINT ThreadSaveStakeCode(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为34
 // 存储证券代码段索引
 UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为35
 

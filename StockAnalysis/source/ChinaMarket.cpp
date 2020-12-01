@@ -20,6 +20,7 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
+#include"SetStakeCode.h"
 #include"SetStakeSection.h"
 
 #include"SetWeekLineInfo.h"
@@ -1732,6 +1733,30 @@ bool CChinaMarket::TaskClearChoicedRTDataSet(long lCurrentTime) {
   return true;
 }
 
+bool CChinaMarket::TaskSaveStakeCode(void) {
+  RunningThreadSaveStakeCode();
+
+  return true;
+}
+
+bool CChinaMarket::SaveStakeCode(void) {
+  long lTotalStakeCode = m_lTotalStakeCode;
+  CSetStakeCode setStakeCode;
+  CStakeCodePtr pStake = nullptr;
+  if (lTotalStakeCode > m_lTotalStakeCodeLastTime) { // 找到了新证券代码
+    setStakeCode.Open();
+    setStakeCode.m_pDatabase->BeginTrans();
+    for (long l = m_lTotalStakeCodeLastTime; l < lTotalStakeCode; l++) {
+      pStake = m_vChinaMarketActiveStakeCode.at(l);
+      pStake->SaveToStakeCodeDB(setStakeCode);
+    }
+    setStakeCode.m_pDatabase->CommitTrans();
+    setStakeCode.Close();
+    m_lTotalStakeCodeLastTime = lTotalStakeCode;
+  }
+  return true;
+}
+
 bool CChinaMarket::TaskSaveStakeSection(void) {
   RunningThreadSaveStakeSection();
   return true;
@@ -2657,6 +2682,13 @@ bool CChinaMarket::RunningThreadBuildWeekLineOfCurrentWeek(void) {
 
 bool CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable(void) {
   thread thread1(ThreadBuildCurrentWeekWeekLineTable, this);
+  thread1.detach();
+
+  return true;
+}
+
+bool CChinaMarket::RunningThreadSaveStakeCode(void) {
+  thread thread1(ThreadSaveStakeCode, this);
   thread1.detach();
 
   return true;

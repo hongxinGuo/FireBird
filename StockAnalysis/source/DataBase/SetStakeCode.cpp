@@ -1,57 +1,57 @@
-// SetStockCode.cpp : CSetStockCode 类的实现
+// SetStakeCode.cpp : CSetStakeCode 类的实现
 
-// CSetStockCode 实现
+// CSetStakeCode 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
 #include "stdafx.h"
-#include "SetStockCode.h"
+#include "SetStakeCode.h"
 #include"globedef.h"
 #include"accessory.h"
 
-IMPLEMENT_DYNAMIC(CSetStockCode, CRecordset)
+IMPLEMENT_DYNAMIC(CSetStakeCode, CRecordset)
 
-CSetStockCode::CSetStockCode(CDatabase* pdb)
+CSetStakeCode::CSetStakeCode(CDatabase* pdb)
   : CRecordset(pdb) {
-  m_StockType = 0;
-  m_StockCode = _T("");
-  m_StockName = _T("");
+  m_StakeType = 0;
+  m_StakeCode = _T("");
+  m_StakeName = _T("");
   m_DayLineStartDate = __CHINA_MARKET_BEGIN_DATE__;
   m_DayLineEndDate = __CHINA_MARKET_BEGIN_DATE__;
   m_IPOStatus = 0;
   m_nFields = 7;
 }
 
-CString CSetStockCode::GetDefaultConnect() {
+CString CSetStakeCode::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetStockCode::GetDefaultSQL() {
-  return _T("[StockCode]");
+CString CSetStakeCode::GetDefaultSQL() {
+  return _T("[StakeCode]");
 }
 
-void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
+void CSetStakeCode::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Int(pFX, _T("[StockType]"), m_StockType);
-  RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
-  RFX_Text(pFX, _T("[StockName]"), m_StockName);
+  RFX_Int(pFX, _T("[StakeType]"), m_StakeType);
+  RFX_Text(pFX, _T("[StakeCode]"), m_StakeCode);
+  RFX_Text(pFX, _T("[StakeName]"), m_StakeName);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
   RFX_Long(pFX, _T("[IPOed]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode 诊断
+// CSetStakeCode 诊断
 
 #ifdef _DEBUG
-void CSetStockCode::AssertValid() const {
+void CSetStakeCode::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetStockCode::Dump(CDumpContext& dc) const {
+void CSetStakeCode::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

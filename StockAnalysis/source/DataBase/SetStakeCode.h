@@ -1,15 +1,15 @@
-// SetStockCode.h : CSetStockCode 的声明
+// SetStakeCode.h : CSetStakeCode 的声明
 
 #pragma once
 #include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetStockCode : public CRecordset
+class CSetStakeCode : public CRecordset
 {
 public:
-  CSetStockCode(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetStockCode)
+  CSetStakeCode(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetStakeCode)
 
   // 字段/参数数据
 
@@ -22,9 +22,9 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  int	m_StockType;
-  CString	m_StockCode;
-  CStringW m_StockName;
+  int	m_StakeType;
+  CString	m_StakeCode;
+  CStringW m_StakeName;
   long m_DayLineStartDate;     // 从网易历史日线服务器上得到的初始交易日
   long m_DayLineEndDate;     // 从网易历史日线服务器上得到的最新日
   long m_IPOStatus;
