@@ -3,9 +3,9 @@
 #include "SetStakeSection.h"
 #include"accessory.h"
 
-// SetStakeCode.h : CSetStakeCode 类的实现
+// SetStakeCode.h : CSetStakeSection 类的实现
 
-// CSetStakeCode 实现
+// CSetStakeSection 实现
 
 // 代码生成在 2019年5月26日, 8:14
 

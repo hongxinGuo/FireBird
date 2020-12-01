@@ -223,7 +223,7 @@ public:
   bool CheckNeteaseRTDataActive(void);
   bool CheckSinaRTDataActive(void);
   bool CheckTengxunRTDataActive(void);
-  bool IsValidTime(void);
+  bool IsValidTime(long lDays);
   //void SetActive(bool fFlag)  { m_fActive = fFlag; }
   bool IsValidDataSource(void) noexcept { if (m_lDataSource != __INVALID_RT_WEB_DATA__) return true; else return false; }
 

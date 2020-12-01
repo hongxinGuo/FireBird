@@ -1,17 +1,17 @@
-// SetStakeCode.cpp : CSetStakeCode 类的实现
+// SetActiveStakeCode.cpp : CSetActiveStakeCode 类的实现
 
-// CSetStakeCode 实现
+// CSetActiveStakeCode 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
 #include "stdafx.h"
-#include "SetStakeCode.h"
+#include "SetActiveStakeCode.h"
 #include"globedef.h"
 #include"accessory.h"
 
-IMPLEMENT_DYNAMIC(CSetStakeCode, CRecordset)
+IMPLEMENT_DYNAMIC(CSetActiveStakeCode, CRecordset)
 
-CSetStakeCode::CSetStakeCode(CDatabase* pdb)
+CSetActiveStakeCode::CSetActiveStakeCode(CDatabase* pdb)
   : CRecordset(pdb) {
   m_StakeType = 0;
   m_StakeCode = _T("");
@@ -22,15 +22,15 @@ CSetStakeCode::CSetStakeCode(CDatabase* pdb)
   m_nFields = 7;
 }
 
-CString CSetStakeCode::GetDefaultConnect() {
+CString CSetActiveStakeCode::GetDefaultConnect() {
   return GetDefaultSchemaConnect();
 }
 
-CString CSetStakeCode::GetDefaultSQL() {
+CString CSetActiveStakeCode::GetDefaultSQL() {
   return _T("[StakeCode]");
 }
 
-void CSetStakeCode::DoFieldExchange(CFieldExchange* pFX) {
+void CSetActiveStakeCode::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -44,14 +44,14 @@ void CSetStakeCode::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[IPOed]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStakeCode 诊断
+// CSetActiveStakeCode 诊断
 
 #ifdef _DEBUG
-void CSetStakeCode::AssertValid() const {
+void CSetActiveStakeCode::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetStakeCode::Dump(CDumpContext& dc) const {
+void CSetActiveStakeCode::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -14,7 +14,7 @@ CStakeCode::CStakeCode() : CObject() {
 CStakeCode::~CStakeCode(void) {
 }
 
-void CStakeCode::LoadStakeCodeDB(CSetStakeCode& setStakeCode) {
+void CStakeCode::LoadActiveStakeCodeDB(CSetActiveStakeCode& setStakeCode) {
   m_wMarket = setStakeCode.m_StakeType;
   m_strStakeCode = setStakeCode.m_StakeCode;
   CString str = setStakeCode.m_StakeName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
@@ -27,7 +27,7 @@ void CStakeCode::LoadStakeCodeDB(CSetStakeCode& setStakeCode) {
   m_lIPOStatus = setStakeCode.m_IPOStatus;
 }
 
-void CStakeCode::SaveToStakeCodeDB(CSetStakeCode& setStakeCode) {
+void CStakeCode::SaveActiveStakeCodeDB(CSetActiveStakeCode& setStakeCode) {
   ASSERT(setStakeCode.IsOpen());
   setStakeCode.AddNew();
   setStakeCode.m_StakeType = m_wMarket;

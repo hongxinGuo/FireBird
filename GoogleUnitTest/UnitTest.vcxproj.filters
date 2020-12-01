@@ -527,6 +527,9 @@
     <ClCompile Include="ChinaStakeTest.cpp">
       <Filter>Test源文件\China Stock Market\Stock</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -774,6 +777,9 @@
     </ClInclude>
     <ClInclude Include="MockChinaStake.h">
       <Filter>Mock类\China Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h">
+      <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

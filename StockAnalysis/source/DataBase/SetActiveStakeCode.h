@@ -1,15 +1,15 @@
-// SetStakeCode.h : CSetStakeCode 的声明
+// SetStakeCode.h : CSetActiveStakeCode 的声明
 
 #pragma once
 #include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetStakeCode : public CRecordset
+class CSetActiveStakeCode : public CRecordset
 {
 public:
-  CSetStakeCode(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetStakeCode)
+  CSetActiveStakeCode(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetActiveStakeCode)
 
   // 字段/参数数据
 

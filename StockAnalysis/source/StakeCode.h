@@ -9,7 +9,7 @@ enum {
 
 #include"stdafx.h"
 
-#include"SetStakeCode.h"
+#include"SetActiveStakeCode.h"
 
 using namespace std;
 #include<memory>
@@ -19,8 +19,8 @@ public:
   CStakeCode();
   ~CStakeCode(void);
 
-  void LoadStakeCodeDB(CSetStakeCode& setStakeCode);
-  void SaveToStakeCodeDB(CSetStakeCode& setStakeCode);
+  void LoadActiveStakeCodeDB(CSetActiveStakeCode& setStakeCode);
+  void SaveActiveStakeCodeDB(CSetActiveStakeCode& setStakeCode);
 
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }

@@ -329,7 +329,12 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
     // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
-    CheckSinaRTDataActive();
+    if (IsValidTime(1)) {
+      m_fActive = true;
+    }
+    else {
+      m_fActive = false;
+    }
     SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
@@ -343,7 +348,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
 }
 
 bool CWebRTData::CheckSinaRTDataActive(void) {
-  if (IsValidTime()) m_fActive = true;
+  if (IsValidTime(14)) m_fActive = true;
   else m_fActive = false;
 
   return m_fActive;
@@ -537,6 +542,86 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
 
     pSinaWebRTData->IncreaseCurrentPos();
 
+    // 读入开盘价。放大一千倍后存储为长整型。其他价格亦如此。
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lOpen = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入前收盘价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lLastClose = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入当前价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lNew = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入最高价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lHigh = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入最低价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lLow = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入竞买价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lBuy = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入竞卖价
+    if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+      throw exception();
+    }
+    m_lSell = static_cast<long>((dTemp + 0.000001) * 1000);
+    // 读入成交股数。成交股数存储实际值
+    if (!ReadSinaOneValue(pSinaWebRTData, m_llVolume)) {
+      throw exception();
+    }
+    // 读入成交金额
+    if (!ReadSinaOneValue(pSinaWebRTData, m_llAmount)) {
+      throw exception();
+    }
+    // 读入买一--买五的股数和价格
+    for (int j = 0; j < 5; j++) {
+      // 读入数量
+      if (!ReadSinaOneValue(pSinaWebRTData, m_lVBuy.at(j))) {
+        throw exception();
+      }
+      // 读入价格
+      if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+        throw exception();
+      }
+      m_lPBuy.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+    }
+    // 读入卖一--卖五的股数和价格
+    for (int j = 0; j < 5; j++) {
+      // 读入数量
+      if (!ReadSinaOneValue(pSinaWebRTData, m_lVSell.at(j))) {
+        throw exception();
+      }
+      // 读入价格
+      if (!ReadSinaOneValue(pSinaWebRTData, dTemp)) {
+        throw exception();
+      }
+      m_lPSell.at(j) = static_cast<long>((dTemp + 0.000001) * 1000);
+    }
+    // 读入成交日期和时间
+    if (!ReadSinaOneValue(pSinaWebRTData, buffer1)) {
+      throw exception();
+    }
+    CString strTime;
+    strTime = buffer1;
+    strTime += ' '; //添加一个空格，以利于下面的转换
+    if (!ReadSinaOneValue(pSinaWebRTData, buffer3)) {
+      throw exception();
+    }
+    strTime += buffer3;
+    m_time = ConvertBufferToTime("%04d-%02d-%02d %02d:%02d:%02d", strTime.GetBuffer());
+
     // 后面的数据皆为无效数据，读至此数据的结尾处即可。
     while (pSinaWebRTData->GetCurrentPosData() != 0x00a) { // 寻找字符'\n'（回车符）
       pSinaWebRTData->IncreaseCurrentPos();
@@ -545,6 +630,12 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
       }
     }
     pSinaWebRTData->IncreaseCurrentPos(); // 读过字符'\n'
+    // 判断此实时数据是否有效，可以在此判断，结果就是今日有效股票数会减少（退市的股票有数据，但其值皆为零，而生成今日活动股票池时需要实时数据是有效的）。
+    // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
+    // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
+    // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
+    CheckSinaRTDataActive();
+    SetDataSource(__SINA_RT_WEB_DATA__);
     fValidStake = true;
     return true;
   }
@@ -553,6 +644,7 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
     CString str = m_strStakeCode;
     str += _T(" ReadSinaStakeData异常\n");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
+    fValidStake = false;
     return false;
   }
 }
@@ -853,7 +945,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
 }
 
 bool CWebRTData::CheckTengxunRTDataActive() {
-  if (!IsValidTime()) { // 如果交易时间在14天前
+  if (!IsValidTime(14)) { // 如果交易时间在14天前
     m_fActive = false;
   }
   else if ((m_lOpen == 0) && (m_llVolume == 0) && (m_lHigh == 0) && (m_lLow == 0)) { // 腾讯非活跃股票的m_lNew不为零，故而不能使用其作为判断依据
@@ -1035,7 +1127,7 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
 }
 
 bool CWebRTData::CheckNeteaseRTDataActive(void) {
-  if (!IsValidTime()) { // 非活跃股票的update时间为0，转换为time_t时为-1.
+  if (!IsValidTime(14)) { // 非活跃股票的update时间为0，转换为time_t时为-1.
     m_fActive = false;
   }
   else {
@@ -1342,8 +1434,8 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
 // 故而十四天内的数据都被认为是有效时间数据，这样能够保证生成当日活动股票集。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool CWebRTData::IsValidTime(void) {
-  if (m_time < (gl_pChinaStakeMarket->GetMarketTime() - 14 * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
+bool CWebRTData::IsValidTime(long lDays) {
+  if (m_time < (gl_pChinaStakeMarket->GetMarketTime() - lDays * 24 * 3600)) { // 确保实时数据不早于当前时间的14天前（春节放假最长为7天，加上前后的休息日，共十一天）
     return false;
   }
   else if (m_time > gl_pChinaStakeMarket->GetMarketTime()) {

@@ -13,8 +13,8 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadSaveStakeCode(not_null<CChinaMarket*> pMarket) {
-  pMarket->SaveStakeCode();
+UINT ThreadSaveActiveStakeCode(not_null<CChinaMarket*> pMarket) {
+  pMarket->SaveActiveStakeCode();
 
   return 34;
 }

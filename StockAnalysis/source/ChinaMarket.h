@@ -85,7 +85,7 @@ public:
   bool TaskSaveChoicedRTData(void);
   bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
-  bool TaskSaveStakeCode(void);
+  bool TaskSaveActiveStakeCode(void);
   bool TaskSaveStakeSection(void); //
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
@@ -121,7 +121,7 @@ public:
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
-  virtual bool RunningThreadSaveStakeCode(void);
+  virtual bool RunningThreadSaveActiveStakeCode(void);
   virtual bool RunningThreadSaveStakeSection(void);
   // interface function
 public:
@@ -196,6 +196,7 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStakeCodeDB(void);
+  void LoadStakeCodeDB(void);
   void LoadStakeSection(void);
   void CreateStakeSet(void);
   void CreateStakeSection(CStakeSectionPtr pStakeSection);
@@ -217,7 +218,7 @@ public:
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
-  virtual bool SaveStakeCode(void);
+  virtual bool SaveActiveStakeCode(void);
   virtual bool SaveStakeSection(void);
 
   bool DeleteWeekLine(void);

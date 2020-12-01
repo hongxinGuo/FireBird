@@ -202,6 +202,7 @@
     <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp" />
@@ -358,6 +359,7 @@
     <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />

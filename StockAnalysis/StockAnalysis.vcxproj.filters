@@ -273,7 +273,7 @@
     <ClInclude Include="source\StakeSection.h">
       <Filter>头文件\China Stock Market\基础数据类</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataBase\SetStakeCode.h">
+    <ClInclude Include="source\DataBase\SetActiveStakeCode.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
@@ -512,9 +512,6 @@
     <ClCompile Include="source\StakeCode.cpp">
       <Filter>源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadSaveStakeCode.cpp">
-      <Filter>源文件\China Stock Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaStake.cpp">
       <Filter>源文件\China Stock Market</Filter>
     </ClCompile>
@@ -524,8 +521,11 @@
     <ClCompile Include="source\DataBase\SetStakeSection.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\DataBase\SetStakeCode.cpp">
+    <ClCompile Include="source\DataBase\SetActiveStakeCode.cpp">
       <Filter>源文件\China Stock Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadSaveActiveStakeCode.cpp">
+      <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
