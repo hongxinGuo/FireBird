@@ -202,7 +202,6 @@ public:
   void CreateStakeSection(CStakeSectionPtr pStakeSection);
   void LoadStockCodeDB(void);
   void UpdateStakeSectionByStakeCodeDB(void);
-  void UpdateStakeSection(CWebRTDataPtr pRTData);
 
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);
@@ -435,6 +434,8 @@ protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStake。
   void CreateStakeSection(CString strFirstStockCode, bool fProcessRTData);
+  bool UpdateStakeSection(CString strStakeCode);
+  bool UpdateStakeSection(long lIndex);
 
 public:
 

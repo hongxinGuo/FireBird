@@ -329,12 +329,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
     // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
-    if (IsValidTime(1)) {
-      m_fActive = true;
-    }
-    else {
-      m_fActive = false;
-    }
+    CheckSinaRTDataActive();
     SetDataSource(__SINA_RT_WEB_DATA__);
     return true;
   }
@@ -634,7 +629,12 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
     // 0.03版本和其之前的都没有做判断，0.04版本还是使用不判断的这种吧。
     // 在系统准备完毕前就判断新浪活跃股票数，只使用成交时间一项，故而依然存在非活跃股票在其中。
     // 0.07版后，采用十四天内的实时数据为活跃股票数据（最长的春节放假七天，加上前后的休息日，共十天，宽限四天）
-    CheckSinaRTDataActive();
+    if (IsValidTime(1)) {
+      m_fActive = true;
+    }
+    else {
+      m_fActive = false;
+    }
     SetDataSource(__SINA_RT_WEB_DATA__);
     fValidStake = true;
     return true;
