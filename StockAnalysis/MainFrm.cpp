@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
   ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStakeSection)
+  ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStakeCode)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -113,7 +114,6 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
   m_lCurrentPos = 0;
   m_timeLast = 0;
-  m_fForceSaveStakeCode = false;
 }
 
 CMainFrame::~CMainFrame() {
@@ -139,10 +139,7 @@ CMainFrame::~CMainFrame() {
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-  if (m_fForceSaveStakeCode) {
-    gl_pChinaStakeMarket->UpdateStakeCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
-  }
-  else if (gl_pChinaStakeMarket->IsUpdateStakeCodeDB()) {
+  if (gl_pChinaStakeMarket->IsUpdateStakeCodeDB()) {
     gl_pChinaStakeMarket->UpdateStakeCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 
@@ -915,4 +912,9 @@ void CMainFrame::OnUpdateStakeSection() {
   // TODO: Add your command handler code here
   gl_pChinaStakeMarket->SetUpdateStakeSection(true);
   gl_pChinaStakeMarket->TaskSaveStakeSection();
+}
+
+void CMainFrame::OnUpdateStakeCode() {
+  // TODO: Add your command handler code here
+  gl_pChinaStakeMarket->RunningThreadUpdateStakeCodeDB();
 }

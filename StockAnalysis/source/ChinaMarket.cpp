@@ -95,9 +95,9 @@ void CChinaMarket::ResetMarket(void) {
   Reset();
 
   ASSERT(m_mapChinaMarketStake.size() == gl_pChinaStakeMarket->GetTotalStock()); // 读入数据库前，要保证已经装载了预先设置的股票代码
-  UpdateStakeSectionByStakeCodeDB();
-  LoadStakeSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
-  CreateStakeSet();
+  //UpdateStakeSectionByStakeCodeDB();
+  //LoadStakeSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
+  //CreateStakeSet();
   LoadStockCodeDB(); // 装入股票代码。(准备修改这个数据集，在12000个股票后，加入其他的证券)
   LoadOptionDB();
   LoadOptionChinaStockMarketDB();

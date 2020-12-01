@@ -64,8 +64,6 @@ public:
 #endif
 
 protected:
-  bool m_fForceSaveStakeCode;
-
   UINT m_uIdTimer;
   long m_lCurrentPos;
   time_t m_timeLast;
@@ -130,4 +128,5 @@ public:
   afx_msg void OnBuildRebuildCurrentWeekWeeklineTable();
   afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
   afx_msg void OnUpdateStakeSection();
+  afx_msg void OnUpdateStakeCode();
 };

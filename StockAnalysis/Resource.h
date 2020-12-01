@@ -106,6 +106,8 @@
 #define ID_MAINTAIN_DAYLINE             32871
 #define ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE 32874
 #define ID_UPDATE_SECTION_INDEX         32876
+#define ID_BUILD_32877                  32877
+#define ID_UPDATE_STAKE_CODE            32878
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -121,11 +123,11 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32877
+#define _APS_NEXT_COMMAND_VALUE         32879
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
