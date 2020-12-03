@@ -201,7 +201,6 @@ public:
   void CreateStakeSet(void);
   void CreateStakeSection(CStakeSectionPtr pStakeSection);
   void LoadStockCodeDB(void);
-  void UpdateStakeSectionByStakeCodeDB(void);
 
   virtual bool UpdateOptionDB(void);
   void LoadOptionDB(void);

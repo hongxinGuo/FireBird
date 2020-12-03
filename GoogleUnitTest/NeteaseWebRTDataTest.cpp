@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     time_t tt = mktime(&tm_);
     gl_pChinaStakeMarket->__TEST_SetMarketTime(tt);
     id.SetTransactionTime(tt);
-    EXPECT_TRUE(id.IsValidTime());
+    EXPECT_TRUE(id.IsValidTime(14));
     EXPECT_FALSE(id.CheckNeteaseRTDataActive());
     id.SetOpen(10);
     EXPECT_TRUE(id.CheckNeteaseRTDataActive());

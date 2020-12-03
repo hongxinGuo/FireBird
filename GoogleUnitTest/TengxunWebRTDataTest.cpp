@@ -53,13 +53,13 @@ namespace StockAnalysisTest {
     time_t tt2 = mktime(&tm_);
     gl_pChinaStakeMarket->__TEST_SetMarketTime(tt);
     id.SetTransactionTime(tt2);
-    EXPECT_FALSE(id.IsValidTime());
+    EXPECT_FALSE(id.IsValidTime(14));
     EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零,且无效时间";
     id.SetOpen(10);
     EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "无效时间";
     id.SetOpen(0);
     id.SetTransactionTime(tt);
-    EXPECT_TRUE(id.IsValidTime());
+    EXPECT_TRUE(id.IsValidTime(14));
     EXPECT_FALSE(id.CheckTengxunRTDataActive()) << "High,Low,Open,Volume皆为零";
     id.SetOpen(10);
     EXPECT_TRUE(id.CheckTengxunRTDataActive());

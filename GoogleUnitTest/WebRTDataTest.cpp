@@ -212,14 +212,14 @@ namespace StockAnalysisTest {
     gl_pChinaStakeMarket->__TEST_SetMarketTime(tt);
     CWebRTData data;
     data.SetTransactionTime(tt);
-    EXPECT_TRUE(data.IsValidTime());
+    EXPECT_TRUE(data.IsValidTime(14));
     data.SetTransactionTime(tt - 3600 * 24 * 14);
-    EXPECT_TRUE(data.IsValidTime());
+    EXPECT_TRUE(data.IsValidTime(14));
     data.SetTransactionTime(tt - 3600 * 24 * 14 - 1);
-    EXPECT_FALSE(data.IsValidTime());
+    EXPECT_FALSE(data.IsValidTime(14));
 
     data.SetTransactionTime(tt + 1);
-    EXPECT_FALSE(data.IsValidTime()) << _T("数据有问题：成交时间晚于当前时间");
+    EXPECT_FALSE(data.IsValidTime(14)) << _T("数据有问题：成交时间晚于当前时间");
   }
 
   TEST_F(CStockWebRTDataTest, TestCheckSinaRTDataMarket) {

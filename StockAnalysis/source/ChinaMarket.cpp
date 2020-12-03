@@ -96,9 +96,8 @@ void CChinaMarket::ResetMarket(void) {
   Reset();
 
   ASSERT(m_mapChinaMarketStake.size() == gl_pChinaStakeMarket->GetTotalStock()); // 读入数据库前，要保证已经装载了预先设置的股票代码
-  //UpdateStakeSectionByStakeCodeDB();
   LoadStakeSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
-  //CreateStakeSet();
+  //CreateStakeSet(); // 使用StakeSection生成有效证券集。（采用这种方法目前要生成136000个证券，导致初始化时间太长。考虑只装载当前活跃证券代码，这个只有不到4万）
   LoadStakeCodeDB();
   LoadStockCodeDB(); // 装入股票代码。(准备修改这个数据集，在12000个股票后，加入其他的证券)
   LoadOptionDB();
@@ -3451,37 +3450,6 @@ void CChinaMarket::LoadStockCodeDB(void) {
     str += _T("个股票需要检查日线数据");
     gl_systemMessage.PushInformationMessage(str);
   }
-  setStockCode.Close();
-}
-
-void CChinaMarket::UpdateStakeSectionByStakeCodeDB(void) {
-  CSetStockCode setStockCode;
-  char buffer[30]{ 0, 0, 0 };
-  CString strMarket = _T("");
-  CString strCode = _T("");
-  int iMarket = 0, iOffset = 0;
-
-  setStockCode.Open();
-  // 装入股票代码数据库
-  while (!setStockCode.IsEOF()) {
-    strMarket = setStockCode.m_StockCode.Left(2);
-    strCode = setStockCode.m_StockCode.Right(6);
-    if (strMarket.Compare(_T("sh")) == 0) iMarket = 0;
-    else iMarket = 1000;
-    iOffset = atoi(strCode.GetBuffer()) / 1000;
-    if (!m_vStakeSection.at(iMarket + iOffset)->IsActive()) {
-      m_vStakeSection.at(iMarket + iOffset)->SetActive(true);
-      if (strMarket.Compare(_T("sh")) == 0) {
-        m_vStakeSection.at(iMarket + iOffset)->SetMarket(__SHANGHAI_MARKET__);
-      }
-      else {
-        m_vStakeSection.at(iMarket + iOffset)->SetMarket(__SHENZHEN_MARKET__);
-      }
-      m_vStakeSection.at(iMarket + iOffset)->SetIndexNumber(iMarket + iOffset);
-    }
-    setStockCode.MoveNext();
-  }
-
   setStockCode.Close();
 }
 
