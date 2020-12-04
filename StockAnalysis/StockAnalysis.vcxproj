@@ -679,6 +679,7 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\AmericaStakeMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="source\CrweberIndex.h" />
@@ -704,6 +705,7 @@
     <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="source\DayLineContainer.h" />
+    <ClInclude Include="source\FinnHubWebInquiry.h" />
     <ClInclude Include="source\Guadan.h" />
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
@@ -746,6 +748,7 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
@@ -771,6 +774,7 @@
     <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp" />
     <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="source\DayLineContainer.cpp" />
+    <ClCompile Include="source\FinnHubWebInquiry.cpp" />
     <ClCompile Include="source\Guadan.cpp" />
     <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\NeteaseRTWebInquiry.cpp" />

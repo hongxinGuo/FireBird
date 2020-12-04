@@ -13,6 +13,7 @@
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
+#include"MockFinnHubWebInquiry.h"
 #include"MockChinaMarket.h"
 using namespace testing;
 
@@ -34,7 +35,9 @@ namespace StockAnalysisTest {
       gl_pChinaStakeMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
+      gl_pAmericaStakeMarket = make_shared<CAmericaStakeMarket>();
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
+      gl_vMarketPtr.push_back(gl_pAmericaStakeMarket); // 美国股票市场
       gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
@@ -49,6 +52,7 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
+      gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 #else
       gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
       gl_pSinaStakeRTWebInquiry = make_shared<CSinaStakeRTWebInquiry>();
@@ -60,6 +64,7 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiry3 = make_shared<CNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiry4 = make_shared<CNeteaseDayLineWebInquiry>();
+      gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 #endif
 
       CChinaStakePtr pStake = nullptr;
@@ -113,17 +118,21 @@ namespace StockAnalysisTest {
       gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquiry3 = nullptr; // 网易日线历史数据
       gl_pNeteaseDayLineWebInquiry4 = nullptr; // 网易日线历史数据
+      gl_pFinnhubWebInquiry = nullptr;
       gl_pPotenDailyBriefingWebInquiry = nullptr;
       gl_pCrweberIndexWebInquiry = nullptr;
+      gl_pFinnhubWebInquiry = nullptr;
 
       EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
       gl_vMarketPtr.clear();
+      gl_pAmericaStakeMarket = nullptr;
       gl_pChinaStakeMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
+      gl_pAmericaStakeMarket = nullptr;
     }
   };
 }

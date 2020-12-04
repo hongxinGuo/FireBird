@@ -49,7 +49,9 @@ public:
   void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
 
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
+  void SetInquiryingStrPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
+  void SetInquiryingStringSuffix(CString strSuffix) { m_strWebDataInquireSuffix = strSuffix; }
 
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }

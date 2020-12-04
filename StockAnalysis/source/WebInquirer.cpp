@@ -14,6 +14,7 @@ int gl_cMaxSavingOneDayLineThreads = 4; // ´Ë±äÁ¿È¡Öµ·¶Î§Îª1-4
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
+#include"MockFinnHubWebInquiry.h"
 using namespace testing;
 
 CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // ĞÂÀËÊµÊ±Êı¾İ²É¼¯
@@ -26,6 +27,7 @@ CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // ÍøÒ×
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
+CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr;
 #else
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
@@ -33,6 +35,7 @@ CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // ÍøÒ
 #include"NeteaseDayLineWebInquiry.h"
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
+#include"FinnHubWebInquiry.h"
 
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // ĞÂÀËÊµÊ±Êı¾İ²É¼¯
 CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry = nullptr;
@@ -44,6 +47,7 @@ CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // ÍøÒ×ÈÕÏß
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
+CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.ioÖ¤È¯ĞÅÏ¢
 #endif
 
 CWebInquirer::CWebInquirer(void) {

@@ -19,8 +19,6 @@ CSinaRTWebInquiry::~CSinaRTWebInquiry() {
 }
 
 bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
-  CWebRTDataPtr pRTData = nullptr;
-
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据

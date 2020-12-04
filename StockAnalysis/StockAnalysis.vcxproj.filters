@@ -76,6 +76,12 @@
     <Filter Include="源文件\China Stock Market\基础数据类">
       <UniqueIdentifier>{b513de86-de3e-4c50-b7fa-466fae532773}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\America Stake Market">
+      <UniqueIdentifier>{23275e11-b50c-4b14-9534-fa11e3ab2c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\America Stock Market">
+      <UniqueIdentifier>{85ee978d-cd8c-4997-9e78-b66061c85a83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -275,6 +281,12 @@
     </ClInclude>
     <ClInclude Include="source\DataBase\SetActiveStakeCode.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaStakeMarket.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\FinnHubWebInquiry.h">
+      <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="source\ThreadSaveActiveStakeCode.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaStakeMarket.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FinnHubWebInquiry.cpp">
+      <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

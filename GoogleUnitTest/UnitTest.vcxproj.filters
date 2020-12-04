@@ -82,6 +82,9 @@
     <Filter Include="Mock类\China Stock Market\基础数据类">
       <UniqueIdentifier>{df9f8197-f5ce-44f4-8616-dd43700ee158}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\America Stake Market">
+      <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -530,6 +533,12 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveActiveStakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\FinnHubWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -779,6 +788,15 @@
       <Filter>Mock类\China Stock Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockFinnHubWebInquiry.h">
+      <Filter>Mock类\America Stake Market</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaStakeMarket.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,6 +20,7 @@ extern int gl_cMaxSavingOneDayLineThreads;
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
+#include"MockFinnhubWebInquiry.h"
 using namespace testing;
 
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
@@ -34,6 +35,7 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
+extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
 #else
 #include"SinaRTWebInquiry.h"
 #include"SinaStakeRTWebInquiry.h"
@@ -42,6 +44,7 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日
 #include"NeteaseDayLineWebInquiry.h"
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
+#include"FinnHubWebInquiry.h"
 
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
@@ -55,6 +58,7 @@ extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日线历
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
+extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
 #endif
 
 class CWebInquirer : public CObject {
@@ -64,6 +68,7 @@ public:
 
   void Initialize(void);
 public:
+  bool GetFinnHubWebData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
   bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }

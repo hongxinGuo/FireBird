@@ -195,6 +195,7 @@
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
@@ -223,6 +224,7 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp" />
@@ -352,6 +354,7 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaStakeMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
@@ -380,6 +383,7 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h" />
@@ -419,6 +423,7 @@
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
     <ClInclude Include="MockDayLineContainer.h" />
+    <ClInclude Include="MockFinnHubWebInquiry.h" />
     <ClInclude Include="MockMainFrm.h" />
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h" />
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
