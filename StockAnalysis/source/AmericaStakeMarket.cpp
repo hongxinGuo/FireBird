@@ -13,9 +13,13 @@ CAmericaStakeMarket::CAmericaStakeMarket() {
   m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
   CalculateTime();
 
+  m_vFinnHubInquiringStr.resize(1000);
+
   // FinnHub前缀字符串在此预设之
-  m_vFinnHubInquiringStr.push_back(_T("https://finnhub.io/api/v1/stock/symbol?exchange=US")); // 查询可用代码集
-  m_vFinnHubInquiringStr.push_back(_T("https://finnhub.io/api/v1/quote?symbol=")); // 申请某个代码的交易
+  m_vFinnHubInquiringStr.at(__COMPANY_PROFILE2__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介
+  m_vFinnHubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange=US"); // 可用代码集
+  m_vFinnHubInquiringStr.at(__QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
+  m_vFinnHubInquiringStr.at(__CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
 
   m_lPrefixIndex = -1; //
 
@@ -26,7 +30,7 @@ CAmericaStakeMarket::~CAmericaStakeMarket() {
 }
 
 void CAmericaStakeMarket::Reset(void) {
-  m_fSymbolUpdated = false; // 需要更新代码
+  m_fSymbolUpdated = false; // 每日需要更新代码
 }
 
 bool CAmericaStakeMarket::SchedulingTask(void) {
@@ -45,7 +49,88 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 }
 
 void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
-  gl_WebInquirer.GetFinnHubWebData();
+  static bool s_fWaitData = false;
+  CWebDataPtr pWebData = nullptr;
+
+  if (s_fWaitData) {// 已经发出了数据申请？
+    if (!IsWaitingFinHubData()) {
+      s_fWaitData = false;
+      if (gl_WebInquirer.GetFinnHubDataSize() > 0) { // 如果网络数据接收到了
+        // 处理当前网络数据
+        switch (m_lPrefixIndex) {
+        case __COMPANY_PROFILE2__:
+        break;
+        case  __COMPANY_SYMBOLS__:
+        pWebData = gl_WebInquirer.PopFinnHubData();
+        break;
+        case  __MARKET_NEWS__:
+        break;
+        case __COMPANY_NEWS__:
+        break;
+        case __NEWS_SETIMENTS__:
+        break;
+        case __PEERS__:
+        break;
+        case __BASIC_FINANCIALS__:
+        break;
+        case __QUOTE__:
+        break;
+        case __CANDLES__:
+        break;
+        case __FOREX_EXCHANGE__:
+        break;
+        case __FOREX_SYMBOLS__:
+        break;
+        case __FOREX_CANDLES__:
+        break;
+        case __FOREX_ALL_RATES__:
+        break;
+        default:
+        break;
+        }
+      }
+    }
+  }
+  else { // 没发出网络数据申请的话
+    if (m_qWebInquiry.size() > 0) { // 有申请等待？
+      m_lPrefixIndex = m_qWebInquiry.top();
+      m_qWebInquiry.pop();
+      gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnHubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
+      switch (m_lPrefixIndex) {
+      case __COMPANY_PROFILE2__:
+      break;
+      case  __COMPANY_SYMBOLS__:
+      break;
+      case  __MARKET_NEWS__:
+      break;
+      case __COMPANY_NEWS__:
+      break;
+      case __NEWS_SETIMENTS__:
+      break;
+      case __PEERS__:
+      break;
+      case __BASIC_FINANCIALS__:
+      break;
+      case __QUOTE__:
+      break;
+      case __CANDLES__:
+      break;
+      case __FOREX_EXCHANGE__:
+      break;
+      case __FOREX_SYMBOLS__:
+      break;
+      case __FOREX_CANDLES__:
+      break;
+      case __FOREX_ALL_RATES__:
+      break;
+      default:
+      break;
+      }
+      gl_pFinnhubWebInquiry->GetWebData();
+      s_fWaitData = true;
+      SetWaitingFinnHubData(true);
+    }
+  }
 }
 
 void CAmericaStakeMarket::ResetMarket(void) {
@@ -56,8 +141,18 @@ void CAmericaStakeMarket::ResetMarket(void) {
 }
 
 bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
+  static int s_iCount = 1;
+
   SchedulingTaskPer1Hour(lSecond, lCurrentTime);
   SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+
+  if (s_iCount-- < 0) { // 每两秒申请一次FinnHub数据
+    s_iCount = 1;
+    GetFinnHubDataFromWeb();
+  }
+
+  TaskUpdateTodaySymbol();
+
   return true;
 }
 
@@ -100,4 +195,13 @@ bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
     }
   }
   return true;
+}
+
+bool CAmericaStakeMarket::TaskUpdateTodaySymbol(void) {
+  if (!m_fSymbolUpdated) {
+    m_qWebInquiry.push(__COMPANY_SYMBOLS__);
+    m_fSymbolUpdated = true;
+    return true;
+  }
+  return false;
 }

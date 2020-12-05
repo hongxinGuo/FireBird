@@ -251,6 +251,7 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadReadPotenDailyBriefing.cpp" />

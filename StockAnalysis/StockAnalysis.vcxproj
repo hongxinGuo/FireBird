@@ -787,6 +787,7 @@
     <ClCompile Include="source\StakeSection.cpp" />
     <ClCompile Include="source\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="source\StakeCode.cpp" />
+    <ClCompile Include="source\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="source\ThreadReadSinaStakeRTData.cpp" />
     <ClCompile Include="source\ThreadSaveActiveStakeCode.cpp" />
     <ClCompile Include="source\WebData.cpp" />

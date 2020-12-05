@@ -68,6 +68,7 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
+  gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
 
 #else
   gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
@@ -80,6 +81,7 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry3 = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry4 = make_shared<CNeteaseDayLineWebInquiry>();
+  gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
 
 #endif
 }

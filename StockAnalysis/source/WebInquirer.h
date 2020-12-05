@@ -68,7 +68,7 @@ public:
 
   void Initialize(void);
 public:
-  bool GetFinnHubWebData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
+  bool GetFinnHubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
   bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
@@ -102,6 +102,10 @@ public:
   void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushData(pData); }
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopData(); }
 
+  size_t GetFinnHubDataSize(void) { return m_qFinnHubData.GetDataSize(); }
+  void PushFinnHubData(CWebDataPtr pData) { m_qFinnHubData.PushData(pData); }
+  CWebDataPtr PopFinnHubData(void) { return m_qFinnHubData.PopData(); }
+
 protected:
   CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
   CQueueWebData m_qSinaStakeRTWebData; // 新浪证券网络数据暂存队列
@@ -109,6 +113,7 @@ protected:
   CQueueWebData m_qNeteaseRTWebData; // 网易网络数据暂存队列
   CQueueWebData m_qCrweberWebData; // crweber.com网络数据暂存队列
   CQueueWebData m_qPotenDailyBriefingWebData; // Poten.com网络数据暂存队列
+  CQueueWebData m_qFinnHubData; // Poten.com网络数据暂存队列
 };
 
 extern CWebInquirer gl_WebInquirer; //

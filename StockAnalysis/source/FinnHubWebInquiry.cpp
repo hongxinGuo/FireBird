@@ -3,6 +3,7 @@
 #include"Thread.h"
 
 #include "FinnhubWebInquiry.h"
+#include"AmericaStakeMarket.h"
 
 using namespace std;
 #include<thread>
@@ -10,6 +11,7 @@ using namespace std;
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("https://finnhub.io/api/v1/quote?symbol=");
   m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
+  //m_strWebDataInquireSuffix = _T(""); // 密钥放在最后
   m_strConnection = _T("FinnHubRT");
   m_lInquiringNumber = 1; // FinnHub实时数据查询数量默认值
 }
@@ -43,12 +45,22 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
   CString str;
   static int s_iCount = 5;
 
+  switch (gl_pAmericaStakeMarket->GetCurrentPrefixIndex()) {
+  case __COMPANY_SYMBOLS__:
+  // 无需中间串
+  break;
+  case __QUOTE__:
+  break;
+  default:
+  break;
+  }
+
   return str;
 }
 
 void CFinnhubWebInquiry::StartReadingThread(void) {
-  //thread thread1(ThreadReadSinaRTData, this);
-  //thread1.detach();
+  thread thread1(ThreadReadFinnHubData, this);
+  thread1.detach();
 }
 
 bool CFinnhubWebInquiry::ReportStatus(long lNumberOfData) {

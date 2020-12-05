@@ -539,6 +539,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

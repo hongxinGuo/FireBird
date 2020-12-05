@@ -545,6 +545,9 @@
     <ClCompile Include="source\FinnHubWebInquiry.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
+    <ClCompile Include="source\ThreadReadFinnHubData.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="StockAnalysis.rc">
