@@ -3,6 +3,8 @@
 #include"stdafx.h"
 
 #include"VirtualMarket.h"
+#include"CompanySymbol.h"
+#include"WebData.h"
 
 // FinnHub申请类别，其值作为优先级的判断标准（数值大的优先级高）
 enum {
@@ -13,6 +15,7 @@ enum {
   __NEWS_SETIMENTS__ = 105,
   __PEERS__ = 106,
   __BASIC_FINANCIALS__ = 107,
+  __SEC_FILINGS__ = 108,
 
   __QUOTE__ = 1, // 实时数据优先级最低
   __CANDLES__ = 2, // 历史数据优先级低
@@ -21,6 +24,19 @@ enum {
   __FOREX_SYMBOLS__ = 202,
   __FOREX_CANDLES__ = 3, // 历史数据优先级低
   __FOREX_ALL_RATES__ = 204,
+
+  __CRYPTO_EXCHANGE__ = 301,
+  __CRYPTO_SYMBOL__ = 302,
+  __CRYPTO_CANDLES__ = 303,
+};
+
+struct FinnHubInquiry {
+public:
+  int m_iPriority; // 优先级
+  long m_iIndex; // 指令
+  bool operator() (FinnHubInquiry temp1, FinnHubInquiry temp2) {
+    return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
+  }
 };
 
 using namespace std;
@@ -46,16 +62,32 @@ public:
 
   bool TaskUpdateTodaySymbol(void);
 
+  bool ProcessCompanySymbolData(CWebDataPtr pWebData);
+  CCompanySymbolPtr ReadOneSymbol(CWebDataPtr pWebData);
+  CString ReadString(CWebDataPtr pWebData);
+
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
 
   void SetWaitingFinnHubData(bool fFlag) noexcept { m_fWaitingFinnHubData = fFlag; }
   bool IsWaitingFinHubData(void) noexcept { bool f = m_fWaitingFinnHubData; return f; }
 
+  void SetFinnInquiry(long lOrder);
+  long GetFinnInquiry(void);
+
+  // 数据库操作
+  bool LoadCompanySymbol(void);
+  bool SaveCompnaySymbol(void);
+
 protected:
+  vector<CCompanySymbolPtr> m_vCompanySymbol;
+  map<CString, long> m_mapConpanySymbol;
+  long m_lLastTotalCompanySymbol;
+  long m_lTotalCompanySymbol;
+
   vector<CString> m_vFinnHubInquiringStr;
   long m_lPrefixIndex; // 当前查询状态
-  priority_queue<int> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
+  priority_queue<FinnHubInquiry, vector<FinnHubInquiry>, FinnHubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
   atomic_bool m_fWaitingFinnHubData;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库

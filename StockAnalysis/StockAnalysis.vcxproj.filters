@@ -82,6 +82,18 @@
     <Filter Include="头文件\America Stock Market">
       <UniqueIdentifier>{85ee978d-cd8c-4997-9e78-b66061c85a83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\America Stock Market\数据库">
+      <UniqueIdentifier>{6c99dadd-719f-4a11-ac93-1ceb6e62d26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\America Stake Market\数据库">
+      <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\America Stake Market\实现">
+      <UniqueIdentifier>{7f3fff23-b4a5-4f22-b8ae-548f9da2c5f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\America Stock Market\实现">
+      <UniqueIdentifier>{62262c0c-fefc-423b-8865-905bc6154cd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -287,6 +299,12 @@
     </ClInclude>
     <ClInclude Include="source\FinnHubWebInquiry.h">
       <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CompanySymbol.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SetCompanySymbol.h">
+      <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -546,6 +564,12 @@
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadReadFinnHubData.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SetCompanySymbol.cpp">
+      <Filter>源文件\America Stake Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CompanySymbol.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
   </ItemGroup>

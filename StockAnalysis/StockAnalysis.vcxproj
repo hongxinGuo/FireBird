@@ -682,6 +682,7 @@
     <ClInclude Include="source\AmericaStakeMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
+    <ClInclude Include="source\CompanySymbol.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
@@ -710,6 +711,7 @@
     <ClInclude Include="source\PotenDailyBriefing.h" />
     <ClInclude Include="source\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="source\PotenDailyBriefingMarket.h" />
+    <ClInclude Include="source\SetCompanySymbol.h" />
     <ClInclude Include="source\StakeSection.h" />
     <ClInclude Include="source\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="source\StakeCode.h" />
@@ -751,6 +753,7 @@
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
+    <ClCompile Include="source\CompanySymbol.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
@@ -784,6 +787,7 @@
     <ClCompile Include="source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
+    <ClCompile Include="source\SetCompanySymbol.cpp" />
     <ClCompile Include="source\StakeSection.cpp" />
     <ClCompile Include="source\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="source\StakeCode.cpp" />
