@@ -120,7 +120,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -195,11 +195,14 @@
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanySymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ReadString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\CompanySymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp" />
@@ -236,6 +239,7 @@
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\SetCompanySymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp" />
@@ -355,11 +359,14 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanySymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ReadString.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaStakeMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
+    <ClInclude Include="..\StockAnalysis\source\CompanySymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h" />
@@ -397,6 +404,7 @@
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
+    <ClInclude Include="..\StockAnalysis\source\SetCompanySymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h" />

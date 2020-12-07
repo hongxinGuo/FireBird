@@ -216,7 +216,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
@@ -679,6 +679,11 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="source\Accessory.h" />
+    <ClInclude Include="source\AmericaMarket\CompanyProfile.h" />
+    <ClInclude Include="source\AmericaMarket\ProcessCompanyProfile.h" />
+    <ClInclude Include="source\AmericaMarket\ProcessCompanySymbol.h" />
+    <ClInclude Include="source\AmericaMarket\ReadString.h" />
+    <ClInclude Include="source\AmericaMarket\SetCompanyProfile.h" />
     <ClInclude Include="source\AmericaStakeMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
@@ -750,6 +755,11 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="source\Accessory.cpp" />
+    <ClCompile Include="source\AmericaMarket\CompanyProfile.cpp" />
+    <ClCompile Include="source\AmericaMarket\ProcessCompanyProfile.cpp" />
+    <ClCompile Include="source\AmericaMarket\ProcessCompanySymbol.cpp" />
+    <ClCompile Include="source\AmericaMarket\ReadString.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetCompanyProfile.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />

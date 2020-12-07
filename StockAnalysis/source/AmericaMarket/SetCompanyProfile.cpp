@@ -1,28 +1,30 @@
-// SetCompanySymbol.cpp : CSetStockCode 类的实现
+// CSetCompanyProfile.cpp : CSetStockCode 类的实现
 
-// CSetCompanySymbol 实现
+// CSetCompanyProfile 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
 #include "stdafx.h"
-#include "SetCompanySymbol.h"
 #include"globedef.h"
 #include"accessory.h"
 
-IMPLEMENT_DYNAMIC(CSetCompanySymbol, CRecordset)
+#include "SetCompanyProfile.h"
 
-CSetCompanySymbol::CSetCompanySymbol(CDatabase* pdb)
+IMPLEMENT_DYNAMIC(CSetCompanyProfile, CRecordset)
+
+CSetCompanyProfile::CSetCompanyProfile(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Description = _T("");
   m_DisplaySymbol = _T("");
   m_Symbol = _T("");
   m_Type = _T("");
   m_Currency = _T("");
-  m_CompanyProfileUpdateDate = 19900101;
-  m_nFields = 7;
+  m_IPODate = 0;
+
+  m_nFields = 15;
 }
 
-CString CSetCompanySymbol::GetDefaultConnect() {
+CString CSetCompanyProfile::GetDefaultConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
@@ -33,11 +35,11 @@ CString CSetCompanySymbol::GetDefaultConnect() {
   }
 }
 
-CString CSetCompanySymbol::GetDefaultSQL() {
-  return _T("[stakesymbol]");
+CString CSetCompanyProfile::GetDefaultSQL() {
+  return _T("[companyprofile]");
 }
 
-void CSetCompanySymbol::DoFieldExchange(CFieldExchange* pFX) {
+void CSetCompanyProfile::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -48,17 +50,25 @@ void CSetCompanySymbol::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
   RFX_Text(pFX, _T("[Type]"), m_Type);
   RFX_Text(pFX, _T("[Currency]"), m_Currency);
-  RFX_Long(pFX, _T("[CompanyProfileUpdateDate]"), m_CompanyProfileUpdateDate);
+  RFX_Text(pFX, _T("[Country]"), m_Country);
+  RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
+  RFX_Long(pFX, _T("[IPODate]"), m_IPODate);
+  RFX_Text(pFX, _T("[Phone]"), m_Phone);
+  RFX_Text(pFX, _T("[ShareOutstanding]"), m_ShareOutstanding);
+  RFX_Text(pFX, _T("[MarketCapitalization]"), m_MarketCapitalization);
+  RFX_Text(pFX, _T("[Name]"), m_Name);
+  RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
+  RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnHubIndustry);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetStockCode 诊断
+// CSetCompanyProfile 诊断
 
 #ifdef _DEBUG
-void CSetCompanySymbol::AssertValid() const {
+void CSetCompanyProfile::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetCompanySymbol::Dump(CDumpContext& dc) const {
+void CSetCompanyProfile::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

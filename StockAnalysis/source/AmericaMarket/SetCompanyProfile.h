@@ -5,11 +5,11 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetCompanySymbol : public CRecordset
+class CSetCompanyProfile : public CRecordset
 {
 public:
-  CSetCompanySymbol(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetCompanySymbol)
+  CSetCompanyProfile(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetCompanyProfile)
 
   // 字段/参数数据
 
@@ -26,9 +26,16 @@ public:
   CString m_DisplaySymbol;
   CString m_Symbol;
   CString m_Type;
-  CString m_Currency;  // 重写
-  long m_CompanyProfileUpdateDate;
-  // 向导生成的虚函数重写
+  CString m_Currency;
+  CString m_Country;
+  CString m_Exchange;
+  long m_IPODate;
+  CString m_MarketCapitalization;
+  CString m_ShareOutstanding;
+  CString m_Phone;
+  CString m_Name;
+  CString m_WebURL;
+  CString m_FinnHubIndustry;  // 向导生成的虚函数重写
 public:
   virtual CString GetDefaultConnect();	// 默认连接字符串
 

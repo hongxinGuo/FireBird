@@ -4,6 +4,7 @@
 
 #include"VirtualMarket.h"
 #include"CompanySymbol.h"
+#include"CompanyProfile.h"
 #include"WebData.h"
 
 // FinnHub申请类别，其值作为优先级的判断标准（数值大的优先级高）
@@ -61,10 +62,13 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskUpdateTodaySymbol(void);
+  bool TaskSaveCompanySymbol(void);
+  bool TaskUpdateComProfile(void);
+  bool TaskSaveCompanyProfile(void);
 
-  bool ProcessCompanySymbolData(CWebDataPtr pWebData);
-  CCompanySymbolPtr ReadOneSymbol(CWebDataPtr pWebData);
-  CString ReadString(CWebDataPtr pWebData);
+  bool IsCompanySymbol(CString strSymbol);
+  void AddCompanySymbol(CCompanySymbolPtr pSymbol);
+  void AddCompanyProfile(CCompanyProfilePtr pProfile);
 
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
@@ -78,6 +82,7 @@ public:
   // 数据库操作
   bool LoadCompanySymbol(void);
   bool SaveCompnaySymbol(void);
+  bool LoadCompanyProfile(void);
 
 protected:
   vector<CCompanySymbolPtr> m_vCompanySymbol;
@@ -85,12 +90,18 @@ protected:
   long m_lLastTotalCompanySymbol;
   long m_lTotalCompanySymbol;
 
+  vector<CCompanyProfilePtr> m_vCompanyProfile;
+  long m_lTotalCompanyProfile;
+  long m_lCurrentProfilePos;
+  bool m_fInquiringComprofileData; // 查询公司简介中
+
   vector<CString> m_vFinnHubInquiringStr;
   long m_lPrefixIndex; // 当前查询状态
   priority_queue<FinnHubInquiry, vector<FinnHubInquiry>, FinnHubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
   atomic_bool m_fWaitingFinnHubData;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
+  bool m_fCompanyProfileUpdated; // 每日更新公司简介
 };
 
 typedef shared_ptr<CAmericaStakeMarket> CAmericaStakeMarketPtr;

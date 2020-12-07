@@ -2,6 +2,8 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
+#include"ProcessCompanySymbol.h"
+#include"ProcessCompanyProfile.h"
 
 #include"SetCompanySymbol.h"
 
@@ -44,7 +46,12 @@ CAmericaStakeMarket::~CAmericaStakeMarket() {
 
 void CAmericaStakeMarket::Reset(void) {
   m_fSymbolUpdated = false; // 每日需要更新代码
+  m_fCompanyProfileUpdated = false;
+  m_fInquiringComprofileData = false;
   m_lLastTotalCompanySymbol = 0;
+  m_lTotalCompanySymbol = 0;
+  m_vCompanySymbol.resize(0);
+  m_mapConpanySymbol.clear();
 }
 
 bool CAmericaStakeMarket::SchedulingTask(void) {
@@ -74,6 +81,8 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         pWebData = gl_WebInquirer.PopFinnHubData();
         switch (m_lPrefixIndex) {
         case __COMPANY_PROFILE2__:
+        ProcessCompanyProfile(pWebData);
+        m_fInquiringComprofileData = false;
         break;
         case  __COMPANY_SYMBOLS__:
         ProcessCompanySymbolData(pWebData);
@@ -112,8 +121,10 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnHubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
       switch (m_lPrefixIndex) {
       case __COMPANY_PROFILE2__:
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vCompanySymbol.at(m_lCurrentProfilePos)->m_strSymbol);
       break;
       case  __COMPANY_SYMBOLS__:
+      // do nothing
       break;
       case  __MARKET_NEWS__:
       break;
@@ -151,6 +162,7 @@ void CAmericaStakeMarket::ResetMarket(void) {
   Reset();
 
   LoadCompanySymbol();
+  LoadCompanyProfile();
 
   CString str = _T("重置America Stake Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -168,7 +180,10 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
     GetFinnHubDataFromWeb();
   }
 
-  TaskUpdateTodaySymbol();
+  //TaskUpdateTodaySymbol();
+  //TaskSaveCompanySymbol();
+
+  TaskUpdateComProfile();
 
   return true;
 }
@@ -229,95 +244,79 @@ bool CAmericaStakeMarket::TaskUpdateTodaySymbol(void) {
   return false;
 }
 
-bool CAmericaStakeMarket::ProcessCompanySymbolData(CWebDataPtr pWebData) {
+bool CAmericaStakeMarket::TaskSaveCompanySymbol(void) {
+  CSetCompanySymbol setCompanySymbol;
   CCompanySymbolPtr pSymbol = nullptr;
 
-  if (pWebData->GetCurrentPosData() != '[') return false;
-  pWebData->IncreaseCurrentPos();
-  while (pWebData->GetCurrentPos() < pWebData->GetBufferLength()) {
-    if ((pSymbol = ReadOneSymbol(pWebData)) != nullptr) {
-      if (m_mapConpanySymbol.find(pSymbol->m_strSymbol) == m_mapConpanySymbol.end()) { // 新代码？
-        m_vCompanySymbol.push_back(pSymbol);
-        m_mapConpanySymbol[pSymbol->m_strSymbol] = m_lTotalCompanySymbol++;
+  if (m_lLastTotalCompanySymbol < m_lTotalCompanySymbol) {
+    setCompanySymbol.Open();
+    setCompanySymbol.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalCompanySymbol; l < m_lTotalCompanySymbol; l++) {
+      pSymbol = m_vCompanySymbol.at(l);
+      pSymbol->Save(setCompanySymbol);
+    }
+    setCompanySymbol.m_pDatabase->CommitTrans();
+    setCompanySymbol.Close();
+    m_lLastTotalCompanySymbol = m_lTotalCompanySymbol;
+  }
+  return true;
+}
+
+bool CAmericaStakeMarket::TaskUpdateComProfile(void) {
+  bool fFound = false;
+  FinnHubInquiry inquiry;
+
+  if (!m_fCompanyProfileUpdated && !m_fInquiringComprofileData) {
+    for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vCompanyProfile.size(); m_lCurrentProfilePos++) {
+      if (IsEarlyThen(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_lLastUpdateDate, GetFormatedMarketDate(), 365)) {
+        fFound = true;
+        break;
       }
     }
-    else return false;
-    if (!(pWebData->GetCurrentPosData() == ',')) { // 读完了？
-      if (pWebData->GetCurrentPosData() == ']') return true; // 读完了
+    if (fFound) {
+      inquiry.m_iIndex = __COMPANY_PROFILE2__;
+      inquiry.m_iPriority = 10;
+      m_qWebInquiry.push(inquiry);
+      m_fInquiringComprofileData = true;
     }
     else {
-      pWebData->IncreaseCurrentPos();
+      m_fCompanyProfileUpdated = true;
     }
   }
   return false;
 }
 
-map<CString, long> gl_mapCompanySymbol{ {"description", 0 }, {"displaySymbol", 1}, {"symbol", 2}, {"type", 3}, {"currency", 4} };
-
-CCompanySymbolPtr CAmericaStakeMarket::ReadOneSymbol(CWebDataPtr pWebData) {
-  CString strDescription = _T("");
-  CString strSymbol;
-  CString strDisplaySymbol;
-  CString strType;
-  CString strCurrency;
-  CString strTemp, strTemp2;
-  CCompanySymbolPtr pSymbol = make_shared<CCompanySymbol>();
-  char buffer[1000];
-  int i1 = 0;
-  long lCurrentPos = pWebData->GetCurrentPos();
-  while (pWebData->GetData(lCurrentPos) != '}') buffer[i1++] = pWebData->GetData(lCurrentPos++);
-  buffer[i1] = '}';
-  buffer[i1 + 1] = 0x000;
-
-  while (pWebData->GetCurrentPosData() != '{') pWebData->IncreaseCurrentPos();
-  pWebData->IncreaseCurrentPos(); // 跨过字符{
-  for (int i = 0; i < 5; i++) { // 共五个数据
-    strTemp = ReadString(pWebData);
-    if (gl_mapCompanySymbol.find(strTemp) != gl_mapCompanySymbol.end()) {
-      while (pWebData->GetCurrentPosData() != '"') pWebData->IncreaseCurrentPos();
-      strTemp2 = ReadString(pWebData);
-      switch (gl_mapCompanySymbol.at(strTemp)) {
-      case 0:
-      pSymbol->m_strDescription = strTemp2;
-      break;
-      case 1:
-      pSymbol->m_strDisplaySymbol = strTemp2;
-      break;
-      case 2:
-      pSymbol->m_strSymbol = strTemp2;
-      break;
-      case 3:
-      pSymbol->m_strType = strTemp2;
-      break;
-      case 4:
-      pSymbol->m_strCurrency = strTemp2;
-      break;
-      default:
-      break;
-      }
-      while (pWebData->GetCurrentPosData() != '"') pWebData->IncreaseCurrentPos();
-    }
+bool CAmericaStakeMarket::TaskSaveCompanyProfile(void) {
+  for (auto& pProfile : m_vCompanyProfile) {
   }
-  while (pWebData->GetCurrentPosData() != '}') pWebData->IncreaseCurrentPos();
-  pWebData->IncreaseCurrentPos();
-  return pSymbol;
+  return false;
 }
 
-CString CAmericaStakeMarket::ReadString(CWebDataPtr pWebData) {
-  char buffer[100];
-  int i = 0;
-  CString str = _T("");
-
-  if (pWebData->GetCurrentPosData() != '"') return str; // error
-  pWebData->IncreaseCurrentPos();
-  while (pWebData->GetCurrentPosData() != '"') {
-    buffer[i++] = pWebData->GetCurrentPosData();
-    pWebData->IncreaseCurrentPos();
+bool CAmericaStakeMarket::IsCompanySymbol(CString strSymbol) {
+  if (m_mapConpanySymbol.find(strSymbol) == m_mapConpanySymbol.end()) { // 新代码？
+    return false;
   }
-  pWebData->IncreaseCurrentPos();
-  buffer[i] = 0x000;
-  str = buffer;
-  return str;
+  else return true;
+}
+
+void CAmericaStakeMarket::AddCompanySymbol(CCompanySymbolPtr pSymbol) {
+  m_vCompanySymbol.push_back(pSymbol);
+  m_mapConpanySymbol[pSymbol->m_strSymbol] = m_lLastTotalCompanySymbol++;
+}
+
+void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {
+  const long lIndex = m_mapConpanySymbol.at(pProfile->m_strName);
+  m_vCompanyProfile.at(lIndex)->m_strCountry = pProfile->m_strCountry;
+  m_vCompanyProfile.at(lIndex)->m_strCurrency = pProfile->m_strCurrency;
+  m_vCompanyProfile.at(lIndex)->m_strExchange = pProfile->m_strExchange;
+  m_vCompanyProfile.at(lIndex)->m_lIPODate = pProfile->m_lIPODate;
+  m_vCompanyProfile.at(lIndex)->m_strLogo = pProfile->m_strLogo;
+  m_vCompanyProfile.at(lIndex)->m_strShareOutstanding = pProfile->m_strShareOutstanding;
+  m_vCompanyProfile.at(lIndex)->m_strName = pProfile->m_strName;
+  m_vCompanyProfile.at(lIndex)->m_strPhone = pProfile->m_strPhone;
+  m_vCompanyProfile.at(lIndex)->m_strShareOutstanding = pProfile->m_strShareOutstanding;
+  m_vCompanyProfile.at(lIndex)->m_strTicker = pProfile->m_strTicker;
+  m_vCompanyProfile.at(lIndex)->m_strWebURL = pProfile->m_strWebURL;
 }
 
 void CAmericaStakeMarket::SetFinnInquiry(long lOrder) {
@@ -368,6 +367,7 @@ long CAmericaStakeMarket::GetFinnInquiry(void) {
 bool CAmericaStakeMarket::LoadCompanySymbol(void) {
   CSetCompanySymbol setCompanySymbol;
   CCompanySymbolPtr pCompanySymbol = nullptr;
+  CCompanyProfilePtr pCompanyProfile = nullptr;
 
   setCompanySymbol.Open();
   setCompanySymbol.m_pDatabase->BeginTrans();
@@ -375,11 +375,15 @@ bool CAmericaStakeMarket::LoadCompanySymbol(void) {
     pCompanySymbol = make_shared<CCompanySymbol>();
     pCompanySymbol->Load(setCompanySymbol);
     m_vCompanySymbol.push_back(pCompanySymbol);
+    pCompanyProfile = make_shared<CCompanyProfile>();
+    pCompanyProfile->Update(pCompanySymbol);
+    m_vCompanyProfile.push_back(pCompanyProfile);
     m_mapConpanySymbol[setCompanySymbol.m_Symbol] = m_lLastTotalCompanySymbol++;
     setCompanySymbol.MoveNext();
   }
   setCompanySymbol.m_pDatabase->CommitTrans();
   setCompanySymbol.Close();
+  m_lTotalCompanyProfile = m_vCompanyProfile.size();
   ASSERT(m_lLastTotalCompanySymbol == m_vCompanySymbol.size());
   return true;
 }
@@ -397,5 +401,22 @@ bool CAmericaStakeMarket::SaveCompnaySymbol(void) {
   setCompanySymbol.m_pDatabase->CommitTrans();
   setCompanySymbol.Close();
   m_lLastTotalCompanySymbol = m_vCompanySymbol.size();
+  return true;
+}
+
+bool CAmericaStakeMarket::LoadCompanyProfile(void) {
+  CSetCompanyProfile setCompanyProfile;
+  CCompanyProfilePtr pCompanyProfile = nullptr;
+
+  setCompanyProfile.Open();
+  setCompanyProfile.m_pDatabase->BeginTrans();
+  while (!setCompanyProfile.IsEOF()) {
+    pCompanyProfile = make_shared<CCompanyProfile>();
+    pCompanyProfile->Load(setCompanyProfile);
+    m_vCompanyProfile.push_back(pCompanyProfile);
+    setCompanyProfile.MoveNext();
+  }
+  setCompanyProfile.m_pDatabase->CommitTrans();
+  setCompanyProfile.Close();
   return true;
 }

@@ -31,7 +31,7 @@ bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
   // 2. 准备中间字符串
   // 3. 准备后缀字符串
   //
-  CreateTotalInquiringString(strMiddle);
+  CreateTotalInquiringString(m_strWebDataInquireMiddle);
 
   return true;
 }

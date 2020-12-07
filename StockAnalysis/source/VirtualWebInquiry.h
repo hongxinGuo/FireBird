@@ -52,6 +52,8 @@ public:
   void SetInquiryingStrPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
   void SetInquiryingStringSuffix(CString strSuffix) { m_strWebDataInquireSuffix = strSuffix; }
+  CString GetInquiringStringMiddle(void) { return m_strWebDataInquireMiddle; }
+  void SetInquiryingStringMiddle(CString strSuffix) { m_strWebDataInquireMiddle = strSuffix; }
 
   bool IsReadingWebData(void) noexcept { return m_fReadingWebData; }
   void SetReadingWebData(bool fFlag) noexcept { m_fReadingWebData = fFlag; }

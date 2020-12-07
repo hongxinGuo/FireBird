@@ -9,6 +9,8 @@ using namespace std;
 
 class CCompanySymbol : public CObject {
 public:
+  CCompanySymbol();
+public:
   void Load(CSetCompanySymbol& setCompanySymbol);
   void Save(CSetCompanySymbol& setCompanySymbol);
 public:
@@ -17,6 +19,7 @@ public:
   CString m_strSymbol;
   CString m_strType;
   CString m_strCurrency;
+  int m_iCompanyProfileUpdateDate;
 };
 
 typedef shared_ptr<CCompanySymbol> CCompanySymbolPtr;
