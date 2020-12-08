@@ -25,15 +25,15 @@ public:
   CString m_strCurrency;
   CString m_strCountry;
   CString m_strExchange;
-  long m_lIPODate;
+  CTime m_tIPODate;
   CString m_strPhone;
-  CString m_strMarketCapitalization;
-  CString m_strShareOutstanding;
+  double m_lMarketCapitalization;
+  double m_dShareOutstanding;
   CString m_strName;
   CString m_strTicker; // 不存储
   CString m_strWebURL;
   CString m_strLogo; // 不存储
-  CString m_strFinnHubIndustry;
+  CString m_strFinnhubIndustry;
 
   // 无需存储变量
   long m_lLastUpdateDate; // 上次更新时间

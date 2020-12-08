@@ -52,13 +52,13 @@ void CSetCompanyProfile::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Currency]"), m_Currency);
   RFX_Text(pFX, _T("[Country]"), m_Country);
   RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
-  RFX_Long(pFX, _T("[IPODate]"), m_IPODate);
+  RFX_Date(pFX, _T("[IPODate]"), m_IPODate);
   RFX_Text(pFX, _T("[Phone]"), m_Phone);
   RFX_Text(pFX, _T("[ShareOutstanding]"), m_ShareOutstanding);
   RFX_Text(pFX, _T("[MarketCapitalization]"), m_MarketCapitalization);
   RFX_Text(pFX, _T("[Name]"), m_Name);
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
-  RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnHubIndustry);
+  RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnhubIndustry);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetCompanyProfile ’Ô∂œ

@@ -5,111 +5,55 @@
 
 #include"ProcessCompanyProfile.h"
 
-bool ProcessCompanyProfile(CWebDataPtr pWebData) {
-  CCompanyProfilePtr pProfile = nullptr;
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
-  if (pWebData->GetCurrentPosData() != '{') return false;
-  if ((pProfile = ReadOneProfile(pWebData)) != nullptr) {
-    if (gl_pAmericaStakeMarket->IsCompanySymbol(pProfile->m_strTicker)) { // 不是新代码？
-      gl_pAmericaStakeMarket->AddCompanyProfile(pProfile);
-      return true;
-    }
-    else { // 发现新代码（不应该的事情
-      TRACE("Company Profilef发现新代码%s\n", pProfile->m_strTicker.GetBuffer());
-    }
+using namespace boost::property_tree;
+char buffer[2048 * 1024];
+
+bool ProcessCompanyProfile(CWebDataPtr pWebData) {
+  CCompanyProfilePtr pProfile = make_shared<CCompanyProfile>();
+  ptree pt;
+  for (int i = 0; i < pWebData->GetBufferLength(); i++) {
+    buffer[i] = pWebData->GetData(i);
+  }
+  buffer[pWebData->GetBufferLength()] = 0x000;
+  string strTemp = buffer;
+  stringstream ss(strTemp);
+  string s;
+  string sTime;
+  try {
+    read_json(ss, pt);
+  }
+  catch (ptree_error& e) {
+    return false;
+  }
+  s = pt.get<string>(_T("country"));
+  pProfile->m_strCountry = s.c_str();
+  s = pt.get<string>(_T("currency"));
+  pProfile->m_strCurrency = s.c_str();
+  s = pt.get<string>(_T("exchange"));
+  pProfile->m_strExchange = s.c_str();
+  s = pt.get<string>(_T("finnhubIndustry"));
+  pProfile->m_strFinnhubIndustry = s.c_str();
+  sTime = pt.get<string>(_T("ipo"));
+  s = pt.get<string>(_T("logo"));
+  pProfile->m_strLogo = s.c_str();
+  s = pt.get<string>(_T("marketCapitalization"));
+  pProfile->m_lMarketCapitalization = atoi(s.c_str());
+  s = pt.get<string>(_T("phone"));
+  pProfile->m_strPhone = s.c_str();
+  pProfile->m_dShareOutstanding = pt.get<double>(_T("shareOutstanding"));
+  s = pt.get<string>(_T("ticker"));
+  pProfile->m_strTicker = s.c_str();
+  s = pt.get<string>(_T("weburl"));
+  pProfile->m_strWebURL = s.c_str();
+  if (gl_pAmericaStakeMarket->IsCompanySymbol(pProfile->m_strTicker)) { // 不是新代码？
+    gl_pAmericaStakeMarket->AddCompanyProfile(pProfile);
+    return true;
+  }
+  else { // 发现新代码（不应该的事情
+    TRACE("Company Profilef发现新代码%s\n", pProfile->m_strTicker.GetBuffer());
   }
   return false;
-}
-
-static map<CString, long> s_mapCompanyProfile{ {"country", 0 }, {"currency", 1}, {"exchange", 2},{"finnhubIndustry", 3}, {"ipo", 4},{"logo", 5}, {"marketCapitalization", 6},
-                                             {"name", 7}, {"phone", 8}, {"shareOutstanding", 9}, {"ticker", 10}, {"weburl", 11} };
-
-CCompanyProfilePtr ReadOneProfile(CWebDataPtr pWebData) {
-  CString strDescription = _T("");
-  CString strSymbol;
-  CString strDisplaySymbol;
-  CString strType;
-  CString strCurrency;
-  CString strTemp, strTemp2;
-  CCompanyProfilePtr pProfile = make_shared<CCompanyProfile>();
-  char buffer[1000];
-  int i1 = 0;
-  long lCurrentPos = pWebData->GetCurrentPos();
-  while (pWebData->GetData(lCurrentPos) != '}') buffer[i1++] = pWebData->GetData(lCurrentPos++);
-  buffer[i1] = '}';
-  buffer[i1 + 1] = 0x000;
-
-  char buffer2[30];
-  int i2 = 0;
-  bool fFinished = false;
-
-  while (pWebData->GetCurrentPosData() != '{') pWebData->IncreaseCurrentPos();
-  pWebData->IncreaseCurrentPos(); // 跨过字符{
-  for (int i = 0; i < 12; i++) { // 共五个数据
-    strTemp = ReadString(pWebData);
-    if (s_mapCompanyProfile.find(strTemp) != s_mapCompanyProfile.end()) {
-      switch (s_mapCompanyProfile.at(strTemp)) {
-      case 6:
-      case 9: // 这两个需要特别处理
-      while (pWebData->GetCurrentPosData() != ':') pWebData->IncreaseCurrentPos();
-      pWebData->IncreaseCurrentPos();
-      i2 = 0;
-      while (pWebData->GetCurrentPosData() != ',') {
-        buffer2[i2++] = pWebData->GetCurrentPosData();
-        pWebData->IncreaseCurrentPos();
-      }
-      buffer2[i2] = 0x000;
-      if (s_mapCompanyProfile.at(strTemp) == 6) {
-        pProfile->m_strMarketCapitalization = buffer2;
-      }
-      else {
-        pProfile->m_strShareOutstanding = buffer2;
-      }
-      break;
-      default:
-      while (pWebData->GetCurrentPosData() != '"') pWebData->IncreaseCurrentPos();
-      strTemp2 = ReadString(pWebData);
-      switch (s_mapCompanyProfile.at(strTemp)) {
-      case 0:
-      pProfile->m_strCountry = strTemp2;
-      break;
-      case 1:
-      pProfile->m_strCurrency = strTemp2;
-      break;
-      case 2:
-      pProfile->m_strExchange = strTemp2;
-      break;
-      case 3:
-      pProfile->m_strFinnHubIndustry = strTemp2;
-      break;
-      case 4:
-      int year, month, day;
-      sscanf_s(strTemp2.GetBuffer(), _T("%4d-%2d-%2d"), &year, &month, &day);
-      pProfile->m_lIPODate = year * 10000 + month * 100 + day;
-      break;
-      case 5:
-      pProfile->m_strLogo = strTemp2;
-      break;
-      case 7:
-      pProfile->m_strName = strTemp2;
-      break;
-      case 8:
-      pProfile->m_strPhone = strTemp2;
-      break;
-      case 10:
-      pProfile->m_strTicker = strTemp2;
-      break;
-      case 11:
-      pProfile->m_strWebURL = strTemp2;
-      fFinished = true;
-      break;
-      default:
-      TRACE("OUT OUT RANGE\n");
-      break;
-      }
-      }
-      while ((pWebData->GetCurrentPosData() != '"') && !fFinished) pWebData->IncreaseCurrentPos();
-    }
-  }
-  return pProfile;
 }

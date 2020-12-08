@@ -305,18 +305,17 @@ void CAmericaStakeMarket::AddCompanySymbol(CCompanySymbolPtr pSymbol) {
 }
 
 void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {
-  const long lIndex = m_mapConpanySymbol.at(pProfile->m_strName);
+  const long lIndex = m_mapConpanySymbol.at(pProfile->m_strTicker);
   m_vCompanyProfile.at(lIndex)->m_lLastUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
   m_vCompanySymbol.at(lIndex)->lCompanyProfileUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
   m_vCompanyProfile.at(lIndex)->m_strCountry = pProfile->m_strCountry;
   m_vCompanyProfile.at(lIndex)->m_strCurrency = pProfile->m_strCurrency;
   m_vCompanyProfile.at(lIndex)->m_strExchange = pProfile->m_strExchange;
-  m_vCompanyProfile.at(lIndex)->m_lIPODate = pProfile->m_lIPODate;
+  m_vCompanyProfile.at(lIndex)->m_tIPODate = pProfile->m_tIPODate;
   m_vCompanyProfile.at(lIndex)->m_strLogo = pProfile->m_strLogo;
-  m_vCompanyProfile.at(lIndex)->m_strShareOutstanding = pProfile->m_strShareOutstanding;
-  m_vCompanyProfile.at(lIndex)->m_strName = pProfile->m_strName;
+  m_vCompanyProfile.at(lIndex)->m_lMarketCapitalization = pProfile->m_lMarketCapitalization;
   m_vCompanyProfile.at(lIndex)->m_strPhone = pProfile->m_strPhone;
-  m_vCompanyProfile.at(lIndex)->m_strShareOutstanding = pProfile->m_strShareOutstanding;
+  m_vCompanyProfile.at(lIndex)->m_dShareOutstanding = pProfile->m_dShareOutstanding;
   m_vCompanyProfile.at(lIndex)->m_strTicker = pProfile->m_strTicker;
   m_vCompanyProfile.at(lIndex)->m_strWebURL = pProfile->m_strWebURL;
 }
