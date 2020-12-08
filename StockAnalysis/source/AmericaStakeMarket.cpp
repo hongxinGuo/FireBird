@@ -306,6 +306,8 @@ void CAmericaStakeMarket::AddCompanySymbol(CCompanySymbolPtr pSymbol) {
 
 void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {
   const long lIndex = m_mapConpanySymbol.at(pProfile->m_strName);
+  m_vCompanyProfile.at(lIndex)->m_lLastUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
+  m_vCompanySymbol.at(lIndex)->lCompanyProfileUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
   m_vCompanyProfile.at(lIndex)->m_strCountry = pProfile->m_strCountry;
   m_vCompanyProfile.at(lIndex)->m_strCurrency = pProfile->m_strCurrency;
   m_vCompanyProfile.at(lIndex)->m_strExchange = pProfile->m_strExchange;

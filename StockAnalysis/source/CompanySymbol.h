@@ -19,7 +19,7 @@ public:
   CString m_strSymbol;
   CString m_strType;
   CString m_strCurrency;
-  int m_iCompanyProfileUpdateDate;
+  long lCompanyProfileUpdateDate;
 };
 
 typedef shared_ptr<CCompanySymbol> CCompanySymbolPtr;

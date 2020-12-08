@@ -45,7 +45,7 @@ void CCompanyProfile::Update(CCompanySymbolPtr pSymbol) {
   m_strDescription = pSymbol->m_strDescription;
   m_strCurrency = pSymbol->m_strCurrency;
   m_strDisplaySymbol = pSymbol->m_strSymbol;
-  m_lLastUpdateDate = pSymbol->m_iCompanyProfileUpdateDate;
+  m_lLastUpdateDate = pSymbol->lCompanyProfileUpdateDate;
   m_strSymbol = pSymbol->m_strSymbol;
   m_strType = pSymbol->m_strType;
 }

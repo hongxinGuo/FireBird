@@ -9,14 +9,14 @@ bool ProcessCompanyProfile(CWebDataPtr pWebData) {
   CCompanyProfilePtr pProfile = nullptr;
 
   if (pWebData->GetCurrentPosData() != '{') return false;
-  while (pWebData->GetCurrentPos() < pWebData->GetBufferLength()) {
-    if ((pProfile = ReadOneProfile(pWebData)) != nullptr) {
-      if (gl_pAmericaStakeMarket->IsCompanySymbol(pProfile->m_strTicker)) { // 不是新代码？
-        gl_pAmericaStakeMarket->AddCompanyProfile(pProfile);
-        return true;
-      }
+  if ((pProfile = ReadOneProfile(pWebData)) != nullptr) {
+    if (gl_pAmericaStakeMarket->IsCompanySymbol(pProfile->m_strTicker)) { // 不是新代码？
+      gl_pAmericaStakeMarket->AddCompanyProfile(pProfile);
+      return true;
     }
-    else return false;
+    else { // 发现新代码（不应该的事情
+      TRACE("Company Profilef发现新代码%s\n", pProfile->m_strTicker.GetBuffer());
+    }
   }
   return false;
 }
@@ -111,7 +111,5 @@ CCompanyProfilePtr ReadOneProfile(CWebDataPtr pWebData) {
       while ((pWebData->GetCurrentPosData() != '"') && !fFinished) pWebData->IncreaseCurrentPos();
     }
   }
-  while (pWebData->GetCurrentPosData() != '}') pWebData->IncreaseCurrentPos();
-  pWebData->IncreaseCurrentPos();
   return pProfile;
 }

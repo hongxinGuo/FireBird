@@ -682,6 +682,7 @@
     <ClInclude Include="source\AmericaMarket\CompanyProfile.h" />
     <ClInclude Include="source\AmericaMarket\ProcessCompanyProfile.h" />
     <ClInclude Include="source\AmericaMarket\ProcessCompanySymbol.h" />
+    <ClInclude Include="source\AmericaMarket\ProcessStakeCandle.h" />
     <ClInclude Include="source\AmericaMarket\ReadString.h" />
     <ClInclude Include="source\AmericaMarket\SetCompanyProfile.h" />
     <ClInclude Include="source\AmericaStakeMarket.h" />
@@ -758,6 +759,7 @@
     <ClCompile Include="source\AmericaMarket\CompanyProfile.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessCompanyProfile.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessCompanySymbol.cpp" />
+    <ClCompile Include="source\AmericaMarket\ProcessStakeCandle.cpp" />
     <ClCompile Include="source\AmericaMarket\ReadString.cpp" />
     <ClCompile Include="source\AmericaMarket\SetCompanyProfile.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
@@ -874,8 +876,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\readme.md" />
+    <None Include="packages.config" />
     <None Include="res\StockAnalysis.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.72.0.0\build\boost.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.72.0.0\build\boost.targets'))" />
+  </Target>
 </Project>
