@@ -306,12 +306,6 @@
     <ClInclude Include="source\SetCompanySymbol.h">
       <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ProcessCompanySymbol.h">
-      <Filter>头文件\America Stock Market\实现</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ReadString.h">
-      <Filter>头文件\America Stock Market\实现</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\ProcessCompanyProfile.h">
       <Filter>头文件\America Stock Market\实现</Filter>
     </ClInclude>
@@ -320,9 +314,6 @@
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetCompanyProfile.h">
       <Filter>头文件\America Stock Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ProcessStakeCandle.h">
-      <Filter>头文件\America Stock Market\实现</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -590,12 +581,6 @@
     <ClCompile Include="source\CompanySymbol.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ProcessCompanySymbol.cpp">
-      <Filter>源文件\America Stake Market\实现</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ReadString.cpp">
-      <Filter>源文件\America Stake Market\实现</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetCompanyProfile.cpp">
       <Filter>源文件\America Stake Market\数据库</Filter>
     </ClCompile>
@@ -604,9 +589,6 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\CompanyProfile.cpp">
       <Filter>源文件\America Stake Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ProcessStakeCandle.cpp">
-      <Filter>源文件\America Stake Market\实现</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

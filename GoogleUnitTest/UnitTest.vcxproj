@@ -197,9 +197,6 @@
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\CompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanyProfile.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanySymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessStakeCandle.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ReadString.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCompanyProfile.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
@@ -365,9 +362,6 @@
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\CompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanyProfile.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessCompanySymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessStakeCandle.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ReadString.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCompanyProfile.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaStakeMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />

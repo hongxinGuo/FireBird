@@ -2,7 +2,6 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
-#include"ProcessCompanySymbol.h"
 #include"ProcessCompanyProfile.h"
 
 #include"SetCompanySymbol.h"
@@ -85,7 +84,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         m_fInquiringComprofileData = false;
         break;
         case  __COMPANY_SYMBOLS__:
-        ProcessCompanySymbolData(pWebData);
+        ProcessCompanySymbol(pWebData);
         break;
         case  __MARKET_NEWS__:
         break;
@@ -180,10 +179,10 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
     GetFinnHubDataFromWeb();
   }
 
-  //TaskUpdateTodaySymbol();
-  //TaskSaveCompanySymbol();
+  TaskUpdateTodaySymbol();
+  TaskSaveCompanySymbol();
 
-  TaskUpdateComProfile();
+  //TaskUpdateComProfile();
 
   return true;
 }
@@ -301,7 +300,7 @@ bool CAmericaStakeMarket::IsCompanySymbol(CString strSymbol) {
 
 void CAmericaStakeMarket::AddCompanySymbol(CCompanySymbolPtr pSymbol) {
   m_vCompanySymbol.push_back(pSymbol);
-  m_mapConpanySymbol[pSymbol->m_strSymbol] = m_lLastTotalCompanySymbol++;
+  m_mapConpanySymbol[pSymbol->m_strSymbol] = m_lTotalCompanySymbol++;
 }
 
 void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {

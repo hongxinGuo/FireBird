@@ -1,24 +1,23 @@
 #include"stdafx.h"
 #include"globedef.h"
-
-#include"ReadString.h"
-
+#include"WebData.h"
 #include"ProcessCompanyProfile.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
 using namespace boost::property_tree;
-char buffer[2048 * 1024];
+
+static char s_buffer[2048 * 1024];
 
 bool ProcessCompanyProfile(CWebDataPtr pWebData) {
   CCompanyProfilePtr pProfile = make_shared<CCompanyProfile>();
   ptree pt;
   for (int i = 0; i < pWebData->GetBufferLength(); i++) {
-    buffer[i] = pWebData->GetData(i);
+    s_buffer[i] = pWebData->GetData(i);
   }
-  buffer[pWebData->GetBufferLength()] = 0x000;
-  string strTemp = buffer;
+  s_buffer[pWebData->GetBufferLength()] = 0x000;
+  string strTemp = s_buffer;
   stringstream ss(strTemp);
   string s;
   string sTime;
@@ -56,4 +55,41 @@ bool ProcessCompanyProfile(CWebDataPtr pWebData) {
     TRACE("Company Profilef发现新代码%s\n", pProfile->m_strTicker.GetBuffer());
   }
   return false;
+}
+
+bool ProcessCompanySymbol(CWebDataPtr pWebData) {
+  CCompanySymbolPtr pSymbol = make_shared<CCompanySymbol>();
+  ptree pt, pt2;
+  for (int i = 0; i < pWebData->GetBufferLength(); i++) {
+    s_buffer[i] = pWebData->GetData(i);
+  }
+  s_buffer[pWebData->GetBufferLength()] = 0x000;
+  string strTemp = s_buffer;
+  stringstream ss(strTemp);
+  string s;
+  string sTime;
+  try {
+    read_json(ss, pt);
+  }
+  catch (ptree_error& e) {
+    return false;
+  }
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pSymbol = make_shared<CCompanySymbol>();
+    pt2 = it->second;
+    s = pt2.get<string>(_T("description"));
+    pSymbol->m_strDescription = s.c_str();
+    s = pt2.get<string>(_T("displaySymbol"));
+    pSymbol->m_strDisplaySymbol = s.c_str();
+    s = pt2.get<string>(_T("symbol"));
+    pSymbol->m_strSymbol = s.c_str();
+    s = pt2.get<string>(_T("type"));
+    pSymbol->m_strType = s.c_str();
+    s = pt2.get<string>(_T("currency"));
+    pSymbol->m_strCurrency = s.c_str();
+    if (!gl_pAmericaStakeMarket->IsCompanySymbol(pSymbol->m_strSymbol)) { // 新代码？
+      gl_pAmericaStakeMarket->AddCompanySymbol(pSymbol);
+    }
+  }
+  return true;
 }
