@@ -3,7 +3,6 @@
 #include"stdafx.h"
 
 #include"SetCompanyProfile.h"
-#include"CompanySymbol.h"
 
 using namespace std;
 #include<memory>
@@ -14,8 +13,7 @@ public:
 public:
   void Load(CSetCompanyProfile& setCompanyProfile);
   void Save(CSetCompanyProfile& setCompanyProfile);
-
-  void Update(CCompanySymbolPtr pSymbol);
+  void Update(CSetCompanyProfile& setCompanyProfile);
 
 public:
   CString m_strDescription;
@@ -25,7 +23,7 @@ public:
   CString m_strCurrency;
   CString m_strCountry;
   CString m_strExchange;
-  CTime m_tIPODate;
+  CString m_strIPODate;
   CString m_strPhone;
   double m_lMarketCapitalization;
   double m_dShareOutstanding;
@@ -34,9 +32,11 @@ public:
   CString m_strWebURL;
   CString m_strLogo; // 不存储
   CString m_strFinnhubIndustry;
+  long m_lCompanyProfileUpdateDate;
 
-  // 无需存储变量
-  long m_lLastUpdateDate; // 上次更新时间
+  // 无需存储数据区
+  bool m_fUpdateDatabase; // 要求更新此数据
+  bool m_fInquiry; // 要求更新
 };
 
 typedef shared_ptr<CCompanyProfile> CCompanyProfilePtr;

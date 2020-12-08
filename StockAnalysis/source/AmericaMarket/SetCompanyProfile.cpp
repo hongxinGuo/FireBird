@@ -19,9 +19,9 @@ CSetCompanyProfile::CSetCompanyProfile(CDatabase* pdb)
   m_Symbol = _T("");
   m_Type = _T("");
   m_Currency = _T("");
-  m_IPODate = 0;
+  m_CompanyProfileUpdateDate = 19900101;
 
-  m_nFields = 15;
+  m_nFields = 16;
 }
 
 CString CSetCompanyProfile::GetDefaultConnect() {
@@ -52,13 +52,14 @@ void CSetCompanyProfile::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Currency]"), m_Currency);
   RFX_Text(pFX, _T("[Country]"), m_Country);
   RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
-  RFX_Date(pFX, _T("[IPODate]"), m_IPODate);
+  RFX_Text(pFX, _T("[IPODate]"), m_IPODate);
   RFX_Text(pFX, _T("[Phone]"), m_Phone);
   RFX_Text(pFX, _T("[ShareOutstanding]"), m_ShareOutstanding);
   RFX_Text(pFX, _T("[MarketCapitalization]"), m_MarketCapitalization);
   RFX_Text(pFX, _T("[Name]"), m_Name);
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
   RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnhubIndustry);
+  RFX_Long(pFX, _T("[CompanyProfileUpdateDate]"), m_CompanyProfileUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetCompanyProfile ’Ô∂œ

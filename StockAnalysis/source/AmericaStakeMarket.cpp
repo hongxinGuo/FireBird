@@ -4,7 +4,7 @@
 #include"WebInquirer.h"
 #include"ProcessCompanyProfile.h"
 
-#include"SetCompanySymbol.h"
+#include"SetCompanyProfile.h"
 
 CAmericaStakeMarket::CAmericaStakeMarket() {
   static int siInstance = 0;
@@ -45,12 +45,13 @@ CAmericaStakeMarket::~CAmericaStakeMarket() {
 
 void CAmericaStakeMarket::Reset(void) {
   m_fSymbolUpdated = false; // 每日需要更新代码
+  m_fSymbolProceeded = false;
   m_fCompanyProfileUpdated = false;
   m_fInquiringComprofileData = false;
-  m_lLastTotalCompanySymbol = 0;
-  m_lTotalCompanySymbol = 0;
-  m_vCompanySymbol.resize(0);
-  m_mapConpanySymbol.clear();
+  m_lLastTotalCompanyProfile = 0;
+  m_lTotalCompanyProfile = 0;
+  m_vCompanyProfile.resize(0);
+  m_mapCompanyProfile.clear();
 }
 
 bool CAmericaStakeMarket::SchedulingTask(void) {
@@ -85,6 +86,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         break;
         case  __COMPANY_SYMBOLS__:
         ProcessCompanySymbol(pWebData);
+        m_fSymbolProceeded = true;
         break;
         case  __MARKET_NEWS__:
         break;
@@ -120,7 +122,9 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnHubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
       switch (m_lPrefixIndex) {
       case __COMPANY_PROFILE2__:
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vCompanySymbol.at(m_lCurrentProfilePos)->m_strSymbol);
+      while (!m_vCompanyProfile.at(m_lCurrentProfilePos)->m_fInquiry) m_lCurrentProfilePos++;
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_strSymbol);
+      m_vCompanyProfile.at(m_lCurrentProfilePos)->m_fInquiry = false;
       break;
       case  __COMPANY_SYMBOLS__:
       // do nothing
@@ -160,7 +164,6 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
 void CAmericaStakeMarket::ResetMarket(void) {
   Reset();
 
-  LoadCompanySymbol();
   LoadCompanyProfile();
 
   CString str = _T("重置America Stake Market于美东标准时间：");
@@ -182,7 +185,7 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
   TaskUpdateTodaySymbol();
   TaskSaveCompanySymbol();
 
-  //TaskUpdateComProfile();
+  TaskUpdateCompanyProfile();
 
   return true;
 }
@@ -210,6 +213,10 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59;
+    if (IsCompanyProfileUpdated()) {
+      TaskUpdateCompanyProfileDB();
+    }
+
     return true;
   }
   else {
@@ -244,30 +251,31 @@ bool CAmericaStakeMarket::TaskUpdateTodaySymbol(void) {
 }
 
 bool CAmericaStakeMarket::TaskSaveCompanySymbol(void) {
-  CSetCompanySymbol setCompanySymbol;
-  CCompanySymbolPtr pSymbol = nullptr;
+  CSetCompanyProfile setCompanyProfile;
+  CCompanyProfilePtr pProfile = nullptr;
 
-  if (m_lLastTotalCompanySymbol < m_lTotalCompanySymbol) {
-    setCompanySymbol.Open();
-    setCompanySymbol.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalCompanySymbol; l < m_lTotalCompanySymbol; l++) {
-      pSymbol = m_vCompanySymbol.at(l);
-      pSymbol->Save(setCompanySymbol);
+  if (m_lLastTotalCompanyProfile < m_lTotalCompanyProfile) {
+    setCompanyProfile.Open();
+    setCompanyProfile.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalCompanyProfile; l < m_lTotalCompanyProfile; l++) {
+      pProfile = m_vCompanyProfile.at(l);
+      pProfile->Save(setCompanyProfile);
     }
-    setCompanySymbol.m_pDatabase->CommitTrans();
-    setCompanySymbol.Close();
-    m_lLastTotalCompanySymbol = m_lTotalCompanySymbol;
+    setCompanyProfile.m_pDatabase->CommitTrans();
+    setCompanyProfile.Close();
+    m_lLastTotalCompanyProfile = m_lTotalCompanyProfile;
   }
   return true;
 }
 
-bool CAmericaStakeMarket::TaskUpdateComProfile(void) {
+bool CAmericaStakeMarket::TaskUpdateCompanyProfile(void) {
   bool fFound = false;
   FinnHubInquiry inquiry;
 
+  if (!m_fSymbolProceeded) return false;
   if (!m_fCompanyProfileUpdated && !m_fInquiringComprofileData) {
     for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vCompanyProfile.size(); m_lCurrentProfilePos++) {
-      if (IsEarlyThen(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_lLastUpdateDate, GetFormatedMarketDate(), 365)) {
+      if (IsEarlyThen(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_lCompanyProfileUpdateDate, GetFormatedMarketDate(), 365)) {
         fFound = true;
         break;
       }
@@ -285,38 +293,54 @@ bool CAmericaStakeMarket::TaskUpdateComProfile(void) {
   return false;
 }
 
-bool CAmericaStakeMarket::TaskSaveCompanyProfile(void) {
-  for (auto& pProfile : m_vCompanyProfile) {
+bool CAmericaStakeMarket::TaskUpdateCompanyProfileDB(void) {
+  long lTotalCompanyProfile = m_vCompanyProfile.size();
+  CCompanyProfilePtr pProfile = nullptr;
+  CSetCompanyProfile setCompanyProfile;
+
+  setCompanyProfile.Open();
+  setCompanyProfile.m_pDatabase->BeginTrans();
+  for (long l = 0; l < lTotalCompanyProfile; l++) {
+    pProfile = m_vCompanyProfile.at(l);
+    if (pProfile->m_fUpdateDatabase) {
+      while ((setCompanyProfile.m_Symbol.Compare(pProfile->m_strTicker) != 0) && !setCompanyProfile.IsEOF()) {
+        setCompanyProfile.MoveNext();
+      }
+      if (setCompanyProfile.IsEOF()) break;
+      pProfile->Update(setCompanyProfile);
+      pProfile->m_fUpdateDatabase = false;
+    }
   }
-  return false;
+  setCompanyProfile.m_pDatabase->CommitTrans();
+  setCompanyProfile.Close();
+  return true;
 }
 
-bool CAmericaStakeMarket::IsCompanySymbol(CString strSymbol) {
-  if (m_mapConpanySymbol.find(strSymbol) == m_mapConpanySymbol.end()) { // 新代码？
+bool CAmericaStakeMarket::IsCompanyProfile(CString strSymbol) {
+  if (m_mapCompanyProfile.find(strSymbol) == m_mapCompanyProfile.end()) { // 新代码？
     return false;
   }
   else return true;
 }
 
-void CAmericaStakeMarket::AddCompanySymbol(CCompanySymbolPtr pSymbol) {
-  m_vCompanySymbol.push_back(pSymbol);
-  m_mapConpanySymbol[pSymbol->m_strSymbol] = m_lTotalCompanySymbol++;
+bool CAmericaStakeMarket::IsCompanyProfileUpdated(void) {
+  int iTotal = m_vCompanyProfile.size();
+  for (int i = 0; i < iTotal; i++) {
+    if (m_vCompanyProfile.at(i)->m_fUpdateDatabase) return true;
+  }
+  return false;
+}
+
+CCompanyProfilePtr CAmericaStakeMarket::GetCompanyProfile(CString strTicker) {
+  if (m_mapCompanyProfile.find(strTicker) != m_mapCompanyProfile.end()) {
+    return m_vCompanyProfile.at(m_mapCompanyProfile.at(strTicker));
+  }
+  else return nullptr;
 }
 
 void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {
-  const long lIndex = m_mapConpanySymbol.at(pProfile->m_strTicker);
-  m_vCompanyProfile.at(lIndex)->m_lLastUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
-  m_vCompanySymbol.at(lIndex)->lCompanyProfileUpdateDate = GetFormatedMarketDate(); // 更新数据更新日期
-  m_vCompanyProfile.at(lIndex)->m_strCountry = pProfile->m_strCountry;
-  m_vCompanyProfile.at(lIndex)->m_strCurrency = pProfile->m_strCurrency;
-  m_vCompanyProfile.at(lIndex)->m_strExchange = pProfile->m_strExchange;
-  m_vCompanyProfile.at(lIndex)->m_tIPODate = pProfile->m_tIPODate;
-  m_vCompanyProfile.at(lIndex)->m_strLogo = pProfile->m_strLogo;
-  m_vCompanyProfile.at(lIndex)->m_lMarketCapitalization = pProfile->m_lMarketCapitalization;
-  m_vCompanyProfile.at(lIndex)->m_strPhone = pProfile->m_strPhone;
-  m_vCompanyProfile.at(lIndex)->m_dShareOutstanding = pProfile->m_dShareOutstanding;
-  m_vCompanyProfile.at(lIndex)->m_strTicker = pProfile->m_strTicker;
-  m_vCompanyProfile.at(lIndex)->m_strWebURL = pProfile->m_strWebURL;
+  m_vCompanyProfile.push_back(pProfile);
+  m_mapCompanyProfile[pProfile->m_strSymbol] = m_lTotalCompanyProfile++;
 }
 
 void CAmericaStakeMarket::SetFinnInquiry(long lOrder) {
@@ -364,46 +388,6 @@ long CAmericaStakeMarket::GetFinnInquiry(void) {
   return -1;
 }
 
-bool CAmericaStakeMarket::LoadCompanySymbol(void) {
-  CSetCompanySymbol setCompanySymbol;
-  CCompanySymbolPtr pCompanySymbol = nullptr;
-  CCompanyProfilePtr pCompanyProfile = nullptr;
-
-  setCompanySymbol.Open();
-  setCompanySymbol.m_pDatabase->BeginTrans();
-  while (!setCompanySymbol.IsEOF()) {
-    pCompanySymbol = make_shared<CCompanySymbol>();
-    pCompanySymbol->Load(setCompanySymbol);
-    m_vCompanySymbol.push_back(pCompanySymbol);
-    pCompanyProfile = make_shared<CCompanyProfile>();
-    pCompanyProfile->Update(pCompanySymbol);
-    m_vCompanyProfile.push_back(pCompanyProfile);
-    m_mapConpanySymbol[setCompanySymbol.m_Symbol] = m_lLastTotalCompanySymbol++;
-    setCompanySymbol.MoveNext();
-  }
-  setCompanySymbol.m_pDatabase->CommitTrans();
-  setCompanySymbol.Close();
-  m_lTotalCompanyProfile = m_vCompanyProfile.size();
-  ASSERT(m_lLastTotalCompanySymbol == m_vCompanySymbol.size());
-  return true;
-}
-
-bool CAmericaStakeMarket::SaveCompnaySymbol(void) {
-  CSetCompanySymbol setCompanySymbol;
-  CCompanySymbolPtr pCompanySymbol = nullptr;
-
-  setCompanySymbol.Open();
-  setCompanySymbol.m_pDatabase->BeginTrans();
-  for (long l = m_lLastTotalCompanySymbol; l < m_vCompanySymbol.size(); l++) {
-    pCompanySymbol = m_vCompanySymbol.at(l);
-    pCompanySymbol->Save(setCompanySymbol);
-  }
-  setCompanySymbol.m_pDatabase->CommitTrans();
-  setCompanySymbol.Close();
-  m_lLastTotalCompanySymbol = m_vCompanySymbol.size();
-  return true;
-}
-
 bool CAmericaStakeMarket::LoadCompanyProfile(void) {
   CSetCompanyProfile setCompanyProfile;
   CCompanyProfilePtr pCompanyProfile = nullptr;
@@ -414,9 +398,29 @@ bool CAmericaStakeMarket::LoadCompanyProfile(void) {
     pCompanyProfile = make_shared<CCompanyProfile>();
     pCompanyProfile->Load(setCompanyProfile);
     m_vCompanyProfile.push_back(pCompanyProfile);
+    m_mapCompanyProfile[setCompanyProfile.m_Symbol] = m_lLastTotalCompanyProfile++;
     setCompanyProfile.MoveNext();
   }
   setCompanyProfile.m_pDatabase->CommitTrans();
   setCompanyProfile.Close();
+  m_lTotalCompanyProfile = m_vCompanyProfile.size();
+  ASSERT(m_lLastTotalCompanyProfile == m_vCompanyProfile.size());
+  return true;
+}
+
+bool CAmericaStakeMarket::SaveCompnayProfile(void) {
+  CSetCompanyProfile setCompanyProfile;
+  CCompanyProfilePtr pCompanyProfile = nullptr;
+  long lTotalCompanyProfile = m_lTotalCompanyProfile;
+
+  setCompanyProfile.Open();
+  setCompanyProfile.m_pDatabase->BeginTrans();
+  for (long l = m_lLastTotalCompanyProfile; l < lTotalCompanyProfile; l++) {
+    pCompanyProfile = m_vCompanyProfile.at(l);
+    pCompanyProfile->Save(setCompanyProfile);
+  }
+  setCompanyProfile.m_pDatabase->CommitTrans();
+  setCompanyProfile.Close();
+  m_lLastTotalCompanyProfile = m_vCompanyProfile.size();
   return true;
 }

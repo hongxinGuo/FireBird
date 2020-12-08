@@ -3,7 +3,6 @@
 #include"stdafx.h"
 
 #include"VirtualMarket.h"
-#include"CompanySymbol.h"
 #include"CompanyProfile.h"
 #include"WebData.h"
 
@@ -63,11 +62,12 @@ public:
 
   bool TaskUpdateTodaySymbol(void);
   bool TaskSaveCompanySymbol(void);
-  bool TaskUpdateComProfile(void);
-  bool TaskSaveCompanyProfile(void);
+  bool TaskUpdateCompanyProfile(void);
+  bool TaskUpdateCompanyProfileDB(void);
 
-  bool IsCompanySymbol(CString strSymbol);
-  void AddCompanySymbol(CCompanySymbolPtr pSymbol);
+  bool IsCompanyProfile(CString strProfile);
+  bool IsCompanyProfileUpdated(void);
+  CCompanyProfilePtr GetCompanyProfile(CString strTicker);
   void AddCompanyProfile(CCompanyProfilePtr pProfile);
 
   // 各种状态
@@ -80,17 +80,13 @@ public:
   long GetFinnInquiry(void);
 
   // 数据库操作
-  bool LoadCompanySymbol(void);
-  bool SaveCompnaySymbol(void);
   bool LoadCompanyProfile(void);
+  bool SaveCompnayProfile(void);
 
 protected:
-  vector<CCompanySymbolPtr> m_vCompanySymbol;
-  map<CString, long> m_mapConpanySymbol;
-  long m_lLastTotalCompanySymbol;
-  long m_lTotalCompanySymbol;
-
   vector<CCompanyProfilePtr> m_vCompanyProfile;
+  map<CString, long> m_mapCompanyProfile;
+  long m_lLastTotalCompanyProfile;
   long m_lTotalCompanyProfile;
   long m_lCurrentProfilePos;
   bool m_fInquiringComprofileData; // 查询公司简介中
@@ -101,6 +97,7 @@ protected:
   atomic_bool m_fWaitingFinnHubData;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
+  bool m_fSymbolProceeded;
   bool m_fCompanyProfileUpdated; // 每日更新公司简介
 };
 

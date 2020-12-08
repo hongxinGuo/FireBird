@@ -29,13 +29,14 @@ public:
   CString m_Currency;
   CString m_Country;
   CString m_Exchange;
-  CTime m_IPODate;
+  CString m_IPODate;
   CString m_MarketCapitalization;
   CString m_ShareOutstanding;
   CString m_Phone;
   CString m_Name;
   CString m_WebURL;
   CString m_FinnhubIndustry;  // 向导生成的虚函数重写
+  long m_CompanyProfileUpdateDate;
 public:
   virtual CString GetDefaultConnect();	// 默认连接字符串
 
