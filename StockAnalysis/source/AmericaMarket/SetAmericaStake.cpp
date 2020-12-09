@@ -1,6 +1,6 @@
-// CSetCompanyProfile.cpp : CSetStockCode 类的实现
+// CSetAmericaStake.cpp : CSetStockCode 类的实现
 
-// CSetCompanyProfile 实现
+// CSetAmericaStake 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -8,40 +8,41 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetCompanyProfile.h"
+#include "SetAmericaStake.h"
 
-IMPLEMENT_DYNAMIC(CSetCompanyProfile, CRecordset)
+IMPLEMENT_DYNAMIC(CSetAmericaStake, CRecordset)
 
-CSetCompanyProfile::CSetCompanyProfile(CDatabase* pdb)
+CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   : CRecordset(pdb) {
-  m_Description = _T("");
-  m_DisplaySymbol = _T("");
-  m_Symbol = _T("");
-  m_Type = _T("");
-  m_Currency = _T("");
-  m_CompanyProfileUpdateDate = 19900101;
+  m_IPODate = _T(" ");
+  m_Currency = _T(" ");
+  m_Type = _T(" ");
+  m_Country = _T(" ");
+  m_Description = _T(" ");
+  m_DisplaySymbol = _T(" ");
+  m_Exchange = _T(" ");
+  m_FinnhubIndustry = _T(" ");
+  m_Name = _T(" ");
+  m_Phone = _T(" ");
+  m_Symbol = _T(" ");
+  m_Ticker = _T(" ");
+  m_WebURL = _T(" ");
+  m_AmericaStakeUpdateDate = 19900101;
   m_DayLineStartDate = 29900101;
   m_DayLineEndDate = 19900101;
 
   m_nFields = 19;
 }
 
-CString CSetCompanyProfile::GetDefaultConnect() {
-  if (!gl_fNormalMode) {
-    gl_fTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
-  }
-  else {
-    gl_fTestMode = false;
-    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是AmericaStakeMarket Schema
-  }
+CString CSetAmericaStake::GetDefaultConnect() {
+  return GetAmericaMarketSchemaConnect();
 }
 
-CString CSetCompanyProfile::GetDefaultSQL() {
+CString CSetAmericaStake::GetDefaultSQL() {
   return _T("[companyprofile]");
 }
 
-void CSetCompanyProfile::DoFieldExchange(CFieldExchange* pFX) {
+void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -62,19 +63,19 @@ void CSetCompanyProfile::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Name]"), m_Name);
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
   RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnhubIndustry);
-  RFX_Long(pFX, _T("[CompanyProfileUpdateDate]"), m_CompanyProfileUpdateDate);
+  RFX_Long(pFX, _T("[AmericaStakeUpdateDate]"), m_AmericaStakeUpdateDate);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetCompanyProfile 诊断
+// CSetAmericaStake 诊断
 
 #ifdef _DEBUG
-void CSetCompanyProfile::AssertValid() const {
+void CSetAmericaStake::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetCompanyProfile::Dump(CDumpContext& dc) const {
+void CSetAmericaStake::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

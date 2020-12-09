@@ -2,9 +2,9 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
-#include"ProcessCompanyProfile.h"
+#include"ProcessAmericaStake.h"
 
-#include"SetCompanyProfile.h"
+#include"SetAmericaStake.h"
 
 CAmericaStakeMarket::CAmericaStakeMarket() {
   static int siInstance = 0;
@@ -44,18 +44,18 @@ CAmericaStakeMarket::~CAmericaStakeMarket() {
 }
 
 void CAmericaStakeMarket::Reset(void) {
-  m_lTotalCompanyProfile = 0;
-  m_lLastTotalCompanyProfile = 0;
+  m_lTotalAmericaStake = 0;
+  m_lLastTotalAmericaStake = 0;
   m_lCurrentProfilePos = 0;
   m_lCurrentUpdateDayLinePos = 0;
-  m_vCompanyProfile.resize(0);
-  m_mapCompanyProfile.clear();
+  m_vAmericaStake.resize(0);
+  m_mapAmericaStake.clear();
   m_fSymbolUpdated = false; // 每日需要更新代码
   m_fSymbolProceeded = false;
-  m_fCompanyProfileUpdated = false;
+  m_fAmericaStakeUpdated = false;
   m_fStakeDayLineUpdated = false;
 
-  m_fInquiringComprofileData = false;
+  m_fInquiringStakeProfileData = false;
   m_fInquiringStakeCandle = false;
 }
 
@@ -89,11 +89,11 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         pWebData = gl_WebInquirer.PopFinnHubData();
         switch (m_lPrefixIndex) {
         case __COMPANY_PROFILE2__:
-        ProcessCompanyProfile(pWebData);
-        m_fInquiringComprofileData = false;
+        ProcessAmericaStakeProfile(pWebData);
+        m_fInquiringStakeProfileData = false;
         break;
         case  __COMPANY_SYMBOLS__:
-        ProcessCompanySymbol(pWebData);
+        ProcessAmericaStakeSymbol(pWebData);
         m_fSymbolProceeded = true;
         break;
         case  __MARKET_NEWS__:
@@ -109,7 +109,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         case __STAKE_QUOTE__:
         break;
         case __STAKE_CANDLES__:
-        ProcessStakeCandle(pWebData, m_vCompanyProfile.at(m_lCurrentUpdateDayLinePos));
+        ProcessAmericaStakeCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
         m_fInquiringStakeCandle = false;
         break;
         case __FOREX_EXCHANGE__:
@@ -132,9 +132,9 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnHubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
       switch (m_lPrefixIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE2__:
-      while (!m_vCompanyProfile.at(m_lCurrentProfilePos)->m_fInquiryCompanyProfile) m_lCurrentProfilePos++;
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_strSymbol);
-      m_vCompanyProfile.at(m_lCurrentProfilePos)->m_fInquiryCompanyProfile = false;
+      while (!m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake) m_lCurrentProfilePos++;
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
+      m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
       break;
       case  __COMPANY_SYMBOLS__:
       // do nothing
@@ -152,7 +152,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       case __STAKE_QUOTE__:
       break;
       case __STAKE_CANDLES__:
-      strMiddle += m_vCompanyProfile.at(m_lCurrentUpdateDayLinePos)->m_strSymbol;
+      strMiddle += m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol;
       strMiddle += _T("&resolution=D");
       strMiddle += _T("&from=");
       sprintf_s(buffer, _T("%I64i"), (INT64)(GetMarketTime() - (time_t)(360) * 24 * 3600));
@@ -163,7 +163,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       strTemp = buffer;
       strMiddle += strTemp;
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      m_vCompanyProfile.at(m_lCurrentUpdateDayLinePos)->m_fDayLineNeedUpdate = false;
+      m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_fDayLineNeedUpdate = false;
       break;
       case __FOREX_EXCHANGE__:
       break;
@@ -186,7 +186,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
 void CAmericaStakeMarket::ResetMarket(void) {
   Reset();
 
-  LoadCompanyProfile();
+  LoadAmericaStake();
 
   CString str = _T("重置America Stake Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -202,12 +202,14 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
   GetFinnHubDataFromWeb();
 
   TaskUpdateTodaySymbol();
-  TaskSaveCompanySymbolDB();
+  TaskSaveStakeSymbolDB();
 
   if (m_fSymbolProceeded) {
-    TaskUpdateCompanyProfile();
-    //TaskUpdateDayLine();
+    TaskUpdateAmericaStake();
+    TaskUpdateDayLine();
   }
+
+  TaskSaveDayLineData();
 
   return true;
 }
@@ -235,8 +237,8 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 59;
-    if (IsCompanyProfileUpdated()) {
-      TaskUpdateCompanyProfileDB();
+    if (IsAmericaStakeUpdated()) {
+      TaskUpdateAmericaStakeDB();
     }
 
     return true;
@@ -272,32 +274,32 @@ bool CAmericaStakeMarket::TaskUpdateTodaySymbol(void) {
   return false;
 }
 
-bool CAmericaStakeMarket::TaskSaveCompanySymbolDB(void) {
-  CSetCompanyProfile setCompanyProfile;
-  CCompanyProfilePtr pProfile = nullptr;
+bool CAmericaStakeMarket::TaskSaveStakeSymbolDB(void) {
+  CSetAmericaStake setAmericaStake;
+  CAmericaStakePtr pStake = nullptr;
 
-  if (m_lLastTotalCompanyProfile < m_lTotalCompanyProfile) {
-    setCompanyProfile.Open();
-    setCompanyProfile.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalCompanyProfile; l < m_lTotalCompanyProfile; l++) {
-      pProfile = m_vCompanyProfile.at(l);
-      pProfile->Save(setCompanyProfile);
+  if (m_lLastTotalAmericaStake < m_lTotalAmericaStake) {
+    setAmericaStake.Open();
+    setAmericaStake.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalAmericaStake; l < m_lTotalAmericaStake; l++) {
+      pStake = m_vAmericaStake.at(l);
+      pStake->Save(setAmericaStake);
     }
-    setCompanyProfile.m_pDatabase->CommitTrans();
-    setCompanyProfile.Close();
-    m_lLastTotalCompanyProfile = m_lTotalCompanyProfile;
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
+    m_lLastTotalAmericaStake = m_lTotalAmericaStake;
   }
   return true;
 }
 
-bool CAmericaStakeMarket::TaskUpdateCompanyProfile(void) {
+bool CAmericaStakeMarket::TaskUpdateAmericaStake(void) {
   bool fFound = false;
   FinnHubInquiry inquiry;
 
   ASSERT(m_fSymbolProceeded);
-  if (!m_fCompanyProfileUpdated && !m_fInquiringComprofileData) {
-    for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vCompanyProfile.size(); m_lCurrentProfilePos++) {
-      if (IsEarlyThen(m_vCompanyProfile.at(m_lCurrentProfilePos)->m_lCompanyProfileUpdateDate, GetFormatedMarketDate(), 365)) {
+  if (!m_fAmericaStakeUpdated && !m_fInquiringStakeProfileData) {
+    for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vAmericaStake.size(); m_lCurrentProfilePos++) {
+      if (IsEarlyThen(m_vAmericaStake.at(m_lCurrentProfilePos)->m_lAmericaStakeUpdateDate, GetFormatedMarketDate(), 365)) {
         fFound = true;
         break;
       }
@@ -306,35 +308,35 @@ bool CAmericaStakeMarket::TaskUpdateCompanyProfile(void) {
       inquiry.m_iIndex = __COMPANY_PROFILE2__;
       inquiry.m_iPriority = 10;
       m_qWebInquiry.push(inquiry);
-      m_fInquiringComprofileData = true;
+      m_fInquiringStakeProfileData = true;
     }
     else {
-      m_fCompanyProfileUpdated = true;
+      m_fAmericaStakeUpdated = true;
     }
   }
   return false;
 }
 
-bool CAmericaStakeMarket::TaskUpdateCompanyProfileDB(void) {
-  const long lTotalCompanyProfile = m_vCompanyProfile.size();
-  CCompanyProfilePtr pProfile = nullptr;
-  CSetCompanyProfile setCompanyProfile;
+bool CAmericaStakeMarket::TaskUpdateAmericaStakeDB(void) {
+  const long lTotalAmericaStake = m_vAmericaStake.size();
+  CAmericaStakePtr pStake = nullptr;
+  CSetAmericaStake setAmericaStake;
 
-  setCompanyProfile.Open();
-  setCompanyProfile.m_pDatabase->BeginTrans();
-  for (long l = 0; l < lTotalCompanyProfile; l++) {
-    pProfile = m_vCompanyProfile.at(l);
-    if (pProfile->m_fUpdateDatabase) {
-      while ((setCompanyProfile.m_Symbol.Compare(pProfile->m_strSymbol) != 0) && !setCompanyProfile.IsEOF()) {
-        setCompanyProfile.MoveNext();
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  for (long l = 0; l < lTotalAmericaStake; l++) {
+    pStake = m_vAmericaStake.at(l);
+    if (pStake->m_fUpdateDatabase) {
+      while ((setAmericaStake.m_Symbol.Compare(pStake->m_strSymbol) != 0) && !setAmericaStake.IsEOF()) {
+        setAmericaStake.MoveNext();
       }
-      if (setCompanyProfile.IsEOF()) break;
-      pProfile->Update(setCompanyProfile);
-      pProfile->m_fUpdateDatabase = false;
+      if (setAmericaStake.IsEOF()) break;
+      pStake->Update(setAmericaStake);
+      pStake->m_fUpdateDatabase = false;
     }
   }
-  setCompanyProfile.m_pDatabase->CommitTrans();
-  setCompanyProfile.Close();
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
   return true;
 }
 
@@ -344,8 +346,8 @@ bool CAmericaStakeMarket::TaskUpdateDayLine(void) {
 
   ASSERT(m_fSymbolProceeded);
   if (!m_fStakeDayLineUpdated && !m_fInquiringStakeCandle) {
-    for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < m_vCompanyProfile.size(); m_lCurrentUpdateDayLinePos++) {
-      if (m_vCompanyProfile.at(m_lCurrentUpdateDayLinePos)->m_fDayLineNeedUpdate) {
+    for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < m_vAmericaStake.size(); m_lCurrentUpdateDayLinePos++) {
+      if (m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_fDayLineNeedUpdate) {
         fFound = true;
         break;
       }
@@ -363,35 +365,75 @@ bool CAmericaStakeMarket::TaskUpdateDayLine(void) {
   return false;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将日线数据存入数据库．
+//  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
+//
+// 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
+// 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
+// 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CAmericaStakeMarket::TaskSaveDayLineData(void) {
+  CString str;
+
+  for (auto& pStake : m_vAmericaStake) {
+    if (pStake->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      if (pStake->GetDayLineSize() > 0) {
+        if (pStake->HaveNewDayLineData()) {
+          RunningThreadSaveStakeDayLine(pStake);
+        }
+        else pStake->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
+      }
+      else { // 此种情况为有股票代码，但此代码尚未上市
+        CString str1 = pStake->GetStakeSymbol();
+        str1 += _T(" 为未上市股票代码");
+        gl_systemMessage.PushDayLineInfoMessage(str1);
+      }
+    }
+    if (gl_fExitingSystem) {
+      break; // 如果程序正在退出，则停止存储。
+    }
+  }
+
+  return(true);
+}
+
+bool CAmericaStakeMarket::RunningThreadSaveStakeDayLine(CAmericaStakePtr pStake) {
+  thread thread1(ThreadSaveAmericaStakeDayLine, pStake);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
 bool TaskUpdateDayLineDB(void) {
   return true;
 }
 
-bool CAmericaStakeMarket::IsCompanyProfile(CString strSymbol) {
-  if (m_mapCompanyProfile.find(strSymbol) == m_mapCompanyProfile.end()) { // 新代码？
+bool CAmericaStakeMarket::IsAmericaStake(CString strSymbol) {
+  if (m_mapAmericaStake.find(strSymbol) == m_mapAmericaStake.end()) { // 新代码？
     return false;
   }
   else return true;
 }
 
-bool CAmericaStakeMarket::IsCompanyProfileUpdated(void) {
-  const int iTotal = m_vCompanyProfile.size();
+bool CAmericaStakeMarket::IsAmericaStakeUpdated(void) {
+  const int iTotal = m_vAmericaStake.size();
   for (int i = 0; i < iTotal; i++) {
-    if (m_vCompanyProfile.at(i)->m_fUpdateDatabase) return true;
+    if (m_vAmericaStake.at(i)->m_fUpdateDatabase) return true;
   }
   return false;
 }
 
-CCompanyProfilePtr CAmericaStakeMarket::GetCompanyProfile(CString strTicker) {
-  if (m_mapCompanyProfile.find(strTicker) != m_mapCompanyProfile.end()) {
-    return m_vCompanyProfile.at(m_mapCompanyProfile.at(strTicker));
+CAmericaStakePtr CAmericaStakeMarket::GetAmericaStake(CString strTicker) {
+  if (m_mapAmericaStake.find(strTicker) != m_mapAmericaStake.end()) {
+    return m_vAmericaStake.at(m_mapAmericaStake.at(strTicker));
   }
   else return nullptr;
 }
 
-void CAmericaStakeMarket::AddCompanyProfile(CCompanyProfilePtr pProfile) {
-  m_vCompanyProfile.push_back(pProfile);
-  m_mapCompanyProfile[pProfile->m_strSymbol] = m_lTotalCompanyProfile++;
+void CAmericaStakeMarket::AddAmericaStake(CAmericaStakePtr pStake) {
+  m_vAmericaStake.push_back(pStake);
+  m_mapAmericaStake[pStake->m_strSymbol] = m_lTotalAmericaStake++;
 }
 
 void CAmericaStakeMarket::SetFinnInquiry(long lOrder) {
@@ -439,39 +481,39 @@ long CAmericaStakeMarket::GetFinnInquiry(void) {
   return -1;
 }
 
-bool CAmericaStakeMarket::LoadCompanyProfile(void) {
-  CSetCompanyProfile setCompanyProfile;
-  CCompanyProfilePtr pCompanyProfile = nullptr;
+bool CAmericaStakeMarket::LoadAmericaStake(void) {
+  CSetAmericaStake setAmericaStake;
+  CAmericaStakePtr pAmericaStake = nullptr;
 
-  setCompanyProfile.Open();
-  setCompanyProfile.m_pDatabase->BeginTrans();
-  while (!setCompanyProfile.IsEOF()) {
-    pCompanyProfile = make_shared<CCompanyProfile>();
-    pCompanyProfile->Load(setCompanyProfile);
-    m_vCompanyProfile.push_back(pCompanyProfile);
-    m_mapCompanyProfile[setCompanyProfile.m_Symbol] = m_lLastTotalCompanyProfile++;
-    setCompanyProfile.MoveNext();
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    pAmericaStake = make_shared<CAmericaStake>();
+    pAmericaStake->Load(setAmericaStake);
+    m_vAmericaStake.push_back(pAmericaStake);
+    m_mapAmericaStake[setAmericaStake.m_Symbol] = m_lLastTotalAmericaStake++;
+    setAmericaStake.MoveNext();
   }
-  setCompanyProfile.m_pDatabase->CommitTrans();
-  setCompanyProfile.Close();
-  m_lTotalCompanyProfile = m_vCompanyProfile.size();
-  ASSERT(m_lLastTotalCompanyProfile == m_vCompanyProfile.size());
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+  m_lTotalAmericaStake = m_vAmericaStake.size();
+  ASSERT(m_lLastTotalAmericaStake == m_vAmericaStake.size());
   return true;
 }
 
 bool CAmericaStakeMarket::SaveCompnayProfile(void) {
-  CSetCompanyProfile setCompanyProfile;
-  CCompanyProfilePtr pCompanyProfile = nullptr;
-  long lTotalCompanyProfile = m_lTotalCompanyProfile;
+  CSetAmericaStake setAmericaStake;
+  CAmericaStakePtr pAmericaStake = nullptr;
+  long lTotalAmericaStake = m_lTotalAmericaStake;
 
-  setCompanyProfile.Open();
-  setCompanyProfile.m_pDatabase->BeginTrans();
-  for (long l = m_lLastTotalCompanyProfile; l < lTotalCompanyProfile; l++) {
-    pCompanyProfile = m_vCompanyProfile.at(l);
-    pCompanyProfile->Save(setCompanyProfile);
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  for (long l = m_lLastTotalAmericaStake; l < lTotalAmericaStake; l++) {
+    pAmericaStake = m_vAmericaStake.at(l);
+    pAmericaStake->Save(setAmericaStake);
   }
-  setCompanyProfile.m_pDatabase->CommitTrans();
-  setCompanyProfile.Close();
-  m_lLastTotalCompanyProfile = m_vCompanyProfile.size();
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+  m_lLastTotalAmericaStake = m_vAmericaStake.size();
   return true;
 }

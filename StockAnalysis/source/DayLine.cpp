@@ -11,7 +11,7 @@ void CDayLine::Reset(void) {
   CChinaStockHistoryData::Reset();
 }
 
-bool CDayLine::LoadExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo) {
+bool CDayLine::LoadChinaMarketExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
   m_lTransactionNumber = atol(psetDayLineExtendInfo->m_TransactionNumber);
   m_lTransactionNumberBelow5000 = atol(psetDayLineExtendInfo->m_TransactionNumberBelow5000);
@@ -82,7 +82,7 @@ bool CDayLine::LoadExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtend
   return true;
 }
 
-bool CDayLine::SaveData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
+bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
 
   psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
@@ -108,16 +108,16 @@ bool CDayLine::SaveData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   return true;
 }
 
-bool CDayLine::AppendData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
+bool CDayLine::AppendChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   psetDayLineBasicInfo->AddNew();
-  SaveData(psetDayLineBasicInfo);
+  SaveChinaMarketData(psetDayLineBasicInfo);
   psetDayLineBasicInfo->Update();
 
   return true;
 }
 
-bool CDayLine::LoadBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
+bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   m_lDate = psetDayLineBasicInfo->m_Date;
   m_wMarket = psetDayLineBasicInfo->m_Market;
@@ -139,6 +139,65 @@ bool CDayLine::LoadBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInf
   m_dRSIndex = atof(psetDayLineBasicInfo->m_RSIndex);
   m_dRSBackup = atof(psetDayLineBasicInfo->m_RSBackup);
   CalculateRSLogarithm1(m_dRS);
+  return true;
+}
+
+bool CDayLine::SaveAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
+  ASSERT(psetAmericaStakeDayLine->IsOpen());
+
+  psetAmericaStakeDayLine->m_Date = GetFormatedMarketDate();
+  psetAmericaStakeDayLine->m_Market = GetMarketString();
+  psetAmericaStakeDayLine->m_StockCode = GetStakeCode();
+  psetAmericaStakeDayLine->m_StockName = GetStakeName();
+  psetAmericaStakeDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  psetAmericaStakeDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
+  psetAmericaStakeDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
+  psetAmericaStakeDayLine->m_Open = ConvertValueToString(GetOpen(), 1000);
+  psetAmericaStakeDayLine->m_Close = ConvertValueToString(GetClose(), 1000);
+  psetAmericaStakeDayLine->m_Volume = ConvertValueToString(GetVolume());
+  psetAmericaStakeDayLine->m_Amount = ConvertValueToString(GetAmount());
+  psetAmericaStakeDayLine->m_UpAndDown = ConvertValueToString(GetUpDown());
+  psetAmericaStakeDayLine->m_UpDownRate = ConvertValueToString(GetUpDownRate());
+  psetAmericaStakeDayLine->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
+  psetAmericaStakeDayLine->m_TotalValue = ConvertValueToString(GetTotalValue());
+  psetAmericaStakeDayLine->m_CurrentValue = ConvertValueToString(GetCurrentValue());
+  psetAmericaStakeDayLine->m_RS = ConvertValueToString(GetRS());
+  psetAmericaStakeDayLine->m_RSIndex = ConvertValueToString(GetRSIndex());
+  psetAmericaStakeDayLine->m_RSBackup = ConvertValueToString(GetRSBackup());
+
+  return true;
+}
+
+bool CDayLine::AppendAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
+  ASSERT(psetAmericaStakeDayLine->IsOpen());
+  psetAmericaStakeDayLine->AddNew();
+  SaveAmericaMarketData(psetAmericaStakeDayLine);
+  psetAmericaStakeDayLine->Update();
+
+  return true;
+}
+
+bool CDayLine::LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
+  ASSERT(psetAmericaStakeDayLine->IsOpen());
+  m_lDate = psetAmericaStakeDayLine->m_Date;
+  m_strMarket = psetAmericaStakeDayLine->m_Market;
+  m_strStakeCode = psetAmericaStakeDayLine->m_StockCode;
+  m_strStakeName = psetAmericaStakeDayLine->m_StockName;
+  m_lLastClose = atof(psetAmericaStakeDayLine->m_LastClose) * 1000;
+  m_lOpen = atof(psetAmericaStakeDayLine->m_Open) * 1000;
+  m_lHigh = atof(psetAmericaStakeDayLine->m_High) * 1000;
+  m_lLow = atof(psetAmericaStakeDayLine->m_Low) * 1000;
+  m_lClose = atof(psetAmericaStakeDayLine->m_Close) * 1000;
+  m_dUpDown = atof(psetAmericaStakeDayLine->m_UpAndDown);
+  m_llVolume = atoll(psetAmericaStakeDayLine->m_Volume);
+  m_llAmount = atoll(psetAmericaStakeDayLine->m_Amount);
+  m_dUpDownRate = atof(psetAmericaStakeDayLine->m_UpDownRate);
+  m_dChangeHandRate = atof(psetAmericaStakeDayLine->m_ChangeHandRate);
+  m_llTotalValue = atoll(psetAmericaStakeDayLine->m_TotalValue);
+  m_llCurrentValue = atoll(psetAmericaStakeDayLine->m_CurrentValue);
+  m_dRS = atof(psetAmericaStakeDayLine->m_RS);
+  m_dRSIndex = atof(psetAmericaStakeDayLine->m_RSIndex);
+  m_dRSBackup = atof(psetAmericaStakeDayLine->m_RSBackup);
   return true;
 }
 

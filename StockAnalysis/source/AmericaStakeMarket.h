@@ -3,7 +3,7 @@
 #include"stdafx.h"
 
 #include"VirtualMarket.h"
-#include"CompanyProfile.h"
+#include"AmericaStake.h"
 #include"WebData.h"
 
 // FinnHub申请类别，其值作为优先级的判断标准（数值大的优先级高）
@@ -61,18 +61,23 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskUpdateTodaySymbol(void);
-  bool TaskSaveCompanySymbolDB(void);
+  bool TaskSaveStakeSymbolDB(void);
 
-  bool TaskUpdateCompanyProfile(void);
-  bool TaskUpdateCompanyProfileDB(void);
+  bool TaskUpdateAmericaStake(void);
+  bool TaskUpdateAmericaStakeDB(void);
 
   bool TaskUpdateDayLine(void);
 
-  bool IsCompanyProfile(CString strProfile);
-  bool IsCompanyProfileUpdated(void);
-  CCompanyProfilePtr GetCompanyProfile(CString strTicker);
-  CCompanyProfilePtr GetCurrentProcessingCompanyProfile(void) { return m_vCompanyProfile.at(m_lCurrentProfilePos); }
-  void AddCompanyProfile(CCompanyProfilePtr pProfile);
+  bool TaskSaveDayLineData(void);
+
+  // 各工作线程调用包裹函数
+  virtual bool RunningThreadSaveStakeDayLine(CAmericaStakePtr pStake);
+
+  bool IsAmericaStake(CString strProfile);
+  bool IsAmericaStakeUpdated(void);
+  CAmericaStakePtr GetAmericaStake(CString strTicker);
+  CAmericaStakePtr GetCurrentProcessingAmericaStake(void) { return m_vAmericaStake.at(m_lCurrentProfilePos); }
+  void AddAmericaStake(CAmericaStakePtr pStake);
 
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
@@ -84,14 +89,14 @@ public:
   long GetFinnInquiry(void);
 
   // 数据库操作
-  bool LoadCompanyProfile(void);
+  bool LoadAmericaStake(void);
   bool SaveCompnayProfile(void);
 
 protected:
-  vector<CCompanyProfilePtr> m_vCompanyProfile;
-  map<CString, long> m_mapCompanyProfile;
-  long m_lLastTotalCompanyProfile;
-  long m_lTotalCompanyProfile;
+  vector<CAmericaStakePtr> m_vAmericaStake;
+  map<CString, long> m_mapAmericaStake;
+  long m_lLastTotalAmericaStake;
+  long m_lTotalAmericaStake;
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
 
@@ -100,12 +105,12 @@ protected:
   priority_queue<FinnHubInquiry, vector<FinnHubInquiry>, FinnHubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
   atomic_bool m_fWaitingFinnHubData;
 
-  bool m_fCompanyProfileUpdated; // 每日更新公司简介
+  bool m_fAmericaStakeUpdated; // 每日更新公司简介
   bool m_fStakeDayLineUpdated; // 每日更新公司简介
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fSymbolProceeded;
 
-  bool m_fInquiringComprofileData; // 查询公司简介中
+  bool m_fInquiringStakeProfileData; // 查询公司简介中
   bool m_fInquiringStakeCandle;
 };
 

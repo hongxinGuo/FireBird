@@ -592,13 +592,13 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(&setDayLineBasicInfo);
+    id.AppendChinaMarketData(&setDayLineBasicInfo);
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
     setDayLineBasicInfo.Open();
-    id2.LoadBasicData(&setDayLineBasicInfo);
+    id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(setDayLineBasicInfo.m_Date, id.GetFormatedMarketDate());
     EXPECT_EQ(setDayLineBasicInfo.m_Market, id.GetMarket());
     EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, id.GetStakeCode());
@@ -678,13 +678,13 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.m_pDatabase->BeginTrans();
-    id.AppendData(&setDayLineBasicInfo);
+    id.AppendChinaMarketData(&setDayLineBasicInfo);
     setDayLineBasicInfo.m_pDatabase->CommitTrans();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101101");
     setDayLineBasicInfo.Open();
-    idLoaded.LoadBasicData(&setDayLineBasicInfo);
+    idLoaded.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
     EXPECT_EQ(idLoaded.GetMarket(), id.GetMarket());
     EXPECT_STREQ(idLoaded.GetStakeCode(), id.GetStakeCode());
@@ -744,13 +744,13 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
     setDayLineBasicInfo.Open();
     setDayLineBasicInfo.AddNew();
-    id.SaveData(&setDayLineBasicInfo);
+    id.SaveChinaMarketData(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
     setDayLineBasicInfo.Close();
 
     setDayLineBasicInfo.m_strFilter = _T("StockCode = 'sh600000'");
     setDayLineBasicInfo.Open();
-    id2.LoadBasicData(&setDayLineBasicInfo);
+    id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
     EXPECT_STREQ(id.GetStakeCode(), id2.GetStakeCode());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());

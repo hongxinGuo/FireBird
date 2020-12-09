@@ -4,6 +4,7 @@
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
+#include"SetAmericaStakeDayLine.h"
 #include"ChinaStockHistoryData.h"
 
 #include<gsl/gsl>
@@ -17,10 +18,13 @@ public:
   CDayLine();
   void Reset(void);       // 这些实现类需要采用这种方法重置内部状态，因为系统会一直运行，每天都需要重置状态。
 
-  bool SaveData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
-  bool AppendData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
-  bool LoadBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
-  bool LoadExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo);
+  bool SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
+  bool AppendChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
+  bool LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
+  bool LoadChinaMarketExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo);
+  bool SaveAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
+  bool AppendAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
+  bool LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
 
   bool ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT64& lLength);
   bool ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, INT64& lCurrentPos);

@@ -1764,7 +1764,7 @@ namespace StockAnalysisTest {
     setDayLine.m_strFilter += strDate;
     setDayLine.Open();
     setDayLine.m_pDatabase->BeginTrans();
-    pDayLine->AppendData(&setDayLine);
+    pDayLine->AppendChinaMarketData(&setDayLine);
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
 

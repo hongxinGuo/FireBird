@@ -94,6 +94,9 @@
     <Filter Include="头文件\America Stock Market\实现">
       <UniqueIdentifier>{62262c0c-fefc-423b-8865-905bc6154cd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\America Stake Market\工作线程">
+      <UniqueIdentifier>{0cb3bc8a-0fb0-4e26-a115-e59d0a1772e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -300,14 +303,17 @@
     <ClInclude Include="source\FinnHubWebInquiry.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ProcessCompanyProfile.h">
-      <Filter>头文件\America Stock Market\实现</Filter>
+    <ClInclude Include="source\DataBase\SetAmericaStakeDayLine.h">
+      <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\CompanyProfile.h">
+    <ClInclude Include="source\AmericaMarket\AmericaStake.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetCompanyProfile.h">
+    <ClInclude Include="source\AmericaMarket\SetAmericaStake.h">
       <Filter>头文件\America Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h">
+      <Filter>头文件\America Stock Market\实现</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -566,17 +572,23 @@
     <ClCompile Include="source\FinnHubWebInquiry.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadReadFinnHubData.cpp">
-      <Filter>源文件\America Stake Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetCompanyProfile.cpp">
+    <ClCompile Include="source\DataBase\SetAmericaStakeDayLine.cpp">
       <Filter>源文件\America Stake Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ProcessCompanyProfile.cpp">
+    <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp">
       <Filter>源文件\America Stake Market\实现</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\CompanyProfile.cpp">
+    <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp">
+      <Filter>源文件\America Stake Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\AmericaStake.cpp">
       <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ThreadReadFinnHubData.cpp">
+      <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp">
+      <Filter>源文件\America Stake Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

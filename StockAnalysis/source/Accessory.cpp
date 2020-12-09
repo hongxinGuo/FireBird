@@ -221,6 +221,24 @@ CString GetDefaultSchemaConnect() {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
+//
+// 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
+//
+/////////////////////////////////////////////////////////////////////////////////
+CString GetAmericaMarketSchemaConnect() {
+  if (!gl_fNormalMode) {
+    gl_fTestMode = true;
+    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
+  }
+  else {
+    gl_fTestMode = false;
+    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是AmericaStakeMarket Schema
+  }
+}
+
 CString ConvertValueToString(long lValue, int iDividend) {
   char buffer[50]{ 0 };
   const double d = (static_cast<double>(lValue)) / iDividend;

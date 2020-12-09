@@ -2154,12 +2154,12 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   while (!setDayLineBasicInfo.IsEOF()) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(&setDayLineBasicInfo);
+    pDayLine->LoadChinaMarketBasicData(&setDayLineBasicInfo);
     while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) < 0)) {
       setDayLineExtendInfo.MoveNext();
     }
     if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) == 0)) {
-      pDayLine->LoadExtendData(&setDayLineExtendInfo);
+      pDayLine->LoadChinaMarketExtendData(&setDayLineExtendInfo);
     }
     dayLineContainer.StoreData(pDayLine);
     setDayLineBasicInfo.MoveNext();

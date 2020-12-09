@@ -1555,7 +1555,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.m_strFilter = _T("[Date] = 21101201");
     setDayLineBasicInfo.Open();
     for (int i = 0; i < 10; i++) {
-      dayLine.LoadBasicData(&setDayLineBasicInfo);
+      dayLine.LoadChinaMarketBasicData(&setDayLineBasicInfo);
       pid = pStake->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
@@ -1932,7 +1932,7 @@ namespace StockAnalysisTest {
     CDayLine dayLine;
     setDayLineExtendInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
     setDayLineExtendInfo.Open();
-    dayLine.LoadExtendData(&setDayLineExtendInfo);
+    dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
     EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
     EXPECT_STREQ(dayLine.GetStakeCode(), _T(""));

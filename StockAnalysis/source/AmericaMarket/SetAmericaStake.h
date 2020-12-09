@@ -5,11 +5,11 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetCompanyProfile : public CRecordset
+class CSetAmericaStake : public CRecordset
 {
 public:
-  CSetCompanyProfile(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetCompanyProfile)
+  CSetAmericaStake(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetAmericaStake)
 
   // 字段/参数数据
 
@@ -37,7 +37,7 @@ public:
   CString m_Name;
   CString m_WebURL;
   CString m_FinnhubIndustry;  // 向导生成的虚函数重写
-  long m_CompanyProfileUpdateDate;
+  long m_AmericaStakeUpdateDate;
   long m_DayLineStartDate;
   long m_DayLineEndDate;
 

@@ -45,7 +45,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   setDayLineBasicInfo.Open();
   while (!setDayLineBasicInfo.IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(&setDayLineBasicInfo);
+    pDayLine->LoadChinaMarketBasicData(&setDayLineBasicInfo);
     vDayLine.push_back(pDayLine);
     lCurrentPos++;
     setDayLineBasicInfo.MoveNext();
@@ -62,12 +62,12 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
     while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-        pDayLine->AppendData(&setDayLineBasicInfo);
+        pDayLine->AppendChinaMarketData(&setDayLineBasicInfo);
         fNeedUpdate = true;
       }
     }
     else {
-      pDayLine->AppendData(&setDayLineBasicInfo);
+      pDayLine->AppendChinaMarketData(&setDayLineBasicInfo);
       fNeedUpdate = true;
     }
   }
@@ -114,7 +114,7 @@ bool CDayLineContainer::LoadDayLineBasicInfo(not_null<CSetDayLineBasicInfo*> pse
   Unload();
   while (!psetDayLineBasicInfo->IsEOF()) {
     pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadBasicData(psetDayLineBasicInfo);
+    pDayLine->LoadChinaMarketBasicData(psetDayLineBasicInfo);
     StoreData(pDayLine);
     psetDayLineBasicInfo->MoveNext();
   }
@@ -142,7 +142,7 @@ bool CDayLineContainer::LoadDayLineExtendInfo(not_null<CSetDayLineExtendInfo*> p
       pDayLine = GetData(iPosition);
     }
     if (pDayLine->GetFormatedMarketDate() == psetDayLineExtendInfo->m_Date) {
-      pDayLine->LoadExtendData(psetDayLineExtendInfo);
+      pDayLine->LoadChinaMarketExtendData(psetDayLineExtendInfo);
     }
     if (GetDataSize() <= (iPosition + 1)) break;
     psetDayLineExtendInfo->MoveNext();
