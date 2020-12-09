@@ -17,8 +17,8 @@ enum {
   __BASIC_FINANCIALS__ = 107,
   __SEC_FILINGS__ = 108,
 
-  __QUOTE__ = 1, // 实时数据优先级最低
-  __CANDLES__ = 2, // 历史数据优先级低
+  __STAKE_QUOTE__ = 1, // 实时数据优先级最低
+  __STAKE_CANDLES__ = 2, // 历史数据优先级低
 
   __FOREX_EXCHANGE__ = 201,
   __FOREX_SYMBOLS__ = 202,
@@ -61,13 +61,17 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskUpdateTodaySymbol(void);
-  bool TaskSaveCompanySymbol(void);
+  bool TaskSaveCompanySymbolDB(void);
+
   bool TaskUpdateCompanyProfile(void);
   bool TaskUpdateCompanyProfileDB(void);
+
+  bool TaskUpdateDayLine(void);
 
   bool IsCompanyProfile(CString strProfile);
   bool IsCompanyProfileUpdated(void);
   CCompanyProfilePtr GetCompanyProfile(CString strTicker);
+  CCompanyProfilePtr GetCurrentProcessingCompanyProfile(void) { return m_vCompanyProfile.at(m_lCurrentProfilePos); }
   void AddCompanyProfile(CCompanyProfilePtr pProfile);
 
   // 各种状态
@@ -89,16 +93,20 @@ protected:
   long m_lLastTotalCompanyProfile;
   long m_lTotalCompanyProfile;
   long m_lCurrentProfilePos;
-  bool m_fInquiringComprofileData; // 查询公司简介中
+  long m_lCurrentUpdateDayLinePos;
 
   vector<CString> m_vFinnHubInquiringStr;
   long m_lPrefixIndex; // 当前查询状态
   priority_queue<FinnHubInquiry, vector<FinnHubInquiry>, FinnHubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
   atomic_bool m_fWaitingFinnHubData;
 
+  bool m_fCompanyProfileUpdated; // 每日更新公司简介
+  bool m_fStakeDayLineUpdated; // 每日更新公司简介
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fSymbolProceeded;
-  bool m_fCompanyProfileUpdated; // 每日更新公司简介
+
+  bool m_fInquiringComprofileData; // 查询公司简介中
+  bool m_fInquiringStakeCandle;
 };
 
 typedef shared_ptr<CAmericaStakeMarket> CAmericaStakeMarketPtr;
