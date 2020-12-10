@@ -54,6 +54,8 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ÔÚÆô¶¯Ê±Ğ
 
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
+extern bool gl_fUsingSandboxMode; // finnhubÄ¿Ç°Ìá¹©Ãâ·ÑsandboxÄ£Ê½£¬¿ÉÒÔ½ÓÊÕ¸ü¶àĞÅÏ¢¡£Ê×Ñ¡Ê¹ÓÃ´ËÄ£Ê½¡£
+
 // ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
 extern CAmericaStakeMarketPtr gl_pAmericaStakeMarket;
 extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;

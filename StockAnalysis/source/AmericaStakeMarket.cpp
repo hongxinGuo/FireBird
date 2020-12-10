@@ -19,7 +19,8 @@ CAmericaStakeMarket::CAmericaStakeMarket() {
   m_vFinnHubInquiringStr.resize(1000);
 
   // FinnHub前缀字符串在此预设之
-  m_vFinnHubInquiringStr.at(__COMPANY_PROFILE2__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介
+  m_vFinnHubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。sandbox目前可以申请此信息。
+  m_vFinnHubInquiringStr.at(__COMPANY_PROFILE2__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
   m_vFinnHubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange=US"); // 可用代码集
   m_vFinnHubInquiringStr.at(__MARKET_NEWS__) = _T("https://finnhub.io/api/v1/news?category=general");
   m_vFinnHubInquiringStr.at(__COMPANY_NEWS__) = _T("https://finnhub.io/api/v1/company-news?symbol=");
@@ -88,8 +89,12 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         // 处理当前网络数据
         pWebData = gl_WebInquirer.PopFinnHubData();
         switch (m_lPrefixIndex) {
-        case __COMPANY_PROFILE2__:
+        case __COMPANY_PROFILE__:
         ProcessAmericaStakeProfile(pWebData);
+        m_fInquiringStakeProfileData = false;
+        break;
+        case __COMPANY_PROFILE2__:
+        ProcessAmericaStakeProfile2(pWebData);
         m_fInquiringStakeProfileData = false;
         break;
         case  __COMPANY_SYMBOLS__:
@@ -131,6 +136,11 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       m_lPrefixIndex = GetFinnInquiry();
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnHubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
       switch (m_lPrefixIndex) { // 根据不同的要求设置中缀字符串
+      case __COMPANY_PROFILE__:
+      while (!m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake) m_lCurrentProfilePos++;
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
+      m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
+      break;
       case __COMPANY_PROFILE2__:
       while (!m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake) m_lCurrentProfilePos++;
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
@@ -155,7 +165,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
       strMiddle += m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol;
       strMiddle += _T("&resolution=D");
       strMiddle += _T("&from=");
-      sprintf_s(buffer, _T("%I64i"), (INT64)(GetMarketTime() - (time_t)(360) * 24 * 3600));
+      sprintf_s(buffer, _T("%I64i"), (INT64)(GetMarketTime() - (time_t)(365) * 24 * 3600));
       strTemp = buffer;
       strMiddle += strTemp;
       strMiddle += _T("&to=");
@@ -198,6 +208,7 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
 
   SchedulingTaskPer1Hour(lSecond, lCurrentTime);
   SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+  SchedulingTaskPer10Seconds(lSecond, lCurrentTime);
 
   GetFinnHubDataFromWeb();
 
@@ -206,7 +217,7 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
 
   if (m_fSymbolProceeded) {
     TaskUpdateAmericaStake();
-    TaskUpdateDayLine();
+    //TaskUpdateDayLine();
   }
 
   TaskSaveDayLineData();
@@ -214,14 +225,25 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
   return true;
 }
 
+bool CAmericaStakeMarket::SchedulingTaskPer10Seconds(long lSecond, long lCurrentTime) {
+  static int i10SecondsCounter = 9;  // 十秒钟一次的计数器
+
+  i10SecondsCounter -= lSecond;
+  if (i10SecondsCounter < 0) {
+    i10SecondsCounter = 9;
+
+    return true;
+  }
+  else return false;
+}
+
 bool CAmericaStakeMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 3599;  // 一分钟一次的计数器
+  static int i1MinuteCounter = 3599;  // 一小时一次的计数器
 
   i1MinuteCounter -= lSecond;
   if (i1MinuteCounter < 0) {
     i1MinuteCounter = 3599;
     TaskResetMarket(lCurrentTime);
-    //TaskMaintainDatabase(lCurrentTime);
 
     return true;
   }
@@ -229,7 +251,7 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime
 }
 
 bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一小时一次的计数器
+  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
 
   TaskResetMarket(lCurrentTime);
 
@@ -299,13 +321,18 @@ bool CAmericaStakeMarket::TaskUpdateAmericaStake(void) {
   ASSERT(m_fSymbolProceeded);
   if (!m_fAmericaStakeUpdated && !m_fInquiringStakeProfileData) {
     for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vAmericaStake.size(); m_lCurrentProfilePos++) {
-      if (IsEarlyThen(m_vAmericaStake.at(m_lCurrentProfilePos)->m_lAmericaStakeUpdateDate, GetFormatedMarketDate(), 365)) {
+      if (IsEarlyThen(m_vAmericaStake.at(m_lCurrentProfilePos)->m_lProfileUpdateDate, GetFormatedMarketDate(), 365)) {
         fFound = true;
         break;
       }
     }
     if (fFound) {
-      inquiry.m_iIndex = __COMPANY_PROFILE2__;
+      if (gl_fUsingSandboxMode) {
+        inquiry.m_iIndex = __COMPANY_PROFILE__;
+      }
+      else {
+        inquiry.m_iIndex = __COMPANY_PROFILE2__;
+      }
       inquiry.m_iPriority = 10;
       m_qWebInquiry.push(inquiry);
       m_fInquiringStakeProfileData = true;

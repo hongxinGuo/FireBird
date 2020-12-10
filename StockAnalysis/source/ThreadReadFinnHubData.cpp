@@ -15,7 +15,7 @@ UINT ThreadReadFinnHubData(not_null<CFinnhubWebInquiry*> pFinnhubWebData) {
   // 完全克服的话，还需要使用其他方法来确定服务器是否发送结束，目前的方法只是读不到了就认为结束了。
   ASSERT(gl_pAmericaStakeMarket->IsWaitingFinHubData());
   gl_ThreadStatus.IncreaseRunningThread();
-  if (pFinnhubWebData->ReadWebData(400, 200, 100)) {
+  if (pFinnhubWebData->ReadWebData(300, 100, 100)) {
     CWebDataPtr pWebDataReceived = pFinnhubWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushFinnHubData(pWebDataReceived);

@@ -27,11 +27,12 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_Symbol = _T(" ");
   m_Ticker = _T(" ");
   m_WebURL = _T(" ");
-  m_AmericaStakeUpdateDate = 19900101;
+  m_ProfileUpdateDate = 19800101;
   m_DayLineStartDate = 29900101;
-  m_DayLineEndDate = 19900101;
+  m_DayLineEndDate = 19800101;
+  m_LastRTDataUpdateDate = 19800101;
 
-  m_nFields = 19;
+  m_nFields = 36;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -53,19 +54,37 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
   RFX_Text(pFX, _T("[Type]"), m_Type);
   RFX_Text(pFX, _T("[Currency]"), m_Currency);
+
+  RFX_Text(pFX, _T("[Address]"), m_Address);
+  RFX_Text(pFX, _T("[City]"), m_City);
   RFX_Text(pFX, _T("[Country]"), m_Country);
+  RFX_Text(pFX, _T("[cusip]"), m_Cusip);
+  RFX_Text(pFX, _T("[sedol]"), m_Sedol);
+  RFX_Long(pFX, _T("[EmployeeTotal]"), m_EmployeeTotal);
   RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
-  RFX_Text(pFX, _T("[Ticker]"), m_Ticker);
+  RFX_Text(pFX, _T("[ggroup]"), m_Ggroup);
+  RFX_Text(pFX, _T("[gind]"), m_Gind);
+  RFX_Text(pFX, _T("[gsector]"), m_Gsector);
+  RFX_Text(pFX, _T("[gsubind]"), m_Gsubind);
   RFX_Text(pFX, _T("[IPODate]"), m_IPODate);
+  RFX_Text(pFX, _T("[isin]"), m_Isin);
+  RFX_Text(pFX, _T("[MarketCapitalization]"), m_MarketCapitalization);
+  RFX_Text(pFX, _T("[naics]"), m_Naics);
+  RFX_Text(pFX, _T("[naicsNationalIndustry]"), m_NaicsNationalIndustry);
+  RFX_Text(pFX, _T("[naicsSector]"), m_NaicsSector);
+  RFX_Text(pFX, _T("[naicsSubsector]"), m_NaicsSubsector);
+  RFX_Text(pFX, _T("[Name]"), m_Name);
   RFX_Text(pFX, _T("[Phone]"), m_Phone);
   RFX_Text(pFX, _T("[ShareOutstanding]"), m_ShareOutstanding);
-  RFX_Text(pFX, _T("[MarketCapitalization]"), m_MarketCapitalization);
-  RFX_Text(pFX, _T("[Name]"), m_Name);
+  RFX_Text(pFX, _T("[state]"), m_State);
+  RFX_Text(pFX, _T("[Ticker]"), m_Ticker);
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
+  RFX_Text(pFX, _T("[Logo]"), m_Logo);
   RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnhubIndustry);
-  RFX_Long(pFX, _T("[AmericaStakeUpdateDate]"), m_AmericaStakeUpdateDate);
+  RFX_Long(pFX, _T("[ProfileUpdateDate]"), m_ProfileUpdateDate);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
+  RFX_Long(pFX, _T("[LastRTDataUpdateDate]"), m_LastRTDataUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetAmericaStake ’Ô∂œ

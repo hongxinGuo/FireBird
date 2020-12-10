@@ -8,6 +8,7 @@
 
 // FinnHub申请类别，其值作为优先级的判断标准（数值大的优先级高）
 enum {
+  __COMPANY_PROFILE__ = 100,
   __COMPANY_PROFILE2__ = 101,
   __COMPANY_SYMBOLS__ = 102,
   __MARKET_NEWS__ = 103,
@@ -56,6 +57,7 @@ public:
   void Reset(void);
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer10Seconds(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer1Hour(long lSecond, long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);

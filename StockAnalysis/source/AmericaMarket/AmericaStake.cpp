@@ -19,9 +19,10 @@ CAmericaStake::CAmericaStake() : CObject() {
   m_strSymbol = _T(" ");
   m_strTicker = _T(" ");
   m_strWebURL = _T(" ");
-  m_lAmericaStakeUpdateDate = 19900101;
+  m_lProfileUpdateDate = 19800101;
   m_lDayLineStartDate = 29900101;
-  m_lDayLineEndDate = 19900101;
+  m_lDayLineEndDate = 19800101;
+  m_lLastRTDataUpdateDate = 19800101;
 
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
@@ -51,12 +52,13 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strName = setAmericaStake.m_Name;
   m_strWebURL = setAmericaStake.m_WebURL;
   m_strFinnhubIndustry = setAmericaStake.m_FinnhubIndustry;
-  m_lAmericaStakeUpdateDate = setAmericaStake.m_AmericaStakeUpdateDate;
+  m_lProfileUpdateDate = setAmericaStake.m_ProfileUpdateDate;
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
+  m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
     //m_fInquiryAmericaStake = false;
-    //m_lAmericaStakeUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    //m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
   }
 }
 
@@ -86,9 +88,10 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_Name = m_strName;
   setAmericaStake.m_WebURL = m_strWebURL;
   setAmericaStake.m_FinnhubIndustry = m_strFinnhubIndustry;
-  setAmericaStake.m_AmericaStakeUpdateDate = m_lAmericaStakeUpdateDate;
+  setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
+  setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setAmericaStake.Update();
 }
 
@@ -109,10 +112,11 @@ void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_Name = m_strName;
   setAmericaStake.m_WebURL = m_strWebURL;
   setAmericaStake.m_FinnhubIndustry = m_strFinnhubIndustry;
-  setAmericaStake.m_AmericaStakeUpdateDate = m_lAmericaStakeUpdateDate;
+  setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
-  if (m_strWebURL.GetLength() > 50) {
+  setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
+  if (m_strWebURL.GetLength() > 100) {
     TRACE("%s字符串太长%d\n", m_strSymbol.GetBuffer(), m_strWebURL.GetLength());
   }
   TRACE("更新股票：%s\n", m_strSymbol.GetBuffer());

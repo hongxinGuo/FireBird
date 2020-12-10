@@ -34,7 +34,82 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData) {
 
   if (pWebData->GetBufferLength() < 20) {
     pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
-    pStake->m_lAmericaStakeUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_fUpdateDatabase = true;
+    return false; // 没有公司简介
+  }
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
+  s = pt.get<string>(_T("address"));
+  pStake->m_strAddress = s.c_str();
+  s = pt.get<string>(_T("city"));
+  pStake->m_strCity = s.c_str();
+  s = pt.get<string>(_T("country"));
+  if (s.size() > 0) pStake->m_strCountry = s.c_str();
+  s = pt.get<string>(_T("currency"));
+  if (s.size() > 0) pStake->m_strCurrency = s.c_str();
+  s = pt.get<string>(_T("cusip"));
+  if (s.size() > 0) pStake->m_strCusip = s.c_str();
+  s = pt.get<string>(_T("sedol"));
+  if (s.size() > 0) pStake->m_strSedol = s.c_str();
+  s = pt.get<string>(_T("description"));
+  if (s.size() > 0) pStake->m_strDescription = s.c_str();
+  s = pt.get<string>(_T("exchange"));
+  if (s.size() > 0) pStake->m_strExchange = s.c_str();
+  s = pt.get<string>(_T("ggroup"));
+  if (s.size() > 0) pStake->m_strGgroup = s.c_str();
+  s = pt.get<string>(_T("gind"));
+  if (s.size() > 0) pStake->m_strGind = s.c_str();
+  s = pt.get<string>(_T("gsector"));
+  if (s.size() > 0) pStake->m_strGsector = s.c_str();
+  s = pt.get<string>(_T("gsubind"));
+  if (s.size() > 0) pStake->m_strGsubind = s.c_str();
+  s = pt.get<string>(_T("ipo"));
+  if (s.size() > 0) pStake->m_strIPODate = s.c_str();
+  s = pt.get<string>(_T("isin"));
+  if (s.size() > 0) pStake->m_strIsin = s.c_str();
+  s = pt.get<string>(_T("marketCapitalization"));
+  if (s.size() > 0) pStake->m_dMarketCapitalization = atof(s.c_str());
+
+  s = pt.get<string>(_T("naics"));
+  if (s.size() > 0) pStake->m_strNaics = s.c_str();
+  s = pt.get<string>(_T("naicsNationalIndustry"));
+  if (s.size() > 0) pStake->m_strNaicsNationalIndustry = s.c_str();
+  s = pt.get<string>(_T("naicsSector"));
+  if (s.size() > 0) pStake->m_strNaicsSector = s.c_str();
+  s = pt.get<string>(_T("naicsSubsector"));
+  if (s.size() > 0) pStake->m_strNaicsSubsector = s.c_str();
+  s = pt.get<string>(_T("name"));
+  if (s.size() > 0) pStake->m_strName = s.c_str();
+  s = pt.get<string>(_T("phone"));
+  if (s.size() > 0) pStake->m_strPhone = s.c_str();
+
+  s = pt.get<string>(_T("shareOutstanding"));
+  if (s.size() > 0) pStake->m_dShareOutstanding = atof(s.c_str());
+  s = pt.get<string>(_T("state"));
+  if (s.size() > 0) pStake->m_strState = s.c_str();
+  s = pt.get<string>(_T("ticker"));
+  if (s.size() > 0) pStake->m_strTicker = s.c_str();
+  s = pt.get<string>(_T("weburl"));
+  if (s.size() > 0) pStake->m_strWebURL = s.c_str();
+
+  s = pt.get<string>(_T("logo"));
+  if (s.size() > 0) pStake->m_strLogo = s.c_str();
+  s = pt.get<string>(_T("finnhubIndustry"));
+  if (s.size() > 0) pStake->m_strFinnhubIndustry = s.c_str();
+  pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+  pStake->m_fUpdateDatabase = true;
+  return true;
+}
+
+bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData) {
+  CAmericaStakePtr pStake = make_shared<CAmericaStake>();
+  ptree pt;
+  string s;
+
+  if (pWebData->GetBufferLength() < 20) {
+    pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
+    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -63,7 +138,7 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData) {
   if (s.size() > 0) pStake->m_strWebURL = s.c_str();
   s = pt.get<string>(_T("ipo"));
   if (s.size() > 0) pStake->m_strIPODate = s.c_str();
-  pStake->m_lAmericaStakeUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+  pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
   pStake->m_fUpdateDatabase = true;
   return true;
 }

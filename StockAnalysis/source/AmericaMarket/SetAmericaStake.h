@@ -27,19 +27,36 @@ public:
   CString m_Symbol;
   CString m_Type;
   CString m_Currency;
+  CString m_Address;
+  CString m_City;
   CString m_Country;
+  CString m_Cusip;
+  CString m_Sedol;
+  long m_EmployeeTotal;
   CString m_Exchange;
-  CString m_Ticker;
+  CString m_Ggroup;
+  CString m_Gind;
+  CString m_Gsector;
+  CString m_Gsubind;
   CString m_IPODate;
+  CString m_Isin;
   CString m_MarketCapitalization;
-  CString m_ShareOutstanding;
-  CString m_Phone;
+  CString m_Naics;
+  CString m_NaicsNationalIndustry;
+  CString m_NaicsSector;
+  CString m_NaicsSubsector;
   CString m_Name;
+  CString m_Phone;
+  CString m_ShareOutstanding;
+  CString m_State;
+  CString m_Ticker;
   CString m_WebURL;
-  CString m_FinnhubIndustry;  // 向导生成的虚函数重写
-  long m_AmericaStakeUpdateDate;
+  CString m_Logo; // 不存储
+  CString m_FinnhubIndustry;
+  long m_ProfileUpdateDate;
   long m_DayLineStartDate;
   long m_DayLineEndDate;
+  long m_LastRTDataUpdateDate; // 最新实时数据更新日期
 
 public:
   virtual CString GetDefaultConnect();	// 默认连接字符串
