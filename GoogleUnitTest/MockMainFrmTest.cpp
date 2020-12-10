@@ -58,21 +58,25 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockMainFrameTest, TestCreateMarketContainer) {
     EXPECT_TRUE(s_pMainFrame->CreateMarketContainer());
-    EXPECT_EQ(gl_vMarketPtr.size(), 6);
+    EXPECT_EQ(gl_vMarketPtr.size(), 8);
     CVirtualMarketPtr pMarket;
-    pMarket = gl_vMarketPtr.at(5);
+    pMarket = gl_vMarketPtr.at(7);
     gl_vMarketPtr.pop_back();
     EXPECT_STREQ(pMarket->GetMarketID(), gl_pCrweberIndexMarket->GetMarketID());
-    pMarket = gl_vMarketPtr.at(4);
+    pMarket = gl_vMarketPtr.at(6);
     gl_vMarketPtr.pop_back();
     EXPECT_STREQ(pMarket->GetMarketID(), gl_pPotenDailyBriefingMarket->GetMarketID());
-    pMarket = gl_vMarketPtr.at(3);
+    pMarket = gl_vMarketPtr.at(5);
     gl_vMarketPtr.pop_back();
     EXPECT_STREQ(pMarket->GetMarketID(), gl_pChinaStakeMarket->GetMarketID());
-    EXPECT_EQ(gl_vMarketPtr.size(), 3);
+    pMarket = gl_vMarketPtr.at(4);
+    gl_vMarketPtr.pop_back();
+    EXPECT_STREQ(pMarket->GetMarketID(), gl_pAmericaStakeMarket->GetMarketID());
+    EXPECT_EQ(gl_vMarketPtr.size(), 4);
   }
 
   TEST_F(CMockMainFrameTest, TestIsNeedResetMarket) {
+    gl_pAmericaStakeMarket->SetResetMarket(false);
     gl_pChinaStakeMarket->SetResetMarket(false);
     gl_pPotenDailyBriefingMarket->SetResetMarket(false);
     gl_pCrweberIndexMarket->SetResetMarket(false);

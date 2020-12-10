@@ -89,7 +89,7 @@ void CAmericaStakeMarket::GetFinnHubDataFromWeb(void) {
         // 处理当前网络数据
         pWebData = gl_WebInquirer.PopFinnHubData();
         switch (m_lPrefixIndex) {
-        case __COMPANY_PROFILE__:
+        case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
         ProcessAmericaStakeProfile(pWebData);
         m_fInquiringStakeProfileData = false;
         break;
@@ -327,12 +327,7 @@ bool CAmericaStakeMarket::TaskUpdateAmericaStake(void) {
       }
     }
     if (fFound) {
-      if (gl_fUsingSandboxMode) {
-        inquiry.m_iIndex = __COMPANY_PROFILE__;
-      }
-      else {
-        inquiry.m_iIndex = __COMPANY_PROFILE2__;
-      }
+      inquiry.m_iIndex = __COMPANY_PROFILE2__;
       inquiry.m_iPriority = 10;
       m_qWebInquiry.push(inquiry);
       m_fInquiringStakeProfileData = true;

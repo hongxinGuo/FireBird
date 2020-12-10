@@ -703,13 +703,13 @@
     <ClInclude Include="source\AmericaMarket\AmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h" />
+    <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="source\AmericaStakeMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="source\CrweberIndex.h" />
     <ClInclude Include="source\CrweberIndexMarket.h" />
     <ClInclude Include="source\CrweberIndexWebInquiry.h" />
-    <ClInclude Include="source\DataBase\SetAmericaStakeDayLine.h" />
     <ClInclude Include="source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="source\DataBase\SetDayLineBasicInfo.h" />
@@ -776,6 +776,7 @@
     <ClCompile Include="source\AmericaMarket\AmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
@@ -783,7 +784,6 @@
     <ClCompile Include="source\CrweberIndex.cpp" />
     <ClCompile Include="source\CrweberIndexMarket.cpp" />
     <ClCompile Include="source\CrweberIndexWebInquiry.cpp" />
-    <ClCompile Include="source\DataBase\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\DataBase\SetChoicedStock.cpp" />
     <ClCompile Include="source\DataBase\SetCrweberIndex.cpp" />
     <ClCompile Include="source\DataBase\SetDayLineBasicInfo.cpp" />

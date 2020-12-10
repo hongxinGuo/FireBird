@@ -303,9 +303,6 @@
     <ClInclude Include="source\FinnHubWebInquiry.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataBase\SetAmericaStakeDayLine.h">
-      <Filter>头文件\America Stock Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\AmericaStake.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
@@ -314,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h">
       <Filter>头文件\America Stock Market\实现</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h">
+      <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -572,9 +572,6 @@
     <ClCompile Include="source\FinnHubWebInquiry.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\DataBase\SetAmericaStakeDayLine.cpp">
-      <Filter>源文件\America Stake Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp">
       <Filter>源文件\America Stake Market\实现</Filter>
     </ClCompile>
@@ -589,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp">
       <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp">
+      <Filter>源文件\America Stake Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

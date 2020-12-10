@@ -11,7 +11,7 @@ using namespace std;
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
   m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
-  //m_strWebDataInquireSuffix = _T("&token=sandbox_bv4ac1n48v6tcp17l5d0"); // sandbox的密钥
+  //m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
   m_strConnection = _T("FinnHubRT");
   m_lInquiringNumber = 1; // FinnHub实时数据查询数量默认值
 }
@@ -30,12 +30,6 @@ bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
   // 1 准备前缀字符串
   // 2. 准备中间字符串
   // 3. 准备后缀字符串
-  if (gl_fUsingSandboxMode) { // 目前sandbox模式下，可以申请更多信息
-    m_strWebDataInquireSuffix = _T("&token=sandbox_bv8qhvv48v6rnm7c41u0"); // sandbox的密钥
-  }
-  else { // 使用免费账户密钥
-    m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
-  }
   //
   CreateTotalInquiringString(m_strWebDataInquireMiddle);
 
