@@ -9,7 +9,7 @@
 #include"NeteaseRTWebInquiry.h"
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
-#include"FinnHubWebInquiry.h"
+#include"FinnhubWebInquiry.h"
 
 #include"ChinaStake.h"
 class CChinaMarket;
@@ -41,8 +41,8 @@ UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebD
 UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
 // 读取新浪实时数据线程。网址：http://hq.sinajs.cn/list=
 UINT ThreadReadSinaStakeRTData(not_null<CSinaStakeRTWebInquiry*> pSinaStakeRTWebData);    // 此工作线程返回值为6，参数为pSinaWebRTStakeData
-// 读取FinnHub.io网络数据线程。 网址：https://finnhub.io/api/v1/
-UINT ThreadReadFinnHubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
+// 读取Finnhub.io网络数据线程。 网址：https://finnhub.io/api/v1/
+UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
 
 // 数据库处理任务
 

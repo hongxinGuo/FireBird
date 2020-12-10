@@ -3,7 +3,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"FinnHubWebInquiry.h"
+#include"FinnhubWebInquiry.h"
 
 namespace testing {
   class CMockFinnhubWebInquiry : public CFinnhubWebInquiry {

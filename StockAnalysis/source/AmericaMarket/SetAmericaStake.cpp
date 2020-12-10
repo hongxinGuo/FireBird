@@ -80,7 +80,7 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Ticker]"), m_Ticker);
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
   RFX_Text(pFX, _T("[Logo]"), m_Logo);
-  RFX_Text(pFX, _T("[FinnHubIndustry]"), m_FinnhubIndustry);
+  RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
   RFX_Long(pFX, _T("[ProfileUpdateDate]"), m_ProfileUpdateDate);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);

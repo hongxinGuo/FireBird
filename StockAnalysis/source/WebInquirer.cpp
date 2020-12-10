@@ -14,7 +14,7 @@ int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
-#include"MockFinnHubWebInquiry.h"
+#include"MockFinnhubWebInquiry.h"
 using namespace testing;
 
 CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
@@ -35,7 +35,7 @@ CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr;
 #include"NeteaseDayLineWebInquiry.h"
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
-#include"FinnHubWebInquiry.h"
+#include"FinnhubWebInquiry.h"
 
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
 CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry = nullptr;
@@ -47,7 +47,7 @@ CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // 网易日线历史数据
-CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
+CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 #endif
 
 CWebInquirer::CWebInquirer(void) {

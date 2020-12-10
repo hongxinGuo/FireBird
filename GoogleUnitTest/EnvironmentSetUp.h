@@ -13,7 +13,7 @@
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
 #include"MockPotenDailyBriefingWebInquiry.h"
-#include"MockFinnHubWebInquiry.h"
+#include"MockFinnhubWebInquiry.h"
 #include"MockChinaMarket.h"
 using namespace testing;
 

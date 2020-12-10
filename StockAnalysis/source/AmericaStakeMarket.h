@@ -6,7 +6,7 @@
 #include"AmericaStake.h"
 #include"WebData.h"
 
-// FinnHub申请类别，其值作为优先级的判断标准（数值大的优先级高）
+// Finnhub申请类别，其值作为优先级的判断标准（数值大的优先级高）
 enum {
   __COMPANY_PROFILE__ = 100,
   __COMPANY_PROFILE2__ = 101,
@@ -31,11 +31,11 @@ enum {
   __CRYPTO_CANDLES__ = 303,
 };
 
-struct FinnHubInquiry {
+struct FinnhubInquiry {
 public:
   int m_iPriority; // 优先级
   long m_iIndex; // 指令
-  bool operator() (FinnHubInquiry temp1, FinnHubInquiry temp2) {
+  bool operator() (FinnhubInquiry temp1, FinnhubInquiry temp2) {
     return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
   }
 };
@@ -52,7 +52,7 @@ public:
   virtual ~CAmericaStakeMarket();
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
-  void GetFinnHubDataFromWeb(void);
+  void GetFinnhubDataFromWeb(void);
   virtual void ResetMarket(void) override;
   void Reset(void);
 
@@ -84,8 +84,8 @@ public:
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
 
-  void SetWaitingFinnHubData(bool fFlag) noexcept { m_fWaitingFinnHubData = fFlag; }
-  bool IsWaitingFinHubData(void) noexcept { bool f = m_fWaitingFinnHubData; return f; }
+  void SetWaitingFinnhubData(bool fFlag) noexcept { m_fWaitingFinnhubData = fFlag; }
+  bool IsWaitingFinHubData(void) noexcept { bool f = m_fWaitingFinnhubData; return f; }
 
   void SetFinnInquiry(long lOrder);
   long GetFinnInquiry(void);
@@ -102,10 +102,10 @@ protected:
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
 
-  vector<CString> m_vFinnHubInquiringStr;
+  vector<CString> m_vFinnhubInquiringStr;
   long m_lPrefixIndex; // 当前查询状态
-  priority_queue<FinnHubInquiry, vector<FinnHubInquiry>, FinnHubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
-  atomic_bool m_fWaitingFinnHubData;
+  priority_queue<FinnhubInquiry, vector<FinnhubInquiry>, FinnhubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
+  atomic_bool m_fWaitingFinnhubData;
 
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
   bool m_fStakeDayLineUpdated; // 每日更新公司简介

@@ -8,12 +8,19 @@
 using namespace std;
 #include<thread>
 
+//
+//m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
+//m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
+// 下面的时第二个,用于dell240工作机。
+//m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 密钥放在最后
+//m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
+
 CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
   m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 密钥放在最后
   //m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
-  m_strConnection = _T("FinnHubRT");
-  m_lInquiringNumber = 1; // FinnHub实时数据查询数量默认值
+  m_strConnection = _T("FinnhubRT");
+  m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 
 CFinnhubWebInquiry::~CFinnhubWebInquiry() {
@@ -24,7 +31,7 @@ bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
 
   CString strMiddle = _T("");
 
-  // 申请下一批次股票实时数据。 此网络数据提取器使用FinnHubMarket
+  // 申请下一批次股票实时数据。 此网络数据提取器使用FinnhubMarket
   // 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
 
   // 1 准备前缀字符串
@@ -59,7 +66,7 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
 }
 
 void CFinnhubWebInquiry::StartReadingThread(void) {
-  thread thread1(ThreadReadFinnHubData, this);
+  thread thread1(ThreadReadFinnhubData, this);
   thread1.detach();
 }
 

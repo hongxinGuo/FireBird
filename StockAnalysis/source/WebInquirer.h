@@ -35,7 +35,7 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
-extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
+extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 #else
 #include"SinaRTWebInquiry.h"
 #include"SinaStakeRTWebInquiry.h"
@@ -44,7 +44,7 @@ extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
 #include"NeteaseDayLineWebInquiry.h"
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
-#include"FinnHubWebInquiry.h"
+#include"FinnhubWebInquiry.h"
 
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
@@ -58,7 +58,7 @@ extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日线历
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
-extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // FinnHub.io证券信息
+extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 #endif
 
 class CWebInquirer : public CObject {
@@ -68,7 +68,7 @@ public:
 
   void Initialize(void);
 public:
-  bool GetFinnHubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
+  bool GetFinnhubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
   bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
@@ -102,9 +102,9 @@ public:
   void PushPotenDailyBriefingData(CWebDataPtr pData) { m_qPotenDailyBriefingWebData.PushData(pData); }
   CWebDataPtr PopPotenDailyBriefingData(void) { return m_qPotenDailyBriefingWebData.PopData(); }
 
-  size_t GetFinnHubDataSize(void) { return m_qFinnHubData.GetDataSize(); }
-  void PushFinnHubData(CWebDataPtr pData) { m_qFinnHubData.PushData(pData); }
-  CWebDataPtr PopFinnHubData(void) { return m_qFinnHubData.PopData(); }
+  size_t GetFinnhubDataSize(void) { return m_qFinnhubData.GetDataSize(); }
+  void PushFinnhubData(CWebDataPtr pData) { m_qFinnhubData.PushData(pData); }
+  CWebDataPtr PopFinnhubData(void) { return m_qFinnhubData.PopData(); }
 
 protected:
   CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
@@ -113,7 +113,7 @@ protected:
   CQueueWebData m_qNeteaseRTWebData; // 网易网络数据暂存队列
   CQueueWebData m_qCrweberWebData; // crweber.com网络数据暂存队列
   CQueueWebData m_qPotenDailyBriefingWebData; // Poten.com网络数据暂存队列
-  CQueueWebData m_qFinnHubData; // Poten.com网络数据暂存队列
+  CQueueWebData m_qFinnhubData; // Poten.com网络数据暂存队列
 };
 
 extern CWebInquirer gl_WebInquirer; //
