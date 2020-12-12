@@ -27,6 +27,20 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_Symbol = _T(" ");
   m_Ticker = _T(" ");
   m_WebURL = _T(" ");
+  m_Cusip = _T(" ");
+  m_Sedol = _T(" ");
+  m_Ggroup = _T(" ");
+  m_Gind = _T(" ");
+  m_Gsector = _T(" ");
+  m_Gsubind = _T(" ");
+  m_Isin = _T(" ");
+  m_Naics = _T(" ");
+  m_NaicsNationalIndustry = _T(" ");
+  m_NaicsSector = _T(" ");
+  m_NaicsSubsector = _T(" ");
+  m_Logo = _T(" ");
+  m_State = _T(" ");
+
   m_ProfileUpdateDate = 19800101;
   m_DayLineStartDate = 29900101;
   m_DayLineEndDate = 19800101;

@@ -168,6 +168,7 @@ bool ProcessAmericaStakeSymbol(CWebDataPtr pWebData) {
       gl_pAmericaStakeMarket->AddAmericaStake(pStake);
     }
   }
+
   return true;
 }
 

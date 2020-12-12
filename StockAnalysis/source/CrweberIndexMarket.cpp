@@ -13,6 +13,7 @@ CCrweberIndexMarket::CCrweberIndexMarket() {
   m_lMarketTimeZone = 0; // crweber.com π”√GMT°£
   CalculateTime();
 
+  SetReadyToRun(false);
   Reset();
 }
 

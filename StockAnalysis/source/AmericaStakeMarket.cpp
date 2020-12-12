@@ -74,12 +74,16 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountFinnhub = 4;
+  static int s_iCountFinnhub = -1;
   const long lCurrentTime = GetFormatedMarketTime();
 
+  // 第一个动作，首先申请当日证券代码
+  TaskInquiryTodaySymbol();
+
   // Finnhub.io读取函数。
-  if (s_iCountFinnhub-- < 0) { // 每0.5秒调用一次
-    s_iCountFinnhub = 4; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
+  if (s_iCountFinnhub-- < 0) { // 每0.3秒调用一次
+    s_iCountFinnhub = 2; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
+    GetFinnhubDataFromWeb();
   }
   else s_iCountFinnhub--;
 
@@ -104,7 +108,7 @@ void CAmericaStakeMarket::GetFinnhubDataFromWeb(void) {
   CWebDataPtr pWebData = nullptr;
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
-  char buffer[50];
+  CAmericaStakePtr pStake = nullptr;
 
   if (s_fWaitingData) { // 已经发出了数据申请？
     if (!IsWaitingFinHubData()) { //Finnhub数据已经接收到了？
@@ -123,6 +127,7 @@ void CAmericaStakeMarket::GetFinnhubDataFromWeb(void) {
         break;
         case  __COMPANY_SYMBOLS__:
         ProcessAmericaStakeSymbol(pWebData);
+        SetSystemReady(true);
         m_fSymbolProceeded = true;
         break;
         case  __MARKET_NEWS__:
@@ -187,18 +192,10 @@ void CAmericaStakeMarket::GetFinnhubDataFromWeb(void) {
       case __STAKE_QUOTE__:
       break;
       case __STAKE_CANDLES__:
-      strMiddle += m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol;
-      strMiddle += _T("&resolution=D");
-      strMiddle += _T("&from=");
-      sprintf_s(buffer, _T("%I64i"), (INT64)(GetMarketTime() - (time_t)(365) * 24 * 3600)); // 免费账户只能读取一年以内的日线数据。
-      strTemp = buffer;
-      strMiddle += strTemp;
-      strMiddle += _T("&to=");
-      sprintf_s(buffer, _T("%I64i"), GetMarketTime());
-      strTemp = buffer;
-      strMiddle += strTemp;
+      pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
+      strMiddle = pStake->GetDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_fDayLineNeedUpdate = false;
+      pStake->m_fDayLineNeedUpdate = false;
       break;
       case __FOREX_EXCHANGE__:
       break;
@@ -223,10 +220,7 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
   SchedulingTaskPer1Minute(lSecond, lCurrentTime);
   SchedulingTaskPer10Seconds(lSecond, lCurrentTime);
 
-  TaskInquiryTodaySymbol();
   TaskSaveStakeSymbolDB();
-
-  GetFinnhubDataFromWeb();
 
   if (m_fSymbolProceeded) {
     TaskInquiryAmericaStake();
@@ -438,10 +432,6 @@ bool CAmericaStakeMarket::RunningTaskThreadUpdateStakeDB(void) {
   return true;
 }
 
-bool TaskUpdateDayLineDB(void) {
-  return true;
-}
-
 bool CAmericaStakeMarket::IsAmericaStake(CString strSymbol) {
   if (m_mapAmericaStake.find(strSymbol) == m_mapAmericaStake.end()) { // 新代码？
     return false;
@@ -570,4 +560,9 @@ bool CAmericaStakeMarket::UpdateStakeDB(void) {
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
   return true;
+}
+
+void CAmericaStakeMarket::ResetFinnhubState(void) {
+  m_fInquiringStakeCandle = false;
+  m_fInquiringStakeProfileData = false;
 }

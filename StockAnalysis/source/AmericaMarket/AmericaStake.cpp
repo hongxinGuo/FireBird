@@ -71,8 +71,11 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
 
 void CAmericaStake::SetCheckingDayLineStatus(void) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+  if (m_lIPOStatus == __STAKE_NULL__) {
+    SetDayLineNeedUpdate(false);
+  }
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pAmericaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  else if (gl_pAmericaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
 }
@@ -200,7 +203,7 @@ void CAmericaStake::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
 
 void CAmericaStake::UpdateDayLineStartEndDate(void) {
   if (m_vDayLine.size() == 0) {
-    SetDayLineStartDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetDayLineStartDate(29900101);
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
@@ -224,4 +227,28 @@ bool CAmericaStake::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;
+}
+
+CString CAmericaStake::GetDayLineInquiryString(time_t tCurrentTime) {
+  CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+  CString strTemp;
+  char buffer[50];
+  time_t tStartTime = 0;
+
+  strMiddle += m_strSymbol;
+  strMiddle += _T("&resolution=D");
+  strMiddle += _T("&from=");
+  tStartTime = FormatToTTime(m_lDayLineEndDate);
+  if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {
+    tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
+  }
+  sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime); // 免费账户只能读取一年以内的日线数据。
+  strTemp = buffer;
+  strMiddle += strTemp;
+  strMiddle += _T("&to=");
+  sprintf_s(buffer, _T("%I64i"), tCurrentTime);
+  strTemp = buffer;
+  strMiddle += strTemp;
+
+  return strMiddle;
 }

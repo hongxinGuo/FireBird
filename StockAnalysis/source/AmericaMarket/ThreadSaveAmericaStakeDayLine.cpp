@@ -15,22 +15,17 @@
 
 UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
   CString str;
-  bool fDataSaved = false;
   gl_ThreadStatus.IncreaseRunningThread();
 
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Wait();
   if (!gl_fExitingSystem) {
-    fDataSaved = pStake->SaveDayLine();
-    if (fDataSaved) {
-      pStake->UpdateDayLineStartEndDate();
-      pStake->SetDayLineDBUpdated(true);
-    }
+    pStake->SaveDayLine();
+    pStake->UpdateDayLineStartEndDate();
+    pStake->SetDayLineDBUpdated(true);
     pStake->UnloadDayLine();
-    if (fDataSaved) {
-      str = pStake->GetSymbol() + _T("日线资料存储完成");
-      gl_systemMessage.PushDayLineInfoMessage(str);
-    }
+    str = pStake->GetSymbol() + _T("日线资料存储完成");
+    gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Signal();

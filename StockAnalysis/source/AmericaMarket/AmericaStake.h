@@ -54,6 +54,8 @@ public:
   CString GetSymbol(void) { return m_strSymbol; }
   CString GetTicker(void) { return m_strTicker; }
 
+  CString GetDayLineInquiryString(time_t tCurrentTime);
+
 public:
   // symbol–≈œ¢
   CString m_strDescription;

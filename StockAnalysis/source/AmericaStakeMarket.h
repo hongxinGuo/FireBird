@@ -130,6 +130,9 @@ public:
 
   bool UpdateStakeDB(void);
 
+  //
+  void ResetFinnhubState(void);
+
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
   map<CString, long> m_mapAmericaStake;

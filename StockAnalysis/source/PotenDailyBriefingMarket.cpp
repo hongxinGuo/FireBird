@@ -18,6 +18,8 @@ CPotenDailyBriefingMarket::CPotenDailyBriefingMarket(void) : CVirtualMarket() {
   m_lMarketTimeZone = 4 * 3600; // poten.com使用美国东部标准时间
   CalculateTime();
 
+  SetReadyToRun(false);
+
   Reset();
 }
 
