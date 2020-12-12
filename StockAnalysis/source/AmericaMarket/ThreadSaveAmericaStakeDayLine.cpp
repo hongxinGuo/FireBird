@@ -13,13 +13,13 @@
 
 #include"AmericaStake.h"
 
-UINT ThreadSaveAmericaStakeDayLine(not_null<CAmericaStakePtr> pStake) {
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
   CString str;
   bool fDataSaved = false;
   gl_ThreadStatus.IncreaseRunningThread();
 
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveOneStockDayLine.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
+  gl_SaveAmericaOneStockDayLine.Wait();
   if (!gl_fExitingSystem) {
     fDataSaved = pStake->SaveDayLine();
     if (fDataSaved) {
@@ -28,13 +28,13 @@ UINT ThreadSaveAmericaStakeDayLine(not_null<CAmericaStakePtr> pStake) {
     }
     pStake->UnloadDayLine();
     if (fDataSaved) {
-      str = pStake->GetStakeSymbol() + _T("日线资料存储完成");
+      str = pStake->GetSymbol() + _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
-  gl_SaveOneStockDayLine.Signal();
+  gl_SaveAmericaOneStockDayLine.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
-  return 15;
+  return 36;
 }

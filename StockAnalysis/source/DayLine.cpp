@@ -147,8 +147,8 @@ bool CDayLine::SaveAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmer
 
   psetAmericaStakeDayLine->m_Date = GetFormatedMarketDate();
   psetAmericaStakeDayLine->m_Market = GetMarketString();
-  psetAmericaStakeDayLine->m_StockCode = GetStakeCode();
-  psetAmericaStakeDayLine->m_StockName = GetStakeName();
+  psetAmericaStakeDayLine->m_Symbol = GetStakeCode();
+  psetAmericaStakeDayLine->m_Ticker = GetStakeName();
   psetAmericaStakeDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetAmericaStakeDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
   psetAmericaStakeDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -181,8 +181,8 @@ bool CDayLine::LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmer
   ASSERT(psetAmericaStakeDayLine->IsOpen());
   m_lDate = psetAmericaStakeDayLine->m_Date;
   m_strMarket = psetAmericaStakeDayLine->m_Market;
-  m_strStakeCode = psetAmericaStakeDayLine->m_StockCode;
-  m_strStakeName = psetAmericaStakeDayLine->m_StockName;
+  m_strStakeCode = psetAmericaStakeDayLine->m_Symbol;
+  m_strStakeName = psetAmericaStakeDayLine->m_Ticker;
   m_lLastClose = atof(psetAmericaStakeDayLine->m_LastClose) * 1000;
   m_lOpen = atof(psetAmericaStakeDayLine->m_Open) * 1000;
   m_lHigh = atof(psetAmericaStakeDayLine->m_High) * 1000;

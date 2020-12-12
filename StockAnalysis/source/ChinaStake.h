@@ -13,6 +13,8 @@ enum {
   __NO_TRANSACTION__ = 8
 };
 
+#include"globeSymbolDef.h"
+
 #include"PriorityQueueWebRTData.h"
 
 #include"SetDayLineBasicInfo.h"

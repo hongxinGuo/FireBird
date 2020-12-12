@@ -13,6 +13,7 @@
 
 #include"ChinaStake.h"
 class CChinaMarket;
+#include"AmericaStakeMarket.h"
 #include"AmericaStake.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
@@ -92,8 +93,12 @@ UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // 此
 UINT ThreadSaveActiveStakeCode(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为34
 // 存储证券代码段索引
 UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为35
-// 存储一个美国股票的日线历史数据。
-UINT ThreadSaveAmericaStakeDayLine(not_null<CAmericaStakePtr> pStake); // 此工作线程返回值为15, 参数为携带智能指针的一个结构指针
+
+// 下面为美国股票市场的工作线程
+// 更新一个美国股票的日线历史数据。
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake); // 此工作线程返回值为36, 参数为携带智能指针的一个结构指针
+// 更新美股日线起止日期线程
+UINT ThreadUpdateStakeDB(not_null < CAmericaStakeMarket*> pMarket); // 此工作线程返回值为37
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

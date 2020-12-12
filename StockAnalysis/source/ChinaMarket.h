@@ -27,6 +27,7 @@ using namespace std;
 
 // 信号量必须声明为全局变量（为了初始化）
 extern Semaphore gl_SaveOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SaveAmericaOneStockDayLine;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SemaphoreBackGroundTaskThreads; // 后台工作线程数。最大为8
 extern Semaphore gl_ProcessSinaRTDataQueue;
 extern Semaphore gl_ProcessTengxunRTDataQueue;

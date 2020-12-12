@@ -17,8 +17,8 @@ CSetAmericaStakeDayLine::CSetAmericaStakeDayLine(CDatabase* pdb)
   m_ID = 0;
   m_Date = 0;
   m_Market = _T("");
-  m_StockCode = _T("");
-  m_StockName = _T("");
+  m_Symbol = _T("");
+  m_Ticker = _T("");
   m_LastClose = _T("0");
   m_Open = _T("0");
   m_High = _T("0");
@@ -52,8 +52,8 @@ void CSetAmericaStakeDayLine::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Date]"), m_Date);
   RFX_Text(pFX, _T("[Market]"), m_Market);
-  RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
-  RFX_Text(pFX, _T("[StockName]"), m_StockName);
+  RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
+  RFX_Text(pFX, _T("[Ticker]"), m_Ticker);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);
   RFX_Text(pFX, _T("[High]"), m_High);

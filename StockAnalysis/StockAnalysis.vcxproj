@@ -222,6 +222,7 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -231,6 +232,7 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -240,6 +242,7 @@
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -254,15 +257,18 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <LibraryPath>C:\Users\hxguo\source\repos\boost\lib64-msvc-14.2;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -346,7 +352,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -400,7 +406,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -454,7 +460,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -586,7 +592,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
@@ -625,7 +631,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
@@ -664,7 +670,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
@@ -696,6 +702,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="GlobeSymbolDef.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="Resource.h" />
@@ -778,6 +785,7 @@
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
@@ -895,12 +903,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.72.0.0\build\boost.targets')" />
+    <Import Project="..\packages\boost.1.71.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.71.0.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.72.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.71.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.71.0.0\build\boost.targets'))" />
   </Target>
 </Project>

@@ -5,6 +5,10 @@
 #include"SetAmericaStakeDayLine.h"
 
 CAmericaStake::CAmericaStake() : CObject() {
+  Reset();
+}
+
+void CAmericaStake::Reset(void) {
   m_strIPODate = _T(" ");
   m_strCurrency = _T(" ");
   m_strType = _T(" ");
@@ -23,6 +27,7 @@ CAmericaStake::CAmericaStake() : CObject() {
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
   m_lLastRTDataUpdateDate = 19800101;
+  m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
@@ -56,9 +61,19 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
   m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
+  m_lIPOStatus = setAmericaStake.m_IPOStatus;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
     //m_fInquiryAmericaStake = false;
     //m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+  }
+  SetCheckingDayLineStatus();
+}
+
+void CAmericaStake::SetCheckingDayLineStatus(void) {
+  ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+  // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
+  if (gl_pAmericaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+    SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
 }
 
@@ -92,6 +107,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
+  setAmericaStake.m_IPOStatus = m_lIPOStatus;
   setAmericaStake.Update();
 }
 
@@ -116,6 +132,7 @@ void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
+  setAmericaStake.m_IPOStatus = m_lIPOStatus;
   if (m_strWebURL.GetLength() > 100) {
     TRACE("%s字符串太长%d\n", m_strSymbol.GetBuffer(), m_strWebURL.GetLength());
   }
@@ -187,7 +204,7 @@ void CAmericaStake::UpdateDayLineStartEndDate(void) {
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
-    if ((GetDayLineStartDate() == 19900101) || (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
+    if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
     }

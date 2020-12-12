@@ -11,13 +11,15 @@ using namespace boost::property_tree;
 static char s_buffer[2048 * 1024];
 
 bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
+  char* pbuffer = new char[2048 * 1024];
   for (int i = 0; i < pWebData->GetBufferLength(); i++) {
-    s_buffer[i] = pWebData->GetData(i);
+    pbuffer[i] = pWebData->GetData(i);
   }
-  s_buffer[pWebData->GetBufferLength()] = 0x000;
-  string strTemp = s_buffer;
+  pbuffer[pWebData->GetBufferLength()] = 0x000;
+  string strTemp = pbuffer;
   stringstream ss(strTemp);
 
+  delete pbuffer;
   try {
     read_json(ss, pt);
   }
@@ -180,8 +182,17 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   CDayLinePtr pDayLine = nullptr;
   int i = 0;
 
-  if (!ConvertToJSon(pt, pWebData)) return false;
+  if (!ConvertToJSon(pt, pWebData)) {
+    pStake->SetIPOStatus(__STAKE_NULL__);
+    pStake->m_fUpdateDatabase = true;
+    return true;
+  }
   s = pt.get<string>(_T("s"));
+  if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+    pStake->SetIPOStatus(__STAKE_NULL__);
+    pStake->m_fUpdateDatabase = true;
+    return true;
+  }
   if (s.compare(_T("ok")) != 0) return false;
   try {
     pt2 = pt.get_child(_T("t"));
@@ -189,6 +200,8 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
       pt3 = it->second;
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
+      pDayLine->SetStakeCode(pStake->GetSymbol());
+      pDayLine->SetStakeName(pStake->GetTicker());
       pDayLine->SetTime(tTemp);
       lTemp = FormatToDate(tTemp);
       pDayLine->SetDate(lTemp);
@@ -258,8 +271,10 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   }
   catch (ptree_error&) {
   }
+  pStake->SetIPOStatus(__STAKE_IPOED__);
   pStake->UpdateDayLine(vDayLine);
   pStake->SetDayLineNeedUpdate(false);
   pStake->SetDayLineNeedSaving(true);
+  pStake->m_fUpdateDatabase = true;
   return true;
 }

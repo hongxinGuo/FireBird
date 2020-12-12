@@ -1,6 +1,7 @@
 #pragma once
 
 #include"stdafx.h"
+#include"globeSymbolDef.h"
 
 #include"DayLine.h"
 #include"SetAmericaStake.h"
@@ -13,8 +14,10 @@ using namespace std;
 class CAmericaStake : public CObject {
 public:
   CAmericaStake();
+  void Reset(void);
 public:
   void Load(CSetAmericaStake& setAmericaStake);
+  void SetCheckingDayLineStatus(void);
   bool CheckDayLineUpdateStatus();
   void Save(CSetAmericaStake& setAmericaStake);
   void Update(CSetAmericaStake& setAmericaStake);
@@ -41,7 +44,15 @@ public:
   bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
   void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
 
-  CString GetStakeSymbol(void) noexcept { return m_strSymbol; }
+  long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
+  void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
+  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STAKE_DELISTED__); }
+  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STAKE_NULL__); }
+  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STAKE_IPOED__); }
+  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STAKE_NOT_CHECKED__); }
+
+  CString GetSymbol(void) { return m_strSymbol; }
+  CString GetTicker(void) { return m_strTicker; }
 
 public:
   // symbol信息
@@ -82,6 +93,7 @@ public:
   long m_lDayLineStartDate;
   long m_lDayLineEndDate;
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
+  long m_lIPOStatus;
 
   vector<CDayLinePtr> m_vDayLine;
 

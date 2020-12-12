@@ -20,6 +20,7 @@ public:
   virtual ~CVirtualWebInquiry(void);
 
   virtual bool ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0); // 唯一的网络实际读取函数
+  virtual bool ReadWebData2(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);// 这种
   bool ReadDataFromWebOnce(long& lCurrentByteReaded);
   virtual UINT ReadWebFile(void); // 无法测试，故而虚拟化后使用Mock类。
   CWebDataPtr TransferWebDataToQueueData(void);
@@ -41,8 +42,8 @@ public:
   void SetInquiringString(CString str) { m_strInquire = str; }
   void AppendInquiringString(CString str) { m_strInquire += str; }
 
-  char GetData(long lIndex) { return m_buffer.at(lIndex); }
-  void SetData(long lIndex, char value) { m_buffer.at(lIndex) = value; }
+  char GetData(long lIndex) { return m_buffer[lIndex]; }
+  void SetData(long lIndex, char value) { m_buffer[lIndex] = value; }
 
   long GetByteReaded(void)noexcept { return m_lByteRead; }
   void SetByteReaded(long lValue)noexcept { m_lByteRead = lValue; }
@@ -85,8 +86,10 @@ protected:
   CHttpFile* m_pFile; // 网络文件指针
   DWORD m_dwWebErrorCode; //网络读取错误代码
   CString m_strInquire;// 查询所需的字符串
-  vector<char> m_buffer; // 接收到数据的缓冲区
+  char m_buffer[1024 * 2048]; // 接收到数据的缓冲区
+  char m_bufferTemp[1024 * 2048]; // 接收到数据的缓冲区
   long m_lByteRead; // 接收到的字符数
+  long m_lByteReadCurrent;
 
   CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
