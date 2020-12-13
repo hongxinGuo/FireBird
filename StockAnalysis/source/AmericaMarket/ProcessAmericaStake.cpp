@@ -279,3 +279,29 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   pStake->m_fUpdateDatabase = true;
   return true;
 }
+
+bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+  string s;
+  ptree pt;
+  double dTemp = 0;
+  time_t tt = 0;
+
+  if (!ConvertToJSon(pt, pWebData)) {
+    return false;
+  }
+  dTemp = pt.get<double>(_T("pc"));
+  pStake->SetLastClose(dTemp * 1000);
+  dTemp = pt.get<double>(_T("o"));
+  pStake->SetOpen(dTemp * 1000);
+  dTemp = pt.get<double>(_T("h"));
+  pStake->SetHigh(dTemp * 1000);
+  dTemp = pt.get<double>(_T("l"));
+  pStake->SetLow(dTemp * 1000);
+  dTemp = pt.get<double>(_T("c"));
+  pStake->SetNew(dTemp * 1000);
+  tt = pt.get<time_t>(_T("t"));
+  pStake->SetTransactionTime(tt);
+  pStake->SetActive(true); // 本日有实时数据
+
+  return true;
+}

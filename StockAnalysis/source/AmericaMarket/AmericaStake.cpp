@@ -29,6 +29,7 @@ void CAmericaStake::Reset(void) {
   m_lLastRTDataUpdateDate = 19800101;
   m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
+  m_lEmployeeTotal = 0;
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
 
@@ -37,6 +38,13 @@ void CAmericaStake::Reset(void) {
   m_fInquiryAmericaStake = true;
   m_fDayLineNeedUpdate = true;
   m_fDayLineNeedSaving = false;
+
+  m_TransactionTime = 0;
+  m_lHigh = 0;
+  m_lLow = 0;
+  m_lLastClose = 0;
+  m_lNew = 0;
+  m_lOpen = 0;
 
   m_vDayLine.resize(0);
 }

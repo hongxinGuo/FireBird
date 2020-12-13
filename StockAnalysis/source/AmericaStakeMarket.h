@@ -67,7 +67,8 @@ enum {
 struct FinnhubInquiry {
 public:
   int m_iPriority; // 优先级
-  long m_iIndex; // 指令
+  long m_lInquiryIndex; // 指令索引
+  long m_lStakeIndex; // 股票集当前位置
   bool operator() (FinnhubInquiry temp1, FinnhubInquiry temp2) {
     return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
   }
@@ -85,7 +86,8 @@ public:
   virtual ~CAmericaStakeMarket();
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
-  void GetFinnhubDataFromWeb(void);
+  bool ProcessFinnhubInquiringMessage(void);
+  bool ProcessFinnhubWebDataReceived(void);
   virtual void ResetMarket(void) override;
   void Reset(void);
 
@@ -96,13 +98,12 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskInquiryTodaySymbol(void);
-  bool TaskSaveStakeSymbolDB(void);
-
-  bool TaskUpdateStakeDB(void);
-
   bool TaskInquiryAmericaStake(void);
-
   bool TaskInquiryDayLine(void);
+  bool TaskInquiryFinnhubRTQuote(void);
+
+  bool TaskSaveStakeSymbolDB(void);
+  bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
 
   // 各工作线程调用包裹函数
@@ -118,10 +119,9 @@ public:
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
 
-  void SetWaitingFinnhubData(bool fFlag) noexcept { m_fWaitingFinnhubData = fFlag; }
-  bool IsWaitingFinHubData(void) noexcept { bool f = m_fWaitingFinnhubData; return f; }
+  void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
+  bool IsFinnhubDataReceived(void) noexcept { bool f = m_fFinnhubDataReceived; return f; }
 
-  void SetFinnInquiry(long lOrder);
   long GetFinnInquiry(void);
 
   // 数据库操作
@@ -130,9 +130,6 @@ public:
 
   bool UpdateStakeDB(void);
 
-  //
-  void ResetFinnhubState(void);
-
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
   map<CString, long> m_mapAmericaStake;
@@ -140,19 +137,19 @@ protected:
   long m_lTotalAmericaStake;
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
+  long m_lCurrentRTDataQuotePos;
+  FinnhubInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
   long m_lPrefixIndex; // 当前查询状态
   priority_queue<FinnhubInquiry, vector<FinnhubInquiry>, FinnhubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
-  atomic_bool m_fWaitingFinnhubData;
+  bool m_fFinnhubInquiring;
+  atomic_bool m_fFinnhubDataReceived;
 
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
   bool m_fStakeDayLineUpdated; // 每日更新公司简介
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fSymbolProceeded;
-
-  bool m_fInquiringStakeProfileData; // 查询公司简介中
-  bool m_fInquiringStakeCandle;
 };
 
 typedef shared_ptr<CAmericaStakeMarket> CAmericaStakeMarketPtr;
