@@ -22,6 +22,10 @@ UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebData) {
       gl_WebInquirer.PushFinnhubData(pWebDataReceived);
     }
   }
+  else {
+    while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
+    gl_pAmericaStakeMarket->SetFinnhubInquiring(false);
+  }
   gl_pAmericaStakeMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
   gl_ThreadStatus.DecreaseRunningThread();
 

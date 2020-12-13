@@ -113,12 +113,12 @@ public:
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);
   CAmericaStakePtr GetAmericaStake(CString strTicker);
-  CAmericaStakePtr GetCurrentProcessingAmericaStake(void) { return m_vAmericaStake.at(m_lCurrentProfilePos); }
   void AddAmericaStake(CAmericaStakePtr pStake);
 
   // ¸÷ÖÖ×´Ì¬
   long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
 
+  void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
   void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
   bool IsFinnhubDataReceived(void) noexcept { bool f = m_fFinnhubDataReceived; return f; }
 

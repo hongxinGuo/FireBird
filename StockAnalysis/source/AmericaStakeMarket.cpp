@@ -84,7 +84,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 
   // Finnhub.io读取函数。
   if (s_iCountFinnhub-- < 0) { // 每0.3秒调用一次
-    s_iCountFinnhub = -1; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
+    s_iCountFinnhub = 2; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
     ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
     ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
   }
@@ -108,53 +108,54 @@ bool CAmericaStakeMarket::ProcessFinnhubWebDataReceived(void) {
   CWebDataPtr pWebData = nullptr;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
-  if (IsFinnhubDataReceived() && (gl_WebInquirer.GetFinnhubDataSize() > 0)) { // 如果网络数据接收到了
-      // 处理当前网络数据
-    pWebData = gl_WebInquirer.PopFinnhubData();
-    switch (m_lPrefixIndex) {
-    case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
-    ProcessAmericaStakeProfile(pWebData);
-    break;
-    case __COMPANY_PROFILE2__:
-    ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
-    ProcessAmericaStakeProfile2(pWebData);
-    break;
-    case  __COMPANY_SYMBOLS__:
-    ProcessAmericaStakeSymbol(pWebData);
-    SetSystemReady(true);
-    m_fSymbolProceeded = true;
-    break;
-    case  __MARKET_NEWS__:
-    break;
-    case __COMPANY_NEWS__:
-    break;
-    case __NEWS_SENTIMENT__:
-    break;
-    case __PEERS__:
-    break;
-    case __BASIC_FINANCIALS__:
-    break;
-    case __STAKE_QUOTE__:
-    ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
-    ProcessAmericaStakeQuote(pWebData, m_vAmericaStake.at(m_lCurrentRTDataQuotePos));
-    break;
-    case __STAKE_CANDLES__:
-    ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
-    ProcessAmericaStakeCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
-    TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
-    break;
-    case __FOREX_EXCHANGE__:
-    break;
-    case __FOREX_SYMBOLS__:
-    break;
-    case __FOREX_CANDLES__:
-    break;
-    case __FOREX_ALL_RATES__:
-    break;
-    default:
-    break;
+  if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
+    if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
+      pWebData = gl_WebInquirer.PopFinnhubData();
+      switch (m_lPrefixIndex) {
+      case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
+      ProcessAmericaStakeProfile(pWebData, m_vAmericaStake.at(m_lCurrentProfilePos));
+      break;
+      case __COMPANY_PROFILE2__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
+      ProcessAmericaStakeProfile2(pWebData, m_vAmericaStake.at(m_lCurrentProfilePos));
+      break;
+      case  __COMPANY_SYMBOLS__:
+      ProcessAmericaStakeSymbol(pWebData);
+      SetSystemReady(true);
+      m_fSymbolProceeded = true;
+      break;
+      case  __MARKET_NEWS__:
+      break;
+      case __COMPANY_NEWS__:
+      break;
+      case __NEWS_SENTIMENT__:
+      break;
+      case __PEERS__:
+      break;
+      case __BASIC_FINANCIALS__:
+      break;
+      case __STAKE_QUOTE__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
+      ProcessAmericaStakeQuote(pWebData, m_vAmericaStake.at(m_lCurrentRTDataQuotePos));
+      break;
+      case __STAKE_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
+      ProcessAmericaStakeCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
+      TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
+      break;
+      case __FOREX_EXCHANGE__:
+      break;
+      case __FOREX_SYMBOLS__:
+      break;
+      case __FOREX_CANDLES__:
+      break;
+      case __FOREX_ALL_RATES__:
+      break;
+      default:
+      break;
+      }
+      m_fFinnhubInquiring = false;
     }
-    m_fFinnhubInquiring = false;
   }
 
   return true;
@@ -180,12 +181,10 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_lPrefixIndex)); // 设置前缀
       switch (m_lPrefixIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
-      while (!m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake) m_lCurrentProfilePos++;
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
       m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
       break;
       case __COMPANY_PROFILE2__:
-      while (!m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake) m_lCurrentProfilePos++;
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
       m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
       break;
@@ -208,6 +207,7 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
       case __STAKE_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
       pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
       strMiddle = pStake->GetDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
@@ -239,22 +239,15 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
 
   TaskSaveStakeSymbolDB();
 
-  static int s_iCount = 4;
+  static int s_iCount = -1;
 
   if (m_fSymbolProceeded) {
     if (s_iCount-- < 0) {
-      s_iCount = 4;
+      s_iCount = -1;
       TaskInquiryAmericaStake();
       TaskInquiryDayLine();
     }
     TaskInquiryFinnhubRTQuote();
-  }
-
-  static int s_iCount2 = 1;
-  if (m_fSymbolProceeded) {
-    if (s_iCount2-- < 0) {
-      s_iCount2 = 1;
-    }
   }
 
   return true;
@@ -371,6 +364,7 @@ bool CAmericaStakeMarket::TaskInquiryAmericaStake(void) {
       inquiry.m_lStakeIndex = m_lCurrentProfilePos;
       inquiry.m_iPriority = 10;
       m_qWebInquiry.push(inquiry);
+      TRACE("更新%s简介\n", m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
       m_fFinnhubInquiring = true;
     }
     else {

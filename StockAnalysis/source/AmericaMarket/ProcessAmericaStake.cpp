@@ -29,19 +29,16 @@ bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
   return true;
 }
 
-bool ProcessAmericaStakeProfile(CWebDataPtr pWebData) {
-  CAmericaStakePtr pStake = make_shared<CAmericaStake>();
+bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   ptree pt;
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
     pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
   s = pt.get<string>(_T("address"));
   pStake->m_strAddress = s.c_str();
   s = pt.get<string>(_T("city"));
@@ -104,19 +101,17 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData) {
   return true;
 }
 
-bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData) {
-  CAmericaStakePtr pStake = make_shared<CAmericaStake>();
+bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   ptree pt;
   string s;
 
+  TRACE("处理%s简介\n", pStake->m_strSymbol.GetBuffer());
   if (pWebData->GetBufferLength() < 20) {
-    pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
     pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  pStake = gl_pAmericaStakeMarket->GetCurrentProcessingAmericaStake();
   s = pt.get<string>(_T("ticker"));
   if (s.size() > 0) pStake->m_strTicker = s.c_str();
   s = pt.get<string>(_T("country"));
