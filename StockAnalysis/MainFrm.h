@@ -129,4 +129,5 @@ public:
   afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
   afx_msg void OnUpdateStakeSection();
   afx_msg void OnUpdateStakeCode();
+  afx_msg void OnAmericaMarketRebuldayLine();
 };

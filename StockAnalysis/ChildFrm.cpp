@@ -15,6 +15,7 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
+  //    ON_COMMAND(ID_AMERICA_MARKET_REBULID_DAY_LINE, &CChildFrame::OnAmericaMarketRebuldayLine)
 END_MESSAGE_MAP()
 
 // CChildFrame 构造/析构

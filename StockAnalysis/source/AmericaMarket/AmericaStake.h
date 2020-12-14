@@ -21,6 +21,7 @@ public:
   bool CheckDayLineUpdateStatus();
   void Save(CSetAmericaStake& setAmericaStake);
   void Update(CSetAmericaStake& setAmericaStake);
+  void Append(CSetAmericaStake& setAmericaStake);
   bool SaveDayLine(void);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);

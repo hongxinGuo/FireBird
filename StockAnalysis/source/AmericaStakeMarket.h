@@ -129,6 +129,8 @@ public:
   bool SaveCompnayProfile(void);
 
   bool UpdateStakeDB(void);
+  bool RebulidFinnhubDayLine(void);
+  bool SortStakeTable(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
@@ -150,6 +152,9 @@ protected:
   bool m_fStakeDayLineUpdated; // 每日更新公司简介
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fSymbolProceeded;
+
+  //
+  bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 
 typedef shared_ptr<CAmericaStakeMarket> CAmericaStakeMarketPtr;

@@ -33,8 +33,8 @@ public:
   void SetTime(time_t t) noexcept { m_time = t; }
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
-  CString GetMarketString(void) noexcept { return m_strMarket; }
-  void SetMarketString(CString strMarket) noexcept { m_strMarket = strMarket; }
+  CString GetMarketString(void) { return m_strMarket; }
+  void SetMarketString(CString strMarket) { m_strMarket = strMarket; }
   CString GetStakeCode(void) { return m_strStakeCode; }
   void SetStakeCode(CString str) { m_strStakeCode = str; }
   CString GetStakeName(void) { return m_strStakeName; }

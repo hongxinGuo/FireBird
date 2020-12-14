@@ -60,6 +60,8 @@ void CAmericaStakeMarket::Reset(void) {
 
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
+
+  m_fRebulidDayLine = false;
 }
 
 void CAmericaStakeMarket::ResetMarket(void) {
@@ -247,7 +249,9 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
       TaskInquiryAmericaStake();
       TaskInquiryDayLine();
     }
-    TaskInquiryFinnhubRTQuote();
+    if (m_fStakeDayLineUpdated) {
+      TaskInquiryFinnhubRTQuote();
+    }
   }
 
   return true;
@@ -333,7 +337,7 @@ bool CAmericaStakeMarket::TaskSaveStakeSymbolDB(void) {
     setAmericaStake.m_pDatabase->BeginTrans();
     for (long l = m_lLastTotalAmericaStake; l < m_lTotalAmericaStake; l++) {
       pStake = m_vAmericaStake.at(l);
-      pStake->Save(setAmericaStake);
+      pStake->Append(setAmericaStake);
     }
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
@@ -542,7 +546,7 @@ bool CAmericaStakeMarket::SaveCompnayProfile(void) {
   setAmericaStake.m_pDatabase->BeginTrans();
   for (long l = m_lLastTotalAmericaStake; l < lTotalAmericaStake; l++) {
     pAmericaStake = m_vAmericaStake.at(l);
-    pAmericaStake->Save(setAmericaStake);
+    pAmericaStake->Append(setAmericaStake);
   }
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
@@ -567,5 +571,69 @@ bool CAmericaStakeMarket::UpdateStakeDB(void) {
   }
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
+  return true;
+}
+
+bool CAmericaStakeMarket::RebulidFinnhubDayLine(void) {
+  CSetAmericaStake setAmericaStake;
+  for (auto& pStake : m_vAmericaStake) {
+    pStake->SetDayLineStartDate(29900101);
+    pStake->SetDayLineEndDate(19800101);
+  }
+
+  //setAmericaStake.m_strSort = _T("[Symbol]");
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    setAmericaStake.Edit();
+    setAmericaStake.m_DayLineStartDate = 29900101;
+    setAmericaStake.m_DayLineEndDate = 19800101;
+    setAmericaStake.Update();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+
+  m_fStakeDayLineUpdated = false;
+
+  return true;
+}
+
+bool CAmericaStakeMarket::SortStakeTable(void) {
+  CSetAmericaStake setAmericaStake;
+  vector<CAmericaStakePtr> vStake;
+  CAmericaStakePtr pStake = nullptr;
+
+  setAmericaStake.m_strSort = _T("[Symbol]");
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    pStake = make_shared<CAmericaStake>();
+    pStake->Load(setAmericaStake);
+    vStake.push_back(pStake);
+    setAmericaStake.MoveNext();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    setAmericaStake.Delete();
+    setAmericaStake.MoveNext();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  for (auto& pStake1 : vStake) {
+    pStake1->Append(setAmericaStake);
+    setAmericaStake.AddNew();
+
+    setAmericaStake.MoveNext();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+
   return true;
 }

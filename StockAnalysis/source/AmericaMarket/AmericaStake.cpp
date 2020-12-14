@@ -23,6 +23,19 @@ void CAmericaStake::Reset(void) {
   m_strSymbol = _T(" ");
   m_strTicker = _T(" ");
   m_strWebURL = _T(" ");
+  m_strAddress = _T(" ");
+  m_strCity = _T(" ");
+  m_strCusip = _T(" ");
+  m_strSedol = _T(" ");
+  m_strGgroup = _T(" ");
+  m_strGind = _T(" ");
+  m_strGsector = _T(" ");
+  m_strGsubind = _T(" ");
+  m_strNaics = _T(" ");
+  m_strNaicsNationalIndustry = _T(" ");
+  m_strNaicsSector = _T(" ");
+  m_strNaicsSubsector = _T(" ");
+  m_strState = _T(" ");
   m_lProfileUpdateDate = 19800101;
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
@@ -51,19 +64,35 @@ void CAmericaStake::Reset(void) {
 
 void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strSymbol = setAmericaStake.m_Symbol;
-  m_strCurrency = setAmericaStake.m_Currency;
   m_strDescription = setAmericaStake.m_Description;
   m_strDisplaySymbol = setAmericaStake.m_DisplaySymbol;
   m_strType = setAmericaStake.m_Type;
+  m_strCurrency = setAmericaStake.m_Currency;
+  m_strAddress = setAmericaStake.m_Address;
+  m_strCity = setAmericaStake.m_City;
   m_strCountry = setAmericaStake.m_Country;
+  m_strCusip = setAmericaStake.m_Cusip;
+  m_strSedol = setAmericaStake.m_Sedol;
+  m_lEmployeeTotal = setAmericaStake.m_EmployeeTotal;
   m_strExchange = setAmericaStake.m_Exchange;
-  m_strTicker = setAmericaStake.m_Ticker;
+  m_strGgroup = setAmericaStake.m_Ggroup;
+  m_strGind = setAmericaStake.m_Gind;
+  m_strGsector = setAmericaStake.m_Gsector;
+  m_strGsubind = setAmericaStake.m_Gsubind;
   m_strIPODate = setAmericaStake.m_IPODate;
+  m_strIsin = setAmericaStake.m_Isin;
+  m_dMarketCapitalization = atof(setAmericaStake.m_MarketCapitalization);
+  m_strNaics = setAmericaStake.m_Naics;
+  m_strNaicsNationalIndustry = setAmericaStake.m_NaicsNationalIndustry;
+  m_strNaicsSector = setAmericaStake.m_NaicsSector;
+  m_strNaicsSubsector = setAmericaStake.m_NaicsSubsector;
+  m_strName = setAmericaStake.m_Name;
   m_strPhone = setAmericaStake.m_Phone;
   m_dShareOutstanding = atof(setAmericaStake.m_ShareOutstanding);
-  m_dMarketCapitalization = atof(setAmericaStake.m_MarketCapitalization);
-  m_strName = setAmericaStake.m_Name;
+  m_strState = setAmericaStake.m_State;
+  m_strTicker = setAmericaStake.m_Ticker;
   m_strWebURL = setAmericaStake.m_WebURL;
+  m_strLogo = setAmericaStake.m_Logo;
   m_strFinnhubIndustry = setAmericaStake.m_FinnhubIndustry;
   m_lProfileUpdateDate = setAmericaStake.m_ProfileUpdateDate;
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
@@ -98,46 +127,36 @@ bool CAmericaStake::CheckDayLineUpdateStatus() {
 }
 
 void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
-  setAmericaStake.AddNew();
   setAmericaStake.m_Symbol = m_strSymbol;
-  setAmericaStake.m_Currency = m_strCurrency;
   setAmericaStake.m_Description = m_strDescription;
   setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;
   setAmericaStake.m_Type = m_strType;
-  setAmericaStake.m_Country = m_strCountry;
-  setAmericaStake.m_Exchange = m_strExchange;
-  setAmericaStake.m_Ticker = m_strTicker;
-  setAmericaStake.m_IPODate = m_strIPODate;
-  setAmericaStake.m_Phone = m_strPhone;
-  setAmericaStake.m_ShareOutstanding = ConvertValueToString(m_dShareOutstanding);
-  setAmericaStake.m_MarketCapitalization = ConvertValueToString(m_dMarketCapitalization);
-  setAmericaStake.m_Name = m_strName;
-  setAmericaStake.m_WebURL = m_strWebURL;
-  setAmericaStake.m_FinnhubIndustry = m_strFinnhubIndustry;
-  setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
-  setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
-  setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
-  setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
-  setAmericaStake.m_IPOStatus = m_lIPOStatus;
-  setAmericaStake.Update();
-}
-
-void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {
-  setAmericaStake.Edit();
-  setAmericaStake.m_Symbol = m_strSymbol;
   setAmericaStake.m_Currency = m_strCurrency;
-  setAmericaStake.m_Description = m_strDescription;
-  setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;
-  setAmericaStake.m_Type = m_strType;
+  setAmericaStake.m_Address = m_strAddress;
+  setAmericaStake.m_City = m_strCity;
   setAmericaStake.m_Country = m_strCountry;
+  setAmericaStake.m_Cusip = m_strCusip;
+  setAmericaStake.m_Sedol = m_strSedol;
+  setAmericaStake.m_EmployeeTotal = m_lEmployeeTotal;
   setAmericaStake.m_Exchange = m_strExchange;
-  setAmericaStake.m_Ticker = m_strTicker;
+  setAmericaStake.m_Ggroup = m_strGgroup;
+  setAmericaStake.m_Gind = m_strGind;
+  setAmericaStake.m_Gsector = m_strGsector;
+  setAmericaStake.m_Gsubind = m_strGsubind;
   setAmericaStake.m_IPODate = m_strIPODate;
+  setAmericaStake.m_Isin = m_strIsin;
+  setAmericaStake.m_MarketCapitalization = ConvertValueToString(m_dMarketCapitalization);
+  setAmericaStake.m_Naics = m_strNaics;
+  setAmericaStake.m_NaicsNationalIndustry = m_strNaicsNationalIndustry;
+  setAmericaStake.m_NaicsSector = m_strNaicsSector;
+  setAmericaStake.m_NaicsSubsector = m_strNaicsSubsector;
+  setAmericaStake.m_Name = m_strName;
   setAmericaStake.m_Phone = m_strPhone;
   setAmericaStake.m_ShareOutstanding = ConvertValueToString(m_dShareOutstanding);
-  setAmericaStake.m_MarketCapitalization = ConvertValueToString(m_dMarketCapitalization);
-  setAmericaStake.m_Name = m_strName;
+  setAmericaStake.m_State = m_strState;
+  setAmericaStake.m_Ticker = m_strTicker;
   setAmericaStake.m_WebURL = m_strWebURL;
+  setAmericaStake.m_Logo = m_strLogo;
   setAmericaStake.m_FinnhubIndustry = m_strFinnhubIndustry;
   setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
@@ -148,6 +167,17 @@ void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {
     TRACE("%s字符串太长%d\n", m_strSymbol.GetBuffer(), m_strWebURL.GetLength());
   }
   TRACE("更新股票：%s\n", m_strSymbol.GetBuffer());
+}
+
+void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {
+  setAmericaStake.Edit();
+  Save(setAmericaStake);
+  setAmericaStake.Update();
+}
+
+void CAmericaStake::Append(CSetAmericaStake& setAmericaStake) {
+  setAmericaStake.AddNew();
+  Save(setAmericaStake);
   setAmericaStake.Update();
 }
 

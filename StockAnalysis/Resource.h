@@ -108,6 +108,12 @@
 #define ID_UPDATE_SECTION_INDEX         32876
 #define ID_BUILD_32877                  32877
 #define ID_UPDATE_STAKE_CODE            32878
+#define ID_32879                        32879
+#define ID_Menu32880                    32880
+#define ID_AMERICA_MARKET_DOWNLOAD_DAY_LINE 32881
+#define ID_AMERICA_MARKET_REBULID_DAY_LINE 32882
+#define ID_32883                        32883
+#define ID_AMERICA_MARKET_SORT_STAKE_TABLE 32884
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -127,7 +133,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32879
+#define _APS_NEXT_COMMAND_VALUE         32885
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

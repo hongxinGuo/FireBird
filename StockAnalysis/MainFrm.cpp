@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
   ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStakeSection)
   ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStakeCode)
+  ON_COMMAND(ID_AMERICA_MARKET_REBULID_DAY_LINE, &CMainFrame::OnAmericaMarketRebuldayLine)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -919,4 +920,9 @@ void CMainFrame::OnUpdateStakeSection() {
 void CMainFrame::OnUpdateStakeCode() {
   // TODO: Add your command handler code here
   gl_pChinaStakeMarket->RunningThreadUpdateStakeCodeDB();
+}
+
+void CMainFrame::OnAmericaMarketRebuldayLine() {
+  // TODO: Add your command handler code here
+  gl_pAmericaStakeMarket->RebulidFinnhubDayLine();
 }

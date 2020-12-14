@@ -196,6 +196,7 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
       pt3 = it->second;
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
+      pDayLine->SetMarketString(pStake->m_strExchange);
       pDayLine->SetStakeCode(pStake->GetSymbol());
       pDayLine->SetStakeName(pStake->GetTicker());
       pDayLine->SetTime(tTemp);
