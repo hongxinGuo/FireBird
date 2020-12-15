@@ -277,10 +277,10 @@ CString CAmericaStake::GetDayLineInquiryString(time_t tCurrentTime) {
   strMiddle += _T("&resolution=D");
   strMiddle += _T("&from=");
   tStartTime = FormatToTTime(m_lDayLineEndDate);
-  if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {
+  if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
     tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
   }
-  sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime); // 免费账户只能读取一年以内的日线数据。
+  sprintf_s(buffer, _T("%I64i"), (INT64)tStartTime);
   strTemp = buffer;
   strMiddle += strTemp;
   strMiddle += _T("&to=");

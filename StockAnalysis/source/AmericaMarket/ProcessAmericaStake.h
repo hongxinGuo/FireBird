@@ -8,3 +8,4 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
 bool ProcessAmericaStakeSymbol(CWebDataPtr pWebData);
 bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
 bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
+bool ProcessAemricaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);

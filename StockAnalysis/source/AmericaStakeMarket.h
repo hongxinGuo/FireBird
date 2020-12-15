@@ -102,6 +102,8 @@ public:
   bool TaskInquiryDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
 
+  bool TaskInquiryFinnhubForexExchange(void);
+
   bool TaskSaveStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
@@ -116,7 +118,7 @@ public:
   void AddAmericaStake(CAmericaStakePtr pStake);
 
   // 各种状态
-  long GetCurrentPrefixIndex(void) noexcept { return m_lPrefixIndex; }
+  long GetCurrentPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
 
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
   void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
@@ -127,10 +129,12 @@ public:
   // 数据库操作
   bool LoadAmericaStake(void);
   bool SaveCompnayProfile(void);
-
   bool UpdateStakeDB(void);
   bool RebulidFinnhubDayLine(void);
   bool SortStakeTable(void);
+
+  bool LoadForexExchange(void);
+  bool UpdateForexExchange(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
@@ -143,16 +147,19 @@ protected:
   FinnhubInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
-  long m_lPrefixIndex; // 当前查询状态
   priority_queue<FinnhubInquiry, vector<FinnhubInquiry>, FinnhubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
   bool m_fFinnhubInquiring;
   atomic_bool m_fFinnhubDataReceived;
 
-  bool m_fAmericaStakeUpdated; // 每日更新公司简介
-  bool m_fStakeDayLineUpdated; // 每日更新公司简介
-  bool m_fSymbolUpdated; // 每日更新公司代码库
-  bool m_fSymbolProceeded;
+  vector<CString> m_vForexExchange;
+  map<CString, long> m_mapForexExchange;
+  long m_lLastTotalForexExchange;
+  long m_lTotalForexExchange;
 
+  bool m_fSymbolUpdated; // 每日更新公司代码库
+  bool m_fAmericaStakeUpdated; // 每日更新公司简介
+  bool m_fStakeDayLineUpdated; // 每日更新公司日线数据
+  bool m_fForexExhangeSymbolUpdated; // 每日更新Forex交易所代码
   //
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };

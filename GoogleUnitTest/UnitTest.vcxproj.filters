@@ -557,6 +557,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">

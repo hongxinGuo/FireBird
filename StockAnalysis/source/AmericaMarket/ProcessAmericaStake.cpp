@@ -301,3 +301,19 @@ bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
 
   return true;
 }
+
+bool ProcessAemricaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+  ptree pt, pt2;
+  string s;
+  CString str = _T("");
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pt2 = it->second;
+    s = pt2.get_value<string>();
+    str = s.c_str();
+    vExchange.push_back(str);
+  }
+
+  return true;
+}

@@ -125,9 +125,11 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
     ASSERT(m_lByteRead < 2048 * 1024);
     m_lTotalByteReaded += m_lByteRead;
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
+    /*
     if ((lTemp = m_pFile->Read(buffer, 1000)) > 0) {
       TRACE("overflow\n");
     }
+    */
     m_pFile->Close();
   }
   catch (CInternetException* exception) {

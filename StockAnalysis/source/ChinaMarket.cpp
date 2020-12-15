@@ -1616,7 +1616,7 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
     m_fSaveDayLine = false;
     TRACE("日线历史数据更新完毕\n");
     CString str;
-    str = _T("日线历史数据更新完毕");
+    str = _T("中国市场日线历史数据更新完毕");
     gl_systemMessage.PushInformationMessage(str);
     if (IsDayLineDBUpdated()) {
       // 更新股票池数据库

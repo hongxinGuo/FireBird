@@ -711,6 +711,7 @@
     <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h" />
+    <ClInclude Include="source\AmericaMarket\SetForexExchange.h" />
     <ClInclude Include="source\AmericaStakeMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
@@ -784,6 +785,7 @@
     <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetForexExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
@@ -903,12 +905,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.71.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.71.0.0\build\boost.targets')" />
+    <Import Project="..\packages\boost.1.72.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.72.0.0\build\boost.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.71.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.71.0.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.72.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.72.0.0\build\boost.targets'))" />
   </Target>
 </Project>
