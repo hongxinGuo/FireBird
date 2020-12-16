@@ -47,12 +47,11 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
     pDayLine = make_shared<CDayLine>();
     pDayLine->LoadChinaMarketBasicData(&setDayLineBasicInfo);
     vDayLine.push_back(pDayLine);
-    lCurrentPos++;
+    lSizeOfOldDayLine++;
     setDayLineBasicInfo.MoveNext();
   }
   setDayLineBasicInfo.Close();
 
-  lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
   setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
   setDayLineBasicInfo.Open();

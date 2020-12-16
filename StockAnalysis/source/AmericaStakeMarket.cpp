@@ -93,7 +93,6 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountFinnhub = -1;
   static int s_iCountfinnhubLimit = 11; // 每1.2秒左右执行一次，以防止出现频率过高的情况。
   const long lCurrentTime = GetFormatedMarketTime();
 
@@ -103,21 +102,16 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
   TaskInquiryFinnhubForexExchange();
   TaskInquiryFinnhubForexSymbol();
 
-  // Finnhub.io读取函数。
-  if (s_iCountFinnhub < 0) { // 每0.3秒调用一次
-    s_iCountFinnhub = 2; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
-    ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
-    ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
-  }
-  else s_iCountFinnhub--;
+  ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
+  ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
-  // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨两点后执行。这样能够保证在重启市场时没有执行查询任务
+  // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
   if (IsSystemReady() && (lCurrentTime > 1000) && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
     s_iCountfinnhubLimit = 11;
     TaskInquiryAmericaStake();
     TaskInquiryDayLine();
     if (m_fStakeDayLineUpdated) {
-      TaskInquiryFinnhubRTQuote();
+      //TaskInquiryFinnhubRTQuote();
     }
   }
   else s_iCountfinnhubLimit--;
@@ -233,9 +227,9 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
   CString strTemp;
   CAmericaStakePtr pStake = nullptr;
 
-  if (IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
-    if (m_qWebInquiry.size() > 0) { // 有申请等待？
-      ASSERT(m_fFinnhubInquiring);
+  if (m_qWebInquiry.size() > 0) { // 有申请等待？
+    ASSERT(m_fFinnhubInquiring);
+    if (IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
       m_CurrentFinnhubInquiry = m_qWebInquiry.top();
       m_qWebInquiry.pop();
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
@@ -289,8 +283,8 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       TRACE("未处理指令%d\n", m_CurrentFinnhubInquiry.m_lInquiryIndex);
       break;
       }
-      gl_pFinnhubWebInquiry->GetWebData();
       SetFinnhubDataReceived(false);
+      gl_pFinnhubWebInquiry->GetWebData();
     }
   }
 
@@ -355,10 +349,16 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
   }
 }
 
+/// <summary>
+/// /////////////////////////////////////////////////////////////////////////////////
+///
+/// 此任务必须放置于每分钟执行一次的调度中。
+/// <returns></returns>
+///
 bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
-  // 市场时间四点重启系统
+  // 市场时间零点重启系统
   if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime > 500) && (lCurrentTime <= 600)) { // 本市场时间的一点重启本市场 // 东八区本地时间为下午五时（或夏令时的四时）。
+    if (lCurrentTime <= 100) { // 本市场时间的零时重启本市场 // 东八区本地时间为中午十二时（或夏令时的四时）。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
@@ -440,10 +440,12 @@ bool CAmericaStakeMarket::TaskUpdateStakeDB(void) {
 bool CAmericaStakeMarket::TaskInquiryAmericaStake(void) {
   bool fFound = false;
   FinnhubInquiry inquiry{ 0, 0, 0 };
+  long lStakeSetSize = m_vAmericaStake.size();
+  CString str = _T("");
 
   ASSERT(IsSystemReady());
   if (!m_fAmericaStakeUpdated && !m_fFinnhubInquiring) {
-    for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < m_vAmericaStake.size(); m_lCurrentProfilePos++) {
+    for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < lStakeSetSize; m_lCurrentProfilePos++) {
       if (IsEarlyThen(m_vAmericaStake.at(m_lCurrentProfilePos)->m_lProfileUpdateDate, GetFormatedMarketDate(), 365)) {
         fFound = true;
         break;
@@ -460,6 +462,8 @@ bool CAmericaStakeMarket::TaskInquiryAmericaStake(void) {
     else {
       m_fAmericaStakeUpdated = true;
       TRACE("Finnhub股票简介更新完毕\n");
+      str = _T("Finnhub股票简介更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
     }
   }
   return false;
@@ -470,10 +474,11 @@ bool CAmericaStakeMarket::TaskInquiryDayLine(void) {
   FinnhubInquiry inquiry{ 0, 0, 0 };
   CAmericaStakePtr pStake;
   CString str = _T("");
+  long lStakeSetSize = m_vAmericaStake.size();
 
   ASSERT(IsSystemReady());
   if (!m_fStakeDayLineUpdated && !m_fFinnhubInquiring) {
-    for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < m_vAmericaStake.size(); m_lCurrentUpdateDayLinePos++) {
+    for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStakeSetSize; m_lCurrentUpdateDayLinePos++) {
       if (m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
         pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
         fFound = true;
@@ -496,7 +501,7 @@ bool CAmericaStakeMarket::TaskInquiryDayLine(void) {
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return false;
+  return true;
 }
 
 bool CAmericaStakeMarket::TaskInquiryFinnhubRTQuote(void) {

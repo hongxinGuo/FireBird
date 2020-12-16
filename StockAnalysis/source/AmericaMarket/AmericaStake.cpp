@@ -202,15 +202,16 @@ bool CAmericaStake::SaveDayLine(void) {
     pDayLine = make_shared<CDayLine>();
     pDayLine->LoadAmericaMarketData(&setAmericaStakeDayLine);
     vDayLine.push_back(pDayLine);
-    lCurrentPos++;
+    lSizeOfOldDayLine++;
     setAmericaStakeDayLine.MoveNext();
   }
   setAmericaStakeDayLine.Close();
-  if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
-    m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+  if (lSizeOfOldDayLine > 0) {
+    if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
+      m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+    }
   }
 
-  lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;
   setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
   setAmericaStakeDayLine.Open();

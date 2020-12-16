@@ -188,20 +188,27 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
-  s = pt.get<string>(_T("s"));
-  if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+  try {
+    s = pt.get<string>(_T("s"));
+    if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+      pStake->SetIPOStatus(__STAKE_NULL__);
+      pStake->m_fUpdateDatabase = true;
+      return true;
+    }
+    if (s.compare(_T("ok")) != 0) {
+      str = _T("下载");
+      str += pStake->m_strSymbol;
+      str += _T("日线返回值不为ok\n");
+      TRACE("%S", str);
+      gl_systemMessage.PushInformationMessage(str);
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+      return false;
+    }
+  }
+  catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
     pStake->SetIPOStatus(__STAKE_NULL__);
     pStake->m_fUpdateDatabase = true;
     return true;
-  }
-  if (s.compare(_T("ok")) != 0) {
-    str = _T("下载");
-    str += pStake->m_strSymbol;
-    str += _T("日线返回值不为ok\n");
-    TRACE("%S", str);
-    gl_systemMessage.PushInformationMessage(str);
-    gl_systemMessage.PushInnerSystemInformationMessage(str);
-    return false;
   }
   try {
     pt2 = pt.get_child(_T("t"));
