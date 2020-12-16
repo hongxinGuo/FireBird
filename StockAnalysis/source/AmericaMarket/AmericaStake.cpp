@@ -206,6 +206,9 @@ bool CAmericaStake::SaveDayLine(void) {
     setAmericaStakeDayLine.MoveNext();
   }
   setAmericaStakeDayLine.Close();
+  if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
+    m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+  }
 
   lSizeOfOldDayLine = lCurrentPos;
   lCurrentPos = 0;

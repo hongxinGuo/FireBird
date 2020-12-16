@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CSetForexSymbol, CRecordset)
 CSetForexSymbol::CSetForexSymbol(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Description = _T(" ");
+  m_DisplaySymbol = _T(" ");
   m_Exchange = _T(" ");
   m_Symbol = _T(" ");
 

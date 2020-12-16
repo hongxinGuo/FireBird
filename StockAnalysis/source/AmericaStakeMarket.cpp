@@ -94,6 +94,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 
   static time_t s_timeLast = 0;
   static int s_iCountFinnhub = -1;
+  static int s_iCountfinnhubLimit = 11; // 每1.2秒左右执行一次，以防止出现频率过高的情况。
   const long lCurrentTime = GetFormatedMarketTime();
 
   TaskCheckSystemReady();
@@ -103,12 +104,23 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
   TaskInquiryFinnhubForexSymbol();
 
   // Finnhub.io读取函数。
-  if (s_iCountFinnhub-- < 0) { // 每0.3秒调用一次
+  if (s_iCountFinnhub < 0) { // 每0.3秒调用一次
     s_iCountFinnhub = 2; //目前采用1.5秒左右接收一次数据。最快不能达到每次1秒，故s_iCountFinnhub必须设置为4.这样能够保证第一次接收时
     ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
     ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
   }
   else s_iCountFinnhub--;
+
+  // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨两点后执行。这样能够保证在重启市场时没有执行查询任务
+  if (IsSystemReady() && (lCurrentTime > 1000) && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
+    s_iCountfinnhubLimit = 11;
+    TaskInquiryAmericaStake();
+    TaskInquiryDayLine();
+    if (m_fStakeDayLineUpdated) {
+      TaskInquiryFinnhubRTQuote();
+    }
+  }
+  else s_iCountfinnhubLimit--;
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
@@ -292,18 +304,6 @@ bool CAmericaStakeMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTim
 
   TaskSaveStakeSymbolDB();
   static int s_iCount = -1;
-
-  // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨两点后执行。这样能够保证在重启市场时没有执行查询任务
-  if (IsSystemReady() && (lCurrentTime > 1000)) {
-    if (s_iCount-- < 0) {
-      s_iCount = -1;
-      TaskInquiryAmericaStake();
-      TaskInquiryDayLine();
-    }
-    if (m_fStakeDayLineUpdated) {
-      TaskInquiryFinnhubRTQuote();
-    }
-  }
 
   return true;
 }
