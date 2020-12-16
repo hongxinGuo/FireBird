@@ -177,11 +177,16 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   time_t tTemp = 0;
   CDayLinePtr pDayLine = nullptr;
   int i = 0;
+  CString str;
 
-  if (!ConvertToJSon(pt, pWebData)) {
-    pStake->SetIPOStatus(__STAKE_NULL__);
-    pStake->m_fUpdateDatabase = true;
-    return true;
+  if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+    str = _T("下载");
+    str += pStake->m_strSymbol;
+    str += _T("日线故障\n");
+    TRACE("%S", str);
+    gl_systemMessage.PushInformationMessage(str);
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
+    return false;
   }
   s = pt.get<string>(_T("s"));
   if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
@@ -189,7 +194,15 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     pStake->m_fUpdateDatabase = true;
     return true;
   }
-  if (s.compare(_T("ok")) != 0) return false;
+  if (s.compare(_T("ok")) != 0) {
+    str = _T("下载");
+    str += pStake->m_strSymbol;
+    str += _T("日线返回值不为ok\n");
+    TRACE("%S", str);
+    gl_systemMessage.PushInformationMessage(str);
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
+    return false;
+  }
   try {
     pt2 = pt.get_child(_T("t"));
     for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -302,7 +315,7 @@ bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   return true;
 }
 
-bool ProcessAemricaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+bool ProcessAmericaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
   ptree pt, pt2;
   string s;
   CString str = _T("");
@@ -313,6 +326,27 @@ bool ProcessAemricaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
     s = pt2.get_value<string>();
     str = s.c_str();
     vExchange.push_back(str);
+  }
+
+  return true;
+}
+
+bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
+  CForexSymbolPtr pSymbol = make_shared<CForexSymbol>();
+  ptree pt, pt2;
+  string s;
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pSymbol = make_shared<CForexSymbol>();
+    pt2 = it->second;
+    s = pt2.get<string>(_T("description"));
+    if (s.size() > 0) pSymbol->m_strDescription = s.c_str();
+    s = pt2.get<string>(_T("displaySymbol"));
+    pSymbol->m_strDisplaySymbol = s.c_str();
+    s = pt2.get<string>(_T("symbol"));
+    pSymbol->m_strSymbol = s.c_str();
+    vForexSymbol.push_back(pSymbol);
   }
 
   return true;

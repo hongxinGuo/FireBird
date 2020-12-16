@@ -5,6 +5,7 @@
 #include"VirtualMarket.h"
 #include"AmericaStake.h"
 #include"WebData.h"
+#include"ForexSymbol.h"
 
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {
@@ -103,10 +104,15 @@ public:
   bool TaskInquiryFinnhubRTQuote(void);
 
   bool TaskInquiryFinnhubForexExchange(void);
+  bool TaskInquiryFinnhubForexSymbol(void);
 
   bool TaskSaveStakeSymbolDB(void);
+  bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
+  bool TaskUpdateForexExchangeDB(void);
+
+  bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
   virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake);
@@ -134,7 +140,7 @@ public:
   bool SortStakeTable(void);
 
   bool LoadForexExchange(void);
-  bool UpdateForexExchange(void);
+  bool LoadForexSymbol(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
@@ -144,6 +150,8 @@ protected:
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
   long m_lCurrentRTDataQuotePos;
+  long m_lCurrentForexExchangePos;
+  long m_lCurrentForexSymbolPos;
   FinnhubInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
@@ -155,11 +163,16 @@ protected:
   map<CString, long> m_mapForexExchange;
   long m_lLastTotalForexExchange;
   long m_lTotalForexExchange;
+  vector<CForexSymbolPtr> m_vForexSymbol;
+  map<CString, long> m_mapForexSymbol;
+  long m_lLastTotalForexSymbol;
+  long m_lTotalForexSymbol;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
   bool m_fStakeDayLineUpdated; // 每日更新公司日线数据
-  bool m_fForexExhangeSymbolUpdated; // 每日更新Forex交易所代码
+  bool m_fForexExhangeUpdated; // 每日更新Forex交易所
+  bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
   //
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
