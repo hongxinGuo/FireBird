@@ -55,11 +55,19 @@ void CAmericaStakeMarket::Reset(void) {
 
   m_vAmericaStake.resize(0);
   m_mapAmericaStake.clear();
+
+  // Finnhub各申请网络数据标识，每日需要重置。
   m_fSymbolUpdated = false; // 每日需要更新代码
   m_fAmericaStakeUpdated = false;
   m_fStakeDayLineUpdated = false;
+  m_vAmericaStake.resize(0);
+  m_mapAmericaStake.clear();
   m_fForexExhangeUpdated = false;
+  m_vForexExchange.resize(0);
+  m_mapForexExchange.clear();
   m_fForexSymbolUpdated = false;
+  m_vForexSymbol.resize(0);
+  m_mapForexSymbol.clear();
   m_fForexDayLineUpdated = false;
 
   m_fFinnhubInquiring = false;
@@ -68,12 +76,8 @@ void CAmericaStakeMarket::Reset(void) {
   m_fRebulidDayLine = false;
   SetSystemReady(false); // 市场初始状态为未设置好。
 
-  m_vForexExchange.resize(0);
-  m_mapForexExchange.clear();
   m_lLastTotalForexExchange = 0;
   m_lTotalForexExchange = 0;
-  m_vForexSymbol.resize(0);
-  m_mapForexSymbol.clear();
   m_lLastTotalForexSymbol = 0;
   m_lTotalForexSymbol = 0;
   m_lCurrentUpdateForexDayLinePos = 0;
@@ -100,24 +104,26 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 
   TaskCheckSystemReady();
 
-  TaskInquiryTodaySymbol(); // 第一个动作，首先申请当日证券代码
-  TaskInquiryFinnhubForexExchange();
-  TaskInquiryFinnhubForexSymbol();
+  if (((lCurrentTime < 180700) || (lCurrentTime > 181300))) {
+    TaskInquiryTodaySymbol(); // 第一个动作，首先申请当日证券代码
+    TaskInquiryFinnhubForexExchange();
+    TaskInquiryFinnhubForexSymbol();
 
-  ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
-  ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
+    ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
+    ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
-  // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
-  if (IsSystemReady() && (lCurrentTime > 1000) && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
-    s_iCountfinnhubLimit = 11;
-    TaskInquiryAmericaStake();
-    TaskInquiryFinnhubForexDayLine();
-    TaskInquiryDayLine();
-    if (m_fStakeDayLineUpdated) {
-      //TaskInquiryFinnhubRTQuote();
+    // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
+    if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
+      s_iCountfinnhubLimit = 11;
+      TaskInquiryAmericaStake();
+      //TaskInquiryFinnhubForexDayLine();
+      //TaskInquiryDayLine();
+      if (m_fStakeDayLineUpdated) {
+        //TaskInquiryFinnhubRTQuote();
+      }
     }
+    else s_iCountfinnhubLimit--;
   }
-  else s_iCountfinnhubLimit--;
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
@@ -371,7 +377,7 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
 bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
   // 市场时间十七时重启系统
   if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
+    if ((lCurrentTime > 181000) && (lCurrentTime <= 181100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
