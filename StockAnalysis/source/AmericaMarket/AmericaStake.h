@@ -42,8 +42,6 @@ public:
   void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void);
   bool HaveNewDayLineData(void);
-  bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
-  void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
 
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
@@ -149,7 +147,6 @@ public:
   vector<CDayLinePtr> m_vDayLine;
 
   // 无需存储数据区
-  bool m_fDayLineDBUpdated;
   bool m_fUpdateDatabase; // 要求更新此数据
   bool m_fInquiryAmericaStake; // 要求更新公司简介
   bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真

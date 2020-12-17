@@ -11,25 +11,25 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-#include"AmericaStake.h"
+#include"ForexSymbol.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
+UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol) {
   CString str;
   gl_ThreadStatus.IncreaseRunningThread();
 
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Wait();
   if (!gl_fExitingSystem) {
-    pStake->SaveDayLine();
-    pStake->UpdateDayLineStartEndDate();
-    pStake->m_fUpdateDatabase = true;
-    pStake->UnloadDayLine();
-    str = pStake->GetSymbol() + _T("日线资料存储完成");
+    pSymbol->SaveDayLine();
+    pSymbol->UpdateDayLineStartEndDate();
+    pSymbol->m_fUpdateDatabase = true;
+    pSymbol->UnloadDayLine();
+    str = pSymbol->GetSymbol() + _T("日线资料存储完成");
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
-  return 36;
+  return 38;
 }

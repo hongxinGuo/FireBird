@@ -1,15 +1,16 @@
-// SetForexSymbol.h : CSetForexSymbol 的声明
+// CSetForexDayLine.h : CSetForexDayLine 的声明
 
 #pragma once
+
 #include"afxdb.h"
 
-// 代码生成在 2019年5月26日, 8:14
+// 代码生成在 2019年6月2日, 5:10
 
-class CSetForexSymbol : public CRecordset
+class CSetForexDayLine : public CRecordset
 {
 public:
-  CSetForexSymbol(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetForexSymbol)
+  CSetForexDayLine(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetForexDayLine)
 
   // 字段/参数数据
 
@@ -21,15 +22,19 @@ public:
   // (注意: 必须使用 3.5 版或更高版本的 ODBC 驱动程序
   // 以同时支持 Unicode 和这些转换)。
 
-  long m_ID;
-  CString m_Description;
-  CString m_DisplaySymbol;
-  CString m_Exchange;
-  CString m_Symbol;
-  long m_DayLineStartDate;
-  long m_DayLineEndDate;
-  long m_IPOStatus;
+  long m_ID;  // 索引用，自动生成。
+  long m_Date;	//成交时间，以日期表示，如20090222即2009年2月22日
+  CString m_Exchange;	//市场（上海，深圳）
+  CString m_Symbol;	//
+  CString m_LastClose;	//昨天收盘价。单位：0.001元
+  CString m_Open;	//今天开盘价
+  CString m_High;	//今天最高价
+  CString m_Low;	//今天最低价
+  CString m_Close;	//今日收盘价
+  CString m_Volume;	//今日总成交数量。单位：股。
 
+// 重写
+  // 向导生成的虚函数重写
 public:
   virtual CString GetDefaultConnect();	// 默认连接字符串
 

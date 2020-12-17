@@ -39,8 +39,15 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  s = pt.get<string>(_T("address"));
-  pStake->m_strAddress = s.c_str();
+  try {
+    s = pt.get<string>(_T("address"));
+    pStake->m_strAddress = s.c_str();
+  }
+  catch (ptree_error&) {
+    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_fUpdateDatabase = true;
+    return false; // 没有公司简介
+  }
   s = pt.get<string>(_T("city"));
   pStake->m_strCity = s.c_str();
   s = pt.get<string>(_T("country"));
@@ -112,8 +119,15 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  s = pt.get<string>(_T("ticker"));
-  if (s.size() > 0) pStake->m_strTicker = s.c_str();
+  try {
+    s = pt.get<string>(_T("ticker"));
+    if (s.size() > 0) pStake->m_strTicker = s.c_str();
+  }
+  catch (ptree_error&) {
+    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_fUpdateDatabase = true;
+    return false; // 没有公司简介
+  }
   s = pt.get<string>(_T("country"));
   if (s.size() > 0) pStake->m_strCountry = s.c_str();
   s = pt.get<string>(_T("currency"));
@@ -183,7 +197,7 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     str = _T("下载");
     str += pStake->m_strSymbol;
     str += _T("日线故障\n");
-    TRACE("%S", str);
+    TRACE("%s", str.GetBuffer());
     gl_systemMessage.PushInformationMessage(str);
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
@@ -199,7 +213,7 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
       str = _T("下载");
       str += pStake->m_strSymbol;
       str += _T("日线返回值不为ok\n");
-      TRACE("%S", str);
+      TRACE("%s", str.GetBuffer());
       gl_systemMessage.PushInformationMessage(str);
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       return false;
@@ -305,8 +319,13 @@ bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   if (!ConvertToJSon(pt, pWebData)) {
     return false;
   }
-  dTemp = pt.get<double>(_T("pc"));
-  pStake->SetLastClose(dTemp * 1000);
+  try {
+    dTemp = pt.get<double>(_T("pc"));
+    pStake->SetLastClose(dTemp * 1000);
+  }
+  catch (ptree_error&) { // 数据格式不对，跳过。
+    return false;
+  }
   dTemp = pt.get<double>(_T("o"));
   pStake->SetOpen(dTemp * 1000);
   dTemp = pt.get<double>(_T("h"));
@@ -356,5 +375,134 @@ bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
     vForexSymbol.push_back(pSymbol);
   }
 
+  return true;
+}
+
+bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
+  vector<CDayLinePtr> vDayLine;
+  ptree pt, pt2, pt3;
+  string s;
+  double dTemp = 0;
+  long lTemp = 0;
+  INT64 llTemp = 0;
+  time_t tTemp = 0;
+  CDayLinePtr pDayLine = nullptr;
+  int i = 0;
+  CString str;
+
+  if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
+    str = _T("下载");
+    str += pForexSymbol->m_strSymbol;
+    str += _T("日线故障\n");
+    TRACE("%s", str.GetBuffer());
+    gl_systemMessage.PushInformationMessage(str);
+    gl_systemMessage.PushInnerSystemInformationMessage(str);
+    return false;
+  }
+  try {
+    s = pt.get<string>(_T("s"));
+    if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
+      pForexSymbol->SetIPOStatus(__STAKE_NULL__);
+      pForexSymbol->m_fUpdateDatabase = true;
+      return true;
+    }
+    if (s.compare(_T("ok")) != 0) {
+      str = _T("下载");
+      str += pForexSymbol->m_strSymbol;
+      str += _T("日线返回值不为ok\n");
+      TRACE("%s", str.GetBuffer());
+      gl_systemMessage.PushInformationMessage(str);
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+      return false;
+    }
+  }
+  catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
+    pForexSymbol->SetIPOStatus(__STAKE_NULL__);
+    pForexSymbol->m_fUpdateDatabase = true;
+    return true;
+  }
+  try {
+    pt2 = pt.get_child(_T("t"));
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      tTemp = pt3.get_value<time_t>();
+      pDayLine = make_shared<CDayLine>();
+      pDayLine->SetMarketString(pForexSymbol->m_strExchange);
+      pDayLine->SetStakeCode(pForexSymbol->GetSymbol());
+      pDayLine->SetTime(tTemp);
+      lTemp = FormatToDate(tTemp);
+      pDayLine->SetDate(lTemp);
+      vDayLine.push_back(pDayLine);
+    }
+  }
+  catch (ptree_error&) {
+    return false;
+  }
+  try {
+    pt2 = pt.get_child(_T("c"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      dTemp = pt3.get_value<double>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetClose(dTemp * 1000);
+    }
+  }
+  catch (ptree_error&) {
+  }
+  try {
+    pt2 = pt.get_child(_T("o"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      dTemp = pt3.get_value<double>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetOpen(dTemp * 1000);
+    }
+  }
+  catch (ptree_error&) {
+  }
+  try {
+    pt2 = pt.get_child(_T("h"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      dTemp = pt3.get_value<double>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetHigh(dTemp * 1000);
+    }
+  }
+  catch (ptree_error&) {
+  }
+  try {
+    pt2 = pt.get_child(_T("l"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      dTemp = pt3.get_value<double>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetLow(dTemp * 1000);
+    }
+  }
+  catch (ptree_error&) {
+  }
+  try {
+    pt2 = pt.get_child(_T("v"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      llTemp = pt3.get_value<INT64>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetVolume(llTemp);
+    }
+  }
+  catch (ptree_error&) {
+    // 有些外汇交易不提供成交量，忽略就可以了
+  }
+  pForexSymbol->SetIPOStatus(__STAKE_IPOED__);
+  pForexSymbol->UpdateDayLine(vDayLine);
+  pForexSymbol->SetDayLineNeedUpdate(false);
+  pForexSymbol->SetDayLineNeedSaving(true);
+  pForexSymbol->m_fUpdateDatabase = true;
   return true;
 }

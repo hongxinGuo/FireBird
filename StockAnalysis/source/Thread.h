@@ -98,7 +98,11 @@ UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖ
 // ¸üĞÂÒ»¸öÃÀ¹ú¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
 UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª36, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì
-UINT ThreadUpdateStakeDB(not_null < CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
+UINT ThreadUpdateStakeDB(not_null<CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
+// ¸üĞÂForexÈÕÏßÊı¾İ
+UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
+// ¸üĞÂForex´úÂë±í
+UINT ThreadUpdateForexSymbolDB(not_null<CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

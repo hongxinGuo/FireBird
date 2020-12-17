@@ -710,6 +710,7 @@
     <ClInclude Include="source\AmericaMarket\AmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\ForexSymbol.h" />
     <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h" />
+    <ClInclude Include="source\AmericaMarket\SetForexDayLine.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="source\AmericaMarket\SetForexExchange.h" />
@@ -786,11 +787,14 @@
     <ClCompile Include="source\AmericaMarket\AmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\ForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\SetForexExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\SetForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
     <ClCompile Include="source\AmericaStakeMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />

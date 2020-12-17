@@ -16,8 +16,11 @@ CSetForexSymbol::CSetForexSymbol(CDatabase* pdb)
   m_DisplaySymbol = _T(" ");
   m_Exchange = _T(" ");
   m_Symbol = _T(" ");
+  m_DayLineStartDate = 29900101;
+  m_DayLineEndDate = 19800101;
+  m_IPOStatus = __STAKE_NOT_CHECKED__;
 
-  m_nFields = 5;
+  m_nFields = 8;
 }
 
 CString CSetForexSymbol::GetDefaultConnect() {
@@ -38,6 +41,9 @@ void CSetForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
   RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
   RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
+  RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
+  RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
+  RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetAmericaStake ’Ô∂œ

@@ -105,18 +105,22 @@ public:
 
   bool TaskInquiryFinnhubForexExchange(void);
   bool TaskInquiryFinnhubForexSymbol(void);
+  bool TaskInquiryFinnhubForexDayLine(void);
 
   bool TaskSaveStakeSymbolDB(void);
-  bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);
-
+  bool TaskAppendForexSymbolDB(void);
+  bool TaskUpdateForexSymbolDB(void);
+  bool TaskUpdateForexDayLineDB(void);
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
   virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake);
   virtual bool RunningTaskThreadUpdateStakeDB(void);
+  virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
+  virtual bool RunningThreadUpdateForexSymbolDB(void);
 
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);
@@ -136,6 +140,7 @@ public:
   bool LoadAmericaStake(void);
   bool SaveCompnayProfile(void);
   bool UpdateStakeDB(void);
+  bool UpdateForexSymbolDB(void);
   bool RebulidFinnhubDayLine(void);
   bool SortStakeTable(void);
 
@@ -167,13 +172,15 @@ protected:
   map<CString, long> m_mapForexSymbol;
   long m_lLastTotalForexSymbol;
   long m_lTotalForexSymbol;
+  long m_lCurrentUpdateForexDayLinePos;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
   bool m_fStakeDayLineUpdated; // 每日更新公司日线数据
   bool m_fForexExhangeUpdated; // 每日更新Forex交易所
   bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
-  //
+  bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
+//
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 

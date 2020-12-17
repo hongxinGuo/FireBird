@@ -35,7 +35,7 @@ CAmericaStakeMarket::CAmericaStakeMarket() {
 
   m_vFinnhubInquiringStr.at(__FOREX_EXCHANGE__) = _T("https://finnhub.io/api/v1/forex/exchange?");
   m_vFinnhubInquiringStr.at(__FOREX_SYMBOLS__) = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
-  m_vFinnhubInquiringStr.at(__FOREX_CANDLES__) = _T("https://finnhub.io/api/v1/forex/candle?symbol=OANDA:EUR_USD&resolution=D");
+  m_vFinnhubInquiringStr.at(__FOREX_CANDLES__) = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
   m_vFinnhubInquiringStr.at(__FOREX_ALL_RATES__) = _T("https://finnhub.io/api/v1/forex/rates?base=USD");
 
   Reset();
@@ -60,6 +60,7 @@ void CAmericaStakeMarket::Reset(void) {
   m_fStakeDayLineUpdated = false;
   m_fForexExhangeUpdated = false;
   m_fForexSymbolUpdated = false;
+  m_fForexDayLineUpdated = false;
 
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
@@ -75,6 +76,7 @@ void CAmericaStakeMarket::Reset(void) {
   m_mapForexSymbol.clear();
   m_lLastTotalForexSymbol = 0;
   m_lTotalForexSymbol = 0;
+  m_lCurrentUpdateForexDayLinePos = 0;
 }
 
 void CAmericaStakeMarket::ResetMarket(void) {
@@ -109,6 +111,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
   if (IsSystemReady() && (lCurrentTime > 1000) && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
     s_iCountfinnhubLimit = 11;
     TaskInquiryAmericaStake();
+    TaskInquiryFinnhubForexDayLine();
     TaskInquiryDayLine();
     if (m_fStakeDayLineUpdated) {
       //TaskInquiryFinnhubRTQuote();
@@ -202,6 +205,9 @@ bool CAmericaStakeMarket::ProcessFinnhubWebDataReceived(void) {
       m_lTotalForexSymbol = m_vForexSymbol.size();
       break;
       case __FOREX_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateForexDayLinePos);
+      ProcessForexCandle(pWebData, m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos));
+      TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
       break;
       case __FOREX_ALL_RATES__:
       break;
@@ -226,6 +232,7 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
   CAmericaStakePtr pStake = nullptr;
+  CForexSymbolPtr pSymbol = nullptr;
 
   if (m_qWebInquiry.size() > 0) { // 有申请等待？
     ASSERT(m_fFinnhubInquiring);
@@ -276,6 +283,11 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
       case __FOREX_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateForexDayLinePos);
+      pSymbol = m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos);
+      strMiddle = pSymbol->GetDayLineInquiryString(GetMarketTime());
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
+      pSymbol->m_fDayLineNeedUpdate = false;
       break;
       case __FOREX_ALL_RATES__:
       break;
@@ -283,7 +295,7 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       TRACE("未处理指令%d\n", m_CurrentFinnhubInquiry.m_lInquiryIndex);
       break;
       }
-      SetFinnhubDataReceived(false);
+      SetFinnhubDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
       gl_pFinnhubWebInquiry->GetWebData();
     }
   }
@@ -337,6 +349,7 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
 
     TaskUpdateForexExchangeDB();
     TaskUpdateForexSymbolDB();
+    TaskUpdateForexDayLineDB();
     TaskUpdateDayLineDB();
     if (IsAmericaStakeUpdated()) {
       TaskUpdateStakeDB();
@@ -356,9 +369,9 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
 /// <returns></returns>
 ///
 bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
-  // 市场时间零点重启系统
+  // 市场时间十七时重启系统
   if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if (lCurrentTime <= 100) { // 本市场时间的零时重启本市场 // 东八区本地时间为中午十二时（或夏令时的四时）。
+    if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
@@ -396,7 +409,7 @@ bool CAmericaStakeMarket::TaskSaveStakeSymbolDB(void) {
   return true;
 }
 
-bool CAmericaStakeMarket::TaskUpdateForexSymbolDB(void) {
+bool CAmericaStakeMarket::TaskAppendForexSymbolDB(void) {
   CSetForexSymbol setForexSymbol;
   CForexSymbolPtr pSymbol = nullptr;
 
@@ -412,6 +425,11 @@ bool CAmericaStakeMarket::TaskUpdateForexSymbolDB(void) {
     m_lLastTotalForexSymbol = m_lTotalForexSymbol;
   }
   return true;
+}
+
+bool CAmericaStakeMarket::TaskUpdateForexSymbolDB(void) {
+  RunningThreadUpdateForexSymbolDB();
+  return false;
 }
 
 bool CAmericaStakeMarket::TaskUpdateForexExchangeDB(void) {
@@ -551,6 +569,41 @@ bool CAmericaStakeMarket::TaskInquiryFinnhubForexSymbol(void) {
   return false;
 }
 
+bool CAmericaStakeMarket::TaskInquiryFinnhubForexDayLine(void) {
+  bool fFound = false;
+  FinnhubInquiry inquiry{ 0, 0, 0 };
+  CForexSymbolPtr pStake;
+  CString str = _T("");
+  long lStakeSetSize = m_vForexSymbol.size();
+
+  ASSERT(IsSystemReady());
+  if (!m_fForexDayLineUpdated && !m_fFinnhubInquiring) {
+    for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStakeSetSize; m_lCurrentUpdateForexDayLinePos++) {
+      if (m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
+        pStake = m_vForexSymbol.at(m_lCurrentUpdateDayLinePos);
+        fFound = true;
+        break;
+      }
+    }
+    if (fFound) {
+      inquiry.m_lInquiryIndex = __FOREX_CANDLES__;
+      inquiry.m_lStakeIndex = m_lCurrentUpdateForexDayLinePos;
+      inquiry.m_iPriority = 10;
+      m_qWebInquiry.push(inquiry);
+      m_fFinnhubInquiring = true;
+      m_vAmericaStake.at(m_lCurrentUpdateForexDayLinePos)->SetDayLineNeedUpdate(false);
+      TRACE("申请Forex%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
+    }
+    else {
+      m_fForexDayLineUpdated = true;
+      TRACE("Finnhub Forex日线更新完毕\n");
+      str = _T("美国市场Forex日线历史数据更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
+    }
+  }
+  return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //	将日线数据存入数据库．
@@ -586,6 +639,41 @@ bool CAmericaStakeMarket::TaskUpdateDayLineDB(void) {
   return(true);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+//
+//	将Forex日线数据存入数据库．
+//  此函数由工作线程ThreadForexDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
+//
+// 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
+// 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
+// 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
+//////////////////////////////////////////////////////////////////////////////////////////
+bool CAmericaStakeMarket::TaskUpdateForexDayLineDB(void) {
+  CString str;
+
+  for (auto& pSymbol : m_vForexSymbol) {
+    if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      if (pSymbol->GetDayLineSize() > 0) {
+        if (pSymbol->HaveNewDayLineData()) {
+          RunningThreadUpdateForexDayLineDB(pSymbol);
+          TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
+        }
+        else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
+      }
+      else { // 此种情况为有股票代码，但此代码尚未上市
+        CString str1 = pSymbol->GetSymbol();
+        str1 += _T(" 为未上市股票代码");
+        gl_systemMessage.PushDayLineInfoMessage(str1);
+      }
+    }
+    if (gl_fExitingSystem) {
+      break; // 如果程序正在退出，则停止存储。
+    }
+  }
+
+  return(true);
+}
+
 bool CAmericaStakeMarket::TaskCheckSystemReady(void) {
   CString str = _T("");
 
@@ -609,6 +697,18 @@ bool CAmericaStakeMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake) 
 
 bool CAmericaStakeMarket::RunningTaskThreadUpdateStakeDB(void) {
   thread thread1(ThreadUpdateStakeDB, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CAmericaStakeMarket::RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol) {
+  thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CAmericaStakeMarket::RunningThreadUpdateForexSymbolDB() {
+  thread thread1(ThreadUpdateForexSymbolDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -708,6 +808,26 @@ bool CAmericaStakeMarket::UpdateStakeDB(void) {
   return true;
 }
 
+bool CAmericaStakeMarket::UpdateForexSymbolDB(void) {
+  const long lTotalForexSymbol = m_vForexSymbol.size();
+  CForexSymbolPtr pSymbol = nullptr;
+  CSetForexSymbol setForexSymbol;
+
+  setForexSymbol.Open();
+  setForexSymbol.m_pDatabase->BeginTrans();
+  while (!setForexSymbol.IsEOF()) {
+    pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
+    if (pSymbol->m_fUpdateDatabase) {
+      pSymbol->Update(setForexSymbol);
+      pSymbol->m_fUpdateDatabase = false;
+    }
+    setForexSymbol.MoveNext();
+  }
+  setForexSymbol.m_pDatabase->CommitTrans();
+  setForexSymbol.Close();
+  return true;
+}
+
 bool CAmericaStakeMarket::RebulidFinnhubDayLine(void) {
   CSetAmericaStake setAmericaStake;
   for (auto& pStake : m_vAmericaStake) {
@@ -743,6 +863,7 @@ bool CAmericaStakeMarket::SortStakeTable(void) {
   while (!setAmericaStake.IsEOF()) {
     pStake = make_shared<CAmericaStake>();
     pStake->Load(setAmericaStake);
+    pStake->SetCheckingDayLineStatus();
     vStake.push_back(pStake);
     setAmericaStake.MoveNext();
   }
@@ -797,6 +918,7 @@ bool CAmericaStakeMarket::LoadForexSymbol(void) {
   while (!setForexSymbol.IsEOF()) {
     pSymbol = make_shared<CForexSymbol>();
     pSymbol->Load(setForexSymbol);
+    pSymbol->SetCheckingDayLineStatus();
     m_vForexSymbol.push_back(pSymbol);
     m_mapForexSymbol[pSymbol->m_strSymbol] = i++;
     setForexSymbol.MoveNext();

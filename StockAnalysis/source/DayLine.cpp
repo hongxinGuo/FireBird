@@ -201,6 +201,44 @@ bool CDayLine::LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmer
   return true;
 }
 
+bool CDayLine::SaveForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
+  ASSERT(psetForexDayLine->IsOpen());
+
+  psetForexDayLine->m_Date = GetFormatedMarketDate();
+  psetForexDayLine->m_Exchange = GetMarketString();
+  psetForexDayLine->m_Symbol = GetStakeCode();
+  psetForexDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  psetForexDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
+  psetForexDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
+  psetForexDayLine->m_Open = ConvertValueToString(GetOpen(), 1000);
+  psetForexDayLine->m_Close = ConvertValueToString(GetClose(), 1000);
+  psetForexDayLine->m_Volume = ConvertValueToString(GetVolume());
+
+  return true;
+}
+
+bool CDayLine::AppendForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
+  ASSERT(psetForexDayLine->IsOpen());
+  psetForexDayLine->AddNew();
+  SaveForexDayLine(psetForexDayLine);
+  psetForexDayLine->Update();
+
+  return true;
+}
+
+bool CDayLine::LoadForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
+  ASSERT(psetForexDayLine->IsOpen());
+  m_lDate = psetForexDayLine->m_Date;
+  m_strMarket = psetForexDayLine->m_Exchange;
+  m_strStakeCode = psetForexDayLine->m_Symbol;
+  m_lLastClose = atof(psetForexDayLine->m_LastClose) * 1000;
+  m_lOpen = atof(psetForexDayLine->m_Open) * 1000;
+  m_lHigh = atof(psetForexDayLine->m_High) * 1000;
+  m_lLow = atof(psetForexDayLine->m_Low) * 1000;
+  m_lClose = atof(psetForexDayLine->m_Close) * 1000;
+  return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 处理一条日线数据。采用网易日线历史数据格式。

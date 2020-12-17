@@ -46,7 +46,6 @@ void CAmericaStake::Reset(void) {
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
 
-  m_fDayLineDBUpdated = false;
   m_fUpdateDatabase = false;
   m_fInquiryAmericaStake = true;
   m_fDayLineNeedUpdate = true;
@@ -103,7 +102,6 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
     //m_fInquiryAmericaStake = false;
     //m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
   }
-  SetCheckingDayLineStatus();
 }
 
 void CAmericaStake::SetCheckingDayLineStatus(void) {
@@ -251,11 +249,11 @@ void CAmericaStake::UpdateDayLineStartEndDate(void) {
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
-      SetDayLineDBUpdated(true);
+      m_fUpdateDatabase = true;
     }
     if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
       SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
-      SetDayLineDBUpdated(true);
+      m_fUpdateDatabase = true;
     }
   }
 }
