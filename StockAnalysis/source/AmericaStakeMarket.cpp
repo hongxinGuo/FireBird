@@ -104,7 +104,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 
   TaskCheckSystemReady();
 
-  if (((lCurrentTime < 180700) || (lCurrentTime > 181300))) {
+  if (((lCurrentTime < 183700) || (lCurrentTime > 184300))) {
     TaskInquiryTodaySymbol(); // 第一个动作，首先申请当日证券代码
     TaskInquiryFinnhubForexExchange();
     TaskInquiryFinnhubForexSymbol();
@@ -116,7 +116,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
     if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
       s_iCountfinnhubLimit = 11;
       TaskInquiryAmericaStake();
-      //TaskInquiryFinnhubForexDayLine();
+      TaskInquiryFinnhubForexDayLine();
       //TaskInquiryDayLine();
       if (m_fStakeDayLineUpdated) {
         //TaskInquiryFinnhubRTQuote();
@@ -377,7 +377,7 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
 bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
   // 市场时间十七时重启系统
   if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime > 181000) && (lCurrentTime <= 181100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
+    if ((lCurrentTime > 184000) && (lCurrentTime <= 184100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
@@ -411,24 +411,6 @@ bool CAmericaStakeMarket::TaskSaveStakeSymbolDB(void) {
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
     m_lLastTotalAmericaStake = m_lTotalAmericaStake;
-  }
-  return true;
-}
-
-bool CAmericaStakeMarket::TaskAppendForexSymbolDB(void) {
-  CSetForexSymbol setForexSymbol;
-  CForexSymbolPtr pSymbol = nullptr;
-
-  if (m_lLastTotalForexSymbol < m_lTotalForexSymbol) {
-    setForexSymbol.Open();
-    setForexSymbol.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalForexSymbol; l < m_lTotalForexSymbol; l++) {
-      pSymbol = m_vForexSymbol.at(l);
-      pSymbol->Append(setForexSymbol);
-    }
-    setForexSymbol.m_pDatabase->CommitTrans();
-    setForexSymbol.Close();
-    m_lLastTotalForexSymbol = m_lTotalForexSymbol;
   }
   return true;
 }
@@ -818,6 +800,18 @@ bool CAmericaStakeMarket::UpdateForexSymbolDB(void) {
   const long lTotalForexSymbol = m_vForexSymbol.size();
   CForexSymbolPtr pSymbol = nullptr;
   CSetForexSymbol setForexSymbol;
+
+  if (m_lLastTotalForexSymbol < m_lTotalForexSymbol) {
+    setForexSymbol.Open();
+    setForexSymbol.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalForexSymbol; l < m_lTotalForexSymbol; l++) {
+      pSymbol = m_vForexSymbol.at(l);
+      pSymbol->Append(setForexSymbol);
+    }
+    setForexSymbol.m_pDatabase->CommitTrans();
+    setForexSymbol.Close();
+    m_lLastTotalForexSymbol = m_lTotalForexSymbol;
+  }
 
   setForexSymbol.Open();
   setForexSymbol.m_pDatabase->BeginTrans();

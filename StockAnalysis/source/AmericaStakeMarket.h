@@ -111,7 +111,6 @@ public:
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);
-  bool TaskAppendForexSymbolDB(void);
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
   bool TaskCheckSystemReady(void);
