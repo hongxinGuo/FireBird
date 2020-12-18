@@ -6,6 +6,9 @@
 #include"AmericaStake.h"
 #include"WebData.h"
 #include"ForexSymbol.h"
+#include"Country.h"
+
+class CFinnhub;
 
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {
@@ -35,12 +38,17 @@ enum {
 
   __STOCK_RECOMMENDATION_TRENDS__ = 200,
   __STOCK_PRICE_TARGET__ = 201,
+  __STOCK_UPGRADE_DOWNGRADE__ = 202, // Primium
+  __STOCK_REVENUE_EXTIMATES__ = 203, // Premium
+  __STOCK_EPS_EXTIMATES__ = 204, // Primium
+  __STOCK_EPS_SURPRISE__ = 205,
+  __STOCK_EARNING_CALENDER__ = 206,
 
-  __STAKE_QUOTE__ = 300, // 实时数据优先级最低
-  __STAKE_CANDLES__ = 301, // 历史数据优先级低
-  __STAKE_ITCK_DATA__ = 302, //Premium
-  __STAKE_LAST_BIDASK__ = 303, //Premium
-  __STAKE_SPLITS__ = 304,
+  __STOCK_QUOTE__ = 300, // 实时数据优先级最低
+  __STOCK_CANDLES__ = 301, // 历史数据优先级低
+  __STOCK_TICK_DATA__ = 302, //Premium
+  __STOCK_LAST_BID_ASK__ = 303, //Premium
+  __STOCK_SPLITS__ = 304,
 
   __FOREX_EXCHANGE__ = 501,
   __FOREX_SYMBOLS__ = 502,
@@ -59,7 +67,7 @@ enum {
   __TRANSCRIPT_LIST__ = 801, //Premium
   __TRANSCRIPT__ = 802, //Premium
 
-  __ECONOMIC_COOUNTRY_LIST__ = 901,
+  __ECONOMIC_COUNTRY_LIST__ = 901,
   __ECONOMIC_CALENDAR__ = 902,
   __ECONOMIC_CODES__ = 903, //Premium
   __ECONOMIC__ = 904, //Premium
@@ -82,6 +90,7 @@ using namespace std;
 #include<atomic>
 
 class CAmericaStakeMarket : public CVirtualMarket {
+  friend class CFinnhub;
 public:
   CAmericaStakeMarket();
   virtual ~CAmericaStakeMarket();
@@ -98,6 +107,8 @@ public:
   bool SchedulingTaskPer1Hour(long lSecond, long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
 
+  bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
+  bool TaskInquiryCountryList(void);
   bool TaskInquiryTodaySymbol(void);
   bool TaskInquiryAmericaStake(void);
   bool TaskInquiryDayLine(void);
@@ -113,6 +124,7 @@ public:
   bool TaskUpdateForexExchangeDB(void);
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
+  bool TaskUpdateCountryListDB(void);
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
@@ -120,6 +132,7 @@ public:
   virtual bool RunningTaskThreadUpdateStakeDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
+  virtual bool RunningThreadUpdateCountryListDB(void);
 
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);
@@ -138,6 +151,7 @@ public:
   // 数据库操作
   bool LoadAmericaStake(void);
   bool SaveCompnayProfile(void);
+  bool UpdateCountryListDB(void);
   bool UpdateStakeDB(void);
   bool UpdateForexSymbolDB(void);
   bool RebulidFinnhubDayLine(void);
@@ -145,6 +159,7 @@ public:
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
+  bool LoadCountryList(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
@@ -172,6 +187,12 @@ protected:
   long m_lLastTotalForexSymbol;
   long m_lTotalForexSymbol;
   long m_lCurrentUpdateForexDayLinePos;
+
+  vector<CCountryPtr> m_vCountry;
+  map<CCountryPtr, long> m_mapCountry;
+  bool m_fCountryListUpdated;
+  long m_lLastTotalCountry;
+  long m_lTotalCountry;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介

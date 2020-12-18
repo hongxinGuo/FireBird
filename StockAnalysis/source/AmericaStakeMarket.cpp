@@ -6,6 +6,7 @@
 
 #include"SetForexExchange.h"
 #include"SetAmericaStake.h"
+#include"SetCountry.h"
 
 CAmericaStakeMarket::CAmericaStakeMarket() {
   static int siInstance = 0;
@@ -30,13 +31,18 @@ CAmericaStakeMarket::CAmericaStakeMarket() {
   m_vFinnhubInquiringStr.at(__BASIC_FINANCIALS__) = _T("https://finnhub.io/api/v1/stock/metric?symbol=");
   m_vFinnhubInquiringStr.at(__SEC_FILINGS__) = _T("https://finnhub.io/api/v1/stock/filings?symbol=");
 
-  m_vFinnhubInquiringStr.at(__STAKE_QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
-  m_vFinnhubInquiringStr.at(__STAKE_CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
+  m_vFinnhubInquiringStr.at(__STOCK_EPS_SURPRISE__) = _T("https://finnhub.io/api/v1/stock/earnings?symbol=");
+  m_vFinnhubInquiringStr.at(__STOCK_EARNING_CALENDER__) = _T("https://finnhub.io/api/v1/calendar/earnings?");
+
+  m_vFinnhubInquiringStr.at(__STOCK_QUOTE__) = _T("https://finnhub.io/api/v1/quote?symbol="); // 某个代码的交易
+  m_vFinnhubInquiringStr.at(__STOCK_CANDLES__) = _T("https://finnhub.io/api/v1/stock/candle?symbol="); // 历史蜡烛图
 
   m_vFinnhubInquiringStr.at(__FOREX_EXCHANGE__) = _T("https://finnhub.io/api/v1/forex/exchange?");
   m_vFinnhubInquiringStr.at(__FOREX_SYMBOLS__) = _T("https://finnhub.io/api/v1/forex/symbol?exchange=");
   m_vFinnhubInquiringStr.at(__FOREX_CANDLES__) = _T("https://finnhub.io/api/v1/forex/candle?symbol=");
   m_vFinnhubInquiringStr.at(__FOREX_ALL_RATES__) = _T("https://finnhub.io/api/v1/forex/rates?base=USD");
+
+  m_vFinnhubInquiringStr.at(__ECONOMIC_COUNTRY_LIST__) = _T("https://finnhub.io/api/v1/country?");
 
   Reset();
 }
@@ -69,6 +75,9 @@ void CAmericaStakeMarket::Reset(void) {
   m_vForexSymbol.resize(0);
   m_mapForexSymbol.clear();
   m_fForexDayLineUpdated = false;
+  m_vCountry.resize(0);
+  m_mapCountry.clear();
+  m_fCountryListUpdated = false;
 
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
@@ -81,11 +90,15 @@ void CAmericaStakeMarket::Reset(void) {
   m_lLastTotalForexSymbol = 0;
   m_lTotalForexSymbol = 0;
   m_lCurrentUpdateForexDayLinePos = 0;
+
+  m_lLastTotalCountry = 0;
+  m_lTotalCountry = 0;
 }
 
 void CAmericaStakeMarket::ResetMarket(void) {
   Reset();
 
+  LoadCountryList();
   LoadAmericaStake();
   LoadForexExchange();
   LoadForexSymbol();
@@ -104,26 +117,7 @@ bool CAmericaStakeMarket::SchedulingTask(void) {
 
   TaskCheckSystemReady();
 
-  if (((lCurrentTime < 183700) || (lCurrentTime > 184300))) {
-    TaskInquiryTodaySymbol(); // 第一个动作，首先申请当日证券代码
-    TaskInquiryFinnhubForexExchange();
-    TaskInquiryFinnhubForexSymbol();
-
-    ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
-    ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
-
-    // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
-    if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
-      s_iCountfinnhubLimit = 11;
-      TaskInquiryAmericaStake();
-      TaskInquiryFinnhubForexDayLine();
-      //TaskInquiryDayLine();
-      if (m_fStakeDayLineUpdated) {
-        //TaskInquiryFinnhubRTQuote();
-      }
-    }
-    else s_iCountfinnhubLimit--;
-  }
+  TaskInquiryFinnhub(lCurrentTime);
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
@@ -177,11 +171,11 @@ bool CAmericaStakeMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __BASIC_FINANCIALS__:
       break;
-      case __STAKE_QUOTE__:
+      case __STOCK_QUOTE__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
       ProcessAmericaStakeQuote(pWebData, m_vAmericaStake.at(m_lCurrentRTDataQuotePos));
       break;
-      case __STAKE_CANDLES__:
+      case __STOCK_CANDLES__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
       ProcessAmericaStakeCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
       TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
@@ -217,6 +211,10 @@ bool CAmericaStakeMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __FOREX_ALL_RATES__:
       break;
+      case __ECONOMIC_COUNTRY_LIST__:
+      ProcessCountryList(pWebData, m_vCountry);
+      m_lTotalCountry = m_vCountry.size();
+      m_fCountryListUpdated = true;
       default:
       break;
       }
@@ -247,7 +245,7 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       m_qWebInquiry.pop();
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
-      case __COMPANY_PROFILE__: // 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
+      case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
       m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
       break;
@@ -258,9 +256,13 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       case  __COMPANY_SYMBOLS__:
       // do nothing
       break;
-      case  __MARKET_NEWS__:
+      case __COMPANY_EXECTIVE__: // Premium
+      break;
+      case __MARKET_NEWS__:
       break;
       case __COMPANY_NEWS__:
+      break;
+      case __PRESS_RELEASE__: // Premium
       break;
       case __NEWS_SENTIMENT__:
       break;
@@ -268,17 +270,57 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       break;
       case __BASIC_FINANCIALS__:
       break;
-      case __STAKE_QUOTE__:
+      case __OWNERSHIP__: // Premium
+      break;
+      case __FUND_OWNERSHIP__: // jPremium
+      break;
+      case __FINANCIAL__: // Premium
+      break;
+      case __FINAICIAL_AS_REPORT__:
+      break;
+      case __SEC_FILINGS__:
+      break;
+      case __INTERNATIONAL_FILINGS__: // Premium
+      break;
+      case __SEC_SENTIMENT_ANALYSIS__: // Premium
+      break;
+      case __SIMILARITY_INDEX__: // Premium
+      break;
+      case __IPO_CALENDER__:
+      break;
+      case __DIVIDENDS__: // Premium
+      break;
+      case __STOCK_RECOMMENDATION_TRENDS__:
+      break;
+      case __STOCK_PRICE_TARGET__:
+      break;
+      case __STOCK_UPGRADE_DOWNGRADE__: // Premium
+      break;
+      case __STOCK_REVENUE_EXTIMATES__: // Premium
+      break;
+      case __STOCK_EPS_EXTIMATES__:// Premium
+      break;
+      case __STOCK_EPS_SURPRISE__:
+      break;
+      case __STOCK_EARNING_CALENDER__:
+      break;
+      case __STOCK_QUOTE__:
       pStake = m_vAmericaStake.at(m_lCurrentRTDataQuotePos);
       strMiddle = pStake->GetSymbol();
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
-      case __STAKE_CANDLES__:
+      case __STOCK_CANDLES__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
       pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
       strMiddle = pStake->GetDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       pStake->m_fDayLineNeedUpdate = false;
+      break;
+      case __STOCK_TICK_DATA__: // Premium
+      break;
+      case __STOCK_LAST_BID_ASK__: // Premium
+      break;
+      case __STOCK_SPLITS__:
       break;
       case __FOREX_EXCHANGE__:
       // do nothing
@@ -296,6 +338,9 @@ bool CAmericaStakeMarket::ProcessFinnhubInquiringMessage(void) {
       pSymbol->m_fDayLineNeedUpdate = false;
       break;
       case __FOREX_ALL_RATES__:
+      break;
+      case __ECONOMIC_COUNTRY_LIST__:
+      // do nothing
       break;
       default:
       TRACE("未处理指令%d\n", m_CurrentFinnhubInquiry.m_lInquiryIndex);
@@ -353,6 +398,7 @@ bool CAmericaStakeMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTi
     i1MinuteCounter = 59;
     TaskResetMarket(lCurrentTime);
 
+    TaskUpdateCountryListDB();
     TaskUpdateForexExchangeDB();
     TaskUpdateForexSymbolDB();
     TaskUpdateForexDayLineDB();
@@ -383,6 +429,49 @@ bool CAmericaStakeMarket::TaskResetMarket(long lCurrentTime) {
     }
   }
   return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// 此函数有SchedulingTask调度，每100毫秒左右执行一次。
+//
+//////////////////////////////////////////////////////////////////////////////////////
+bool CAmericaStakeMarket::TaskInquiryFinnhub(long lCurrentTime) {
+  static int s_iCountfinnhubLimit = 11;
+  if (((lCurrentTime < 183700) || (lCurrentTime > 184300))) {
+    TaskInquiryCountryList();
+    TaskInquiryTodaySymbol(); // 第一个动作，首先申请当日证券代码
+    TaskInquiryFinnhubForexExchange();
+    TaskInquiryFinnhubForexSymbol();
+
+    ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
+    ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
+
+    // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
+    if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
+      s_iCountfinnhubLimit = 11;
+      TaskInquiryAmericaStake();
+      TaskInquiryFinnhubForexDayLine();
+      TaskInquiryDayLine();
+      if (m_fStakeDayLineUpdated) {
+        //TaskInquiryFinnhubRTQuote();
+      }
+    }
+    else s_iCountfinnhubLimit--;
+  }
+  return true;
+}
+
+bool CAmericaStakeMarket::TaskInquiryCountryList(void) {
+  FinnhubInquiry inquiry{ 0, 0, 0 };
+  if (!m_fCountryListUpdated && !m_fFinnhubInquiring) {
+    inquiry.m_lInquiryIndex = __ECONOMIC_COUNTRY_LIST__;
+    inquiry.m_iPriority = 10;
+    m_qWebInquiry.push(inquiry);
+    m_fFinnhubInquiring = true;
+    return true;
+  }
+  return false;
 }
 
 bool CAmericaStakeMarket::TaskInquiryTodaySymbol(void) {
@@ -492,7 +581,7 @@ bool CAmericaStakeMarket::TaskInquiryDayLine(void) {
       }
     }
     if (fFound) {
-      inquiry.m_lInquiryIndex = __STAKE_CANDLES__;
+      inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
       inquiry.m_lStakeIndex = m_lCurrentUpdateDayLinePos;
       inquiry.m_iPriority = 10;
       m_qWebInquiry.push(inquiry);
@@ -521,7 +610,7 @@ bool CAmericaStakeMarket::TaskInquiryFinnhubRTQuote(void) {
       m_lCurrentRTDataQuotePos++;
       if (m_lCurrentRTDataQuotePos == m_vAmericaStake.size()) m_lCurrentRTDataQuotePos = 0;
     }
-    inquiry.m_lInquiryIndex = __STAKE_QUOTE__;
+    inquiry.m_lInquiryIndex = __STOCK_QUOTE__;
     inquiry.m_lStakeIndex = m_lCurrentRTDataQuotePos;
     inquiry.m_iPriority = 10;
     m_qWebInquiry.push(inquiry);
@@ -662,6 +751,11 @@ bool CAmericaStakeMarket::TaskUpdateForexDayLineDB(void) {
   return(true);
 }
 
+bool CAmericaStakeMarket::TaskUpdateCountryListDB(void) {
+  RunningThreadUpdateCountryListDB();
+  return false;
+}
+
 bool CAmericaStakeMarket::TaskCheckSystemReady(void) {
   CString str = _T("");
 
@@ -697,6 +791,12 @@ bool CAmericaStakeMarket::RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSym
 
 bool CAmericaStakeMarket::RunningThreadUpdateForexSymbolDB() {
   thread thread1(ThreadUpdateForexSymbolDB, this);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
+bool CAmericaStakeMarket::RunningThreadUpdateCountryListDB(void) {
+  thread thread1(ThreadUpdateCountryListDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -773,6 +873,25 @@ bool CAmericaStakeMarket::SaveCompnayProfile(void) {
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
   m_lLastTotalAmericaStake = m_vAmericaStake.size();
+  return true;
+}
+
+bool CAmericaStakeMarket::UpdateCountryListDB(void) {
+  const long lTotalCountry = m_vCountry.size();
+  CCountryPtr pCountry = nullptr;
+  CSetCountry setCountry;
+
+  if (m_lLastTotalCountry < m_lTotalCountry) {
+    setCountry.Open();
+    setCountry.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalCountry; l < m_lTotalCountry; l++) {
+      pCountry = m_vCountry.at(l);
+      pCountry->Append(setCountry);
+    }
+    setCountry.m_pDatabase->CommitTrans();
+    setCountry.Close();
+    m_lLastTotalCountry = m_lTotalCountry;
+  }
   return true;
 }
 
@@ -925,6 +1044,23 @@ bool CAmericaStakeMarket::LoadForexSymbol(void) {
   }
   setForexSymbol.Close();
   m_lLastTotalForexSymbol = m_lTotalForexSymbol = m_vForexSymbol.size();
+
+  return true;
+}
+
+bool CAmericaStakeMarket::LoadCountryList(void) {
+  CSetCountry setCountry;
+  CCountryPtr pCountry = nullptr;
+
+  setCountry.Open();
+  while (!setCountry.IsEOF()) {
+    pCountry = make_shared<CCountry>();
+    pCountry->Load(setCountry);
+    m_vCountry.push_back(pCountry);
+    setCountry.MoveNext();
+  }
+  setCountry.Close();
+  m_lLastTotalCountry = m_lTotalCountry = m_vCountry.size();
 
   return true;
 }

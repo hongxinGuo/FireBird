@@ -65,7 +65,7 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;
-  case __STAKE_QUOTE__:
+  case __STOCK_QUOTE__:
   break;
   default:
   break;

@@ -506,3 +506,33 @@ bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
   pForexSymbol->m_fUpdateDatabase = true;
   return true;
 }
+
+bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
+  CCountryPtr pCountry = nullptr;
+  ptree pt, pt2;
+  string s;
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pCountry = make_shared<CCountry>();
+    pt2 = it->second;
+    try {
+      s = pt2.get<string>(_T("code2"));
+      if (s.size() > 0) pCountry->m_strCode2 = s.c_str();
+      s = pt2.get<string>(_T("code3"));
+      pCountry->m_strCode3 = s.c_str();
+      s = pt2.get<string>(_T("codeNo"));
+      pCountry->m_strCodeNo = s.c_str();
+      s = pt2.get<string>(_T("country"));
+      pCountry->m_strCountry = s.c_str();
+      s = pt2.get<string>(_T("currency"));
+      pCountry->m_strCurrency = s.c_str();
+      s = pt2.get<string>(_T("currencyCode"));
+      pCountry->m_strCurrencyCode = s.c_str();
+    }
+    catch (ptree_error&) {
+    }
+    vCountry.push_back(pCountry);
+  }
+  return true;
+}

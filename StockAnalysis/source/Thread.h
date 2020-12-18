@@ -103,6 +103,8 @@ UINT ThreadUpdateStakeDB(not_null<CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·
 UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
 // ¸üĞÂForex´úÂë±í
 UINT ThreadUpdateForexSymbolDB(not_null<CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
+// ¸üĞÂCountryList´úÂë±í
+UINT ThreadUpdateCountryListDB(not_null<CAmericaStakeMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©
