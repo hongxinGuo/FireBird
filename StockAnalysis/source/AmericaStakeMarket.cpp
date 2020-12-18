@@ -8,6 +8,9 @@
 #include"SetAmericaStake.h"
 #include"SetCountry.h"
 
+Semaphore gl_SaveAmericaOneStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
+Semaphore gl_SaveForexDayLine(1);  // 此信号量用于生成Forex日线历史数据库
+
 CAmericaStakeMarket::CAmericaStakeMarket() {
   static int siInstance = 0;
   if (++siInstance > 1) {
@@ -651,7 +654,7 @@ bool CAmericaStakeMarket::TaskInquiryFinnhubForexDayLine(void) {
   FinnhubInquiry inquiry{ 0, 0, 0 };
   CForexSymbolPtr pStake;
   CString str = _T("");
-  long lStakeSetSize = m_vForexSymbol.size();
+  const long lStakeSetSize = m_vForexSymbol.size();
 
   ASSERT(IsSystemReady());
   if (!m_fForexDayLineUpdated && !m_fFinnhubInquiring) {

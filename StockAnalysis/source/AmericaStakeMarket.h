@@ -1,12 +1,15 @@
 #pragma once
 
 #include"stdafx.h"
+#include"Semaphore.h"
 
 #include"VirtualMarket.h"
 #include"AmericaStake.h"
 #include"WebData.h"
 #include"ForexSymbol.h"
 #include"Country.h"
+
+using namespace MyLib;
 
 class CFinnhub;
 
@@ -82,6 +85,9 @@ public:
     return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
   }
 };
+
+extern Semaphore gl_SaveAmericaOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SaveForexDayLine;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
 #include<map>
