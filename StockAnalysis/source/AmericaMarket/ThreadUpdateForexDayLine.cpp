@@ -18,7 +18,7 @@ UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol) {
   gl_ThreadStatus.IncreaseRunningThread();
 
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveAmericaOneStockDayLine.Wait();
+  gl_SaveForexDayLine.Wait();
   if (!gl_fExitingSystem) {
     pSymbol->SaveDayLine();
     pSymbol->UpdateDayLineStartEndDate();
@@ -28,7 +28,7 @@ UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol) {
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
-  gl_SaveAmericaOneStockDayLine.Signal();
+  gl_SaveForexDayLine.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 38;

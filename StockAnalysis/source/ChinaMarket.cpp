@@ -37,6 +37,7 @@ using namespace gsl;
 // 信号量必须声明为全局变量（为了初始化）
 Semaphore gl_SaveOneStockDayLine(4);  // 此信号量用于生成日线历史数据库
 Semaphore gl_SaveAmericaOneStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
+Semaphore gl_SaveForexDayLine(1);  // 此信号量用于生成Forex日线历史数据库
 Semaphore gl_ProcessSinaRTDataQueue(1);   // 新浪实时数据处理同时只允许一个线程存在
 Semaphore gl_ProcessTengxunRTDataQueue(1);
 Semaphore gl_ProcessNeteaseRTDataQueue(1);

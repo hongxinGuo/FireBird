@@ -877,7 +877,6 @@ bool CAmericaStakeMarket::SaveCompnayProfile(void) {
 }
 
 bool CAmericaStakeMarket::UpdateCountryListDB(void) {
-  const long lTotalCountry = m_vCountry.size();
   CCountryPtr pCountry = nullptr;
   CSetCountry setCountry;
 
