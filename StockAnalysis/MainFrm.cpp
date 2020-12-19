@@ -151,7 +151,7 @@ CMainFrame::~CMainFrame() {
 }
 
 bool CMainFrame::CreateMarketContainer(void) {
-  gl_vMarketPtr.push_back(gl_pAmericaStakeMarket); // 美国股票市场
+  gl_vMarketPtr.push_back(gl_pAmericaMarket); // 美国股票市场
   gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
   gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
   gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
@@ -164,7 +164,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (gl_pChinaStakeMarket == nullptr) gl_pChinaStakeMarket = make_shared<CChinaMarket>();
   if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
   if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
-  if (gl_pAmericaStakeMarket == nullptr) gl_pAmericaStakeMarket = make_shared<CAmericaStakeMarket>();
+  if (gl_pAmericaMarket == nullptr) gl_pAmericaMarket = make_shared<CAmericaMarket>();
   gl_WebInquirer.Initialize();
 
   //生成市场容器Vector
@@ -924,5 +924,5 @@ void CMainFrame::OnUpdateStakeCode() {
 
 void CMainFrame::OnAmericaMarketRebuldayLine() {
   // TODO: Add your command handler code here
-  gl_pAmericaStakeMarket->RebulidFinnhubDayLine();
+  gl_pAmericaMarket->RebulidFinnhubDayLine();
 }

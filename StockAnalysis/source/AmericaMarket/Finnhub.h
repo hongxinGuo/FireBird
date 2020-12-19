@@ -7,10 +7,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include"AmericaStakeMarket.h"
+#include"AmericaMarket.h"
 
 class CFinnhub {
 public:
-  bool ProcessFinnhubInquiringMessage(CAmericaStakeMarketPtr pMarket);
-  bool ProcessFinnhubWebDataReceived(CAmericaStakeMarketPtr pMarket, FinnhubInquiry CurrentFinnhubInquiry);
+  bool ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket);
+  bool ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, FinnhubInquiry CurrentFinnhubInquiry);
 };

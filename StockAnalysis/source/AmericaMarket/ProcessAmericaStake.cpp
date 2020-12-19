@@ -34,7 +34,7 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -44,7 +44,7 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
     pStake->m_strAddress = s.c_str();
   }
   catch (ptree_error&) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -103,7 +103,7 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
   if (s.size() > 0) pStake->m_strLogo = s.c_str();
   s = pt.get<string>(_T("finnhubIndustry"));
   if (s.size() > 0) pStake->m_strFinnhubIndustry = s.c_str();
-  pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+  pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
   pStake->m_fUpdateDatabase = true;
   return true;
 }
@@ -114,7 +114,7 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
 
   TRACE("处理%s简介\n", pStake->m_strSymbol.GetBuffer());
   if (pWebData->GetBufferLength() < 20) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -124,7 +124,7 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
     if (s.size() > 0) pStake->m_strTicker = s.c_str();
   }
   catch (ptree_error&) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -149,8 +149,6 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   if (s.size() > 0) pStake->m_strWebURL = s.c_str();
   s = pt.get<string>(_T("ipo"));
   if (s.size() > 0) pStake->m_strIPODate = s.c_str();
-  pStake->m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
-  pStake->m_fUpdateDatabase = true;
   return true;
 }
 
@@ -173,8 +171,8 @@ bool ProcessAmericaStakeSymbol(CWebDataPtr pWebData) {
     if (s.size() > 0) pStake->m_strType = s.c_str();
     s = pt2.get<string>(_T("currency"));
     if (s.size() > 0) pStake->m_strCurrency = s.c_str();
-    if (!gl_pAmericaStakeMarket->IsAmericaStake(pStake->m_strSymbol)) { // 新代码？
-      gl_pAmericaStakeMarket->AddAmericaStake(pStake);
+    if (!gl_pAmericaMarket->IsAmericaStake(pStake->m_strSymbol)) { // 新代码？
+      gl_pAmericaMarket->AddAmericaStake(pStake);
     }
   }
 
@@ -534,5 +532,19 @@ bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
     }
     vCountry.push_back(pCountry);
   }
+  return true;
+}
+
+bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+  char buffer[1000];
+  int i = 0;
+
+  ASSERT(pWebData->GetBufferLength() < 1000);
+  for (i = 0; i < pWebData->GetBufferLength(); i++) {
+    buffer[i] = pWebData->GetData(i);
+  }
+  buffer[pWebData->GetBufferLength()] = 0x000;
+  pStake->m_strPeer = buffer;
+
   return true;
 }

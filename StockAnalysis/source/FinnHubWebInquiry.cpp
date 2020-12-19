@@ -3,7 +3,7 @@
 #include"Thread.h"
 
 #include "FinnhubWebInquiry.h"
-#include"AmericaStakeMarket.h"
+#include"AmericaMarket.h"
 
 using namespace std;
 #include<thread>
@@ -61,7 +61,7 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
   CString str;
   static int s_iCount = 5;
 
-  switch (gl_pAmericaStakeMarket->GetCurrentPrefixIndex()) {
+  switch (gl_pAmericaMarket->GetCurrentPrefixIndex()) {
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;

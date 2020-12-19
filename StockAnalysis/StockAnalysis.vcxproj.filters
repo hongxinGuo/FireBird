@@ -297,9 +297,6 @@
     <ClInclude Include="source\DataBase\SetActiveStakeCode.h">
       <Filter>头文件\China Stock Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaStakeMarket.h">
-      <Filter>头文件\America Stock Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\FinnHubWebInquiry.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
@@ -337,6 +334,9 @@
       <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\Country.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
   </ItemGroup>
@@ -590,9 +590,6 @@
     <ClCompile Include="source\ThreadSaveActiveStakeCode.cpp">
       <Filter>源文件\China Stock Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaStakeMarket.cpp">
-      <Filter>源文件\America Stake Market</Filter>
-    </ClCompile>
     <ClCompile Include="source\FinnHubWebInquiry.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
@@ -646,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp">
       <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket.cpp">
+      <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

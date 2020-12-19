@@ -119,8 +119,9 @@ public:
   CString m_strState;
   CString m_strTicker;
   CString m_strWebURL;
-  CString m_strLogo; // 不存储
+  CString m_strLogo;
   CString m_strFinnhubIndustry;
+  CString m_strPeer;
   long m_lProfileUpdateDate; // 最新简介更新日期
   long m_lDayLineStartDate;
   long m_lDayLineEndDate;
@@ -149,6 +150,7 @@ public:
   // 无需存储数据区
   bool m_fUpdateDatabase; // 要求更新此数据
   bool m_fInquiryAmericaStake; // 要求更新公司简介
+  bool m_fPeerUpdated; // 同业公司数据已更新
   bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 

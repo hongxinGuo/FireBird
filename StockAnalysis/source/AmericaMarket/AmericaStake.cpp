@@ -17,6 +17,7 @@ void CAmericaStake::Reset(void) {
   m_strDisplaySymbol = _T(" ");
   m_strExchange = _T(" ");
   m_strFinnhubIndustry = _T(" ");
+  m_strPeer = _T(" ");
   m_strLogo = _T(" ");
   m_strName = _T(" ");
   m_strPhone = _T(" ");
@@ -48,6 +49,7 @@ void CAmericaStake::Reset(void) {
 
   m_fUpdateDatabase = false;
   m_fInquiryAmericaStake = true;
+  m_fPeerUpdated = false;
   m_fDayLineNeedUpdate = true;
   m_fDayLineNeedSaving = false;
 
@@ -93,6 +95,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strWebURL = setAmericaStake.m_WebURL;
   m_strLogo = setAmericaStake.m_Logo;
   m_strFinnhubIndustry = setAmericaStake.m_FinnhubIndustry;
+  m_strPeer = setAmericaStake.m_Peer;
   m_lProfileUpdateDate = setAmericaStake.m_ProfileUpdateDate;
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
@@ -100,7 +103,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
     //m_fInquiryAmericaStake = false;
-    //m_lProfileUpdateDate = gl_pAmericaStakeMarket->GetFormatedMarketDate();
+    //m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
   }
 }
 
@@ -110,7 +113,7 @@ void CAmericaStake::SetCheckingDayLineStatus(void) {
     SetDayLineNeedUpdate(false);
   }
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  else if (gl_pAmericaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  else if (gl_pAmericaMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
 }
@@ -118,7 +121,7 @@ void CAmericaStake::SetCheckingDayLineStatus(void) {
 bool CAmericaStake::CheckDayLineUpdateStatus() {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pAmericaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  if (gl_pAmericaMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
   return true;
@@ -156,6 +159,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_WebURL = m_strWebURL;
   setAmericaStake.m_Logo = m_strLogo;
   setAmericaStake.m_FinnhubIndustry = m_strFinnhubIndustry;
+  setAmericaStake.m_Peer = m_strPeer;
   setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;

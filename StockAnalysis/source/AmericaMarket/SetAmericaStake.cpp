@@ -22,6 +22,7 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_DisplaySymbol = _T(" ");
   m_Exchange = _T(" ");
   m_FinnhubIndustry = _T(" ");
+  m_Peer = _T(" ");
   m_Name = _T(" ");
   m_Phone = _T(" ");
   m_Symbol = _T(" ");
@@ -47,7 +48,7 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_LastRTDataUpdateDate = 19800101;
   m_IPOStatus = __STAKE_NOT_CHECKED__;
 
-  m_nFields = 37;
+  m_nFields = 38;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -96,6 +97,7 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[WebURL]"), m_WebURL);
   RFX_Text(pFX, _T("[Logo]"), m_Logo);
   RFX_Text(pFX, _T("[FinnhubIndustry]"), m_FinnhubIndustry);
+  RFX_Text(pFX, _T("[Peer]"), m_Peer);
   RFX_Long(pFX, _T("[ProfileUpdateDate]"), m_ProfileUpdateDate);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);

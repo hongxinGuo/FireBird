@@ -718,7 +718,7 @@
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="source\AmericaMarket\SetForexExchange.h" />
     <ClInclude Include="source\AmericaMarket\SetForexSymbol.h" />
-    <ClInclude Include="source\AmericaStakeMarket.h" />
+    <ClInclude Include="source\AmericaMarket.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="source\CrweberIndex.h" />
@@ -803,7 +803,7 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
-    <ClCompile Include="source\AmericaStakeMarket.cpp" />
+    <ClCompile Include="source\AmericaMarket.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />

@@ -195,13 +195,23 @@
     <ClCompile Include="..\StockAnalysis\MainFrm.cpp" />
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\AmericaStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Finnhub.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessAmericaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaStakeMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
@@ -361,11 +371,18 @@
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />
     <ClInclude Include="..\StockAnalysis\resource.h" />
     <ClInclude Include="..\StockAnalysis\source\Accessory.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\AmericaStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Finnhub.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessAmericaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaStakeMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
@@ -448,7 +465,6 @@
     <ClInclude Include="MockSystemMessage.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\StockAnalysis\source\desktop.ini" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemDefinitionGroup />

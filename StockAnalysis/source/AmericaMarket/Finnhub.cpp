@@ -11,7 +11,7 @@
 /// <param name=""></param>
 ///
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaStakeMarketPtr pMarket) {
+bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
   CAmericaStakePtr pStake = nullptr;
@@ -138,7 +138,7 @@ bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaStakeMarketPtr pMarket) {
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
 //
 //////////////////////////////////////////////
-bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaStakeMarketPtr pMarket, FinnhubInquiry finnhubInquiry) {
+bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, FinnhubInquiry finnhubInquiry) {
   CWebDataPtr pWebData = nullptr;
   CString str = _T("");
   vector<CString> vExchange;

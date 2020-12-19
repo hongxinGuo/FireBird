@@ -51,8 +51,9 @@ public:
   CString m_State;
   CString m_Ticker;
   CString m_WebURL;
-  CString m_Logo; // ²»´æ´¢
+  CString m_Logo;
   CString m_FinnhubIndustry;
+  CString m_Peer;
   long m_ProfileUpdateDate;
   long m_DayLineStartDate;
   long m_DayLineEndDate;

@@ -235,7 +235,7 @@ CString GetAmericaMarketSchemaConnect() {
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是AmericaStakeMarket Schema
+    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是AmericaMarket Schema
   }
 }
 

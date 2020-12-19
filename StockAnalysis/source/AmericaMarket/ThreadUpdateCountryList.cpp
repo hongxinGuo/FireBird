@@ -1,6 +1,6 @@
 #include"globedef.h"
 
-UINT ThreadUpdateCountryListDB(not_null<CAmericaStakeMarket*> pMarket) {
+UINT ThreadUpdateCountryListDB(not_null<CAmericaMarket*> pMarket) {
   pMarket->UpdateCountryListDB();
 
   return 40;

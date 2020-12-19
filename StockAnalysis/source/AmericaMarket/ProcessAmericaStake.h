@@ -14,3 +14,4 @@ bool ProcessAmericaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
 bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
 bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
 bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
+bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake);

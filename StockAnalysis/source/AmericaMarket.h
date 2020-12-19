@@ -95,11 +95,11 @@ using namespace std;
 #include<queue>
 #include<atomic>
 
-class CAmericaStakeMarket : public CVirtualMarket {
+class CAmericaMarket : public CVirtualMarket {
   friend class CFinnhub;
 public:
-  CAmericaStakeMarket();
-  virtual ~CAmericaStakeMarket();
+  CAmericaMarket();
+  virtual ~CAmericaMarket();
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool ProcessFinnhubInquiringMessage(void);
@@ -114,11 +114,12 @@ public:
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
-  bool TaskInquiryCountryList(void);
-  bool TaskInquiryTodaySymbol(void);
-  bool TaskInquiryAmericaStake(void);
-  bool TaskInquiryDayLine(void);
+  bool TaskInquiryFinnhubCountryList(void);
+  bool TaskInquiryFinnhubCompanySymbol(void);
+  bool TaskInquiryFinnhubCompanyProfile2(void);
+  bool TaskInquiryFinnhubDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
+  bool TaskInquiryFinnhubPeer(void);
 
   bool TaskInquiryFinnhubForexExchange(void);
   bool TaskInquiryFinnhubForexSymbol(void);
@@ -177,6 +178,7 @@ protected:
   long m_lCurrentRTDataQuotePos;
   long m_lCurrentForexExchangePos;
   long m_lCurrentForexSymbolPos;
+  long m_lCurrentUpdatePeerPos;
   FinnhubInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
@@ -206,8 +208,9 @@ protected:
   bool m_fForexExhangeUpdated; // 每日更新Forex交易所
   bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
   bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
+  bool m_fPeerUpdated; // 每月更新Peers数据
 //
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 
-typedef shared_ptr<CAmericaStakeMarket> CAmericaStakeMarketPtr;
+typedef shared_ptr<CAmericaMarket> CAmericaMarketPtr;
