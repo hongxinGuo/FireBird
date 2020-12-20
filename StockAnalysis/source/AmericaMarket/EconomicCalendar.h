@@ -1,0 +1,30 @@
+#pragma once
+
+#include"stdafx.h"
+
+#include"SetEconomicCalendar.h"
+
+using namespace std;
+#include<memory>
+
+class CEconomicCalendar : public CObject {
+public:
+  CEconomicCalendar();
+
+  void Load(CSetEconomicCalendar& setEconomicCalendar);
+  void Append(CSetEconomicCalendar& setEconomicCalendar);
+  void Save(CSetEconomicCalendar& setEconomicCalendar);
+
+public:
+  CTime  m_tTime;
+  CString m_strTime;
+  CString m_strCountry;
+  CString m_strEvent;
+  CString m_strImpact;
+  double m_dActual;
+  double m_dEstimate;
+  double m_dPrev;
+  CString m_strUnit;
+};
+
+typedef shared_ptr<CEconomicCalendar> CEconomicCalendarPtr;

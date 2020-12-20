@@ -1,6 +1,7 @@
 #include"stdafx.h"
 #include"globedef.h"
 #include"WebData.h"
+#include"EconomicCalendar.h"
 #include"ProcessAmericaStake.h"
 
 #include <boost/property_tree/ptree.hpp>
@@ -543,8 +544,73 @@ bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   for (i = 0; i < pWebData->GetBufferLength(); i++) {
     buffer[i] = pWebData->GetData(i);
   }
-  buffer[pWebData->GetBufferLength()] = 0x000;
+  if (i > 200) {
+    buffer[200] = 0x000;
+  }
+  else {
+    buffer[pWebData->GetBufferLength()] = 0x000;
+  }
   pStake->m_strPeer = buffer;
 
+  return true;
+}
+
+bool ProcessEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
+  CEconomicCalendarPtr pEconomicCalendar = nullptr;
+  ptree pt, pt2;
+  string s;
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pEconomicCalendar = make_shared<CEconomicCalendar>();
+    pt2 = it->second;
+    try {
+      s = pt2.get<string>(_T("country"));
+      if (s.size() > 0) pEconomicCalendar->m_strCountry = s.c_str();
+      s = pt2.get<string>(_T("event"));
+      pEconomicCalendar->m_strEvent = s.c_str();
+      s = pt2.get<string>(_T("impact"));
+      pEconomicCalendar->m_strImpact = s.c_str();
+      pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
+      pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("actual"));
+      pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
+      s = pt2.get<string>(_T("time"));
+      pEconomicCalendar->m_strTime = s.c_str();
+      s = pt2.get<string>(_T("unit"));
+      pEconomicCalendar->m_strUnit = s.c_str();
+    }
+    catch (ptree_error&) {
+    }
+    vEconomicCalendar.push_back(pEconomicCalendar);
+  }
+  return true;
+}
+
+bool ProcessEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
+  ptree pt, pt2;
+  string s;
+  CTime time;
+  CEPSSurprisePtr pEPSSurprise = nullptr;
+  long year, month, day;
+  CString str;
+
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+    pEPSSurprise = make_shared<CEPSSurprise>();
+    pt2 = it->second;
+    try {
+      s = pt2.get<string>(_T("symbol"));
+      pEPSSurprise->m_strSymbol = s.c_str();
+      s = pt2.get<string>(_T("period"));
+      str = s.c_str();
+      sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+      pEPSSurprise->m_lDate = year * 10000 + month * 100 + day;
+      pEPSSurprise->m_dEstimate = pt2.get<double>(_T("estimate"));
+      pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
+    }
+    catch (ptree_error&) {
+    }
+    vEPSSurprise.push_back(pEPSSurprise);
+  }
   return true;
 }

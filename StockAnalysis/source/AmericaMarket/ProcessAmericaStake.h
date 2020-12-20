@@ -4,6 +4,7 @@
 #include"AmericaStake.h"
 #include"ForexSymbol.h"
 #include"Country.h"
+#include"EPSSurprise.h"
 
 bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
 bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
@@ -15,3 +16,5 @@ bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
 bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
 bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
 bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
+bool ProcessEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
+bool ProcessEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);

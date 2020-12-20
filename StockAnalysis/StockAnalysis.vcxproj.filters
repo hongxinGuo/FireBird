@@ -339,6 +339,18 @@
     <ClInclude Include="source\AmericaMarket.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h">
+      <Filter>头文件\America Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\EconomicCalendar.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h">
+      <Filter>头文件\America Stock Market\数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\EPSSurprise.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -646,6 +658,21 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket.cpp">
       <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp">
+      <Filter>源文件\America Stake Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp">
+      <Filter>源文件\America Stake Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp">
+      <Filter>源文件\America Stake Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

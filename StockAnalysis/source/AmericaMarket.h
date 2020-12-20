@@ -8,6 +8,7 @@
 #include"WebData.h"
 #include"ForexSymbol.h"
 #include"Country.h"
+#include"EconomicCalendar.h"
 
 using namespace MyLib;
 
@@ -87,6 +88,7 @@ public:
 };
 
 extern Semaphore gl_SaveAmericaOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SaveEPSSurprise;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SaveForexDayLine;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
@@ -120,6 +122,8 @@ public:
   bool TaskInquiryFinnhubDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
   bool TaskInquiryFinnhubPeer(void);
+  bool TaskInquiryFinnhubEconomicCalender(void);
+  bool TaskInquiryFinnhubEPSSurprise(void);
 
   bool TaskInquiryFinnhubForexExchange(void);
   bool TaskInquiryFinnhubForexSymbol(void);
@@ -132,6 +136,7 @@ public:
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
   bool TaskUpdateCountryListDB(void);
+  bool TaskUPdateEPSSurpriseDB(void);
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
@@ -140,11 +145,14 @@ public:
   virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
+  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStakePtr pStake);
 
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);
   CAmericaStakePtr GetAmericaStake(CString strTicker);
   void AddAmericaStake(CAmericaStakePtr pStake);
+
+  bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
   // 各种状态
   long GetCurrentPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
@@ -161,12 +169,15 @@ public:
   bool UpdateCountryListDB(void);
   bool UpdateStakeDB(void);
   bool UpdateForexSymbolDB(void);
-  bool RebulidFinnhubDayLine(void);
-  bool SortStakeTable(void);
+  bool UpdateEconomicCalendarDB(void);
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
   bool LoadCountryList(void);
+  bool LoadEconomicCalendar(void);
+
+  bool RebulidFinnhubDayLine(void);
+  bool SortStakeTable(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
@@ -179,6 +190,7 @@ protected:
   long m_lCurrentForexExchangePos;
   long m_lCurrentForexSymbolPos;
   long m_lCurrentUpdatePeerPos;
+  long m_lCurrentUpdateEPSSurprisePos;
   FinnhubInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
@@ -190,6 +202,7 @@ protected:
   map<CString, long> m_mapForexExchange;
   long m_lLastTotalForexExchange;
   long m_lTotalForexExchange;
+
   vector<CForexSymbolPtr> m_vForexSymbol;
   map<CString, long> m_mapForexSymbol;
   long m_lLastTotalForexSymbol;
@@ -197,10 +210,15 @@ protected:
   long m_lCurrentUpdateForexDayLinePos;
 
   vector<CCountryPtr> m_vCountry;
-  map<CCountryPtr, long> m_mapCountry;
+  map<CString, long> m_mapCountry;
   bool m_fCountryListUpdated;
   long m_lLastTotalCountry;
   long m_lTotalCountry;
+
+  vector<CEconomicCalendarPtr> m_vEconomicCalendar;
+  map<CString, long> m_mapEconomicCalendar;
+  long m_lLastTotalEconomicCalendar;
+  long m_lTotalEconomicCalendar;
 
   bool m_fSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
@@ -209,7 +227,9 @@ protected:
   bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
   bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
   bool m_fPeerUpdated; // 每月更新Peers数据
-//
+  bool m_fEconomicCalendarUpdated; // 每日更新经济日历数据
+  bool m_fEPSSurpriseUpdated;
+  //
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 

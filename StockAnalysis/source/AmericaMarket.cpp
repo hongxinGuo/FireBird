@@ -3,12 +3,16 @@
 
 #include"WebInquirer.h"
 #include"ProcessAmericaStake.h"
+#include"EPSSurprise.h"
 
 #include"SetForexExchange.h"
 #include"SetAmericaStake.h"
 #include"SetCountry.h"
+#include"SetEconomicCalendar.h"
+#include"SetEPSSurprise.h"
 
 Semaphore gl_SaveAmericaOneStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
+Semaphore gl_SaveEPSSurprise(1);  // 此信号量用于更新EPSSurprise数据
 Semaphore gl_SaveForexDayLine(1);  // 此信号量用于生成Forex日线历史数据库
 
 CAmericaMarket::CAmericaMarket() {
@@ -46,6 +50,7 @@ CAmericaMarket::CAmericaMarket() {
   m_vFinnhubInquiringStr.at(__FOREX_ALL_RATES__) = _T("https://finnhub.io/api/v1/forex/rates?base=USD");
 
   m_vFinnhubInquiringStr.at(__ECONOMIC_COUNTRY_LIST__) = _T("https://finnhub.io/api/v1/country?");
+  m_vFinnhubInquiringStr.at(__ECONOMIC_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/economic?");
 
   Reset();
 }
@@ -62,6 +67,7 @@ void CAmericaMarket::Reset(void) {
   m_lCurrentForexExchangePos = 0;
   m_lCurrentForexSymbolPos = 0;
   m_lCurrentUpdatePeerPos = 0;
+  m_lCurrentUpdateEPSSurprisePos = 0;
 
   m_vAmericaStake.resize(0);
   m_mapAmericaStake.clear();
@@ -82,6 +88,10 @@ void CAmericaMarket::Reset(void) {
   m_vCountry.resize(0);
   m_mapCountry.clear();
   m_fCountryListUpdated = false;
+  m_vEconomicCalendar.resize(0);
+  m_mapEconomicCalendar.clear();
+  m_fEconomicCalendarUpdated = false;
+  m_fEPSSurpriseUpdated = false;
 
   m_fPeerUpdated = false;
 
@@ -99,6 +109,8 @@ void CAmericaMarket::Reset(void) {
 
   m_lLastTotalCountry = 0;
   m_lTotalCountry = 0;
+  m_lTotalEconomicCalendar = 0;
+  m_lLastTotalEconomicCalendar = 0;
 }
 
 void CAmericaMarket::ResetMarket(void) {
@@ -108,6 +120,7 @@ void CAmericaMarket::ResetMarket(void) {
   LoadAmericaStake();
   LoadForexExchange();
   LoadForexSymbol();
+  LoadEconomicCalendar();
 
   CString str = _T("重置America Stake Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -151,6 +164,8 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   CString str = _T("");
   vector<CString> vExchange;
   vector<CForexSymbolPtr> vForexSymbol;
+  vector<CEconomicCalendarPtr> vEconomicCalendar;
+  vector<CEPSSurprisePtr> vEPSSurprise;
   long lTemp = 0;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
@@ -187,6 +202,14 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       pStake->m_fUpdateDatabase = true;
       break;
       case __BASIC_FINANCIALS__:
+      break;
+      case __STOCK_EPS_SURPRISE__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
+      pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
+      ProcessEPSSurprise(pWebData, vEPSSurprise);
+      pStake->UpdateEPSSurprise(vEPSSurprise);
+      pStake->m_fEPSSurpriseNeedUpdate = false;
+      pStake->m_fEPSSurpriseNeedSave = true;
       break;
       case __STOCK_QUOTE__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
@@ -232,6 +255,11 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       ProcessCountryList(pWebData, m_vCountry);
       m_lTotalCountry = m_vCountry.size();
       m_fCountryListUpdated = true;
+      break;
+      case __ECONOMIC_CALENDAR__:
+      ProcessEconomicCalendar(pWebData, vEconomicCalendar);
+      UpdateEconomicCalendar(vEconomicCalendar);
+      m_fEconomicCalendarUpdated = true;
       default:
       break;
       }
@@ -323,6 +351,8 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
       case __STOCK_EPS_EXTIMATES__:// Premium
       break;
       case __STOCK_EPS_SURPRISE__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol);
       break;
       case __STOCK_EARNING_CALENDER__:
       break;
@@ -362,6 +392,9 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
       case __FOREX_ALL_RATES__:
       break;
       case __ECONOMIC_COUNTRY_LIST__:
+      // do nothing
+      break;
+      case __ECONOMIC_CALENDAR__:
       // do nothing
       break;
       default:
@@ -425,6 +458,7 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
     TaskUpdateForexSymbolDB();
     TaskUpdateForexDayLineDB();
     TaskUpdateDayLineDB();
+    TaskUPdateEPSSurpriseDB();
     if (IsAmericaStakeUpdated()) {
       TaskUpdateStakeDB();
     }
@@ -470,6 +504,7 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
     if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
       s_iCountfinnhubLimit = 11;
       TaskInquiryFinnhubCompanyProfile2();
+      TaskInquiryFinnhubEPSSurprise();
       TaskInquiryFinnhubPeer();
       TaskInquiryFinnhubForexDayLine();
       TaskInquiryFinnhubDayLine();
@@ -676,6 +711,53 @@ bool CAmericaMarket::TaskInquiryFinnhubPeer(void) {
   return true;
 }
 
+bool CAmericaMarket::TaskInquiryFinnhubEconomicCalender(void) {
+  FinnhubInquiry inquiry{ 0, 0, 0 };
+  if (!m_fEconomicCalendarUpdated && !m_fFinnhubInquiring) {
+    inquiry.m_lInquiryIndex = __ECONOMIC_CALENDAR__;
+    inquiry.m_iPriority = 10;
+    m_qWebInquiry.push(inquiry);
+    m_fFinnhubInquiring = true;
+    return true;
+  }
+  return false;
+}
+
+bool CAmericaMarket::TaskInquiryFinnhubEPSSurprise(void) {
+  bool fFound = false;
+  FinnhubInquiry inquiry{ 0, 0, 0 };
+  CAmericaStakePtr pStake;
+  CString str = _T("");
+  long lStakeSetSize = m_vAmericaStake.size();
+
+  ASSERT(IsSystemReady());
+  if (!m_fEPSSurpriseUpdated && !m_fFinnhubInquiring) {
+    for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStakeSetSize; m_lCurrentUpdateEPSSurprisePos++) {
+      if (m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->IsEPSSurpriseNeedUpdate()) {
+        pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
+        fFound = true;
+        break;
+      }
+    }
+    if (fFound) {
+      inquiry.m_lInquiryIndex = __STOCK_EPS_SURPRISE__;
+      inquiry.m_lStakeIndex = m_lCurrentUpdateEPSSurprisePos;
+      inquiry.m_iPriority = 10;
+      m_qWebInquiry.push(inquiry);
+      m_fFinnhubInquiring = true;
+      m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseNeedUpdate(false);
+      TRACE("申请%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol.GetBuffer());
+    }
+    else {
+      m_fEPSSurpriseUpdated = true;
+      TRACE("Finnhub日线更新完毕\n");
+      str = _T("美国市场日线历史数据更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
+    }
+  }
+  return true;
+}
+
 bool CAmericaMarket::TaskInquiryFinnhubForexExchange(void) {
   FinnhubInquiry inquiry{ 0, 0, 0 };
   if (!m_fForexExhangeUpdated && !m_fFinnhubInquiring) {
@@ -812,6 +894,22 @@ bool CAmericaMarket::TaskUpdateCountryListDB(void) {
   return false;
 }
 
+bool CAmericaMarket::TaskUPdateEPSSurpriseDB(void) {
+  CString str;
+
+  for (auto& pStake : m_vAmericaStake) {
+    if (pStake->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      RunningThreadUpdateEPSSurpriseDB(pStake);
+      TRACE("更新%s EPS surprise数据\n", pStake->GetSymbol().GetBuffer());
+    }
+    if (gl_fExitingSystem) {
+      break; // 如果程序正在退出，则停止存储。
+    }
+  }
+
+  return(true);
+}
+
 bool CAmericaMarket::TaskCheckSystemReady(void) {
   CString str = _T("");
 
@@ -857,6 +955,12 @@ bool CAmericaMarket::RunningThreadUpdateCountryListDB(void) {
   return true;
 }
 
+bool CAmericaMarket::RunningThreadUpdateEPSSurpriseDB(CAmericaStakePtr pStake) {
+  thread thread1(ThreadUpdateEPSSurpriseDB, pStake);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
 bool CAmericaMarket::IsAmericaStake(CString strSymbol) {
   if (m_mapAmericaStake.find(strSymbol) == m_mapAmericaStake.end()) { // 新代码？
     return false;
@@ -882,6 +986,19 @@ CAmericaStakePtr CAmericaMarket::GetAmericaStake(CString strTicker) {
 void CAmericaMarket::AddAmericaStake(CAmericaStakePtr pStake) {
   m_vAmericaStake.push_back(pStake);
   m_mapAmericaStake[pStake->m_strSymbol] = m_lTotalAmericaStake++;
+}
+
+bool CAmericaMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
+  CString strSymbol = _T("");
+
+  for (auto& pEconomicCalendar : vEconomicCalendar) {
+    strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+    if (m_mapEconomicCalendar.find(strSymbol) == m_mapEconomicCalendar.end()) { // 新事件？
+      m_vEconomicCalendar.push_back(pEconomicCalendar);
+      m_mapEconomicCalendar[strSymbol] = m_lTotalEconomicCalendar++;
+    }
+  }
+  return true;
 }
 
 long CAmericaMarket::GetFinnInquiry(void) {
@@ -1002,6 +1119,26 @@ bool CAmericaMarket::UpdateForexSymbolDB(void) {
   return true;
 }
 
+bool CAmericaMarket::UpdateEconomicCalendarDB(void) {
+  const long lTotalEconomicCalendar = m_vEconomicCalendar.size();
+  CEconomicCalendarPtr pEconomicCalendar = nullptr;
+  CSetEconomicCalendar setEconomicCalendar;
+
+  if (m_lLastTotalEconomicCalendar < m_lTotalEconomicCalendar) {
+    setEconomicCalendar.Open();
+    setEconomicCalendar.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalEconomicCalendar; l < m_lTotalEconomicCalendar; l++) {
+      pEconomicCalendar = m_vEconomicCalendar.at(l);
+      pEconomicCalendar->Append(setEconomicCalendar);
+    }
+    setEconomicCalendar.m_pDatabase->CommitTrans();
+    setEconomicCalendar.Close();
+    m_lLastTotalEconomicCalendar = m_lTotalEconomicCalendar;
+  }
+
+  return true;
+}
+
 bool CAmericaMarket::RebulidFinnhubDayLine(void) {
   CSetAmericaStake setAmericaStake;
   for (auto& pStake : m_vAmericaStake) {
@@ -1116,6 +1253,26 @@ bool CAmericaMarket::LoadCountryList(void) {
   }
   setCountry.Close();
   m_lLastTotalCountry = m_lTotalCountry = m_vCountry.size();
+
+  return true;
+}
+
+bool CAmericaMarket::LoadEconomicCalendar(void) {
+  CSetEconomicCalendar setEconomicCalendar;
+  CEconomicCalendarPtr pEconomicCalendar = nullptr;
+  CString strSymbol = _T("");
+
+  setEconomicCalendar.Open();
+  while (!setEconomicCalendar.IsEOF()) {
+    pEconomicCalendar = make_shared<CEconomicCalendar>();
+    pEconomicCalendar->Load(setEconomicCalendar);
+    strSymbol = pEconomicCalendar->m_strCountry + pEconomicCalendar->m_strEvent + pEconomicCalendar->m_strTime;
+    m_vEconomicCalendar.push_back(pEconomicCalendar);
+    m_mapEconomicCalendar[strSymbol] = m_lTotalEconomicCalendar++;
+    setEconomicCalendar.MoveNext();
+  }
+  setEconomicCalendar.Close();
+  m_lLastTotalEconomicCalendar = m_lTotalEconomicCalendar = m_vEconomicCalendar.size();
 
   return true;
 }

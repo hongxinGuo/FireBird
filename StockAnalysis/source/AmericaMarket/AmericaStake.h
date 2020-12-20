@@ -4,6 +4,7 @@
 #include"globeSymbolDef.h"
 
 #include"DayLine.h"
+#include"EPSSurprise.h"
 #include"SetAmericaStake.h"
 
 using namespace std;
@@ -23,8 +24,10 @@ public:
   void Update(CSetAmericaStake& setAmericaStake);
   void Append(CSetAmericaStake& setAmericaStake);
   bool SaveDayLine(void);
+  bool UpdateEPSSurpriseDB(void);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
+  void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
   long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
   void SetDayLineStartDate(long lDate) noexcept { m_lDayLineStartDate = lDate; }
@@ -49,6 +52,12 @@ public:
   bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STAKE_NULL__); }
   bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STAKE_IPOED__); }
   bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STAKE_NOT_CHECKED__); }
+
+  bool IsEPSSurpriseNeedUpdate(void) noexcept { return m_fEPSSurpriseNeedUpdate; }
+  void SetEPSSurpriseNeedUpdate(bool fFlag) noexcept { m_fEPSSurpriseNeedUpdate = fFlag; }
+  bool IsEPSSurpriseNeedSave(void) noexcept { return m_fEPSSurpriseNeedSave; }
+  void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
+  bool IsEPSSurpriseNeedSaveAndClearFlag(void);
 
   CString GetSymbol(void) { return m_strSymbol; }
   CString GetTicker(void) { return m_strTicker; }
@@ -146,7 +155,9 @@ public:
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 
   vector<CDayLinePtr> m_vDayLine;
-
+  vector<CEPSSurprisePtr> m_vEPSSurprise;
+  bool m_fEPSSurpriseNeedUpdate;
+  atomic_bool m_fEPSSurpriseNeedSave;
   // 无需存储数据区
   bool m_fUpdateDatabase; // 要求更新此数据
   bool m_fInquiryAmericaStake; // 要求更新公司简介

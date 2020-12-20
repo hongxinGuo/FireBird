@@ -105,6 +105,8 @@ UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol); // ´Ë¹¤×÷Ïß³
 UINT ThreadUpdateForexSymbolDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
 // ¸üĞÂCountryList´úÂë±í
 UINT ThreadUpdateCountryListDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
+// ¸üĞÂEPSSurprise±í
+UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStakePtr> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª41
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

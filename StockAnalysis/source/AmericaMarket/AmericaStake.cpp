@@ -49,6 +49,8 @@ void CAmericaStake::Reset(void) {
 
   m_fUpdateDatabase = false;
   m_fInquiryAmericaStake = true;
+  m_fEPSSurpriseNeedUpdate = true;
+  m_fEPSSurpriseNeedSave = false;
   m_fPeerUpdated = false;
   m_fDayLineNeedUpdate = true;
   m_fDayLineNeedSaving = false;
@@ -101,6 +103,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
   m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
+  if (m_strPeer.GetLength() < 4) m_fPeerUpdated = false;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
     //m_fInquiryAmericaStake = false;
     //m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
@@ -238,10 +241,70 @@ bool CAmericaStake::SaveDayLine(void) {
   return fNeedUpdate;
 }
 
+bool CAmericaStake::UpdateEPSSurpriseDB(void) {
+  CSetEPSSurprise setEPSSurprise;
+
+  size_t lSize = 0;
+  vector<CEPSSurprisePtr> vEPSSurprise;
+  CEPSSurprisePtr pEPSSurprise = nullptr;
+  long lCurrentPos = 0, lSizeOfOldEPSSurprise = 0;
+  bool fNeedUpdate = false;
+
+  if (m_vEPSSurprise.size() == 0) return true;
+
+  lSize = m_vEPSSurprise.size();
+  setEPSSurprise.m_strFilter = _T("[Symbol] = '");
+  setEPSSurprise.m_strFilter += m_strSymbol + _T("'");
+  setEPSSurprise.m_strSort = _T("[Date]");
+
+  setEPSSurprise.Open();
+  while (!setEPSSurprise.IsEOF()) {
+    pEPSSurprise = make_shared<CEPSSurprise>();
+    pEPSSurprise->Load(setEPSSurprise);
+    vEPSSurprise.push_back(pEPSSurprise);
+    lSizeOfOldEPSSurprise++;
+    setEPSSurprise.MoveNext();
+  }
+  setEPSSurprise.Close();
+
+  lCurrentPos = 0;
+  setEPSSurprise.m_strFilter = _T("[ID] = 1");
+  setEPSSurprise.Open();
+  setEPSSurprise.m_pDatabase->BeginTrans();
+  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+    pEPSSurprise = m_vEPSSurprise.at(i);
+    while ((lCurrentPos < lSizeOfOldEPSSurprise) && (vEPSSurprise.at(lCurrentPos)->m_lDate < pEPSSurprise->m_lDate)) lCurrentPos++;
+    if (lCurrentPos < lSizeOfOldEPSSurprise) {
+      if (vEPSSurprise.at(lCurrentPos)->m_lDate > pEPSSurprise->m_lDate) {
+        pEPSSurprise->Append(setEPSSurprise);
+        fNeedUpdate = true;
+      }
+    }
+    else {
+      pEPSSurprise->Append(setEPSSurprise);
+      fNeedUpdate = true;
+    }
+  }
+  setEPSSurprise.m_pDatabase->CommitTrans();
+  setEPSSurprise.Close();
+
+  return fNeedUpdate;
+}
+
 void CAmericaStake::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
   m_vDayLine.resize(0);
   for (auto& pDayLine : vDayLine) {
     m_vDayLine.push_back(pDayLine);
+  }
+}
+
+void CAmericaStake::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
+  CEPSSurprisePtr p = nullptr;
+
+  m_vEPSSurprise.resize(0);
+  for (int i = (vEPSSurprise.size() - 1); i >= 0; i--) {
+    p = vEPSSurprise.at(i);
+    m_vEPSSurprise.push_back(p);
   }
 }
 
@@ -271,6 +334,11 @@ bool CAmericaStake::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;
+}
+
+bool CAmericaStake::IsEPSSurpriseNeedSaveAndClearFlag(void) {
+  const bool fNeedSave = m_fEPSSurpriseNeedSave.exchange(false);
+  return fNeedSave;
 }
 
 CString CAmericaStake::GetDayLineInquiryString(time_t tCurrentTime) {
