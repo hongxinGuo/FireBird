@@ -244,6 +244,8 @@ bool CAmericaStake::SaveDayLine(void) {
   return fNeedUpdate;
 }
 
+bool myCompare(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
+
 bool CAmericaStake::UpdateEPSSurpriseDB(void) {
   CSetEPSSurprise setEPSSurprise;
 
@@ -254,13 +256,16 @@ bool CAmericaStake::UpdateEPSSurpriseDB(void) {
   bool fNeedUpdate = false;
 
   if (m_vEPSSurprise.size() == 0) return true;
-  if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate <= m_lLastEPSSurpriseUpdateDate) { // 新下载数据中没有新数据？
-    return true;
+  sort(m_vEPSSurprise.begin(), m_vEPSSurprise.end(), myCompare);
+  for (auto& pEPS : m_vEPSSurprise) {
+    if (pEPS->m_lDate > m_lLastEPSSurpriseUpdateDate) {
+      m_lLastEPSSurpriseUpdateDate = pEPS->m_lDate;
+      fNeedUpdate = true;
+      m_fUpdateDatabase = true;
+    }
   }
-  else {
-    m_lLastEPSSurpriseUpdateDate = m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate; // 更新最新数据日期
-    m_fUpdateDatabase = true; // 更新本股票信息
-  }
+  if (!fNeedUpdate) return false;
+
   lSize = m_vEPSSurprise.size();
   setEPSSurprise.m_strFilter = _T("[Symbol] = '");
   setEPSSurprise.m_strFilter += m_strSymbol + _T("'");
