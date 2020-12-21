@@ -537,7 +537,7 @@ bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
 }
 
 bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
-  char buffer[1000];
+  char buffer[1000]{};
   int i = 0;
 
   ASSERT(pWebData->GetBufferLength() < 1000);

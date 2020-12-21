@@ -16,7 +16,6 @@ IMPLEMENT_DYNAMIC(CSetEconomicCalendar, CRecordset)
 CSetEconomicCalendar::CSetEconomicCalendar(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
-  m_Time = _T(" ");
   m_Country = _T(" ");
   m_Event = _T(" ");
   m_Impact = _T(" ");
@@ -41,7 +40,7 @@ void CSetEconomicCalendar::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Text(pFX, _T("Time"), m_Time);
+  RFX_Text(pFX, _T("[Time]"), m_Time);
   RFX_Text(pFX, _T("Country"), m_Country);
   RFX_Text(pFX, _T("Event"), m_Event);
   RFX_Text(pFX, _T("Impact"), m_Impact);

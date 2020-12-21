@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
--- Host: localhost    Database: americastakedata
+-- Host: localhost    Database: americamarket
 -- ------------------------------------------------------
 -- Server version	8.0.22
 
@@ -55,10 +55,12 @@ CREATE TABLE `companyprofile` (
   `WebURL` varchar(150) DEFAULT ' ',
   `Logo` varchar(110) DEFAULT ' ',
   `FinnhubIndustry` varchar(100) DEFAULT ' ',
+  `Peer` varchar(200) DEFAULT ' ',
   `ProfileUpdateDate` int DEFAULT '19800101',
   `DayLineStartDate` int DEFAULT '29900101',
   `DayLineEndDate` int DEFAULT '19800101',
   `LastRTDataUpdateDate` int DEFAULT '19800101',
+  `LastEPSSurpriseUpdateDate` int DEFAULT '19800101',
   `IPOStatus` int DEFAULT '128',
   PRIMARY KEY (`ID`),
   KEY `Symbol` (`Symbol`),
@@ -66,41 +68,29 @@ CREATE TABLE `companyprofile` (
   KEY `DayLineStartDate` (`DayLineStartDate`) /*!80000 INVISIBLE */,
   KEY `DayLineEndDate` (`DayLineEndDate`),
   KEY `LastRTUpdatedDate` (`LastRTDataUpdateDate`)
-) ENGINE=InnoDB AUTO_INCREMENT=9470 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19006 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `companyprofile3`
+-- Table structure for table `country_list`
 --
 
-DROP TABLE IF EXISTS `companyprofile3`;
+DROP TABLE IF EXISTS `country_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `companyprofile3` (
+CREATE TABLE `country_list` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `Symbol` varchar(20) DEFAULT ' ',
-  `Description` varchar(100) DEFAULT ' ',
-  `DisplaySymbol` varchar(8) DEFAULT ' ',
-  `Type` varchar(8) DEFAULT ' ',
-  `Currency` varchar(8) DEFAULT ' ',
-  `Country` varchar(8) DEFAULT ' ',
-  `Exchange` varchar(45) DEFAULT ' ',
-  `Ticker` varchar(20) DEFAULT ' ',
-  `IPODate` varchar(20) DEFAULT ' ',
-  `Phone` varchar(30) DEFAULT ' ',
-  `ShareOutstanding` decimal(20,6) DEFAULT '0.000000',
-  `MarketCapitalization` decimal(25,6) DEFAULT '0.000000',
-  `Name` varchar(100) DEFAULT ' ',
-  `WebURL` varchar(150) DEFAULT ' ',
-  `FinnhubIndustry` varchar(100) DEFAULT ' ',
-  `ProfileUpdateDate` int DEFAULT '19800101',
-  `DayLineStartDate` int DEFAULT '29900101',
-  `DayLineEndDate` int DEFAULT '19800101',
-  `LastRTDataUpdateDate` int DEFAULT '19800101',
+  `Code2` varchar(45) DEFAULT ' ',
+  `Code3` varchar(45) DEFAULT ' ',
+  `CodeNo` varchar(45) DEFAULT ' ',
+  `Country` varchar(100) DEFAULT ' ',
+  `Currency` varchar(45) DEFAULT ' ',
+  `CurrencyCode` varchar(45) DEFAULT ' ',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
-  KEY `Symbol` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=9399 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `Code` (`Code2`) /*!80000 INVISIBLE */,
+  KEY `CurrencyCode` (`CurrencyCode`)
+) ENGINE=InnoDB AUTO_INCREMENT=3238 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,7 +124,110 @@ CREATE TABLE `dayline` (
   PRIMARY KEY (`ID`),
   KEY `Date` (`Date`,`Symbol`) /*!80000 INVISIBLE */,
   KEY `Stock` (`Symbol`)
-) ENGINE=InnoDB AUTO_INCREMENT=1995886 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2031779 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `economic_calendar`
+--
+
+DROP TABLE IF EXISTS `economic_calendar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `economic_calendar` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Time` bigint DEFAULT '0',
+  `Country` varchar(45) DEFAULT ' ',
+  `Event` varchar(100) DEFAULT ' ',
+  `Impact` varchar(45) DEFAULT ' ',
+  `Actual` decimal(10,3) DEFAULT '0.000',
+  `estimate` decimal(10,3) DEFAULT '0.000',
+  `Prev` decimal(10,3) DEFAULT '0.000',
+  `Unit` varchar(45) DEFAULT ' ',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `eps_surprise`
+--
+
+DROP TABLE IF EXISTS `eps_surprise`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `eps_surprise` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Symbol` varchar(45) DEFAULT ' ',
+  `Date` int DEFAULT '0',
+  `Actual` decimal(20,3) DEFAULT '0.000',
+  `Estimate` decimal(20,3) DEFAULT '0.000',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `Symbol` (`Symbol`),
+  KEY `Date` (`Date`)
+) ENGINE=InnoDB AUTO_INCREMENT=18349 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `forex_dayline`
+--
+
+DROP TABLE IF EXISTS `forex_dayline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `forex_dayline` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Date` int DEFAULT '19800101',
+  `Exchange` varchar(50) DEFAULT ' ',
+  `Symbol` varchar(50) DEFAULT ' ',
+  `LastClose` decimal(10,3) DEFAULT '0.000',
+  `Open` decimal(10,3) DEFAULT '0.000',
+  `High` decimal(10,3) DEFAULT '0.000',
+  `Low` decimal(10,3) DEFAULT '0.000',
+  `Close` decimal(10,3) DEFAULT '0.000',
+  `Volume` decimal(18,0) DEFAULT '0',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=220938 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `forex_exchange`
+--
+
+DROP TABLE IF EXISTS `forex_exchange`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `forex_exchange` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Exchange` varchar(45) DEFAULT ' ',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `Exchange` (`Exchange`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `forex_symbol`
+--
+
+DROP TABLE IF EXISTS `forex_symbol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `forex_symbol` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Description` varchar(100) DEFAULT ' ',
+  `DisplaySymbol` varchar(45) DEFAULT ' ',
+  `Exchange` varchar(45) DEFAULT ' ',
+  `Symbol` varchar(45) DEFAULT ' ',
+  `DayLineStartDate` int DEFAULT '29900101',
+  `DayLineEndDate` int DEFAULT '19800101',
+  `IPOStatus` int DEFAULT '128',
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`),
+  KEY `Symbol` (`Symbol`)
+) ENGINE=InnoDB AUTO_INCREMENT=1061 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -146,7 +239,7 @@ CREATE TABLE `dayline` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-15 10:10:30
+-- Dump completed on 2020-12-21 19:31:08
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: stockdata
@@ -275,7 +368,7 @@ CREATE TABLE `crweberindex` (
   KEY `TC14` (`CPP_TC14`),
   KEY `CPP_USGCBS` (`CPP_USGCBS`),
   KEY `time` (`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=720745 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=779533 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,7 +462,7 @@ CREATE TABLE `currentweekline` (
   `CanceledSellBelow200000` decimal(15,0) DEFAULT '0',
   `CanceledSellAbove200000` decimal(15,0) DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=373381 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='此表用于存储当前周的周线数据（所有的周数据皆位于此表中）';
+) ENGINE=InnoDB AUTO_INCREMENT=396649 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='此表用于存储当前周的周线数据（所有的周数据皆位于此表中）';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -405,7 +498,7 @@ CREATE TABLE `dayline` (
   KEY `TIME` (`Date`,`UpDownRate`),
   KEY `STOCKCODE` (`StockCode`,`Date`),
   KEY `Day` (`Date`,`StockCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=13907877 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13931540 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +579,7 @@ CREATE TABLE `daylineinfo` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `STOCKCODE` (`StockCode`,`Date`),
   KEY `TIME` (`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=14159453 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14182712 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -515,7 +608,7 @@ CREATE TABLE `option_calculatingrs` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Index_UNIQUE` (`Index`),
   KEY `Index` (`Index`)
-) ENGINE=InnoDB AUTO_INCREMENT=9491 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -802,7 +895,7 @@ CREATE TABLE `stakecode` (
   `IPOed` int DEFAULT '128',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`,`StakeCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=37729 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='中国证券市场中所有的活跃证券。包括股票、债券、基金等。\n采用轮询方式寻找之，从000000到999999，前缀为sh或sz。';
+) ENGINE=InnoDB AUTO_INCREMENT=37788 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='中国证券市场中所有的活跃证券。包括股票、债券、基金等。\n采用轮询方式寻找之，从000000到999999，前缀为sh或sz。';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -934,7 +1027,7 @@ CREATE TABLE `today` (
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Id_UNIQUE` (`Id`),
   KEY `time` (`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=56274943 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57399999 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -970,7 +1063,7 @@ CREATE TABLE `weekline` (
   KEY `TIME` (`Date`,`UpDownRate`),
   KEY `DAY` (`Date`,`StockCode`),
   KEY `STOCKCODE` (`StockCode`,`Date`)
-) ENGINE=InnoDB AUTO_INCREMENT=3193977 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3217245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1051,7 +1144,7 @@ CREATE TABLE `weeklineinfo` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   KEY `STOCKCODE` (`StockCode`,`Date`),
   KEY `TIME` (`Date`,`StockCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=3193977 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3217245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -1063,4 +1156,4 @@ CREATE TABLE `weeklineinfo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-15 10:10:30
+-- Dump completed on 2020-12-21 19:31:09

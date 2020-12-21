@@ -35,6 +35,7 @@ public:
   void SetDayLineEndDate(long lDate) noexcept { m_lDayLineEndDate = lDate; }
   long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
+  void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
   void UpdateDayLineStartEndDate(void);
   long GetDayLineSize(void) noexcept { return m_vDayLine.size(); }
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
@@ -135,6 +136,7 @@ public:
   long m_lDayLineStartDate;
   long m_lDayLineEndDate;
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
+  long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
   long m_lIPOStatus;
 
   // 实时数据区

@@ -46,9 +46,10 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_DayLineStartDate = 29900101;
   m_DayLineEndDate = 19800101;
   m_LastRTDataUpdateDate = 19800101;
+  m_LastEPSSurpriseUpdateDate = 19800101;
   m_IPOStatus = __STAKE_NOT_CHECKED__;
 
-  m_nFields = 38;
+  m_nFields = 39;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -102,6 +103,7 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);
   RFX_Long(pFX, _T("[LastRTDataUpdateDate]"), m_LastRTDataUpdateDate);
+  RFX_Long(pFX, _T("[LastEPSSurpriseUpdateDate]"), m_LastEPSSurpriseUpdateDate);
   RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////

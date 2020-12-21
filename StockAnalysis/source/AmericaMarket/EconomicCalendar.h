@@ -16,7 +16,7 @@ public:
   void Save(CSetEconomicCalendar& setEconomicCalendar);
 
 public:
-  CTime  m_tTime;
+  INT64 m_iTime; // 不存储这个数据
   CString m_strTime;
   CString m_strCountry;
   CString m_strEvent;

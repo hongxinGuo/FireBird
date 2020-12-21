@@ -79,6 +79,12 @@ enum {
 
 struct FinnhubInquiry {
 public:
+  void Reset(void) {
+    m_iPriority = 0;
+    m_lInquiryIndex = 0;
+    m_lStakeIndex = 0;
+  }
+public:
   int m_iPriority; // 优先级
   long m_lInquiryIndex; // 指令索引
   long m_lStakeIndex; // 股票集当前位置
@@ -136,7 +142,8 @@ public:
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
   bool TaskUpdateCountryListDB(void);
-  bool TaskUPdateEPSSurpriseDB(void);
+  bool TaskUpdateEPSSurpriseDB(void);
+  bool TaskUpdateEconomicCalendar(void);
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
@@ -174,7 +181,7 @@ public:
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
   bool LoadCountryList(void);
-  bool LoadEconomicCalendar(void);
+  bool LoadEconomicCalendarDB(void);
 
   bool RebulidFinnhubDayLine(void);
   bool SortStakeTable(void);

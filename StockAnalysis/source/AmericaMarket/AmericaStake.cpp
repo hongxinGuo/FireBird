@@ -41,6 +41,7 @@ void CAmericaStake::Reset(void) {
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
   m_lLastRTDataUpdateDate = 19800101;
+  m_lLastEPSSurpriseUpdateDate = 19800101;
   m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
   m_lEmployeeTotal = 0;
@@ -102,6 +103,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
   m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
+  m_lLastEPSSurpriseUpdateDate = setAmericaStake.m_LastEPSSurpriseUpdateDate;
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
   if (m_strPeer.GetLength() < 4) m_fPeerUpdated = false;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
@@ -167,6 +169,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
+  setAmericaStake.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setAmericaStake.m_IPOStatus = m_lIPOStatus;
   if (m_strWebURL.GetLength() > 100) {
     TRACE("%s字符串太长%d\n", m_strSymbol.GetBuffer(), m_strWebURL.GetLength());
@@ -251,7 +254,13 @@ bool CAmericaStake::UpdateEPSSurpriseDB(void) {
   bool fNeedUpdate = false;
 
   if (m_vEPSSurprise.size() == 0) return true;
-
+  if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate <= m_lLastEPSSurpriseUpdateDate) { // 新下载数据中没有新数据？
+    return true;
+  }
+  else {
+    m_lLastEPSSurpriseUpdateDate = m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate; // 更新最新数据日期
+    m_fUpdateDatabase = true; // 更新本股票信息
+  }
   lSize = m_vEPSSurprise.size();
   setEPSSurprise.m_strFilter = _T("[Symbol] = '");
   setEPSSurprise.m_strFilter += m_strSymbol + _T("'");

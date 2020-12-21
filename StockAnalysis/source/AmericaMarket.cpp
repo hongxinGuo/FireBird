@@ -69,8 +69,8 @@ void CAmericaMarket::Reset(void) {
   m_lCurrentUpdatePeerPos = 0;
   m_lCurrentUpdateEPSSurprisePos = 0;
 
-  m_vAmericaStake.resize(0);
-  m_mapAmericaStake.clear();
+  m_CurrentFinnhubInquiry.Reset();
+  while (m_qWebInquiry.size() > 0) m_qWebInquiry.pop();
 
   // Finnhub各申请网络数据标识，每日需要重置。
   m_fSymbolUpdated = false; // 每日需要更新代码
@@ -120,7 +120,7 @@ void CAmericaMarket::ResetMarket(void) {
   LoadAmericaStake();
   LoadForexExchange();
   LoadForexSymbol();
-  LoadEconomicCalendar();
+  LoadEconomicCalendarDB();
 
   CString str = _T("重置America Stake Market于美东标准时间：");
   str += GetStringOfMarketTime();
@@ -458,7 +458,8 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
     TaskUpdateForexSymbolDB();
     TaskUpdateForexDayLineDB();
     TaskUpdateDayLineDB();
-    TaskUPdateEPSSurpriseDB();
+    TaskUpdateEPSSurpriseDB();
+    TaskUpdateEconomicCalendar();
     if (IsAmericaStakeUpdated()) {
       TaskUpdateStakeDB();
     }
@@ -479,7 +480,7 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
 bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
   // 市场时间十七时重启系统
   if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime > 184000) && (lCurrentTime <= 184100)) { // 本市场时间的下午五时重启本市场。这样有利于接收日线数据。
+    if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
     }
@@ -489,16 +490,17 @@ bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
-// 此函数有SchedulingTask调度，每100毫秒左右执行一次。
+// 此函数由SchedulingTask调度，每100毫秒左右执行一次。
 //
 //////////////////////////////////////////////////////////////////////////////////////
 bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
-  static int s_iCountfinnhubLimit = 11;
-  if (((lCurrentTime < 183700) || (lCurrentTime > 184300))) {
+  static int s_iCountfinnhubLimit = 11; // 保证每12次执行一次（即1.2秒每次）
+  if (((lCurrentTime < 165700) || (lCurrentTime > 170300))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
     TaskInquiryFinnhubForexExchange();
     TaskInquiryFinnhubForexSymbol();
+    //TaskInquiryFinnhubEconomicCalender();
 
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
     if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
@@ -746,12 +748,12 @@ bool CAmericaMarket::TaskInquiryFinnhubEPSSurprise(void) {
       m_qWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
       m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseNeedUpdate(false);
-      TRACE("申请%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol.GetBuffer());
+      TRACE("申请%s EPS Surprise数据\n", m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol.GetBuffer());
     }
     else {
       m_fEPSSurpriseUpdated = true;
-      TRACE("Finnhub日线更新完毕\n");
-      str = _T("美国市场日线历史数据更新完毕");
+      TRACE("Finnhub EPS Surprise更新完毕\n");
+      str = _T("Finnhub EPS Surprise更新完毕");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
@@ -894,7 +896,7 @@ bool CAmericaMarket::TaskUpdateCountryListDB(void) {
   return false;
 }
 
-bool CAmericaMarket::TaskUPdateEPSSurpriseDB(void) {
+bool CAmericaMarket::TaskUpdateEPSSurpriseDB(void) {
   CString str;
 
   for (auto& pStake : m_vAmericaStake) {
@@ -908,6 +910,24 @@ bool CAmericaMarket::TaskUPdateEPSSurpriseDB(void) {
   }
 
   return(true);
+}
+
+bool CAmericaMarket::TaskUpdateEconomicCalendar(void) {
+  CSetEconomicCalendar setEconomicCalendar;
+  CEconomicCalendarPtr pCalendar = nullptr;
+
+  if (m_lLastTotalEconomicCalendar < m_lTotalEconomicCalendar) {
+    setEconomicCalendar.Open();
+    setEconomicCalendar.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalEconomicCalendar; l < m_lTotalEconomicCalendar; l++) {
+      pCalendar = m_vEconomicCalendar.at(l);
+      pCalendar->Append(setEconomicCalendar);
+    }
+    setEconomicCalendar.m_pDatabase->CommitTrans();
+    setEconomicCalendar.Close();
+    m_lLastTotalEconomicCalendar = m_lTotalEconomicCalendar;
+  }
+  return true;
 }
 
 bool CAmericaMarket::TaskCheckSystemReady(void) {
@@ -1257,7 +1277,7 @@ bool CAmericaMarket::LoadCountryList(void) {
   return true;
 }
 
-bool CAmericaMarket::LoadEconomicCalendar(void) {
+bool CAmericaMarket::LoadEconomicCalendarDB(void) {
   CSetEconomicCalendar setEconomicCalendar;
   CEconomicCalendarPtr pEconomicCalendar = nullptr;
   CString strSymbol = _T("");
