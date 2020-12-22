@@ -17,11 +17,11 @@ bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket) {
   CAmericaStakePtr pStake = nullptr;
   CForexSymbolPtr pSymbol = nullptr;
 
-  if (pMarket->m_qWebInquiry.size() > 0) { // 有申请等待？
+  if (pMarket->m_qFinnhubWebInquiry.size() > 0) { // 有申请等待？
     ASSERT(pMarket->m_fFinnhubInquiring);
     if (pMarket->IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
-      pMarket->m_CurrentFinnhubInquiry = pMarket->m_qWebInquiry.top();
-      pMarket->m_qWebInquiry.pop();
+      pMarket->m_CurrentFinnhubInquiry = pMarket->m_qFinnhubWebInquiry.top();
+      pMarket->m_qFinnhubWebInquiry.pop();
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(pMarket->m_vFinnhubInquiringStr.at(pMarket->m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
       switch (pMarket->m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
@@ -138,7 +138,7 @@ bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket) {
 // 每分钟只允许60次申请，故而没有必要强调处理速度。
 //
 //////////////////////////////////////////////
-bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, FinnhubInquiry finnhubInquiry) {
+bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInquiry finnhubInquiry) {
   CWebDataPtr pWebData = nullptr;
   CString str = _T("");
   vector<CString> vExchange;

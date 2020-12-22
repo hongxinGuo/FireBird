@@ -351,6 +351,12 @@
     <ClInclude Include="source\AmericaMarket\EPSSurprise.h">
       <Filter>头文件\America Stock Market</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h">
+      <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -672,6 +678,18 @@
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp">
+      <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp">
+      <Filter>源文件\America Stake Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp">
+      <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp">
       <Filter>源文件\America Stake Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>

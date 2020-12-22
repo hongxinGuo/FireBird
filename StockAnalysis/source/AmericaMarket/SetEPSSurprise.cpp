@@ -18,8 +18,8 @@ CSetEPSSurprise::CSetEPSSurprise(CDatabase* pdb)
   m_ID = 0;
   m_Symbol = _T(" ");
   m_Date = 0;
-  m_Actual = _T(" ");
-  m_Estimate = _T(" ");
+  m_Actual = 0;
+  m_Estimate = 0;
   m_nFields = 5;
 }
 
@@ -39,8 +39,8 @@ void CSetEPSSurprise::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Text(pFX, _T("Symbol"), m_Symbol);
   RFX_Long(pFX, _T("Date"), m_Date);
-  RFX_Text(pFX, _T("Actual"), m_Actual);
-  RFX_Text(pFX, _T("Estimate"), m_Estimate);
+  RFX_Double(pFX, _T("Actual"), m_Actual);
+  RFX_Double(pFX, _T("Estimate"), m_Estimate);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetAmericaForexDayLine ’Ô∂œ

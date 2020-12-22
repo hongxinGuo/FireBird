@@ -714,6 +714,7 @@
     <ClInclude Include="source\AmericaMarket\Finnhub.h" />
     <ClInclude Include="source\AmericaMarket\ForexSymbol.h" />
     <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h" />
+    <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h" />
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h" />
@@ -723,6 +724,7 @@
     <ClInclude Include="source\AmericaMarket\SetForexExchange.h" />
     <ClInclude Include="source\AmericaMarket\SetForexSymbol.h" />
     <ClInclude Include="source\AmericaMarket.h" />
+    <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="source\CrweberIndex.h" />
@@ -798,6 +800,7 @@
     <ClCompile Include="source\AmericaMarket\Finnhub.cpp" />
     <ClCompile Include="source\AmericaMarket\ForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp" />
+    <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp" />
@@ -806,6 +809,8 @@
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\SetForexExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\SetForexSymbol.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
@@ -813,6 +818,7 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
     <ClCompile Include="source\AmericaMarket.cpp" />
+    <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp" />
     <ClCompile Include="source\CrweberIndex.cpp" />

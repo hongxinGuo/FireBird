@@ -10,6 +10,9 @@
 #include"Country.h"
 #include"EconomicCalendar.h"
 
+#include"QuandlWebInquiry.h"
+#include"TiingoWebInquiry.h"
+
 using namespace MyLib;
 
 class CFinnhub;
@@ -77,7 +80,7 @@ enum {
   __ECONOMIC__ = 904, //Premium
 };
 
-struct FinnhubInquiry {
+struct WebInquiry {
 public:
   void Reset(void) {
     m_iPriority = 0;
@@ -88,7 +91,7 @@ public:
   int m_iPriority; // 优先级
   long m_lInquiryIndex; // 指令索引
   long m_lStakeIndex; // 股票集当前位置
-  bool operator() (FinnhubInquiry temp1, FinnhubInquiry temp2) {
+  bool operator() (WebInquiry temp1, WebInquiry temp2) {
     return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
   }
 };
@@ -167,6 +170,12 @@ public:
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
   void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
   bool IsFinnhubDataReceived(void) noexcept { bool f = m_fFinnhubDataReceived; return f; }
+  void SetQuandlInquiring(bool fFlag) noexcept { m_fQuandlInquiring = fFlag; }
+  void SetQuandlDataReceived(bool fFlag) noexcept { m_fQuandlDataReceived = fFlag; }
+  bool IsQuandlDataReceived(void) noexcept { bool f = m_fQuandlDataReceived; return f; }
+  void SetTiingoInquiring(bool fFlag) noexcept { m_fTiingoInquiring = fFlag; }
+  void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
+  bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
 
   long GetFinnInquiry(void);
 
@@ -198,12 +207,22 @@ protected:
   long m_lCurrentForexSymbolPos;
   long m_lCurrentUpdatePeerPos;
   long m_lCurrentUpdateEPSSurprisePos;
-  FinnhubInquiry m_CurrentFinnhubInquiry;
+  WebInquiry m_CurrentFinnhubInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
-  priority_queue<FinnhubInquiry, vector<FinnhubInquiry>, FinnhubInquiry> m_qWebInquiry; // 网络数据查询命令队列(有优先级）
+  priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）
   bool m_fFinnhubInquiring;
   atomic_bool m_fFinnhubDataReceived;
+
+  vector<CString> m_vTiingoInquiringStr;
+  priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qTiingoWebInquiry; // 网络数据查询命令队列(有优先级）
+  bool m_fTiingoInquiring;
+  atomic_bool m_fTiingoDataReceived;
+
+  vector<CString> m_vQuandlInquiringStr;
+  priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qQuandlWebInquiry; // 网络数据查询命令队列(有优先级）
+  bool m_fQuandlInquiring;
+  atomic_bool m_fQuandlDataReceived;
 
   vector<CString> m_vForexExchange;
   map<CString, long> m_mapForexExchange;

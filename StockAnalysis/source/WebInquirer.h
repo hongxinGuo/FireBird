@@ -45,6 +45,8 @@ extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
 #include"FinnhubWebInquiry.h"
+#include"TiingoWebInquiry.h"
+#include"QuandlWebInquiry.h"
 
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
 extern CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
@@ -59,6 +61,8 @@ extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
 extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
+extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
+extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 #endif
 
 class CWebInquirer : public CObject {
@@ -68,6 +72,7 @@ public:
 
   void Initialize(void);
 public:
+  bool GetQuandlData(void) { return gl_pQuandlWebInquiry->GetWebData(); }
   bool GetFinnhubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
   bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
@@ -106,6 +111,14 @@ public:
   void PushFinnhubData(CWebDataPtr pData) { m_qFinnhubData.PushData(pData); }
   CWebDataPtr PopFinnhubData(void) { return m_qFinnhubData.PopData(); }
 
+  size_t GetQuandlDataSize(void) { return m_qQuandlData.GetDataSize(); }
+  void PushQuandlData(CWebDataPtr pData) { m_qQuandlData.PushData(pData); }
+  CWebDataPtr PopQuandlData(void) { return m_qQuandlData.PopData(); }
+
+  size_t GetTiingoDataSize(void) { return m_qTiingoData.GetDataSize(); }
+  void PushTiingoData(CWebDataPtr pData) { m_qTiingoData.PushData(pData); }
+  CWebDataPtr PopTiingoData(void) { return m_qTiingoData.PopData(); }
+
 protected:
   CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
   CQueueWebData m_qSinaStakeRTWebData; // 新浪证券网络数据暂存队列
@@ -114,6 +127,8 @@ protected:
   CQueueWebData m_qCrweberWebData; // crweber.com网络数据暂存队列
   CQueueWebData m_qPotenDailyBriefingWebData; // Poten.com网络数据暂存队列
   CQueueWebData m_qFinnhubData; // Poten.com网络数据暂存队列
+  CQueueWebData m_qQuandlData; // Poten.com网络数据暂存队列
+  CQueueWebData m_qTiingoData; // Poten.com网络数据暂存队列
 };
 
 extern CWebInquirer gl_WebInquirer; //

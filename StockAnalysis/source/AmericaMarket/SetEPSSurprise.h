@@ -25,8 +25,8 @@ public:
   long m_ID;  // 索引用，自动生成。
   CString m_Symbol;
   long m_Date;
-  CString m_Actual;
-  CString m_Estimate;
+  double m_Actual;
+  double m_Estimate;
 
   // 重写
     // 向导生成的虚函数重写

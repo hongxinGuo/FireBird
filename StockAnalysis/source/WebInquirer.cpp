@@ -48,6 +48,8 @@ CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // ÍøÒ×ÈÕÏ
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.ioÖ¤È¯ĞÅÏ¢
+extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
+extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 #endif
 
 CWebInquirer::CWebInquirer(void) {

@@ -12,5 +12,5 @@
 class CFinnhub {
 public:
   bool ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket);
-  bool ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, FinnhubInquiry CurrentFinnhubInquiry);
+  bool ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInquiry CurrentFinnhubInquiry);
 };

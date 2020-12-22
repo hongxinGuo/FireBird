@@ -249,60 +249,26 @@ bool myCompare(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate <
 bool CAmericaStake::UpdateEPSSurpriseDB(void) {
   CSetEPSSurprise setEPSSurprise;
 
-  size_t lSize = 0;
-  vector<CEPSSurprisePtr> vEPSSurprise;
-  CEPSSurprisePtr pEPSSurprise = nullptr;
-  long lCurrentPos = 0, lSizeOfOldEPSSurprise = 0;
-  bool fNeedUpdate = false;
-
   if (m_vEPSSurprise.size() == 0) return true;
-  sort(m_vEPSSurprise.begin(), m_vEPSSurprise.end(), myCompare);
-  for (auto& pEPS : m_vEPSSurprise) {
-    if (pEPS->m_lDate > m_lLastEPSSurpriseUpdateDate) {
-      m_lLastEPSSurpriseUpdateDate = pEPS->m_lDate;
-      fNeedUpdate = true;
-      m_fUpdateDatabase = true;
-    }
+  sort(m_vEPSSurprise.begin(), m_vEPSSurprise.end(), myCompare); // 以日期早晚顺序排列。
+  if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > m_lLastEPSSurpriseUpdateDate) {
+    m_fUpdateDatabase = true;
   }
-  if (!fNeedUpdate) return false;
+  else return false; // 没有新数据则返回
 
-  lSize = m_vEPSSurprise.size();
-  setEPSSurprise.m_strFilter = _T("[Symbol] = '");
-  setEPSSurprise.m_strFilter += m_strSymbol + _T("'");
-  setEPSSurprise.m_strSort = _T("[Date]");
-
-  setEPSSurprise.Open();
-  while (!setEPSSurprise.IsEOF()) {
-    pEPSSurprise = make_shared<CEPSSurprise>();
-    pEPSSurprise->Load(setEPSSurprise);
-    vEPSSurprise.push_back(pEPSSurprise);
-    lSizeOfOldEPSSurprise++;
-    setEPSSurprise.MoveNext();
-  }
-  setEPSSurprise.Close();
-
-  lCurrentPos = 0;
   setEPSSurprise.m_strFilter = _T("[ID] = 1");
   setEPSSurprise.Open();
   setEPSSurprise.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    pEPSSurprise = m_vEPSSurprise.at(i);
-    while ((lCurrentPos < lSizeOfOldEPSSurprise) && (vEPSSurprise.at(lCurrentPos)->m_lDate < pEPSSurprise->m_lDate)) lCurrentPos++;
-    if (lCurrentPos < lSizeOfOldEPSSurprise) {
-      if (vEPSSurprise.at(lCurrentPos)->m_lDate > pEPSSurprise->m_lDate) {
-        pEPSSurprise->Append(setEPSSurprise);
-        fNeedUpdate = true;
-      }
-    }
-    else {
+  for (auto& pEPSSurprise : m_vEPSSurprise) { // 数据是正序存储的，需要从头部开始存储
+    if (pEPSSurprise->m_lDate > m_lLastEPSSurpriseUpdateDate) {
       pEPSSurprise->Append(setEPSSurprise);
-      fNeedUpdate = true;
     }
   }
   setEPSSurprise.m_pDatabase->CommitTrans();
   setEPSSurprise.Close();
+  m_lLastEPSSurpriseUpdateDate = m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate;
 
-  return fNeedUpdate;
+  return true;
 }
 
 void CAmericaStake::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {

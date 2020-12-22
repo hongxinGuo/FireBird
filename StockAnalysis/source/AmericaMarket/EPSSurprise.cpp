@@ -13,14 +13,14 @@ void CEPSSurprise::Append(CSetEPSSurprise& setEPSSurprise) {
   setEPSSurprise.AddNew();
   setEPSSurprise.m_Symbol = m_strSymbol;
   setEPSSurprise.m_Date = m_lDate;
-  setEPSSurprise.m_Actual = ConvertValueToString(m_dActual);
-  setEPSSurprise.m_Estimate = ConvertValueToString(m_dEstimate);
+  setEPSSurprise.m_Actual = m_dActual;
+  setEPSSurprise.m_Estimate = m_dEstimate;
   setEPSSurprise.Update();
 }
 
 void CEPSSurprise::Load(CSetEPSSurprise& setEPSSurprise) {
   m_strSymbol = setEPSSurprise.m_Symbol;
   m_lDate = setEPSSurprise.m_Date;
-  m_dActual = atof(setEPSSurprise.m_Actual);
-  m_dEstimate = atof(setEPSSurprise.m_Estimate);
+  m_dActual = setEPSSurprise.m_Actual;
+  m_dEstimate = setEPSSurprise.m_Estimate;
 }
