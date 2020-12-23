@@ -15,6 +15,8 @@ int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
 #include"MockFinnhubWebInquiry.h"
+#include"MockTiingoWebInquiry.h"
+#include"MockQuandlWebInquiry.h"
 using namespace testing;
 
 CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
@@ -71,6 +73,8 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
   gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
+  gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
+  gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 
 #else
   gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
@@ -84,7 +88,8 @@ void CWebInquirer::Initialize(void) {
   gl_pNeteaseDayLineWebInquiry3 = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry4 = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
-
+  gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
+  gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 #endif
 }
 

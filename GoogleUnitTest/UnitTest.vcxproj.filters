@@ -910,6 +910,12 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEPSSurprise.h">
       <Filter>dependency</Filter>
     </ClInclude>
+    <ClInclude Include="MockTiingoWebInquiry.h">
+      <Filter>Mock类\America Stake Market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockQuandlWebInquiry.h">
+      <Filter>Mock类\America Stake Market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

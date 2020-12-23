@@ -466,10 +466,12 @@
     <ClInclude Include="MockNeteaseRTWebInquiry.h" />
     <ClInclude Include="MockPotenDailyBriefingMarket.h" />
     <ClInclude Include="MockPotenDailyBriefingWebInquiry.h" />
+    <ClInclude Include="MockQuandlWebInquiry.h" />
     <ClInclude Include="MockSinaStakeRTWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
     <ClInclude Include="MockStockAnalysisView.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />
+    <ClInclude Include="MockTiingoWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />
     <ClInclude Include="MockSystemMessage.h" />
   </ItemGroup>

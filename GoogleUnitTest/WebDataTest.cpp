@@ -10,13 +10,13 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       EXPECT_EQ(m_id.GetCurrentPos(), 0);
       EXPECT_EQ(m_id.GetTime(), 0);
-      EXPECT_EQ(m_id.GetBufferLength(), 2048 * 1024);
+      EXPECT_EQ(m_id.GetBufferLength(), 2048 * 4096);
       m_id.ResetCurrentPos();
       EXPECT_EQ(m_id.GetCurrentPos(), 0);
     }
 
     virtual void TearDown(void) override {
-      m_id.SetBufferLength(2038 * 1024);
+      m_id.SetBufferLength(2048 * 4096);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
 
