@@ -157,14 +157,14 @@ bool CAmericaMarket::SchedulingTask(void) {
 
   TaskCheckSystemReady();
 
-  //TaskInquiryFinnhub(lCurrentTime);
+  TaskInquiryFinnhub(lCurrentTime);
 
   ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
   ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
-    //SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
+    SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetMarketTime();
   }
 
@@ -310,6 +310,8 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
   return true;
 }
 
+bool CompareAmericaStake2(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
+
 //////////////////////////////////////////////
 //
 // 处理工作线程接收到的Finnhub网络信息。
@@ -326,6 +328,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CForexSymbolPtr> vForexSymbol;
   vector<CEconomicCalendarPtr> vEconomicCalendar;
   vector<CEPSSurprisePtr> vEPSSurprise;
+  vector<CAmericaStakePtr> vStake;
   long lTemp = 0;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
@@ -346,7 +349,19 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       pStake->m_fUpdateDatabase = true;
       break;
       case  __COMPANY_SYMBOLS__:
-      ProcessFinnhubStockSymbol(pWebData);
+      if (ProcessFinnhubStockSymbol(pWebData, vStake)) {
+        m_lTotalAmericaStake += vStake.size();
+        for (auto& pStake : vStake) {
+          m_vAmericaStake.push_back(pStake);
+        }
+        sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
+        m_mapAmericaStake.clear();
+        int j = 0;
+        for (auto& pStake : m_vAmericaStake) {
+          m_mapAmericaStake[pStake->m_strSymbol] = j++;
+        }
+        gl_systemMessage.PushInformationMessage("发现新代码，更新代码集");
+      }
       m_fSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:
@@ -708,12 +723,17 @@ bool CAmericaMarket::TaskSaveStakeSymbolDB(void) {
   if (m_lLastTotalAmericaStake < m_lTotalAmericaStake) {
     setAmericaStake.Open();
     setAmericaStake.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalAmericaStake; l < m_lTotalAmericaStake; l++) {
+    while (!setAmericaStake.IsEOF()) {
+      setAmericaStake.Delete();
+      setAmericaStake.MoveNext();
+    }
+    for (long l = 0; l < m_lTotalAmericaStake; l++) {
       pStake = m_vAmericaStake.at(l);
       pStake->Append(setAmericaStake);
     }
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
+
     m_lLastTotalAmericaStake = m_lTotalAmericaStake;
   }
   return true;
@@ -1192,7 +1212,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   CSetAmericaStake setAmericaStake;
   CAmericaStakePtr pAmericaStake = nullptr;
 
-  //setAmericaStake.m_strSort = _T("[Symbol]");
+  setAmericaStake.m_strSort = _T("[Symbol]");
   setAmericaStake.Open();
   setAmericaStake.m_pDatabase->BeginTrans();
   while (!setAmericaStake.IsEOF()) {

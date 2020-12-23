@@ -8,7 +8,7 @@
 
 bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
 bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
-bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData);
+bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vStake);
 bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
 bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
 bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);

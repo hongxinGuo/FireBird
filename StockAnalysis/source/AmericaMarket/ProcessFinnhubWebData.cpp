@@ -11,7 +11,7 @@
 
 using namespace boost::property_tree;
 
-static char s_buffer[2048 * 4096];
+static char s_buffer[1024 * 1024 * 8];
 
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
@@ -139,10 +139,13 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   return true;
 }
 
-bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData) {
+bool CompareAmericaStake(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
+
+bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vStake) {
   CAmericaStakePtr pStake = make_shared<CAmericaStake>();
   ptree pt, pt2;
   string s;
+  bool fFoundNewSymbol = false;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -156,14 +159,20 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData) {
     pStake->m_strSymbol = s.c_str();
     s = pt2.get<string>(_T("type"));
     if (s.size() > 0) pStake->m_strType = s.c_str();
+    s = pt2.get<string>(_T("mic"));
+    if (s.size() > 0) pStake->m_strMic = s.c_str();
+    s = pt2.get<string>(_T("figi"));
+    if (s.size() > 0) pStake->m_strFigi = s.c_str();
     s = pt2.get<string>(_T("currency"));
     if (s.size() > 0) pStake->m_strCurrency = s.c_str();
     if (!gl_pAmericaMarket->IsAmericaStake(pStake->m_strSymbol)) { // ÐÂ´úÂë£¿
-      gl_pAmericaMarket->AddAmericaStake(pStake);
+      vStake.push_back(pStake);
+      fFoundNewSymbol = true;
     }
   }
+  sort(vStake.begin(), vStake.end(), CompareAmericaStake);
 
-  return true;
+  return fFoundNewSymbol;
 }
 
 bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {

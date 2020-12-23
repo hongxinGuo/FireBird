@@ -17,8 +17,8 @@ class CWebData : public CObject {
 public:
   CWebData() {
     m_lTime = 0;
-    m_vDataBuffer.resize(2048 * 4096);
-    m_lBufferLength = 2048 * 4096;
+    m_vDataBuffer.resize(1024 * 1024 * 8);
+    m_lBufferLength = 1024 * 1024 * 8;
     m_lCurrentPos = 0;
   }
   ~CWebData() {

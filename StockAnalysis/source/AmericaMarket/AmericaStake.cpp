@@ -12,6 +12,8 @@ void CAmericaStake::Reset(void) {
   m_strIPODate = _T(" ");
   m_strCurrency = _T(" ");
   m_strType = _T(" ");
+  m_strMic = _T(" ");
+  m_strFigi = _T(" ");
   m_strCountry = _T(" ");
   m_strDescription = _T(" ");
   m_strDisplaySymbol = _T(" ");
@@ -71,6 +73,8 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strDescription = setAmericaStake.m_Description;
   m_strDisplaySymbol = setAmericaStake.m_DisplaySymbol;
   m_strType = setAmericaStake.m_Type;
+  m_strMic = setAmericaStake.m_Mic;
+  m_strFigi = setAmericaStake.m_Figi;
   m_strCurrency = setAmericaStake.m_Currency;
   m_strAddress = setAmericaStake.m_Address;
   m_strCity = setAmericaStake.m_City;
@@ -137,6 +141,8 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_Description = m_strDescription;
   setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;
   setAmericaStake.m_Type = m_strType;
+  setAmericaStake.m_Mic = m_strMic;
+  setAmericaStake.m_Figi = m_strFigi;
   setAmericaStake.m_Currency = m_strCurrency;
   setAmericaStake.m_Address = m_strAddress;
   setAmericaStake.m_City = m_strCity;

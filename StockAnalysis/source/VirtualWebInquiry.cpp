@@ -122,7 +122,7 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
         m_buffer[m_lByteRead++] = m_bufferTemp[l];
       }
     } while (m_lByteReadCurrent > 0);
-    ASSERT(m_lByteRead < 4096 * 2048);
+    ASSERT(m_lByteRead < 1024 * 1024 * 8);
     m_lTotalByteReaded += m_lByteRead;
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
     /*

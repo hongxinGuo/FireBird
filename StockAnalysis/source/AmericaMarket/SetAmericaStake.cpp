@@ -14,12 +14,14 @@ IMPLEMENT_DYNAMIC(CSetAmericaStake, CRecordset)
 
 CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   : CRecordset(pdb) {
-  m_IPODate = _T(" ");
-  m_Currency = _T(" ");
-  m_Type = _T(" ");
-  m_Country = _T(" ");
   m_Description = _T(" ");
   m_DisplaySymbol = _T(" ");
+  m_IPODate = _T(" ");
+  m_Type = _T(" ");
+  m_Mic = _T(" ");
+  m_Figi = _T(" ");
+  m_Currency = _T(" ");
+  m_Country = _T(" ");
   m_Exchange = _T(" ");
   m_FinnhubIndustry = _T(" ");
   m_Peer = _T(" ");
@@ -49,7 +51,7 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_LastEPSSurpriseUpdateDate = 19800101;
   m_IPOStatus = __STAKE_NOT_CHECKED__;
 
-  m_nFields = 39;
+  m_nFields = 41;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -70,6 +72,8 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Description]"), m_Description);
   RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
   RFX_Text(pFX, _T("[Type]"), m_Type);
+  RFX_Text(pFX, _T("[Mic]"), m_Mic);
+  RFX_Text(pFX, _T("[Figi]"), m_Figi);
   RFX_Text(pFX, _T("[Currency]"), m_Currency);
 
   RFX_Text(pFX, _T("[Address]"), m_Address);

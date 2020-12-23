@@ -102,6 +102,8 @@ public:
   CString m_strDisplaySymbol;
   CString m_strSymbol;
   CString m_strType;
+  CString m_strMic;
+  CString m_strFigi;
   CString m_strCurrency;
 
   // profile–≈œ¢

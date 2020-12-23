@@ -143,6 +143,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
   CString str = _T("");
   vector<CString> vExchange;
   vector<CForexSymbolPtr> vForexSymbol;
+  vector<CAmericaStakePtr> vStake;
   long lTemp = 0;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
@@ -160,7 +161,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       ProcessFinnhubStockProfile2(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentProfilePos));
       break;
       case  __COMPANY_SYMBOLS__:
-      ProcessFinnhubStockSymbol(pWebData);
+      ProcessFinnhubStockSymbol(pWebData, vStake);
       pMarket->m_fSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:

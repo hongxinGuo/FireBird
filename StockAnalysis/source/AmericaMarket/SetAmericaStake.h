@@ -26,6 +26,8 @@ public:
   CString m_DisplaySymbol;
   CString m_Symbol;
   CString m_Type;
+  CString m_Mic;
+  CString m_Figi;
   CString m_Currency;
   CString m_Address;
   CString m_City;
