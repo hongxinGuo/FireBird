@@ -2,8 +2,14 @@
 
 #include"stdafx.h"
 
+#include"WebData.h"
+
 using namespace std;
 #include<vector>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+using namespace boost::property_tree;
 
 // 时间变换。将buffer中的字符串根据strFormat的制式变换成time_t制式的日期时间
 time_t ConvertBufferToTime(CString strFormat, const char* buffer);
@@ -43,3 +49,5 @@ public:
   long m_lStrongDayLength[4]{ 0, 0, 0, 0 }; // 满足条件的天数
   double m_dRSStrong[4]{ 50.0, 50.0, 50.0, 50.0 }; // 正值意思为高于此值，负值意思为低于此值
 };
+
+bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData);

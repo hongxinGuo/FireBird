@@ -306,9 +306,6 @@
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h">
       <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h">
-      <Filter>头文件\America Stock Market\实现</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h">
       <Filter>头文件\America Stock Market\数据库</Filter>
     </ClInclude>
@@ -356,6 +353,12 @@
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h">
       <Filter>头文件\America Stock Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\ProcessFinnhubWebData.h">
+      <Filter>头文件\America Stock Market\实现</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h">
+      <Filter>头文件\America Stock Market\实现</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -611,9 +614,6 @@
     <ClCompile Include="source\FinnHubWebInquiry.cpp">
       <Filter>源文件\America Stake Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp">
-      <Filter>源文件\America Stake Market\实现</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp">
       <Filter>源文件\America Stake Market\数据库</Filter>
     </ClCompile>
@@ -691,6 +691,12 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp">
       <Filter>源文件\America Stake Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ProcessFinnhubWebData.cpp">
+      <Filter>源文件\America Stake Market\实现</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp">
+      <Filter>源文件\America Stake Market\实现</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

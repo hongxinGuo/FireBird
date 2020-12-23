@@ -1,6 +1,6 @@
 #include"WebInquirer.h"
 
-#include"ProcessAmericaStake.h"
+#include"ProcessFinnhubWebData.h"
 
 #include"Finnhub.h"
 
@@ -153,14 +153,14 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       switch (finnhubInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
       ASSERT(finnhubInquiry.m_lStakeIndex == pMarket->m_lCurrentProfilePos);
-      ProcessAmericaStakeProfile(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentProfilePos));
+      ProcessFinnhubStockProfile(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentProfilePos));
       break;
       case __COMPANY_PROFILE2__:
       ASSERT(finnhubInquiry.m_lStakeIndex == pMarket->m_lCurrentProfilePos);
-      ProcessAmericaStakeProfile2(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentProfilePos));
+      ProcessFinnhubStockProfile2(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentProfilePos));
       break;
       case  __COMPANY_SYMBOLS__:
-      ProcessAmericaStakeSymbol(pWebData);
+      ProcessFinnhubStockSymbol(pWebData);
       pMarket->m_fSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:
@@ -175,15 +175,15 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       break;
       case __STOCK_QUOTE__:
       ASSERT(finnhubInquiry.m_lStakeIndex == pMarket->m_lCurrentRTDataQuotePos);
-      ProcessAmericaStakeQuote(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentRTDataQuotePos));
+      ProcessFinnhubStockQuote(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentRTDataQuotePos));
       break;
       case __STOCK_CANDLES__:
       ASSERT(finnhubInquiry.m_lStakeIndex == pMarket->m_lCurrentUpdateDayLinePos);
-      ProcessAmericaStakeCandle(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentUpdateDayLinePos));
+      ProcessFinnhubStockCandle(pWebData, pMarket->m_vAmericaStake.at(pMarket->m_lCurrentUpdateDayLinePos));
       TRACE("处理%s日线数据\n", pMarket->m_vAmericaStake.at(pMarket->m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
       break;
       case __FOREX_EXCHANGE__:
-      ProcessAmericaForexExchange(pWebData, vExchange);
+      ProcessFinnhubForexExchange(pWebData, vExchange);
       for (int i = 0; i < vExchange.size(); i++) {
         if (pMarket->m_mapForexExchange.find(vExchange.at(i)) == pMarket->m_mapForexExchange.end()) {
           lTemp = pMarket->m_vForexExchange.size();
@@ -195,7 +195,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       pMarket->m_fForexExhangeUpdated = true;
       break;
       case __FOREX_SYMBOLS__:
-      ProcessAmericaForexSymbol(pWebData, vForexSymbol);
+      ProcessFinnhubForexSymbol(pWebData, vForexSymbol);
       for (auto& pSymbol : vForexSymbol) {
         if (pMarket->m_mapForexSymbol.find(pSymbol->m_strSymbol) == pMarket->m_mapForexSymbol.end()) {
           pSymbol->m_strExchange = pMarket->m_vForexExchange.at(pMarket->m_CurrentFinnhubInquiry.m_lStakeIndex);
@@ -208,7 +208,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       break;
       case __FOREX_CANDLES__:
       ASSERT(finnhubInquiry.m_lStakeIndex == pMarket->m_lCurrentUpdateForexDayLinePos);
-      ProcessForexCandle(pWebData, pMarket->m_vForexSymbol.at(pMarket->m_lCurrentUpdateForexDayLinePos));
+      ProcessFinnhubForexCandle(pWebData, pMarket->m_vForexSymbol.at(pMarket->m_lCurrentUpdateForexDayLinePos));
       TRACE("处理%s日线数据\n", pMarket->m_vForexSymbol.at(pMarket->m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
       break;
       case __FOREX_ALL_RATES__:

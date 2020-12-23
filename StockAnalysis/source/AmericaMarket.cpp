@@ -2,7 +2,7 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
-#include"ProcessAmericaStake.h"
+#include"ProcessFinnhubWebData.h"
 #include"EPSSurprise.h"
 
 #include"SetForexExchange.h"
@@ -25,6 +25,13 @@ CAmericaMarket::CAmericaMarket() {
   m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
   CalculateTime();
 
+  InitialFinnhubInquiryStr();
+  InitialTiingoInquiryStr();
+
+  Reset();
+}
+
+void CAmericaMarket::InitialFinnhubInquiryStr(void) {
   m_vFinnhubInquiringStr.resize(1000);
 
   // Finnhub前缀字符串在此预设之
@@ -51,14 +58,22 @@ CAmericaMarket::CAmericaMarket() {
 
   m_vFinnhubInquiringStr.at(__ECONOMIC_COUNTRY_LIST__) = _T("https://finnhub.io/api/v1/country?");
   m_vFinnhubInquiringStr.at(__ECONOMIC_CALENDAR__) = _T("https://finnhub.io/api/v1/calendar/economic?");
+}
 
-  Reset();
+void CAmericaMarket::InitialTiingoInquiryStr(void) {
+  m_vTiingoInquiringStr.resize(1000);
+
+  m_vTiingoInquiringStr.at(__STOCK_CANDLES__) = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
 CAmericaMarket::~CAmericaMarket() {
 }
 
 void CAmericaMarket::Reset(void) {
+  ResetFinnhub();
+}
+
+void CAmericaMarket::ResetFinnhub(void) {
   m_lTotalAmericaStake = 0;
   m_lLastTotalAmericaStake = 0;
   m_lCurrentProfilePos = 0;
@@ -113,6 +128,12 @@ void CAmericaMarket::Reset(void) {
   m_lLastTotalEconomicCalendar = 0;
 }
 
+void CAmericaMarket::ResetQuandl(void) {
+}
+
+void CAmericaMarket::ResetTiingo(void) {
+}
+
 void CAmericaMarket::ResetMarket(void) {
   Reset();
 
@@ -145,126 +166,6 @@ bool CAmericaMarket::SchedulingTask(void) {
   if (GetMarketTime() > s_timeLast) {
     SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetMarketTime();
-  }
-
-  return true;
-}
-
-//////////////////////////////////////////////
-//
-// 处理工作线程接收到的Finnhub网络信息。
-//
-// 目前只允许同时处理一条信息。即信息从申请至处理完之前，不允许处理下一条信息。这样能够保证同一性。且由于Finnhub网站有速度限制，
-// 每分钟只允许60次申请，故而没有必要强调处理速度。
-//
-//////////////////////////////////////////////
-bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
-  CWebDataPtr pWebData = nullptr;
-  CAmericaStakePtr pStake = nullptr;
-  CString str = _T("");
-  vector<CString> vExchange;
-  vector<CForexSymbolPtr> vForexSymbol;
-  vector<CEconomicCalendarPtr> vEconomicCalendar;
-  vector<CEPSSurprisePtr> vEPSSurprise;
-  long lTemp = 0;
-
-  ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
-  if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
-    if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
-      ASSERT(m_fFinnhubInquiring);
-      pWebData = gl_WebInquirer.PopFinnhubData();
-      switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
-      case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
-      ProcessAmericaStakeProfile(pWebData, m_vAmericaStake.at(m_lCurrentProfilePos));
-      break;
-      case __COMPANY_PROFILE2__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
-      pStake = m_vAmericaStake.at(m_lCurrentProfilePos);
-      ProcessAmericaStakeProfile2(pWebData, pStake);
-      pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
-      pStake->m_fUpdateDatabase = true;
-      break;
-      case  __COMPANY_SYMBOLS__:
-      ProcessAmericaStakeSymbol(pWebData);
-      m_fSymbolUpdated = true;
-      break;
-      case  __MARKET_NEWS__:
-      break;
-      case __COMPANY_NEWS__:
-      break;
-      case __NEWS_SENTIMENT__:
-      break;
-      case __PEERS__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdatePeerPos);
-      pStake = m_vAmericaStake.at(m_lCurrentUpdatePeerPos);
-      ProcessPeer(pWebData, pStake);
-      pStake->m_fUpdateDatabase = true;
-      break;
-      case __BASIC_FINANCIALS__:
-      break;
-      case __STOCK_EPS_SURPRISE__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
-      pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
-      ProcessEPSSurprise(pWebData, vEPSSurprise);
-      pStake->UpdateEPSSurprise(vEPSSurprise);
-      pStake->m_fEPSSurpriseNeedUpdate = false;
-      pStake->m_fEPSSurpriseNeedSave = true;
-      break;
-      case __STOCK_QUOTE__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
-      ProcessAmericaStakeQuote(pWebData, m_vAmericaStake.at(m_lCurrentRTDataQuotePos));
-      break;
-      case __STOCK_CANDLES__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
-      ProcessAmericaStakeCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
-      TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
-      break;
-      case __FOREX_EXCHANGE__:
-      ProcessAmericaForexExchange(pWebData, vExchange);
-      for (int i = 0; i < vExchange.size(); i++) {
-        if (m_mapForexExchange.find(vExchange.at(i)) == m_mapForexExchange.end()) {
-          lTemp = m_vForexExchange.size();
-          m_vForexExchange.push_back(vExchange.at(i));
-          m_mapForexExchange[vExchange.at(i)] = lTemp;
-        }
-      }
-      m_lTotalForexExchange = m_vForexExchange.size();
-      m_fForexExhangeUpdated = true;
-      break;
-      case __FOREX_SYMBOLS__:
-      ProcessAmericaForexSymbol(pWebData, vForexSymbol);
-      for (auto& pSymbol : vForexSymbol) {
-        if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
-          pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStakeIndex);
-          lTemp = m_mapForexSymbol.size();
-          m_mapForexSymbol[pSymbol->m_strSymbol] = lTemp;
-          m_vForexSymbol.push_back(pSymbol);
-        }
-      }
-      m_lTotalForexSymbol = m_vForexSymbol.size();
-      break;
-      case __FOREX_CANDLES__:
-      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateForexDayLinePos);
-      ProcessForexCandle(pWebData, m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos));
-      TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
-      break;
-      case __FOREX_ALL_RATES__:
-      break;
-      case __ECONOMIC_COUNTRY_LIST__:
-      ProcessCountryList(pWebData, m_vCountry);
-      m_lTotalCountry = m_vCountry.size();
-      m_fCountryListUpdated = true;
-      break;
-      case __ECONOMIC_CALENDAR__:
-      ProcessEconomicCalendar(pWebData, vEconomicCalendar);
-      UpdateEconomicCalendar(vEconomicCalendar);
-      m_fEconomicCalendarUpdated = true;
-      default:
-      break;
-      }
-      m_fFinnhubInquiring = false;
-    }
   }
 
   return true;
@@ -407,6 +308,262 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
   }
 
   return true;
+}
+
+//////////////////////////////////////////////
+//
+// 处理工作线程接收到的Finnhub网络信息。
+//
+// 目前只允许同时处理一条信息。即信息从申请至处理完之前，不允许处理下一条信息。这样能够保证同一性。且由于Finnhub网站有速度限制，
+// 每分钟只允许60次申请，故而没有必要强调处理速度。
+//
+//////////////////////////////////////////////
+bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
+  CWebDataPtr pWebData = nullptr;
+  CAmericaStakePtr pStake = nullptr;
+  CString str = _T("");
+  vector<CString> vExchange;
+  vector<CForexSymbolPtr> vForexSymbol;
+  vector<CEconomicCalendarPtr> vEconomicCalendar;
+  vector<CEPSSurprisePtr> vEPSSurprise;
+  long lTemp = 0;
+
+  ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
+  if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
+    if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
+      ASSERT(m_fFinnhubInquiring);
+      pWebData = gl_WebInquirer.PopFinnhubData();
+      switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
+      case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
+      ProcessFinnhubStockProfile(pWebData, m_vAmericaStake.at(m_lCurrentProfilePos));
+      break;
+      case __COMPANY_PROFILE2__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentProfilePos);
+      pStake = m_vAmericaStake.at(m_lCurrentProfilePos);
+      ProcessFinnhubStockProfile2(pWebData, pStake);
+      pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+      pStake->m_fUpdateDatabase = true;
+      break;
+      case  __COMPANY_SYMBOLS__:
+      ProcessFinnhubStockSymbol(pWebData);
+      m_fSymbolUpdated = true;
+      break;
+      case  __MARKET_NEWS__:
+      break;
+      case __COMPANY_NEWS__:
+      break;
+      case __NEWS_SENTIMENT__:
+      break;
+      case __PEERS__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdatePeerPos);
+      pStake = m_vAmericaStake.at(m_lCurrentUpdatePeerPos);
+      ProcessFinnhubStockPeer(pWebData, pStake);
+      pStake->m_fUpdateDatabase = true;
+      break;
+      case __BASIC_FINANCIALS__:
+      break;
+      case __STOCK_EPS_SURPRISE__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
+      pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
+      ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise);
+      pStake->UpdateEPSSurprise(vEPSSurprise);
+      pStake->m_fEPSSurpriseNeedUpdate = false;
+      pStake->m_fEPSSurpriseNeedSave = true;
+      break;
+      case __STOCK_QUOTE__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
+      ProcessFinnhubStockQuote(pWebData, m_vAmericaStake.at(m_lCurrentRTDataQuotePos));
+      break;
+      case __STOCK_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
+      ProcessFinnhubStockCandle(pWebData, m_vAmericaStake.at(m_lCurrentUpdateDayLinePos));
+      TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
+      break;
+      case __FOREX_EXCHANGE__:
+      ProcessFinnhubForexExchange(pWebData, vExchange);
+      for (int i = 0; i < vExchange.size(); i++) {
+        if (m_mapForexExchange.find(vExchange.at(i)) == m_mapForexExchange.end()) {
+          lTemp = m_vForexExchange.size();
+          m_vForexExchange.push_back(vExchange.at(i));
+          m_mapForexExchange[vExchange.at(i)] = lTemp;
+        }
+      }
+      m_lTotalForexExchange = m_vForexExchange.size();
+      m_fForexExhangeUpdated = true;
+      break;
+      case __FOREX_SYMBOLS__:
+      ProcessFinnhubForexSymbol(pWebData, vForexSymbol);
+      for (auto& pSymbol : vForexSymbol) {
+        if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
+          pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStakeIndex);
+          lTemp = m_mapForexSymbol.size();
+          m_mapForexSymbol[pSymbol->m_strSymbol] = lTemp;
+          m_vForexSymbol.push_back(pSymbol);
+        }
+      }
+      m_lTotalForexSymbol = m_vForexSymbol.size();
+      break;
+      case __FOREX_CANDLES__:
+      ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateForexDayLinePos);
+      ProcessFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos));
+      TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
+      break;
+      case __FOREX_ALL_RATES__:
+      break;
+      case __ECONOMIC_COUNTRY_LIST__:
+      ProcessFinnhubCountryList(pWebData, m_vCountry);
+      m_lTotalCountry = m_vCountry.size();
+      m_fCountryListUpdated = true;
+      break;
+      case __ECONOMIC_CALENDAR__:
+      ProcessFinnhubEconomicCalendar(pWebData, vEconomicCalendar);
+      UpdateEconomicCalendar(vEconomicCalendar);
+      m_fEconomicCalendarUpdated = true;
+      default:
+      break;
+      }
+      m_fFinnhubInquiring = false;
+    }
+  }
+
+  return true;
+}
+
+bool CAmericaMarket::ProcessTiingoInquiringMessage(void) {
+  CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
+  CString strTemp;
+  CAmericaStakePtr pStake = nullptr;
+  CForexSymbolPtr pSymbol = nullptr;
+
+  if (m_qTiingoWebInquiry.size() > 0) { // 有申请等待？
+    ASSERT(m_fTiingoInquiring);
+    if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
+      m_CurrentTiingoInquiry = m_qTiingoWebInquiry.top();
+      m_qTiingoWebInquiry.pop();
+      gl_pTiingoWebInquiry->SetInquiryingStrPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); // 设置前缀
+      switch (m_CurrentTiingoInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
+      case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
+      m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
+      break;
+      case __COMPANY_PROFILE2__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentProfilePos);
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol);
+      m_vAmericaStake.at(m_lCurrentProfilePos)->m_fInquiryAmericaStake = false;
+      break;
+      case  __COMPANY_SYMBOLS__:
+      // do nothing
+      break;
+      case __COMPANY_EXECTIVE__: // Premium
+      break;
+      case __MARKET_NEWS__:
+      break;
+      case __COMPANY_NEWS__:
+      break;
+      case __PRESS_RELEASE__: // Premium
+      break;
+      case __NEWS_SENTIMENT__:
+      break;
+      case __PEERS__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentUpdatePeerPos);
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentUpdatePeerPos)->m_strSymbol);
+      m_vAmericaStake.at(m_lCurrentUpdatePeerPos)->m_fPeerUpdated = true;
+      break;
+      case __BASIC_FINANCIALS__:
+      break;
+      case __OWNERSHIP__: // Premium
+      break;
+      case __FUND_OWNERSHIP__: // jPremium
+      break;
+      case __FINANCIAL__: // Premium
+      break;
+      case __FINAICIAL_AS_REPORT__:
+      break;
+      case __SEC_FILINGS__:
+      break;
+      case __INTERNATIONAL_FILINGS__: // Premium
+      break;
+      case __SEC_SENTIMENT_ANALYSIS__: // Premium
+      break;
+      case __SIMILARITY_INDEX__: // Premium
+      break;
+      case __IPO_CALENDER__:
+      break;
+      case __DIVIDENDS__: // Premium
+      break;
+      case __STOCK_RECOMMENDATION_TRENDS__:
+      break;
+      case __STOCK_PRICE_TARGET__:
+      break;
+      case __STOCK_UPGRADE_DOWNGRADE__: // Premium
+      break;
+      case __STOCK_REVENUE_EXTIMATES__: // Premium
+      break;
+      case __STOCK_EPS_EXTIMATES__:// Premium
+      break;
+      case __STOCK_EPS_SURPRISE__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol);
+      break;
+      case __STOCK_EARNING_CALENDER__:
+      break;
+      case __STOCK_QUOTE__:
+      pStake = m_vAmericaStake.at(m_lCurrentRTDataQuotePos);
+      strMiddle = pStake->GetSymbol();
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
+      break;
+      case __STOCK_CANDLES__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentUpdateDayLinePos);
+      pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
+      strMiddle = pStake->GetDayLineInquiryString(GetMarketTime());
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
+      pStake->m_fDayLineNeedUpdate = false;
+      break;
+      case __STOCK_TICK_DATA__: // Premium
+      break;
+      case __STOCK_LAST_BID_ASK__: // Premium
+      break;
+      case __STOCK_SPLITS__:
+      break;
+      case __FOREX_EXCHANGE__:
+      // do nothing
+      break;
+      case __FOREX_SYMBOLS__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == (m_lCurrentForexExchangePos - 1));
+      strMiddle = m_vForexExchange.at(m_CurrentTiingoInquiry.m_lStakeIndex);
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
+      break;
+      case __FOREX_CANDLES__:
+      ASSERT(m_CurrentTiingoInquiry.m_lStakeIndex == m_lCurrentUpdateForexDayLinePos);
+      pSymbol = m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos);
+      strMiddle = pSymbol->GetDayLineInquiryString(GetMarketTime());
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
+      pSymbol->m_fDayLineNeedUpdate = false;
+      break;
+      case __FOREX_ALL_RATES__:
+      break;
+      case __ECONOMIC_COUNTRY_LIST__:
+      // do nothing
+      break;
+      case __ECONOMIC_CALENDAR__:
+      // do nothing
+      break;
+      default:
+      TRACE("未处理指令%d\n", m_CurrentTiingoInquiry.m_lInquiryIndex);
+      break;
+      }
+      SetTiingoDataReceived(false); // 重置此标识需要放在启动工作线程（GetWebData）之前，否则工作线程中的断言容易出错。
+      gl_pTiingoWebInquiry->GetWebData();
+    }
+  }
+
+  return true;
+}
+
+bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
+  return false;
 }
 
 bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {

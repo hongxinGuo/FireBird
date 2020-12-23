@@ -244,13 +244,10 @@ bool CAmericaStake::SaveDayLine(void) {
   return fNeedUpdate;
 }
 
-bool myCompare(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
-
 bool CAmericaStake::UpdateEPSSurpriseDB(void) {
   CSetEPSSurprise setEPSSurprise;
 
   if (m_vEPSSurprise.size() == 0) return true;
-  sort(m_vEPSSurprise.begin(), m_vEPSSurprise.end(), myCompare); // 以日期早晚顺序排列。
   if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > m_lLastEPSSurpriseUpdateDate) {
     m_fUpdateDatabase = true;
   }

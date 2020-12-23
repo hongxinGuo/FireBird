@@ -713,7 +713,8 @@
     <ClInclude Include="source\AmericaMarket\EPSSurprise.h" />
     <ClInclude Include="source\AmericaMarket\Finnhub.h" />
     <ClInclude Include="source\AmericaMarket\ForexSymbol.h" />
-    <ClInclude Include="source\AmericaMarket\ProcessAmericaStake.h" />
+    <ClInclude Include="source\AmericaMarket\ProcessFinnhubWebData.h" />
+    <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h" />
@@ -799,7 +800,8 @@
     <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp" />
     <ClCompile Include="source\AmericaMarket\Finnhub.cpp" />
     <ClCompile Include="source\AmericaMarket\ForexSymbol.cpp" />
-    <ClCompile Include="source\AmericaMarket\ProcessAmericaStake.cpp" />
+    <ClCompile Include="source\AmericaMarket\ProcessFinnhubWebData.cpp" />
+    <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp" />

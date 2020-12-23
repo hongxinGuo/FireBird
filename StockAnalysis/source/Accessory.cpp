@@ -320,3 +320,22 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
     else vData.at(i) = d;
   }
 }
+
+bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
+  char* pbuffer = new char[2048 * 1024];
+  for (int i = 0; i < pWebData->GetBufferLength(); i++) {
+    pbuffer[i] = pWebData->GetData(i);
+  }
+  pbuffer[pWebData->GetBufferLength()] = 0x000;
+  string strTemp = pbuffer;
+  stringstream ss(strTemp);
+
+  delete pbuffer;
+  try {
+    read_json(ss, pt);
+  }
+  catch (ptree_error&) {
+    return false;
+  }
+  return true;
+}

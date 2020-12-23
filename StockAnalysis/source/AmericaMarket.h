@@ -110,13 +110,20 @@ class CAmericaMarket : public CVirtualMarket {
   friend class CFinnhub;
 public:
   CAmericaMarket();
+  void InitialFinnhubInquiryStr(void);
+  void InitialTiingoInquiryStr(void);
   virtual ~CAmericaMarket();
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool ProcessFinnhubInquiringMessage(void);
   bool ProcessFinnhubWebDataReceived(void);
+  bool ProcessTiingoInquiringMessage(void);
+  bool ProcessTiingoWebDataReceived(void);
   virtual void ResetMarket(void) override;
   void Reset(void);
+  void ResetFinnhub(void);
+  void ResetQuandl(void);
+  void ResetTiingo(void);
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Seconds(long lSecond, long lCurrentTime);
@@ -133,10 +140,11 @@ public:
   bool TaskInquiryFinnhubPeer(void);
   bool TaskInquiryFinnhubEconomicCalender(void);
   bool TaskInquiryFinnhubEPSSurprise(void);
-
   bool TaskInquiryFinnhubForexExchange(void);
   bool TaskInquiryFinnhubForexSymbol(void);
   bool TaskInquiryFinnhubForexDayLine(void);
+
+  bool TaskInquiryTiingoDayLine(void);
 
   bool TaskSaveStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
@@ -208,6 +216,8 @@ protected:
   long m_lCurrentUpdatePeerPos;
   long m_lCurrentUpdateEPSSurprisePos;
   WebInquiry m_CurrentFinnhubInquiry;
+  WebInquiry m_CurrentTiingoInquiry;
+  WebInquiry m_CurrentQuandlInquiry;
 
   vector<CString> m_vFinnhubInquiringStr;
   priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）

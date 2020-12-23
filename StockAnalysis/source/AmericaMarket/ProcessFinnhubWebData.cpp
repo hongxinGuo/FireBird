@@ -1,8 +1,10 @@
 #include"stdafx.h"
 #include"globedef.h"
+#include"accessory.h"
+
 #include"WebData.h"
 #include"EconomicCalendar.h"
-#include"ProcessAmericaStake.h"
+#include"ProcessFinnhubWebData.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -11,26 +13,10 @@ using namespace boost::property_tree;
 
 static char s_buffer[2048 * 1024];
 
-bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
-  char* pbuffer = new char[2048 * 1024];
-  for (int i = 0; i < pWebData->GetBufferLength(); i++) {
-    pbuffer[i] = pWebData->GetData(i);
-  }
-  pbuffer[pWebData->GetBufferLength()] = 0x000;
-  string strTemp = pbuffer;
-  stringstream ss(strTemp);
+bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
+bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
 
-  delete pbuffer;
-  try {
-    read_json(ss, pt);
-  }
-  catch (ptree_error&) {
-    return false;
-  }
-  return true;
-}
-
-bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   ptree pt;
   string s;
 
@@ -109,7 +95,7 @@ bool ProcessAmericaStakeProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
   return true;
 }
 
-bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   ptree pt;
   string s;
 
@@ -153,7 +139,7 @@ bool ProcessAmericaStakeProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   return true;
 }
 
-bool ProcessAmericaStakeSymbol(CWebDataPtr pWebData) {
+bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData) {
   CAmericaStakePtr pStake = make_shared<CAmericaStake>();
   ptree pt, pt2;
   string s;
@@ -180,7 +166,7 @@ bool ProcessAmericaStakeSymbol(CWebDataPtr pWebData) {
   return true;
 }
 
-bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2, pt3;
   string s;
@@ -302,6 +288,7 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   catch (ptree_error&) {
   }
   pStake->SetIPOStatus(__STAKE_IPOED__);
+  sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
   pStake->UpdateDayLine(vDayLine);
   pStake->SetDayLineNeedUpdate(false);
   pStake->SetDayLineNeedSaving(true);
@@ -309,7 +296,7 @@ bool ProcessAmericaStakeCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   return true;
 }
 
-bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   string s;
   ptree pt;
   double dTemp = 0;
@@ -340,7 +327,7 @@ bool ProcessAmericaStakeQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   return true;
 }
 
-bool ProcessAmericaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
   ptree pt, pt2;
   string s;
   CString str = _T("");
@@ -356,7 +343,7 @@ bool ProcessAmericaForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
   return true;
 }
 
-bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
+bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
   CForexSymbolPtr pSymbol = make_shared<CForexSymbol>();
   ptree pt, pt2;
   string s;
@@ -377,7 +364,7 @@ bool ProcessAmericaForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
   return true;
 }
 
-bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
+bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2, pt3;
   string s;
@@ -499,6 +486,7 @@ bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
     // 有些外汇交易不提供成交量，忽略就可以了
   }
   pForexSymbol->SetIPOStatus(__STAKE_IPOED__);
+  sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
   pForexSymbol->UpdateDayLine(vDayLine);
   pForexSymbol->SetDayLineNeedUpdate(false);
   pForexSymbol->SetDayLineNeedSaving(true);
@@ -506,7 +494,7 @@ bool ProcessForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
   return true;
 }
 
-bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
+bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
   CCountryPtr pCountry = nullptr;
   ptree pt, pt2;
   string s;
@@ -536,7 +524,7 @@ bool ProcessCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
   return true;
 }
 
-bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   char buffer[1000]{};
   int i = 0;
 
@@ -555,7 +543,7 @@ bool ProcessPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   return true;
 }
 
-bool ProcessEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
+bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
   CEconomicCalendarPtr pEconomicCalendar = nullptr;
   ptree pt, pt2;
   string s;
@@ -586,7 +574,7 @@ bool ProcessEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>&
   return true;
 }
 
-bool ProcessEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
+bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
   ptree pt, pt2;
   string s;
   CTime time;
@@ -612,5 +600,7 @@ bool ProcessEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurpr
     }
     vEPSSurprise.push_back(pEPSSurprise);
   }
+  sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
+
   return true;
 }
