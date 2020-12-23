@@ -157,14 +157,14 @@ bool CAmericaMarket::SchedulingTask(void) {
 
   TaskCheckSystemReady();
 
-  TaskInquiryFinnhub(lCurrentTime);
+  //TaskInquiryFinnhub(lCurrentTime);
 
   ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
   ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
-    SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
+    //SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetMarketTime();
   }
 
