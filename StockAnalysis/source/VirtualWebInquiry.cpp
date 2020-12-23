@@ -40,7 +40,7 @@ void CVirtualWebInquiry::Reset(void) noexcept {
   m_fWebError = false;
 }
 
-bool CVirtualWebInquiry::ReadWebData2(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
+bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
   bool fDone = false;
@@ -99,7 +99,7 @@ bool CVirtualWebInquiry::ReadWebData2(long lFirstDelayTime, long lSecondDelayTim
   return fStatus;
 }
 
-bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
+bool CVirtualWebInquiry::ReadWebData(void) {
   CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
   bool fStatus = true;
@@ -115,7 +115,6 @@ bool CVirtualWebInquiry::ReadWebData(long lFirstDelayTime, long lSecondDelayTime
   SetByteReaded(0);
   try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    // 网易日线历史数据无法一次读完，故需要多次读取。当设置的读取字节数大于实际数据值时，其他站点皆可一次读取到所有数据，无须设置等待时间了。
     do {
       m_lByteReadCurrent = m_pFile->Read(m_bufferTemp, 1024); // 目前最大的一次读取数值大致为1M，故设置2M即足够了。
       for (long l = 0; l < m_lByteReadCurrent; l++) {

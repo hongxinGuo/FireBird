@@ -30,6 +30,8 @@ CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // ÍøÒ
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // ÍøÒ×ÈÕÏßÀúÊ·Êı¾İ
 CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr;
+CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry = nullptr;
+CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr;
 #else
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
@@ -38,6 +40,8 @@ CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry = nullptr;
 #include"PotenDailyBriefingWebInquiry.h"
 #include"CrweberIndexWebInquiry.h"
 #include"FinnhubWebInquiry.h"
+#include"TiingoWebInquiry.h"
+#include"QuandlWebInquiry.h"
 
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // ĞÂÀËÊµÊ±Êı¾İ²É¼¯
 CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry = nullptr;

@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData(70, 30, 20))
+    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData(70, 30, 20))
+    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(true));
     SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));

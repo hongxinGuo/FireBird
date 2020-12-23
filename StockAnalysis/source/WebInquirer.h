@@ -21,6 +21,8 @@ extern int gl_cMaxSavingOneDayLineThreads;
 #include"MockPotenDailyBriefingWebInquiry.h"
 #include"MockCrweberIndexWebInquiry.h"
 #include"MockFinnhubWebInquiry.h"
+#include"MockTiingoWebInquiry.h"
+#include"MockQuandlWebInquiry.h"
 using namespace testing;
 
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
@@ -36,6 +38,8 @@ extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
 extern CMockNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
 extern CMockFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
+extern CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry; // Finnhub.io证券信息
+extern CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry; // Finnhub.io证券信息
 #else
 #include"SinaRTWebInquiry.h"
 #include"SinaStakeRTWebInquiry.h"

@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CThreadReadNeteaseDayLineTest, TestThreadReadNeteaseDayLine) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
+    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData3(200, 30, 30))
       .Times(1)
       .WillOnce(Return(false));
     NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));
@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_FALSE(gl_pChinaStakeMarket->GetStock(_T("sh600601"))->IsDayLineNeedProcess());
 
-    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData(200, 30, 30))
+    EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData3(200, 30, 30))
       .Times(1)
       .WillOnce(Return(true));
     NeteaseDayLineWebInquiry.__TESTSetBuffer(_T("testData"));

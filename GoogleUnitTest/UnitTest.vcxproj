@@ -202,7 +202,9 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Finnhub.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessAmericaStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp" />
@@ -211,12 +213,15 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
@@ -383,7 +388,9 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Finnhub.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.h" />
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessAmericaStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h" />
@@ -392,6 +399,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />

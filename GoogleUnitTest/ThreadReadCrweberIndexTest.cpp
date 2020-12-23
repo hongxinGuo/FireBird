@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CThreadCrweberIndexTest, TestThreadCrweberIndex) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_CALL(crweberIndexInquiry, ReadWebData(1000, 100, 100))
+    EXPECT_CALL(crweberIndexInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));
@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
-    EXPECT_CALL(crweberIndexInquiry, ReadWebData(1000, 100, 100))
+    EXPECT_CALL(crweberIndexInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(true));
     crweberIndexInquiry.__TESTSetBuffer(_T("testData"));

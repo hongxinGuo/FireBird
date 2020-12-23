@@ -48,13 +48,13 @@ namespace StockAnalysisTest {
   TEST_F(CVirtualWebInquiryTest, TestReadWebData1) {
     m_VirtualWebInquiry.SetReadingWebData(true);
     m_VirtualWebInquiry.SetInquiringString(_T("Dummy"));
-    EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData(100, 20)) << "没有正确的网址";
+    EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData()) << "没有正确的网址";
     EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
   }
   */
 
-  TEST_F(CVirtualWebInquiryTest, TestReadWebData2) {
+  TEST_F(CVirtualWebInquiryTest, TestReadWebData3) {
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
       .Times(8)
       .WillOnce(Return(0)) //第一次返回值为0
@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
     m_VirtualWebInquiry.SetReadingWebData(true);
     m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
     //m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData(100, 20));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData3(100, 30, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
     EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
   }

@@ -27,7 +27,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CPotenDailyBriefingThreadTest, TestThreadReadPotenDailyBriefing) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData(500, 50, 30))
+    EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
-    EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData(500, 50, 30))
+    EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(true));
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));

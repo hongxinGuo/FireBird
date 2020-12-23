@@ -13,7 +13,7 @@
 
 UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebInquiry) {
   gl_ThreadStatus.IncreaseRunningThread();
-  if (pPotenDailyBriefingWebInquiry->ReadWebData(500, 50, 30)) {
+  if (pPotenDailyBriefingWebInquiry->ReadWebData()) {
     CWebDataPtr pWebDataReceived = pPotenDailyBriefingWebInquiry->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       pWebDataReceived->SetTime(static_cast<INT64>(pPotenDailyBriefingWebInquiry->GetInquiringDate()) * 1000000);

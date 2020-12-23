@@ -9,7 +9,7 @@ namespace testing {
   class CMockTengxunRTWebInquiry : public CTengxunRTWebInquiry {
   public:
     MOCK_METHOD(void, StartReadingThread, (), (override));
-    MOCK_METHOD(bool, ReadWebData, (long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime));
+    MOCK_METHOD(bool, ReadWebData, ());
   };
   typedef  shared_ptr<CMockTengxunRTWebInquiry> CMockTengxunRTWebInquiryPtr;
 }

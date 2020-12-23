@@ -16,7 +16,7 @@ UINT ThreadReadQuandlData(not_null<CQuandlWebInquiry*> pQuandlWebData) {
   // 完全克服的话，还需要使用其他方法来确定服务器是否发送结束，目前的方法只是读不到了就认为结束了。
   ASSERT(!gl_pAmericaMarket->IsQuandlDataReceived());
   gl_ThreadStatus.IncreaseRunningThread();
-  if (pQuandlWebData->ReadWebData(800, 400, 100)) { // 800毫秒读取时间，目前不允许改变
+  if (pQuandlWebData->ReadWebData()) { // 800毫秒读取时间，目前不允许改变
     CWebDataPtr pWebDataReceived = pQuandlWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
       gl_WebInquirer.PushQuandlData(pWebDataReceived);
