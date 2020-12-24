@@ -582,9 +582,25 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
 }
 
 bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  SchedulingTaskPer1Hour(lSecond, lCurrentTime);
-  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
-  SchedulingTaskPer10Seconds(lSecond, lCurrentTime);
+  static int s_iCount1Hour = 3599;
+  static int s_iCount1Minute = 59;
+  static int s_iCount10Second = 9;
+
+  s_iCount10Second -= lSecond;
+  s_iCount1Minute -= lSecond;
+  s_iCount1Hour -= lSecond;
+  if (s_iCount1Hour < 0) {
+    s_iCount1Hour = 3599;
+    SchedulingTaskPer1Hour(lCurrentTime);
+  }
+  if (s_iCount1Minute < 0) {
+    s_iCount1Minute = 59;
+    SchedulingTaskPer1Minute(lCurrentTime);
+  }
+  if (s_iCount10Second < 0) {
+    s_iCount10Second = 9;
+    SchedulingTaskPer10Seconds(lCurrentTime);
+  }
 
   TaskSaveStakeSymbolDB();
   static int s_iCount = -1;
@@ -592,55 +608,29 @@ bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   return true;
 }
 
-bool CAmericaMarket::SchedulingTaskPer10Seconds(long lSecond, long lCurrentTime) {
-  static int i10SecondsCounter = 9;  // 十秒钟一次的计数器
-
-  i10SecondsCounter -= lSecond;
-  if (i10SecondsCounter < 0) {
-    i10SecondsCounter = 9;
-
-    return true;
-  }
-  else return false;
+bool CAmericaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
+  return true;
 }
 
-bool CAmericaMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 3599;  // 一小时一次的计数器
-
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 3599;
-
-    return true;
-  }
-  else return false;
+bool CAmericaMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
+  return true;
 }
 
-bool CAmericaMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
+bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
+  TaskResetMarket(lCurrentTime);
 
-  // 自动查询crweber.com
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 59;
-    TaskResetMarket(lCurrentTime);
-
-    TaskUpdateCountryListDB();
-    TaskUpdateForexExchangeDB();
-    TaskUpdateForexSymbolDB();
-    TaskUpdateForexDayLineDB();
-    TaskUpdateDayLineDB();
-    TaskUpdateEPSSurpriseDB();
-    TaskUpdateEconomicCalendar();
-    if (IsAmericaStakeUpdated()) {
-      TaskUpdateStakeDB();
-    }
-
-    return true;
+  TaskUpdateCountryListDB();
+  TaskUpdateForexExchangeDB();
+  TaskUpdateForexSymbolDB();
+  TaskUpdateForexDayLineDB();
+  TaskUpdateDayLineDB();
+  TaskUpdateEPSSurpriseDB();
+  TaskUpdateEconomicCalendar();
+  if (IsAmericaStakeUpdated()) {
+    TaskUpdateStakeDB(); // 更新代码表要放在前面，这样能狗预防出现同步问题。缺点是如果中途退出程序的话，会导致最后一分钟接收到的信息作废。
   }
-  else {
-    return false;
-  }
+
+  return true;
 }
 
 /// <summary>
@@ -721,12 +711,10 @@ bool CAmericaMarket::TaskSaveStakeSymbolDB(void) {
   CAmericaStakePtr pStake = nullptr;
 
   if (m_lLastTotalAmericaStake < m_lTotalAmericaStake) {
+    DeleteStakeSymbolDB();
+
     setAmericaStake.Open();
     setAmericaStake.m_pDatabase->BeginTrans();
-    while (!setAmericaStake.IsEOF()) {
-      setAmericaStake.Delete();
-      setAmericaStake.MoveNext();
-    }
     for (long l = 0; l < m_lTotalAmericaStake; l++) {
       pStake = m_vAmericaStake.at(l);
       pStake->Append(setAmericaStake);
@@ -786,7 +774,6 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanyProfile2(void) {
       inquiry.m_lStakeIndex = m_lCurrentProfilePos;
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
-      TRACE("更新%s简介\n", m_vAmericaStake.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
       m_fFinnhubInquiring = true;
     }
     else {
@@ -1360,6 +1347,31 @@ bool CAmericaMarket::RebulidFinnhubDayLine(void) {
   return true;
 }
 
+bool CAmericaMarket::RebuildEPSSurprise(void) {
+  DeleteEPSSurpriseDB();
+
+  for (auto& p : m_vAmericaStake) {
+    p->m_lLastEPSSurpriseUpdateDate = 19800101;
+  }
+  m_fEPSSurpriseUpdated = false;
+  return true;
+}
+
+void CAmericaMarket::DeleteEPSSurpriseDB(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
+
+  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`eps_surprise`;"));
+  database.CommitTrans();
+  database.Close();
+}
+
 bool CAmericaMarket::SortStakeTable(void) {
   CSetAmericaStake setAmericaStake;
   vector<CAmericaStakePtr> vStake;
@@ -1470,6 +1482,23 @@ bool CAmericaMarket::LoadEconomicCalendarDB(void) {
   }
   setEconomicCalendar.Close();
   m_lLastTotalEconomicCalendar = m_lTotalEconomicCalendar = m_vEconomicCalendar.size();
+
+  return true;
+}
+
+bool CAmericaMarket::DeleteStakeSymbolDB(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
+
+  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`companyprofile`;"));
+  database.CommitTrans();
+  database.Close();
 
   return true;
 }

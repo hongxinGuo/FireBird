@@ -2943,15 +2943,15 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
 }
 
 bool CChinaMarket::DeleteTodayTempDB(void) {
-  CSetDayLineToday setDayLineToday;
-  setDayLineToday.Open();
-  setDayLineToday.m_pDatabase->BeginTrans();
-  while (!setDayLineToday.IsEOF()) {
-    setDayLineToday.Delete();
-    setDayLineToday.MoveNext();
-  }
-  setDayLineToday.m_pDatabase->CommitTrans();
-  setDayLineToday.Close();
+  CDatabase database;
+
+  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+
+  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`today`;"));
+  database.CommitTrans();
+  database.Close();
 
   return true;
 }

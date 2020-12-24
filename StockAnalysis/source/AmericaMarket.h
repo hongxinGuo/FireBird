@@ -126,9 +126,9 @@ public:
   void ResetTiingo(void);
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer10Seconds(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer1Hour(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer10Seconds(long lCurrentTime);
+  bool SchedulingTaskPer1Minute(long lCurrentTime);
+  bool SchedulingTaskPer1Hour(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
@@ -200,7 +200,11 @@ public:
   bool LoadCountryList(void);
   bool LoadEconomicCalendarDB(void);
 
+  bool DeleteStakeSymbolDB(void);
+  void DeleteEPSSurpriseDB(void);
+
   bool RebulidFinnhubDayLine(void);
+  bool RebuildEPSSurprise(void);
   bool SortStakeTable(void);
 
 protected:

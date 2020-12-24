@@ -99,7 +99,6 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   ptree pt;
   string s;
 
-  TRACE("´¦Àí%s¼ò½é\n", pStake->m_strSymbol.GetBuffer());
   if (pWebData->GetBufferLength() < 20) {
     pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;

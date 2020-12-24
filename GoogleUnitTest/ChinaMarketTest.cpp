@@ -1865,32 +1865,6 @@ namespace StockAnalysisTest {
     gl_pChinaStakeMarket->DeleteCurrentWeekWeekLine();
   }
 
-  TEST_F(CChinaMarketTest, TestDeleteTodayTempDB) {
-    CSetDayLineToday setDayLineToday, setDayLineToday2;
-    CString strName;
-
-    setDayLineToday.m_strFilter = _T("[ID] = 1");
-    setDayLineToday.Open();
-    setDayLineToday.m_pDatabase->BeginTrans();
-    setDayLineToday.AddNew();
-    setDayLineToday.m_StockCode = _T("sh600000");
-    setDayLineToday.m_Date = 20201212;
-    setDayLineToday.Update();
-    setDayLineToday.m_pDatabase->CommitTrans();
-    setDayLineToday.Close();
-
-    setDayLineToday.m_strFilter = _T("");
-    setDayLineToday.Open();
-    EXPECT_FALSE(setDayLineToday.IsEOF());
-    setDayLineToday.Close();
-
-    gl_pChinaStakeMarket->DeleteTodayTempDB();
-
-    setDayLineToday2.Open();
-    EXPECT_TRUE(setDayLineToday2.IsEOF());
-    setDayLineToday2.Close();
-  }
-
   TEST_F(CChinaMarketTest, TestLoadDayLine) {
     CDayLineContainer dayLineContainer;
     long lDate = GetCurrentMonday(20200101);

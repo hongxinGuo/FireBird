@@ -29,6 +29,7 @@ void CAmericaStake::Reset(void) {
   m_strAddress = _T(" ");
   m_strCity = _T(" ");
   m_strCusip = _T(" ");
+  m_strIsin = _T(" ");
   m_strSedol = _T(" ");
   m_strGgroup = _T(" ");
   m_strGind = _T(" ");
@@ -282,11 +283,8 @@ void CAmericaStake::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
 }
 
 void CAmericaStake::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
-  CEPSSurprisePtr p = nullptr;
-
   m_vEPSSurprise.resize(0);
-  for (int i = (vEPSSurprise.size() - 1); i >= 0; i--) {
-    p = vEPSSurprise.at(i);
+  for (auto& p : vEPSSurprise) {
     m_vEPSSurprise.push_back(p);
   }
 }
