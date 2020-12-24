@@ -317,6 +317,19 @@ bool CAmericaStake::HaveNewDayLineData(void) {
   else return false;
 }
 
+bool CAmericaStake::CheckEPSSurpriseStatus(long lCurrentDate) {
+  if (m_lLastEPSSurpriseUpdateDate == 19800101) {
+    m_fEPSSurpriseNeedUpdate = true;
+  }
+  else if (m_lLastEPSSurpriseUpdateDate == 19700101) {
+    m_fEPSSurpriseNeedUpdate = false;
+  }
+  else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 100)) {
+    m_fEPSSurpriseNeedUpdate = false;
+  }
+  return m_fEPSSurpriseNeedUpdate;
+}
+
 bool CAmericaStake::IsEPSSurpriseNeedSaveAndClearFlag(void) {
   const bool fNeedSave = m_fEPSSurpriseNeedSave.exchange(false);
   return fNeedSave;

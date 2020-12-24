@@ -23,6 +23,7 @@ INT64 FormatToDateTime(time_t tt) noexcept; // 将时间转变为整数（YYYYMMDDHHMMSS)
 long FormatToDate(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 long FormatToTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
 INT64 FormatToDateTime(const tm* ptm) noexcept; // 将时间转变为整型(YYYYMMDD)形式
+bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays);
 
 long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值

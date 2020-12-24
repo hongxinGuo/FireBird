@@ -128,6 +128,7 @@ public:
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Seconds(long lCurrentTime);
   bool SchedulingTaskPer1Minute(long lCurrentTime);
+  bool SchedulingTaskPer10Minute(long lCurrentTime);
   bool SchedulingTaskPer1Hour(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
 

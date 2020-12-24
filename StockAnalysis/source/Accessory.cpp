@@ -79,6 +79,17 @@ INT64 FormatToDateTime(const tm* ptm) noexcept {
   return((static_cast<INT64>(ptm->tm_year) + 1900) * 10000000000 + (static_cast<INT64>(ptm->tm_mon) + 1) * 100000000 + static_cast<INT64>(ptm->tm_mday) * 1000000 + ptm->tm_hour * 10000 + ptm->tm_min * 100 + ptm->tm_sec);
 }
 
+bool IsEarlyThen(long lEarlyDate, long lLatelyDate, long lTimeSpawnOfDays) {
+  CTimeSpan ts(lTimeSpawnOfDays, 0, 0, 0);
+  const long year = lEarlyDate / 10000;
+  const long month = lEarlyDate / 100 - year * 100;
+  const long day = lEarlyDate - year * 10000 - month * 100;
+  CTime ctEarly(year, month, day, 12, 0, 0);
+  ctEarly += ts;
+  long lNewDate = ctEarly.GetYear() * 10000 + ctEarly.GetMonth() * 100 + ctEarly.GetDay();
+  return (lNewDate < lLatelyDate);
+}
+
 const static CTimeSpan s_1Day(1, 0, 0, 0);
 const static CTimeSpan s_2Day(2, 0, 0, 0);
 const static CTimeSpan s_3Day(3, 0, 0, 0);

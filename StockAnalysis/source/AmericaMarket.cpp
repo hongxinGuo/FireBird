@@ -381,10 +381,17 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       case __STOCK_EPS_SURPRISE__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentUpdateEPSSurprisePos);
       pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
-      ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise);
-      pStake->UpdateEPSSurprise(vEPSSurprise);
-      pStake->m_fEPSSurpriseNeedUpdate = false;
-      pStake->m_fEPSSurpriseNeedSave = true;
+      if (ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
+        if (vEPSSurprise.size() > 0) {
+          pStake->UpdateEPSSurprise(vEPSSurprise);
+        }
+        else {
+          pStake->m_lLastEPSSurpriseUpdateDate = 19700101; // 将日期设置为更早。
+          pStake->m_fUpdateDatabase = true; // 更新代码集
+        }
+        pStake->m_fEPSSurpriseNeedUpdate = false;
+        pStake->m_fEPSSurpriseNeedSave = true;
+      }
       break;
       case __STOCK_QUOTE__:
       ASSERT(m_CurrentFinnhubInquiry.m_lStakeIndex == m_lCurrentRTDataQuotePos);
@@ -583,15 +590,21 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
 
 bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   static int s_iCount1Hour = 3599;
+  static int s_iCount10Minute = 599;
   static int s_iCount1Minute = 59;
   static int s_iCount10Second = 9;
 
   s_iCount10Second -= lSecond;
   s_iCount1Minute -= lSecond;
+  s_iCount10Minute -= lSecond;
   s_iCount1Hour -= lSecond;
   if (s_iCount1Hour < 0) {
     s_iCount1Hour = 3599;
     SchedulingTaskPer1Hour(lCurrentTime);
+  }
+  if (s_iCount10Minute < 0) {
+    s_iCount10Minute = 599;
+    SchedulingTaskPer10Minute(lCurrentTime);
   }
   if (s_iCount1Minute < 0) {
     s_iCount1Minute = 59;
@@ -612,10 +625,6 @@ bool CAmericaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
   return true;
 }
 
-bool CAmericaMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
-  return true;
-}
-
 bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
 
@@ -626,10 +635,19 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   TaskUpdateDayLineDB();
   TaskUpdateEPSSurpriseDB();
   TaskUpdateEconomicCalendar();
+
+  return true;
+}
+
+bool CAmericaMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
   if (IsAmericaStakeUpdated()) {
-    TaskUpdateStakeDB(); // 更新代码表要放在前面，这样能狗预防出现同步问题。缺点是如果中途退出程序的话，会导致最后一分钟接收到的信息作废。
+    TaskUpdateStakeDB();
   }
 
+  return true;
+}
+
+bool CAmericaMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
   return true;
 }
 
@@ -1205,6 +1223,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   while (!setAmericaStake.IsEOF()) {
     pAmericaStake = make_shared<CAmericaStake>();
     pAmericaStake->Load(setAmericaStake);
+    pAmericaStake->CheckEPSSurpriseStatus(GetFormatedMarketDate());
     m_vAmericaStake.push_back(pAmericaStake);
     m_mapAmericaStake[setAmericaStake.m_Symbol] = m_lLastTotalAmericaStake++;
     setAmericaStake.MoveNext();
