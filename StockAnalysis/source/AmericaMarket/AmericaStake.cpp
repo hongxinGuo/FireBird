@@ -138,6 +138,7 @@ bool CAmericaStake::CheckDayLineUpdateStatus() {
 }
 
 void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
+  // 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
   m_strSymbol = m_strSymbol.Left(45);
   m_strDescription = m_strDescription.Left(200);
   m_strDisplaySymbol = m_strDisplaySymbol.Left(45);
@@ -151,7 +152,16 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   m_strCusip = m_strCusip.Left(45);
   m_strSedol = m_strSedol.Left(45);
   m_strExchange = m_strExchange.Left(100);
+  m_strGgroup = m_strGgroup.Left(45);
+  m_strGind = m_strGind.Left(45);
+  m_strGsector = m_strGsector.Left(45);
+  m_strGsubind = m_strGsubind.Left(45);
   m_strIPODate = m_strIPODate.Left(20);
+  m_strIsin = m_strIsin.Left(45);
+  m_strNaics = m_strNaics.Left(45);
+  m_strNaicsNationalIndustry = m_strNaicsNationalIndustry.Left(45);
+  m_strNaicsSector = m_strNaicsSector.Left(45);
+  m_strNaicsSubsector = m_strNaicsSubsector.Left(45);
   m_strName = m_strName.Left(100);
   m_strPhone = m_strPhone.Left(100);
   m_strState = m_strState.Left(45);
@@ -201,9 +211,6 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setAmericaStake.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setAmericaStake.m_IPOStatus = m_lIPOStatus;
-  if (m_strWebURL.GetLength() > 100) {
-    TRACE("%s字符串太长%d\n", m_strSymbol.GetBuffer(), m_strWebURL.GetLength());
-  }
   TRACE("更新股票：%s\n", m_strSymbol.GetBuffer());
 }
 
@@ -358,7 +365,7 @@ bool CAmericaStake::IsEPSSurpriseNeedSaveAndClearFlag(void) {
   return fNeedSave;
 }
 
-CString CAmericaStake::GetDayLineInquiryString(time_t tCurrentTime) {
+CString CAmericaStake::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
   char buffer[50];
@@ -376,6 +383,23 @@ CString CAmericaStake::GetDayLineInquiryString(time_t tCurrentTime) {
   strMiddle += strTemp;
   strMiddle += _T("&to=");
   sprintf_s(buffer, _T("%I64i"), tCurrentTime);
+  strTemp = buffer;
+  strMiddle += strTemp;
+
+  return strMiddle;
+}
+
+CString CAmericaStake::GetTiingoDayLineInquiryString(long lCurrentDate) {
+  CString strMiddle = _T("");
+  CString strTemp;
+  char buffer[50];
+  long year = lCurrentDate / 10000;
+  long month = lCurrentDate / 100 - year * 100;
+  long date = lCurrentDate - year * 10000 - month * 100;
+
+  strMiddle += m_strSymbol;
+  strMiddle += _T("/prices?&startDate=1980-1-1&endDate=");
+  sprintf_s(buffer, _T("%4d-%2d-%2d"), year, month, date);
   strTemp = buffer;
   strMiddle += strTemp;
 

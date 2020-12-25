@@ -91,7 +91,7 @@ bool CFinnhub::ProcessFinnhubInquiringMessage(CAmericaMarketPtr pMarket) {
       case __STOCK_CANDLES__:
       ASSERT(pMarket->m_CurrentFinnhubInquiry.m_lStockIndex == pMarket->m_lCurrentUpdateDayLinePos);
       pStake = pMarket->m_vAmericaStake.at(pMarket->m_lCurrentUpdateDayLinePos);
-      strMiddle = pStake->GetDayLineInquiryString(pMarket->GetMarketTime());
+      strMiddle = pStake->GetFinnhubDayLineInquiryString(pMarket->GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       pStake->m_fDayLineNeedUpdate = false;
       break;

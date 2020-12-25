@@ -145,6 +145,7 @@ public:
   bool TaskInquiryFinnhubForexSymbol(void);
   bool TaskInquiryFinnhubForexDayLine(void);
 
+  void TaskInquiryTiingo(void);
   bool TaskInquiryTiingoDayLine(void);
 
   bool TaskSaveStakeSymbolDB(void);

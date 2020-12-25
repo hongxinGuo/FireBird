@@ -41,7 +41,7 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     lTemp = year * 10000 + month * 100 + day;
     pDayLine->SetDate(lTemp);
     dTemp = pt2.get<double>(_T("close"));
-    pDayLine->SetClose(dTemp);
+    pDayLine->SetClose(dTemp * 1000);
     dTemp = pt2.get<double>(_T("open"));
     pDayLine->SetOpen(dTemp * 1000);
     dTemp = pt2.get<double>(_T("high"));
