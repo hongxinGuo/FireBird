@@ -142,12 +142,23 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   m_strDescription = m_strDescription.Left(200);
   m_strDisplaySymbol = m_strDisplaySymbol.Left(45);
   m_strType = m_strType.Left(45);
+  m_strMic = m_strMic.Left(45);
+  m_strFigi = m_strFigi.Left(45);
+  m_strCurrency = m_strCurrency.Left(45);
   m_strAddress = m_strAddress.Left(100);
+  m_strCity = m_strCity.Left(45);
+  m_strCountry = m_strCountry.Left(45);
+  m_strCusip = m_strCusip.Left(45);
+  m_strSedol = m_strSedol.Left(45);
   m_strExchange = m_strExchange.Left(100);
+  m_strIPODate = m_strIPODate.Left(20);
   m_strName = m_strName.Left(100);
+  m_strPhone = m_strPhone.Left(100);
+  m_strState = m_strState.Left(45);
+  m_strTicker = m_strTicker.Left(45);
   m_strWebURL = m_strWebURL.Left(150);
   m_strLogo = m_strLogo.Left(110);
-
+  m_strFinnhubIndustry = m_strFinnhubIndustry.Left(100);
   m_strPeer = m_strPeer.Left(200);
 
   setAmericaStake.m_Symbol = m_strSymbol;
