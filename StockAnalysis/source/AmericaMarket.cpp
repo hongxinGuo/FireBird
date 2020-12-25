@@ -828,11 +828,16 @@ bool CAmericaMarket::TaskInquiryFinnhubCountryList(void) {
 
 bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol(void) {
   WebInquiry inquiry{ 0, 0, 0 };
+  CString str;
+
   if (!m_fSymbolUpdated && !m_fFinnhubInquiring) {
     inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
     inquiry.m_iPriority = 10;
     m_qFinnhubWebInquiry.push(inquiry);
     m_fFinnhubInquiring = true;
+    str = _T("≤È—ØFinnhub Symbol");
+    gl_systemMessage.PushInformationMessage(str);
+
     return true;
   }
   return false;
