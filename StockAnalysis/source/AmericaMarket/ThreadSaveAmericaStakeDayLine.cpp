@@ -15,8 +15,8 @@
 
 UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
   CString str;
-  gl_ThreadStatus.IncreaseRunningThread();
 
+  gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Wait();
   if (!gl_fExitingSystem) {

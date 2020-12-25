@@ -138,6 +138,18 @@ bool CAmericaStake::CheckDayLineUpdateStatus() {
 }
 
 void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
+  m_strSymbol = m_strSymbol.Left(45);
+  m_strDescription = m_strDescription.Left(200);
+  m_strDisplaySymbol = m_strDisplaySymbol.Left(45);
+  m_strType = m_strType.Left(45);
+  m_strAddress = m_strAddress.Left(100);
+  m_strExchange = m_strExchange.Left(100);
+  m_strName = m_strName.Left(100);
+  m_strWebURL = m_strWebURL.Left(150);
+  m_strLogo = m_strLogo.Left(110);
+
+  m_strPeer = m_strPeer.Left(200);
+
   setAmericaStake.m_Symbol = m_strSymbol;
   setAmericaStake.m_Description = m_strDescription;
   setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;

@@ -15,6 +15,9 @@ using namespace gsl;
 using namespace std;
 #include<memory>
 
+class CDayLine;
+typedef shared_ptr<CDayLine> CDayLinePtr;
+
 class CDayLine : public CChinaStockHistoryData {
 public:
   CDayLine();
@@ -51,5 +54,3 @@ public:
 
 private:
 };
-
-typedef shared_ptr<CDayLine> CDayLinePtr;

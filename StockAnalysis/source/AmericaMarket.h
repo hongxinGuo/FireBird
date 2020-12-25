@@ -85,12 +85,12 @@ public:
   void Reset(void) {
     m_iPriority = 0;
     m_lInquiryIndex = 0;
-    m_lStakeIndex = 0;
+    m_lStockIndex = 0;
   }
 public:
   int m_iPriority; // 优先级
   long m_lInquiryIndex; // 指令索引
-  long m_lStakeIndex; // 股票集当前位置
+  long m_lStockIndex; // 股票集当前位置
   bool operator() (WebInquiry temp1, WebInquiry temp2) {
     return temp1.m_iPriority < temp2.m_iPriority; // 优先级大的位于前列
   }
