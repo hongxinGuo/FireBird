@@ -645,8 +645,7 @@ bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
     SchedulingTaskPer10Seconds(lCurrentTime);
   }
 
-  TaskSaveStakeSymbolDB();
-  static int s_iCount = -1;
+  TaskAppendStakeSymbolDB();
 
   return true;
 }
@@ -759,7 +758,7 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol(void) {
   return false;
 }
 
-bool CAmericaMarket::TaskSaveStakeSymbolDB(void) {
+bool CAmericaMarket::TaskAppendStakeSymbolDB(void) {
   CSetAmericaStake setAmericaStake;
   CAmericaStakePtr pStake = nullptr;
 
@@ -1039,11 +1038,12 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
 }
 
 void CAmericaMarket::TaskInquiryTiingo(void) {
-  static int s_iCountfinnhubLimit = 11; // 保证每12次执行一次（即1.2秒每次）
+  static int s_iCountfinnhubLimit = 79; // 保证每80次执行一次（即8秒每次）.免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
 
   if (IsSystemReady() && !m_fTiingoInquiring && (s_iCountfinnhubLimit-- < 0)) {
-    s_iCountfinnhubLimit = 11;
-    TaskInquiryTiingoDayLine();
+    s_iCountfinnhubLimit = 79;
+    // 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
+    //TaskInquiryTiingoDayLine(); // 初步测试完毕。
   }
 }
 

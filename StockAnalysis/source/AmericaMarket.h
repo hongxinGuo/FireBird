@@ -148,7 +148,7 @@ public:
   void TaskInquiryTiingo(void);
   bool TaskInquiryTiingoDayLine(void);
 
-  bool TaskSaveStakeSymbolDB(void);
+  bool TaskAppendStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);

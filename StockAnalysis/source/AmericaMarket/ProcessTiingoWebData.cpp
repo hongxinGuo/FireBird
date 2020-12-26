@@ -6,7 +6,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-
 using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
@@ -52,7 +51,6 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     pDayLine->SetVolume(lTemp);
     vDayLine.push_back(pDayLine);
   }
-
   pStake->SetIPOStatus(__STAKE_IPOED__);
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
   pStake->UpdateDayLine(vDayLine);

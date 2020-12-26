@@ -145,6 +145,7 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
   ptree pt, pt2;
   string s;
   bool fFoundNewSymbol = false;
+  int iCount = 0;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -168,8 +169,10 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
       vStake.push_back(pStake);
       fFoundNewSymbol = true;
     }
+    iCount++;
   }
   sort(vStake.begin(), vStake.end(), CompareAmericaStake);
+  TRACE("今日Finnhub Company Symbol总数为%d\n", iCount);
 
   return fFoundNewSymbol;
 }
