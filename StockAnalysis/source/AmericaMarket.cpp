@@ -22,6 +22,12 @@ CAmericaMarket::CAmericaMarket() {
     TRACE("CAmericaMarket市场变量只允许存在一个实例\n");
   }
 
+  // 不参与每日重置状态的变量，程序启动时需要预设状态
+  m_fEPSSurpriseUpdated = true;
+  m_fPeerUpdated = true;
+  m_lCurrentUpdatePeerPos = 0;
+  m_lCurrentUpdateEPSSurprisePos = 0;
+
   m_strMarketId = _T("Finnhub美股信息");
   m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
   CalculateTime();
@@ -83,8 +89,6 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_lCurrentRTDataQuotePos = 0;
   m_lCurrentForexExchangePos = 0;
   m_lCurrentForexSymbolPos = 0;
-  m_lCurrentUpdatePeerPos = 0;
-  m_lCurrentUpdateEPSSurprisePos = 0;
 
   m_CurrentFinnhubInquiry.Reset();
   while (m_qFinnhubWebInquiry.size() > 0) m_qFinnhubWebInquiry.pop();
@@ -108,9 +112,6 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_vEconomicCalendar.resize(0);
   m_mapEconomicCalendar.clear();
   m_fEconomicCalendarUpdated = false;
-  m_fEPSSurpriseUpdated = false;
-
-  m_fPeerUpdated = false;
 
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
@@ -128,6 +129,13 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_lTotalCountry = 0;
   m_lTotalEconomicCalendar = 0;
   m_lLastTotalEconomicCalendar = 0;
+
+  if (GetDayOfWeek() == 5) { // 每周的星期六更新一次Peer和EPSSurprise
+    m_lCurrentUpdatePeerPos = 0;
+    m_lCurrentUpdateEPSSurprisePos = 0;
+    m_fEPSSurpriseUpdated = false;
+    m_fPeerUpdated = false;
+  }
 }
 
 void CAmericaMarket::ResetQuandl(void) {
