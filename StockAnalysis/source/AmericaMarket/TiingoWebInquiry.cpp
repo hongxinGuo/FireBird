@@ -19,7 +19,7 @@ CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 发行版使用hotmail账户
 #endif // DEBUG
 
-  m_strConnection = _T("FinnhubRT");
+  m_strConnection = _T("Tiingo");
   m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 

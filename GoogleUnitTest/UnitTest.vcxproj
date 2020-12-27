@@ -310,6 +310,7 @@
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
+    <ClCompile Include="FinnhubWebInquiryTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStakeTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
@@ -337,6 +338,7 @@
     <ClCompile Include="PotenDailyBriefingWebInquiryTest.cpp" />
     <ClCompile Include="PriorityQueueWebRTDataTest.cpp" />
     <ClCompile Include="ProcessDayLineDataTest.cpp" />
+    <ClCompile Include="QuandlWebInquiryTest.cpp" />
     <ClCompile Include="QueueWebRTDataTest.cpp" />
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
@@ -353,6 +355,7 @@
     <ClCompile Include="ThreadReadPotenDailyBriefingTest.cpp" />
     <ClCompile Include="ThreadReadSinaRTDataTest.cpp" />
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp" />
+    <ClCompile Include="TiingoWebInquiryTest.cpp" />
     <ClCompile Include="UpdateWeekLineTest.cpp" />
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
@@ -602,7 +605,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -652,7 +655,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -702,7 +705,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -752,7 +755,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -802,7 +805,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -861,7 +864,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
     </ClCompile>

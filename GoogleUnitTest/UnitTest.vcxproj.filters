@@ -46,12 +46,6 @@
     <Filter Include="Mock类\网络数据提取器">
       <UniqueIdentifier>{4523166a-02cf-4735-ae79-bd9f4e85502c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\China Stock Market">
-      <UniqueIdentifier>{ef6d2c8c-73e6-485a-a1c2-2a5848bd3cab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mock类\China Stock Market\网络通信">
-      <UniqueIdentifier>{de8581bb-ebe1-4325-bc8f-bbf11dda7374}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\Windows界面">
       <UniqueIdentifier>{175d2e97-b77f-48b4-8c0f-46f1dcea41e9}</UniqueIdentifier>
     </Filter>
@@ -67,9 +61,6 @@
     <Filter Include="Mock类\辅助类和函数">
       <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\China Stock Market\工作线程">
-      <UniqueIdentifier>{d5a11f7e-be69-45b6-be45-b364b6ba2be0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test源文件\China Stock Market\工作线程">
       <UniqueIdentifier>{0f58af1b-b4fa-46ff-9a0b-cb69b0f4ff3a}</UniqueIdentifier>
     </Filter>
@@ -79,11 +70,26 @@
     <Filter Include="Test源文件\China Stock Market\基础数据类\WebRTData">
       <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\China Stock Market\基础数据类">
-      <UniqueIdentifier>{df9f8197-f5ce-44f4-8616-dd43700ee158}</UniqueIdentifier>
+    <Filter Include="Test源文件\America Market">
+      <UniqueIdentifier>{ca784c55-79ab-464b-8a17-db759a8800f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\America Stake Market">
+    <Filter Include="Test源文件\America Market\网络通信">
+      <UniqueIdentifier>{ee72531c-5289-457d-94fe-334b87358474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\America Market">
       <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Market">
+      <UniqueIdentifier>{ef6d2c8c-73e6-485a-a1c2-2a5848bd3cab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Market\网络通信">
+      <UniqueIdentifier>{de8581bb-ebe1-4325-bc8f-bbf11dda7374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Market\工作线程">
+      <UniqueIdentifier>{d5a11f7e-be69-45b6-be45-b364b6ba2be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\China Market\基础数据类">
+      <UniqueIdentifier>{df9f8197-f5ce-44f4-8616-dd43700ee158}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -477,7 +483,7 @@
       <Filter>Test源文件\China Stock Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="MockWeekLineContainer.h">
-      <Filter>Mock类\China Stock Market\基础数据类</Filter>
+      <Filter>Mock类\China Market\基础数据类</Filter>
     </ClCompile>
     <ClCompile Include="MockDayLineContainerTest.cpp">
       <Filter>Test源文件\China Stock Market\基础数据类</Filter>
@@ -620,25 +626,34 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="FinnhubWebInquiryTest.cpp">
+      <Filter>Test源文件\America Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="TiingoWebInquiryTest.cpp">
+      <Filter>Test源文件\America Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="QuandlWebInquiryTest.cpp">
+      <Filter>Test源文件\America Market\网络通信</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
       <Filter>Test源文件</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseDayLineWebInquiry.h">
-      <Filter>Mock类\China Stock Market\网络通信</Filter>
+      <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockNeteaseRTWebInquiry.h">
-      <Filter>Mock类\China Stock Market\网络通信</Filter>
+      <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockSinaRTWebInquiry.h">
-      <Filter>Mock类\China Stock Market\网络通信</Filter>
+      <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockTengxunRTWebInquiry.h">
-      <Filter>Mock类\China Stock Market\网络通信</Filter>
+      <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaMarket.h">
-      <Filter>Mock类\China Stock Market</Filter>
+      <Filter>Mock类\China Market</Filter>
     </ClInclude>
     <ClInclude Include="MockCrweberIndexWebInquiry.h">
       <Filter>Mock类\Crweber.com Market</Filter>
@@ -842,13 +857,13 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockDayLineContainer.h">
-      <Filter>Mock类\China Stock Market\基础数据类</Filter>
+      <Filter>Mock类\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockSinaStakeRTWebInquiry.h">
-      <Filter>Mock类\China Stock Market\网络通信</Filter>
+      <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h">
       <Filter>dependency</Filter>
@@ -866,13 +881,13 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockChinaStake.h">
-      <Filter>Mock类\China Stock Market</Filter>
+      <Filter>Mock类\China Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnHubWebInquiry.h">
-      <Filter>Mock类\America Stake Market</Filter>
+      <Filter>Mock类\America Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h">
       <Filter>dependency</Filter>
@@ -923,10 +938,10 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoWebInquiry.h">
-      <Filter>Mock类\America Stake Market</Filter>
+      <Filter>Mock类\America Market</Filter>
     </ClInclude>
     <ClInclude Include="MockQuandlWebInquiry.h">
-      <Filter>Mock类\America Stake Market</Filter>
+      <Filter>Mock类\America Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h">
       <Filter>dependency</Filter>
