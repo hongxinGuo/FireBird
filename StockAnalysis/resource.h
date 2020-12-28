@@ -129,6 +129,13 @@
 #define ID_CURRENT_RUNNING_BACKGROUND_THREAD 59152
 #define ID_CURRENT_RTDATA_SIZE          59153
 #define ID_CURRENT_AMERICAMARKET_WORKING_THREAD 59154
+#define ID_SHOW_SINA_RT                 59155
+#define ID_SHOW_NETEASE_DAYLINE         59156
+#define ID_SHOW_TENGXUN_RT              59157
+#define ID_SHOW_NETEASE_RT              59158
+#define ID_SHOW_FINNHUB_WEB             59159
+#define ID_SHOW_TIINGO_WEB              59160
+#define ID_SHOW_QUANDL_WEB              59161
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
