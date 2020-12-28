@@ -77,6 +77,8 @@ public:
   void SetTotalByteReaded(long lValue = 0) noexcept { m_lTotalByteReaded = lValue; }
   void ClearTotalByteReaded(void) noexcept { m_lTotalByteReaded = 0; }
 
+  time_t GetCurrentInquiryTime(void) noexcept { return m_tCurrentInquiryTime; }
+
 public:
   // 以下为测试用函数
   void __TESTSetBuffer(char* buffer, long lTotalNumber);
@@ -86,8 +88,8 @@ protected:
   CHttpFile* m_pFile; // 网络文件指针
   DWORD m_dwWebErrorCode; //网络读取错误代码
   CString m_strInquire;// 查询所需的字符串
-  char m_buffer[1024 * 1024 * 8]; // 接收到数据的缓冲区
-  char m_bufferTemp[1024 * 1024 * 8]; // 接收到数据的缓冲区
+  char m_buffer[1024 * 1024 * 8]; // 接收到数据的缓冲区，最多8M
+  char m_bufferTemp[1024 * 1024 * 8]; // 接收到数据的临时缓冲区，最多8M
   long m_lByteRead; // 接收到的字符数
   long m_lByteReadCurrent;
 
@@ -101,6 +103,7 @@ protected:
   bool m_fReportStatus; //
 
   long m_lInquiringNumber; // 每次查询数量
+  time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
   static atomic_long m_lReadingThreadNumber; // 当前执行网络读取线程数。所有的网络读取器都使用同一个变量，故而声明为静态。
   static atomic_long m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。

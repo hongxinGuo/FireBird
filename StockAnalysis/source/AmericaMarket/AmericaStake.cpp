@@ -55,7 +55,7 @@ void CAmericaStake::Reset(void) {
   m_fInquiryAmericaStake = true;
   m_fEPSSurpriseNeedUpdate = true;
   m_fEPSSurpriseNeedSave = false;
-  m_fPeerUpdated = false;
+  m_fFinnhubPeerUpdated = false;
   m_fDayLineNeedUpdate = true;
   m_fDayLineNeedSaving = false;
 
@@ -110,7 +110,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
   m_lLastEPSSurpriseUpdateDate = setAmericaStake.m_LastEPSSurpriseUpdateDate;
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
-  if (m_strPeer.GetLength() < 4) m_fPeerUpdated = false;
+  if (m_strPeer.GetLength() < 4) m_fFinnhubPeerUpdated = false;
   if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
     //m_fInquiryAmericaStake = false;
     //m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();

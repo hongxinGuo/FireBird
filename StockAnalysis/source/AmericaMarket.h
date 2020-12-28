@@ -262,16 +262,18 @@ protected:
   long m_lLastTotalEconomicCalendar;
   long m_lTotalEconomicCalendar;
 
-  bool m_fSymbolUpdated; // 每日更新公司代码库
+  bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介
-  bool m_fStakeDayLineUpdated; // 每日更新公司日线数据
-  bool m_fForexExhangeUpdated; // 每日更新Forex交易所
-  bool m_fForexSymbolUpdated; // 每日更新Forex交易所代码
+  bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
+  bool m_fFinnhubForexExhangeUpdated; // 每日更新Forex交易所
+  bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
   bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
-  bool m_fPeerUpdated; // 每月更新Peers数据
-  bool m_fEconomicCalendarUpdated; // 每日更新经济日历数据
-  bool m_fEPSSurpriseUpdated;
-  //
+  bool m_fFinnhubPeerUpdated; // 每月更新Peers数据
+  bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
+  bool m_fFinnhubEPSSurpriseUpdated;
+
+  bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
+//
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 

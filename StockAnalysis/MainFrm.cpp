@@ -104,6 +104,18 @@ static UINT indicators[] =
   ID_CURRENT_TIME,
 };
 
+static UINT innerSystemIndicators[] =
+{
+  ID_SEPARATOR,           // 状态行指示器
+  ID_SHOW_SINA_RT,
+  ID_SHOW_NETEASE_DAYLINE,
+  ID_SHOW_NETEASE_RT,
+  ID_SHOW_TENGXUN_RT,
+  ID_SHOW_FINNHUB_WEB,
+  ID_SHOW_TIINGO_WEB,
+  ID_SHOW_QUANDL_WEB,
+};
+
 // CMainFrame 构造/析构
 
 CMainFrame::CMainFrame() {
@@ -229,6 +241,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     return -1;      // 未能创建
   }
   m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
+
+  if (!m_wndInnerSystemBar.Create(this))
+  {
+    TRACE0("未能创建状态栏\n");
+    return -1;      // 未能创建
+  }
+  m_wndInnerSystemBar.SetIndicators(innerSystemIndicators, sizeof(innerSystemIndicators) / sizeof(UINT));
 
   // TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
   m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
@@ -461,6 +480,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
   //CMainFrame只执行更新状态任务
   UpdateStatus();
+  UpdateInnerSystemStatus();
 
   if (gl_fTestMode) {
     gl_systemMessage.PushInformationMessage(_T("警告：使用了Test驱动"));
@@ -476,6 +496,11 @@ void CMainFrame::UpdateStatus(void) {
   CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   //更新状态条
+  if (gl_pChinaStakeMarket->IsCurrentEditStockChanged()) {
+    str = m_aStockCodeTemp;
+    SysCallSetPaneText(1, (LPCTSTR)str);
+    gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
+  }
   // 显示股票代码和名称
   if (gl_pChinaStakeMarket->IsCurrentStockChanged()) {
     gl_pChinaStakeMarket->SetCurrentStockChanged(false);
@@ -492,12 +517,6 @@ void CMainFrame::UpdateStatus(void) {
   sprintf_s(buffer, _T("%d"), gl_pChinaStakeMarket->GetCurrentSelectedPosition());
   str = buffer;
   SysCallSetPaneText(5, (LPCTSTR)str);
-
-  if (gl_pChinaStakeMarket->IsCurrentEditStockChanged()) {
-    str = m_aStockCodeTemp;
-    SysCallSetPaneText(1, (LPCTSTR)str);
-    gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
-  }
 
   // 显示当前读取的新浪实时数据股票代码
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStakeMarket->GetStockCodeForInquiringRTData());
@@ -540,6 +559,35 @@ void CMainFrame::UpdateStatus(void) {
 
   //更新当地时间的显示
   SysCallSetPaneText(12, (LPCTSTR)gl_pChinaStakeMarket->GetStringOfLocalTime());
+}
+
+void CMainFrame::UpdateInnerSystemStatus(void) {
+  char buffer[30];
+  CString str;
+  // 更新当前工作线程数
+  sprintf_s(buffer, _T("%5I64d"), gl_pSinaRTWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(1, (LPCTSTR)str);
+
+  sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseDayLineWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(2, (LPCTSTR)str);
+  sprintf_s(buffer, _T("%5I64d"), gl_pNeteaseRTWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(3, (LPCTSTR)str);
+  sprintf_s(buffer, _T("%5I64d"), gl_pTengxunRTWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(4, (LPCTSTR)str);
+
+  sprintf_s(buffer, _T("%5I64d"), gl_pFinnhubWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(5, (LPCTSTR)str);
+  sprintf_s(buffer, _T("%6I64d"), gl_pTiingoWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(6, (LPCTSTR)str);
+  sprintf_s(buffer, _T("%6I64d"), gl_pQuandlWebInquiry->GetCurrentInquiryTime());
+  str = buffer;
+  SysCallSetInnerSystemPaneText(7, (LPCTSTR)str);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

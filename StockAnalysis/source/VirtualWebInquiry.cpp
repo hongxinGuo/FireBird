@@ -23,6 +23,8 @@ CVirtualWebInquiry::CVirtualWebInquiry() {
 
   m_lInquiringNumber = 500; // 每次查询数量默认值为500
 
+  m_tCurrentInquiryTime = 0;
+
 #ifdef DEBUG
   m_fReportStatus = false;
 #else
@@ -55,6 +57,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
   long lCurrentByteReaded = 0;
   SetWebError(false);
   SetByteReaded(0);
+  m_tCurrentInquiryTime = GetTickCount64();
   try {
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
@@ -93,6 +96,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
     delete m_pFile;
     m_pFile = nullptr;
   }
+  m_tCurrentInquiryTime = GetTickCount64() - m_tCurrentInquiryTime;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);
@@ -108,11 +112,13 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   ASSERT(m_pFile == nullptr);
   char buffer[1000];
   long lTemp = 0;
+  time_t tt = 0;
 
   m_lReadingThreadNumber++;
 
   SetWebError(false);
   SetByteReaded(0);
+  tt = GetTickCount64();
   try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     do {
@@ -148,6 +154,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
     delete m_pFile;
     m_pFile = nullptr;
   }
+  m_tCurrentInquiryTime = GetTickCount64() - tt;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);

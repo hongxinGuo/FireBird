@@ -162,7 +162,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
       break;
       case  __COMPANY_SYMBOLS__:
       ProcessFinnhubStockSymbol(pWebData, vStake);
-      pMarket->m_fSymbolUpdated = true;
+      pMarket->m_fFinnhubSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:
       break;
@@ -193,7 +193,7 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
         }
       }
       pMarket->m_lTotalForexExchange = pMarket->m_vForexExchange.size();
-      pMarket->m_fForexExhangeUpdated = true;
+      pMarket->m_fFinnhubForexExhangeUpdated = true;
       break;
       case __FOREX_SYMBOLS__:
       ProcessFinnhubForexSymbol(pWebData, vForexSymbol);

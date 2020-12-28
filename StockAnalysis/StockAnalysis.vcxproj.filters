@@ -327,9 +327,6 @@
     <ClInclude Include="source\AmericaMarket\SetForexDayLine.h">
       <Filter>头文件\America Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\Finnhub.h">
-      <Filter>头文件\America Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetCountry.h">
       <Filter>头文件\America Market\数据库</Filter>
     </ClInclude>
@@ -652,9 +649,6 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\Finnhub.cpp">
-      <Filter>源文件\America Market</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp">
       <Filter>源文件\America Market\数据库</Filter>

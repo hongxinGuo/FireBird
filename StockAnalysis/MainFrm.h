@@ -26,12 +26,14 @@ public:
 public:
   bool SchedulingTask(void);
   void UpdateStatus(void);
+  void UpdateInnerSystemStatus(void);
   bool CreateMarketContainer(void); // 生成各市场容器（只用于调度）
 
 public:
   // 需包裹的调用系统函数的函数（以便于使用GMock），前缀为SysCall
   virtual void SysCallOnTimer(UINT_PTR nIDEvent) { CMDIFrameWndEx::OnTimer(nIDEvent); }
   virtual void SysCallSetPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndStatusBar.SetPaneText(iIndex, lpszNewText); }
+  virtual void SysCallSetInnerSystemPaneText(int iIndex, LPCTSTR lpszNewText) { m_wndInnerSystemBar.SetPaneText(iIndex, lpszNewText); }
   virtual void SysCallOnSysCommand(UINT nID, LPARAM lParam) { CMDIFrameWndEx::OnSysCommand(nID, lParam); }
   virtual void SysCallCmdUIEnable(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->Enable(fFlag); }
   virtual void SysCallCmdUISetCheck(CCmdUI* pCmdUI, bool fFlag) { pCmdUI->SetCheck(fFlag); }
@@ -73,6 +75,7 @@ protected:
 protected:  // 控件条嵌入成员
   CMFCMenuBar m_wndMenuBar;
   CMFCToolBar m_wndToolBar;
+  CMFCStatusBar m_wndInnerSystemBar;
   CMFCStatusBar m_wndStatusBar;
   CMFCToolBarImages m_UserImages;
   COutputWnd m_wndOutput;
