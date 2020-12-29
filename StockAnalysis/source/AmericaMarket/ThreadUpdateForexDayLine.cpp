@@ -13,7 +13,7 @@
 
 #include"ForexSymbol.h"
 
-UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbolPtr> pSymbol) {
+UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbol*> pSymbol) {
   CString str;
   gl_ThreadStatus.IncreaseRunningThread();
 

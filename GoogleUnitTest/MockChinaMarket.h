@@ -14,8 +14,8 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadBuildDayLineRS, (long lStartCalculatingDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildDayLineRSOfDate, (long lThisDate), (override));
     MOCK_METHOD(bool, RunningThreadSaveTempRTData, (), (override));
-    MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStakePtr pStake), (override));
-    MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStakePtr pCurrentStock), (override));
+    MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStake* pStake), (override));
+    MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStake* pCurrentStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStakeCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));
@@ -26,7 +26,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong1Stock, (vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake), (override));
     MOCK_METHOD(bool, RunningThreadCalculate10RSStrong2Stock, (vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLine, (long lStartDate), (override));
-    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStakePtr pStake, long lStartDate), (override));
+    MOCK_METHOD(bool, RunningThreadBuildWeekLineOfStock, (CChinaStake* pStake, long lStartDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));

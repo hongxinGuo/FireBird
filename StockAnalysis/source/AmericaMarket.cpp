@@ -165,12 +165,17 @@ bool CAmericaMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountfinnhubLimit = 11; // 每1.2秒左右执行一次，以防止出现频率过高的情况。
+  static int s_iCountfinnhubLimit = 12; // 每1.2秒左右执行一次，以防止出现频率过高的情况。
   const long lCurrentTime = GetFormatedMarketTime();
 
   TaskCheckSystemReady();
 
-  TaskInquiryFinnhub(lCurrentTime);
+  if (--s_iCountfinnhubLimit < 0) {
+    TaskInquiryFinnhub(lCurrentTime);
+    if (m_fFinnhubInquiring) {
+      s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+    }
+  }
 
   ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
   ProcessFinnhubInquiringMessage(); // 然后再申请处理下一个
@@ -708,11 +713,10 @@ bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
-// 此函数由SchedulingTask调度，每100毫秒左右执行一次。
+// 此函数由SchedulingTask调度，每1500毫秒左右执行一次。
 //
 //////////////////////////////////////////////////////////////////////////////////////
 bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
-  static int s_iCountfinnhubLimit = 11; // 保证每12次执行一次（即1.2秒每次）
   if (((lCurrentTime < 165700) || (lCurrentTime > 170300))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
@@ -721,18 +725,16 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
     //TaskInquiryFinnhubEconomicCalender();
 
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
-    if (IsSystemReady() && !m_fFinnhubInquiring && (s_iCountfinnhubLimit < 0)) {
-      s_iCountfinnhubLimit = 11;
+    if (IsSystemReady() && !m_fFinnhubInquiring) {
       TaskInquiryFinnhubCompanyProfile2();
       TaskInquiryFinnhubEPSSurprise();
       TaskInquiryFinnhubPeer();
-      TaskInquiryFinnhubForexDayLine();
-      TaskInquiryFinnhubDayLine();
+      //TaskInquiryFinnhubForexDayLine();
+      //TaskInquiryFinnhubDayLine();
       if (m_fFinnhubDayLineUpdated) {
         //TaskInquiryFinnhubRTQuote();
       }
     }
-    else s_iCountfinnhubLimit--;
   }
 
   return true;
@@ -1114,7 +1116,7 @@ bool CAmericaMarket::TaskUpdateDayLineDB(void) {
     if (pStake->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStake->GetDayLineSize() > 0) {
         if (pStake->HaveNewDayLineData()) {
-          RunningThreadUpdateDayLineDB(pStake);
+          RunningThreadUpdateDayLineDB(pStake.get());
           TRACE("更新%s日线数据\n", pStake->GetSymbol().GetBuffer());
         }
         else pStake->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
@@ -1149,7 +1151,7 @@ bool CAmericaMarket::TaskUpdateForexDayLineDB(void) {
     if (pSymbol->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pSymbol->GetDayLineSize() > 0) {
         if (pSymbol->HaveNewDayLineData()) {
-          RunningThreadUpdateForexDayLineDB(pSymbol);
+          RunningThreadUpdateForexDayLineDB(pSymbol.get());
           TRACE("更新%s日线数据\n", pSymbol->GetSymbol().GetBuffer());
         }
         else pSymbol->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
@@ -1178,7 +1180,7 @@ bool CAmericaMarket::TaskUpdateEPSSurpriseDB(void) {
 
   for (auto& pStake : m_vAmericaStake) {
     if (pStake->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      RunningThreadUpdateEPSSurpriseDB(pStake);
+      RunningThreadUpdateEPSSurpriseDB(pStake.get());
       TRACE("更新%s EPS surprise数据\n", pStake->GetSymbol().GetBuffer());
     }
     if (gl_fExitingSystem) {
@@ -1222,7 +1224,7 @@ bool CAmericaMarket::TaskCheckSystemReady(void) {
   return true;
 }
 
-bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake) {
+bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStake* pStake) {
   thread thread1(ThreadUpdateAmericaStakeDayLineDB, pStake);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
@@ -1234,7 +1236,7 @@ bool CAmericaMarket::RunningTaskThreadUpdateStakeDB(void) {
   return true;
 }
 
-bool CAmericaMarket::RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol) {
+bool CAmericaMarket::RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol) {
   thread thread1(ThreadUpdateForexDayLineDB, pSymbol);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
@@ -1252,7 +1254,7 @@ bool CAmericaMarket::RunningThreadUpdateCountryListDB(void) {
   return true;
 }
 
-bool CAmericaMarket::RunningThreadUpdateEPSSurpriseDB(CAmericaStakePtr pStake) {
+bool CAmericaMarket::RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStake) {
   thread thread1(ThreadUpdateEPSSurpriseDB, pStake);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;

@@ -215,7 +215,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />

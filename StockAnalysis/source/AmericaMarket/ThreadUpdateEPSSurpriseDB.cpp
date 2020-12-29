@@ -1,6 +1,6 @@
 #include"globedef.h"
 
-UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStakePtr> pStake) {
+UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStake*> pStake) {
   gl_SaveEPSSurprise.Wait();
   pStake->UpdateEPSSurpriseDB();
   gl_ThreadStatus.DecreaseSavingDayLineThreads();

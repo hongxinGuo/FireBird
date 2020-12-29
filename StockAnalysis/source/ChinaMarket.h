@@ -103,9 +103,9 @@ public:
   virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
   virtual bool RunningThreadBuildDayLineRSOfDate(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStakePtr pStake);
-  virtual bool RunningThreadLoadDayLine(CChinaStakePtr pCurrentStock);
-  virtual bool RunningThreadLoadWeekLine(CChinaStakePtr pCurrentStock);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStake* pStake);
+  virtual bool RunningThreadLoadDayLine(CChinaStake* pCurrentStock);
+  virtual bool RunningThreadLoadWeekLine(CChinaStake* pCurrentStock);
   virtual bool RunningThreadUpdateStakeCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
@@ -116,7 +116,7 @@ public:
   virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake);
   virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake);
   virtual bool RunningThreadBuildWeekLine(long lStartDate);
-  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStakePtr pStake, long lStartDate);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStake* pStake, long lStartDate);
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);

@@ -811,7 +811,7 @@
     <ClCompile Include="source\AmericaMarket\SetForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />

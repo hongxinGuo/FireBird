@@ -13,7 +13,7 @@
 
 #include"AmericaStake.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStake*> pStake) {
   CString str;
 
   gl_ThreadStatus.IncreaseRunningThread();

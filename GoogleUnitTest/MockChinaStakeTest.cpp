@@ -70,7 +70,7 @@ namespace StockAnalysisTest {
     pStake->SetDayLineLoaded(true);
     pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = true;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_TRUE(pStake->IsDayLineLoaded());
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
@@ -80,7 +80,7 @@ namespace StockAnalysisTest {
     pStake->SetDayLineLoaded(true);
     pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 0);
 
@@ -90,7 +90,7 @@ namespace StockAnalysisTest {
     pStake->SetDayLineLoaded(true);
     pStake->SetStakeCode(_T("sh601111"));
     gl_fExitingSystem = false;
-    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake), (UINT)15);
+    EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -104,7 +104,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStake, LoadDayLine)
       .Times(1);
     pStake->SetDayLineLoaded(false);
-    EXPECT_EQ(ThreadLoadDayLine(pStake), (UINT)16);
+    EXPECT_EQ(ThreadLoadDayLine(pStake.get()), (UINT)16);
     EXPECT_TRUE(pStake->IsDayLineLoaded());
     EXPECT_EQ(pStake->GetDayLineSize(), 0) << _T("存储日线数据后清空队列\n");
   }
@@ -114,7 +114,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStake, LoadWeekLine)
       .Times(1);
     pStake->SetWeekLineLoaded(false);
-    EXPECT_EQ(ThreadLoadWeekLine(pStake), (UINT)29);
+    EXPECT_EQ(ThreadLoadWeekLine(pStake.get()), (UINT)29);
     EXPECT_TRUE(pStake->IsWeekLineLoaded());
     EXPECT_EQ(pStake->GetWeekLineSize(), 0) << _T("存储周线数据后清空队列\n");
   }

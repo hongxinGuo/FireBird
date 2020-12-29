@@ -551,9 +551,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadSaveAmericaStakeDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -634,6 +631,9 @@
     </ClCompile>
     <ClCompile Include="QuandlWebInquiryTest.cpp">
       <Filter>Test源文件\America Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
+      <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -160,12 +160,12 @@ public:
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
-  virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake);
+  virtual bool RunningThreadUpdateDayLineDB(CAmericaStake* pStake);
   virtual bool RunningTaskThreadUpdateStakeDB(void);
-  virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbolPtr pSymbol);
+  virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
-  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStakePtr pStake);
+  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStake);
 
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);

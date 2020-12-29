@@ -1972,7 +1972,7 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
     if (pStake->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStake->GetDayLineSize() > 0) {
         if (pStake->HaveNewDayLineData()) {
-          RunningThreadSaveDayLineBasicInfoOfStock(pStake);
+          RunningThreadSaveDayLineBasicInfoOfStock(pStake.get());
         }
         else pStake->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
       }
@@ -2001,7 +2001,7 @@ bool CChinaMarket::UnloadDayLine(void) noexcept {
 bool CChinaMarket::BuildWeekLine(long lStartDate) {
   gl_systemMessage.PushInformationMessage(_T("重新生成周线历史数据"));
   for (auto& pStake : m_vChinaMarketStake) {
-    RunningThreadBuildWeekLineOfStock(pStake, lStartDate);
+    RunningThreadBuildWeekLineOfStock(pStake.get(), lStartDate);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     Sleep(1000);
@@ -2551,11 +2551,11 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
   if (i <= 0) {
     if (m_pCurrentStock != nullptr) {
       if (!m_pCurrentStock->IsDayLineLoaded()) {
-        RunningThreadLoadDayLine(m_pCurrentStock);
+        RunningThreadLoadDayLine(m_pCurrentStock.get());
         i = 10;
       }
       if (!m_pCurrentStock->IsWeekLineLoaded()) {
-        RunningThreadLoadWeekLine(m_pCurrentStock);
+        RunningThreadLoadWeekLine(m_pCurrentStock.get());
         i = 10;
       }
     }
@@ -2600,19 +2600,19 @@ bool CChinaMarket::RunningThreadSaveTempRTData(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStakePtr pStake) {
+bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStake* pStake) {
   thread thread1(ThreadSaveDayLineBasicInfoOfStock, pStake);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
-bool CChinaMarket::RunningThreadLoadDayLine(CChinaStakePtr pCurrentStock) {
+bool CChinaMarket::RunningThreadLoadDayLine(CChinaStake* pCurrentStock) {
   thread thread1(ThreadLoadDayLine, pCurrentStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
 
-bool CChinaMarket::RunningThreadLoadWeekLine(CChinaStakePtr pCurrentStock) {
+bool CChinaMarket::RunningThreadLoadWeekLine(CChinaStake* pCurrentStock) {
   thread thread1(ThreadLoadWeekLine, pCurrentStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
@@ -2681,7 +2681,7 @@ bool CChinaMarket::RunningThreadBuildWeekLine(long lStartDate) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStakePtr pStake, long lStartDate) {
+bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStake* pStake, long lStartDate) {
   thread thread1(ThreadBuildWeekLineOfStock, pStake, lStartDate);
   thread1.detach();
 
