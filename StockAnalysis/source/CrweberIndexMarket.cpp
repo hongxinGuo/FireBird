@@ -57,50 +57,44 @@ void CCrweberIndexMarket::ResetMarket(void) {
 }
 
 bool CCrweberIndexMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
-  SchedulingTaskPer1Hour(lSecond, lCurrentTime);
-  SchedulingTaskPer1Minute(lSecond, lCurrentTime);
+  static int i1HourCounter = 3599;  // 一小时一次的计数器
+  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
+
+  i1HourCounter -= lSecond;
+  i1MinuteCounter -= lSecond;
+  if (i1HourCounter < 0) {
+    i1HourCounter = 3599;
+    SchedulingTaskPer1Hour(lCurrentTime);
+  }
+  if (i1MinuteCounter < 0) {
+    i1MinuteCounter = 59;
+    SchedulingTaskPer1Minute(lCurrentTime);
+  }
   return true;
 }
 
-bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 3599;  // 一分钟一次的计数器
+bool CCrweberIndexMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
+  TaskResetMarket(lCurrentTime);
+  //TaskMaintainDatabase(lCurrentTime);
 
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 3599;
-    TaskResetMarket(lCurrentTime);
-    //TaskMaintainDatabase(lCurrentTime);
-
-    if (!gl_WebInquirer.IsReadingCrweberIndex()) {
-      TaskProcessWebRTDataGetFromCrweberdotcom();
-      if (m_fDataBaseLoaded) {
-        if (m_lNewestUPdateDate < GetFormatedMarketDate()) {
-          gl_WebInquirer.GetCrweberIndexData();
-        }
-      }
-      else {
-        GetNewestDatabaseDateFromDB();
-        m_fDataBaseLoaded = true;
+  if (!gl_WebInquirer.IsReadingCrweberIndex()) {
+    TaskProcessWebRTDataGetFromCrweberdotcom();
+    if (m_fDataBaseLoaded) {
+      if (m_lNewestUPdateDate < GetFormatedMarketDate()) {
+        gl_WebInquirer.GetCrweberIndexData();
       }
     }
-
-    return true;
+    else {
+      GetNewestDatabaseDateFromDB();
+      m_fDataBaseLoaded = true;
+    }
   }
-  else return false;
+
+  return true;
 }
 
-bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lSecond, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一小时一次的计数器
-
-  // 自动查询crweber.com
-  i1MinuteCounter -= lSecond;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 59;
-    return true;
-  }
-  else {
-    return false;
-  }
+bool CCrweberIndexMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
+  return true;
 }
 
 bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {

@@ -17,8 +17,8 @@ public:
   void Reset(void);
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer1Minute(long lSecond, long lCurrentTime);
-  bool SchedulingTaskPer1Hour(long lSecond, long lCurrentTime);
+  bool SchedulingTaskPer1Minute(long lCurrentTime);
+  bool SchedulingTaskPer1Hour(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
   bool TaskProcessWebRTDataGetFromCrweberdotcom(void);
 
