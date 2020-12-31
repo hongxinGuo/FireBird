@@ -16,6 +16,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadSaveTempRTData, (), (override));
     MOCK_METHOD(bool, RunningThreadSaveDayLineBasicInfoOfStock, (CChinaStake* pStake), (override));
     MOCK_METHOD(bool, RunningThreadLoadDayLine, (CChinaStake* pCurrentStock), (override));
+    MOCK_METHOD(bool, RunningThreadLoadWeekLine, (CChinaStake* pCurrentStock), (override));
     MOCK_METHOD(bool, RunningThreadUpdateStakeCodeDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateOptionDB, (), (override));
     MOCK_METHOD(bool, RunningThreadAppendChoicedStockDB, (), (override));

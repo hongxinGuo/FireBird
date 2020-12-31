@@ -30,7 +30,6 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_TRUE(gl_pAmericaMarket->IsResetMarket());
       gl_pAmericaMarket->SetResetMarket(true);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }

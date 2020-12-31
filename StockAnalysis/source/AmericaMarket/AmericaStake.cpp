@@ -250,7 +250,6 @@ bool CAmericaStake::SaveDayLine(void) {
     lSizeOfOldDayLine++;
     setAmericaStakeDayLine.MoveNext();
   }
-  setAmericaStakeDayLine.Close();
   if (lSizeOfOldDayLine > 0) {
     if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
       m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
@@ -258,8 +257,6 @@ bool CAmericaStake::SaveDayLine(void) {
   }
 
   lCurrentPos = 0;
-  setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
-  setAmericaStakeDayLine.Open();
   setAmericaStakeDayLine.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = m_vDayLine.at(i);

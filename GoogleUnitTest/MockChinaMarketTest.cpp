@@ -155,6 +155,8 @@ namespace StockAnalysisTest {
     s_pchinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadDayLine(_))
       .Times(1);
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadWeekLine(_))
+      .Times(1);
     EXPECT_TRUE(s_pchinaMarket->TaskLoadCurrentStockHistoryData());
   }
 

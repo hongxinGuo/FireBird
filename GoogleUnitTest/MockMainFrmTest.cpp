@@ -19,7 +19,7 @@ namespace StockAnalysisTest {
 
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
-      EXPECT_EQ(gl_vMarketPtr.size(), 3);
+      EXPECT_EQ(gl_vMarketPtr.size(), 4);
       EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
     }
@@ -37,7 +37,7 @@ namespace StockAnalysisTest {
       gl_pChinaStakeMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
-      EXPECT_EQ(gl_vMarketPtr.size(), 3);
+      EXPECT_EQ(gl_vMarketPtr.size(), 4);
       if (CMFCVisualManager::GetInstance() != NULL) {
         delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
       }
@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pMainFrame->IsNeedResetMarket());
   }
 
-  TEST_F(CMockMainFrameTest, TestUpdateStatus) {
+  TEST_F(CMockMainFrameTest, TestUpdateStatus1) {
     InSequence seq;
     gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
     gl_pChinaStakeMarket->SetCurrentStockChanged(false);
@@ -106,11 +106,15 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(12, _))
       .Times(1);
     s_pMainFrame->UpdateStatus();
+  }
 
+  TEST_F(CMockMainFrameTest, TestUpdateStatus2) {
     gl_pChinaStakeMarket->SetCurrentEditStockChanged(true);
     gl_pChinaStakeMarket->SetCurrentStockChanged(true);
     gl_pChinaStakeMarket->SetCurrentStock(_T("sh600000"));
     InSequence seq1;
+    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(1, _))
+      .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(2, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(3, _))
@@ -118,8 +122,6 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(4, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(5, _))
-      .Times(1);
-    EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(1, _))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(6, _))
       .Times(1);
