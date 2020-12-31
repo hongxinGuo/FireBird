@@ -138,6 +138,25 @@ namespace StockAnalysisTest {
     s_pMainFrame->UpdateStatus();
   }
 
+  TEST_F(CMockMainFrameTest, TestUpdateInnerSystemStatus) {
+    InSequence seq;
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(1, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(2, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(3, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(4, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(5, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(6, _))
+      .Times(1);
+    EXPECT_CALL(*s_pMainFrame, SysCallSetInnerSystemPaneText(7, _))
+      .Times(1);
+    s_pMainFrame->UpdateInnerSystemStatus();
+  }
+
   TEST_F(CMockMainFrameTest, TestOnSysCommand) {
     gl_fExitingSystem = false;
     EXPECT_CALL(*s_pMainFrame, SysCallOnSysCommand)

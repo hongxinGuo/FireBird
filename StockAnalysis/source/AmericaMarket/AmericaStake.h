@@ -19,11 +19,11 @@ public:
 public:
   void Load(CSetAmericaStake& setAmericaStake);
   void SetCheckingDayLineStatus(void);
-  bool CheckDayLineUpdateStatus();
+  bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime);
   void Save(CSetAmericaStake& setAmericaStake);
   void Update(CSetAmericaStake& setAmericaStake);
   void Append(CSetAmericaStake& setAmericaStake);
-  bool SaveDayLine(void);
+  void SaveDayLine(void);
   bool UpdateEPSSurpriseDB(void);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);

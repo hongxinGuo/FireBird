@@ -102,7 +102,7 @@ UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖ
 
 // ÏÂÃæÎªÃÀ¹ú¹ÉÆ±ÊĞ³¡µÄ¹¤×÷Ïß³Ì
 // ¸üĞÂÒ»¸öÃÀ¹ú¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStake*> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª36, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª36, ²ÎÊıÎªĞ¯´øÖÇÄÜÖ¸ÕëµÄÒ»¸ö½á¹¹Ö¸Õë
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì
 UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
 // ¸üĞÂForexÈÕÏßÊı¾İ
@@ -113,6 +113,8 @@ UINT ThreadUpdateForexSymbolDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì
 UINT ThreadUpdateCountryListDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
 // ¸üĞÂEPSSurprise±í
 UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStake*> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª41
+// ¸üĞÂÃÀ¹ú¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
+UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket);
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

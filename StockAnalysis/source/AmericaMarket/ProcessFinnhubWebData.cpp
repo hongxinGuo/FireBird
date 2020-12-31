@@ -216,7 +216,6 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     }
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pStake->SetIPOStatus(__STAKE_NULL__);
     pStake->m_fUpdateDatabase = true;
     return true;
   }

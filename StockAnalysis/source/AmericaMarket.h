@@ -151,6 +151,7 @@ public:
   bool TaskAppendStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
+  bool TaskUpdateDayLineDB2(void);
   bool TaskUpdateForexExchangeDB(void);
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
@@ -160,7 +161,8 @@ public:
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
-  virtual bool RunningThreadUpdateDayLineDB(CAmericaStake* pStake);
+  virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake);
+  virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
@@ -188,6 +190,9 @@ public:
   bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
 
   long GetFinnInquiry(void);
+
+  long GetTotalStock(void) { return m_vAmericaStake.size(); }
+  CAmericaStakePtr GetStock(long lIndex) { return m_vAmericaStake.at(lIndex); }
 
   // 数据库操作
   bool LoadAmericaStake(void);

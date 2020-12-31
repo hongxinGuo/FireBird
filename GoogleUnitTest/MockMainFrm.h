@@ -10,6 +10,7 @@ namespace testing {
   public:
     MOCK_METHOD(void, SysCallOnTimer, (UINT_PTR nIDEvent), (override));
     MOCK_METHOD(void, SysCallSetPaneText, (int iIndex, LPCTSTR lpszNewText), (override));
+    MOCK_METHOD(void, SysCallSetInnerSystemPaneText, (int iIndex, LPCTSTR lpszNewText), (override));
     MOCK_METHOD(void, SysCallOnSysCommand, (UINT nID, LPARAM lParam), (override));
     MOCK_METHOD(void, ProcessTodayStock, (), (override));
     MOCK_METHOD(void, CalculateTodayRS, (), (override));

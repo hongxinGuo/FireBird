@@ -33,6 +33,7 @@ CSetAmericaStakeDayLine::CSetAmericaStakeDayLine(CDatabase* pdb)
   m_CurrentValue = _T("0");
   m_RS = _T("");	//相对于总市场的强度
   m_RSIndex = _T("");	//相对于总市场的强度
+  m_RSBackup = _T("");
   m_nFields = 20;
 }
 

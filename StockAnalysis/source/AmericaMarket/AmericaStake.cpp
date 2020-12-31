@@ -65,6 +65,10 @@ void CAmericaStake::Reset(void) {
   m_lLastClose = 0;
   m_lNew = 0;
   m_lOpen = 0;
+  m_llCurrentValue = 0;
+  m_llAmount = 0;
+  m_lUpDown = 0;
+  m_dUpDownRate = 0;
 
   m_vDayLine.resize(0);
 }
@@ -128,11 +132,20 @@ void CAmericaStake::SetCheckingDayLineStatus(void) {
   }
 }
 
-bool CAmericaStake::CheckDayLineUpdateStatus() {
+bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-  // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pAmericaMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
-    SetDayLineNeedUpdate(false); // 日线数据不需要更新
+  if (m_lIPOStatus == __STAKE_NULL__) {
+    SetDayLineNeedUpdate(false);
+  }
+  if (lTime > 170000) {
+    if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
+      SetDayLineNeedUpdate(false); // 日线数据不需要更新
+    }
+  }
+  else {
+    if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+      SetDayLineNeedUpdate(false); // 日线数据不需要更新
+    }
   }
   return true;
 }
@@ -226,56 +239,66 @@ void CAmericaStake::Append(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.Update();
 }
 
-bool CAmericaStake::SaveDayLine(void) {
+void CAmericaStake::SaveDayLine(void) {
   CSetAmericaStakeDayLine setAmericaStakeDayLine;
 
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
-  bool fNeedUpdate = false;
 
   ASSERT(m_vDayLine.size() > 0);
 
-  lSize = m_vDayLine.size();
-  setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
-  setAmericaStakeDayLine.m_strFilter += m_strSymbol + _T("'");
-  setAmericaStakeDayLine.m_strSort = _T("[Date]");
-
-  setAmericaStakeDayLine.Open();
-  while (!setAmericaStakeDayLine.IsEOF()) {
-    pDayLine = make_shared<CDayLine>();
-    pDayLine->LoadAmericaMarketData(&setAmericaStakeDayLine);
-    vDayLine.push_back(pDayLine);
-    lSizeOfOldDayLine++;
-    setAmericaStakeDayLine.MoveNext();
-  }
-  if (lSizeOfOldDayLine > 0) {
-    if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
-      m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
+  if (m_vDayLine.at(0)->GetFormatedMarketDate() > m_lDayLineEndDate) { // 只是添加新的数据
+    setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
+    setAmericaStakeDayLine.Open();
+    setAmericaStakeDayLine.m_pDatabase->BeginTrans();
+    for (auto& pDayLine2 : m_vDayLine) {
+      pDayLine2->AppendAmericaMarketData(&setAmericaStakeDayLine);
     }
+    setAmericaStakeDayLine.m_pDatabase->CommitTrans();
+    setAmericaStakeDayLine.Close();
   }
+  else { // 需要与之前的数据做对比
+    lSize = m_vDayLine.size();
+    setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
+    setAmericaStakeDayLine.m_strFilter += m_strSymbol + _T("'");
+    setAmericaStakeDayLine.m_strSort = _T("[Date]");
 
-  lCurrentPos = 0;
-  setAmericaStakeDayLine.m_pDatabase->BeginTrans();
-  for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
-    pDayLine = m_vDayLine.at(i);
-    while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
-    if (lCurrentPos < lSizeOfOldDayLine) {
-      if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-        pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
-        fNeedUpdate = true;
+    setAmericaStakeDayLine.Open();
+    while (!setAmericaStakeDayLine.IsEOF()) {
+      pDayLine = make_shared<CDayLine>();
+      pDayLine->LoadAmericaMarketData(&setAmericaStakeDayLine);
+      vDayLine.push_back(pDayLine);
+      lSizeOfOldDayLine++;
+      setAmericaStakeDayLine.MoveNext();
+    }
+    if (lSizeOfOldDayLine > 0) {
+      if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
+        m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
       }
     }
-    else {
-      pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
-      fNeedUpdate = true;
-    }
-  }
-  setAmericaStakeDayLine.m_pDatabase->CommitTrans();
-  setAmericaStakeDayLine.Close();
+    setAmericaStakeDayLine.Close();
 
-  return fNeedUpdate;
+    setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
+    setAmericaStakeDayLine.Open();
+    setAmericaStakeDayLine.m_pDatabase->BeginTrans();
+    lCurrentPos = 0;
+    for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+      pDayLine = m_vDayLine.at(i);
+      while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+      if (lCurrentPos < lSizeOfOldDayLine) {
+        if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
+          pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+        }
+      }
+      else {
+        pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+      }
+    }
+    setAmericaStakeDayLine.m_pDatabase->CommitTrans();
+    setAmericaStakeDayLine.Close();
+  }
 }
 
 bool CAmericaStake::UpdateEPSSurpriseDB(void) {
