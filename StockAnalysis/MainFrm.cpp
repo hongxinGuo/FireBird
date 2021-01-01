@@ -85,6 +85,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStakeCode)
   ON_COMMAND(ID_AMERICA_MARKET_REBULID_DAY_LINE, &CMainFrame::OnAmericaMarketRebuldayLine)
   ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
+  ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -979,4 +980,9 @@ void CMainFrame::OnAmericaMarketRebuldayLine() {
 void CMainFrame::OnRebuildEpsSurprise() {
   // TODO: Add your command handler code here
   gl_pAmericaMarket->RebuildEPSSurprise();
+}
+
+void CMainFrame::OnRebuildPeer() {
+  // TODO: Add your command handler code here
+  gl_pAmericaMarket->ReBuildPeer();
 }

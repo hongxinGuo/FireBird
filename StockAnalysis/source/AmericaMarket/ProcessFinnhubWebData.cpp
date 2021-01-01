@@ -144,8 +144,9 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
   CAmericaStakePtr pStake = make_shared<CAmericaStake>();
   ptree pt, pt2;
   string s;
-  bool fFoundNewSymbol = false;
   int iCount = 0;
+  CString str, strNumber;
+  char buffer[30];
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -165,16 +166,15 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
     if (s.size() > 0) pStake->m_strFigi = s.c_str();
     s = pt2.get<string>(_T("currency"));
     if (s.size() > 0) pStake->m_strCurrency = s.c_str();
-    if (!gl_pAmericaMarket->IsAmericaStake(pStake->m_strSymbol)) { // 新代码？
-      vStake.push_back(pStake);
-      fFoundNewSymbol = true;
-    }
+    vStake.push_back(pStake);
     iCount++;
   }
-  sort(vStake.begin(), vStake.end(), CompareAmericaStake);
   TRACE("今日Finnhub Company Symbol总数为%d\n", iCount);
-
-  return fFoundNewSymbol;
+  sprintf_s(buffer, _T("%6d"), iCount);
+  strNumber = buffer;
+  str = _T("今日Finnhub Company Symbol总数为") + strNumber;
+  gl_systemMessage.PushInnerSystemInformationMessage(str);
+  return true;
 }
 
 bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
@@ -391,7 +391,6 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
     str += pForexSymbol->m_strSymbol;
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
-    gl_systemMessage.PushInformationMessage(str);
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }

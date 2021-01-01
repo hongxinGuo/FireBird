@@ -161,18 +161,18 @@ public:
   bool TaskCheckSystemReady(void);
 
   // 各工作线程调用包裹函数
-  virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake);
+  virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
-  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStake);
+  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStock);
 
   bool IsAmericaStake(CString strProfile);
   bool IsAmericaStakeUpdated(void);
   CAmericaStakePtr GetAmericaStake(CString strTicker);
-  void AddAmericaStake(CAmericaStakePtr pStake);
+  void AddAmericaStake(CAmericaStakePtr pStock);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -196,7 +196,7 @@ public:
 
   // 数据库操作
   bool LoadAmericaStake(void);
-  bool SaveCompnayProfile(void);
+  bool SaveCompanyProfile(void);
   bool UpdateCountryListDB(void);
   bool UpdateStakeDB(void);
   bool UpdateForexSymbolDB(void);
@@ -212,13 +212,13 @@ public:
 
   bool RebulidFinnhubDayLine(void);
   bool RebuildEPSSurprise(void);
+  bool ReBuildPeer(void);
   bool SortStakeTable(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;
   map<CString, long> m_mapAmericaStake;
   long m_lLastTotalAmericaStake;
-  long m_lTotalAmericaStake;
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
   long m_lCurrentRTDataQuotePos;

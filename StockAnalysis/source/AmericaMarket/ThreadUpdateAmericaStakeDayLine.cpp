@@ -13,18 +13,18 @@
 
 #include"AmericaStake.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStock) {
   CString str;
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   gl_SaveAmericaOneStockDayLine.Wait();
   if (!gl_fExitingSystem) {
-    pStake->SaveDayLine();
-    pStake->UpdateDayLineStartEndDate();
-    pStake->m_fUpdateDatabase = true;
-    pStake->UnloadDayLine();
-    str = pStake->GetSymbol() + _T("日线资料存储完成");
+    pStock->SaveDayLine();
+    pStock->UpdateDayLineStartEndDate();
+    pStock->m_fUpdateDatabase = true;
+    pStock->UnloadDayLine();
+    str = pStock->GetSymbol() + _T("日线资料存储完成");
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_SaveAmericaOneStockDayLine.Signal();
@@ -36,29 +36,24 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake) {
 
 UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
   CString str;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   for (long i = 0; i < pMarket->GetTotalStock(); i++) {
-    pStake = pMarket->GetStock(i);
-    if (pStake->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      if (pStake->GetDayLineSize() > 0) {
-        if (pStake->HaveNewDayLineData()) {
-          pStake->SaveDayLine();
-          pStake->UpdateDayLineStartEndDate();
-          pStake->m_fUpdateDatabase = true;
-          pStake->UnloadDayLine();
-          str = pStake->GetSymbol() + _T("日线资料存储完成");
+    pStock = pMarket->GetStock(i);
+    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      if (pStock->GetDayLineSize() > 0) {
+        if (pStock->HaveNewDayLineData()) {
+          pStock->SaveDayLine();
+          pStock->UpdateDayLineStartEndDate();
+          pStock->m_fUpdateDatabase = true;
+          pStock->UnloadDayLine();
+          str = pStock->GetSymbol() + _T("日线资料存储完成");
           gl_systemMessage.PushDayLineInfoMessage(str);
-          TRACE("更新%s日线数据\n", pStake->GetSymbol().GetBuffer());
+          TRACE("更新%s日线数据\n", pStock->GetSymbol().GetBuffer());
         }
-        else pStake->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
-      }
-      else { // 此种情况为有股票代码，但此代码尚未上市
-        CString str1 = pStake->GetSymbol();
-        str1 += _T(" 为未上市股票代码");
-        gl_systemMessage.PushDayLineInfoMessage(str1);
+        else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
       }
     }
     if (gl_fExitingSystem) {

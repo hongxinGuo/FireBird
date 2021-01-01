@@ -134,4 +134,5 @@ public:
   afx_msg void OnUpdateStakeCode();
   afx_msg void OnAmericaMarketRebuldayLine();
   afx_msg void OnRebuildEpsSurprise();
+  afx_msg void OnRebuildPeer();
 };

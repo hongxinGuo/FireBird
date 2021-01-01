@@ -82,7 +82,6 @@ void CAmericaMarket::Reset(void) {
 }
 
 void CAmericaMarket::ResetFinnhub(void) {
-  m_lTotalAmericaStake = 0;
   m_lLastTotalAmericaStake = 0;
   m_lCurrentProfilePos = 0;
   m_lCurrentUpdateDayLinePos = 0;
@@ -165,7 +164,7 @@ bool CAmericaMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountfinnhubLimit = 12; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。
+  static int s_iCountfinnhubLimit = 11; // Finnhub.io每1.1秒左右申请一次，以防止出现频率过高的情况。
   static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
   const long lCurrentTime = GetFormatedMarketTime();
 
@@ -174,7 +173,7 @@ bool CAmericaMarket::SchedulingTask(void) {
   if (--s_iCountfinnhubLimit < 0) {
     TaskInquiryFinnhub(lCurrentTime);
     if (m_fFinnhubInquiring) {
-      s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+      s_iCountfinnhubLimit = 11; // 如果申请了网络数据，则重置计数器，以便申请下一次。
     }
   }
 
@@ -208,7 +207,7 @@ bool CAmericaMarket::SchedulingTask(void) {
 bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
   CForexSymbolPtr pSymbol = nullptr;
 
   if (m_qFinnhubWebInquiry.size() > 0) { // 有申请等待？
@@ -281,15 +280,15 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
       case __STOCK_EARNING_CALENDER__:
       break;
       case __STOCK_QUOTE__:
-      pStake = m_vAmericaStake.at(m_lCurrentRTDataQuotePos);
-      strMiddle = pStake->GetSymbol();
+      pStock = m_vAmericaStake.at(m_lCurrentRTDataQuotePos);
+      strMiddle = pStock->GetSymbol();
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
       case __STOCK_CANDLES__:
-      pStake = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      strMiddle = pStake->GetFinnhubDayLineInquiryString(GetMarketTime());
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      strMiddle = pStock->GetFinnhubDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      pStake->m_fDayLineNeedUpdate = false;
+      pStock->m_fDayLineNeedUpdate = false;
       break;
       case __STOCK_TICK_DATA__: // Premium
       break;
@@ -342,7 +341,7 @@ bool CompareAmericaStake2(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1
 //////////////////////////////////////////////
 bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   CWebDataPtr pWebData = nullptr;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
   CString str = _T("");
   vector<CString> vExchange;
   vector<CForexSymbolPtr> vForexSymbol;
@@ -350,6 +349,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CEPSSurprisePtr> vEPSSurprise;
   vector<CAmericaStakePtr> vStake;
   long lTemp = 0;
+  bool fFoundNewStock = false;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
   if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
@@ -361,17 +361,20 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       ProcessFinnhubStockProfile(pWebData, m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex));
       break;
       case __COMPANY_PROFILE2__:
-      pStake = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      ProcessFinnhubStockProfile2(pWebData, pStake);
-      pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
-      pStake->m_fUpdateDatabase = true;
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ProcessFinnhubStockProfile2(pWebData, pStock);
+      pStock->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+      pStock->m_fUpdateDatabase = true;
       break;
       case  __COMPANY_SYMBOLS__:
-      if (ProcessFinnhubStockSymbol(pWebData, vStake)) {
-        m_lTotalAmericaStake += vStake.size();
-        for (auto& pStake2 : vStake) {
-          m_vAmericaStake.push_back(pStake2);
+      ProcessFinnhubStockSymbol(pWebData, vStake);
+      for (auto& pStock2 : vStake) {
+        if (!IsAmericaStake(pStock2->GetSymbol())) {
+          m_vAmericaStake.push_back(pStock2);
+          fFoundNewStock = true;
         }
+      }
+      if (fFoundNewStock) {
         sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
         m_mapAmericaStake.clear();
         int j = 0;
@@ -389,24 +392,24 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       case __NEWS_SENTIMENT__:
       break;
       case __PEERS__:
-      pStake = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      ProcessFinnhubStockPeer(pWebData, pStake);
-      pStake->m_fUpdateDatabase = true;
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ProcessFinnhubStockPeer(pWebData, pStock);
+      pStock->m_fUpdateDatabase = true;
       break;
       case __BASIC_FINANCIALS__:
       break;
       case __STOCK_EPS_SURPRISE__:
-      pStake = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       if (ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
         if (vEPSSurprise.size() > 0) {
-          pStake->UpdateEPSSurprise(vEPSSurprise);
+          pStock->UpdateEPSSurprise(vEPSSurprise);
         }
         else {
-          pStake->m_lLastEPSSurpriseUpdateDate = 19700101; // 将日期设置为更早。
-          pStake->m_fUpdateDatabase = true; // 更新代码集
+          pStock->m_lLastEPSSurpriseUpdateDate = 19700101; // 将日期设置为更早。
+          pStock->m_fUpdateDatabase = true; // 更新代码集
         }
-        pStake->m_fEPSSurpriseNeedUpdate = false;
-        pStake->m_fEPSSurpriseNeedSave = true;
+        pStock->m_fEPSSurpriseNeedUpdate = false;
+        pStock->m_fEPSSurpriseNeedSave = true;
       }
       break;
       case __STOCK_QUOTE__:
@@ -469,7 +472,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
 bool CAmericaMarket::ProcessTiingoInquiringMessage(void) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
   CForexSymbolPtr pSymbol = nullptr;
 
   if (m_qTiingoWebInquiry.size() > 0) { // 有申请等待？
@@ -537,10 +540,10 @@ bool CAmericaMarket::ProcessTiingoInquiringMessage(void) {
       case __STOCK_QUOTE__:
       break;
       case __STOCK_CANDLES__:
-      pStake = m_vAmericaStake.at(m_CurrentTiingoInquiry.m_lStockIndex);
-      strMiddle = pStake->GetTiingoDayLineInquiryString(GetFormatedMarketDate());
+      pStock = m_vAmericaStake.at(m_CurrentTiingoInquiry.m_lStockIndex);
+      strMiddle = pStock->GetTiingoDayLineInquiryString(GetFormatedMarketDate());
       gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      pStake->m_fDayLineNeedUpdate = false;
+      pStock->m_fDayLineNeedUpdate = false;
       break;
       case __STOCK_TICK_DATA__: // Premium
       break;
@@ -577,7 +580,7 @@ bool CAmericaMarket::ProcessTiingoInquiringMessage(void) {
 
 bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
   CWebDataPtr pWebData = nullptr;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
   CString str = _T("");
   vector<CString> vExchange;
   vector<CForexSymbolPtr> vForexSymbol;
@@ -670,28 +673,27 @@ bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
 }
 
 bool CAmericaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
-  TaskUpdateCountryListDB();
-  TaskUpdateForexExchangeDB();
-  TaskUpdateForexSymbolDB();
-  TaskUpdateForexDayLineDB();
-  TaskUpdateDayLineDB();
-  TaskUpdateEPSSurpriseDB();
-  TaskUpdateEconomicCalendar();
-
   return true;
 }
 
 bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
 
+  if (IsAmericaStakeUpdated()) {
+    TaskUpdateStakeDB();
+  }
+  TaskUpdateCountryListDB();
+  TaskUpdateForexExchangeDB();
+  TaskUpdateForexSymbolDB();
+  TaskUpdateForexDayLineDB();
+  TaskUpdateDayLineDB2();
+  TaskUpdateEPSSurpriseDB();
+  TaskUpdateEconomicCalendar();
+
   return true;
 }
 
 bool CAmericaMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  if (IsAmericaStakeUpdated()) {
-    TaskUpdateStakeDB();
-  }
-
   return true;
 }
 
@@ -723,8 +725,8 @@ bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
 //////////////////////////////////////////////////////////////////////////////////////
 bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
   if (((lCurrentTime < 165700) || (lCurrentTime > 170300))) { // 下午五时重启系统，故而此时不允许接收网络信息。
-    TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
+    TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubForexExchange();
     TaskInquiryFinnhubForexSymbol();
     //TaskInquiryFinnhubEconomicCalender();
@@ -776,17 +778,17 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol(void) {
 
 bool CAmericaMarket::TaskAppendStakeSymbolDB(void) {
   CSetAmericaStake setAmericaStake;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
 
-  if (m_lLastTotalAmericaStake < m_lTotalAmericaStake) {
+  if (m_lLastTotalAmericaStake < m_vAmericaStake.size()) {
     DeleteStakeSymbolDB();
-    m_lLastTotalAmericaStake = m_lTotalAmericaStake;
+    m_lLastTotalAmericaStake = m_vAmericaStake.size();
 
     setAmericaStake.Open();
     setAmericaStake.m_pDatabase->BeginTrans();
-    for (long l = 0; l < m_lTotalAmericaStake; l++) {
-      pStake = m_vAmericaStake.at(l);
-      pStake->Append(setAmericaStake);
+    for (long l = 0; l < m_vAmericaStake.size(); l++) {
+      pStock = m_vAmericaStake.at(l);
+      pStock->Append(setAmericaStake);
     }
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
@@ -857,7 +859,7 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanyProfile2(void) {
 bool CAmericaMarket::TaskInquiryFinnhubDayLine(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CAmericaStakePtr pStake;
+  CAmericaStakePtr pStock;
   CString str = _T("");
   long lStakeSetSize = m_vAmericaStake.size();
 
@@ -865,7 +867,7 @@ bool CAmericaMarket::TaskInquiryFinnhubDayLine(void) {
   if (!m_fFinnhubDayLineUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStakeSetSize; m_lCurrentUpdateDayLinePos++) {
       if (m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-        pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
+        pStock = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
         fFound = true;
         break;
       }
@@ -913,7 +915,7 @@ bool CAmericaMarket::TaskInquiryFinnhubRTQuote(void) {
 bool CAmericaMarket::TaskInquiryFinnhubPeer(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CAmericaStakePtr pStake;
+  CAmericaStakePtr pStock;
   CString str = _T("");
   long lStakeSetSize = m_vAmericaStake.size();
 
@@ -921,7 +923,7 @@ bool CAmericaMarket::TaskInquiryFinnhubPeer(void) {
   if (!m_fFinnhubPeerUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdatePeerPos = 0; m_lCurrentUpdatePeerPos < lStakeSetSize; m_lCurrentUpdatePeerPos++) {
       if (!m_vAmericaStake.at(m_lCurrentUpdatePeerPos)->m_fFinnhubPeerUpdated) {
-        pStake = m_vAmericaStake.at(m_lCurrentUpdatePeerPos);
+        pStock = m_vAmericaStake.at(m_lCurrentUpdatePeerPos);
         fFound = true;
         break;
       }
@@ -960,7 +962,7 @@ bool CAmericaMarket::TaskInquiryFinnhubEconomicCalender(void) {
 bool CAmericaMarket::TaskInquiryFinnhubEPSSurprise(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CAmericaStakePtr pStake;
+  CAmericaStakePtr pStock;
   CString str = _T("");
   long lStakeSetSize = m_vAmericaStake.size();
 
@@ -968,7 +970,7 @@ bool CAmericaMarket::TaskInquiryFinnhubEPSSurprise(void) {
   if (!m_fFinnhubEPSSurpriseUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStakeSetSize; m_lCurrentUpdateEPSSurprisePos++) {
       if (m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos)->IsEPSSurpriseNeedUpdate()) {
-        pStake = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
+        pStock = m_vAmericaStake.at(m_lCurrentUpdateEPSSurprisePos);
         fFound = true;
         break;
       }
@@ -1021,7 +1023,7 @@ bool CAmericaMarket::TaskInquiryFinnhubForexSymbol(void) {
 bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CForexSymbolPtr pStake;
+  CForexSymbolPtr pStock;
   CString str = _T("");
   const long lStakeSetSize = m_vForexSymbol.size();
 
@@ -1029,7 +1031,7 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
   if (!m_fForexDayLineUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStakeSetSize; m_lCurrentUpdateForexDayLinePos++) {
       if (m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
-        pStake = m_vForexSymbol.at(m_lCurrentUpdateDayLinePos);
+        pStock = m_vForexSymbol.at(m_lCurrentUpdateDayLinePos);
         fFound = true;
         break;
       }
@@ -1070,7 +1072,7 @@ void CAmericaMarket::TaskInquiryTiingo(void) {
 bool CAmericaMarket::TaskInquiryTiingoDayLine(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CAmericaStakePtr pStake;
+  CAmericaStakePtr pStock;
   CString str = _T("");
   long lStakeSetSize = m_vAmericaStake.size();
 
@@ -1078,7 +1080,7 @@ bool CAmericaMarket::TaskInquiryTiingoDayLine(void) {
   if (!m_fTiingoDayLineUpdated && !m_fTiingoInquiring) {
     for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStakeSetSize; m_lCurrentUpdateDayLinePos++) {
       if (m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-        pStake = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
+        pStock = m_vAmericaStake.at(m_lCurrentUpdateDayLinePos);
         fFound = true;
         break;
       }
@@ -1114,19 +1116,14 @@ bool CAmericaMarket::TaskInquiryTiingoDayLine(void) {
 bool CAmericaMarket::TaskUpdateDayLineDB(void) {
   CString str;
 
-  for (auto pStake : m_vAmericaStake) {
-    if (pStake->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      if (pStake->GetDayLineSize() > 0) {
-        if (pStake->HaveNewDayLineData()) {
-          RunningThreadUpdateDayLineDB(pStake);
-          TRACE("更新%s日线数据\n", pStake->GetSymbol().GetBuffer());
+  for (auto pStock : m_vAmericaStake) {
+    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      if (pStock->GetDayLineSize() > 0) {
+        if (pStock->HaveNewDayLineData()) {
+          RunningThreadUpdateDayLineDB(pStock);
+          TRACE("更新%s日线数据\n", pStock->GetSymbol().GetBuffer());
         }
-        else pStake->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
-      }
-      else { // 此种情况为有股票代码，但此代码尚未上市
-        CString str1 = pStake->GetSymbol();
-        str1 += _T(" 为未上市股票代码");
-        gl_systemMessage.PushDayLineInfoMessage(str1);
+        else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
       }
     }
     if (gl_fExitingSystem) {
@@ -1186,10 +1183,10 @@ bool CAmericaMarket::TaskUpdateCountryListDB(void) {
 bool CAmericaMarket::TaskUpdateEPSSurpriseDB(void) {
   CString str;
 
-  for (auto& pStake : m_vAmericaStake) {
-    if (pStake->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      RunningThreadUpdateEPSSurpriseDB(pStake.get());
-      TRACE("更新%s EPS surprise数据\n", pStake->GetSymbol().GetBuffer());
+  for (auto& pStock : m_vAmericaStake) {
+    if (pStock->IsEPSSurpriseNeedSaveAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      RunningThreadUpdateEPSSurpriseDB(pStock.get());
+      TRACE("更新%s EPS surprise数据\n", pStock->GetSymbol().GetBuffer());
     }
     if (gl_fExitingSystem) {
       break; // 如果程序正在退出，则停止存储。
@@ -1232,8 +1229,8 @@ bool CAmericaMarket::TaskCheckSystemReady(void) {
   return true;
 }
 
-bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStake) {
-  thread thread1(ThreadUpdateAmericaStakeDayLineDB, pStake);
+bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock) {
+  thread thread1(ThreadUpdateAmericaStakeDayLineDB, pStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1268,8 +1265,8 @@ bool CAmericaMarket::RunningThreadUpdateCountryListDB(void) {
   return true;
 }
 
-bool CAmericaMarket::RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStake) {
-  thread thread1(ThreadUpdateEPSSurpriseDB, pStake);
+bool CAmericaMarket::RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStock) {
+  thread thread1(ThreadUpdateEPSSurpriseDB, pStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1296,9 +1293,9 @@ CAmericaStakePtr CAmericaMarket::GetAmericaStake(CString strTicker) {
   else return nullptr;
 }
 
-void CAmericaMarket::AddAmericaStake(CAmericaStakePtr pStake) {
-  m_vAmericaStake.push_back(pStake);
-  m_mapAmericaStake[pStake->m_strSymbol] = m_lTotalAmericaStake++;
+void CAmericaMarket::AddAmericaStake(CAmericaStakePtr pStock) {
+  m_mapAmericaStake[pStock->m_strSymbol] = m_vAmericaStake.size();
+  m_vAmericaStake.push_back(pStock);
 }
 
 bool CAmericaMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
@@ -1342,15 +1339,15 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   }
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
-  m_lLastTotalAmericaStake = m_lTotalAmericaStake = m_vAmericaStake.size();
+  m_lLastTotalAmericaStake = m_vAmericaStake.size();
   ASSERT(m_lLastTotalAmericaStake == m_vAmericaStake.size());
   return true;
 }
 
-bool CAmericaMarket::SaveCompnayProfile(void) {
+bool CAmericaMarket::SaveCompanyProfile(void) {
   CSetAmericaStake setAmericaStake;
   CAmericaStakePtr pAmericaStake = nullptr;
-  long lTotalAmericaStake = m_lTotalAmericaStake;
+  long lTotalAmericaStake = m_vAmericaStake.size();
 
   setAmericaStake.Open();
   setAmericaStake.m_pDatabase->BeginTrans();
@@ -1384,16 +1381,16 @@ bool CAmericaMarket::UpdateCountryListDB(void) {
 
 bool CAmericaMarket::UpdateStakeDB(void) {
   const long lTotalAmericaStake = m_vAmericaStake.size();
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
   CSetAmericaStake setAmericaStake;
 
   setAmericaStake.Open();
   setAmericaStake.m_pDatabase->BeginTrans();
   while (!setAmericaStake.IsEOF()) {
-    pStake = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
-    if (pStake->m_fUpdateDatabase) {
-      pStake->Update(setAmericaStake);
-      pStake->m_fUpdateDatabase = false;
+    pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+    if (pStock->m_fUpdateDatabase) {
+      pStock->Update(setAmericaStake);
+      pStock->m_fUpdateDatabase = false;
     }
     setAmericaStake.MoveNext();
   }
@@ -1456,9 +1453,9 @@ bool CAmericaMarket::UpdateEconomicCalendarDB(void) {
 
 bool CAmericaMarket::RebulidFinnhubDayLine(void) {
   CSetAmericaStake setAmericaStake;
-  for (auto& pStake : m_vAmericaStake) {
-    pStake->SetDayLineStartDate(29900101);
-    pStake->SetDayLineEndDate(19800101);
+  for (auto& pStock : m_vAmericaStake) {
+    pStock->SetDayLineStartDate(29900101);
+    pStock->SetDayLineEndDate(19800101);
   }
 
   //setAmericaStake.m_strSort = _T("[Symbol]");
@@ -1489,6 +1486,12 @@ bool CAmericaMarket::RebuildEPSSurprise(void) {
   return true;
 }
 
+bool CAmericaMarket::ReBuildPeer(void) {
+  m_fFinnhubPeerUpdated = false;
+
+  return true;
+}
+
 void CAmericaMarket::DeleteEPSSurpriseDB(void) {
   CDatabase database;
 
@@ -1507,16 +1510,16 @@ void CAmericaMarket::DeleteEPSSurpriseDB(void) {
 bool CAmericaMarket::SortStakeTable(void) {
   CSetAmericaStake setAmericaStake;
   vector<CAmericaStakePtr> vStake;
-  CAmericaStakePtr pStake = nullptr;
+  CAmericaStakePtr pStock = nullptr;
 
   setAmericaStake.m_strSort = _T("[Symbol]");
   setAmericaStake.Open();
   setAmericaStake.m_pDatabase->BeginTrans();
   while (!setAmericaStake.IsEOF()) {
-    pStake = make_shared<CAmericaStake>();
-    pStake->Load(setAmericaStake);
-    pStake->SetCheckingDayLineStatus();
-    vStake.push_back(pStake);
+    pStock = make_shared<CAmericaStake>();
+    pStock->Load(setAmericaStake);
+    pStock->SetCheckingDayLineStatus();
+    vStake.push_back(pStock);
     setAmericaStake.MoveNext();
   }
   setAmericaStake.m_pDatabase->CommitTrans();

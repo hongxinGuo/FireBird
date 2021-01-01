@@ -116,6 +116,11 @@
 #define ID_AMERICA_MARKET_SORT_STAKE_TABLE 32884
 #define ID_32885                        32885
 #define ID_REBUILD_EPS_SURPRISE         32886
+#define ID_32887                        32887
+#define ID_32888                        32888
+#define ID_REBULID_PEER_TABLE           32889
+#define ID_REBULID_PEER                 32890
+#define ID_REBUILD_PEER                 32891
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -142,8 +147,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32887
+#define _APS_NEXT_RESOURCE_VALUE        319
+#define _APS_NEXT_COMMAND_VALUE         32892
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

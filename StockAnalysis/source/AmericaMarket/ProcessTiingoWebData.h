@@ -3,4 +3,4 @@
 #include"WebData.h"
 #include"AmericaStake.h"
 
-bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake);
+bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStock);
