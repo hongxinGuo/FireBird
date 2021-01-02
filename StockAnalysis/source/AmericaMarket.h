@@ -191,11 +191,13 @@ public:
 
   long GetFinnInquiry(void);
 
-  long GetTotalStock(void) { return m_vAmericaStake.size(); }
+  long GetTotalStock(void) noexcept { return m_vAmericaStake.size(); }
   CAmericaStakePtr GetStock(long lIndex) { return m_vAmericaStake.at(lIndex); }
+  CAmericaStakePtr GetStock(CString strSymbol) { return m_vAmericaStake.at(m_mapAmericaStake.at(strSymbol)); }
 
   // 数据库操作
   bool LoadAmericaStake(void);
+  bool LoadAmericaChoicedStock(void);
   bool SaveCompanyProfile(void);
   bool UpdateCountryListDB(void);
   bool UpdateStakeDB(void);
@@ -229,6 +231,9 @@ protected:
   WebInquiry m_CurrentFinnhubInquiry;
   WebInquiry m_CurrentTiingoInquiry;
   WebInquiry m_CurrentQuandlInquiry;
+  vector<CAmericaStakePtr> m_vAmericaChoicedStake;
+  map<CString, long> m_mapAmericaChoicedStake;
+  long m_lChoicedStockPos;
 
   vector<CString> m_vFinnhubInquiringStr;
   priority_queue<WebInquiry, vector<WebInquiry>, WebInquiry> m_qFinnhubWebInquiry; // 网络数据查询命令队列(有优先级）
@@ -248,24 +253,20 @@ protected:
   vector<CString> m_vForexExchange;
   map<CString, long> m_mapForexExchange;
   long m_lLastTotalForexExchange;
-  long m_lTotalForexExchange;
 
   vector<CForexSymbolPtr> m_vForexSymbol;
   map<CString, long> m_mapForexSymbol;
   long m_lLastTotalForexSymbol;
-  long m_lTotalForexSymbol;
   long m_lCurrentUpdateForexDayLinePos;
 
   vector<CCountryPtr> m_vCountry;
   map<CString, long> m_mapCountry;
   bool m_fCountryListUpdated;
   long m_lLastTotalCountry;
-  long m_lTotalCountry;
 
   vector<CEconomicCalendarPtr> m_vEconomicCalendar;
   map<CString, long> m_mapEconomicCalendar;
   long m_lLastTotalEconomicCalendar;
-  long m_lTotalEconomicCalendar;
 
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
   bool m_fAmericaStakeUpdated; // 每日更新公司简介

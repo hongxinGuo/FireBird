@@ -131,7 +131,7 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -205,6 +205,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h" />
@@ -635,6 +637,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -685,6 +688,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -735,6 +739,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -785,6 +790,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -835,6 +841,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -874,6 +881,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

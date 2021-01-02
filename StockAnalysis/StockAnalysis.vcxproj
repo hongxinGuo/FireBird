@@ -226,7 +226,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>true</Microsoft-googletest-v140-windesktop-msvcstl-static-rt-dyn-Disable-gtest_main>
@@ -379,8 +379,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -433,8 +432,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -486,8 +484,7 @@
       <StackReserveSize>
       </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -605,8 +602,7 @@
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackReserveSize>
       </StackReserveSize>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Midl>
@@ -644,8 +640,7 @@
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackReserveSize>
       </StackReserveSize>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Midl>
@@ -685,8 +680,7 @@
       <AdditionalOptions>-d2:-FH4- %(AdditionalOptions)</AdditionalOptions>
       <StackReserveSize>
       </StackReserveSize>
-      <StackCommitSize>
-      </StackCommitSize>
+      <StackCommitSize>40971520</StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <Midl>
@@ -715,6 +709,7 @@
     <ClInclude Include="source\AmericaMarket\ProcessFinnhubWebData.h" />
     <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
+    <ClInclude Include="source\AmericaMarket\SetAmericaChoicedStock.h" />
     <ClInclude Include="source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h" />
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h" />
@@ -801,6 +796,7 @@
     <ClCompile Include="source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetAmericaChoicedStock.cpp" />
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp" />

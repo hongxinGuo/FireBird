@@ -242,7 +242,6 @@ void CAmericaStake::Append(CSetAmericaStake& setAmericaStake) {
 void CAmericaStake::SaveDayLine(void) {
   CSetAmericaStakeDayLine setAmericaStakeDayLine;
 
-  size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
   long lCurrentPos = 0, lSizeOfOldDayLine = 0;
@@ -260,7 +259,6 @@ void CAmericaStake::SaveDayLine(void) {
     setAmericaStakeDayLine.Close();
   }
   else { // 需要与之前的数据做对比
-    lSize = m_vDayLine.size();
     setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
     setAmericaStakeDayLine.m_strFilter += m_strSymbol + _T("'");
     setAmericaStakeDayLine.m_strSort = _T("[Date]");
@@ -284,16 +282,21 @@ void CAmericaStake::SaveDayLine(void) {
     setAmericaStakeDayLine.Open();
     setAmericaStakeDayLine.m_pDatabase->BeginTrans();
     lCurrentPos = 0;
-    for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
+    for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
       pDayLine = m_vDayLine.at(i);
-      while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
-      if (lCurrentPos < lSizeOfOldDayLine) {
-        if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-          pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
-        }
+      if (pDayLine->GetFormatedMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
+        pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
       }
       else {
-        pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+        while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+        if (lCurrentPos < lSizeOfOldDayLine) {
+          if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
+            pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+          }
+        }
+        else {
+          pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+        }
       }
     }
     setAmericaStakeDayLine.m_pDatabase->CommitTrans();

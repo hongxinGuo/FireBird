@@ -192,7 +192,6 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
           pMarket->m_mapForexExchange[vExchange.at(i)] = lTemp;
         }
       }
-      pMarket->m_lTotalForexExchange = pMarket->m_vForexExchange.size();
       pMarket->m_fFinnhubForexExhangeUpdated = true;
       break;
       case __FOREX_SYMBOLS__:
@@ -205,7 +204,6 @@ bool CFinnhub::ProcessFinnhubWebDataReceived(CAmericaMarketPtr pMarket, WebInqui
           pMarket->m_vForexSymbol.push_back(pSymbol);
         }
       }
-      pMarket->m_lTotalForexSymbol = pMarket->m_vForexSymbol.size();
       break;
       case __FOREX_CANDLES__:
       ASSERT(finnhubInquiry.m_lStockIndex == pMarket->m_lCurrentUpdateForexDayLinePos);

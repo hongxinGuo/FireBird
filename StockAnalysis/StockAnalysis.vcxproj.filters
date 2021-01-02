@@ -363,6 +363,9 @@
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h">
       <Filter>头文件\America Market\网络通信</Filter>
     </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetAmericaChoicedStock.h">
+      <Filter>头文件\America Market\数据库</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -697,6 +700,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetAmericaChoicedStock.cpp">
+      <Filter>源文件\America Market\数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

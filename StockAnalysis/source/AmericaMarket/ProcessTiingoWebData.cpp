@@ -26,7 +26,6 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     str += pStake->m_strSymbol;
     str += _T("»’œﬂπ ’œ\n");
     TRACE("%s", str.GetBuffer());
-    gl_systemMessage.PushInformationMessage(str);
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
