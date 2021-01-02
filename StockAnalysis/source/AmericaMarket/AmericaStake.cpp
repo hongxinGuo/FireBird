@@ -65,10 +65,13 @@ void CAmericaStake::Reset(void) {
   m_lLastClose = 0;
   m_lNew = 0;
   m_lOpen = 0;
+  m_llTotalValue = 0;
   m_llCurrentValue = 0;
   m_llAmount = 0;
   m_lUpDown = 0;
+  m_llVolume = 0;
   m_dUpDownRate = 0;
+  m_dChangeHandRate = 0;
 
   m_vDayLine.resize(0);
 }
@@ -121,20 +124,12 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   }
 }
 
-void CAmericaStake::SetCheckingDayLineStatus(void) {
+bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   if (m_lIPOStatus == __STAKE_NULL__) {
     SetDayLineNeedUpdate(false);
   }
-  // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  else if (gl_pAmericaMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
-    SetDayLineNeedUpdate(false); // 日线数据不需要更新
-  }
-}
-
-bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
-  ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-  if (m_lIPOStatus == __STAKE_NULL__) {
+  if ((m_lDayLineEndDate != 19800101) && (gl_pAmericaMarket->IsEarlyThen(m_lDayLineEndDate, gl_pAmericaMarket->GetFormatedMarketDate(), 100))) {
     SetDayLineNeedUpdate(false);
   }
   if (lTime > 170000) {
@@ -240,7 +235,7 @@ void CAmericaStake::Append(CSetAmericaStake& setAmericaStake) {
 }
 
 void CAmericaStake::SaveDayLine(void) {
-  CSetAmericaStakeDayLine setAmericaStakeDayLine;
+  CSetAmericaStakeDayLine setAmericaStakeDayLine, setSaveAmericaStakeDayLine;
 
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
@@ -249,14 +244,14 @@ void CAmericaStake::SaveDayLine(void) {
   ASSERT(m_vDayLine.size() > 0);
 
   if (m_vDayLine.at(0)->GetFormatedMarketDate() > m_lDayLineEndDate) { // 只是添加新的数据
-    setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
-    setAmericaStakeDayLine.Open();
-    setAmericaStakeDayLine.m_pDatabase->BeginTrans();
+    setSaveAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
+    setSaveAmericaStakeDayLine.Open();
+    setSaveAmericaStakeDayLine.m_pDatabase->BeginTrans();
     for (auto& pDayLine2 : m_vDayLine) {
-      pDayLine2->AppendAmericaMarketData(&setAmericaStakeDayLine);
+      pDayLine2->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
     }
-    setAmericaStakeDayLine.m_pDatabase->CommitTrans();
-    setAmericaStakeDayLine.Close();
+    setSaveAmericaStakeDayLine.m_pDatabase->CommitTrans();
+    setSaveAmericaStakeDayLine.Close();
   }
   else { // 需要与之前的数据做对比
     setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
@@ -278,29 +273,29 @@ void CAmericaStake::SaveDayLine(void) {
     }
     setAmericaStakeDayLine.Close();
 
-    setAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
-    setAmericaStakeDayLine.Open();
-    setAmericaStakeDayLine.m_pDatabase->BeginTrans();
+    setSaveAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
+    setSaveAmericaStakeDayLine.Open();
+    setSaveAmericaStakeDayLine.m_pDatabase->BeginTrans();
     lCurrentPos = 0;
     for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
       pDayLine = m_vDayLine.at(i);
       if (pDayLine->GetFormatedMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
-        pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+        pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
       }
       else {
         while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
         if (lCurrentPos < lSizeOfOldDayLine) {
           if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-            pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+            pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
           }
         }
         else {
-          pDayLine->AppendAmericaMarketData(&setAmericaStakeDayLine);
+          pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
         }
       }
     }
-    setAmericaStakeDayLine.m_pDatabase->CommitTrans();
-    setAmericaStakeDayLine.Close();
+    setSaveAmericaStakeDayLine.m_pDatabase->CommitTrans();
+    setSaveAmericaStakeDayLine.Close();
   }
 }
 

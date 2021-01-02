@@ -18,7 +18,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStock) {
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveAmericaOneStockDayLine.Wait();
+  gl_SaveAmericaStockDayLine.Wait();
   if (!gl_fExitingSystem) {
     pStock->SaveDayLine();
     pStock->UpdateDayLineStartEndDate();
@@ -27,7 +27,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStock) {
     str = pStock->GetSymbol() + _T("日线资料存储完成");
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
-  gl_SaveAmericaOneStockDayLine.Signal();
+  gl_SaveAmericaStockDayLine.Signal();
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_ThreadStatus.DecreaseRunningThread();
 
@@ -40,7 +40,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveAmericaOneStockDayLine.Wait();
+  gl_SaveAmericaStockDayLine.Wait();
   for (long i = 0; i < pMarket->GetTotalStock(); i++) {
     pStock = pMarket->GetStock(i);
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -61,7 +61,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
       break; // 如果程序正在退出，则停止存储。
     }
   }
-  gl_SaveAmericaOneStockDayLine.Signal();
+  gl_SaveAmericaStockDayLine.Signal();
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_ThreadStatus.DecreaseRunningThread();
 

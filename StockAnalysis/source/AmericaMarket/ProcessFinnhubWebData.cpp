@@ -201,7 +201,6 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pStake->SetIPOStatus(__STAKE_NULL__);
       pStake->m_fUpdateDatabase = true;
       return true;
     }

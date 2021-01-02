@@ -13,7 +13,7 @@
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
 
-Semaphore gl_SaveAmericaOneStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
+Semaphore gl_SaveAmericaStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
 Semaphore gl_SaveEPSSurprise(1);  // 此信号量用于更新EPSSurprise数据
 Semaphore gl_SaveForexDayLine(1);  // 此信号量用于生成Forex日线历史数据库
 
@@ -417,8 +417,14 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       ProcessFinnhubStockQuote(pWebData, m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex));
       break;
       case __STOCK_CANDLES__:
-      ProcessFinnhubStockCandle(pWebData, m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex));
-      TRACE("处理%s日线数据\n", m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol.GetBuffer());
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ProcessFinnhubStockCandle(pWebData, pStock);
+      if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
+        if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
+          pStock->SetIPOStatus(__STAKE_NULL__);
+        }
+      }
+      TRACE("处理%s日线数据\n", pStock->m_strSymbol.GetBuffer());
       break;
       case __FOREX_EXCHANGE__:
       ProcessFinnhubForexExchange(pWebData, vExchange);
@@ -1541,7 +1547,7 @@ bool CAmericaMarket::SortStakeTable(void) {
   while (!setAmericaStake.IsEOF()) {
     pStock = make_shared<CAmericaStake>();
     pStock->Load(setAmericaStake);
-    pStock->SetCheckingDayLineStatus();
+    pStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime());
     vStake.push_back(pStock);
     setAmericaStake.MoveNext();
   }

@@ -96,7 +96,7 @@ public:
   }
 };
 
-extern Semaphore gl_SaveAmericaOneStockDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_SaveAmericaStockDayLine;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SaveEPSSurprise;  // 此信号量用于生成日线历史数据库
 extern Semaphore gl_SaveForexDayLine;  // 此信号量用于生成日线历史数据库
 
