@@ -296,7 +296,6 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   }
   catch (ptree_error&) {
   }
-  pStake->SetIPOStatus(__STAKE_IPOED__);
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
   pStake->UpdateDayLine(vDayLine);
   pStake->SetDayLineNeedUpdate(false);
@@ -331,7 +330,6 @@ bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   pStake->SetNew(dTemp * 1000);
   tt = pt.get<time_t>(_T("t"));
   pStake->SetTransactionTime(tt);
-  pStake->SetActive(true); // 本日有实时数据
 
   return true;
 }

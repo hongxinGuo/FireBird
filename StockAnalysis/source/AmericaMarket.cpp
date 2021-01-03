@@ -130,7 +130,7 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_lLastTotalCountry = 0;
   m_lLastTotalEconomicCalendar = 0;
 
-  if (GetDayOfWeek() == 5) { // 每周的星期六更新一次Peer和EPSSurprise
+  if (GetDayOfWeek() == 6) { // 每周的星期六更新一次Peer和EPSSurprise
     m_lCurrentUpdatePeerPos = 0;
     m_lCurrentUpdateEPSSurprisePos = 0;
     m_fFinnhubEPSSurpriseUpdated = false;
@@ -349,6 +349,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CEconomicCalendarPtr> vEconomicCalendar;
   vector<CEPSSurprisePtr> vEPSSurprise;
   vector<CAmericaStakePtr> vStake;
+  vector<CDayLinePtr> vDayLine;
   long lTemp = 0;
   bool fFoundNewStock = false;
 
@@ -414,7 +415,15 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case __STOCK_QUOTE__:
-      ProcessFinnhubStockQuote(pWebData, m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex));
+      pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ProcessFinnhubStockQuote(pWebData, pStock);
+      if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) {
+        pStock->SetActive(true);
+        if (!pStock->IsIPOed()) {
+          pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->m_fUpdateDatabase = true;
+        }
+      }
       break;
       case __STOCK_CANDLES__:
       pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
@@ -423,6 +432,12 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
         if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
           pStock->SetIPOStatus(__STAKE_NULL__);
         }
+      }
+      else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetFormatedMarketDate(), GetFormatedMarketDate(), 100)) {
+        pStock->SetIPOStatus(__STAKE_DELISTED__);
+      }
+      else {
+        pStock->SetIPOStatus(__STAKE_IPOED__);
       }
       TRACE("处理%s日线数据\n", pStock->m_strSymbol.GetBuffer());
       break;
@@ -904,10 +919,6 @@ bool CAmericaMarket::TaskInquiryFinnhubRTQuote(void) {
   if (!m_fFinnhubInquiring) {
     m_lCurrentRTDataQuotePos++;
     if (m_lCurrentRTDataQuotePos == m_vAmericaStake.size()) m_lCurrentRTDataQuotePos = 0;
-    while (!m_vAmericaStake.at(m_lCurrentRTDataQuotePos)->IsIPOed()) {
-      m_lCurrentRTDataQuotePos++;
-      if (m_lCurrentRTDataQuotePos == m_vAmericaStake.size()) m_lCurrentRTDataQuotePos = 0;
-    }
     inquiry.m_lInquiryIndex = __STOCK_QUOTE__;
     inquiry.m_lStockIndex = m_lCurrentRTDataQuotePos;
     inquiry.m_iPriority = 10;
@@ -1505,18 +1516,19 @@ bool CAmericaMarket::RebulidFinnhubDayLine(void) {
 }
 
 bool CAmericaMarket::RebuildEPSSurprise(void) {
-  DeleteEPSSurpriseDB();
-
   for (auto& p : m_vAmericaStake) {
     p->m_lLastEPSSurpriseUpdateDate = 19800101;
     p->m_fEPSSurpriseNeedUpdate = true;
   }
   m_fFinnhubEPSSurpriseUpdated = false;
+  m_lCurrentUpdateEPSSurprisePos = 0;
+
   return true;
 }
 
 bool CAmericaMarket::ReBuildPeer(void) {
   m_fFinnhubPeerUpdated = false;
+  m_lCurrentUpdatePeerPos = 0;
 
   return true;
 }

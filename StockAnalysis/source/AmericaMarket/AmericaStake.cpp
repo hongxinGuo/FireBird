@@ -126,13 +126,18 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
 
 bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
-  if (m_lIPOStatus == __STAKE_NULL__) {
+  if (IsNullStock()) {
     SetDayLineNeedUpdate(false);
   }
-  if ((m_lDayLineEndDate != 19800101) && (gl_pAmericaMarket->IsEarlyThen(m_lDayLineEndDate, gl_pAmericaMarket->GetFormatedMarketDate(), 100))) {
+  else if (IsDelisted()) { // 摘牌股票?
+    if (gl_pAmericaMarket->GetDayOfWeek() != 6) { // 每星期六检查一次
+      SetDayLineNeedUpdate(false);
+    }
+  }
+  else if ((m_lDayLineEndDate != 19800101) && (gl_pAmericaMarket->IsEarlyThen(m_lDayLineEndDate, gl_pAmericaMarket->GetFormatedMarketDate(), 100))) {
     SetDayLineNeedUpdate(false);
   }
-  if (lTime > 170000) {
+  else if (lTime > 170000) {
     if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
       SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
@@ -360,19 +365,22 @@ bool CAmericaStake::IsDayLineNeedSavingAndClearFlag(void) {
 }
 
 bool CAmericaStake::HaveNewDayLineData(void) {
-  if (m_vDayLine.size() <= 0) return false;
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
+  if (m_vDayLine.size() == 0) return false;
+  if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) 
+      || (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate())){
+    return true;
+  }
   else return false;
 }
 
 bool CAmericaStake::CheckEPSSurpriseStatus(long lCurrentDate) {
-  if (m_lLastEPSSurpriseUpdateDate == 19800101) {
-    m_fEPSSurpriseNeedUpdate = true;
-  }
-  else if (m_lLastEPSSurpriseUpdateDate == 19700101) {
+  if (IsNullStock() || IsDelisted()) {
     m_fEPSSurpriseNeedUpdate = false;
   }
-  else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 100)) {
+  else if (m_lLastEPSSurpriseUpdateDate == 19700101) { // 没有数据？
+    m_fEPSSurpriseNeedUpdate = false;
+  }
+  else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 45)) { // 有不早于45天的数据？
     m_fEPSSurpriseNeedUpdate = false;
   }
   return m_fEPSSurpriseNeedUpdate;

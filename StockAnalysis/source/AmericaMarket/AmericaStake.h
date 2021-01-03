@@ -37,6 +37,7 @@ public:
   void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
   void UpdateDayLineStartEndDate(void);
   long GetDayLineSize(void) noexcept { return m_vDayLine.size(); }
+  CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
 
   bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
