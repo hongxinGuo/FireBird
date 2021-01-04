@@ -13,27 +13,6 @@
 
 #include"AmericaStake.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStock) {
-  CString str;
-
-  gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveAmericaStockDayLine.Wait();
-  if (!gl_fExitingSystem) {
-    pStock->SaveDayLine();
-    pStock->UpdateDayLineStartEndDate();
-    pStock->m_fUpdateDatabase = true;
-    pStock->UnloadDayLine();
-    str = pStock->GetSymbol() + _T("日线资料存储完成");
-    gl_systemMessage.PushDayLineInfoMessage(str);
-  }
-  gl_SaveAmericaStockDayLine.Signal();
-  gl_ThreadStatus.DecreaseSavingDayLineThreads();
-  gl_ThreadStatus.DecreaseRunningThread();
-
-  return 36;
-}
-
 UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
   CString str;
   CAmericaStakePtr pStock = nullptr;

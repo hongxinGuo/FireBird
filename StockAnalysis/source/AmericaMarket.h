@@ -151,7 +151,6 @@ public:
   bool TaskAppendStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
-  bool TaskUpdateDayLineDB2(void);
   bool TaskUpdateForexExchangeDB(void);
   bool TaskUpdateForexSymbolDB(void);
   bool TaskUpdateForexDayLineDB(void);
@@ -164,7 +163,6 @@ public:
 
   // 各工作线程调用包裹函数
   virtual bool RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket);
-  virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);

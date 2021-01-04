@@ -101,8 +101,6 @@ UINT ThreadSaveActiveStakeCode(not_null<CChinaMarket*> pMarket); // 此工作线程返
 UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为35
 
 // 下面为美国股票市场的工作线程
-// 更新一个美国股票的日线历史数据。
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaStakePtr> pStake); // 此工作线程返回值为36, 参数为携带智能指针的一个结构指针
 // 更新美股日线起止日期线程
 UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket); // 此工作线程返回值为37
 // 更新Forex日线数据

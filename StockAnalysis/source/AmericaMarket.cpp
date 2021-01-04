@@ -715,7 +715,7 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   TaskUpdateForexExchangeDB();
   TaskUpdateForexSymbolDB();
   TaskUpdateForexDayLineDB();
-  TaskUpdateDayLineDB2();
+  TaskUpdateDayLineDB();
   TaskUpdateEPSSurpriseDB();
   TaskUpdateEconomicCalendar();
 
@@ -762,8 +762,8 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
 
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
     if (IsSystemReady() && !m_fFinnhubInquiring) {
-      TaskInquiryFinnhubDayLine();
       TaskInquiryFinnhubCompanyProfile2();
+      TaskInquiryFinnhubDayLine();
       TaskInquiryFinnhubEPSSurprise();
       TaskInquiryFinnhubPeer();
       TaskInquiryFinnhubForexDayLine();
@@ -1129,37 +1129,7 @@ bool CAmericaMarket::TaskInquiryTiingoDayLine(void) {
   return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//	将日线数据存入数据库．
-//  此函数由工作线程ThreadDayLineSaveProc调用，尽量不要使用全局变量。(目前使用主线程调用之，以消除同步问题的出现）
-//
-// 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
-// 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
-// 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
-//////////////////////////////////////////////////////////////////////////////////////////
 bool CAmericaMarket::TaskUpdateDayLineDB(void) {
-  CString str;
-
-  for (auto pStock : m_vAmericaStake) {
-    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      if (pStock->GetDayLineSize() > 0) {
-        if (pStock->HaveNewDayLineData()) {
-          RunningThreadUpdateDayLineDB(pStock);
-          TRACE("更新%s日线数据\n", pStock->GetSymbol().GetBuffer());
-        }
-        else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
-      }
-    }
-    if (gl_fExitingSystem) {
-      break; // 如果程序正在退出，则停止存储。
-    }
-  }
-
-  return(true);
-}
-
-bool CAmericaMarket::TaskUpdateDayLineDB2(void) {
   RunningThreadUpdateDayLineDB();
 
   return true;
@@ -1261,12 +1231,6 @@ bool CAmericaMarket::TaskUpdateDayLineStartEndDate(void) {
 
 bool CAmericaMarket::RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket) {
   thread thread1(ThreadUpdateAmericaStakeDayLineStartEndDate, pMarket);
-  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
-  return true;
-}
-
-bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock) {
-  thread thread1(ThreadUpdateAmericaStakeDayLineDB, pStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
