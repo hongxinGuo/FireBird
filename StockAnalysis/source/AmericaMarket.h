@@ -210,8 +210,10 @@ public:
   bool LoadEconomicCalendarDB(void);
 
   bool DeleteStakeSymbolDB(void);
+  bool DeleteStakeDayLineDB(void);
   void DeleteEPSSurpriseDB(void);
 
+  bool RebuildStakeDayLineDB(void);
   bool RebulidFinnhubDayLine(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);

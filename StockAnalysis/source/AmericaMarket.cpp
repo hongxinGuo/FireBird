@@ -350,6 +350,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CEPSSurprisePtr> vEPSSurprise;
   vector<CAmericaStakePtr> vStake;
   vector<CDayLinePtr> vDayLine;
+  vector<CCountryPtr> vCountry;
   long lTemp = 0;
   bool fFoundNewStock = false;
 
@@ -417,7 +418,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       case __STOCK_QUOTE__:
       pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       ProcessFinnhubStockQuote(pWebData, pStock);
-      if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) {
+      if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
         pStock->SetActive(true);
         if (!pStock->IsIPOed()) {
           pStock->SetIPOStatus(__STAKE_IPOED__);
@@ -470,7 +471,13 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       case __FOREX_ALL_RATES__:
       break;
       case __ECONOMIC_COUNTRY_LIST__:
-      ProcessFinnhubCountryList(pWebData, m_vCountry);
+      ProcessFinnhubCountryList(pWebData, vCountry);
+      for (auto& pCountry : vCountry) {
+        if (m_mapCountry.find(pCountry->m_strCountry) == m_mapCountry.end()) {
+          m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
+          m_vCountry.push_back(pCountry);
+        }
+      }
       m_fCountryListUpdated = true;
       break;
       case __ECONOMIC_CALENDAR__:
@@ -1629,10 +1636,12 @@ bool CAmericaMarket::LoadCountryList(void) {
   CSetCountry setCountry;
   CCountryPtr pCountry = nullptr;
 
+  setCountry.m_strSort = _T("[Country]");
   setCountry.Open();
   while (!setCountry.IsEOF()) {
     pCountry = make_shared<CCountry>();
     pCountry->Load(setCountry);
+    m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
     m_vCountry.push_back(pCountry);
     setCountry.MoveNext();
   }
@@ -1675,6 +1684,41 @@ bool CAmericaMarket::DeleteStakeSymbolDB(void) {
   database.ExecuteSQL(_T("TRUNCATE `americamarket`.`companyprofile`;"));
   database.CommitTrans();
   database.Close();
+
+  return true;
+}
+
+bool CAmericaMarket::DeleteStakeDayLineDB(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
+
+  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`dayline`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+
+bool CAmericaMarket::RebuildStakeDayLineDB(void) {
+  CSetAmericaStake setAmericaStake;
+
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    setAmericaStake.Edit();
+    setAmericaStake.m_IPOStatus = __STAKE_NOT_CHECKED__;
+    setAmericaStake.Update();
+    setAmericaStake.MoveNext();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+  m_fAmericaStakeUpdated = false;
 
   return true;
 }

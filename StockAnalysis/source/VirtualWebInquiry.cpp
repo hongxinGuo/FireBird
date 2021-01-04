@@ -42,6 +42,63 @@ void CVirtualWebInquiry::Reset(void) noexcept {
   m_fWebError = false;
 }
 
+bool CVirtualWebInquiry::ReadWebData(void) {
+  CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
+  m_pFile = nullptr;
+  bool fStatus = true;
+  CString str1, strLeft;
+  ASSERT(IsReadingWebData());
+  ASSERT(m_pFile == nullptr);
+  time_t tt = 0;
+
+  m_lReadingThreadNumber++;
+
+  SetWebError(false);
+  SetByteReaded(0);
+  tt = GetTickCount64();
+  try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
+    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
+    Sleep(10); // 先等待10ms。
+    do {
+      m_lByteReadCurrent = m_pFile->Read(m_bufferTemp, 1024); // 目前最大的一次读取数值大致为4M，故设置8M即足够了。
+      for (long l = 0; l < m_lByteReadCurrent; l++) {
+        m_buffer[m_lByteRead++] = m_bufferTemp[l];
+      }
+    } while (m_lByteReadCurrent > 0);
+    ASSERT(m_lByteRead < 1024 * 1024 * 8);
+    m_lTotalByteReaded += m_lByteRead;
+    m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
+    /*
+    if ((lTemp = m_pFile->Read(buffer, 1000)) > 0) {
+      TRACE("overflow\n");
+    }
+    */
+    m_pFile->Close();
+  }
+  catch (CInternetException* exception) {
+    SetWebError(true);
+    if (m_pFile != nullptr) m_pFile->Close();
+    m_dwWebErrorCode = exception->m_dwError;
+    str1 = GetInquiringString();
+
+    strLeft = str1.Left(80);
+    TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
+    str1 = _T("Error Web : ") + strLeft + _T("\n");
+    gl_systemMessage.PushInnerSystemInformationMessage(str1);
+    fStatus = false;
+    exception->Delete();
+  }
+  if (m_pFile != nullptr) {
+    delete m_pFile;
+    m_pFile = nullptr;
+  }
+  m_tCurrentInquiryTime = GetTickCount64() - tt;
+  m_lReadingThreadNumber--;
+  ASSERT(m_lReadingThreadNumber >= 0);
+  SetReadingWebData(false);
+  return fStatus;
+}
+
 bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
@@ -97,64 +154,6 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
     m_pFile = nullptr;
   }
   m_tCurrentInquiryTime = GetTickCount64() - m_tCurrentInquiryTime;
-  m_lReadingThreadNumber--;
-  ASSERT(m_lReadingThreadNumber >= 0);
-  SetReadingWebData(false);
-  return fStatus;
-}
-
-bool CVirtualWebInquiry::ReadWebData(void) {
-  CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
-  m_pFile = nullptr;
-  bool fStatus = true;
-  CString str1, strLeft;
-  ASSERT(IsReadingWebData());
-  ASSERT(m_pFile == nullptr);
-  char buffer[1000];
-  long lTemp = 0;
-  time_t tt = 0;
-
-  m_lReadingThreadNumber++;
-
-  SetWebError(false);
-  SetByteReaded(0);
-  tt = GetTickCount64();
-  try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
-    m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    do {
-      m_lByteReadCurrent = m_pFile->Read(m_bufferTemp, 1024); // 目前最大的一次读取数值大致为1M，故设置2M即足够了。
-      for (long l = 0; l < m_lByteReadCurrent; l++) {
-        m_buffer[m_lByteRead++] = m_bufferTemp[l];
-      }
-    } while (m_lByteReadCurrent > 0);
-    ASSERT(m_lByteRead < 1024 * 1024 * 8);
-    m_lTotalByteReaded += m_lByteRead;
-    m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
-    /*
-    if ((lTemp = m_pFile->Read(buffer, 1000)) > 0) {
-      TRACE("overflow\n");
-    }
-    */
-    m_pFile->Close();
-  }
-  catch (CInternetException* exception) {
-    SetWebError(true);
-    if (m_pFile != nullptr) m_pFile->Close();
-    m_dwWebErrorCode = exception->m_dwError;
-    str1 = GetInquiringString();
-
-    strLeft = str1.Left(80);
-    TRACE(_T("%s net error, Error Code %d\n"), (LPCTSTR)strLeft, exception->m_dwError);
-    str1 = _T("Error Web : ") + strLeft + _T("\n");
-    gl_systemMessage.PushInnerSystemInformationMessage(str1);
-    fStatus = false;
-    exception->Delete();
-  }
-  if (m_pFile != nullptr) {
-    delete m_pFile;
-    m_pFile = nullptr;
-  }
-  m_tCurrentInquiryTime = GetTickCount64() - tt;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);
