@@ -809,6 +809,7 @@
     <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />

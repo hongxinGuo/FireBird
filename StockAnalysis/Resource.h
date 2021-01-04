@@ -122,6 +122,9 @@
 #define ID_REBULID_PEER                 32890
 #define ID_REBUILD_PEER                 32891
 #define ID_REBUILD_DAYLINE              32892
+#define ID_32893                        32893
+#define ID_UPDATE_DAYLINE_START_END     32894
+#define ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END 32895
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -149,7 +152,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
-#define _APS_NEXT_COMMAND_VALUE         32893
+#define _APS_NEXT_COMMAND_VALUE         32896
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -114,7 +114,9 @@ UINT ThreadUpdateCountryListDB(not_null<CAmericaMarket*> pMarket); // 此工作线程
 // 更新EPSSurprise表
 UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStake*> pStake); // 此工作线程返回值为41
 // 更新美国股票的日线历史数据。
-UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket);
+UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket); // 此工作线程返回值为42
+// 从日线数据中重建起止日期
+UINT ThreadUpdateAmericaStakeDayLineStartEndDate(CAmericaMarket* pMarket); // 此工作线程返回值为43
 
 //各种计算用工作线程
 // 计算10日强股票集（两个月内只出现一次强势峰）

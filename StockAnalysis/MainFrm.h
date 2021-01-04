@@ -136,4 +136,5 @@ public:
   afx_msg void OnRebuildEpsSurprise();
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();
+  afx_msg void OnUpdateAmericaStakeDaylineStartEnd();
 };

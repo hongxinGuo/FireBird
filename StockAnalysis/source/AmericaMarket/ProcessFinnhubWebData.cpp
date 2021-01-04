@@ -15,6 +15,7 @@ static char s_buffer[1024 * 1024 * 8];
 
 bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->m_lDate < p2->m_lDate); }
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
+bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; }
 
 bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   ptree pt;
@@ -194,7 +195,6 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     str += pStake->m_strSymbol;
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
-    gl_systemMessage.PushInformationMessage(str);
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
@@ -216,7 +216,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
     pStake->m_fUpdateDatabase = true;
-    return true;
+    return false;
   }
   try {
     pt2 = pt.get_child(_T("t"));
@@ -527,6 +527,7 @@ bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCount
     }
     vCountry.push_back(pCountry);
   }
+  sort(vCountry.begin(), vCountry.end(), CompareCountryList);
   return true;
 }
 

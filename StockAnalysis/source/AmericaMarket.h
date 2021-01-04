@@ -160,7 +160,10 @@ public:
   bool TaskUpdateEconomicCalendar(void);
   bool TaskCheckSystemReady(void);
 
+  bool TaskUpdateDayLineStartEndDate(void);
+
   // 各工作线程调用包裹函数
+  virtual bool RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
@@ -214,6 +217,7 @@ public:
   void DeleteEPSSurpriseDB(void);
 
   bool RebuildStakeDayLineDB(void);
+  bool UpdateDayLineStartEndDate(void);
   bool RebulidFinnhubDayLine(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);

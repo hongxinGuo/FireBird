@@ -58,7 +58,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   tt = GetTickCount64();
   try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
-    Sleep(10); // 先等待10ms。
+    Sleep(5); // 先等待10ms。
     do {
       m_lByteReadCurrent = m_pFile->Read(m_bufferTemp, 1024); // 目前最大的一次读取数值大致为4M，故设置8M即足够了。
       for (long l = 0; l < m_lByteReadCurrent; l++) {

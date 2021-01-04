@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
+  ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateAmericaStakeDaylineStartEnd)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -991,4 +992,9 @@ void CMainFrame::OnRebuildPeer() {
 void CMainFrame::OnRebuildDayline() {
   // TODO: Add your command handler code here
   gl_pAmericaMarket->RebuildStakeDayLineDB();
+}
+
+void CMainFrame::OnUpdateAmericaStakeDaylineStartEnd() {
+  // TODO: Add your command handler code here
+  gl_pAmericaMarket->TaskUpdateDayLineStartEndDate();
 }

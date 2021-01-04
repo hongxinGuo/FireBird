@@ -45,10 +45,10 @@ UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
     pStock = pMarket->GetStock(i);
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->GetDayLineSize() > 0) {
+        pStock->UpdateDayLineStartEndDate();
+        pStock->m_fUpdateDatabase = true;
         if (pStock->HaveNewDayLineData()) {
           pStock->SaveDayLine();
-          pStock->UpdateDayLineStartEndDate();
-          pStock->m_fUpdateDatabase = true;
           pStock->UnloadDayLine();
           str = pStock->GetSymbol() + _T("日线资料存储完成");
           gl_systemMessage.PushDayLineInfoMessage(str);

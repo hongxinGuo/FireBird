@@ -428,19 +428,20 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __STOCK_CANDLES__:
       pStock = m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      ProcessFinnhubStockCandle(pWebData, pStock);
-      if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
-        if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
-          pStock->SetIPOStatus(__STAKE_NULL__);
+      if (ProcessFinnhubStockCandle(pWebData, pStock)) {
+        if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
+          if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
+            pStock->SetIPOStatus(__STAKE_NULL__);
+          }
         }
+        else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetFormatedMarketDate(), GetFormatedMarketDate(), 100)) {
+          pStock->SetIPOStatus(__STAKE_DELISTED__);
+        }
+        else {
+          pStock->SetIPOStatus(__STAKE_IPOED__);
+        }
+        TRACE("处理%s日线数据\n", pStock->m_strSymbol.GetBuffer());
       }
-      else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetFormatedMarketDate(), GetFormatedMarketDate(), 100)) {
-        pStock->SetIPOStatus(__STAKE_DELISTED__);
-      }
-      else {
-        pStock->SetIPOStatus(__STAKE_IPOED__);
-      }
-      TRACE("处理%s日线数据\n", pStock->m_strSymbol.GetBuffer());
       break;
       case __FOREX_EXCHANGE__:
       ProcessFinnhubForexExchange(pWebData, vExchange);
@@ -761,11 +762,11 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
 
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
     if (IsSystemReady() && !m_fFinnhubInquiring) {
+      TaskInquiryFinnhubDayLine();
       TaskInquiryFinnhubCompanyProfile2();
       TaskInquiryFinnhubEPSSurprise();
       TaskInquiryFinnhubPeer();
       TaskInquiryFinnhubForexDayLine();
-      TaskInquiryFinnhubDayLine();
       if (m_fFinnhubDayLineUpdated) {
         //TaskInquiryFinnhubRTQuote();
       }
@@ -1253,6 +1254,17 @@ bool CAmericaMarket::TaskCheckSystemReady(void) {
   return true;
 }
 
+bool CAmericaMarket::TaskUpdateDayLineStartEndDate(void) {
+  RunningthreadUpdateDayLneStartEndDate(this);
+  return false;
+}
+
+bool CAmericaMarket::RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket) {
+  thread thread1(ThreadUpdateAmericaStakeDayLineStartEndDate, pMarket);
+  thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
+  return true;
+}
+
 bool CAmericaMarket::RunningThreadUpdateDayLineDB(CAmericaStakePtr pStock) {
   thread thread1(ThreadUpdateAmericaStakeDayLineDB, pStock);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -1719,6 +1731,50 @@ bool CAmericaMarket::RebuildStakeDayLineDB(void) {
   setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
   m_fAmericaStakeUpdated = false;
+
+  return true;
+}
+
+bool CAmericaMarket::UpdateDayLineStartEndDate(void) {
+  CString strFilterPrefix = _T("[Symbol] = '");
+  CString strFilter, str;
+  CSetAmericaStakeDayLine setAmericaStakeDayLine;
+  CSetAmericaStake setAmericaStake;
+  CAmericaStakePtr pStock2 = nullptr;
+  bool fSavedStatus = m_fFinnhubDayLineUpdated;
+
+  m_fFinnhubDayLineUpdated = true;
+  for (auto& pStock : m_vAmericaStake) {
+    setAmericaStakeDayLine.m_strFilter = strFilterPrefix + pStock->m_strSymbol + _T("'");
+    setAmericaStakeDayLine.m_strSort = _T("[Date]");
+    setAmericaStakeDayLine.Open();
+    if (!setAmericaStakeDayLine.IsEOF()) {
+      if (setAmericaStakeDayLine.m_Date < pStock->m_lDayLineStartDate) {
+        pStock->m_lDayLineStartDate = setAmericaStakeDayLine.m_Date;
+      }
+      setAmericaStakeDayLine.MoveLast();
+      if (setAmericaStakeDayLine.m_Date > pStock->m_lDayLineEndDate) {
+        pStock->m_lDayLineEndDate = setAmericaStakeDayLine.m_Date;
+      }
+    }
+    setAmericaStakeDayLine.Close();
+  }
+
+  setAmericaStake.Open();
+  setAmericaStake.m_pDatabase->BeginTrans();
+  while (!setAmericaStake.IsEOF()) {
+    if (m_mapAmericaStake.find(setAmericaStake.m_Symbol) != m_mapAmericaStake.end()) {
+      pStock2 = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+      setAmericaStake.Edit();
+      setAmericaStake.m_DayLineStartDate = pStock2->m_lDayLineStartDate;
+      setAmericaStake.m_DayLineStartDate = pStock2->m_lDayLineStartDate;
+      setAmericaStake.Update();
+    }
+    setAmericaStake.MoveNext();
+  }
+  setAmericaStake.m_pDatabase->CommitTrans();
+  setAmericaStake.Close();
+  m_fFinnhubDayLineUpdated = fSavedStatus;
 
   return true;
 }

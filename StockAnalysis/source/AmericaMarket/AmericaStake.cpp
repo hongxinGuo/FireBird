@@ -344,8 +344,6 @@ void CAmericaStake::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
 
 void CAmericaStake::UpdateDayLineStartEndDate(void) {
   if (m_vDayLine.size() == 0) {
-    SetDayLineStartDate(29900101);
-    SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
   }
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
@@ -366,8 +364,8 @@ bool CAmericaStake::IsDayLineNeedSavingAndClearFlag(void) {
 
 bool CAmericaStake::HaveNewDayLineData(void) {
   if (m_vDayLine.size() == 0) return false;
-  if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) 
-      || (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate())){
+  if ((m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate())
+      || (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
     return true;
   }
   else return false;
