@@ -50,6 +50,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
   time_t tt = 0;
+  char buffer[1024];
 
   m_lReadingThreadNumber++;
 
@@ -60,9 +61,10 @@ bool CVirtualWebInquiry::ReadWebData(void) {
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     Sleep(5); // 先等待10ms。
     do {
-      m_lByteReadCurrent = m_pFile->Read(m_bufferTemp, 1024); // 目前最大的一次读取数值大致为4M，故设置8M即足够了。
+      m_lByteReadCurrent = m_pFile->Read(buffer, 1024); // 目前最大的一次读取数值大致为4M，故设置8M即足够了。
+      ASSERT(m_lByteReadCurrent <= 1024);
       for (long l = 0; l < m_lByteReadCurrent; l++) {
-        m_buffer[m_lByteRead++] = m_bufferTemp[l];
+        m_buffer[m_lByteRead++] = buffer[l];
       }
     } while (m_lByteReadCurrent > 0);
     ASSERT(m_lByteRead < 1024 * 1024 * 8);
@@ -131,6 +133,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
         }
       }
     }
+    ASSERT(m_lByteRead < 1024 * 1024 * 8);
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
     m_pFile->Close();
 

@@ -63,6 +63,20 @@ public:
   long m_LastEPSSurpriseUpdateDate;
   long m_IPOStatus;
 
+  // Tiingo Symbol信息
+  CString m_TiingoPermaTicker; // Tiingo永久代码标识
+  BOOL m_IsActive; //
+  BOOL m_IsADR;
+  long m_SICCode;
+  CString m_SICIndustry;
+  CString m_SICSector;
+  CString m_TiingoIndustry;
+  CString m_TiingoSector;
+  CString m_CompanyWebSite;
+  CString m_SECFilingWebSite;
+  long m_StatementUpdateDate;
+  long m_DailyDataUpdateDate;
+
 public:
   virtual CString GetDefaultConnect();	// 默认连接字符串
 

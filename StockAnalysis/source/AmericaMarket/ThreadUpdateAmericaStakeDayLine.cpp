@@ -13,7 +13,7 @@
 
 #include"AmericaStake.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB2(not_null<CAmericaMarket*> pMarket) {
+UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket) {
   CString str;
   CAmericaStakePtr pStock = nullptr;
 

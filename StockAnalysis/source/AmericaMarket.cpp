@@ -71,6 +71,8 @@ void CAmericaMarket::InitialFinnhubInquiryStr(void) {
 void CAmericaMarket::InitialTiingoInquiryStr(void) {
   m_vTiingoInquiringStr.resize(1000);
 
+  m_vTiingoInquiringStr.at(__COMPANY_PROFILE__) = _T("https://api.tiingo.com/tiingo/fundamentals/");
+  m_vTiingoInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://api.tiingo.com/tiingo/fundamentals/meta?"); // 可用代码集
   m_vTiingoInquiringStr.at(__STOCK_CANDLES__) = _T("https://api.tiingo.com/tiingo/daily/");
 }
 
@@ -98,7 +100,6 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_fFinnhubSymbolUpdated = false; // 每日需要更新代码
   m_fAmericaStakeUpdated = false;
   m_fFinnhubDayLineUpdated = false;
-  m_fTiingoDayLineUpdated = false;
   m_vAmericaStake.resize(0);
   m_mapAmericaStake.clear();
   m_vAmericaChoicedStake.resize(0);
@@ -144,6 +145,9 @@ void CAmericaMarket::ResetQuandl(void) {
 void CAmericaMarket::ResetTiingo(void) {
   m_fTiingoInquiring = false;
   m_fTiingoDataReceived = true;
+
+  m_fTiingoSymbolUpdated = false;
+  m_fTiingoDayLineUpdated = false;
 }
 
 void CAmericaMarket::ResetMarket(void) {
@@ -384,7 +388,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
         for (auto& pStake2 : m_vAmericaStake) {
           m_mapAmericaStake[pStake2->m_strSymbol] = j++;
         }
-        gl_systemMessage.PushInformationMessage("发现新代码，更新代码集");
+        gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
       }
       m_fFinnhubSymbolUpdated = true;
       break;
@@ -615,6 +619,7 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
   vector<CEPSSurprisePtr> vEPSSurprise;
   vector<CAmericaStakePtr> vStake;
   long lTemp = 0;
+  bool fFoundNewStock = false;
 
   ASSERT(gl_WebInquirer.GetTiingoDataSize() <= 1);
   if (IsTiingoDataReceived()) { // 如果网络数据接收完成
@@ -627,6 +632,23 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
       case __COMPANY_PROFILE2__:
       break;
       case  __COMPANY_SYMBOLS__:
+      ProcessTiingoStockSymbol(pWebData, vStake);
+      for (auto& pStock2 : vStake) {
+        if (!IsAmericaStake(pStock2->GetSymbol())) {
+          m_vAmericaStake.push_back(pStock2);
+          fFoundNewStock = true;
+        }
+      }
+      if (fFoundNewStock) {
+        sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
+        m_mapAmericaStake.clear();
+        int j = 0;
+        for (auto& pStake2 : m_vAmericaStake) {
+          m_mapAmericaStake[pStake2->m_strSymbol] = j++;
+        }
+        gl_systemMessage.PushInformationMessage("Tiingo发现新代码，更新代码集");
+      }
+      m_fTiingoSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:
       break;
@@ -643,8 +665,9 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
       case __STOCK_QUOTE__:
       break;
       case __STOCK_CANDLES__:
-      ProcessTiingoStockDayLine(pWebData, m_vAmericaStake.at(m_CurrentTiingoInquiry.m_lStockIndex));
-      TRACE("处理Tiingo %s日线数据\n", m_vAmericaStake.at(m_CurrentTiingoInquiry.m_lStockIndex)->m_strSymbol.GetBuffer());
+      pStock = m_vAmericaStake.at(m_CurrentTiingoInquiry.m_lStockIndex);
+      ProcessTiingoStockDayLine(pWebData, pStock);
+      TRACE("处理Tiingo %s日线数据\n", pStock->m_strSymbol.GetBuffer());
       break;
       case __FOREX_EXCHANGE__:
       break;
@@ -1082,9 +1105,27 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
 
 void CAmericaMarket::TaskInquiryTiingo(void) {
   if (IsSystemReady() && !m_fTiingoInquiring) {
+    //TaskInquiryTiingoCompanySymbol();
     // 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
-    //TaskInquiryTiingoDayLine(); // 初步测试完毕。
+    TaskInquiryTiingoDayLine(); // 初步测试完毕。
   }
+}
+
+bool CAmericaMarket::TaskInquiryTiingoCompanySymbol(void) {
+  WebInquiry inquiry{ 0, 0, 0 };
+  CString str;
+
+  if (!m_fTiingoSymbolUpdated && !m_fTiingoInquiring) {
+    inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+    inquiry.m_iPriority = 10;
+    m_qTiingoWebInquiry.push(inquiry);
+    m_fTiingoInquiring = true;
+    str = _T("查询Tiingo Company Symbol");
+    gl_systemMessage.PushInformationMessage(str);
+
+    return true;
+  }
+  return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1117,7 +1158,7 @@ bool CAmericaMarket::TaskInquiryTiingoDayLine(void) {
       m_qTiingoWebInquiry.push(inquiry);
       m_fTiingoInquiring = true;
       m_vAmericaChoicedStake.at(m_lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
-      TRACE("申请%s日线数据\n", m_vAmericaChoicedStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
+      TRACE("申请Tiingo %s日线数据\n", m_vAmericaChoicedStake.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
     }
     else {
       m_fTiingoDayLineUpdated = true;
@@ -1236,7 +1277,7 @@ bool CAmericaMarket::RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMark
 }
 
 bool CAmericaMarket::RunningThreadUpdateDayLineDB() {
-  thread thread1(ThreadUpdateAmericaStakeDayLineDB2, this);
+  thread thread1(ThreadUpdateAmericaStakeDayLineDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }

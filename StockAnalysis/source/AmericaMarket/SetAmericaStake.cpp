@@ -51,7 +51,21 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_LastEPSSurpriseUpdateDate = 19800101;
   m_IPOStatus = __STAKE_NOT_CHECKED__;
 
-  m_nFields = 41;
+  // Tiingo Symbol–≈œ¢
+  m_TiingoPermaTicker = _T("");
+  m_IsActive = true;
+  m_IsADR = false;
+  m_TiingoIndustry = _T("");
+  m_TiingoSector = _T("");
+  m_SICCode = 0;
+  m_SICIndustry = _T("");
+  m_SICSector = _T("");
+  m_CompanyWebSite = _T("");
+  m_SECFilingWebSite = _T("");
+  m_DailyDataUpdateDate = 19800101;
+  m_StatementUpdateDate = 19800101;
+
+  m_nFields = 53;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -109,6 +123,18 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[LastRTDataUpdateDate]"), m_LastRTDataUpdateDate);
   RFX_Long(pFX, _T("[LastEPSSurpriseUpdateDate]"), m_LastEPSSurpriseUpdateDate);
   RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
+  RFX_Text(pFX, _T("[TiingoPermaTicker]"), m_TiingoPermaTicker);
+  RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);
+  RFX_Bool(pFX, _T("[IsADR]"), m_IsADR);
+  RFX_Long(pFX, _T("[SICCode]"), m_SICCode);
+  RFX_Text(pFX, _T("[SICIndustry]"), m_SICIndustry);
+  RFX_Text(pFX, _T("[SICSector]"), m_SICSector);
+  RFX_Text(pFX, _T("[TiingoIndustry]"), m_TiingoIndustry);
+  RFX_Text(pFX, _T("[TiingoSector]"), m_TiingoSector);
+  RFX_Text(pFX, _T("[CompanyWebSite]"), m_CompanyWebSite);
+  RFX_Text(pFX, _T("[SECFilingWebSite]"), m_SECFilingWebSite);
+  RFX_Long(pFX, _T("[StatementUpdateDate]"), m_StatementUpdateDate);
+  RFX_Long(pFX, _T("[DailyDataUpdateDate]"), m_DailyDataUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetAmericaStake ’Ô∂œ

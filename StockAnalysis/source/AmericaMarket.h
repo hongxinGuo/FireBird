@@ -146,6 +146,7 @@ public:
   bool TaskInquiryFinnhubForexDayLine(void);
 
   void TaskInquiryTiingo(void);
+  bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
 
   bool TaskAppendStakeSymbolDB(void);
@@ -282,6 +283,7 @@ protected:
   bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
   bool m_fFinnhubEPSSurpriseUpdated;
 
+  bool m_fTiingoSymbolUpdated; // 每日更新公司代码库
   bool m_fTiingoDayLineUpdated; // 每日更新公司日线数据
 //
   bool m_fRebulidDayLine; // 重建日线历史数据。

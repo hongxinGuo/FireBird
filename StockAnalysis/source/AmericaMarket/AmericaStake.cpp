@@ -9,6 +9,7 @@ CAmericaStake::CAmericaStake() : CObject() {
 }
 
 void CAmericaStake::Reset(void) {
+  // Finnhub Symbol数据
   m_strIPODate = _T(" ");
   m_strCurrency = _T(" ");
   m_strType = _T(" ");
@@ -46,6 +47,20 @@ void CAmericaStake::Reset(void) {
   m_lLastRTDataUpdateDate = 19800101;
   m_lLastEPSSurpriseUpdateDate = 19800101;
   m_lIPOStatus = __STAKE_NOT_CHECKED__;
+
+  // Tiingo Symbol数据
+  m_strTiingoPermaTicker = _T("");
+  m_fIsActive = true;
+  m_fIsADR = false;
+  m_strTiingoIndustry = _T("");
+  m_strTiingoSector = _T("");
+  m_iSICCode = 0;
+  m_strSICIndustry = _T("");
+  m_strSICSector = _T("");
+  m_strCompanyWebSite = _T("");
+  m_strSECFilingWebSite = _T("");
+  m_lDailyDataUpdateDate = 19800101;
+  m_lStatementUpdateDate = 19800101;
 
   m_lEmployeeTotal = 0;
   m_dMarketCapitalization = 0;
@@ -118,10 +133,20 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lLastEPSSurpriseUpdateDate = setAmericaStake.m_LastEPSSurpriseUpdateDate;
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
   if (m_strPeer.GetLength() < 4) m_fFinnhubPeerUpdated = false;
-  if ((m_strType.GetLength() < 2) || (m_strCurrency.GetLength() < 2)) {
-    //m_fInquiryAmericaStake = false;
-    //m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
-  }
+
+  // Tiingo信息
+  m_strTiingoPermaTicker = setAmericaStake.m_TiingoPermaTicker;
+  m_fIsActive = setAmericaStake.m_IsActive;
+  m_fIsADR = setAmericaStake.m_IsADR;
+  m_iSICCode = setAmericaStake.m_SICCode;
+  m_strSICIndustry = setAmericaStake.m_SICIndustry;
+  m_strSICSector = setAmericaStake.m_SICSector;
+  m_strTiingoIndustry = setAmericaStake.m_TiingoIndustry;
+  m_strTiingoSector = setAmericaStake.m_TiingoSector;
+  m_strCompanyWebSite = setAmericaStake.m_CompanyWebSite;
+  m_strSECFilingWebSite = setAmericaStake.m_SECFilingWebSite;
+  m_lDailyDataUpdateDate = setAmericaStake.m_DailyDataUpdateDate;
+  m_lStatementUpdateDate = setAmericaStake.m_StatementUpdateDate;
 }
 
 bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
@@ -184,6 +209,13 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   m_strFinnhubIndustry = m_strFinnhubIndustry.Left(100);
   m_strPeer = m_strPeer.Left(200);
 
+  m_strSICIndustry = m_strSICIndustry.Left(45);
+  m_strSICSector = m_strSICSector.Left(45);
+  m_strTiingoIndustry = m_strTiingoIndustry.Left(45);
+  m_strTiingoSector = m_strTiingoSector.Left(45);
+  m_strCompanyWebSite = m_strCompanyWebSite.Left(100);
+  m_strSECFilingWebSite = m_strSECFilingWebSite.Left(100);
+
   setAmericaStake.m_Symbol = m_strSymbol;
   setAmericaStake.m_Description = m_strDescription;
   setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;
@@ -224,6 +256,21 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setAmericaStake.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setAmericaStake.m_IPOStatus = m_lIPOStatus;
+
+  // Tiingo信息
+  setAmericaStake.m_TiingoPermaTicker = m_strTiingoPermaTicker;
+  setAmericaStake.m_IsActive = m_fIsActive;
+  setAmericaStake.m_IsADR = m_fIsADR;
+  setAmericaStake.m_SICCode = m_iSICCode;
+  setAmericaStake.m_SICIndustry = m_strSICIndustry;
+  setAmericaStake.m_SICSector = m_strSICSector;
+  setAmericaStake.m_TiingoIndustry = m_strTiingoIndustry;
+  setAmericaStake.m_TiingoSector = m_strTiingoSector;
+  setAmericaStake.m_CompanyWebSite = m_strCompanyWebSite;
+  setAmericaStake.m_SECFilingWebSite = m_strSECFilingWebSite;
+  setAmericaStake.m_DailyDataUpdateDate = m_lDailyDataUpdateDate;
+  setAmericaStake.m_StatementUpdateDate = m_lStatementUpdateDate;
+
   TRACE("更新股票：%s\n", m_strSymbol.GetBuffer());
 }
 

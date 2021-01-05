@@ -99,7 +99,7 @@ public:
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
 public:
-  // symbol信息
+  // Finnhub symbol信息
   CString m_strDescription;
   CString m_strDisplaySymbol;
   CString m_strSymbol;
@@ -108,7 +108,7 @@ public:
   CString m_strFigi;
   CString m_strCurrency;
 
-  // profile信息
+  // Finnhub profile信息
   CString m_strAddress;
   CString m_strCity;
   CString m_strCountry;
@@ -142,6 +142,20 @@ public:
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
   long m_lIPOStatus;
+
+  // Tiingo Symbol信息
+  CString m_strTiingoPermaTicker; // Tiingo永久代码标识
+  bool m_fIsActive; //
+  bool m_fIsADR;
+  INT32 m_iSICCode;
+  CString m_strSICIndustry;
+  CString m_strSICSector;
+  CString m_strTiingoIndustry;
+  CString m_strTiingoSector;
+  CString m_strCompanyWebSite;
+  CString m_strSECFilingWebSite;
+  long m_lStatementUpdateDate;
+  long m_lDailyDataUpdateDate;
 
   // 实时数据区
   time_t m_TransactionTime; // 实时数据交易时间
