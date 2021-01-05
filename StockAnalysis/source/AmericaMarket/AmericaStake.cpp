@@ -149,8 +149,11 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lStatementUpdateDate = setAmericaStake.m_StatementUpdateDate;
 }
 
-bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime) {
+bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+  if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+    if (!m_fIsActive) SetDayLineNeedUpdate(false);
+  }
   if (IsNullStock()) {
     SetDayLineNeedUpdate(false);
   }

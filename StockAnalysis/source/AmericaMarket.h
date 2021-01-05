@@ -149,7 +149,6 @@ public:
   bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
 
-  bool TaskAppendStakeSymbolDB(void);
   bool TaskUpdateStakeDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);
@@ -200,7 +199,6 @@ public:
   // Êý¾Ý¿â²Ù×÷
   bool LoadAmericaStake(void);
   bool LoadAmericaChoicedStock(void);
-  bool SaveCompanyProfile(void);
   bool UpdateCountryListDB(void);
   bool UpdateStakeDB(void);
   bool UpdateForexSymbolDB(void);
@@ -220,7 +218,6 @@ public:
   bool RebulidFinnhubDayLine(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
-  bool SortStakeTable(void);
 
 protected:
   vector<CAmericaStakePtr> m_vAmericaStake;

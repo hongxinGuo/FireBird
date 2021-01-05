@@ -722,8 +722,6 @@ bool CAmericaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
     SchedulingTaskPer10Seconds(lCurrentTime);
   }
 
-  TaskAppendStakeSymbolDB();
-
   return true;
 }
 
@@ -831,26 +829,6 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol(void) {
     return true;
   }
   return false;
-}
-
-bool CAmericaMarket::TaskAppendStakeSymbolDB(void) {
-  CSetAmericaStake setAmericaStake;
-  CAmericaStakePtr pStock = nullptr;
-
-  if (m_lLastTotalAmericaStake < m_vAmericaStake.size()) {
-    DeleteStakeSymbolDB();
-    m_lLastTotalAmericaStake = m_vAmericaStake.size();
-
-    setAmericaStake.Open();
-    setAmericaStake.m_pDatabase->BeginTrans();
-    for (long l = 0; l < m_vAmericaStake.size(); l++) {
-      pStock = m_vAmericaStake.at(l);
-      pStock->Append(setAmericaStake);
-    }
-    setAmericaStake.m_pDatabase->CommitTrans();
-    setAmericaStake.Close();
-  }
-  return true;
 }
 
 bool CAmericaMarket::TaskUpdateForexSymbolDB(void) {
@@ -987,7 +965,7 @@ bool CAmericaMarket::TaskInquiryFinnhubPeer(void) {
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
-      m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
+      m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_fFinnhubPeerUpdated = false;
       TRACE("申请%s Peer数据\n", m_vAmericaStake.at(m_lCurrentUpdatePeerPos)->m_strSymbol.GetBuffer());
     }
     else {
@@ -1095,7 +1073,7 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
-      m_vAmericaStake.at(m_lCurrentUpdateForexDayLinePos)->SetDayLineNeedUpdate(false);
+      m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->SetDayLineNeedUpdate(false);
       TRACE("申请Forex%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
     }
     else {
@@ -1377,7 +1355,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   while (!setAmericaStake.IsEOF()) {
     pAmericaStake = make_shared<CAmericaStake>();
     pAmericaStake->Load(setAmericaStake);
-    pAmericaStake->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime());
+    pAmericaStake->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
     pAmericaStake->CheckEPSSurpriseStatus(GetFormatedMarketDate());
     m_vAmericaStake.push_back(pAmericaStake);
     m_mapAmericaStake[setAmericaStake.m_Symbol] = m_lLastTotalAmericaStake++;
@@ -1413,23 +1391,6 @@ bool CAmericaMarket::LoadAmericaChoicedStock(void) {
   return true;
 }
 
-bool CAmericaMarket::SaveCompanyProfile(void) {
-  CSetAmericaStake setAmericaStake;
-  CAmericaStakePtr pAmericaStake = nullptr;
-  long lTotalAmericaStake = m_vAmericaStake.size();
-
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  for (long l = m_lLastTotalAmericaStake; l < lTotalAmericaStake; l++) {
-    pAmericaStake = m_vAmericaStake.at(l);
-    pAmericaStake->Append(setAmericaStake);
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
-  m_lLastTotalAmericaStake = lTotalAmericaStake;
-  return true;
-}
-
 bool CAmericaMarket::UpdateCountryListDB(void) {
   CCountryPtr pCountry = nullptr;
   CSetCountry setCountry;
@@ -1453,18 +1414,34 @@ bool CAmericaMarket::UpdateStakeDB(void) {
   CAmericaStakePtr pStock = nullptr;
   CSetAmericaStake setAmericaStake;
 
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
-    if (pStock->m_fUpdateDatabase) {
-      pStock->Update(setAmericaStake);
+  if (m_lLastTotalAmericaStake < m_vAmericaStake.size()) {
+    DeleteStakeSymbolDB();
+    m_lLastTotalAmericaStake = m_vAmericaStake.size();
+
+    setAmericaStake.Open();
+    setAmericaStake.m_pDatabase->BeginTrans();
+    for (long l = 0; l < m_vAmericaStake.size(); l++) {
+      pStock = m_vAmericaStake.at(l);
+      pStock->Append(setAmericaStake);
       pStock->m_fUpdateDatabase = false;
     }
-    setAmericaStake.MoveNext();
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
   }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
+  else {
+    setAmericaStake.Open();
+    setAmericaStake.m_pDatabase->BeginTrans();
+    while (!setAmericaStake.IsEOF()) {
+      pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+      if (pStock->m_fUpdateDatabase) {
+        pStock->Update(setAmericaStake);
+        pStock->m_fUpdateDatabase = false;
+      }
+      setAmericaStake.MoveNext();
+    }
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
+  }
   return true;
 }
 
@@ -1521,23 +1498,11 @@ bool CAmericaMarket::UpdateEconomicCalendarDB(void) {
 }
 
 bool CAmericaMarket::RebulidFinnhubDayLine(void) {
-  CSetAmericaStake setAmericaStake;
   for (auto& pStock : m_vAmericaStake) {
     pStock->SetDayLineStartDate(29900101);
     pStock->SetDayLineEndDate(19800101);
+    pStock->m_fUpdateDatabase = true;
   }
-
-  //setAmericaStake.m_strSort = _T("[Symbol]");
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    setAmericaStake.Edit();
-    setAmericaStake.m_DayLineStartDate = 29900101;
-    setAmericaStake.m_DayLineEndDate = 19800101;
-    setAmericaStake.Update();
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
 
   m_fFinnhubDayLineUpdated = false;
 
@@ -1575,47 +1540,6 @@ void CAmericaMarket::DeleteEPSSurpriseDB(void) {
   database.ExecuteSQL(_T("TRUNCATE `americamarket`.`eps_surprise`;"));
   database.CommitTrans();
   database.Close();
-}
-
-bool CAmericaMarket::SortStakeTable(void) {
-  CSetAmericaStake setAmericaStake;
-  vector<CAmericaStakePtr> vStake;
-  CAmericaStakePtr pStock = nullptr;
-
-  setAmericaStake.m_strSort = _T("[Symbol]");
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    pStock = make_shared<CAmericaStake>();
-    pStock->Load(setAmericaStake);
-    pStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime());
-    vStake.push_back(pStock);
-    setAmericaStake.MoveNext();
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
-
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    setAmericaStake.Delete();
-    setAmericaStake.MoveNext();
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
-
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  for (auto& pStake1 : vStake) {
-    pStake1->Append(setAmericaStake);
-    setAmericaStake.AddNew();
-
-    setAmericaStake.MoveNext();
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
-
-  return true;
 }
 
 bool CAmericaMarket::LoadForexExchange(void) {
@@ -1728,18 +1652,10 @@ bool CAmericaMarket::DeleteStakeDayLineDB(void) {
 }
 
 bool CAmericaMarket::RebuildStakeDayLineDB(void) {
-  CSetAmericaStake setAmericaStake;
-
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    setAmericaStake.Edit();
-    setAmericaStake.m_IPOStatus = __STAKE_NOT_CHECKED__;
-    setAmericaStake.Update();
-    setAmericaStake.MoveNext();
+  for (auto& pStock : m_vAmericaStake) {
+    pStock->m_lIPOStatus = __STAKE_NOT_CHECKED__;
+    pStock->m_fUpdateDatabase = true;
   }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
   m_fAmericaStakeUpdated = false;
 
   return true;
@@ -1749,7 +1665,6 @@ bool CAmericaMarket::UpdateDayLineStartEndDate(void) {
   CString strFilterPrefix = _T("[Symbol] = '");
   CString strFilter, str;
   CSetAmericaStakeDayLine setAmericaStakeDayLine;
-  CSetAmericaStake setAmericaStake;
   CAmericaStakePtr pStock2 = nullptr;
   bool fSavedStatus = m_fFinnhubDayLineUpdated;
 
@@ -1761,29 +1676,17 @@ bool CAmericaMarket::UpdateDayLineStartEndDate(void) {
     if (!setAmericaStakeDayLine.IsEOF()) {
       if (setAmericaStakeDayLine.m_Date < pStock->m_lDayLineStartDate) {
         pStock->m_lDayLineStartDate = setAmericaStakeDayLine.m_Date;
+        pStock->m_fUpdateDatabase = true;
       }
       setAmericaStakeDayLine.MoveLast();
       if (setAmericaStakeDayLine.m_Date > pStock->m_lDayLineEndDate) {
         pStock->m_lDayLineEndDate = setAmericaStakeDayLine.m_Date;
+        pStock->m_fUpdateDatabase = true;
       }
     }
     setAmericaStakeDayLine.Close();
   }
 
-  setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
-  while (!setAmericaStake.IsEOF()) {
-    if (m_mapAmericaStake.find(setAmericaStake.m_Symbol) != m_mapAmericaStake.end()) {
-      pStock2 = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
-      setAmericaStake.Edit();
-      setAmericaStake.m_DayLineStartDate = pStock2->m_lDayLineStartDate;
-      setAmericaStake.m_DayLineStartDate = pStock2->m_lDayLineStartDate;
-      setAmericaStake.Update();
-    }
-    setAmericaStake.MoveNext();
-  }
-  setAmericaStake.m_pDatabase->CommitTrans();
-  setAmericaStake.Close();
   m_fFinnhubDayLineUpdated = fSavedStatus;
 
   return true;

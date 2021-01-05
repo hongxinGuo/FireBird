@@ -18,7 +18,7 @@ public:
   void Reset(void);
 public:
   void Load(CSetAmericaStake& setAmericaStake);
-  bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime);
+  bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
   void Save(CSetAmericaStake& setAmericaStake);
   void Update(CSetAmericaStake& setAmericaStake);
   void Append(CSetAmericaStake& setAmericaStake);
