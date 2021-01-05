@@ -67,7 +67,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
         m_buffer[m_lByteRead++] = buffer[l];
       }
     } while (m_lByteReadCurrent > 0);
-    ASSERT(m_lByteRead < 1024 * 1024 * 8);
+    ASSERT(m_lByteRead < 1024 * 1024 * 12);
     m_lTotalByteReaded += m_lByteRead;
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
     /*
@@ -133,7 +133,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
         }
       }
     }
-    ASSERT(m_lByteRead < 1024 * 1024 * 8);
+    ASSERT(m_lByteRead < 1024 * 1024 * 12);
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾
     m_pFile->Close();
 

@@ -4,6 +4,9 @@
 
 #include"ProcessTiingoWebData.h"
 
+using namespace std;
+#include<algorithm>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 using namespace boost::property_tree;
@@ -18,6 +21,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vS
   CString str, strNumber;
   char buffer[30];
   long year, month, day;
+  int i = 0;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -26,6 +30,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vS
     s = pt2.get<string>(_T("permaTicker"));
     if (s.size() > 0) pStake->m_strTiingoPermaTicker = s.c_str();
     s = pt2.get<string>(_T("ticker"));
+    transform(s.begin(), s.end(), s.begin(), toupper);
     pStake->m_strSymbol = s.c_str();
     pStake->m_fIsActive = pt2.get<bool>(_T("isActive"));
     pStake->m_fIsADR = pt2.get<bool>(_T("isADR"));
@@ -33,7 +38,12 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vS
     if (s.size() > 0) pStake->m_strTiingoIndustry = s.c_str();
     s = pt2.get<string>(_T("sector"));
     if (s.size() > 0) pStake->m_strTiingoSector = s.c_str();
-    pStake->m_iSICCode = pt2.get<int>(_T("sicCode"));
+    s = pt2.get<string>(_T("sicCode"));
+    if (s.at(0) == 'F') {
+    }
+    else {
+      pStake->m_iSICCode = atoi(s.c_str());
+    }
     s = pt2.get<string>(_T("sicIndustry"));
     if (s.size() > 0) pStake->m_strSICIndustry = s.c_str();
     s = pt2.get<string>(_T("sicSector"));

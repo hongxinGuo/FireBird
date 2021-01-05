@@ -333,7 +333,7 @@ void ZoomIn(vector<double>& vData, double dLevel, double dRate) {
 }
 
 bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
-  char* pbuffer = new char[1024 * 1024 * 8];
+  char* pbuffer = new char[1024 * 1024 * 12];
   for (int i = 0; i < pWebData->GetBufferLength(); i++) {
     pbuffer[i] = pWebData->GetData(i);
   }

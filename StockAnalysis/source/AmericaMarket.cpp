@@ -632,21 +632,25 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
       case __COMPANY_PROFILE2__:
       break;
       case  __COMPANY_SYMBOLS__:
-      ProcessTiingoStockSymbol(pWebData, vStake);
-      for (auto& pStock2 : vStake) {
-        if (!IsAmericaStake(pStock2->GetSymbol())) {
-          m_vAmericaStake.push_back(pStock2);
-          fFoundNewStock = true;
+      if (ProcessTiingoStockSymbol(pWebData, vStake)) {
+        for (auto& pStock2 : vStake) {
+          if (m_mapAmericaStake.find(pStock2->m_strSymbol) != m_mapAmericaStake.end()) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+            pStock = m_vAmericaStake.at(m_mapAmericaStake.at(pStock2->m_strSymbol));
+            pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
+            pStock->m_fIsActive = pStock2->m_fIsActive;
+            pStock->m_fIsADR = pStock2->m_fIsADR;
+            pStock->m_strTiingoIndustry = pStock2->m_strTiingoIndustry;
+            pStock->m_strTiingoSector = pStock2->m_strTiingoSector;
+            pStock->m_strSICIndustry = pStock2->m_strSICIndustry;
+            pStock->m_strSICSector = pStock2->m_strSICSector;
+            pStock->m_iSICCode = pStock2->m_iSICCode;
+            pStock->m_strCompanyWebSite = pStock2->m_strCompanyWebSite;
+            pStock->m_strSECFilingWebSite = pStock2->m_strSECFilingWebSite;
+            pStock->m_lDailyDataUpdateDate = pStock2->m_lDailyDataUpdateDate;
+            pStock->m_lStatementUpdateDate = pStock2->m_lStatementUpdateDate;
+            pStock->m_fUpdateDatabase = true;
+          }
         }
-      }
-      if (fFoundNewStock) {
-        sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
-        m_mapAmericaStake.clear();
-        int j = 0;
-        for (auto& pStake2 : m_vAmericaStake) {
-          m_mapAmericaStake[pStake2->m_strSymbol] = j++;
-        }
-        gl_systemMessage.PushInformationMessage("Tiingo发现新代码，更新代码集");
       }
       m_fTiingoSymbolUpdated = true;
       break;
@@ -1105,7 +1109,7 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
 
 void CAmericaMarket::TaskInquiryTiingo(void) {
   if (IsSystemReady() && !m_fTiingoInquiring) {
-    //TaskInquiryTiingoCompanySymbol();
+    TaskInquiryTiingoCompanySymbol();
     // 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
     TaskInquiryTiingoDayLine(); // 初步测试完毕。
   }
