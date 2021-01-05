@@ -634,7 +634,8 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
       case  __COMPANY_SYMBOLS__:
       if (ProcessTiingoStockSymbol(pWebData, vStake)) {
         for (auto& pStock2 : vStake) {
-          if (m_mapAmericaStake.find(pStock2->m_strSymbol) != m_mapAmericaStake.end()) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+          if (pStock2->m_fIsActive && (m_mapAmericaStake.find(pStock2->m_strSymbol) != m_mapAmericaStake.end())) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+            lTemp++;
             pStock = m_vAmericaStake.at(m_mapAmericaStake.at(pStock2->m_strSymbol));
             pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
             pStock->m_fIsActive = pStock2->m_fIsActive;

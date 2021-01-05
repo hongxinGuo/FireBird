@@ -50,7 +50,7 @@ void CAmericaStake::Reset(void) {
 
   // Tiingo SymbolÊý¾Ý
   m_strTiingoPermaTicker = _T("");
-  m_fIsActive = true;
+  m_fIsActive = false;
   m_fIsADR = false;
   m_strTiingoIndustry = _T("");
   m_strTiingoSector = _T("");
