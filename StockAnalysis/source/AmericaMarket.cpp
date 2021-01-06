@@ -1062,7 +1062,7 @@ bool CAmericaMarket::TaskInquiryFinnhubForexDayLine(void) {
   if (!m_fForexDayLineUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStakeSetSize; m_lCurrentUpdateForexDayLinePos++) {
       if (m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
-        pStock = m_vForexSymbol.at(m_lCurrentUpdateDayLinePos);
+        pStock = m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos);
         fFound = true;
         break;
       }
@@ -1453,7 +1453,6 @@ bool CAmericaMarket::UpdateForexSymbolDB(void) {
   const long lTotalForexSymbol = m_vForexSymbol.size();
   CForexSymbolPtr pSymbol = nullptr;
   CSetForexSymbol setForexSymbol;
-  long lTotalForexSymbol = m_vForexSymbol.size();
   bool fUpdateSymbol = false;
 
   if (m_lLastTotalForexSymbol < lTotalForexSymbol) {
