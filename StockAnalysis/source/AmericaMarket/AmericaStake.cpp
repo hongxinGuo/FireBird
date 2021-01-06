@@ -273,8 +273,6 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_SECFilingWebSite = m_strSECFilingWebSite;
   setAmericaStake.m_DailyDataUpdateDate = m_lDailyDataUpdateDate;
   setAmericaStake.m_StatementUpdateDate = m_lStatementUpdateDate;
-
-  TRACE("¸üÐÂ¹ÉÆ±£º%s\n", m_strSymbol.GetBuffer());
 }
 
 void CAmericaStake::Update(CSetAmericaStake& setAmericaStake) {

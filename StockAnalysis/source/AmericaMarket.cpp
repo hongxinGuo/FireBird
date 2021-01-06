@@ -1413,6 +1413,7 @@ bool CAmericaMarket::UpdateStakeDB(void) {
   const long lTotalAmericaStake = m_vAmericaStake.size();
   CAmericaStakePtr pStock = nullptr;
   CSetAmericaStake setAmericaStake;
+  bool fNeedUpdate = false;
 
   if (m_lLastTotalAmericaStake < m_vAmericaStake.size()) {
     DeleteStakeSymbolDB();
@@ -1429,18 +1430,26 @@ bool CAmericaMarket::UpdateStakeDB(void) {
     setAmericaStake.Close();
   }
   else {
-    setAmericaStake.Open();
-    setAmericaStake.m_pDatabase->BeginTrans();
-    while (!setAmericaStake.IsEOF()) {
-      pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+    for (auto& pStock : m_vAmericaStake) {
       if (pStock->m_fUpdateDatabase) {
-        pStock->Update(setAmericaStake);
-        pStock->m_fUpdateDatabase = false;
+        fNeedUpdate = true;
+        break;
       }
-      setAmericaStake.MoveNext();
     }
-    setAmericaStake.m_pDatabase->CommitTrans();
-    setAmericaStake.Close();
+    if (fNeedUpdate) {
+      setAmericaStake.Open();
+      setAmericaStake.m_pDatabase->BeginTrans();
+      while (!setAmericaStake.IsEOF()) {
+        pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+        if (pStock->m_fUpdateDatabase) {
+          pStock->Update(setAmericaStake);
+          pStock->m_fUpdateDatabase = false;
+        }
+        setAmericaStake.MoveNext();
+      }
+      setAmericaStake.m_pDatabase->CommitTrans();
+      setAmericaStake.Close();
+    }
   }
   return true;
 }
