@@ -1453,44 +1453,31 @@ bool CAmericaMarket::UpdateForexSymbolDB(void) {
   const long lTotalForexSymbol = m_vForexSymbol.size();
   CForexSymbolPtr pSymbol = nullptr;
   CSetForexSymbol setForexSymbol;
-  long lTotalForexSymbol = m_vForexSymbol.size();
-  bool fUpdateSymbol = false;
 
-  if (m_lLastTotalForexSymbol < lTotalForexSymbol) {
+  if (m_lLastTotalForexSymbol < m_vForexSymbol.size()) {
     setForexSymbol.Open();
     setForexSymbol.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalForexSymbol; l < lTotalForexSymbol; l++) {
+    for (long l = m_lLastTotalForexSymbol; l < m_vForexSymbol.size(); l++) {
       pSymbol = m_vForexSymbol.at(l);
       pSymbol->Append(setForexSymbol);
     }
     setForexSymbol.m_pDatabase->CommitTrans();
     setForexSymbol.Close();
-    m_lLastTotalForexSymbol = lTotalForexSymbol;
+    m_lLastTotalForexSymbol = m_vForexSymbol.size();
   }
 
-  for (auto& pSymbol : m_vForexSymbol) {
+  setForexSymbol.Open();
+  setForexSymbol.m_pDatabase->BeginTrans();
+  while (!setForexSymbol.IsEOF()) {
+    pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
     if (pSymbol->m_fUpdateDatabase) {
-      fUpdateSymbol = true;
-      break;
+      pSymbol->Update(setForexSymbol);
+      pSymbol->m_fUpdateDatabase = false;
     }
+    setForexSymbol.MoveNext();
   }
-  if (fUpdateSymbol) {
-    setForexSymbol.Open();
-    setForexSymbol.m_pDatabase->BeginTrans();
-    while (!setForexSymbol.IsEOF()) {
-      if (m_mapForexSymbol.find(setForexSymbol.m_Symbol) != m_mapForexSymbol.end()) {
-        pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
-        if (pSymbol->m_fUpdateDatabase) {
-          pSymbol->Update(setForexSymbol);
-          pSymbol->m_fUpdateDatabase = false;
-        }
-      }
-      setForexSymbol.MoveNext();
-    }
-    setForexSymbol.m_pDatabase->CommitTrans();
-    setForexSymbol.Close();
-  }
-
+  setForexSymbol.m_pDatabase->CommitTrans();
+  setForexSymbol.Close();
   return true;
 }
 
