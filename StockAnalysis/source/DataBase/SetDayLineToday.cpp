@@ -114,7 +114,7 @@ CSetDayLineToday::CSetDayLineToday(CDatabase* pdb)
 }
 
 CString CSetDayLineToday::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetDayLineToday::GetDefaultSQL() {

@@ -116,6 +116,11 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
     return false; // 数据解析出错的话，则放弃。
   }
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
+  for (auto& pDayLine : vDayLine) {
+    pDayLine->SetMarketString(pStake->m_strExchange);
+    pDayLine->SetStakeCode(pStake->GetSymbol());
+    pDayLine->SetStakeName(pStake->GetTicker());
+  }
   pStake->UpdateDayLine(vDayLine);
   pStake->SetDayLineNeedUpdate(false);
   pStake->SetDayLineNeedSaving(true);

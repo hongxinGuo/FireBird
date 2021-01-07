@@ -23,7 +23,7 @@ CSetStakeSection::CSetStakeSection(CDatabase* pdb)
 }
 
 CString CSetStakeSection::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetStakeSection::GetDefaultSQL() {

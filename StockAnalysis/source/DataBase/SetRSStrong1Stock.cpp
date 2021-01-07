@@ -13,7 +13,7 @@ CSetRSStrong1Stock::CSetRSStrong1Stock(CDatabase* pdb) : CRecordset(pdb) {
 }
 
 CString CSetRSStrong1Stock::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetRSStrong1Stock::GetDefaultSQL() {

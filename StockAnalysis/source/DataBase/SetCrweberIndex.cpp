@@ -7,8 +7,7 @@
 IMPLEMENT_DYNAMIC(CSetCrweberIndex, CRecordset)
 
 CSetCrweberIndex::CSetCrweberIndex(CDatabase* pdb)
-  : CRecordset(pdb)
-{
+  : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
   m_TD1 = m_TD2 = m_TD3C = m_TD5 = m_TD6 = m_TD7 = m_TD8 = m_TD9 = m_TD12 = m_TD15
@@ -19,18 +18,15 @@ CSetCrweberIndex::CSetCrweberIndex(CDatabase* pdb)
   m_nFields = 36;
 }
 
-CString CSetCrweberIndex::GetDefaultConnect()
-{
-  return GetDefaultSchemaConnect();
+CString CSetCrweberIndex::GetDefaultConnect() {
+  return GetChinaMarketSchemaVonnect();
 }
 
-CString CSetCrweberIndex::GetDefaultSQL()
-{
+CString CSetCrweberIndex::GetDefaultSQL() {
   return _T("[crweberIndex]");
 }
 
-void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX)
-{
+void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -76,13 +72,11 @@ void CSetCrweberIndex::DoFieldExchange(CFieldExchange* pFX)
 // CSetStockCode 诊断
 
 #ifdef _DEBUG
-void CSetCrweberIndex::AssertValid() const
-{
+void CSetCrweberIndex::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetCrweberIndex::Dump(CDumpContext& dc) const
-{
+void CSetCrweberIndex::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -965,7 +965,6 @@ bool CAmericaMarket::TaskInquiryFinnhubPeer(void) {
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
-      m_vAmericaStake.at(m_lCurrentUpdateDayLinePos)->m_fFinnhubPeerUpdated = false;
       TRACE("ÉêÇë%s PeerÊý¾Ý\n", m_vAmericaStake.at(m_lCurrentUpdatePeerPos)->m_strSymbol.GetBuffer());
     }
     else {

@@ -221,7 +221,7 @@ long GetCurrentMonday(long lDate) {
 // 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
-CString GetDefaultSchemaConnect() {
+CString GetChinaMarketSchemaVonnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
     return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
@@ -242,7 +242,7 @@ CString GetDefaultSchemaConnect() {
 CString GetAmericaMarketSchemaConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
+    return _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是AmericaMarketTest Schema
   }
   else {
     gl_fTestMode = false;

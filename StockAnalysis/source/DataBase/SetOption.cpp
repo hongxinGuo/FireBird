@@ -22,7 +22,7 @@ CSetOption::CSetOption(CDatabase* pdb)
 // 有关的问题后移除 #error。可能需要将此密码存
 // 储为其他格式或使用其他的用户身份验证。
 CString CSetOption::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetOption::GetDefaultSQL() {

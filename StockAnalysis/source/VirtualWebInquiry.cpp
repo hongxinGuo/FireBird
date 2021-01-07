@@ -107,6 +107,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
   bool fDone = false;
   bool fStatus = true;
   CString str1, strLeft;
+  time_t tt = 0;
 
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
@@ -116,7 +117,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
   long lCurrentByteReaded = 0;
   SetWebError(false);
   SetByteReaded(0);
-  m_tCurrentInquiryTime = GetTickCount64();
+  tt = GetTickCount64();
   try {
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
@@ -156,7 +157,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
     delete m_pFile;
     m_pFile = nullptr;
   }
-  m_tCurrentInquiryTime = GetTickCount64() - m_tCurrentInquiryTime;
+  m_tCurrentInquiryTime = GetTickCount64() - tt;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
   SetReadingWebData(false);

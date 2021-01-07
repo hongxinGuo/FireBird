@@ -23,7 +23,7 @@ CSetActiveStakeCode::CSetActiveStakeCode(CDatabase* pdb)
 }
 
 CString CSetActiveStakeCode::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetActiveStakeCode::GetDefaultSQL() {

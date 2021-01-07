@@ -21,7 +21,7 @@ CSetPotenDailyBriefing::CSetPotenDailyBriefing(CDatabase* pdb)
 }
 
 CString CSetPotenDailyBriefing::GetDefaultConnect() {
-  return GetDefaultSchemaConnect();
+  return GetChinaMarketSchemaVonnect();
 }
 
 CString CSetPotenDailyBriefing::GetDefaultSQL() {

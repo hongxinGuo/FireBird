@@ -1562,7 +1562,7 @@ bool CChinaStake::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 }
 
 void CChinaStake::SetCheckingDayLineStatus(void) {
-  ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+  //ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
   if (gl_pChinaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新

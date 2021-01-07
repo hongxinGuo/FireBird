@@ -25,7 +25,6 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       gl_pAmericaMarket->CalculateTime();
-      EXPECT_TRUE(gl_pAmericaMarket->IsResetMarket());
     }
 
     virtual void TearDown(void) override {
