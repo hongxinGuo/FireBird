@@ -710,6 +710,7 @@
     <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaChoicedStock.h" />
+    <ClInclude Include="source\AmericaMarket\SetAmericaMarketOption.h" />
     <ClInclude Include="source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h" />
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h" />
@@ -797,6 +798,7 @@
     <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaChoicedStock.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetAmericaMarketOption.cpp" />
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp" />

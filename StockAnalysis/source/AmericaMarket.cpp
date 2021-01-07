@@ -6,6 +6,7 @@
 #include"ProcessTiingoWebData.h"
 #include"EPSSurprise.h"
 
+#include"SetAmericaMarketOption.h"
 #include"SetForexExchange.h"
 #include"SetAmericaStake.h"
 #include"SetAmericaChoicedStock.h"
@@ -153,6 +154,7 @@ void CAmericaMarket::ResetTiingo(void) {
 void CAmericaMarket::ResetMarket(void) {
   Reset();
 
+  LoadOption();
   LoadCountryList();
   LoadAmericaStake();
   LoadAmericaChoicedStock();
@@ -1342,6 +1344,24 @@ long CAmericaMarket::GetFinnInquiry(void) {
     return inquiry.m_lInquiryIndex;
   }
   return -1;
+}
+
+bool CAmericaMarket::LoadOption(void) {
+  CSetAmericaMarketOption setOption;
+
+  setOption.Open();
+  if (setOption.m_FinnhubToken.GetLength() > 5) {
+    gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(setOption.m_FinnhubToken);
+  }
+  if (setOption.m_TiingoToken.GetLength() > 5) {
+    gl_pTiingoWebInquiry->SetInquiryingStringSuffix(setOption.m_TiingoToken);
+  }
+  if (setOption.m_QuandlToken.GetLength() > 5) {
+    gl_pQuandlWebInquiry->SetInquiryingStringSuffix(setOption.m_QuandlToken);
+  }
+  setOption.Close();
+
+  return true;
 }
 
 bool CAmericaMarket::LoadAmericaStake(void) {

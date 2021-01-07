@@ -205,6 +205,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp" />
@@ -395,6 +396,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h" />

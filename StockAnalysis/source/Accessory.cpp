@@ -218,17 +218,17 @@ long GetCurrentMonday(long lDate) {
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
 //
-// 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
+// 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
 CString GetChinaMarketSchemaVonnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
-    return _T("DSN=mysqlTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // mysqlTest操作的是TestData Schema
+    return _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // ChinaMarketTest操作的是TestData Schema
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=mysql;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是StockData Schema
+    return _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // ChinaMarket操作的是Chinamarket Schema
   }
 }
 
@@ -236,7 +236,7 @@ CString GetChinaMarketSchemaVonnect() {
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。
 //
-// 测试模式时使用mysqlTest驱动，正常模式时使用mysql驱动，以保证使用不同的Schema。
+// 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
 CString GetAmericaMarketSchemaConnect() {
@@ -246,7 +246,7 @@ CString GetAmericaMarketSchemaConnect() {
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // mysql操作的是AmericaMarket Schema
+    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // AmericaMarket操作的是AmericaMarket Schema
   }
 }
 

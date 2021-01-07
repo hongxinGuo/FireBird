@@ -2223,9 +2223,9 @@ bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
 
   if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weekline`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weekline`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2243,9 +2243,9 @@ bool CChinaMarket::DeleteStakeCodeDB(void) {
 
   if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`stockcode`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`stockcode`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2263,9 +2263,9 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
 
   if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`weeklineinfo`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2824,9 +2824,9 @@ bool CChinaMarket::DeleteDayLineBasicInfo(void) {
     exit(1); // 退出系统
   }
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`dayline`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`dayline`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2847,9 +2847,9 @@ bool CChinaMarket::DeleteDayLineExtendInfo(void) {
     exit(1); // 退出系统
   }
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`daylineinfo`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`daylineinfo`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2947,9 +2947,9 @@ bool CChinaMarket::DeleteTodayTempDB(void) {
 
   if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
 
-  database.Open(_T("mysql"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `stockdata`.`today`;"));
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`today`;"));
   database.CommitTrans();
   database.Close();
 

@@ -18,12 +18,13 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
 
   // finnhub不允许一个账户同时用于两个机器上，故而使用两个账户，看看能否避开速度限制。
   // 有可能一个网址只允许一个账户运行，则这种两个账户的方法也不起作用。
+  if (m_strWebDataInquireSuffix.GetLength() < 5) {
 #ifdef DEBUG
-  m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 调试版使用ymail账户
+    m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 调试版使用ymail账户
 #else
-  m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 发行版使用hotmail账户
+    m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 发行版使用hotmail账户
 #endif // DEBUG
-
+  }
   m_strConnection = _T("Quandl");
   m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }

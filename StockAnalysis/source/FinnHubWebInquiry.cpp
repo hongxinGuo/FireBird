@@ -20,15 +20,16 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
 
   // finnhub不允许一个账户同时用于两个机器上，故而使用两个账户，看看能否避开速度限制。
   // 有可能一个网址只允许一个账户运行，则这种两个账户的方法也不起作用。
+  if (m_strWebDataInquireSuffix.GetLength() < 5) {
 #ifdef DEBUG
-  m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
-  //m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
+    m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
+    //m_strWebDataInquireSuffix = _T("&token=sandbox_bv8t3mn48v6rnm7c6aug"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 #else
-  //m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
-  m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 发行版使用hotmail账户
-//m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
+    //m_strWebDataInquireSuffix = _T("&token=bv4ac1n48v6tcp17l5cg"); // 调试版使用ymail账户
+    m_strWebDataInquireSuffix = _T("&token=bv985d748v6ujthqfke0"); // 发行版使用hotmail账户
+  //m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 #endif // DEBUG
-
+  }
   m_strConnection = _T("Finnhub");
   m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }

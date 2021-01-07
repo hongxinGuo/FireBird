@@ -197,6 +197,7 @@ public:
   CAmericaStakePtr GetStock(CString strSymbol) { return m_vAmericaStake.at(m_mapAmericaStake.at(strSymbol)); }
 
   // Êý¾Ý¿â²Ù×÷
+  bool LoadOption(void);
   bool LoadAmericaStake(void);
   bool LoadAmericaChoicedStock(void);
   bool UpdateCountryListDB(void);
