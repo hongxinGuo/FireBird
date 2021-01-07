@@ -210,10 +210,6 @@ public:
   bool LoadCountryList(void);
   bool LoadEconomicCalendarDB(void);
 
-  bool DeleteStakeSymbolDB(void);
-  bool DeleteStakeDayLineDB(void);
-  void DeleteEPSSurpriseDB(void);
-
   bool RebuildStakeDayLineDB(void);
   bool UpdateDayLineStartEndDate(void);
   bool RebulidFinnhubDayLine(void);

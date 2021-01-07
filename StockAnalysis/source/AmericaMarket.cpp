@@ -1370,7 +1370,6 @@ bool CAmericaMarket::LoadAmericaStake(void) {
 
   setAmericaStake.m_strSort = _T("[Symbol]");
   setAmericaStake.Open();
-  setAmericaStake.m_pDatabase->BeginTrans();
   while (!setAmericaStake.IsEOF()) {
     pAmericaStake = make_shared<CAmericaStake>();
     pAmericaStake->Load(setAmericaStake);
@@ -1380,10 +1379,8 @@ bool CAmericaMarket::LoadAmericaStake(void) {
     m_mapAmericaStake[setAmericaStake.m_Symbol] = m_lLastTotalAmericaStake++;
     setAmericaStake.MoveNext();
   }
-  setAmericaStake.m_pDatabase->CommitTrans();
   setAmericaStake.Close();
   m_lLastTotalAmericaStake = m_vAmericaStake.size();
-  ASSERT(m_lLastTotalAmericaStake == m_vAmericaStake.size());
   return true;
 }
 
@@ -1433,37 +1430,35 @@ bool CAmericaMarket::UpdateStakeDB(void) {
   CAmericaStakePtr pStock = nullptr;
   CSetAmericaStake setAmericaStake;
 
-  if (m_lLastTotalAmericaStake < m_vAmericaStake.size()) {
-    DeleteStakeSymbolDB();
-    m_lLastTotalAmericaStake = m_vAmericaStake.size();
-
+  if (m_lLastTotalAmericaStake < lTotalAmericaStake) { //有新的代码？
     setAmericaStake.Open();
     setAmericaStake.m_pDatabase->BeginTrans();
-    for (long l = 0; l < m_lLastTotalAmericaStake; l++) {
+    for (long l = m_lLastTotalAmericaStake; l < lTotalAmericaStake; l++) {
       pStock = m_vAmericaStake.at(l);
       pStock->Append(setAmericaStake);
       pStock->m_fUpdateDatabase = false;
     }
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
+    m_lLastTotalAmericaStake = m_vAmericaStake.size();
   }
-  else {
-    if (IsAmericaStakeUpdated()) {
-      setAmericaStake.Open();
-      setAmericaStake.m_pDatabase->BeginTrans();
-      while (!setAmericaStake.IsEOF()) {
-        if (IsAmericaStake(setAmericaStake.m_Symbol)) {
-          pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
-          if (pStock->m_fUpdateDatabase) {
-            pStock->Update(setAmericaStake);
-            pStock->m_fUpdateDatabase = false;
-          }
+
+  //更新原有的代码集状态
+  if (IsAmericaStakeUpdated()) {
+    setAmericaStake.Open();
+    setAmericaStake.m_pDatabase->BeginTrans();
+    while (!setAmericaStake.IsEOF()) {
+      if (IsAmericaStake(setAmericaStake.m_Symbol)) {
+        pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+        if (pStock->m_fUpdateDatabase) {
+          pStock->Update(setAmericaStake);
+          pStock->m_fUpdateDatabase = false;
         }
-        setAmericaStake.MoveNext();
       }
-      setAmericaStake.m_pDatabase->CommitTrans();
-      setAmericaStake.Close();
+      setAmericaStake.MoveNext();
     }
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
   }
   return true;
 }
@@ -1562,21 +1557,6 @@ bool CAmericaMarket::ReBuildPeer(void) {
   return true;
 }
 
-void CAmericaMarket::DeleteEPSSurpriseDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1);
-  }
-
-  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`eps_surprise`;"));
-  database.CommitTrans();
-  database.Close();
-}
-
 bool CAmericaMarket::LoadForexExchange(void) {
   CSetForexExchange setForexExchange;
   int i = 0;
@@ -1648,40 +1628,6 @@ bool CAmericaMarket::LoadEconomicCalendarDB(void) {
   }
   setEconomicCalendar.Close();
   m_lLastTotalEconomicCalendar = m_vEconomicCalendar.size();
-
-  return true;
-}
-
-bool CAmericaMarket::DeleteStakeSymbolDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1);
-  }
-
-  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`companyprofile`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
-bool CAmericaMarket::DeleteStakeDayLineDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1);
-  }
-
-  database.Open(_T("AmericaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`dayline`;"));
-  database.CommitTrans();
-  database.Close();
 
   return true;
 }
