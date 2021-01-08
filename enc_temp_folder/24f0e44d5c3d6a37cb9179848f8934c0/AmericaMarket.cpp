@@ -791,10 +791,10 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
     if (IsSystemReady() && !m_fFinnhubInquiring) {
       TaskInquiryFinnhubCompanyProfile2();
-      TaskInquiryFinnhubForexDayLine();
       TaskInquiryFinnhubDayLine();
       TaskInquiryFinnhubEPSSurprise();
       TaskInquiryFinnhubPeer();
+      TaskInquiryFinnhubForexDayLine();
       if (m_fFinnhubDayLineUpdated) {
         //TaskInquiryFinnhubRTQuote();
       }

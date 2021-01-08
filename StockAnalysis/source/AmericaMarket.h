@@ -212,7 +212,6 @@ public:
 
   bool RebuildStakeDayLineDB(void);
   bool UpdateDayLineStartEndDate(void);
-  bool RebulidFinnhubDayLine(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
 
