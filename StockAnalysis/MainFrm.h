@@ -137,4 +137,5 @@ public:
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();
   afx_msg void OnUpdateAmericaStakeDaylineStartEnd();
+//  afx_msg void OnRebuildChinamarketDayline();
 };

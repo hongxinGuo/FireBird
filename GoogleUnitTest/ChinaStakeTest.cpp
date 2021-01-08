@@ -900,6 +900,26 @@ namespace StockAnalysisTest {
     setStockCode.Close();
   }
 
+  TEST_F(CChinaStockTest, TestUpdateStakeCodeDB) {
+    CSetStockCode setStockCode;
+    CChinaStake stake;
+
+    setStockCode.Open();
+    stake.LoadStockCodeDB(setStockCode);
+    EXPECT_STREQ(stake.GetStakeCode(), _T("sh600000"));
+    EXPECT_EQ(stake.GetIPOStatus(), __STAKE_IPOED__);
+    stake.SetIPOStatus(__STAKE_NULL__);
+    stake.UpdateStakeCodeDB(setStockCode);
+    setStockCode.Close();
+
+    setStockCode.Open();
+    EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_NULL__) << "此时状态已变为NULL";
+    setStockCode.Edit();
+    setStockCode.m_IPOStatus = __STAKE_IPOED__;
+    setStockCode.Update();
+    setStockCode.Close();
+  }
+
   TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
     CSetStockCode setStockCode;
     CChinaStake stake;

@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
   ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateAmericaStakeDaylineStartEnd)
+  //  ON_COMMAND(ID_REBUILD_CHINAMARKET_DAYLINE, &CMainFrame::OnRebuildChinamarketDayline)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -993,3 +994,7 @@ void CMainFrame::OnUpdateAmericaStakeDaylineStartEnd() {
   // TODO: Add your command handler code here
   gl_pAmericaMarket->TaskUpdateDayLineStartEndDate();
 }
+
+//void CMainFrame::OnRebuildChinamarketDayline() {
+//  // TODO: Add your command handler code here
+//}

@@ -2197,14 +2197,6 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
   return true;
 }
 
-bool CChinaMarket::DeleteWeekLine(void) {
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-  DeleteWeekLineBasicInfo();
-  DeleteWeekLineExtendInfo();
-
-  return true;
-}
-
 bool CChinaMarket::DeleteWeekLine(long lMonday) {
   DeleteWeekLineBasicInfo(lMonday);
   DeleteWeekLineExtendInfo(lMonday);
@@ -2212,20 +2204,44 @@ bool CChinaMarket::DeleteWeekLine(long lMonday) {
   return true;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-// 采用CDatabase类直接执行sql语句，保证执行速度。
-// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
-//
-//////////////////////////////////////////////////////////////////////////
+bool CChinaMarket::DeleteWeekLine(void) {
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
+  DeleteWeekLineBasicInfo();
+  DeleteWeekLineExtendInfo();
+  return true;
+}
+
 bool CChinaMarket::DeleteWeekLineBasicInfo(void) {
   CDatabase database;
 
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
 
   database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weekline`;"));
+  database.CommitTrans();
+  database.Close();
+
+  return true;
+}
+
+bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
+  CDatabase database;
+
+  if (gl_fTestMode) {
+    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
+    exit(1);
+  }
+
+  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+  database.BeginTrans();
+  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2246,26 +2262,6 @@ bool CChinaMarket::DeleteStakeCodeDB(void) {
   database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
   database.BeginTrans();
   database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`stockcode`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-// 采用CDatabase类直接执行sql语句，保证执行速度。
-// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
-//
-//////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-
-  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`weeklineinfo`;"));
   database.CommitTrans();
   database.Close();
 
@@ -2803,59 +2799,6 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
   return iCount;
 }
 
-bool CChinaMarket::DeleteDayLine(void) {
-  DeleteDayLineBasicInfo();
-  DeleteDayLineExtendInfo();
-
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-// 采用CDatabase类直接执行sql语句，保证执行速度。
-// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
-//
-//////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DeleteDayLineBasicInfo(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1); // 退出系统
-  }
-
-  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`dayline`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-//
-// 采用CDatabase类直接执行sql语句，保证执行速度。
-// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
-//
-//////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DeleteDayLineExtendInfo(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1); // 退出系统
-  }
-
-  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`daylineinfo`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
 bool CChinaMarket::DeleteDayLine(long lDate) {
   DeleteDayLineBasicInfo(lDate);
   DeleteDayLineExtendInfo(lDate);
@@ -3358,6 +3301,35 @@ bool CChinaMarket::UpdateStakeCodeDB(void) {
   return true;
 }
 
+bool CChinaMarket::UpdateStakeCodeDB2(void) {
+  CSetStockCode setStockCode;
+  CChinaStakePtr pStake = nullptr;
+  CString str;
+
+  setStockCode.Open();
+  setStockCode.m_pDatabase->BeginTrans();
+  if (m_lLastTotalStake == 0) { // 尚未存储代码集？
+    for (auto& pStake2 : m_vChinaMarketStake) {
+      pStake2->AppendStakeCodeDB(setStockCode);
+    }
+  }
+  else {
+    ASSERT(m_lLastTotalStake == 12000); // 代码集中的代码总数只能是12000个。
+    while (!setStockCode.IsEOF()) {
+      if (m_mapChinaMarketStake.find(setStockCode.m_StockCode) == m_mapChinaMarketStake.end()) {
+        ASSERT(false); //错误：代码集与系统生成的不符
+        str = _T("ChinaMarket代码集中有异常代码：") + setStockCode.m_StockCode;
+        gl_systemMessage.PushInnerSystemInformationMessage(str);
+      }
+      pStake = m_vChinaMarketStake.at(m_mapChinaMarketStake.at(setStockCode.m_StockCode));
+      pStake->UpdateStakeCodeDB(setStockCode);
+    }
+  }
+  setStockCode.m_pDatabase->CommitTrans();
+  setStockCode.Close();
+  return true;
+}
+
 void CChinaMarket::LoadStakeCodeDB(void) {
   CSetActiveStakeCode setStakeCode;
   char buffer[30]{ 0, 0, 0 };
@@ -3451,6 +3423,10 @@ void CChinaMarket::LoadStockCodeDB(void) {
     gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
+  m_lLastTotalStake = m_vChinaMarketStake.size(); // 数据库中的代码总数
+  if (m_lLastTotalStake > 0) {
+    ASSERT(m_lLastTotalStake == 12000);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

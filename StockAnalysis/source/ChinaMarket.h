@@ -196,6 +196,7 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStakeCodeDB(void);
+  virtual bool UpdateStakeCodeDB2(void);
   void LoadStakeCodeDB(void);
   void LoadStakeSection(void);
   void CreateStakeSet(void);
@@ -219,17 +220,14 @@ public:
   virtual bool SaveActiveStakeCode(void);
   virtual bool SaveStakeSection(void);
 
+  bool DeleteStakeCodeDB(void);
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
   bool DeleteWeekLineExtendInfo(void);
-  bool DeleteStakeCodeDB(void);
   bool DeleteWeekLine(long lMonday);
   bool DeleteWeekLineBasicInfo(long lMonday);
   bool DeleteWeekLineExtendInfo(long lMonday);
 
-  bool DeleteDayLine(void);
-  bool DeleteDayLineBasicInfo(void);
-  bool DeleteDayLineExtendInfo(void);
   bool DeleteDayLine(long lDate);
   bool DeleteDayLineBasicInfo(long lDate);
   bool DeleteDayLineExtendInfo(long lDate);
@@ -461,6 +459,7 @@ protected:
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lTotalStake; // 证券代码总数（前12000个为股票代码，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数
+  long m_lLastTotalStake; // 本次装载的股票总数
 
   vector<CChinaStakePtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStakePtr> m_v10RSStrong2Stock; // 10日强势股票集

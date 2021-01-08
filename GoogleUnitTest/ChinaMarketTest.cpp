@@ -1126,7 +1126,7 @@ namespace StockAnalysisTest {
     pStake = gl_pChinaStakeMarket->GetStock(1);
     EXPECT_TRUE(pStake->IsDelisted());
     EXPECT_STREQ(pStake->GetStakeCode(), _T("sh600001"));
-    EXPECT_EQ(pStake->GetDayLineStartDate(), 19980122);
+    EXPECT_EQ(pStake->GetDayLineStartDate(), 19980123);
     EXPECT_EQ(pStake->GetDayLineEndDate(), 20091215);
     EXPECT_FALSE(pStake->IsActive());
   }

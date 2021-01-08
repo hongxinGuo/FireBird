@@ -1548,6 +1548,12 @@ void CChinaStake::AppendStakeCodeDB(CSetStockCode& setStockCode) {
   setStockCode.Update();
 }
 
+void CChinaStake::UpdateStakeCodeDB(CSetStockCode& setStockCode) {
+  setStockCode.Edit();
+  SaveStakeCodeDB(setStockCode);
+  setStockCode.Update();
+}
+
 bool CChinaStake::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   SetStakeCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
