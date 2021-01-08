@@ -132,7 +132,7 @@ void CChinaStake::Reset(void) {
   m_fActive = false;
 
   m_fDayLineNeedUpdate = true;
-  m_fDayLineNeedProcess = false; // 从网络上读取了日线历史数据
+  m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
   m_fDayLineNeedSaving = false;
 
   m_fChoiced = false;
@@ -191,7 +191,6 @@ bool CChinaStake::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquir
     m_vDayLineBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
   }
   m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
-  SetDayLineNeedProcess(true);
 
   return true;
 }

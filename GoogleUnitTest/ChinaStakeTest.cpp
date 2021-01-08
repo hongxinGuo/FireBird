@@ -814,12 +814,9 @@ namespace StockAnalysisTest {
     CString str = _T("abcedfg\r\n");
     m_NeteaseDayLineWebInquiry.__TESTSetBuffer(str);
     CChinaStake stake;
-    EXPECT_FALSE(stake.IsDayLineNeedProcess());
     EXPECT_EQ(stake.GetDayLineBufferLength(), 0);
     stake.TransferNeteaseDayLineWebDataToBuffer(&m_NeteaseDayLineWebInquiry);
     EXPECT_EQ(stake.GetDayLineBufferLength(), str.GetLength());
-    EXPECT_TRUE(stake.IsDayLineNeedProcess());
-    stake.SetDayLineNeedProcess(false); // 将此标识还原为初始状态。
     EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
   }
 

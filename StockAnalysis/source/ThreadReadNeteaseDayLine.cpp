@@ -30,6 +30,7 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     pStake = gl_pChinaStakeMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStake->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
+    pStake->SetDayLineNeedProcess(true);
   }
   gl_ThreadStatus.DecreaseRunningThread();
 
