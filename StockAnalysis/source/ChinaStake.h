@@ -81,6 +81,9 @@ public:
   bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STAKE_IPOED__); }
   bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STAKE_NOT_CHECKED__); }
 
+  bool IsUpdateStakeCodeDB(void) noexcept { return m_fUpdateStakeCodeDB; }
+  void SetUpdateStakeCodeDB(bool fFlag) noexcept { m_fUpdateStakeCodeDB = fFlag; }
+
   // 基本实时数据，需要更新
   time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
   void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
@@ -646,4 +649,5 @@ protected:
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
+  bool m_fUpdateStakeCodeDB; // 更新股票代码数据库
 };

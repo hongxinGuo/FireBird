@@ -14,7 +14,7 @@
 UINT ThreadUpdateStakeCodeDB(not_null<CChinaMarket*> pMarket) {
   //
   gl_ThreadStatus.IncreaseRunningThread();
-  pMarket->UpdateStakeCodeDB();
+  pMarket->UpdateStakeCodeDB2();
   gl_ThreadStatus.DecreaseRunningThread();
   return 18;
 }

@@ -97,6 +97,9 @@ public:
   // 装载当前股票日线任务
   bool TaskLoadCurrentStockHistoryData(void);
 
+  // 更新stakeCode任务
+  void TaskSetUpdateStakeCodeDBFlag(void);
+
   // 各工作线程调用包裹函数
   virtual bool RunningThreadSaveChoicedRTData(void);
   virtual bool RunningThreadProcessTodayStock(void);

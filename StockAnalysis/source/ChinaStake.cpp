@@ -140,6 +140,8 @@ void CChinaStake::Reset(void) {
 
   m_fDayLineDBUpdated = false;
 
+  m_fUpdateStakeCodeDB = false;
+
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_fNeedProcessRTData = true;
   m_fRTDataCalculated = false;
@@ -206,8 +208,6 @@ bool CChinaStake::ProcessNeteaseDayLineData(void) {
   shared_ptr<CDayLine> pDayLine;
   INT64 lCurrentPos = 0;
 
-  ASSERT(m_fDayLineNeedProcess);
-  ASSERT(m_fDayLineNeedSaving == false);
   SetDayLineNeedProcess(false); // 无论是否正确处理，都不再使用
   if (m_lDayLineBufferLength == 0) { // 没有数据读入？此种状态是查询的股票为无效（不存在）号码
     return false;

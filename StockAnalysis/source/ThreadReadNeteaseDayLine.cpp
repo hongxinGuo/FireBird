@@ -31,7 +31,7 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
     pStake = gl_pChinaStakeMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStake->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
     pStake->SetDayLineNeedProcess(true);
-  }
+ }
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 4; // 此线程正常返回值为4

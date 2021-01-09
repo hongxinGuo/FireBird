@@ -657,12 +657,11 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(IsSystemReady());
-  if ((GetFormatedMarketTime() >= 92600) && (m_iDayLineNeedUpdate > 0)) {
-    // 抓取日线数据.开始于09:26:00
-    // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-    return(gl_WebInquirer.GetNeteaseDayLineData());
-  }
-  else return false;
+  if (m_iDayLineNeedUpdate <= 0) return false;
+  if (IsWorkingDay() && (GetFormatedMarketTime() < 92600)) return false;
+  // 抓取日线数据.开始于09:26:00
+  // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+  return(gl_WebInquirer.GetNeteaseDayLineData());
 }
 
 bool CChinaMarket::TaskUpdateStakeCodeFromWeb(void) {
@@ -1686,12 +1685,19 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
-  if (IsUpdateStakeCodeDB()) {
+  bool fUpdate = false;
+
+  for (auto& pStake : m_vChinaMarketStake) {
+    if (pStake->IsUpdateStakeCodeDB()) {
+      fUpdate = true;
+      break;
+    }
+  }
+  if (fUpdate) {
     RunningThreadUpdateStakeCodeDB();
-    SetUpdateStakeCodeDB(false);
     return true;
   }
-  return false;
+  else return false;
 }
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
@@ -2560,6 +2566,15 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
   return true;
 }
 
+void CChinaMarket::TaskSetUpdateStakeCodeDBFlag(void) {
+  for (auto& pStake : m_vChinaMarketStake) {
+    if (pStake->IsUpdateStakeCodeDB()) {
+      SetUpdateStakeCodeDB(true);
+      break;
+    }
+  }
+}
+
 bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
   thread thread1(ThreadSaveRTData, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
@@ -3311,7 +3326,9 @@ bool CChinaMarket::UpdateStakeCodeDB2(void) {
   if (m_lLastTotalStake == 0) { // 尚未存储代码集？
     for (auto& pStake2 : m_vChinaMarketStake) {
       pStake2->AppendStakeCodeDB(setStockCode);
+      pStake2->SetUpdateStakeCodeDB(false);
     }
+    m_lLastTotalStake = m_vChinaMarketStake.size();
   }
   else {
     ASSERT(m_lLastTotalStake == 12000); // 代码集中的代码总数只能是12000个。
@@ -3322,7 +3339,10 @@ bool CChinaMarket::UpdateStakeCodeDB2(void) {
         gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
       pStake = m_vChinaMarketStake.at(m_mapChinaMarketStake.at(setStockCode.m_StockCode));
-      pStake->UpdateStakeCodeDB(setStockCode);
+      if (pStake->IsUpdateStakeCodeDB()) {
+        pStake->UpdateStakeCodeDB(setStockCode);
+        pStake->SetUpdateStakeCodeDB(false);
+      }
     }
   }
   setStockCode.m_pDatabase->CommitTrans();
