@@ -462,7 +462,7 @@ protected:
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lTotalStake; // 证券代码总数（前12000个为股票代码，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数
-  long m_lLastTotalStake; // 本次装载的股票总数
+  long m_lLoadedStake; // 本次装载的股票总数
 
   vector<CChinaStakePtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStakePtr> m_v10RSStrong2Stock; // 10日强势股票集

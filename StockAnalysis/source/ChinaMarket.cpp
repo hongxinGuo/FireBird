@@ -211,6 +211,7 @@ void CChinaMarket::Reset(void) {
   for (int i = 0; i < m_vStakeSection.size(); i++) {
     m_vStakeSection.at(i)->SetBuildStakePtr(false);
   }
+  m_lLoadedStake = 0;
   // 生成股票代码池
   CreateTotalStockContainer();
 }
@@ -657,11 +658,12 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(IsSystemReady());
-  if (m_iDayLineNeedUpdate <= 0) return false;
-  if (IsWorkingDay() && (GetFormatedMarketTime() < 92600)) return false;
-  // 抓取日线数据.开始于09:26:00
-  // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
-  return(gl_WebInquirer.GetNeteaseDayLineData());
+  if ((GetFormatedMarketTime() >= 92600) && (m_iDayLineNeedUpdate > 0)) {
+    // 抓取日线数据.开始于09:26:00
+    // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
+    return(gl_WebInquirer.GetNeteaseDayLineData());
+  }
+  else return false;
 }
 
 bool CChinaMarket::TaskUpdateStakeCodeFromWeb(void) {
@@ -1685,19 +1687,12 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
-  bool fUpdate = false;
-
-  for (auto& pStake : m_vChinaMarketStake) {
-    if (pStake->IsUpdateStakeCodeDB()) {
-      fUpdate = true;
-      break;
-    }
-  }
-  if (fUpdate) {
+  if (IsUpdateStakeCodeDB()) {
     RunningThreadUpdateStakeCodeDB();
+    SetUpdateStakeCodeDB(false);
     return true;
   }
-  else return false;
+  return false;
 }
 
 bool CChinaMarket::TaskUpdateOptionDB(void) {
@@ -1849,7 +1844,6 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
       m_fSaveDayLine = true;
       TaskSaveDayLineData();
     }
-    TaskCheckDayLineDB();
     return true;
   } // 每十秒钟一次的任务
   else {
@@ -2564,15 +2558,6 @@ bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
   }
   else i--;
   return true;
-}
-
-void CChinaMarket::TaskSetUpdateStakeCodeDBFlag(void) {
-  for (auto& pStake : m_vChinaMarketStake) {
-    if (pStake->IsUpdateStakeCodeDB()) {
-      SetUpdateStakeCodeDB(true);
-      break;
-    }
-  }
 }
 
 bool CChinaMarket::RunningThreadSaveChoicedRTData(void) {
@@ -3323,15 +3308,14 @@ bool CChinaMarket::UpdateStakeCodeDB2(void) {
 
   setStockCode.Open();
   setStockCode.m_pDatabase->BeginTrans();
-  if (m_lLastTotalStake == 0) { // 尚未存储代码集？
+  if (m_lLoadedStake == 0) { // 尚未存储代码集？
     for (auto& pStake2 : m_vChinaMarketStake) {
       pStake2->AppendStakeCodeDB(setStockCode);
-      pStake2->SetUpdateStakeCodeDB(false);
     }
-    m_lLastTotalStake = m_vChinaMarketStake.size();
+    m_lLoadedStake = m_vChinaMarketStake.size();
   }
   else {
-    ASSERT(m_lLastTotalStake == 12000); // 代码集中的代码总数只能是12000个。
+    ASSERT(m_lLoadedStake == 12000); // 代码集中的代码总数只能是12000个。
     while (!setStockCode.IsEOF()) {
       if (m_mapChinaMarketStake.find(setStockCode.m_StockCode) == m_mapChinaMarketStake.end()) {
         ASSERT(false); //错误：代码集与系统生成的不符
@@ -3339,10 +3323,7 @@ bool CChinaMarket::UpdateStakeCodeDB2(void) {
         gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
       pStake = m_vChinaMarketStake.at(m_mapChinaMarketStake.at(setStockCode.m_StockCode));
-      if (pStake->IsUpdateStakeCodeDB()) {
-        pStake->UpdateStakeCodeDB(setStockCode);
-        pStake->SetUpdateStakeCodeDB(false);
-      }
+      pStake->UpdateStakeCodeDB(setStockCode);
     }
   }
   setStockCode.m_pDatabase->CommitTrans();
@@ -3443,9 +3424,8 @@ void CChinaMarket::LoadStockCodeDB(void) {
     gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
-  m_lLastTotalStake = m_vChinaMarketStake.size(); // 数据库中的代码总数
-  if (m_lLastTotalStake > 0) {
-    ASSERT(m_lLastTotalStake == 12000);
+  if (m_lLoadedStake != 0) {
+    ASSERT(m_lLoadedStake == 12000);
   }
 }
 

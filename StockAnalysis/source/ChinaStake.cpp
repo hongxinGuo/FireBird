@@ -1722,12 +1722,10 @@ void CChinaStake::SetDayLineNeedUpdate(bool fFlag) {
 
 void CChinaStake::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
-    ASSERT(!m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = true;
     gl_pChinaStakeMarket->IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
-    ASSERT(m_fDayLineNeedProcess);
     m_fDayLineNeedProcess = false;
     gl_pChinaStakeMarket->DecreaseNeteaseDayLineNeedProcessNumber();
   }
