@@ -3301,35 +3301,6 @@ bool CChinaMarket::UpdateStakeCodeDB(void) {
   return true;
 }
 
-bool CChinaMarket::UpdateStakeCodeDB2(void) {
-  CSetStockCode setStockCode;
-  CChinaStakePtr pStake = nullptr;
-  CString str;
-
-  setStockCode.Open();
-  setStockCode.m_pDatabase->BeginTrans();
-  if (m_lLoadedStake == 0) { // 尚未存储代码集？
-    for (auto& pStake2 : m_vChinaMarketStake) {
-      pStake2->AppendStakeCodeDB(setStockCode);
-    }
-    m_lLoadedStake = m_vChinaMarketStake.size();
-  }
-  else {
-    ASSERT(m_lLoadedStake == 12000); // 代码集中的代码总数只能是12000个。
-    while (!setStockCode.IsEOF()) {
-      if (m_mapChinaMarketStake.find(setStockCode.m_StockCode) == m_mapChinaMarketStake.end()) {
-        ASSERT(false); //错误：代码集与系统生成的不符
-        str = _T("ChinaMarket代码集中有异常代码：") + setStockCode.m_StockCode;
-        gl_systemMessage.PushInnerSystemInformationMessage(str);
-      }
-      pStake = m_vChinaMarketStake.at(m_mapChinaMarketStake.at(setStockCode.m_StockCode));
-      pStake->UpdateStakeCodeDB(setStockCode);
-    }
-  }
-  setStockCode.m_pDatabase->CommitTrans();
-  setStockCode.Close();
-  return true;
-}
 
 void CChinaMarket::LoadStakeCodeDB(void) {
   CSetActiveStakeCode setStakeCode;

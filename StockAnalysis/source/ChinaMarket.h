@@ -199,7 +199,6 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStakeCodeDB(void);
-  virtual bool UpdateStakeCodeDB2(void);
   void LoadStakeCodeDB(void);
   void LoadStakeSection(void);
   void CreateStakeSet(void);

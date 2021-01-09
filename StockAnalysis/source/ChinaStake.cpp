@@ -140,8 +140,6 @@ void CChinaStake::Reset(void) {
 
   m_fDayLineDBUpdated = false;
 
-  m_fUpdateStakeCodeDB = false;
-
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   m_fNeedProcessRTData = true;
   m_fRTDataCalculated = false;
