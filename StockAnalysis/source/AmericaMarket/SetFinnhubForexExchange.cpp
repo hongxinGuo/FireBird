@@ -1,4 +1,4 @@
-// CSetForexExchange.cpp : CSetForexExchange 类的实现
+// CSetFinnhubForexExchange.cpp : CSetFinnhubForexExchange 类的实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -6,26 +6,26 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetForexExchange.h"
+#include "SetFinnhubForexExchange.h"
 
-IMPLEMENT_DYNAMIC(CSetForexExchange, CRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubForexExchange, CRecordset)
 
-CSetForexExchange::CSetForexExchange(CDatabase* pdb)
+CSetFinnhubForexExchange::CSetFinnhubForexExchange(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Exchange = _T(" ");
 
   m_nFields = 2;
 }
 
-CString CSetForexExchange::GetDefaultConnect() {
+CString CSetFinnhubForexExchange::GetDefaultConnect() {
   return GetAmericaMarketSchemaConnect();
 }
 
-CString CSetForexExchange::GetDefaultSQL() {
-  return _T("[forex_exchange]");
+CString CSetFinnhubForexExchange::GetDefaultSQL() {
+  return _T("[finnhub_forex_exchange]");
 }
 
-void CSetForexExchange::DoFieldExchange(CFieldExchange* pFX) {
+void CSetFinnhubForexExchange::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -37,11 +37,11 @@ void CSetForexExchange::DoFieldExchange(CFieldExchange* pFX) {
 // CSetAmericaStake 诊断
 
 #ifdef _DEBUG
-void CSetForexExchange::AssertValid() const {
+void CSetFinnhubForexExchange::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetForexExchange::Dump(CDumpContext& dc) const {
+void CSetFinnhubForexExchange::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

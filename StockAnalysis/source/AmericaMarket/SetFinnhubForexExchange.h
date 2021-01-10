@@ -1,15 +1,15 @@
-// SetForexExchange.h : CSetForexExchange 的声明
+// SetForexExchange.h : CSetFinnhubForexExchange 的声明
 
 #pragma once
 #include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetForexExchange : public CRecordset
+class CSetFinnhubForexExchange : public CRecordset
 {
 public:
-  CSetForexExchange(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetForexExchange)
+  CSetFinnhubForexExchange(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetFinnhubForexExchange)
 
   // 字段/参数数据
 

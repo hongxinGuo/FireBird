@@ -1,15 +1,15 @@
-// SetForexSymbol.h : CSetForexSymbol 的声明
+// SetFinnhubForexSymbol.h : CSetFinnhubForexSymbol 的声明
 
 #pragma once
 #include"afxdb.h"
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetForexSymbol : public CRecordset
+class CSetFinnhubForexSymbol : public CRecordset
 {
 public:
-  CSetForexSymbol(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetForexSymbol)
+  CSetFinnhubForexSymbol(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetFinnhubForexSymbol)
 
   // 字段/参数数据
 

@@ -14,7 +14,7 @@ CForexSymbol::CForexSymbol() : CObject() {
   m_fDayLineNeedUpdate = true;
 }
 
-void CForexSymbol::Load(CSetForexSymbol& setForexSymbol) {
+void CForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
   m_strDescription = setForexSymbol.m_Description;
   m_strDisplaySymbol = setForexSymbol.m_DisplaySymbol;
   m_strExchange = setForexSymbol.m_Exchange;
@@ -24,19 +24,19 @@ void CForexSymbol::Load(CSetForexSymbol& setForexSymbol) {
   m_lIPOStatus = setForexSymbol.m_IPOStatus;
 }
 
-void CForexSymbol::Append(CSetForexSymbol& setForexSymbol) {
+void CForexSymbol::Append(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.AddNew();
   Save(setForexSymbol);
   setForexSymbol.Update();
 }
 
-void CForexSymbol::Update(CSetForexSymbol& setForexSymbol) {
+void CForexSymbol::Update(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.Edit();
   Save(setForexSymbol);
   setForexSymbol.Update();
 }
 
-void CForexSymbol::Save(CSetForexSymbol& setForexSymbol) {
+void CForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.m_Description = m_strDescription;
   setForexSymbol.m_DisplaySymbol = m_strDisplaySymbol;
   setForexSymbol.m_Exchange = m_strExchange;

@@ -1,7 +1,7 @@
 #pragma once
 #include"stdafx.h"
 
-#include"SetForexSymbol.h"
+#include"SetFinnhubForexSymbol.h"
 #include"SetForexDayLine.h"
 
 using namespace std;
@@ -13,10 +13,10 @@ class CForexSymbol : public CObject {
 public:
   CForexSymbol();
 
-  void Load(CSetForexSymbol& setForexSymbol);
-  void Append(CSetForexSymbol& setForexSymbol);
-  void Update(CSetForexSymbol& setForexSymbol);
-  void Save(CSetForexSymbol& setForexSymbol);
+  void Load(CSetFinnhubForexSymbol& setForexSymbol);
+  void Append(CSetFinnhubForexSymbol& setForexSymbol);
+  void Update(CSetFinnhubForexSymbol& setForexSymbol);
+  void Save(CSetFinnhubForexSymbol& setForexSymbol);
 
   bool SaveDayLine(void);
 

@@ -7,7 +7,7 @@
 #include"EPSSurprise.h"
 
 #include"SetAmericaMarketOption.h"
-#include"SetForexExchange.h"
+#include"SetFinnhubForexExchange.h"
 #include"SetAmericaStake.h"
 #include"SetAmericaChoicedStock.h"
 #include"SetCountry.h"
@@ -839,7 +839,7 @@ bool CAmericaMarket::TaskUpdateForexSymbolDB(void) {
 }
 
 bool CAmericaMarket::TaskUpdateForexExchangeDB(void) {
-  CSetForexExchange setForexExchange;
+  CSetFinnhubForexExchange setForexExchange;
 
   if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
     setForexExchange.Open();
@@ -1466,7 +1466,7 @@ bool CAmericaMarket::UpdateStakeDB(void) {
 bool CAmericaMarket::UpdateForexSymbolDB(void) {
   const long lTotalForexSymbol = m_vForexSymbol.size();
   CForexSymbolPtr pSymbol = nullptr;
-  CSetForexSymbol setForexSymbol;
+  CSetFinnhubForexSymbol setForexSymbol;
   bool fUpdateSymbol = false;
 
   if (m_lLastTotalForexSymbol < lTotalForexSymbol) {
@@ -1546,7 +1546,7 @@ bool CAmericaMarket::ReBuildPeer(void) {
 }
 
 bool CAmericaMarket::LoadForexExchange(void) {
-  CSetForexExchange setForexExchange;
+  CSetFinnhubForexExchange setForexExchange;
   int i = 0;
 
   setForexExchange.Open();
@@ -1562,7 +1562,7 @@ bool CAmericaMarket::LoadForexExchange(void) {
 }
 
 bool CAmericaMarket::LoadForexSymbol(void) {
-  CSetForexSymbol setForexSymbol;
+  CSetFinnhubForexSymbol setForexSymbol;
   CForexSymbolPtr pSymbol = nullptr;
   int i = 0;
 

@@ -1,4 +1,4 @@
-// SetForexSymbol.cpp : CSetForexSymbol 类的实现
+// SetFinnhubForexSymbol.cpp : CSetFinnhubForexSymbol 类的实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -6,11 +6,11 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetForexSymbol.h"
+#include "SetFinnhubForexSymbol.h"
 
-IMPLEMENT_DYNAMIC(CSetForexSymbol, CRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubForexSymbol, CRecordset)
 
-CSetForexSymbol::CSetForexSymbol(CDatabase* pdb)
+CSetFinnhubForexSymbol::CSetFinnhubForexSymbol(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Description = _T(" ");
   m_DisplaySymbol = _T(" ");
@@ -23,15 +23,15 @@ CSetForexSymbol::CSetForexSymbol(CDatabase* pdb)
   m_nFields = 8;
 }
 
-CString CSetForexSymbol::GetDefaultConnect() {
+CString CSetFinnhubForexSymbol::GetDefaultConnect() {
   return GetAmericaMarketSchemaConnect();
 }
 
-CString CSetForexSymbol::GetDefaultSQL() {
-  return _T("[forex_symbol]");
+CString CSetFinnhubForexSymbol::GetDefaultSQL() {
+  return _T("[finnhub_forex_symbol]");
 }
 
-void CSetForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
+void CSetFinnhubForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -49,11 +49,11 @@ void CSetForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
 // CSetAmericaStake 诊断
 
 #ifdef _DEBUG
-void CSetForexSymbol::AssertValid() const {
+void CSetFinnhubForexSymbol::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetForexSymbol::Dump(CDumpContext& dc) const {
+void CSetFinnhubForexSymbol::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

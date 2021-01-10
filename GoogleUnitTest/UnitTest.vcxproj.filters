@@ -566,12 +566,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -639,6 +633,12 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -916,12 +916,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexExchange.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -962,6 +956,12 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

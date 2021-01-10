@@ -64,17 +64,11 @@
     <Filter Include="头文件\America Market">
       <UniqueIdentifier>{85ee978d-cd8c-4997-9e78-b66061c85a83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\America Market\数据库">
-      <UniqueIdentifier>{6c99dadd-719f-4a11-ac93-1ceb6e62d26b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\America Market\实现">
       <UniqueIdentifier>{62262c0c-fefc-423b-8865-905bc6154cd9}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\America Market">
       <UniqueIdentifier>{23275e11-b50c-4b14-9534-fa11e3ab2c89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\America Market\数据库">
-      <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\America Market\实现">
       <UniqueIdentifier>{7f3fff23-b4a5-4f22-b8ae-548f9da2c5f5}</UniqueIdentifier>
@@ -102,6 +96,12 @@
     </Filter>
     <Filter Include="源文件\America Market\网络通信">
       <UniqueIdentifier>{7e6320d9-417b-45fd-aa3d-a30d5249b0d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\America Market\类型和数据库">
+      <UniqueIdentifier>{6c99dadd-719f-4a11-ac93-1ceb6e62d26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\America Market\类型和数据库">
+      <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -307,10 +307,10 @@
       <Filter>头文件\America Market</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="GlobeSymbolDef.h">
       <Filter>头文件</Filter>
@@ -318,17 +318,11 @@
     <ClInclude Include="source\AmericaMarket\ForexSymbol.h">
       <Filter>头文件\America Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetForexSymbol.h">
-      <Filter>头文件\America Market\数据库</Filter>
-    </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetForexExchange.h">
-      <Filter>头文件\America Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetForexDayLine.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetCountry.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\Country.h">
       <Filter>头文件\America Market</Filter>
@@ -337,13 +331,13 @@
       <Filter>头文件\America Market</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\EconomicCalendar.h">
       <Filter>头文件\America Market</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\EPSSurprise.h">
       <Filter>头文件\America Market</Filter>
@@ -364,10 +358,22 @@
       <Filter>头文件\America Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetAmericaChoicedStock.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\SetAmericaMarketOption.h">
-      <Filter>头文件\America Market\数据库</Filter>
+      <Filter>头文件\America Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetFinnhubForexExchange.h">
+      <Filter>头文件\America Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetTiingoStockFundanmental.h">
+      <Filter>头文件\America Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\TiingoStockFundanmental.h">
+      <Filter>头文件\America Market\类型和数据库</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\SetFinnhubForexSymbol.h">
+      <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -621,7 +627,7 @@
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\AmericaStake.cpp">
       <Filter>源文件\America Market</Filter>
@@ -630,31 +636,25 @@
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetForexSymbol.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ForexSymbol.cpp">
       <Filter>源文件\America Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetForexExchange.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetForexDayLine.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\Country.cpp">
       <Filter>源文件\America Market</Filter>
@@ -666,13 +666,13 @@
       <Filter>源文件\America Market</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp">
       <Filter>源文件\America Market</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp">
       <Filter>源文件\America Market</Filter>
@@ -705,13 +705,25 @@
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetAmericaChoicedStock.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
       <Filter>源文件\America Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\SetAmericaMarketOption.cpp">
-      <Filter>源文件\America Market\数据库</Filter>
+      <Filter>源文件\America Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetFinnhubForexExchange.cpp">
+      <Filter>源文件\America Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetTiingoStockFundanmental.cpp">
+      <Filter>源文件\America Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\TiingoStockFundanmental.cpp">
+      <Filter>源文件\America Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\SetFinnhubForexSymbol.cpp">
+      <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
