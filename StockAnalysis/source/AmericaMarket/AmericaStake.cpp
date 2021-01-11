@@ -461,11 +461,13 @@ CString CAmericaStake::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
   CString strTemp;
   char buffer[50];
   time_t tStartTime = 0;
+  long lStartDate = 0;
 
   strMiddle += m_strSymbol;
   strMiddle += _T("&resolution=D");
   strMiddle += _T("&from=");
-  tStartTime = FormatToTTime(m_lDayLineEndDate);
+  lStartDate = gl_pAmericaMarket->GetNextDay(m_lDayLineEndDate);
+  tStartTime = FormatToTTime(lStartDate);
   if (tStartTime < (tCurrentTime - (time_t)(365) * 24 * 3600)) {// 免费账户只能读取一年以内的日线数据。
     tStartTime = (tCurrentTime - (time_t)(365) * 24 * 3600);
   }
@@ -489,7 +491,7 @@ CString CAmericaStake::GetTiingoDayLineInquiryString(long lCurrentDate) {
   long date = lCurrentDate - year * 10000 - month * 100;
 
   strMiddle += m_strSymbol;
-  strMiddle += _T("/prices?&startDate=1980-1-1&endDate=");
+  strMiddle += _T("/prices?&startDate=1950-1-1&endDate=");
   sprintf_s(buffer, _T("%4d-%2d-%2d"), year, month, date);
   strTemp = buffer;
   strMiddle += strTemp;
