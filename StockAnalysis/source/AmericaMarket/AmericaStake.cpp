@@ -45,6 +45,7 @@ void CAmericaStake::Reset(void) {
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
   m_lLastRTDataUpdateDate = 19800101;
+  m_lPeerUpdateDate = 19800101;
   m_lLastEPSSurpriseUpdateDate = 19800101;
   m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
@@ -130,9 +131,9 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_lDayLineStartDate = setAmericaStake.m_DayLineStartDate;
   m_lDayLineEndDate = setAmericaStake.m_DayLineEndDate;
   m_lLastRTDataUpdateDate = setAmericaStake.m_LastRTDataUpdateDate;
+  m_lPeerUpdateDate = setAmericaStake.m_PeerUpdateDate;
   m_lLastEPSSurpriseUpdateDate = setAmericaStake.m_LastEPSSurpriseUpdateDate;
   m_lIPOStatus = setAmericaStake.m_IPOStatus;
-  if (m_strPeer.GetLength() < 4) m_fFinnhubPeerUpdated = false;
 
   // Tiingo信息
   m_strTiingoPermaTicker = setAmericaStake.m_TiingoPermaTicker;
@@ -158,24 +159,31 @@ bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDat
     SetDayLineNeedUpdate(false);
   }
   else if (IsDelisted()) { // 摘牌股票?
-    if (gl_pAmericaMarket->GetDayOfWeek() != 6) { // 每星期六检查一次
+    if (lDayOfWeek != 6) { // 每星期六检查一次
       SetDayLineNeedUpdate(false);
     }
   }
-  else if ((m_lDayLineEndDate != 19800101) && (gl_pAmericaMarket->IsEarlyThen(m_lDayLineEndDate, gl_pAmericaMarket->GetFormatedMarketDate(), 100))) {
+  else if ((!IsNotChecked()) && (gl_pAmericaMarket->IsEarlyThen(m_lDayLineEndDate, gl_pAmericaMarket->GetFormatedMarketDate(), 100))) {
     SetDayLineNeedUpdate(false);
   }
-  else if (lTime > 170000) {
-    if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
-      SetDayLineNeedUpdate(false); // 日线数据不需要更新
-    }
-  }
   else {
-    if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+    if ((lDayOfWeek > 0) && (lDayOfWeek < 6)) {
+      if (lTime > 170000) {
+        if (lTodayDate <= GetDayLineEndDate()) { // 最新日线数据为今日的数据，而当前时间为下午五时之后
+          SetDayLineNeedUpdate(false); // 日线数据不需要更新
+        }
+      }
+      else {
+        if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
+          SetDayLineNeedUpdate(false); // 日线数据不需要更新
+        }
+      }
+    }
+    else if (lLastTradeDate <= GetDayLineEndDate()) { // 最新日线数据为上一个交易日的数据,而当前时间为下午五时之前。
       SetDayLineNeedUpdate(false); // 日线数据不需要更新
     }
   }
-  return true;
+  return m_fDayLineNeedUpdate;
 }
 
 void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
@@ -256,6 +264,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_ProfileUpdateDate = m_lProfileUpdateDate;
   setAmericaStake.m_DayLineStartDate = m_lDayLineStartDate;
   setAmericaStake.m_DayLineEndDate = m_lDayLineEndDate;
+  setAmericaStake.m_PeerUpdateDate = m_lPeerUpdateDate;
   setAmericaStake.m_LastRTDataUpdateDate = m_lLastRTDataUpdateDate;
   setAmericaStake.m_LastEPSSurpriseUpdateDate = m_lLastEPSSurpriseUpdateDate;
   setAmericaStake.m_IPOStatus = m_lIPOStatus;
@@ -435,6 +444,16 @@ bool CAmericaStake::CheckEPSSurpriseStatus(long lCurrentDate) {
 bool CAmericaStake::IsEPSSurpriseNeedSaveAndClearFlag(void) {
   const bool fNeedSave = m_fEPSSurpriseNeedSave.exchange(false);
   return fNeedSave;
+}
+
+bool CAmericaStake::CheckPeerStatus(long lCurrentDate) {
+  if (IsNullStock() || IsDelisted()) {
+    m_fFinnhubPeerUpdated = true;
+  }
+  else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, 90)) { // 有不早于45天的数据？
+    m_fFinnhubPeerUpdated = true;
+  }
+  return m_fFinnhubPeerUpdated;
 }
 
 CString CAmericaStake::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {

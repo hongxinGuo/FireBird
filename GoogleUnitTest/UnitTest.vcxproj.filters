@@ -560,13 +560,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetCountry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp">
@@ -639,6 +633,18 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="AmericaMarketTest.cpp">
+      <Filter>Test源文件\America Market</Filter>
+    </ClCompile>
+    <ClCompile Include="AmericaStakeTest.cpp">
+      <Filter>Test源文件\America Market</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -910,13 +916,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ForexSymbol.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexSymbol.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket.h">
@@ -962,6 +962,12 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetForexDayLine.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

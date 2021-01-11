@@ -34,6 +34,8 @@ public:
   void SetDayLineEndDate(long lDate) noexcept { m_lDayLineEndDate = lDate; }
   long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
+  long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
+  void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
   void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
   void UpdateDayLineStartEndDate(void);
   long GetDayLineSize(void) noexcept { return m_vDayLine.size(); }
@@ -60,6 +62,8 @@ public:
   bool IsEPSSurpriseNeedSave(void) noexcept { return m_fEPSSurpriseNeedSave; }
   void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
   bool IsEPSSurpriseNeedSaveAndClearFlag(void);
+
+  bool CheckPeerStatus(long lCurrentDate);
 
   CString GetSymbol(void) { return m_strSymbol; }
   CString GetTicker(void) { return m_strTicker; }
@@ -140,6 +144,7 @@ public:
   long m_lDayLineStartDate;
   long m_lDayLineEndDate;
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
+  long m_lPeerUpdateDate; // 最新实时数据更新日期
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
   long m_lIPOStatus;
 

@@ -1,8 +1,8 @@
 #include"globedef.h"
 
-#include "ForexSymbol.h"
+#include "FinnhubForexSymbol.h"
 
-CForexSymbol::CForexSymbol() : CObject() {
+CFinnhubForexSymbol::CFinnhubForexSymbol() : CObject() {
   m_strDescription = _T(" ");
   m_strDisplaySymbol = _T(" ");
   m_strExchange = _T(" ");
@@ -14,7 +14,7 @@ CForexSymbol::CForexSymbol() : CObject() {
   m_fDayLineNeedUpdate = true;
 }
 
-void CForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
+void CFinnhubForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
   m_strDescription = setForexSymbol.m_Description;
   m_strDisplaySymbol = setForexSymbol.m_DisplaySymbol;
   m_strExchange = setForexSymbol.m_Exchange;
@@ -24,19 +24,19 @@ void CForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
   m_lIPOStatus = setForexSymbol.m_IPOStatus;
 }
 
-void CForexSymbol::Append(CSetFinnhubForexSymbol& setForexSymbol) {
+void CFinnhubForexSymbol::Append(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.AddNew();
   Save(setForexSymbol);
   setForexSymbol.Update();
 }
 
-void CForexSymbol::Update(CSetFinnhubForexSymbol& setForexSymbol) {
+void CFinnhubForexSymbol::Update(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.Edit();
   Save(setForexSymbol);
   setForexSymbol.Update();
 }
 
-void CForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
+void CFinnhubForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.m_Description = m_strDescription;
   setForexSymbol.m_DisplaySymbol = m_strDisplaySymbol;
   setForexSymbol.m_Exchange = m_strExchange;
@@ -46,7 +46,7 @@ void CForexSymbol::Save(CSetFinnhubForexSymbol& setForexSymbol) {
   setForexSymbol.m_IPOStatus = m_lIPOStatus;
 }
 
-bool CForexSymbol::SaveDayLine() {
+bool CFinnhubForexSymbol::SaveDayLine() {
   CSetForexDayLine setForexDayLine;
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
@@ -100,7 +100,7 @@ bool CForexSymbol::SaveDayLine() {
   return fNeedUpdate;
 }
 
-void CForexSymbol::SetCheckingDayLineStatus(void) {
+void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
   ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   if (m_lIPOStatus == __STAKE_NULL__) {
     SetDayLineNeedUpdate(false);
@@ -111,7 +111,7 @@ void CForexSymbol::SetCheckingDayLineStatus(void) {
   }
 }
 
-CString CForexSymbol::GetDayLineInquiryString(time_t tCurrentTime) {
+CString CFinnhubForexSymbol::GetDayLineInquiryString(time_t tCurrentTime) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
   char buffer[50];
@@ -135,14 +135,14 @@ CString CForexSymbol::GetDayLineInquiryString(time_t tCurrentTime) {
   return strMiddle;
 }
 
-void CForexSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
+void CFinnhubForexSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
   m_vDayLine.resize(0);
   for (auto& pDayLine : vDayLine) {
     m_vDayLine.push_back(pDayLine);
   }
 }
 
-void CForexSymbol::UpdateDayLineStartEndDate(void) {
+void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
   if (m_vDayLine.size() == 0) {
     SetDayLineStartDate(29900101);
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
@@ -159,11 +159,11 @@ void CForexSymbol::UpdateDayLineStartEndDate(void) {
   }
 }
 
-bool CForexSymbol::IsDayLineNeedSavingAndClearFlag(void) {
+bool CFinnhubForexSymbol::IsDayLineNeedSavingAndClearFlag(void) {
   const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
   return fNeedSaveing;
 }
-bool CForexSymbol::HaveNewDayLineData(void) {
+bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;

@@ -349,13 +349,13 @@ bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
 }
 
 bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
-  CForexSymbolPtr pSymbol = make_shared<CForexSymbol>();
+  CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
   ptree pt, pt2;
   string s;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pSymbol = make_shared<CForexSymbol>();
+    pSymbol = make_shared<CFinnhubForexSymbol>();
     pt2 = it->second;
     s = pt2.get<string>(_T("description"));
     if (s.size() > 0) pSymbol->m_strDescription = s.c_str();

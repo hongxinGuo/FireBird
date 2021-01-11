@@ -6,7 +6,7 @@
 #include"VirtualMarket.h"
 #include"AmericaStake.h"
 #include"WebData.h"
-#include"ForexSymbol.h"
+#include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
 
@@ -165,7 +165,7 @@ public:
   virtual bool RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
-  virtual bool RunningThreadUpdateForexDayLineDB(CForexSymbol* pSymbol);
+  virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStock);
@@ -201,6 +201,7 @@ public:
   bool LoadAmericaStake(void);
   bool LoadAmericaChoicedStock(void);
   bool UpdateCountryListDB(void);
+  bool DeleteStakeDB(void);
   bool UpdateStakeDB(void);
   bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);

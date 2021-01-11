@@ -9,9 +9,9 @@ using namespace std;
 #include<atomic>
 #include<vector>
 
-class CForexSymbol : public CObject {
+class CFinnhubForexSymbol : public CObject {
 public:
-  CForexSymbol();
+  CFinnhubForexSymbol();
 
   void Load(CSetFinnhubForexSymbol& setForexSymbol);
   void Append(CSetFinnhubForexSymbol& setForexSymbol);
@@ -67,4 +67,4 @@ public:
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 };
 
-typedef shared_ptr<CForexSymbol> CForexSymbolPtr;
+typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;

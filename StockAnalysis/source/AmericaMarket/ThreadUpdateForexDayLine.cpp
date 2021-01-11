@@ -11,9 +11,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-#include"ForexSymbol.h"
+#include"FinnhubForexSymbol.h"
 
-UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbol*> pSymbol) {
+UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
   CString str;
   gl_ThreadStatus.IncreaseRunningThread();
 

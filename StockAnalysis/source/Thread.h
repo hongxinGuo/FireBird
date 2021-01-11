@@ -104,7 +104,7 @@ UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖ
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì
 UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
 // ¸üĞÂForexÈÕÏßÊı¾İ
-UINT ThreadUpdateForexDayLineDB(not_null<CForexSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
+UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
 // ¸üĞÂForex´úÂë±í
 UINT ThreadUpdateForexSymbolDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
 // ¸üĞÂCountryList´úÂë±í

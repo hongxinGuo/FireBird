@@ -2,7 +2,7 @@
 
 #include"WebData.h"
 #include"AmericaStake.h"
-#include"ForexSymbol.h"
+#include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EPSSurprise.h"
 
