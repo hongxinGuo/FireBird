@@ -1,4 +1,4 @@
-// CSetFinnhubExchanges.h : CSetFinnhubExchanges 的声明
+// CSetFinnhubExchange.h : CSetFinnhubExchange 的声明
 
 #pragma once
 
@@ -6,11 +6,11 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-class CSetFinnhubExchanges : public CRecordset
+class CSetFinnhubExchange : public CRecordset
 {
 public:
-  CSetFinnhubExchanges(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetFinnhubExchanges)
+  CSetFinnhubExchange(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetFinnhubExchange)
 
   // 字段/参数数据
 

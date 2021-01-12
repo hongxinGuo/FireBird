@@ -2,18 +2,18 @@
 
 #include"stdafx.h"
 
-#include"SetFinnhubExchanges.h"
+#include"SetFinnhubExchange.h"
 
 using namespace std;
 #include<memory>
 
-class CFinnhubExchanges : public CObject {
+class CFinnhubExchange : public CObject {
 public:
-  CFinnhubExchanges();
+  CFinnhubExchange();
 
-  void Append(CSetFinnhubExchanges& setFinnhubExchanges);
+  void Append(CSetFinnhubExchange& setFinnhubExchange);
 
-  void Load(CSetFinnhubExchanges& setFinnhubExchanges);
+  void Load(CSetFinnhubExchange& setFinnhubExchange);
 
 public:
   CString m_strCode;
@@ -26,4 +26,4 @@ public:
   CString m_strSource;
 };
 
-typedef shared_ptr<CFinnhubExchanges> CFinnhubExchangesPtr;
+typedef shared_ptr<CFinnhubExchange> CFinnhubExchangePtr;

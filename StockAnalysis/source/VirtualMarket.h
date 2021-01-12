@@ -18,6 +18,7 @@ public:
 public:
   virtual bool SchedulingTask(void); // 由程序的定时器调度，大约每100毫秒一次
   virtual void ResetMarket(void);
+  virtual void UpdateMarketInfo(void); // 更新本市场信息（从FinnhubExchange中）。
 
   bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
   bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
@@ -69,6 +70,17 @@ public:
   void __TEST_SetFormatedMarketTime(long lTime) noexcept { m_lMarketTime = lTime; }// 此函数只用于测试
   void __TEST_SetMarketTM(tm tm_) noexcept { m_tmMarket = tm_; }
   void __TEST_SetFormatedMarketDate(long lDate) noexcept { m_lMarketDate = lDate; }
+
+public:
+  // Finnhub.io提供的信息
+  CString m_strCode;
+  CString m_strName;
+  CString m_strMic;
+  CString m_strTimeZone;
+  CString m_strHour;
+  CString m_strCloseDate;
+  CString m_strCountry;
+  CString m_strSource;
 
 protected:
   long m_lMarketTimeZone; // 该市场的时区与GMT之差（以秒计，负值处于东十二区（超前），正值处于西十二区（滞后））。

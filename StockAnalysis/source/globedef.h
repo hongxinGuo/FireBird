@@ -34,10 +34,13 @@ enum {
 #include"PriorityQueueWebRTData.h"
 #include"ThreadStatus.h"
 
+//#include"FinnhubExchange.h"
+
 using namespace std;
 #include<deque>
 #include<atomic>
 #include<vector>
+#include<map>
 
 extern CSystemMessage gl_systemMessage; // 系统消息汇总类。此变量必须放在第一位，其他全局变量初始化时用到此变量。
 
@@ -51,6 +54,9 @@ extern bool gl_fExitingCalculatingRS; // 用于通知工作线程退出的信号
 
 extern bool gl_fNormalMode; // 正常模式标识，默认为假。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 extern bool gl_fTestMode; // 是否设置了gl_fTestMode标识，默认为真。系统在启动时需要设置此标识为假。（用于判断是否在实际系统中使用了MySQLTest驱动）。
+
+extern vector<CFinnhubExchangePtr> gl_vFinnhubExchange; // 世界各交易所信息。Finnhub提供
+extern map<CString, long> gl_mapFinnhubExchange;
 
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 

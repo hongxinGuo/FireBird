@@ -1,11 +1,9 @@
 #include"globedef.h"
 
 UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket) {
-  gl_SaveAmericaStockDayLine.Wait();
-  gl_SaveEPSSurprise.Wait();
+  gl_UpdateAmericaMarketDB.Wait();
   pMarket->UpdateStakeDB();
-  gl_SaveEPSSurprise.Signal();
-  gl_SaveAmericaStockDayLine.Signal();
+  gl_UpdateAmericaMarketDB.Signal();
 
   return 37;
 }

@@ -1,4 +1,4 @@
-// CSetFinnhubExchanges.cpp : CSetFinnhubExchanges 类的实现
+// CSetFinnhubExchange.cpp : CSetFinnhubExchange 类的实现
 
 // CSetAmericaStakeDayLine 实现
 
@@ -9,11 +9,11 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetFinnhubExchanges.h"
+#include "SetFinnhubExchange.h"
 
-IMPLEMENT_DYNAMIC(CSetFinnhubExchanges, CRecordset)
+IMPLEMENT_DYNAMIC(CSetFinnhubExchange, CRecordset)
 
-CSetFinnhubExchanges::CSetFinnhubExchanges(CDatabase* pdb)
+CSetFinnhubExchange::CSetFinnhubExchange(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Code = _T("");
@@ -27,15 +27,15 @@ CSetFinnhubExchanges::CSetFinnhubExchanges(CDatabase* pdb)
   m_nFields = 9;
 }
 
-CString CSetFinnhubExchanges::GetDefaultConnect() {
+CString CSetFinnhubExchange::GetDefaultConnect() {
   return GetAmericaMarketSchemaConnect();
 }
 
-CString CSetFinnhubExchanges::GetDefaultSQL() {
-  return _T("[forex_dayline]");
+CString CSetFinnhubExchange::GetDefaultSQL() {
+  return _T("[finnhub_exchange]");
 }
 
-void CSetFinnhubExchanges::DoFieldExchange(CFieldExchange* pFX) {
+void CSetFinnhubExchange::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -54,11 +54,11 @@ void CSetFinnhubExchanges::DoFieldExchange(CFieldExchange* pFX) {
 // CSetAmericaForexDayLine 诊断
 
 #ifdef _DEBUG
-void CSetFinnhubExchanges::AssertValid() const {
+void CSetFinnhubExchange::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetFinnhubExchanges::Dump(CDumpContext& dc) const {
+void CSetFinnhubExchange::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

@@ -104,4 +104,55 @@ namespace StockAnalysisTest {
       EXPECT_TRUE(stake.CheckDayLineUpdateStatus(20210108, 20210107, 170000, i)) << "时间不晚于17时，检查上一交易日日线";
     }
   }
+
+  TEST_F(CAmericaStockTest, TestSaveDayLine) {
+    CAmericaStake stake;
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+    CSetAmericaStakeDayLine setDayLine;
+
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetDate(20200101); // 这个需要添加进数据库
+    pDayLine->SetClose(10010);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetDate(20210101); // 这个需要添加进数据库
+    pDayLine->SetClose(12345);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
+    pDayLine->SetClose(10020);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetDate(20210108); // 这个需要添加进数据库
+    pDayLine->SetClose(10030);
+    vDayLine.push_back(pDayLine);
+
+    stake.m_strSymbol = _T("A");
+    stake.m_lDayLineEndDate = 20210107;
+    stake.UpdateDayLine(vDayLine);
+
+    stake.SaveDayLine();
+
+    setDayLine.m_strFilter = _T("[Symbol] = 'A'");
+    setDayLine.m_strSort = _T("[Date]");
+    setDayLine.Open();
+    setDayLine.m_pDatabase->BeginTrans();
+    EXPECT_TRUE(setDayLine.m_Date == 20200101);
+    EXPECT_STREQ(setDayLine.m_Close, _T("10.010"));
+    setDayLine.Delete();
+    while (setDayLine.m_Date != 20210101) setDayLine.MoveNext();
+    EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
+    setDayLine.Delete();
+    setDayLine.MoveLast();
+    EXPECT_TRUE(setDayLine.m_Date = 20210108);
+    EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
+    setDayLine.Delete();
+    setDayLine.m_pDatabase->CommitTrans();
+    setDayLine.Close();
+  }
 }

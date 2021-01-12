@@ -352,7 +352,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -405,7 +405,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -458,7 +458,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnablePREfast>false</EnablePREfast>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -589,7 +589,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
@@ -627,7 +627,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
@@ -665,7 +665,7 @@
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Column</DiagnosticsFormat>
@@ -705,7 +705,7 @@
     <ClInclude Include="source\AmericaMarket\Country.h" />
     <ClInclude Include="source\AmericaMarket\EconomicCalendar.h" />
     <ClInclude Include="source\AmericaMarket\EPSSurprise.h" />
-    <ClInclude Include="source\AmericaMarket\FinnhubExchanges.h" />
+    <ClInclude Include="source\AmericaMarket\FinnhubExchange.h" />
     <ClInclude Include="source\AmericaMarket\FinnhubForexSymbol.h" />
     <ClInclude Include="source\AmericaMarket\ProcessFinnhubWebData.h" />
     <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h" />
@@ -715,7 +715,7 @@
     <ClInclude Include="source\AmericaMarket\SetCountry.h" />
     <ClInclude Include="source\AmericaMarket\SetEconomicCalendar.h" />
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h" />
-    <ClInclude Include="source\AmericaMarket\SetFinnhubExchanges.h" />
+    <ClInclude Include="source\AmericaMarket\SetFinnhubExchange.h" />
     <ClInclude Include="source\AmericaMarket\SetForexDayLine.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStake.h" />
     <ClInclude Include="source\AmericaMarket\SetAmericaStakeDayLine.h" />
@@ -797,7 +797,7 @@
     <ClCompile Include="source\AmericaMarket\Country.cpp" />
     <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp" />
     <ClCompile Include="source\AmericaMarket\EPSSurprise.cpp" />
-    <ClCompile Include="source\AmericaMarket\FinnhubExchanges.cpp" />
+    <ClCompile Include="source\AmericaMarket\FinnhubExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\FinnhubForexSymbol.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="source\AmericaMarket\ProcessTiingoWebData.cpp" />
@@ -807,7 +807,7 @@
     <ClCompile Include="source\AmericaMarket\SetCountry.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEconimicCalendar.cpp" />
     <ClCompile Include="source\AmericaMarket\SetEPSSurprise.cpp" />
-    <ClCompile Include="source\AmericaMarket\SetFinnhubExchanges.cpp" />
+    <ClCompile Include="source\AmericaMarket\SetFinnhubExchange.cpp" />
     <ClCompile Include="source\AmericaMarket\SetForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStake.cpp" />
     <ClCompile Include="source\AmericaMarket\SetAmericaStakeDayLine.cpp" />

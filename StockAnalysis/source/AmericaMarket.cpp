@@ -14,9 +14,7 @@
 #include"SetEconomicCalendar.h"
 #include"SetEPSSurprise.h"
 
-Semaphore gl_SaveAmericaStockDayLine(1);  // 此信号量用于生成美国股票日线历史数据库
-Semaphore gl_SaveEPSSurprise(1);  // 此信号量用于更新EPSSurprise数据
-Semaphore gl_SaveForexDayLine(1);  // 此信号量用于生成Forex日线历史数据库
+Semaphore gl_UpdateAmericaMarketDB(1);  // 此信号量用于生成美国股票日线历史数据库
 
 CAmericaMarket::CAmericaMarket() {
   static int siInstance = 0;
@@ -30,7 +28,7 @@ CAmericaMarket::CAmericaMarket() {
   m_lCurrentUpdatePeerPos = 0;
   m_lCurrentUpdateEPSSurprisePos = 0;
 
-  m_strMarketId = _T("Finnhub美股信息");
+  m_strMarketId = _T("美国市场");
   m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
   CalculateTime();
 

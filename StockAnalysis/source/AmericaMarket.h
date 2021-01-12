@@ -6,6 +6,7 @@
 #include"VirtualMarket.h"
 #include"AmericaStake.h"
 #include"WebData.h"
+#include"FinnhubExchange.h"
 #include"FinnhubForexSymbol.h"
 #include"Country.h"
 #include"EconomicCalendar.h"
@@ -96,9 +97,7 @@ public:
   }
 };
 
-extern Semaphore gl_SaveAmericaStockDayLine;  // 此信号量用于生成日线历史数据库
-extern Semaphore gl_SaveEPSSurprise;  // 此信号量用于生成日线历史数据库
-extern Semaphore gl_SaveForexDayLine;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_UpdateAmericaMarketDB;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
 #include<map>

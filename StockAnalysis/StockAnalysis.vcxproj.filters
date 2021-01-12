@@ -375,10 +375,10 @@
     <ClInclude Include="source\AmericaMarket\EconomicCalendar.h">
       <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\SetFinnhubExchanges.h">
+    <ClInclude Include="source\AmericaMarket\FinnhubExchange.h">
       <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\FinnhubExchanges.h">
+    <ClInclude Include="source\AmericaMarket\SetFinnhubExchange.h">
       <Filter>头文件\America Market\类型和数据库</Filter>
     </ClInclude>
   </ItemGroup>
@@ -731,10 +731,10 @@
     <ClCompile Include="source\AmericaMarket\EconomicCalendar.cpp">
       <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\SetFinnhubExchanges.cpp">
+    <ClCompile Include="source\AmericaMarket\FinnhubExchange.cpp">
       <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\FinnhubExchanges.cpp">
+    <ClCompile Include="source\AmericaMarket\SetFinnhubExchange.cpp">
       <Filter>源文件\America Market\类型和数据库</Filter>
     </ClCompile>
   </ItemGroup>

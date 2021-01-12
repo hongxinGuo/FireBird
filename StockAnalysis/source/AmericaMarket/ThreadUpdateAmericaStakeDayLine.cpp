@@ -19,7 +19,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket) {
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_SaveAmericaStockDayLine.Wait();
+  gl_UpdateAmericaMarketDB.Wait();
   for (long i = 0; i < pMarket->GetTotalStock(); i++) {
     pStock = pMarket->GetStock(i);
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -39,7 +39,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket) {
       break; // 如果程序正在退出，则停止存储。
     }
   }
-  gl_SaveAmericaStockDayLine.Signal();
+  gl_UpdateAmericaMarketDB.Signal();
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_ThreadStatus.DecreaseRunningThread();
 

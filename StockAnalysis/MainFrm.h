@@ -24,6 +24,7 @@ public:
 
   // 操作
 public:
+  bool LoadWorldExchangeDB(void); // 装入世界交易所信息
   bool SchedulingTask(void);
   void UpdateStatus(void);
   void UpdateInnerSystemStatus(void);
@@ -132,10 +133,8 @@ public:
   afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
   afx_msg void OnUpdateStakeSection();
   afx_msg void OnUpdateStakeCode();
-//  afx_msg void OnAmericaMarketRebuldayLine();
   afx_msg void OnRebuildEpsSurprise();
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();
   afx_msg void OnUpdateAmericaStakeDaylineStartEnd();
-//  afx_msg void OnRebuildChinamarketDayline();
 };
