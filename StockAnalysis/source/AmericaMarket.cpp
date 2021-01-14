@@ -22,10 +22,8 @@ CAmericaMarket::CAmericaMarket() {
     TRACE("CAmericaMarket市场变量只允许存在一个实例\n");
   }
 
-  // 不参与每日重置状态的变量，程序启动时需要预设状态
+  // 无需每日更新的变量放在这里
   m_fFinnhubEPSSurpriseUpdated = true;
-  m_fFinnhubPeerUpdated = true;
-  m_lCurrentUpdatePeerPos = 0;
   m_lCurrentUpdateEPSSurprisePos = 0;
 
   m_strMarketId = _T("美国市场");
@@ -117,6 +115,9 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_mapEconomicCalendar.clear();
   m_fFinnhubEconomicCalendarUpdated = false;
 
+  m_fFinnhubPeerUpdated = false;
+  m_lCurrentUpdatePeerPos = 0;
+
   m_fFinnhubInquiring = false;
   m_fFinnhubDataReceived = true;
 
@@ -131,10 +132,8 @@ void CAmericaMarket::ResetFinnhub(void) {
   m_lLastTotalEconomicCalendar = 0;
 
   if (GetDayOfWeek() == 6) { // 每周的星期六更新一次Peer和EPSSurprise
-    m_lCurrentUpdatePeerPos = 0;
     m_lCurrentUpdateEPSSurprisePos = 0;
     m_fFinnhubEPSSurpriseUpdated = false;
-    m_fFinnhubPeerUpdated = false;
   }
 }
 
@@ -1390,6 +1389,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   }
   setAmericaStake.Close();
   m_lLastTotalAmericaStake = m_vAmericaStake.size();
+  TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalAmericaStake);
   return true;
 }
 

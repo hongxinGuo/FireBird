@@ -435,7 +435,10 @@ bool CAmericaStake::CheckEPSSurpriseStatus(long lCurrentDate) {
   else if (m_lLastEPSSurpriseUpdateDate == 19700101) { // 没有数据？
     m_fEPSSurpriseNeedUpdate = false;
   }
-  else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 45)) { // 有不早于45天的数据？
+  else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 135)) { // 有不早于135天的数据？
+    m_fEPSSurpriseNeedUpdate = false;
+  }
+  else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (m_lLastEPSSurpriseUpdateDate != 19800101)) { // 有早于225天的数据？
     m_fEPSSurpriseNeedUpdate = false;
   }
   return m_fEPSSurpriseNeedUpdate;

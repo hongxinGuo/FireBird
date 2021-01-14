@@ -150,23 +150,28 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pStake = make_shared<CAmericaStake>();
-    pt2 = it->second;
-    s = pt2.get<string>(_T("description"));
-    if (s.size() > 0) pStake->m_strDescription = s.c_str();
-    s = pt2.get<string>(_T("displaySymbol"));
-    pStake->m_strDisplaySymbol = s.c_str();
-    s = pt2.get<string>(_T("symbol"));
-    pStake->m_strSymbol = s.c_str();
-    s = pt2.get<string>(_T("type"));
-    if (s.size() > 0) pStake->m_strType = s.c_str();
-    s = pt2.get<string>(_T("mic"));
-    if (s.size() > 0) pStake->m_strMic = s.c_str();
-    s = pt2.get<string>(_T("figi"));
-    if (s.size() > 0) pStake->m_strFigi = s.c_str();
-    s = pt2.get<string>(_T("currency"));
-    if (s.size() > 0) pStake->m_strCurrency = s.c_str();
-    vStake.push_back(pStake);
-    iCount++;
+    try {
+      pt2 = it->second;
+      s = pt2.get<string>(_T("currency"));
+      if (s.size() > 0) pStake->m_strCurrency = s.c_str();
+      s = pt2.get<string>(_T("description"));
+      if (s.size() > 0) pStake->m_strDescription = s.c_str();
+      s = pt2.get<string>(_T("displaySymbol"));
+      pStake->m_strDisplaySymbol = s.c_str();
+      s = pt2.get<string>(_T("figi"));
+      if (s.size() > 0) pStake->m_strFigi = s.c_str();
+      s = pt2.get<string>(_T("mic"));
+      if (s.size() > 0) pStake->m_strMic = s.c_str();
+      s = pt2.get<string>(_T("symbol"));
+      pStake->m_strSymbol = s.c_str();
+      s = pt2.get<string>(_T("type"));
+      if (s.size() > 0) pStake->m_strType = s.c_str();
+      vStake.push_back(pStake);
+      iCount++;
+    }
+    catch (ptree_error&) {
+      TRACE("下载Finnhub Symbol有误\n");
+    }
   }
   TRACE("今日Finnhub Company Symbol总数为%d\n", iCount);
   sprintf_s(buffer, _T("%6d"), iCount);
