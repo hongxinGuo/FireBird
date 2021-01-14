@@ -230,7 +230,7 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
       m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryAmericaStake = false;
       break;
       case  __COMPANY_SYMBOLS__:
-      // do nothing
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 清除中间字符串内容
       break;
       case __COMPANY_EXECTIVE__: // Premium
       break;
@@ -494,6 +494,9 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       default:
       break;
       }
+      gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(_T(""));
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T(""));
+      gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
       m_fFinnhubInquiring = false;
     }
   }
@@ -765,10 +768,11 @@ bool CAmericaMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
 ///
 bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
   // 市场时间十七时重启系统
-  if (IsSystemReady() && IsPermitResetMarket()) { // 如果允许重置系统
-    if ((lCurrentTime > 170000) && (lCurrentTime <= 170100)) { // 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
+  if (IsPermitResetMarket()) { // 如果允许重置系统
+    if ((lCurrentTime > 175000) && (lCurrentTime <= 175100)) { // 本市场时间的下午五时(北京时间上午五时重启本市场。这样有利于接收日线数据。
       SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
       SetPermitResetMarket(false); // 今天不再允许重启系统。
+      SetSystemReady(false);
     }
   }
   return true;
@@ -780,10 +784,10 @@ bool CAmericaMarket::TaskResetMarket(long lCurrentTime) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
-  if (((lCurrentTime < 165700) || (lCurrentTime > 170300))) { // 下午五时重启系统，故而此时不允许接收网络信息。
-    TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
+  if (((lCurrentTime < 174700) || (lCurrentTime > 175100))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubForexExchange();
+    TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
     TaskInquiryFinnhubForexSymbol();
     //TaskInquiryFinnhubEconomicCalender();
 
