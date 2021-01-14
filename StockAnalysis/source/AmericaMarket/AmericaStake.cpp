@@ -305,60 +305,48 @@ void CAmericaStake::SaveDayLine(void) {
 
   ASSERT(m_vDayLine.size() > 0);
 
-  if (m_vDayLine.at(0)->GetFormatedMarketDate() > m_lDayLineEndDate) { // 只是添加新的数据
-    setSaveAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
-    setSaveAmericaStakeDayLine.Open();
-    setSaveAmericaStakeDayLine.m_pDatabase->BeginTrans();
-    for (auto& pDayLine2 : m_vDayLine) {
-      pDayLine2->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
-    }
-    setSaveAmericaStakeDayLine.m_pDatabase->CommitTrans();
-    setSaveAmericaStakeDayLine.Close();
+  setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
+  setAmericaStakeDayLine.m_strFilter += m_strSymbol + _T("'");
+  setAmericaStakeDayLine.m_strSort = _T("[Date]");
+
+  setAmericaStakeDayLine.Open();
+  while (!setAmericaStakeDayLine.IsEOF()) {
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->LoadAmericaMarketData(&setAmericaStakeDayLine);
+    vDayLine.push_back(pDayLine);
+    lSizeOfOldDayLine++;
+    setAmericaStakeDayLine.MoveNext();
   }
-  else { // 需要与之前的数据做对比
-    setAmericaStakeDayLine.m_strFilter = _T("[Symbol] = '");
-    setAmericaStakeDayLine.m_strFilter += m_strSymbol + _T("'");
-    setAmericaStakeDayLine.m_strSort = _T("[Date]");
-
-    setAmericaStakeDayLine.Open();
-    while (!setAmericaStakeDayLine.IsEOF()) {
-      pDayLine = make_shared<CDayLine>();
-      pDayLine->LoadAmericaMarketData(&setAmericaStakeDayLine);
-      vDayLine.push_back(pDayLine);
-      lSizeOfOldDayLine++;
-      setAmericaStakeDayLine.MoveNext();
+  if (lSizeOfOldDayLine > 0) {
+    if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
+      m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
     }
-    if (lSizeOfOldDayLine > 0) {
-      if (vDayLine.at(0)->GetFormatedMarketDate() < m_lDayLineStartDate) {
-        m_lDayLineStartDate = vDayLine.at(0)->GetFormatedMarketDate();
-      }
-    }
-    setAmericaStakeDayLine.Close();
+  }
+  setAmericaStakeDayLine.Close();
 
-    setSaveAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
-    setSaveAmericaStakeDayLine.Open();
-    setSaveAmericaStakeDayLine.m_pDatabase->BeginTrans();
-    lCurrentPos = 0;
-    for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
-      pDayLine = m_vDayLine.at(i);
-      if (pDayLine->GetFormatedMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
-        pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
-      }
-      else {
-        while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
-        if (lCurrentPos < lSizeOfOldDayLine) {
-          if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-            pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
-          }
-        }
-        else {
+  setSaveAmericaStakeDayLine.m_strFilter = _T("[ID] = 1");
+  setSaveAmericaStakeDayLine.Open();
+  setSaveAmericaStakeDayLine.m_pDatabase->BeginTrans();
+  lCurrentPos = 0;
+  for (int i = 0; i < m_vDayLine.size(); i++) { // 数据是正序存储的，需要从头部开始存储
+    pDayLine = m_vDayLine.at(i);
+    if (pDayLine->GetFormatedMarketDate() < m_lDayLineStartDate) { // 有更早的新数据？
+      pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
+    }
+    else {
+      while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
+      if (lCurrentPos < lSizeOfOldDayLine) {
+        if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
           pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
         }
       }
+      else {
+        pDayLine->AppendAmericaMarketData(&setSaveAmericaStakeDayLine);
+      }
     }
-    setSaveAmericaStakeDayLine.m_pDatabase->CommitTrans();
-    setSaveAmericaStakeDayLine.Close();
   }
+  setSaveAmericaStakeDayLine.m_pDatabase->CommitTrans();
+  setSaveAmericaStakeDayLine.Close();
 }
 
 bool CAmericaStake::UpdateEPSSurpriseDB(void) {
