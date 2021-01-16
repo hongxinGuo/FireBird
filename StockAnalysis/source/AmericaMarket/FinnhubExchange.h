@@ -15,6 +15,9 @@ public:
 
   void Load(CSetFinnhubExchange& setFinnhubExchange);
 
+  void SetUpdated(bool fFlag) noexcept { m_fUpdated = fFlag; }
+  bool IsUpdated(void) noexcept { return m_fUpdated; }
+
 public:
   CString m_strCode;
   CString m_strName;
@@ -24,6 +27,9 @@ public:
   CString m_strCloseDate;
   CString m_strCountry;
   CString m_strSource;
+  bool m_fIsActive;
+
+  bool m_fUpdated;
 };
 
 typedef shared_ptr<CFinnhubExchange> CFinnhubExchangePtr;

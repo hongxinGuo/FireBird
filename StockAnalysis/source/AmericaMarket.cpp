@@ -42,7 +42,7 @@ void CAmericaMarket::InitialFinnhubInquiryStr(void) {
   // Finnhub前缀字符串在此预设之
   m_vFinnhubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。
   m_vFinnhubInquiringStr.at(__COMPANY_PROFILE2__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
-  m_vFinnhubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange=US"); // 可用代码集
+  m_vFinnhubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange="); // 可用代码集
   m_vFinnhubInquiringStr.at(__MARKET_NEWS__) = _T("https://finnhub.io/api/v1/news?category=general");
   m_vFinnhubInquiringStr.at(__COMPANY_NEWS__) = _T("https://finnhub.io/api/v1/company-news?symbol=");
   m_vFinnhubInquiringStr.at(__NEWS_SENTIMENT__) = _T("https://finnhub.io/api/v1/news-sentiment?symbol=");
@@ -92,6 +92,10 @@ void CAmericaMarket::ResetFinnhub(void) {
 
   m_CurrentFinnhubInquiry.Reset();
   while (m_qFinnhubWebInquiry.size() > 0) m_qFinnhubWebInquiry.pop();
+
+  m_vFinnhubExchange.resize(0);
+  m_mapFinnhubExchange.clear();
+  m_lCurrentExchangePos = 0;
 
   // Finnhub各申请网络数据标识，每日需要重置。
   m_fFinnhubSymbolUpdated = false; // 每日需要更新代码
@@ -152,6 +156,7 @@ void CAmericaMarket::ResetMarket(void) {
   Reset();
 
   LoadOption();
+  LoadWorldExchangeDB(); // 装入世界交易所信息
   LoadCountryList();
   LoadAmericaStake();
   LoadAmericaChoicedStock();
@@ -230,7 +235,8 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
       m_vAmericaStake.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryAmericaStake = false;
       break;
       case  __COMPANY_SYMBOLS__:
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 清除中间字符串内容
+      strMiddle = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
       case __COMPANY_EXECTIVE__: // Premium
       break;
@@ -390,7 +396,6 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
         }
         gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
       }
-      m_fFinnhubSymbolUpdated = true;
       break;
       case  __MARKET_NEWS__:
       break;
@@ -494,9 +499,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       default:
       break;
       }
-      gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(_T(""));
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T(""));
-      gl_pFinnhubWebInquiry->SetInquiryingStringSuffix(_T(""));
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
       m_fFinnhubInquiring = false;
     }
   }
@@ -692,6 +695,7 @@ bool CAmericaMarket::ProcessTiingoWebDataReceived(void) {
       default:
       break;
       }
+      gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
       m_fTiingoInquiring = false;
     }
   }
@@ -787,7 +791,7 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
   if (((lCurrentTime < 174700) || (lCurrentTime > 175100))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubForexExchange();
-    TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
+    TaskInquiryFinnhubCompanySymbol2(); // 第一个动作，首先申请当日证券代码
     TaskInquiryFinnhubForexSymbol();
     //TaskInquiryFinnhubEconomicCalender();
 
@@ -834,6 +838,40 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol(void) {
     return true;
   }
   return false;
+}
+
+bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol2(void) {
+  bool fFound = false;
+  WebInquiry inquiry{ 0, 0, 0 };
+  CFinnhubExchangePtr pExchange;
+  CString str = _T("");
+  long lExchangeSize = m_vFinnhubExchange.size();
+
+  if (!m_fFinnhubSymbolUpdated && !m_fFinnhubInquiring) {
+    for (m_lCurrentExchangePos = 0; m_lCurrentExchangePos < lExchangeSize; m_lCurrentExchangePos++) {
+      if (m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_fIsActive && !m_vFinnhubExchange.at(m_lCurrentExchangePos)->IsUpdated()) {
+        pExchange = m_vFinnhubExchange.at(m_lCurrentExchangePos);
+        fFound = true;
+        break;
+      }
+    }
+    if (fFound) {
+      inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
+      inquiry.m_lStockIndex = m_lCurrentExchangePos;
+      inquiry.m_iPriority = 10;
+      m_qFinnhubWebInquiry.push(inquiry);
+      m_fFinnhubInquiring = true;
+      pExchange->SetUpdated(true);
+      TRACE("申请%s交易所数据\n", pExchange->m_strCode.GetBuffer());
+    }
+    else {
+      m_fFinnhubSymbolUpdated = true;
+      TRACE("Finnhub交易所代码完毕\n");
+      str = _T("市场交易所代码数据更新完毕");
+      gl_systemMessage.PushInformationMessage(str);
+    }
+  }
+  return true;
 }
 
 bool CAmericaMarket::TaskUpdateForexSymbolDB(void) {
@@ -1367,6 +1405,26 @@ bool CAmericaMarket::LoadOption(void) {
   return true;
 }
 
+bool CAmericaMarket::LoadWorldExchangeDB(void) {
+  CSetFinnhubExchange setExchange;
+  CFinnhubExchangePtr pExchange = nullptr;
+
+  if (m_vFinnhubExchange.size() == 0) {
+    setExchange.m_strSort = _T("[Code]");
+    setExchange.Open();
+    while (!setExchange.IsEOF()) {
+      pExchange = make_shared<CFinnhubExchange>();
+      pExchange->Load(setExchange);
+      m_vFinnhubExchange.push_back(pExchange);
+      m_mapFinnhubExchange[pExchange->m_strCode] = m_vFinnhubExchange.size();
+      setExchange.MoveNext();
+    }
+    setExchange.Close();
+  }
+
+  return true;
+}
+
 bool CAmericaMarket::LoadAmericaStake(void) {
   CSetAmericaStake setAmericaStake;
   CAmericaStakePtr pAmericaStake = nullptr;
@@ -1377,6 +1435,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   while (!setAmericaStake.IsEOF()) {
     pAmericaStake = make_shared<CAmericaStake>();
     pAmericaStake->Load(setAmericaStake);
+    pAmericaStake->m_strExchangeCode = _T("US"); // 暂时使用。
     if (!IsAmericaStake(pAmericaStake->m_strSymbol)) {
       pAmericaStake->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pAmericaStake->CheckEPSSurpriseStatus(GetFormatedMarketDate());

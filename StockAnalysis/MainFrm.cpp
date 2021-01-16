@@ -132,8 +132,6 @@ void CMainFrame::Reset(void) {
   // 在此之前已经准备好了全局股票池（在CChinaMarket的构造函数中）。
   m_lCurrentPos = 0;
   m_timeLast = 0;
-
-  LoadWorldExchangeDB();
 }
 
 CMainFrame::~CMainFrame() {
@@ -167,26 +165,6 @@ CMainFrame::~CMainFrame() {
   while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
 
   TRACE("finally exited\n");
-}
-
-bool CMainFrame::LoadWorldExchangeDB(void) {
-  CSetFinnhubExchange setExchange;
-  CFinnhubExchangePtr pExchange = nullptr;
-
-  if (gl_vFinnhubExchange.size() == 0) {
-    setExchange.m_strSort = _T("[Code]");
-    setExchange.Open();
-    while (!setExchange.IsEOF()) {
-      pExchange = make_shared<CFinnhubExchange>();
-      pExchange->Load(setExchange);
-      gl_vFinnhubExchange.push_back(pExchange);
-      gl_mapFinnhubExchange[pExchange->m_strCode] = gl_vFinnhubExchange.size();
-      setExchange.MoveNext();
-    }
-    setExchange.Close();
-  }
-
-  return true;
 }
 
 bool CMainFrame::CreateMarketContainer(void) {

@@ -15,9 +15,6 @@ bool gl_fExitingCalculatingRS = false; // 用于通知工作线程退出的信号
 bool gl_fNormalMode = false; // 测试模式标识，默认为真。系统需要在启动时设置此标识，否则只有读取数据库的权利，无法添加和更改。
 bool gl_fTestMode = true; // 是否设置了gl_fTestMode标识（用于判断是否在实际系统中使用了MySQLTest驱动）。
 
-vector<CFinnhubExchangePtr> gl_vFinnhubExchange;
-map<CString, long> gl_mapFinnhubExchange;
-
 vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的SchedulingTask
 
 // 各市场。皆为唯一实例

@@ -134,6 +134,7 @@ public:
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
   bool TaskInquiryFinnhubCountryList(void);
   bool TaskInquiryFinnhubCompanySymbol(void);
+  bool TaskInquiryFinnhubCompanySymbol2(void);
   bool TaskInquiryFinnhubCompanyProfile2(void);
   bool TaskInquiryFinnhubDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
@@ -197,6 +198,7 @@ public:
 
   // 数据库操作
   bool LoadOption(void);
+  bool LoadWorldExchangeDB(void); // 装入世界交易所信息
   bool LoadAmericaStake(void);
   bool LoadAmericaChoicedStock(void);
   bool UpdateCountryListDB(void);
@@ -216,6 +218,10 @@ public:
   bool ReBuildPeer(void);
 
 protected:
+  vector<CFinnhubExchangePtr> m_vFinnhubExchange;
+  map<CString, long> m_mapFinnhubExchange;
+  long m_lCurrentExchangePos;
+
   vector<CAmericaStakePtr> m_vAmericaStake;
   map<CString, long> m_mapAmericaStake;
   long m_lLastTotalAmericaStake;

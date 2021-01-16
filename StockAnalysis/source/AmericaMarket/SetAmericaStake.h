@@ -25,6 +25,7 @@ public:
   CString m_Description;
   CString m_DisplaySymbol;
   CString m_Symbol;
+  CString m_ExchangeCode;
   CString m_Type;
   CString m_Mic;
   CString m_Figi;
@@ -35,7 +36,7 @@ public:
   CString m_Cusip;
   CString m_Sedol;
   long m_EmployeeTotal;
-  CString m_Exchange;
+  CString m_ListedExchange;
   CString m_Ggroup;
   CString m_Gind;
   CString m_Gsector;

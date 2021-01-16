@@ -24,7 +24,8 @@ CSetFinnhubExchange::CSetFinnhubExchange(CDatabase* pdb)
   m_CloseDate = _T("");
   m_Country = _T("");
   m_Source = _T("");
-  m_nFields = 9;
+  m_IsActive = false;
+  m_nFields = 10;
 }
 
 CString CSetFinnhubExchange::GetDefaultConnect() {
@@ -49,6 +50,7 @@ void CSetFinnhubExchange::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[CloseDate]"), m_CloseDate);
   RFX_Text(pFX, _T("[Country]"), m_Country);
   RFX_Text(pFX, _T("[Source]"), m_Source);
+  RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetAmericaForexDayLine ’Ô∂œ

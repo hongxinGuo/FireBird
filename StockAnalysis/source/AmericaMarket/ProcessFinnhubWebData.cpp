@@ -47,7 +47,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
   s = pt.get<string>(_T("description"));
   if (s.size() > 0) pStake->m_strDescription = s.c_str();
   s = pt.get<string>(_T("exchange"));
-  if (s.size() > 0) pStake->m_strExchange = s.c_str();
+  if (s.size() > 0) pStake->m_strListedExchange = s.c_str();
   s = pt.get<string>(_T("ggroup"));
   if (s.size() > 0) pStake->m_strGgroup = s.c_str();
   s = pt.get<string>(_T("gind"));
@@ -118,7 +118,7 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   s = pt.get<string>(_T("currency"));
   if (s.size() > 0) pStake->m_strCurrency = s.c_str();
   s = pt.get<string>(_T("exchange"));
-  if (s.size() > 0) pStake->m_strExchange = s.c_str();
+  if (s.size() > 0) pStake->m_strListedExchange = s.c_str();
   s = pt.get<string>(_T("name"));
   if (s.size() > 0) pStake->m_strName = s.c_str();
   s = pt.get<string>(_T("finnhubIndustry"));
@@ -227,7 +227,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
       pt3 = it->second;
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
-      pDayLine->SetMarketString(pStake->m_strExchange);
+      pDayLine->SetMarketString(pStake->m_strListedExchange);
       pDayLine->SetStakeCode(pStake->GetSymbol());
       pDayLine->SetStakeName(pStake->GetTicker());
       pDayLine->SetTime(tTemp);

@@ -24,7 +24,6 @@ public:
 
   // 操作
 public:
-  bool LoadWorldExchangeDB(void); // 装入世界交易所信息
   bool SchedulingTask(void);
   void UpdateStatus(void);
   void UpdateInnerSystemStatus(void);

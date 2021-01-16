@@ -22,12 +22,13 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_Figi = _T(" ");
   m_Currency = _T(" ");
   m_Country = _T(" ");
-  m_Exchange = _T(" ");
+  m_ListedExchange = _T(" ");
   m_FinnhubIndustry = _T(" ");
   m_Peer = _T(" ");
   m_Name = _T(" ");
   m_Phone = _T(" ");
   m_Symbol = _T(" ");
+  m_ExchangeCode = _T(" ");
   m_Ticker = _T(" ");
   m_WebURL = _T(" ");
   m_Cusip = _T(" ");
@@ -66,7 +67,7 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_DailyDataUpdateDate = 19800101;
   m_StatementUpdateDate = 19800101;
 
-  m_nFields = 54;
+  m_nFields = 55;
 }
 
 CString CSetAmericaStake::GetDefaultConnect() {
@@ -84,6 +85,7 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
+  RFX_Text(pFX, _T("[ExchangeCode]"), m_ExchangeCode);
   RFX_Text(pFX, _T("[Description]"), m_Description);
   RFX_Text(pFX, _T("[DisplaySymbol]"), m_DisplaySymbol);
   RFX_Text(pFX, _T("[Type]"), m_Type);
@@ -97,7 +99,7 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[cusip]"), m_Cusip);
   RFX_Text(pFX, _T("[sedol]"), m_Sedol);
   RFX_Long(pFX, _T("[EmployeeTotal]"), m_EmployeeTotal);
-  RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
+  RFX_Text(pFX, _T("[ListedExchange]"), m_ListedExchange);
   RFX_Text(pFX, _T("[ggroup]"), m_Ggroup);
   RFX_Text(pFX, _T("[gind]"), m_Gind);
   RFX_Text(pFX, _T("[gsector]"), m_Gsector);

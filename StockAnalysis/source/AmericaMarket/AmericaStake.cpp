@@ -18,13 +18,14 @@ void CAmericaStake::Reset(void) {
   m_strCountry = _T(" ");
   m_strDescription = _T(" ");
   m_strDisplaySymbol = _T(" ");
-  m_strExchange = _T(" ");
+  m_strListedExchange = _T(" ");
   m_strFinnhubIndustry = _T(" ");
   m_strPeer = _T(" ");
   m_strLogo = _T(" ");
   m_strName = _T(" ");
   m_strPhone = _T(" ");
   m_strSymbol = _T(" ");
+  m_strExchangeCode = _T("US");
   m_strTicker = _T(" ");
   m_strWebURL = _T(" ");
   m_strAddress = _T(" ");
@@ -94,6 +95,7 @@ void CAmericaStake::Reset(void) {
 
 void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strSymbol = setAmericaStake.m_Symbol;
+  m_strExchangeCode = setAmericaStake.m_ExchangeCode;
   m_strDescription = setAmericaStake.m_Description;
   m_strDisplaySymbol = setAmericaStake.m_DisplaySymbol;
   m_strType = setAmericaStake.m_Type;
@@ -106,7 +108,7 @@ void CAmericaStake::Load(CSetAmericaStake& setAmericaStake) {
   m_strCusip = setAmericaStake.m_Cusip;
   m_strSedol = setAmericaStake.m_Sedol;
   m_lEmployeeTotal = setAmericaStake.m_EmployeeTotal;
-  m_strExchange = setAmericaStake.m_Exchange;
+  m_strListedExchange = setAmericaStake.m_ListedExchange;
   m_strGgroup = setAmericaStake.m_Ggroup;
   m_strGind = setAmericaStake.m_Gind;
   m_strGsector = setAmericaStake.m_Gsector;
@@ -189,6 +191,7 @@ bool CAmericaStake::CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDat
 void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   // 由于数据库的格式为定长的字符串，故而需要限制实际字符串的长度。
   m_strSymbol = m_strSymbol.Left(45);
+  m_strExchangeCode = m_strExchangeCode.Left(45);
   m_strDescription = m_strDescription.Left(200);
   m_strDisplaySymbol = m_strDisplaySymbol.Left(45);
   m_strType = m_strType.Left(45);
@@ -200,7 +203,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   m_strCountry = m_strCountry.Left(45);
   m_strCusip = m_strCusip.Left(45);
   m_strSedol = m_strSedol.Left(45);
-  m_strExchange = m_strExchange.Left(100);
+  m_strListedExchange = m_strListedExchange.Left(100);
   m_strGgroup = m_strGgroup.Left(45);
   m_strGind = m_strGind.Left(45);
   m_strGsector = m_strGsector.Left(45);
@@ -228,6 +231,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   m_strSECFilingWebSite = m_strSECFilingWebSite.Left(100);
 
   setAmericaStake.m_Symbol = m_strSymbol;
+  setAmericaStake.m_ExchangeCode = m_strExchangeCode;
   setAmericaStake.m_Description = m_strDescription;
   setAmericaStake.m_DisplaySymbol = m_strDisplaySymbol;
   setAmericaStake.m_Type = m_strType;
@@ -240,7 +244,7 @@ void CAmericaStake::Save(CSetAmericaStake& setAmericaStake) {
   setAmericaStake.m_Cusip = m_strCusip;
   setAmericaStake.m_Sedol = m_strSedol;
   setAmericaStake.m_EmployeeTotal = m_lEmployeeTotal;
-  setAmericaStake.m_Exchange = m_strExchange;
+  setAmericaStake.m_ListedExchange = m_strListedExchange;
   setAmericaStake.m_Ggroup = m_strGgroup;
   setAmericaStake.m_Gind = m_strGind;
   setAmericaStake.m_Gsector = m_strGsector;
