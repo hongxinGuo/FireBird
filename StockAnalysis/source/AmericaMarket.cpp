@@ -384,6 +384,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       for (auto& pStock2 : vStake) {
         if (!IsAmericaStake(pStock2->GetSymbol())) {
           m_vAmericaStake.push_back(pStock2);
+          pStock2->m_fUpdateDatabase = true;
           fFoundNewStock = true;
         }
       }
@@ -743,6 +744,10 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   if (m_lLastTotalCountry < m_vCountry.size()) {
     TaskUpdateCountryListDB();
   }
+  if (IsAmericaStakeUpdated()) {
+    TaskUpdateStakeDB();
+  }
+
   TaskUpdateForexExchangeDB();
   TaskUpdateForexSymbolDB();
   TaskUpdateForexDayLineDB();
@@ -754,9 +759,9 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
 }
 
 bool CAmericaMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  if (IsAmericaStakeUpdated()) {
-    TaskUpdateStakeDB();
-  }
+  // if (IsAmericaStakeUpdated()) {
+  //TaskUpdateStakeDB();
+//}
   return true;
 }
 
@@ -862,12 +867,12 @@ bool CAmericaMarket::TaskInquiryFinnhubCompanySymbol2(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
       pExchange->SetUpdated(true);
-      TRACE("申请%s交易所数据\n", pExchange->m_strCode.GetBuffer());
+      TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
     }
     else {
       m_fFinnhubSymbolUpdated = true;
-      TRACE("Finnhub交易所代码完毕\n");
-      str = _T("市场交易所代码数据更新完毕");
+      TRACE("Finnhub交易所代码数据查询完毕\n");
+      str = _T("交易所代码数据查询完毕");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
@@ -1549,6 +1554,104 @@ bool CAmericaMarket::UpdateStakeDB(void) {
     }
     setAmericaStake.m_pDatabase->CommitTrans();
     setAmericaStake.Close();
+  }
+  return true;
+}
+
+/// <summary>
+/// 当关键字为字符串时，MySQL的排序与STL的sort表现不相同（ALTG+和ALTG-A这两个字符串的大小不同）。
+/// 目前不使用此函数。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CAmericaMarket::UpdateStakeDB2(void) {
+  const long lTotalAmericaStake = m_vAmericaStake.size();
+  CAmericaStakePtr pStock = nullptr;
+  CSetAmericaStake setAmericaStake;
+  bool fAppendAll = false;
+  CString strCmp = _T("");
+  int j = 0;
+
+  //更新原有的代码集状态
+  if (IsAmericaStakeUpdated()) {
+    setAmericaStake.m_strSort = _T("[Symbol]");
+    setAmericaStake.Open();
+    if (setAmericaStake.IsEOF()) fAppendAll = true;
+    setAmericaStake.m_pDatabase->BeginTrans();
+    for (int i = 0; i < lTotalAmericaStake; i++) {
+      pStock = m_vAmericaStake.at(i);
+      if (pStock->m_fUpdateDatabase) {
+        if (!fAppendAll) {
+          strCmp = setAmericaStake.m_Symbol;
+          j = 0;
+          while (strCmp.Compare(pStock->m_strSymbol) < 0) {
+            setAmericaStake.MoveNext();
+            strCmp = setAmericaStake.m_Symbol;
+            j++;
+          }
+          if (strCmp.Compare(pStock->m_strSymbol) == 0) { // 有旧Symbol存在
+            pStock->Update(setAmericaStake);
+          }
+          else { // 添加新Symbol
+            pStock->Append(setAmericaStake);
+          }
+          pStock->m_fUpdateDatabase = false;
+        }
+        else {
+          pStock->Append(setAmericaStake);
+          pStock->m_fUpdateDatabase = false;
+        }
+      }
+    }
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
+    m_lLastTotalAmericaStake = lTotalAmericaStake;
+  }
+  return true;
+}
+
+/// <summary>
+/// 这种查询方式比较晦涩，但结果正确。目前使用此函数。
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
+bool CAmericaMarket::UpdateStakeDB3(void) {
+  CAmericaStakePtr pStock = nullptr;
+  CSetAmericaStake setAmericaStake;
+  int iUpdatedStock = 0;
+  int iCount = 0;
+
+  //更新原有的代码集状态
+  if (IsAmericaStakeUpdated()) {
+    for (auto& pStock2 : m_vAmericaStake) {
+      if (pStock2->m_fUpdateDatabase) iUpdatedStock++;
+    }
+    setAmericaStake.m_strSort = _T("[Symbol]");
+    setAmericaStake.Open();
+    setAmericaStake.m_pDatabase->BeginTrans();
+    while (iCount < iUpdatedStock) {
+      if (setAmericaStake.IsEOF()) break;
+      pStock = m_vAmericaStake.at(m_mapAmericaStake.at(setAmericaStake.m_Symbol));
+      if (pStock->m_fUpdateDatabase) {
+        iCount++;
+        pStock->Update(setAmericaStake);
+        pStock->m_fUpdateDatabase = false;
+      }
+      setAmericaStake.MoveNext();
+    }
+    if (iCount < iUpdatedStock) {
+      for (auto& pStock3 : m_vAmericaStake) {
+        if (pStock3->m_fUpdateDatabase) {
+          iCount++;
+          pStock3->Append(setAmericaStake);
+          pStock3->m_fUpdateDatabase = false;
+        }
+        if (iCount >= iUpdatedStock) break;
+      }
+    }
+    setAmericaStake.m_pDatabase->CommitTrans();
+    setAmericaStake.Close();
+    m_lLastTotalAmericaStake = m_vAmericaStake.size();
   }
   return true;
 }
