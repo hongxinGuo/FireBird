@@ -219,6 +219,8 @@ public:
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
 
+  bool SortStakeVector(void);
+
 protected:
   vector<CFinnhubExchangePtr> m_vFinnhubExchange;
   map<CString, long> m_mapFinnhubExchange;

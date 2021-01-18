@@ -68,6 +68,8 @@ void CAmericaStake::Reset(void) {
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
 
+  m_strSymbolForSort = _T("");
+
   m_fUpdateDatabase = false;
   m_fInquiryAmericaStake = true;
   m_fEPSSurpriseNeedUpdate = true;
@@ -389,6 +391,10 @@ void CAmericaStake::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
   for (auto& p : vEPSSurprise) {
     m_vEPSSurprise.push_back(p);
   }
+}
+
+void CAmericaStake::UpdateSymbolForSort(void) {
+  m_strSymbolForSort = m_strExchangeCode + _T(".") + m_strSymbol;
 }
 
 void CAmericaStake::UpdateDayLineStartEndDate(void) {

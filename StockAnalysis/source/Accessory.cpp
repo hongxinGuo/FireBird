@@ -250,6 +250,17 @@ CString GetAmericaMarketSchemaConnect() {
   }
 }
 
+CString GetStockHistoryDataSchemaConnect() {
+  if (!gl_fNormalMode) {
+    gl_fTestMode = true;
+    return _T("DSN=StockHistoryDataTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是StockHistoryDataTest Schema
+  }
+  else {
+    gl_fTestMode = false;
+    return _T("DSN=StockHistoryData;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // AmericaMarket操作的是StockHistoryData Schema
+  }
+}
+
 CString ConvertValueToString(long lValue, int iDividend) {
   char buffer[50]{ 0 };
   const double d = (static_cast<double>(lValue)) / iDividend;

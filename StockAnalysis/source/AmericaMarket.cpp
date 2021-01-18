@@ -340,7 +340,7 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
   return true;
 }
 
-bool CompareAmericaStake2(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
+bool CompareAmericaStake2(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbolForSort.Compare(p2->m_strSymbolForSort) < 0); }
 
 //////////////////////////////////////////////
 //
@@ -381,6 +381,11 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case  __COMPANY_SYMBOLS__:
       ProcessFinnhubStockSymbol(pWebData, vStake);
+      // 交易所代码和SymbolForSort需要后加上。
+      for (auto& pStock3 : vStake) {
+        pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
+        pStock3->UpdateSymbolForSort();
+      }
       for (auto& pStock2 : vStake) {
         if (!IsAmericaStake(pStock2->GetSymbol())) {
           m_vAmericaStake.push_back(pStock2);
@@ -389,12 +394,7 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
         }
       }
       if (fFoundNewStock) {
-        sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
-        m_mapAmericaStake.clear();
-        int j = 0;
-        for (auto& pStake2 : m_vAmericaStake) {
-          m_mapAmericaStake[pStake2->m_strSymbol] = j++;
-        }
+        SortStakeVector();
         gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
       }
       break;
@@ -744,9 +744,6 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
   if (m_lLastTotalCountry < m_vCountry.size()) {
     TaskUpdateCountryListDB();
   }
-  if (IsAmericaStakeUpdated()) {
-    TaskUpdateStakeDB();
-  }
 
   TaskUpdateForexExchangeDB();
   TaskUpdateForexSymbolDB();
@@ -759,9 +756,9 @@ bool CAmericaMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
 }
 
 bool CAmericaMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  // if (IsAmericaStakeUpdated()) {
-  //TaskUpdateStakeDB();
-//}
+  if (IsAmericaStakeUpdated()) {
+    TaskUpdateStakeDB();
+  }
   return true;
 }
 
@@ -804,7 +801,7 @@ bool CAmericaMarket::TaskInquiryFinnhub(long lCurrentTime) {
     if (IsSystemReady() && !m_fFinnhubInquiring) {
       TaskInquiryFinnhubCompanyProfile2();
       TaskInquiryFinnhubPeer();
-      TaskInquiryFinnhubEPSSurprise();
+      //TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
       TaskInquiryFinnhubForexDayLine();
       TaskInquiryFinnhubDayLine();
       if (m_fFinnhubDayLineUpdated) {
@@ -1440,7 +1437,8 @@ bool CAmericaMarket::LoadAmericaStake(void) {
   while (!setAmericaStake.IsEOF()) {
     pAmericaStake = make_shared<CAmericaStake>();
     pAmericaStake->Load(setAmericaStake);
-    pAmericaStake->m_strExchangeCode = _T("US"); // 暂时使用。
+    pAmericaStake->UpdateSymbolForSort();
+    pAmericaStake->m_strSymbolForSort = pAmericaStake->m_strExchangeCode + _T(".") + pAmericaStake->m_strSymbol;
     if (!IsAmericaStake(pAmericaStake->m_strSymbol)) {
       pAmericaStake->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pAmericaStake->CheckEPSSurpriseStatus(GetFormatedMarketDate());
@@ -1456,6 +1454,7 @@ bool CAmericaMarket::LoadAmericaStake(void) {
     setAmericaStake.MoveNext();
   }
   setAmericaStake.Close();
+  SortStakeVector();
   m_lLastTotalAmericaStake = m_vAmericaStake.size();
   TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalAmericaStake);
   return true;
@@ -1734,6 +1733,17 @@ bool CAmericaMarket::RebuildEPSSurprise(void) {
 bool CAmericaMarket::ReBuildPeer(void) {
   m_fFinnhubPeerUpdated = false;
   m_lCurrentUpdatePeerPos = 0;
+
+  return true;
+}
+
+bool CAmericaMarket::SortStakeVector(void) {
+  sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
+  m_mapAmericaStake.clear();
+  int j = 0;
+  for (auto& pStake2 : m_vAmericaStake) {
+    m_mapAmericaStake[pStake2->m_strSymbol] = j++;
+  }
 
   return true;
 }
