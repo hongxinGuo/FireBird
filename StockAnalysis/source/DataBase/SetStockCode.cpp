@@ -23,7 +23,7 @@ CSetStockCode::CSetStockCode(CDatabase* pdb)
 }
 
 CString CSetStockCode::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetStockCode::GetDefaultSQL() {

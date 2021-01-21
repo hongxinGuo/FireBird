@@ -18,7 +18,7 @@ CSetChoicedStock::CSetChoicedStock(CDatabase* pdb) : CRecordset(pdb) {
 }
 
 CString CSetChoicedStock::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetChoicedStock::GetDefaultSQL() {

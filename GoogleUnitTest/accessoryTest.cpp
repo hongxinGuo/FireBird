@@ -17,37 +17,25 @@ namespace StockAnalysisTest {
 
   TEST_F(AccessoryTest, TestGetChinaMarketSchemaAnalysis) {
     EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
-    EXPECT_STREQ(GetChinaMarketSchemaVonnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+    EXPECT_STREQ(GetChinaMarketSchemaConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
     EXPECT_TRUE(gl_fTestMode);
     gl_fNormalMode = true;
-    EXPECT_STREQ(GetChinaMarketSchemaVonnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+    EXPECT_STREQ(GetChinaMarketSchemaConnect(), _T("DSN=ChinaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
     EXPECT_FALSE(gl_fTestMode);
     gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
-    EXPECT_STREQ(GetChinaMarketSchemaVonnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+    EXPECT_STREQ(GetChinaMarketSchemaConnect(), _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
     EXPECT_TRUE(gl_fTestMode);
   }
 
   TEST_F(AccessoryTest, TestGetAmericaMarketSchemaAnalysis) {
     EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
-    EXPECT_STREQ(GetAmeircaMarketSchemaVonnect(), _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+    EXPECT_STREQ(GetAmericaMarketSchemaConnect(), _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
     EXPECT_TRUE(gl_fTestMode);
     gl_fNormalMode = true;
-    EXPECT_STREQ(GetAmeircaMarketSchemaVonnect(), _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
+    EXPECT_STREQ(GetAmericaMarketSchemaConnect(), _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
     EXPECT_FALSE(gl_fTestMode);
     gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
-    EXPECT_STREQ(GetAmeircaMarketSchemaVonnect(), _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-    EXPECT_TRUE(gl_fTestMode);
-  }
-
-  TEST_F(AccessoryTest, TestGetStockHistoryDataSchemaAnalysis) {
-    EXPECT_FALSE(gl_fNormalMode); // 默认状态下此标识为假。
-    EXPECT_STREQ(GetStockHistoryDataSchemaVonnect(), _T("DSN=StockHistoryDataTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
-    EXPECT_TRUE(gl_fTestMode);
-    gl_fNormalMode = true;
-    EXPECT_STREQ(GetStockHistoryDataSchemaVonnect(), _T("DSN=StockHistoryData;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-    EXPECT_FALSE(gl_fTestMode);
-    gl_fNormalMode = false; // 运行单元测试时，必须将此标识设置为假，故而在运行完此测试函数后，需要再次将其置为假，否则会出错。
-    EXPECT_STREQ(GetStockHistoryDataSchemaVonnect(), _T("DSN=StockHistoryDataTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
+    EXPECT_STREQ(GetAmericaMarketSchemaConnect(), _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"));
     EXPECT_TRUE(gl_fTestMode);
   }
 

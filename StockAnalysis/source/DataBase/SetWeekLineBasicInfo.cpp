@@ -37,7 +37,7 @@ CSetWeekLineBasicInfo::CSetWeekLineBasicInfo(CDatabase* pdb)
 }
 
 CString CSetWeekLineBasicInfo::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetWeekLineBasicInfo::GetDefaultSQL() {

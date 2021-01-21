@@ -137,15 +137,10 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   return true;
 }
 
-bool CompareAmericaStake(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
-
 bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vStake) {
   CAmericaStakePtr pStake = make_shared<CAmericaStake>();
   ptree pt, pt2;
   string s;
-  int iCount = 0;
-  CString str, strNumber;
-  char buffer[30];
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -167,17 +162,11 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
       s = pt2.get<string>(_T("type"));
       if (s.size() > 0) pStake->m_strType = s.c_str();
       vStake.push_back(pStake);
-      iCount++;
     }
     catch (ptree_error&) {
       TRACE("下载Finnhub Symbol有误\n");
     }
   }
-  TRACE("今日Finnhub Company Symbol总数为%d\n", iCount);
-  sprintf_s(buffer, _T("%6d"), iCount);
-  strNumber = buffer;
-  str = _T("今日Finnhub Company Symbol总数为") + strNumber;
-  gl_systemMessage.PushInnerSystemInformationMessage(str);
   return true;
 }
 

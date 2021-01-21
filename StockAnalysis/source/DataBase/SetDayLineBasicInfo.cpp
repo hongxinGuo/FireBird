@@ -37,11 +37,11 @@ CSetDayLineBasicInfo::CSetDayLineBasicInfo(CDatabase* pdb)
 }
 
 CString CSetDayLineBasicInfo::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetDayLineBasicInfo::GetDefaultSQL() {
-  return _T("[DayLine]");
+  return _T("[dayline]");
 }
 
 void CSetDayLineBasicInfo::DoFieldExchange(CFieldExchange* pFX) {

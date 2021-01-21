@@ -29,9 +29,8 @@ long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值
 long GetCurrentMonday(long lDate); // 找到包含lDate的那个星期的星期一
 
-CString GetChinaMarketSchemaVonnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
+CString GetChinaMarketSchemaConnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
 CString GetAmericaMarketSchemaConnect();// 用于美国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用AmericaMarketTest驱动，正常模式时使用AmericaMarket驱动
-CString GetStockHistoryDataSchemaConnect();// 用于历史数据集的GetDefaultConnect()，以保持一致性。测试模式时使用StockHistoryDataTest驱动，正常模式时使用StockHistoryData驱动
 
 CString ConvertValueToString(long lValue, int iDividend = 1);
 CString ConvertValueToString(INT64 iValue, int iDividend = 1);

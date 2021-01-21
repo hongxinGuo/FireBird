@@ -27,7 +27,7 @@ CSetRSOption::CSetRSOption(CDatabase* pdb)
 }
 
 CString CSetRSOption::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetRSOption::GetDefaultSQL() {

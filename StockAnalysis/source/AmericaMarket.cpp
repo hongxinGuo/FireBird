@@ -26,6 +26,8 @@ CAmericaMarket::CAmericaMarket() {
   m_fFinnhubEPSSurpriseUpdated = true;
   m_lCurrentUpdateEPSSurprisePos = 0;
 
+  m_lCurrentUpdateDayLinePos = 0; // 由于证券代码总数有十万之多，无法在一天之内更新完，故不再重置此索引。
+
   m_strMarketId = _T("美国市场");
   m_lMarketTimeZone = 4 * 3600; // 美国股市使用美东标准时间。
   CalculateTime();
@@ -84,7 +86,6 @@ void CAmericaMarket::Reset(void) {
 void CAmericaMarket::ResetFinnhub(void) {
   m_lLastTotalAmericaStake = 0;
   m_lCurrentProfilePos = 0;
-  m_lCurrentUpdateDayLinePos = 0;
   m_lCurrentRTDataQuotePos = 0;
   m_lCurrentForexExchangePos = 0;
   m_lCurrentForexSymbolPos = 0;
@@ -340,7 +341,7 @@ bool CAmericaMarket::ProcessFinnhubInquiringMessage(void) {
   return true;
 }
 
-bool CompareAmericaStake2(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbolForSort.Compare(p2->m_strSymbolForSort) < 0); }
+bool CompareAmericaStake(CAmericaStakePtr p1, CAmericaStakePtr p2) { return (p1->m_strSymbolForSort.Compare(p2->m_strSymbolForSort) < 0); }
 
 //////////////////////////////////////////////
 //
@@ -363,6 +364,8 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CCountryPtr> vCountry;
   long lTemp = 0;
   bool fFoundNewStock = false;
+  char buffer[30];
+  CString strNumber;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
   if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
@@ -381,6 +384,11 @@ bool CAmericaMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case  __COMPANY_SYMBOLS__:
       ProcessFinnhubStockSymbol(pWebData, vStake);
+      TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStake.size());
+      sprintf_s(buffer, _T("%6d"), vStake.size());
+      strNumber = buffer;
+      str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
       // 交易所代码和SymbolForSort需要后加上。
       for (auto& pStock3 : vStake) {
         pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
@@ -963,6 +971,7 @@ bool CAmericaMarket::TaskInquiryFinnhubDayLine(void) {
     }
     else {
       m_fFinnhubDayLineUpdated = true;
+      m_lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
       TRACE("Finnhub日线更新完毕\n");
       str = _T("美国市场日线历史数据更新完毕");
       gl_systemMessage.PushInformationMessage(str);
@@ -1738,7 +1747,7 @@ bool CAmericaMarket::ReBuildPeer(void) {
 }
 
 bool CAmericaMarket::SortStakeVector(void) {
-  sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake2);
+  sort(m_vAmericaStake.begin(), m_vAmericaStake.end(), CompareAmericaStake);
   m_mapAmericaStake.clear();
   int j = 0;
   for (auto& pStake2 : m_vAmericaStake) {

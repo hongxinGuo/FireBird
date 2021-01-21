@@ -38,11 +38,11 @@ CSetAmericaStakeDayLine::CSetAmericaStakeDayLine(CDatabase* pdb)
 }
 
 CString CSetAmericaStakeDayLine::GetDefaultConnect() {
-  return GetStockHistoryDataSchemaConnect();
+  return GetAmericaMarketSchemaConnect();
 }
 
 CString CSetAmericaStakeDayLine::GetDefaultSQL() {
-  return _T("[us_dayline]");
+  return _T("[dayline]");
 }
 
 void CSetAmericaStakeDayLine::DoFieldExchange(CFieldExchange* pFX) {

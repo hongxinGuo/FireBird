@@ -19,7 +19,7 @@ CSetCrweberIndex::CSetCrweberIndex(CDatabase* pdb)
 }
 
 CString CSetCrweberIndex::GetDefaultConnect() {
-  return GetChinaMarketSchemaVonnect();
+  return GetChinaMarketSchemaConnect();
 }
 
 CString CSetCrweberIndex::GetDefaultSQL() {

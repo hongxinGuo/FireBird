@@ -221,7 +221,7 @@ long GetCurrentMonday(long lDate) {
 // 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
-CString GetChinaMarketSchemaVonnect() {
+CString GetChinaMarketSchemaConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
     return _T("DSN=ChinaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // ChinaMarketTest操作的是TestData Schema
@@ -247,17 +247,6 @@ CString GetAmericaMarketSchemaConnect() {
   else {
     gl_fTestMode = false;
     return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // AmericaMarket操作的是AmericaMarket Schema
-  }
-}
-
-CString GetStockHistoryDataSchemaConnect() {
-  if (!gl_fNormalMode) {
-    gl_fTestMode = true;
-    return _T("DSN=StockHistoryDataTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是StockHistoryDataTest Schema
-  }
-  else {
-    gl_fTestMode = false;
-    return _T("DSN=StockHistoryData;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // AmericaMarket操作的是StockHistoryData Schema
   }
 }
 
