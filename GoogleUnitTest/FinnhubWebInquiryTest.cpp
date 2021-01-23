@@ -20,14 +20,14 @@ namespace StockAnalysisTest {
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_pAmericaMarket->CalculateTime();
+      gl_pWorldMarket->CalculateTime();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pAmericaMarket->SetResetMarket(true);
+      gl_pWorldMarket->SetResetMarket(true);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_pAmericaMarket->SetSystemReady(false);
+      gl_pWorldMarket->SetSystemReady(false);
     }
     CMockFinnhubWebInquiry m_FinnhubWebInquiry; // 网易日线历史数据
   };
@@ -46,7 +46,7 @@ namespace StockAnalysisTest {
     m_FinnhubWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_FinnhubWebInquiry.GetWebData());
     m_FinnhubWebInquiry.SetReadingWebData(false);
-    gl_pAmericaMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetSystemReady(true);
     EXPECT_CALL(m_FinnhubWebInquiry, StartReadingThread)
       .Times(1);
     m_FinnhubWebInquiry.GetWebData();
@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CFinnhubWebInquiryTest, TestPrepareNextInquiringStr) {
     CString str;
-    gl_pAmericaMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
       if (m_FinnhubWebInquiry.PrepareNextInquiringStr()) {
         str = m_FinnhubWebInquiry.GetInquiringString();
@@ -71,6 +71,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
-    gl_pAmericaMarket->SetSystemReady(false);
+    gl_pWorldMarket->SetSystemReady(false);
   }
 }

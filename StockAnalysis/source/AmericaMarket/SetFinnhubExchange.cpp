@@ -1,6 +1,6 @@
 // CSetFinnhubExchange.cpp : CSetFinnhubExchange 类的实现
 
-// CSetAmericaStakeDayLine 实现
+// CSetWorldStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -29,7 +29,7 @@ CSetFinnhubExchange::CSetFinnhubExchange(CDatabase* pdb)
 }
 
 CString CSetFinnhubExchange::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetFinnhubExchange::GetDefaultSQL() {
@@ -53,7 +53,7 @@ void CSetFinnhubExchange::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Bool(pFX, _T("[IsActive]"), m_IsActive);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetFinnhubExchange 诊断
 
 #ifdef _DEBUG
 void CSetFinnhubExchange::AssertValid() const {

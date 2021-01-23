@@ -142,62 +142,62 @@ bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayL
   return true;
 }
 
-bool CDayLine::SaveAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
-  ASSERT(psetAmericaStakeDayLine->IsOpen());
+bool CDayLine::SaveWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldStockDayLine) {
+  ASSERT(psetWorldStockDayLine->IsOpen());
 
-  psetAmericaStakeDayLine->m_Date = GetFormatedMarketDate();
-  psetAmericaStakeDayLine->m_Market = GetMarketString();
-  psetAmericaStakeDayLine->m_Symbol = GetStakeCode();
-  psetAmericaStakeDayLine->m_Ticker = GetStakeName();
-  psetAmericaStakeDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
-  psetAmericaStakeDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
-  psetAmericaStakeDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
-  psetAmericaStakeDayLine->m_Open = ConvertValueToString(GetOpen(), 1000);
-  psetAmericaStakeDayLine->m_Close = ConvertValueToString(GetClose(), 1000);
-  psetAmericaStakeDayLine->m_Volume = ConvertValueToString(GetVolume());
-  psetAmericaStakeDayLine->m_Amount = ConvertValueToString(GetAmount());
-  psetAmericaStakeDayLine->m_UpAndDown = ConvertValueToString(GetUpDown());
-  psetAmericaStakeDayLine->m_UpDownRate = ConvertValueToString(GetUpDownRate());
-  psetAmericaStakeDayLine->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
-  psetAmericaStakeDayLine->m_TotalValue = ConvertValueToString(GetTotalValue());
-  psetAmericaStakeDayLine->m_CurrentValue = ConvertValueToString(GetCurrentValue());
-  psetAmericaStakeDayLine->m_RS = ConvertValueToString(GetRS());
-  psetAmericaStakeDayLine->m_RSIndex = ConvertValueToString(GetRSIndex());
-  psetAmericaStakeDayLine->m_RSBackup = ConvertValueToString(GetRSBackup());
-
-  return true;
-}
-
-bool CDayLine::AppendAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
-  ASSERT(psetAmericaStakeDayLine->IsOpen());
-  psetAmericaStakeDayLine->AddNew();
-  SaveAmericaMarketData(psetAmericaStakeDayLine);
-  psetAmericaStakeDayLine->Update();
+  psetWorldStockDayLine->m_Date = GetFormatedMarketDate();
+  psetWorldStockDayLine->m_Market = GetMarketString();
+  psetWorldStockDayLine->m_Symbol = GetStakeCode();
+  psetWorldStockDayLine->m_Ticker = GetStakeName();
+  psetWorldStockDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
+  psetWorldStockDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
+  psetWorldStockDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
+  psetWorldStockDayLine->m_Open = ConvertValueToString(GetOpen(), 1000);
+  psetWorldStockDayLine->m_Close = ConvertValueToString(GetClose(), 1000);
+  psetWorldStockDayLine->m_Volume = ConvertValueToString(GetVolume());
+  psetWorldStockDayLine->m_Amount = ConvertValueToString(GetAmount());
+  psetWorldStockDayLine->m_UpAndDown = ConvertValueToString(GetUpDown());
+  psetWorldStockDayLine->m_UpDownRate = ConvertValueToString(GetUpDownRate());
+  psetWorldStockDayLine->m_ChangeHandRate = ConvertValueToString(GetChangeHandRate());
+  psetWorldStockDayLine->m_TotalValue = ConvertValueToString(GetTotalValue());
+  psetWorldStockDayLine->m_CurrentValue = ConvertValueToString(GetCurrentValue());
+  psetWorldStockDayLine->m_RS = ConvertValueToString(GetRS());
+  psetWorldStockDayLine->m_RSIndex = ConvertValueToString(GetRSIndex());
+  psetWorldStockDayLine->m_RSBackup = ConvertValueToString(GetRSBackup());
 
   return true;
 }
 
-bool CDayLine::LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> psetAmericaStakeDayLine) {
-  ASSERT(psetAmericaStakeDayLine->IsOpen());
-  m_lDate = psetAmericaStakeDayLine->m_Date;
-  m_strMarket = psetAmericaStakeDayLine->m_Market;
-  m_strStakeCode = psetAmericaStakeDayLine->m_Symbol;
-  m_strStakeName = psetAmericaStakeDayLine->m_Ticker;
-  m_lLastClose = atof(psetAmericaStakeDayLine->m_LastClose) * 1000;
-  m_lOpen = atof(psetAmericaStakeDayLine->m_Open) * 1000;
-  m_lHigh = atof(psetAmericaStakeDayLine->m_High) * 1000;
-  m_lLow = atof(psetAmericaStakeDayLine->m_Low) * 1000;
-  m_lClose = atof(psetAmericaStakeDayLine->m_Close) * 1000;
-  m_dUpDown = atof(psetAmericaStakeDayLine->m_UpAndDown);
-  m_llVolume = atoll(psetAmericaStakeDayLine->m_Volume);
-  m_llAmount = atoll(psetAmericaStakeDayLine->m_Amount);
-  m_dUpDownRate = atof(psetAmericaStakeDayLine->m_UpDownRate);
-  m_dChangeHandRate = atof(psetAmericaStakeDayLine->m_ChangeHandRate);
-  m_llTotalValue = atoll(psetAmericaStakeDayLine->m_TotalValue);
-  m_llCurrentValue = atoll(psetAmericaStakeDayLine->m_CurrentValue);
-  m_dRS = atof(psetAmericaStakeDayLine->m_RS);
-  m_dRSIndex = atof(psetAmericaStakeDayLine->m_RSIndex);
-  m_dRSBackup = atof(psetAmericaStakeDayLine->m_RSBackup);
+bool CDayLine::AppendWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldStockDayLine) {
+  ASSERT(psetWorldStockDayLine->IsOpen());
+  psetWorldStockDayLine->AddNew();
+  SaveWorldMarketData(psetWorldStockDayLine);
+  psetWorldStockDayLine->Update();
+
+  return true;
+}
+
+bool CDayLine::LoadWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldStockDayLine) {
+  ASSERT(psetWorldStockDayLine->IsOpen());
+  m_lDate = psetWorldStockDayLine->m_Date;
+  m_strMarket = psetWorldStockDayLine->m_Market;
+  m_strStakeCode = psetWorldStockDayLine->m_Symbol;
+  m_strStakeName = psetWorldStockDayLine->m_Ticker;
+  m_lLastClose = atof(psetWorldStockDayLine->m_LastClose) * 1000;
+  m_lOpen = atof(psetWorldStockDayLine->m_Open) * 1000;
+  m_lHigh = atof(psetWorldStockDayLine->m_High) * 1000;
+  m_lLow = atof(psetWorldStockDayLine->m_Low) * 1000;
+  m_lClose = atof(psetWorldStockDayLine->m_Close) * 1000;
+  m_dUpDown = atof(psetWorldStockDayLine->m_UpAndDown);
+  m_llVolume = atoll(psetWorldStockDayLine->m_Volume);
+  m_llAmount = atoll(psetWorldStockDayLine->m_Amount);
+  m_dUpDownRate = atof(psetWorldStockDayLine->m_UpDownRate);
+  m_dChangeHandRate = atof(psetWorldStockDayLine->m_ChangeHandRate);
+  m_llTotalValue = atoll(psetWorldStockDayLine->m_TotalValue);
+  m_llCurrentValue = atoll(psetWorldStockDayLine->m_CurrentValue);
+  m_dRS = atof(psetWorldStockDayLine->m_RS);
+  m_dRSIndex = atof(psetWorldStockDayLine->m_RSIndex);
+  m_dRSBackup = atof(psetWorldStockDayLine->m_RSBackup);
   return true;
 }
 

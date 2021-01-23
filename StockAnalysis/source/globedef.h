@@ -24,7 +24,7 @@ enum {
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
 #include"ChinaMarket.h"
-#include"AmericaMarket.h"
+#include"WorldMarket.h"
 
 #include"WebRTData.h"
 
@@ -58,7 +58,7 @@ extern bool gl_fTestMode; // ÊÇ·ñÉèÖÃÁËgl_fTestMode±êÊ¶£¬Ä¬ÈÏÎªÕæ¡£ÏµÍ³ÔÚÆô¶¯Ê±Ğ
 extern vector<CVirtualMarketPtr> gl_vMarketPtr; // ¸÷ÊĞ³¡Ö¸ÕëµÄÈİÆ÷£¬Ö»ÓÃÓÚÖ´ĞĞ¸÷ÊĞ³¡µÄSchedulingTask
 
 // ¸÷ÊĞ³¡Î¨Ò»µÄÊµÀı
-extern CAmericaMarketPtr gl_pAmericaMarket;
+extern CWorldMarketPtr gl_pWorldMarket;
 extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
 extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
 // ´ËÊĞ³¡±äÁ¿±ØĞëÎ»ÓÚÈ«¾Ö±äÁ¿µÄ×îºó£¬ÒòÎªÆä³õÊ¼»¯ĞèÒªÆäËûÈ«¾Ö±äÁ¿µÄÖ§³Ö¡£

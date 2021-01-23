@@ -15,12 +15,12 @@ bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
 bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; }
 
-bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   ptree pt;
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -30,7 +30,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
     pStake->m_strAddress = s.c_str();
   }
   catch (ptree_error&) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -89,17 +89,17 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CAmericaStakePtr& pStake) 
   if (s.size() > 0) pStake->m_strLogo = s.c_str();
   s = pt.get<string>(_T("finnhubIndustry"));
   if (s.size() > 0) pStake->m_strFinnhubIndustry = s.c_str();
-  pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+  pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
   pStake->m_fUpdateDatabase = true;
   return true;
 }
 
-bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   ptree pt;
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -109,7 +109,7 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
     if (s.size() > 0) pStake->m_strTicker = s.c_str();
   }
   catch (ptree_error&) {
-    pStake->m_lProfileUpdateDate = gl_pAmericaMarket->GetFormatedMarketDate();
+    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
     pStake->m_fUpdateDatabase = true;
     return false; // 没有公司简介
   }
@@ -137,14 +137,14 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CAmericaStakePtr& pStake)
   return true;
 }
 
-bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vStake) {
-  CAmericaStakePtr pStake = make_shared<CAmericaStake>();
+bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
+  CWorldStockPtr pStake = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pStake = make_shared<CAmericaStake>();
+    pStake = make_shared<CWorldStock>();
     try {
       pt2 = it->second;
       s = pt2.get<string>(_T("currency"));
@@ -170,7 +170,7 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& v
   return true;
 }
 
-bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2, pt3;
   string s;
@@ -296,7 +296,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
   return true;
 }
 
-bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   string s;
   ptree pt;
   double dTemp = 0;
@@ -523,7 +523,7 @@ bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCount
   return true;
 }
 
-bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   char buffer[1000]{};
   int i = 0;
 

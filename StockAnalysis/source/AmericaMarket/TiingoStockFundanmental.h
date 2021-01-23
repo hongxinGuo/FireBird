@@ -5,7 +5,7 @@
 
 #include"DayLine.h"
 #include"EPSSurprise.h"
-#include"SetAmericaStake.h"
+#include"SetWorldStock.h"
 
 using namespace std;
 #include<memory>

@@ -37,9 +37,9 @@ namespace StockAnalysisTest {
       gl_pChinaStakeMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
-      gl_pAmericaMarket = make_shared<CAmericaMarket>();
+      gl_pWorldMarket = make_shared<CWorldMarket>();
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
-      gl_vMarketPtr.push_back(gl_pAmericaMarket); // 美国股票市场
+      gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
       gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
@@ -136,11 +136,11 @@ namespace StockAnalysisTest {
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
       gl_vMarketPtr.clear();
-      gl_pAmericaMarket = nullptr;
+      gl_pWorldMarket = nullptr;
       gl_pChinaStakeMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
-      gl_pAmericaMarket = nullptr;
+      gl_pWorldMarket = nullptr;
     }
   };
 }

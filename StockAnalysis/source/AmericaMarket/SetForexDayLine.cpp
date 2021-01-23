@@ -1,6 +1,6 @@
 // CSetForexDayLine.cpp : CSetForexDayLine 类的实现
 
-// CSetAmericaStakeDayLine 实现
+// CSetWorldStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -29,7 +29,7 @@ CSetForexDayLine::CSetForexDayLine(CDatabase* pdb)
 }
 
 CString CSetForexDayLine::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetForexDayLine::GetDefaultSQL() {
@@ -53,7 +53,7 @@ void CSetForexDayLine::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Volume]"), m_Volume);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetForexDayLine 诊断
 
 #ifdef _DEBUG
 void CSetForexDayLine::AssertValid() const {

@@ -1,6 +1,6 @@
-// SetAmericaStakeDayLine.cpp : CSetDayLineBasicInfo 类的实现
+// SetWorldStockDayLine.cpp : CSetDayLineBasicInfo 类的实现
 
-// CSetAmericaStakeDayLine 实现
+// CSetWorldStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -9,10 +9,10 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetAmericaStakeDayLine.h"
-IMPLEMENT_DYNAMIC(CSetAmericaStakeDayLine, CRecordset)
+#include "SetWorldStockDayLine.h"
+IMPLEMENT_DYNAMIC(CSetWorldStockDayLine, CRecordset)
 
-CSetAmericaStakeDayLine::CSetAmericaStakeDayLine(CDatabase* pdb)
+CSetWorldStockDayLine::CSetWorldStockDayLine(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
@@ -37,15 +37,15 @@ CSetAmericaStakeDayLine::CSetAmericaStakeDayLine(CDatabase* pdb)
   m_nFields = 20;
 }
 
-CString CSetAmericaStakeDayLine::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+CString CSetWorldStockDayLine::GetDefaultConnect() {
+  return GetWorldMarketSchemaConnect();
 }
 
-CString CSetAmericaStakeDayLine::GetDefaultSQL() {
+CString CSetWorldStockDayLine::GetDefaultSQL() {
   return _T("[dayline]");
 }
 
-void CSetAmericaStakeDayLine::DoFieldExchange(CFieldExchange* pFX) {
+void CSetWorldStockDayLine::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -72,14 +72,14 @@ void CSetAmericaStakeDayLine::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[RelativeStrongBackup]"), m_RSBackup);	//相对于市场指数的强度
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaStakeDayLine 诊断
+// CSetWorldStockDayLine 诊断
 
 #ifdef _DEBUG
-void CSetAmericaStakeDayLine::AssertValid() const {
+void CSetWorldStockDayLine::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetAmericaStakeDayLine::Dump(CDumpContext& dc) const {
+void CSetWorldStockDayLine::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

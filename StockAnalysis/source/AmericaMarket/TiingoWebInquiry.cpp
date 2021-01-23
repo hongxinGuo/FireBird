@@ -3,7 +3,7 @@
 #include"Thread.h"
 
 #include "TiingoWebInquiry.h"
-#include"AmericaMarket.h"
+#include"WorldMarket.h"
 
 using namespace std;
 #include<thread>

@@ -1,4 +1,4 @@
-// CSetAmericaMarketOption.h : SetAmericaMarketOption 的声明
+// CSetWorldMarketOption.h : SetWorldMarketOption 的声明
 
 #pragma once
 
@@ -6,11 +6,11 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-class CSetAmericaMarketOption : public CRecordset
+class CSetWorldMarketOption : public CRecordset
 {
 public:
-  CSetAmericaMarketOption(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetAmericaMarketOption)
+  CSetWorldMarketOption(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetWorldMarketOption)
 
   // 字段/参数数据
 

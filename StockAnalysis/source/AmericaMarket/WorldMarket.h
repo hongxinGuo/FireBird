@@ -4,7 +4,7 @@
 #include"Semaphore.h"
 
 #include"VirtualMarket.h"
-#include"AmericaStake.h"
+#include"WorldStock.h"
 #include"WebData.h"
 #include"FinnhubExchange.h"
 #include"FinnhubForexSymbol.h"
@@ -97,7 +97,7 @@ public:
   }
 };
 
-extern Semaphore gl_UpdateAmericaMarketDB;  // 此信号量用于生成日线历史数据库
+extern Semaphore gl_UpdateWorldMarketDB;  // 此信号量用于生成日线历史数据库
 
 using namespace std;
 #include<map>
@@ -105,13 +105,13 @@ using namespace std;
 #include<queue>
 #include<atomic>
 
-class CAmericaMarket : public CVirtualMarket {
+class CWorldMarket : public CVirtualMarket {
   friend class CFinnhub;
 public:
-  CAmericaMarket();
+  CWorldMarket();
   void InitialFinnhubInquiryStr(void);
   void InitialTiingoInquiryStr(void);
-  virtual ~CAmericaMarket();
+  virtual ~CWorldMarket();
 
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
   bool ProcessFinnhubInquiringMessage(void);
@@ -162,18 +162,18 @@ public:
   bool TaskUpdateDayLineStartEndDate(void);
 
   // 各工作线程调用包裹函数
-  virtual bool RunningthreadUpdateDayLneStartEndDate(CAmericaMarket* pMarket);
+  virtual bool RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB();
   virtual bool RunningTaskThreadUpdateStakeDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
-  virtual bool RunningThreadUpdateEPSSurpriseDB(CAmericaStake* pStock);
+  virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
 
-  bool IsAmericaStake(CString strProfile);
-  bool IsAmericaStakeUpdated(void);
-  CAmericaStakePtr GetAmericaStake(CString strTicker);
-  void AddAmericaStake(CAmericaStakePtr pStock);
+  bool IsWorldStock(CString strProfile);
+  bool IsWorldStockUpdated(void);
+  CWorldStockPtr GetWorldStock(CString strTicker);
+  void AddWorldStock(CWorldStockPtr pStock);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
@@ -192,15 +192,15 @@ public:
 
   long GetFinnInquiry(void);
 
-  long GetTotalStock(void) noexcept { return m_vAmericaStake.size(); }
-  CAmericaStakePtr GetStock(long lIndex) { return m_vAmericaStake.at(lIndex); }
-  CAmericaStakePtr GetStock(CString strSymbol) { return m_vAmericaStake.at(m_mapAmericaStake.at(strSymbol)); }
+  long GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
+  CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
+  CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
 
   // 数据库操作
   bool LoadOption(void);
   bool LoadWorldExchangeDB(void); // 装入世界交易所信息
-  bool LoadAmericaStake(void);
-  bool LoadAmericaChoicedStock(void);
+  bool LoadWorldStock(void);
+  bool LoadWorldChoicedStock(void);
   bool UpdateCountryListDB(void);
   bool DeleteStakeDB(void);
   bool UpdateStakeDB(void);
@@ -226,9 +226,9 @@ protected:
   map<CString, long> m_mapFinnhubExchange;
   long m_lCurrentExchangePos;
 
-  vector<CAmericaStakePtr> m_vAmericaStake;
-  map<CString, long> m_mapAmericaStake;
-  long m_lLastTotalAmericaStake;
+  vector<CWorldStockPtr> m_vWorldStock;
+  map<CString, long> m_mapWorldStock;
+  long m_lLastTotalWorldStock;
   long m_lCurrentProfilePos;
   long m_lCurrentUpdateDayLinePos;
   long m_lCurrentRTDataQuotePos;
@@ -239,8 +239,8 @@ protected:
   WebInquiry m_CurrentFinnhubInquiry;
   WebInquiry m_CurrentTiingoInquiry;
   WebInquiry m_CurrentQuandlInquiry;
-  vector<CAmericaStakePtr> m_vAmericaChoicedStake;
-  map<CString, long> m_mapAmericaChoicedStake;
+  vector<CWorldStockPtr> m_vWorldChoicedStake;
+  map<CString, long> m_mapWorldChoicedStake;
   long m_lChoicedStockPos;
 
   vector<CString> m_vFinnhubInquiringStr;
@@ -277,7 +277,7 @@ protected:
   long m_lLastTotalEconomicCalendar;
 
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
-  bool m_fAmericaStakeUpdated; // 每日更新公司简介
+  bool m_fWorldStockUpdated; // 每日更新公司简介
   bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
   bool m_fFinnhubForexExhangeUpdated; // 每日更新Forex交易所
   bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
@@ -292,4 +292,4 @@ protected:
   bool m_fRebulidDayLine; // 重建日线历史数据。
 };
 
-typedef shared_ptr<CAmericaMarket> CAmericaMarketPtr;
+typedef shared_ptr<CWorldMarket> CWorldMarketPtr;

@@ -35,7 +35,7 @@ CSetTiingoStockFundanmental::CSetTiingoStockFundanmental(CDatabase* pdb)
 }
 
 CString CSetTiingoStockFundanmental::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetTiingoStockFundanmental::GetDefaultSQL() {

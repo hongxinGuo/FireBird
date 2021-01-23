@@ -1,6 +1,6 @@
 #include"thread.h"
 
-UINT ThreadUpdateAmericaStakeDayLineStartEndDate(CAmericaMarket* pMarket) {
+UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarket* pMarket) {
   pMarket->UpdateDayLineStartEndDate();
 
   return 43;

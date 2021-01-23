@@ -545,15 +545,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\AmericaStake.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -570,9 +561,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.cpp">
@@ -620,13 +608,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.cpp">
@@ -651,6 +633,30 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -910,22 +916,10 @@
     <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\AmericaStake.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStake.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaStakeDayLine.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetCountry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EconomicCalendar.h">
@@ -958,12 +952,6 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaChoicedStock.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetAmericaMarketOption.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexExchange.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -980,6 +968,30 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetTiingoStockFundanmental.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldChoicedStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

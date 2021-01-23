@@ -1,9 +1,9 @@
 #include"globedef.h"
 
-UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStake*> pStake) {
-  gl_UpdateAmericaMarketDB.Wait();
+UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStake) {
+  gl_UpdateWorldMarketDB.Wait();
   pStake->UpdateEPSSurpriseDB();
-  gl_UpdateAmericaMarketDB.Signal();
+  gl_UpdateWorldMarketDB.Signal();
 
   return 41;
 }

@@ -15,8 +15,8 @@
 
 #include"ChinaStake.h"
 class CChinaMarket;
-#include"AmericaMarket.h"
-#include"AmericaStake.h"
+#include"WorldMarket.h"
+#include"WorldStock.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"
 
@@ -102,19 +102,19 @@ UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖ
 
 // ÏÂÃæÎªÃÀ¹ú¹ÉÆ±ÊĞ³¡µÄ¹¤×÷Ïß³Ì
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì
-UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
+UINT ThreadUpdateStakeDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª37
 // ¸üĞÂForexÈÕÏßÊı¾İ
 UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol); // ´Ë¹¤×÷Ïß³ÌµÄ·µ»ØÖµÎ´38
 // ¸üĞÂForex´úÂë±í
-UINT ThreadUpdateForexSymbolDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
+UINT ThreadUpdateForexSymbolDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª39
 // ¸üĞÂCountryList´úÂë±í
-UINT ThreadUpdateCountryListDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
+UINT ThreadUpdateCountryListDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª40
 // ¸üĞÂEPSSurprise±í
-UINT ThreadUpdateEPSSurpriseDB(not_null<CAmericaStake*> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª41
+UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStake); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª41
 // ¸üĞÂÃÀ¹ú¹ÉÆ±µÄÈÕÏßÀúÊ·Êı¾İ¡£
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª42
+UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª42
 // ´ÓÈÕÏßÊı¾İÖĞÖØ½¨ÆğÖ¹ÈÕÆÚ
-UINT ThreadUpdateAmericaStakeDayLineStartEndDate(CAmericaMarket* pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª43
+UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarket* pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª43
 
 //¸÷ÖÖ¼ÆËãÓÃ¹¤×÷Ïß³Ì
 // ¼ÆËã10ÈÕÇ¿¹ÉÆ±¼¯£¨Á½¸öÔÂÄÚÖ»³öÏÖÒ»´ÎÇ¿ÊÆ·å£©

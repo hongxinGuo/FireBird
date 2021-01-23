@@ -4,7 +4,7 @@
 
 #include"SetDayLineBasicInfo.h"
 #include"SetDayLineExtendInfo.h"
-#include"SetAmericaStakeDayLine.h"
+#include"SetWorldStockDayLine.h"
 #include"SetForexDayLine.h"
 
 #include"ChinaStockHistoryData.h"
@@ -27,9 +27,9 @@ public:
   bool AppendChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
   bool LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo);
   bool LoadChinaMarketExtendData(not_null<CSetDayLineExtendInfo*> psetDayLineExtendInfo);
-  bool SaveAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
-  bool AppendAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
-  bool LoadAmericaMarketData(not_null<CSetAmericaStakeDayLine*> pSetAmericaStakeDayLine);
+  bool SaveWorldMarketData(not_null<CSetWorldStockDayLine*> pSetWorldStockDayLine);
+  bool AppendWorldMarketData(not_null<CSetWorldStockDayLine*> pSetWorldStockDayLine);
+  bool LoadWorldMarketData(not_null<CSetWorldStockDayLine*> pSetWorldStockDayLine);
   bool SaveForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);
   bool AppendForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);
   bool LoadForexDayLine(not_null<CSetForexDayLine*> pSetForexDayLine);

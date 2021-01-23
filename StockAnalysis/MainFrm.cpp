@@ -88,7 +88,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
-  ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateAmericaStakeDaylineStartEnd)
+  ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -168,7 +168,7 @@ CMainFrame::~CMainFrame() {
 }
 
 bool CMainFrame::CreateMarketContainer(void) {
-  gl_vMarketPtr.push_back(gl_pAmericaMarket); // 美国股票市场
+  gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
   gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
   gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
   gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
@@ -181,7 +181,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   if (gl_pChinaStakeMarket == nullptr) gl_pChinaStakeMarket = make_shared<CChinaMarket>();
   if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
   if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
-  if (gl_pAmericaMarket == nullptr) gl_pAmericaMarket = make_shared<CAmericaMarket>();
+  if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
   gl_WebInquirer.Initialize();
 
   //生成市场容器Vector
@@ -977,22 +977,22 @@ void CMainFrame::OnUpdateStakeCode() {
 
 void CMainFrame::OnRebuildEpsSurprise() {
   // TODO: Add your command handler code here
-  gl_pAmericaMarket->RebuildEPSSurprise();
+  gl_pWorldMarket->RebuildEPSSurprise();
 }
 
 void CMainFrame::OnRebuildPeer() {
   // TODO: Add your command handler code here
-  gl_pAmericaMarket->ReBuildPeer();
+  gl_pWorldMarket->ReBuildPeer();
 }
 
 void CMainFrame::OnRebuildDayline() {
   // TODO: Add your command handler code here
-  gl_pAmericaMarket->RebuildStakeDayLineDB();
+  gl_pWorldMarket->RebuildStakeDayLineDB();
 }
 
-void CMainFrame::OnUpdateAmericaStakeDaylineStartEnd() {
+void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {
   // TODO: Add your command handler code here
-  gl_pAmericaMarket->TaskUpdateDayLineStartEndDate();
+  gl_pWorldMarket->TaskUpdateDayLineStartEndDate();
 }
 
 //void CMainFrame::OnRebuildChinamarketDayline() {

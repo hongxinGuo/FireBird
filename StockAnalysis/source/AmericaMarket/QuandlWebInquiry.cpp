@@ -3,7 +3,7 @@
 #include"Thread.h"
 
 #include "QuandlWebInquiry.h"
-#include"AmericaMarket.h"
+#include"WorldMarket.h"
 
 using namespace std;
 #include<thread>
@@ -58,7 +58,7 @@ CString CQuandlWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSk
   CString str;
   static int s_iCount = 5;
 
-  switch (gl_pAmericaMarket->GetCurrentPrefixIndex()) {
+  switch (gl_pWorldMarket->GetCurrentPrefixIndex()) {
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;

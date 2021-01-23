@@ -5,11 +5,11 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-class CSetAmericaStake : public CRecordset
+class CSetWorldStock : public CRecordset
 {
 public:
-  CSetAmericaStake(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetAmericaStake)
+  CSetWorldStock(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetWorldStock)
 
   // 字段/参数数据
 

@@ -239,14 +239,14 @@ CString GetChinaMarketSchemaConnect() {
 // 测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动，以保证使用不同的Schema。
 //
 /////////////////////////////////////////////////////////////////////////////////
-CString GetAmericaMarketSchemaConnect() {
+CString GetWorldMarketSchemaConnect() {
   if (!gl_fNormalMode) {
     gl_fTestMode = true;
-    return _T("DSN=AmericaMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是AmericaMarketTest Schema
+    return _T("DSN=WorldMarketTest;UID=Test;PASSWORD=test;charset=utf8mb4"); // Test操作的是world_market_test Schema
   }
   else {
     gl_fTestMode = false;
-    return _T("DSN=AmericaMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // AmericaMarket操作的是AmericaMarket Schema
+    return _T("DSN=WorldMarket;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"); // WorldMarket操作的是world_market Schema
   }
 }
 

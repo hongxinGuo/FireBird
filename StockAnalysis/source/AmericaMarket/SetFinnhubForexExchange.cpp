@@ -18,7 +18,7 @@ CSetFinnhubForexExchange::CSetFinnhubForexExchange(CDatabase* pdb)
 }
 
 CString CSetFinnhubForexExchange::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetFinnhubForexExchange::GetDefaultSQL() {
@@ -34,7 +34,7 @@ void CSetFinnhubForexExchange::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("[Exchange]"), m_Exchange);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaStake ’Ô∂œ
+// CSetWorldStock ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetFinnhubForexExchange::AssertValid() const {

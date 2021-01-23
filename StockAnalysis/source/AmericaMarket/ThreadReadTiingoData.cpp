@@ -14,7 +14,7 @@
 UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pFinnhubWebData) {
   // 新浪实时数据库的读取时间，以下列数字比较合适，再快的话，可能会出现丢帧现象。
   // 完全克服的话，还需要使用其他方法来确定服务器是否发送结束，目前的方法只是读不到了就认为结束了。
-  ASSERT(!gl_pAmericaMarket->IsTiingoDataReceived());
+  ASSERT(!gl_pWorldMarket->IsTiingoDataReceived());
   gl_ThreadStatus.IncreaseRunningThread();
   if (pFinnhubWebData->ReadWebData()) { // 800毫秒读取时间，目前不允许改变
     CWebDataPtr pWebDataReceived = pFinnhubWebData->TransferWebDataToQueueData();
@@ -24,9 +24,9 @@ UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pFinnhubWebData) {
   }
   else {
     while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
-    gl_pAmericaMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Finnhub数据申请标志。
+    gl_pWorldMarket->SetTiingoInquiring(false); // 当工作线程出现故障时，需要清除Finnhub数据申请标志。
   }
-  gl_pAmericaMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
+  gl_pWorldMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 1;

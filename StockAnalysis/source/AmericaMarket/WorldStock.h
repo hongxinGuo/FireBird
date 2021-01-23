@@ -6,23 +6,23 @@
 #include"DayLine.h"
 #include"EPSSurprise.h"
 
-#include"SetAmericaStake.h"
+#include"SetWorldStock.h"
 
 using namespace std;
 #include<memory>
 #include<atomic>
 #include<vector>
 
-class CAmericaStake : public CObject {
+class CWorldStock : public CObject {
 public:
-  CAmericaStake();
+  CWorldStock();
   void Reset(void);
 public:
-  void Load(CSetAmericaStake& setAmericaStake);
+  void Load(CSetWorldStock& setWorldStock);
   bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
-  void Save(CSetAmericaStake& setAmericaStake);
-  void Update(CSetAmericaStake& setAmericaStake);
-  void Append(CSetAmericaStake& setAmericaStake);
+  void Save(CSetWorldStock& setWorldStock);
+  void Update(CSetWorldStock& setWorldStock);
+  void Append(CSetWorldStock& setWorldStock);
   void SaveDayLine(void);
   bool UpdateEPSSurpriseDB(void);
 
@@ -192,7 +192,7 @@ public:
   atomic_bool m_fEPSSurpriseNeedSave;
   // 无需存储数据区
   bool m_fUpdateDatabase; // 要求更新此数据
-  bool m_fInquiryAmericaStake; // 要求更新公司简介
+  bool m_fInquiryWorldStock; // 要求更新公司简介
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
   bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
@@ -201,4 +201,4 @@ protected:
   // 无需存储数据区
 };
 
-typedef shared_ptr<CAmericaStake> CAmericaStakePtr;
+typedef shared_ptr<CWorldStock> CWorldStockPtr;

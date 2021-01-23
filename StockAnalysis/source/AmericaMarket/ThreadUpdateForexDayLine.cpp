@@ -18,7 +18,7 @@ UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
   gl_ThreadStatus.IncreaseRunningThread();
 
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_UpdateAmericaMarketDB.Wait();
+  gl_UpdateWorldMarketDB.Wait();
   if (!gl_fExitingSystem) {
     pSymbol->SaveDayLine();
     pSymbol->UpdateDayLineStartEndDate();
@@ -28,7 +28,7 @@ UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
     gl_systemMessage.PushDayLineInfoMessage(str);
   }
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
-  gl_UpdateAmericaMarketDB.Signal();
+  gl_UpdateWorldMarketDB.Signal();
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 38;

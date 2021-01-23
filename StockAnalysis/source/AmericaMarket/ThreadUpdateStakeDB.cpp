@@ -1,9 +1,9 @@
 #include"globedef.h"
 
-UINT ThreadUpdateStakeDB(not_null<CAmericaMarket*> pMarket) {
-  gl_UpdateAmericaMarketDB.Wait();
+UINT ThreadUpdateStakeDB(not_null<CWorldMarket*> pMarket) {
+  gl_UpdateWorldMarketDB.Wait();
   pMarket->UpdateStakeDB3();
-  gl_UpdateAmericaMarketDB.Signal();
+  gl_UpdateWorldMarketDB.Signal();
 
   return 37;
 }

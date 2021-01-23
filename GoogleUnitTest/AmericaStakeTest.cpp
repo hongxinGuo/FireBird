@@ -3,13 +3,13 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"AmericaStake.h"
-#include"AmericaMarket.h"
+#include"WorldStock.h"
+#include"WorldMarket.h"
 
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CAmericaStockTest : public ::testing::Test
+  class CWorldStockTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -25,11 +25,11 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CAmericaStakePtr pStake;
+    CWorldStockPtr pStake;
   };
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus1) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus1) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
 
@@ -39,16 +39,16 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus2) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus2) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
     stake.m_lIPOStatus = __STAKE_NULL__;
     EXPECT_FALSE(stake.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
   }
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus3) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus3) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
     stake.m_lIPOStatus = __STAKE_DELISTED__;
@@ -59,20 +59,20 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stake.CheckDayLineUpdateStatus(0, 0, 0, 6)) << "摘牌股票只在星期六检查日线\n";
   }
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus4) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus4) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
     stake.m_lIPOStatus = __STAKE_IPOED__;
     stake.m_fIsActive = true;
-    stake.m_lDayLineEndDate = gl_pAmericaMarket->GetPrevDay(gl_pAmericaMarket->GetFormatedMarketDate(), 100);
-    EXPECT_TRUE(stake.CheckDayLineUpdateStatus(gl_pAmericaMarket->GetFormatedMarketDate(), 20210108, 0, 1));
-    stake.m_lDayLineEndDate = gl_pAmericaMarket->GetPrevDay(stake.m_lDayLineEndDate);
-    EXPECT_FALSE(stake.CheckDayLineUpdateStatus(gl_pAmericaMarket->GetFormatedMarketDate(), 20210108, 0, 1)) << "早于100天的股票不再更新日线";
+    stake.m_lDayLineEndDate = gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetFormatedMarketDate(), 100);
+    EXPECT_TRUE(stake.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), 20210108, 0, 1));
+    stake.m_lDayLineEndDate = gl_pWorldMarket->GetPrevDay(stake.m_lDayLineEndDate);
+    EXPECT_FALSE(stake.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), 20210108, 0, 1)) << "早于100天的股票不再更新日线";
   }
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus5) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus5) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
     stake.m_lIPOStatus = __STAKE_IPOED__;
@@ -88,8 +88,8 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CAmericaStockTest, TestCheckCheckDayLineUpdateStatus6) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus6) {
+    CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
     stake.m_lIPOStatus = __STAKE_IPOED__;
@@ -105,11 +105,11 @@ namespace StockAnalysisTest {
     }
   }
 
-  TEST_F(CAmericaStockTest, TestSaveDayLine) {
-    CAmericaStake stake;
+  TEST_F(CWorldStockTest, TestSaveDayLine) {
+    CWorldStock stake;
     vector<CDayLinePtr> vDayLine;
     CDayLinePtr pDayLine;
-    CSetAmericaStakeDayLine setDayLine;
+    CSetWorldStockDayLine setDayLine;
 
     pDayLine = make_shared<CDayLine>();
     pDayLine->SetStakeCode(_T("A"));
@@ -128,7 +128,7 @@ namespace StockAnalysisTest {
     vDayLine.push_back(pDayLine);
     pDayLine = make_shared<CDayLine>();
     pDayLine->SetStakeCode(_T("A"));
-    pDayLine->SetDate(20210108); // 这个需要添加进数据库
+    pDayLine->SetDate(20210123); // 这个需要添加进数据库
     pDayLine->SetClose(10030);
     vDayLine.push_back(pDayLine);
 
@@ -149,7 +149,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(setDayLine.m_Close, _T("12.345"));
     setDayLine.Delete();
     setDayLine.MoveLast();
-    EXPECT_TRUE(setDayLine.m_Date = 20210108);
+    EXPECT_TRUE(setDayLine.m_Date = 20210123);
     EXPECT_STREQ(setDayLine.m_Close, _T("10.030"));
     setDayLine.Delete();
     setDayLine.m_pDatabase->CommitTrans();

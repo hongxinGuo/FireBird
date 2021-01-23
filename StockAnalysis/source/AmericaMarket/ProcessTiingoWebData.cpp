@@ -13,8 +13,8 @@ using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
-bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vStake) {
-  CAmericaStakePtr pStake = make_shared<CAmericaStake>();
+bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
+  CWorldStockPtr pStake = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
   int iCount = 0;
@@ -25,7 +25,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vS
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pStake = make_shared<CAmericaStake>();
+    pStake = make_shared<CWorldStock>();
     pt2 = it->second;
     s = pt2.get<string>(_T("permaTicker"));
     if (s.size() > 0) pStake->m_strTiingoPermaTicker = s.c_str();
@@ -71,7 +71,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CAmericaStakePtr>& vS
   return true;
 }
 
-bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CAmericaStakePtr& pStake) {
+bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2;
   string s;

@@ -1,6 +1,6 @@
-// SetAmericaChoicedStock.h : CSetAmericaChoicedStock 类的实现
+// SetWorldChoicedStock.h : CSetWorldChoicedStock 类的实现
 
-// CSetAmericaChoicedStock 实现
+// CSetWorldChoicedStock 实现
 
 // 代码生成在 2019年5月26日, 8:15
 
@@ -8,24 +8,24 @@
 #include"globedef.h"
 #include"Accessory.h"
 
-#include "SetAmericaChoicedStock.h"
-IMPLEMENT_DYNAMIC(CSetAmericaChoicedStock, CRecordset)
+#include "SetWorldChoicedStock.h"
+IMPLEMENT_DYNAMIC(CSetWorldChoicedStock, CRecordset)
 
-CSetAmericaChoicedStock::CSetAmericaChoicedStock(CDatabase* pdb) : CRecordset(pdb) {
+CSetWorldChoicedStock::CSetWorldChoicedStock(CDatabase* pdb) : CRecordset(pdb) {
   m_ID = 0;
   m_Symbol = _T("");
   m_nFields = 2;
 }
 
-CString CSetAmericaChoicedStock::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+CString CSetWorldChoicedStock::GetDefaultConnect() {
+  return GetWorldMarketSchemaConnect();
 }
 
-CString CSetAmericaChoicedStock::GetDefaultSQL() {
+CString CSetWorldChoicedStock::GetDefaultSQL() {
   return _T("[choicedstock]");
 }
 
-void CSetAmericaChoicedStock::DoFieldExchange(CFieldExchange* pFX) {
+void CSetWorldChoicedStock::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -37,11 +37,11 @@ void CSetAmericaChoicedStock::DoFieldExchange(CFieldExchange* pFX) {
 // CSetChoicedStock 诊断
 
 #ifdef _DEBUG
-void CSetAmericaChoicedStock::AssertValid() const {
+void CSetWorldChoicedStock::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetAmericaChoicedStock::Dump(CDumpContext& dc) const {
+void CSetWorldChoicedStock::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

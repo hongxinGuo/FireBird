@@ -1,15 +1,15 @@
-// SetAmericaChoicedStock.h : CSetChoicedStock 的声明
+// SetWorldChoicedStock.h : CSetChoicedStock 的声明
 
 #pragma once
 #include"stdafx.h"
 
 // 代码生成在 2019年5月26日, 8:15
 
-class CSetAmericaChoicedStock : public CRecordset
+class CSetWorldChoicedStock : public CRecordset
 {
 public:
-  CSetAmericaChoicedStock(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetAmericaChoicedStock)
+  CSetWorldChoicedStock(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetWorldChoicedStock)
 
   // 字段/参数数据
 

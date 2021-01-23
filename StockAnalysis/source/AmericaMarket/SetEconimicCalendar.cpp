@@ -1,6 +1,6 @@
 // CSetEconomicCalendar.cpp : CSetEconomicCalendar 类的实现
 
-// CSetAmericaStakeDayLine 实现
+// CSetWorldStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -27,7 +27,7 @@ CSetEconomicCalendar::CSetEconomicCalendar(CDatabase* pdb)
 }
 
 CString CSetEconomicCalendar::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetEconomicCalendar::GetDefaultSQL() {
@@ -50,7 +50,7 @@ void CSetEconomicCalendar::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("Unit"), m_Unit);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetEconomicCalendar 诊断
 
 #ifdef _DEBUG
 void CSetEconomicCalendar::AssertValid() const {

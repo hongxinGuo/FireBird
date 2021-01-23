@@ -1,6 +1,6 @@
-// CSetAmericaMarketOption.cpp : CSetAmericaMarketOption 类的实现
+// CSetWorldMarketOption.cpp : CSetWorldMarketOption 类的实现
 
-// CSetAmericaMarketOption 实现
+// CSetWorldMarketOption 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -9,11 +9,11 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetAmericaMarketOption.h"
+#include "SetWorldMarketOption.h"
 
-IMPLEMENT_DYNAMIC(CSetAmericaMarketOption, CRecordset)
+IMPLEMENT_DYNAMIC(CSetWorldMarketOption, CRecordset)
 
-CSetAmericaMarketOption::CSetAmericaMarketOption(CDatabase* pdb)
+CSetWorldMarketOption::CSetWorldMarketOption(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_FinnhubToken = _T(" ");
@@ -22,15 +22,15 @@ CSetAmericaMarketOption::CSetAmericaMarketOption(CDatabase* pdb)
   m_nFields = 4;
 }
 
-CString CSetAmericaMarketOption::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+CString CSetWorldMarketOption::GetDefaultConnect() {
+  return GetWorldMarketSchemaConnect();
 }
 
-CString CSetAmericaMarketOption::GetDefaultSQL() {
+CString CSetWorldMarketOption::GetDefaultSQL() {
   return _T("[america_market_option]");
 }
 
-void CSetAmericaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
+void CSetWorldMarketOption::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -41,14 +41,14 @@ void CSetAmericaMarketOption::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("QuandlToken"), m_QuandlToken);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetWorldForexDayLine 诊断
 
 #ifdef _DEBUG
-void CSetAmericaMarketOption::AssertValid() const {
+void CSetWorldMarketOption::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetAmericaMarketOption::Dump(CDumpContext& dc) const {
+void CSetWorldMarketOption::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

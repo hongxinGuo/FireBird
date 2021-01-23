@@ -1,7 +1,5 @@
 // CSetCountry.cpp : CSetCountry 类的实现
 
-// CSetAmericaStakeDayLine 实现
-
 // 代码生成在 2019年6月2日, 5:10
 
 #include "stdafx.h"
@@ -26,7 +24,7 @@ CSetCountry::CSetCountry(CDatabase* pdb)
 }
 
 CString CSetCountry::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetCountry::GetDefaultSQL() {
@@ -47,7 +45,7 @@ void CSetCountry::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Text(pFX, _T("CurrencyCode"), m_CurrencyCode);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetCountry 诊断
 
 #ifdef _DEBUG
 void CSetCountry::AssertValid() const {

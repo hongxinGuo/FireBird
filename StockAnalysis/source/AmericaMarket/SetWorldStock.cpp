@@ -1,6 +1,6 @@
-// CSetAmericaStake.cpp : CSetStockCode 类的实现
+// CSetWorldStock.cpp : CSetStockCode 类的实现
 
-// CSetAmericaStake 实现
+// CSetWorldStock 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
@@ -8,11 +8,11 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include "SetAmericaStake.h"
+#include "SetWorldStock.h"
 
-IMPLEMENT_DYNAMIC(CSetAmericaStake, CRecordset)
+IMPLEMENT_DYNAMIC(CSetWorldStock, CRecordset)
 
-CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
+CSetWorldStock::CSetWorldStock(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Description = _T(" ");
   m_DisplaySymbol = _T(" ");
@@ -70,15 +70,15 @@ CSetAmericaStake::CSetAmericaStake(CDatabase* pdb)
   m_nFields = 55;
 }
 
-CString CSetAmericaStake::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+CString CSetWorldStock::GetDefaultConnect() {
+  return GetWorldMarketSchemaConnect();
 }
 
-CString CSetAmericaStake::GetDefaultSQL() {
+CString CSetWorldStock::GetDefaultSQL() {
   return _T("[companyprofile]");
 }
 
-void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
+void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -141,14 +141,14 @@ void CSetAmericaStake::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[DailyDataUpdateDate]"), m_DailyDataUpdateDate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaStake 诊断
+// CSetWorldStock 诊断
 
 #ifdef _DEBUG
-void CSetAmericaStake::AssertValid() const {
+void CSetWorldStock::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetAmericaStake::Dump(CDumpContext& dc) const {
+void CSetWorldStock::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

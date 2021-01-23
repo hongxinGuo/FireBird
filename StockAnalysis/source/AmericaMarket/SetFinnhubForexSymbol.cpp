@@ -24,7 +24,7 @@ CSetFinnhubForexSymbol::CSetFinnhubForexSymbol(CDatabase* pdb)
 }
 
 CString CSetFinnhubForexSymbol::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetFinnhubForexSymbol::GetDefaultSQL() {
@@ -46,7 +46,7 @@ void CSetFinnhubForexSymbol::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Long(pFX, _T("[IPOStatus]"), m_IPOStatus);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaStake ’Ô∂œ
+// CSetWorldStock ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetFinnhubForexSymbol::AssertValid() const {

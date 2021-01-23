@@ -1,6 +1,6 @@
 // CSetEPSSurprise.cpp : CSetEPSSurprise 类的实现
 
-// CSetAmericaStakeDayLine 实现
+// CSetWorldStockDayLine 实现
 
 // 代码生成在 2019年6月2日, 5:10
 
@@ -24,7 +24,7 @@ CSetEPSSurprise::CSetEPSSurprise(CDatabase* pdb)
 }
 
 CString CSetEPSSurprise::GetDefaultConnect() {
-  return GetAmericaMarketSchemaConnect();
+  return GetWorldMarketSchemaConnect();
 }
 
 CString CSetEPSSurprise::GetDefaultSQL() {
@@ -43,7 +43,7 @@ void CSetEPSSurprise::DoFieldExchange(CFieldExchange* pFX) {
   RFX_Double(pFX, _T("Estimate"), m_Estimate);
 }
 /////////////////////////////////////////////////////////////////////////////
-// CSetAmericaForexDayLine 诊断
+// CSetEPSSurprise 诊断
 
 #ifdef _DEBUG
 void CSetEPSSurprise::AssertValid() const {

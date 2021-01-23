@@ -14,22 +14,22 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      m_fSystemStatus = gl_pAmericaMarket->IsSystemReady();
-      gl_pAmericaMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
+      m_fSystemStatus = gl_pWorldMarket->IsSystemReady();
+      gl_pWorldMarket->SetSystemReady(true); // Quandl引擎必须等待系统初始化后才可使用。
     }
 
     static void TearDownTestSuite(void) {
-      gl_pAmericaMarket->SetSystemReady(m_fSystemStatus);
+      gl_pWorldMarket->SetSystemReady(m_fSystemStatus);
     }
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_pAmericaMarket->CalculateTime();
+      gl_pWorldMarket->CalculateTime();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pAmericaMarket->SetResetMarket(true);
+      gl_pWorldMarket->SetResetMarket(true);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
     CMockQuandlWebInquiry m_QuandlWebInquiry; // 网易日线历史数据
@@ -44,7 +44,7 @@ namespace StockAnalysisTest {
     m_QuandlWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_QuandlWebInquiry.GetWebData());
     m_QuandlWebInquiry.SetReadingWebData(false);
-    gl_pAmericaMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetSystemReady(true);
     EXPECT_CALL(m_QuandlWebInquiry, StartReadingThread)
       .Times(1);
     m_QuandlWebInquiry.GetWebData();
@@ -57,7 +57,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CQuandlWebInquiryTest, TestPrepareNextInquiringStr) {
     CString str;
-    gl_pAmericaMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
       if (m_QuandlWebInquiry.PrepareNextInquiringStr()) {
         str = m_QuandlWebInquiry.GetInquiringString();
@@ -65,6 +65,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
-    gl_pAmericaMarket->SetSystemReady(false);
+    gl_pWorldMarket->SetSystemReady(false);
   }
 }

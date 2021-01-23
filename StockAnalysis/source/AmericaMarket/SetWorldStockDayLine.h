@@ -1,4 +1,4 @@
-// SetAmericaStakeDayLine.h : CSetDayLineBasicInfo 的声明
+// SetWorldStockDayLine.h : CSetDayLineBasicInfo 的声明
 
 #pragma once
 
@@ -6,11 +6,11 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-class CSetAmericaStakeDayLine : public CRecordset
+class CSetWorldStockDayLine : public CRecordset
 {
 public:
-  CSetAmericaStakeDayLine(CDatabase* pDatabase = nullptr);
-  DECLARE_DYNAMIC(CSetAmericaStakeDayLine)
+  CSetWorldStockDayLine(CDatabase* pDatabase = nullptr);
+  DECLARE_DYNAMIC(CSetWorldStockDayLine)
 
   // 字段/参数数据
 

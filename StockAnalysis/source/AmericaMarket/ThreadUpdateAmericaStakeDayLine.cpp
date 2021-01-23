@@ -11,15 +11,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-#include"AmericaStake.h"
+#include"WorldStock.h"
 
-UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket) {
+UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
   CString str;
-  CAmericaStakePtr pStock = nullptr;
+  CWorldStockPtr pStock = nullptr;
 
   gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
-  gl_UpdateAmericaMarketDB.Wait();
+  gl_UpdateWorldMarketDB.Wait();
   for (long i = 0; i < pMarket->GetTotalStock(); i++) {
     pStock = pMarket->GetStock(i);
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
@@ -39,7 +39,7 @@ UINT ThreadUpdateAmericaStakeDayLineDB(not_null<CAmericaMarket*> pMarket) {
       break; // 如果程序正在退出，则停止存储。
     }
   }
-  gl_UpdateAmericaMarketDB.Signal();
+  gl_UpdateWorldMarketDB.Signal();
   gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_ThreadStatus.DecreaseRunningThread();
 
