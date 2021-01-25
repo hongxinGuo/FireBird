@@ -120,7 +120,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -131,7 +131,7 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANDebug|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\include;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -142,7 +142,7 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan2|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -152,7 +152,7 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASANRelease|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -162,7 +162,7 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Asan|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;C:\Users\hxguo\source\repos\StockAnalysis\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -172,7 +172,7 @@
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\AmericaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\ChinaMarket;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Crweber;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\Poten Daily;C:\Users\hxguo\source\repos\StockAnalysis\StockAnalysis\source\DataBase;C:\Users\hxguo\source\repos\StockAnalysis\GoogleUnitTest;$(IncludePath)</IncludePath>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -216,6 +216,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldMarketOption.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetWorldStockDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
@@ -229,13 +230,38 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaStakeRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStakeCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp" />
@@ -259,44 +285,18 @@
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefing.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp" />
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildDayLineRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLineRS.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadLoadWeekLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadPotenDailyBriefing.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaStakeRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveActiveStakeCode.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveCrweberDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveDayLine.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ThreadUpdateStockCodeDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
@@ -417,13 +417,18 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h" />
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
@@ -447,22 +452,17 @@
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
-    <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\NeteaseRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h" />
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefing.h" />
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h" />
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\PriorityQueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
-    <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h" />
     <ClInclude Include="..\StockAnalysis\source\StakeSection.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
-    <ClInclude Include="..\StockAnalysis\source\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />
     <ClInclude Include="..\StockAnalysis\source\VirtualMarket.h" />

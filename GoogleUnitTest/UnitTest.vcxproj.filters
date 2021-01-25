@@ -186,18 +186,6 @@
     <ClCompile Include="..\StockAnalysis\source\Accessory.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndex.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndexMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\CrweberIndexWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -207,76 +195,16 @@
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\NeteaseRTWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\OneDeal.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefing.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SinaRTWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\TengxunRTWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadLoadDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadMaintainDayLineDB.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadProcessCurrentTradeDayStock.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadCrweberIndex.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadNeteaseRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadPotenDailyBriefing.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadTengxunRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveTempRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadUpdateStockCodeDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\VirtualMarket.cpp">
@@ -327,14 +255,8 @@
     <ClCompile Include="ThreadReadTengxunRTDataTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadChoice10RSStrongSTockSet.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadChoice10RSStrongStockSetTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveCrweberDB.cpp">
-      <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="GuadanTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
@@ -422,18 +344,6 @@
     <ClCompile Include="..\StockAnalysis\source\WeekLine.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadLoadWeekLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildDayLineRS.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadBuildWeekLineRS.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadBuildDayLineRSOfDayTest.cpp">
       <Filter>Test源文件\China Market\工作线程</Filter>
     </ClCompile>
@@ -506,16 +416,7 @@
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadSinaStakeRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaStake.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="StakeCodeTest.cpp">
@@ -534,12 +435,6 @@
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadSaveActiveStakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp">
@@ -659,6 +554,111 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLineRS.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadLoadWeekLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadMaintainDayLineDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaStakeRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStakeCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndex.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\Poten Daily\ThreadReadPotenDailyBriefing.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -697,18 +697,6 @@
     <ClInclude Include="..\StockAnalysis\source\Accessory.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndex.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndexMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\CrweberIndexWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DayLine.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -718,19 +706,7 @@
     <ClInclude Include="..\StockAnalysis\source\Guadan.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\NeteaseRTWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\OneDeal.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefing.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\PotenDailyBriefingWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h">
@@ -739,13 +715,7 @@
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SinaRTWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\TengxunRTWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Thread.h">
@@ -798,9 +768,6 @@
     </ClInclude>
     <ClInclude Include="MockPotenDailyBriefingMarket.h">
       <Filter>Mock类\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h">
-      <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h">
       <Filter>dependency</Filter>
@@ -889,13 +856,7 @@
     <ClInclude Include="MockSinaStakeRTWebInquiry.h">
       <Filter>Mock类\China Market\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\SinaStakeRTWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaStake.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StakeSection.h">
@@ -992,6 +953,45 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefing.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>
