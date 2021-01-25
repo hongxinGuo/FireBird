@@ -227,13 +227,13 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       m_qFinnhubWebInquiry.pop();
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
-      case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
+      case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
-      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryWorldStock = false;
+      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
       case __COMPANY_PROFILE2__:
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
-      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryWorldStock = false;
+      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
       case  __COMPANY_SYMBOLS__:
       strMiddle = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;

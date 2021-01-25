@@ -200,6 +200,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.cpp" />
@@ -256,7 +257,6 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DayLineContainer.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\FinnHubWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\globedef.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Guadan.cpp" />
     <ClCompile Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.cpp" />
@@ -397,6 +397,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\EPSSurprise.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubExchange.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.h" />
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessTiingoWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\QuandlWebInquiry.h" />
@@ -444,7 +445,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLine.h" />
     <ClInclude Include="..\StockAnalysis\source\DayLineContainer.h" />
-    <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\globedef.h" />
     <ClInclude Include="..\StockAnalysis\source\Guadan.h" />
     <ClInclude Include="..\StockAnalysis\source\NeteaseDayLineWebInquiry.h" />

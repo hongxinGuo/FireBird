@@ -71,7 +71,7 @@ void CWorldStock::Reset(void) {
   m_strSymbolForSort = _T("");
 
   m_fUpdateDatabase = false;
-  m_fInquiryWorldStock = true;
+  m_fInquiryStockProfile = true;
   m_fEPSSurpriseNeedUpdate = true;
   m_fEPSSurpriseNeedSave = false;
   m_fFinnhubPeerUpdated = false;

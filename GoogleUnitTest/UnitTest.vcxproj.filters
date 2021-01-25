@@ -539,9 +539,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadSaveActiveStakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\FinnHubWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ThreadReadFinnHubData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -657,6 +654,9 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
@@ -913,9 +913,6 @@
     <ClInclude Include="MockFinnHubWebInquiry.h">
       <Filter>Mock类\America Market</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\FinnHubWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -992,6 +989,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

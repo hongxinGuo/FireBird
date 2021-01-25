@@ -31,15 +31,6 @@
     <Filter Include="源文件\网络数据提取器">
       <UniqueIdentifier>{72c0370f-98bb-40af-9cd0-d0eb922a24c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\China Stock Market">
-      <UniqueIdentifier>{16557625-a09d-4e58-97a5-4f794fb65075}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Stock Market\数据库">
-      <UniqueIdentifier>{13ecdaff-a4be-49d7-8e13-b37df1208114}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Stock Market\网络通信">
-      <UniqueIdentifier>{73cf621c-e037-44e4-9071-f8e73c30f28f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\基类">
       <UniqueIdentifier>{8e686ba3-15b6-4540-bb77-449cdb398b0a}</UniqueIdentifier>
     </Filter>
@@ -57,9 +48,6 @@
     </Filter>
     <Filter Include="源文件\Poten Daily Briefing Market">
       <UniqueIdentifier>{52662461-24bd-43ef-85a1-e88fca5a96fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\China Stock Market\基础数据类">
-      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\China Market">
       <UniqueIdentifier>{bbdb3553-c794-4b3a-9b9e-e276966333b8}</UniqueIdentifier>
@@ -103,6 +91,18 @@
     <Filter Include="源文件\World Market\类型和数据库">
       <UniqueIdentifier>{0106f414-d766-4ad6-91dd-f3e5d5bb8448}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\China Market">
+      <UniqueIdentifier>{16557625-a09d-4e58-97a5-4f794fb65075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Market\数据库">
+      <UniqueIdentifier>{13ecdaff-a4be-49d7-8e13-b37df1208114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Market\网络通信">
+      <UniqueIdentifier>{73cf621c-e037-44e4-9071-f8e73c30f28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\China Market\基础数据类">
+      <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -112,10 +112,10 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="source\DayLine.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\OneDeal.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\globedef.h">
       <Filter>头文件</Filter>
@@ -172,7 +172,7 @@
       <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\ChinaMarket.h">
-      <Filter>头文件\China Stock Market</Filter>
+      <Filter>头文件\China Market</Filter>
     </ClInclude>
     <ClInclude Include="source\CrweberIndexMarket.h">
       <Filter>头文件\Crweber.com Market</Filter>
@@ -181,16 +181,16 @@
       <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
-      <Filter>头文件\China Stock Market\网络通信</Filter>
+      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\NeteaseRTWebInquiry.h">
-      <Filter>头文件\China Stock Market\网络通信</Filter>
+      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\SinaRTWebInquiry.h">
-      <Filter>头文件\China Stock Market\网络通信</Filter>
+      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\TengxunRTWebInquiry.h">
-      <Filter>头文件\China Stock Market\网络通信</Filter>
+      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\VirtualWebInquiry.h">
       <Filter>头文件\基类</Filter>
@@ -205,43 +205,43 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\Guadan.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetChoicedStock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetDayLineBasicInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetDayLineExtendInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetDayLineToday.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetOption.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetOptionChinaStockMarket.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRealTimeData.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRSOption.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRSStrong1Stock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRSStrong2Stock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetRSStrongStock.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetStockCode.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetCrweberIndex.h">
       <Filter>头文件\Crweber.com Market</Filter>
@@ -250,13 +250,13 @@
       <Filter>头文件\Poten Daily Briefing Market</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetWeekLineExtendInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\WeekLine.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\ChinaStockHistoryData.h">
       <Filter>头文件\基类</Filter>
@@ -265,13 +265,13 @@
       <Filter>头文件\基类</Filter>
     </ClInclude>
     <ClInclude Include="source\DayLineContainer.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\WeekLineContainer.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\WebRTData.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\WebRTDataContainer.h">
       <Filter>头文件\辅助类和函数</Filter>
@@ -283,25 +283,25 @@
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\SinaStakeRTWebInquiry.h">
-      <Filter>头文件\China Stock Market\网络通信</Filter>
+      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\StakeCode.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\ChinaStake.h">
-      <Filter>头文件\China Stock Market</Filter>
+      <Filter>头文件\China Market</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetStakeSection.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="source\StakeSection.h">
-      <Filter>头文件\China Stock Market\基础数据类</Filter>
+      <Filter>头文件\China Market\基础数据类</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetActiveStakeCode.h">
-      <Filter>头文件\China Stock Market\数据库</Filter>
+      <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
     <ClInclude Include="GlobeSymbolDef.h">
       <Filter>头文件</Filter>
@@ -323,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h">
       <Filter>头文件\World Market\实现</Filter>
-    </ClInclude>
-    <ClInclude Include="source\FinnHubWebInquiry.h">
-      <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h">
       <Filter>头文件\World Market\网络通信</Filter>
@@ -380,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="source\AmericaMarket\WorldMarket.h">
       <Filter>头文件\World Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h">
+      <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -680,9 +680,6 @@
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp">
       <Filter>源文件\World Market\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="source\FinnHubWebInquiry.cpp">
-      <Filter>源文件\World Market\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
@@ -736,6 +733,9 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\WorldMarket.cpp">
       <Filter>源文件\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp">
+      <Filter>源文件\World Market\网络通信</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
