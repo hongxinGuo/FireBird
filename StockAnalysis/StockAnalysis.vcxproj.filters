@@ -123,9 +123,6 @@
     <ClInclude Include="source\Accessory.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
-    <ClInclude Include="source\CrweberIndex.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\SystemMessage.h">
       <Filter>头文件\辅助类和函数</Filter>
     </ClInclude>
@@ -159,38 +156,8 @@
     <ClInclude Include="source\VirtualMarket.h">
       <Filter>头文件\基类</Filter>
     </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefing.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CrweberIndexWebInquiry.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefingWebInquiry.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ChinaMarket.h">
-      <Filter>头文件\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CrweberIndexMarket.h">
-      <Filter>头文件\Crweber.com Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PotenDailyBriefingMarket.h">
-      <Filter>头文件\Poten Daily Briefing Market</Filter>
-    </ClInclude>
-    <ClInclude Include="source\NeteaseDayLineWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\NeteaseRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SinaRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TengxunRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="source\VirtualWebInquiry.h">
       <Filter>头文件\基类</Filter>
@@ -285,14 +252,8 @@
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\SinaStakeRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\StakeCode.h">
       <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ChinaStake.h">
-      <Filter>头文件\China Market</Filter>
     </ClInclude>
     <ClInclude Include="source\DataBase\SetStakeSection.h">
       <Filter>头文件\China Market\数据库</Filter>
@@ -381,6 +342,45 @@
     <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h">
       <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>
+    <ClInclude Include="source\Crweber\CrweberIndex.h">
+      <Filter>头文件\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Crweber\CrweberIndexMarket.h">
+      <Filter>头文件\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Crweber\CrweberIndexWebInquiry.h">
+      <Filter>头文件\Crweber.com Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Poten Daily\PotenDailyBriefing.h">
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Poten Daily\PotenDailyBriefingMarket.h">
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Poten Daily\PotenDailyBriefingWebInquiry.h">
+      <Filter>头文件\Poten Daily Briefing Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\NeteaseDayLineWebInquiry.h">
+      <Filter>头文件\China Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\NeteaseRTWebInquiry.h">
+      <Filter>头文件\China Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h">
+      <Filter>头文件\China Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\SinaStakeRTWebInquiry.h">
+      <Filter>头文件\China Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\TengxunRTWebInquiry.h">
+      <Filter>头文件\China Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\ChinaMarket.h">
+      <Filter>头文件\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\ChinaStake.h">
+      <Filter>头文件\China Market</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -397,9 +397,6 @@
     </ClCompile>
     <ClCompile Include="source\Accessory.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\SystemMessage.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -425,74 +422,8 @@
     <ClCompile Include="source\QueueWebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CrweberIndexWebInquiry.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefingWebInquiry.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseDayLineWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\NeteaseRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SinaRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TengxunRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ChinaMarket.cpp">
-      <Filter>源文件\China Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CrweberIndexMarket.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PotenDailyBriefingMarket.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadLoadDayLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadMaintainDayLineDB.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadProcessCurrentTradeDayStock.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadCrweberIndex.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadPotenDailyBriefing.cpp">
-      <Filter>源文件\Poten Daily Briefing Market</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadUpdateStockCodeDB.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveTempRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadNeteaseDayLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadNeteaseRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadSinaRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadTengxunRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\VirtualMarket.cpp">
       <Filter>源文件\基类</Filter>
@@ -502,15 +433,6 @@
     </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveDayLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadChoice10RSStrongSTockSet.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveCrweberDB.cpp">
-      <Filter>源文件\Crweber.com Market</Filter>
     </ClCompile>
     <ClCompile Include="source\Guadan.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
@@ -569,18 +491,6 @@
     <ClCompile Include="source\WeekLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadBuildWeekLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadLoadWeekLine.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadBuildWeekLineRS.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadBuildDayLineRS.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp">
       <Filter>源文件\基类</Filter>
     </ClCompile>
@@ -608,17 +518,8 @@
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\ThreadReadSinaStakeRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SinaStakeRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\StakeCode.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ChinaStake.cpp">
-      <Filter>源文件\China Market</Filter>
     </ClCompile>
     <ClCompile Include="source\StakeSection.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
@@ -628,12 +529,6 @@
     </ClCompile>
     <ClCompile Include="source\DataBase\SetActiveStakeCode.cpp">
       <Filter>源文件\China Market\数据库</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadSaveActiveStakeCode.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ThreadReadFinnHubData.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
@@ -736,6 +631,111 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\FinnHubWebInquiry.cpp">
       <Filter>源文件\World Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadReadFinnHubData.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Crweber\CrweberIndex.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Crweber\CrweberIndexMarket.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Crweber\CrweberIndexWebInquiry.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Crweber\ThreadReadCrweberIndex.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Crweber\ThreadSaveCrweberDB.cpp">
+      <Filter>源文件\Crweber.com Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Poten Daily\PotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Poten Daily\PotenDailyBriefingMarket.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Poten Daily\PotenDailyBriefingWebInquiry.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Poten Daily\ThreadReadPotenDailyBriefing.cpp">
+      <Filter>源文件\Poten Daily Briefing Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\NeteaseDayLineWebInquiry.cpp">
+      <Filter>源文件\China Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\NeteaseRTWebInquiry.cpp">
+      <Filter>源文件\China Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp">
+      <Filter>源文件\China Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\SinaStakeRTWebInquiry.cpp">
+      <Filter>源文件\China Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\TengxunRTWebInquiry.cpp">
+      <Filter>源文件\China Market\网络通信</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp">
+      <Filter>源文件\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ChinaStake.cpp">
+      <Filter>源文件\China Market</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadBuildDayLineRS.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLine.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLineRS.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadChoice10RSStrongSTockSet.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadLoadDayLine.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadLoadWeekLine.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadMaintainDayLineDB.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadProcessCurrentTradeDayStock.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseDayLine.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadReadSinaRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadReadSinaStakeRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStakeCode.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadSaveDayLine.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadSaveRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadSaveTempRTData.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadUpdateStockCodeDB.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
