@@ -499,3 +499,8 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
 
   return strMiddle;
 }
+
+bool CWorldStock::IsUSMarket(void) {
+  if (m_strExchangeCode.Compare(_T("US")) == 0) return true;
+  else return false;
+}

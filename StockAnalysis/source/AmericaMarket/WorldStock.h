@@ -105,12 +105,14 @@ public:
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
+  bool IsUSMarket(void);
+
 public:
   // Finnhub symbol信息
   CString m_strDescription;
   CString m_strDisplaySymbol;
   CString m_strSymbol;
-  CString m_strExchangeCode;
+  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
   CString m_strType;
   CString m_strMic;
   CString m_strFigi;

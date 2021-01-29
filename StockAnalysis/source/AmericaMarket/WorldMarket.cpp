@@ -378,9 +378,10 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __COMPANY_PROFILE2__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      ProcessFinnhubStockProfile2(pWebData, pStock);
-      pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-      pStock->m_fUpdateDatabase = true;
+      if (ProcessFinnhubStockProfile2(pWebData, pStock)) {
+        pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
+        pStock->m_fUpdateDatabase = true;
+      }
       break;
       case  __COMPANY_SYMBOLS__:
       ProcessFinnhubStockSymbol(pWebData, vStake);
@@ -954,8 +955,8 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
   ASSERT(IsSystemReady());
   if (!m_fFinnhubDayLineUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStakeSetSize; m_lCurrentUpdateDayLinePos++) {
-      if (m_vWorldStock.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
-        pStock = m_vWorldStock.at(m_lCurrentUpdateDayLinePos);
+      pStock = m_vWorldStock.at(m_lCurrentUpdateDayLinePos);
+      if (pStock->IsUSMarket() && pStock->IsDayLineNeedUpdate()) { // 目前免费账户只能下载美国市场的股票日线。
         fFound = true;
         break;
       }
@@ -972,8 +973,8 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
     else {
       m_fFinnhubDayLineUpdated = true;
       m_lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
-      TRACE("Finnhub日线更新完毕\n");
-      str = _T("美国市场日线历史数据更新完毕");
+      TRACE("Finnhub日线更新完毕，从新开始更新\n");
+      str = _T("美国市场日线历史数据更新完毕，从新开始更新");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
@@ -1850,9 +1851,7 @@ bool CWorldMarket::UpdateDayLineStartEndDate(void) {
   CString strFilter, str;
   CSetWorldStockDayLine setWorldStockDayLine;
   CWorldStockPtr pStock2 = nullptr;
-  bool fSavedStatus = m_fFinnhubDayLineUpdated;
 
-  m_fFinnhubDayLineUpdated = true;
   for (auto& pStock : m_vWorldStock) {
     setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->m_strSymbol + _T("'");
     setWorldStockDayLine.m_strSort = _T("[Date]");
@@ -1870,8 +1869,6 @@ bool CWorldMarket::UpdateDayLineStartEndDate(void) {
     }
     setWorldStockDayLine.Close();
   }
-
-  m_fFinnhubDayLineUpdated = fSavedStatus;
 
   return true;
 }

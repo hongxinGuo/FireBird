@@ -318,6 +318,11 @@
     <ClCompile Include="CheckNeteaseDayLineInquiryStrTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp" />
     <ClCompile Include="ChinaStockHistoryDataTest.cpp" />
+    <ClCompile Include="CountryTest.cpp" />
+    <ClCompile Include="EconomicCalendarTest.cpp" />
+    <ClCompile Include="EPSSurpriseTest.cpp" />
+    <ClCompile Include="FinnhubExchangeTest.cpp" />
+    <ClCompile Include="FinnhubForexSymbolTest.cpp" />
     <ClCompile Include="FinnhubWebInquiryTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
     <ClCompile Include="MockChinaStakeTest.cpp" />

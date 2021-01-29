@@ -99,9 +99,7 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-    pStake->m_fUpdateDatabase = true;
-    return false; // 没有公司简介
+    return true; // 没有公司简介也返回任务完成成功
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
   try {
@@ -109,9 +107,7 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
     if (s.size() > 0) pStake->m_strTicker = s.c_str();
   }
   catch (ptree_error&) {
-    pStake->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-    pStake->m_fUpdateDatabase = true;
-    return false; // 没有公司简介
+    return true; // 没有公司简介也返回任务完成成功
   }
   s = pt.get<string>(_T("country"));
   if (s.size() > 0) pStake->m_strCountry = s.c_str();

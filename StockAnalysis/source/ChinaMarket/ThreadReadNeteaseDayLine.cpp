@@ -2,7 +2,7 @@
 //
 // 读取网易日线历史数据的线程。
 //
-// 读取数据时多试几次，防止网络延迟导致数据截断。目前在读完数据后，在测试两次，都没有数据后才返回。
+// 读取数据时多试几次，防止网络延迟导致数据截断。目前在读完数据后，再测试两次，都没有数据后才返回。
 //
 // 有时fReading == false的断言会失败，但程序中只有两处设置此变量，故估计是不同线程同时操作的原因，需要改为
 // 同步事件模式唤醒此线程为好。研究之。（在调用此线程前就设置，就不会出现故障了，可见时启动线程时会出现延时所致）。
@@ -31,7 +31,7 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
     pStake = gl_pChinaStakeMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     pStake->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
     pStake->SetDayLineNeedProcess(true);
- }
+  }
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 4; // 此线程正常返回值为4

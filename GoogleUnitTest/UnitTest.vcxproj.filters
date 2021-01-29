@@ -52,12 +52,6 @@
     <Filter Include="Mock类\辅助类和函数">
       <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test源文件\America Market">
-      <UniqueIdentifier>{ca784c55-79ab-464b-8a17-db759a8800f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test源文件\America Market\网络通信">
-      <UniqueIdentifier>{ee72531c-5289-457d-94fe-334b87358474}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\America Market">
       <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
     </Filter>
@@ -90,6 +84,15 @@
     </Filter>
     <Filter Include="Test源文件\China Market\基础数据类\WebRTData">
       <UniqueIdentifier>{0109d643-78a6-465a-90a1-ddddc45a166c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\World Market">
+      <UniqueIdentifier>{ca784c55-79ab-464b-8a17-db759a8800f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\World Market\网络通信">
+      <UniqueIdentifier>{ee72531c-5289-457d-94fe-334b87358474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\World Market\类型和数据库">
+      <UniqueIdentifier>{87a59d1f-00e1-48f0-86e7-3fdf13d25f1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -489,13 +492,13 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="FinnhubWebInquiryTest.cpp">
-      <Filter>Test源文件\America Market\网络通信</Filter>
+      <Filter>Test源文件\World Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="TiingoWebInquiryTest.cpp">
-      <Filter>Test源文件\America Market\网络通信</Filter>
+      <Filter>Test源文件\World Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="QuandlWebInquiryTest.cpp">
-      <Filter>Test源文件\America Market\网络通信</Filter>
+      <Filter>Test源文件\World Market\网络通信</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
       <Filter>dependency</Filter>
@@ -513,10 +516,10 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="AmericaMarketTest.cpp">
-      <Filter>Test源文件\America Market</Filter>
+      <Filter>Test源文件\World Market</Filter>
     </ClCompile>
     <ClCompile Include="AmericaStakeTest.cpp">
-      <Filter>Test源文件\America Market</Filter>
+      <Filter>Test源文件\World Market</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp">
       <Filter>dependency</Filter>
@@ -658,6 +661,21 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadUpdateStockCodeDB.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="CountryTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="EPSSurpriseTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="EconomicCalendarTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubExchangeTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="FinnhubForexSymbolTest.cpp">
+      <Filter>Test源文件\World Market\类型和数据库</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

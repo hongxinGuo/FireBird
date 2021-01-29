@@ -28,7 +28,7 @@ bool CDayLineContainer::LoadData(CString strStockCode) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
-  CSetDayLineBasicInfo setDayLineBasicInfo;
+  CSetDayLineBasicInfo setDayLineBasicInfo, setDayLineBasicInfo2;
   size_t lSize = 0;
   vector<CDayLinePtr> vDayLine;
   CDayLinePtr pDayLine = nullptr;
@@ -53,25 +53,25 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   setDayLineBasicInfo.Close();
 
   lCurrentPos = 0;
-  setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
-  setDayLineBasicInfo.Open();
-  setDayLineBasicInfo.m_pDatabase->BeginTrans();
+  setDayLineBasicInfo2.m_strFilter = _T("[ID] = 1");
+  setDayLineBasicInfo2.Open();
+  setDayLineBasicInfo2.m_pDatabase->BeginTrans();
   for (int i = 0; i < lSize; i++) { // 数据是正序存储的，需要从头部开始存储
     pDayLine = GetData(i);
     while ((lCurrentPos < lSizeOfOldDayLine) && (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() < pDayLine->GetFormatedMarketDate())) lCurrentPos++;
     if (lCurrentPos < lSizeOfOldDayLine) {
       if (vDayLine.at(lCurrentPos)->GetFormatedMarketDate() > pDayLine->GetFormatedMarketDate()) {
-        pDayLine->AppendChinaMarketData(&setDayLineBasicInfo);
+        pDayLine->AppendChinaMarketData(&setDayLineBasicInfo2);
         fNeedUpdate = true;
       }
     }
     else {
-      pDayLine->AppendChinaMarketData(&setDayLineBasicInfo);
+      pDayLine->AppendChinaMarketData(&setDayLineBasicInfo2);
       fNeedUpdate = true;
     }
   }
-  setDayLineBasicInfo.m_pDatabase->CommitTrans();
-  setDayLineBasicInfo.Close();
+  setDayLineBasicInfo2.m_pDatabase->CommitTrans();
+  setDayLineBasicInfo2.Close();
 
   return fNeedUpdate;
 }

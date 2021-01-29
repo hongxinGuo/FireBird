@@ -12,6 +12,8 @@ CFinnhubForexSymbol::CFinnhubForexSymbol() : CObject() {
   m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
   m_fDayLineNeedUpdate = true;
+  m_fUpdateDatabase = false;
+  m_fDayLineNeedSaving = false;
 }
 
 void CFinnhubForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
