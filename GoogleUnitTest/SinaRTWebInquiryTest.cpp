@@ -25,13 +25,11 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
-      gl_pChinaStakeMarket->ResetSinaStakeRTDAtaInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
       gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
-      gl_pChinaStakeMarket->ResetSinaStakeRTDAtaInquiringIndex();
     }
   public:
     CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集

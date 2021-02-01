@@ -731,7 +731,6 @@
     <ClInclude Include="source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h" />
-    <ClInclude Include="source\ChinaMarket\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\TengxunRTWebInquiry.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
@@ -833,7 +832,6 @@
     <ClCompile Include="source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="source\ChinaMarket\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLine.cpp" />
@@ -846,7 +844,6 @@
     <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadReadSinaStakeRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStakeCode.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadSaveDayLine.cpp" />

@@ -37,18 +37,18 @@ public:
   void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
   bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
   void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
+  bool IsDayLineNeedSavingAndClearFlag(void);
   long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
   void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
 
   void SetCheckingDayLineStatus(void);
 
-  CString GetDayLineInquiryString(time_t tCurrentTime);
+  CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
   size_t GetDayLineSize(void) { return m_vDayLine.size(); }
   void UpdateDayLineStartEndDate(void);
-  bool IsDayLineNeedSavingAndClearFlag(void);
   bool HaveNewDayLineData(void);
 
 public:

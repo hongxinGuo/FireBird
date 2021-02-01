@@ -95,6 +95,85 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(symbol.IsDayLineNeedSaving());
   }
 
+  TEST_F(CFinnhubForexSymbolTest, TestSetCheckDayLineStatus) {
+    CFinnhubForexSymbol symbol;
+
+    EXPECT_TRUE(symbol.IsDayLineNeedUpdate());
+    symbol.m_lIPOStatus = __STAKE_NULL__;
+    symbol.SetCheckingDayLineStatus();
+    EXPECT_FALSE(symbol.IsDayLineNeedUpdate());
+
+    symbol.SetDayLineNeedUpdate(true);
+    symbol.SetIPOStatus(__STAKE_IPOED__);
+    symbol.SetDayLineEndDate(gl_pWorldMarket->GetLastTradeDate());
+    symbol.SetCheckingDayLineStatus();
+    EXPECT_FALSE(symbol.IsDayLineNeedUpdate());
+  }
+
+  TEST_F(CFinnhubForexSymbolTest, TestHaveNewDayLineData) {
+    CFinnhubForexSymbol symbol;
+    vector<CDayLinePtr> vDayLine;
+
+    CDayLinePtr pDayLine;
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDate(20200102);
+    vDayLine.push_back(pDayLine);
+
+    EXPECT_FALSE(symbol.HaveNewDayLineData());
+    symbol.UpdateDayLine(vDayLine);
+    symbol.SetDayLineEndDate(20200101); // 比日线最新数据旧
+    EXPECT_TRUE(symbol.HaveNewDayLineData());
+  }
+
+  TEST_F(CFinnhubForexSymbolTest, TestUpdateDayLineStartEndDate) {
+    CFinnhubForexSymbol symbol;
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+
+    symbol.SetDayLineEndDate(19900101);
+    symbol.SetDayLineStartDate(19900101);
+    symbol.UpdateDayLineStartEndDate();
+    EXPECT_EQ(symbol.GetDayLineStartDate(), 29900101);
+    EXPECT_EQ(symbol.GetDayLineEndDate(), 19800101);
+
+    EXPECT_EQ(symbol.GetDayLineSize(), 0);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDate(20200102);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetDate(20200105);
+    vDayLine.push_back(pDayLine);
+    symbol.UpdateDayLine(vDayLine);
+    EXPECT_EQ(symbol.GetDayLineSize(), 2);
+
+    EXPECT_FALSE(symbol.m_fUpdateDatabase);
+    symbol.UpdateDayLineStartEndDate();
+    EXPECT_EQ(symbol.GetDayLineStartDate(), 20200102);
+    EXPECT_EQ(symbol.GetDayLineEndDate(), 20200105);
+    EXPECT_TRUE(symbol.m_fUpdateDatabase);
+
+    symbol.UnloadDayLine();
+    EXPECT_EQ(symbol.GetDayLineSize(), 0);
+  }
+
+  TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString1) {
+    CFinnhubForexSymbol symbol;
+    CString str;
+
+    symbol.m_strSymbol = _T("ABCDE");
+    str = symbol.GetFinnhubDayLineInquiryString(123456789);
+    EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=315558000&to=123456789")) << "当前时间小于19800101，315558000就是19800101";
+  }
+
+  TEST_F(CFinnhubForexSymbolTest, TestGetFinnhubDayLineInquiringString2) {
+    CFinnhubForexSymbol symbol;
+    CString str;
+
+    symbol.m_strSymbol = _T("ABCDE");
+    str = symbol.GetFinnhubDayLineInquiryString(1131536000);
+    EXPECT_STREQ(str, _T("ABCDE&resolution=D&from=1100000000&to=1131536000")) << "365 * 24 * 3600 = 31536000";
+  }
+
   TEST_F(CFinnhubForexSymbolTest, TestAppend) {
     CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
     CFinnhubForexSymbol FinnhubForexSymbol;

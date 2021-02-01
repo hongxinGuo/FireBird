@@ -52,9 +52,6 @@
     <Filter Include="Mock类\辅助类和函数">
       <UniqueIdentifier>{f56b161d-f342-4ef9-8a55-9ff0a1c80029}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mock类\America Market">
-      <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mock类\China Market">
       <UniqueIdentifier>{ef6d2c8c-73e6-485a-a1c2-2a5848bd3cab}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="Test源文件\World Market\类型和数据库">
       <UniqueIdentifier>{87a59d1f-00e1-48f0-86e7-3fdf13d25f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mock类\World Market">
+      <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -569,9 +569,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -606,9 +603,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaStakeRTData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp">
@@ -871,9 +865,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="MockSinaStakeRTWebInquiry.h">
-      <Filter>Mock类\China Market\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\StakeCode.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -890,7 +881,7 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnHubWebInquiry.h">
-      <Filter>Mock类\America Market</Filter>
+      <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
       <Filter>dependency</Filter>
@@ -911,10 +902,10 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockTiingoWebInquiry.h">
-      <Filter>Mock类\America Market</Filter>
+      <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="MockQuandlWebInquiry.h">
-      <Filter>Mock类\America Market</Filter>
+      <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h">
       <Filter>dependency</Filter>
@@ -986,9 +977,6 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h">

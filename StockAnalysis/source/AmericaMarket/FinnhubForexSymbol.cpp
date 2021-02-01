@@ -113,7 +113,7 @@ void CFinnhubForexSymbol::SetCheckingDayLineStatus(void) {
   }
 }
 
-CString CFinnhubForexSymbol::GetDayLineInquiryString(time_t tCurrentTime) {
+CString CFinnhubForexSymbol::GetFinnhubDayLineInquiryString(time_t tCurrentTime) {
   CString strMiddle = _T(""), strMiddle2 = _T(""), strMiddle3 = _T("");
   CString strTemp;
   char buffer[50];
@@ -147,14 +147,14 @@ void CFinnhubForexSymbol::UpdateDayLine(vector<CDayLinePtr>& vDayLine) {
 void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
   if (m_vDayLine.size() == 0) {
     SetDayLineStartDate(29900101);
-    SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetDayLineEndDate(19800101);
   }
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
       m_fUpdateDatabase = true;
     }
-    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
+    if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) {
       SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
       m_fUpdateDatabase = true;
     }
@@ -167,6 +167,6 @@ bool CFinnhubForexSymbol::IsDayLineNeedSavingAndClearFlag(void) {
 }
 bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
-  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
+  if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) return true;
   else return false;
 }

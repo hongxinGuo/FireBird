@@ -30,8 +30,8 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStake*> pStake) {
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }
-  gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_SaveOneStockDayLine.Signal();
+  gl_ThreadStatus.DecreaseSavingDayLineThreads();
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 15;

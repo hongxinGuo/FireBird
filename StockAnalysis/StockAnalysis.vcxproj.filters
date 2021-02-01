@@ -369,9 +369,6 @@
     <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h">
       <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
-    <ClInclude Include="source\ChinaMarket\SinaStakeRTWebInquiry.h">
-      <Filter>头文件\China Market\网络通信</Filter>
-    </ClInclude>
     <ClInclude Include="source\ChinaMarket\TengxunRTWebInquiry.h">
       <Filter>头文件\China Market\网络通信</Filter>
     </ClInclude>
@@ -671,9 +668,6 @@
     <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp">
       <Filter>源文件\China Market\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="source\ChinaMarket\SinaStakeRTWebInquiry.cpp">
-      <Filter>源文件\China Market\网络通信</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaMarket\TengxunRTWebInquiry.cpp">
       <Filter>源文件\China Market\网络通信</Filter>
     </ClCompile>
@@ -714,9 +708,6 @@
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ChinaMarket\ThreadReadSinaRTData.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ChinaMarket\ThreadReadSinaStakeRTData.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp">

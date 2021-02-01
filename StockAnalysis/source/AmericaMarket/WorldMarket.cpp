@@ -317,7 +317,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       break;
       case __FOREX_CANDLES__:
       pSymbol = m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      strMiddle = pSymbol->GetDayLineInquiryString(GetMarketTime());
+      strMiddle = pSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       pSymbol->m_fDayLineNeedUpdate = false;
       break;

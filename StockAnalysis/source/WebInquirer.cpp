@@ -20,7 +20,6 @@ int gl_cMaxSavingOneDayLineThreads = 4; // 此变量取值范围为1-4
 using namespace testing;
 
 CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
-CMockSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry = nullptr;
 CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
 CMockNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
 CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
@@ -44,7 +43,6 @@ CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry = nullptr;
 #include"QuandlWebInquiry.h"
 
 CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry = nullptr; // 新浪实时数据采集
-CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry = nullptr;
 CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry = nullptr; // 腾讯实时数据采集
 CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry = nullptr; // 网易实时数据采集
 CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // Poten.com上的油运数据。
@@ -67,7 +65,6 @@ CWebInquirer::~CWebInquirer(void) {
 void CWebInquirer::Initialize(void) {
 #ifdef __GOOGLEMOCK__
   gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
-  gl_pSinaStakeRTWebInquiry = make_shared<CMockSinaStakeRTWebInquiry>();
   gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
   gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
   gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
@@ -82,7 +79,6 @@ void CWebInquirer::Initialize(void) {
 
 #else
   gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
-  gl_pSinaStakeRTWebInquiry = make_shared<CSinaStakeRTWebInquiry>();
   gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
   gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
   gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();

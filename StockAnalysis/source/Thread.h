@@ -3,7 +3,6 @@
 #include"stdafx.h"
 
 #include"SinaRTWebInquiry.h"
-#include"SinaStakeRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
@@ -42,8 +41,6 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
 UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData); // 此工作线程返回值为5，参数为pCrweberIndexWebData
 // 读取Poten Daily Briefing.网址：http://energy.poten.com/poten-daily-briefing-webpage-04/11/2018
 UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPotenDailyBriefingWebData); // 此工作线程返回值为6.
-// 读取新浪实时数据线程。网址：http://hq.sinajs.cn/list=
-UINT ThreadReadSinaStakeRTData(not_null<CSinaStakeRTWebInquiry*> pSinaStakeRTWebData);    // 此工作线程返回值为6，参数为pSinaWebRTStakeData
 // 读取Finnhub.io网络数据线程。 网址：https://finnhub.io/api/v1/
 UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebInquiry); // 此工作线程返回值为7。
 // 读取api.tiingo.com
@@ -95,8 +92,6 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate); /
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为32
 // 重建当前周的周线数据表
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为33
-// 存储证券代码至数据库
-UINT ThreadSaveActiveStakeCode(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为34
 // 存储证券代码段索引
 UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // 此工作线程返回值为35
 

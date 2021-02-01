@@ -235,7 +235,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
@@ -248,7 +247,6 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaStakeRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
@@ -427,7 +425,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaStakeRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
@@ -496,7 +493,6 @@
     <ClInclude Include="MockPotenDailyBriefingMarket.h" />
     <ClInclude Include="MockPotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="MockQuandlWebInquiry.h" />
-    <ClInclude Include="MockSinaStakeRTWebInquiry.h" />
     <ClInclude Include="MockSinaRTWebInquiry.h" />
     <ClInclude Include="MockStockAnalysisView.h" />
     <ClInclude Include="MockTengxunRTWebInquiry.h" />

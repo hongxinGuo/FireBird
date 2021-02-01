@@ -14,7 +14,6 @@ extern int gl_cMaxSavingOneDayLineThreads;
 
 #ifdef __GOOGLEMOCK__
 #include"MockSinaRTWebInquiry.h"
-#include"MockSinaStakeRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
 #include"MockNeteaseDayLineWebInquiry.h"
@@ -26,7 +25,6 @@ extern int gl_cMaxSavingOneDayLineThreads;
 using namespace testing;
 
 extern CMockSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
-extern CMockSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
 extern CMockTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CMockNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
 extern CMockPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
@@ -42,7 +40,6 @@ extern CMockTiingoWebInquiryPtr gl_pTiingoWebInquiry; // Finnhub.io证券信息
 extern CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry; // Finnhub.io证券信息
 #else
 #include"SinaRTWebInquiry.h"
-#include"SinaStakeRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseRTWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"
@@ -53,7 +50,6 @@ extern CMockQuandlWebInquiryPtr gl_pQuandlWebInquiry; // Finnhub.io证券信息
 #include"QuandlWebInquiry.h"
 
 extern CSinaRTWebInquiryPtr gl_pSinaRTWebInquiry; // 新浪实时数据采集
-extern CSinaStakeRTWebInquiryPtr gl_pSinaStakeRTWebInquiry; // 新浪实时数据采集
 extern CTengxunRTWebInquiryPtr gl_pTengxunRTWebInquiry; // 腾讯实时数据采集
 extern CNeteaseRTWebInquiryPtr gl_pNeteaseRTWebInquiry; // 网易实时数据采集
 extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Poten.com上的油运数据。
@@ -79,7 +75,6 @@ public:
   bool GetQuandlData(void) { return gl_pQuandlWebInquiry->GetWebData(); }
   bool GetFinnhubData(void) { return gl_pFinnhubWebInquiry->GetWebData(); }
   bool GetSinaRTData(void) { return gl_pSinaRTWebInquiry->GetWebData(); }
-  bool GetSinaStakeRTData(void) { return gl_pSinaStakeRTWebInquiry->GetWebData(); }
   bool GetTengxunRTData(void) { return gl_pTengxunRTWebInquiry->GetWebData(); }
   bool GetNeteaseRTData(void) { return gl_pNeteaseRTWebInquiry->GetWebData(); }
   bool GetNeteaseDayLineData(void);

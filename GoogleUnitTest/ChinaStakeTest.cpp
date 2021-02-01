@@ -714,6 +714,15 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lNumberOfStock, gl_pChinaStakeMarket->GetDayLineNeedProcessNumber());
   }
 
+  TEST_F(CChinaStockTest, TestIsUpdateStockCodeDB) {
+    CChinaStake stake;
+    EXPECT_FALSE(stake.IsUpdateStockCodeDB());
+    stake.SetUpdateStockCodeDB(true);
+    EXPECT_TRUE(stake.IsUpdateStockCodeDB());
+    stake.SetUpdateStockCodeDB(false);
+    EXPECT_FALSE(stake.IsUpdateStockCodeDB());
+  }
+
   TEST_F(CChinaStockTest, TestIsChoiced) {
     CChinaStake stake;
     EXPECT_FALSE(stake.IsChoiced());

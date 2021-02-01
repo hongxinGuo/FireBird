@@ -290,6 +290,8 @@ public:
   // 各种状态标识提取和设置
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
+  bool IsUpdateStockCodeDB(void) noexcept { return m_fUpdateStockCodeDB; }
+  void SetUpdateStockCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
@@ -589,6 +591,7 @@ protected:
   INT64 m_llLastSavedVolume; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
+  bool m_fUpdateStockCodeDB; // 更新StockCode数据库
 
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况

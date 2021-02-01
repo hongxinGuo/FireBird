@@ -45,7 +45,6 @@ namespace StockAnalysisTest {
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 #ifdef __GOOGLEMOCK__
       gl_pSinaRTWebInquiry = make_shared<CMockSinaRTWebInquiry>();
-      gl_pSinaStakeRTWebInquiry = make_shared<CMockSinaStakeRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CMockTengxunRTWebInquiry>();
       gl_pNeteaseRTWebInquiry = make_shared<CMockNeteaseRTWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CMockPotenDailyBriefingWebInquiry>();
@@ -59,7 +58,6 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();
 #else
       gl_pSinaRTWebInquiry = make_shared<CSinaRTWebInquiry>();
-      gl_pSinaStakeRTWebInquiry = make_shared<CSinaStakeRTWebInquiry>();
       gl_pTengxunRTWebInquiry = make_shared<CTengxunRTWebInquiry>();
       gl_pNeteaseRTWebInquiry = make_shared<CNeteaseRTWebInquiry>();
       gl_pPotenDailyBriefingWebInquiry = make_shared<CPotenDailyBriefingWebInquiry>();
@@ -117,7 +115,6 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
       gl_pSinaRTWebInquiry = nullptr;
-      gl_pSinaStakeRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
       gl_pNeteaseRTWebInquiry = nullptr;
       gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
