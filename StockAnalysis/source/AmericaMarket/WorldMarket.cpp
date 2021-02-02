@@ -174,7 +174,7 @@ bool CWorldMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountfinnhubLimit = 11; // Finnhub.io每1.1秒左右申请一次，以防止出现频率过高的情况。
+  static int s_iCountfinnhubLimit = 12; // Finnhub.io每1.2秒左右申请一次，以防止出现频率过高的情况。
   static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
   const long lCurrentTime = GetFormatedMarketTime();
 
@@ -183,7 +183,7 @@ bool CWorldMarket::SchedulingTask(void) {
   if (--s_iCountfinnhubLimit < 0) {
     TaskInquiryFinnhub(lCurrentTime);
     if (m_fFinnhubInquiring) {
-      s_iCountfinnhubLimit = 11; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+      s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
     }
   }
 
@@ -415,9 +415,10 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       break;
       case __PEERS__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      ProcessFinnhubStockPeer(pWebData, pStock);
-      pStock->SetPeerUpdateDate(GetFormatedMarketDate());
-      pStock->m_fUpdateDatabase = true;
+      if (ProcessFinnhubStockPeer(pWebData, pStock)) {
+        pStock->SetPeerUpdateDate(GetFormatedMarketDate());
+        pStock->m_fUpdateDatabase = true;
+      }
       break;
       case __BASIC_FINANCIALS__:
       break;
@@ -1741,6 +1742,13 @@ bool CWorldMarket::RebuildEPSSurprise(void) {
 }
 
 bool CWorldMarket::ReBuildPeer(void) {
+  for (auto& pStock : m_vWorldStock) {
+    if (pStock->GetPeerUpdateDate() != 19800101) {
+      pStock->SetPeerUpdateDate(19800101);
+      pStock->m_fFinnhubPeerUpdated = false;
+      pStock->m_fUpdateDatabase = true;
+    }
+  }
   m_fFinnhubPeerUpdated = false;
   m_lCurrentUpdatePeerPos = 0;
 

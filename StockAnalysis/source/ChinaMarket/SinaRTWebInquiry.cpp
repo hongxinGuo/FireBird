@@ -37,23 +37,11 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 新浪网络实时数据提取函数。
-// 目前只提取前12000个股票的实时数据，准备加入提取其他证券实时数据的功能。
-// 由于速度的限制，前12000个股票的实时数据提取必须达到每三秒一次，故而其他证券的查询只能利用空闲时间。
-// 这里查询五次股票之后，再查询一次其他证券。
+// 目前只提取前12000个股票的实时数据。
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CSinaRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str;
-  static int s_iCount = 5;
-
-  if (--s_iCount > 0) {// 申请股票的实时数据
-    str = gl_pChinaStakeMarket->GetSinaStockInquiringStr(lTotalNumber, fSkipUnactiveStock);
-  }
-  else {// 申请后面其他证券的实时数据
-    s_iCount = 5;
-  }
-
-  return str;
+  return gl_pChinaStakeMarket->GetSinaStockInquiringStr(lTotalNumber, fSkipUnactiveStock);
 }
 
 void CSinaRTWebInquiry::StartReadingThread(void) {

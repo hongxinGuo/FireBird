@@ -97,11 +97,13 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
 bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   ptree pt;
   string s;
+  string sError;
 
   if (pWebData->GetBufferLength() < 20) {
     return true; // 没有公司简介也返回任务完成成功
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
   try {
     s = pt.get<string>(_T("ticker"));
     if (s.size() > 0) pStake->m_strTicker = s.c_str();
@@ -522,6 +524,15 @@ bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCount
 bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   char buffer[1000]{};
   int i = 0;
+  ptree pt;
+  string sError;
+
+  if (pWebData->GetBufferLength() <= 3) {
+    pStake->m_strPeer = _T(""); // 清空
+    return true; // 没有有效的同业竞争对手
+  }
+  if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
 
   ASSERT(pWebData->GetBufferLength() < 1000);
   for (i = 0; i < pWebData->GetBufferLength(); i++) {

@@ -493,4 +493,44 @@ namespace StockAnalysisTest {
       EXPECT_DOUBLE_EQ(RSReference.m_dRSStrong[i], 50.0);
     }
   }
+
+  string strData1{ _T("{\"error\":\"E\"}") }; // 如果有error项，的话，其后续字符必须为E，以便于测试。
+  string strData2{ ("{\"ok\":\"1\",\"error\":\"E\"}") };
+  string strData3{ ("{\"ok\":\"1\"}") };
+
+  class IsJsonReportingErrorTest : public::testing::TestWithParam<string*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      string s = *GetParam();
+      for (int i = 0; i < s.size(); i++) {
+        bufferJson[i] = s.at(i);
+      }
+      bufferJson[s.size()] = 0x000;
+      iBufferLength = s.size();
+    }
+
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    char bufferJson[200];
+    int iBufferLength;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestIsJsonReportingError, IsJsonReportingErrorTest, testing::Values(&strData1, &strData2, &strData3));
+
+  TEST_P(IsJsonReportingErrorTest, TestIsJsonReportingError1) {
+    ptree pt;
+    string s;
+    CWebDataPtr pData = make_shared<CWebData>();
+    pData->SetData(bufferJson, iBufferLength);
+
+    ConvertToJSon(pt, pData);
+    if (IsJsonReportingrror(pt, s)) {
+      EXPECT_EQ(s.at(0), 'E');
+    }
+  }
 }

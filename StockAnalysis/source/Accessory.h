@@ -52,3 +52,4 @@ public:
 };
 
 bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData);
+bool IsJsonReportingrror(ptree& pt, string& s); // 检测json是否为错误报告

@@ -352,3 +352,13 @@ bool ConvertToJSon(ptree& pt, CWebDataPtr pWebData) {
   }
   return true;
 }
+
+bool IsJsonReportingrror(ptree& pt, string& s) {
+  try {
+    s = pt.get<string>(_T("error"));
+  }
+  catch (ptree_error&) {
+    return false;
+  }
+  return true;
+}
