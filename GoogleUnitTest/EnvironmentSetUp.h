@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
 
       CChinaStakePtr pStake = nullptr;
       // 重置股票池状态（因已装入实际状态）
-      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStake(); i++) {
+      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
         pStake = gl_pChinaStakeMarket->GetStock(i);
         pStake->SetDayLineEndDate(-1);
         EXPECT_TRUE(pStake->IsDayLineNeedUpdate());

@@ -57,7 +57,7 @@ bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
 }
 
 CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str = gl_pChinaStakeMarket->GetNeteaseStakeInquiringStr(lTotalNumber, 0, gl_pChinaStakeMarket->GetTotalStake(), fSkipUnactiveStock);
+  CString str = gl_pChinaStakeMarket->GetNeteaseStakeInquiringStr(lTotalNumber, 0, gl_pChinaStakeMarket->GetTotalStock(), fSkipUnactiveStock);
   return str;
 }
 

@@ -384,27 +384,28 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case  __COMPANY_SYMBOLS__:
-      ProcessFinnhubStockSymbol(pWebData, vStake);
-      TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStake.size());
-      sprintf_s(buffer, _T("%6d"), vStake.size());
-      strNumber = buffer;
-      str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
-      gl_systemMessage.PushInnerSystemInformationMessage(str);
-      // 交易所代码和SymbolForSort需要后加上。
-      for (auto& pStock3 : vStake) {
-        pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
-        pStock3->UpdateSymbolForSort();
-      }
-      for (auto& pStock2 : vStake) {
-        if (!IsWorldStock(pStock2->GetSymbol())) {
-          m_vWorldStock.push_back(pStock2);
-          pStock2->m_fUpdateDatabase = true;
-          fFoundNewStock = true;
+      if (ProcessFinnhubStockSymbol(pWebData, vStake)) {
+        TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStake.size());
+        sprintf_s(buffer, _T("%6d"), vStake.size());
+        strNumber = buffer;
+        str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
+        gl_systemMessage.PushInnerSystemInformationMessage(str);
+        // 交易所代码和SymbolForSort需要后加上。
+        for (auto& pStock3 : vStake) {
+          pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
+          pStock3->UpdateSymbolForSort();
         }
-      }
-      if (fFoundNewStock) {
-        SortStakeVector();
-        gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
+        for (auto& pStock2 : vStake) {
+          if (!IsWorldStock(pStock2->GetSymbol())) {
+            m_vWorldStock.push_back(pStock2);
+            pStock2->m_fUpdateDatabase = true;
+            fFoundNewStock = true;
+          }
+        }
+        if (fFoundNewStock) {
+          SortStakeVector();
+          gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
+        }
       }
       break;
       case  __MARKET_NEWS__:
@@ -465,31 +466,33 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case __FOREX_EXCHANGE__:
-      ProcessFinnhubForexExchange(pWebData, vExchange);
-      for (int i = 0; i < vExchange.size(); i++) {
-        if (m_mapForexExchange.find(vExchange.at(i)) == m_mapForexExchange.end()) {
-          lTemp = m_vForexExchange.size();
-          m_vForexExchange.push_back(vExchange.at(i));
-          m_mapForexExchange[vExchange.at(i)] = lTemp;
+      if (ProcessFinnhubForexExchange(pWebData, vExchange)) {
+        for (int i = 0; i < vExchange.size(); i++) {
+          if (m_mapForexExchange.find(vExchange.at(i)) == m_mapForexExchange.end()) {
+            lTemp = m_vForexExchange.size();
+            m_vForexExchange.push_back(vExchange.at(i));
+            m_mapForexExchange[vExchange.at(i)] = lTemp;
+          }
         }
+        m_fFinnhubForexExhangeUpdated = true;
       }
-      m_fFinnhubForexExhangeUpdated = true;
       break;
       case __FOREX_SYMBOLS__:
-      ProcessFinnhubForexSymbol(pWebData, vForexSymbol);
-      for (auto& pSymbol : vForexSymbol) {
-        if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
-          pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-          lTemp = m_mapForexSymbol.size();
-          m_mapForexSymbol[pSymbol->m_strSymbol] = lTemp;
-          m_vForexSymbol.push_back(pSymbol);
+      if (ProcessFinnhubForexSymbol(pWebData, vForexSymbol)) {
+        for (auto& pSymbol : vForexSymbol) {
+          if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
+            pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+            lTemp = m_mapForexSymbol.size();
+            m_mapForexSymbol[pSymbol->m_strSymbol] = lTemp;
+            m_vForexSymbol.push_back(pSymbol);
+          }
         }
       }
       break;
       case __FOREX_CANDLES__:
-      ProcessFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex));
-      TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol.GetBuffer());
-      break;
+      if (ProcessFinnhubForexCandle(pWebData, m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+        TRACE("处理%s日线数据\n", m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol.GetBuffer());
+        break;
       case __FOREX_ALL_RATES__:
       break;
       case __ECONOMIC_COUNTRY_LIST__:
@@ -501,6 +504,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         }
       }
       m_fCountryListUpdated = true;
+      }
       break;
       case __ECONOMIC_CALENDAR__:
       ProcessFinnhubEconomicCalendar(pWebData, vEconomicCalendar);

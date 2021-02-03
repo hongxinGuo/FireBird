@@ -138,9 +138,11 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
 bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
   CWorldStockPtr pStake = make_shared<CWorldStock>();
   ptree pt, pt2;
-  string s;
+  string s, sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pStake = make_shared<CWorldStock>();
     try {
@@ -163,6 +165,7 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSt
     }
     catch (ptree_error&) {
       TRACE("下载Finnhub Symbol有误\n");
+      return false;
     }
   }
   return true;
@@ -179,6 +182,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   CDayLinePtr pDayLine = nullptr;
   int i = 0;
   CString str;
+  string sError;
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("下载");
@@ -188,6 +192,8 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
@@ -328,8 +334,11 @@ bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
   ptree pt, pt2;
   string s;
   CString str = _T("");
+  string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pt2 = it->second;
     s = pt2.get_value<string>();
@@ -344,8 +353,11 @@ bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
   CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
   ptree pt, pt2;
   string s;
+  string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pSymbol = make_shared<CFinnhubForexSymbol>();
     pt2 = it->second;
@@ -372,6 +384,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
   CDayLinePtr pDayLine = nullptr;
   int i = 0;
   CString str;
+  string sError;
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("下载");
@@ -381,6 +394,8 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
@@ -528,7 +543,7 @@ bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   string sError;
 
   if (pWebData->GetBufferLength() <= 3) {
-    pStake->m_strPeer = _T(""); // 清空
+    pStake->m_strPeer = _T(" "); // 清空
     return true; // 没有有效的同业竞争对手
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
@@ -587,8 +602,11 @@ bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vE
   CEPSSurprisePtr pEPSSurprise = nullptr;
   long year, month, day;
   CString str;
+  string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
+  if (IsJsonReportingrror(pt, sError)) return false;
+
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pEPSSurprise = make_shared<CEPSSurprise>();
     pt2 = it->second;
@@ -603,10 +621,10 @@ bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vE
       pEPSSurprise->m_dActual = pt2.get<double>(_T("actual"));
     }
     catch (ptree_error&) {
+      return false;
     }
     vEPSSurprise.push_back(pEPSSurprise);
   }
   sort(vEPSSurprise.begin(), vEPSSurprise.end(), CompareEPSSurprise); // 以日期早晚顺序排列。
-
   return true;
 }

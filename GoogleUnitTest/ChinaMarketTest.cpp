@@ -629,14 +629,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(gl_pChinaStakeMarket->GetStakeName(_T("sh60000")), _T("")); // Ã»ÕÒµ½·µ»Ø¿Õ×Ö·û´®
   }
 
-  TEST_F(CChinaMarketTest, TestGetStockIndex) {
-    long lIndex = -2;
-    EXPECT_TRUE(gl_pChinaStakeMarket->GetStockIndex(_T("sh600000"), lIndex));
-    EXPECT_STREQ(gl_pChinaStakeMarket->GetStock(lIndex)->GetStakeCode(), _T("sh600000"));
-    EXPECT_FALSE(gl_pChinaStakeMarket->GetStockIndex(_T("sh60000"), lIndex));
-    EXPECT_EQ(lIndex, -1);
-  }
-
   TEST_F(CChinaMarketTest, TestIncreaseTotalActiveStock) {
     long l = gl_pChinaStakeMarket->GetTotalActiveStock();
     gl_pChinaStakeMarket->IncreaseActiveStockNumber();
@@ -1200,10 +1192,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetStockPtr) {
     CChinaStakePtr pStake = nullptr;
-    long lIndex = -1;
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600000"));
-    EXPECT_TRUE(gl_pChinaStakeMarket->GetStockIndex(_T("sh600000"), lIndex));
-    EXPECT_EQ(lIndex, 0);
     EXPECT_STREQ(pStake->GetStakeCode(), _T("sh600000"));
   }
 

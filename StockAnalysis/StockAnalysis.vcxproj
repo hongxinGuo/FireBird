@@ -699,7 +699,7 @@
     <ClInclude Include="GlobeSymbolDef.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="source\Accessory.h" />
     <ClInclude Include="source\AmericaMarket\FinnHubWebInquiry.h" />
     <ClInclude Include="source\AmericaMarket\WorldMarket.h" />

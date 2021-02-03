@@ -145,8 +145,6 @@ public:
 
   CString GetStakeName(CString strStockCode);
 
-  // 得到股票索引
-  bool GetStockIndex(CString strStockCode, long& lIndex);
   // 得到股票指针
   CChinaStakePtr GetStock(CString strStockCode);
   CChinaStakePtr GetStock(long lIndex);
@@ -192,7 +190,6 @@ public:
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStakeCodeDB(void);
   void LoadStakeSection(void);
-  void CreateStakeSection(CStakeSectionPtr pStakeSection);
   void LoadStockCodeDB(void);
 
   virtual bool UpdateOptionDB(void);
@@ -336,7 +333,6 @@ public:
   void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
   long GetTotalStock(void) noexcept { return m_lTotalStock; }
-  long GetTotalStake(void) noexcept { return m_lTotalStake; }
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
   bool IsMarketOpened(void) noexcept { return m_fMarketOpened; }
@@ -436,9 +432,8 @@ protected:
   vector<CChinaStakePtr> m_vChinaMarketStake; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStake; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
-  long m_lTotalStake; // 证券代码总数（前12000个为股票代码，其后为其他证券）
   long m_lTotalActiveStock;	// 当天股票总数
-  long m_lLoadedStake; // 本次装载的股票总数
+  long m_lLoadedStock; // 本次装载的股票总数
 
   vector<CChinaStakePtr> m_v10RSStrong1Stock; // 10日强势股票集
   vector<CChinaStakePtr> m_v10RSStrong2Stock; // 10日强势股票集
