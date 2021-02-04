@@ -75,7 +75,7 @@ CString CSetWorldStock::GetDefaultConnect() {
 }
 
 CString CSetWorldStock::GetDefaultSQL() {
-  return _T("[companyprofile]");
+  return _T("[stock_profile]");
 }
 
 void CSetWorldStock::DoFieldExchange(CFieldExchange* pFX) {

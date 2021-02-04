@@ -727,7 +727,7 @@
     <ClInclude Include="source\AmericaMarket\TiingoStockFundanmental.h" />
     <ClInclude Include="source\AmericaMarket\TiingoWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\ChinaMarket.h" />
-    <ClInclude Include="source\ChinaMarket\ChinaStake.h" />
+    <ClInclude Include="source\ChinaMarket\ChinaStock.h" />
     <ClInclude Include="source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h" />
@@ -828,7 +828,7 @@
     <ClCompile Include="source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp" />
-    <ClCompile Include="source\ChinaMarket\ChinaStake.cpp" />
+    <ClCompile Include="source\ChinaMarket\ChinaStock.cpp" />
     <ClCompile Include="source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp" />

@@ -11,7 +11,7 @@
 #include"StakeCode.h"
 #include"StakeSection.h"
 
-#include "ChinaStake.h"
+#include "ChinaStock.h"
 
 #include<gsl/gsl>
 using namespace gsl;
@@ -129,15 +129,16 @@ public:
   // 实时数据读取
   CString GetSinaStockInquiringStr(long lTotalNumber, bool fSkipUnactiveStock);
   CString GetTengxunInquiringStockStr(long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
-  CString	GetNeteaseStakeInquiringStr(long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
+  CString	GetNeteaseStockInquiringStr(long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-  CString GetNextStakeInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
-  bool StepToActiveStake(long& lStockIndex, long lStartPosition, long lEndPostion);
+  CString GetNextStockInquiringMiddleStrBeforeSystemReady(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition);
+  CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
+  bool StepToActiveStock(long& lStockIndex, long lStartPosition, long lEndPostion);
   CString CreateNextStakeInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber);
   CString CreateStakeCode(bool fShanghaiMarket, long lStakeIndex);
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lStartPosition, long lEndPosition);
-  long IncreaseStakeInquiringIndex(long& lIndex, long lStartPosition, long lEndPosition);
+  long IncreaseStockInquiringIndex(long& lIndex, long lStartPosition, long lEndPosition);
 
   bool IsAStock(CChinaStockPtr pStake); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
@@ -363,10 +364,12 @@ public:
   void ResetTengxunRTDataInquiringIndex(void) noexcept { m_lTengxunRTDataInquiringIndex = 0; }
   void ResetNeteaseRTDataInquiringIndex(void) noexcept { m_lNeteaseRTDataInquiringIndex = 0; }
   void ResetNeteaseDayLineDataInquiringIndex(void) noexcept { m_lNeteaseDayLineDataInquiringIndex = 0; }
+  void ResetSinaStockSetInquiryIndex(void) noexcept { m_lCurrentSinaStockSetInquiryIndex = 0; }
   long GetSinaStockRTDataInquiringIndex(void) noexcept { return m_lSinaStockRTDataInquiringIndex; }
   long GetTengxunRTDataInquiringIndex(void) noexcept { return m_lTengxunRTDataInquiringIndex; }
   long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
   long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
+  long GetSinaStockSetInquiryIndex(void) noexcept { return m_lCurrentSinaStockSetInquiryIndex; }
 
   int GetDayLineNeedUpdateNumber(void) noexcept { const int i = m_iDayLineNeedUpdate; return i; }
   void SetDayLineNeedUpdateNumber(int i) noexcept { m_iDayLineNeedUpdate = i; }
@@ -432,7 +435,8 @@ protected:
   bool m_fUpdateStakeSection; // 更新StakeSection标识
 
   vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
-  long m_lCurrentStockSetIndex;
+  long m_lCurrentSinaStockSetInquiryIndex;
+  long m_lCurrentNeteaseStockSetIndex;
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）

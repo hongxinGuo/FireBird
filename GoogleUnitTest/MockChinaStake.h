@@ -3,7 +3,7 @@
 #include"stdafx.h"
 #include"pch.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 
 namespace testing {
   class CMockChinaStake : public CChinaStock {

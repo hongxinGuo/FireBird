@@ -4,7 +4,7 @@
 #include"globedef.h"
 #include"Thread.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 #include"ChinaMarket.h"
 
 #include"MockChinaStake.h"

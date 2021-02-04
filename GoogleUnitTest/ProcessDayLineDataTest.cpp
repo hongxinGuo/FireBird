@@ -3,7 +3,7 @@
 
 #include"globedef.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 
 using namespace std;
 #include<vector>

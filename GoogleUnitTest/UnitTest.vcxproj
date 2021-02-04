@@ -231,7 +231,7 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
@@ -421,7 +421,7 @@
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\WorldStock.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h" />
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />

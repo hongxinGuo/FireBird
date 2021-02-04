@@ -5,7 +5,7 @@
 
 #include"globedef.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 #include"ChinaMarket.h"
 
 // SHARED_HANDayLineERS 可以在实现预览、缩略图和搜索筛选器句柄的

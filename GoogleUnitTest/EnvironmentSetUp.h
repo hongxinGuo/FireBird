@@ -6,7 +6,7 @@
 #include"globedef.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"

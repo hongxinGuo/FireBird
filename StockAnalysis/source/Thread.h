@@ -12,7 +12,7 @@
 #include"TiingoWebInquiry.h"
 #include"QuandlWebInquiry.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 class CChinaMarket;
 #include"WorldMarket.h"
 #include"WorldStock.h"

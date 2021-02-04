@@ -11,7 +11,7 @@
 #include"Thread.h"
 
 #include"ChinaMarket.h"
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 
 #include"WebInquirer.h"
 

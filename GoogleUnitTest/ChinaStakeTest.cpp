@@ -3,7 +3,7 @@
 #include"pch.h"
 #include"globedef.h"
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 #include"ChinaMarket.h"
 #include"WebRTData.h"
 
@@ -714,13 +714,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(lNumberOfStock, gl_pChinaStakeMarket->GetDayLineNeedProcessNumber());
   }
 
-  TEST_F(CChinaStockTest, TestIsUpdateStockCodeDB) {
+  TEST_F(CChinaStockTest, TestIsUpdateStockProfileDB) {
     CChinaStock stake;
-    EXPECT_FALSE(stake.IsUpdateStockCodeDB());
-    stake.SetUpdateStockCodeDB(true);
-    EXPECT_TRUE(stake.IsUpdateStockCodeDB());
-    stake.SetUpdateStockCodeDB(false);
-    EXPECT_FALSE(stake.IsUpdateStockCodeDB());
+    EXPECT_FALSE(stake.IsUpdateStockProfileDB());
+    stake.SetUpdateStockProfileDB(true);
+    EXPECT_TRUE(stake.IsUpdateStockProfileDB());
+    stake.SetUpdateStockProfileDB(false);
+    EXPECT_FALSE(stake.IsUpdateStockProfileDB());
   }
 
   TEST_F(CChinaStockTest, TestIsChoiced) {

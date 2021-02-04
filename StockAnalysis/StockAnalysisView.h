@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include"ChinaStake.h"
+#include"ChinaStock.h"
 
 enum {
   __SHOW_DAY_LINE_DATA__ = 1,

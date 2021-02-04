@@ -5,7 +5,7 @@
 
 #include"Accessory.h"
 
-#include "ChinaStake.h"
+#include "ChinaStock.h"
 #include"ChinaMarket.h"
 
 #include<gsl/gsl>

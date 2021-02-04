@@ -557,9 +557,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnHubWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -670,6 +667,9 @@
     </ClCompile>
     <ClCompile Include="FinnhubForexSymbolTest.cpp">
       <Filter>Test源文件\World Market\类型和数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp">
+      <Filter>dependency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -967,9 +967,6 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaMarket.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStake.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -998,6 +995,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\Poten Daily\PotenDailyBriefingWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,12 +21,14 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
       gl_pChinaStakeMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStockSetInquiryIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
       gl_pChinaStakeMarket->SetSystemReady(false);
       gl_pChinaStakeMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStakeMarket->ResetSinaStockSetInquiryIndex();
     }
   public:
     CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集

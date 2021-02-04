@@ -372,11 +372,11 @@
     <ClInclude Include="source\ChinaMarket\ChinaMarket.h">
       <Filter>头文件\China Market</Filter>
     </ClInclude>
-    <ClInclude Include="source\ChinaMarket\ChinaStake.h">
-      <Filter>头文件\China Market</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaMarket\ChinaStock.h">
+      <Filter>头文件\China Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -674,9 +674,6 @@
     <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp">
       <Filter>源文件\China Market</Filter>
     </ClCompile>
-    <ClCompile Include="source\ChinaMarket\ChinaStake.cpp">
-      <Filter>源文件\China Market</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaMarket\ThreadBuildDayLineRS.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
@@ -727,6 +724,9 @@
     </ClCompile>
     <ClCompile Include="source\ChinaMarket\ThreadUpdateStockCodeDB.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ChinaStock.cpp">
+      <Filter>源文件\China Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
