@@ -9,14 +9,14 @@ namespace StockAnalysisTest {
   struct SinaRTData {
     SinaRTData(int count, CString StockCode, int iType, bool fActive, time_t tt) {
       m_iCount = count;
-      m_strStakeCode = StockCode;
+      m_strStockCode = StockCode;
       m_iSourceType = iType;
       m_fActive = fActive;
       m_tt = tt;
     }
   public:
     int m_iCount;
-    CString m_strStakeCode;
+    CString m_strStockCode;
     int m_iSourceType;
     bool m_fActive;
     time_t m_tt;
@@ -42,13 +42,13 @@ namespace StockAnalysisTest {
   class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     static void SetUpTestSuite(void) {
-      CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
       pStake->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
       pStake->SetIPOStatus(__STAKE_NULL__); // 故意将此股票状态设置为未上市。
       s_tCurrentMarketTime = gl_pChinaStakeMarket->GetMarketTime();
     }
     static void TearDownTestSuite(void) {
-      CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
       pStake->SetActive(true);
     }
     virtual void SetUp(void) override {
@@ -58,13 +58,13 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      pStake = gl_pChinaStakeMarket->GetStock(pData->m_strStakeCode);
+      pStake = gl_pChinaStakeMarket->GetStock(pData->m_strStockCode);
       pStake->ClearRTDataDeque();
       pStake->SetTransactionTime(s_tCurrentMarketTime - 10);
       gl_pChinaStakeMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
-      pRTData->SetStakeCode(pData->m_strStakeCode);
+      pRTData->SetStockCode(pData->m_strStockCode);
       pRTData->SetActive(pData->m_fActive);
       pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
     }
@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    CChinaStakePtr pStake;
+    CChinaStockPtr pStake;
     CWebRTDataPtr pRTData;
   };
 

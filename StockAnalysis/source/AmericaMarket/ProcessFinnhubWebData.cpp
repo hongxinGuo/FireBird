@@ -221,8 +221,8 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
       pDayLine->SetMarketString(pStake->m_strListedExchange);
-      pDayLine->SetStakeCode(pStake->GetSymbol());
-      pDayLine->SetStakeName(pStake->GetTicker());
+      pDayLine->SetStockCode(pStake->GetSymbol());
+      pDayLine->SetStockName(pStake->GetTicker());
       pDayLine->SetTime(tTemp);
       lTemp = FormatToDate(tTemp);
       pDayLine->SetDate(lTemp);
@@ -425,7 +425,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
       pDayLine->SetMarketString(pForexSymbol->m_strExchange);
-      pDayLine->SetStakeCode(pForexSymbol->GetSymbol());
+      pDayLine->SetStockCode(pForexSymbol->GetSymbol());
       pDayLine->SetTime(tTemp);
       lTemp = FormatToDate(tTemp);
       pDayLine->SetDate(lTemp);

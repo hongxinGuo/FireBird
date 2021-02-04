@@ -10,11 +10,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
     }
 
     static void TearDownTestSuite() {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
     }
 
@@ -37,16 +37,16 @@ namespace StockAnalysisTest {
 
   TEST_F(CStakeCodeTest, TestGetStakeCode) {
     CStakeCode sc;
-    EXPECT_STREQ(sc.GetStakeCode(), _T(""));
-    sc.SetStakeCode(_T("sh600000"));
-    EXPECT_STREQ(sc.GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(sc.GetStockCode(), _T(""));
+    sc.SetStockCode(_T("sh600000"));
+    EXPECT_STREQ(sc.GetStockCode(), _T("sh600000"));
   }
 
   TEST_F(CStakeCodeTest, TestGetStakeName) {
     CStakeCode sc;
-    EXPECT_STREQ(sc.GetStakeName(), _T(""));
-    sc.SetStakeCode(_T("中远海运"));
-    EXPECT_STREQ(sc.GetStakeCode(), _T("中远海运"));
+    EXPECT_STREQ(sc.GetStockName(), _T(""));
+    sc.SetStockCode(_T("中远海运"));
+    EXPECT_STREQ(sc.GetStockCode(), _T("中远海运"));
   }
 
   TEST_F(CStakeCodeTest, TestGetOffset) {

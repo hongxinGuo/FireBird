@@ -20,7 +20,7 @@
 #include"ChinaMarket.h"
 
 UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLineWebData) {
-  CChinaStakePtr pStake = nullptr;
+  CChinaStockPtr pStake = nullptr;
 
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
   gl_ThreadStatus.IncreaseRunningThread();

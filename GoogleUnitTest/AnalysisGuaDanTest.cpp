@@ -173,7 +173,7 @@ namespace StockAnalysisTest {
     long lPrice;
     CWebRTDataPtr pCurrentData;
     CWebRTDataPtr pLastData;
-    CChinaStake m_stock;
+    CChinaStock m_stock;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestGuadanData, RTDataGuadanTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
@@ -417,7 +417,7 @@ namespace StockAnalysisTest {
     long lPrice;
     CWebRTDataPtr pCurrentData;
     CWebRTDataPtr pLastData;
-    CChinaStake m_stock;
+    CChinaStock m_stock;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNeedCheck, NeedCheckTest, testing::Values(&Guadan1, &Guadan2, &Guadan3, &Guadan4,
@@ -816,7 +816,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestSetCurrentGuadan) {
-    CChinaStake id;
+    CChinaStock id;
     CWebRTDataPtr pCurrentRTData = make_shared<CWebRTData>();
 
     for (int i = 0; i < 5; i++) {
@@ -854,7 +854,7 @@ namespace StockAnalysisTest {
   }
 
   TEST(CStockTest3, TestHaveGuadan) {
-    CChinaStake id;
+    CChinaStock id;
     EXPECT_FALSE(id.HaveGuadan(10000));
     id.SetGuadan(10000, 0);
     EXPECT_FALSE(id.HaveGuadan(10000));

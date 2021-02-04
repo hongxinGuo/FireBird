@@ -8,7 +8,7 @@
 namespace StockAnalysisTest {
   struct HighLowData {
     HighLowData(CString strStockCode, long lPBuy0, long lPSell0, long lLastClose, long lHighLimit, long lLowLimit, long lHighLimit2, long lLowLimit2) {
-      m_strStakeCode = strStockCode;
+      m_strStockCode = strStockCode;
       m_lPBuy0 = lPBuy0;
       m_lPSell0 = lPSell0;
       m_lLastClose = lLastClose;
@@ -18,7 +18,7 @@ namespace StockAnalysisTest {
       m_lLowLimit2 = lLowLimit2;
     }
   public:
-    CString m_strStakeCode;
+    CString m_strStockCode;
     long m_lPBuy0;
     long m_lPSell0;
     long m_lLastClose;
@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
       pRTData->SetPSell(0, pData->m_lPSell0);
       m_stock.SetHighLimit(pData->m_lHighLimit);
       m_stock.SetLowLimit(pData->m_lLowLimit);
-      m_stock.SetStakeCode(pData->m_strStakeCode);
+      m_stock.SetStockCode(pData->m_strStockCode);
     }
 
     virtual void TearDown(void) override {
@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
     }
 
   public:
-    CChinaStake m_stock;
+    CChinaStock m_stock;
     CWebRTDataPtr pRTData;
   };
 

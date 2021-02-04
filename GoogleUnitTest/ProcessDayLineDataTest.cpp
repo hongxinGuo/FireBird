@@ -12,12 +12,12 @@ namespace StockAnalysisTest {
   struct NeteaseDayLineData {
     NeteaseDayLineData(int count, CString StockCode, CString Data) {
       m_iCount = count;
-      m_strStakeCode = StockCode;
+      m_strStockCode = StockCode;
       m_strData = Data;
     }
   public:
     int m_iCount;
-    CString m_strStakeCode;
+    CString m_strStockCode;
     CString m_strData;
   };
 
@@ -48,7 +48,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       NeteaseDayLineData* pData = GetParam();
-      m_pStock = gl_pChinaStakeMarket->GetStock(pData->m_strStakeCode);
+      m_pStock = gl_pChinaStakeMarket->GetStock(pData->m_strStockCode);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
       if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
@@ -69,7 +69,7 @@ namespace StockAnalysisTest {
 
   public:
     int m_iCount;
-    CChinaStakePtr m_pStock;
+    CChinaStockPtr m_pStock;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,

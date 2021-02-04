@@ -13,8 +13,8 @@ namespace StockAnalysisTest {
     CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
     EXPECT_EQ(RTData.GetMarket(), 0);
-    EXPECT_STREQ(RTData.GetStakeCode(), _T(""));
-    EXPECT_STREQ(RTData.GetStakeName(), _T(""));
+    EXPECT_STREQ(RTData.GetStockCode(), _T(""));
+    EXPECT_STREQ(RTData.GetStockName(), _T(""));
     EXPECT_EQ(RTData.GetOpen(), 0);
     EXPECT_EQ(RTData.GetLastClose(), 0);
     EXPECT_EQ(RTData.GetNew(), 0);
@@ -219,8 +219,8 @@ namespace StockAnalysisTest {
     case 0:
     EXPECT_TRUE(fSucceed); // 没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStakeCode(), _T("sh600000"));
-    EXPECT_STREQ(m_RTData.GetStakeName(), _T(""));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);
     EXPECT_EQ(m_RTData.GetNew(), 12290);
@@ -252,8 +252,8 @@ namespace StockAnalysisTest {
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStakeCode(), _T("sh600000"));
-    EXPECT_STREQ(m_RTData.GetStakeName(), _T(""));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);
     EXPECT_EQ(m_RTData.GetNew(), 12290);
@@ -282,18 +282,18 @@ namespace StockAnalysisTest {
     break;
     case 2:
     EXPECT_TRUE(fSucceed);
-    EXPECT_STREQ(m_RTData.GetStakeCode(), _T("")); // 没有设置，仍是初始值
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("")); // 没有设置，仍是初始值
     EXPECT_EQ(m_RTData.GetHigh(), -1); // 后续部分皆未设置。
     break;
     case 3:
     EXPECT_TRUE(fSucceed); // 第一个数据错误
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
-    EXPECT_STREQ(m_RTData.GetStakeCode(), _T("sh600601")); // 股票代码已设置
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601")); // 股票代码已设置
     EXPECT_EQ(m_RTData.GetHigh(), 0); // 此位置出错，没有设置。
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStakeCode(), _T("sh600000"));
-    EXPECT_STREQ(m_RTData.GetStakeName(), _T("浦发银行"));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);
     EXPECT_EQ(m_RTData.GetNew(), 12290);

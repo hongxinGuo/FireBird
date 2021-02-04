@@ -45,14 +45,14 @@ using namespace std;
 #include<array>
 #include<mutex>
 
-class CChinaStake;
-typedef shared_ptr<CChinaStake> CChinaStakePtr;
+class CChinaStock;
+typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
 // 证券名称数据包
-class CChinaStake : public CObject {
+class CChinaStock : public CObject {
 public:
-  CChinaStake(void);
-  virtual ~CChinaStake(void);
+  CChinaStock(void);
+  virtual ~CChinaStock(void);
   void Reset(void);
 
 public:
@@ -61,10 +61,10 @@ public:
   // 本股票各变量状态
   WORD GetMarket(void) noexcept { return m_wMarket; }
   void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
-  CString GetStakeCode(void) { return m_strStakeCode; }
-  void SetStakeCode(CString str) { m_strStakeCode = str; }
-  CString GetStakeName(void) { return m_strStakeName; }
-  void SetStakeName(CString str) { m_strStakeName = str; }
+  CString GetStockCode(void) { return m_strStockCode; }
+  void SetStockCode(CString str) { m_strStockCode = str; }
+  CString GetStockName(void) { return m_strStockName; }
+  void SetStockName(CString str) { m_strStockName = str; }
 
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
@@ -297,7 +297,7 @@ public:
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
   void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
 
-  bool IsSameStock(CChinaStakePtr pStake);
+  bool IsSameStock(CChinaStockPtr pStake);
 
   // 第一个实时数据判断和设置
   bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }
@@ -475,8 +475,8 @@ protected:
   WORD m_wMarket;	// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
                 // 7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；
                 // 上海市场采用单数标示，深圳市场采用双数标示。目前暂时不用，先查看涉及到哪些函数需要修改。
-  CString m_strStakeCode; // 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
-  CString m_strStakeName; // 股票名称
+  CString m_strStockCode; // 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
+  CString m_strStockName; // 股票名称
   CStringW m_strStakeNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
   long m_lOffsetInContainer;	// 在容器中的偏移量
   long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，

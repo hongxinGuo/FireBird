@@ -40,13 +40,13 @@ public:
   virtual void ShowStockHistoryDataLine(CDC* pDC);
   virtual void ShowRealtimeData(CDC* pDC);
 
-  bool ShowGuadan(CDC* pDC, CChinaStakePtr pStake, int iXStart, int iYStart, int iYEnd);
-  bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStakePtr pStake, int iXStart, int iYStart);
+  bool ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart, int iYEnd);
+  bool ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart);
   void ShowRealtimeGuadan(CDC* pdc);
-  void ShowBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea);
-  void ShowOrdinaryBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea);
-  void ShowAttackBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea);
-  void ShowCanceledBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea);
+  void ShowBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea);
+  void ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea);
+  void ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea);
+  void ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea);
   void ShowCurrentRS(CDC* pDC, vector<double>& vRS);
   bool RSLineTo(CDC* pDC, int i, double dValue, int iSize);
 
@@ -55,7 +55,7 @@ public:
   int GetCurrentShowType(void) noexcept { return m_iCurrentShowType; }
   void SetCurrentShowType(int iValue) noexcept { m_iCurrentShowType = iValue; }
 
-  bool UpdateHistoryDataContainer(CChinaStakePtr pStake);
+  bool UpdateHistoryDataContainer(CChinaStockPtr pStake);
 
   //系统包裹函数
 public:

@@ -20,12 +20,12 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
     }
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
     }
@@ -58,14 +58,14 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CChinaStakePtr pStake;
+    CChinaStockPtr pStake;
   };
 
   TEST_F(CChinaStockTest, TestInitialize) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
@@ -90,28 +90,28 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stake.GetTotalValue(), 0);
     EXPECT_EQ(stake.GetCurrentValue(), 0);
     stake.SetMarket(1);
-    stake.SetStakeCode(_T("abcde"));
-    stake.SetStakeName(_T("dcba"));
+    stake.SetStockCode(_T("abcde"));
+    stake.SetStockName(_T("dcba"));
     stake.SetOffset(1);
     stake.SetDayLineEndDate(20020202);
     stake.SetIPOStatus(0);
     EXPECT_EQ(stake.GetMarket(), 1);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("abcde"));
-    EXPECT_STREQ(stake.GetStakeName(), _T("dcba"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("abcde"));
+    EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stake.IsNullStock());
     stake.Reset();
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
   }
 
   TEST_F(CChinaStockTest, TestGetMarket) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetMarket(), 0);
     stake.SetMarket(__SHANGHAI_MARKET__);
     EXPECT_EQ(stake.GetMarket(), __SHANGHAI_MARKET__);
@@ -120,48 +120,48 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetStockCode) {
-    CChinaStake stake;
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    stake.SetStakeCode(_T("sh600000"));
-    EXPECT_STREQ(stake.GetStakeCode(), _T("sh600000"));
+    CChinaStock stake;
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    stake.SetStockCode(_T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
   }
 
   TEST_F(CChinaStockTest, TestGetStockName) {
-    CChinaStake stake;
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
-    stake.SetStakeName(_T("浦发银行"));
-    EXPECT_STREQ(stake.GetStakeName(), _T("浦发银行"));
+    CChinaStock stake;
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
+    stake.SetStockName(_T("浦发银行"));
+    EXPECT_STREQ(stake.GetStockName(), _T("浦发银行"));
   }
   TEST_F(CChinaStockTest, TestGetOffset) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetOffset(), -1);
     stake.SetOffset(10101);
     EXPECT_EQ(stake.GetOffset(), 10101);
   }
 
   TEST_F(CChinaStockTest, TestGetDayLineEndDate) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     stake.SetDayLineEndDate(19980101);
     EXPECT_EQ(stake.GetDayLineEndDate(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetDayLineStartDate) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetDayLineStartDate(), __CHINA_MARKET_BEGIN_DATE__);
     stake.SetDayLineStartDate(19980101);
     EXPECT_EQ(stake.GetDayLineStartDate(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetIPOStatus) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_TRUE(stake.IsNotChecked());
     stake.SetIPOStatus(255);
     EXPECT_EQ(stake.GetIPOStatus(), 255);
   }
 
   TEST_F(CChinaStockTest, TestIsNullStock) {
-    CChinaStake stake;
+    CChinaStock stake;
     stake.SetIPOStatus(__STAKE_NULL__);
     EXPECT_TRUE(stake.IsNullStock());
     stake.SetIPOStatus(__STAKE_NOT_CHECKED__);
@@ -169,7 +169,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsIPOed) {
-    CChinaStake stake;
+    CChinaStock stake;
     stake.SetIPOStatus(__STAKE_IPOED__);
     EXPECT_TRUE(stake.IsIPOed());
     stake.SetIPOStatus(__STAKE_NOT_CHECKED__);
@@ -177,7 +177,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsNotChecked) {
-    CChinaStake stake;
+    CChinaStock stake;
     stake.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_TRUE(stake.IsNotChecked());
     stake.SetIPOStatus(__STAKE_DELISTED__);
@@ -185,7 +185,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDelisted) {
-    CChinaStake stake;
+    CChinaStock stake;
     stake.SetIPOStatus(__STAKE_DELISTED__);
     EXPECT_TRUE(stake.IsDelisted());
     stake.SetIPOStatus(__STAKE_NOT_CHECKED__);
@@ -193,93 +193,93 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetTransactionTime) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetTransactionTime(), 0);
     stake.SetTransactionTime(1010101010);
     EXPECT_EQ(stake.GetTransactionTime(), 1010101010);
   }
 
   TEST_F(CChinaStockTest, TestGetLastClose) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetLastClose(), 0);
     stake.SetLastClose(10101010);
     EXPECT_EQ(stake.GetLastClose(), 10101010);
   }
   TEST_F(CChinaStockTest, TestGetOpen) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetOpen(), 0);
     stake.SetOpen(10101);
     EXPECT_EQ(stake.GetOpen(), 10101);
   }
 
   TEST_F(CChinaStockTest, TestGetHigh) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetHigh(), 0);
     stake.SetHigh(19980101);
     EXPECT_EQ(stake.GetHigh(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetLow) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetLow(), 0);
     stake.SetLow(19980101);
     EXPECT_EQ(stake.GetLow(), 19980101);
   }
 
   TEST_F(CChinaStockTest, TestGetNew) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetNew(), 0);
     stake.SetNew(10101010);
     EXPECT_EQ(stake.GetNew(), 10101010);
   }
   TEST_F(CChinaStockTest, TestGetAmount) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetAmount(), 0);
     stake.SetAmount(1010101010101010);
     EXPECT_EQ(stake.GetAmount(), 1010101010101010);
   }
   TEST_F(CChinaStockTest, TestGetVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetVolume(), 0);
     stake.SetVolume(10101010);
     EXPECT_EQ(stake.GetVolume(), 10101010);
   }
   TEST_F(CChinaStockTest, TestGetTotalValue) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetTotalValue(), 0);
     stake.SetTotalValue(10101010);
     EXPECT_EQ(stake.GetTotalValue(), 10101010);
   }
   TEST_F(CChinaStockTest, TestGetCurrentValue) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentValue(), 0);
     stake.SetCurrentValue(10101010);
     EXPECT_EQ(stake.GetCurrentValue(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetHighLimit) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetHighLimit(), 0);
     stake.SetHighLimit(101010);
     EXPECT_EQ(stake.GetHighLimit(), 101010);
   }
 
   TEST_F(CChinaStockTest, TestGetLowLimit) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetLowLimit(), 0);
     stake.SetLowLimit(101010);
     EXPECT_EQ(stake.GetLowLimit(), 101010);
   }
 
   TEST_F(CChinaStockTest, TestGetLastSavedVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetLastSavedVolume(), 0);
     stake.SetLastSavedVolume(101010101010);
     EXPECT_EQ(stake.GetLastSavedVolume(), 101010101010);
   }
 
   TEST_F(CChinaStockTest, TestGetPBuy) {
-    CChinaStake stake;
+    CChinaStock stake;
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(stake.GetPBuy(i), 0);
       stake.SetPBuy(i, 10101010);
@@ -288,7 +288,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetVBuy) {
-    CChinaStake stake;
+    CChinaStock stake;
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(stake.GetVBuy(i), 0);
       stake.SetVBuy(i, 10101010);
@@ -297,7 +297,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetPSell) {
-    CChinaStake stake;
+    CChinaStock stake;
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(stake.GetPSell(i), 0);
       stake.SetPSell(i, 10101010);
@@ -306,7 +306,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetVSell) {
-    CChinaStake stake;
+    CChinaStock stake;
     for (int i = 0; i < 5; i++) {
       EXPECT_EQ(stake.GetVSell(i), 0);
       stake.SetVSell(i, 10101010);
@@ -315,21 +315,21 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetRS) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_DOUBLE_EQ(stake.GetRS(), 0.0);
     stake.SetRS(10101010.0);
     EXPECT_DOUBLE_EQ(stake.GetRS(), 10101010.0);
   }
 
   TEST_F(CChinaStockTest, TestGetRSIndex) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_DOUBLE_EQ(stake.GetRSIndex(), 0.0);
     stake.SetRSIndex(10101010.0);
     EXPECT_DOUBLE_EQ(stake.GetRSIndex(), 10101010.0);
   }
 
   TEST_F(CChinaStockTest, TestGetChangeHandRate) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_DOUBLE_EQ(stake.GetChangeHandRate(), 0.0);
     stake.SetChangeHandRate(1.1);
     EXPECT_DOUBLE_EQ(stake.GetChangeHandRate(), 1.1);
@@ -339,22 +339,22 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CWebRTDataPtr pRTData = make_shared<CWebRTData>();
 
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
     stake.SetMarket(1);
-    stake.SetStakeCode(_T("abcde"));
-    stake.SetStakeName(_T("dcba"));
+    stake.SetStockCode(_T("abcde"));
+    stake.SetStockName(_T("dcba"));
     stake.SetOffset(1);
     stake.SetDayLineEndDate(20020202);
     stake.SetIPOStatus(0);
     EXPECT_EQ(stake.GetMarket(), 1);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("abcde"));
-    EXPECT_STREQ(stake.GetStakeName(), _T("dcba"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("abcde"));
+    EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stake.IsNullStock());
@@ -378,8 +378,8 @@ namespace StockAnalysisTest {
     stake.Reset();
     EXPECT_TRUE(stake.IsNotChecked());
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
@@ -406,29 +406,29 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestUpdateStatus) {
     ASSERT_FALSE(gl_fNormalMode);
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
     stake.SetMarket(1);
-    stake.SetStakeCode(_T("abcde"));
-    stake.SetStakeName(_T("dcba"));
+    stake.SetStockCode(_T("abcde"));
+    stake.SetStockName(_T("dcba"));
     stake.SetOffset(1);
     stake.SetDayLineEndDate(20020202);
     stake.SetIPOStatus(0);
     EXPECT_EQ(stake.GetMarket(), 1);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("abcde"));
-    EXPECT_STREQ(stake.GetStakeName(), _T("dcba"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("abcde"));
+    EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
     EXPECT_TRUE(stake.IsNullStock());
     stake.Reset();
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
@@ -458,8 +458,8 @@ namespace StockAnalysisTest {
     long lDateDest = FormatToDate(stake.GetTransactionTime());
     EXPECT_EQ(lDateSource, lDateDest);
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
-    EXPECT_STREQ(stake.GetStakeName(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockName(), _T(""));
     EXPECT_EQ(stake.GetOffset(), -1);
     EXPECT_EQ(stake.GetDayLineEndDate(), __CHINA_MARKET_BEGIN_DATE__);
     EXPECT_TRUE(stake.IsNotChecked());
@@ -503,14 +503,14 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveTodayInfo) {
     CSetDayLineBasicInfo setDayLineBasicInfo;
-    CChinaStake stake;
+    CChinaStock stake;
     long lDate = 21091101;
     time_t tt = FormatToTTime(lDate);
     CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
     stake.SetMarket(__SHANGHAI_MARKET__);
-    stake.SetStakeCode(_T("sh600000"));
-    stake.SetStakeName("浦东发展");
+    stake.SetStockCode(_T("sh600000"));
+    stake.SetStockName("浦东发展");
     stake.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDate()作比较
     stake.SetLastClose(101010);
     stake.SetOpen(202020);
@@ -548,111 +548,111 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetAttackBuyAmount) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetAttackBuyAmount(), 0);
     stake.SetAttackBuyAmount(10101010);
     EXPECT_EQ(stake.GetAttackBuyAmount(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetAttackSellAmount) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetAttackSellAmount(), 0);
     stake.SetAttackSellAmount(10101010);
     EXPECT_EQ(stake.GetAttackSellAmount(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetOrdinaryBuyVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetOrdinaryBuyVolume(), 0);
     stake.SetOrdinaryBuyVolume(10101010);
     EXPECT_EQ(stake.GetOrdinaryBuyVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetOrdinarySellVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetOrdinarySellVolume(), 0);
     stake.SetOrdinarySellVolume(10101010);
     EXPECT_EQ(stake.GetOrdinarySellVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetAttackBuyVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetAttackBuyVolume(), 0);
     stake.SetAttackBuyVolume(10101010);
     EXPECT_EQ(stake.GetAttackBuyVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetStrongBuyVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetStrongBuyVolume(), 0);
     stake.SetStrongBuyVolume(10101010);
     EXPECT_EQ(stake.GetStrongBuyVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentAttackBuy) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentAttackBuy(), 0);
     stake.SetCurrentAttackBuy(10101010);
     EXPECT_EQ(stake.GetCurrentAttackBuy(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentStrongBuy) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentStrongBuy(), 0);
     stake.SetCurrentStrongBuy(10101010);
     EXPECT_EQ(stake.GetCurrentStrongBuy(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetAttackSellVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetAttackSellVolume(), 0);
     stake.SetAttackSellVolume(10101010);
     EXPECT_EQ(stake.GetAttackSellVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetStrongSellVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetStrongSellVolume(), 0);
     stake.SetStrongSellVolume(10101010);
     EXPECT_EQ(stake.GetStrongSellVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentAttackSell) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentAttackSell(), 0);
     stake.SetCurrentAttackSell(10101010);
     EXPECT_EQ(stake.GetCurrentAttackSell(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentStrongSell) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentStrongSell(), 0);
     stake.SetCurrentStrongSell(10101010);
     EXPECT_EQ(stake.GetCurrentStrongSell(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetUnknownVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetUnknownVolume(), 0);
     stake.SetUnknownVolume(10101010);
     EXPECT_EQ(stake.GetUnknownVolume(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentUnknown) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCurrentUnknown(), 0);
     stake.SetCurrentUnknown(10101010);
     EXPECT_EQ(stake.GetCurrentUnknown(), 10101010);
   }
 
   TEST_F(CChinaStockTest, TestGetCanceledBuyVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCanceledBuyVolume(), 0);
     stake.SetCanceledBuyVolume(10101010);
     EXPECT_EQ(stake.GetCanceledBuyVolume(), 10101010);
   }
   TEST_F(CChinaStockTest, TestGetCanceledSellVolume) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetCanceledSellVolume(), 0);
     stake.SetCanceledSellVolume(10101010);
     EXPECT_EQ(stake.GetCanceledSellVolume(), 10101010);
@@ -662,7 +662,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsActive) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsActive());
     stake.SetActive(true);
     EXPECT_TRUE(stake.IsActive());
@@ -671,7 +671,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsSaveToChoicedStockDB) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsSaveToChoicedStockDB());
     stake.SetSaveToChoicedStockDB(true);
     EXPECT_TRUE(stake.IsSaveToChoicedStockDB());
@@ -680,7 +680,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
-    CChinaStake stake;
+    CChinaStock stake;
     long lNumberOfStock = gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber();
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     stake.SetDayLineNeedUpdate(false);
@@ -703,7 +703,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
-    CChinaStake stake;
+    CChinaStock stake;
     long lNumberOfStock = gl_pChinaStakeMarket->GetDayLineNeedProcessNumber();
     EXPECT_FALSE(stake.IsDayLineNeedProcess());
     stake.SetDayLineNeedProcess(true);
@@ -715,7 +715,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsUpdateStockCodeDB) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsUpdateStockCodeDB());
     stake.SetUpdateStockCodeDB(true);
     EXPECT_TRUE(stake.IsUpdateStockCodeDB());
@@ -724,7 +724,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsChoiced) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsChoiced());
     stake.SetChoiced(true);
     EXPECT_TRUE(stake.IsChoiced());
@@ -733,7 +733,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineDBUpdated) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsDayLineDBUpdated());
     stake.SetDayLineDBUpdated(true);
     EXPECT_TRUE(stake.IsDayLineDBUpdated());
@@ -742,7 +742,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineLoaded) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsDayLineLoaded());
     stake.SetDayLineLoaded(true);
     EXPECT_TRUE(stake.IsDayLineLoaded());
@@ -751,7 +751,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestHaveFirstRTData) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.HaveFirstRTData());
     stake.SetHavingFirstRTData(true);
     EXPECT_TRUE(stake.HaveFirstRTData());
@@ -760,7 +760,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsRTDataCalculated) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsRTDataCalculated());
     stake.SetRTDataCalculated(true);
     EXPECT_TRUE(stake.IsRTDataCalculated());
@@ -769,7 +769,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsRecordRTData) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsRecordRTData());
     stake.SetRecordRTData(true);
     EXPECT_TRUE(stake.IsRecordRTData());
@@ -778,7 +778,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsStartCalculating) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.HaveFirstRTData());
     EXPECT_FALSE(stake.SetHavingFirstRTData(false)); // 不允许外部设置停止计算标识（内部可以）
     EXPECT_FALSE(stake.HaveFirstRTData());
@@ -789,7 +789,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestHaveNewDayLineData) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.HaveNewDayLineData());
     EXPECT_EQ(stake.GetDayLineSize(), 0);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -805,7 +805,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
-    CChinaStake stake;
+    CChinaStock stake;
     int iNumberOfSave = gl_pChinaStakeMarket->GetDayLineNeedSaveNumber();
     stake.SetDayLineNeedSaving(true);
     EXPECT_EQ(iNumberOfSave + 1, gl_pChinaStakeMarket->GetDayLineNeedSaveNumber());
@@ -822,7 +822,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
     CString str = _T("abcedfg\r\n");
     m_NeteaseDayLineWebInquiry.__TESTSetBuffer(str);
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_EQ(stake.GetDayLineBufferLength(), 0);
     stake.TransferNeteaseDayLineWebDataToBuffer(&m_NeteaseDayLineWebInquiry);
     EXPECT_EQ(stake.GetDayLineBufferLength(), str.GetLength());
@@ -830,7 +830,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestTodayDataIsActive) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsTodayDataActive());
     stake.SetActive(true);
     EXPECT_FALSE(stake.IsTodayDataActive());
@@ -851,7 +851,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestIsSaveStock) {
     pStake = gl_pChinaStakeMarket->GetStock(1);
-    CChinaStakePtr pStock2 = nullptr;
+    CChinaStockPtr pStock2 = nullptr;
     EXPECT_FALSE(pStake->IsSameStock(pStock2));
     pStock2 = gl_pChinaStakeMarket->GetStock(2);
     EXPECT_FALSE(pStake->IsSameStock(pStock2));
@@ -860,7 +860,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsTodayDataChanged) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsTodayDataChanged());
     stake.SetHigh(10);
     EXPECT_TRUE(stake.IsTodayDataChanged());
@@ -876,7 +876,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestGetCurrentGuadanTransactionPrice) {
-    CChinaStake stake;
+    CChinaStock stake;
 
     EXPECT_DOUBLE_EQ(stake.GetCurrentGuadanTransactionPrice(), 0);
     stake.SetCurrentGuadanTransactionPrice(10.01);
@@ -885,11 +885,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
     CSetStockCode setStockCode;
-    CChinaStake stake, stock2;
-    stake.SetStakeCode(_T("sh400000")); // 这个必须用未曾使用过的股票代码，已利于随后删除
+    CChinaStock stake, stock2;
+    stake.SetStockCode(_T("sh400000")); // 这个必须用未曾使用过的股票代码，已利于随后删除
     stake.SetOffset(13000);
     stake.SetMarket(__SHANGHAI_MARKET__);
-    stake.SetStakeName(_T("未使用过"));
+    stake.SetStockName(_T("未使用过"));
     stake.SetIPOStatus(__STAKE_IPOED__);
     stake.SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
     stake.SetDayLineStartDate(19900101);
@@ -908,11 +908,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestUpdateStakeCodeDB) {
     CSetStockCode setStockCode;
-    CChinaStake stake;
+    CChinaStock stake;
 
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stake.GetIPOStatus(), __STAKE_IPOED__);
     stake.SetIPOStatus(__STAKE_NULL__);
     stake.UpdateStakeCodeDB(setStockCode);
@@ -928,12 +928,12 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestLoadStockCodeDB1) {
     CSetStockCode setStockCode;
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     setStockCode.m_strSort = _T("[ID]");
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stake.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stake.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stake.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
@@ -942,7 +942,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestLoadStockCodeDB2) {
     CSetStockCode setStockCode;
-    CChinaStake stake;
+    CChinaStock stake;
 
     gl_pChinaStakeMarket->CalculateTime();
     stake.SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
@@ -950,7 +950,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stake.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stake.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stake.GetDayLineEndDate(), lCurrentDate);
@@ -958,7 +958,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestSetCheckingDayLineStatus) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     stake.SetDayLineEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
     stake.SetCheckingDayLineStatus();
@@ -986,20 +986,20 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CWebRTDataPtr pData = make_shared<CWebRTData>();
-    pData->SetStakeCode(_T("sh600008"));
-    CChinaStake stake;
+    pData->SetStockCode(_T("sh600008"));
+    CChinaStock stake;
     EXPECT_EQ(stake.GetRTDataQueueSize(), 0);
     stake.PushRTData(pData);
     EXPECT_EQ(stake.GetRTDataQueueSize(), 1);
     pData = stake.GetRTDataAtHead();
     EXPECT_EQ(stake.GetRTDataQueueSize(), 1);
-    EXPECT_STREQ(pData->GetStakeCode(), _T("sh600008"));
+    EXPECT_STREQ(pData->GetStockCode(), _T("sh600008"));
     CWebRTDataPtr pData2 = stake.PopRTData();
     EXPECT_EQ(stake.GetRTDataQueueSize(), 0);
   }
 
   TEST_F(CChinaStockTest, TestGetGuadan) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.HaveGuadan(10000));
     stake.SetGuadan(10000, 10000);
     EXPECT_TRUE(stake.HaveGuadan(10000));
@@ -1007,7 +1007,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestCheckCurrentRTData) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_TRUE(stake.CheckCurrentRTData());
     stake.SetOrdinaryBuyVolume(-1);
     EXPECT_FALSE(stake.CheckCurrentRTData());
@@ -1029,7 +1029,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestClearRTDataDeque) {
-    CChinaStake stake;
+    CChinaStock stake;
     CWebRTDataPtr pRTData;
     for (int i = 0; i < 10; i++) {
       pRTData = make_shared<CWebRTData>();
@@ -1043,12 +1043,12 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestSaveTempInfo) {
     CSetDayLineToday setDayLineToday;
-    pStake = make_shared<CChinaStake>();
-    CChinaStake stake;
+    pStake = make_shared<CChinaStock>();
+    CChinaStock stake;
 
     pStake->SetHavingFirstRTData(true);
     pStake->SetMarket(__SHANGHAI_MARKET__);
-    pStake->SetStakeCode(_T("sh600000"));
+    pStake->SetStockCode(_T("sh600000"));
     pStake->SetTransactionTime(FormatToTTime(20191101));
     pStake->SetLastClose(101010);
     pStake->SetOpen(202020);
@@ -1149,7 +1149,7 @@ namespace StockAnalysisTest {
     setDayLineToday.Open();
     EXPECT_EQ(setDayLineToday.m_Date, 20191101);
     EXPECT_EQ(setDayLineToday.m_Market, pStake->GetMarket());
-    EXPECT_STREQ(setDayLineToday.m_StockCode, pStake->GetStakeCode());
+    EXPECT_STREQ(setDayLineToday.m_StockCode, pStake->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStake->GetLastClose() / 1000);
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStake->GetOpen() / 1000);
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_High), (double)pStake->GetHigh() / 1000);
@@ -1237,7 +1237,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(stake.GetTransactionTime(), 0);
     EXPECT_EQ(stake.GetMarket(), 0);
-    EXPECT_STREQ(stake.GetStakeCode(), _T(""));
+    EXPECT_STREQ(stake.GetStockCode(), _T(""));
     EXPECT_EQ(stake.GetLastClose(), 0);
     EXPECT_EQ(stake.GetOpen(), 0);
     EXPECT_EQ(stake.GetHigh(), 0);
@@ -1331,8 +1331,8 @@ namespace StockAnalysisTest {
     pid = make_shared<CDayLine>();
     pid->SetDate(21900101);
     pid->SetMarket(__SHANGHAI_MARKET__);
-    pid->SetStakeCode(_T("sh600011"));
-    pid->SetStakeName(_T("首创股份"));
+    pid->SetStockCode(_T("sh600011"));
+    pid->SetStockName(_T("首创股份"));
     pid->SetLastClose(34235345);
     pid->SetOpen(1000000);
     pid->SetHigh(45234543);
@@ -1349,7 +1349,7 @@ namespace StockAnalysisTest {
     pStake->StoreDayLine(pid);
 
     pStake->SetDayLineEndDate(21890101);
-    pStake->SetStakeCode(_T("sh600011"));
+    pStake->SetStockCode(_T("sh600011"));
     ASSERT(!gl_fNormalMode);
     pStake->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
@@ -1434,14 +1434,14 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Close();
 
     EXPECT_FALSE(pStake->IsDayLineLoaded());
-    pStake->LoadDayLine(pStake->GetStakeCode());
+    pStake->LoadDayLine(pStake->GetStockCode());
     EXPECT_TRUE(pStake->IsDayLineLoaded());
 
     CDayLinePtr pDayLine;
     pDayLine = pStake->GetDayLine(pStake->GetDayLineSize() - 1);
 
     EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
-    EXPECT_STREQ(pDayLine->GetStakeCode(), _T("sh600011"));
+    EXPECT_STREQ(pDayLine->GetStockCode(), _T("sh600011"));
     EXPECT_EQ(pDayLine->GetMarket(), 1);
     EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
     EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
@@ -1555,8 +1555,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600016"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600016"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -1573,7 +1573,7 @@ namespace StockAnalysisTest {
       pStake->StoreDayLine(pid);
     }
     pStake->SetDayLineEndDate(10190101);
-    pStake->SetStakeCode(_T("sh600016"));
+    pStake->SetStockCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
     pStake->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
@@ -1585,7 +1585,7 @@ namespace StockAnalysisTest {
       pid = pStake->GetDayLine(i);
       EXPECT_EQ(setDayLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setDayLineBasicInfo.m_Market, pid->GetMarket());
-      EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pid->GetStakeCode());
+      EXPECT_STREQ(setDayLineBasicInfo.m_StockCode, pid->GetStockCode());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_Open) * 1000, pid->GetOpen());
       EXPECT_DOUBLE_EQ(atof(setDayLineBasicInfo.m_High) * 1000, pid->GetHigh());
@@ -1618,7 +1618,7 @@ namespace StockAnalysisTest {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLinePtr pDayLine = nullptr;
-    CChinaStake stake;
+    CChinaStock stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
 
@@ -1626,8 +1626,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600010"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600010"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -1643,7 +1643,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreDayLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600010"));
+    pStake->SetStockCode(_T("sh600010"));
     pStake->SetDayLineEndDate(10190101);
     ASSERT(!gl_fNormalMode);
     pStake->SaveDayLineBasicInfo();
@@ -1656,7 +1656,7 @@ namespace StockAnalysisTest {
       pDayLine = pStake->GetDayLine(i);
       EXPECT_EQ(pDayLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
       EXPECT_EQ(pDayLine->GetMarket(), pid->GetMarket());
-      EXPECT_STREQ(pDayLine->GetStakeCode(), pid->GetStakeCode());
+      EXPECT_STREQ(pDayLine->GetStockCode(), pid->GetStockCode());
       EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
       EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
       EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1686,7 +1686,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate) {
     CDayLinePtr pid;
-    CChinaStake stake;
+    CChinaStock stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600004"));
 
@@ -1694,8 +1694,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600004"));
-      pid->SetStakeName(_T("白云机场"));
+      pid->SetStockCode(_T("sh600004"));
+      pid->SetStockName(_T("白云机场"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -1711,7 +1711,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreDayLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600004"));
+    pStake->SetStockCode(_T("sh600004"));
     pStake->SetDayLineStartDate(19920102);
     pStake->SetDayLineEndDate(20800100);
     ASSERT(!gl_fNormalMode);
@@ -1723,7 +1723,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate3) {
     CDayLinePtr pid;
-    CChinaStake stake;
+    CChinaStock stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
 
@@ -1731,8 +1731,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600008"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -1748,7 +1748,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreDayLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600008"));
+    pStake->SetStockCode(_T("sh600008"));
     pStake->SetDayLineStartDate(19900101);
     pStake->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
@@ -1760,7 +1760,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestUpdateDayLineStartEndDate2) {
     CDayLinePtr pid;
-    CChinaStake stake;
+    CChinaStock stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600008"));
 
@@ -1768,8 +1768,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600008"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -1785,7 +1785,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreDayLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600008"));
+    pStake->SetStockCode(_T("sh600008"));
     pStake->SetDayLineStartDate(19900102);
     pStake->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
@@ -1798,27 +1798,27 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSetTodayActive) {
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
     EXPECT_FALSE(pStake->IsActive());
-    CString strStockName = pStake->GetStakeName();
+    CString strStockName = pStake->GetStockName();
     WORD wMarket = pStake->GetMarket();
     long lTotalActiveStock = gl_pChinaStakeMarket->GetTotalActiveStock();
     pStake->SetTodayActive(__SHENZHEN_MARKET__, _T("sh600002"), _T("梨园"));
     EXPECT_TRUE(pStake->IsActive());
     EXPECT_FALSE(pStake->IsDayLineLoaded());
     EXPECT_EQ(pStake->GetMarket(), __SHENZHEN_MARKET__);
-    EXPECT_STREQ(pStake->GetStakeCode(), _T("sh600002"));
-    EXPECT_STREQ(pStake->GetStakeName(), _T("梨园"));
+    EXPECT_STREQ(pStake->GetStockCode(), _T("sh600002"));
+    EXPECT_STREQ(pStake->GetStockName(), _T("梨园"));
     EXPECT_EQ(gl_pChinaStakeMarket->GetTotalActiveStock(), lTotalActiveStock + 1);
 
     // clearup
     pStake->SetActive(false);
     pStake->SetMarket(wMarket);
-    pStake->SetStakeCode(_T("sh600001"));
-    pStake->SetStakeName(strStockName);
+    pStake->SetStockCode(_T("sh600001"));
+    pStake->SetStockName(strStockName);
     gl_pChinaStakeMarket->SetTotalActiveStock(lTotalActiveStock);
   }
 
   TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {
-    CChinaStake stake;
+    CChinaStock stake;
     INT64 lCurrentPos = 0;
     CString str = _T("日期,股票代码,名称,收盘价,最高价,最低价,开盘价,前收盘,涨跌额,换手率,成交量,成交金额,总市值,流通市值\r\n");
     stake.__TestSetDayLineBuffer(str.GetLength(), str.GetBuffer());
@@ -1837,7 +1837,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestIsVolumeConsisitence) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_TRUE(stake.IsVolumeConsistence());
     stake.SetVolume(10000);
     EXPECT_FALSE(stake.IsVolumeConsistence());
@@ -1846,8 +1846,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestReportDayLineDownLoaded) {
-    CChinaStake stake;
-    stake.SetStakeCode(_T("sh600008"));
+    CChinaStock stake;
+    stake.SetStockCode(_T("sh600008"));
     stake.ReportDayLineDownLoaded();
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -1865,7 +1865,7 @@ namespace StockAnalysisTest {
       vDayLine.push_back(pDayLine);
     }
     EXPECT_EQ(vDayLine.size(), 10);
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.IsDayLineLoaded());
     stake.UpdateDayLine(vDayLine);
     EXPECT_EQ(stake.GetDayLineSize(), 10);
@@ -1876,11 +1876,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestSaveCalculatedInfo) {
-    CChinaStake stake;
+    CChinaStock stake;
 
     stake.SetTransactionTime(FormatToTTime(19900101));
     stake.SetMarket(__SHANGHAI_MARKET__);
-    stake.SetStakeCode(_T("sh600601"));
+    stake.SetStockCode(_T("sh600601"));
     stake.SetTransactionNumber(1);
     stake.SetTransactionNumberBelow5000(2);
     stake.SetTransactionNumberBelow50000(3);
@@ -1961,7 +1961,7 @@ namespace StockAnalysisTest {
     dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
     EXPECT_EQ(dayLine.GetFormatedMarketTime(), 0);
-    EXPECT_STREQ(dayLine.GetStakeCode(), _T(""));
+    EXPECT_STREQ(dayLine.GetStockCode(), _T(""));
     EXPECT_EQ(dayLine.GetMarket(), 0);
     EXPECT_EQ(dayLine.GetTransactionNumber(), stake.GetTransactionNumber());
     EXPECT_EQ(dayLine.GetTransactionNumberBelow5000(), stake.GetTransactionNumberBelow5000());
@@ -2030,12 +2030,12 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestProcessRTData1) {
-    CChinaStake stake;
+    CChinaStock stake;
     EXPECT_FALSE(stake.ProcessRTData()) << _T("实时队列为空，故而并未执行任何计算工作，只是调用一下函数而已");
   }
 
   TEST_F(CChinaStockTest, TestProcessRTData2) {
-    CChinaStake stake;
+    CChinaStock stake;
     CWebRTDataPtr prtData;
     prtData = make_shared<CWebRTData>();
     prtData->SetTransactionTime(10101010);
@@ -2062,8 +2062,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600016"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600016"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -2079,7 +2079,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreWeekLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600016"));
+    pStake->SetStockCode(_T("sh600016"));
     ASSERT(!gl_fNormalMode);
     pStake->SaveWeekLine();
 
@@ -2091,7 +2091,7 @@ namespace StockAnalysisTest {
       pid = pStake->GetWeekLine(i);
       EXPECT_EQ(setWeekLineBasicInfo.m_Date, pid->GetFormatedMarketDate());
       EXPECT_EQ(setWeekLineBasicInfo.m_Market, pid->GetMarket());
-      EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, pid->GetStakeCode());
+      EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, pid->GetStockCode());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, pid->GetLastClose());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, pid->GetOpen());
       EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_High) * 1000, pid->GetHigh());
@@ -2125,7 +2125,7 @@ namespace StockAnalysisTest {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     CWeekLinePtr pid;
     CWeekLinePtr pWeekLine = nullptr;
-    CChinaStake stake;
+    CChinaStock stake;
 
     pStake = gl_pChinaStakeMarket->GetStock(_T("sh600010"));
 
@@ -2133,8 +2133,8 @@ namespace StockAnalysisTest {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
       pid->SetMarket(__SHANGHAI_MARKET__);
-      pid->SetStakeCode(_T("sh600010"));
-      pid->SetStakeName(_T("首创股份"));
+      pid->SetStockCode(_T("sh600010"));
+      pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
       pid->SetHigh(45234543);
@@ -2150,7 +2150,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStake->StoreWeekLine(pid);
     }
-    pStake->SetStakeCode(_T("sh600010"));
+    pStake->SetStockCode(_T("sh600010"));
     ASSERT(!gl_fNormalMode);
     pStake->SaveWeekLine();
 
@@ -2163,7 +2163,7 @@ namespace StockAnalysisTest {
       pWeekLine = pStake->GetWeekLine(i);
       EXPECT_EQ(pWeekLine->GetFormatedMarketDate(), pid->GetFormatedMarketDate());
       EXPECT_EQ(pWeekLine->GetMarket(), pid->GetMarket());
-      EXPECT_STREQ(pWeekLine->GetStakeCode(), pid->GetStakeCode());
+      EXPECT_STREQ(pWeekLine->GetStockCode(), pid->GetStockCode());
       EXPECT_EQ(pWeekLine->GetLastClose(), pid->GetLastClose());
       EXPECT_EQ(pWeekLine->GetOpen(), pid->GetOpen());
       EXPECT_EQ(pWeekLine->GetHigh(), pid->GetHigh());

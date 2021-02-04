@@ -44,7 +44,7 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
   return 25;
 }
 
-UINT ThreadBuildWeekLineOfStock(not_null<CChinaStake*> pStake, long lStartDate) {
+UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStake, long lStartDate) {
   gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();

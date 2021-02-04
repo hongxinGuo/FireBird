@@ -91,7 +91,7 @@ CStockAnalysisView::CStockAnalysisView() {
 CStockAnalysisView::~CStockAnalysisView() {
 }
 
-bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStakePtr pStake, int iXStart, int iYStart, int iYEnd) {
+bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
   CSize sizeText = SysCallGetTextExtent(pDC, str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
@@ -122,7 +122,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStakePtr pStake, int iXStart
   return true;
 }
 
-bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStakePtr pStake, int iXStart, int iYStart) {
+bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart) {
   if (gl_pChinaStakeMarket->GetTotalActiveStock() > 0) {
     pStake = gl_pChinaStakeMarket->GetStock(0); // 600000
   }
@@ -166,8 +166,8 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   CPen* ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
   CPoint ptCurrent;
 
-  CChinaStakePtr pStake;
-  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pStake;
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
   int iGraphYEnd2 = iGraphYEnd + 100;
@@ -226,7 +226,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   SysCallSelectObject(pDC, ppen);
 }
 
-void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -276,7 +276,7 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rect
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -322,7 +322,7 @@ void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStakePtr pStake, CRec
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -400,7 +400,7 @@ void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStakePtr pStake, CR
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStakePtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -490,7 +490,7 @@ void CStockAnalysisView::ShowStockHistoryDataLine(CDC* pDC) {
   CPen penYellow1(PS_SOLID, 1, crYellow), penYellow2(PS_SOLID, 2, crYellow), penYellow3(PS_SOLID, 3, crYellow);
   CPen penBlue1(PS_SOLID, 1, crBlue), penBlue2(PS_SOLID, 2, crBlue), penBlue3(PS_SOLID, 3, crBlue);
   CPoint ptCurrent;
-  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   if (m_vRSShow.size() != m_pCurrentHistoryDataContainer->GetDataSize()) m_vRSShow.resize(m_pCurrentHistoryDataContainer->GetDataSize());
   if (pCurrentStock == nullptr) return;
@@ -589,7 +589,7 @@ bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
   return true;
 }
 
-bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStakePtr pStake) {
+bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStake) {
   if (pStake != nullptr) {
     switch (m_iCurrentShowType) {
     case __SHOW_DAY_LINE_DATA__:

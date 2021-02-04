@@ -3,7 +3,7 @@
 #include "SetStakeSection.h"
 #include"accessory.h"
 
-// SetStakeCode.h : CSetStakeSection 类的实现
+// SetStockCode.h : CSetStakeSection 类的实现
 
 // CSetStakeSection 实现
 

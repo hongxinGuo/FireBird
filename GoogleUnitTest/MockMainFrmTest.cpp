@@ -20,12 +20,12 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 4);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       gl_pChinaStakeMarket->ResetCurrentStock();
       gl_pChinaStakeMarket->SetResetMarket(true);
@@ -316,7 +316,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode(), _T("sh601872"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode(), _T("sh601872"));
   }
 
   TEST_F(CMockMainFrameTest, TestOnChar2) {
@@ -383,7 +383,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode(), _T("sh600604"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode(), _T("sh600604"));
   }
 
   TEST_F(CMockMainFrameTest, TestOnKeyUp) {
@@ -392,14 +392,14 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(34, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(34, 1, 1);
-    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode(), _T("sh600001"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode(), _T("sh600001"));
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCurrentStockChanged());
 
     gl_pChinaStakeMarket->SetCurrentStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(33, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(33, 1, 1);
-    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode(), _T("sh600000"));
     EXPECT_TRUE(gl_pChinaStakeMarket->IsCurrentStockChanged());
 
     gl_pChinaStakeMarket->SetCurrentStockChanged(false);

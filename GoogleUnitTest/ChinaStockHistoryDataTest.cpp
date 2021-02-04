@@ -10,11 +10,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
     }
 
     static void TearDownTestSuite() {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
     }
 
     virtual void SetUp(void) override {
@@ -50,16 +50,16 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {
     CChinaStockHistoryData dl;
-    EXPECT_STREQ(dl.GetStakeCode(), _T(""));
-    dl.SetStakeCode(_T("sh600000"));
-    EXPECT_STREQ(dl.GetStakeCode(), _T("sh600000"));
+    EXPECT_STREQ(dl.GetStockCode(), _T(""));
+    dl.SetStockCode(_T("sh600000"));
+    EXPECT_STREQ(dl.GetStockCode(), _T("sh600000"));
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockName) {
     CChinaStockHistoryData dl;
-    EXPECT_STREQ(dl.GetStakeName(), _T(""));
-    dl.SetStakeName(_T("浦东银行"));
-    EXPECT_STREQ(dl.GetStakeName(), _T("浦东银行"));
+    EXPECT_STREQ(dl.GetStockName(), _T(""));
+    dl.SetStockName(_T("浦东银行"));
+    EXPECT_STREQ(dl.GetStockName(), _T("浦东银行"));
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetLastClose) {

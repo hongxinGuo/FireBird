@@ -20,7 +20,7 @@ namespace StockAnalysisTest {
   {
   protected:
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStake, SaveDayLineBasicInfo)
       .Times(0);
     pStake->SetDayLineLoaded(true);
-    pStake->SetStakeCode(_T("sh601111"));
+    pStake->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = true;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_TRUE(pStake->IsDayLineLoaded());
@@ -78,7 +78,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(false));
     pStake->SetDayLineLoaded(true);
-    pStake->SetStakeCode(_T("sh601111"));
+    pStake->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
@@ -88,7 +88,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     pStake->SetDayLineLoaded(true);
-    pStake->SetStakeCode(_T("sh601111"));
+    pStake->SetStockCode(_T("sh601111"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStake.get()), (UINT)15);
     EXPECT_FALSE(pStake->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";

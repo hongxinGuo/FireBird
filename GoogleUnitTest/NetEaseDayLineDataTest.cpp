@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
     break;
     case 9:
     EXPECT_TRUE(fSucceed);
-    EXPECT_STREQ(m_DayLinePtr->GetStakeName(), _T("价值7030"));
+    EXPECT_STREQ(m_DayLinePtr->GetStockName(), _T("价值7030"));
     EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
     EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
     EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);
@@ -218,7 +218,7 @@ namespace StockAnalysisTest {
     break;
     case 9:
     EXPECT_TRUE(fSucceed);
-    EXPECT_STREQ(m_DayLinePtr->GetStakeName(), _T("价值7030"));
+    EXPECT_STREQ(m_DayLinePtr->GetStockName(), _T("价值7030"));
     EXPECT_EQ(m_DayLinePtr->GetClose(), 3658980);
     EXPECT_EQ(m_DayLinePtr->GetLastClose(), 3654160);
     EXPECT_EQ(m_DayLinePtr->GetHigh(), 0);

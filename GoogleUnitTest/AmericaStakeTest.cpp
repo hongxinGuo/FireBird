@@ -112,22 +112,22 @@ namespace StockAnalysisTest {
     CSetWorldStockDayLine setDayLine;
 
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetStockCode(_T("A"));
     pDayLine->SetDate(20200101); // 这个需要添加进数据库
     pDayLine->SetClose(10010);
     vDayLine.push_back(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetStockCode(_T("A"));
     pDayLine->SetDate(20210101); // 这个需要添加进数据库
     pDayLine->SetClose(12345);
     vDayLine.push_back(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetStockCode(_T("A"));
     pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
     pDayLine->SetClose(10020);
     vDayLine.push_back(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetStakeCode(_T("A"));
+    pDayLine->SetStockCode(_T("A"));
     pDayLine->SetDate(20210123); // 这个需要添加进数据库
     pDayLine->SetClose(10030);
     vDayLine.push_back(pDayLine);

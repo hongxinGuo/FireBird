@@ -101,20 +101,20 @@ public:
   virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
   virtual bool RunningThreadBuildDayLineRSOfDate(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStake* pStake);
-  virtual bool RunningThreadLoadDayLine(CChinaStake* pCurrentStock);
-  virtual bool RunningThreadLoadWeekLine(CChinaStake* pCurrentStock);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStake);
+  virtual bool RunningThreadLoadDayLine(CChinaStock* pCurrentStock);
+  virtual bool RunningThreadLoadWeekLine(CChinaStock* pCurrentStock);
   virtual bool RunningThreadUpdateStakeCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
   virtual bool RunningThreadChoice10RSStrong1StockSet(void);
   virtual bool RunningThreadChoice10RSStrongStockSet(void);
-  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStakePtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStakePtr pStake);
-  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake);
-  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStakePtr>* pv10RSStrongStock, CChinaStakePtr pStake);
+  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStake);
+  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake);
+  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake);
   virtual bool RunningThreadBuildWeekLine(long lStartDate);
-  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStake* pStake, long lStartDate);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStock* pStake, long lStartDate);
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
@@ -139,22 +139,22 @@ public:
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lStartPosition, long lEndPosition);
   long IncreaseStakeInquiringIndex(long& lIndex, long lStartPosition, long lEndPosition);
 
-  bool IsAStock(CChinaStakePtr pStake); // 是否为沪深A股
+  bool IsAStock(CChinaStockPtr pStake); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
-  bool IsStock(CString  strStockCode);	// 是否为正确的股票代码
+  bool IsStock(CString strStockCode);	// 是否为正确的股票代码
 
-  CString GetStakeName(CString strStockCode);
+  CString GetStockName(CString strStockCode);
 
   // 得到股票指针
-  CChinaStakePtr GetStock(CString strStockCode);
-  CChinaStakePtr GetStock(long lIndex);
+  CChinaStockPtr GetStock(CString strStockCode, bool fCreateNewStockIfNeed = false);
+  CChinaStockPtr GetStock(long lIndex);
 
   void IncreaseActiveStockNumber(void) noexcept { m_lTotalActiveStock++; }
 
   // 得到当前显示股票
-  CChinaStakePtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
+  CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
-  void SetCurrentStock(CChinaStakePtr pStake);
+  void SetCurrentStock(CChinaStockPtr pStake);
   void ResetCurrentStock(void);
   bool IsCurrentStockChanged(void) noexcept { return m_fCurrentStockChanged; }
   void SetCurrentStockChanged(bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
@@ -174,7 +174,7 @@ public:
   void SetCurrentSelectedPosition(long lIndex) noexcept { m_lCurrentSelectedPosition = lIndex; }
   long GetCurrentSelectedStockSet(void) noexcept { return m_lCurrentSelectedStockSet; }
   void SetCurrentSelectedStockSet(long lIndex) noexcept { m_lCurrentSelectedStockSet = lIndex; }
-  CChinaStakePtr GetCurrentSelectedStock(void);
+  CChinaStockPtr GetCurrentSelectedStock(void);
 
   bool IsChoiced10RSStrong1StockSet(void) noexcept { return m_fChoiced10RSStrong1StockSet; }
   void SetChoiced10RSStrong1StockSet(bool fFlag) noexcept { m_fChoiced10RSStrong1StockSet = fFlag; }
@@ -285,8 +285,8 @@ public:
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
 
-  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketStake.size(); }
-  long GetStockOffset(CString str) { return m_mapChinaMarketStake.at(str); }
+  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketStock.size(); }
+  long GetStockOffset(CString str) { return m_mapChinaMarketStock.at(str); }
 
   void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
   CString GetStockCodeForInquiringRTData(void) { return m_strStockCodeForInquiringRTData; }
@@ -315,6 +315,7 @@ public:
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
   bool TaskDistributeNeteaseRTDataToProperStock(void);
+  bool CheckAndCreateNewStock(CString strStockCode);
 
   void TaskSaveTempDataIntoDB(long lCurrentTime);
 
@@ -350,8 +351,8 @@ public:
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
   void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-  bool AddChoicedStock(CChinaStakePtr pStake);
-  bool DeleteChoicedStock(CChinaStakePtr pStake);
+  bool AddChoicedStock(CChinaStockPtr pStake);
+  bool DeleteChoicedStock(CChinaStockPtr pStake);
   size_t GetChoicedStockSize(void) { return m_avChoicedStock.at(0).size(); }
   size_t GetChoicedStockSize(long lIndex) { return m_avChoicedStock.at(lIndex).size(); }
   void ClearChoiceStockContainer(void) { m_avChoicedStock.at(0).clear(); }
@@ -411,8 +412,9 @@ public:
 
 protected:
   // 初始化
-  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStake改为CMockChinaStake。
+  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStake。
   void CreateStakeSection(CString strFirstStockCode, bool fProcessRTData);
+  bool CreateNewStock(CString strStockCode, bool fProcessRTData);
   bool UpdateStakeSection(CString strStakeCode);
   bool UpdateStakeSection(long lIndex);
 
@@ -425,20 +427,23 @@ protected:
 
 // 变量区
 protected:
-  vector<CString> m_vCurrentStockSet; // 当前股票集。字符串的格式为sh600000、sz000001
+  vector<CString> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为sh600000、sz000001
   vector<CStakeSectionPtr> m_vStakeSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
   bool m_fUpdateStakeSection; // 更新StakeSection标识
 
-  vector<CChinaStakePtr> m_vChinaMarketStake; // 本系统允许的所有股票池（无论代码是否存在）
-  map<CString, long> m_mapChinaMarketStake; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
+  vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
+  long m_lCurrentStockSetIndex;
+
+  vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
+  map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lTotalActiveStock;	// 当天股票总数
   long m_lLoadedStock; // 本次装载的股票总数
 
-  vector<CChinaStakePtr> m_v10RSStrong1Stock; // 10日强势股票集
-  vector<CChinaStakePtr> m_v10RSStrong2Stock; // 10日强势股票集
+  vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集
+  vector<CChinaStockPtr> m_v10RSStrong2Stock; // 10日强势股票集
   vector<CRSReference> m_aRSStrongOption; // 用于计算RS的参数，最多十个。
-  vector<vector<CChinaStakePtr> > m_avChoicedStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
+  vector<vector<CChinaStockPtr> > m_avChoicedStock; // 各种选择的股票集。0-9：自选股票集；10-19：10日RS股票集；20-29：股价变化股票集
   long m_lCurrentSelectedPosition; // 当前股票集的位置
   long m_lCurrentRSStrongIndex; // 仅用于传递当前的位置，以用于选择正确的数据表
   long m_lCurrentSelectedStockSet; // 当前选择的股票集（-1为整体股票集，1-10为10日RS特性股票集，以此类推）。
@@ -464,7 +469,7 @@ protected:
   bool m_fSaveDayLine; // 将读取的日线存入数据库标识
   bool m_fRTDataSetCleared; // 实时数据库已清除标识。九点三十分之前为假，之后设置为真。
   bool m_fSaveTempData; // 存储临时实时数据标识
-  CChinaStakePtr m_pCurrentStock; // 当前显示的股票
+  CChinaStockPtr m_pCurrentStock; // 当前显示的股票
 
   time_t m_ttNewestTransactionTime;
 
@@ -491,7 +496,7 @@ protected:
   long m_lUpdatedDateFor10DaysRS1;
   long m_lUpdatedDateFor10DaysRS;
 
-  vector<CChinaStakePtr> m_vpSelectedStock; // 当前选择的股票
+  vector<CChinaStockPtr> m_vpSelectedStock; // 当前选择的股票
   bool m_fLoadedSelectedStock;
 
   bool m_fCurrentStockChanged; // 当前选择的股票改变了

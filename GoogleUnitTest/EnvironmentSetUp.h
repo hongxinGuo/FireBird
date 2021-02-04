@@ -71,7 +71,7 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 #endif
 
-      CChinaStakePtr pStake = nullptr;
+      CChinaStockPtr pStake = nullptr;
       // 重置股票池状态（因已装入实际状态）
       for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
         pStake = gl_pChinaStakeMarket->GetStock(i);
@@ -88,9 +88,9 @@ namespace StockAnalysisTest {
         pStake = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
         pStake->SetIPOStatus(setStockCode.m_IPOStatus);
         pStake->SetMarket(setStockCode.m_StockType);
-        pStake->SetStakeCode(setStockCode.m_StockCode);
+        pStake->SetStockCode(setStockCode.m_StockCode);
         CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-        pStake->SetStakeName(str);
+        pStake->SetStockName(str);
         pStake->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
         if (pStake->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
           pStake->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
@@ -128,7 +128,7 @@ namespace StockAnalysisTest {
       gl_pTiingoWebInquiry = nullptr;
       gl_pQuandlWebInquiry = nullptr;
 
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);

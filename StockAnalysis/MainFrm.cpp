@@ -497,7 +497,7 @@ void CMainFrame::UpdateStatus(void) {
   CString str;
   char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   //更新状态条
   if (gl_pChinaStakeMarket->IsCurrentEditStockChanged()) {
@@ -508,8 +508,8 @@ void CMainFrame::UpdateStatus(void) {
   // 显示股票代码和名称
   if (gl_pChinaStakeMarket->IsCurrentStockChanged()) {
     gl_pChinaStakeMarket->SetCurrentStockChanged(false);
-    SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStakeCode());
-    SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStakeName());
+    SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
+    SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
   // 显示当前选择的股票
@@ -671,7 +671,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStakePtr pStake;
+  CChinaStockPtr pStake;
   CString strTemp;
 
   switch (nChar) {
@@ -729,9 +729,9 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStakePtr pStake;
+  CChinaStockPtr pStake;
   CString strTemp;
-  CChinaStakePtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {

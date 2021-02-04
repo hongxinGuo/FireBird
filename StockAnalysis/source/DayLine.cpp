@@ -87,8 +87,8 @@ bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBa
 
   psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
   psetDayLineBasicInfo->m_Market = GetMarket();
-  psetDayLineBasicInfo->m_StockCode = GetStakeCode();
-  psetDayLineBasicInfo->m_StockName = GetStakeName();
+  psetDayLineBasicInfo->m_StockCode = GetStockCode();
+  psetDayLineBasicInfo->m_StockName = GetStockName();
   psetDayLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetDayLineBasicInfo->m_High = ConvertValueToString(GetHigh(), 1000);
   psetDayLineBasicInfo->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -121,8 +121,8 @@ bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayL
   ASSERT(psetDayLineBasicInfo->IsOpen());
   m_lDate = psetDayLineBasicInfo->m_Date;
   m_wMarket = psetDayLineBasicInfo->m_Market;
-  m_strStakeCode = psetDayLineBasicInfo->m_StockCode;
-  m_strStakeName = psetDayLineBasicInfo->m_StockName;
+  m_strStockCode = psetDayLineBasicInfo->m_StockCode;
+  m_strStockName = psetDayLineBasicInfo->m_StockName;
   m_lLastClose = atof(psetDayLineBasicInfo->m_LastClose) * 1000;
   m_lOpen = atof(psetDayLineBasicInfo->m_Open) * 1000;
   m_lHigh = atof(psetDayLineBasicInfo->m_High) * 1000;
@@ -147,8 +147,8 @@ bool CDayLine::SaveWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldSto
 
   psetWorldStockDayLine->m_Date = GetFormatedMarketDate();
   psetWorldStockDayLine->m_Market = GetMarketString();
-  psetWorldStockDayLine->m_Symbol = GetStakeCode();
-  psetWorldStockDayLine->m_Ticker = GetStakeName();
+  psetWorldStockDayLine->m_Symbol = GetStockCode();
+  psetWorldStockDayLine->m_Ticker = GetStockName();
   psetWorldStockDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetWorldStockDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
   psetWorldStockDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -181,8 +181,8 @@ bool CDayLine::LoadWorldMarketData(not_null<CSetWorldStockDayLine*> psetWorldSto
   ASSERT(psetWorldStockDayLine->IsOpen());
   m_lDate = psetWorldStockDayLine->m_Date;
   m_strMarket = psetWorldStockDayLine->m_Market;
-  m_strStakeCode = psetWorldStockDayLine->m_Symbol;
-  m_strStakeName = psetWorldStockDayLine->m_Ticker;
+  m_strStockCode = psetWorldStockDayLine->m_Symbol;
+  m_strStockName = psetWorldStockDayLine->m_Ticker;
   m_lLastClose = atof(psetWorldStockDayLine->m_LastClose) * 1000;
   m_lOpen = atof(psetWorldStockDayLine->m_Open) * 1000;
   m_lHigh = atof(psetWorldStockDayLine->m_High) * 1000;
@@ -206,7 +206,7 @@ bool CDayLine::SaveForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
 
   psetForexDayLine->m_Date = GetFormatedMarketDate();
   psetForexDayLine->m_Exchange = GetMarketString();
-  psetForexDayLine->m_Symbol = GetStakeCode();
+  psetForexDayLine->m_Symbol = GetStockCode();
   psetForexDayLine->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
   psetForexDayLine->m_High = ConvertValueToString(GetHigh(), 1000);
   psetForexDayLine->m_Low = ConvertValueToString(GetLow(), 1000);
@@ -230,7 +230,7 @@ bool CDayLine::LoadForexDayLine(not_null<CSetForexDayLine*> psetForexDayLine) {
   ASSERT(psetForexDayLine->IsOpen());
   m_lDate = psetForexDayLine->m_Date;
   m_strMarket = psetForexDayLine->m_Exchange;
-  m_strStakeCode = psetForexDayLine->m_Symbol;
+  m_strStockCode = psetForexDayLine->m_Symbol;
   m_lLastClose = atof(psetForexDayLine->m_LastClose) * 1000;
   m_lOpen = atof(psetForexDayLine->m_Open) * 1000;
   m_lHigh = atof(psetForexDayLine->m_High) * 1000;
@@ -288,7 +288,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
 
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
-  SetStakeCode(strStockCode);
+  SetStockCode(strStockCode);
   str = strStockCode.Left(2);
   if (str == _T("sh")) {
     SetMarket(__SHANGHAI_MARKET__);
@@ -301,7 +301,7 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
   }
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
-  SetStakeName(str);
+  SetStockName(str);
 
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   dTemp = atof(buffer2);
@@ -407,7 +407,7 @@ bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, 
 
   if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
   str = buffer2;
-  SetStakeCode(strStockCode);
+  SetStockCode(strStockCode);
   str = strStockCode.Left(2);
   if (str == _T("sh")) {
     SetMarket(__SHANGHAI_MARKET__);
@@ -420,7 +420,7 @@ bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, 
   }
   if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
   str = buffer2;
-  SetStakeName(str);
+  SetStockName(str);
 
   if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
   dTemp = atof(buffer2);

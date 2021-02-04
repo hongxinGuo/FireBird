@@ -35,7 +35,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite(void) {
       delete s_pchinaMarket;
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStakeCode();
+      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       gl_pChinaStakeMarket->SetDayLineNeedSaveNumber(0);
@@ -65,7 +65,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData1) {
-    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
     EXPECT_FALSE(pStake->IsDayLineNeedSaving());
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData2) {
-    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
     EXPECT_FALSE(pStake->IsDayLineNeedSaving());
     pStake->SetDayLineNeedSaving(true);
@@ -85,7 +85,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
-    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
     EXPECT_FALSE(pStake->IsDayLineNeedSaving());
     pStake->SetDayLineNeedSaving(true);
@@ -103,7 +103,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData4) {
-    CChinaStakePtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStake = s_pchinaMarket->GetStock(_T("sh600000"));
 
     pStake->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();

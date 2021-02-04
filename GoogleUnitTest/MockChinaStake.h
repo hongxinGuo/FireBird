@@ -6,7 +6,7 @@
 #include"ChinaStake.h"
 
 namespace testing {
-  class CMockChinaStake : public CChinaStake {
+  class CMockChinaStake : public CChinaStock {
   public:
     MOCK_METHOD(void, ReportGuadanTransaction, (), (override));
     MOCK_METHOD(void, ReportGuadan, (), (override));

@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStake*> pStake) {
+UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStake) {
   CString str;
   bool fDataSaved = false;
   gl_ThreadStatus.IncreaseRunningThread();
@@ -26,7 +26,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStake*> pStake) {
     }
     pStake->UnloadDayLine();
     if (fDataSaved) {
-      str = pStake->GetStakeCode() + _T("日线资料存储完成");
+      str = pStake->GetStockCode() + _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }

@@ -51,7 +51,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestShowOrdinaryBuySell) {
     CDC DC;
-    CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(1);
+    CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
     pStake->SetVolume(10000);
@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestShowCanceledBuySell) {
     CDC DC;
-    CChinaStakePtr pStake = gl_pChinaStakeMarket->GetStock(1);
+    CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
     pStake->SetCanceledBuyVolume(10000);
