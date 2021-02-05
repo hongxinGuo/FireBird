@@ -459,15 +459,18 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
   if (m_DayLine.GetDataSize() == 0) {
     SetDayLineStartDate(__CHINA_MARKET_BEGIN_DATE__);
     SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
+    SetUpdateStockProfileDB(true);
   }
   else {
     if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
       SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
+      SetUpdateStockProfileDB(true);
     }
     if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
       SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
+      SetUpdateStockProfileDB(true);
     }
   }
 }
@@ -1517,7 +1520,7 @@ void CChinaStock::ReportGuadan(void) {
   }
 }
 
-void CChinaStock::SaveStakeCodeDB(CSetStockCode& setStockCode) {
+void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
   setStockCode.m_StockType = GetMarket();
   setStockCode.m_StockCode = GetStockCode();
@@ -1539,15 +1542,15 @@ void CChinaStock::SaveStakeCodeDB(CSetStockCode& setStockCode) {
   setStockCode.m_DayLineEndDate = GetDayLineEndDate();
 }
 
-void CChinaStock::AppendStakeCodeDB(CSetStockCode& setStockCode) {
+void CChinaStock::AppendStockCodeDB(CSetStockCode& setStockCode) {
   setStockCode.AddNew();
-  SaveStakeCodeDB(setStockCode);
+  SaveStockCodeDB(setStockCode);
   setStockCode.Update();
 }
 
-void CChinaStock::UpdateStakeCodeDB(CSetStockCode& setStockCode) {
+void CChinaStock::UpdateStockCodeDB(CSetStockCode& setStockCode) {
   setStockCode.Edit();
-  SaveStakeCodeDB(setStockCode);
+  SaveStockCodeDB(setStockCode);
   setStockCode.Update();
 }
 

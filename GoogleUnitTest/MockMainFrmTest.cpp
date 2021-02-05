@@ -33,7 +33,6 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingMarket->SetResetMarket(true);
       gl_pChinaStakeMarket->SetCurrentStockChanged(false);
       gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
-      gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false); // 这里使用了实际的数据库，故而不允许更新
       gl_pChinaStakeMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
       EXPECT_FALSE(gl_fNormalMode);
       EXPECT_TRUE(gl_fTestMode);

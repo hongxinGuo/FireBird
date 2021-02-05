@@ -324,9 +324,9 @@ public:
   void SaveTempInfo(CSetDayLineToday& setDayLineToday); // 存储当日计算出的数据
   void UpdateDayLineStartEndDate(void);
   void LoadTempInfo(const CSetDayLineToday& setDayLineToday);
-  void SaveStakeCodeDB(CSetStockCode& setStockCode);
-  void AppendStakeCodeDB(CSetStockCode& setStockCode);
-  void UpdateStakeCodeDB(CSetStockCode& setStockCode);
+  void SaveStockCodeDB(CSetStockCode& setStockCode);
+  void AppendStockCodeDB(CSetStockCode& setStockCode);
+  void UpdateStockCodeDB(CSetStockCode& setStockCode);
   bool LoadStockCodeDB(const CSetStockCode& setStockCode);
   void SetCheckingDayLineStatus(void);
   //周线历史数据存取

@@ -219,7 +219,7 @@ public:
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
 
-  bool SortStakeVector(void);
+  bool SortStockVector(void);
 
 protected:
   vector<CFinnhubExchangePtr> m_vFinnhubExchange;

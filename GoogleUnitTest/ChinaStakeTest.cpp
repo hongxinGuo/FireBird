@@ -44,7 +44,6 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
       gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
       gl_pChinaStakeMarket->CalculateTime();
-      gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false);
       gl_pChinaStakeMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -895,7 +894,7 @@ namespace StockAnalysisTest {
     stake.SetDayLineStartDate(19900101);
     setStockCode.m_strFilter = _T("[ID] = 1");
     setStockCode.Open();
-    stake.AppendStakeCodeDB(setStockCode);
+    stake.AppendStockCodeDB(setStockCode);
     setStockCode.Close();
 
     setStockCode.m_strFilter = _T("[StockCode] = 'sh400000'");
@@ -915,7 +914,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
     EXPECT_EQ(stake.GetIPOStatus(), __STAKE_IPOED__);
     stake.SetIPOStatus(__STAKE_NULL__);
-    stake.UpdateStakeCodeDB(setStockCode);
+    stake.UpdateStockCodeDB(setStockCode);
     setStockCode.Close();
 
     setStockCode.Open();

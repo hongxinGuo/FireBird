@@ -1,19 +1,19 @@
 #include"stdafx.h"
 
-#include "SetStakeSection.h"
+#include "SetStockSection.h"
 #include"accessory.h"
 
-// SetStockCode.h : CSetStakeSection 类的实现
+// SetStockCode.h : CSetStockSection 类的实现
 
-// CSetStakeSection 实现
+// CSetStockSection 实现
 
 // 代码生成在 2019年5月26日, 8:14
 
 #include "stdafx.h"
 
-IMPLEMENT_DYNAMIC(CSetStakeSection, CRecordset)
+IMPLEMENT_DYNAMIC(CSetStockSection, CRecordset)
 
-CSetStakeSection::CSetStakeSection(CDatabase* pdb)
+CSetStockSection::CSetStockSection(CDatabase* pdb)
   : CRecordset(pdb) {
   m_Active = false;
   m_Market = 0;
@@ -22,15 +22,15 @@ CSetStakeSection::CSetStakeSection(CDatabase* pdb)
   m_nFields = 5;
 }
 
-CString CSetStakeSection::GetDefaultConnect() {
+CString CSetStockSection::GetDefaultConnect() {
   return GetChinaMarketSchemaConnect();
 }
 
-CString CSetStakeSection::GetDefaultSQL() {
-  return _T("[StakeCodeSection]");
+CString CSetStockSection::GetDefaultSQL() {
+  return _T("[Stock_Code_Section]");
 }
 
-void CSetStakeSection::DoFieldExchange(CFieldExchange* pFX) {
+void CSetStockSection::DoFieldExchange(CFieldExchange* pFX) {
   pFX->SetFieldType(CFieldExchange::outputColumn);
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
@@ -46,11 +46,11 @@ void CSetStakeSection::DoFieldExchange(CFieldExchange* pFX) {
 // CSetStakeCode 诊断
 
 #ifdef _DEBUG
-void CSetStakeSection::AssertValid() const {
+void CSetStockSection::AssertValid() const {
   CRecordset::AssertValid();
 }
 
-void CSetStakeSection::Dump(CDumpContext& dc) const {
+void CSetStockSection::Dump(CDumpContext& dc) const {
   CRecordset::Dump(dc);
 }
 #endif //_DEBUG

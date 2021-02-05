@@ -751,7 +751,7 @@
     <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
     <ClInclude Include="source\DataBase\SetActiveStakeCode.h" />
-    <ClInclude Include="source\DataBase\SetStakeSection.h" />
+    <ClInclude Include="source\DataBase\SetStockSection.h" />
     <ClInclude Include="source\DataBase\SetStockCode.h" />
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h" />
     <ClInclude Include="source\DataBase\SetWeekLineBasicInfo.h" />
@@ -871,7 +871,7 @@
     <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
     <ClCompile Include="source\DataBase\SetActiveStakeCode.cpp" />
-    <ClCompile Include="source\DataBase\SetStakeSection.cpp" />
+    <ClCompile Include="source\DataBase\SetStockSection.cpp" />
     <ClCompile Include="source\DataBase\SetStockCode.cpp" />
     <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp" />
     <ClCompile Include="source\DataBase\SetWeekLineBasicInfo.cpp" />

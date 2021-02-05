@@ -35,6 +35,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       // 下列全局智能指针为实际类
       gl_pChinaStakeMarket = make_shared<CChinaMarket>();
+      gl_pChinaStakeMarket->__TestCreateStockVector();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();

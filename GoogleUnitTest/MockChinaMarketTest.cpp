@@ -161,15 +161,6 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskUpdateStockCodeDB) {
-    s_pchinaMarket->SetUpdateStakeCodeDB(false);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadUpdateStakeCodeDB())
-      .Times(0);
-    EXPECT_FALSE(s_pchinaMarket->TaskUpdateStockCodeDB());
-    s_pchinaMarket->SetUpdateStakeCodeDB(true);
-    EXPECT_CALL(*s_pchinaMarket, RunningThreadUpdateStakeCodeDB())
-      .Times(1);
-    EXPECT_TRUE(s_pchinaMarket->TaskUpdateStockCodeDB());
-    EXPECT_FALSE(s_pchinaMarket->IsUpdateStakeCodeDB());
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskUpdateOptionDB) {
@@ -367,7 +358,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间小于150400时
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), 19900101) << "没有执行修改最新相对强度日的动作";
-    EXPECT_FALSE(s_pchinaMarket->IsUpdateStakeCodeDB());
+    EXPECT_FALSE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_FALSE(s_pchinaMarket->IsTodayStockProcessed());
 
@@ -387,7 +378,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间大于150400时
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), lDate);
-    EXPECT_TRUE(s_pchinaMarket->IsUpdateStakeCodeDB());
+    EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());
   }
@@ -431,11 +422,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateStockCodeDB) {
-    EXPECT_CALL(*s_pchinaMarket, UpdateStakeCodeDB)
+    EXPECT_CALL(*s_pchinaMarket, UpdateStockCodeDB2)
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingRTData(false);
-    EXPECT_EQ(ThreadUpdateStakeCodeDB(s_pchinaMarket), (UINT)18);
+    EXPECT_EQ(ThreadUpdateStockCodeDB(s_pchinaMarket), (UINT)18);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateChoicedStockDB) {

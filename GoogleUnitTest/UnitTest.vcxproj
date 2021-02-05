@@ -274,8 +274,8 @@
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetWeekLinextendInfo.cpp" />
@@ -445,8 +445,8 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong1Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetRSStrongStock.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeSection.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockCode.h" />
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineBasicInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineExtendInfo.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h" />

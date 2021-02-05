@@ -23,6 +23,7 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStake) {
     if (fDataSaved) {
       pStake->UpdateDayLineStartEndDate();
       pStake->SetDayLineDBUpdated(true);
+      pStake->SetUpdateStockProfileDB(true);
     }
     pStake->UnloadDayLine();
     if (fDataSaved) {

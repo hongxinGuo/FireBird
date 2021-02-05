@@ -83,7 +83,6 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStakeMarket->IsMarketOpened());
       gl_ThreadStatus.SetSavingTempData(false);
       gl_pChinaStakeMarket->SetRTDataSetCleared(false);
-      gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false);
       gl_pChinaStakeMarket->SetUpdateOptionDB(false);
       gl_pChinaStakeMarket->ClearChoicedRTDataQueue();
       gl_pChinaStakeMarket->SetResetMarket(true);
@@ -783,13 +782,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStakeMarket->IsRecordingRTData());
   }
 
-  TEST_F(CChinaMarketTest, TestSetUpdateStockCodeDB) {
-    EXPECT_FALSE(gl_pChinaStakeMarket->IsUpdateStakeCodeDB());
-    gl_pChinaStakeMarket->SetUpdateStakeCodeDB(true);
-    EXPECT_TRUE(gl_pChinaStakeMarket->IsUpdateStakeCodeDB());
-    gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false);
-    EXPECT_FALSE(gl_pChinaStakeMarket->IsUpdateStakeCodeDB());
-  }
   TEST_F(CChinaMarketTest, TestSetUpdateOptionDB) {
     EXPECT_FALSE(gl_pChinaStakeMarket->IsUpdateOptionDB());
     gl_pChinaStakeMarket->SetUpdateOptionDB(true);
@@ -1034,9 +1026,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
     gl_pChinaStakeMarket->TaskCheckDayLineDB();
     EXPECT_FALSE(gl_pChinaStakeMarket->IsDayLineDBUpdated());
-    EXPECT_TRUE(gl_pChinaStakeMarket->IsUpdateStakeCodeDB());
-
-    gl_pChinaStakeMarket->SetUpdateStakeCodeDB(false);
+    EXPECT_TRUE(gl_pChinaStakeMarket->IsUpdateStockCodeDB());
 
     gl_pChinaStakeMarket->SetDayLineNeedUpdateNumber(gl_pChinaStakeMarket->GetTotalStock());
   }

@@ -106,18 +106,18 @@ namespace StockAnalysisTest {
     case 3:
     EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
     EXPECT_TRUE(pStake->IsActive());
-    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(pStake->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
     break;
     case 4:
-    EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime() - s_tCurrentMarketTime, 0);
     //EXPECT_FALSE(pStake->IsActive());
-    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime);
+    EXPECT_EQ(pStake->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
     break;
     case 5:
-    EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime(), s_tCurrentMarketTime - 5);
-    EXPECT_EQ(pStake->GetTransactionTime(), s_tCurrentMarketTime - 5);
+    EXPECT_EQ(gl_pChinaStakeMarket->GetNewestTransactionTime() - s_tCurrentMarketTime, -5);
+    EXPECT_EQ(pStake->GetTransactionTime() - s_tCurrentMarketTime, -5);
     EXPECT_EQ(pStake->GetRTDataQueueSize(), 1);
     EXPECT_TRUE(pStake->IsActive());
     EXPECT_TRUE(pStake->IsIPOed());

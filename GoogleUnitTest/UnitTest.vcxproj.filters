@@ -428,9 +428,6 @@
     <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStakeSection.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="MockChinaStakeTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
@@ -671,6 +668,9 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -871,9 +871,6 @@
     <ClInclude Include="..\StockAnalysis\source\StakeSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStakeSection.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="MockChinaStake.h">
       <Filter>Mock类\China Market</Filter>
     </ClInclude>
@@ -998,6 +995,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\ChinaStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

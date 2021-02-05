@@ -31,7 +31,6 @@ UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
     if (pMarket->GetFormatedMarketTime() > 150400) {   // 如果中国股市闭市了
       pMarket->SetRSEndDate(gl_pChinaStakeMarket->GetFormatedMarketDate());
       pMarket->SetUpdateOptionDB(true);   // 更新状态
-      pMarket->SetUpdateStakeCodeDB(true);  // 更新代码。
       pMarket->SetTodayStockProcessed(true);  // 设置今日已处理标识
     }
     else {

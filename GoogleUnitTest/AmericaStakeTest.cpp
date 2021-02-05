@@ -32,10 +32,10 @@ namespace StockAnalysisTest {
     CWorldStock stake;
 
     stake.m_fDayLineNeedUpdate = true;
-
     stake.m_fIsActive = false;
     for (int i = 1; i < 6; i++) {
       EXPECT_FALSE(stake.CheckDayLineUpdateStatus(0, 0, 0, i)) << "非活跃股票工作日不更新日线\n";
+      stake.m_fDayLineNeedUpdate = true;
     }
   }
 

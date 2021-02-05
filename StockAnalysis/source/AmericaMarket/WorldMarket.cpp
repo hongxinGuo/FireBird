@@ -403,7 +403,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
           }
         }
         if (fFoundNewStock) {
-          SortStakeVector();
+          SortStockVector();
           gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
         }
       }
@@ -1469,7 +1469,7 @@ bool CWorldMarket::LoadWorldStock(void) {
     setWorldStock.MoveNext();
   }
   setWorldStock.Close();
-  SortStakeVector();
+  SortStockVector();
   m_lLastTotalWorldStock = m_vWorldStock.size();
   TRACE("共装入%d Finnhub Symbol\n", m_lLastTotalWorldStock);
   return true;
@@ -1759,7 +1759,7 @@ bool CWorldMarket::ReBuildPeer(void) {
   return true;
 }
 
-bool CWorldMarket::SortStakeVector(void) {
+bool CWorldMarket::SortStockVector(void) {
   sort(m_vWorldStock.begin(), m_vWorldStock.end(), CompareWorldStock);
   m_mapWorldStock.clear();
   int j = 0;

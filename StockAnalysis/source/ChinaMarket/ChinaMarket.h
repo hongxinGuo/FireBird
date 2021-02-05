@@ -104,7 +104,7 @@ public:
   virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStake);
   virtual bool RunningThreadLoadDayLine(CChinaStock* pCurrentStock);
   virtual bool RunningThreadLoadWeekLine(CChinaStock* pCurrentStock);
-  virtual bool RunningThreadUpdateStakeCodeDB(void);
+  virtual bool RunningThreadUpdateStockCodeDB(void);
   virtual bool RunningThreadUpdateOptionDB(void);
   virtual bool RunningThreadAppendChoicedStockDB(void);
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
@@ -121,6 +121,7 @@ public:
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
   virtual bool RunningThreadSaveStakeSection(void);
   // interface function
+
 public:
   // 系统状态区
 
@@ -147,7 +148,7 @@ public:
   CString GetStockName(CString strStockCode);
 
   // 得到股票指针
-  CChinaStockPtr GetStock(CString strStockCode, bool fCreateNewStockIfNeed = false);
+  CChinaStockPtr GetStock(CString strStockCode);
   CChinaStockPtr GetStock(long lIndex);
 
   void IncreaseActiveStockNumber(void) noexcept { m_lTotalActiveStock++; }
@@ -189,7 +190,8 @@ public:
   // 数据库读取存储操作
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
-  virtual bool UpdateStakeCodeDB(void);
+  virtual bool UpdateStockCodeDB(void);
+  virtual bool UpdateStockCodeDB2(void);
   void LoadStakeSection(void);
   void LoadStockCodeDB(void);
 
@@ -242,7 +244,9 @@ public:
   bool CreateStockCodeSet(set<CString>& setStockCode, not_null<vector<CChinaStockHistoryDataPtr>*> pvData);
   virtual bool BuildCurrentWeekWeekLineTable(void); // 使用周线表构建当前周周线表
 
-// 股票历史数据处理
+  bool SortStockVector(void);
+
+  // 股票历史数据处理
   virtual bool Choice10RSStrong2StockSet(void); // 选择10日强势股票集（两次峰值）
   virtual bool Choice10RSStrong1StockSet(void); // 选择10日强势股票集（一次峰值）
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
@@ -316,7 +320,6 @@ public:
   //处理实时股票变化等
   bool TaskDistributeSinaRTDataToProperStock(void);
   bool TaskDistributeNeteaseRTDataToProperStock(void);
-  bool CheckAndCreateNewStock(CString strStockCode);
 
   void TaskSaveTempDataIntoDB(long lCurrentTime);
 
@@ -388,8 +391,7 @@ public:
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
 
-  void SetUpdateStakeCodeDB(bool fFlag) noexcept { m_fUpdateStockCodeDB = fFlag; }
-  bool IsUpdateStakeCodeDB(void) noexcept { const bool fFlag = m_fUpdateStockCodeDB; return fFlag; }
+  bool IsUpdateStockCodeDB(void);
   void SetUpdateOptionDB(bool fFlag) noexcept { m_fUpdateOptionDB = fFlag; }
   bool IsUpdateOptionDB(void) noexcept { const bool fFlag = m_fUpdateOptionDB; return fFlag; }
   void SetUpdateChoicedStockDB(bool fFlag) noexcept { m_fUpdateChoicedStockDB = fFlag; }
@@ -416,12 +418,14 @@ public:
 protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStake。
-  void CreateStakeSection(CString strFirstStockCode, bool fProcessRTData);
-  bool CreateNewStock(CString strStockCode, bool fProcessRTData);
+  void CreateStockSection(CString strFirstStockCode, bool fProcessRTData);
+  bool CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData, long lIPOStatus = __STAKE_NOT_CHECKED__);
   bool UpdateStakeSection(CString strStakeCode);
   bool UpdateStakeSection(long lIndex);
 
 public:
+  // 测试专用函数
+  void __TestCreateStockVector(void);
 
 protected:
   // 本市场各选项
@@ -519,7 +523,6 @@ protected:
   CString m_strStockCodeForInquiringNeteaseDayLine;
 
   // 更新股票代码数据库标识
-  atomic_bool m_fUpdateStockCodeDB;
   atomic_bool m_fUpdateOptionDB;
   bool m_fUpdateChoicedStockDB;
 

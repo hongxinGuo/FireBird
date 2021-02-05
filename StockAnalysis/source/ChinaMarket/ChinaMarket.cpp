@@ -21,10 +21,9 @@
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
 #include"SetActiveStakeCode.h"
-#include"SetStakeSection.h"
+#include"SetStockSection.h"
 
 #include"SetWeekLineInfo.h"
-#include"SetStakeSection.h"
 
 using namespace std;
 #include<thread>
@@ -43,6 +42,8 @@ Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // ∫ÛÃ®π
 
 CWebRTDataContainer gl_WebRTDataContainer;
 CWebInquirer gl_WebInquirer;
+
+bool CompareChinaMarketStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetStockCode().Compare(p2->GetStockCode()) < 0); }
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -165,7 +166,6 @@ void CChinaMarket::Reset(void) {
   m_fUsingNeteaseRTDataReceiver = true; //  π”√Õ¯“◊ µ ± ˝æ›Ã·»°∆˜
   m_iCountDownTengxunNumber = 5;
 
-  m_fUpdateStockCodeDB = false;
   m_fUpdateChoicedStockDB = false;
 
   m_iDayLineNeedProcess = 0;
@@ -223,7 +223,8 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 
 bool CChinaMarket::CheckMarketReady(void) {
   if (!IsSystemReady()) {
-    if (m_llRTDataReceived > m_lTotalStock * 2) {
+    long lMax = m_lTotalStock > 12000 ? m_lTotalStock * 2 : 24000;
+    if (m_llRTDataReceived > lMax) {
       SetSystemReady(true);
       gl_systemMessage.PushInformationMessage(_T("÷–π˙π…∆± –≥°≥ı ºªØÕÍ±œ"));
     }
@@ -234,19 +235,19 @@ bool CChinaMarket::CheckMarketReady(void) {
 bool CChinaMarket::ChangeToNextStock(void) {
   ASSERT(m_pCurrentStock != nullptr);
   const long lIndex = m_pCurrentStock->GetOffset();
-  CChinaStockPtr pStake = m_pCurrentStock;
+  CChinaStockPtr pStock = m_pCurrentStock;
 
   if (IsTotalStockSetSelected()) {
     bool fFound = false;
     int i = 1;
     while (!fFound) {
       if ((lIndex + i) < m_lTotalStock) {
-        pStake = GetStock(lIndex + i);
+        pStock = GetStock(lIndex + i);
       }
       else {
-        pStake = GetStock(lIndex + i - m_lTotalStock);
+        pStock = GetStock(lIndex + i - m_lTotalStock);
       }
-      if (!pStake->IsNullStock()) fFound = true;
+      if (!pStock->IsNullStock()) fFound = true;
       i++;
     }
   }
@@ -254,34 +255,34 @@ bool CChinaMarket::ChangeToNextStock(void) {
     ASSERT(m_avChoicedStock.at(m_lCurrentSelectedStockSet).size() > 0); //
     if (m_lCurrentSelectedPosition >= (m_avChoicedStock.at(m_lCurrentSelectedStockSet).size() - 1)) {
       m_lCurrentSelectedPosition = 0;
-      pStake = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
+      pStock = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
     }
     else {
       m_lCurrentSelectedPosition++;
-      pStake = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
+      pStock = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
     }
   }
 
-  SetCurrentStock(pStake);
+  SetCurrentStock(pStock);
   return true;
 }
 
 bool CChinaMarket::ChangeToPrevStock(void) {
   ASSERT(m_pCurrentStock != nullptr);
   const long lIndex = m_pCurrentStock->GetOffset();
-  CChinaStockPtr pStake = m_pCurrentStock;
+  CChinaStockPtr pStock = m_pCurrentStock;
 
   if (IsTotalStockSetSelected()) {
     bool fFound = false;
     int i = 1;
     while (!fFound) {
       if ((lIndex - i) >= 0) {
-        pStake = GetStock(lIndex - i);
+        pStock = GetStock(lIndex - i);
       }
       else {
-        pStake = GetStock(lIndex + m_lTotalStock - i);
+        pStock = GetStock(lIndex + m_lTotalStock - i);
       }
-      if (!pStake->IsNullStock()) fFound = true;
+      if (!pStock->IsNullStock()) fFound = true;
       i++;
     }
   }
@@ -289,14 +290,14 @@ bool CChinaMarket::ChangeToPrevStock(void) {
     ASSERT(m_avChoicedStock.at(m_lCurrentSelectedStockSet).size() > 0); //
     if (m_lCurrentSelectedPosition == 0) {
       m_lCurrentSelectedPosition = m_avChoicedStock.at(m_lCurrentSelectedStockSet).size() - 1;
-      pStake = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
+      pStock = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
     }
     else {
       m_lCurrentSelectedPosition--;
-      pStake = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
+      pStock = m_avChoicedStock.at(m_lCurrentSelectedStockSet).at(m_lCurrentSelectedPosition);
     }
   }
-  SetCurrentStock(pStake);
+  SetCurrentStock(pStock);
   return true;
 }
 
@@ -338,7 +339,7 @@ size_t CChinaMarket::GetCurrentStockSetSize(void) {
 bool CChinaMarket::CreateTotalStockContainer(void) {
   char buffer[10]{};
 
-  CChinaStockPtr pStake = nullptr;
+  CChinaStockPtr pStock = nullptr;
 
   // «Âø’÷Æ«∞µƒ ˝æ›£®»Áπ˚”–µƒª∞°£‘⁄Reset ±£¨’‚¡Ω∏ˆ»›∆˜÷–æÕ¥Ê”– ˝æ›£©°£
   m_vChinaMarketStock.resize(0);
@@ -346,7 +347,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   ASSERT(m_lTotalStock == 0);
 
   for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
-    CreateStakeSection(m_vCurrentSectionStockCode.at(i), true);
+    CreateStockSection(m_vCurrentSectionStockCode.at(i), true);
   }
 
   m_lTotalStock = m_vChinaMarketStock.size();
@@ -355,14 +356,14 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   return true;
 }
 
-void CChinaMarket::CreateStakeSection(CString strFirstStockCode, bool fProcessRTData) {
+void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRTData) {
   CString strCode = strFirstStockCode.Right(6);
   CString strMarket = strFirstStockCode.Left(2);
   CString str = _T("");
   int iCode = atoi(strCode.GetBuffer());
   int iMarket = 0;
   char buffer[10];
-  CChinaStockPtr pStake = nullptr;
+  CChinaStockPtr pStock = nullptr;
 
   if (strMarket.Compare(_T("sh")) == 0) { // …œ∫£ –≥°
     iMarket = 0;
@@ -381,7 +382,7 @@ void CChinaMarket::CreateStakeSection(CString strFirstStockCode, bool fProcessRT
     }
     sprintf_s(buffer, _T("%06d"), i);
     str += buffer;
-    CreateNewStock(str, fProcessRTData);
+    //CreateNewStock(str, fProcessRTData);
     m_vCurrentStockSet.push_back(str); //
   }
   if (UpdateStakeSection(iCode / 1000 + iMarket)) {
@@ -390,27 +391,29 @@ void CChinaMarket::CreateStakeSection(CString strFirstStockCode, bool fProcessRT
   m_vStakeSection.at(iCode / 1000 + iMarket)->SetBuildStakePtr(true); // “—æ≠‘⁄÷§»Ø≥ÿ÷–Ω®¡¢¡À
 }
 
-bool CChinaMarket::CreateNewStock(CString strStockCode, bool fProcessRTData) {
-  CChinaStockPtr pStake;
+bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData, long lIPOStatus) {
+  CChinaStockPtr pStock;
 
-  pStake = make_shared<CChinaStock>();
-  pStake->SetActive(false);
-  pStake->SetStockCode(strStockCode);
-  if (pStake->GetStockCode().Left(2).Compare(_T("sh")) == 0) pStake->SetMarket(__SHANGHAI_MARKET__);
-  else pStake->SetMarket(__SHENZHEN_MARKET__);
-  pStake->SetIPOStatus(__STAKE_NOT_CHECKED__);
-  pStake->SetOffset(m_lTotalStock);
-  pStake->SetDayLineEndDate(19900101);
-  pStake->SetDayLineStartDate(19900101);
-  if ((pStake->GetStockCode() < _T("sh001000")) || (pStake->GetStockCode() >= _T("sz399000"))) { // ª¶…Ó÷∏ ˝£ø
-    pStake->SetNeedProcessRTData(false);
+  pStock = make_shared<CChinaStock>();
+  pStock->SetActive(false);
+  pStock->SetStockCode(strStockCode);
+  pStock->SetStockName(strStockName);
+  if (pStock->GetStockCode().Left(2).Compare(_T("sh")) == 0) pStock->SetMarket(__SHANGHAI_MARKET__);
+  else pStock->SetMarket(__SHENZHEN_MARKET__);
+  pStock->SetIPOStatus(lIPOStatus);
+  pStock->SetOffset(m_lTotalStock);
+  pStock->SetDayLineEndDate(19900101);
+  pStock->SetDayLineStartDate(19900101);
+  pStock->SetUpdateStockProfileDB(true);
+  if ((pStock->GetStockCode() < _T("sh001000")) || (pStock->GetStockCode() >= _T("sz399000"))) { // ª¶…Ó÷∏ ˝£ø
+    pStock->SetNeedProcessRTData(false);
   }
   else {
-    pStake->SetNeedProcessRTData(fProcessRTData);
+    pStock->SetNeedProcessRTData(fProcessRTData);
   }
-  m_vChinaMarketStock.push_back(pStake);
-  m_mapChinaMarketStock[pStake->GetStockCode()] = m_lTotalStock++; //  π”√œ¬±Í…˙≥…–¬µƒ”≥…‰
-  ASSERT(pStake->IsDayLineNeedUpdate());
+  m_vChinaMarketStock.push_back(pStock);
+  m_mapChinaMarketStock[pStock->GetStockCode()] = m_lTotalStock++; //  π”√œ¬±Í…˙≥…–¬µƒ”≥…‰
+  ASSERT(pStock->IsDayLineNeedUpdate());
   m_iDayLineNeedUpdate++;
 
   return true;
@@ -439,6 +442,12 @@ bool CChinaMarket::UpdateStakeSection(long lIndex) {
   return false;
 }
 
+void CChinaMarket::__TestCreateStockVector(void) {
+  for (int i = 0; i < m_vCurrentStockSet.size(); i++) {
+    CreateNewStock(m_vCurrentStockSet.at(i), _T(""), true);
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // …˙≥…Õ¯“◊»’œﬂπ…∆±¥˙¬Îµƒ◊÷∑˚¥Æ£¨”√”⁄≤È—Ø¥Àπ…∆±‘⁄µ±«∞ –≥° «∑Ò¥¶”⁄ªÓ‘æ◊¥Ã¨£®ªÚ’ﬂ «∑Ò¥Ê‘⁄¥Àπ…∆±∫≈¬Î£©
@@ -457,22 +466,22 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lSt
   strReturn = _T("");
 
   while (!fFound && (iCount++ < GetTotalStock())) {
-    CChinaStockPtr pStake = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
-    if (!pStake->IsDayLineNeedUpdate()) { // »’œﬂ ˝æ›≤ª–Ë“™∏¸–¬°£‘⁄œµÕ≥≥ı º ±£¨…Ë÷√¥Àm_fDayLineNeedUpdate±Í ∂
-      // TRACE("%S »’œﬂ ˝æ›Œﬁ–Ë∏¸–¬\n", static_cast<LPCWSTR>(pStake->m_strStockCode));
+    CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
+    if (!pStock->IsDayLineNeedUpdate()) { // »’œﬂ ˝æ›≤ª–Ë“™∏¸–¬°£‘⁄œµÕ≥≥ı º ±£¨…Ë÷√¥Àm_fDayLineNeedUpdate±Í ∂
+      // TRACE("%S »’œﬂ ˝æ›Œﬁ–Ë∏¸–¬\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lStartPosition, lEndPosition);
     }
-    else if (pStake->IsNullStock()) {	// …–Œ¥ π”√π˝µƒπ…∆±¥˙¬ÎŒﬁ–Ë≤È—Ø»’œﬂ ˝æ›
-      pStake->SetDayLineNeedUpdate(false); // ¥Àπ…∆±»’œﬂ◊ ¡œ≤ª–Ë“™∏¸–¬¡À°£
-      // TRACE("Œﬁ–ßπ…∆±¥˙¬Î£∫%S, Œﬁ–Ë≤È—Ø»’œﬂ ˝æ›\n", static_cast<LPCWSTR>(pStake->m_strStockCode));
+    else if (pStock->IsNullStock()) {	// …–Œ¥ π”√π˝µƒπ…∆±¥˙¬ÎŒﬁ–Ë≤È—Ø»’œﬂ ˝æ›
+      pStock->SetDayLineNeedUpdate(false); // ¥Àπ…∆±»’œﬂ◊ ¡œ≤ª–Ë“™∏¸–¬¡À°£
+      // TRACE("Œﬁ–ßπ…∆±¥˙¬Î£∫%S, Œﬁ–Ë≤È—Ø»’œﬂ ˝æ›\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lStartPosition, lEndPosition);
     }
-    else if (pStake->GetDayLineEndDate() >= GetLastTradeDate()) { //…œ“ªΩª“◊»’µƒ»’œﬂ ˝æ›“—æ≠¥Ê¥¢£ø¥À ±“—æ≠¥¶¿Ìπ˝“ª¥Œ»’œﬂ ˝æ›¡À£¨Œﬁ–Ë‘Ÿ¥Œ¥¶¿Ì°£
-      pStake->SetDayLineNeedUpdate(false); // ¥Àπ…∆±»’œﬂ◊ ¡œ≤ª–Ë“™∏¸–¬¡À°£
-      // TRACE("%S »’œﬂ ˝æ›±æ»’“—∏¸–¬\n", static_cast<LPCWSTR>(pStake->m_strStockCode));
+    else if (pStock->GetDayLineEndDate() >= GetLastTradeDate()) { //…œ“ªΩª“◊»’µƒ»’œﬂ ˝æ›“—æ≠¥Ê¥¢£ø¥À ±“—æ≠¥¶¿Ìπ˝“ª¥Œ»’œﬂ ˝æ›¡À£¨Œﬁ–Ë‘Ÿ¥Œ¥¶¿Ì°£
+      pStock->SetDayLineNeedUpdate(false); // ¥Àπ…∆±»’œﬂ◊ ¡œ≤ª–Ë“™∏¸–¬¡À°£
+      // TRACE("%S »’œﬂ ˝æ›±æ»’“—∏¸–¬\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lStartPosition, lEndPosition);
     }
-    else if (pStake->IsDayLineNeedProcess()) { // »’œﬂ ˝æ›“—œ¬‘ÿµ´…–Œ¥¥¶¿Ì£®“ª∞„¥À«Èøˆ≤ªª·≥ˆœ÷£©
+    else if (pStock->IsDayLineNeedProcess()) { // »’œﬂ ˝æ›“—œ¬‘ÿµ´…–Œ¥¥¶¿Ì£®“ª∞„¥À«Èøˆ≤ªª·≥ˆœ÷£©
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lStartPosition, lEndPosition);
     }
     else {
@@ -486,12 +495,12 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lSt
   }
 
   // ’“µΩ¡À–Ë…Í«Î»’œﬂ¿˙ ∑ ˝æ›µƒπ…∆±£®siCounterŒ™À˜“˝£©
-  CChinaStockPtr pStake = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
-  ASSERT(!pStake->IsDayLineNeedSaving());
-  ASSERT(!pStake->IsDayLineNeedProcess());
-  ASSERT(pStake->IsDayLineNeedUpdate());
-  pStake->SetDayLineNeedUpdate(false);
-  switch (pStake->GetMarket()) { // ◊™ªª≥…Õ¯“◊»’œﬂ ˝æ›…Í«Î÷∆ Ω£®…œ∫£Œ™°Æ0°Ø£¨…Ó€⁄Œ™°Æ1°Ø£©
+  CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
+  ASSERT(!pStock->IsDayLineNeedSaving());
+  ASSERT(!pStock->IsDayLineNeedProcess());
+  ASSERT(pStock->IsDayLineNeedUpdate());
+  pStock->SetDayLineNeedUpdate(false);
+  switch (pStock->GetMarket()) { // ◊™ªª≥…Õ¯“◊»’œﬂ ˝æ›…Í«Î÷∆ Ω£®…œ∫£Œ™°Æ0°Ø£¨…Ó€⁄Œ™°Æ1°Ø£©
   case __SHANGHAI_MARKET__: // …œ∫£ –≥°£ø
   case __SHANGHAI_MAIN__: // …œ∫£÷˜∞Â£ø
   case __SHANGHAI_INDEX__: // …œ∫£÷∏ ˝
@@ -511,7 +520,7 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lSt
   default: // ‘ΩΩÁ
   ASSERT(0);
   }
-  strReturn += pStake->GetStockCode().Right(6); // »°π…∆±¥˙¬Îµƒ”“±ﬂ¡˘Œª ˝◊÷°£
+  strReturn += pStock->GetStockCode().Right(6); // »°π…∆±¥˙¬Îµƒ”“±ﬂ¡˘Œª ˝◊÷°£
   IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lStartPosition, lEndPosition);
   return true;
 }
@@ -552,16 +561,16 @@ long CChinaMarket::GetMinLineOffset(time_t Time) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-//		≈–∂œpStake «∑ÒŒ™ª¶…ÓAπ…°£
+//		≈–∂œpStock «∑ÒŒ™ª¶…ÓAπ…°£
 //		ª¶ –Aπ…¥˙¬Î“‘6ø™Õ∑£¨…Ó –Aπ…¥˙¬Î“‘00ø™Õ∑°£
 //
 //
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::IsAStock(CChinaStockPtr pStake) {
-  ASSERT(pStake != nullptr);
+bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
+  ASSERT(pStock != nullptr);
 
-  return(IsAStock(pStake->GetStockCode()));
+  return(IsAStock(pStock->GetStockCode()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -607,15 +616,15 @@ bool CChinaMarket::IsStock(CString strStockCode) {
 }
 
 bool CChinaMarket::IsDayLineDBUpdated(void) noexcept {
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineDBUpdated()) return true;
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineDBUpdated()) return true;
   }
   return false;
 }
 
 void CChinaMarket::ClearDayLineDBUpdatedFlag(void) noexcept {
-  for (auto& pStake : m_vChinaMarketStock) {
-    pStake->SetDayLineDBUpdated(false);
+  for (auto& pStock : m_vChinaMarketStock) {
+    pStock->SetDayLineDBUpdated(false);
   }
 }
 
@@ -627,9 +636,9 @@ void CChinaMarket::ClearDayLineDBUpdatedFlag(void) noexcept {
 /////////////////////////////////////////////////////////////////////////
 INT64 CChinaMarket::GetTotalAttackBuyAmount(void) {
   INT64 lAmount = 0;
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsActive() && IsAStock(pStake)) {
-      lAmount += pStake->GetAttackBuyAmount();
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsActive() && IsAStock(pStock)) {
+      lAmount += pStock->GetAttackBuyAmount();
     }
   }
   return(lAmount);
@@ -643,9 +652,9 @@ INT64 CChinaMarket::GetTotalAttackBuyAmount(void) {
 /////////////////////////////////////////////////////////////////////////////
 INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
   INT64 lAmount = 0;
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsActive() && IsAStock(pStake)) {
-      lAmount += pStake->GetAttackSellAmount();
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsActive() && IsAStock(pStock)) {
+      lAmount += pStock->GetAttackSellAmount();
     }
   }
   return(lAmount);
@@ -679,9 +688,10 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
   gl_ProcessSinaRTDataQueue.Wait();
-  CChinaStockPtr pStake;
+  CChinaStockPtr pStock;
   const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
   CString strVolume;
+  bool fFoundNewStock = false;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopSinaData();
@@ -693,23 +703,31 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      CheckAndCreateNewStock(pRTData->GetStockCode());
-      pStake = GetStock(pRTData->GetStockCode());
-      ASSERT(pStake != nullptr);
-      if (!pStake->IsActive()) {
-        if (pRTData->IsValidTime(14)) {
-          pStake->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
-          pStake->SetIPOStatus(__STAKE_IPOED__);
+      if (!IsSystemReady()) {
+        if (!IsStock(pRTData->GetStockCode())) {
+          CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true, __STAKE_IPOED__);
+          fFoundNewStock = true;
         }
       }
-      if (pRTData->GetTransactionTime() > pStake->GetTransactionTime()) { // –¬µƒ ˝æ›£ø
-        pStake->PushRTData(pRTData); // ¥Ê¥¢–¬µƒ ˝æ›÷¡ ˝æ›≥ÿ
-        if (pStake->IsRecordRTData()) {
+      pStock = GetStock(pRTData->GetStockCode());
+      ASSERT(pStock != nullptr);
+      if (!pStock->IsActive()) {
+        if (pRTData->IsValidTime(14)) {
+          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetIPOStatus(__STAKE_IPOED__);
+        }
+      }
+      if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // –¬µƒ ˝æ›£ø
+        pStock->PushRTData(pRTData); // ¥Ê¥¢–¬µƒ ˝æ›÷¡ ˝æ›≥ÿ
+        if (pStock->IsRecordRTData()) {
           StoreChoiceRTData(pRTData);
         }
-        pStake->SetTransactionTime(pRTData->GetTransactionTime());   // …Ë÷√◊Ó–¬Ω” ‹µΩ µ ± ˝æ›µƒ ±º‰
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());   // …Ë÷√◊Ó–¬Ω” ‹µΩ µ ± ˝æ›µƒ ±º‰
       }
     }
+  }
+  if (fFoundNewStock) {
+    SortStockVector();
   }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // …Ë÷√Ω” ’µΩ µ ± ˝æ›±Í ∂
   ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // ±ÿ–Î“ª¥Œ¥¶¿Ì»´ÃÂ ˝æ›°£
@@ -729,9 +747,10 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
   gl_ProcessNeteaseRTDataQueue.Wait();
-  CChinaStockPtr pStake;
+  CChinaStockPtr pStock;
   const size_t lTotalNumber = gl_WebRTDataContainer.GetNeteaseDataSize();
   CString strVolume;
+  bool fFoundNewStock = false;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
     CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopNeteaseData();
@@ -743,39 +762,37 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      CheckAndCreateNewStock(pRTData->GetStockCode());
-      pStake = GetStock(pRTData->GetStockCode());
-      ASSERT(pStake != nullptr);
-      if (!pStake->IsActive()) {
-        if (pRTData->IsValidTime(14)) {
-          pStake->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
-          pStake->SetIPOStatus(__STAKE_IPOED__);
+      if (!IsSystemReady()) {
+        if (!IsStock(pRTData->GetStockCode())) {
+          CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true, __STAKE_IPOED__);
+          fFoundNewStock = true;
         }
       }
-      if (pRTData->GetTransactionTime() > pStake->GetTransactionTime()) { // –¬µƒ ˝æ›£ø
-        pStake->PushRTData(pRTData); // ¥Ê¥¢–¬µƒ ˝æ›÷¡ ˝æ›≥ÿ
-        if (pStake->IsRecordRTData()) {
+      pStock = GetStock(pRTData->GetStockCode());
+      ASSERT(pStock != nullptr);
+      if (!pStock->IsActive()) {
+        if (pRTData->IsValidTime(14)) {
+          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetIPOStatus(__STAKE_IPOED__);
+        }
+      }
+      if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // –¬µƒ ˝æ›£ø
+        pStock->PushRTData(pRTData); // ¥Ê¥¢–¬µƒ ˝æ›÷¡ ˝æ›≥ÿ
+        if (pStock->IsRecordRTData()) {
           StoreChoiceRTData(pRTData);
         }
-        pStake->SetTransactionTime(pRTData->GetTransactionTime());   // …Ë÷√◊Ó–¬Ω” ‹µΩ µ ± ˝æ›µƒ ±º‰
+        pStock->SetTransactionTime(pRTData->GetTransactionTime());   // …Ë÷√◊Ó–¬Ω” ‹µΩ µ ± ˝æ›µƒ ±º‰
       }
     }
+  }
+  if (fFoundNewStock) {
+    SortStockVector();
   }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // …Ë÷√Ω” ’µΩ µ ± ˝æ›±Í ∂
   ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // ±ÿ–Î“ª¥Œ¥¶¿Ì»´ÃÂ ˝æ›°£
   gl_ProcessNeteaseRTDataQueue.Signal();
 
   return true;
-}
-
-bool CChinaMarket::CheckAndCreateNewStock(CString strStockCode) {
-  if (!IsSystemReady()) {
-    if (!IsStock(strStockCode)) { // ≥ˆœ÷–¬¥˙¬Î
-      CreateNewStock(strStockCode, true); // …˙≥…–¬µƒ¥˙¬Î
-      return true;
-    }
-  }
-  return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -849,8 +866,8 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
     else if (buffer[0] == '1') strStockCode = "sz";
     else return false;
     strStockCode += strRight.Right(6);
-    CChinaStockPtr pStake = GetStock(strStockCode);
-    if (pStake == nullptr) {
+    CChinaStockPtr pStock = GetStock(strStockCode);
+    if (pStock == nullptr) {
       CString strReport = _T("Õ¯“◊»’œﬂ≤È—Øπ…∆±¥˙¬Î¥ÌŒÛ£∫");
       TRACE(_T("Õ¯“◊»’œﬂ≤È—Øπ…∆±¥˙¬Î¥ÌŒÛ£∫%s\n"), strStockCode.GetBuffer());
       strReport += strStockCode;
@@ -865,7 +882,7 @@ CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStakeIndex, CString 
   CString str = _T("");
 
   if (!fSkipUnactiveStock) {
-    return GetNextStockInquiringMiddleStrBeforeSystemReady(m_lCurrentSinaStockSetInquiryIndex, strPostfix, lTotalNumber, lStartPosition, lEndPosition);
+    return GetNextStockInquiringMiddleStrBeforeSystemReady(m_lCurrentSinaStockSetInquiryIndex, strPostfix, lTotalNumber, lStartPosition, m_vCurrentStockSet.size());
   }
 
   if (lStartPosition == lEndPosition) return _T("sh600000"); // µ±√ª”–÷§»Øø…≤È—Ø ±£¨∑µªÿ“ª∏ˆ”––ß◊÷∑˚¥Æ
@@ -977,9 +994,9 @@ bool CChinaMarket::StepToActiveStock(long& iStockIndex, long lStartPosition, lon
 bool CChinaMarket::TaskProcessRTData(void) {
   ASSERT(gl_ThreadStatus.IsRTDataNeedCalculate());
   ASSERT(!gl_ThreadStatus.IsSavingTempData()); // ¥À¡Ω∏ˆœﬂ≥Ãª•≥‚
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsActive()) {
-      pStake->ProcessRTData();
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsActive()) {
+      pStock->ProcessRTData();
     }
   }
   return true;
@@ -1103,10 +1120,10 @@ bool CChinaMarket::ValidateNeteaseRTData(CWebRTData& RTData) {
 
   ASSERT(RTData.GetDataSource() == __NETEASE_RT_WEB_DATA__);
   if (RTData.IsActive()) {
-    CChinaStockPtr pStake = nullptr;
-    if ((pStake = GetStock(RTData.GetStockCode())) != nullptr) {
-      if (!pStake->IsActive()) {
-        str = pStake->GetStockCode();
+    CChinaStockPtr pStock = nullptr;
+    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
+      if (!pStock->IsActive()) {
+        str = pStock->GetStockCode();
         str += _T(" Õ¯“◊ µ ±ºÏ≤‚µΩ≤ª¥¶”⁄ªÓ‘æ◊¥Ã¨");
         //gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
@@ -1221,10 +1238,10 @@ void CChinaMarket::CheckTengxunRTData(CWebRTData& RTData) {
   CString str;
   ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
   if (RTData.IsActive()) {
-    CChinaStockPtr pStake = nullptr;
-    if ((pStake = GetStock(RTData.GetStockCode())) != nullptr) {
-      if (!pStake->IsActive()) {
-        str = pStake->GetStockCode();
+    CChinaStockPtr pStock = nullptr;
+    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
+      if (!pStock->IsActive()) {
+        str = pStock->GetStockCode();
         str += _T("Ã⁄—∂ µ ±ºÏ≤‚µΩ≤ª¥¶”⁄ªÓ‘æ◊¥Ã¨");
         //gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
@@ -1244,11 +1261,11 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
   for (int i = 0; i < lTotalData; i++) {
     pRTData = gl_WebRTDataContainer.PopTengxunData();
     if (pRTData->IsActive()) {
-      auto pStake = GetStock(pRTData->GetStockCode());
-      pStake->SetTotalValue(pRTData->GetTotalValue());
-      pStake->SetCurrentValue(pRTData->GetCurrentValue());
-      pStake->SetHighLimit(pRTData->GetHighLimit());
-      pStake->SetLowLimit(pRTData->GetLowLimit());
+      auto pStock = GetStock(pRTData->GetStockCode());
+      pStock->SetTotalValue(pRTData->GetTotalValue());
+      pStock->SetCurrentValue(pRTData->GetCurrentValue());
+      pStock->SetHighLimit(pRTData->GetHighLimit());
+      pStock->SetLowLimit(pRTData->GetLowLimit());
     }
   }
   return true;
@@ -1447,18 +1464,18 @@ void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
   }
 }
 
-bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStake) {
-  auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStake);
+bool CChinaMarket::AddChoicedStock(CChinaStockPtr pStock) {
+  auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
   if (it == m_avChoicedStock.at(0).end()) {
-    m_avChoicedStock.at(0).push_back(pStake);
-    ASSERT(!pStake->IsSaveToChoicedStockDB());
+    m_avChoicedStock.at(0).push_back(pStock);
+    ASSERT(!pStock->IsSaveToChoicedStockDB());
     return true;
   }
   return false;
 }
 
-bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStake) {
-  auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStake);
+bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStock) {
+  auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
   if (it == m_avChoicedStock.at(0).end()) {
     return false;
   }
@@ -1471,8 +1488,8 @@ bool CChinaMarket::DeleteChoicedStock(CChinaStockPtr pStake) {
 }
 
 void CChinaMarket::ClearDayLineNeedUpdaeStatus(void) {
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(false);
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(false);
   }
 }
 
@@ -1484,6 +1501,13 @@ void CChinaMarket::IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
 void CChinaMarket::DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
   ASSERT(m_iDayLineNeedUpdate > 0);
   if (m_iDayLineNeedUpdate >= iNumber) m_iDayLineNeedUpdate -= iNumber;
+}
+
+bool CChinaMarket::IsUpdateStockCodeDB(void) {
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsUpdateStockProfileDB()) return true;
+  }
+  return false;
 }
 
 bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
@@ -1584,7 +1608,6 @@ bool CChinaMarket::TaskCheckDayLineDB(void) {
     gl_systemMessage.PushInformationMessage(str);
     if (IsDayLineDBUpdated()) {
       // ∏¸–¬π…∆±≥ÿ ˝æ›ø‚
-      SetUpdateStakeCodeDB(true);
       ClearDayLineDBUpdatedFlag();
     }
   }
@@ -1651,9 +1674,8 @@ bool CChinaMarket::TaskResetMarketAgain(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskUpdateStockCodeDB(void) {
-  if (IsUpdateStakeCodeDB()) {
-    RunningThreadUpdateStakeCodeDB();
-    SetUpdateStakeCodeDB(false);
+  if (IsUpdateStockCodeDB()) {
+    RunningThreadUpdateStockCodeDB();
     return true;
   }
   return false;
@@ -1733,7 +1755,7 @@ bool CChinaMarket::TaskSaveStakeSection(void) {
 }
 
 bool CChinaMarket::SaveStakeSection(void) {
-  CSetStakeSection setStakeSection;
+  CSetStockSection setStakeSection;
 
   setStakeSection.Open();
   setStakeSection.m_pDatabase->BeginTrans();
@@ -1813,17 +1835,10 @@ CString CChinaMarket::GetStockName(CString strStockCode) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-CChinaStockPtr CChinaMarket::GetStock(CString strStockCode, bool fCreateNewStockIfNeeded) {
+CChinaStockPtr CChinaMarket::GetStock(CString strStockCode) {
   CChinaStockPtr pStock;
   if (!IsStock(strStockCode)) {
-    if (fCreateNewStockIfNeeded) {
-      ASSERT(!IsSystemReady()); // ÷ª”–‘⁄ –≥°√ª”–◊º±∏∫√ ±≤≈‘ –ÌÃÌº”–¬π…∆±°£
-      CreateNewStock(strStockCode, true);
-      return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode)));
-    }
-    else {
-      return nullptr;
-    }
+    return nullptr;
   }
   else {
     return (m_vChinaMarketStock.at(m_mapChinaMarketStock.at(strStockCode)));
@@ -1846,8 +1861,8 @@ CChinaStockPtr CChinaMarket::GetStock(long lIndex) {
 //
 //////////////////////////////////////////////////////////////////////////////////////
 void CChinaMarket::SetCurrentStock(CString strStockCode) {
-  CChinaStockPtr pStake = GetStock(strStockCode);
-  SetCurrentStock(pStake);
+  CChinaStockPtr pStock = GetStock(strStockCode);
+  SetCurrentStock(pStock);
   ASSERT(m_pCurrentStock != nullptr);
 }
 
@@ -1858,10 +1873,10 @@ void CChinaMarket::SetCurrentStock(CString strStockCode) {
 // …Ë÷√œ‡”¶µƒπ…∆±÷∏’Î£¨◊∞‘ÿ∆‰»’œﬂ ˝æ›°£
 //
 /////////////////////////////////////////////////////////////////////////
-void CChinaMarket::SetCurrentStock(CChinaStockPtr pStake) {
+void CChinaMarket::SetCurrentStock(CChinaStockPtr pStock) {
   bool fSet = false;
   if (m_pCurrentStock != nullptr) {
-    if (!m_pCurrentStock->IsSameStock(pStake)) {
+    if (!m_pCurrentStock->IsSameStock(pStock)) {
       m_pCurrentStock->SetRecordRTData(false);
       fSet = true;
     }
@@ -1870,8 +1885,8 @@ void CChinaMarket::SetCurrentStock(CChinaStockPtr pStake) {
     fSet = true;
   }
   if (fSet) {
-    pStake->SetRecordRTData(true);
-    m_pCurrentStock = pStake;
+    pStock->SetRecordRTData(true);
+    m_pCurrentStock = pStock;
     SetCurrentStockChanged(true);
     m_pCurrentStock->SetDayLineLoaded(false); // ’‚¿Ô÷ª «…Ë÷√±Í ∂£¨ µº ◊∞‘ÿ»’œﬂ”…µ˜∂»≥Ã–Ú÷¥––°£
   }
@@ -1896,16 +1911,16 @@ void CChinaMarket::ResetCurrentStock(void) {
 bool CChinaMarket::TaskSaveDayLineData(void) {
   CString str;
 
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineNeedSavingAndClearFlag()) { // «Â≥˝±Í ∂–Ë“™”ÎºÏ≤‚±Í ∂¥¶”⁄Õ¨“ª‘≠◊”π˝≥Ã÷–£¨∑¿÷πÕ¨≤ΩŒ Ã‚≥ˆœ÷
-      if (pStake->GetDayLineSize() > 0) {
-        if (pStake->HaveNewDayLineData()) {
-          RunningThreadSaveDayLineBasicInfoOfStock(pStake.get());
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedSavingAndClearFlag()) { // «Â≥˝±Í ∂–Ë“™”ÎºÏ≤‚±Í ∂¥¶”⁄Õ¨“ª‘≠◊”π˝≥Ã÷–£¨∑¿÷πÕ¨≤ΩŒ Ã‚≥ˆœ÷
+      if (pStock->GetDayLineSize() > 0) {
+        if (pStock->HaveNewDayLineData()) {
+          RunningThreadSaveDayLineBasicInfoOfStock(pStock.get());
         }
-        else pStake->UnloadDayLine(); // µ±Œﬁ–Ë÷¥––¥Ê¥¢∫Ø ˝ ±£¨’‚¿Ôªπ“™µ•∂¿–∂‘ÿ»’œﬂ ˝æ›°£“Ú¥Ê¥¢»’œﬂ ˝æ›œﬂ≥Ã…‘∫Û≤≈÷¥––£¨π ∂¯≤ªƒ‹‘⁄¥ÀÕ≥“ª÷¥––…æ≥˝∫Ø ˝°£
+        else pStock->UnloadDayLine(); // µ±Œﬁ–Ë÷¥––¥Ê¥¢∫Ø ˝ ±£¨’‚¿Ôªπ“™µ•∂¿–∂‘ÿ»’œﬂ ˝æ›°£“Ú¥Ê¥¢»’œﬂ ˝æ›œﬂ≥Ã…‘∫Û≤≈÷¥––£¨π ∂¯≤ªƒ‹‘⁄¥ÀÕ≥“ª÷¥––…æ≥˝∫Ø ˝°£
       }
       else { // ¥À÷÷«ÈøˆŒ™”–π…∆±¥˙¬Î£¨µ´¥À¥˙¬Î…–Œ¥…œ –
-        CString str1 = pStake->GetStockCode();
+        CString str1 = pStock->GetStockCode();
         str1 += _T(" Œ™Œ¥…œ –π…∆±¥˙¬Î");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
@@ -1919,8 +1934,8 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
 }
 
 bool CChinaMarket::UnloadDayLine(void) noexcept {
-  for (auto& pStake : m_vChinaMarketStock) {
-    pStake->UnloadDayLine();
+  for (auto& pStock : m_vChinaMarketStock) {
+    pStock->UnloadDayLine();
   }
 
   return true;
@@ -1928,8 +1943,8 @@ bool CChinaMarket::UnloadDayLine(void) noexcept {
 
 bool CChinaMarket::BuildWeekLine(long lStartDate) {
   gl_systemMessage.PushInformationMessage(_T("÷ÿ–¬…˙≥…÷‹œﬂ¿˙ ∑ ˝æ›"));
-  for (auto& pStake : m_vChinaMarketStock) {
-    RunningThreadBuildWeekLineOfStock(pStake.get(), lStartDate);
+  for (auto& pStock : m_vChinaMarketStock) {
+    RunningThreadBuildWeekLineOfStock(pStock.get(), lStartDate);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     Sleep(1000);
@@ -2050,6 +2065,16 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
 
   SaveCurrentWeekLine(weekLineContainer);
 
+  return true;
+}
+
+bool CChinaMarket::SortStockVector(void) {
+  sort(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), CompareChinaMarketStock);
+  m_mapChinaMarketStock.clear();
+  int j = 0;
+  for (auto& pStock : m_vChinaMarketStock) {
+    m_mapChinaMarketStock[pStock->GetStockCode()] = j++;
+  }
   return true;
 }
 
@@ -2343,9 +2368,9 @@ bool CChinaMarket::SaveRTData(void) {
 }
 
 bool CChinaMarket::IsDayLineNeedSaving(void) {
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineNeedSaving()) {
-      ASSERT(pStake->IsActive());
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedSaving()) {
+      ASSERT(pStock->IsActive());
       return true;
     }
   }
@@ -2355,8 +2380,8 @@ bool CChinaMarket::IsDayLineNeedSaving(void) {
 bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
-  for (auto& pStake : m_vChinaMarketStock) {
-    RunningThreadCalculate10RSStrong2Stock(&v10RSStrongStock, pStake);
+  for (auto& pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrong2Stock(&v10RSStrongStock, pStock);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     if (gl_fExitingSystem) return false;
@@ -2373,10 +2398,10 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   }
   setRSStrong2.m_pDatabase->CommitTrans();
   setRSStrong2.m_pDatabase->BeginTrans();
-  for (auto& pStake : v10RSStrongStock) {
+  for (auto& pStock : v10RSStrongStock) {
     setRSStrong2.AddNew();
-    setRSStrong2.m_Market = pStake->GetMarket();
-    setRSStrong2.m_StockCode = pStake->GetStockCode();
+    setRSStrong2.m_Market = pStock->GetMarket();
+    setRSStrong2.m_StockCode = pStock->GetStockCode();
     setRSStrong2.Update();
   }
   setRSStrong2.m_pDatabase->CommitTrans();
@@ -2388,8 +2413,8 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
 bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
-  for (auto& pStake : m_vChinaMarketStock) {
-    RunningThreadCalculate10RSStrong1Stock(&v10RSStrongStock, pStake);
+  for (auto& pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrong1Stock(&v10RSStrongStock, pStock);
   }
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
     if (gl_fExitingSystem) return false;
@@ -2406,10 +2431,10 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   }
   setRSStrong1.m_pDatabase->CommitTrans();
   setRSStrong1.m_pDatabase->BeginTrans();
-  for (auto& pStake : v10RSStrongStock) {
+  for (auto& pStock : v10RSStrongStock) {
     setRSStrong1.AddNew();
-    setRSStrong1.m_Market = pStake->GetMarket();
-    setRSStrong1.m_StockCode = pStake->GetStockCode();
+    setRSStrong1.m_Market = pStock->GetMarket();
+    setRSStrong1.m_StockCode = pStock->GetStockCode();
     setRSStrong1.Update();
   }
   setRSStrong1.m_pDatabase->CommitTrans();
@@ -2421,8 +2446,8 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
 bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
-  for (auto& pStake : m_vChinaMarketStock) {
-    RunningThreadCalculate10RSStrongStock(&v10RSStrongStock, pRef, pStake);
+  for (auto& pStock : m_vChinaMarketStock) {
+    RunningThreadCalculate10RSStrongStock(&v10RSStrongStock, pRef, pStock);
   }
 
   while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
@@ -2441,10 +2466,10 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   }
   setRSStrong.m_pDatabase->CommitTrans();
   setRSStrong.m_pDatabase->BeginTrans();
-  for (auto& pStake : v10RSStrongStock) {
+  for (auto& pStock : v10RSStrongStock) {
     setRSStrong.AddNew();
-    setRSStrong.m_Market = pStake->GetMarket();
-    setRSStrong.m_StockCode = pStake->GetStockCode();
+    setRSStrong.m_Market = pStock->GetMarket();
+    setRSStrong.m_StockCode = pStock->GetStockCode();
     setRSStrong.Update();
   }
   setRSStrong.m_pDatabase->CommitTrans();
@@ -2454,17 +2479,17 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
 }
 
 bool CChinaMarket::IsDayLineNeedUpdate(void) noexcept {
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineNeedUpdate()) return true;
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedUpdate()) return true;
   }
   return false;
 }
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (pStake->IsDayLineNeedProcess()) {
-      pStake->ProcessNeteaseDayLineData();
-      pStake->ResetTempDayLineDataBuffer();
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedProcess()) {
+      pStock->ProcessNeteaseDayLineData();
+      pStock->ResetTempDayLineDataBuffer();
     }
   }
   return true;
@@ -2524,8 +2549,8 @@ bool CChinaMarket::RunningThreadSaveTempRTData(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStake) {
-  thread thread1(ThreadSaveDayLineBasicInfoOfStock, pStake);
+bool CChinaMarket::RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStock) {
+  thread thread1(ThreadSaveDayLineBasicInfoOfStock, pStock);
   thread1.detach();// ±ÿ–Î∑÷¿Î÷Æ£¨“‘ µœ÷≤¢––≤Ÿ◊˜£¨≤¢±£÷§”…œµÕ≥ªÿ ’◊ ‘¥°£
   return true;
 }
@@ -2542,8 +2567,8 @@ bool CChinaMarket::RunningThreadLoadWeekLine(CChinaStock* pCurrentStock) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadUpdateStakeCodeDB(void) {
-  thread thread1(ThreadUpdateStakeCodeDB, this);
+bool CChinaMarket::RunningThreadUpdateStockCodeDB(void) {
+  thread thread1(ThreadUpdateStockCodeDB, this);
   thread1.detach();// ±ÿ–Î∑÷¿Î÷Æ£¨“‘ µœ÷≤¢––≤Ÿ◊˜£¨≤¢±£÷§”…œµÕ≥ªÿ ’◊ ‘¥°£
   return true;
 }
@@ -2585,15 +2610,15 @@ bool CChinaMarket::RunningThreadChoice10RSStrongStockSet(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake) {
-  thread thread1(ThreadCalculate10RSStrong1Stock, pv10RSStrongStock, pStake);
+bool CChinaMarket::RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrong1Stock, pv10RSStrongStock, pStock);
   thread1.detach();
 
   return true;
 }
 
-bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake) {
-  thread thread1(ThreadCalculate10RSStrong2Stock, pv10RSStrongStock, pStake);
+bool CChinaMarket::RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrong2Stock, pv10RSStrongStock, pStock);
   thread1.detach();
 
   return true;
@@ -2605,8 +2630,8 @@ bool CChinaMarket::RunningThreadBuildWeekLine(long lStartDate) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStock* pStake, long lStartDate) {
-  thread thread1(ThreadBuildWeekLineOfStock, pStake, lStartDate);
+bool CChinaMarket::RunningThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate) {
+  thread thread1(ThreadBuildWeekLineOfStock, pStock, lStartDate);
   thread1.detach();
 
   return true;
@@ -2619,8 +2644,8 @@ bool CChinaMarket::RunningThreadBuildWeekLineRS(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStake) {
-  thread thread1(ThreadCalculate10RSStrongStock, pv10RSStrongStock, pRef, pStake);
+bool CChinaMarket::RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock) {
+  thread thread1(ThreadCalculate10RSStrongStock, pv10RSStrongStock, pRef, pStock);
   thread1.detach();
 
   return true;
@@ -2678,15 +2703,16 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
   setDayLineBasicInfo.m_strFilter = _T("[ID] = 1");
   setDayLineBasicInfo.Open();
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (!pStake->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (!pStock->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
       continue;
     }
     iCount++;
-    pStake->SetDayLineEndDate(lCurrentTradeDay);
-    pStake->SetIPOStatus(__STAKE_IPOED__); // ‘Ÿ…Ë÷√“ª¥Œ°£∑¿÷π–¬π…π…∆±¥˙¬Î”…”⁄√ª”–¿˙ ∑ ˝æ›∂¯±ªŒÛ≈–Œ™≤ª¥Ê‘⁄°£
+    pStock->SetDayLineEndDate(lCurrentTradeDay);
+    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetIPOStatus(__STAKE_IPOED__); // ‘Ÿ…Ë÷√“ª¥Œ°£∑¿÷π–¬π…π…∆±¥˙¬Î”…”⁄√ª”–¿˙ ∑ ˝æ›∂¯±ªŒÛ≈–Œ™≤ª¥Ê‘⁄°£
     setDayLineBasicInfo.AddNew();
-    pStake->SaveTodayBasicInfo(&setDayLineBasicInfo);
+    pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
   }
   setDayLineBasicInfo.m_pDatabase->CommitTrans();
@@ -2696,12 +2722,12 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
   setDayLineExtendInfo.m_strFilter = _T("[ID] = 1");
   setDayLineExtendInfo.Open();
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (!pStake->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (!pStock->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
       continue;
     }
     setDayLineExtendInfo.AddNew();
-    pStake->SaveTodayExtendInfo(&setDayLineExtendInfo);
+    pStock->SaveTodayExtendInfo(&setDayLineExtendInfo);
     setDayLineExtendInfo.Update();
   }
   setDayLineExtendInfo.m_pDatabase->CommitTrans();
@@ -2787,17 +2813,17 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
   setDayLineToday.m_strFilter = _T("[ID] = 1");
   setDayLineToday.Open();
   setDayLineToday.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_vChinaMarketStock) {
-    if (!pStake->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (!pStock->IsTodayDataActive()) {  // ¥Àπ…∆±ΩÒÃÏÕ£≈∆,À˘”–µƒ ˝æ›Ω‘Œ™¡„,≤ª–Ë“™¥Ê¥¢.
       continue;
     }
-    if (pStake->IsNeedProcessRTData() && (!pStake->IsVolumeConsistence())) {
-      str = pStake->GetStockCode();
+    if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
+      str = pStock->GetStockCode();
       str += _T(" π… ˝≤ª’˝»∑");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
     }
     setDayLineToday.AddNew();
-    pStake->SaveTempInfo(setDayLineToday);
+    pStock->SaveTempInfo(setDayLineToday);
     setDayLineToday.Update();
   }
   setDayLineToday.m_pDatabase->CommitTrans();
@@ -2830,7 +2856,7 @@ bool CChinaMarket::DeleteTodayTempDB(void) {
 // π ∂¯¥À¥¶’‚—˘º∆À„°£
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::LoadTodayTempDB(void) {
-  CChinaStockPtr pStake = nullptr;
+  CChinaStockPtr pStock = nullptr;
   CSetDayLineToday setDayLineToday;
   CWebRTDataPtr pRTData;
 
@@ -2841,9 +2867,9 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   if (!setDayLineToday.IsEOF()) {
     if (setDayLineToday.m_Date == GetFormatedMarketDate()) { // »Áπ˚ «µ±ÃÏµƒ––«È£¨‘Ú‘ÿ»Î£¨∑Ò‘Ú∑≈∆˙
       while (!setDayLineToday.IsEOF()) {
-        if ((pStake = GetStock(setDayLineToday.m_StockCode)) != nullptr) {
-          ASSERT(!pStake->HaveFirstRTData()); // »∑±£√ª”–ø™ ºº∆À„ µ ± ˝æ›
-          pStake->LoadTempInfo(setDayLineToday);
+        if ((pStock = GetStock(setDayLineToday.m_StockCode)) != nullptr) {
+          ASSERT(!pStock->HaveFirstRTData()); // »∑±£√ª”–ø™ ºº∆À„ µ ± ˝æ›
+          pStock->LoadTempInfo(setDayLineToday);
         }
         setDayLineToday.MoveNext();
       }
@@ -2856,14 +2882,14 @@ bool CChinaMarket::LoadTodayTempDB(void) {
 
 bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
   CSetRSStrong1Stock setRSStrong1;
-  CChinaStockPtr pStake = nullptr;
+  CChinaStockPtr pStock = nullptr;
 
   m_v10RSStrong1Stock.clear();
   setRSStrong1.Open();
   while (!setRSStrong1.IsEOF()) {
-    pStake = gl_pChinaStakeMarket->GetStock(setRSStrong1.m_StockCode);
-    if (pStake != nullptr) {
-      m_v10RSStrong1Stock.push_back(pStake);
+    pStock = gl_pChinaStakeMarket->GetStock(setRSStrong1.m_StockCode);
+    if (pStock != nullptr) {
+      m_v10RSStrong1Stock.push_back(pStock);
     }
     setRSStrong1.MoveNext();
   }
@@ -2874,14 +2900,14 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
 
 bool CChinaMarket::Load10DaysRSStrong2StockSet(void) {
   CSetRSStrong2Stock setRSStrong2;
-  CChinaStockPtr pStake = nullptr;
+  CChinaStockPtr pStock = nullptr;
 
   m_v10RSStrong2Stock.clear();
   setRSStrong2.Open();
   while (!setRSStrong2.IsEOF()) {
-    pStake = gl_pChinaStakeMarket->GetStock(setRSStrong2.m_StockCode);
-    if (pStake != nullptr) {
-      m_v10RSStrong2Stock.push_back(pStake);
+    pStock = gl_pChinaStakeMarket->GetStock(setRSStrong2.m_StockCode);
+    if (pStock != nullptr) {
+      m_v10RSStrong2Stock.push_back(pStock);
     }
     setRSStrong2.MoveNext();
   }
@@ -2964,8 +2990,8 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
   setRSStrongStock.Open();
   while (!setRSStrongStock.IsEOF()) {
-    CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(setRSStrongStock.m_StockCode);
-    if (pStake != nullptr) m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStake); // 10»’RSπ…∆±ºØ∆ ºŒª÷√Œ™µ⁄10∏ˆ°£
+    CChinaStockPtr pStock = gl_pChinaStakeMarket->GetStock(setRSStrongStock.m_StockCode);
+    if (pStock != nullptr) m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10»’RSπ…∆±ºØ∆ ºŒª÷√Œ™µ⁄10∏ˆ°£
     setRSStrongStock.MoveNext();
   }
   setRSStrongStock.Close();
@@ -3206,15 +3232,16 @@ double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) noexc
   return result;
 }
 
-bool CChinaMarket::UpdateStakeCodeDB(void) {
+bool CChinaMarket::UpdateStockCodeDB(void) {
   CSetStockCode setStockCode;
 
   DeleteStakeCodeDB();
 
   setStockCode.Open();
   setStockCode.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_vChinaMarketStock) {
-    pStake->AppendStakeCodeDB(setStockCode);
+  for (auto& pStock : m_vChinaMarketStock) {
+    pStock->AppendStockCodeDB(setStockCode);
+    pStock->SetUpdateStockProfileDB(false);
   }
   setStockCode.m_pDatabase->CommitTrans();
   setStockCode.Close();
@@ -3222,8 +3249,47 @@ bool CChinaMarket::UpdateStakeCodeDB(void) {
   return true;
 }
 
+bool CChinaMarket::UpdateStockCodeDB2(void) {
+  const long lTotalChinaStock = m_vChinaMarketStock.size();
+  CChinaStockPtr pStock = nullptr;
+  CSetStockCode setStockCode;
+
+  if (m_lLoadedStock < lTotalChinaStock) { //”––¬µƒ¥˙¬Î£ø
+    DeleteStakeCodeDB();
+    setStockCode.Open();
+    setStockCode.m_pDatabase->BeginTrans();
+    for (long l = 0; l < lTotalChinaStock; l++) {
+      pStock = m_vChinaMarketStock.at(l);
+      pStock->AppendStockCodeDB(setStockCode);
+      pStock->SetUpdateStockProfileDB(false);
+    }
+    setStockCode.m_pDatabase->CommitTrans();
+    setStockCode.Close();
+    m_lLoadedStock = m_vChinaMarketStock.size();
+  }
+
+  //∏¸–¬‘≠”–µƒ¥˙¬ÎºØ◊¥Ã¨
+  if (IsUpdateStockCodeDB()) {
+    setStockCode.Open();
+    setStockCode.m_pDatabase->BeginTrans();
+    while (!setStockCode.IsEOF()) {
+      if (IsStock(setStockCode.m_StockCode)) {
+        pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
+        if (pStock->IsUpdateStockProfileDB()) {
+          pStock->UpdateStockCodeDB(setStockCode);
+          pStock->SetUpdateStockProfileDB(false);
+        }
+      }
+      setStockCode.MoveNext();
+    }
+    setStockCode.m_pDatabase->CommitTrans();
+    setStockCode.Close();
+  }
+  return true;
+}
+
 void CChinaMarket::LoadStakeSection(void) {
-  CSetStakeSection setStakeSection;
+  CSetStockSection setStakeSection;
 
   setStakeSection.Open();
   while (!setStakeSection.IsEOF()) {
@@ -3243,11 +3309,12 @@ void CChinaMarket::LoadStockCodeDB(void) {
   char buffer[30]{ 0, 0, 0 };
   CString str;
 
+  setStockCode.m_strSort = _T("[StockCode]");
   setStockCode.Open();
   // ◊∞»Îπ…∆±¥˙¬Î ˝æ›ø‚
   while (!setStockCode.IsEOF()) {
-    CChinaStockPtr pStake = GetStock(setStockCode.m_StockCode);
-    if (pStake != nullptr) pStake->LoadStockCodeDB(setStockCode);
+    CChinaStockPtr pStock = GetStock(setStockCode.m_StockCode);
+    if (pStock != nullptr) pStock->LoadStockCodeDB(setStockCode);
     setStockCode.MoveNext();
   }
   if (m_iDayLineNeedUpdate > 0) {
@@ -3261,9 +3328,8 @@ void CChinaMarket::LoadStockCodeDB(void) {
     gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
-  if (m_lLoadedStock != 0) {
-    ASSERT(m_lLoadedStock == 12000);
-  }
+  m_lLoadedStock = m_vChinaMarketStock.size();
+  SortStockVector();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -3399,13 +3465,13 @@ bool CChinaMarket::UpdateChoicedStockDB(void) {
   }
   setChoicedStock.m_pDatabase->CommitTrans();
   setChoicedStock.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_avChoicedStock.at(0)) {
-    ASSERT(pStake->IsChoiced());
+  for (auto& pStock : m_avChoicedStock.at(0)) {
+    ASSERT(pStock->IsChoiced());
     setChoicedStock.AddNew();
-    setChoicedStock.m_Market = pStake->GetMarket();
-    setChoicedStock.m_StockCode = pStake->GetStockCode();
+    setChoicedStock.m_Market = pStock->GetMarket();
+    setChoicedStock.m_StockCode = pStock->GetStockCode();
     setChoicedStock.Update();
-    pStake->SetSaveToChoicedStockDB(true);
+    pStock->SetSaveToChoicedStockDB(true);
   }
   setChoicedStock.m_pDatabase->CommitTrans();
   setChoicedStock.Close();
@@ -3418,14 +3484,14 @@ bool CChinaMarket::AppendChoicedStockDB(void) {
 
   setChoicedStock.Open();
   setChoicedStock.m_pDatabase->BeginTrans();
-  for (auto& pStake : m_avChoicedStock.at(0)) {
-    ASSERT(pStake->IsChoiced());
-    if (!pStake->IsSaveToChoicedStockDB()) {
+  for (auto& pStock : m_avChoicedStock.at(0)) {
+    ASSERT(pStock->IsChoiced());
+    if (!pStock->IsSaveToChoicedStockDB()) {
       setChoicedStock.AddNew();
-      setChoicedStock.m_Market = pStake->GetMarket();
-      setChoicedStock.m_StockCode = pStake->GetStockCode();
+      setChoicedStock.m_Market = pStock->GetMarket();
+      setChoicedStock.m_StockCode = pStock->GetStockCode();
       setChoicedStock.Update();
-      pStake->SetSaveToChoicedStockDB(true);
+      pStock->SetSaveToChoicedStockDB(true);
     }
   }
   setChoicedStock.m_pDatabase->CommitTrans();
@@ -3440,13 +3506,15 @@ void CChinaMarket::LoadChoicedStockDB(void) {
   setChoicedStock.Open();
   // ◊∞»Îπ…∆±¥˙¬Î ˝æ›ø‚
   while (!setChoicedStock.IsEOF()) {
-    CChinaStockPtr pStake = GetStock(setChoicedStock.m_StockCode);
-    auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStake);
-    if (it == m_avChoicedStock.at(0).end()) {
-      m_avChoicedStock.at(0).push_back(pStake);
+    CChinaStockPtr pStock = GetStock(setChoicedStock.m_StockCode);
+    if (pStock != nullptr) {
+      auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
+      if (it == m_avChoicedStock.at(0).end()) {
+        m_avChoicedStock.at(0).push_back(pStock);
+      }
+      pStock->SetChoiced(true);
+      pStock->SetSaveToChoicedStockDB(true);
     }
-    pStake->SetChoiced(true);
-    pStake->SetSaveToChoicedStockDB(true);
     setChoicedStock.MoveNext();
   }
   setChoicedStock.Close();
