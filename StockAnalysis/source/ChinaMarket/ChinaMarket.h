@@ -132,7 +132,8 @@ public:
   CString GetTengxunInquiringStockStr(long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
   CString	GetNeteaseStockInquiringStr(long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
-  CString GetNextStockInquiringMiddleStrBeforeSystemReady(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition);
+  CString GetNextSinaStockInquiringMiddleStrBeforeSystemReady(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition);
+  CString GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition);
   CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lStartPosition, long lEndPosition, bool fSkipUnactiveStock);
   bool StepToActiveStock(long& lStockIndex, long lStartPosition, long lEndPostion);
   CString CreateNextStakeInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber);
@@ -440,7 +441,7 @@ protected:
 
   vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
   long m_lCurrentSinaStockSetInquiryIndex;
-  long m_lCurrentNeteaseStockSetIndex;
+  long m_lCurrentNeteaseStockSetInquiryIndex;
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）

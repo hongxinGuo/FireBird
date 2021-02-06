@@ -131,7 +131,7 @@ void CChinaStock::Reset(void) {
 
   m_fActive = false;
 
-  m_fDayLineNeedUpdate = true;
+  m_fDayLineNeedUpdate = false; // 默认状态下日线不需要更新
   m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
   m_fDayLineNeedSaving = false;
 
@@ -1527,17 +1527,7 @@ void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
-  if (IsIPOed()) { // 如果此股票是活跃股票
-    if (gl_pChinaStakeMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStakeMarket->GetFormatedMarketDate(), 30)) { // 如果此股票的日线历史数据已经早于一个月了，则设置此股票状态为已退市
-      setStockCode.m_IPOStatus = __STAKE_DELISTED__;
-    }
-    else {
-      setStockCode.m_IPOStatus = GetIPOStatus();
-    }
-  }
-  else {
-    setStockCode.m_IPOStatus = GetIPOStatus();
-  }
+  setStockCode.m_IPOStatus = GetIPOStatus();
   setStockCode.m_DayLineStartDate = GetDayLineStartDate();
   setStockCode.m_DayLineEndDate = GetDayLineEndDate();
 }
@@ -1568,17 +1558,14 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 }
 
 void CChinaStock::SetCheckingDayLineStatus(void) {
-  //ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
+  ASSERT(!IsDayLineNeedUpdate()); // 默认状态为日线数据不需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStakeMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
-    SetDayLineNeedUpdate(false); // 日线数据不需要更新
-  }
-  else if (IsNullStock()) { // 无效代码不需更新日线数据
-    SetDayLineNeedUpdate(false);
+  if (gl_pChinaStakeMarket->GetLastTradeDate() > GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+    SetDayLineNeedUpdate(true); // 日线数据需要更新
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStakeMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
-      SetDayLineNeedUpdate(false);
+    if ((gl_pChinaStakeMarket->GetDayOfWeek() == 1) || (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__)) {
+      SetDayLineNeedUpdate(true);
     }
   }
 }

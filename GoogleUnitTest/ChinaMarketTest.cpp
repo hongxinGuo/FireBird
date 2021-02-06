@@ -1059,18 +1059,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(i, 1000);
   }
 
-  TEST_F(CChinaMarketTest, TestStepToActiveStockIndex) {
-    long i = 0; //
-    gl_pChinaStakeMarket->StepToActiveStock(i, 0, gl_pChinaStakeMarket->GetTotalStock());
-    EXPECT_EQ(i, 0); // sh600000为活跃股票
-    i++;
-    gl_pChinaStakeMarket->StepToActiveStock(i, 0, gl_pChinaStakeMarket->GetTotalStock());
-    EXPECT_EQ(i, 4); // sh600004为活跃股票，之间三个是退市股
-    for (int j = 1; j < 4; j++) {
-      EXPECT_FALSE(gl_pChinaStakeMarket->GetStock(j)->IsActive());
-    }
-  }
-
   TEST_F(CChinaMarketTest, TestTaskProcessRTData) {
     gl_ThreadStatus.SetRTDataNeedCalculate(true);
     EXPECT_TRUE(gl_pChinaStakeMarket->TaskProcessRTData());

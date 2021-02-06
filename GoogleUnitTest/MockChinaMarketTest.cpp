@@ -378,7 +378,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
     // 市场时间大于150400时
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), lDate);
-    EXPECT_TRUE(s_pchinaMarket->IsUpdateStockCodeDB());
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_TRUE(s_pchinaMarket->IsTodayStockProcessed());
   }
