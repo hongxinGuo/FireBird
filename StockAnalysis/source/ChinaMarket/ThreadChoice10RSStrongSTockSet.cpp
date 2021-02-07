@@ -75,7 +75,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
-    if (gl_pChinaStakeMarket->IsAStock(pStake) && pStake->IsActive()) {
+    if (gl_pChinaStockMarket->IsAStock(pStake) && pStake->IsActive()) {
       if (!pStake->IsDayLineLoaded()) {
         pStake->LoadDayLine(pStake->GetStockCode());
         pStake->SetDayLineLoaded(true);
@@ -83,7 +83,7 @@ UINT ThreadCalculate10RSStrongStock(not_null<vector<CChinaStockPtr>*> pv10RSStro
       if (pStake->Calculate10RSStrongStockSet(pRef)) {
         pv10RSStrongStock->push_back(pStake);
       }
-      if (!pStake->IsSameStock(gl_pChinaStakeMarket->GetCurrentStock())) {
+      if (!pStake->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
         pStake->UnloadDayLine();
       }
     }
@@ -99,7 +99,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
-    if (gl_pChinaStakeMarket->IsAStock(pStake) && pStake->IsActive()) {
+    if (gl_pChinaStockMarket->IsAStock(pStake) && pStake->IsActive()) {
       if (!pStake->IsDayLineLoaded()) {
         pStake->LoadDayLine(pStake->GetStockCode());
         pStake->SetDayLineLoaded(true);
@@ -107,7 +107,7 @@ UINT ThreadCalculate10RSStrong1Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
       if (pStake->Calculate10RSStrong1StockSet()) {
         pv10RSStrongStock->push_back(pStake);
       }
-      if (!pStake->IsSameStock(gl_pChinaStakeMarket->GetCurrentStock())) {
+      if (!pStake->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
         pStake->UnloadDayLine();
       }
     }
@@ -123,7 +123,7 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   if (!gl_fExitingSystem) {
-    if (gl_pChinaStakeMarket->IsAStock(pStake) && pStake->IsActive()) {
+    if (gl_pChinaStockMarket->IsAStock(pStake) && pStake->IsActive()) {
       if (!pStake->IsDayLineLoaded()) {
         pStake->LoadDayLine(pStake->GetStockCode());
         pStake->SetDayLineLoaded(true);
@@ -131,7 +131,7 @@ UINT ThreadCalculate10RSStrong2Stock(not_null<vector<CChinaStockPtr>*> pv10RSStr
       if (pStake->Calculate10RSStrong2StockSet()) {
         pv10RSStrongStock->push_back(pStake);
       }
-      if (!pStake->IsSameStock(gl_pChinaStakeMarket->GetCurrentStock())) {
+      if (!pStake->IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
         pStake->UnloadDayLine();
       }
     }

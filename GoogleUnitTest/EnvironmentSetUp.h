@@ -34,14 +34,13 @@ namespace StockAnalysisTest {
 
     virtual void SetUp(void) override {
       // 下列全局智能指针为实际类
-      gl_pChinaStakeMarket = make_shared<CChinaMarket>();
-      gl_pChinaStakeMarket->__TestCreateStockVector();
+      gl_pChinaStockMarket = make_shared<CChinaMarket>();
       gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
       gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
       gl_pWorldMarket = make_shared<CWorldMarket>();
       EXPECT_EQ(gl_vMarketPtr.size(), 0);
       gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-      gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
+      gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
       gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
       gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
 #ifdef __GOOGLEMOCK__
@@ -73,48 +72,22 @@ namespace StockAnalysisTest {
 #endif
 
       CChinaStockPtr pStake = nullptr;
-      // 重置股票池状态（因已装入实际状态）
-      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
-        pStake = gl_pChinaStakeMarket->GetStock(i);
-        pStake->SetDayLineEndDate(-1);
-        EXPECT_TRUE(pStake->IsDayLineNeedUpdate());
-        //if (!pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(true);
-      }
-      // 初始化活跃股票标识
-      EXPECT_TRUE(gl_fTestMode);
-      EXPECT_FALSE(gl_fNormalMode);
-      CSetStockCode setStockCode;
-      setStockCode.Open();
-      while (!setStockCode.IsEOF()) {
-        pStake = gl_pChinaStakeMarket->GetStock(setStockCode.m_StockCode);
-        pStake->SetIPOStatus(setStockCode.m_IPOStatus);
-        pStake->SetMarket(setStockCode.m_StockType);
-        pStake->SetStockCode(setStockCode.m_StockCode);
-        CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
-        pStake->SetStockName(str);
-        pStake->SetDayLineStartDate(setStockCode.m_DayLineStartDate);
-        if (pStake->GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
-          pStake->SetDayLineEndDate(setStockCode.m_DayLineEndDate);
-        }
-        if (setStockCode.m_IPOStatus == __STAKE_IPOED__) {
-          pStake->SetActive(true);
-          gl_pChinaStakeMarket->IncreaseActiveStockNumber();
-        }
-        else {
-          //EXPECT_FALSE(pStake->IsActive());
-        }
-        setStockCode.MoveNext();
-      }
-      setStockCode.Close();
-      EXPECT_GT(gl_pChinaStakeMarket->GetTotalActiveStock(), 0);
-      gl_pChinaStakeMarket->SetSystemReady(true);
-      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
+      // 初始化活跃股票标识. 目前此测试股票代码总数为4826.
+      ASSERT_TRUE(gl_fTestMode);
+      ASSERT_FALSE(gl_fNormalMode);
+
+      gl_pChinaStockMarket->LoadStockCodeDB();
+      long l = gl_pChinaStockMarket->GetTotalLoadedStock();
+      EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
+      EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
+      gl_pChinaStockMarket->SetSystemReady(true);
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
 
     virtual void TearDown(void) override {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
-      EXPECT_FALSE(gl_pChinaStakeMarket->IsCurrentStockChanged());
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
       gl_pNeteaseRTWebInquiry = nullptr;
@@ -129,13 +102,13 @@ namespace StockAnalysisTest {
       gl_pTiingoWebInquiry = nullptr;
       gl_pQuandlWebInquiry = nullptr;
 
-      EXPECT_EQ(gl_pChinaStakeMarket->GetCurrentStock(), nullptr) << gl_pChinaStakeMarket->GetCurrentStock()->GetStockCode();
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedProcessNumber(), 0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
       while (gl_ThreadStatus.GetNumberOfRunningThread() > 0) Sleep(1);
       gl_vMarketPtr.clear();
       gl_pWorldMarket = nullptr;
-      gl_pChinaStakeMarket = nullptr;
+      gl_pChinaStockMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
       gl_pWorldMarket = nullptr;

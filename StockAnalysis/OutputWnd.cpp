@@ -216,7 +216,7 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent) {
   size_t lTotal = 0;
   long lCurrentPos = 0;
   bool fUpdate = false;
-  CString strTime = gl_pChinaStakeMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
+  CString strTime = gl_pChinaStockMarket->GetStringOfLocalDateTime(); // 消息的前缀，使用当地时间
 
   // 如果显示列表超过10000个，则删除前面的1000个。
   m_wndOutputInformation.TruncateList(10000);

@@ -139,17 +139,17 @@ CMainFrame::~CMainFrame() {
 
   gl_fExitingSystem = true;
 
-  if (gl_pChinaStakeMarket->IsUpdateOptionDB()) {
-    gl_pChinaStakeMarket->UpdateOptionDB();
+  if (gl_pChinaStockMarket->IsUpdateOptionDB()) {
+    gl_pChinaStockMarket->UpdateOptionDB();
   }
 
-  gl_pChinaStakeMarket->UpdateOptionChinaStockMarketDB();
+  gl_pChinaStockMarket->UpdateOptionChinaStockMarketDB();
 
-  if (gl_pChinaStakeMarket->IsUpdateChoicedStockDB()) {
-    gl_pChinaStakeMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+  if (gl_pChinaStockMarket->IsUpdateChoicedStockDB()) {
+    gl_pChinaStockMarket->UpdateChoicedStockDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 
-  gl_pChinaStakeMarket->SaveCalculatingRSOption();
+  gl_pChinaStockMarket->SaveCalculatingRSOption();
 
   while (gl_ThreadStatus.IsSavingDayLine()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
@@ -157,9 +157,9 @@ CMainFrame::~CMainFrame() {
 
   // 更新股票代码数据库要放在最后，等待存储日线数据的线程（如果唤醒了的话）结束之后再执行。
   // 因为彼线程也在更新股票代码数据库，而此更新只是消除同类项而已。
-  if (gl_pChinaStakeMarket->IsUpdateStockCodeDB()) {
-    //gl_pChinaStakeMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
-    gl_pChinaStakeMarket->UpdateStockCodeDB2(); // 这里直接调用存储函数，不采用工作线程的模式。
+  if (gl_pChinaStockMarket->IsUpdateStockCodeDB()) {
+    //gl_pChinaStockMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
+    gl_pChinaStockMarket->UpdateStockCodeDB2(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 
   while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
@@ -170,7 +170,7 @@ CMainFrame::~CMainFrame() {
 
 bool CMainFrame::CreateMarketContainer(void) {
   gl_vMarketPtr.push_back(gl_pWorldMarket); // 美国股票市场
-  gl_vMarketPtr.push_back(gl_pChinaStakeMarket); // 中国股票市场
+  gl_vMarketPtr.push_back(gl_pChinaStockMarket); // 中国股票市场
   gl_vMarketPtr.push_back(gl_pPotenDailyBriefingMarket); // poten.com提供的每日航运指数
   gl_vMarketPtr.push_back(gl_pCrweberIndexMarket); // Crweber.com提供的每日航运指数
   return true;
@@ -179,7 +179,7 @@ bool CMainFrame::CreateMarketContainer(void) {
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   gl_systemMessage.PushInformationMessage(_T("系统初始化中....."));
 
-  if (gl_pChinaStakeMarket == nullptr) gl_pChinaStakeMarket = make_shared<CChinaMarket>();
+  if (gl_pChinaStockMarket == nullptr) gl_pChinaStockMarket = make_shared<CChinaMarket>();
   if (gl_pCrweberIndexMarket == nullptr) gl_pCrweberIndexMarket = make_shared<CCrweberIndexMarket>();
   if (gl_pPotenDailyBriefingMarket == nullptr) gl_pPotenDailyBriefingMarket = make_shared<CPotenDailyBriefingMarket>();
   if (gl_pWorldMarket == nullptr) gl_pWorldMarket = make_shared<CWorldMarket>();
@@ -190,7 +190,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
   TRACE(_T("开始重置系统\n"));
   gl_systemMessage.PushInformationMessage(_T("重置系统"));
-  ASSERT(gl_pChinaStakeMarket != nullptr);
+  ASSERT(gl_pChinaStockMarket != nullptr);
   ASSERT(gl_pPotenDailyBriefingMarket != nullptr);
   ASSERT(gl_pCrweberIndexMarket != nullptr);
   ResetMarket();
@@ -498,44 +498,44 @@ void CMainFrame::UpdateStatus(void) {
   CString str;
   char buffer[30]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   //更新状态条
-  if (gl_pChinaStakeMarket->IsCurrentEditStockChanged()) {
+  if (gl_pChinaStockMarket->IsCurrentEditStockChanged()) {
     str = m_aStockCodeTemp;
     SysCallSetPaneText(1, (LPCTSTR)str);
-    gl_pChinaStakeMarket->SetCurrentEditStockChanged(false);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
   }
   // 显示股票代码和名称
-  if (gl_pChinaStakeMarket->IsCurrentStockChanged()) {
-    gl_pChinaStakeMarket->SetCurrentStockChanged(false);
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
+    gl_pChinaStockMarket->SetCurrentStockChanged(false);
     SysCallSetPaneText(2, (LPCTSTR)pCurrentStock->GetStockCode());
     SysCallSetPaneText(3, (LPCTSTR)pCurrentStock->GetStockName());
   }
 
   // 显示当前选择的股票
-  sprintf_s(buffer, _T("%d"), gl_pChinaStakeMarket->GetCurrentSelectedStockSet());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedStockSet());
   str = buffer;
   SysCallSetPaneText(4, (LPCTSTR)str);
 
   // 显示当前选择的位置
-  sprintf_s(buffer, _T("%d"), gl_pChinaStakeMarket->GetCurrentSelectedPosition());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetCurrentSelectedPosition());
   str = buffer;
   SysCallSetPaneText(5, (LPCTSTR)str);
 
   // 显示当前读取的新浪实时数据股票代码
-  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStakeMarket->GetStockCodeForInquiringRTData());
+  SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
-  sprintf_s(buffer, _T("%d"), gl_pChinaStakeMarket->GetTotalActiveStock());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetTotalActiveStock());
   str = buffer;
   SysCallSetPaneText(7, (LPCTSTR)str);
 
   // 显示当前读取网易日线历史的股票代码
-  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStakeMarket->GetStockCodeForInquiringNeteaseDayLine());
+  SysCallSetPaneText(8, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine());
 
   // 更新当前抓取的实时数据大小
-  if ((gl_pChinaStakeMarket->GetMarketTime() - m_timeLast) > 0) { // 每秒更新一次
+  if ((gl_pChinaStockMarket->GetMarketTime() - m_timeLast) > 0) { // 每秒更新一次
     const long lTotalByteReaded = gl_pSinaRTWebInquiry->GetTotalByteReaded();
     if (lTotalByteReaded > 1024 * 1024) { // 1M以上的流量？
       sprintf_s(buffer, _T("%4dM"), lTotalByteReaded / (1024 * 1024));
@@ -547,7 +547,7 @@ void CMainFrame::UpdateStatus(void) {
       sprintf_s(buffer, _T("%4d"), lTotalByteReaded);
     }
     gl_pSinaRTWebInquiry->ClearTotalByteReaded();
-    m_timeLast = gl_pChinaStakeMarket->GetMarketTime();
+    m_timeLast = gl_pChinaStockMarket->GetMarketTime();
     str = buffer;
     m_wndStatusBar.SetPaneText(9, (LPCTSTR)str);
   }
@@ -563,7 +563,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(11, (LPCTSTR)str);
 
   //更新当地时间的显示
-  SysCallSetPaneText(12, (LPCTSTR)gl_pChinaStakeMarket->GetStringOfLocalTime());
+  SysCallSetPaneText(12, (LPCTSTR)gl_pChinaStockMarket->GetStringOfLocalTime());
 }
 
 void CMainFrame::UpdateInnerSystemStatus(void) {
@@ -618,23 +618,23 @@ void CMainFrame::OnCalculateTodayRS() {
 }
 
 void CMainFrame::CalculateTodayRS(void) {
-  gl_pChinaStakeMarket->RunningThreadBuildDayLineRS(gl_pChinaStakeMarket->GetFormatedMarketDate());
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnProcessTodayStock() {
   // TODO: 在此添加命令处理程序代码
-  if (gl_pChinaStakeMarket->IsSystemReady()) {
+  if (gl_pChinaStockMarket->IsSystemReady()) {
     ProcessTodayStock();
   }
 }
 
 void CMainFrame::ProcessTodayStock() {
-  gl_pChinaStakeMarket->RunningThreadProcessTodayStock();
+  gl_pChinaStockMarket->RunningThreadProcessTodayStock();
 }
 
 void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_pChinaStakeMarket->IsSystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
+  if (gl_pChinaStockMarket->IsSystemReady()) { // 系统自动更新日线数据时，不允许处理当日的实时数据。
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else SysCallCmdUIEnable(pCmdUI, false);
@@ -642,7 +642,7 @@ void CMainFrame::OnUpdateProcessTodayStock(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculateTodayRS(CCmdUI* pCmdUI) {
   // TODO: 在此添加命令更新用户界面处理程序代码
-  if (gl_pChinaStakeMarket->IsSystemReady()) {
+  if (gl_pChinaStockMarket->IsSystemReady()) {
     if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
       SysCallCmdUIEnable(pCmdUI, false);
     }
@@ -694,34 +694,34 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
     m_lCurrentPos++;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;
   }
-  gl_pChinaStakeMarket->SetCurrentEditStockChanged(true);
+  gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
   break;
   case 0x00d: // 回车
   strTemp = m_aStockCodeTemp;
-  if (gl_pChinaStakeMarket->IsStock(strTemp)) {
-    pStake = gl_pChinaStakeMarket->GetStock(strTemp);
-    gl_pChinaStakeMarket->SetCurrentStock(pStake);
+  if (gl_pChinaStockMarket->IsStock(strTemp)) {
+    pStake = gl_pChinaStockMarket->GetStock(strTemp);
+    gl_pChinaStockMarket->SetCurrentStock(pStake);
     SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
   m_lCurrentPos = 0;
-  gl_pChinaStakeMarket->SetCurrentEditStockChanged(true);
+  gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
   break;
   case 0x008: // back space
   if (m_lCurrentPos > 0) {
     m_lCurrentPos--;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;
-    gl_pChinaStakeMarket->SetCurrentEditStockChanged(true);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
   }
   break;
   default:
   break;
   }
-  if (gl_pChinaStakeMarket->IsCurrentStockChanged()) {
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
     CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
     CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
     if (pView != nullptr) {
-      pView->UpdateHistoryDataContainer(gl_pChinaStakeMarket->GetCurrentStock());
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
     }
   }
 
@@ -732,38 +732,38 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
   CChinaStockPtr pStake;
   CString strTemp;
-  CChinaStockPtr pCurrentStock = gl_pChinaStakeMarket->GetCurrentStock();
+  CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   if (pCurrentStock != nullptr) {
     switch (nChar) {
     case 118: // F7，选择前一个股票集
-    gl_pChinaStakeMarket->ChangeToPrevStockSet();
-    gl_pChinaStakeMarket->SetCurrentSelectedPosition(0);
-    gl_pChinaStakeMarket->SetCurrentStock(gl_pChinaStakeMarket->GetCurrentSelectedStock());
+    gl_pChinaStockMarket->ChangeToPrevStockSet();
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
     break;
     case 119: // F8， 选择后一个股票集
-    gl_pChinaStakeMarket->ChangeToNextStockSet();
-    gl_pChinaStakeMarket->SetCurrentSelectedPosition(0);
-    gl_pChinaStakeMarket->SetCurrentStock(gl_pChinaStakeMarket->GetCurrentSelectedStock());
+    gl_pChinaStockMarket->ChangeToNextStockSet();
+    gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetCurrentSelectedStock());
     break;
     case 33: // PAGE UP
      // last stake
-    gl_pChinaStakeMarket->ChangeToPrevStock();
+    gl_pChinaStockMarket->ChangeToPrevStock();
     break;
     case 34: // PAGE DOWN
       // next stake
-    gl_pChinaStakeMarket->ChangeToNextStock();
+    gl_pChinaStockMarket->ChangeToNextStock();
     break;
     case 45: // Ins, 加入自选股票
     pCurrentStock->SetChoiced(true);
-    if (gl_pChinaStakeMarket->AddChoicedStock(pCurrentStock)) {
-      gl_pChinaStakeMarket->SetUpdateChoicedStockDB(true);
+    if (gl_pChinaStockMarket->AddChoicedStock(pCurrentStock)) {
+      gl_pChinaStockMarket->SetUpdateChoicedStockDB(true);
     }
     break;
     case 46: // delete,从自选股票池中删除
     pCurrentStock->SetChoiced(false);
-    if (gl_pChinaStakeMarket->DeleteChoicedStock(pCurrentStock)) {
-      gl_pChinaStakeMarket->SetUpdateChoicedStockDB(true);
+    if (gl_pChinaStockMarket->DeleteChoicedStock(pCurrentStock)) {
+      gl_pChinaStockMarket->SetUpdateChoicedStockDB(true);
     }
     break;
     default:
@@ -771,11 +771,11 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
     break;
     }
   }
-  if (gl_pChinaStakeMarket->IsCurrentStockChanged()) {
+  if (gl_pChinaStockMarket->IsCurrentStockChanged()) {
     CMDIChildWnd* pChild = (CMDIChildWnd*)GetActiveFrame();
     CStockAnalysisView* pView = (CStockAnalysisView*)pChild->GetActiveView();
     if (pView != nullptr) {
-      pView->UpdateHistoryDataContainer(gl_pChinaStakeMarket->GetCurrentStock());
+      pView->UpdateHistoryDataContainer(gl_pChinaStockMarket->GetCurrentStock());
     }
   }
   SysCallOnKeyUp(nChar, nRepCnt, nFlags);
@@ -783,7 +783,7 @@ void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnRebuildDayLineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DATE__);
+  gl_pChinaStockMarket->RunningThreadBuildDayLineRS(__CHINA_MARKET_BEGIN_DATE__);
 }
 
 void CMainFrame::OnBuildResetMarket() {
@@ -796,7 +796,7 @@ void CMainFrame::OnBuildResetMarket() {
 void CMainFrame::OnUpdateRebuildDayLineRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
   // 要避免在八点至半九点半之间执行重算相对强度的工作，因为此时间段时要重置系统，结果导致程序崩溃。
-  if ((gl_pChinaStakeMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaStakeMarket->GetFormatedMarketTime() < 93000)) {
+  if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 83000) && (gl_pChinaStockMarket->GetFormatedMarketTime() < 93000)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else if (gl_ThreadStatus.IsCalculatingDayLineRS()) {
@@ -825,37 +825,37 @@ void CMainFrame::OnUpdateAbortBuindingRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnRecordRTData() {
   // TODO: Add your command handler code here
-  if (gl_pChinaStakeMarket->IsRecordingRTData()) gl_pChinaStakeMarket->SetRecordRTData(false);
-  else gl_pChinaStakeMarket->SetRecordRTData(true);
+  if (gl_pChinaStockMarket->IsRecordingRTData()) gl_pChinaStockMarket->SetRecordRTData(false);
+  else gl_pChinaStockMarket->SetRecordRTData(true);
 }
 
 void CMainFrame::OnUpdateRecordRTData(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStakeMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
+  if (gl_pChinaStockMarket->IsRecordingRTData()) SysCallCmdUISetCheck(pCmdUI, true);
   else SysCallCmdUISetCheck(pCmdUI, false);
 }
 
 void CMainFrame::OnCalculate10dayRS1() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadChoice10RSStrong1StockSet();
-  gl_pChinaStakeMarket->SetChoiced10RSStrong1StockSet(true);
+  gl_pChinaStockMarket->RunningThreadChoice10RSStrong1StockSet();
+  gl_pChinaStockMarket->SetChoiced10RSStrong1StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS2() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadChoice10RSStrong2StockSet();
-  gl_pChinaStakeMarket->SetChoiced10RSStrong2StockSet(true);
+  gl_pChinaStockMarket->RunningThreadChoice10RSStrong2StockSet();
+  gl_pChinaStockMarket->SetChoiced10RSStrong2StockSet(true);
 }
 
 void CMainFrame::OnCalculate10dayRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadChoice10RSStrongStockSet();
-  gl_pChinaStakeMarket->SetChoiced10RSStrongStockSet(true);
+  gl_pChinaStockMarket->RunningThreadChoice10RSStrongStockSet();
+  gl_pChinaStockMarket->SetChoiced10RSStrongStockSet(true);
 }
 
 void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStakeMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
@@ -863,7 +863,7 @@ void CMainFrame::OnUpdateCalculate10dayRS1(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStakeMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
@@ -871,7 +871,7 @@ void CMainFrame::OnUpdateCalculate10dayRS2(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if ((gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStakeMarket->GetDayLineNeedSaveNumber() > 0)) {
+  if ((gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() > 0) && (gl_pChinaStockMarket->GetDayLineNeedSaveNumber() > 0)) {
     SysCallCmdUIEnable(pCmdUI, false);
   }
   else SysCallCmdUIEnable(pCmdUI, true);
@@ -879,22 +879,22 @@ void CMainFrame::OnUpdateCalculate10dayRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnStopUpdateDayLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->ClearDayLineNeedUpdaeStatus();
+  gl_pChinaStockMarket->ClearDayLineNeedUpdaeStatus();
 }
 
 void CMainFrame::OnUsingNeteaseRealtimeDataServer() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->SetUsingNeteaseRTDataServer();
+  gl_pChinaStockMarket->SetUsingNeteaseRTDataServer();
 }
 
 void CMainFrame::OnUsingSinaRealtimeDataServer() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->SetUsingSinaRTDataServer();
+  gl_pChinaStockMarket->SetUsingSinaRTDataServer();
 }
 
 void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStakeMarket->IsUsingNeteaseRTDataServer()) {
+  if (gl_pChinaStockMarket->IsUsingNeteaseRTDataServer()) {
     SysCallCmdUISetCheck(pCmdUI, true);
   }
   else {
@@ -904,7 +904,7 @@ void CMainFrame::OnUpdateUsingNeteaseRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
-  if (gl_pChinaStakeMarket->IsUsingSinaRTDataServer()) {
+  if (gl_pChinaStockMarket->IsUsingSinaRTDataServer()) {
     SysCallCmdUISetCheck(pCmdUI, true);
   }
   else {
@@ -914,7 +914,7 @@ void CMainFrame::OnUpdateUsingSinaRealtimeDataServer(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCreateWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildWeekLine(19900101);
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(19900101);
 }
 
 void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
@@ -923,7 +923,7 @@ void CMainFrame::OnUpdateBuildCreateWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnRebuildWeekLineRS() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildWeekLineRS();
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineRS();
 }
 
 void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
@@ -932,13 +932,13 @@ void CMainFrame::OnUpdateRebuildWeekLineRS(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildCurrentWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildWeekLineOfCurrentWeek();
+  gl_pChinaStockMarket->RunningThreadBuildWeekLineOfCurrentWeek();
 }
 
 void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
 //#ifndef _DEBUG
-  if ((gl_pChinaStakeMarket->GetFormatedMarketTime() > 151000)) {
+  if ((gl_pChinaStockMarket->GetFormatedMarketTime() > 151000)) {
     SysCallCmdUIEnable(pCmdUI, true);
   }
   else {
@@ -949,7 +949,7 @@ void CMainFrame::OnUpdateBuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekLine() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildWeekLine(gl_pChinaStakeMarket->GetFormatedMarketDate());
+  gl_pChinaStockMarket->RunningThreadBuildWeekLine(gl_pChinaStockMarket->GetFormatedMarketDate());
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
@@ -958,7 +958,7 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadBuildCurrentWeekWeekLineTable();
+  gl_pChinaStockMarket->RunningThreadBuildCurrentWeekWeekLineTable();
 }
 
 void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
@@ -967,13 +967,13 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateStakeSection() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->SetUpdateStakeSection(true);
-  gl_pChinaStakeMarket->TaskSaveStakeSection();
+  gl_pChinaStockMarket->SetUpdateStakeSection(true);
+  gl_pChinaStockMarket->TaskSaveStakeSection();
 }
 
 void CMainFrame::OnUpdateStakeCode() {
   // TODO: Add your command handler code here
-  gl_pChinaStakeMarket->RunningThreadUpdateStockCodeDB();
+  gl_pChinaStockMarket->RunningThreadUpdateStockCodeDB();
 }
 
 void CMainFrame::OnRebuildEpsSurprise() {

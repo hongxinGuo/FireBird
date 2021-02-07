@@ -23,16 +23,16 @@ namespace StockAnalysisTest {
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_pChinaStakeMarket->CalculateTime();
-      gl_pChinaStakeMarket->ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
 
-      EXPECT_TRUE(gl_pChinaStakeMarket->IsResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStakeMarket->SetSystemReady(false);
-      gl_pChinaStakeMarket->ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSystemReady(false);
+      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
     CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集
@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
     m_NeteaseRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseRTWebInquiry.GetWebData());
     m_NeteaseRTWebInquiry.SetReadingWebData(false);
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_NeteaseRTWebInquiry, StartReadingThread)
       .Times(1);
     m_NeteaseRTWebInquiry.GetWebData();
@@ -61,13 +61,13 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestGetNextInquiryMiddleStr) {
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_NeteaseRTWebInquiry.GetNextInquiringMiddleStr(1, false); // 得到第一个股票字符串
     EXPECT_STREQ(str, _T("0600000"));
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestPrepareNextInquiringStr) {
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_TRUE(m_NeteaseRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_NeteaseRTWebInquiry.GetInquiringString();
     EXPECT_STREQ(str.Left(35), _T("http://api.money.126.net/data/feed/"));

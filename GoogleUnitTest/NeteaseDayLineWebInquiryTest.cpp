@@ -13,37 +13,37 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 
     static void TearDownTestSuite(void) {
       while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      gl_pChinaStakeMarket->CalculateTime();
-      gl_pChinaStakeMarket->ResetNeteaseDayLineDataInquiringIndex();
+      gl_pChinaStockMarket->CalculateTime();
+      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
-      EXPECT_TRUE(gl_pChinaStakeMarket->IsResetMarket());
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_TRUE(gl_pChinaStakeMarket->IsResetMarket());
-      gl_pChinaStakeMarket->SetResetMarket(true);
-      gl_pChinaStakeMarket->ResetNeteaseDayLineDataInquiringIndex();
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+      gl_pChinaStockMarket->SetResetMarket(true);
+      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      gl_pChinaStakeMarket->SetSystemReady(false);
-      gl_pChinaStakeMarket->SetCurrentStockChanged(false);
+      gl_pChinaStockMarket->SetSystemReady(false);
+      gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
-      for (int i = 0; i < gl_pChinaStakeMarket->GetTotalStock(); i++) {
-        CChinaStockPtr pStake = gl_pChinaStakeMarket->GetStock(i);
+      for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+        CChinaStockPtr pStake = gl_pChinaStockMarket->GetStock(i);
         if (!pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(true);
       }
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
     CMockNeteaseDayLineWebInquiry m_NeteaseDayLineWebInquiry; // 网易日线历史数据
   };
@@ -55,11 +55,11 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_NeteaseDayLineWebInquiry.GetWebData());
     m_NeteaseDayLineWebInquiry.SetReadingWebData(false);
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_NeteaseDayLineWebInquiry, StartReadingThread)
       .Times(1);
     m_NeteaseDayLineWebInquiry.GetWebData();
@@ -81,9 +81,9 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestPrepareNextInquiringStr) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     CString str;
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     for (int i = 0; i < 4; i++) {
       if (m_NeteaseDayLineWebInquiry.PrepareNextInquiringStr()) {
         str = m_NeteaseDayLineWebInquiry.GetInquiringString();
@@ -91,6 +91,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_EQ(str.GetLength(), 0);
     }
-    gl_pChinaStakeMarket->SetSystemReady(false);
+    gl_pChinaStockMarket->SetSystemReady(false);
   }
 }

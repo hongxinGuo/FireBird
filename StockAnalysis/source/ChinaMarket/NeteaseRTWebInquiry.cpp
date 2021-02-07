@@ -44,21 +44,17 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
 
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
-  bool fSkipUnactiveStock = true;
 
   // 申请下一批次股票实时数据
-  if (gl_pChinaStakeMarket->IsSystemReady()) fSkipUnactiveStock = true;
-  else fSkipUnactiveStock = false;
-  strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, fSkipUnactiveStock); // 目前还是使用全部股票池
-  gl_pChinaStakeMarket->SetStockCodeForInquiringRTData(strMiddle.Left(7)); // 只提取第一个股票代码.网易代码格式为：0600000，共七个字符
+  strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaStockMarket->IsSystemReady()); // 目前还是使用全部股票池
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(7)); // 只提取第一个股票代码.网易代码格式为：0600000，共七个字符
   CreateTotalInquiringString(strMiddle);
 
   return true;
 }
 
-CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str = gl_pChinaStakeMarket->GetNeteaseStockInquiringStr(lTotalNumber, 0, gl_pChinaStakeMarket->GetTotalStock(), fSkipUnactiveStock);
-  return str;
+CString CNeteaseRTWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSystemReady) {
+  return gl_pChinaStockMarket->GetNeteaseStockInquiringMiddleStr(lTotalNumber, gl_pChinaStockMarket->GetTotalStock(), fSystemReady);
 }
 
 void CNeteaseRTWebInquiry::StartReadingThread(void) {

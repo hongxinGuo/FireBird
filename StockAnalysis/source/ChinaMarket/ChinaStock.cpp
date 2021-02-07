@@ -169,18 +169,18 @@ void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = true;
-    gl_pChinaStakeMarket->IncreaseNeteaseDayLineNeedSaveNumber();
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedSaveNumber();
   }
   else {
     ASSERT(m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = false;
-    gl_pChinaStakeMarket->DecreaseNeteaseDayLineNeedSaveNumber();
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   }
 }
 
 bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
   const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  if (fNeedSaveing) gl_pChinaStakeMarket->DecreaseNeteaseDayLineNeedSaveNumber();
+  if (fNeedSaveing) gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
@@ -220,7 +220,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
-      if (gl_pChinaStakeMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStakeMarket->GetFormatedMarketDate(), 30)) {
+      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
         SetIPOStatus(__STAKE_DELISTED__);   // 此股票代码已经退市。
       }
       //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
@@ -246,7 +246,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
   ReportDayLineDownLoaded();
-  if (gl_pChinaStakeMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaStakeMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
+  if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
     SetIPOStatus(__STAKE_DELISTED__); // 已退市或暂停交易。
   }
   else {
@@ -298,7 +298,7 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
   SetMarket(wMarket);
   SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
   if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-  gl_pChinaStakeMarket->SetTotalActiveStock(gl_pChinaStakeMarket->GetTotalActiveStock() + 1);
+  gl_pChinaStockMarket->SetTotalActiveStock(gl_pChinaStockMarket->GetTotalActiveStock() + 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -888,7 +888,7 @@ bool CChinaStock::ProcessRTData(void) {
     pRTData = PopRTData(); // 采用同步机制获取数据
     if (pRTData->IsActive()) { // 数据有效
       UpdateStatus(pRTData);   // 更新股票现时状态。
-      if (gl_pChinaStakeMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
+      if (gl_pChinaStockMarket->IsMarketOpened() && IsNeedProcessRTData()) {// 开市时间内计算具体情况。指数类股票无需计算交易情况和挂单变化
         ProcessOneRTData(pRTData);
         CheckCurrentRTData();
         m_fRTDataCalculated = true;
@@ -1429,7 +1429,7 @@ bool CChinaStock::CheckCurrentRTData() {
     if (GetAttackSellVolume() < 0) j += 8;
     if (GetStrongBuyVolume() < 0) j += 16;
     if (GetStrongSellVolume() < 0) j += 32;
-    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStakeMarket->GetFormatedMarketTime(), GetStockCode().GetBuffer(), j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetFormatedMarketTime(), GetStockCode().GetBuffer(), j);
     return false;
   }
   return true;
@@ -1560,11 +1560,11 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 void CChinaStock::SetCheckingDayLineStatus(void) {
   ASSERT(!IsDayLineNeedUpdate()); // 默认状态为日线数据不需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStakeMarket->GetLastTradeDate() > GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+  if (gl_pChinaStockMarket->GetLastTradeDate() > GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(true); // 日线数据需要更新
   }
   else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStakeMarket->GetDayOfWeek() == 1) || (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__)) {
+    if ((gl_pChinaStockMarket->GetDayOfWeek() == 1) || (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__)) {
       SetDayLineNeedUpdate(true);
     }
   }
@@ -1581,8 +1581,8 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
     SaveWeekLine();
   }
 
-  if (gl_pChinaStakeMarket->GetCurrentStock() != nullptr) {
-    if (gl_pChinaStakeMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
+  if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
+    if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
       UnloadDayLine();
       UnloadWeekLine();
     }
@@ -1699,23 +1699,23 @@ void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
-    gl_pChinaStakeMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
   }
   else {
     ASSERT(m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = false;
-    gl_pChinaStakeMarket->DecreaseNeteaseDayLineNeedUpdateNumber();
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber();
   }
 }
 
 void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     m_fDayLineNeedProcess = true;
-    gl_pChinaStakeMarket->IncreaseNeteaseDayLineNeedProcessNumber();
+    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
     m_fDayLineNeedProcess = false;
-    gl_pChinaStakeMarket->DecreaseNeteaseDayLineNeedProcessNumber();
+    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber();
   }
 }
 

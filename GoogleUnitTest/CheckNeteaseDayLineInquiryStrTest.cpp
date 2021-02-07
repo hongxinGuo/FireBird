@@ -28,7 +28,7 @@ namespace StockAnalysisTest {
   protected:
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       CheckNeteaseDayLineInquiryStrData* pData = GetParam();
       m_iCount = pData->m_iCount;
       m_strCode = pData->m_strData;
@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      EXPECT_EQ(gl_pChinaStakeMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStakeMarket->GetTotalStock());
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 
   public:
@@ -49,7 +49,7 @@ namespace StockAnalysisTest {
                            ));
 
   TEST_P(CheckNeteaseDayLineInquiryStrTest, TestCheck) {
-    bool fSucceed = gl_pChinaStakeMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
+    bool fSucceed = gl_pChinaStockMarket->CheckValidOfNeteaseDayLineInquiringStr(m_strCode);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);

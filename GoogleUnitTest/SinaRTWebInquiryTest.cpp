@@ -14,8 +14,7 @@ namespace StockAnalysisTest {
   class CSinaRTWebInquiryTest : public ::testing::Test {
   protected:
     static void SetUpTestSuite(void) {
-      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
-      gl_pChinaStakeMarket->ResetSinaStockSetInquiryIndex();
+      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
     }
 
     static void TearDownTestSuite(void) {
@@ -25,14 +24,12 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
-      gl_pChinaStakeMarket->ResetSinaStockSetInquiryIndex();
+      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStakeMarket->ResetSinaStockRTDAtaInquiringIndex();
-      gl_pChinaStakeMarket->ResetSinaStockSetInquiryIndex();
+      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
     }
   public:
     CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集
@@ -54,7 +51,7 @@ namespace StockAnalysisTest {
     m_SinaRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_SinaRTWebInquiry.GetWebData());
     m_SinaRTWebInquiry.SetReadingWebData(false);
-    gl_pChinaStakeMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_SinaRTWebInquiry, StartReadingThread)
       .Times(1);
     m_SinaRTWebInquiry.GetWebData();
@@ -62,15 +59,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestGetNextInquiringMIddleStr) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetSinaStockSetInquiryIndex(), 0);
     CString str = m_SinaRTWebInquiry.GetNextInquiringMiddleStr(900, false);
     CString str2 = str.Left(9);
-    EXPECT_STREQ(str2, _T("sh600000,"));
+    EXPECT_STREQ(str2, _T("sh000001,"));
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestPrepareInquiringStr) {
-    EXPECT_EQ(gl_pChinaStakeMarket->GetSinaStockRTDataInquiringIndex(), 0);
-    gl_pChinaStakeMarket->SetSystemReady(false);
+    EXPECT_EQ(gl_pChinaStockMarket->GetSinaStockRTDataInquiringIndex(), 0);
+    gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_SinaRTWebInquiry.GetInquiringString();
     EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh600000"));

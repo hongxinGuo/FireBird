@@ -209,7 +209,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_pChinaStakeMarket->__TEST_SetMarketTime(tt);
+    gl_pChinaStockMarket->__TEST_SetMarketTime(tt);
     CWebRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.IsValidTime(14));
@@ -231,7 +231,7 @@ namespace StockAnalysisTest {
     tm_.tm_min = 0;
     tm_.tm_sec = 0;
     time_t tt = mktime(&tm_);
-    gl_pChinaStakeMarket->__TEST_SetMarketTime(tt);
+    gl_pChinaStockMarket->__TEST_SetMarketTime(tt);
     CWebRTData data;
     data.SetTransactionTime(tt);
     EXPECT_TRUE(data.CheckSinaRTDataActive());

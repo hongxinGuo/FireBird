@@ -62,4 +62,4 @@ extern CWorldMarketPtr gl_pWorldMarket;
 extern CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket;
 extern CCrweberIndexMarketPtr gl_pCrweberIndexMarket;
 // 此市场变量必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
-extern CChinaMarketPtr gl_pChinaStakeMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。
+extern CChinaMarketPtr gl_pChinaStockMarket; // 市场。所有活跃的股票皆位于其中，单一实例变量，仅允许存在一个实例。

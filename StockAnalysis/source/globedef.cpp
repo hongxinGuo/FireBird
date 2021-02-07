@@ -21,4 +21,4 @@ vector<CVirtualMarketPtr> gl_vMarketPtr; // 各市场指针的容器，只用于执行各市场的
 CWorldMarketPtr gl_pWorldMarket = nullptr;
 CPotenDailyBriefingMarketPtr gl_pPotenDailyBriefingMarket = nullptr;
 CCrweberIndexMarketPtr gl_pCrweberIndexMarket = nullptr;
-CChinaMarketPtr gl_pChinaStakeMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
+CChinaMarketPtr gl_pChinaStockMarket = nullptr;  // 此市场实例必须位于全局变量的最后，因为其初始化需要其他全局变量的支持。
