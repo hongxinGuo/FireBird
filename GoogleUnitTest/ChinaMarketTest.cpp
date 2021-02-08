@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
 
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStake = gl_pChinaStockMarket->GetStock(i);
-        EXPECT_TRUE(pStake->IsDayLineNeedUpdate()) << pStake->GetStockCode();
+        //EXPECT_TRUE(pStake->IsDayLineNeedUpdate()) << pStake->GetStockCode();
       }
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       ASSERT_FALSE(gl_fNormalMode);
@@ -129,7 +129,6 @@ namespace StockAnalysisTest {
       }
       else EXPECT_TRUE(pStake->IsNeedProcessRTData());
     }
-    EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
     EXPECT_FALSE(gl_pChinaStockMarket->IsLoadSelectedStock());
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
@@ -144,13 +143,9 @@ namespace StockAnalysisTest {
     EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 0);   // 在全局变量gl_ChinaStockMarket初始化时就生成了全部股票代码池
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStockMapIndexSize(), gl_pChinaStockMarket->GetTotalStock());
     pStake = gl_pChinaStockMarket->GetStock(0);
-    EXPECT_STREQ(pStake->GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(pStake->GetStockCode(), _T("sh000001"));
     EXPECT_EQ(pStake->GetMarket(), __SHANGHAI_MARKET__);
-    pStake = gl_pChinaStockMarket->GetStock(6000);
-    EXPECT_STREQ(pStake->GetStockCode(), _T("sz000000"));
-    EXPECT_EQ(pStake->GetMarket(), __SHENZHEN_MARKET__);
-    EXPECT_EQ(gl_pChinaStockMarket->GetStockOffset(_T("sh600000")), 0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetStockOffset(_T("sz000000")), 6000);
+    EXPECT_EQ(gl_pChinaStockMarket->GetStockOffset(_T("sh000001")), 0);
 
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0) << gl_pChinaStockMarket->GetDayLineNeedProcessNumber();
@@ -601,7 +596,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestIsStock) {
-    EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 1);
+    EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsStock(_T("sh600000")));
     EXPECT_FALSE(gl_pChinaStockMarket->IsStock(_T("sh60000")));
   }
@@ -610,12 +605,6 @@ namespace StockAnalysisTest {
     //未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
     //EXPECT_STREQ(gl_pChinaStockMarket->GetStockName(_T("sh600000")), _T("浦发银行"));
     EXPECT_STREQ(gl_pChinaStockMarket->GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
-  }
-
-  TEST_F(CChinaMarketTest, TestIncreaseTotalActiveStock) {
-    long l = gl_pChinaStockMarket->GetTotalActiveStock();
-    gl_pChinaStockMarket->IncreaseActiveStockNumber();
-    EXPECT_EQ(gl_pChinaStockMarket->GetTotalActiveStock(), l + 1);
   }
 
   TEST_F(CChinaMarketTest, TestGetStockCode) {
@@ -1060,12 +1049,11 @@ namespace StockAnalysisTest {
     CChinaStockPtr pStake = nullptr;
     pStake = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStake->IsIPOed());
-    EXPECT_STREQ(pStake->GetStockCode(), _T("sh00001"));
+    EXPECT_STREQ(pStake->GetStockCode(), _T("sh000001"));
     EXPECT_EQ(pStake->GetDayLineStartDate(), 19901220);
     EXPECT_TRUE(pStake->IsActive());
-    pStake = gl_pChinaStockMarket->GetStock(1);
+    pStake = gl_pChinaStockMarket->GetStock(_T("sh600002"));
     EXPECT_TRUE(pStake->IsDelisted());
-    EXPECT_STREQ(pStake->GetStockCode(), _T("sh000002"));
     EXPECT_EQ(pStake->GetDayLineStartDate(), 19901220);
     EXPECT_EQ(pStake->GetDayLineEndDate(), 20210205);
     EXPECT_FALSE(pStake->IsActive());
@@ -1129,13 +1117,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsCheckActiveStock());
     gl_pChinaStockMarket->SetCheckActiveStock(true);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCheckActiveStock());
-  }
-
-  TEST_F(CChinaMarketTest, TestGetTotalActiveStock) {
-    long l = gl_pChinaStockMarket->GetTotalActiveStock();
-    gl_pChinaStockMarket->SetTotalActiveStock(4000);
-    EXPECT_EQ(gl_pChinaStockMarket->GetTotalActiveStock(), 4000);
-    gl_pChinaStockMarket->SetTotalActiveStock(l);
   }
 
   TEST_F(CChinaMarketTest, TestGetStockPtr) {

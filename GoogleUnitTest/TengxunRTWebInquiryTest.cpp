@@ -53,7 +53,7 @@ namespace StockAnalysisTest {
   TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
     gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
-    EXPECT_STREQ(str, _T("sh600000"));
+    EXPECT_STREQ(str, _T("sh000001"));
   }
 
   TEST_F(CTengxunRTWebInquiryTest, TestPrepareNextInquiringStr) {

@@ -110,7 +110,7 @@ void CChinaMarket::ResetMarket(void) {
 
 void CChinaMarket::Reset(void) {
   CalculateTime(); // 初始化市场时间
-  m_lTotalActiveStock = 0; // 初始时股票池中的股票数量为零
+  m_lLoadedStock = 0;
   m_lTotalStock = 0;
 
   m_llRTDataReceived = 0;
@@ -205,7 +205,6 @@ void CChinaMarket::Reset(void) {
   for (int i = 0; i < m_vStakeSection.size(); i++) {
     m_vStakeSection.at(i)->SetBuildStakePtr(false);
   }
-  m_lLoadedStock = 0;
   // 生成股票代码池
   CreateTotalStockContainer();
 }
@@ -2111,6 +2110,10 @@ bool CChinaMarket::SortStockVector(void) {
   int j = 0;
   for (auto& pStock : m_vChinaMarketStock) {
     m_mapChinaMarketStock[pStock->GetStockCode()] = j++;
+  }
+  int i = 0;
+  for (auto& pStock : m_vChinaMarketStock) {
+    pStock->SetOffset(i++);
   }
   return true;
 }

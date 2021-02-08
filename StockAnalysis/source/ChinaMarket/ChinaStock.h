@@ -297,7 +297,7 @@ public:
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
   void SetSaveToChoicedStockDB(bool fSaved) noexcept { m_fSaveToChoicedStockDB = fSaved; }
 
-  bool IsSameStock(CChinaStockPtr pStake);
+  bool IsSameStock(CChinaStockPtr pStock);
 
   // 第一个实时数据判断和设置
   bool HaveFirstRTData(void) noexcept { return m_fHaveFirstRTData; }

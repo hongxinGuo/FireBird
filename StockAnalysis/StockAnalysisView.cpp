@@ -123,7 +123,7 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart
 }
 
 bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart) {
-  if (gl_pChinaStockMarket->GetTotalActiveStock() > 0) {
+  if (gl_pChinaStockMarket->GetTotalStock() > 0) {
     pStake = gl_pChinaStockMarket->GetStock(0); // 600000
   }
   else return false;

@@ -911,7 +911,7 @@ namespace StockAnalysisTest {
 
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh000001"));
     EXPECT_EQ(stake.GetIPOStatus(), __STAKE_IPOED__);
     stake.SetIPOStatus(__STAKE_NULL__);
     stake.UpdateStockCodeDB(setStockCode);
@@ -932,7 +932,7 @@ namespace StockAnalysisTest {
     setStockCode.m_strSort = _T("[ID]");
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("sh000001"));
     EXPECT_EQ(stake.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stake.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stake.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
@@ -1799,21 +1799,18 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(pStake->IsActive());
     CString strStockName = pStake->GetStockName();
     WORD wMarket = pStake->GetMarket();
-    long lTotalActiveStock = gl_pChinaStockMarket->GetTotalActiveStock();
     pStake->SetTodayActive(__SHENZHEN_MARKET__, _T("sh600002"), _T("ÀæÔ°"));
     EXPECT_TRUE(pStake->IsActive());
     EXPECT_FALSE(pStake->IsDayLineLoaded());
     EXPECT_EQ(pStake->GetMarket(), __SHENZHEN_MARKET__);
     EXPECT_STREQ(pStake->GetStockCode(), _T("sh600002"));
     EXPECT_STREQ(pStake->GetStockName(), _T("ÀæÔ°"));
-    EXPECT_EQ(gl_pChinaStockMarket->GetTotalActiveStock(), lTotalActiveStock + 1);
 
     // clearup
     pStake->SetActive(false);
     pStake->SetMarket(wMarket);
     pStake->SetStockCode(_T("sh600001"));
     pStake->SetStockName(strStockName);
-    gl_pChinaStockMarket->SetTotalActiveStock(lTotalActiveStock);
   }
 
   TEST_F(CChinaStockTest, TestSkipNeteaseDayLineFirstInformationLine) {

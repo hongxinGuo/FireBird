@@ -527,7 +527,7 @@ void CMainFrame::UpdateStatus(void) {
   SysCallSetPaneText(6, (LPCTSTR)gl_pChinaStockMarket->GetStockCodeForInquiringRTData());
 
   // 显示活跃股票总数
-  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetTotalActiveStock());
+  sprintf_s(buffer, _T("%d"), gl_pChinaStockMarket->GetTotalStock());
   str = buffer;
   SysCallSetPaneText(7, (LPCTSTR)str);
 

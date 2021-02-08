@@ -71,15 +71,12 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 #endif
 
-      CChinaStockPtr pStake = nullptr;
       // 初始化活跃股票标识. 目前此测试股票代码总数为4826.
       ASSERT_TRUE(gl_fTestMode);
       ASSERT_FALSE(gl_fNormalMode);
 
       gl_pChinaStockMarket->LoadStockCodeDB();
-      long l = gl_pChinaStockMarket->GetTotalLoadedStock();
       EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
-      EXPECT_GT(gl_pChinaStockMarket->GetTotalActiveStock(), 0);
       gl_pChinaStockMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }

@@ -155,8 +155,6 @@ public:
 
   void AddStock(CChinaStockPtr pStock) noexcept { m_vChinaMarketStock.push_back(pStock); m_mapChinaMarketStock[pStock->GetStockCode()] = m_vChinaMarketStock.size(); }
 
-  void IncreaseActiveStockNumber(void) noexcept { m_lTotalActiveStock++; }
-
   // 得到当前显示股票
   CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
@@ -164,9 +162,6 @@ public:
   void ResetCurrentStock(void);
   bool IsCurrentStockChanged(void) noexcept { return m_fCurrentStockChanged; }
   void SetCurrentStockChanged(bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
-
-  long GetTotalActiveStock(void) noexcept { return m_lTotalActiveStock; }
-  void SetTotalActiveStock(long lValue) noexcept { m_lTotalActiveStock = lValue; }
 
   long GetMinLineOffset(time_t tMarket);
 
@@ -446,7 +441,6 @@ protected:
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
   long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
-  long m_lTotalActiveStock;	// 当天股票总数
   long m_lLoadedStock; // 本次装载的股票总数
 
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集

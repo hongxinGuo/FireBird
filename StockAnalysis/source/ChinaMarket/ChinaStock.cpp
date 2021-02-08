@@ -298,7 +298,6 @@ void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString str
   SetMarket(wMarket);
   SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
   if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
-  gl_pChinaStockMarket->SetTotalActiveStock(gl_pChinaStockMarket->GetTotalActiveStock() + 1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -1582,7 +1581,7 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
   }
 
   if (gl_pChinaStockMarket->GetCurrentStock() != nullptr) {
-    if (gl_pChinaStockMarket->GetCurrentStock()->GetOffset() != m_lOffsetInContainer) {
+    if (!IsSameStock(gl_pChinaStockMarket->GetCurrentStock())) {
       UnloadDayLine();
       UnloadWeekLine();
     }
@@ -1661,9 +1660,12 @@ INT64 CChinaStock::GetRTDataQueueSize(void) {
   return m_qRTData.GetDataSize();
 }
 
-bool CChinaStock::IsSameStock(CChinaStockPtr pStake) {
-  if (pStake == nullptr) return false;
-  else if (m_lOffsetInContainer == pStake->GetOffset()) return true;
+bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
+  if (pStock == nullptr) return false;
+  else if (m_strStockCode.Compare(pStock->GetStockCode()) == 0) {
+    ASSERT(m_lOffsetInContainer == pStock->GetOffset());
+    return true;
+  }
   else return false;
 }
 
