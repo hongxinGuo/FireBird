@@ -386,7 +386,7 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
   m_vStakeSection.at(iCode / 1000 + iMarket)->SetBuildStakePtr(true); // 已经在证券池中建立了
 }
 
-bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData, long lIPOStatus) {
+bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
   CChinaStockPtr pStock;
 
   pStock = make_shared<CChinaStock>();
@@ -395,7 +395,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetStockName(strStockName);
   if (pStock->GetStockCode().Left(2).Compare(_T("sh")) == 0) pStock->SetMarket(__SHANGHAI_MARKET__);
   else pStock->SetMarket(__SHENZHEN_MARKET__);
-  pStock->SetIPOStatus(lIPOStatus);
+  pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
   pStock->SetOffset(m_lTotalStock);
   pStock->SetDayLineEndDate(19900101);
   pStock->SetDayLineStartDate(19900101);
@@ -458,11 +458,6 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
     CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // 日线数据不需要更新。在系统初始时，设置此m_fDayLineNeedUpdate标识
       // TRACE("%S 日线数据无需更新\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
-      IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
-    }
-    else if (pStock->IsNullStock()) {	// 尚未使用过的股票代码无需查询日线数据
-      pStock->SetDayLineNeedUpdate(false); // 此股票日线资料不需要更新了。
-      // TRACE("无效股票代码：%S, 无需查询日线数据\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
     }
     else if (pStock->GetDayLineEndDate() >= GetLastTradeDate()) { //上一交易日的日线数据已经存储？此时已经处理过一次日线数据了，无需再次处理。
@@ -658,7 +653,7 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
   ASSERT(IsSystemReady());
-  if ((GetFormatedMarketTime() >= 92600) && (m_iDayLineNeedUpdate > 0)) {
+  if ((GetFormatedMarketTime() >= 92600) && IsDayLineNeedUpdate()) {
     // 抓取日线数据.开始于09:26:00
     // 最多使用四个引擎，否则容易被网易服务器拒绝服务。一般还是用两个为好。
     return(gl_WebInquirer.GetNeteaseDayLineData());
@@ -1530,15 +1525,6 @@ void CChinaMarket::ClearDayLineNeedUpdaeStatus(void) {
   }
 }
 
-void CChinaMarket::IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
-  m_iDayLineNeedUpdate += iNumber;
-}
-
-void CChinaMarket::DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber) {
-  ASSERT(m_iDayLineNeedUpdate > 0);
-  if (m_iDayLineNeedUpdate >= iNumber) m_iDayLineNeedUpdate -= iNumber;
-}
-
 bool CChinaMarket::IsUpdateStockCodeDB(void) {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsUpdateStockProfileDB()) return true;
@@ -1633,10 +1619,7 @@ bool CChinaMarket::TaskProcessTodayStock(long lCurrentTime) {
 }
 
 bool CChinaMarket::TaskCheckDayLineDB(void) {
-  if (m_fSaveDayLine && (m_iDayLineNeedSave <= 0) && (m_iDayLineNeedUpdate <= 0) && (m_iDayLineNeedProcess <= 0)) {
-    if ((m_iDayLineNeedSave < 0) || (m_iDayLineNeedUpdate < 0) || (m_iDayLineNeedProcess < 0)) {
-      gl_systemMessage.PushInnerSystemInformationMessage(_T("日线历史数据处理过程中程序有瑕疵"));
-    }
+  if (m_fSaveDayLine && (!IsDayLineNeedSaving()) && (!IsDayLineNeedUpdate()) && (!IsDayLineNeedProcess())) {
     m_fSaveDayLine = false;
     TRACE("日线历史数据更新完毕\n");
     CString str;
@@ -2241,26 +2224,6 @@ bool CChinaMarket::DeleteWeekLineExtendInfo(void) {
   return true;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//
-// 采用CDatabase类直接执行sql语句，保证执行速度。
-// 不利之处是无法测试，否则测试语句就会与实际执行语句混合在一处。研究之。
-//
-//////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::DeleteStakeCodeDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-
-  database.Open(_T("ChinaMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `chinamarket`.`stockcode`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
 bool CChinaMarket::DeleteWeekLineBasicInfo(long lMonday) {
   CString strSQL;
   CString strDate;
@@ -2407,16 +2370,6 @@ bool CChinaMarket::SaveRTData(void) {
   return(true);
 }
 
-bool CChinaMarket::IsDayLineNeedSaving(void) {
-  for (auto& pStock : m_vChinaMarketStock) {
-    if (pStock->IsDayLineNeedSaving()) {
-      ASSERT(pStock->IsActive());
-      return true;
-    }
-  }
-  return false;
-}
-
 bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   vector<CChinaStockPtr> v10RSStrongStock;
 
@@ -2523,6 +2476,46 @@ bool CChinaMarket::IsDayLineNeedUpdate(void) noexcept {
     if (pStock->IsDayLineNeedUpdate()) return true;
   }
   return false;
+}
+
+bool CChinaMarket::IsDayLineNeedProcess(void) noexcept {
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedProcess()) return true;
+  }
+  return false;
+}
+
+bool CChinaMarket::IsDayLineNeedSaving(void) {
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedSaving()) {
+      ASSERT(pStock->IsActive());
+      return true;
+    }
+  }
+  return false;
+}
+
+long CChinaMarket::HowManyDayLineNeedUpdate(void) {
+  long l = 0;
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedUpdate()) l++;
+  }
+  return l;
+}
+
+long CChinaMarket::HowManyDayLineNeedProcess(void) {
+  long l = 0;
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedProcess()) l++;
+  }
+  return l;
+}
+long CChinaMarket::HowManyDayLineNeedSaving(void) {
+  long l = 0;
+  for (auto& pStock : m_vChinaMarketStock) {
+    if (pStock->IsDayLineNeedSaving()) l++;
+  }
+  return l;
 }
 
 bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
@@ -3273,23 +3266,6 @@ double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) noexc
 }
 
 bool CChinaMarket::UpdateStockCodeDB(void) {
-  CSetStockCode setStockCode;
-
-  DeleteStakeCodeDB();
-
-  setStockCode.Open();
-  setStockCode.m_pDatabase->BeginTrans();
-  for (auto& pStock : m_vChinaMarketStock) {
-    pStock->AppendStockCodeDB(setStockCode);
-    pStock->SetUpdateStockProfileDB(false);
-  }
-  setStockCode.m_pDatabase->CommitTrans();
-  setStockCode.Close();
-
-  return true;
-}
-
-bool CChinaMarket::UpdateStockCodeDB2(void) {
   const long lTotalChinaStock = m_vChinaMarketStock.size();
   CChinaStockPtr pStock = nullptr;
   CSetStockCode setStockCode;
@@ -3366,9 +3342,9 @@ void CChinaMarket::LoadStockCodeDB(void) {
     m_vChinaMarketStock.push_back(pStock);
     setStockCode.MoveNext();
   }
-  if (m_iDayLineNeedUpdate > 0) {
-    const int i = m_iDayLineNeedUpdate;
-    m_lStockNeedUpdated = m_iDayLineNeedUpdate;
+  if (IsDayLineNeedUpdate()) {
+    const int i = HowManyDayLineNeedUpdate();
+    m_lStockNeedUpdated = i;
     if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
     _itoa_s(i, buffer, 10);

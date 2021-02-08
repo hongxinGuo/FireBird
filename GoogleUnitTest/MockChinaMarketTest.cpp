@@ -421,7 +421,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateStockCodeDB) {
-    EXPECT_CALL(*s_pchinaMarket, UpdateStockCodeDB2)
+    EXPECT_CALL(*s_pchinaMarket, UpdateStockCodeDB)
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingRTData(false);

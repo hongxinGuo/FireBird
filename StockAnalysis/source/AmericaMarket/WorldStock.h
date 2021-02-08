@@ -29,8 +29,6 @@ public:
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
-  void UpdateSymbolForSort(void);
-
   long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
   void SetDayLineStartDate(long lDate) noexcept { m_lDayLineStartDate = lDate; }
   long GetDayLineEndDate(void) noexcept { return m_lDayLineEndDate; }
@@ -169,7 +167,6 @@ public:
   long m_lDailyDataUpdateDate;
 
   // 系统生成信息
-  CString m_strSymbolForSort; // 用于排序的符号。前面时交易所信息，后面是股票代码。
 
   // 实时数据区
   time_t m_TransactionTime; // 实时数据交易时间

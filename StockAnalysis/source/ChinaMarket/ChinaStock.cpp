@@ -131,7 +131,7 @@ void CChinaStock::Reset(void) {
 
   m_fActive = false;
 
-  m_fDayLineNeedUpdate = false; // 默认状态下日线不需要更新
+  m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
   m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
   m_fDayLineNeedSaving = false;
 
@@ -216,7 +216,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
 
   if (lCurrentPos >= m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
     if (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
-      SetIPOStatus(__STAKE_NULL__);   // 此股票代码尚未使用。
+      SetIPOStatus(__STAKE_DELISTED__);   // 此股票代码尚未使用。
       //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
     }
     else { // 已经退市的股票
@@ -1557,18 +1557,17 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
 }
 
 void CChinaStock::SetCheckingDayLineStatus(void) {
-  ASSERT(!IsDayLineNeedUpdate()); // 默认状态为日线数据不需要更新
+  ASSERT(IsDayLineNeedUpdate()); // 默认状态为日线数据需要更新
   // 不再更新日线数据比上个交易日要新的股票。其他所有的股票都查询一遍，以防止出现新股票或者老的股票重新活跃起来。
-  if (gl_pChinaStockMarket->GetLastTradeDate() > GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
-    SetDayLineNeedUpdate(true); // 日线数据需要更新
+  if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
+    SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
-  else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
-    if ((gl_pChinaStockMarket->GetDayOfWeek() == 1) || (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__)) {
-      SetDayLineNeedUpdate(true);
+  else if(IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
+    if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
+      SetDayLineNeedUpdate(false);
     }
   }
 }
-
 bool CChinaStock::BuildWeekLine(long lStartDate) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
@@ -1701,12 +1700,10 @@ void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedUpdateNumber();
   }
   else {
     ASSERT(m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedUpdateNumber();
   }
 }
 

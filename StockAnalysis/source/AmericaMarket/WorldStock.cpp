@@ -68,8 +68,6 @@ void CWorldStock::Reset(void) {
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
 
-  m_strSymbolForSort = _T("");
-
   m_fUpdateDatabase = false;
   m_fInquiryStockProfile = true;
   m_fEPSSurpriseNeedUpdate = true;
@@ -391,10 +389,6 @@ void CWorldStock::UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise) {
   for (auto& p : vEPSSurprise) {
     m_vEPSSurprise.push_back(p);
   }
-}
-
-void CWorldStock::UpdateSymbolForSort(void) {
-  m_strSymbolForSort = m_strExchangeCode + _T(".") + m_strSymbol;
 }
 
 void CWorldStock::UpdateDayLineStartEndDate(void) {

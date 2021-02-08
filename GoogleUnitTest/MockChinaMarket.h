@@ -35,7 +35,6 @@ namespace testing {
 
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
-    MOCK_METHOD(bool, UpdateStockCodeDB2, (), (override));
     MOCK_METHOD(bool, AppendChoicedStockDB, (), (override));
     MOCK_METHOD(bool, UpdateTodayTempDB, (), (override));
     MOCK_METHOD(bool, SaveRTData, (), (override));

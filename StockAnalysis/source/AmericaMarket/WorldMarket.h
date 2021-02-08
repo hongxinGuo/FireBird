@@ -202,10 +202,7 @@ public:
   bool LoadWorldStock(void);
   bool LoadWorldChoicedStock(void);
   bool UpdateCountryListDB(void);
-  bool DeleteStakeDB(void);
   bool UpdateStakeDB(void);
-  bool UpdateStakeDB2(void);
-  bool UpdateStakeDB3(void);
   bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
 

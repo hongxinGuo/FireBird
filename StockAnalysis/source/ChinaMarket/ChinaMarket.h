@@ -190,7 +190,6 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
-  virtual bool UpdateStockCodeDB2(void);
   void LoadStakeSection(void);
   void LoadStockCodeDB(void);
 
@@ -210,7 +209,6 @@ public:
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
   virtual bool SaveStakeSection(void);
 
-  bool DeleteStakeCodeDB(void);
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
   bool DeleteWeekLineExtendInfo(void);
@@ -251,7 +249,11 @@ public:
   virtual bool Choice10RSStrongStockSet(CRSReference* pRef, int iIndex);
 
   bool IsDayLineNeedUpdate(void) noexcept;
+  bool IsDayLineNeedProcess(void) noexcept;
   bool IsDayLineNeedSaving(void);
+  long HowManyDayLineNeedUpdate(void);
+  long HowManyDayLineNeedProcess(void);
+  long HowManyDayLineNeedSaving(void);
 
   virtual long BuildDayLineOfDate(long lCurrentTradeDay);
   virtual bool BuildDayLineRSOfDate(long lDate);
@@ -379,8 +381,6 @@ public:
   void SetDayLineNeedProcessNumber(int i) noexcept { m_iDayLineNeedProcess = i; }
   int GetDayLineNeedSaveNumber(void) noexcept { const int i = m_iDayLineNeedSave; return i; }
   void SetDayLineNeedSaveNumber(int i) noexcept { m_iDayLineNeedSave = i; }
-  void IncreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
-  void DecreaseNeteaseDayLineNeedUpdateNumber(int iNumber = 1);
   void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { m_iDayLineNeedProcess += iNumber; }
   void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { if (m_iDayLineNeedProcess >= iNumber) m_iDayLineNeedProcess -= iNumber; }
   void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) noexcept { m_iDayLineNeedSave += iNumber; }
@@ -417,7 +417,7 @@ protected:
   // 初始化
   bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStake。
   void CreateStockSection(CString strFirstStockCode, bool fProcessRTData);
-  bool CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData, long lIPOStatus = __STAKE_NOT_CHECKED__);
+  bool CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData);
   bool UpdateStakeSection(CString strStakeCode);
   bool UpdateStakeSection(long lIndex);
 

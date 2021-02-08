@@ -341,7 +341,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
   return true;
 }
 
-bool CompareWorldStock(CWorldStockPtr p1, CWorldStockPtr p2) { return (p1->m_strSymbolForSort.Compare(p2->m_strSymbolForSort) < 0); }
+bool CompareWorldStock(CWorldStockPtr p1, CWorldStockPtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
 
 //////////////////////////////////////////////
 //
@@ -393,7 +393,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         // 交易所代码和SymbolForSort需要后加上。
         for (auto& pStock3 : vStake) {
           pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
-          pStock3->UpdateSymbolForSort();
         }
         for (auto& pStock2 : vStake) {
           if (!IsWorldStock(pStock2->GetSymbol())) {
@@ -1452,8 +1451,6 @@ bool CWorldMarket::LoadWorldStock(void) {
   while (!setWorldStock.IsEOF()) {
     pWorldStock = make_shared<CWorldStock>();
     pWorldStock->Load(setWorldStock);
-    pWorldStock->UpdateSymbolForSort();
-    pWorldStock->m_strSymbolForSort = pWorldStock->m_strExchangeCode + _T(".") + pWorldStock->m_strSymbol;
     if (!IsWorldStock(pWorldStock->m_strSymbol)) {
       pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
@@ -1516,120 +1513,12 @@ bool CWorldMarket::UpdateCountryListDB(void) {
   return true;
 }
 
-bool CWorldMarket::DeleteStakeDB(void) {
-  CDatabase database;
-
-  if (gl_fTestMode) {
-    ASSERT(0); // 由于处理实际数据库，故不允许测试此函数
-    exit(1);
-  }
-
-  database.Open(_T("WorldMarket"), FALSE, FALSE, _T("ODBC;UID=hxguo;PASSWORD=hxguo;charset=utf8mb4"));
-  database.BeginTrans();
-  database.ExecuteSQL(_T("TRUNCATE `americamarket`.`companyprofile`;"));
-  database.CommitTrans();
-  database.Close();
-
-  return true;
-}
-
+/// <summary>
+/// 这种查询方式比较晦涩，但结果正确。目前使用此函数。(可能出现存储多个相同代码的问题，研究之）
+/// </summary>
+/// <param name=""></param>
+/// <returns></returns>
 bool CWorldMarket::UpdateStakeDB(void) {
-  const long lTotalWorldStock = m_vWorldStock.size();
-  CWorldStockPtr pStock = nullptr;
-  CSetWorldStock setWorldStock;
-
-  if (m_lLastTotalWorldStock < lTotalWorldStock) { //有新的代码？
-    DeleteStakeDB();
-    setWorldStock.Open();
-    setWorldStock.m_pDatabase->BeginTrans();
-    for (long l = 0; l < lTotalWorldStock; l++) {
-      pStock = m_vWorldStock.at(l);
-      pStock->Append(setWorldStock);
-      pStock->m_fUpdateDatabase = false;
-    }
-    setWorldStock.m_pDatabase->CommitTrans();
-    setWorldStock.Close();
-    m_lLastTotalWorldStock = m_vWorldStock.size();
-  }
-
-  //更新原有的代码集状态
-  if (IsWorldStockUpdated()) {
-    setWorldStock.Open();
-    setWorldStock.m_pDatabase->BeginTrans();
-    while (!setWorldStock.IsEOF()) {
-      if (IsWorldStock(setWorldStock.m_Symbol)) {
-        pStock = m_vWorldStock.at(m_mapWorldStock.at(setWorldStock.m_Symbol));
-        if (pStock->m_fUpdateDatabase) {
-          pStock->Update(setWorldStock);
-          pStock->m_fUpdateDatabase = false;
-        }
-      }
-      setWorldStock.MoveNext();
-    }
-    setWorldStock.m_pDatabase->CommitTrans();
-    setWorldStock.Close();
-  }
-  return true;
-}
-
-/// <summary>
-/// 当关键字为字符串时，MySQL的排序与STL的sort表现不相同（ALTG+和ALTG-A这两个字符串的大小不同）。
-/// 目前不使用此函数。
-/// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-bool CWorldMarket::UpdateStakeDB2(void) {
-  const long lTotalWorldStock = m_vWorldStock.size();
-  CWorldStockPtr pStock = nullptr;
-  CSetWorldStock setWorldStock;
-  bool fAppendAll = false;
-  CString strCmp = _T("");
-  int j = 0;
-
-  //更新原有的代码集状态
-  if (IsWorldStockUpdated()) {
-    setWorldStock.m_strSort = _T("[Symbol]");
-    setWorldStock.Open();
-    if (setWorldStock.IsEOF()) fAppendAll = true;
-    setWorldStock.m_pDatabase->BeginTrans();
-    for (int i = 0; i < lTotalWorldStock; i++) {
-      pStock = m_vWorldStock.at(i);
-      if (pStock->m_fUpdateDatabase) {
-        if (!fAppendAll) {
-          strCmp = setWorldStock.m_Symbol;
-          j = 0;
-          while (strCmp.Compare(pStock->m_strSymbol) < 0) {
-            setWorldStock.MoveNext();
-            strCmp = setWorldStock.m_Symbol;
-            j++;
-          }
-          if (strCmp.Compare(pStock->m_strSymbol) == 0) { // 有旧Symbol存在
-            pStock->Update(setWorldStock);
-          }
-          else { // 添加新Symbol
-            pStock->Append(setWorldStock);
-          }
-          pStock->m_fUpdateDatabase = false;
-        }
-        else {
-          pStock->Append(setWorldStock);
-          pStock->m_fUpdateDatabase = false;
-        }
-      }
-    }
-    setWorldStock.m_pDatabase->CommitTrans();
-    setWorldStock.Close();
-    m_lLastTotalWorldStock = lTotalWorldStock;
-  }
-  return true;
-}
-
-/// <summary>
-/// 这种查询方式比较晦涩，但结果正确。目前使用此函数。
-/// </summary>
-/// <param name=""></param>
-/// <returns></returns>
-bool CWorldMarket::UpdateStakeDB3(void) {
   CWorldStockPtr pStock = nullptr;
   CSetWorldStock setWorldStock;
   int iUpdatedStock = 0;
@@ -1667,6 +1556,7 @@ bool CWorldMarket::UpdateStakeDB3(void) {
     setWorldStock.Close();
     m_lLastTotalWorldStock = m_vWorldStock.size();
   }
+  ASSERT(iCount == iUpdatedStock);
   return true;
 }
 
