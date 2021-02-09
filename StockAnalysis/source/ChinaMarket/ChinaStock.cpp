@@ -171,18 +171,15 @@ void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
   if (fFlag) {
     ASSERT(!m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedSaveNumber();
   }
   else {
     ASSERT(m_fDayLineNeedSaving);
     m_fDayLineNeedSaving = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   }
 }
 
 bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
   const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  if (fNeedSaveing) gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedSaveNumber();
   return fNeedSaveing;
 }
 
@@ -1719,11 +1716,9 @@ void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
 void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
   if (fFlag) {
     m_fDayLineNeedProcess = true;
-    gl_pChinaStockMarket->IncreaseNeteaseDayLineNeedProcessNumber();
   }
   else {
     m_fDayLineNeedProcess = false;
-    gl_pChinaStockMarket->DecreaseNeteaseDayLineNeedProcessNumber();
   }
 }
 

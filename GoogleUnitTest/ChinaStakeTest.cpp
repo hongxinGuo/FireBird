@@ -42,7 +42,6 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
-      gl_pChinaStockMarket->SetDayLineNeedUpdateNumber(gl_pChinaStockMarket->GetTotalStock());
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();

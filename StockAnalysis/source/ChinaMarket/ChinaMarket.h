@@ -137,8 +137,6 @@ public:
   CString GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
   CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition, bool fSystemReady);
   bool StepToActiveStock(long& lStockIndex, long lEndPostion);
-  CString CreateNextStakeInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber);
-  CString CreateStakeCode(bool fShanghaiMarket, long lStakeIndex);
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition);
   long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
@@ -251,9 +249,9 @@ public:
   bool IsDayLineNeedUpdate(void) noexcept;
   bool IsDayLineNeedProcess(void) noexcept;
   bool IsDayLineNeedSaving(void);
-  long HowManyDayLineNeedUpdate(void);
-  long HowManyDayLineNeedProcess(void);
-  long HowManyDayLineNeedSaving(void);
+  long GetDayLineNeedUpdateNumber(void);
+  long GetDayLineNeedProcessNumber(void);
+  long GetDayLineNeedSaveNumber(void);
 
   virtual long BuildDayLineOfDate(long lCurrentTradeDay);
   virtual bool BuildDayLineRSOfDate(long lDate);
@@ -268,9 +266,6 @@ public:
 
   bool IsTodayTempRTDataLoaded(void) noexcept { return m_fTodayTempDataLoaded; }
   void SetTodayTempRTDataLoaded(bool fFlag) noexcept { m_fTodayTempDataLoaded = fFlag; }
-
-  bool IsUpdatedStakeCode(void) noexcept { return m_fUpdatedStakeCode; }
-  void SetUpdatedStakeCode(bool fFlag) noexcept { m_fUpdatedStakeCode = fFlag; }
 
   bool IsDayLineDBUpdated(void) noexcept;
   void ClearDayLineDBUpdatedFlag(void) noexcept;
@@ -374,17 +369,7 @@ public:
   long GetNeteaseRTDataInquiringIndex(void) noexcept { return m_lNeteaseRTDataInquiringIndex; }
   long GetNeteaseDayLineDataInquiringIndex(void) noexcept { return m_lNeteaseDayLineDataInquiringIndex; }
 
-  int GetDayLineNeedUpdateNumber(void) noexcept { const int i = m_iDayLineNeedUpdate; return i; }
-  void SetDayLineNeedUpdateNumber(int i) noexcept { m_iDayLineNeedUpdate = i; }
   void ClearDayLineNeedUpdaeStatus(void);
-  int GetDayLineNeedProcessNumber(void) noexcept { const int i = m_iDayLineNeedProcess; return i; }
-  void SetDayLineNeedProcessNumber(int i) noexcept { m_iDayLineNeedProcess = i; }
-  int GetDayLineNeedSaveNumber(void) noexcept { const int i = m_iDayLineNeedSave; return i; }
-  void SetDayLineNeedSaveNumber(int i) noexcept { m_iDayLineNeedSave = i; }
-  void IncreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { m_iDayLineNeedProcess += iNumber; }
-  void DecreaseNeteaseDayLineNeedProcessNumber(int iNumber = 1) noexcept { if (m_iDayLineNeedProcess >= iNumber) m_iDayLineNeedProcess -= iNumber; }
-  void IncreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) noexcept { m_iDayLineNeedSave += iNumber; }
-  void DecreaseNeteaseDayLineNeedSaveNumber(int iNumber = 1) noexcept { if (m_iDayLineNeedSave >= iNumber) m_iDayLineNeedSave -= iNumber; }
 
   void SetRecordRTData(bool fFlag) noexcept { m_fSaveRTData = fFlag; }
   bool IsRecordingRTData(void) noexcept { if (m_fSaveRTData) return true; else return false; }
@@ -520,11 +505,6 @@ protected:
   // 更新股票代码数据库标识
   atomic_bool m_fUpdateOptionDB;
   bool m_fUpdateChoicedStockDB;
-
-  // 网易日线历史数据读取处理和存储计数器。
-  atomic_int m_iDayLineNeedUpdate; // 日线需要更新的股票数量
-  atomic_int m_iDayLineNeedProcess; // 日线需要处理的股票数量
-  atomic_int m_iDayLineNeedSave; // 日线需要存储的股票数量
 
 private:
 };

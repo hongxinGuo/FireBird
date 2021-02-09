@@ -59,7 +59,6 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->SetDayLineNeedProcessNumber(0);
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
       if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);

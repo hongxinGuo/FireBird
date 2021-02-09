@@ -168,10 +168,6 @@ void CChinaMarket::Reset(void) {
 
   m_fUpdateChoicedStockDB = false;
 
-  m_iDayLineNeedProcess = 0;
-  m_iDayLineNeedSave = 0;
-  m_iDayLineNeedUpdate = 0;
-
   m_lSinaStockRTDataInquiringIndex = 0;
   m_lTengxunRTDataInquiringIndex = 0;
   m_lNeteaseRTDataInquiringIndex = 0;
@@ -346,7 +342,6 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
     CreateStockSection(m_vCurrentSectionStockCode.at(i), true);
   }
 
-  ASSERT(m_iDayLineNeedUpdate == m_lTotalStock); // 总查询股票数为总股票数（12000）。
   ASSERT(m_mapChinaMarketStock.size() == m_lTotalStock);
   return true;
 }
@@ -409,7 +404,6 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   m_vChinaMarketStock.push_back(pStock);
   m_mapChinaMarketStock[pStock->GetStockCode()] = m_lTotalStock++; // 使用下标生成新的映射
   ASSERT(pStock->IsDayLineNeedUpdate());
-  m_iDayLineNeedUpdate++;
 
   return true;
 }
@@ -951,61 +945,6 @@ CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CSt
     IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
   }
   if (s_lIndex > 0) s_lIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
-
-  return str;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// 证券代码查询字符串生成器
-//
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-CString CChinaMarket::CreateNextStakeInquiringMiddleStr(long& lStakeIndex, CString strPostfix, long lTotalNumber) {
-  CString str = _T("");
-
-  if (lStakeIndex > 999999) {
-    str += CreateStakeCode(false, lStakeIndex - 1000000);
-  }
-  else {
-    str += CreateStakeCode(true, lStakeIndex);
-  }
-  lStakeIndex++;
-  int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
-  while ((lStakeIndex < 2000000) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
-    str += strPostfix;
-    iCount++;
-    if (lStakeIndex > 999999) {
-      str += CreateStakeCode(false, lStakeIndex - 1000000);
-    }
-    else {
-      str += CreateStakeCode(true, lStakeIndex);
-    }
-    lStakeIndex++;
-  }
-
-  if (lStakeIndex > 1999999) {
-    TRACE("沪深市场证券代码查询完毕\n");
-    SetUpdatedStakeCode(true);
-  }
-
-  return str;
-}
-
-CString CChinaMarket::CreateStakeCode(bool fShanghaiMarket, long lStakeIndex) {
-  CString str = _T("");
-  char buffer[10];
-  CString strNumber;
-  CString strMarket = _T("");
-  if (fShanghaiMarket) {
-    strMarket = _T("sh");
-  }
-  else {
-    strMarket = _T("sz");
-  }
-  sprintf_s(buffer, _T("%06d"), lStakeIndex);
-  str += strMarket;
-  strNumber = buffer;
-  str += strNumber;
 
   return str;
 }
@@ -1817,7 +1756,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     // do something
 
     // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-    if (m_iDayLineNeedProcess > 0) {
+    if (IsDayLineNeedProcess()) {
       TaskProcessDayLineGetFromNeeteaseServer();
     }
 
@@ -2498,7 +2437,7 @@ bool CChinaMarket::IsDayLineNeedSaving(void) {
   return false;
 }
 
-long CChinaMarket::HowManyDayLineNeedUpdate(void) {
+long CChinaMarket::GetDayLineNeedUpdateNumber(void) {
   long l = 0;
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedUpdate()) l++;
@@ -2506,14 +2445,14 @@ long CChinaMarket::HowManyDayLineNeedUpdate(void) {
   return l;
 }
 
-long CChinaMarket::HowManyDayLineNeedProcess(void) {
+long CChinaMarket::GetDayLineNeedProcessNumber(void) {
   long l = 0;
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedProcess()) l++;
   }
   return l;
 }
-long CChinaMarket::HowManyDayLineNeedSaving(void) {
+long CChinaMarket::GetDayLineNeedSaveNumber(void) {
   long l = 0;
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedSaving()) l++;
@@ -3355,7 +3294,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
     setStockCode.MoveNext();
   }
   if (IsDayLineNeedUpdate()) {
-    const int i = HowManyDayLineNeedUpdate();
+    const int i = GetDayLineNeedUpdateNumber();
     m_lStockNeedUpdated = i;
     if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
