@@ -1448,6 +1448,7 @@ bool CWorldMarket::LoadWorldStock(void) {
 
   setWorldStock.m_strSort = _T("[Symbol]");
   setWorldStock.Open();
+  setWorldStock.m_pDatabase->BeginTrans();
   while (!setWorldStock.IsEOF()) {
     pWorldStock = make_shared<CWorldStock>();
     pWorldStock->Load(setWorldStock);
@@ -1462,9 +1463,11 @@ bool CWorldMarket::LoadWorldStock(void) {
       str = _T("发现重复代码：");
       str += pWorldStock->m_strSymbol;
       gl_systemMessage.PushInnerSystemInformationMessage(str);
+      setWorldStock.Delete(); // 删除此重复代码
     }
     setWorldStock.MoveNext();
   }
+  setWorldStock.m_pDatabase->CommitTrans();
   setWorldStock.Close();
   SortStockVector();
   m_lLastTotalWorldStock = m_vWorldStock.size();

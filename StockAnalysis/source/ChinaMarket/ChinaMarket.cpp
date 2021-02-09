@@ -3338,8 +3338,16 @@ void CChinaMarket::LoadStockCodeDB(void) {
   // 装入股票代码数据库
   while (!setStockCode.IsEOF()) {
     CChinaStockPtr pStock = make_shared<CChinaStock>();
-    pStock->LoadStockCodeDB(setStockCode);
-    m_vChinaMarketStock.push_back(pStock);
+    if (!IsStock(setStockCode.m_StockCode)) {
+      pStock->LoadStockCodeDB(setStockCode);
+      m_vChinaMarketStock.push_back(pStock);
+    }
+    else {
+      str = _T("发现重复代码：");
+      str += setStockCode.m_StockCode;
+      gl_systemMessage.PushInnerSystemInformationMessage(str);
+      setStockCode.Delete(); // 删除此重复代码
+    }
     setStockCode.MoveNext();
   }
   if (IsDayLineNeedUpdate()) {
