@@ -495,7 +495,6 @@ protected:
   int m_iTodayStockProcessed; // 今日是否执行了股票收盘.0:尚未执行；1：正在执行中；2：已执行完。
   bool m_fCheckActiveStock; // 是否查询今日活跃股票代码
   bool m_fTodayTempDataLoaded; //今日暂存的临时数据是否加载标识。
-  bool m_fUpdatedStakeCode; // 今天是否执行了更新证券代码库的任务
 
   // 多线程读取之变量
   CString m_strStockCodeForInquiringRTData;

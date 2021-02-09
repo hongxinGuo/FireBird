@@ -145,8 +145,6 @@ void CChinaMarket::Reset(void) {
 
   m_fUpdateStakeSection = false;
 
-  m_fUpdatedStakeCode = false;
-
   m_lCurrentRSStrongIndex = 0;
   m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
   m_lCurrentSelectedPosition = 0;
@@ -474,7 +472,6 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
   CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
-  TRACE("Inquiry %s's DayLine\n", pStock->GetStockCode().GetBuffer());
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
   ASSERT(pStock->IsDayLineNeedUpdate());
@@ -1872,10 +1869,8 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
 
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
-      TRACE("Save %s's DayLine\n", pStock->GetStockCode().GetBuffer());
       if (pStock->GetDayLineSize() > 0) {
         if (pStock->HaveNewDayLineData()) {
-          TRACE("Save %s's DayLine\n", pStock->GetStockCode().GetBuffer());
           RunningThreadSaveDayLineBasicInfoOfStock(pStock.get());
         }
         else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
@@ -2464,7 +2459,6 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
-      TRACE("Process %s's DayLine\n", pStock->GetStockCode().GetBuffer());
       pStock->ResetTempDayLineDataBuffer();
     }
   }
@@ -3209,51 +3203,47 @@ double CChinaMarket::GetUpDownRate(CString strClose, CString strLastClose) noexc
 }
 
 bool CChinaMarket::UpdateStockCodeDB(void) {
-  const long lTotalChinaStock = m_vChinaMarketStock.size();
   CChinaStockPtr pStock = nullptr;
   CSetStockCode setStockCode;
+  int iUpdatedStock = 0;
+  int iCount = 0;
 
-  if (m_lLoadedStock < lTotalChinaStock) { //有新的代码？
+  //更新原有的代码集状态
+  if (IsUpdateStockCodeDB()) {
+    for (auto& pStock2 : m_vChinaMarketStock) {
+      if (pStock2->IsUpdateStockProfileDB()) iUpdatedStock++;
+    }
+    setStockCode.m_strSort = _T("[StockCode]");
     setStockCode.Open();
     setStockCode.m_pDatabase->BeginTrans();
-    while (!setStockCode.IsEOF()) {
-      setStockCode.Delete();
+    while (iCount < iUpdatedStock) {
+      if (setStockCode.IsEOF()) break;
+      pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
+      if (pStock->IsUpdateStockProfileDB()) {
+        iCount++;
+        pStock->UpdateStockCodeDB(setStockCode);
+        pStock->SetUpdateStockProfileDB(false);
+      }
       setStockCode.MoveNext();
     }
-    setStockCode.m_pDatabase->CommitTrans();
-    setStockCode.Close();
-
-    setStockCode.Open();
-    setStockCode.m_pDatabase->BeginTrans();
-    for (long l = 0; l < lTotalChinaStock; l++) {
-      pStock = m_vChinaMarketStock.at(l);
-      pStock->AppendStockCodeDB(setStockCode);
-      pStock->SetUpdateStockProfileDB(false);
+    if (iCount < iUpdatedStock) {
+      for (auto& pStock3 : m_vChinaMarketStock) {
+        if (pStock3->IsUpdateStockProfileDB()) {
+          iCount++;
+          pStock3->AppendStockCodeDB(setStockCode);
+          pStock3->SetUpdateStockProfileDB(false);
+        }
+        if (iCount >= iUpdatedStock) break;
+      }
     }
     setStockCode.m_pDatabase->CommitTrans();
     setStockCode.Close();
     m_lLoadedStock = m_vChinaMarketStock.size();
   }
-
-  //更新原有的代码集状态
-  if (IsUpdateStockCodeDB()) {
-    setStockCode.Open();
-    setStockCode.m_pDatabase->BeginTrans();
-    while (!setStockCode.IsEOF()) {
-      if (IsStock(setStockCode.m_StockCode)) {
-        pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
-        if (pStock->IsUpdateStockProfileDB()) {
-          pStock->UpdateStockCodeDB(setStockCode);
-          pStock->SetUpdateStockProfileDB(false);
-        }
-      }
-      setStockCode.MoveNext();
-    }
-    setStockCode.m_pDatabase->CommitTrans();
-    setStockCode.Close();
-  }
+  ASSERT(iCount == iUpdatedStock);
   return true;
 }
+
 
 void CChinaMarket::LoadStakeSection(void) {
   CSetStockSection setStakeSection;
