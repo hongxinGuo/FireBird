@@ -138,6 +138,8 @@ void CChinaStock::Reset(void) {
   m_fChoiced = false;
   m_fSaveToChoicedStockDB = false;
 
+  m_fUpdateStockProfileDB = false;
+
   m_fDayLineDBUpdated = false;
 
   m_fHaveFirstRTData = false;  // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
@@ -1544,6 +1546,7 @@ void CChinaStock::UpdateStockCodeDB(CSetStockCode& setStockCode) {
 }
 
 bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
+  SetMarket(setStockCode.m_StockType);
   SetStockCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
@@ -1551,6 +1554,12 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);
+  }
+  if(!IsDelisted()) {
+    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
+      SetIPOStatus(__STAKE_DELISTED__);
+      SetUpdateStockProfileDB(true);
+    }
   }
   SetCheckingDayLineStatus();
   return true;

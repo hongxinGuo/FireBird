@@ -480,6 +480,7 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
 
   // 找到了需申请日线历史数据的股票（siCounter为索引）
   CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
+  TRACE("Inquiry %s's DayLine\n", pStock->GetStockCode().GetBuffer());
   ASSERT(!pStock->IsDayLineNeedSaving());
   ASSERT(!pStock->IsDayLineNeedProcess());
   ASSERT(pStock->IsDayLineNeedUpdate());
@@ -1821,7 +1822,7 @@ bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentT
     }
 
     // 判断是否存储日线库和股票代码库
-    if ((m_iDayLineNeedSave > 0)) {
+    if (IsDayLineNeedSaving()) {
       m_fSaveDayLine = true;
       TaskSaveDayLineData();
     }
@@ -1932,8 +1933,10 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
 
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
+      TRACE("Save %s's DayLine\n", pStock->GetStockCode().GetBuffer());
       if (pStock->GetDayLineSize() > 0) {
         if (pStock->HaveNewDayLineData()) {
+          TRACE("Save %s's DayLine\n", pStock->GetStockCode().GetBuffer());
           RunningThreadSaveDayLineBasicInfoOfStock(pStock.get());
         }
         else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
@@ -2522,6 +2525,7 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedProcess()) {
       pStock->ProcessNeteaseDayLineData();
+      TRACE("Process %s's DayLine\n", pStock->GetStockCode().GetBuffer());
       pStock->ResetTempDayLineDataBuffer();
     }
   }
