@@ -51,26 +51,26 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockStockAnalysisViewTest, TestShowOrdinaryBuySell) {
     CDC DC;
-    CChinaStockPtr pStake = gl_pChinaStockMarket->GetStock(1);
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
-    pStake->SetVolume(10000);
+    pStock->SetVolume(10000);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallFillSolidRect(&DC, _, _))
       .Times(14);
 
-    s_pStockAnalysisView->ShowOrdinaryBuySell(&DC, pStake, rectArea);
+    s_pStockAnalysisView->ShowOrdinaryBuySell(&DC, pStock, rectArea);
   }
 
   TEST_F(CMockStockAnalysisViewTest, TestShowCanceledBuySell) {
     CDC DC;
-    CChinaStockPtr pStake = gl_pChinaStockMarket->GetStock(1);
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(1);
     CRect rectArea(0, 0, 300, 300);
 
-    pStake->SetCanceledBuyVolume(10000);
+    pStock->SetCanceledBuyVolume(10000);
     EXPECT_CALL(*s_pStockAnalysisView, SysCallFillSolidRect(&DC, _, _))
       .Times(14);
 
-    s_pStockAnalysisView->ShowCanceledBuySell(&DC, pStake, rectArea);
+    s_pStockAnalysisView->ShowCanceledBuySell(&DC, pStock, rectArea);
   }
 
   TEST_F(CMockStockAnalysisViewTest, TestShowCurrentRS) {

@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 #include"globedef.h"
 
-UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStake) {
+UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStock) {
   CString str;
   bool fDataSaved = false;
   gl_ThreadStatus.IncreaseRunningThread();
@@ -19,15 +19,15 @@ UINT ThreadSaveDayLineBasicInfoOfStock(not_null<CChinaStock*> pStake) {
   gl_ThreadStatus.IncreaseSavingDayLineThreads();
   gl_SaveOneStockDayLine.Wait(); //使用多线程模式（重新生成全部历史日线时使用4个线程；更新历史日线时只使用一个线程，此时使用多个线程服务器出现互斥错误）。
   if (!gl_fExitingSystem) {
-    fDataSaved = pStake->SaveDayLineBasicInfo();
-    pStake->UpdateDayLineStartEndDate();
+    fDataSaved = pStock->SaveDayLineBasicInfo();
+    pStock->UpdateDayLineStartEndDate();
     if (fDataSaved) {
-      pStake->SetDayLineDBUpdated(true);
-      pStake->SetUpdateStockProfileDB(true);
+      pStock->SetDayLineDBUpdated(true);
+      pStock->SetUpdateStockProfileDB(true);
     }
-    pStake->UnloadDayLine();
+    pStock->UnloadDayLine();
     if (fDataSaved) {
-      str = pStake->GetStockCode() + _T("日线资料存储完成");
+      str = pStock->GetStockCode() + _T("日线资料存储完成");
       gl_systemMessage.PushDayLineInfoMessage(str);
     }
   }

@@ -403,7 +403,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         }
         if (fFoundNewStock) {
           SortStockVector();
-          gl_systemMessage.PushInformationMessage("Finnhub发现新代码，更新代码集");
         }
       }
       break;

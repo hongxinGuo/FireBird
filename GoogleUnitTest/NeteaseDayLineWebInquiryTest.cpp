@@ -40,8 +40,8 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
-        CChinaStockPtr pStake = gl_pChinaStockMarket->GetStock(i);
-        if (!pStake->IsDayLineNeedUpdate()) pStake->SetDayLineNeedUpdate(true);
+        CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
+        if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
       }
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }

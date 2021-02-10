@@ -1,6 +1,19 @@
 #include"globedef.h"
 #include "Accessory.h"
 
+long GetFormatedDate(void) {
+  time_t tLocal;
+  tm tmLocal;
+  long lLocalDate;
+  time(&tLocal);
+  gmtime_s(&tmLocal, &tLocal);
+  lLocalDate = (tmLocal.tm_year + 1900) * 10000 + (tmLocal.tm_mon + 1) * 100 + tmLocal.tm_mday;
+
+  return lLocalDate;
+}
+
+
+
 time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
   time_t tt{ 0 };
   tm tm_;

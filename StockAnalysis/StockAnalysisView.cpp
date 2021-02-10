@@ -91,12 +91,12 @@ CStockAnalysisView::CStockAnalysisView() {
 CStockAnalysisView::~CStockAnalysisView() {
 }
 
-bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart, int iYEnd) {
+bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart, int iYEnd) {
   CString str = _T("abcd");
   CSize sizeText = SysCallGetTextExtent(pDC, str);
   int iNumberOfLine = (iYEnd - iYStart) / sizeText.cy;
 
-  long lStartPrice = ((long)(pStake->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
+  long lStartPrice = ((long)(pStock->GetCurrentGuadanTransactionPrice() * 100) - iNumberOfLine / 2) * 10;
   char buffer[20];
   int j = 0;
 
@@ -106,11 +106,11 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart
     str = buffer;
     long lCurrentPrice = lStartPrice + i * 10;
 
-    if (!pStake->HaveGuadan(lCurrentPrice)) { // 此价位没有挂单
+    if (!pStock->HaveGuadan(lCurrentPrice)) { // 此价位没有挂单
       strPrice = _T("    ----------");
     }
     else {
-      sprintf_s(buffer, "    %10I64d", pStake->GetGuadan(lCurrentPrice));
+      sprintf_s(buffer, "    %10I64d", pStock->GetGuadan(lCurrentPrice));
       strPrice = buffer;
     }
 
@@ -122,9 +122,9 @@ bool CStockAnalysisView::ShowGuadan(CDC* pDC, CChinaStockPtr pStake, int iXStart
   return true;
 }
 
-bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStake, int iXStart, int iYStart) {
+bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pStock, int iXStart, int iYStart) {
   if (gl_pChinaStockMarket->GetTotalStock() > 0) {
-    pStake = gl_pChinaStockMarket->GetStock(0); // 600000
+    pStock = gl_pChinaStockMarket->GetStock(0); // 600000
   }
   else return false;
 
@@ -132,7 +132,7 @@ bool CStockAnalysisView::ShowCurrentTransactionInfo(CDC* pDC, CChinaStockPtr pSt
   CSize sizeText = pDC->GetTextExtent(str);
   char buffer[30];
 
-  sprintf_s(buffer, _T("%8.3f"), pStake->GetCurrentGuadanTransactionPrice());
+  sprintf_s(buffer, _T("%8.3f"), pStock->GetCurrentGuadanTransactionPrice());
   str = _T("当前挂单成交价格： ");
   str += buffer;
   pDC->TextOut(iXStart, iYStart + 10, str);
@@ -166,7 +166,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   CPen* ppen = nullptr, penWhite(PS_SOLID, 1, crWhite), penWhite2(PS_SOLID, 2, crWhite), penRed(PS_SOLID, 1, crRed);
   CPoint ptCurrent;
 
-  CChinaStockPtr pStake;
+  CChinaStockPtr pStock;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 
   int iGraphXStart = 60, iGraphXEnd = iGraphXStart + 480, iGraphYStart = 20, iGraphYEnd = iGraphYStart + 300;
@@ -182,7 +182,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   int y12 = y11 + 30, y13 = y12 + 20, y14 = y13 + 20;
 
   crBefore = pDC->SetBkColor(crYellow);
-  pStake = gl_pChinaStockMarket->GetCurrentStock();
+  pStock = gl_pChinaStockMarket->GetCurrentStock();
 
   ppen = SysCallSelectObject(pDC, &penRed);
   ptCurrent.x = iTextStart - 5;
@@ -226,7 +226,7 @@ void CStockAnalysisView::ShowRealtimeGuadan(CDC* pDC) {
   SysCallSelectObject(pDC, ppen);
 }
 
-void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -237,7 +237,7 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rect
   double yBase = rectArea.top + HalfHeight;
   double dRatio = 1.0;
 
-  if (pStake->GetVolume() > 0) base = pStake->GetVolume();
+  if (pStock->GetVolume() > 0) base = pStock->GetVolume();
   else return;
 
   rectTop.bottom = yBase;
@@ -246,37 +246,37 @@ void CStockAnalysisView::ShowBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rect
   rectTop.right = rectBottom.right = rectArea.right;
   rectTop.left = rectArea.left;
   rectTop.right = rectArea.left + 30;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetUnknownVolume() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetUnknownVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 31;
   rectTop.right = rectArea.left + 60;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolume() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 61;
   rectTop.right = rectArea.left + 90;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetAttackBuyVolume() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetAttackBuyVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 91;
   rectTop.right = rectArea.left + 120;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetStrongBuyVolume() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetStrongBuyVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
 
   rectBottom.top = yBase;
   rectBottom.left = rectArea.left + 31;
   rectBottom.right = rectArea.left + 60;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolume() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 61;
   rectBottom.right = rectArea.left + 90;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetAttackSellVolume() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetAttackSellVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 91;
   rectBottom.right = rectArea.left + 120;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetStrongSellVolume() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetStrongSellVolume() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -287,7 +287,7 @@ void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStake, CRec
   double yBase = rectArea.top + HalfHeight;
   double dRatio = 4.0;
 
-  if (pStake->GetVolume() > 0) base = pStake->GetVolume();
+  if (pStock->GetVolume() > 0) base = pStock->GetVolume();
   else return;
 
   rectTop.bottom = yBase;
@@ -296,33 +296,33 @@ void CStockAnalysisView::ShowAttackBuySell(CDC* pDC, CChinaStockPtr pStake, CRec
   rectTop.right = rectBottom.right = rectArea.right;
   rectTop.left = rectArea.left;
   rectTop.right = rectArea.left + 30;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetAttackBuyBelow50000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetAttackBuyBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 31;
   rectTop.right = rectArea.left + 60;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetAttackBuyBelow200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetAttackBuyBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 61;
   rectTop.right = rectArea.left + 90;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetAttackBuyAbove200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetAttackBuyAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
 
   rectBottom.top = yBase;
   rectBottom.left = rectArea.left;
   rectBottom.right = rectArea.left + 30;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetAttackSellBelow50000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetAttackSellBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 31;
   rectBottom.right = rectArea.left + 60;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetAttackSellBelow200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetAttackSellBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 61;
   rectBottom.right = rectArea.left + 90;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetAttackSellAbove200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetAttackSellAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -333,7 +333,7 @@ void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStake, CR
   double yBase = rectArea.top + HalfHeight;
   double dRatio = 4.0;
 
-  if (pStake->GetVolume() > 0) base = pStake->GetVolume();
+  if (pStock->GetVolume() > 0) base = pStock->GetVolume();
   else return;
 
   rectTop.bottom = yBase;
@@ -342,65 +342,65 @@ void CStockAnalysisView::ShowOrdinaryBuySell(CDC* pDC, CChinaStockPtr pStake, CR
   rectTop.right = rectBottom.right = rectArea.right;
   rectTop.left = rectArea.left;
   rectTop.right = rectArea.left + 30;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow5000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow5000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 31;
   rectTop.right = rectArea.left + 60;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow10000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow10000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 61;
   rectTop.right = rectArea.left + 90;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow20000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow20000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 91;
   rectTop.right = rectArea.left + 120;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow50000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 121;
   rectTop.right = rectArea.left + 150;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow100000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow100000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 151;
   rectTop.right = rectArea.left + 180;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeBelow200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 181;
   rectTop.right = rectArea.left + 210;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetOrdinaryBuyVolumeAbove200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetOrdinaryBuyVolumeAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
 
   rectBottom.top = yBase;
   rectBottom.left = rectArea.left;
   rectBottom.right = rectArea.left + 30;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow5000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow5000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 31;
   rectBottom.right = rectArea.left + 60;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow10000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow10000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 61;
   rectBottom.right = rectArea.left + 90;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow20000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow20000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 91;
   rectBottom.right = rectArea.left + 120;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow50000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 121;
   rectBottom.right = rectArea.left + 150;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow100000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow100000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 151;
   rectBottom.right = rectArea.left + 180;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeBelow200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 181;
   rectBottom.right = rectArea.left + 210;
-  rectBottom.bottom = yBase + HalfHeight * ((double)pStake->GetOrdinarySellVolumeAbove200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * ((double)pStock->GetOrdinarySellVolumeAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
-void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStake, CRect rectArea) {
+void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStock, CRect rectArea) {
   const COLORREF  crGreen(RGB(0, 255, 0)), crRed(RGB(255, 0, 0));
   CPen* ppen = nullptr;
   CPen penRed20(PS_SOLID, 10, crRed), penRed30(PS_SOLID, 30, crRed), penRed40(PS_SOLID, 40, crRed);
@@ -412,9 +412,9 @@ void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStake, CR
   double dRatio = 1.0;
   CRect rectTop, rectBottom;
 
-  if ((pStake->GetCanceledBuyVolume() == 0) && (pStake->GetCanceledSellVolume() == 0)) return;
-  if ((pStake->GetCanceledBuyVolume() > pStake->GetCanceledSellVolume())) base = pStake->GetCanceledBuyVolume();
-  else base = pStake->GetCanceledSellVolume();
+  if ((pStock->GetCanceledBuyVolume() == 0) && (pStock->GetCanceledSellVolume() == 0)) return;
+  if ((pStock->GetCanceledBuyVolume() > pStock->GetCanceledSellVolume())) base = pStock->GetCanceledBuyVolume();
+  else base = pStock->GetCanceledSellVolume();
 
   rectTop.bottom = yBase;
   rectBottom.top = yBase - 1;
@@ -422,61 +422,61 @@ void CStockAnalysisView::ShowCanceledBuySell(CDC* pDC, CChinaStockPtr pStake, CR
   rectTop.right = rectBottom.right = rectArea.right;
   rectTop.left = rectArea.left;
   rectTop.right = rectArea.left + 30;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow5000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow5000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 31;
   rectTop.right = rectArea.left + 60;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow10000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow10000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 61;
   rectTop.right = rectArea.left + 90;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow20000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow20000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 91;
   rectTop.right = rectArea.left + 120;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow50000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 121;
   rectTop.right = rectArea.left + 150;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow100000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow100000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 151;
   rectTop.right = rectArea.left + 180;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeBelow200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
   rectTop.left = rectArea.left + 181;
   rectTop.right = rectArea.left + 210;
-  rectTop.top = yBase - HalfHeight * ((double)pStake->GetCanceledBuyVolumeAbove200000() * dRatio / base);
+  rectTop.top = yBase - HalfHeight * ((double)pStock->GetCanceledBuyVolumeAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectTop, crRed);
 
   rectBottom.top = yBase;
   rectBottom.left = rectArea.left;
   rectBottom.right = rectArea.left + 30;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow5000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow5000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 31;
   rectBottom.right = rectArea.left + 60;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow10000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow10000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 61;
   rectBottom.right = rectArea.left + 90;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow20000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow20000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 91;
   rectBottom.right = rectArea.left + 120;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow50000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow50000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 121;
   rectBottom.right = rectArea.left + 150;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow100000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow100000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 151;
   rectBottom.right = rectArea.left + 180;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeBelow200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeBelow200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
   rectBottom.left = rectArea.left + 181;
   rectBottom.right = rectArea.left + 210;
-  rectBottom.bottom = yBase + HalfHeight * (pStake->GetCanceledSellVolumeAbove200000() * dRatio / base);
+  rectBottom.bottom = yBase + HalfHeight * (pStock->GetCanceledSellVolumeAbove200000() * dRatio / base);
   SysCallFillSolidRect(pDC, rectBottom, crGreen);
 }
 
@@ -589,14 +589,14 @@ bool CStockAnalysisView::RSLineTo(CDC* pDC, int i, double dValue, int iSize) {
   return true;
 }
 
-bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStake) {
-  if (pStake != nullptr) {
+bool CStockAnalysisView::UpdateHistoryDataContainer(CChinaStockPtr pStock) {
+  if (pStock != nullptr) {
     switch (m_iCurrentShowType) {
     case __SHOW_DAY_LINE_DATA__:
-    m_pCurrentHistoryDataContainer = pStake->GetDayLineContainer();
+    m_pCurrentHistoryDataContainer = pStock->GetDayLineContainer();
     break;
     case __SHOW_WEEK_LINE_DATA__:
-    m_pCurrentHistoryDataContainer = pStake->GetWeekLineContainer();
+    m_pCurrentHistoryDataContainer = pStock->GetWeekLineContainer();
     break;
     default:
     m_pCurrentHistoryDataContainer = nullptr;

@@ -167,21 +167,6 @@ bool CChinaStock::HaveNewDayLineData(void) {
   else return false;
 }
 
-void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
-  if (fFlag) {
-    ASSERT(!m_fDayLineNeedSaving);
-    m_fDayLineNeedSaving = true;
-  }
-  else {
-    ASSERT(m_fDayLineNeedSaving);
-    m_fDayLineNeedSaving = false;
-  }
-}
-
-bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
-  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  return fNeedSaveing;
-}
 
 bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
@@ -1553,7 +1538,7 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }
   if(!IsDelisted()) {
-    if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
+    if (IsEarlyThen(GetDayLineEndDate(), GetFormatedDate(), 30)) {
       SetIPOStatus(__STAKE_DELISTED__);
       SetUpdateStockProfileDB(true);
     }
@@ -1704,11 +1689,9 @@ bool CChinaStock::IsTodayDataChanged(void) {
 
 void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
   if (fFlag) {
-    ASSERT(!m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = true;
   }
   else {
-    ASSERT(m_fDayLineNeedUpdate);
     m_fDayLineNeedUpdate = false;
   }
 }
@@ -1720,6 +1703,20 @@ void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
   else {
     m_fDayLineNeedProcess = false;
   }
+}
+
+void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
+  if (fFlag) {
+    m_fDayLineNeedSaving = true;
+  }
+  else {
+    m_fDayLineNeedSaving = false;
+  }
+}
+
+bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
+  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
+  return fNeedSaveing;
 }
 
 void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {

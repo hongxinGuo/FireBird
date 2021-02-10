@@ -14,7 +14,7 @@ using namespace boost::property_tree;
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
 bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
-  CWorldStockPtr pStake = make_shared<CWorldStock>();
+  CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
   int iCount = 0;
@@ -25,42 +25,42 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSta
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pStake = make_shared<CWorldStock>();
+    pStock = make_shared<CWorldStock>();
     pt2 = it->second;
     s = pt2.get<string>(_T("permaTicker"));
-    if (s.size() > 0) pStake->m_strTiingoPermaTicker = s.c_str();
+    if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
     s = pt2.get<string>(_T("ticker"));
     transform(s.begin(), s.end(), s.begin(), toupper);
-    pStake->m_strSymbol = s.c_str();
-    pStake->m_fIsActive = pt2.get<bool>(_T("isActive"));
-    pStake->m_fIsADR = pt2.get<bool>(_T("isADR"));
+    pStock->m_strSymbol = s.c_str();
+    pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
+    pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
     s = pt2.get<string>(_T("industry"));
-    if (s.size() > 0) pStake->m_strTiingoIndustry = s.c_str();
+    if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
     s = pt2.get<string>(_T("sector"));
-    if (s.size() > 0) pStake->m_strTiingoSector = s.c_str();
+    if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
     s = pt2.get<string>(_T("sicCode"));
     if (s.at(0) == 'F') {
     }
     else {
-      pStake->m_iSICCode = atoi(s.c_str());
+      pStock->m_iSICCode = atoi(s.c_str());
     }
     s = pt2.get<string>(_T("sicIndustry"));
-    if (s.size() > 0) pStake->m_strSICIndustry = s.c_str();
+    if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
     s = pt2.get<string>(_T("sicSector"));
-    if (s.size() > 0) pStake->m_strSICSector = s.c_str();
+    if (s.size() > 0) pStock->m_strSICSector = s.c_str();
     s = pt2.get<string>(_T("companyWebsite"));
-    if (s.size() > 0) pStake->m_strCompanyWebSite = s.c_str();
+    if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
     s = pt2.get<string>(_T("secFilingWebsite"));
-    if (s.size() > 0) pStake->m_strSECFilingWebSite = s.c_str();
+    if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
     s = pt2.get<string>(_T("statementLastUpdated"));
     if (s.size() > 0) str = s.c_str();
     sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-    pStake->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
+    pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
     s = pt2.get<string>(_T("dailyLastUpdated"));
     if (s.size() > 0) str = s.c_str();
     sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-    pStake->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
-    vStake.push_back(pStake);
+    pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
+    vStake.push_back(pStock);
     iCount++;
   }
   TRACE("今日Tiingo Company Symbol总数为%d\n", iCount);
@@ -71,7 +71,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSta
   return true;
 }
 
-bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
+bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2;
   string s;
@@ -83,7 +83,7 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("Tiingo下载");
-    str += pStake->m_strSymbol;
+    str += pStock->m_strSymbol;
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -117,13 +117,13 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStake) {
   }
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
   for (auto& pDayLine : vDayLine) {
-    pDayLine->SetMarketString(pStake->m_strListedExchange);
-    pDayLine->SetStockCode(pStake->GetSymbol());
-    pDayLine->SetStockName(pStake->GetTicker());
+    pDayLine->SetMarketString(pStock->m_strListedExchange);
+    pDayLine->SetStockCode(pStock->GetSymbol());
+    pDayLine->SetStockName(pStock->GetTicker());
   }
-  pStake->UpdateDayLine(vDayLine);
-  pStake->SetDayLineNeedUpdate(false);
-  pStake->SetDayLineNeedSaving(true);
-  pStake->m_fUpdateDatabase = true;
+  pStock->UpdateDayLine(vDayLine);
+  pStock->SetDayLineNeedUpdate(false);
+  pStock->SetDayLineNeedSaving(true);
+  pStock->m_fUpdateDatabase = true;
   return true;
 }

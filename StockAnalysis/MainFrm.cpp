@@ -671,7 +671,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg) {
 
 void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStockPtr pStake;
+  CChinaStockPtr pStock;
   CString strTemp;
 
   switch (nChar) {
@@ -698,8 +698,8 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case 0x00d: // 回车
   strTemp = m_aStockCodeTemp;
   if (gl_pChinaStockMarket->IsStock(strTemp)) {
-    pStake = gl_pChinaStockMarket->GetStock(strTemp);
-    gl_pChinaStockMarket->SetCurrentStock(pStake);
+    pStock = gl_pChinaStockMarket->GetStock(strTemp);
+    gl_pChinaStockMarket->SetCurrentStock(pStock);
     SysCallInvalidate();
   }
   m_aStockCodeTemp[0] = 0x000;
@@ -729,7 +729,7 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CMainFrame::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  CChinaStockPtr pStake;
+  CChinaStockPtr pStock;
   CString strTemp;
   CChinaStockPtr pCurrentStock = gl_pChinaStockMarket->GetCurrentStock();
 

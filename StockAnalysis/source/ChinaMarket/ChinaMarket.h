@@ -101,7 +101,7 @@ public:
   virtual bool RunningThreadBuildDayLineRS(long lStartCalculatingDay);
   virtual bool RunningThreadBuildDayLineRSOfDate(long lThisDay);
   virtual bool RunningThreadSaveTempRTData(void);
-  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStake);
+  virtual bool RunningThreadSaveDayLineBasicInfoOfStock(CChinaStock* pStock);
   virtual bool RunningThreadLoadDayLine(CChinaStock* pCurrentStock);
   virtual bool RunningThreadLoadWeekLine(CChinaStock* pCurrentStock);
   virtual bool RunningThreadUpdateStockCodeDB(void);
@@ -110,11 +110,11 @@ public:
   virtual bool RunningThreadChoice10RSStrong2StockSet(void);
   virtual bool RunningThreadChoice10RSStrong1StockSet(void);
   virtual bool RunningThreadChoice10RSStrongStockSet(void);
-  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStake);
-  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake);
-  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStake);
+  virtual bool RunningThreadCalculate10RSStrongStock(vector<CChinaStockPtr>* pv10RSStrongStock, CRSReference* pRef, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong1Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
+  virtual bool RunningThreadCalculate10RSStrong2Stock(vector<CChinaStockPtr>* pv10RSStrongStock, CChinaStockPtr pStock);
   virtual bool RunningThreadBuildWeekLine(long lStartDate);
-  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStock* pStake, long lStartDate);
+  virtual bool RunningThreadBuildWeekLineOfStock(CChinaStock* pStock, long lStartDate);
   virtual bool RunningThreadBuildWeekLineRS(void);
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
@@ -136,12 +136,11 @@ public:
   CString GetNextSinaStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
   CString GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
   CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition, bool fSystemReady);
-  bool StepToActiveStock(long& lStockIndex, long lEndPostion);
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition);
   long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);
 
-  bool IsAStock(CChinaStockPtr pStake); // 是否为沪深A股
+  bool IsAStock(CChinaStockPtr pStock); // 是否为沪深A股
   bool IsAStock(CString strStockCode); // 是否为沪深A股
   bool IsStock(CString strStockCode);	// 是否为正确的股票代码
 
@@ -156,7 +155,7 @@ public:
   // 得到当前显示股票
   CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
-  void SetCurrentStock(CChinaStockPtr pStake);
+  void SetCurrentStock(CChinaStockPtr pStock);
   void ResetCurrentStock(void);
   bool IsCurrentStockChanged(void) noexcept { return m_fCurrentStockChanged; }
   void SetCurrentStockChanged(bool fFlag) noexcept { m_fCurrentStockChanged = fFlag; }
@@ -352,8 +351,8 @@ public:
   bool IsCurrentEditStockChanged(void) noexcept { return m_fCurrentEditStockChanged; }
   void SetCurrentEditStockChanged(bool fFlag) noexcept { m_fCurrentEditStockChanged = fFlag; }
 
-  bool AddChoicedStock(CChinaStockPtr pStake);
-  bool DeleteChoicedStock(CChinaStockPtr pStake);
+  bool AddChoicedStock(CChinaStockPtr pStock);
+  bool DeleteChoicedStock(CChinaStockPtr pStock);
   size_t GetChoicedStockSize(void) { return m_avChoicedStock.at(0).size(); }
   size_t GetChoicedStockSize(long lIndex) { return m_avChoicedStock.at(lIndex).size(); }
   void ClearChoiceStockContainer(void) { m_avChoicedStock.at(0).clear(); }

@@ -69,8 +69,7 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_TRUE(m_SinaRTWebInquiry.PrepareNextInquiringStr());
     CString str = m_SinaRTWebInquiry.GetInquiringString();
-    EXPECT_STREQ(str.Left(33), _T("http://hq.sinajs.cn/list=sh000001"));
-    EXPECT_STREQ(str.Right(8), _T("sh600698")) << _T("每次申请850个股票");
+    EXPECT_STREQ(str.Left(25), _T("http://hq.sinajs.cn/list="));
   }
 
   TEST_F(CSinaRTWebInquiryTest, TestReportStatus) {

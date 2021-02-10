@@ -63,7 +63,7 @@ namespace StockAnalysisTest {
   TEST_F(CNeteaseRTWebInquiryTest, TestGetNextInquiryMiddleStr) {
     gl_pChinaStockMarket->SetSystemReady(true);
     CString str = m_NeteaseRTWebInquiry.GetNextInquiringMiddleStr(1, false); // 得到第一个股票字符串
-    EXPECT_STREQ(str, _T("0600000"));
+    EXPECT_STREQ(str, _T("0000000"));
   }
 
   TEST_F(CNeteaseRTWebInquiryTest, TestPrepareNextInquiringStr) {

@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
     static void TearDownTestSuite(void) {
     }
     virtual void SetUp(void) override {
-      pStake = nullptr;
+      pStock = nullptr;
     }
 
     virtual void TearDown(void) override {
@@ -25,7 +25,7 @@ namespace StockAnalysisTest {
     }
 
   protected:
-    CWorldStockPtr pStake;
+    CWorldStockPtr pStock;
   };
 
   TEST_F(CWorldStockTest, TestCheckCheckDayLineUpdateStatus1) {
