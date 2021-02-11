@@ -59,7 +59,7 @@ namespace StockAnalysisTest {
     }
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_LE(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->CalculateTime();
@@ -118,7 +118,6 @@ namespace StockAnalysisTest {
     for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
       EXPECT_EQ(pStock->GetOffset(), i);
-      EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << pStock->GetStockCode();
       EXPECT_FALSE(pStock->IsDayLineNeedProcess());
       EXPECT_FALSE(pStock->IsDayLineNeedSaving());
       if ((pStock->GetStockCode() >= _T("sh000000")) && (pStock->GetStockCode() <= _T("sh000999"))) {
@@ -310,7 +309,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_TRUE(fStatus);
-    EXPECT_STREQ(str, _T("0600001")) << _T("第一个股票已设置为无需查询日线历史数据");
+    EXPECT_STREQ(str, _T("0000002")) << _T("第一个股票已设置为无需查询日线历史数据");
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(2);
@@ -329,7 +328,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_TRUE(fStatus);
-    EXPECT_STREQ(str, _T("0600005")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
+    EXPECT_STREQ(str, _T("0000004")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
     pStock->SetDayLineEndDate(lDate); // 恢复原状。
     pStock = gl_pChinaStockMarket->GetStock(5);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
@@ -626,9 +625,16 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket()) << _T("第一次重启市场，其结束时间必须在9:14之前，这样才能保证只运行了一次（此函数必须每分钟调度一次");
     gl_pChinaStockMarket->SetSystemReady(true);
     gl_pChinaStockMarket->TaskResetMarket(91300);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
-    EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
-    EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
+    if (gl_pChinaStockMarket->TooManyStocksNeedUpdated()) {
+      EXPECT_FALSE(gl_pChinaStockMarket->IsResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
+    }
+    else {
+      EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
+      EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
+     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
+   }
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarket2) {
@@ -852,7 +858,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsIPOed());
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh000001"));
     EXPECT_EQ(pStock->GetDayLineStartDate(), 19901220);
-    EXPECT_TRUE(pStock->IsActive());
+    EXPECT_FALSE(pStock->IsActive()) << "装载股票代码时永远设置为假";
     pStock = gl_pChinaStockMarket->GetStock(_T("sh600002"));
     EXPECT_TRUE(pStock->IsDelisted());
     EXPECT_EQ(pStock->GetDayLineStartDate(), 19980409);
@@ -1158,10 +1164,10 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetSystemReady(false);
     EXPECT_FALSE(gl_pChinaStockMarket->CheckMarketReady());
     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
-    gl_pChinaStockMarket->SetRTDataReceived(gl_pChinaStockMarket->GetTotalStock() * 2);
+    gl_pChinaStockMarket->SetRTDataReceived(24000);
     EXPECT_FALSE(gl_pChinaStockMarket->CheckMarketReady());
     EXPECT_FALSE(gl_pChinaStockMarket->IsSystemReady());
-    gl_pChinaStockMarket->SetRTDataReceived(gl_pChinaStockMarket->GetTotalStock() * 2 + 1);
+    gl_pChinaStockMarket->SetRTDataReceived(24000 + 1);
     EXPECT_TRUE(gl_pChinaStockMarket->CheckMarketReady());
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
     gl_pChinaStockMarket->SetSystemReady(false);
@@ -1200,11 +1206,11 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestChangeCurrentStockToPrevStock1) {
     EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
-    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(1)); // 选取退市的邯郸钢铁
+    gl_pChinaStockMarket->SetCurrentStock(gl_pChinaStockMarket->GetStock(1)); // 选取A股指数
     gl_pChinaStockMarket->ChangeToPrevStock();
-    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是浦发银行");
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 0) << _T("上一个是上证指数");
     gl_pChinaStockMarket->ChangeToPrevStock();
-    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), 11998) << _T("浦发银行前的为空，然后就转到最后面的中证煤炭了");
+    EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock()->GetOffset(), gl_pChinaStockMarket->GetTotalStock() - 1) << _T("上证指数前的为空，然后就转到最后面的中证煤炭了");
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
     gl_pChinaStockMarket->SetCurrentSelectedPosition(0);
   }

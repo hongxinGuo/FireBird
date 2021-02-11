@@ -422,9 +422,6 @@
     <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="StakeCodeTest.cpp">
-      <Filter>Test源文件\China Market\基础数据类</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp">
       <Filter>dependency</Filter>
     </ClCompile>

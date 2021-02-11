@@ -56,7 +56,6 @@ namespace StockAnalysisTest {
       s_pchinaMarket->SetRSEndDate(19900101);
       s_pchinaMarket->SetUpdateOptionDB(false);
       gl_ThreadStatus.SetSavingTempData(false);
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -79,7 +78,7 @@ namespace StockAnalysisTest {
     pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     s_pchinaMarket->TaskSaveDayLineData();
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
   }
@@ -95,7 +94,7 @@ namespace StockAnalysisTest {
     pStock->StoreDayLine(pDayLine);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     s_pchinaMarket->TaskSaveDayLineData();
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
 
@@ -116,7 +115,7 @@ namespace StockAnalysisTest {
     //pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(1);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     EXPECT_TRUE(s_pchinaMarket->TaskSaveDayLineData());
     EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
     pStock->UnloadDayLine();

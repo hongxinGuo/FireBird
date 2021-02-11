@@ -295,8 +295,6 @@ public:
   void SetStockCodeForInquiringNeteaseDayLine(CString strStockCode) { m_strStockCodeForInquiringNeteaseDayLine = strStockCode; }
   CString GetStockCodeForInquiringNeteaseDayLine(void) { return m_strStockCodeForInquiringNeteaseDayLine; }
 
-  bool UpdateStakeContainer(CWebRTDataPtr pRTData);
-
   // 处理网络上提取的实时股票数据
   bool TaskProcessWebRTDataGetFromSinaServer(void);
   void StoreChoiceRTData(CWebRTDataPtr pRTData);
@@ -332,7 +330,7 @@ public:
   int GetCountDownTengxunNumber(void) noexcept { return m_iCountDownTengxunNumber; }
   void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-  long GetTotalStock(void) noexcept { return m_lTotalStock; }
+  long GetTotalStock(void) noexcept { return m_vChinaMarketStock.size(); }
   long GetTotalLoadedStock(void) noexcept { return m_lLoadedStock; }
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }
@@ -424,7 +422,6 @@ protected:
 
   vector<CChinaStockPtr> m_vChinaMarketStock; // 本系统允许的所有股票池（无论代码是否存在）
   map<CString, long> m_mapChinaMarketStock; // 将所有被查询的股票代码映射为偏移量（目前只接受A股信息）
-  long m_lTotalStock; // 股票代码总数（目前总数为固定的12000个，位于证券前部）。
   long m_lLoadedStock; // 本次装载的股票总数
 
   vector<CChinaStockPtr> m_v10RSStrong1Stock; // 10日强势股票集

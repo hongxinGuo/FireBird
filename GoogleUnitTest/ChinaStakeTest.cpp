@@ -98,7 +98,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
-    EXPECT_TRUE(stake.IsNullStock());
     stake.Reset();
     EXPECT_EQ(stake.GetMarket(), 0);
     EXPECT_STREQ(stake.GetStockCode(), _T(""));
@@ -355,7 +354,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
-    EXPECT_TRUE(stake.IsNullStock());
     pRTData->SetTransactionTime(12345);
     pRTData->SetLastClose(10101010);
     pRTData->SetOpen(20202020);
@@ -422,7 +420,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stake.GetStockName(), _T("dcba"));
     EXPECT_EQ(stake.GetOffset(), 1);
     EXPECT_EQ(stake.GetDayLineEndDate(), 20020202);
-    EXPECT_TRUE(stake.IsNullStock());
     stake.Reset();
     EXPECT_EQ(stake.GetMarket(), 0);
     EXPECT_STREQ(stake.GetStockCode(), _T(""));
@@ -679,37 +676,20 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
     CChinaStock stake;
-    long lNumberOfStock = gl_pChinaStockMarket->GetDayLineNeedUpdateNumber();
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     stake.SetDayLineNeedUpdate(false);
     EXPECT_FALSE(stake.IsDayLineNeedUpdate());
-    if (lNumberOfStock > 0) {
-      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() + 1);
-    }
-    else {
-      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber());
-    }
     stake.SetDayLineNeedUpdate(true);
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
-    if (lNumberOfStock > 0) {
-      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber());
-    }
-    else {
-      EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedUpdateNumber() - 1);
-    }
-    EXPECT_LE(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
   }
 
   TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
     CChinaStock stake;
-    long lNumberOfStock = gl_pChinaStockMarket->GetDayLineNeedProcessNumber();
     EXPECT_FALSE(stake.IsDayLineNeedProcess());
     stake.SetDayLineNeedProcess(true);
     EXPECT_TRUE(stake.IsDayLineNeedProcess());
-    EXPECT_EQ(lNumberOfStock + 1, gl_pChinaStockMarket->GetDayLineNeedProcessNumber());
     stake.SetDayLineNeedProcess(false);
     EXPECT_FALSE(stake.IsDayLineNeedProcess());
-    EXPECT_EQ(lNumberOfStock, gl_pChinaStockMarket->GetDayLineNeedProcessNumber());
   }
 
   TEST_F(CChinaStockTest, TestIsUpdateStockProfileDB) {
@@ -804,17 +784,13 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
     CChinaStock stake;
-    int iNumberOfSave = gl_pChinaStockMarket->GetDayLineNeedSaveNumber();
     stake.SetDayLineNeedSaving(true);
-    EXPECT_EQ(iNumberOfSave + 1, gl_pChinaStockMarket->GetDayLineNeedSaveNumber());
     EXPECT_TRUE(stake.IsDayLineNeedSaving());
     stake.SetDayLineNeedSaving(false);
-    EXPECT_EQ(iNumberOfSave, gl_pChinaStockMarket->GetDayLineNeedSaveNumber());
     EXPECT_FALSE(stake.IsDayLineNeedSaving());
     stake.SetDayLineNeedSaving(true);
     EXPECT_TRUE(stake.IsDayLineNeedSavingAndClearFlag());
     EXPECT_FALSE(stake.IsDayLineNeedSaving());
-    EXPECT_EQ(iNumberOfSave, gl_pChinaStockMarket->GetDayLineNeedSaveNumber());
   }
 
   TEST_F(CChinaStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {
@@ -963,11 +939,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stake.IsDayLineNeedUpdate()) << stake.GetDayLineEndDate() << gl_pChinaStockMarket->GetFormatedMarketDate();
     stake.SetDayLineNeedUpdate(true);
     stake.SetDayLineEndDate(gl_pChinaStockMarket->GetLastTradeDate());
-    stake.SetCheckingDayLineStatus();
-    EXPECT_FALSE(stake.IsDayLineNeedUpdate());
-    stake.SetDayLineNeedUpdate(true);
-    stake.SetDayLineEndDate(gl_pChinaStockMarket->GetLastTradeDate() - 1);
-    stake.SetIPOStatus(__STAKE_NULL__);
     stake.SetCheckingDayLineStatus();
     EXPECT_FALSE(stake.IsDayLineNeedUpdate());
     stake.SetDayLineNeedUpdate(true);

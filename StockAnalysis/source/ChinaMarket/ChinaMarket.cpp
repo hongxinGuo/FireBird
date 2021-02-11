@@ -111,7 +111,6 @@ void CChinaMarket::ResetMarket(void) {
 void CChinaMarket::Reset(void) {
   CalculateTime(); // 初始化市场时间
   m_lLoadedStock = 0;
-  m_lTotalStock = 0;
 
   m_llRTDataReceived = 0;
   m_lStockNeedUpdated = 0;
@@ -215,7 +214,7 @@ void CChinaMarket::Dump(CDumpContext& dc) const {
 
 bool CChinaMarket::CheckMarketReady(void) {
   if (!IsSystemReady()) {
-    long lMax = m_lTotalStock > 12000 ? m_lTotalStock * 2 : 24000;
+    long lMax = GetTotalStock() > 12000 ? GetTotalStock() * 2 : 24000;
     if (m_llRTDataReceived > lMax) {
       SetSystemReady(true);
       gl_systemMessage.PushInformationMessage(_T("中国股票市场初始化完毕"));
@@ -233,11 +232,11 @@ bool CChinaMarket::ChangeToNextStock(void) {
     bool fFound = false;
     int i = 1;
     while (!fFound) {
-      if ((lIndex + i) < m_lTotalStock) {
+      if ((lIndex + i) < GetTotalStock()) {
         pStock = GetStock(lIndex + i);
       }
       else {
-        pStock = GetStock(lIndex + i - m_lTotalStock);
+        pStock = GetStock(lIndex + i - GetTotalStock());
       }
       if (!pStock->IsNullStock()) fFound = true;
       i++;
@@ -272,7 +271,7 @@ bool CChinaMarket::ChangeToPrevStock(void) {
         pStock = GetStock(lIndex - i);
       }
       else {
-        pStock = GetStock(lIndex + m_lTotalStock - i);
+        pStock = GetStock(lIndex + GetTotalStock() - i);
       }
       if (!pStock->IsNullStock()) fFound = true;
       i++;
@@ -318,7 +317,7 @@ bool CChinaMarket::ChangeToNextStockSet(void) {
 }
 
 size_t CChinaMarket::GetCurrentStockSetSize(void) {
-  if (IsTotalStockSetSelected()) return m_lTotalStock;
+  if (IsTotalStockSetSelected()) return GetTotalStock();
   else return m_avChoicedStock.at(m_lCurrentSelectedStockSet).size();
 }
 
@@ -334,12 +333,12 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
   CChinaStockPtr pStock = nullptr;
 
   // 清空之前的数据（如果有的话。在Reset时，这两个容器中就存有数据）。
-  ASSERT(m_lTotalStock == 0);
+  ASSERT(GetTotalStock() == 0);
 
   for (int i = 0; i < m_vCurrentSectionStockCode.size(); i++) {
     CreateStockSection(m_vCurrentSectionStockCode.at(i), true);
   }
-  ASSERT(m_mapChinaMarketStock.size() == m_lTotalStock);
+  ASSERT(m_mapChinaMarketStock.size() == m_vChinaMarketStock.size());
   return true;
 }
 
@@ -388,7 +387,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   if (pStock->GetStockCode().Left(2).Compare(_T("sh")) == 0) pStock->SetMarket(__SHANGHAI_MARKET__);
   else pStock->SetMarket(__SHENZHEN_MARKET__);
   pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
-  pStock->SetOffset(m_lTotalStock);
+  pStock->SetOffset(GetTotalStock());
   pStock->SetDayLineEndDate(19900101);
   pStock->SetDayLineStartDate(19900101);
   pStock->SetUpdateStockProfileDB(true);
@@ -399,7 +398,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
     pStock->SetNeedProcessRTData(fProcessRTData);
   }
   m_vChinaMarketStock.push_back(pStock);
-  m_mapChinaMarketStock[pStock->GetStockCode()] = m_lTotalStock++; // 使用下标生成新的映射
+  m_mapChinaMarketStock[pStock->GetStockCode()] = GetTotalStock(); // 使用下标生成新的映射
   ASSERT(pStock->IsDayLineNeedUpdate());
 
   return true;
@@ -777,7 +776,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fSystemReady) {
   if (fSystemReady) {
-    return GetNextStockInquiringMiddleStr(m_lSinaStockRTDataInquiringIndex, _T(","), lTotalNumber, m_lTotalStock, fSystemReady);
+    return GetNextStockInquiringMiddleStr(m_lSinaStockRTDataInquiringIndex, _T(","), lTotalNumber, GetTotalStock(), fSystemReady);
   }
   else {
     return GetNextSinaStockInquiringMiddleStrBeforeSystemReady(_T(","), lTotalNumber);
@@ -975,18 +974,6 @@ bool CChinaMarket::TaskProcessWebRTDataGetFromSinaServer(void) {
     }
   }
   return true;
-}
-
-bool CChinaMarket::UpdateStakeContainer(CWebRTDataPtr pRTData) {
-  if (IsStock(pRTData->GetStockCode())) { // 没找到？ 不应该的
-    // Error
-    // 更新StakeSection的状态，生成新的证券。
-    return false;
-  }
-  else {
-    m_vChinaMarketStock.at(m_mapChinaMarketStock.at(pRTData->GetStockCode()))->SetActive(true);
-    return true;
-  }
 }
 
 void CChinaMarket::StoreChoiceRTData(CWebRTDataPtr pRTData) {
@@ -3281,7 +3268,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
     gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
-  m_lLoadedStock = m_lTotalStock = m_vChinaMarketStock.size();
+  m_lLoadedStock =  m_vChinaMarketStock.size();
   SortStockVector();
 }
 

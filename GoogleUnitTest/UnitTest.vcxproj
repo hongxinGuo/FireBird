@@ -354,7 +354,6 @@
     <ClCompile Include="QueueWebDataTest.cpp" />
     <ClCompile Include="SemaphoreTest.cpp" />
     <ClCompile Include="MockSystemMessageTest.cpp" />
-    <ClCompile Include="StakeCodeTest.cpp" />
     <ClCompile Include="TaskDistributeNeteaseRTDataToProperStockTest.cpp" />
     <ClCompile Include="TaskDistributeSinaRTDataToProperStockTest.cpp" />
     <ClCompile Include="MockStockAnalysisViewTest.cpp" />

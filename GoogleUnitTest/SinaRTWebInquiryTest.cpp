@@ -58,12 +58,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(m_SinaRTWebInquiry.IsReadingWebData()) << _T("此标志由工作线程负责重置。此处调用的是Mock类，故而此标识没有重置");
   }
 
-  TEST_F(CSinaRTWebInquiryTest, TestGetNextInquiringMIddleStr) {
-    CString str = m_SinaRTWebInquiry.GetNextInquiringMiddleStr(900, false);
-    CString str2 = str.Left(9);
-    EXPECT_STREQ(str2, _T("sh000001,"));
-  }
-
   TEST_F(CSinaRTWebInquiryTest, TestPrepareInquiringStr) {
     EXPECT_EQ(gl_pChinaStockMarket->GetSinaStockRTDataInquiringIndex(), 0);
     gl_pChinaStockMarket->SetSystemReady(false);

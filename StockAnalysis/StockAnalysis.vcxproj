@@ -762,7 +762,6 @@
     <ClInclude Include="source\Poten Daily\PotenDailyBriefingMarket.h" />
     <ClInclude Include="source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
     <ClInclude Include="source\StakeSection.h" />
-    <ClInclude Include="source\StakeCode.h" />
     <ClInclude Include="source\WebRTDataContainer.h" />
     <ClInclude Include="source\PriorityQueueWebRTData.h" />
     <ClInclude Include="source\QueueWebRTData.h" />
@@ -886,7 +885,6 @@
     <ClCompile Include="source\QueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
     <ClCompile Include="source\StakeSection.cpp" />
-    <ClCompile Include="source\StakeCode.cpp" />
     <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="source\WebRTDataContainer.cpp" />
     <ClCompile Include="source\DayLine.cpp" />
