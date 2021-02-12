@@ -425,12 +425,6 @@
     <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="MockChinaStakeTest.cpp">
-      <Filter>Test源文件\China Market\Stock</Filter>
-    </ClCompile>
-    <ClCompile Include="ChinaStakeTest.cpp">
-      <Filter>Test源文件\China Market\Stock</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -667,6 +661,12 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetStockSection.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockTest.cpp">
+      <Filter>Test源文件\China Market\Stock</Filter>
+    </ClCompile>
+    <ClCompile Include="MockChinaStockTest.cpp">
+      <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

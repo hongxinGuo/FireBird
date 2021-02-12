@@ -2305,7 +2305,6 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   setRSStrong2.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong2.AddNew();
-    setRSStrong2.m_Market = pStock->GetMarket();
     setRSStrong2.m_StockCode = pStock->GetStockCode();
     setRSStrong2.Update();
   }
@@ -2338,7 +2337,6 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   setRSStrong1.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong1.AddNew();
-    setRSStrong1.m_Market = pStock->GetMarket();
     setRSStrong1.m_StockCode = pStock->GetStockCode();
     setRSStrong1.Update();
   }
@@ -2373,7 +2371,6 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   setRSStrong.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong.AddNew();
-    setRSStrong.m_Market = pStock->GetMarket();
     setRSStrong.m_StockCode = pStock->GetStockCode();
     setRSStrong.Update();
   }
@@ -3404,7 +3401,6 @@ bool CChinaMarket::UpdateChoicedStockDB(void) {
   for (auto& pStock : m_avChoicedStock.at(0)) {
     ASSERT(pStock->IsChoiced());
     setChoicedStock.AddNew();
-    setChoicedStock.m_Market = pStock->GetMarket();
     setChoicedStock.m_StockCode = pStock->GetStockCode();
     setChoicedStock.Update();
     pStock->SetSaveToChoicedStockDB(true);
@@ -3424,8 +3420,6 @@ bool CChinaMarket::AppendChoicedStockDB(void) {
     ASSERT(pStock->IsChoiced());
     if (!pStock->IsSaveToChoicedStockDB()) {
       setChoicedStock.AddNew();
-      setChoicedStock.m_Market = pStock->GetMarket();
-      setChoicedStock.m_StockCode = pStock->GetStockCode();
       setChoicedStock.Update();
       pStock->SetSaveToChoicedStockDB(true);
     }

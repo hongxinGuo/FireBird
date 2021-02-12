@@ -1117,7 +1117,6 @@ namespace StockAnalysisTest {
 
     setDayLineToday.Open();
     EXPECT_EQ(setDayLineToday.m_Date, 20191101);
-    EXPECT_EQ(setDayLineToday.m_Market, pStock->GetMarket());
     EXPECT_STREQ(setDayLineToday.m_StockCode, pStock->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_LastClose), (double)pStock->GetLastClose() / 1000);
     EXPECT_DOUBLE_EQ(atof(setDayLineToday.m_Open), (double)pStock->GetOpen() / 1000);

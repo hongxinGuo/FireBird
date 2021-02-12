@@ -323,7 +323,7 @@
     <ClCompile Include="FinnhubForexSymbolTest.cpp" />
     <ClCompile Include="FinnhubWebInquiryTest.cpp" />
     <ClCompile Include="MockChinaMarketTest.cpp" />
-    <ClCompile Include="MockChinaStakeTest.cpp" />
+    <ClCompile Include="MockChinaStockTest.cpp" />
     <ClCompile Include="CrweberIndexMarketTest.cpp" />
     <ClCompile Include="CrweberIndexWebInquiryTest.cpp" />
     <ClCompile Include="CrweberIndexTest.cpp" />
@@ -370,7 +370,7 @@
     <ClCompile Include="WebDataTest.cpp" />
     <ClCompile Include="WebRTDataTest.cpp" />
     <ClCompile Include="SinaRTWebInquiryTest.cpp" />
-    <ClCompile Include="ChinaStakeTest.cpp" />
+    <ClCompile Include="ChinaStockTest.cpp" />
     <ClCompile Include="WebRTDataContainerTest.cpp" />
     <ClCompile Include="SystemMessageTest.cpp" />
     <ClCompile Include="ThreadStatusTest.cpp" />
