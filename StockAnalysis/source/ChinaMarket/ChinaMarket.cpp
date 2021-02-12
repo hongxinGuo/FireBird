@@ -2440,20 +2440,16 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 }
 
 bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
-  static int i = 0;
-  if (i <= 0) {
     if (m_pCurrentStock != nullptr) {
       if (!m_pCurrentStock->IsDayLineLoaded()) {
         RunningThreadLoadDayLine(m_pCurrentStock.get());
-        i = 10;
+        m_pCurrentStock->SetDayLineLoaded(true);
       }
       if (!m_pCurrentStock->IsWeekLineLoaded()) {
         RunningThreadLoadWeekLine(m_pCurrentStock.get());
-        i = 10;
+        m_pCurrentStock->SetWeekLineLoaded(true);
       }
     }
-  }
-  else i--;
   return true;
 }
 

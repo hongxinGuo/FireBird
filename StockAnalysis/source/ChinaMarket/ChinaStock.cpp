@@ -1534,6 +1534,12 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   SetStockName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
   m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
+  if ((GetStockCode() < _T("sh001000")) || (GetStockCode() >= _T("sz399000"))) { // 沪深指数？
+    SetNeedProcessRTData(false);
+  }
+  else {
+    SetNeedProcessRTData(true);
+  }
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }

@@ -206,38 +206,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(str2.Compare(strCompare), 1);
   }
 
-  TEST_F(CChinaMarketTest, TestGetSinaInquiringStockStr2) {
-    CChinaStockPtr pStock = nullptr;
-    CString str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    EXPECT_EQ(gl_pChinaStockMarket->GetSinaStockRTDataInquiringIndex(), 0) << "当查询全部证券时，不使用此有效数据集。";
-    str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    EXPECT_EQ(gl_pChinaStockMarket->GetSinaStockRTDataInquiringIndex(), 0) << "当查询全部证券时，不使用此有效数据集。";
-    CString strCompare, str2;
-    pStock = gl_pChinaStockMarket->GetStock(899);
-    strCompare = pStock->GetStockCode();
-    str2 = str.Left(8);
-    EXPECT_EQ(str2.Compare(strCompare), 0);
-    str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    pStock = gl_pChinaStockMarket->GetStock(1798);
-    strCompare = pStock->GetStockCode();
-    str2 = str.Left(8);
-    EXPECT_EQ(str2.Compare(strCompare), 0);
-    str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    pStock = gl_pChinaStockMarket->GetStock(2697);
-    strCompare = pStock->GetStockCode();
-    str2 = str.Left(8);
-    EXPECT_EQ(str2.Compare(strCompare), 0);
-    str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    pStock = gl_pChinaStockMarket->GetStock(3596);
-    strCompare = pStock->GetStockCode();
-    str2 = str.Left(8);
-    EXPECT_EQ(str2.Compare(strCompare), 0);
-    str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
-    pStock = gl_pChinaStockMarket->GetStock(0);
-    strCompare = pStock->GetStockCode();
-    str2 = str.Left(8);
-    EXPECT_EQ(str2.Compare(strCompare), 1);
-  }
 
   TEST_F(CChinaMarketTest, TestGetInquiringStockStr) {
     CString str2;
@@ -318,10 +286,10 @@ namespace StockAnalysisTest {
     pStock->SetIPOStatus(__STAKE_NULL__);
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_TRUE(fStatus);
-    EXPECT_STREQ(str, _T("0600003")) << _T("第三个股票设置为无效股票");
+    EXPECT_STREQ(str, _T("0000003")) << _T("第三个股票设置为无效股票");
     pStock->SetIPOStatus(lIPOStatus); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(3);
-    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
+    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
     pStock = gl_pChinaStockMarket->GetStock(4);
     lDate = pStock->GetDayLineEndDate();
     pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
@@ -331,9 +299,7 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("0000004")) << _T("0600004的日线结束日已设置为最新，故而无需再更新日线");
     pStock->SetDayLineEndDate(lDate); // 恢复原状。
     pStock = gl_pChinaStockMarket->GetStock(5);
-    EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-    pStock = gl_pChinaStockMarket->GetStock(4);
-    EXPECT_FALSE(pStock->IsDayLineNeedUpdate()) << _T("标识在查询下载股票时更新了");
+    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 
     // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(0);

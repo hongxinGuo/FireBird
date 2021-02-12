@@ -143,20 +143,28 @@ namespace StockAnalysisTest {
     s_pchinaMarket->ResetCurrentStock();
     s_pchinaMarket->SetCurrentStock(_T("sh600000"));
     s_pchinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
+    s_pchinaMarket->GetCurrentStock()->SetWeekLineLoaded(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadDayLine(_))
       .Times(0);
+    EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadWeekLine(_))
+      .Times(0);
     EXPECT_TRUE(s_pchinaMarket->TaskLoadCurrentStockHistoryData());
+    EXPECT_TRUE(s_pchinaMarket->GetCurrentStock()->IsDayLineLoaded());
+    EXPECT_TRUE(s_pchinaMarket->GetCurrentStock()->IsWeekLineLoaded());
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine3) {
     s_pchinaMarket->ResetCurrentStock();
     s_pchinaMarket->SetCurrentStock(_T("sh600000"));
     s_pchinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
+    s_pchinaMarket->GetCurrentStock()->SetWeekLineLoaded(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadDayLine(_))
       .Times(1);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadWeekLine(_))
       .Times(1);
     EXPECT_TRUE(s_pchinaMarket->TaskLoadCurrentStockHistoryData());
+    EXPECT_TRUE(s_pchinaMarket->GetCurrentStock()->IsDayLineLoaded());
+    EXPECT_TRUE(s_pchinaMarket->GetCurrentStock()->IsWeekLineLoaded());
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskUpdateStockCodeDB) {
