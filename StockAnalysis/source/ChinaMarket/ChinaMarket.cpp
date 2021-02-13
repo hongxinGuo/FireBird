@@ -3,6 +3,7 @@
 //#include"stdafx.h"
 
 #include"globedef.h"
+#include"accessory.h"
 #include"Thread.h"
 
 #include"WebInquirer.h"
@@ -344,6 +345,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
 
 void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRTData) {
   CString strCode = GetStockSymbol(strFirstStockCode);
+  CString strStockCode, strStockSymbol, strExchange;
   CString str = _T("");
   int iCode = atoi(strCode.GetBuffer());
   int iMarket = 0;
@@ -359,16 +361,12 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
   if (m_vStakeSection.at((iCode / 1000) + iMarket)->IsBuildStakePtr()) return; // 已经在证券池中建立了
   // 生成上海股票代码
   for (int i = iCode; i < (iCode + 1000); i++) {
-    if (iMarket == 0) {
-      str = _T("sh");
-    }
-    else if (iMarket == 1000) {
-      str = _T("sz");
-    }
+    strExchange = GetStockExchange(strFirstStockCode);
     sprintf_s(buffer, _T("%06d"), i);
-    str += buffer;
-    m_vCurrentStockSet.push_back(str); //
-    m_mapCurrentStockSet[str] = m_vCurrentStockSet.size();
+    strStockSymbol = buffer;
+    strStockCode = CreateStockCode(strExchange, strStockSymbol);
+    m_vCurrentStockSet.push_back(strStockCode); //
+    m_mapCurrentStockSet[strStockCode] = m_vCurrentStockSet.size();
   }
   if (UpdateStakeSection(iCode / 1000 + iMarket)) {
     SetUpdateStakeSection(true);
@@ -848,79 +846,107 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
 }
 
 CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStakeIndex, CString strPostfix, long lTotalNumber, long lEndPosition, bool fSystemReady) {
-  CString str = _T("");
+  CString strReturn = _T("");
+  CString strStockCode, strStockExchange, strStockSymbol;
 
   if (0 == lEndPosition) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-  str += m_vChinaMarketStock.at(iStakeIndex)->GetStockCode();  // 得到第一个股票代码
+  strStockCode = m_vChinaMarketStock.at(iStakeIndex)->GetStockCode();  // 得到第一个股票代码
+  strStockSymbol = GetStockSymbol(strStockCode);
+  if (IsShanghaiExchange(strStockCode)) {
+    strReturn = _T("sh") + strStockSymbol;
+  }
+  else {
+    strReturn = _T("sz") + strStockSymbol;
+  }
   IncreaseStockInquiringIndex(iStakeIndex, lEndPosition);
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((iStakeIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
-    str += strPostfix;
-    str += m_vChinaMarketStock.at(iStakeIndex)->GetStockCode();
+    strReturn += strPostfix;
+    strStockCode = m_vChinaMarketStock.at(iStakeIndex)->GetStockCode();
+    strStockSymbol = GetStockSymbol(strStockCode);
+    if (IsShanghaiExchange(strStockCode)) {
+      strReturn += _T("sh") + strStockSymbol;
+    }
+    else {
+      strReturn += _T("sz") + strStockSymbol;
+    }
     // 每次查到最后时暂停一下。目前不使用之，已加快查询速度
     // if (iStakeIndex == lStartPosition) break;
     IncreaseStockInquiringIndex(iStakeIndex, lEndPosition);
   }
   if (iStakeIndex > 0) iStakeIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
-  return str;
+  return strReturn;
 }
 
 CString CChinaMarket::GetNextSinaStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber) {
-  CString str = _T("");
+  CString strReturn = _T("");
+  CString strStockCode, strStockExchange, strStockSymbol;
   long lEndPosition = m_vCurrentStockSet.size();
   static long s_lIndex = 0;
 
   if (0 == lEndPosition) return _T("sh600000"); // 当没有证券可查询时，返回一个有效字符串
-  str += m_vCurrentStockSet.at(s_lIndex);  // 得到第一个股票代码
+  strStockCode = m_vCurrentStockSet.at(s_lIndex);  // 得到第一个股票代码
+  strStockSymbol = GetStockSymbol(strStockCode);
+  if (IsShanghaiExchange(strStockCode)) {
+    strReturn = _T("sh") + strStockSymbol;
+  }
+  else {
+    strReturn = _T("sz") + strStockSymbol;
+  }
   IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((s_lIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
-    str += strPostfix;
-    str += m_vCurrentStockSet.at(s_lIndex);
+    strReturn += strPostfix;
+    strStockCode = m_vCurrentStockSet.at(s_lIndex);
+    strStockSymbol = GetStockSymbol(strStockCode);
+    if (IsShanghaiExchange(strStockCode)) {
+      strReturn += _T("sh") + strStockSymbol;
+    }
+    else {
+      strReturn += _T("sz") + strStockSymbol;
+    }
     IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
   }
   if (s_lIndex > 0) s_lIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
-  return str;
+  return strReturn;
 }
 
 CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber) {
-  CString strStockCode = _T("");
-  CString str, strRight6, strLeft2, strPrefix;
+  CString strReturn, strStockCode = _T("");
+  CString strStockSymbol, strPrefix;
   long lEndPosition = m_vCurrentStockSet.size();
   static long s_lIndex = 0;
 
   if (0 == lEndPosition) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
-  str += m_vCurrentStockSet.at(s_lIndex);  // 得到第一个股票代码
-  strRight6 = GetStockSymbol(str);
-  strLeft2 = str.Left(2);
-  if (IsShanghaiExchange(str)) {
+  strStockCode = m_vCurrentStockSet.at(s_lIndex);  // 得到第一个股票代码
+  strStockSymbol = GetStockSymbol(strStockCode);
+  if (IsShanghaiExchange(strStockCode)) {
     strPrefix = _T("0");
   }
   else strPrefix = _T("1");
-  strStockCode = strPrefix + strRight6;
+  strReturn = strPrefix + strStockSymbol;
 
   IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
   int iCount = 1; // 从1开始计数，因为第一个数据前不需要添加postfix。
   while ((s_lIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
-    strStockCode += strPostfix;
-    str = m_vCurrentStockSet.at(s_lIndex);
-    strRight6 = GetStockSymbol(str);
-    strLeft2 = str.Left(2);
-    if (IsShanghaiExchange(str)) {
+    strReturn += strPostfix;
+    strStockCode = m_vCurrentStockSet.at(s_lIndex);
+    strStockSymbol = GetStockSymbol(strStockCode);
+    if (IsShanghaiExchange(strStockCode)) {
       strPrefix = _T("0");
     }
     else strPrefix = _T("1");
-    strStockCode += strPrefix + strRight6;
+    strReturn += strPrefix + strStockSymbol;
     IncreaseStockInquiringIndex(s_lIndex, lEndPosition);
   }
   if (s_lIndex > 0) s_lIndex--; // 退后一步，防止最后一个股票查询错误（其实不必要了）
 
-  return strStockCode;
+  return strReturn;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

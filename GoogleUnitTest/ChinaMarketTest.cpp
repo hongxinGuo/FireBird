@@ -212,6 +212,8 @@ namespace StockAnalysisTest {
     gl_pChinaStockMarket->SetSystemReady(true);
     gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
     CString str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, true);
+    str2 = str.Left(2);
+    EXPECT_STREQ(str2, _T("sh"));
     str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, true);
     str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, true);
     str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, true);
