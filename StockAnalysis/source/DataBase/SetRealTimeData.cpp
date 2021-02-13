@@ -14,7 +14,6 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Time = _T("0");
-  m_Market = 0;
   m_StockCode = _T("");
   m_LastClose = _T("0");
   m_Open = _T("0");
@@ -44,7 +43,7 @@ CSetRealTimeData::CSetRealTimeData(CDatabase* pdb)
   m_VSell4 = _T("0");
   m_PSell5 = _T("0");
   m_VSell5 = _T("0");
-  m_nFields = 32;
+  m_nFields = 31;
 }
 // 此连接字符串中可能包含明文密码和/或其他重要
 // 信息。请在查看完此连接字符串并找到所有与安全
@@ -65,7 +64,6 @@ void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Text(pFX, _T("[Time]"), m_Time);
-  RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);

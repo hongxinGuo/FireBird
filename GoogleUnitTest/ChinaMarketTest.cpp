@@ -142,7 +142,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_pChinaStockMarket->GetTotalStockMapIndexSize(), gl_pChinaStockMarket->GetTotalStock());
     pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_STREQ(pStock->GetStockCode(), _T("sh000001"));
-    EXPECT_EQ(pStock->GetMarket(), __SHANGHAI_MARKET__);
     EXPECT_EQ(gl_pChinaStockMarket->GetStockOffset(_T("sh000001")), 0);
 
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());

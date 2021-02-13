@@ -31,6 +31,12 @@ long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值
 long GetCurrentMonday(long lDate); // 找到包含lDate的那个星期的星期一
 
+bool IsShanghaiExchange(CString strStockCode);
+bool IsShenzhenExchange(CString strStockCode);
+CString GetStockSymbol(CString strStockCode);
+CString GetStockExchange(CString strStockCode);
+CString CreateStockCode(CString strStockExchange, CString strStockSymbol);
+
 CString GetChinaMarketSchemaConnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
 CString GetWorldMarketSchemaConnect();// 用于美国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用world_market_test驱动，正常模式时使用world_market驱动
 

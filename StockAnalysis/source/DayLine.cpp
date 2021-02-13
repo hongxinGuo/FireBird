@@ -86,7 +86,6 @@ bool CDayLine::SaveChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLineBa
   ASSERT(psetDayLineBasicInfo->IsOpen());
 
   psetDayLineBasicInfo->m_Date = GetFormatedMarketDate();
-  psetDayLineBasicInfo->m_Market = GetMarket();
   psetDayLineBasicInfo->m_StockCode = GetStockCode();
   psetDayLineBasicInfo->m_StockName = GetStockName();
   psetDayLineBasicInfo->m_LastClose = ConvertValueToString(GetLastClose(), 1000);
@@ -120,7 +119,6 @@ bool CDayLine::AppendChinaMarketData(not_null<CSetDayLineBasicInfo*> psetDayLine
 bool CDayLine::LoadChinaMarketBasicData(not_null<CSetDayLineBasicInfo*> psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   m_lDate = psetDayLineBasicInfo->m_Date;
-  m_wMarket = psetDayLineBasicInfo->m_Market;
   m_strStockCode = psetDayLineBasicInfo->m_StockCode;
   m_strStockName = psetDayLineBasicInfo->m_StockName;
   m_lLastClose = atof(psetDayLineBasicInfo->m_LastClose) * 1000;
@@ -289,16 +287,6 @@ bool CDayLine::ProcessNeteaseData(CString strStockCode, char*& pCurrentPos, INT6
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   SetStockCode(strStockCode);
-  str = strStockCode.Left(2);
-  if (str == _T("sh")) {
-    SetMarket(__SHANGHAI_MARKET__);
-  }
-  else if (str == _T("sz")) {
-    SetMarket(__SHENZHEN_MARKET__);
-  }
-  else {
-    return false;
-  }
   if (!ReadOneValueOfNeteaseDayLine(pCurrentPos, buffer2, iCount)) return false;
   str = buffer2;
   SetStockName(str);
@@ -409,15 +397,6 @@ bool CDayLine::ProcessNeteaseData2(CString strStockCode, vector<char>& pBuffer, 
   str = buffer2;
   SetStockCode(strStockCode);
   str = strStockCode.Left(2);
-  if (str == _T("sh")) {
-    SetMarket(__SHANGHAI_MARKET__);
-  }
-  else if (str == _T("sz")) {
-    SetMarket(__SHENZHEN_MARKET__);
-  }
-  else {
-    return false;
-  }
   if (!ReadOneValueOfNeteaseDayLine2(pBuffer, buffer2, lCurrentPos)) return false;
   str = buffer2;
   SetStockName(str);

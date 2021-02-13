@@ -16,7 +16,6 @@ CSetWeekLineBasicInfo::CSetWeekLineBasicInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
-  m_Market = 0;
   m_StockCode = _T("");
   m_StockName = _T("");
   m_LastClose = _T("0");
@@ -33,7 +32,7 @@ CSetWeekLineBasicInfo::CSetWeekLineBasicInfo(CDatabase* pdb)
   m_CurrentValue = _T("0");
   m_RS = _T("");	//相对于总市场的强度
   m_RSIndex = _T("");	//相对于总市场的强度
-  m_nFields = 20;
+  m_nFields = 19;
 }
 
 CString CSetWeekLineBasicInfo::GetDefaultConnect() {
@@ -51,7 +50,6 @@ void CSetWeekLineBasicInfo::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Date]"), m_Date);
-  RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);

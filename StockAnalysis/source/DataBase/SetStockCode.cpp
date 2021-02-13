@@ -13,13 +13,12 @@ IMPLEMENT_DYNAMIC(CSetStockCode, CRecordset)
 
 CSetStockCode::CSetStockCode(CDatabase* pdb)
   : CRecordset(pdb) {
-  m_StockType = 0;
   m_StockCode = _T("");
   m_StockName = _T("");
   m_DayLineStartDate = __CHINA_MARKET_BEGIN_DATE__;
   m_DayLineEndDate = __CHINA_MARKET_BEGIN_DATE__;
   m_IPOStatus = 0;
-  m_nFields = 7;
+  m_nFields = 6;
 }
 
 CString CSetStockCode::GetDefaultConnect() {
@@ -36,7 +35,6 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Int(pFX, _T("[StockType]"), m_StockType);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);

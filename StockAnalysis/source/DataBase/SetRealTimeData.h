@@ -23,7 +23,6 @@ public:
 
   long m_ID;
   CString m_Time;	//成交时间，以秒计算，
-  long m_Market; // 上海为1，深圳为2， 。。。
   CStringW m_StockName;	//四位股票简称
   CString	m_StockCode;	//六位股票代码
   CString	m_LastClose;	//昨天收盘价

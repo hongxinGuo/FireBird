@@ -12,7 +12,6 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
-    EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
     EXPECT_STREQ(RTData.GetStockName(), _T(""));
     EXPECT_EQ(RTData.GetOpen(), 0);

@@ -177,8 +177,6 @@ public:
   long GetDataSource(void) noexcept { return m_lDataSource; }
   time_t GetTransactionTime(void) noexcept { return m_time; }
   void SetTransactionTime(time_t time) noexcept { m_time = time; }
-  WORD GetMarket(void) noexcept { return m_wMarket; }
-  void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
   CString GetStockCode(void) { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
   CString GetStockName(void) { return m_strStockName; }
@@ -239,7 +237,6 @@ protected:
   long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
   // Serialized data
   time_t m_time;	// 交易发生时的时间
-  WORD m_wMarket;	// 市场标示.目前为__SHANGHAI_MARKET__和__SHENZHEN_MARKET__两个市场
   CString m_strStockCode;// 证券代码, sh600001，sz002389，
   CString m_strStockName; // 证券名称
   long m_lOpen;	// 今日开盘。单位：0.001元

@@ -343,18 +343,17 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
 }
 
 void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRTData) {
-  CString strCode = strFirstStockCode.Right(6);
-  CString strMarket = strFirstStockCode.Left(2);
+  CString strCode = GetStockSymbol(strFirstStockCode);
   CString str = _T("");
   int iCode = atoi(strCode.GetBuffer());
   int iMarket = 0;
   char buffer[10];
   CChinaStockPtr pStock = nullptr;
 
-  if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
+  if (IsShanghaiExchange(strFirstStockCode)) { // 上海市场
     iMarket = 0;
   }
-  else if (strMarket.Compare(_T("sz")) == 0) { // 深圳市场
+  else if (IsShenzhenExchange(strFirstStockCode)) { // 深圳市场
     iMarket = 1000;
   }
   if (m_vStakeSection.at((iCode / 1000) + iMarket)->IsBuildStakePtr()) return; // 已经在证券池中建立了
@@ -384,8 +383,6 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetActive(false);
   pStock->SetStockCode(strStockCode);
   pStock->SetStockName(strStockName);
-  if (pStock->GetStockCode().Left(2).Compare(_T("sh")) == 0) pStock->SetMarket(__SHANGHAI_MARKET__);
-  else pStock->SetMarket(__SHENZHEN_MARKET__);
   pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
   pStock->SetOffset(GetTotalStock());
   pStock->SetDayLineEndDate(19900101);
@@ -405,15 +402,14 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
 }
 
 bool CChinaMarket::UpdateStakeSection(CString strStakeCode) {
-  CString strCode = strStakeCode.Right(6);
-  CString strMarket = strStakeCode.Left(2);
+  CString strCode = GetStockSymbol(strStakeCode);
   int iCode = atoi(strCode.GetBuffer());
   int iMarket = 0;
 
-  if (strMarket.Compare(_T("sh")) == 0) { // 上海市场
+  if (IsShanghaiExchange(strStakeCode)) { // 上海市场
     iMarket = 0;
   }
-  else if (strMarket.Compare(_T("sz")) == 0) { // 深圳市场
+  else if (IsShenzhenExchange(strStakeCode)) { // 深圳市场
     iMarket = 1000;
   }
   return UpdateStakeSection(iCode / 1000 + iMarket);
@@ -474,27 +470,16 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
   ASSERT(!pStock->IsDayLineNeedProcess());
   ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false);
-  switch (pStock->GetMarket()) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
-  case __SHANGHAI_MARKET__: // 上海市场？
-  case __SHANGHAI_MAIN__: // 上海主板？
-  case __SHANGHAI_INDEX__: // 上海指数
-  case __SHANGHAI_3BAN__: // 上海3板
-  case __SHANGHAI_KECHUANG__: // 上海科创板
-  case __SHANGHAI_B_SHARE__: // 上海B股
-  strReturn += '0'; // 上海市场标识
-  break;
-  case __SHENZHEN_MARKET__: // 深圳市场？
-  case __SHENZHEN_INDEX__: // 深圳指数
-  case __SHENZHEN_3BAN__: // 深圳中小板
-  case __SHENZHEN_B_SHARE__: // 深圳B股
-  case __SHENZHEN_CHUANGYE__: // 深圳创业板
-  case __SHENZHEN_MAIN__: // 深圳主板
-  strReturn += '1'; // 深圳市场标识
-  break;
-  default: // 越界
+  if (IsShanghaiExchange(pStock->GetStockCode())) { // 转换成网易日线数据申请制式（上海为‘0’，深圳为‘1’）
+    strReturn += '0'; // 上海市场标识
+  }
+  else if (IsShenzhenExchange(pStock->GetStockCode())) {
+    strReturn += '1'; // 深圳市场标识
+  }
+  else {
   ASSERT(0);
   }
-  strReturn += pStock->GetStockCode().Right(6); // 取股票代码的右边六位数字。
+  strReturn += GetStockSymbol(pStock->GetStockCode()); // 取股票代码的右边六位数字。
   IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
   return true;
 }
@@ -687,7 +672,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       ASSERT(pStock != nullptr);
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
-          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
           pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
@@ -746,7 +731,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       ASSERT(pStock != nullptr);
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
-          pStock->SetTodayActive(pRTData->GetMarket(), pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
           pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
@@ -808,9 +793,8 @@ CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lE
   m_strNeteaseRTDataInquiringStr = _T("");
   strStockCode = m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
   IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
-  strRight6 = strStockCode.Right(6);
-  strLeft2 = strStockCode.Left(2);
-  if (strLeft2.Compare(_T("sh")) == 0) {
+  strRight6 = GetStockSymbol(strStockCode);
+  if (IsShanghaiExchange(strStockCode)) {
     strPrefix = _T("0");
   }
   else strPrefix = _T("1");
@@ -820,9 +804,8 @@ CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lE
     iCount++;
     m_strNeteaseRTDataInquiringStr += _T(",");
     strStockCode = m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode();
-    strRight6 = strStockCode.Right(6);
-    strLeft2 = strStockCode.Left(2);
-    if (strLeft2.Compare(_T("sh")) == 0) {
+    strRight6 = GetStockSymbol(strStockCode);
+    if (IsShanghaiExchange(strStockCode)) {
       strPrefix = _T("0");
     }
     else strPrefix = _T("1");
@@ -910,11 +893,11 @@ CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CSt
   long lEndPosition = m_vCurrentStockSet.size();
   static long s_lIndex = 0;
 
-  if (0 == lEndPosition) return _T("1600000"); // 当没有证券可查询时，返回一个有效字符串
+  if (0 == lEndPosition) return _T("0600000"); // 当没有证券可查询时，返回一个有效字符串
   str += m_vCurrentStockSet.at(s_lIndex);  // 得到第一个股票代码
-  strRight6 = str.Right(6);
+  strRight6 = GetStockSymbol(str);
   strLeft2 = str.Left(2);
-  if (strLeft2.Compare(_T("sh")) == 0) {
+  if (IsShanghaiExchange(str)) {
     strPrefix = _T("0");
   }
   else strPrefix = _T("1");
@@ -926,9 +909,9 @@ CString CChinaMarket::GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CSt
     iCount++;
     strStockCode += strPostfix;
     str = m_vCurrentStockSet.at(s_lIndex);
-    strRight6 = str.Right(6);
+    strRight6 = GetStockSymbol(str);
     strLeft2 = str.Left(2);
-    if (strLeft2.Compare(_T("sh")) == 0) {
+    if (IsShanghaiExchange(str)) {
       strPrefix = _T("0");
     }
     else strPrefix = _T("1");

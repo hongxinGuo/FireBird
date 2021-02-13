@@ -31,8 +31,6 @@ public:
   void SetDate(long lDate) noexcept { m_lDate = lDate; }
   time_t GetFormatedMarketTime(void) noexcept { return m_time; }
   void SetTime(time_t t) noexcept { m_time = t; }
-  WORD GetMarket(void) noexcept { return m_wMarket; }
-  void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
   CString GetMarketString(void) { return m_strMarket; }
   void SetMarketString(CString strMarket) { m_strMarket = strMarket; }
   CString GetStockCode(void) { return m_strStockCode; }
@@ -231,7 +229,6 @@ protected:
   // need to save
   long m_lDate; // ¿‡–Õ(YYYYMMDD)
   time_t m_time;
-  WORD m_wMarket;
   CString m_strMarket;
   CString m_strStockCode;
   CString m_strStockName;

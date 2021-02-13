@@ -41,12 +41,6 @@ namespace StockAnalysisTest {
     EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
   }
 
-  TEST_F(CChinaStockHistoryDataTest, TestGetMarket) {
-    CChinaStockHistoryData dl;
-    EXPECT_EQ(dl.GetMarket(), 0);
-    dl.SetMarket(1);
-    EXPECT_EQ(dl.GetMarket(), 1);
-  }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {
     CChinaStockHistoryData dl;

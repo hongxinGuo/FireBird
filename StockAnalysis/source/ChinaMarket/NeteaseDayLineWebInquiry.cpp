@@ -47,6 +47,10 @@ void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
   thread1.detach();
 }
 
+/// <summary>
+/// 这里的strStockCode为Netease制式：0600000，100001，
+/// </summary>
+/// <param name="strStockCode"></param>
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
   not_null<char*> p = strStockCode.GetBuffer();
   const char cFirstChar = *p;

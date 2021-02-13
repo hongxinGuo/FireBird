@@ -59,8 +59,6 @@ public:
   void UpdateStatus(CWebRTDataPtr pRTData);
 
   // 本股票各变量状态
-  WORD GetMarket(void) noexcept { return m_wMarket; }
-  void SetMarket(WORD wValue) noexcept { m_wMarket = wValue; }
   CString GetStockCode(void) { return m_strStockCode; }
   void SetStockCode(CString str) { m_strStockCode = str; }
   CString GetStockName(void) { return m_strStockName; }
@@ -439,7 +437,7 @@ public:
   void ResetTempDayLineDataBuffer(void);
   INT64 GetDayLineBufferLength(void) noexcept { return m_lDayLineBufferLength; }
   bool SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos);
-  void SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName);
+  void SetTodayActive(CString strStockCode, CString strStockName);
   void UpdateDayLine(vector<CDayLinePtr>& vTempDayLine); // 使用新队列更新日线队列
   void ReportDayLineDownLoaded(void);
 
@@ -472,9 +470,6 @@ public:
 public:
 
 protected:
-  WORD m_wMarket;	// 1：上海市场（不区分细类）；2：深圳市场（不区分细类）；3：上海指数；4：深圳指数；：上海三版；6：深圳中小板；
-                // 7：上海B股；8：深圳B股；9：上海科创版; 10：深圳创业板；
-                // 上海市场采用单数标示，深圳市场采用双数标示。目前暂时不用，先查看涉及到哪些函数需要修改。
   CString m_strStockCode; // 股票代码。八位，前两位为市场前缀，后六位为数字代码。如sh600601，sz000001
   CString m_strStockName; // 股票名称
   CStringW m_strStakeNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）

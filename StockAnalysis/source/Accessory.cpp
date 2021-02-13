@@ -227,6 +227,49 @@ long GetCurrentMonday(long lDate) {
   return lCurrentMonday;
 }
 
+bool IsShanghaiExchange(CString strStockCode) {
+  CString str = GetStockExchange(strStockCode);
+  if (str.Compare(_T("sh")) == 0) return true;
+  else return false;
+}
+
+bool IsShenzhenExchange(CString strStockCode) {
+  CString str = GetStockExchange(strStockCode);
+  if (str.Compare(_T("sz")) == 0) return true;
+  else return false;
+}
+
+/// <summary>
+/// 从一个完整的股票代码中分离出符号部分（去除表示交易所的部分）
+/// 目前使用的上海深圳格式为sh600000、sz000001，今后要改为600000.SS, 000001.SZ
+/// </summary>
+/// <param name="strStockCode"></param>
+/// <returns></returns>
+CString GetStockSymbol(CString strStockCode) {
+  return(strStockCode.Right(6));
+}
+
+/// <summary>
+/// 从一个完整的股票代码中分离出交易所部分（去除表示符号的部分）
+/// 目前使用的上海深圳格式为sh600000、sz000001，今后要改为600000.SS, 000001.SZ
+/// </summary>
+/// <param name="strStockCode"></param>
+/// <returns></returns>
+CString GetStockExchange(CString strStockCode) {
+  return(strStockCode.Left(2));
+}
+
+/// <summary>
+/// 使用交易所和符号生成完整股票代码。
+/// 目前方式为 交易所 + 符号。 sh + 600000 = sh600000， 以后为 SS + 600000 = 600000.SS
+/// </summary>
+/// <param name="strStockExchange"></param>
+/// <param name="strStockSymbol"></param>
+/// <returns></returns>
+CString CreateStockCode(CString strStockExchange, CString strStockSymbol) {
+  return strStockExchange + strStockSymbol;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // 所有数据集的GetDefaultConnect()函数皆调用此函数完成具体工作，以保证一致性。

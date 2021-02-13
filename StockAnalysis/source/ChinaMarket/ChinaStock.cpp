@@ -28,7 +28,6 @@ CChinaStock::~CChinaStock(void) {
 }
 
 void CChinaStock::Reset(void) {
-  m_wMarket = 0;
   m_strStockCode = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
@@ -224,7 +223,7 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
     }
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetTodayActive(pDayLine->GetMarket(), pDayLine->GetStockCode(), pDayLine->GetStockName());
+      SetTodayActive(pDayLine->GetStockCode(), pDayLine->GetStockName());
       TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode().GetBuffer());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
@@ -276,10 +275,9 @@ bool CChinaStock::SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos) {
   return true;
 }
 
-void CChinaStock::SetTodayActive(WORD wMarket, CString strStockCode, CString strStockName) {
+void CChinaStock::SetTodayActive(CString strStockCode, CString strStockName) {
   SetActive(true);
   SetDayLineLoaded(false);
-  SetMarket(wMarket);
   SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
   if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 }
@@ -302,7 +300,6 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDayLineBasicInfo->m_Market = m_wMarket;
   psetDayLineBasicInfo->m_StockCode = m_strStockCode;
   psetDayLineBasicInfo->m_StockName = m_strStockName;
   psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
@@ -460,7 +457,6 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
   psetDayLineExtendInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDayLineExtendInfo->m_Market = m_wMarket;
   psetDayLineExtendInfo->m_StockCode = m_strStockCode;
   psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   psetDayLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
@@ -1504,7 +1500,6 @@ void CChinaStock::ReportGuadan(void) {
 
 void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
-  setStockCode.m_StockType = GetMarket();
   setStockCode.m_StockCode = GetStockCode();
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
@@ -1527,7 +1522,6 @@ void CChinaStock::UpdateStockCodeDB(CSetStockCode& setStockCode) {
 }
 
 bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
-  SetMarket(setStockCode.m_StockType);
   SetStockCode(setStockCode.m_StockCode);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);

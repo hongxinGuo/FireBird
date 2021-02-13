@@ -32,7 +32,6 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     CWebRTData RTData;
     EXPECT_EQ(RTData.GetTransactionTime(), 0);
-    EXPECT_EQ(RTData.GetMarket(), 0);
     EXPECT_STREQ(RTData.GetStockCode(), _T(""));
     EXPECT_STREQ(RTData.GetStockName(), _T(""));
     EXPECT_EQ(RTData.GetOpen(), 0);
@@ -84,12 +83,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(rtData.GetTransactionTime());
     rtData.SetTransactionTime(false);
     EXPECT_FALSE(rtData.GetTransactionTime());
-  }
-
-  TEST_F(CStockWebRTDataTest, TestGetMarket) {
-    CWebRTData rtData;
-    rtData.SetMarket(__SHANGHAI_MARKET__);
-    EXPECT_EQ(rtData.GetMarket(), __SHANGHAI_MARKET__);
   }
 
   TEST_F(CStockWebRTDataTest, TestGetLastClose) {
@@ -391,7 +384,6 @@ namespace StockAnalysisTest {
     break;
     case 4: // 市场
     m_RTData.SetNeteaseRTValue(lIndex, m_strValue);
-    EXPECT_EQ(m_RTData.GetMarket(), __SHANGHAI_MARKET__);
     break;
     case 5:
     break;
@@ -1678,7 +1670,6 @@ namespace StockAnalysisTest {
     time_t tt = FormatToTTime(21101123);
 
     pRTData->SetTransactionTime(tt);
-    pRTData->SetMarket(__SHANGHAI_MARKET__);
     pRTData->SetStockCode(_T("sh600000"));
     pRTData->SetStockName(_T("浦发银行"));
     pRTData->SetOpen(10000);
@@ -1705,7 +1696,6 @@ namespace StockAnalysisTest {
     setRTData.m_strFilter = _T("[StockCode] = 'sh600000'");
     setRTData.Open();
     EXPECT_EQ(atoll(setRTData.m_Time), pRTData->GetTransactionTime());
-    EXPECT_EQ(setRTData.m_Market, pRTData->GetMarket());
     EXPECT_STREQ(setRTData.m_StockCode, pRTData->GetStockCode());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_LastClose) * 1000, pRTData->GetLastClose());
     EXPECT_DOUBLE_EQ(atof(setRTData.m_Open) * 1000, pRTData->GetOpen());
@@ -1740,7 +1730,6 @@ namespace StockAnalysisTest {
     time_t tt = FormatToTTime(21101123);
 
     pRTData->SetTransactionTime(tt);
-    pRTData->SetMarket(__SHANGHAI_MARKET__);
     pRTData->SetStockCode(_T("sh600000"));
     pRTData->SetStockName(_T("浦发银行"));
     pRTData->SetOpen(10000);
@@ -1768,7 +1757,6 @@ namespace StockAnalysisTest {
     setRTData.Open();
     id.LoadData(setRTData);
     EXPECT_EQ(id.GetTransactionTime(), pRTData->GetTransactionTime());
-    EXPECT_EQ(id.GetMarket(), pRTData->GetMarket());
     EXPECT_STREQ(id.GetStockCode(), pRTData->GetStockCode());
     EXPECT_EQ(id.GetLastClose(), pRTData->GetLastClose());
     EXPECT_EQ(id.GetOpen(), pRTData->GetOpen());

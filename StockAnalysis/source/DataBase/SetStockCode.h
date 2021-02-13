@@ -22,7 +22,6 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  int	m_StockType;
   CString	m_StockCode;
   CStringW m_StockName;
   long m_DayLineStartDate;     // 从网易历史日线服务器上得到的初始交易日
