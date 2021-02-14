@@ -68,7 +68,6 @@ void CWorldStock::Reset(void) {
   m_dMarketCapitalization = 0;
   m_dShareOutstanding = 0;
 
-  m_fUpdateDatabase = false;
   m_fInquiryStockProfile = true;
   m_fEPSSurpriseNeedUpdate = true;
   m_fEPSSurpriseNeedSave = false;
@@ -358,7 +357,7 @@ bool CWorldStock::UpdateEPSSurpriseDB(void) {
 
   if (m_vEPSSurprise.size() == 0) return true;
   if (m_vEPSSurprise.at(m_vEPSSurprise.size() - 1)->m_lDate > m_lLastEPSSurpriseUpdateDate) {
-    m_fUpdateDatabase = true;
+    SetUpdateStockProfileDB(true);
   }
   else return false; // 没有新数据则返回
 
@@ -397,11 +396,11 @@ void CWorldStock::UpdateDayLineStartEndDate(void) {
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
-      m_fUpdateDatabase = true;
+      SetUpdateStockProfileDB(true);
     }
     if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
       SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
-      m_fUpdateDatabase = true;
+      SetUpdateStockProfileDB(true);
     }
   }
 }

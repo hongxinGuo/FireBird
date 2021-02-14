@@ -191,7 +191,6 @@ public:
   bool m_fEPSSurpriseNeedUpdate;
   atomic_bool m_fEPSSurpriseNeedSave;
   // 无需存储数据区
-  bool m_fUpdateDatabase; // 要求更新此数据
   bool m_fInquiryStockProfile; // 要求更新公司简介
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
   bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真

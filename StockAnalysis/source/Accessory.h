@@ -37,6 +37,13 @@ CString GetStockSymbol(CString strStockCode);
 CString GetStockExchange(CString strStockCode);
 CString CreateStockCode(CString strStockExchange, CString strStockSymbol);
 
+// 股票代码采用国家标准制式
+bool IsShanghaiExchange2(CString strStockCode);
+bool IsShenzhenExchange2(CString strStockCode);
+CString GetStockSymbol2(CString strStockCode);
+CString GetStockExchange2(CString strStockCode);
+CString CreateStockCode2(CString strStockExchange, CString strStockSymbol);
+
 CString GetChinaMarketSchemaConnect();// 用于中国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用ChinaMarketTest驱动，正常模式时使用ChinaMarket驱动
 CString GetWorldMarketSchemaConnect();// 用于美国市场数据集的GetDefaultConnect()，以保持一致性。测试模式时使用world_market_test驱动，正常模式时使用world_market驱动
 

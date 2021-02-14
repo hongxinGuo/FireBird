@@ -94,6 +94,9 @@
     <Filter Include="Mock类\World Market">
       <UniqueIdentifier>{e88a1d06-b060-48f2-8120-cd6322a422f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\China Market\基类">
+      <UniqueIdentifier>{bf4f6ddd-218c-4a6c-a8b6-017abe56de23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -353,9 +356,6 @@
     <ClCompile Include="..\StockAnalysis\source\WeekLineContainer.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
-      <Filter>Test源文件\基类</Filter>
-    </ClCompile>
     <ClCompile Include="NeteaseWebRTDataTest.cpp">
       <Filter>Test源文件\China Market\基础数据类\WebRTData</Filter>
     </ClCompile>
@@ -406,9 +406,6 @@
     </ClCompile>
     <ClCompile Include="WeekLineContainerTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp">
-      <Filter>Test源文件\基类</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>dependency</Filter>
@@ -670,6 +667,15 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockHistoryDataContainerTest.cpp">
+      <Filter>Test源文件\China Market\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="ChinaStockHistoryDataTest.cpp">
+      <Filter>Test源文件\China Market\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualStockTest.cpp">
+      <Filter>Test源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

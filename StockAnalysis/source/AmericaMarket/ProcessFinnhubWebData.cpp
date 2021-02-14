@@ -21,7 +21,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 
   if (pWebData->GetBufferLength() < 20) {
     pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-    pStock->m_fUpdateDatabase = true;
+    pStock->SetUpdateStockProfileDB(true);
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
@@ -31,7 +31,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   }
   catch (ptree_error&) {
     pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-    pStock->m_fUpdateDatabase = true;
+    pStock->SetUpdateStockProfileDB(true);
     return false; // 没有公司简介
   }
   s = pt.get<string>(_T("city"));
@@ -90,7 +90,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   s = pt.get<string>(_T("finnhubIndustry"));
   if (s.size() > 0) pStock->m_strFinnhubIndustry = s.c_str();
   pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
-  pStock->m_fUpdateDatabase = true;
+  pStock->SetUpdateStockProfileDB(true);
   return true;
 }
 
@@ -197,7 +197,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pStock->m_fUpdateDatabase = true;
+      pStock->SetUpdateStockProfileDB(true);
       return true;
     }
     if (s.compare(_T("ok")) != 0) {
@@ -211,7 +211,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     }
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pStock->m_fUpdateDatabase = true;
+    pStock->SetUpdateStockProfileDB(true);
     return false;
   }
   try {
@@ -296,7 +296,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   pStock->UpdateDayLine(vDayLine);
   pStock->SetDayLineNeedUpdate(false);
   pStock->SetDayLineNeedSaving(true);
-  pStock->m_fUpdateDatabase = true;
+  pStock->SetUpdateStockProfileDB(true);
   return true;
 }
 

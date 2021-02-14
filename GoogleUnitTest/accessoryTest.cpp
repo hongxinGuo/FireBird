@@ -202,6 +202,46 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(CreateStockCode(_T("sz"), _T("")), _T("sz"));
   }
 
+  TEST_F(AccessoryTest, TestIsShanghaiExchange2) {
+    EXPECT_TRUE(IsShanghaiExchange2(_T("SS")));
+    EXPECT_TRUE(IsShanghaiExchange2(_T("600001.SS")));
+    EXPECT_TRUE(IsShanghaiExchange2(_T("000001.SS")));
+    EXPECT_TRUE(IsShanghaiExchange2(_T("399399.SS")));
+    EXPECT_TRUE(IsShanghaiExchange2(_T("abcSS")));
+    EXPECT_FALSE(IsShanghaiExchange2(_T("SZ")));
+  }
+
+  TEST_F(AccessoryTest, TestIsShenzhenExchange2) {
+    EXPECT_TRUE(IsShenzhenExchange2(_T("SZ")));
+    EXPECT_TRUE(IsShenzhenExchange2(_T("600001.SZ")));
+    EXPECT_TRUE(IsShenzhenExchange2(_T("000001.SZ")));
+    EXPECT_TRUE(IsShenzhenExchange2(_T("399399.SZ")));
+    EXPECT_TRUE(IsShenzhenExchange2(_T("abcSZ")));
+    EXPECT_FALSE(IsShenzhenExchange2(_T("SS")));
+  }
+
+  TEST_F(AccessoryTest, TestGetStockExchange2) {
+    EXPECT_STREQ(GetStockExchange2(_T("600000.SS")), _T("SS"));
+    EXPECT_STREQ(GetStockExchange2(_T("600000.SZ")), _T("SZ"));
+    EXPECT_STREQ(GetStockExchange2(_T("600SA")), _T("SA"));
+    EXPECT_STREQ(GetStockExchange2(_T("SS")), _T("SS"));
+    EXPECT_STREQ(GetStockExchange2(_T("S")), _T("S"));
+  }
+
+  TEST_F(AccessoryTest, TestGetStockSymbol2) {
+    EXPECT_STREQ(GetStockSymbol2(_T("600001.SS")), _T("600001"));
+    EXPECT_STREQ(GetStockSymbol2(_T("600000.SZ")), _T("600000"));
+    EXPECT_STREQ(GetStockSymbol2(_T("600SA")), _T("60"));
+    EXPECT_STREQ(GetStockSymbol2(_T("600.SS")), _T("600"));
+  }
+
+  TEST_F(AccessoryTest, TestCreateStockCode2) {
+    EXPECT_STREQ(CreateStockCode2(_T("SS"), _T("600000")), _T("600000.SS"));
+    EXPECT_STREQ(CreateStockCode2(_T("SZ"), _T("000001")), _T("000001.SZ"));
+    EXPECT_STREQ(CreateStockCode2(_T("SS"), _T("6000")), _T("6000.SS"));
+    EXPECT_STREQ(CreateStockCode2(_T("SZ"), _T("")), _T(".SZ"));
+  }
+
 }
 
 namespace StockAnalysisTest {
