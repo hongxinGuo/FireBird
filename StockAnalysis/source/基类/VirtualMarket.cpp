@@ -7,7 +7,7 @@
 // 所有的市场使用同一个当地时间。
 time_t CVirtualMarket::sm_tLocal = 0;
 
-CVirtualMarket::CVirtualMarket(void) {
+CVirtualMarket::CVirtualMarket(void) : CObject() {
   m_fPermitResetMarket = true; // 允许系统被重置标识，唯独此标识不允许系统重置。初始时设置为真：允许重置系统。
   m_fResetMarket = true;
   m_fReadyToRun = true;

@@ -11,7 +11,7 @@
 atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // 当前执行网络读取线程数
 atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
-CVirtualWebInquiry::CVirtualWebInquiry() {
+CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
   m_pFile = nullptr;
   m_lByteRead = 0;
   m_lByteReadCurrent = 0;

@@ -1,6 +1,6 @@
 #include "WebRTDataContainer.h"
 
-CWebRTDataContainer::CWebRTDataContainer() {
+CWebRTDataContainer::CWebRTDataContainer() : CObject() {
   ResetSinaQueue();
 }
 

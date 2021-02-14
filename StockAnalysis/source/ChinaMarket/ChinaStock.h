@@ -15,6 +15,8 @@ enum {
 
 #include"globeSymbolDef.h"
 
+#include"VirtualStock.h"
+
 #include"PriorityQueueWebRTData.h"
 
 #include"SetDayLineBasicInfo.h"
@@ -49,7 +51,7 @@ class CChinaStock;
 typedef shared_ptr<CChinaStock> CChinaStockPtr;
 
 // 证券名称数据包
-class CChinaStock : public CObject {
+class CChinaStock : public CVirtualStock {
 public:
   CChinaStock(void);
   virtual ~CChinaStock(void);

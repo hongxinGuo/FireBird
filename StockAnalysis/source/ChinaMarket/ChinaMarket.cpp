@@ -379,6 +379,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
 
   pStock = make_shared<CChinaStock>();
   pStock->SetActive(false);
+  pStock->SetTodayNewStock(true);
   pStock->SetStockCode(strStockCode);
   pStock->SetStockName(strStockName);
   pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);

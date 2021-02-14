@@ -210,12 +210,6 @@
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\VirtualMarket.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\VirtualWebInquiry.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\WebInquirer.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -668,6 +662,15 @@
     <ClCompile Include="MockChinaStockTest.cpp">
       <Filter>Test源文件\China Market\Stock</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\基类\VirtualMarket.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\基类\VirtualStock.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -731,12 +734,6 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\VirtualMarket.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\VirtualWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\WebData.h">
@@ -995,6 +992,15 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetStockSection.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\基类\VirtualMarket.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\基类\VirtualStock.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\基类\VirtualWebInquiry.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,7 +4,7 @@
 
 #include"SetWorldStockDayLine.h"
 
-CWorldStock::CWorldStock() : CObject() {
+CWorldStock::CWorldStock() : CVirtualStock() {
   Reset();
 }
 

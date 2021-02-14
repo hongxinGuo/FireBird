@@ -15,7 +15,7 @@ using namespace std;
 
 class CWebData : public CObject {
 public:
-  CWebData() {
+  CWebData() : CObject() {
     m_lTime = 0;
     m_vDataBuffer.resize(1024 * 1024 * 16);
     m_lBufferLength = 1024 * 1024 * 16;

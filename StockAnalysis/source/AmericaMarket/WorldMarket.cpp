@@ -396,13 +396,16 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         }
         for (auto& pStock2 : vStake) {
           if (!IsWorldStock(pStock2->GetSymbol())) {
+            m_mapWorldStock[pStock2->GetSymbol()] = m_vWorldStock.size();
             m_vWorldStock.push_back(pStock2);
+            pStock2->SetTodayNewStock(true);
             pStock2->m_fUpdateDatabase = true;
             fFoundNewStock = true;
+            TRACE("发现新代码：%s\n", pStock2->GetSymbol().GetBuffer());
           }
         }
         if (fFoundNewStock) {
-          SortStockVector();
+          gl_systemMessage.PushInnerSystemInformationMessage("Finnhub发现新代码，更新代码集");
         }
       }
       break;
@@ -768,9 +771,10 @@ bool CWorldMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  if (IsWorldStockUpdated()) {
+  if (m_fFinnhubSymbolUpdated && IsWorldStockUpdated()) {
     TaskUpdateStakeDB();
   }
+
   return true;
 }
 
@@ -805,7 +809,7 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
   if (((lCurrentTime < 174700) || (lCurrentTime > 175100))) { // 下午五时重启系统，故而此时不允许接收网络信息。
     TaskInquiryFinnhubCountryList();
     TaskInquiryFinnhubForexExchange();
-    TaskInquiryFinnhubCompanySymbol2(); // 第一个动作，首先申请当日证券代码
+    TaskInquiryFinnhubCompanySymbol(); // 第一个动作，首先申请当日证券代码
     TaskInquiryFinnhubForexSymbol();
     //TaskInquiryFinnhubEconomicCalender();
 
@@ -838,23 +842,6 @@ bool CWorldMarket::TaskInquiryFinnhubCountryList(void) {
 }
 
 bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
-  WebInquiry inquiry{ 0, 0, 0 };
-  CString str;
-
-  if (!m_fFinnhubSymbolUpdated && !m_fFinnhubInquiring) {
-    inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
-    inquiry.m_iPriority = 10;
-    m_qFinnhubWebInquiry.push(inquiry);
-    m_fFinnhubInquiring = true;
-    str = _T("查询Finnhub Company Symbol");
-    gl_systemMessage.PushInformationMessage(str);
-
-    return true;
-  }
-  return false;
-}
-
-bool CWorldMarket::TaskInquiryFinnhubCompanySymbol2(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
   CFinnhubExchangePtr pExchange;
@@ -1538,6 +1525,7 @@ bool CWorldMarket::UpdateStakeDB(void) {
       if (setWorldStock.IsEOF()) break;
       pStock = m_vWorldStock.at(m_mapWorldStock.at(setWorldStock.m_Symbol));
       if (pStock->m_fUpdateDatabase) {
+        ASSERT(!pStock->IsTodayNewStock());
         iCount++;
         pStock->Update(setWorldStock);
         pStock->m_fUpdateDatabase = false;
@@ -1547,9 +1535,12 @@ bool CWorldMarket::UpdateStakeDB(void) {
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vWorldStock) {
         if (pStock3->m_fUpdateDatabase) {
+          ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
           iCount++;
           pStock3->Append(setWorldStock);
+          pStock3->SetTodayNewStock(false);
           pStock3->m_fUpdateDatabase = false;
+          TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
         }
         if (iCount >= iUpdatedStock) break;
       }

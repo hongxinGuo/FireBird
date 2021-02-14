@@ -20,7 +20,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CChinaStock::CChinaStock() : CObject() {
+CChinaStock::CChinaStock() : CVirtualStock() {
   Reset();
 }
 

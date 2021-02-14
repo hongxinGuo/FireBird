@@ -103,6 +103,12 @@
     <Filter Include="头文件\China Market\基础数据类">
       <UniqueIdentifier>{97e4e119-3a03-47c2-8d22-4e6459d54f25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\China Market\基类">
+      <UniqueIdentifier>{736b912a-bcfd-4f4d-8623-95fc3d43028f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\China Market\基类">
+      <UniqueIdentifier>{6bc823fd-4718-4603-9453-614fb5c07332}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -150,14 +156,8 @@
     <ClInclude Include="source\QueueWebData.h">
       <Filter>头文件\网络数据提取器</Filter>
     </ClInclude>
-    <ClInclude Include="source\VirtualMarket.h">
-      <Filter>头文件\基类</Filter>
-    </ClInclude>
     <ClInclude Include="source\WebInquirer.h">
       <Filter>头文件\网络数据提取器</Filter>
-    </ClInclude>
-    <ClInclude Include="source\VirtualWebInquiry.h">
-      <Filter>头文件\基类</Filter>
     </ClInclude>
     <ClInclude Include="source\ThreadStatus.h">
       <Filter>头文件\辅助类和函数</Filter>
@@ -221,12 +221,6 @@
     </ClInclude>
     <ClInclude Include="source\WeekLine.h">
       <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ChinaStockHistoryData.h">
-      <Filter>头文件\基类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ChinaStockHistoryDataContainer.h">
-      <Filter>头文件\基类</Filter>
     </ClInclude>
     <ClInclude Include="source\DayLineContainer.h">
       <Filter>头文件\China Market\基础数据类</Filter>
@@ -375,6 +369,21 @@
     <ClInclude Include="source\DataBase\SetStockSection.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
+    <ClInclude Include="source\ChinaStockHistoryData.h">
+      <Filter>头文件\China Market\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ChinaStockHistoryDataContainer.h">
+      <Filter>头文件\China Market\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\基类\VirtualMarket.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\基类\VirtualWebInquiry.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
+    <ClInclude Include="source\基类\VirtualStock.h">
+      <Filter>头文件\基类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -418,12 +427,6 @@
     </ClCompile>
     <ClCompile Include="source\WebInquirer.cpp">
       <Filter>源文件\网络数据提取器</Filter>
-    </ClCompile>
-    <ClCompile Include="source\VirtualMarket.cpp">
-      <Filter>源文件\基类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\VirtualWebInquiry.cpp">
-      <Filter>源文件\基类</Filter>
     </ClCompile>
     <ClCompile Include="source\ThreadStatus.cpp">
       <Filter>源文件\辅助类和函数</Filter>
@@ -479,14 +482,8 @@
     <ClCompile Include="source\DataBase\SetWeekLinextendInfo.cpp">
       <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
-    <ClCompile Include="source\ChinaStockHistoryData.cpp">
-      <Filter>源文件\基类</Filter>
-    </ClCompile>
     <ClCompile Include="source\WeekLine.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp">
-      <Filter>源文件\基类</Filter>
     </ClCompile>
     <ClCompile Include="source\DayLineContainer.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
@@ -721,6 +718,21 @@
     </ClCompile>
     <ClCompile Include="source\DataBase\SetStockSection.cpp">
       <Filter>源文件\China Market\数据库</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStockHistoryData.cpp">
+      <Filter>源文件\China Market\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaStockHistoryDataContainer.cpp">
+      <Filter>源文件\China Market\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\基类\VirtualMarket.cpp">
+      <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\基类\VirtualWebInquiry.cpp">
+      <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\基类\VirtualStock.cpp">
+      <Filter>源文件\基类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

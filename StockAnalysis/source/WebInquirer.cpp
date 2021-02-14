@@ -56,7 +56,7 @@ CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
 #endif
 
-CWebInquirer::CWebInquirer(void) {
+CWebInquirer::CWebInquirer(void) : CObject() {
 }
 
 CWebInquirer::~CWebInquirer(void) {

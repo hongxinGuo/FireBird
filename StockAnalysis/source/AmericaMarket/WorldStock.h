@@ -3,9 +3,10 @@
 #include"stdafx.h"
 #include"globeSymbolDef.h"
 
+#include"VirtualStock.h"
+
 #include"DayLine.h"
 #include"EPSSurprise.h"
-
 #include"SetWorldStock.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 #include<atomic>
 #include<vector>
 
-class CWorldStock : public CObject {
+class CWorldStock : public CVirtualStock {
 public:
   CWorldStock();
   void Reset(void);
