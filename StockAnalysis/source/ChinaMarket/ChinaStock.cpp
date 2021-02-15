@@ -174,7 +174,6 @@ bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquir
     m_vDayLineBuffer.at(i) = pNeteaseWebDayLineData->GetData(i);
   }
   m_lDayLineBufferLength = pNeteaseWebDayLineData->GetByteReaded();
-
   return true;
 }
 
@@ -195,19 +194,11 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   }
 
   ASSERT(m_vDayLineBuffer.at(m_lDayLineBufferLength) == 0x000); // 最后字符为增加的0x000.
-  if (!SkipNeteaseDayLineInformationHeader(lCurrentPos)) return false;
+  if (!SkipNeteaseDayLineInformationHeader(lCurrentPos)) {
+    return false;
+  }
 
   if (lCurrentPos >= m_lDayLineBufferLength) {// 无效股票号码，数据只有前缀说明，没有实际信息，或者退市了；或者已经更新了；或者是新股上市的第一天
-    if (GetDayLineEndDate() == __CHINA_MARKET_BEGIN_DATE__) { // 如果初始日线结束日期从来没有变更过，则此股票代码尚未被使用过
-      SetIPOStatus(__STAKE_DELISTED__);   // 此股票代码尚未使用。
-      //TRACE("无效股票代码:%s\n", GetStockCode().GetBuffer());
-    }
-    else { // 已经退市的股票
-      if (gl_pChinaStockMarket->IsEarlyThen(GetDayLineEndDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) {
-        SetIPOStatus(__STAKE_DELISTED__);   // 此股票代码已经退市。
-      }
-      //TRACE("%S没有可更新的日线数据\n", GetStockCode().GetBuffer());
-    }
     return false;
   }
 
@@ -1526,11 +1517,14 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   SetStockName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
   m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
-  if ((GetStockCode() < _T("sh001000")) || (GetStockCode() >= _T("sz399000"))) { // 沪深指数？
-    SetNeedProcessRTData(false);
+  SetNeedProcessRTData(true);
+  if (IsShanghaiExchange2(GetStockCode())) {
+    if (GetStockCode().Left(6) <= _T("000999")) { //沪市指数？
+      SetNeedProcessRTData(false);
+    }
   }
-  else {
-    SetNeedProcessRTData(true);
+  else if ((GetStockCode().Left(6) >= _T("399000"))) { // 深市指数
+    SetNeedProcessRTData(false);
   }
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);

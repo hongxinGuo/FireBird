@@ -127,6 +127,8 @@
 #define ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END 32895
 #define ID_BUILD_32896                  32896
 #define ID_REBUILD_CHINAMARKET_DAYLINE  32897
+#define ID_BUILD_32898                  32898
+#define ID_Change_DayLineExtendInfo     32899
 #define ID_CURRENT_SELECT_STOCK         59142
 #define ID_CURRENT_SELECT_STOCKNAME     59143
 #define ID_CURRENT_INPUT                59144
@@ -154,7 +156,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319
-#define _APS_NEXT_COMMAND_VALUE         32898
+#define _APS_NEXT_COMMAND_VALUE         32900
 #define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

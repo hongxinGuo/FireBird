@@ -44,10 +44,11 @@ bool CNeteaseRTWebInquiry::ReportStatus(long lNumberOfData) {
 
 bool CNeteaseRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
-
+  CString strNeteaseStockCode;
   // 申请下一批次股票实时数据
   strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, gl_pChinaStockMarket->IsSystemReady()); // 目前还是使用全部股票池
-  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(7)); // 只提取第一个股票代码.网易代码格式为：0600000，共七个字符
+  strNeteaseStockCode = strMiddle.Left(7); //只提取第一个股票代码.网易代码格式为：0600000，共七个字符
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(XferNeteaseToStandred(strNeteaseStockCode)); 
   CreateTotalInquiringString(strMiddle);
 
   return true;

@@ -21,6 +21,7 @@ UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebD
       gl_WebInquirer.PushCrweberData(pWebDataReceived);
     }
   }
+  pCrweberIndexWebData->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 5;

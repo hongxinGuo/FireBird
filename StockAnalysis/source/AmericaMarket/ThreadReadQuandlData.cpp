@@ -26,6 +26,7 @@ UINT ThreadReadQuandlData(not_null<CQuandlWebInquiry*> pQuandlWebData) {
     while (gl_WebInquirer.GetQuandlDataSize() > 0) gl_WebInquirer.PopQuandlData();
     gl_pWorldMarket->SetQuandlInquiring(false); // 当工作线程出现故障时，需要清除Quandl数据申请标志。
   }
+  pQuandlWebData->SetReadingWebData(false);
   gl_pWorldMarket->SetQuandlDataReceived(true); // 接收完网络数据后，清除状态。
   gl_ThreadStatus.DecreaseRunningThread();
 

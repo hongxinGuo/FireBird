@@ -21,6 +21,7 @@ UINT ThreadReadTengxunRTData(not_null<CTengxunRTWebInquiry*> pTengxunRTWebData) 
       gl_WebInquirer.PushTengxunRTData(pWebDataReceived);
     }
   }
+  pTengxunRTWebData->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 2;

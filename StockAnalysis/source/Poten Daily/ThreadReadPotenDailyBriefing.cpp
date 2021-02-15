@@ -20,6 +20,7 @@ UINT ThreadReadPotenDailyBriefing(not_null<CPotenDailyBriefingWebInquiry*> pPote
       gl_WebInquirer.PushPotenDailyBriefingData(pWebDataReceived);
     }
   }
+  pPotenDailyBriefingWebInquiry->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 6;

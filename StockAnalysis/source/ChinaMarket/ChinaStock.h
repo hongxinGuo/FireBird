@@ -291,6 +291,7 @@ public:
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
   bool IsUpdateStockProfileDB(void) noexcept { return m_fUpdateStockProfileDB; }
+  bool IsUpdateStockProfileDBAndClearFlag(void) { const bool fNeedSaveing = m_fUpdateStockProfileDB.exchange(false); return fNeedSaveing; }
   void SetUpdateStockProfileDB(bool fFlag) noexcept { m_fUpdateStockProfileDB = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
@@ -588,7 +589,7 @@ protected:
   INT64 m_llLastSavedVolume; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
-  bool m_fUpdateStockProfileDB; // 更新StockProfile数据库
+  atomic_bool m_fUpdateStockProfileDB; // 更新StockProfile数据库
 
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况

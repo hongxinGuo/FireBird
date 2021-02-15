@@ -718,7 +718,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
           pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
-          pStock->SetIPOStatus(__STAKE_IPOED__);
+          //pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -2590,8 +2590,8 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
     }
     iCount++;
     pStock->SetDayLineEndDate(lCurrentTradeDay);
-    pStock->SetUpdateStockProfileDB(true);
     pStock->SetIPOStatus(__STAKE_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+    pStock->SetUpdateStockProfileDB(true);
     setDayLineBasicInfo.AddNew();
     pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
@@ -3130,19 +3130,17 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     while (iCount < iUpdatedStock) {
       if (setStockCode.IsEOF()) break;
       pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
-      if (pStock->IsUpdateStockProfileDB()) {
+      if (pStock->IsUpdateStockProfileDBAndClearFlag()) {
         iCount++;
         pStock->UpdateStockCodeDB(setStockCode);
-        pStock->SetUpdateStockProfileDB(false);
       }
       setStockCode.MoveNext();
     }
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vChinaMarketStock) {
-        if (pStock3->IsUpdateStockProfileDB()) {
+        if (pStock3->IsUpdateStockProfileDBAndClearFlag()) {
           iCount++;
           pStock3->AppendStockCodeDB(setStockCode);
-          pStock3->SetUpdateStockProfileDB(false);
         }
         if (iCount >= iUpdatedStock) break;
       }

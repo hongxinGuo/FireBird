@@ -29,9 +29,11 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
   if (pNeteaseDayLineWebData->ReadWebData3(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     pStock = gl_pChinaStockMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
+    ASSERT(pStock != nullptr);
     pStock->TransferNeteaseDayLineWebDataToBuffer(pNeteaseDayLineWebData);
     pStock->SetDayLineNeedProcess(true);
   }
+  pNeteaseDayLineWebData->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 4; // 此线程正常返回值为4

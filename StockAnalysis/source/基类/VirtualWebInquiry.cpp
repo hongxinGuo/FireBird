@@ -96,7 +96,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   m_tCurrentInquiryTime = GetTickCount64() - tt;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
-  SetReadingWebData(false);
   return fStatus;
 }
 
@@ -159,7 +158,6 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
   m_tCurrentInquiryTime = GetTickCount64() - tt;
   m_lReadingThreadNumber--;
   ASSERT(m_lReadingThreadNumber >= 0);
-  SetReadingWebData(false);
   return fStatus;
 }
 

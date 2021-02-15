@@ -20,6 +20,7 @@ UINT ThreadReadSinaRTData(not_null<CSinaRTWebInquiry*> pSinaRTWebData) {
       gl_WebInquirer.PushSinaRTData(pWebDataReceived);
     }
   }
+  pSinaRTWebData->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 1;

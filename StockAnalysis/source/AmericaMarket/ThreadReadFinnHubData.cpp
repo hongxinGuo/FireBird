@@ -26,6 +26,7 @@ UINT ThreadReadFinnhubData(not_null<CFinnhubWebInquiry*> pFinnhubWebData) {
     while (gl_WebInquirer.GetFinnhubDataSize() > 0) gl_WebInquirer.PopFinnhubData();
     gl_pWorldMarket->SetFinnhubInquiring(false); // 当工作线程出现故障时，需要清除Finnhub数据申请标志。
   }
+  pFinnhubWebData->SetReadingWebData(false);
   gl_pWorldMarket->SetFinnhubDataReceived(true); // 接收完网络数据后，清除状态。
   gl_ThreadStatus.DecreaseRunningThread();
 

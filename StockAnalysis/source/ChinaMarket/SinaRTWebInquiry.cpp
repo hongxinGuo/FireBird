@@ -20,6 +20,7 @@ CSinaRTWebInquiry::~CSinaRTWebInquiry() {
 
 bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
+  CString strSinaStockCode;
 
   // 申请下一批次股票实时数据
   if (gl_pChinaStockMarket->IsCheckActiveStock() || !gl_pChinaStockMarket->IsSystemReady()) { // 如果处于寻找今日活跃股票期间（9:10--9:29, 11:31--12:59),则使用全局股票池
@@ -28,7 +29,8 @@ bool CSinaRTWebInquiry::PrepareNextInquiringStr(void) {
   else { // 开市时使用今日活跃股票池
     strMiddle = GetNextInquiringMiddleStr(m_lInquiringNumber, true);
   }
-  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(strMiddle.Left(8)); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+  strSinaStockCode = strMiddle.Left(8); // 只提取第一个股票代码。新浪代码格式为：sh000001，共八个字符。
+  gl_pChinaStockMarket->SetStockCodeForInquiringRTData(XferSinaToStandred(strSinaStockCode));
   CreateTotalInquiringString(strMiddle);
 
   return true;

@@ -26,11 +26,13 @@ CNeteaseDayLineWebInquiry::~CNeteaseDayLineWebInquiry() {
 bool CNeteaseDayLineWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
   char buffer2[200];
+  CString strStockCode;
 
   // 准备网易日线数据申请格式
   if (gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(strMiddle, gl_pChinaStockMarket->GetTotalStock())) {
-    SetDownLoadingStockCode(strMiddle);
-    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strMiddle);
+    strStockCode = XferNeteaseToStandred(strMiddle);
+    SetDownLoadingStockCode(strStockCode);
+    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(strStockCode);
     strMiddle += _T("&start=19900101&end=");
     sprintf_s(buffer2, _T("%8d"), gl_pChinaStockMarket->GetFormatedMarketDate());
     strMiddle += buffer2;
@@ -48,9 +50,9 @@ void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
 }
 
 /// <summary>
-/// 这里的strStockCode为Netease制式：0600000，100001，
+/// 这里的strStockCode为标准制式：600000.SS，000001.SZ，
 /// </summary>
 /// <param name="strStockCode"></param>
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
-  m_strDownLoadingStockCode = XferNeteaseToStandred(strStockCode);
+  m_strDownLoadingStockCode = strStockCode;
 }

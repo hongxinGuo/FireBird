@@ -22,6 +22,7 @@ UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData) 
   else {
     TRACE("读取网易实时数据出错\n");
   }
+  pNeteaseRTWebData->SetReadingWebData(false);
   gl_ThreadStatus.DecreaseRunningThread();
 
   return 3;
