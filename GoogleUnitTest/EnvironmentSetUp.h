@@ -51,8 +51,6 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexWebInquiry = make_shared<CMockCrweberIndexWebInquiry>();
       gl_pNeteaseDayLineWebInquiry = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pNeteaseDayLineWebInquiry2 = make_shared<CMockNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquiry3 = make_shared<CMockNeteaseDayLineWebInquiry>();
-      gl_pNeteaseDayLineWebInquiry4 = make_shared<CMockNeteaseDayLineWebInquiry>();
       gl_pFinnhubWebInquiry = make_shared<CMockFinnhubWebInquiry>();
       gl_pTiingoWebInquiry = make_shared<CMockTiingoWebInquiry>();
       gl_pQuandlWebInquiry = make_shared<CMockQuandlWebInquiry>();

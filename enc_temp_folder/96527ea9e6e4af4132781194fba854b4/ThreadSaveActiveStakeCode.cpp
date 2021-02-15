@@ -18,3 +18,9 @@ UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket) {
 
   return 35;
 }
+
+UINT ThreadChangeDayLineExtendInfoStockCodeToStandred(not_null<CChinaMarket*> pMarket) {
+  pMarket->ChangeDayLineStockCodeToStandred();
+  
+  return 36;
+}

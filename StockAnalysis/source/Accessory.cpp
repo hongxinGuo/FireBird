@@ -316,6 +316,79 @@ CString CreateStockCode2(CString strStockExchange, CString strStockSymbol) {
   return strStockSymbol + _T(".") + strStockExchange;
 }
 
+CString XferSinaToStandred(CString strSina) {
+  CString strSymbol = strSina.Right(6);
+  if (IsShanghaiExchange(strSina)) {
+    return strSymbol + _T(".") + _T("SS");
+  }
+  else {
+    ASSERT(strSina.GetAt(1) == 'z');
+    return strSymbol + _T(".") + _T("SZ");
+  }
+}
+
+CString XferSinaToNetease(CString strSina) {
+  CString strSymbol = strSina.Right(6);
+  if (IsShanghaiExchange(strSina)) {
+    return _T("0") + strSymbol;
+  }
+  else {
+    ASSERT(strSina.GetAt(1) == 'z');
+    return _T("1") + strSymbol;
+  }
+}
+
+CString XferNeteaseToStandred(CString strNetease) {
+  CString strSymbol = strNetease.Right(6);
+  if (strNetease.GetAt(0) == '0') {
+    return strSymbol + _T(".") + _T("SS");
+  }
+  else {
+    ASSERT(strNetease.GetAt(0) == '1');
+    return strSymbol + _T(".") + _T("SZ");
+  }
+}
+
+CString XferNeteaseToSina(CString strNetease) {
+  CString strSymbol = strNetease.Right(6);
+  if (strNetease.GetAt(0) == '0') {
+    return _T("sh") + strSymbol;
+  }
+  else {
+    ASSERT(strNetease.GetAt(0) == '1');
+    return _T("sz") + strSymbol;
+  }
+}
+
+CString XferTengxunToStandred(CString strTengxun) {
+    return XferSinaToStandred(strTengxun);
+}
+
+CString XferStandredToSina(CString strStandred) {
+  CString strSymbol = strStandred.Left(6);
+  if (IsShanghaiExchange2(strStandred)) {
+    return _T("sh") + strSymbol;
+  }
+  else {
+    ASSERT(strStandred.GetAt(strStandred.GetLength()-1) == 'Z');
+    return _T("sz") + strSymbol;
+  }
+}
+
+CString XferStandredToNetease(CString strStandred) {
+  CString strSymbol = strStandred.Left(6);
+  if (IsShanghaiExchange2(strStandred)) {
+    return _T("0") + strSymbol;
+  }
+  else {
+    ASSERT(strStandred.GetAt(strStandred.GetLength()-1) == 'Z');
+    return _T("1") + strSymbol;
+  }
+}
+
+CString XferStandredToTengxun(CString strStandred) {
+  return XferStandredToSina(strStandred);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //

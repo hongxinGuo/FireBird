@@ -52,18 +52,5 @@ void CNeteaseDayLineWebInquiry::StartReadingThread(void) {
 /// </summary>
 /// <param name="strStockCode"></param>
 void CNeteaseDayLineWebInquiry::SetDownLoadingStockCode(CString strStockCode) {
-  not_null<char*> p = strStockCode.GetBuffer();
-  const char cFirstChar = *p;
-  CString strRight = strStockCode.Right(6);
-  if (cFirstChar == '0') {
-    m_strDownLoadingStockCode = _T("sh");
-    m_strDownLoadingStockCode += strRight;
-  }
-  else if (cFirstChar == '1') {
-    m_strDownLoadingStockCode = _T("sz");
-    m_strDownLoadingStockCode += strRight;
-  }
-  else {
-    m_strDownLoadingStockCode = strStockCode;
-  }
+  m_strDownLoadingStockCode = XferNeteaseToStandred(strStockCode);
 }

@@ -56,10 +56,6 @@ extern CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry; // Pot
 extern CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry; // crweber.com上的每日油运指数
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry; // 网易日线历史数据
 extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry5; // 网易日线历史数据
-extern CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry6; // 网易日线历史数据
 extern CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 extern CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
 extern CTiingoWebInquiryPtr gl_pTiingoWebInquiry;

@@ -1443,8 +1443,8 @@ bool CWorldMarket::LoadWorldStock(void) {
       pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
       pWorldStock->CheckPeerStatus(GetFormatedMarketDate());
-      m_vWorldStock.push_back(pWorldStock);
       m_mapWorldStock[setWorldStock.m_Symbol] = m_lLastTotalWorldStock++;
+      m_vWorldStock.push_back(pWorldStock);
     }
     else {
       str = _T("发现重复代码：");

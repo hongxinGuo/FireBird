@@ -143,6 +143,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
   CString strTest;
   CString strStockSymbol = _T("");
   WORD wMarket;
+  CString strSinaStockCode;
 
   int i = 0;
   while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (i < 1900)) {
@@ -187,14 +188,15 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    m_strStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strSinaStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    m_strStockCode = CreateStockCode(_T("sz"), strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strSinaStockCode = CreateStockCode(_T("sz"), strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     throw exception();
     }
+    m_strStockCode = XferSinaToStandred(strSinaStockCode);
     lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
@@ -433,7 +435,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
   }
 }
 
-bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake) {
+bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStake) {
   static char buffer1[100];
   char buffer2[7];
   static char buffer3[100];
@@ -443,6 +445,7 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
   char bufferTest[2000];
   CString strTest;
   WORD wMarket;
+  CString strStockSymbol, strSinaStockCode;
 
   int i = 0;
   while ((pSinaWebRTData->GetData(i + pSinaWebRTData->GetCurrentPos()) != ';') && (i < 1900)) {
@@ -484,17 +487,18 @@ bool CWebRTData::ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
 
     pSinaWebRTData->GetData(buffer2, 6, pSinaWebRTData->GetCurrentPos());
     buffer2[6] = 0x000;
-    m_strStockCode = buffer2;
+    strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strSinaStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strSinaStockCode = CreateStockCode(_T("sz"),strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     throw exception();
     }
+    m_strStockCode = XferSinaToStandred(strSinaStockCode);
     lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
@@ -715,6 +719,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
   float fTemp = 0.0;
   long lStockCode = 0;
   WORD wMarket;
+  CString strStockSymbol, strTengxunStockCode;
 
   try {
     m_fActive = false;    // 初始状态为无效数据
@@ -740,17 +745,18 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     // 六位股票代码
     pTengxunWebRTData->GetData(buffer2, 6, pTengxunWebRTData->GetCurrentPos());
     buffer2[6] = 0x000;
-    m_strStockCode = buffer2;
+    strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    m_strStockCode = _T("sh") + m_strStockCode; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strTengxunStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    m_strStockCode = _T("sz") + m_strStockCode;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strTengxunStockCode = CreateStockCode(_T("sz"), strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     return false;
     }
+    m_strStockCode = XferTengxunToStandred(strTengxunStockCode);
     lStockCode = atoi(buffer2);
     pTengxunWebRTData->IncreaseCurrentPos(6);
 
@@ -1066,6 +1072,7 @@ bool CWebRTData::ReadNeteaseData(CWebDataPtr pNeteaseWebRTData) {
   CString strStockCode = _T(" "), strHeader;
   long lSectionLength = 0;
   CString strTest;
+  CString strStockSymbol, strNeteaseStockCode;
 
   int i = 0;
   while ((pNeteaseWebRTData->GetData(pNeteaseWebRTData->GetCurrentPos() + i) != '}') && (i < 1900)) {
@@ -1194,6 +1201,7 @@ bool CWebRTData::ReadNeteaseStockCodePrefix(CWebDataPtr pWebDataReceived) {
   pWebDataReceived->IncreaseCurrentPos();
   strStockCode = strHeader;
   strStockCode += bufferStockCode;
+  strStockCode = XferSinaToStandred(strStockCode);
   if (gl_pChinaStockMarket->GetStock(strStockCode) == nullptr) {
     return false;
   }
@@ -1313,10 +1321,10 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
   ASSERT(strValue.GetLength() == 7);
   str = strValue.Left(1);
   if (str.Compare(_T("0")) == 0) {
-    str1 = _T("sh");
+    str1 = _T("SS");
   }
-  else str1 = _T("sz");
-  m_strStockCode = str1 + strValue.Right(6);
+  else str1 = _T("SZ");
+  m_strStockCode = CreateStockCode2(str1, strValue.Right(6));
   break;
   case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
   //m_strStockName = buffer;

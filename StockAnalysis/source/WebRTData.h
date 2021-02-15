@@ -154,7 +154,7 @@ public:
   bool ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer); // 从file中读入一个浮点数据，最后字符为‘，’。
 
   // 读取新浪实时数据中的证券代码
-  bool ReadSinaStakeCode(CWebDataPtr pSinaWebRTData, bool& fValidStake);
+  bool ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStake);
 
   // 读取腾讯实时数据函数
   // 从字符指针处读入腾讯制式数据。此指针开始处为v_s,遇到\n(回车)结束

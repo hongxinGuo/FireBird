@@ -49,8 +49,6 @@ CPotenDailyBriefingWebInquiryPtr gl_pPotenDailyBriefingWebInquiry = nullptr; // 
 CCrweberIndexWebInquiryPtr gl_pCrweberIndexWebInquiry = nullptr; // crweber.com上的每日油运指数
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry = nullptr; // 网易日线历史数据
 CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry2 = nullptr; // 网易日线历史数据
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry3 = nullptr; // 网易日线历史数据
-CNeteaseDayLineWebInquiryPtr gl_pNeteaseDayLineWebInquiry4 = nullptr; // 网易日线历史数据
 CFinnhubWebInquiryPtr gl_pFinnhubWebInquiry; // Finnhub.io证券信息
 CQuandlWebInquiryPtr gl_pQuandlWebInquiry;
 CTiingoWebInquiryPtr gl_pTiingoWebInquiry;
@@ -85,8 +83,6 @@ void CWebInquirer::Initialize(void) {
   gl_pCrweberIndexWebInquiry = make_shared<CCrweberIndexWebInquiry>();
   gl_pNeteaseDayLineWebInquiry = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pNeteaseDayLineWebInquiry2 = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry3 = make_shared<CNeteaseDayLineWebInquiry>();
-  gl_pNeteaseDayLineWebInquiry4 = make_shared<CNeteaseDayLineWebInquiry>();
   gl_pFinnhubWebInquiry = make_shared<CFinnhubWebInquiry>();
   gl_pTiingoWebInquiry = make_shared<CTiingoWebInquiry>();
   gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
@@ -101,13 +97,7 @@ bool CWebInquirer::GetNeteaseDayLineData(void) {
   case 6:
   case 5:
   case 4:
-  if (!gl_pNeteaseDayLineWebInquiry4->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiry4->GetWebData();
-  }
   case 3:
-  if (!gl_pNeteaseDayLineWebInquiry3->IsReadingWebData()) {
-    gl_pNeteaseDayLineWebInquiry3->GetWebData();
-  }
   case 2:
   if (!gl_pNeteaseDayLineWebInquiry2->IsReadingWebData()) {
     gl_pNeteaseDayLineWebInquiry2->GetWebData();

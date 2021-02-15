@@ -292,9 +292,9 @@ void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
 }
 
 void CChinaStock::ReportDayLineDownLoaded(void) {
-  CString strTemp = GetStockCode();
-  strTemp += _T("日线下载完成.");
-  gl_systemMessage.PushDayLineInfoMessage(strTemp);
+  //CString strTemp = GetStockCode();
+  //strTemp += _T("日线下载完成.");
+  //gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
 
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
@@ -435,22 +435,21 @@ bool CChinaStock::SaveDayLineBasicInfo(void) {
 }
 
 void CChinaStock::UpdateDayLineStartEndDate(void) {
-  if (m_DayLine.GetDataSize() == 0) {
-    SetDayLineStartDate(__CHINA_MARKET_BEGIN_DATE__);
-    SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
-    SetUpdateStockProfileDB(true);
-  }
-  else {
+  bool fUpdated = false;
+  if (m_DayLine.GetDataSize() > 0) {
     if ((GetDayLineStartDate() == 19900101) || (m_DayLine.GetData(0)->GetFormatedMarketDate() < GetDayLineStartDate())) {
       SetDayLineStartDate(m_DayLine.GetData(0)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
-      SetUpdateStockProfileDB(true);
+      fUpdated = true;
     }
     if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) {
       SetDayLineEndDate(m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate());
       SetDayLineDBUpdated(true);
-      SetUpdateStockProfileDB(true);
+      fUpdated = true;
     }
+  }
+  if (fUpdated) {
+    SetUpdateStockProfileDB(true);
   }
 }
 

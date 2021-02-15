@@ -150,8 +150,6 @@ public:
   CChinaStockPtr GetStock(CString strStockCode);
   CChinaStockPtr GetStock(long lIndex);
 
-  void AddStock(CChinaStockPtr pStock) noexcept { m_vChinaMarketStock.push_back(pStock); m_mapChinaMarketStock[pStock->GetStockCode()] = m_vChinaMarketStock.size(); }
-
   // 得到当前显示股票
   CChinaStockPtr GetCurrentStock(void) noexcept { return m_pCurrentStock; }
   void SetCurrentStock(CString strStockCode);
@@ -205,6 +203,8 @@ public:
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
   virtual bool SaveStakeSection(void);
+
+  bool ChangeDayLineStockCodeToStandred(void);
 
   bool DeleteWeekLine(void);
   bool DeleteWeekLineBasicInfo(void);
