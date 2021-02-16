@@ -243,12 +243,6 @@
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h">
       <Filter>头文件\China Market\数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\StakeSection.h">
-      <Filter>头文件\China Market\基础数据类</Filter>
-    </ClInclude>
-    <ClInclude Include="source\DataBase\SetActiveStakeCode.h">
-      <Filter>头文件\China Market\数据库</Filter>
-    </ClInclude>
     <ClInclude Include="GlobeSymbolDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -384,6 +378,9 @@
     <ClInclude Include="source\基类\VirtualStock.h">
       <Filter>头文件\基类</Filter>
     </ClInclude>
+    <ClInclude Include="source\ChinaMarket\StockSection.h">
+      <Filter>头文件\China Market\基础数据类</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -508,12 +505,6 @@
     </ClCompile>
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StakeSection.cpp">
-      <Filter>源文件\China Market\基础数据类</Filter>
-    </ClCompile>
-    <ClCompile Include="source\DataBase\SetActiveStakeCode.cpp">
-      <Filter>源文件\China Market\数据库</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
@@ -733,6 +724,9 @@
     </ClCompile>
     <ClCompile Include="source\基类\VirtualStock.cpp">
       <Filter>源文件\基类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\StockSection.cpp">
+      <Filter>源文件\China Market\基础数据类</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

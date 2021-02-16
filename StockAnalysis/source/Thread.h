@@ -93,7 +93,7 @@ UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×
 // ÖØ½¨µ±Ç°ÖÜµÄÖÜÏßÊı¾İ±í
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª33
 // ´æ´¢Ö¤È¯´úÂë¶ÎË÷Òı
-UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
+UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket); // ´Ë¹¤×÷Ïß³Ì·µ»ØÖµÎª35
 
 // ÏÂÃæÎªÃÀ¹ú¹ÉÆ±ÊĞ³¡µÄ¹¤×÷Ïß³Ì
 // ¸üĞÂÃÀ¹ÉÈÕÏßÆğÖ¹ÈÕÆÚÏß³Ì

@@ -8,8 +8,7 @@
 #include"VirtualMarket.h"
 
 #include"WebRTDataContainer.h"
-#include"StakeCode.h"
-#include"StakeSection.h"
+#include"StockSection.h"
 
 #include "ChinaStock.h"
 
@@ -84,7 +83,7 @@ public:
   bool TaskSaveChoicedRTData(void);
   bool TaskClearChoicedRTDataSet(long lCurrentTime);
 
-  bool TaskSaveStakeSection(void); //
+  bool TaskSaveStockSection(void); //
 
   //处理个股票的实时数据，计算挂单变化等。由工作线程ThreadCalculatingRTDataProc调用。
   bool TaskProcessRTData(void);
@@ -119,7 +118,7 @@ public:
   virtual bool RunningThreadBuildWeekLineRSOfDate(long lThisDay);
   virtual bool RunningThreadBuildWeekLineOfCurrentWeek(void);
   virtual bool RunningThreadBuildCurrentWeekWeekLineTable(void);
-  virtual bool RunningThreadSaveStakeSection(void);
+  virtual bool RunningThreadSaveStockSection(void);
   // interface function
 
 public:
@@ -202,7 +201,7 @@ public:
   bool LoadDayLine(CDayLineContainer& dayLineContainer, long lDate);
   bool LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, long lMondayOfWeek);
   bool SaveWeekLine(CWeekLineContainer& weekLineContainer);
-  virtual bool SaveStakeSection(void);
+  virtual bool SaveStockSection(void);
 
   bool ChangeDayLineStockCodeToStandred(void);
 
@@ -392,8 +391,8 @@ public:
   void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
   bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }
 
-  void SetUpdateStakeSection(bool fFlag) noexcept { m_fUpdateStakeSection = fFlag; }
-  bool IsUpdateStakeSection(void) noexcept { return m_fUpdateStakeSection; }
+  void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
+  bool IsUpdateStockSection(void) noexcept { return m_fUpdateStockSection; }
 
 protected:
   // 初始化
@@ -414,8 +413,8 @@ protected:
 // 变量区
 protected:
   vector<CString> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
-  vector<CStakeSectionPtr> m_vStakeSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
-  bool m_fUpdateStakeSection; // 更新StakeSection标识
+  vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
+  bool m_fUpdateStockSection; // 更新StakeSection标识
 
   vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
   map<CString, long> m_mapCurrentStockSet; // 当前所有股票代码的映射

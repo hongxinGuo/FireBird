@@ -235,6 +235,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadBuildWeekLine.cpp" />
@@ -260,7 +261,6 @@
     <ClCompile Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadReadCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\Crweber\ThreadSaveCrweberDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetChoicedStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.cpp" />
     <ClCompile Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.cpp" />
@@ -291,8 +291,6 @@
     <ClCompile Include="..\StockAnalysis\source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\QueueWebRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp" />
     <ClCompile Include="..\StockAnalysis\source\SystemMessage.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ThreadStatus.cpp" />
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp" />
@@ -426,13 +424,13 @@
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\SinaRTWebInquiry.h" />
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\TengxunRTWebInquiry.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryData.h" />
     <ClInclude Include="..\StockAnalysis\source\ChinaStockHistoryDataContainer.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexMarket.h" />
     <ClInclude Include="..\StockAnalysis\source\Crweber\CrweberIndexWebInquiry.h" />
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetChoicedStock.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetCrweberIndex.h" />
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetDayLineBasicInfo.h" />
@@ -463,8 +461,6 @@
     <ClInclude Include="..\StockAnalysis\source\QueueWebData.h" />
     <ClInclude Include="..\StockAnalysis\source\QueueWebRTData.h" />
     <ClInclude Include="..\StockAnalysis\source\Semaphore.h" />
-    <ClInclude Include="..\StockAnalysis\source\StakeCode.h" />
-    <ClInclude Include="..\StockAnalysis\source\StakeSection.h" />
     <ClInclude Include="..\StockAnalysis\source\SystemMessage.h" />
     <ClInclude Include="..\StockAnalysis\source\Thread.h" />
     <ClInclude Include="..\StockAnalysis\source\ThreadStatus.h" />

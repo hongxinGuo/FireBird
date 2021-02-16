@@ -473,8 +473,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadSaveStakeSection) {
-    EXPECT_CALL(*s_pchinaMarket, SaveStakeSection)
+    EXPECT_CALL(*s_pchinaMarket, SaveStockSection)
       .Times(1);
-    EXPECT_EQ(ThreadSaveStakeSection(s_pchinaMarket), (UINT)35);
+    EXPECT_EQ(ThreadSaveStockSection(s_pchinaMarket), (UINT)35);
   }
 }

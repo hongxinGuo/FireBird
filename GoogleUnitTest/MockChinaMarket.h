@@ -31,7 +31,7 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRS, (), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineRSOfDate, (long lThisDate), (override));
     MOCK_METHOD(bool, RunningThreadBuildWeekLineOfCurrentWeek, (), (override));
-    MOCK_METHOD(bool, RunningThreadSaveStakeSection, (), (override));
+    MOCK_METHOD(bool, RunningThreadSaveStockSection, (), (override));
 
     MOCK_METHOD(bool, UpdateOptionDB, (), (override));
     MOCK_METHOD(bool, UpdateStockCodeDB, (), (override));
@@ -46,7 +46,7 @@ namespace testing {
     MOCK_METHOD(bool, BuildWeekLineOfCurrentWeek, (), (override));
     MOCK_METHOD(bool, BuildCurrentWeekWeekLineTable, (), (override));
     MOCK_METHOD(bool, BuildWeekLineRSOfDate, (long lDate), (override));
-    MOCK_METHOD(bool, SaveStakeSection, (), (override));
+    MOCK_METHOD(bool, SaveStockSection, (), (override));
   };
 
   typedef shared_ptr<CMockChinaMarket> CMockChinaMarketPtr;

@@ -967,8 +967,8 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateStakeSection() {
   // TODO: Add your command handler code here
-  gl_pChinaStockMarket->SetUpdateStakeSection(true);
-  gl_pChinaStockMarket->TaskSaveStakeSection();
+  gl_pChinaStockMarket->SetUpdateStockSection(true);
+  gl_pChinaStockMarket->TaskSaveStockSection();
 }
 
 void CMainFrame::OnUpdateStakeCode() {

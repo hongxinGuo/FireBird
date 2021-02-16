@@ -731,6 +731,7 @@
     <ClInclude Include="source\ChinaMarket\NeteaseDayLineWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\NeteaseRTWebInquiry.h" />
     <ClInclude Include="source\ChinaMarket\SinaRTWebInquiry.h" />
+    <ClInclude Include="source\ChinaMarket\StockSection.h" />
     <ClInclude Include="source\ChinaMarket\TengxunRTWebInquiry.h" />
     <ClInclude Include="source\ChinaStockHistoryData.h" />
     <ClInclude Include="source\ChinaStockHistoryDataContainer.h" />
@@ -750,7 +751,6 @@
     <ClInclude Include="source\DataBase\SetRSStrong1Stock.h" />
     <ClInclude Include="source\DataBase\SetRSStrong2Stock.h" />
     <ClInclude Include="source\DataBase\SetRSStrongStock.h" />
-    <ClInclude Include="source\DataBase\SetActiveStakeCode.h" />
     <ClInclude Include="source\DataBase\SetStockSection.h" />
     <ClInclude Include="source\DataBase\SetStockCode.h" />
     <ClInclude Include="source\DataBase\SetWeekLineInfo.h" />
@@ -761,7 +761,6 @@
     <ClInclude Include="source\Poten Daily\PotenDailyBriefing.h" />
     <ClInclude Include="source\Poten Daily\PotenDailyBriefingMarket.h" />
     <ClInclude Include="source\Poten Daily\PotenDailyBriefingWebInquiry.h" />
-    <ClInclude Include="source\StakeSection.h" />
     <ClInclude Include="source\WebRTDataContainer.h" />
     <ClInclude Include="source\PriorityQueueWebRTData.h" />
     <ClInclude Include="source\QueueWebRTData.h" />
@@ -832,6 +831,7 @@
     <ClCompile Include="source\ChinaMarket\NeteaseDayLineWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\NeteaseRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\SinaRTWebInquiry.cpp" />
+    <ClCompile Include="source\ChinaMarket\StockSection.cpp" />
     <ClCompile Include="source\ChinaMarket\TengxunRTWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadBuildDayLineRS.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadBuildWeekLine.cpp" />
@@ -870,7 +870,6 @@
     <ClCompile Include="source\DataBase\SetRSStrong1Stock.cpp" />
     <ClCompile Include="source\DataBase\SetRSStrong2Stcok.cpp" />
     <ClCompile Include="source\DataBase\SetRSStrongStock.cpp" />
-    <ClCompile Include="source\DataBase\SetActiveStakeCode.cpp" />
     <ClCompile Include="source\DataBase\SetStockSection.cpp" />
     <ClCompile Include="source\DataBase\SetStockCode.cpp" />
     <ClCompile Include="source\DataBase\SetWeekLineInfo.cpp" />
@@ -885,7 +884,6 @@
     <ClCompile Include="source\PriorityQueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebRTData.cpp" />
     <ClCompile Include="source\QueueWebData.cpp" />
-    <ClCompile Include="source\StakeSection.cpp" />
     <ClCompile Include="source\WebData.cpp" />
     <ClCompile Include="source\WebRTDataContainer.cpp" />
     <ClCompile Include="source\DayLine.cpp" />

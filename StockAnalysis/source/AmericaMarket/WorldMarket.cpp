@@ -165,7 +165,7 @@ void CWorldMarket::ResetMarket(void) {
   LoadForexSymbol();
   LoadEconomicCalendarDB();
 
-  CString str = _T("重置World Stake Market于美东标准时间：");
+  CString str = _T("重置World Market于美东标准时间：");
   str += GetStringOfMarketTime();
   gl_systemMessage.PushInformationMessage(str);
 }

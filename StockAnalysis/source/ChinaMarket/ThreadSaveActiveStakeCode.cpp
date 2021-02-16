@@ -13,8 +13,8 @@
 using namespace std;
 #include<thread>
 
-UINT ThreadSaveStakeSection(not_null<CChinaMarket*> pMarket) {
-  pMarket->SaveStakeSection();
+UINT ThreadSaveStockSection(not_null<CChinaMarket*> pMarket) {
+  pMarket->SaveStockSection();
 
   return 35;
 }

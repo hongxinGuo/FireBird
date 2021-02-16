@@ -410,15 +410,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\StakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\StakeSection.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -677,6 +668,9 @@
     <ClCompile Include="VirtualStockTest.cpp">
       <Filter>Test源文件\基类</Filter>
     </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -865,17 +859,8 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\StakeCode.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\StakeSection.h">
-      <Filter>dependency</Filter>
-    </ClInclude>
     <ClInclude Include="MockChinaStake.h">
       <Filter>Mock类\China Market</Filter>
-    </ClInclude>
-    <ClInclude Include="..\StockAnalysis\source\DataBase\SetActiveStakeCode.h">
-      <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="MockFinnHubWebInquiry.h">
       <Filter>Mock类\World Market</Filter>
@@ -1007,6 +992,9 @@
       <Filter>dependency</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\基类\VirtualWebInquiry.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>dependency</Filter>
     </ClInclude>
   </ItemGroup>

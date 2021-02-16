@@ -21,7 +21,6 @@
 #include"SetRSStrong1Stock.h"
 #include"SetRSStrongStock.h"
 #include"SetRSOption.h"
-#include"SetActiveStakeCode.h"
 #include"SetStockSection.h"
 
 #include"SetWeekLineInfo.h"
@@ -64,14 +63,14 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 
   m_avChoicedStock.resize(30);
   m_aRSStrongOption.resize(10);
-  m_vStakeSection.resize(2000); // 沪深各1000个段。
-  CStakeSectionPtr pStakeSection;
+  m_vStockSection.resize(2000); // 沪深各1000个段。
+  CStockSectionPtr pStockSection;
   for (int i = 0; i < 2000; i++) {
-    pStakeSection = make_shared<CStakeSection>();
-    pStakeSection->SetIndexNumber(i);
-    if (i < 1000) pStakeSection->SetMarket(__SHANGHAI_MARKET__);
-    else pStakeSection->SetMarket(__SHENZHEN_MARKET__);
-    m_vStakeSection.at(i) = pStakeSection;
+    pStockSection = make_shared<CStockSection>();
+    pStockSection->SetIndexNumber(i);
+    if (i < 1000) pStockSection->SetMarket(__SHANGHAI_MARKET__);
+    else pStockSection->SetMarket(__SHENZHEN_MARKET__);
+    m_vStockSection.at(i) = pStockSection;
   }
 
   Reset();
@@ -143,7 +142,7 @@ void CChinaMarket::Reset(void) {
 
   m_fTodayTempDataLoaded = false;
 
-  m_fUpdateStakeSection = false;
+  m_fUpdateStockSection = false;
 
   m_lCurrentRSStrongIndex = 0;
   m_lCurrentSelectedStockSet = -1; // 选择使用全体股票集、
@@ -196,8 +195,8 @@ void CChinaMarket::Reset(void) {
   // 从股票代码集数据库中读入其他股票集
 
   //重置StakeSection
-  for (int i = 0; i < m_vStakeSection.size(); i++) {
-    m_vStakeSection.at(i)->SetBuildStakePtr(false);
+  for (int i = 0; i < m_vStockSection.size(); i++) {
+    m_vStockSection.at(i)->SetBuildStakePtr(false);
   }
   // 生成股票代码池
   CreateTotalStockContainer();
@@ -358,7 +357,7 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
   else if (IsShenzhenExchange2(strFirstStockCode)) { // 深圳市场
     iMarket = 1000;
   }
-  if (m_vStakeSection.at((iCode / 1000) + iMarket)->IsBuildStakePtr()) return; // 已经在证券池中建立了
+  if (m_vStockSection.at((iCode / 1000) + iMarket)->IsBuildStakePtr()) return; // 已经在证券池中建立了
   // 生成上海股票代码
   for (int i = iCode; i < (iCode + 1000); i++) {
     strExchange = GetStockExchange2(strFirstStockCode);
@@ -369,9 +368,9 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
     m_mapCurrentStockSet[strStockCode] = m_vCurrentStockSet.size();
   }
   if (UpdateStakeSection(iCode / 1000 + iMarket)) {
-    SetUpdateStakeSection(true);
+    SetUpdateStockSection(true);
   }
-  m_vStakeSection.at(iCode / 1000 + iMarket)->SetBuildStakePtr(true); // 已经在证券池中建立了
+  m_vStockSection.at(iCode / 1000 + iMarket)->SetBuildStakePtr(true); // 已经在证券池中建立了
 }
 
 bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
@@ -410,8 +409,8 @@ bool CChinaMarket::UpdateStakeSection(CString strStakeCode) {
 }
 
 bool CChinaMarket::UpdateStakeSection(long lIndex) {
-  if (!m_vStakeSection.at(lIndex)->IsActive()) {
-    m_vStakeSection.at(lIndex)->SetActive(true);
+  if (!m_vStockSection.at(lIndex)->IsActive()) {
+    m_vStockSection.at(lIndex)->SetActive(true);
     return true;
   }
   return false;
@@ -1400,9 +1399,9 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 
     TaskCheckDayLineDB();
 
-    if (m_fUpdateStakeSection) {
-      TaskSaveStakeSection();
-      m_fUpdateStakeSection = false;
+    if (m_fUpdateStockSection) {
+      TaskSaveStockSection();
+      m_fUpdateStockSection = false;
     }
 
     return true;
@@ -1610,41 +1609,41 @@ bool CChinaMarket::TaskClearChoicedRTDataSet(long lCurrentTime) {
   return true;
 }
 
-bool CChinaMarket::TaskSaveStakeSection(void) {
-  RunningThreadSaveStakeSection();
+bool CChinaMarket::TaskSaveStockSection(void) {
+  RunningThreadSaveStockSection();
   return true;
 }
 
-bool CChinaMarket::SaveStakeSection(void) {
-  CSetStockSection setStakeSection;
+bool CChinaMarket::SaveStockSection(void) {
+  CSetStockSection setStockSection;
 
-  setStakeSection.Open();
-  setStakeSection.m_pDatabase->BeginTrans();
-  while (!setStakeSection.IsEOF()) {
-    setStakeSection.Delete();
-    setStakeSection.MoveNext();
+  setStockSection.Open();
+  setStockSection.m_pDatabase->BeginTrans();
+  while (!setStockSection.IsEOF()) {
+    setStockSection.Delete();
+    setStockSection.MoveNext();
   }
-  setStakeSection.m_pDatabase->CommitTrans();
-  setStakeSection.Close();
+  setStockSection.m_pDatabase->CommitTrans();
+  setStockSection.Close();
 
-  CStakeSectionPtr pStakeSection = nullptr;
+  CStockSectionPtr pStockSection = nullptr;
 
-  setStakeSection.Open();
-  setStakeSection.m_pDatabase->BeginTrans();
+  setStockSection.Open();
+  setStockSection.m_pDatabase->BeginTrans();
   for (int i = 0; i < 2000; i++) {
-    pStakeSection = m_vStakeSection.at(i);
-    setStakeSection.AddNew();
-    setStakeSection.m_ID = i;
-    setStakeSection.m_Active = pStakeSection->IsActive();
-    setStakeSection.m_Market = pStakeSection->GetMarket();
-    setStakeSection.m_IndexNumber = pStakeSection->GetIndexNumber();
-    setStakeSection.m_Comment = pStakeSection->GetComment();
-    setStakeSection.Update();
+    pStockSection = m_vStockSection.at(i);
+    setStockSection.AddNew();
+    setStockSection.m_ID = i;
+    setStockSection.m_Active = pStockSection->IsActive();
+    setStockSection.m_Market = pStockSection->GetMarket();
+    setStockSection.m_IndexNumber = pStockSection->GetIndexNumber();
+    setStockSection.m_Comment = pStockSection->GetComment();
+    setStockSection.Update();
   }
-  setStakeSection.m_pDatabase->CommitTrans();
-  setStakeSection.Close();
+  setStockSection.m_pDatabase->CommitTrans();
+  setStockSection.Close();
 
-  m_fUpdateStakeSection = false;
+  m_fUpdateStockSection = false;
   return true;
 }
 
@@ -2547,8 +2546,8 @@ bool CChinaMarket::RunningThreadBuildCurrentWeekWeekLineTable(void) {
   return true;
 }
 
-bool CChinaMarket::RunningThreadSaveStakeSection(void) {
-  thread thread1(ThreadSaveStakeSection, this);
+bool CChinaMarket::RunningThreadSaveStockSection(void) {
+  thread thread1(ThreadSaveStockSection, this);
   thread1.detach();
 
   return true;
@@ -3160,11 +3159,11 @@ void CChinaMarket::LoadStakeSection(void) {
 
   setStakeSection.Open();
   while (!setStakeSection.IsEOF()) {
-    if (!m_vStakeSection.at(setStakeSection.m_IndexNumber)->IsActive()) {
-      m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetActive(setStakeSection.m_Active);
-      m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetMarket(setStakeSection.m_Market);
-      m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetIndexNumber(setStakeSection.m_IndexNumber);
-      m_vStakeSection.at(setStakeSection.m_IndexNumber)->SetComment(setStakeSection.m_Comment);
+    if (!m_vStockSection.at(setStakeSection.m_IndexNumber)->IsActive()) {
+      m_vStockSection.at(setStakeSection.m_IndexNumber)->SetActive(setStakeSection.m_Active);
+      m_vStockSection.at(setStakeSection.m_IndexNumber)->SetMarket(setStakeSection.m_Market);
+      m_vStockSection.at(setStakeSection.m_IndexNumber)->SetIndexNumber(setStakeSection.m_IndexNumber);
+      m_vStockSection.at(setStakeSection.m_IndexNumber)->SetComment(setStakeSection.m_Comment);
     }
     setStakeSection.MoveNext();
   }

@@ -1,6 +1,6 @@
-#include "StakeSection.h"
+#include "StockSection.h"
 
-CStakeSection::CStakeSection() : CObject() {
+CStockSection::CStockSection() : CObject() {
   m_fActive = false;
   m_wMarket = 0;
   m_strComment = _T("");
@@ -8,5 +8,5 @@ CStakeSection::CStakeSection() : CObject() {
   m_fBuildStakePtr = false;
 }
 
-CStakeSection::~CStakeSection(void) {
+CStockSection::~CStockSection(void) {
 }

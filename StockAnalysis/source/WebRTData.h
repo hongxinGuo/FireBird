@@ -119,8 +119,6 @@ enum {
 #include"WebData.h"
 #include"TengxunRTWebInquiry.h"
 
-#include"StakeCode.h"
-
 #include"SetRealTimeData.h"
 
 using namespace std;
