@@ -45,8 +45,8 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {
     CChinaStockHistoryData dl;
     EXPECT_STREQ(dl.GetStockCode(), _T(""));
-    dl.SetStockCode(_T("sh600000"));
-    EXPECT_STREQ(dl.GetStockCode(), _T("sh600000"));
+    dl.SetStockCode(_T("600000.SS"));
+    EXPECT_STREQ(dl.GetStockCode(), _T("600000.SS"));
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockName) {

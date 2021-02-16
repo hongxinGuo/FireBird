@@ -23,15 +23,15 @@ namespace StockAnalysisTest {
   };
 
   // 无效实时数据标识
-  NeteaseData rtData1(1, _T("sh600000"), __INVALID_RT_WEB_DATA__, false, -10);
+  NeteaseData rtData1(1, _T("600000.SS"), __INVALID_RT_WEB_DATA__, false, -10);
   // 正常实时数据，但时间比较旧（一样）
-  NeteaseData rtData2(2, _T("sz000001"), __SINA_RT_WEB_DATA__, true, -10);
+  NeteaseData rtData2(2, _T("000001.SZ"), __SINA_RT_WEB_DATA__, true, -10);
   // 正常数据，更新的时间
-  NeteaseData rtData3(3, _T("sh600601"), __SINA_RT_WEB_DATA__, true, 0);
+  NeteaseData rtData3(3, _T("600601.SS"), __SINA_RT_WEB_DATA__, true, 0);
   // 非活跃股票，更新的时间
-  NeteaseData rtData4(4, _T("sh600000"), __SINA_RT_WEB_DATA__, true, 0);
+  NeteaseData rtData4(4, _T("600000.SS"), __SINA_RT_WEB_DATA__, true, 0);
   // 在本测试集的开始，故意设置sh600008的状态为非活跃
-  NeteaseData rtData5(5, _T("sh600008"), __SINA_RT_WEB_DATA__, true, -5);
+  NeteaseData rtData5(5, _T("600008.SS"), __SINA_RT_WEB_DATA__, true, -5);
   // 无效深圳股票代码
   //NeteaseData rtData6(6, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
   //NeteaseData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
@@ -42,13 +42,13 @@ namespace StockAnalysisTest {
   class TaskDistributeNeteaseRTDataToProperStockTest : public::testing::TestWithParam<NeteaseData*> {
   protected:
     static void SetUpTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
       pStock->SetIPOStatus(__STAKE_NULL__); // 故意将此股票状态设置为未上市。
       s_tCurrentMarketTime = gl_pChinaStockMarket->GetMarketTime();
     }
     static void TearDownTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(true);
     }
     virtual void SetUp(void) override {

@@ -1539,7 +1539,6 @@ bool CWorldMarket::UpdateStakeDB(void) {
           ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
           iCount++;
           pStock3->Append(setWorldStock);
-          pStock3->SetUpdateStockProfileDB(false);
           TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
         }
         if (iCount >= iUpdatedStock) break;

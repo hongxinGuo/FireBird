@@ -89,7 +89,7 @@ namespace StockAnalysisTest {
     INT64 lCount = 0;
     bool fSucceed;
     if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sz000001"), m_pCurrentPos, lCount);
-    else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("sh600000"), m_pCurrentPos, lCount);
+    else fSucceed = m_DayLinePtr->ProcessNeteaseData(_T("600000.SS"), m_pCurrentPos, lCount);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);
@@ -187,7 +187,7 @@ namespace StockAnalysisTest {
   TEST_P(ProcessNeteaseDayLineTest2, ProcessNeteaseDayLineData2) {
     bool fSucceed;
     if (m_iCount == 2) fSucceed = m_DayLinePtr->ProcessNeteaseData2(_T("sz000001"), m_pData, m_lCountPos);
-    else fSucceed = m_DayLinePtr->ProcessNeteaseData2(_T("sh600000"), m_pData, m_lCountPos);
+    else fSucceed = m_DayLinePtr->ProcessNeteaseData2(_T("600000.SS"), m_pData, m_lCountPos);
     switch (m_iCount) {
     case 1:
     EXPECT_TRUE(fSucceed);

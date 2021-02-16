@@ -106,8 +106,8 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestGetStockCode) {
     CChinaStock stake;
     EXPECT_STREQ(stake.GetStockCode(), _T(""));
-    stake.SetStockCode(_T("sh600000"));
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh600000"));
+    stake.SetStockCode(_T("600000.SS"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("600000.SS"));
   }
 
   TEST_F(CChinaStockTest, TestGetStockName) {
@@ -481,7 +481,7 @@ namespace StockAnalysisTest {
     time_t tt = FormatToTTime(lDate);
     CString strDate = _T("21091101"); // 最好设置此日期为未来，以防止误操作实际数据库
 
-    stake.SetStockCode(_T("sh600000"));
+    stake.SetStockCode(_T("600000.SS"));
     stake.SetStockName("浦东发展");
     stake.SetTransactionTime(tt); // 此处设置固定的日期，而存储时使用的是当前日期，故而需要与gl_systemTime.FormatToDate()作比较
     stake.SetLastClose(101010);
@@ -862,7 +862,7 @@ namespace StockAnalysisTest {
 
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh000001"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("000001.SS"));
     EXPECT_EQ(stake.GetIPOStatus(), __STAKE_IPOED__);
     stake.SetIPOStatus(__STAKE_NULL__);
     stake.UpdateStockCodeDB(setStockCode);
@@ -883,7 +883,7 @@ namespace StockAnalysisTest {
     setStockCode.m_strSort = _T("[ID]");
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh000001"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("000001.SS"));
     EXPECT_EQ(stake.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stake.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stake.GetDayLineEndDate(), setStockCode.m_DayLineEndDate);
@@ -900,7 +900,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stake.IsDayLineNeedUpdate());
     setStockCode.Open();
     stake.LoadStockCodeDB(setStockCode);
-    EXPECT_STREQ(stake.GetStockCode(), _T("sh000001"));
+    EXPECT_STREQ(stake.GetStockCode(), _T("000001.SS"));
     EXPECT_EQ(stake.GetIPOStatus(), setStockCode.m_IPOStatus);
     EXPECT_EQ(stake.GetDayLineStartDate(), setStockCode.m_DayLineStartDate);
     EXPECT_EQ(stake.GetDayLineEndDate(), lCurrentDate);
@@ -992,7 +992,7 @@ namespace StockAnalysisTest {
     CChinaStock stake;
 
     pStock->SetHavingFirstRTData(true);
-    pStock->SetStockCode(_T("sh600000"));
+    pStock->SetStockCode(_T("600000.SS"));
     pStock->SetTransactionTime(FormatToTTime(20191101));
     pStock->SetLastClose(101010);
     pStock->SetOpen(202020);
@@ -1266,13 +1266,13 @@ namespace StockAnalysisTest {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine stake;
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600011"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600011.SS"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(21900101);
 
     pid = make_shared<CDayLine>();
     pid->SetDate(21900101);
-    pid->SetStockCode(_T("sh600011"));
+    pid->SetStockCode(_T("600011.SS"));
     pid->SetStockName(_T("首创股份"));
     pid->SetLastClose(34235345);
     pid->SetOpen(1000000);
@@ -1290,7 +1290,7 @@ namespace StockAnalysisTest {
     pStock->StoreDayLine(pid);
 
     pStock->SetDayLineEndDate(21890101);
-    pStock->SetStockCode(_T("sh600011"));
+    pStock->SetStockCode(_T("600011.SS"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
@@ -1382,7 +1382,7 @@ namespace StockAnalysisTest {
     pDayLine = pStock->GetDayLine(pStock->GetDayLineSize() - 1);
 
     EXPECT_EQ(pDayLine->GetFormatedMarketTime(), 0);
-    EXPECT_STREQ(pDayLine->GetStockCode(), _T("sh600011"));
+    EXPECT_STREQ(pDayLine->GetStockCode(), _T("600011.SS"));
     EXPECT_EQ(pDayLine->GetLastClose(), pid->GetLastClose());
     EXPECT_EQ(pDayLine->GetOpen(), pid->GetOpen());
     EXPECT_EQ(pDayLine->GetHigh(), pid->GetHigh());
@@ -1487,14 +1487,14 @@ namespace StockAnalysisTest {
     CSetDayLineBasicInfo setDayLineBasicInfo;
     CDayLinePtr pid;
     CDayLine dayLine;
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600016.SS"));
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated());
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(20190101);
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
-      pid->SetStockCode(_T("sh600016"));
+      pid->SetStockCode(_T("600016.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1512,7 +1512,7 @@ namespace StockAnalysisTest {
       pStock->StoreDayLine(pid);
     }
     pStock->SetDayLineEndDate(10190101);
-    pStock->SetStockCode(_T("sh600016"));
+    pStock->SetStockCode(_T("600016.SS"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
     EXPECT_FALSE(gl_pChinaStockMarket->IsDayLineDBUpdated()) << "存储数据时不修改数据库状态，需要单独执行修改标识的函数";
@@ -1558,12 +1558,12 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = nullptr;
     CChinaStock stake;
 
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600010"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600010.SS"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(21101201);
-      pid->SetStockCode(_T("sh600010"));
+      pid->SetStockCode(_T("600010.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1580,7 +1580,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
-    pStock->SetStockCode(_T("sh600010"));
+    pStock->SetStockCode(_T("600010.SS"));
     pStock->SetDayLineEndDate(10190101);
     ASSERT(!gl_fNormalMode);
     pStock->SaveDayLineBasicInfo();
@@ -1624,12 +1624,12 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CChinaStock stake;
 
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600004"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600004.SS"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000 + 2);
-      pid->SetStockCode(_T("sh600004"));
+      pid->SetStockCode(_T("600004.SS"));
       pid->SetStockName(_T("白云机场"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1646,7 +1646,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
-    pStock->SetStockCode(_T("sh600004"));
+    pStock->SetStockCode(_T("600004.SS"));
     pStock->SetDayLineStartDate(19920102);
     pStock->SetDayLineEndDate(20800100);
     ASSERT(!gl_fNormalMode);
@@ -1660,12 +1660,12 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CChinaStock stake;
 
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
 
     for (int i = 1; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
-      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockCode(_T("600008.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1682,7 +1682,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
-    pStock->SetStockCode(_T("sh600008"));
+    pStock->SetStockCode(_T("600008.SS"));
     pStock->SetDayLineStartDate(19900101);
     pStock->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
@@ -1696,12 +1696,12 @@ namespace StockAnalysisTest {
     CDayLinePtr pid;
     CChinaStock stake;
 
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
 
     for (int i = 1; i < 10; i++) {
       pid = make_shared<CDayLine>();
       pid->SetDate(__CHINA_MARKET_BEGIN_DATE__ + i * 100000);
-      pid->SetStockCode(_T("sh600008"));
+      pid->SetStockCode(_T("600008.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -1718,7 +1718,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreDayLine(pid);
     }
-    pStock->SetStockCode(_T("sh600008"));
+    pStock->SetStockCode(_T("600008.SS"));
     pStock->SetDayLineStartDate(19900102);
     pStock->SetDayLineEndDate(20800102);
     ASSERT(!gl_fNormalMode);
@@ -1729,18 +1729,18 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaStockTest, TestSetTodayActive) {
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600001")); // 这个股票退市了，故而可以作为测试对象
+    pStock = gl_pChinaStockMarket->GetStock(_T("600001.SS")); // 这个股票退市了，故而可以作为测试对象
     EXPECT_FALSE(pStock->IsActive());
     CString strStockName = pStock->GetStockName();
-    pStock->SetTodayActive(_T("sz600002"), _T("梨园"));
+    pStock->SetTodayActive(_T("600002.SZ"), _T("梨园"));
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_FALSE(pStock->IsDayLineLoaded());
-    EXPECT_STREQ(pStock->GetStockCode(), _T("sz600002"));
+    EXPECT_STREQ(pStock->GetStockCode(), _T("600002.SZ"));
     EXPECT_STREQ(pStock->GetStockName(), _T("梨园"));
 
     // clearup
     pStock->SetActive(false);
-    pStock->SetStockCode(_T("sh600001"));
+    pStock->SetStockCode(_T("600001.SS"));
     pStock->SetStockName(strStockName);
   }
 
@@ -1774,7 +1774,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestReportDayLineDownLoaded) {
     CChinaStock stake;
-    stake.SetStockCode(_T("sh600008"));
+    stake.SetStockCode(_T("600008.SS"));
     stake.ReportDayLineDownLoaded();
     //EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     //CString str = gl_systemMessage.PopDayLineInfoMessage();
@@ -1806,7 +1806,7 @@ namespace StockAnalysisTest {
     CChinaStock stake;
 
     stake.SetTransactionTime(FormatToTTime(19900101));
-    stake.SetStockCode(_T("sh600601"));
+    stake.SetStockCode(_T("600601.SS"));
     stake.SetTransactionNumber(1);
     stake.SetTransactionNumberBelow5000(2);
     stake.SetTransactionNumberBelow50000(3);
@@ -1882,7 +1882,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Close();
 
     CDayLine dayLine;
-    setDayLineExtendInfo.m_strFilter = _T("[StockCode] = 'sh600601'");
+    setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '600601.SS'");
     setDayLineExtendInfo.Open();
     dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();
@@ -1980,13 +1980,13 @@ namespace StockAnalysisTest {
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     CWeekLinePtr pid;
     CWeekLine stake;
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600016"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600016.SS"));
     gl_pChinaStockMarket->__TEST_SetFormatedMarketDate(20190101);
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
-      pid->SetStockCode(_T("sh600016"));
+      pid->SetStockCode(_T("600016.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -2003,7 +2003,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreWeekLine(pid);
     }
-    pStock->SetStockCode(_T("sh600016"));
+    pStock->SetStockCode(_T("600016.SS"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveWeekLine();
 
@@ -2050,12 +2050,12 @@ namespace StockAnalysisTest {
     CWeekLinePtr pWeekLine = nullptr;
     CChinaStock stake;
 
-    pStock = gl_pChinaStockMarket->GetStock(_T("sh600010"));
+    pStock = gl_pChinaStockMarket->GetStock(_T("600010.SS"));
 
     for (int i = 0; i < 10; i++) {
       pid = make_shared<CWeekLine>();
       pid->SetDate(21101201);
-      pid->SetStockCode(_T("sh600010"));
+      pid->SetStockCode(_T("600010.SS"));
       pid->SetStockName(_T("首创股份"));
       pid->SetLastClose(34235345);
       pid->SetOpen(1000000 + i);
@@ -2072,7 +2072,7 @@ namespace StockAnalysisTest {
       pid->SetRS(14.5);
       pStock->StoreWeekLine(pid);
     }
-    pStock->SetStockCode(_T("sh600010"));
+    pStock->SetStockCode(_T("600010.SS"));
     ASSERT(!gl_fNormalMode);
     pStock->SaveWeekLine();
 

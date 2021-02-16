@@ -110,7 +110,7 @@ namespace StockAnalysisTest {
   TEST_F(CMockMainFrameTest, TestUpdateStatus2) {
     gl_pChinaStockMarket->SetCurrentEditStockChanged(true);
     gl_pChinaStockMarket->SetCurrentStockChanged(true);
-    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
     InSequence seq1;
     EXPECT_CALL(*s_pMainFrame, SysCallSetPaneText(1, _))
       .Times(1);
@@ -249,32 +249,32 @@ namespace StockAnalysisTest {
   TEST_F(CMockMainFrameTest, TestOnChar) {
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('s', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('s', 1, 1);
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('h', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('h', 1, 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 2);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('6', 1, 1))
       .Times(1);
     s_pMainFrame->OnChar('6', 1, 1);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 3);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('0', 1, 1))
       .Times(1);
     s_pMainFrame->OnChar('0', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 4);
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 2);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('1', 1, 1))
       .Times(1);
     s_pMainFrame->OnChar('1', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 3);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('8', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('8', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 4);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('7', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('7', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 5);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
@@ -290,23 +290,29 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 5);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('8', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('8', 1, 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 6);
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('7', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('7', 1, 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 7);
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('2', 1, 1))
       .Times(1);
     s_pMainFrame->OnChar('2', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 6);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('.', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('.', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 7);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('S', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('S', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 8);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('S', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('S', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 9);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar(0x00d, 1, 1))
       .Times(1);
@@ -315,7 +321,7 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh601872"));
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("601872.SS"));
   }
 
   TEST_F(CMockMainFrameTest, TestOnChar2) {
@@ -327,14 +333,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('s', 1, 1))
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('0', 1, 1))
       .Times(1);
-    s_pMainFrame->OnChar('s', 1, 1);
+    s_pMainFrame->OnChar('0', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 1);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('z', 1, 1))
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('0', 1, 1))
       .Times(1);
-    s_pMainFrame->OnChar('z', 1, 1);
+    s_pMainFrame->OnChar('0', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 2);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
@@ -350,31 +356,37 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 4);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('3', 1, 1))
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('8', 1, 1))
       .Times(1);
-    s_pMainFrame->OnChar('3', 1, 1);
+    s_pMainFrame->OnChar('8', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 5);
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('4', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('4', 1, 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 6);
-    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('5', 1, 1))
-      .Times(1);
-    s_pMainFrame->OnChar('5', 1, 1);
-    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
-    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 7);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar('9', 1, 1))
       .Times(1);
     s_pMainFrame->OnChar('9', 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 6);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('.', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('.', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 7);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('S', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('S', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 8);
     gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
-    gl_pChinaStockMarket->SetCurrentStock(_T("sh600604"));
+    EXPECT_CALL(*s_pMainFrame, SysCallOnChar('Z', 1, 1))
+      .Times(1);
+    s_pMainFrame->OnChar('Z', 1, 1);
+    EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
+    EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 9);
+    gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
+    gl_pChinaStockMarket->SetCurrentStock(_T("600604.SS"));
     EXPECT_CALL(*s_pMainFrame, SysCallOnChar(0x00d, 1, 1))
       .Times(1);
     EXPECT_CALL(*s_pMainFrame, SysCallInvalidate())
@@ -382,23 +394,23 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnChar(0x00d, 1, 1);
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentEditStockChanged());
     EXPECT_EQ(s_pMainFrame->GetCurrentPos(), 0);
-    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600604"));
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("600604.SS"));
   }
 
   TEST_F(CMockMainFrameTest, TestOnKeyUp) {
     EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-    gl_pChinaStockMarket->SetCurrentStock(_T("sh600000"));
+    gl_pChinaStockMarket->SetCurrentStock(_T("600000.SS"));
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(34, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(34, 1, 1);
-    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600001"));
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("600001.SS"));
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
 
     gl_pChinaStockMarket->SetCurrentStockChanged(false);
     EXPECT_CALL(*s_pMainFrame, SysCallOnKeyUp(33, 1, 1))
       .Times(1);
     s_pMainFrame->OnKeyUp(33, 1, 1);
-    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(gl_pChinaStockMarket->GetCurrentStock()->GetStockCode(), _T("600000.SS"));
     EXPECT_TRUE(gl_pChinaStockMarket->IsCurrentStockChanged());
 
     gl_pChinaStockMarket->SetCurrentStockChanged(false);

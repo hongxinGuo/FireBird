@@ -44,8 +44,8 @@ namespace StockAnalysisTest {
   TEST_F(CWeekLineTest, TestGetStockCode) {
     CWeekLine dl;
     EXPECT_STREQ(dl.GetStockCode(), _T(""));
-    dl.SetStockCode(_T("sh600000"));
-    EXPECT_STREQ(dl.GetStockCode(), _T("sh600000"));
+    dl.SetStockCode(_T("600000.SS"));
+    EXPECT_STREQ(dl.GetStockCode(), _T("600000.SS"));
   }
 
   TEST_F(CWeekLineTest, TestGetStockName) {
@@ -860,7 +860,7 @@ namespace StockAnalysisTest {
     CWeekLine id, id2;
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-    id.SetStockCode(_T("sh600000"));
+    id.SetStockCode(_T("600000.SS"));
     id.SetStockName(_T("浦发银行"));
     id.SetLastClose(1010);
     id.SetOpen(1100);
@@ -892,7 +892,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetTime(100100100100);
     pDayLine->SetDate(20200202);
-    pDayLine->SetStockCode(_T("sh600000"));
+    pDayLine->SetStockCode(_T("600000.SS"));
     pDayLine->SetStockName(_T("浦发银行"));
 
     pDayLine->SetOpen(1010);
@@ -1052,7 +1052,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
     pDayLine1->SetTime(100100100100);
     pDayLine1->SetDate(20200727);
-    pDayLine1->SetStockCode(_T("sh600000"));
+    pDayLine1->SetStockCode(_T("600000.SS"));
     pDayLine1->SetStockName(_T("浦发银行"));
 
     pDayLine1->SetOpen(1010);
@@ -1144,7 +1144,7 @@ namespace StockAnalysisTest {
 
     pDayLine2->SetTime(100100100100);
     pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中
-    pDayLine2->SetStockCode(_T("sh600000"));
+    pDayLine2->SetStockCode(_T("600000.SS"));
     pDayLine2->SetStockName(_T("浦发银行"));
 
     pDayLine2->SetOpen(1010);

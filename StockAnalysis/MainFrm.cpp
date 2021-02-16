@@ -686,10 +686,10 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   case '7':
   case '8':
   case '9':
-  case 's':
-  case 'h':
-  case 'z':
-  if (m_lCurrentPos < 8) {
+  case 'S':
+  case 'Z':
+  case '.':
+  if (m_lCurrentPos < 10) {
     m_aStockCodeTemp[m_lCurrentPos] = nChar;
     m_lCurrentPos++;
     m_aStockCodeTemp[m_lCurrentPos] = 0x000;

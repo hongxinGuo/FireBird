@@ -73,9 +73,9 @@ namespace StockAnalysisTest {
   TEST_F(CNeteaseDayLineWebInquiryTest, TestSetDownLoadingStockCode) {
     EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T(""));
     m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("1000001"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("sz000001"));
+    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("1000001"));
     m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("0600001"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("sh600001"));
+    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("0600001"));
     m_NeteaseDayLineWebInquiry.SetDownLoadingStockCode(_T("2600001"));
     EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetDownLoadingStockCode(), _T("2600001"));
   }

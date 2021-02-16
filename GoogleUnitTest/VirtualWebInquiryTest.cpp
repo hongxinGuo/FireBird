@@ -68,7 +68,7 @@ namespace StockAnalysisTest {
     //m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
     EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData3(100, 30, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
-    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
   }
 
   TEST_F(CVirtualWebInquiryTest, TestReadDataFromWebOnce) {

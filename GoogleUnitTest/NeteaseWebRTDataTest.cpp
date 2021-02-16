@@ -218,7 +218,7 @@ namespace StockAnalysisTest {
     case 0:
     EXPECT_TRUE(fSucceed); // 没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("600000.SS"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);
@@ -251,7 +251,7 @@ namespace StockAnalysisTest {
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("600000.SS"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T(""));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);
@@ -287,11 +287,11 @@ namespace StockAnalysisTest {
     case 3:
     EXPECT_TRUE(fSucceed); // 第一个数据错误
     fSucceed = m_RTData.ReadNeteaseData(m_pNeteaseWebRTData);
-    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600601")); // 股票代码已设置
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("600601.SS")); // 股票代码已设置
     EXPECT_EQ(m_RTData.GetHigh(), 0); // 此位置出错，没有设置。
     EXPECT_TRUE(fSucceed); // 第二个数据没有错误
     EXPECT_EQ(m_lStringLength, m_pNeteaseWebRTData->GetCurrentPos() + 4); // 最后剩下四个字符" });"没有读
-    EXPECT_STREQ(m_RTData.GetStockCode(), _T("sh600000"));
+    EXPECT_STREQ(m_RTData.GetStockCode(), _T("600000.SS"));
     EXPECT_STREQ(m_RTData.GetStockName(), _T("浦发银行"));
     EXPECT_EQ(m_RTData.GetOpen(), 12480);
     EXPECT_EQ(m_RTData.GetLastClose(), 12570);

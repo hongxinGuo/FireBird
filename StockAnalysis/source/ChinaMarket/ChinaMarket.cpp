@@ -526,17 +526,18 @@ bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::IsAStock(CString strStockCode) {
-  if (strStockCode[0] == 's') {
-    if ((strStockCode[1] == 'h') && (strStockCode[2] == '6') && (strStockCode[3] == '0')) {
-      if ((strStockCode[4] == '0') || (strStockCode[4] == '1')) {
+  CString strSymbol = GetStockSymbol2(strStockCode);
+  if (IsShanghaiExchange2(strStockCode)) {
+    if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
+      if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
         return true;
       }
     }
-    else {
-      if ((strStockCode[1] == 'z') && (strStockCode[2] == '0') && (strStockCode[3] == '0')) {
-        if ((strStockCode[4] == '0') || (strStockCode[4] == '2')) {
-          return true;
-        }
+  }
+  else if(IsShenzhenExchange2(strStockCode)) {
+    if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) {
+      if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) {
+        return true;
       }
     }
   }
@@ -718,7 +719,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
           pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
-          //pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -783,7 +784,7 @@ CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lE
   while ((m_lNeteaseRTDataInquiringIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
     m_strNeteaseRTDataInquiringStr += _T(",");
-    m_strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode());
+    m_strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode());
     if (m_lNeteaseRTDataInquiringIndex == 0) break;
     IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
   }
@@ -819,7 +820,7 @@ CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStakeIndex, CString 
   while ((iStakeIndex < lEndPosition) && (iCount < lTotalNumber)) { // 每次最大查询量为lTotalNumber个股票
     iCount++;
     strReturn += strPostfix;
-    strReturn = XferStandredToSina(m_vChinaMarketStock.at(iStakeIndex)->GetStockCode());  // 得到第一个股票代码
+    strReturn += XferStandredToSina(m_vChinaMarketStock.at(iStakeIndex)->GetStockCode());  // 得到第一个股票代码
       // 每次查到最后时暂停一下。目前不使用之，已加快查询速度
     // if (iStakeIndex == lStartPosition) break;
     IncreaseStockInquiringIndex(iStakeIndex, lEndPosition);

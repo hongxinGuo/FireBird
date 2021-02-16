@@ -64,7 +64,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData1) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
@@ -72,7 +72,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData2) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
 
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
 
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
@@ -102,7 +102,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData4) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("sh600000"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
 
     pStock->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -141,7 +141,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine2) {
     s_pchinaMarket->ResetCurrentStock();
-    s_pchinaMarket->SetCurrentStock(_T("sh600000"));
+    s_pchinaMarket->SetCurrentStock(_T("600000.SS"));
     s_pchinaMarket->GetCurrentStock()->SetDayLineLoaded(true);
     s_pchinaMarket->GetCurrentStock()->SetWeekLineLoaded(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadDayLine(_))
@@ -155,7 +155,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CMockChinaMarketTest, TestTaskLoadCurrentStockDayLine3) {
     s_pchinaMarket->ResetCurrentStock();
-    s_pchinaMarket->SetCurrentStock(_T("sh600000"));
+    s_pchinaMarket->SetCurrentStock(_T("600000.SS"));
     s_pchinaMarket->GetCurrentStock()->SetDayLineLoaded(false);
     s_pchinaMarket->GetCurrentStock()->SetWeekLineLoaded(false);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadLoadDayLine(_))
