@@ -184,7 +184,7 @@ public:
   virtual bool SaveRTData(void);  // 实时数据处理函数，将读取到的实时数据存入数据库中
   bool TaskSaveDayLineData(void);  // 日线历史数据处理函数，将读取到的日线历史数据存入数据库中
   virtual bool UpdateStockCodeDB(void);
-  void LoadStakeSection(void);
+  void LoadStockSection(void);
   void LoadStockCodeDB(void);
 
   virtual bool UpdateOptionDB(void);
@@ -396,11 +396,11 @@ public:
 
 protected:
   // 初始化
-  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStake。
+  bool CreateTotalStockContainer(void); //此函数是构造函数的一部分，不允许单独调用。使用Mock类测试时，派生Mock类中将CChinaStock改为CMockChinaStock。
   void CreateStockSection(CString strFirstStockCode, bool fProcessRTData);
   bool CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData);
-  bool UpdateStakeSection(CString strStakeCode);
-  bool UpdateStakeSection(long lIndex);
+  bool UpdateStockSection(CString strStockCode);
+  bool UpdateStockSection(long lIndex);
 
 public:
   // 测试专用函数
@@ -414,7 +414,7 @@ protected:
 protected:
   vector<CString> m_vCurrentSectionStockCode; // 当前股票集的第一个代码。字符串的格式为600000.SS、sz000001
   vector<CStockSectionPtr> m_vStockSection; // 共2000个，上海深圳各1000，证券代码上三位是否已经被使用。
-  bool m_fUpdateStockSection; // 更新StakeSection标识
+  bool m_fUpdateStockSection; // 更新StockSection标识
 
   vector<CString> m_vCurrentStockSet; // 当前所有的股票代码
   map<CString, long> m_mapCurrentStockSet; // 当前所有股票代码的映射

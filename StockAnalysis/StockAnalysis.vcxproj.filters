@@ -506,9 +506,6 @@
     <ClCompile Include="source\WebData.cpp">
       <Filter>源文件\辅助类和函数</Filter>
     </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
@@ -550,9 +547,6 @@
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp">
       <Filter>源文件\World Market\网络通信</Filter>
-    </ClCompile>
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
-      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
     <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
       <Filter>源文件\World Market\工作线程</Filter>
@@ -689,9 +683,6 @@
     <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
-    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStakeCode.cpp">
-      <Filter>源文件\China Market\工作线程</Filter>
-    </ClCompile>
     <ClCompile Include="source\ChinaMarket\ThreadSaveDayLine.cpp">
       <Filter>源文件\China Market\工作线程</Filter>
     </ClCompile>
@@ -727,6 +718,15 @@
     </ClCompile>
     <ClCompile Include="source\ChinaMarket\StockSection.cpp">
       <Filter>源文件\China Market\基础数据类</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStockCode.cpp">
+      <Filter>源文件\China Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateStockDB.cpp">
+      <Filter>源文件\World Market\工作线程</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

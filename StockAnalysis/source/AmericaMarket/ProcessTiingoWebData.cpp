@@ -13,7 +13,7 @@ using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
-bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
+bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
@@ -60,7 +60,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSta
     if (s.size() > 0) str = s.c_str();
     sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
     pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
-    vStake.push_back(pStock);
+    vStock.push_back(pStock);
     iCount++;
   }
   TRACE("今日Tiingo Company Symbol总数为%d\n", iCount);

@@ -435,7 +435,7 @@ bool CWebRTData::ReadSinaOneValue(CWebDataPtr pSinaWebRTData, char* buffer) {
   }
 }
 
-bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStake) {
+bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStock) {
   static char buffer1[100];
   char buffer2[7];
   static char buffer3[100];
@@ -519,7 +519,7 @@ bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
       pSinaWebRTData->IncreaseCurrentPos();
       m_fActive = false;
       SetDataSource(__SINA_RT_WEB_DATA__);
-      fValidStake = false;
+      fValidStock = false;
       return true;  // 非活跃股票没有实时数据，在此返回。
     }
     if ((buffer1[0] == 0x00a) || (buffer1[0] == 0x000)) {
@@ -642,15 +642,15 @@ bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStake
       m_fActive = false;
     }
     SetDataSource(__SINA_RT_WEB_DATA__);
-    fValidStake = true;
+    fValidStock = true;
     return true;
   }
   catch (exception&) {
-    TRACE(_T("ReadSinaStakeData异常\n"));
+    TRACE(_T("ReadSinaStockData异常\n"));
     CString str = m_strStockCode;
-    str += _T(" ReadSinaStakeData异常\n");
+    str += _T(" ReadSinaStockData异常\n");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
-    fValidStake = false;
+    fValidStock = false;
     return false;
   }
 }

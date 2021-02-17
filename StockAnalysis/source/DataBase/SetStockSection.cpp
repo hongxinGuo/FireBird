@@ -43,7 +43,7 @@ void CSetStockSection::DoFieldExchange(CFieldExchange* pFX) {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CSetStakeCode ’Ô∂œ
+// CSetStockCode ’Ô∂œ
 
 #ifdef _DEBUG
 void CSetStockSection::AssertValid() const {

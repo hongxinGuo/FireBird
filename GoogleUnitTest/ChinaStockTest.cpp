@@ -7,7 +7,7 @@
 #include"ChinaMarket.h"
 #include"WebRTData.h"
 
-#include"MockChinaStake.h"
+#include"MockChinaStock.h"
 
 using namespace testing;
 
@@ -856,7 +856,7 @@ namespace StockAnalysisTest {
     setStockCode.Close();
   }
 
-  TEST_F(CChinaStockTest, TestUpdateStakeCodeDB) {
+  TEST_F(CChinaStockTest, TestUpdateStockCodeDB) {
     CSetStockCode setStockCode;
     CChinaStock stake;
 

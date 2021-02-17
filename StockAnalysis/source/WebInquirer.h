@@ -85,9 +85,6 @@ public:
   size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetDataSize(); }
   void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushData(pData); }
   CWebDataPtr PopSinaRTData(void) { return m_qSinaRTWebData.PopData(); }
-  size_t GetSinaStakeRTDataSize(void) { return m_qSinaStakeRTWebData.GetDataSize(); }
-  void PushSinaStakeRTData(CWebDataPtr pData) { m_qSinaStakeRTWebData.PushData(pData); }
-  CWebDataPtr PopSinaStakeRTData(void) { return m_qSinaStakeRTWebData.PopData(); }
   size_t GetTengxunRTDataSize(void) { return m_qTengxunRTWebData.GetDataSize(); }
   void PushTengxunRTData(CWebDataPtr pData) { m_qTengxunRTWebData.PushData(pData); }
   CWebDataPtr PopTengxunRTData(void) { return m_qTengxunRTWebData.PopData(); }
@@ -116,7 +113,6 @@ public:
 
 protected:
   CQueueWebData m_qSinaRTWebData; // 新浪股票网络数据暂存队列
-  CQueueWebData m_qSinaStakeRTWebData; // 新浪证券网络数据暂存队列
   CQueueWebData m_qTengxunRTWebData; // 腾讯网络数据暂存队列
   CQueueWebData m_qNeteaseRTWebData; // 网易网络数据暂存队列
   CQueueWebData m_qCrweberWebData; // crweber.com网络数据暂存队列

@@ -130,8 +130,8 @@ public:
   afx_msg void OnUpdateBuildRebuildCurrentWeekLine(CCmdUI* pCmdUI);
   afx_msg void OnBuildRebuildCurrentWeekWeeklineTable();
   afx_msg void OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI);
-  afx_msg void OnUpdateStakeSection();
-  afx_msg void OnUpdateStakeCode();
+  afx_msg void OnUpdateStockSection();
+  afx_msg void OnUpdateStockCode();
   afx_msg void OnRebuildEpsSurprise();
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();

@@ -17,8 +17,8 @@ public:
   void SetMarket(WORD wMarket) noexcept { m_wMarket = wMarket; }
   CString GetComment(void) { return m_strComment; }
   void SetComment(CString strComment) { m_strComment = strComment; }
-  bool IsBuildStakePtr(void) noexcept { return m_fBuildStakePtr; }
-  void SetBuildStakePtr(bool fFlag) noexcept { m_fBuildStakePtr = fFlag; }
+  bool IsBuildStockPtr(void) noexcept { return m_fBuildStockPtr; }
+  void SetBuildStockPtr(bool fFlag) noexcept { m_fBuildStockPtr = fFlag; }
 
 protected:
   // 需存储数据
@@ -28,7 +28,7 @@ protected:
   CString m_strComment; // 注释
 
   // 无需存储数据
-  bool m_fBuildStakePtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStock中）。
+  bool m_fBuildStockPtr; // 本段证券是否已建立证券指针（在m_vChinaMarketStock中）。
 };
 
 typedef shared_ptr<CStockSection> CStockSectionPtr;

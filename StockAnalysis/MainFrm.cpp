@@ -83,8 +83,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_LINE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekLine)
   ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
-  ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStakeSection)
-  ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStakeCode)
+  ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
+  ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStockCode)
   ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
@@ -965,13 +965,13 @@ void CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable(CCmdUI* pCmdUI) {
   // TODO: Add your command update UI handler code here
 }
 
-void CMainFrame::OnUpdateStakeSection() {
+void CMainFrame::OnUpdateStockSection() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->SetUpdateStockSection(true);
   gl_pChinaStockMarket->TaskSaveStockSection();
 }
 
-void CMainFrame::OnUpdateStakeCode() {
+void CMainFrame::OnUpdateStockCode() {
   // TODO: Add your command handler code here
   gl_pChinaStockMarket->RunningThreadUpdateStockCodeDB();
 }
@@ -988,7 +988,7 @@ void CMainFrame::OnRebuildPeer() {
 
 void CMainFrame::OnRebuildDayline() {
   // TODO: Add your command handler code here
-  gl_pWorldMarket->RebuildStakeDayLineDB();
+  gl_pWorldMarket->RebuildStockDayLineDB();
 }
 
 void CMainFrame::OnUpdateWorldStockDaylineStartEnd() {

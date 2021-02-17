@@ -148,7 +148,7 @@ public:
   bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
 
-  bool TaskUpdateStakeDB(void);
+  bool TaskUpdateStockDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);
   bool TaskUpdateForexSymbolDB(void);
@@ -163,7 +163,7 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB();
-  virtual bool RunningTaskThreadUpdateStakeDB(void);
+  virtual bool RunningTaskThreadUpdateStockDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
@@ -201,7 +201,7 @@ public:
   bool LoadWorldStock(void);
   bool LoadWorldChoicedStock(void);
   bool UpdateCountryListDB(void);
-  bool UpdateStakeDB(void);
+  bool UpdateStockDB(void);
   bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
 
@@ -210,7 +210,7 @@ public:
   bool LoadCountryList(void);
   bool LoadEconomicCalendarDB(void);
 
-  bool RebuildStakeDayLineDB(void);
+  bool RebuildStockDayLineDB(void);
   bool UpdateDayLineStartEndDate(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
@@ -235,8 +235,8 @@ protected:
   WebInquiry m_CurrentFinnhubInquiry;
   WebInquiry m_CurrentTiingoInquiry;
   WebInquiry m_CurrentQuandlInquiry;
-  vector<CWorldStockPtr> m_vWorldChoicedStake;
-  map<CString, long> m_mapWorldChoicedStake;
+  vector<CWorldStockPtr> m_vWorldChoicedStock;
+  map<CString, long> m_mapWorldChoicedStock;
   long m_lChoicedStockPos;
 
   vector<CString> m_vFinnhubInquiringStr;

@@ -219,13 +219,13 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadFinnHubData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadReadTiingoData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockDB.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\WorldMarket.cpp" />
@@ -249,7 +249,7 @@
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStakeCode.cpp" />
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveRTData.cpp" />
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveTempRTData.cpp" />
@@ -308,7 +308,7 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="AmericaMarketTest.cpp" />
-    <ClCompile Include="AmericaStakeTest.cpp" />
+    <ClCompile Include="AmericaStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />
@@ -480,7 +480,7 @@
     <ClInclude Include="..\StockAnalysis\targetver.h" />
     <ClInclude Include="EnvironmentSetUp.h" />
     <ClInclude Include="MockChinaMarket.h" />
-    <ClInclude Include="MockChinaStake.h" />
+    <ClInclude Include="MockChinaStock.h" />
     <ClInclude Include="MockCrweberIndexMarket.h" />
     <ClInclude Include="MockCrweberIndexWebInquiry.h" />
     <ClInclude Include="MockDayLineContainer.h" />

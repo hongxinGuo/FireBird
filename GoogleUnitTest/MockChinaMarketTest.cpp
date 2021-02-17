@@ -472,7 +472,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pchinaMarket), (UINT)33);
   }
 
-  TEST_F(CMockChinaMarketTest, TestThreadSaveStakeSection) {
+  TEST_F(CMockChinaMarketTest, TestThreadSaveStockSection) {
     EXPECT_CALL(*s_pchinaMarket, SaveStockSection)
       .Times(1);
     EXPECT_EQ(ThreadSaveStockSection(s_pchinaMarket), (UINT)35);

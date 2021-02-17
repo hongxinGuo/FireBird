@@ -817,13 +817,13 @@
     <ClCompile Include="source\AmericaMarket\SetTiingoStockFundanmental.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadQuandlData.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadReadTiingoData.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateCountryList.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateStakeDB.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateStockDB.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp" />
@@ -845,7 +845,7 @@
     <ClCompile Include="source\ChinaMarket\ThreadReadNeteaseRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadReadSinaRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadReadTengxunRTData.cpp" />
-    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStakeCode.cpp" />
+    <ClCompile Include="source\ChinaMarket\ThreadSaveActiveStockCode.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadSaveDayLine.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadSaveRTData.cpp" />
     <ClCompile Include="source\ChinaMarket\ThreadSaveTempRTData.cpp" />

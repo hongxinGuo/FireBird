@@ -135,7 +135,7 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   return true;
 }
 
-bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStake) {
+bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s, sError;
@@ -161,7 +161,7 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSt
       pStock->m_strSymbol = s.c_str();
       s = pt2.get<string>(_T("type"));
       if (s.size() > 0) pStock->m_strType = s.c_str();
-      vStake.push_back(pStock);
+      vStock.push_back(pStock);
     }
     catch (ptree_error&) {
       TRACE("œ¬‘ÿFinnhub Symbol”–ŒÛ\n");

@@ -410,9 +410,6 @@
     <ClCompile Include="..\StockAnalysis\source\WebData.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStakeDB.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\Country.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -470,9 +467,6 @@
     <ClCompile Include="QuandlWebInquiryTest.cpp">
       <Filter>Test源文件\World Market\网络通信</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStakeDayLine.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateDayLineStartEndDate.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -486,9 +480,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="AmericaMarketTest.cpp">
-      <Filter>Test源文件\World Market</Filter>
-    </ClCompile>
-    <ClCompile Include="AmericaStakeTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp">
@@ -573,9 +564,6 @@
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadReadTengxunRTData.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
-    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStakeCode.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveDayLine.cpp">
@@ -670,6 +658,18 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\ChinaMarket\StockSection.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\ChinaMarket\ThreadSaveActiveStockCode.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateAmericaStockDayLine.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockDB.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="AmericaStockTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -859,9 +859,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="MockChinaStake.h">
-      <Filter>Mock类\China Market</Filter>
-    </ClInclude>
     <ClInclude Include="MockFinnHubWebInquiry.h">
       <Filter>Mock类\World Market</Filter>
     </ClInclude>
@@ -996,6 +993,9 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\ChinaMarket\StockSection.h">
       <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="MockChinaStock.h">
+      <Filter>Mock类\China Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
