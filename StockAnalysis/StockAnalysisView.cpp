@@ -655,7 +655,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
   ASSERT(gl_pChinaStockMarket->GetCurrentStock() != nullptr);
   ASSERT(gl_pChinaStockMarket->GetCurrentStock()->IsDayLineLoaded());
   switch (m_iCurrentShowType) {
-  case __SHOW_DAY_LINE_DATA__: // show day line(or week line) stake data
+  case __SHOW_DAY_LINE_DATA__: // show day line(or week line) stock data
   case __SHOW_WEEK_LINE_DATA__:
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
@@ -663,7 +663,7 @@ void CStockAnalysisView::Show(CDC* pdc) {
   SysCallBitBlt(pdc, 0, 0, rect.right, rect.bottom, &m_MemoryDC, 0, 0, SRCCOPY);
   if (pOldBitmap != nullptr) m_MemoryDC.SelectObject(pOldBitmap);
   break;
-  case __SHOW_REAL_TIME_DATA__:	// show realtime stake data
+  case __SHOW_REAL_TIME_DATA__:	// show realtime stock data
   pOldBitmap = m_MemoryDC.SelectObject(&m_Bitmap);
   m_MemoryDC.FillSolidRect(0, 0, rect.right, rect.bottom, crGray);
   ShowRealtimeData(&m_MemoryDC);
