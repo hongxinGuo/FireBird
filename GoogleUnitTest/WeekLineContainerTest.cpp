@@ -32,7 +32,7 @@ namespace StockAnalysisTest {
     pWeekLine->SetHigh(1000);
     pWeekLine->SetLow(200);
     CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
-    pWeekLine2->SetStockCode(_T("sh600001"));
+    pWeekLine2->SetStockCode(_T("600001.SS"));
     pWeekLine2->SetDate(20200201);
     pWeekLine2->SetHigh(11000);
     pWeekLine2->SetLow(1200);
@@ -84,7 +84,7 @@ namespace StockAnalysisTest {
     pWeekLine->SetHigh(1000);
     pWeekLine->SetLow(200);
     CWeekLinePtr pWeekLine2 = make_shared<CWeekLine>();
-    pWeekLine2->SetStockCode(_T("sh600001"));
+    pWeekLine2->SetStockCode(_T("600001.SS"));
     pWeekLine2->SetDate(20200201);
     pWeekLine2->SetHigh(11000);
     pWeekLine2->SetLow(1200);

@@ -562,7 +562,7 @@ namespace StockAnalysisTest {
     CWeekLine id, id2;
 
     id.SetDate(21101101);
-    id.SetStockCode(_T("sh600008"));
+    id.SetStockCode(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
@@ -797,7 +797,7 @@ namespace StockAnalysisTest {
     CWeekLine id, idLoaded;
 
     id.SetDate(21101101);
-    id.SetStockCode(_T("sh600008"));
+    id.SetStockCode(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);

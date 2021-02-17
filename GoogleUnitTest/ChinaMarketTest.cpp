@@ -399,7 +399,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestGetStockName) {
     //未实现.由于stockName存储时使用的是UniCode制式，而本系统默认是Ansi制式，导致无法进行字符串对比。暂时不进行测试了。
     //EXPECT_STREQ(gl_pChinaStockMarket->GetStockName(_T("600000.SS")), _T("浦发银行"));
-    EXPECT_STREQ(gl_pChinaStockMarket->GetStockName(_T("sh60000")), _T("")); // 没找到返回空字符串
+    EXPECT_STREQ(gl_pChinaStockMarket->GetStockName(_T("60000.SS")), _T("")); // 没找到返回空字符串
   }
 
   TEST_F(CChinaMarketTest, TestGetStockCode) {
@@ -856,8 +856,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetStockCodeForInquiringSinaRTData) {
-    gl_pChinaStockMarket->SetStockCodeForInquiringRTData(_T("sh601919"));
-    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringRTData(), _T("sh601919"));
+    gl_pChinaStockMarket->SetStockCodeForInquiringRTData(_T("601919.SS"));
+    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringRTData(), _T("601919.SS"));
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingNeteaseDayLineDataTime) {

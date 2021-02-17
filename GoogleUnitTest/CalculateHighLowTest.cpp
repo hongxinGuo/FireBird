@@ -39,21 +39,21 @@ namespace StockAnalysisTest {
   HighLowData HighLowData9("", 0, 2030, 2250, 2480, 2030, 0, 0);
   HighLowData HighLowData10("", 94970, 0, 86340, 94970, 77710, 0, 0);
   HighLowData HighLowData11("", 93760, 0, 85240, 93760, 76720, 0, 0);
-  HighLowData HighLowData12("sh600421", 0, 13810, 14540, 15270, 13810, 0, 0);
-  HighLowData HighLowData13("sz300216", 0, 1490, 1650, 1820, 1490, 0, 0);
+  HighLowData HighLowData12("600421.SS", 0, 13810, 14540, 15270, 13810, 0, 0);
+  HighLowData HighLowData13("300216.SZ", 0, 1490, 1650, 1820, 1490, 0, 0);
   HighLowData HighLowData14("", 0, 18290, 20320, 22350, 18290, 0, 0);
-  HighLowData HighLowData15("sh600568", 1790, 0, 1700, 1790, 1620, 0, 0);
-  HighLowData HighLowData16("sz002586", 2000, 0, 1900, 2000, 1810, 0, 0);
-  HighLowData HighLowData17("sh600145", 1580, 0, 1500, 1580, 1430, 0, 0);
-  HighLowData HighLowData18("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
-  HighLowData HighLowData19("sz000572", 0, 3330, 3500, 3680, 3330, 0, 0);
-  HighLowData HighLowData20("sh600543", 0, 10240, 11380, 12520, 10240, 0, 0);
-  HighLowData HighLowData21("sh603595", 0, 32530, 36140, 39750, 32530, 0, 0);
-  HighLowData HighLowData22("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
-  HighLowData HighLowData23("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
-  HighLowData HighLowData24("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
-  HighLowData HighLowData25("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
-  HighLowData HighLowData26("sh600978", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData15("600568.SS", 1790, 0, 1700, 1790, 1620, 0, 0);
+  HighLowData HighLowData16("002586.SZ", 2000, 0, 1900, 2000, 1810, 0, 0);
+  HighLowData HighLowData17("600145.SS", 1580, 0, 1500, 1580, 1430, 0, 0);
+  HighLowData HighLowData18("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData19("000572.SZ", 0, 3330, 3500, 3680, 3330, 0, 0);
+  HighLowData HighLowData20("600543.SS", 0, 10240, 11380, 12520, 10240, 0, 0);
+  HighLowData HighLowData21("603595.SS", 0, 32530, 36140, 39750, 32530, 0, 0);
+  HighLowData HighLowData22("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData23("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData24("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData25("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
+  HighLowData HighLowData26("600978.SS", 0, 1240, 1300, 1370, 1240, 0, 0);
 
   class StockHighLlowLImitTest : public::testing::TestWithParam<HighLowData*>
   {

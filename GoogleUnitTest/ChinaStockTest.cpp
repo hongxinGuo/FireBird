@@ -837,7 +837,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestSaveStockCodeDB) {
     CSetStockCode setStockCode;
     CChinaStock stock, stock2;
-    stock.SetStockCode(_T("sh400000")); // 这个必须用未曾使用过的股票代码，已利于随后删除
+    stock.SetStockCode(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
     stock.SetOffset(13000);
     stock.SetStockName(_T("未使用过"));
     stock.SetIPOStatus(__STAKE_IPOED__);
@@ -848,10 +848,10 @@ namespace StockAnalysisTest {
     stock.AppendStockCodeDB(setStockCode);
     setStockCode.Close();
 
-    setStockCode.m_strFilter = _T("[StockCode] = 'sh400000'");
+    setStockCode.m_strFilter = _T("[StockCode] = '400000.SS'");
     setStockCode.Open();
     EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_IPOED__);
-    EXPECT_EQ(setStockCode.m_StockCode, _T("sh400000"));
+    EXPECT_EQ(setStockCode.m_StockCode, _T("400000.SS"));
     setStockCode.Delete();
     setStockCode.Close();
   }
@@ -931,14 +931,14 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestRTDataDeque) {    // 此三个函数是具备同步机制的，这里没有进行测试
     CWebRTDataPtr pData = make_shared<CWebRTData>();
-    pData->SetStockCode(_T("sh600008"));
+    pData->SetStockCode(_T("600008.SS"));
     CChinaStock stock;
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
     stock.PushRTData(pData);
     EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
     pData = stock.GetRTDataAtHead();
     EXPECT_EQ(stock.GetRTDataQueueSize(), 1);
-    EXPECT_STREQ(pData->GetStockCode(), _T("sh600008"));
+    EXPECT_STREQ(pData->GetStockCode(), _T("600008.SS"));
     CWebRTDataPtr pData2 = stock.PopRTData();
     EXPECT_EQ(stock.GetRTDataQueueSize(), 0);
   }

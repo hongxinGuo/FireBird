@@ -37,6 +37,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
     EXPECT_FALSE(gl_pChinaStockMarket->GetStock(_T("600601.SS"))->IsDayLineNeedProcess());
 
+    EXPECT_FALSE(NeteaseDayLineWebInquiry.IsReadingWebData());
+    NeteaseDayLineWebInquiry.SetReadingWebData(true);
     EXPECT_CALL(NeteaseDayLineWebInquiry, ReadWebData3(200, 30, 30))
       .Times(1)
       .WillOnce(Return(true));

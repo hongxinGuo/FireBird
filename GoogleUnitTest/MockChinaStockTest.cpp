@@ -66,7 +66,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*pStock, SaveDayLineBasicInfo)
       .Times(0);
     pStock->SetDayLineLoaded(true);
-    pStock->SetStockCode(_T("sh601111"));
+    pStock->SetStockCode(_T("601111.SS"));
     gl_fExitingSystem = true;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
     EXPECT_TRUE(pStock->IsDayLineLoaded());
@@ -76,7 +76,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(false));
     pStock->SetDayLineLoaded(true);
-    pStock->SetStockCode(_T("sh601111"));
+    pStock->SetStockCode(_T("601111.SS"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
@@ -86,13 +86,13 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     pStock->SetDayLineLoaded(true);
-    pStock->SetStockCode(_T("sh601111"));
+    pStock->SetStockCode(_T("601111.SS"));
     gl_fExitingSystem = false;
     EXPECT_EQ(ThreadSaveDayLineBasicInfoOfStock(pStock.get()), (UINT)15);
     EXPECT_FALSE(pStock->IsDayLineLoaded()) << "存储时不涉及卸载日线数据\n";
     EXPECT_EQ(gl_systemMessage.GetDayLineInfoDequeSize(), 1);
     CString str = gl_systemMessage.PopDayLineInfoMessage();
-    EXPECT_STREQ(str, _T("sh601111日线资料存储完成"));
+    EXPECT_STREQ(str, _T("601111.SS日线资料存储完成"));
   }
 
   TEST_F(CMockChinaStockTest, TestThreadLoadDayLine) {

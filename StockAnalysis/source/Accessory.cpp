@@ -241,7 +241,7 @@ bool IsShenzhenExchange(CString strStockCode) {
 
 /// <summary>
 /// 从一个完整的股票代码中分离出符号部分（去除表示交易所的部分）
-/// 目前使用的上海深圳格式为sh600000、sz000001，今后要改为600000.SS, 000001.SZ
+/// 目前使用的上海深圳格式为600000.SS, 000001.SZ
 /// </summary>
 /// <param name="strStockCode"></param>
 /// <returns></returns>

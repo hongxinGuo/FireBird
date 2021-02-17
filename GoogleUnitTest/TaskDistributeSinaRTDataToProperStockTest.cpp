@@ -42,13 +42,13 @@ namespace StockAnalysisTest {
   class TaskDistributeSinaRTDataToProperStockTest : public::testing::TestWithParam<SinaRTData*> {
   protected:
     static void SetUpTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(false); // 故意将600008的状态设置为不活跃，这样测试五可以测试。
       pStock->SetIPOStatus(__STAKE_NULL__); // 故意将此股票状态设置为未上市。
       s_tCurrentMarketTime = gl_pChinaStockMarket->GetMarketTime();
     }
     static void TearDownTestSuite(void) {
-      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("sh600008"));
+      CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(true);
     }
     virtual void SetUp(void) override {

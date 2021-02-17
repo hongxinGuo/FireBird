@@ -185,7 +185,7 @@ namespace StockAnalysisTest {
     pHistoryData->SetDate(20200101);
     pHistoryData->Set30RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
-    pHistoryData2->SetStockCode(_T("sh600001"));
+    pHistoryData2->SetStockCode(_T("600001.SS"));
     pHistoryData2->SetDate(20200201);
     pHistoryData2->Set30RS(2.2);
 
@@ -229,7 +229,7 @@ namespace StockAnalysisTest {
     pHistoryData->SetDate(20200101);
     pHistoryData->Set120RS(1.1);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
-    pHistoryData2->SetStockCode(_T("sh600001"));
+    pHistoryData2->SetStockCode(_T("600001.SS"));
     pHistoryData2->SetDate(20200201);
     pHistoryData2->Set120RS(2.2);
 
@@ -252,7 +252,7 @@ namespace StockAnalysisTest {
     pHistoryData->SetHigh(1000);
     pHistoryData->SetLow(200);
     CChinaStockHistoryDataPtr pHistoryData2 = make_shared<CChinaStockHistoryData>();
-    pHistoryData2->SetStockCode(_T("sh600001"));
+    pHistoryData2->SetStockCode(_T("600001.SS"));
     pHistoryData2->SetDate(20200201);
     pHistoryData2->SetHigh(11000);
     pHistoryData2->SetLow(1200);
