@@ -633,15 +633,6 @@ namespace StockAnalysisTest {
   TEST_F(CChinaStockTest, TestReadOnlyFunctions) {
   }
 
-  TEST_F(CChinaStockTest, TestIsActive) {
-    CChinaStock stock;
-    EXPECT_FALSE(stock.IsActive());
-    stock.SetActive(true);
-    EXPECT_TRUE(stock.IsActive());
-    stock.SetActive(false);
-    EXPECT_FALSE(stock.IsActive());
-  }
-
   TEST_F(CChinaStockTest, TestIsSaveToChoicedStockDB) {
     CChinaStock stock;
     EXPECT_FALSE(stock.IsSaveToChoicedStockDB());

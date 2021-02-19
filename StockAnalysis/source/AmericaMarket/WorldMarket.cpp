@@ -1526,7 +1526,6 @@ bool CWorldMarket::UpdateStockDB(void) {
       if (setWorldStock.IsEOF()) break;
       pStock = m_vWorldStock.at(m_mapWorldStock.at(setWorldStock.m_Symbol));
       if (pStock->IsUpdateStockProfileDB()) {
-        ASSERT(!pStock->IsTodayNewStock());
         iCount++;
         pStock->Update(setWorldStock);
         pStock->SetUpdateStockProfileDB(false);
@@ -1536,9 +1535,10 @@ bool CWorldMarket::UpdateStockDB(void) {
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vWorldStock) {
         if (pStock3->IsUpdateStockProfileDB()) {
-          ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
+          //ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
           iCount++;
           pStock3->Append(setWorldStock);
+          pStock3->SetTodayNewStock(false);
           TRACE("存储股票：%s\n", pStock3->GetSymbol().GetBuffer());
         }
         if (iCount >= iUpdatedStock) break;

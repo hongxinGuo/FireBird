@@ -16,7 +16,6 @@ CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
-  m_Market = 0;
   m_StockCode = _T("");
   m_StockName = _T("");
   m_LastClose = _T("0");
@@ -105,7 +104,7 @@ CSetWeekLineInfo::CSetWeekLineInfo(CDatabase* pdb)
   m_CanceledSellVolumeBelow200000 = _T("");
   m_CanceledSellVolumeAbove200000 = _T("");
 
-  m_nFields = 82;
+  m_nFields = 81;
 }
 
 CString CSetWeekLineInfo::GetDefaultConnect() {
@@ -123,7 +122,6 @@ void CSetWeekLineInfo::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Date]"), m_Date);
-  RFX_Long(pFX, _T("[Market]"), m_Market);
   RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);

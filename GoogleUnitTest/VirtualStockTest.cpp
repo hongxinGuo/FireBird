@@ -33,6 +33,7 @@ namespace StockAnalysisTest {
     stock.SetTodayNewStock(false);
     EXPECT_FALSE(stock.IsTodayNewStock());
   }
+
   TEST_F(CVirtualStockTest, TestIsUpdateStockProfileDB) {
     CVirtualStock stock;
 
@@ -42,5 +43,15 @@ namespace StockAnalysisTest {
     stock.SetUpdateStockProfileDB(false);
     EXPECT_FALSE(stock.IsUpdateStockProfileDB());
   }
+
+  TEST_F(CVirtualStockTest, TestIsActive) {
+    CVirtualStock stock;
+    EXPECT_FALSE(stock.IsActive());
+    stock.SetActive(true);
+    EXPECT_TRUE(stock.IsActive());
+    stock.SetActive(false);
+    EXPECT_FALSE(stock.IsActive());
+  }
+
 
 }

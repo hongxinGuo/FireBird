@@ -128,8 +128,6 @@ void CChinaStock::Reset(void) {
   m_dCurrentGuadanTransactionPrice = 0;
   m_nCurrentTransactionType = 0;
 
-  m_fActive = false;
-
   m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
   m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
   m_fDayLineNeedSaving = false;
@@ -1518,7 +1516,7 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   SetIPOStatus(setStockCode.m_IPOStatus);
   m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
   SetNeedProcessRTData(true);
-  if (IsShanghaiExchange2(GetStockCode())) {
+  if (IsShanghaiExchange(GetStockCode())) {
     if (GetStockCode().Left(6) <= _T("000999")) { //沪市指数？
       SetNeedProcessRTData(false);
     }

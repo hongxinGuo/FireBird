@@ -343,7 +343,7 @@ bool CChinaMarket::CreateTotalStockContainer(void) {
 }
 
 void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRTData) {
-  CString strCode = GetStockSymbol2(strFirstStockCode);
+  CString strCode = GetStockSymbol(strFirstStockCode);
   CString strStockCode, strStockSymbol, strExchange;
   CString str = _T("");
   int iCode = atoi(strCode.GetBuffer());
@@ -351,19 +351,19 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
   char buffer[10];
   CChinaStockPtr pStock = nullptr;
 
-  if (IsShanghaiExchange2(strFirstStockCode)) { // 上海市场
+  if (IsShanghaiExchange(strFirstStockCode)) { // 上海市场
     iMarket = 0;
   }
-  else if (IsShenzhenExchange2(strFirstStockCode)) { // 深圳市场
+  else if (IsShenzhenExchange(strFirstStockCode)) { // 深圳市场
     iMarket = 1000;
   }
   if (m_vStockSection.at((iCode / 1000) + iMarket)->IsBuildStockPtr()) return; // 已经在证券池中建立了
   // 生成上海股票代码
   for (int i = iCode; i < (iCode + 1000); i++) {
-    strExchange = GetStockExchange2(strFirstStockCode);
+    strExchange = GetStockExchange(strFirstStockCode);
     sprintf_s(buffer, _T("%06d"), i);
     strStockSymbol = buffer;
-    strStockCode = CreateStockCode2(strExchange, strStockSymbol);
+    strStockCode = CreateStockCode(strExchange, strStockSymbol);
     m_vCurrentStockSet.push_back(strStockCode); //
     m_mapCurrentStockSet[strStockCode] = m_vCurrentStockSet.size();
   }
@@ -525,15 +525,15 @@ bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::IsAStock(CString strStockCode) {
-  CString strSymbol = GetStockSymbol2(strStockCode);
-  if (IsShanghaiExchange2(strStockCode)) {
+  CString strSymbol = GetStockSymbol(strStockCode);
+  if (IsShanghaiExchange(strStockCode)) {
     if ((strSymbol[0] == '6') && (strSymbol[1] == '0')) {
       if ((strSymbol[2] == '0') || (strSymbol[2] == '1')) {
         return true;
       }
     }
   }
-  else if(IsShenzhenExchange2(strStockCode)) {
+  else if(IsShenzhenExchange(strStockCode)) {
     if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) {
       if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) {
         return true;
@@ -3131,6 +3131,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
       if (setStockCode.IsEOF()) break;
       pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
       if (pStock->IsUpdateStockProfileDBAndClearFlag()) {
+        //ASSERT(!pStock3->IsTodayNewStock());
         iCount++;
         pStock->UpdateStockCodeDB(setStockCode);
       }
@@ -3139,8 +3140,10 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vChinaMarketStock) {
         if (pStock3->IsUpdateStockProfileDBAndClearFlag()) {
+          ASSERT(pStock3->IsTodayNewStock());
           iCount++;
           pStock3->AppendStockCodeDB(setStockCode);
+          pStock3->SetTodayNewStock(false);
         }
         if (iCount >= iUpdatedStock) break;
       }

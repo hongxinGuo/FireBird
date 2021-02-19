@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
       EXPECT_EQ(pStock->GetOffset(), i);
       EXPECT_FALSE(pStock->IsDayLineNeedProcess());
       EXPECT_FALSE(pStock->IsDayLineNeedSaving());
-      if (IsShanghaiExchange2(pStock->GetStockCode())) {
+      if (IsShanghaiExchange(pStock->GetStockCode())) {
         if ((pStock->GetStockCode().Left(6) >= _T("000000")) && (pStock->GetStockCode().Left(6) <= _T("000999"))) {
           EXPECT_FALSE(pStock->IsNeedProcessRTData());
         }
@@ -128,7 +128,9 @@ namespace StockAnalysisTest {
       else if ((pStock->GetStockCode().Left(6) >= _T("399000")) && (pStock->GetStockCode().Left(6) <= _T("399999"))) {
         EXPECT_FALSE(pStock->IsNeedProcessRTData());
       }
-      else EXPECT_TRUE(pStock->IsNeedProcessRTData());
+      else {
+        EXPECT_TRUE(pStock->IsNeedProcessRTData());
+      }
     }
     EXPECT_FALSE(gl_pChinaStockMarket->IsLoadSelectedStock());
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());

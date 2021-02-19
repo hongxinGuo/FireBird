@@ -8,6 +8,9 @@ CWorldStock::CWorldStock() : CVirtualStock() {
   Reset();
 }
 
+CWorldStock::~CWorldStock() {
+}
+
 void CWorldStock::Reset(void) {
   // Finnhub SymbolÊý¾Ý
   m_strIPODate = _T(" ");

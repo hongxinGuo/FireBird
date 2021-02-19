@@ -188,10 +188,10 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    strSinaStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strSinaStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    strSinaStockCode = CreateStockCode(_T("sz"), strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strSinaStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     throw exception();
@@ -490,10 +490,10 @@ bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStock
     strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    strSinaStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strSinaStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    strSinaStockCode = CreateStockCode(_T("sz"),strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strSinaStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     throw exception();
@@ -748,10 +748,10 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     strStockSymbol = buffer2;
     switch (wMarket) {
     case __SHANGHAI_MARKET__:
-    strTengxunStockCode = CreateStockCode(_T("sh"), strStockSymbol); // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
+    strTengxunStockCode = _T("sh") + strStockSymbol; // 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。上海为sh
     break;
     case __SHENZHEN_MARKET__:
-    strTengxunStockCode = CreateStockCode(_T("sz"), strStockSymbol);// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
+    strTengxunStockCode = _T("sz") + strStockSymbol;// 由于上海深圳股票代码有重叠，故而所有的股票代码都带上市场前缀。深圳为sz
     break;
     default:
     return false;
@@ -1324,7 +1324,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
     str1 = _T("SS");
   }
   else str1 = _T("SZ");
-  m_strStockCode = CreateStockCode2(str1, strValue.Right(6));
+  m_strStockCode = CreateStockCode(str1, strValue.Right(6));
   break;
   case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
   //m_strStockName = buffer;

@@ -17,6 +17,7 @@ using namespace std;
 class CWorldStock : public CVirtualStock {
 public:
   CWorldStock();
+  ~CWorldStock();
   void Reset(void);
 public:
   void Load(CSetWorldStock& setWorldStock);
@@ -101,8 +102,6 @@ public:
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
 
-  bool IsActive(void) noexcept { return m_fActive; }
-  void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
   bool IsUSMarket(void);
 
@@ -183,8 +182,6 @@ public:
   double m_dChangeHandRate; // 换手率
   INT64 m_llTotalValue;	// 总市值。单位：万元
   INT64 m_llCurrentValue;	// 流通市值。单位：万元
-
-  bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
 
   vector<CDayLinePtr> m_vDayLine;
   vector<CEPSSurprisePtr> m_vEPSSurprise;

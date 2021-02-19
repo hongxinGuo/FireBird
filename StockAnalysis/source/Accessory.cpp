@@ -227,57 +227,15 @@ long GetCurrentMonday(long lDate) {
   return lCurrentMonday;
 }
 
+
 bool IsShanghaiExchange(CString strStockCode) {
   CString str = GetStockExchange(strStockCode);
-  if (str.Compare(_T("sh")) == 0) return true;
+  if (str.Compare(_T("SS")) == 0) return true;
   else return false;
 }
 
 bool IsShenzhenExchange(CString strStockCode) {
   CString str = GetStockExchange(strStockCode);
-  if (str.Compare(_T("sz")) == 0) return true;
-  else return false;
-}
-
-/// <summary>
-/// 从一个完整的股票代码中分离出符号部分（去除表示交易所的部分）
-/// 目前使用的上海深圳格式为600000.SS, 000001.SZ
-/// </summary>
-/// <param name="strStockCode"></param>
-/// <returns></returns>
-CString GetStockSymbol(CString strStockCode) {
-  return(strStockCode.Right(6));
-}
-
-/// <summary>
-/// 从一个完整的股票代码中分离出交易所部分（去除表示符号的部分）
-/// 目前使用的上海深圳格式为sh600000、sz000001，今后要改为600000.SS, 000001.SZ
-/// </summary>
-/// <param name="strStockCode"></param>
-/// <returns></returns>
-CString GetStockExchange(CString strStockCode) {
-  return(strStockCode.Left(2));
-}
-
-/// <summary>
-/// 使用交易所和符号生成完整股票代码。
-/// 目前方式为 交易所 + 符号。 sh + 600000 = sh600000， 以后为 SS + 600000 = 600000.SS
-/// </summary>
-/// <param name="strStockExchange"></param>
-/// <param name="strStockSymbol"></param>
-/// <returns></returns>
-CString CreateStockCode(CString strStockExchange, CString strStockSymbol) {
-  return strStockExchange + strStockSymbol;
-}
-
-bool IsShanghaiExchange2(CString strStockCode) {
-  CString str = GetStockExchange2(strStockCode);
-  if (str.Compare(_T("SS")) == 0) return true;
-  else return false;
-}
-
-bool IsShenzhenExchange2(CString strStockCode) {
-  CString str = GetStockExchange2(strStockCode);
   if (str.Compare(_T("SZ")) == 0) return true;
   else return false;
 }
@@ -288,7 +246,7 @@ bool IsShenzhenExchange2(CString strStockCode) {
 /// </summary>
 /// <param name="strStockCode"></param>
 /// <returns></returns>
-CString GetStockSymbol2(CString strStockCode) {
+CString GetStockSymbol(CString strStockCode) {
   long lLength = strStockCode.GetLength();
   ASSERT(lLength > 3);
   CString str = strStockCode.Left(lLength - 3);
@@ -301,7 +259,7 @@ CString GetStockSymbol2(CString strStockCode) {
 /// </summary>
 /// <param name="strStockCode"></param>
 /// <returns></returns>
-CString GetStockExchange2(CString strStockCode) {
+CString GetStockExchange(CString strStockCode) {
   return(strStockCode.Right(2));
 }
 
@@ -312,13 +270,13 @@ CString GetStockExchange2(CString strStockCode) {
 /// <param name="strStockExchange"></param>
 /// <param name="strStockSymbol"></param>
 /// <returns></returns>
-CString CreateStockCode2(CString strStockExchange, CString strStockSymbol) {
+CString CreateStockCode(CString strStockExchange, CString strStockSymbol) {
   return strStockSymbol + _T(".") + strStockExchange;
 }
 
 CString XferSinaToStandred(CString strSina) {
   CString strSymbol = strSina.Right(6);
-  if (IsShanghaiExchange(strSina)) {
+  if (strSina.Left(2).Compare(_T("sh")) == 0) {
     return strSymbol + _T(".") + _T("SS");
   }
   else {
@@ -329,8 +287,8 @@ CString XferSinaToStandred(CString strSina) {
 
 CString XferSinaToNetease(CString strSina) {
   CString strSymbol = strSina.Right(6);
-  if (IsShanghaiExchange(strSina)) {
-    return _T("0") + strSymbol;
+    if (strSina.Left(2).Compare(_T("sh")) == 0) {
+      return _T("0") + strSymbol;
   }
   else {
     ASSERT(strSina.GetAt(1) == 'z');
@@ -366,7 +324,7 @@ CString XferTengxunToStandred(CString strTengxun) {
 
 CString XferStandredToSina(CString strStandred) {
   CString strSymbol = strStandred.Left(6);
-  if (IsShanghaiExchange2(strStandred)) {
+  if (IsShanghaiExchange(strStandred)) {
     return _T("sh") + strSymbol;
   }
   else {
@@ -377,7 +335,7 @@ CString XferStandredToSina(CString strStandred) {
 
 CString XferStandredToNetease(CString strStandred) {
   CString strSymbol = strStandred.Left(6);
-  if (IsShanghaiExchange2(strStandred)) {
+  if (IsShanghaiExchange(strStandred)) {
     return _T("0") + strSymbol;
   }
   else {

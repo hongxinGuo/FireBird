@@ -31,17 +31,12 @@ long GetNextMonday(long lDate); // 找到lDate的下一个星期一的数值
 long GetPrevMonday(long lDate); // 找到lDate的上一个星期一的数值
 long GetCurrentMonday(long lDate); // 找到包含lDate的那个星期的星期一
 
+// 股票代码采用国家标准制式
 bool IsShanghaiExchange(CString strStockCode);
 bool IsShenzhenExchange(CString strStockCode);
 CString GetStockSymbol(CString strStockCode);
 CString GetStockExchange(CString strStockCode);
 CString CreateStockCode(CString strStockExchange, CString strStockSymbol);
-// 股票代码采用国家标准制式
-bool IsShanghaiExchange2(CString strStockCode);
-bool IsShenzhenExchange2(CString strStockCode);
-CString GetStockSymbol2(CString strStockCode);
-CString GetStockExchange2(CString strStockCode);
-CString CreateStockCode2(CString strStockExchange, CString strStockSymbol);
 // 股票代码转换
 CString XferSinaToStandred(CString strSina);
 CString XferSinaToNetease(CString strSina);
