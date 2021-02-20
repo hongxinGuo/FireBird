@@ -20,16 +20,8 @@ CThreadStatus::CThreadStatus() {
   m_SavingTempData = false;
   m_CreatingWeekLine = false;
 
-  m_SavingDayLine = 0;
-  m_NumberOfRunningThread = 0;
+  m_NumberOfSavingThread = 0;
 }
 
 CThreadStatus::~CThreadStatus() {
-}
-
-bool CThreadStatus::IsSavingDayLine(void) {
-  if (m_SavingDayLine > 0) {
-    return true;
-  }
-  else return false;
 }

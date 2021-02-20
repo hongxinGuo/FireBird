@@ -12,9 +12,9 @@
 
 UINT ThreadSaveRTData(not_null<CChinaMarket*> pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
   pMarket->SaveRTData();
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 19;
 }

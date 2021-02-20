@@ -8,7 +8,7 @@ using namespace std;
 #include<thread>
 
 UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
   gl_ThreadStatus.SetCreatingWeekLine(true);
 
   long lStartMonday = GetCurrentMonday(lStartDate);
@@ -39,26 +39,26 @@ UINT ThreadBuildWeekLine(not_null<CChinaMarket*> pMarket, long lStartDate) {
   pMarket->BuildCurrentWeekWeekLineTable();
 
   gl_ThreadStatus.SetCreatingWeekLine(false);
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 25;
 }
 
 UINT ThreadBuildWeekLineOfStock(not_null<CChinaStock*> pStock, long lStartDate) {
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
   if (!gl_fExitingSystem) pStock->BuildWeekLine(lStartDate);
 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
   gl_SemaphoreBackGroundTaskThreads.Signal();
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 26;
 }
 
 UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();
 
@@ -66,13 +66,13 @@ UINT ThreadBuildWeekLineOfCurrentWeek(not_null<CChinaMarket*> pMarket) {
 
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads();
   gl_SemaphoreBackGroundTaskThreads.Signal();
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 32;
 }
 
 UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket) {
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
 
   // 清除当前周周线表
   pMarket->DeleteCurrentWeekWeekLine();
@@ -80,7 +80,7 @@ UINT ThreadBuildCurrentWeekWeekLineTable(not_null<CChinaMarket*> pMarket) {
   // 生成新的当前周周线
   pMarket->BuildCurrentWeekWeekLineTable();
 
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 33;
 }

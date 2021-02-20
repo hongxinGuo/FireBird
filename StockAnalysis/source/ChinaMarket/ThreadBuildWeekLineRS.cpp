@@ -16,7 +16,6 @@ using namespace std;
 #include<thread>
 
 UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatingDate) {
-  gl_ThreadStatus.IncreaseRunningThread();
   gl_ThreadStatus.SetCalculatingWeekLineRS(true);
   long lToday = GetPrevMonday(startCalculatingDate);
 
@@ -56,7 +55,6 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
     gl_systemMessage.PushInformationMessage(_T("中止了重新计算日线相对强度的过程"));
   }
   gl_ThreadStatus.SetCalculatingWeekLineRS(false); // 本线程顺利退出，处于非运行状态
-  gl_ThreadStatus.DecreaseRunningThread();
 
   return 30;
 }
@@ -68,7 +66,6 @@ UINT ThreadBuildWeekLineRS(not_null<CChinaMarket*> pMarket, long startCalculatin
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
-  gl_ThreadStatus.IncreaseRunningThread();
   gl_SemaphoreBackGroundTaskThreads.Wait();
   gl_ThreadStatus.IncreaseBackGroundWorkingthreads();     // 正在工作的线程数加一
   const long year = lDate / 10000;
@@ -84,7 +81,6 @@ UINT ThreadBuildWeekLineRSOfDate(not_null<CChinaMarket*> pMarket, long lDate) {
   }
   gl_ThreadStatus.DecreaseBackGroundWorkingthreads(); // 正在工作的线程数减一
   gl_SemaphoreBackGroundTaskThreads.Signal();
-  gl_ThreadStatus.DecreaseRunningThread();
 
   return 31;
 }

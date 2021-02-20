@@ -27,13 +27,12 @@ namespace StockAnalysisTest {
     ASSERT_FALSE(gl_fNormalMode);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingRTData());
     EXPECT_FALSE(gl_ThreadStatus.IsRTDataNeedCalculate());
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
     EXPECT_FALSE(gl_ThreadStatus.IsSavingTempData());
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
-    EXPECT_EQ(gl_ThreadStatus.HowManyBackGroundThreadsWorking(), 0);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfBackGroundWorkingThread(), 0);
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
-    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
+    int iRunningThread = gl_ThreadStatus.GetNumberOfSavingThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
 
     size_t l = gl_systemMessage.GetInformationDequeSize();
     CThreadStatus threadStatus; // 生成第二个实例（第一个为全局变量，系统启动时就生成了）
@@ -105,36 +104,23 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
   }
 
-  TEST_F(ThreadStatusTest, TestIsSavingDayLine) {
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads; i++) {  // 目前采用最多4个线程
-      gl_ThreadStatus.IncreaseSavingDayLineThreads();
-    }
-    for (int i = 0; i < gl_cMaxSavingOneDayLineThreads - 1; i++) {
-      gl_ThreadStatus.DecreaseSavingDayLineThreads();
-      EXPECT_TRUE(gl_ThreadStatus.IsSavingDayLine());
-    }
-    gl_ThreadStatus.DecreaseSavingDayLineThreads();
-    EXPECT_FALSE(gl_ThreadStatus.IsSavingDayLine());
-  }
-
   TEST_F(ThreadStatusTest, TestIsWorkingThreadRunning) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
-    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
-    gl_ThreadStatus.IncreaseRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread + 1);
-    EXPECT_TRUE(gl_ThreadStatus.IsWorkingThreadRunning());
-    gl_ThreadStatus.DecreaseRunningThread();
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
-    EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
-    gl_ThreadStatus.DecreaseRunningThread();
+    int iRunningThread = gl_ThreadStatus.GetNumberOfSavingThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
+    gl_ThreadStatus.IncreaseSavingThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread + 1);
+    EXPECT_TRUE(gl_ThreadStatus.IsSavingThreadRunning());
+    gl_ThreadStatus.DecreaseSavingThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
+    EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
+    gl_ThreadStatus.DecreaseSavingThread();
     if (iRunningThread <= 0) {
-      EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
-      EXPECT_FALSE(gl_ThreadStatus.IsWorkingThreadRunning());
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
+      EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
     }
     else {
-      EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread - 1);
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread - 1);
     }
   }
 }

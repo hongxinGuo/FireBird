@@ -17,7 +17,7 @@ using namespace std;
 UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
   ASSERT(pMarket->IsSystemReady()); // 调用本工作线程时必须设置好市场。
 
-  gl_ThreadStatus.IncreaseRunningThread();
+  gl_ThreadStatus.IncreaseSavingThread();
   pMarket->SetProcessingTodayStock();
 
   const long lDate = FormatToDate(pMarket->GetNewestTransactionTime());
@@ -37,7 +37,7 @@ UINT ThreadProcessTodayStock(not_null<CChinaMarket*> pMarket) {
       pMarket->SetTodayStockProcessed(false);
     }
   }
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 14;
 }

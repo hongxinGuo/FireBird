@@ -26,14 +26,14 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CPotenDailyBriefingThreadTest, TestThreadReadPotenDailyBriefing) {
-    int iRunningThread = gl_ThreadStatus.GetNumberOfRunningThread();
+    int iRunningThread = gl_ThreadStatus.GetNumberOfSavingThread();
     EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
     potenDailyBriefingInquiry.SetInquiringDate(12345678);
     EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 0);
 
     EXPECT_CALL(potenDailyBriefingInquiry, ReadWebData())
@@ -42,7 +42,7 @@ namespace StockAnalysisTest {
     potenDailyBriefingInquiry.__TESTSetBuffer(_T("testData"));
     potenDailyBriefingInquiry.SetInquiringDate(12345678);
     EXPECT_EQ(ThreadReadPotenDailyBriefing(&potenDailyBriefingInquiry), (UINT)6);
-    EXPECT_EQ(gl_ThreadStatus.GetNumberOfRunningThread(), iRunningThread);
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
     EXPECT_EQ(gl_WebInquirer.GetPotenDailyBriefingDataSize(), 1);
     CWebDataPtr pWebData = gl_WebInquirer.PopPotenDailyBriefingData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);

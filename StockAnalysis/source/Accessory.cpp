@@ -255,7 +255,7 @@ CString GetStockSymbol(CString strStockCode) {
 
 /// <summary>
 /// 从一个完整的股票代码中分离出交易所部分（去除表示符号的部分）
-/// 目前使用的上海深圳格式为600000.SS、000001.SZ，今后要改为600000.SS, 000001.SZ
+/// 目前使用的上海深圳格式为600000.SS、000001.SZ
 /// </summary>
 /// <param name="strStockCode"></param>
 /// <returns></returns>
@@ -265,7 +265,7 @@ CString GetStockExchange(CString strStockCode) {
 
 /// <summary>
 /// 使用交易所和符号生成完整股票代码。
-/// 方式为 符号.交易所。 SS + 600000 = 600000.SS， 以后为 SS + 600000 = 600000.SS
+/// 方式为 符号.交易所。 SS + 600000 = 600000.SS
 /// </summary>
 /// <param name="strStockExchange"></param>
 /// <param name="strStockSymbol"></param>

@@ -17,7 +17,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite(void) {
-      while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 

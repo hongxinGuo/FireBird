@@ -50,7 +50,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-      while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
@@ -863,8 +863,8 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingNeteaseDayLineDataTime) {
-    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(_T("0600000"));
-    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine(), _T("0600000"));
+    gl_pChinaStockMarket->SetStockCodeForInquiringNeteaseDayLine(_T("600000.SS"));
+    EXPECT_EQ(gl_pChinaStockMarket->GetStockCodeForInquiringNeteaseDayLine(), _T("600000.SS"));
   }
 
   TEST_F(CChinaMarketTest, TestGetReadingTengxunRTDataTime) {

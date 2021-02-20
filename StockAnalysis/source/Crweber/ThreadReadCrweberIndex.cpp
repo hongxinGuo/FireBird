@@ -14,7 +14,6 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebData) {
-  gl_ThreadStatus.IncreaseRunningThread();
   if (pCrweberIndexWebData->ReadWebData()) {
     CWebDataPtr pWebDataReceived = pCrweberIndexWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
@@ -22,7 +21,6 @@ UINT ThreadReadCrweberIndex(not_null<CCrweberIndexWebInquiry*> pCrweberIndexWebD
     }
   }
   pCrweberIndexWebData->SetReadingWebData(false);
-  gl_ThreadStatus.DecreaseRunningThread();
 
   return 5;
 }

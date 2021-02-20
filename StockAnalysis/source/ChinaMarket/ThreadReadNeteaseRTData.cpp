@@ -12,7 +12,6 @@
 #include"WebInquirer.h"
 
 UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData) {
-  gl_ThreadStatus.IncreaseRunningThread();
   if (pNeteaseRTWebData->ReadWebData()) {
     CWebDataPtr pWebDataReceived = pNeteaseRTWebData->TransferWebDataToQueueData();
     if (pWebDataReceived != nullptr) {
@@ -23,7 +22,6 @@ UINT ThreadReadNeteaseRTData(not_null<CNeteaseRTWebInquiry*> pNeteaseRTWebData) 
     TRACE("读取网易实时数据出错\n");
   }
   pNeteaseRTWebData->SetReadingWebData(false);
-  gl_ThreadStatus.DecreaseRunningThread();
 
   return 3;
 }

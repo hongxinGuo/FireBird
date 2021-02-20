@@ -152,7 +152,7 @@ CMainFrame::~CMainFrame() {
 
   gl_pChinaStockMarket->SaveCalculatingRSOption();
 
-  while (gl_ThreadStatus.IsSavingDayLine()) {
+  while (gl_ThreadStatus.IsSavingThreadRunning()) {
     Sleep(1); // 等待处理日线历史数据的线程结束。
   }
 
@@ -161,9 +161,6 @@ CMainFrame::~CMainFrame() {
   if (gl_pChinaStockMarket->IsUpdateStockCodeDB()) {
     gl_pChinaStockMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
-
-  while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-  while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
 
   TRACE("finally exited\n");
 }
@@ -553,12 +550,12 @@ void CMainFrame::UpdateStatus(void) {
   }
 
   // 更新当前工作线程数
-  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfRunningThread());
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfSavingThread());
   str = buffer;
   SysCallSetPaneText(10, (LPCTSTR)str);
 
   // 更新当前后台工作线程数
-  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.HowManyBackGroundThreadsWorking());
+  sprintf_s(buffer, _T("%02d"), gl_ThreadStatus.GetNumberOfBackGroundWorkingThread());
   str = buffer;
   SysCallSetPaneText(11, (LPCTSTR)str);
 

@@ -307,8 +307,8 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
-    <ClCompile Include="AmericaMarketTest.cpp" />
-    <ClCompile Include="AmericaStockTest.cpp" />
+    <ClCompile Include="WorldMarketTest.cpp" />
+    <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
     <ClCompile Include="CalculateHighLowTest.cpp" />
     <ClCompile Include="CalculatingRTDataTest.cpp" />

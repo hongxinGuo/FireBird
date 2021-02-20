@@ -18,7 +18,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite(void) {
-      while (gl_ThreadStatus.IsWorkingThreadRunning()) Sleep(1);
+      while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
     }
 
     virtual void SetUp(void) override {

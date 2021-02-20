@@ -91,7 +91,7 @@ void CChinaMarket::ResetMarket(void) {
   str += GetStringOfMarketTime();
   gl_systemMessage.PushInformationMessage(str);
   while (gl_ThreadStatus.IsBackGroundthreadsWorking() || gl_ThreadStatus.IsCalculatingRTData() || gl_ThreadStatus.IsSavingTempData()
-         || gl_ThreadStatus.IsSavingDayLine()) {
+         || gl_ThreadStatus.IsSavingThreadRunning()) {
     Sleep(1);
   }
   Reset();
@@ -607,7 +607,7 @@ INT64 CChinaMarket::GetTotalAttackSellAmount(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // 抓取网易历史日线数据
-// 由于可能会抓取全部12000个日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
+// 由于可能会抓取全部5000个左右日线数据，所需时间超过10分钟，故而9:15:00第一次重置系统时不去更新，而在9:25:00第二次重置系统后才开始。
 // 为了防止与重启系统发生冲突，实际执行时间延后至9:26:00。
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1823,7 +1823,7 @@ bool CChinaMarket::BuildWeekLine(long lStartDate) {
   for (auto& pStock : m_vChinaMarketStock) {
     RunningThreadBuildWeekLineOfStock(pStock.get(), lStartDate);
   }
-  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+  while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
     Sleep(1000);
   }
   gl_systemMessage.PushInformationMessage(_T("周线历史数据生成完毕"));
@@ -2232,7 +2232,7 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   for (auto& pStock : m_vChinaMarketStock) {
     RunningThreadCalculate10RSStrong2Stock(&v10RSStrongStock, pStock);
   }
-  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+  while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
     if (gl_fExitingSystem) return false;
     Sleep(100); // 等待工作线程完成所有任务
   }
@@ -2264,7 +2264,7 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   for (auto& pStock : m_vChinaMarketStock) {
     RunningThreadCalculate10RSStrong1Stock(&v10RSStrongStock, pStock);
   }
-  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+  while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
     if (gl_fExitingSystem) return false;
     Sleep(100); // 等待工作线程完成所有任务
   }
@@ -2297,7 +2297,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
     RunningThreadCalculate10RSStrongStock(&v10RSStrongStock, pRef, pStock);
   }
 
-  while (gl_ThreadStatus.HowManyBackGroundThreadsWorking() > 0) {
+  while (gl_ThreadStatus.GetNumberOfBackGroundWorkingThread() > 0) {
     if (gl_fExitingSystem) return false;
     Sleep(100); // 等待工作线程完成所有任务
   }

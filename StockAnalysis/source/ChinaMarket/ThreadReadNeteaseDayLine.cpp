@@ -23,7 +23,6 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
   CChinaStockPtr pStock = nullptr;
 
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
-  gl_ThreadStatus.IncreaseRunningThread();
   // 网易的日线数据服务器似乎无法使用一次读完的功能，只能用这种等待定时方式，原因未知。
   //if (pNeteaseDayLineWebData->ReadWebData()) { // 这种是采用一次读完的方式，但网易日线数据服务器可能不支持。
   if (pNeteaseDayLineWebData->ReadWebData3(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
@@ -34,7 +33,6 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
     pStock->SetDayLineNeedProcess(true);
   }
   pNeteaseDayLineWebData->SetReadingWebData(false);
-  gl_ThreadStatus.DecreaseRunningThread();
 
   return 4; // 此线程正常返回值为4
 }

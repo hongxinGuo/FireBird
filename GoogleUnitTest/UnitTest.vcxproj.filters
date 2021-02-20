@@ -479,9 +479,6 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\FinnhubForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="AmericaMarketTest.cpp">
-      <Filter>Test源文件\World Market</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\SetFinnhubForexSymbol.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
@@ -668,7 +665,10 @@
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockDB.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="AmericaStockTest.cpp">
+    <ClCompile Include="WorldMarketTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldStockTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
   </ItemGroup>

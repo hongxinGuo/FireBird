@@ -17,8 +17,7 @@ UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
   CString str;
   CWorldStockPtr pStock = nullptr;
 
-  gl_ThreadStatus.IncreaseRunningThread();
-  gl_ThreadStatus.IncreaseSavingDayLineThreads();
+  gl_ThreadStatus.IncreaseSavingThread();
   gl_UpdateWorldMarketDB.Wait();
   for (long i = 0; i < pMarket->GetTotalStock(); i++) {
     pStock = pMarket->GetStock(i);
@@ -40,8 +39,7 @@ UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
     }
   }
   gl_UpdateWorldMarketDB.Signal();
-  gl_ThreadStatus.DecreaseSavingDayLineThreads();
-  gl_ThreadStatus.DecreaseRunningThread();
+  gl_ThreadStatus.DecreaseSavingThread();
 
   return 42;
 }
