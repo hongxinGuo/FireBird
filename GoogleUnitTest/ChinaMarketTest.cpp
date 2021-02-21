@@ -50,7 +50,6 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-      while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
       for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
         CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(i);
         EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
