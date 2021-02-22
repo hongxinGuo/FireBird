@@ -12,6 +12,7 @@ CWorldStock::~CWorldStock() {
 }
 
 void CWorldStock::Reset(void) {
+  CVirtualStock::Reset();
   // Finnhub Symbol数据
   m_strIPODate = _T(" ");
   m_strCurrency = _T(" ");
@@ -51,7 +52,6 @@ void CWorldStock::Reset(void) {
   m_lLastRTDataUpdateDate = 19800101;
   m_lPeerUpdateDate = 19800101;
   m_lLastEPSSurpriseUpdateDate = 19800101;
-  m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
   // Tiingo Symbol数据
   m_strTiingoPermaTicker = _T("");

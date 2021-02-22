@@ -172,7 +172,7 @@ public:
   bool IsWorldStock(CString strProfile);
   bool IsWorldStockUpdated(void);
   CWorldStockPtr GetWorldStock(CString strTicker);
-  void AddWorldStock(CWorldStockPtr pStock);
+  void CreateNewStock(CWorldStockPtr pStock2);
 
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 

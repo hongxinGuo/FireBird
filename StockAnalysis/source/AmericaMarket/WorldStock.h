@@ -18,7 +18,7 @@ class CWorldStock : public CVirtualStock {
 public:
   CWorldStock();
   ~CWorldStock();
-  void Reset(void);
+  virtual void Reset(void);
 public:
   void Load(CSetWorldStock& setWorldStock);
   bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
@@ -31,10 +31,6 @@ public:
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
-  long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
-  void SetDayLineStartDate(long lDate) noexcept { m_lDayLineStartDate = lDate; }
-  long GetDayLineEndDate(void) noexcept { return m_lDayLineEndDate; }
-  void SetDayLineEndDate(long lDate) noexcept { m_lDayLineEndDate = lDate; }
   long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
   long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
@@ -51,13 +47,6 @@ public:
   void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void);
   bool HaveNewDayLineData(void);
-
-  long GetIPOStatus(void) noexcept { return m_lIPOStatus; }
-  void SetIPOStatus(long lValue) noexcept { m_lIPOStatus = lValue; }
-  bool IsDelisted(void) noexcept { return (m_lIPOStatus == __STAKE_DELISTED__); }
-  bool IsNullStock(void) noexcept { return (m_lIPOStatus == __STAKE_NULL__); }
-  bool IsIPOed(void) noexcept { return(m_lIPOStatus == __STAKE_IPOED__); }
-  bool IsNotChecked(void) noexcept { return(m_lIPOStatus == __STAKE_NOT_CHECKED__); }
 
   bool IsEPSSurpriseNeedUpdate(void) noexcept { return m_fEPSSurpriseNeedUpdate; }
   void SetEPSSurpriseNeedUpdate(bool fFlag) noexcept { m_fEPSSurpriseNeedUpdate = fFlag; }
@@ -145,12 +134,9 @@ public:
   CString m_strFinnhubIndustry;
   CString m_strPeer;
   long m_lProfileUpdateDate; // 最新简介更新日期
-  long m_lDayLineStartDate;
-  long m_lDayLineEndDate;
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
   long m_lPeerUpdateDate; // 最新实时数据更新日期
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
-  long m_lIPOStatus;
 
   // Tiingo Symbol信息
   CString m_strTiingoPermaTicker; // Tiingo永久代码标识

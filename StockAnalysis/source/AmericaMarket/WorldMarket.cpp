@@ -390,16 +390,13 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         strNumber = buffer;
         str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
         gl_systemMessage.PushInnerSystemInformationMessage(str);
-        // 交易所代码和SymbolForSort需要后加上。
+        // 加上交易所代码。
         for (auto& pStock3 : vStock) {
           pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
         }
         for (auto& pStock2 : vStock) {
           if (!IsWorldStock(pStock2->GetSymbol())) {
-            m_mapWorldStock[pStock2->GetSymbol()] = m_vWorldStock.size();
-            m_vWorldStock.push_back(pStock2);
-            pStock2->SetTodayNewStock(true);
-            pStock2->SetUpdateStockProfileDB(true);
+            CreateNewStock(pStock2);
             fFoundNewStock = true;
             TRACE("发现新代码：%s\n", pStock2->GetSymbol().GetBuffer());
           }
@@ -1362,9 +1359,11 @@ CWorldStockPtr CWorldMarket::GetWorldStock(CString strTicker) {
   else return nullptr;
 }
 
-void CWorldMarket::AddWorldStock(CWorldStockPtr pStock) {
-  m_mapWorldStock[pStock->m_strSymbol] = m_vWorldStock.size();
+void CWorldMarket::CreateNewStock(CWorldStockPtr pStock) {
+  m_mapWorldStock[pStock->GetSymbol()] = m_vWorldStock.size();
   m_vWorldStock.push_back(pStock);
+  pStock->SetTodayNewStock(true);
+  pStock->SetUpdateStockProfileDB(true);
 }
 
 bool CWorldMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
@@ -1571,7 +1570,7 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
   }
 
   for (auto& pSymbol : m_vForexSymbol) {
-    if (pSymbol->m_fUpdateDatabase) {
+    if (pSymbol->IsUpdateStockProfileDB()) {
       fUpdateSymbol = true;
       break;
     }
@@ -1582,9 +1581,9 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
     while (!setForexSymbol.IsEOF()) {
       if (m_mapForexSymbol.find(setForexSymbol.m_Symbol) != m_mapForexSymbol.end()) {
         pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
-        if (pSymbol->m_fUpdateDatabase) {
+        if (pSymbol->IsUpdateStockProfileDB()) {
           pSymbol->Update(setForexSymbol);
-          pSymbol->m_fUpdateDatabase = false;
+          pSymbol->SetUpdateStockProfileDB(false);
         }
       }
       setForexSymbol.MoveNext();
@@ -1729,9 +1728,9 @@ bool CWorldMarket::LoadEconomicCalendarDB(void) {
 
 bool CWorldMarket::RebuildStockDayLineDB(void) {
   for (auto& pStock : m_vWorldStock) {
-    pStock->m_lIPOStatus = __STAKE_NOT_CHECKED__;
-    pStock->m_lDayLineStartDate = 29900101;
-    pStock->m_lDayLineEndDate = 19800101;
+    pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
+    pStock->SetDayLineStartDate(29900101);
+    pStock->SetDayLineEndDate(19800101);
     pStock->m_fDayLineNeedUpdate = true;
     pStock->SetUpdateStockProfileDB(true);
   }
@@ -1751,13 +1750,13 @@ bool CWorldMarket::UpdateDayLineStartEndDate(void) {
     setWorldStockDayLine.m_strSort = _T("[Date]");
     setWorldStockDayLine.Open();
     if (!setWorldStockDayLine.IsEOF()) {
-      if (setWorldStockDayLine.m_Date < pStock->m_lDayLineStartDate) {
-        pStock->m_lDayLineStartDate = setWorldStockDayLine.m_Date;
+      if (setWorldStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
+        pStock->SetDayLineStartDate(setWorldStockDayLine.m_Date);
         pStock->SetUpdateStockProfileDB(true);
       }
       setWorldStockDayLine.MoveLast();
-      if (setWorldStockDayLine.m_Date > pStock->m_lDayLineEndDate) {
-        pStock->m_lDayLineEndDate = setWorldStockDayLine.m_Date;
+      if (setWorldStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
+        pStock->SetDayLineEndDate(setWorldStockDayLine.m_Date);
         pStock->SetUpdateStockProfileDB(true);
       }
     }

@@ -32,12 +32,12 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.m_strSymbol, _T(" "));
     EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T(" "));
-    EXPECT_EQ(FinnhubForexSymbol.m_lDayLineStartDate, 29900101);
-    EXPECT_EQ(FinnhubForexSymbol.m_lDayLineEndDate, 19800101);
-    EXPECT_EQ(FinnhubForexSymbol.m_lIPOStatus, __STAKE_NOT_CHECKED__);
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
+    EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STAKE_NOT_CHECKED__);
     EXPECT_TRUE(FinnhubForexSymbol.m_fDayLineNeedUpdate);
     EXPECT_FALSE(FinnhubForexSymbol.m_fDayLineNeedSaving);
-    EXPECT_FALSE(FinnhubForexSymbol.m_fUpdateDatabase);
+    EXPECT_FALSE(FinnhubForexSymbol.IsUpdateStockProfileDB());
   }
 
   TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
@@ -99,7 +99,7 @@ namespace StockAnalysisTest {
     CFinnhubForexSymbol symbol;
 
     EXPECT_TRUE(symbol.IsDayLineNeedUpdate());
-    symbol.m_lIPOStatus = __STAKE_NULL__;
+    symbol.SetIPOStatus(__STAKE_NULL__);
     symbol.SetCheckingDayLineStatus();
     EXPECT_FALSE(symbol.IsDayLineNeedUpdate());
 
@@ -146,11 +146,11 @@ namespace StockAnalysisTest {
     symbol.UpdateDayLine(vDayLine);
     EXPECT_EQ(symbol.GetDayLineSize(), 2);
 
-    EXPECT_FALSE(symbol.m_fUpdateDatabase);
+    EXPECT_FALSE(symbol.IsUpdateStockProfileDB());
     symbol.UpdateDayLineStartEndDate();
     EXPECT_EQ(symbol.GetDayLineStartDate(), 20200102);
     EXPECT_EQ(symbol.GetDayLineEndDate(), 20200105);
-    EXPECT_TRUE(symbol.m_fUpdateDatabase);
+    EXPECT_TRUE(symbol.IsUpdateStockProfileDB());
 
     symbol.UnloadDayLine();
     EXPECT_EQ(symbol.GetDayLineSize(), 0);

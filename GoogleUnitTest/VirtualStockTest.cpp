@@ -52,5 +52,58 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsActive());
   }
 
+  TEST_F(CVirtualStockTest, TestGetDayLineEndDate) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19000101);
+    stock.SetDayLineEndDate(19980101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 19980101);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetDayLineStartDate) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetDayLineStartDate(), 29900101);
+    stock.SetDayLineStartDate(19980101);
+    EXPECT_EQ(stock.GetDayLineStartDate(), 19980101);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetIPOStatus) {
+    CVirtualStock stock;
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(255);
+    EXPECT_EQ(stock.GetIPOStatus(), 255);
+  }
+
+  TEST_F(CVirtualStockTest, TestIsNullStock) {
+    CVirtualStock stock;
+    stock.SetIPOStatus(__STAKE_NULL__);
+    EXPECT_TRUE(stock.IsNullStock());
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsNullStock());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsIPOed) {
+    CVirtualStock stock;
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    EXPECT_TRUE(stock.IsIPOed());
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsIPOed());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsNotChecked) {
+    CChinaStock stock;
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    EXPECT_TRUE(stock.IsNotChecked());
+    stock.SetIPOStatus(__STAKE_DELISTED__);
+    EXPECT_FALSE(stock.IsNotChecked());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsDelisted) {
+    CVirtualStock stock;
+    stock.SetIPOStatus(__STAKE_DELISTED__);
+    EXPECT_TRUE(stock.IsDelisted());
+    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    EXPECT_FALSE(stock.IsDelisted());
+  }
+
 
 }

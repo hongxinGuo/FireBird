@@ -2,17 +2,21 @@
 
 #include "FinnhubForexSymbol.h"
 
-CFinnhubForexSymbol::CFinnhubForexSymbol() : CObject() {
+CFinnhubForexSymbol::CFinnhubForexSymbol() : CVirtualStock() {
+  Reset();
+}
+
+void CFinnhubForexSymbol::Reset(void) {
+  CVirtualStock::Reset();
   m_strDescription = _T(" ");
   m_strDisplaySymbol = _T(" ");
   m_strExchange = _T(" ");
   m_strSymbol = _T(" ");
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
-  m_lIPOStatus = __STAKE_NOT_CHECKED__;
 
   m_fDayLineNeedUpdate = true;
-  m_fUpdateDatabase = false;
+  m_fUpdateStockProfileDB = false;
   m_fDayLineNeedSaving = false;
 }
 
@@ -152,11 +156,11 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
-      m_fUpdateDatabase = true;
+      m_fUpdateStockProfileDB = true;
     }
     if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) {
       SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
-      m_fUpdateDatabase = true;
+      m_fUpdateStockProfileDB = true;
     }
   }
 }

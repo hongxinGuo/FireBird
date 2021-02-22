@@ -28,12 +28,12 @@ CChinaStock::~CChinaStock(void) {
 }
 
 void CChinaStock::Reset(void) {
+  CVirtualStock::Reset();
   m_strStockCode = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
   m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
   m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
-  m_lIPOStatus = __STAKE_NOT_CHECKED__;   // 默认状态为无效股票代码。
   m_nHand = 100;
 
   m_TransactionTime = 0;
