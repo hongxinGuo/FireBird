@@ -642,33 +642,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsSaveToChoicedStockDB());
   }
 
-  TEST_F(CChinaStockTest, TestIsDayLineNeedUpdate) {
-    CChinaStock stock;
-    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    stock.SetDayLineNeedUpdate(false);
-    EXPECT_FALSE(stock.IsDayLineNeedUpdate());
-    stock.SetDayLineNeedUpdate(true);
-    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-  }
-
-  TEST_F(CChinaStockTest, TestIsDayLineNeedProcess) {
-    CChinaStock stock;
-    EXPECT_FALSE(stock.IsDayLineNeedProcess());
-    stock.SetDayLineNeedProcess(true);
-    EXPECT_TRUE(stock.IsDayLineNeedProcess());
-    stock.SetDayLineNeedProcess(false);
-    EXPECT_FALSE(stock.IsDayLineNeedProcess());
-  }
-
-  TEST_F(CChinaStockTest, TestIsUpdateStockProfileDB) {
-    CChinaStock stock;
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
-    stock.SetUpdateStockProfileDB(true);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
-    stock.SetUpdateStockProfileDB(false);
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
-  }
-
   TEST_F(CChinaStockTest, TestIsChoiced) {
     CChinaStock stock;
     EXPECT_FALSE(stock.IsChoiced());
@@ -748,17 +721,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.HaveNewDayLineData());
     stock.UnloadDayLine();
     EXPECT_EQ(stock.GetDayLineSize(), 0);
-  }
-
-  TEST_F(CChinaStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
-    CChinaStock stock;
-    stock.SetDayLineNeedSaving(true);
-    EXPECT_TRUE(stock.IsDayLineNeedSaving());
-    stock.SetDayLineNeedSaving(false);
-    EXPECT_FALSE(stock.IsDayLineNeedSaving());
-    stock.SetDayLineNeedSaving(true);
-    EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
-    EXPECT_FALSE(stock.IsDayLineNeedSaving());
   }
 
   TEST_F(CChinaStockTest, TestTransferNeteaseDayLineWebDataToBuffer) {

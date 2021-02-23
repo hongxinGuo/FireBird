@@ -300,7 +300,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       strMiddle = pStock->GetFinnhubDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      pStock->m_fDayLineNeedUpdate = false;
+      pStock->SetDayLineNeedUpdate(false);
       break;
       case __STOCK_TICK_DATA__: // Premium
       break;
@@ -319,7 +319,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       pSymbol = m_vForexSymbol.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       strMiddle = pSymbol->GetFinnhubDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      pSymbol->m_fDayLineNeedUpdate = false;
+      pSymbol->SetDayLineNeedUpdate(false);
       break;
       case __FOREX_ALL_RATES__:
       break;
@@ -595,7 +595,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
       pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
       strMiddle = pStock->GetTiingoDayLineInquiryString(GetFormatedMarketDate());
       gl_pTiingoWebInquiry->SetInquiryingStringMiddle(strMiddle);
-      pStock->m_fDayLineNeedUpdate = false;
+      pStock->SetDayLineNeedUpdate(false);
       break;
       case __STOCK_TICK_DATA__: // Premium
       break;
@@ -1731,7 +1731,7 @@ bool CWorldMarket::RebuildStockDayLineDB(void) {
     pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
     pStock->SetDayLineStartDate(29900101);
     pStock->SetDayLineEndDate(19800101);
-    pStock->m_fDayLineNeedUpdate = true;
+    pStock->SetDayLineNeedUpdate(true);
     pStock->SetUpdateStockProfileDB(true);
   }
   m_fWorldStockUpdated = false;

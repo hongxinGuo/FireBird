@@ -33,12 +33,6 @@ public:
   CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
   void SetDisplaySymbol(CString strSymbol) { m_strDisplaySymbol = strSymbol; }
 
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
-  void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
-  bool IsDayLineNeedSavingAndClearFlag(void);
-
   void SetCheckingDayLineStatus(void);
 
   CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
@@ -57,8 +51,6 @@ public:
 
   vector<CDayLinePtr> m_vDayLine;
 
-  bool m_fDayLineNeedUpdate;
-  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 };
 
 typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;

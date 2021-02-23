@@ -75,8 +75,6 @@ void CWorldStock::Reset(void) {
   m_fEPSSurpriseNeedUpdate = true;
   m_fEPSSurpriseNeedSave = false;
   m_fFinnhubPeerUpdated = false;
-  m_fDayLineNeedUpdate = true;
-  m_fDayLineNeedSaving = false;
 
   m_TransactionTime = 0;
   m_lHigh = 0;
@@ -406,11 +404,6 @@ void CWorldStock::UpdateDayLineStartEndDate(void) {
       SetUpdateStockProfileDB(true);
     }
   }
-}
-
-bool CWorldStock::IsDayLineNeedSavingAndClearFlag(void) {
-  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  return fNeedSaveing;
 }
 
 bool CWorldStock::HaveNewDayLineData(void) {

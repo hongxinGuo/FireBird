@@ -43,6 +43,16 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsUpdateStockProfileDB());
   }
 
+  TEST_F(CVirtualStockTest, TestIsUpdateStockProfileDBAndClearFlag) {
+    CVirtualStock stock;
+
+    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+    EXPECT_FALSE(stock.IsUpdateStockProfileDBAndClearFlag());
+    stock.SetUpdateStockProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateStockProfileDBAndClearFlag());
+    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+  }
+
   TEST_F(CVirtualStockTest, TestIsActive) {
     CVirtualStock stock;
     EXPECT_FALSE(stock.IsActive());
@@ -103,6 +113,36 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsDelisted());
     stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsDelisted());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsDayLineNeedUpdate) {
+    CVirtualStock stock;
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(false);
+    EXPECT_FALSE(stock.IsDayLineNeedUpdate());
+    stock.SetDayLineNeedUpdate(true);
+    EXPECT_TRUE(stock.IsDayLineNeedUpdate());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsDayLineNeedProcess) {
+    CVirtualStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(true);
+    EXPECT_TRUE(stock.IsDayLineNeedProcess());
+    stock.SetDayLineNeedProcess(false);
+    EXPECT_FALSE(stock.IsDayLineNeedProcess());
+  }
+
+  TEST_F(CVirtualStockTest, TestIsDayLineNeededSaving) {    // 此两个函数是具备同步机制的，这里没有进行测试
+    CVirtualStock stock;
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(false);
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
+    stock.SetDayLineNeedSaving(true);
+    EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
+    EXPECT_FALSE(stock.IsDayLineNeedSaving());
   }
 
 

@@ -276,9 +276,6 @@ public:
   INT64 GetLastSavedVolume(void) noexcept { return m_llLastSavedVolume; }
 
   // 各种状态标识提取和设置
-  bool IsUpdateStockProfileDB(void) noexcept { return m_fUpdateStockProfileDB; }
-  bool IsUpdateStockProfileDBAndClearFlag(void) { const bool fNeedSaveing = m_fUpdateStockProfileDB.exchange(false); return fNeedSaveing; }
-  void SetUpdateStockProfileDB(bool fFlag) noexcept { m_fUpdateStockProfileDB = fFlag; }
   bool IsChoiced(void) noexcept { return m_fChoiced; }
   void SetChoiced(bool fChoiced) noexcept { m_fChoiced = fChoiced; }
   bool IsSaveToChoicedStockDB(void) noexcept { return m_fSaveToChoicedStockDB; }
@@ -405,15 +402,6 @@ public:
   bool CalculateDayLineRS(void);
   bool CalculateDayLineRSIndex(void);
   bool CalculateDayLineRSLogarithm(void);
-
-  // 由于处理日线历史数据的函数位于不同的线程中，故而需要同步机制设置标识
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag);
-  bool IsDayLineNeedProcess(void) noexcept { return m_fDayLineNeedProcess; }
-  void SetDayLineNeedProcess(bool fFlag);
-  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
-  void SetDayLineNeedSaving(bool fFlag);
-  bool IsDayLineNeedSavingAndClearFlag(void);
 
   bool IsDayLineDBUpdated(void) noexcept { return (m_fDayLineDBUpdated); }
   void SetDayLineDBUpdated(bool fUpdate) noexcept { m_fDayLineDBUpdated = fUpdate; }
@@ -570,8 +558,6 @@ protected:
 
   INT64 m_llLastSavedVolume; // 如果交易中途系统退出，则再次登入时上次的交易数量
 
-  atomic_bool m_fUpdateStockProfileDB; // 更新StockProfile数据库
-
   bool m_fHaveFirstRTData; // 实时数据开始计算标识。第一个实时数据只能用来初始化系统，不能用于计算。从第二个数据开始计算才有效。
   bool m_fNeedProcessRTData; //指数类股票无需计算交易和挂单情况
   bool m_fRTDataCalculated; // 实时数据显示需要更新
@@ -622,10 +608,6 @@ protected:
   //网易日线接收处理相关数据
   vector<char> m_vDayLineBuffer; // 日线读取缓冲区
   INT64 m_lDayLineBufferLength; // 缓冲区大小（不包括最后添加的那个结束符0x000）。
-
-  atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
-  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 
   bool m_fDayLineDBUpdated; // 日线历史数据库更新标识
 };

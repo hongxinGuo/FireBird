@@ -128,14 +128,8 @@ void CChinaStock::Reset(void) {
   m_dCurrentGuadanTransactionPrice = 0;
   m_nCurrentTransactionType = 0;
 
-  m_fDayLineNeedUpdate = true; // 默认状态下日线需要更新
-  m_fDayLineNeedProcess = false; // 初始状态为尚未读取日线历史数据，无需处理
-  m_fDayLineNeedSaving = false;
-
   m_fChoiced = false;
   m_fSaveToChoicedStockDB = false;
-
-  m_fUpdateStockProfileDB = false;
 
   m_fDayLineDBUpdated = false;
 
@@ -1675,38 +1669,6 @@ bool CChinaStock::IsTodayDataChanged(void) {
   else {
     return false;
   }
-}
-
-void CChinaStock::SetDayLineNeedUpdate(bool fFlag) {
-  if (fFlag) {
-    m_fDayLineNeedUpdate = true;
-  }
-  else {
-    m_fDayLineNeedUpdate = false;
-  }
-}
-
-void CChinaStock::SetDayLineNeedProcess(bool fFlag) {
-  if (fFlag) {
-    m_fDayLineNeedProcess = true;
-  }
-  else {
-    m_fDayLineNeedProcess = false;
-  }
-}
-
-void CChinaStock::SetDayLineNeedSaving(bool fFlag) {
-  if (fFlag) {
-    m_fDayLineNeedSaving = true;
-  }
-  else {
-    m_fDayLineNeedSaving = false;
-  }
-}
-
-bool CChinaStock::IsDayLineNeedSavingAndClearFlag(void) {
-  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  return fNeedSaveing;
 }
 
 void CChinaStock::ShowDayLine(CDC* pDC, CRect rectClient) {

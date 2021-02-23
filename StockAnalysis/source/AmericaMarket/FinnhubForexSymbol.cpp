@@ -15,9 +15,6 @@ void CFinnhubForexSymbol::Reset(void) {
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
 
-  m_fDayLineNeedUpdate = true;
-  m_fUpdateStockProfileDB = false;
-  m_fDayLineNeedSaving = false;
 }
 
 void CFinnhubForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {
@@ -165,10 +162,6 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
   }
 }
 
-bool CFinnhubForexSymbol::IsDayLineNeedSavingAndClearFlag(void) {
-  const bool fNeedSaveing = m_fDayLineNeedSaving.exchange(false);
-  return fNeedSaveing;
-}
 bool CFinnhubForexSymbol::HaveNewDayLineData(void) {
   if (m_vDayLine.size() <= 0) return false;
   if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) return true;

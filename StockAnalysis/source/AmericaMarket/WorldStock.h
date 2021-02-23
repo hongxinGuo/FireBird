@@ -41,11 +41,6 @@ public:
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
 
-  bool IsDayLineNeedUpdate(void) noexcept { return m_fDayLineNeedUpdate; }
-  void SetDayLineNeedUpdate(bool fFlag) noexcept { m_fDayLineNeedUpdate = fFlag; }
-  bool IsDayLineNeedSaving(void) noexcept { return m_fDayLineNeedSaving; }
-  void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
-  bool IsDayLineNeedSavingAndClearFlag(void);
   bool HaveNewDayLineData(void);
 
   bool IsEPSSurpriseNeedUpdate(void) noexcept { return m_fEPSSurpriseNeedUpdate; }
@@ -176,8 +171,6 @@ public:
   // 无需存储数据区
   bool m_fInquiryStockProfile; // 要求更新公司简介
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
-  bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
-  atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
 
 protected:
   // 无需存储数据区

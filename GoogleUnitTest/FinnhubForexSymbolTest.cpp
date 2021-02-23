@@ -35,8 +35,8 @@ namespace StockAnalysisTest {
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 29900101);
     EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 19800101);
     EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STAKE_NOT_CHECKED__);
-    EXPECT_TRUE(FinnhubForexSymbol.m_fDayLineNeedUpdate);
-    EXPECT_FALSE(FinnhubForexSymbol.m_fDayLineNeedSaving);
+    EXPECT_TRUE(FinnhubForexSymbol.IsDayLineNeedUpdate());
+    EXPECT_FALSE(FinnhubForexSymbol.IsDayLineNeedSaving());
     EXPECT_FALSE(FinnhubForexSymbol.IsUpdateStockProfileDB());
   }
 
