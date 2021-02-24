@@ -162,6 +162,8 @@ CMainFrame::~CMainFrame() {
     gl_pChinaStockMarket->UpdateStockCodeDB(); // 这里直接调用存储函数，不采用工作线程的模式。
   }
 
+  while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
+
   TRACE("finally exited\n");
 }
 

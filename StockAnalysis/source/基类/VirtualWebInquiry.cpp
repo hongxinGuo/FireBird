@@ -8,7 +8,6 @@
 
 #include"VirtualWebInquiry.h"
 
-atomic_long CVirtualWebInquiry::m_lReadingThreadNumber = 0; // 当前执行网络读取线程数
 atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
@@ -52,7 +51,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   time_t tt = 0;
   char buffer[1024];
 
-  m_lReadingThreadNumber++;
+  gl_ThreadStatus.IncreaseWebInquiringThread();
 
   SetWebError(false);
   SetByteReaded(0);
@@ -94,8 +93,9 @@ bool CVirtualWebInquiry::ReadWebData(void) {
     m_pFile = nullptr;
   }
   m_tCurrentInquiryTime = GetTickCount64() - tt;
-  m_lReadingThreadNumber--;
-  ASSERT(m_lReadingThreadNumber >= 0);
+  gl_ThreadStatus.DecreaseWebInquiringThread();
+
+  ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
   return fStatus;
 }
 
@@ -110,7 +110,7 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
 
-  m_lReadingThreadNumber++;
+  gl_ThreadStatus.IncreaseWebInquiringThread();
 
   long lCurrentByteReaded = 0;
   SetWebError(false);
@@ -156,8 +156,8 @@ bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTim
     m_pFile = nullptr;
   }
   m_tCurrentInquiryTime = GetTickCount64() - tt;
-  m_lReadingThreadNumber--;
-  ASSERT(m_lReadingThreadNumber >= 0);
+  gl_ThreadStatus.DecreaseWebInquiringThread();
+  ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
   return fStatus;
 }
 

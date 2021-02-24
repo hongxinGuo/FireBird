@@ -44,7 +44,6 @@ namespace StockAnalysisTest {
       gl_pPotenDailyBriefingMarket->Reset();
       gl_pPotenDailyBriefingMarket->SetTodayDataUpdated(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
-      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
   };
 

@@ -29,7 +29,6 @@ namespace StockAnalysisTest {
       // clearup
       m_VirtualWebInquiry.SetInquiringString(_T(""));
       m_VirtualWebInquiry.SetReadingWebData(false);
-      m_VirtualWebInquiry.SetReadingthreadNumber(0);
     }
   public:
     CMockVirtualWebInquiry m_VirtualWebInquiry;
@@ -190,14 +189,5 @@ namespace StockAnalysisTest {
     EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 500) << _T("默认值为500");
     m_VirtualWebInquiry.SetInquiringNumber(800);
     EXPECT_EQ(m_VirtualWebInquiry.GetInquiringNumber(), 800);
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestGetReadingThreadNumber) {
-    EXPECT_EQ(m_VirtualWebInquiry.GetReadingThreadNumber(), 0) << _T("初始时读取网络线程数为零");
-    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebThreadRunning());
-    m_VirtualWebInquiry.SetReadingthreadNumber(100);
-    EXPECT_EQ(m_VirtualWebInquiry.GetReadingThreadNumber(), 100);
-    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebThreadRunning());
-    m_VirtualWebInquiry.SetReadingthreadNumber(0);
   }
 }

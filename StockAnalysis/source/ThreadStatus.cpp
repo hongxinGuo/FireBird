@@ -12,6 +12,8 @@ CThreadStatus::CThreadStatus() {
     gl_systemMessage.PushInformationMessage(_T("系统状态只允许生成一个实例"));
   }
   m_NumberOfBackGroundWorkingThreads = 0;
+  m_NumberOfSavingThread = 0;
+  m_NumberOfWebInquiringThread = 0;
 
   m_CalculatingDayLineRS = false;
   m_CalculatingWeekLineRS = false;
@@ -20,7 +22,6 @@ CThreadStatus::CThreadStatus() {
   m_SavingTempData = false;
   m_CreatingWeekLine = false;
 
-  m_NumberOfSavingThread = 0;
 }
 
 CThreadStatus::~CThreadStatus() {

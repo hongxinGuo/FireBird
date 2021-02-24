@@ -104,7 +104,7 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_ThreadStatus.IsBackGroundthreadsWorking());
   }
 
-  TEST_F(ThreadStatusTest, TestIsWorkingThreadRunning) {
+  TEST_F(ThreadStatusTest, TestIsSavThreadRunning) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfSavingThread();
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread);
     EXPECT_FALSE(gl_ThreadStatus.IsSavingThreadRunning());
@@ -123,4 +123,25 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_ThreadStatus.GetNumberOfSavingThread(), iRunningThread - 1);
     }
   }
+
+  TEST_F(ThreadStatusTest, TestIsWebInquiringThreadRunning) {
+    int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
+    gl_ThreadStatus.IncreaseWebInquiringThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread + 1);
+    EXPECT_TRUE(gl_ThreadStatus.IsWebInquiringThreadRunning());
+    gl_ThreadStatus.DecreaseWebInquiringThread();
+    EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+    EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
+    gl_ThreadStatus.DecreaseWebInquiringThread();
+    if (iRunningThread <= 0) {
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
+      EXPECT_FALSE(gl_ThreadStatus.IsWebInquiringThreadRunning());
+    }
+    else {
+      EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread - 1);
+    }
+  }
+
 }

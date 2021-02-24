@@ -103,7 +103,6 @@ bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     return true; // 没有公司简介也返回任务完成成功
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
   try {
     s = pt.get<string>(_T("ticker"));
     if (s.size() > 0) pStock->m_strTicker = s.c_str();
@@ -141,7 +140,6 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSt
   string s, sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pStock = make_shared<CWorldStock>();
@@ -337,7 +335,6 @@ bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
   string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pt2 = it->second;
@@ -356,7 +353,6 @@ bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
   string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pSymbol = make_shared<CFinnhubForexSymbol>();
@@ -394,7 +390,6 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   try {
     s = pt.get<string>(_T("s"));
@@ -547,7 +542,6 @@ bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     return true; // 没有有效的同业竞争对手
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   ASSERT(pWebData->GetBufferLength() < 1000);
   for (i = 0; i < pWebData->GetBufferLength(); i++) {
@@ -605,7 +599,6 @@ bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vE
   string sError;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pEPSSurprise = make_shared<CEPSSurprise>();

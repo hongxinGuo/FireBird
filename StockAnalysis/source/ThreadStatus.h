@@ -47,6 +47,11 @@ public:
   int GetNumberOfSavingThread(void) noexcept { const int iNumber = m_NumberOfSavingThread; return iNumber; }
   bool IsSavingThreadRunning(void) noexcept { if (GetNumberOfSavingThread() > 0) return true; else return false; }
 
+  void IncreaseWebInquiringThread(void) noexcept { m_NumberOfWebInquiringThread++; }
+  void DecreaseWebInquiringThread(void) noexcept { if (m_NumberOfWebInquiringThread > 0) m_NumberOfWebInquiringThread--; }
+  int GetNumberOfWebInquiringThread(void) noexcept { const int iNumber = m_NumberOfWebInquiringThread; return iNumber; }
+  bool IsWebInquiringThreadRunning(void) noexcept { if (GetNumberOfWebInquiringThread() > 0) return true; else return false; }
+
 protected:
   atomic_bool m_CalculatingDayLineRS;
   atomic_bool m_CalculatingWeekLineRS;
@@ -57,4 +62,5 @@ protected:
 
   atomic_int m_NumberOfBackGroundWorkingThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许cMaxBackGroundTaskThreads个线程
   atomic_int m_NumberOfSavingThread; // 正在运行的存储工作线程数量
+  atomic_int m_NumberOfWebInquiringThread; // 正在运行的存储工作线程数量
 };

@@ -79,8 +79,6 @@ public:
   bool GetPotenDailyBriefingData(void) { return gl_pPotenDailyBriefingWebInquiry->GetWebData(); }
   bool IsReadingPotenDailyBriefing(void)  noexcept { return gl_pPotenDailyBriefingWebInquiry->IsReadingWebData(); }
 
-  bool IsReadingWebThreadRunning(void) noexcept { return gl_pSinaRTWebInquiry->IsReadingWebThreadRunning(); }
-
 public:
   size_t GetSinaRTDataSize(void) { return m_qSinaRTWebData.GetDataSize(); }
   void PushSinaRTData(CWebDataPtr pData) { m_qSinaRTWebData.PushData(pData); }

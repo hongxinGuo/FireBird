@@ -99,8 +99,8 @@ namespace StockAnalysisTest {
 
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
-      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
-      while (gl_ThreadStatus.GetNumberOfSavingThread() > 0) Sleep(1);
+      while (gl_ThreadStatus.IsSavingThreadRunning()) Sleep(1);
+      while (gl_ThreadStatus.IsWebInquiringThreadRunning()) Sleep(1);
       gl_vMarketPtr.clear();
       gl_pWorldMarket = nullptr;
       gl_pChinaStockMarket = nullptr;

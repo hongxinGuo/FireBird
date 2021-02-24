@@ -38,7 +38,6 @@ namespace StockAnalysisTest {
       delete s_pchinaMarket;
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      while (gl_WebInquirer.IsReadingWebThreadRunning()) Sleep(1);
     }
     virtual void SetUp(void) override {
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
