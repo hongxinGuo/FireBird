@@ -43,7 +43,7 @@ void CWorldMarket::InitialFinnhubInquiryStr(void) {
 
   // Finnhub前缀字符串在此预设之
   m_vFinnhubInquiringStr.at(__COMPANY_PROFILE__) = _T("https://finnhub.io/api/v1/stock/profile?symbol="); // 公司简介。
-  m_vFinnhubInquiringStr.at(__COMPANY_PROFILE2__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
+  m_vFinnhubInquiringStr.at(__COMPANY_PROFILE_CONCISE__) = _T("https://finnhub.io/api/v1/stock/profile2?symbol="); // 公司简介（简版）
   m_vFinnhubInquiringStr.at(__COMPANY_SYMBOLS__) = _T("https://finnhub.io/api/v1/stock/symbol?exchange="); // 可用代码集
   m_vFinnhubInquiringStr.at(__MARKET_NEWS__) = _T("https://finnhub.io/api/v1/news?category=general");
   m_vFinnhubInquiringStr.at(__COMPANY_NEWS__) = _T("https://finnhub.io/api/v1/company-news?symbol=");
@@ -231,7 +231,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
       m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
-      case __COMPANY_PROFILE2__:
+      case __COMPANY_PROFILE_CONCISE__:
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
       m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
@@ -376,16 +376,16 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
       ProcessFinnhubStockProfile(pWebData, m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex));
       break;
-      case __COMPANY_PROFILE2__:
+      case __COMPANY_PROFILE_CONCISE__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      if (ProcessFinnhubStockProfile2(pWebData, pStock)) {
+      if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
         pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
         pStock->SetUpdateStockProfileDB(true);
       }
       break;
       case  __COMPANY_SYMBOLS__:
       if (ProcessFinnhubStockSymbol(pWebData, vStock)) {
-        TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStock.size());
+        //TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStock.size());
         sprintf_s(buffer, _T("%6d"), vStock.size());
         strNumber = buffer;
         str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
@@ -536,7 +536,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
       switch (m_CurrentTiingoInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
       break;
-      case __COMPANY_PROFILE2__:
+      case __COMPANY_PROFILE_CONCISE__:
       break;
       case  __COMPANY_SYMBOLS__:
       // do nothing
@@ -650,7 +650,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       switch (m_CurrentTiingoInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
       break;
-      case __COMPANY_PROFILE2__:
+      case __COMPANY_PROFILE_CONCISE__:
       break;
       case  __COMPANY_SYMBOLS__:
       if (ProcessTiingoStockSymbol(pWebData, vStock)) {
@@ -861,7 +861,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
       pExchange->SetUpdated(true);
-      TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
+      //TRACE("申请%s交易所证券代码\n", pExchange->m_strCode.GetBuffer());
     }
     else {
       m_fFinnhubSymbolUpdated = true;
@@ -916,11 +916,11 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfile2(void) {
       }
     }
     if (fFound) {
-      inquiry.m_lInquiryIndex = __COMPANY_PROFILE2__;
+      inquiry.m_lInquiryIndex = __COMPANY_PROFILE_CONCISE__;
       inquiry.m_lStockIndex = m_lCurrentProfilePos;
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
-      TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
+      //TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
       m_fFinnhubInquiring = true;
     }
     else {

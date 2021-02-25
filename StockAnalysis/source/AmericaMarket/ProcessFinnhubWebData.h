@@ -7,7 +7,7 @@
 #include"EPSSurprise.h"
 
 bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
-bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
 bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock);

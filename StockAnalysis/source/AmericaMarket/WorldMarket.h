@@ -24,7 +24,7 @@ enum {
   __WEBSOCKET__NEWS__ = 2, // Premium
 
   __COMPANY_PROFILE__ = 100, //Premium
-  __COMPANY_PROFILE2__ = 101,
+  __COMPANY_PROFILE_CONCISE__ = 101,
   __COMPANY_SYMBOLS__ = 102,
   __COMPANY_EXECTIVE__ = 103, //Premium
   __MARKET_NEWS__ = 104,

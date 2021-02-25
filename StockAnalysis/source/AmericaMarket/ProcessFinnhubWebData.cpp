@@ -15,6 +15,12 @@ bool CompareEPSSurprise(CEPSSurprisePtr& p1, CEPSSurprisePtr& p2) { return (p1->
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2) { return p1->GetFormatedMarketDate() < p2->GetFormatedMarketDate(); }
 bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCountry < p2->m_strCountry; }
 
+/// <summary>
+/// 高级版的公司简介，需要申请付费账号
+/// </summary>
+/// <param name="pWebData"></param>
+/// <param name="pStock"></param>
+/// <returns></returns>
 bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   ptree pt;
   string s;
@@ -94,43 +100,64 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   return true;
 }
 
-bool ProcessFinnhubStockProfile2(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+/// <summary>
+/// 简版的公司简介，格式如下：
+/// "country": "US",
+/// "currency": "USD",
+/// "exchange" : "NASDAQ/NMS (GLOBAL MARKET)",
+/// "ipo" : "1980-12-12",
+/// "marketCapitalization" : 1415993,
+/// "name" : "Apple Inc",
+/// "phone" : "14089961010",
+/// "shareOutstanding" : 4375.47998046875,
+/// "ticker" : "AAPL",
+/// "weburl" : "https://www.apple.com/",
+/// "logo" : "https://static.finnhub.io/logo/87cb30d8-80df-11ea-8951-00000000092a.png",
+/// "finnhubIndustry" : "Technology"
+///
+/// </summary>
+/// <param name="pWebData"></param>
+/// <param name="pStock"></param>
+/// <returns></returns>
+bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   ptree pt;
   string s;
   string sError;
 
-  if (pWebData->GetBufferLength() < 20) {
-    return true; // 没有公司简介也返回任务完成成功
+  if (pWebData->GetBufferLength() < 30) {
+    TRACE("%s无公司简介, 字符串长度为：%d\n", pStock->GetSymbol().GetBuffer(), pWebData->GetBufferLength());
+    //正常的长度大致为300左右, 小于100则为无效信息。
+    return true; // 没有公司简介也返回任务完成成功。此时应该返回两个字符：{}
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
   try {
     s = pt.get<string>(_T("ticker"));
     if (s.size() > 0) pStock->m_strTicker = s.c_str();
+    s = pt.get<string>(_T("country"));
+    if (s.size() > 0) pStock->m_strCountry = s.c_str();
+    s = pt.get<string>(_T("currency"));
+    if (s.size() > 0) pStock->m_strCurrency = s.c_str();
+    s = pt.get<string>(_T("exchange"));
+    if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
+    s = pt.get<string>(_T("name"));
+    if (s.size() > 0) pStock->m_strName = s.c_str();
+    s = pt.get<string>(_T("finnhubIndustry"));
+    if (s.size() > 0) pStock->m_strFinnhubIndustry = s.c_str();
+    s = pt.get<string>(_T("logo"));
+    if (s.size() > 0) pStock->m_strLogo = s.c_str();
+    s = pt.get<string>(_T("marketCapitalization"));
+    if (s.size() > 0) pStock->m_dMarketCapitalization = atof(s.c_str());
+    s = pt.get<string>(_T("phone"));
+    if (s.size() > 0) pStock->m_strPhone = s.c_str();
+    if (s.size() > 0) pStock->m_dShareOutstanding = pt.get<double>(_T("shareOutstanding"));
+    s = pt.get<string>(_T("weburl"));
+    if (s.size() > 0) pStock->m_strWebURL = s.c_str();
+    s = pt.get<string>(_T("ipo"));
+    if (s.size() > 0) pStock->m_strIPODate = s.c_str();
   }
   catch (ptree_error&) {
-    return true; // 没有公司简介也返回任务完成成功
+    return false; // 出现错误则返回任务失败
   }
-  s = pt.get<string>(_T("country"));
-  if (s.size() > 0) pStock->m_strCountry = s.c_str();
-  s = pt.get<string>(_T("currency"));
-  if (s.size() > 0) pStock->m_strCurrency = s.c_str();
-  s = pt.get<string>(_T("exchange"));
-  if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
-  s = pt.get<string>(_T("name"));
-  if (s.size() > 0) pStock->m_strName = s.c_str();
-  s = pt.get<string>(_T("finnhubIndustry"));
-  if (s.size() > 0) pStock->m_strFinnhubIndustry = s.c_str();
-  s = pt.get<string>(_T("logo"));
-  if (s.size() > 0) pStock->m_strLogo = s.c_str();
-  s = pt.get<string>(_T("marketCapitalization"));
-  if (s.size() > 0) pStock->m_dMarketCapitalization = atof(s.c_str());
-  s = pt.get<string>(_T("phone"));
-  if (s.size() > 0) pStock->m_strPhone = s.c_str();
-  if (s.size() > 0) pStock->m_dShareOutstanding = pt.get<double>(_T("shareOutstanding"));
-  s = pt.get<string>(_T("weburl"));
-  if (s.size() > 0) pStock->m_strWebURL = s.c_str();
-  s = pt.get<string>(_T("ipo"));
-  if (s.size() > 0) pStock->m_strIPODate = s.c_str();
   return true;
 }
 

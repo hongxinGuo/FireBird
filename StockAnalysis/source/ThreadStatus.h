@@ -62,5 +62,5 @@ protected:
 
   atomic_int m_NumberOfBackGroundWorkingThreads;  // 正在计算日线相对强度的线程数。目前最多同时允许cMaxBackGroundTaskThreads个线程
   atomic_int m_NumberOfSavingThread; // 正在运行的存储工作线程数量
-  atomic_int m_NumberOfWebInquiringThread; // 正在运行的存储工作线程数量
+  atomic_int m_NumberOfWebInquiringThread; // 正在运行的提取网络数据工作线程数量
 };
