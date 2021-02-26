@@ -127,14 +127,14 @@ public:
   // 初始化市场
 
   // 实时数据读取
-  CString GetSinaStockInquiringStr(long lTotalNumber, bool fSystemReady);
-  CString GetTengxunInquiringStockStr(long lTotalNumber, long lEndPosition, bool fSystemReady);
-  CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fSystemReady);
-  CString	GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition, bool fSystemReady);
+  CString GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock);
+  CString GetTengxunInquiringStockStr(long lTotalNumber, long lEndPosition);
+  CString GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fCheckActiveStock);
+  CString	GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition);
   bool CheckValidOfNeteaseDayLineInquiringStr(CString str);
   CString GetNextSinaStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
   CString GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(CString strPostfix, long lTotalNumber);
-  CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition, bool fSystemReady);
+  CString GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition);
   //日线历史数据读取
   bool CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEndPosition);
   long IncreaseStockInquiringIndex(long& lIndex, long lEndPosition);

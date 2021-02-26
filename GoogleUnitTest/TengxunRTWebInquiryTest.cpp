@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     m_TengxunRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_TengxunRTWebInquiry.GetWebData());
     m_TengxunRTWebInquiry.SetReadingWebData(false);
-    gl_pChinaStockMarket->SetSystemReady(true);
+    gl_pChinaStockMarket->SetCheckActiveStock(false);
     EXPECT_CALL(m_TengxunRTWebInquiry, StartReadingThread)
       .Times(1);
     m_TengxunRTWebInquiry.GetWebData();
@@ -52,7 +52,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CTengxunRTWebInquiryTest, TestGetNextInquiryStr) {
     gl_pChinaStockMarket->SetSystemReady(true);
-    CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1, false);
+    CString str = m_TengxunRTWebInquiry.GetNextInquiringMiddleStr(1);
     EXPECT_STREQ(str, _T("sh000001"));
   }
 

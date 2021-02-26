@@ -217,7 +217,6 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
   }
-  if (IsJsonReportingrror(pt, sError)) return false;
 
   try {
     s = pt.get<string>(_T("s"));

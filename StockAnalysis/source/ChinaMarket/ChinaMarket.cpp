@@ -375,6 +375,7 @@ void CChinaMarket::CreateStockSection(CString strFirstStockCode, bool fProcessRT
 
 bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bool fProcessRTData) {
   CChinaStockPtr pStock;
+  CString str;
 
   pStock = make_shared<CChinaStock>();
   pStock->SetActive(false);
@@ -387,10 +388,11 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetDayLineStartDate(19900101);
   pStock->SetUpdateStockProfileDB(true);
   pStock->SetNeedProcessRTData(fProcessRTData);
-  m_mapChinaMarketStock[pStock->GetStockCode()] = GetTotalStock(); // 使用下标生成新的映射
+  m_mapChinaMarketStock[pStock->GetStockCode()] = m_vChinaMarketStock.size(); // 使用下标生成新的映射
   m_vChinaMarketStock.push_back(pStock);
   ASSERT(pStock->IsDayLineNeedUpdate());
-
+  str = _T("china Market生成新代码") + pStock->GetStockCode();
+  gl_systemMessage.PushInnerSystemInformationMessage(str);
   return true;
 }
 
@@ -533,7 +535,7 @@ bool CChinaMarket::IsAStock(CString strStockCode) {
       }
     }
   }
-  else if(IsShenzhenExchange(strStockCode)) {
+  else if (IsShenzhenExchange(strStockCode)) {
     if ((strSymbol[0] == '0') && (strSymbol[1] == '0')) {
       if ((strSymbol[2] == '0') || (strSymbol[2] == '2')) {
         return true;
@@ -632,14 +634,15 @@ bool CChinaMarket::TaskGetNeteaseDayLineFromWeb(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
   gl_ProcessSinaRTDataQueue.Wait();
-  CChinaStockPtr pStock;
   const size_t lTotalNumber = gl_WebRTDataContainer.GetSinaDataSize();
   CString strVolume;
   bool fFoundNewStock = false;
   CString strStandredStockCode;
+  CWebRTDataPtr pRTData = nullptr;
+  CChinaStockPtr pStock = nullptr;
 
   for (int iCount = 0; iCount < lTotalNumber; iCount++) {
-    CWebRTDataPtr pRTData = gl_WebRTDataContainer.PopSinaData();
+    pRTData = gl_WebRTDataContainer.PopSinaData();
     if (pRTData->GetDataSource() == __INVALID_RT_WEB_DATA__) {
       gl_systemMessage.PushInnerSystemInformationMessage(_T("新浪实时数据源设置有误"));
       continue;
@@ -648,7 +651,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      if (!IsSystemReady()) {
+      if (IsCheckActiveStock()) {
         if (!IsStock(pRTData->GetStockCode())) {
           CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
@@ -656,7 +659,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       }
       pStock = GetStock(pRTData->GetStockCode());
       ASSERT(pStock != nullptr);
-      if (!pStock->IsActive()) {
+      if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
         if (pRTData->IsValidTime(14)) {
           pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
           pStock->SetIPOStatus(__STAKE_IPOED__);
@@ -707,7 +710,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       if (m_ttNewestTransactionTime < pRTData->GetTransactionTime()) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
-      if (!IsSystemReady()) {
+      if (IsCheckActiveStock()) {
         if (!IsStock(pRTData->GetStockCode())) {
           CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
@@ -745,12 +748,12 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
 // 生成每次查询新浪实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fSystemReady) {
-  if (fSystemReady) {
-    return GetNextStockInquiringMiddleStr(m_lSinaStockRTDataInquiringIndex, _T(","), lTotalNumber, GetTotalStock(), fSystemReady);
+CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckActiveStock) {
+  if (fCheckActiveStock) {
+    return GetNextSinaStockInquiringMiddleStrBeforeSystemReady(_T(","), lTotalNumber);
   }
   else {
-    return GetNextSinaStockInquiringMiddleStrBeforeSystemReady(_T(","), lTotalNumber);
+    return GetNextStockInquiringMiddleStr(m_lSinaStockRTDataInquiringIndex, _T(","), lTotalNumber, GetTotalStock());
   }
 }
 
@@ -759,21 +762,21 @@ CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fSystemRe
 // 生成每次查询腾讯实时股票数据的字符串
 //
 //////////////////////////////////////////////////////////////////////////////////////////
-CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, long lEndPosition, bool fSystemReady) {
-  ASSERT(IsSystemReady());
-  return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber, lEndPosition, fSystemReady);
+CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, long lEndPosition) {
+  ASSERT(!IsCheckActiveStock());
+  return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber, lEndPosition);
 }
 
-CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fSystemReady) {
-  if (fSystemReady) {
-    return GetNextNeteaseStockInquiringStr(lTotalNumber, lEndPosition, fSystemReady);
-  }
-  else {
+CString CChinaMarket::GetNeteaseStockInquiringMiddleStr(long lTotalNumber, long lEndPosition, bool fCheckActiveStock) {
+  if (fCheckActiveStock) {
     return GetNextNeteaseStockInquiringMiddleStrBeforeSystemReady(_T(","), lTotalNumber);
   }
+  else {
+    return GetNextNeteaseStockInquiringStr(lTotalNumber, lEndPosition);
+  }
 }
 
-CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition, bool fSystemReady) {
+CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lEndPosition) {
   CString strStockCode, strRight6, strLeft2, strPrefix;
 
   m_strNeteaseRTDataInquiringStr = _T("");
@@ -808,7 +811,7 @@ bool CChinaMarket::CheckValidOfNeteaseDayLineInquiringStr(CString str) {
   return true;
 }
 
-CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition, bool fSystemReady) {
+CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStockIndex, CString strPostfix, long lTotalNumber, long lEndPosition) {
   CString strReturn = _T("");
   CString strStockCode, strStockExchange, strStockSymbol;
 
@@ -1412,6 +1415,10 @@ bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime
 }
 
 bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
+  if (!IsSystemReady()) {
+    m_fCheckActiveStock = true;
+    return true;
+  }
   if (((lCurrentTime >= 91500) && (lCurrentTime < 92700))
       || ((lCurrentTime >= 113300) && (lCurrentTime < 125900))
       || (lCurrentTime > 150300)) {
@@ -2381,16 +2388,16 @@ bool CChinaMarket::TaskProcessDayLineGetFromNeeteaseServer(void) {
 }
 
 bool CChinaMarket::TaskLoadCurrentStockHistoryData(void) {
-    if (m_pCurrentStock != nullptr) {
-      if (!m_pCurrentStock->IsDayLineLoaded()) {
-        RunningThreadLoadDayLine(m_pCurrentStock.get());
-        m_pCurrentStock->SetDayLineLoaded(true);
-      }
-      if (!m_pCurrentStock->IsWeekLineLoaded()) {
-        RunningThreadLoadWeekLine(m_pCurrentStock.get());
-        m_pCurrentStock->SetWeekLineLoaded(true);
-      }
+  if (m_pCurrentStock != nullptr) {
+    if (!m_pCurrentStock->IsDayLineLoaded()) {
+      RunningThreadLoadDayLine(m_pCurrentStock.get());
+      m_pCurrentStock->SetDayLineLoaded(true);
     }
+    if (!m_pCurrentStock->IsWeekLineLoaded()) {
+      RunningThreadLoadWeekLine(m_pCurrentStock.get());
+      m_pCurrentStock->SetWeekLineLoaded(true);
+    }
+  }
   return true;
 }
 
@@ -3156,7 +3163,6 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
   return true;
 }
 
-
 void CChinaMarket::LoadStockSection(void) {
   CSetStockSection setStockSection;
 
@@ -3206,7 +3212,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
     gl_systemMessage.PushInformationMessage(str);
   }
   setStockCode.Close();
-  m_lLoadedStock =  m_vChinaMarketStock.size();
+  m_lLoadedStock = m_vChinaMarketStock.size();
   SortStockVector();
 }
 
