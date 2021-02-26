@@ -729,7 +729,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   s_iCount1Hour -= lSecond;
   if (s_iCount1Hour < 0) {
     s_iCount1Hour = 3599;
-    SchedulingTaskPer1Hour(lCurrentTime);
+    SchedulingTaskPerHour(lCurrentTime);
   }
   if (s_iCount10Minute < 0) {
     s_iCount10Minute = 599;
@@ -737,7 +737,7 @@ bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   }
   if (s_iCount1Minute < 0) {
     s_iCount1Minute = 59;
-    SchedulingTaskPer1Minute(lCurrentTime);
+    SchedulingTaskPerMinute(lCurrentTime);
   }
   if (s_iCount10Second < 0) {
     s_iCount10Second = 9;
@@ -751,7 +751,7 @@ bool CWorldMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
   return true;
 }
 
-bool CWorldMarket::SchedulingTaskPer1Minute(long lCurrentTime) {
+bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
   TaskResetMarket(lCurrentTime);
 
   if (m_lLastTotalCountry < m_vCountry.size()) {
@@ -776,7 +776,7 @@ bool CWorldMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
   return true;
 }
 
-bool CWorldMarket::SchedulingTaskPer1Hour(long lCurrentTime) {
+bool CWorldMarket::SchedulingTaskPerHour(long lCurrentTime) {
   return true;
 }
 

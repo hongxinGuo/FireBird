@@ -52,11 +52,11 @@ public:
 public:
   // 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
   virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
-  bool SchedulingTaskPerSecond(long lSecondNumber); // 每秒调度一次
-  bool SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime); // 每十秒调度一次
-  bool SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime); // 每一分钟调度一次
-  bool SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime); // 每五分钟调度一次
-  bool SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime); // 每小时调度一次
+  bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
+  bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
+  bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次
+  bool SchedulingTaskPer5Minutes(long lCurrentTime); // 每五分钟调度一次
+  bool SchedulingTaskPerHour(long lCurrentTime); // 每小时调度一次
 
   // 各种任务
   bool TaskGetRTDataFromWeb(void);

@@ -1158,6 +1158,8 @@ bool CChinaMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
+  const long lCurrentTime = GetFormatedMarketTime();
+
   // 抓取实时数据(新浪、腾讯和网易）。每400毫秒申请一次，即可保证在3秒中内遍历一遍全体活跃股票。
   if (m_fGetRTData && (m_iCountDownSlowReadingRTData <= 0)) {
     TaskGetRTDataFromWeb();
@@ -1171,7 +1173,7 @@ bool CChinaMarket::SchedulingTask(void) {
 
   //根据时间，调度各项定时任务.每秒调度一次
   if (GetMarketTime() > s_timeLast) {
-    SchedulingTaskPerSecond(GetMarketTime() - s_timeLast);
+    SchedulingTaskPerSecond(GetMarketTime() - s_timeLast, lCurrentTime);
     s_timeLast = GetMarketTime();
   }
 
@@ -1234,15 +1236,33 @@ bool CChinaMarket::TaskGetRTDataFromWeb(void) {
 //
 //
 /////////////////////////////////////////////////////////////////////////////////////////////
-bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
+bool CChinaMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   static int s_iCountDownProcessWebRTData = 0;
-  const long lCurrentTime = GetFormatedMarketTime();
+  static int s_iCount1Hour = 3599;
+  static int s_iCount5Minute = 299;
+  static int s_iCount1Minute = 59;
+  static int s_iCount10Second = 9;
 
-  // 各调度程序按间隔时间大小顺序排列，间隔时间长的必须位于间隔时间短的之前。
-  SchedulingTaskPerHour(lSecondNumber, lCurrentTime);
-  SchedulingTaskPer5Minutes(lSecondNumber, lCurrentTime);
-  SchedulingTaskPerMinute(lSecondNumber, lCurrentTime);
-  SchedulingTaskPer10Seconds(lSecondNumber, lCurrentTime);
+  s_iCount10Second -= lSecond;
+  s_iCount1Minute -= lSecond;
+  s_iCount5Minute -= lSecond;
+  s_iCount1Hour -= lSecond;
+  if (s_iCount1Hour < 0) {
+    s_iCount1Hour = 3599;
+    SchedulingTaskPerHour(lCurrentTime);
+  }
+  if (s_iCount5Minute < 0) {
+    s_iCount5Minute = 299;
+    SchedulingTaskPer5Minutes(lCurrentTime);
+  }
+  if (s_iCount1Minute < 0) {
+    s_iCount1Minute = 59;
+    SchedulingTaskPerMinute(lCurrentTime);
+  }
+  if (s_iCount10Second < 0) {
+    s_iCount10Second = 9;
+    SchedulingTaskPer10Seconds(lCurrentTime);
+  }
 
   CheckMarketReady(); // 检查市场是否完成初始化
 
@@ -1293,39 +1313,21 @@ bool CChinaMarket::SchedulingTaskPerSecond(long lSecondNumber) {
   return true;
 }
 
-bool CChinaMarket::SchedulingTaskPerHour(long lSecondNumber, long lCurrentTime) {
-  static int i1HourCounter = 3599; // 一小时一次的计数器
-
+bool CChinaMarket::SchedulingTaskPerHour(long lCurrentTime) {
   // 计算每一小时一次的任务
-  i1HourCounter -= lSecondNumber;
-  if (i1HourCounter < 0) {
-    i1HourCounter = 3599;
-
-    return true;
-  }
-  else
-    return false;
+  return true;
 }
 
-bool CChinaMarket::SchedulingTaskPer5Minutes(long lSecondNumber, long lCurrentTime) {
-  static int i5MinuteCounter = 299; // 五分钟一次的计数器
-
+bool CChinaMarket::SchedulingTaskPer5Minutes(long lCurrentTime) {
   // 计算每五分钟一次的任务。
-  i5MinuteCounter -= lSecondNumber;
-  if (i5MinuteCounter < 0) {
-    i5MinuteCounter = 299;
 
-    TaskUpdateStockCodeDB();
+  TaskUpdateStockCodeDB();
 
-    if (IsSavingTempData()) {
-      TaskSaveTempDataIntoDB(lCurrentTime);
-    }
-
-    return true;
-  } // 每五分钟一次的任务
-  else {
-    return false;
+  if (IsSavingTempData()) {
+    TaskSaveTempDataIntoDB(lCurrentTime);
   }
+
+  return true;
 }
 
 void CChinaMarket::TaskSaveTempDataIntoDB(long lCurrentTime) {
@@ -1376,42 +1378,32 @@ bool CChinaMarket::IsUpdateStockCodeDB(void) {
   return false;
 }
 
-bool CChinaMarket::SchedulingTaskPerMinute(long lSecondNumber, long lCurrentTime) {
-  static int i1MinuteCounter = 59;  // 一分钟一次的计数器
-
+bool CChinaMarket::SchedulingTaskPerMinute(long lCurrentTime) {
   // 计算每分钟一次的任务。所有的定时任务，要按照时间间隔从长到短排列，即先执行每分钟一次的任务，再执行每秒钟一次的任务，这样能够保证长间隔的任务优先执行。
-  i1MinuteCounter -= lSecondNumber;
-  if (i1MinuteCounter < 0) {
-    i1MinuteCounter = 59; // 重置计数器
+  TaskResetMarket(lCurrentTime);
+  TaskResetMarketAgain(lCurrentTime);
 
-    TaskResetMarket(lCurrentTime);
-    TaskResetMarketAgain(lCurrentTime);
+  // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
+  TaskSetCheckActiveStockFlag(lCurrentTime);
 
-    // 在开市前和中午暂停时查询所有股票池，找到当天活跃股票。
-    TaskSetCheckActiveStockFlag(lCurrentTime);
+  // 下午三点三分开始处理当日实时数据。
+  TaskProcessTodayStock(lCurrentTime);
 
-    // 下午三点三分开始处理当日实时数据。
-    TaskProcessTodayStock(lCurrentTime);
+  TaskSaveChoicedRTData();
 
-    TaskSaveChoicedRTData();
+  TaskClearChoicedRTDataSet(lCurrentTime);
 
-    TaskClearChoicedRTDataSet(lCurrentTime);
+  TaskUpdateOptionDB();
+  TaskUpdateChoicedStockDB();
 
-    TaskUpdateOptionDB();
-    TaskUpdateChoicedStockDB();
+  TaskCheckDayLineDB();
 
-    TaskCheckDayLineDB();
-
-    if (m_fUpdateStockSection) {
-      TaskSaveStockSection();
-      m_fUpdateStockSection = false;
-    }
-
-    return true;
-  } // 每一分钟一次的任务
-  else {
-    return false;
+  if (m_fUpdateStockSection) {
+    TaskSaveStockSection();
+    m_fUpdateStockSection = false;
   }
+
+  return true;
 }
 
 bool CChinaMarket::TaskSetCheckActiveStockFlag(long lCurrentTime) {
@@ -1671,30 +1663,19 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandred(void) {
   return false;
 }
 
-bool CChinaMarket::SchedulingTaskPer10Seconds(long lSecondNumber, long lCurrentTime) {
-  static int i10SecondsCounter = 9; // 十秒一次的计数器
-
+bool CChinaMarket::SchedulingTaskPer10Seconds(long lCurrentTime) {
   // 计算每十秒钟一次的任务
-  i10SecondsCounter -= lSecondNumber;
-  if (i10SecondsCounter < 0) {
-    i10SecondsCounter = 9;
-    // do something
-
     // 将处理日线历史数据的函数改为定时查询，读取和存储采用工作进程。
-    if (IsDayLineNeedProcess()) {
-      TaskProcessDayLineGetFromNeeteaseServer();
-    }
-
-    // 判断是否存储日线库和股票代码库
-    if (IsDayLineNeedSaving()) {
-      m_fSaveDayLine = true;
-      TaskSaveDayLineData();
-    }
-    return true;
-  } // 每十秒钟一次的任务
-  else {
-    return false;
+  if (IsDayLineNeedProcess()) {
+    TaskProcessDayLineGetFromNeeteaseServer();
   }
+
+  // 判断是否存储日线库和股票代码库
+  if (IsDayLineNeedSaving()) {
+    m_fSaveDayLine = true;
+    TaskSaveDayLineData();
+  }
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

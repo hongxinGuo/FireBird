@@ -126,9 +126,9 @@ public:
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Seconds(long lCurrentTime);
-  bool SchedulingTaskPer1Minute(long lCurrentTime);
+  bool SchedulingTaskPerMinute(long lCurrentTime);
   bool SchedulingTaskPer10Minute(long lCurrentTime);
-  bool SchedulingTaskPer1Hour(long lCurrentTime);
+  bool SchedulingTaskPerHour(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
 
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。

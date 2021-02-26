@@ -1111,12 +1111,6 @@ namespace StockAnalysisTest {
     gl_pNeteaseRTWebInquiry->SetReadingWebData(false);
   }
 
-  TEST_F(CChinaMarketTest, TestSchedulingTaskPerHour) {
-    EXPECT_TRUE(gl_pChinaStockMarket->SchedulingTaskPerHour(3600, 10100));
-    EXPECT_FALSE(gl_pChinaStockMarket->SchedulingTaskPerHour(3599, 19000)) << _T("前面那个将计数器重置，此调用尚差一秒，故而返回假");
-    EXPECT_TRUE(gl_pChinaStockMarket->SchedulingTaskPerHour(1, 10100));
-  }
-
   TEST_F(CChinaMarketTest, TestGetRTDataReceived) {
     gl_pChinaStockMarket->SetRTDataReceived(101010);
     EXPECT_EQ(gl_pChinaStockMarket->GetRTDataReceived(), 101010);
