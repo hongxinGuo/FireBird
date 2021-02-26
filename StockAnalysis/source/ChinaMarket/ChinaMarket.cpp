@@ -763,7 +763,7 @@ CString CChinaMarket::GetSinaStockInquiringStr(long lTotalNumber, bool fCheckAct
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 CString CChinaMarket::GetTengxunInquiringStockStr(long lTotalNumber, long lEndPosition) {
-  ASSERT(!IsCheckActiveStock());
+  ASSERT(IsSystemReady());
   return GetNextStockInquiringMiddleStr(m_lTengxunRTDataInquiringIndex, _T(","), lTotalNumber, lEndPosition);
 }
 

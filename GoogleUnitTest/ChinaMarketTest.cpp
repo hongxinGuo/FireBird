@@ -172,7 +172,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestGetTengxunInquiringStockStr) {
     CChinaStockPtr pStock = nullptr;
-    gl_pChinaStockMarket->SetCheckActiveStock(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     CString str = gl_pChinaStockMarket->GetTengxunInquiringStockStr(900, gl_pChinaStockMarket->GetTotalStock());
     str = gl_pChinaStockMarket->GetTengxunInquiringStockStr(900, gl_pChinaStockMarket->GetTotalStock());
     CString strCompare, str2;
@@ -1095,7 +1095,7 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaMarketTest, TestTaskGetRTDataFromWeb3) {
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
-    gl_pChinaStockMarket->SetCheckActiveStock(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     gl_pChinaStockMarket->SetCountDownTengxunNumber(0);
     EXPECT_CALL(*gl_pSinaRTWebInquiry, StartReadingThread).Times(1);
     EXPECT_CALL(*gl_pTengxunRTWebInquiry, StartReadingThread).Times(1); // _T("腾讯实时数据采集计数器已倒数至零");

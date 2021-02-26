@@ -43,7 +43,7 @@ namespace StockAnalysisTest {
     m_TengxunRTWebInquiry.SetReadingWebData(true);
     EXPECT_FALSE(m_TengxunRTWebInquiry.GetWebData());
     m_TengxunRTWebInquiry.SetReadingWebData(false);
-    gl_pChinaStockMarket->SetCheckActiveStock(false);
+    gl_pChinaStockMarket->SetSystemReady(true);
     EXPECT_CALL(m_TengxunRTWebInquiry, StartReadingThread)
       .Times(1);
     m_TengxunRTWebInquiry.GetWebData();
