@@ -35,6 +35,7 @@ public:
   void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
   long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
   void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
+  long GetLastEPSSurpriseUpdateDate(void) noexcept { return m_lLastEPSSurpriseUpdateDate; }
   void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
   void UpdateDayLineStartEndDate(void);
   long GetDayLineSize(void) noexcept { return m_vDayLine.size(); }
@@ -52,8 +53,25 @@ public:
 
   bool CheckPeerStatus(long lCurrentDate);
 
-  CString GetSymbol(void) { return m_strSymbol; }
-  CString GetTicker(void) { return m_strTicker; }
+  CString GetDescription(void) noexcept { return m_strDescription; }
+  void SetDescription(CString strDescription) noexcept { m_strDescription = strDescription; }
+  CString GetDisplaySymbol(void) noexcept { return m_strDisplaySymbol; }
+  void SetDisplaySymbol(CString strDisplaySymbol) noexcept { m_strDisplaySymbol = strDisplaySymbol; }
+  CString GetSymbol(void) noexcept { return m_strSymbol; }
+  void SetSymbol(CString strSymbol) noexcept { m_strSymbol = strSymbol; }
+  CString GetExchangeCode(void) noexcept { return m_strExchangeCode; }
+  void SetExchangeCode(CString strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
+  CString GetType(void) noexcept { return m_strType; }
+  void SetType(CString strType) noexcept { m_strType = strType; }
+  CString GetMic(void) noexcept { return m_strMic; }
+  void SetMic(CString strMic) noexcept { m_strMic = strMic; }
+  CString GetFigi(void) noexcept { return m_strFigi; }
+  void SetFigi(CString strFigi) noexcept { m_strFigi = strFigi; }
+  CString GetCurrency(void) noexcept { return m_strCurrency; }
+  void SetCurrency(CString strCurrency) noexcept { m_strCurrency = strCurrency; }
+
+  CString GetTicker(void) noexcept { return m_strTicker; }
+  void SetTicker(CString strTicker) noexcept { m_strTicker = strTicker; }
 
   CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
   CString GetTiingoDayLineInquiryString(long lCurrentDate);
@@ -86,19 +104,10 @@ public:
   void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
   INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
 
-
   bool IsUSMarket(void);
 
 public:
   // Finnhub symbol信息
-  CString m_strDescription;
-  CString m_strDisplaySymbol;
-  CString m_strSymbol;
-  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
-  CString m_strType;
-  CString m_strMic;
-  CString m_strFigi;
-  CString m_strCurrency;
 
   // Finnhub profile信息
   CString m_strAddress;
@@ -173,6 +182,16 @@ public:
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 
 protected:
+  // Finnhub symbol信息
+  CString m_strDescription;
+  CString m_strDisplaySymbol;
+  CString m_strSymbol;
+  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
+  CString m_strType;
+  CString m_strMic;
+  CString m_strFigi;
+  CString m_strCurrency;
+
   // 无需存储数据区
 };
 

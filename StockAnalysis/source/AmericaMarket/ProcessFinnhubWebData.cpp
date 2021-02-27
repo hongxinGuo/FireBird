@@ -45,13 +45,13 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   s = pt.get<string>(_T("country"));
   if (s.size() > 0) pStock->m_strCountry = s.c_str();
   s = pt.get<string>(_T("currency"));
-  if (s.size() > 0) pStock->m_strCurrency = s.c_str();
+  if (s.size() > 0) pStock->SetCurrency(s.c_str());
   s = pt.get<string>(_T("cusip"));
   if (s.size() > 0) pStock->m_strCusip = s.c_str();
   s = pt.get<string>(_T("sedol"));
   if (s.size() > 0) pStock->m_strSedol = s.c_str();
   s = pt.get<string>(_T("description"));
-  if (s.size() > 0) pStock->m_strDescription = s.c_str();
+  if (s.size() > 0) pStock->SetDescription(s.c_str());
   s = pt.get<string>(_T("exchange"));
   if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
   s = pt.get<string>(_T("ggroup"));
@@ -136,7 +136,7 @@ bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pSt
     s = pt.get<string>(_T("country"));
     if (s.size() > 0) pStock->m_strCountry = s.c_str();
     s = pt.get<string>(_T("currency"));
-    if (s.size() > 0) pStock->m_strCurrency = s.c_str();
+    if (s.size() > 0) pStock->SetCurrency(s.c_str());
     s = pt.get<string>(_T("exchange"));
     if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
     s = pt.get<string>(_T("name"));
@@ -173,19 +173,19 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSt
     try {
       pt2 = it->second;
       s = pt2.get<string>(_T("currency"));
-      if (s.size() > 0) pStock->m_strCurrency = s.c_str();
+      if (s.size() > 0) pStock->SetCurrency(s.c_str());
       s = pt2.get<string>(_T("description"));
-      if (s.size() > 0) pStock->m_strDescription = s.c_str();
+      if (s.size() > 0) pStock->SetDescription(s.c_str());
       s = pt2.get<string>(_T("displaySymbol"));
-      pStock->m_strDisplaySymbol = s.c_str();
+      pStock->SetDisplaySymbol(s.c_str());
       s = pt2.get<string>(_T("figi"));
-      if (s.size() > 0) pStock->m_strFigi = s.c_str();
+      if (s.size() > 0) pStock->SetFigi(s.c_str());
       s = pt2.get<string>(_T("mic"));
-      if (s.size() > 0) pStock->m_strMic = s.c_str();
+      if (s.size() > 0) pStock->SetMic(s.c_str());
       s = pt2.get<string>(_T("symbol"));
-      pStock->m_strSymbol = s.c_str();
+      pStock->SetSymbol(s.c_str());
       s = pt2.get<string>(_T("type"));
-      if (s.size() > 0) pStock->m_strType = s.c_str();
+      if (s.size() > 0) pStock->SetType(s.c_str());
       vStock.push_back(pStock);
     }
     catch (ptree_error&) {
@@ -211,7 +211,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("下载");
-    str += pStock->m_strSymbol;
+    str += pStock->GetSymbol();
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -226,7 +226,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     }
     if (s.compare(_T("ok")) != 0) {
       str = _T("下载");
-      str += pStock->m_strSymbol;
+      str += pStock->GetSymbol();
       str += _T("日线返回值不为ok\n");
       TRACE("%s", str.GetBuffer());
       gl_systemMessage.PushInformationMessage(str);

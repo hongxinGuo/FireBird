@@ -32,8 +32,8 @@ namespace StockAnalysisTest {
   NeteaseData rtData4(4, _T("600000.SS"), __SINA_RT_WEB_DATA__, true, 0);
   // 在本测试集的开始，故意设置sh600008的状态为非活跃
   NeteaseData rtData5(5, _T("600008.SS"), __SINA_RT_WEB_DATA__, true, -5);
-  // 无效深圳股票代码
-  //NeteaseData rtData6(6, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
+  // 新股票代码
+  NeteaseData rtData6(6, _T("000000.NT"), __SINA_RT_WEB_DATA__, true, 0);
   //NeteaseData rtData7(7, _T("140000")__SINA_RT_WEB_DATA__, true, 10101010);
   //NeteaseData rtData8(8, _T("1400000")__SINA_RT_WEB_DATA__, true, 10101010);
 
@@ -58,9 +58,11 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       NeteaseData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
-      pStock->ClearRTDataDeque();
-      pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
+      if (gl_pChinaStockMarket->IsStock(pData->m_strStockCode)) {
+        pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
+        pStock->ClearRTDataDeque();
+        pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
+      }
       gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
@@ -83,11 +85,13 @@ namespace StockAnalysisTest {
   };
 
   INSTANTIATE_TEST_SUITE_P(TestCheckNeteaseDayLineInquiryData, TaskDistributeNeteaseRTDataToProperStockTest,
-                           testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5//, &Data6, &Data7, &Data8
+                           testing::Values(&rtData1, &rtData2, &rtData3, &rtData4, &rtData5, &rtData6 //&Data7, &Data8
                            ));
 
   TEST_P(TaskDistributeNeteaseRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
+    long lTotalStock = gl_pChinaStockMarket->GetTotalStock();
+
     gl_WebRTDataContainer.PushNeteaseData(pRTData);
     EXPECT_EQ(gl_WebRTDataContainer.GetNeteaseDataSize(), 1);
     EXPECT_TRUE(gl_pChinaStockMarket->TaskDistributeNeteaseRTDataToProperStock());
@@ -121,6 +125,14 @@ namespace StockAnalysisTest {
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_TRUE(pStock->IsIPOed());
+    break;
+    case 6: // 新股票代码
+    EXPECT_EQ(lTotalStock + 1, gl_pChinaStockMarket->GetTotalStock()) << "发现新的股票，股票总数增加了一个";
+    EXPECT_EQ(pStock, nullptr) << "新股票代码，则不预置此指针";
+    pStock = gl_pChinaStockMarket->GetStock(pRTData->GetStockCode());
+    EXPECT_TRUE(pStock->IsActive());
+    EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
+    EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
     break;
     default:
     break;

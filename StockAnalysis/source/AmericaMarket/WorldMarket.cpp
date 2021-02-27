@@ -228,11 +228,11 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
       m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
       case __COMPANY_PROFILE_CONCISE__:
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
       m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
       break;
       case  __COMPANY_SYMBOLS__:
@@ -251,7 +251,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       break;
       case __PEERS__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->m_strSymbol);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
       pStock->m_fFinnhubPeerUpdated = true;
       break;
       case __BASIC_FINANCIALS__:
@@ -287,7 +287,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __STOCK_EPS_EXTIMATES__:// Premium
       break;
       case __STOCK_EPS_SURPRISE__:
-      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_strSymbol);
+      gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
       break;
       case __STOCK_EARNING_CALENDER__:
       break;
@@ -341,7 +341,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
   return true;
 }
 
-bool CompareWorldStock(CWorldStockPtr p1, CWorldStockPtr p2) { return (p1->m_strSymbol.Compare(p2->m_strSymbol) < 0); }
+bool CompareWorldStock(CWorldStockPtr p1, CWorldStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
 
 //////////////////////////////////////////////
 //
@@ -392,7 +392,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         gl_systemMessage.PushInnerSystemInformationMessage(str);
         // 加上交易所代码。
         for (auto& pStock3 : vStock) {
-          pStock3->m_strExchangeCode = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
+          pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
         }
         for (auto& pStock2 : vStock) {
           if (!IsWorldStock(pStock2->GetSymbol())) {
@@ -461,7 +461,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         else {
           pStock->SetIPOStatus(__STAKE_IPOED__);
         }
-        TRACE("处理%s日线数据\n", pStock->m_strSymbol.GetBuffer());
+        TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
       }
       break;
       case __FOREX_EXCHANGE__:
@@ -655,9 +655,9 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       case  __COMPANY_SYMBOLS__:
       if (ProcessTiingoStockSymbol(pWebData, vStock)) {
         for (auto& pStock2 : vStock) {
-          if (pStock2->m_fIsActive && (IsWorldStock(pStock2->m_strSymbol))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+          if (pStock2->m_fIsActive && (IsWorldStock(pStock2->GetSymbol()))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
             lTemp++;
-            pStock = m_vWorldStock.at(m_mapWorldStock.at(pStock2->m_strSymbol));
+            pStock = m_vWorldStock.at(m_mapWorldStock.at(pStock2->GetSymbol()));
             pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
             pStock->m_fIsActive = pStock2->m_fIsActive;
             pStock->m_fIsADR = pStock2->m_fIsADR;
@@ -693,7 +693,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       case __STOCK_CANDLES__:
       pStock = m_vWorldStock.at(m_CurrentTiingoInquiry.m_lStockIndex);
       ProcessTiingoStockDayLine(pWebData, pStock);
-      TRACE("处理Tiingo %s日线数据\n", pStock->m_strSymbol.GetBuffer());
+      TRACE("处理Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
       break;
       case __FOREX_EXCHANGE__:
       break;
@@ -956,7 +956,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
       pStock->SetDayLineNeedUpdate(false);
-      TRACE("申请%s日线数据\n", pStock->m_strSymbol.GetBuffer());
+      TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
     }
     else {
       m_fFinnhubDayLineUpdated = true;
@@ -981,7 +981,7 @@ bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
     inquiry.m_iPriority = 10;
     m_qFinnhubWebInquiry.push(inquiry);
     m_fFinnhubInquiring = true;
-    TRACE("申请%s实时数据\n", m_vWorldStock.at(m_lCurrentRTDataQuotePos)->m_strSymbol.GetBuffer());
+    TRACE("申请%s实时数据\n", m_vWorldStock.at(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
   }
   return true;
 }
@@ -1008,7 +1008,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
-      TRACE("申请%s Peer数据\n", m_vWorldStock.at(m_lCurrentUpdatePeerPos)->m_strSymbol.GetBuffer());
+      TRACE("申请%s Peer数据\n", m_vWorldStock.at(m_lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
     }
     else {
       m_fFinnhubPeerUpdated = true;
@@ -1055,7 +1055,7 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       m_fFinnhubInquiring = true;
       m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseNeedUpdate(false);
-      TRACE("申请%s EPS Surprise数据\n", m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->m_strSymbol.GetBuffer());
+      TRACE("申请%s EPS Surprise数据\n", m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
     }
     else {
       m_fFinnhubEPSSurpriseUpdated = true;
@@ -1183,7 +1183,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
       m_qTiingoWebInquiry.push(inquiry);
       m_fTiingoInquiring = true;
       m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
-      TRACE("申请Tiingo %s日线数据\n", m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->m_strSymbol.GetBuffer());
+      TRACE("申请Tiingo %s日线数据\n", m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->GetSymbol().GetBuffer());
     }
     else {
       m_fTiingoDayLineUpdated = true;
@@ -1438,7 +1438,7 @@ bool CWorldMarket::LoadWorldStock(void) {
   while (!setWorldStock.IsEOF()) {
     pWorldStock = make_shared<CWorldStock>();
     pWorldStock->Load(setWorldStock);
-    if (!IsWorldStock(pWorldStock->m_strSymbol)) {
+    if (!IsWorldStock(pWorldStock->GetSymbol())) {
       pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
       pWorldStock->CheckPeerStatus(GetFormatedMarketDate());
@@ -1447,7 +1447,7 @@ bool CWorldMarket::LoadWorldStock(void) {
     }
     else {
       str = _T("发现重复代码：");
-      str += pWorldStock->m_strSymbol;
+      str += pWorldStock->GetSymbol();
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       setWorldStock.Delete(); // 删除此重复代码
     }
@@ -1645,7 +1645,7 @@ bool CWorldMarket::SortStockVector(void) {
   m_mapWorldStock.clear();
   int j = 0;
   for (auto& pStock : m_vWorldStock) {
-    m_mapWorldStock[pStock->m_strSymbol] = j++;
+    m_mapWorldStock[pStock->GetSymbol()] = j++;
   }
 
   return true;
@@ -1746,7 +1746,7 @@ bool CWorldMarket::UpdateDayLineStartEndDate(void) {
   CWorldStockPtr pStock2 = nullptr;
 
   for (auto& pStock : m_vWorldStock) {
-    setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->m_strSymbol + _T("'");
+    setWorldStockDayLine.m_strFilter = strFilterPrefix + pStock->GetSymbol() + _T("'");
     setWorldStockDayLine.m_strSort = _T("[Date]");
     setWorldStockDayLine.Open();
     if (!setWorldStockDayLine.IsEOF()) {

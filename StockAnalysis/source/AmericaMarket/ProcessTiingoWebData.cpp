@@ -31,7 +31,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSto
     if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
     s = pt2.get<string>(_T("ticker"));
     transform(s.begin(), s.end(), s.begin(), toupper);
-    pStock->m_strSymbol = s.c_str();
+    pStock->SetSymbol(s.c_str());
     pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
     pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
     s = pt2.get<string>(_T("industry"));
@@ -83,7 +83,7 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 
   if (!ConvertToJSon(pt, pWebData)) { // 工作线程故障
     str = _T("Tiingo下载");
-    str += pStock->m_strSymbol;
+    str += pStock->GetSymbol();
     str += _T("日线故障\n");
     TRACE("%s", str.GetBuffer());
     gl_systemMessage.PushInnerSystemInformationMessage(str);

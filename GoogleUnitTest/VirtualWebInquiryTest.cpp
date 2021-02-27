@@ -42,15 +42,13 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.IsReportStatus());
   }
 
-  /*
-  TEST_F(CVirtualWebInquiryTest, TestReadWebData1) {
-    m_VirtualWebInquiry.SetReadingWebData(true);
-    m_VirtualWebInquiry.SetInquiringString(_T("Dummy"));
-    EXPECT_FALSE(m_VirtualWebInquiry.ReadWebData()) << "没有正确的网址";
-    EXPECT_TRUE(m_VirtualWebInquiry.IsWebError());
-    EXPECT_FALSE(m_VirtualWebInquiry.IsReadingWebData());
+  TEST_F(CVirtualWebInquiryTest, TestReset) {
+    m_VirtualWebInquiry.SetByteReaded(1000);
+    m_VirtualWebInquiry.SetWebError(true);
+    m_VirtualWebInquiry.Reset();
+    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
+    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
   }
-  */
 
   TEST_F(CVirtualWebInquiryTest, TestReadWebData3) {
     EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())

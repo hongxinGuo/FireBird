@@ -67,7 +67,6 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
       gl_pChinaStockMarket->SetSystemReady(true); // 测试市场时，默认系统已经准备好
       gl_pChinaStockMarket->SetPermitResetMarket(true);
-      gl_pChinaStockMarket->SetCheckActiveStock(true);
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
       EXPECT_FALSE(gl_pChinaStockMarket->IsMarketOpened());
 
@@ -90,9 +89,9 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pChinaStockMarket->SetPermitResetMarket(true);
-      gl_pChinaStockMarket->SetCheckActiveStock(true);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       gl_pChinaStockMarket->SetSystemReady(true); // 离开此测试时，默认系统已准备好。
+      EXPECT_TRUE(gl_pChinaStockMarket->IsCheckActiveStock());
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -824,6 +823,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pChinaStockMarket->IsCheckActiveStock());
     gl_pChinaStockMarket->TaskSetCheckActiveStockFlag(150000);
     EXPECT_FALSE(gl_pChinaStockMarket->IsCheckActiveStock());
+
+    gl_pChinaStockMarket->SetCheckActiveStock(true); // 恢复原态
   }
 
   TEST_F(CChinaMarketTest, TestLoadStockCodeDB) {
