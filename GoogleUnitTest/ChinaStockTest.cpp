@@ -176,71 +176,6 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsDelisted());
   }
 
-  TEST_F(CChinaStockTest, TestGetTransactionTime) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetTransactionTime(), 0);
-    stock.SetTransactionTime(1010101010);
-    EXPECT_EQ(stock.GetTransactionTime(), 1010101010);
-  }
-
-  TEST_F(CChinaStockTest, TestGetLastClose) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetLastClose(), 0);
-    stock.SetLastClose(10101010);
-    EXPECT_EQ(stock.GetLastClose(), 10101010);
-  }
-  TEST_F(CChinaStockTest, TestGetOpen) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetOpen(), 0);
-    stock.SetOpen(10101);
-    EXPECT_EQ(stock.GetOpen(), 10101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetHigh) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetHigh(), 0);
-    stock.SetHigh(19980101);
-    EXPECT_EQ(stock.GetHigh(), 19980101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetLow) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetLow(), 0);
-    stock.SetLow(19980101);
-    EXPECT_EQ(stock.GetLow(), 19980101);
-  }
-
-  TEST_F(CChinaStockTest, TestGetNew) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetNew(), 0);
-    stock.SetNew(10101010);
-    EXPECT_EQ(stock.GetNew(), 10101010);
-  }
-  TEST_F(CChinaStockTest, TestGetAmount) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetAmount(), 0);
-    stock.SetAmount(1010101010101010);
-    EXPECT_EQ(stock.GetAmount(), 1010101010101010);
-  }
-  TEST_F(CChinaStockTest, TestGetVolume) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetVolume(), 0);
-    stock.SetVolume(10101010);
-    EXPECT_EQ(stock.GetVolume(), 10101010);
-  }
-  TEST_F(CChinaStockTest, TestGetTotalValue) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetTotalValue(), 0);
-    stock.SetTotalValue(10101010);
-    EXPECT_EQ(stock.GetTotalValue(), 10101010);
-  }
-  TEST_F(CChinaStockTest, TestGetCurrentValue) {
-    CChinaStock stock;
-    EXPECT_EQ(stock.GetCurrentValue(), 0);
-    stock.SetCurrentValue(10101010);
-    EXPECT_EQ(stock.GetCurrentValue(), 10101010);
-  }
-
   TEST_F(CChinaStockTest, TestGetHighLimit) {
     CChinaStock stock;
     EXPECT_EQ(stock.GetHighLimit(), 0);
@@ -310,13 +245,6 @@ namespace StockAnalysisTest {
     EXPECT_DOUBLE_EQ(stock.GetRSIndex(), 0.0);
     stock.SetRSIndex(10101010.0);
     EXPECT_DOUBLE_EQ(stock.GetRSIndex(), 10101010.0);
-  }
-
-  TEST_F(CChinaStockTest, TestGetChangeHandRate) {
-    CChinaStock stock;
-    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
-    stock.SetChangeHandRate(1.1);
-    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
   }
 
   TEST_F(CChinaStockTest, TestReset) {

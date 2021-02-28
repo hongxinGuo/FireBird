@@ -121,11 +121,172 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetCurrency(), _T("abcdef"));
   }
 
+  TEST_F(CWorldStockTest, TestGetAddress) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetAddress(), _T(" "));
+    stock.SetAddress(_T("abcdef"));
+    EXPECT_STREQ(stock.GetAddress(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetCity) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetCity(), _T(" "));
+    stock.SetCity(_T("abcdef"));
+    EXPECT_STREQ(stock.GetCity(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetCountry) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetCountry(), _T(" "));
+    stock.SetCountry(_T("abcdef"));
+    EXPECT_STREQ(stock.GetCountry(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetCusip) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetCusip(), _T(" "));
+    stock.SetCusip(_T("abcdef"));
+    EXPECT_STREQ(stock.GetCusip(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetSedol) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetSedol(), _T(" "));
+    stock.SetSedol(_T("abcdef"));
+    EXPECT_STREQ(stock.GetSedol(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetListedExchange) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetListedExchange(), _T(" "));
+    stock.SetListedExchange(_T("abcdef"));
+    EXPECT_STREQ(stock.GetListedExchange(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetGgroup) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetGgroup(), _T(" "));
+    stock.SetGgroup(_T("abcdef"));
+    EXPECT_STREQ(stock.GetGgroup(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetGind) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetGind(), _T(" "));
+    stock.SetGind(_T("abcdef"));
+    EXPECT_STREQ(stock.GetGind(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetGsector) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetGsector(), _T(" "));
+    stock.SetGsector(_T("abcdef"));
+    EXPECT_STREQ(stock.GetGsector(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetGsubind) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetGsubind(), _T(" "));
+    stock.SetGsubind(_T("abcdef"));
+    EXPECT_STREQ(stock.GetGsubind(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetIPODate) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetIPODate(), _T(" "));
+    stock.SetIPODate(_T("abcdef"));
+    EXPECT_STREQ(stock.GetIPODate(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetIsin) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetIsin(), _T(" "));
+    stock.SetIsin(_T("abcdef"));
+    EXPECT_STREQ(stock.GetIsin(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetNaics) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetNaics(), _T(" "));
+    stock.SetNaics(_T("abcdef"));
+    EXPECT_STREQ(stock.GetNaics(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetNaicsNationalIndustry) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T(" "));
+    stock.SetNaicsNationalIndustry(_T("abcdef"));
+    EXPECT_STREQ(stock.GetNaicsNationalIndustry(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetNaicsSector) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetNaicsSector(), _T(" "));
+    stock.SetNaicsSector(_T("abcdef"));
+    EXPECT_STREQ(stock.GetNaicsSector(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetNaicsSubsector) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetNaicsSubsector(), _T(" "));
+    stock.SetNaicsSubsector(_T("abcdef"));
+    EXPECT_STREQ(stock.GetNaicsSubsector(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetName) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetName(), _T(" "));
+    stock.SetName(_T("abcdef"));
+    EXPECT_STREQ(stock.GetName(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetPhone) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetPhone(), _T(" "));
+    stock.SetPhone(_T("abcdef"));
+    EXPECT_STREQ(stock.GetPhone(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetState) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetState(), _T(" "));
+    stock.SetState(_T("abcdef"));
+    EXPECT_STREQ(stock.GetState(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetWebURL) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetWebURL(), _T(" "));
+    stock.SetWebURL(_T("abcdef"));
+    EXPECT_STREQ(stock.GetWebURL(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetLogo) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetLogo(), _T(" "));
+    stock.SetLogo(_T("abcdef"));
+    EXPECT_STREQ(stock.GetLogo(), _T("abcdef"));
+  }
+
   TEST_F(CWorldStockTest, TestGetTicker) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetTicker(), _T(" "));
     stock.SetTicker(_T("abcdef"));
     EXPECT_STREQ(stock.GetTicker(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetFinnhubIndustry) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetFinnhubIndustry(), _T(" "));
+    stock.SetFinnhubIndustry(_T("abcdef"));
+    EXPECT_STREQ(stock.GetFinnhubIndustry(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetPeer) {
+    CWorldStock stock;
+    EXPECT_STREQ(stock.GetPeer(), _T(" "));
+    stock.SetPeer(_T("abcdef"));
+    EXPECT_STREQ(stock.GetPeer(), _T("abcdef"));
   }
 
   TEST_F(CWorldStockTest, TestIsUSMarket) {

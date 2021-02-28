@@ -26,76 +26,76 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   string s;
 
   if (pWebData->GetBufferLength() < 20) {
-    pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
+    pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
     pStock->SetUpdateStockProfileDB(true);
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
   try {
     s = pt.get<string>(_T("address"));
-    pStock->m_strAddress = s.c_str();
+    pStock->SetAddress(s.c_str());
   }
   catch (ptree_error&) {
-    pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
+    pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
     pStock->SetUpdateStockProfileDB(true);
     return false; // 没有公司简介
   }
   s = pt.get<string>(_T("city"));
-  pStock->m_strCity = s.c_str();
+  pStock->SetCity(s.c_str());
   s = pt.get<string>(_T("country"));
-  if (s.size() > 0) pStock->m_strCountry = s.c_str();
+  if (s.size() > 0) pStock->SetCountry(s.c_str());
   s = pt.get<string>(_T("currency"));
   if (s.size() > 0) pStock->SetCurrency(s.c_str());
   s = pt.get<string>(_T("cusip"));
-  if (s.size() > 0) pStock->m_strCusip = s.c_str();
+  if (s.size() > 0) pStock->SetCusip(s.c_str());
   s = pt.get<string>(_T("sedol"));
-  if (s.size() > 0) pStock->m_strSedol = s.c_str();
+  if (s.size() > 0) pStock->SetSedol(s.c_str());
   s = pt.get<string>(_T("description"));
   if (s.size() > 0) pStock->SetDescription(s.c_str());
   s = pt.get<string>(_T("exchange"));
-  if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
+  if (s.size() > 0) pStock->SetListedExchange(s.c_str());
   s = pt.get<string>(_T("ggroup"));
-  if (s.size() > 0) pStock->m_strGgroup = s.c_str();
+  if (s.size() > 0) pStock->SetGgroup(s.c_str());
   s = pt.get<string>(_T("gind"));
-  if (s.size() > 0) pStock->m_strGind = s.c_str();
+  if (s.size() > 0) pStock->SetGind(s.c_str());
   s = pt.get<string>(_T("gsector"));
-  if (s.size() > 0) pStock->m_strGsector = s.c_str();
+  if (s.size() > 0) pStock->SetGsector(s.c_str());
   s = pt.get<string>(_T("gsubind"));
-  if (s.size() > 0) pStock->m_strGsubind = s.c_str();
+  if (s.size() > 0) pStock->SetGsubind(s.c_str());
   s = pt.get<string>(_T("ipo"));
-  if (s.size() > 0) pStock->m_strIPODate = s.c_str();
+  if (s.size() > 0) pStock->SetIPODate(s.c_str());
   s = pt.get<string>(_T("isin"));
-  if (s.size() > 0) pStock->m_strIsin = s.c_str();
+  if (s.size() > 0) pStock->SetIsin(s.c_str());
   s = pt.get<string>(_T("marketCapitalization"));
-  if (s.size() > 0) pStock->m_dMarketCapitalization = atof(s.c_str());
+  if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
 
   s = pt.get<string>(_T("naics"));
-  if (s.size() > 0) pStock->m_strNaics = s.c_str();
+  if (s.size() > 0) pStock->SetNaics(s.c_str());
   s = pt.get<string>(_T("naicsNationalIndustry"));
-  if (s.size() > 0) pStock->m_strNaicsNationalIndustry = s.c_str();
+  if (s.size() > 0) pStock->SetNaicsNationalIndustry(s.c_str());
   s = pt.get<string>(_T("naicsSector"));
-  if (s.size() > 0) pStock->m_strNaicsSector = s.c_str();
+  if (s.size() > 0) pStock->SetNaicsSector(s.c_str());
   s = pt.get<string>(_T("naicsSubsector"));
-  if (s.size() > 0) pStock->m_strNaicsSubsector = s.c_str();
+  if (s.size() > 0) pStock->SetNaicsSubsector(s.c_str());
   s = pt.get<string>(_T("name"));
-  if (s.size() > 0) pStock->m_strName = s.c_str();
+  if (s.size() > 0) pStock->SetName(s.c_str());
   s = pt.get<string>(_T("phone"));
-  if (s.size() > 0) pStock->m_strPhone = s.c_str();
+  if (s.size() > 0) pStock->SetPhone(s.c_str());
 
   s = pt.get<string>(_T("shareOutstanding"));
-  if (s.size() > 0) pStock->m_dShareOutstanding = atof(s.c_str());
+  if (s.size() > 0) pStock->SetShareOutstanding(atof(s.c_str()));
   s = pt.get<string>(_T("state"));
-  if (s.size() > 0) pStock->m_strState = s.c_str();
+  if (s.size() > 0) pStock->SetState(s.c_str());
   s = pt.get<string>(_T("ticker"));
-  if (s.size() > 0) pStock->m_strTicker = s.c_str();
+  if (s.size() > 0) pStock->SetTicker(s.c_str());
   s = pt.get<string>(_T("weburl"));
-  if (s.size() > 0) pStock->m_strWebURL = s.c_str();
+  if (s.size() > 0) pStock->SetWebURL(s.c_str());
 
   s = pt.get<string>(_T("logo"));
-  if (s.size() > 0) pStock->m_strLogo = s.c_str();
+  if (s.size() > 0) pStock->SetLogo(s.c_str());
   s = pt.get<string>(_T("finnhubIndustry"));
-  if (s.size() > 0) pStock->m_strFinnhubIndustry = s.c_str();
-  pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
+  if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
+  pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
   pStock->SetUpdateStockProfileDB(true);
   return true;
 }
@@ -132,28 +132,28 @@ bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pSt
   if (!ConvertToJSon(pt, pWebData)) return false;
   try {
     s = pt.get<string>(_T("ticker"));
-    if (s.size() > 0) pStock->m_strTicker = s.c_str();
+    if (s.size() > 0) pStock->SetTicker(s.c_str());
     s = pt.get<string>(_T("country"));
-    if (s.size() > 0) pStock->m_strCountry = s.c_str();
+    if (s.size() > 0) pStock->SetCountry(s.c_str());
     s = pt.get<string>(_T("currency"));
     if (s.size() > 0) pStock->SetCurrency(s.c_str());
     s = pt.get<string>(_T("exchange"));
-    if (s.size() > 0) pStock->m_strListedExchange = s.c_str();
+    if (s.size() > 0) pStock->SetListedExchange(s.c_str());
     s = pt.get<string>(_T("name"));
-    if (s.size() > 0) pStock->m_strName = s.c_str();
+    if (s.size() > 0) pStock->SetName(s.c_str());
     s = pt.get<string>(_T("finnhubIndustry"));
-    if (s.size() > 0) pStock->m_strFinnhubIndustry = s.c_str();
+    if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
     s = pt.get<string>(_T("logo"));
-    if (s.size() > 0) pStock->m_strLogo = s.c_str();
+    if (s.size() > 0) pStock->SetLogo(s.c_str());
     s = pt.get<string>(_T("marketCapitalization"));
-    if (s.size() > 0) pStock->m_dMarketCapitalization = atof(s.c_str());
+    if (s.size() > 0) pStock->SetMarketCapitalization(atof(s.c_str()));
     s = pt.get<string>(_T("phone"));
-    if (s.size() > 0) pStock->m_strPhone = s.c_str();
-    if (s.size() > 0) pStock->m_dShareOutstanding = pt.get<double>(_T("shareOutstanding"));
+    if (s.size() > 0) pStock->SetPhone(s.c_str());
+    if (s.size() > 0) pStock->SetShareOutstanding(pt.get<double>(_T("shareOutstanding")));
     s = pt.get<string>(_T("weburl"));
-    if (s.size() > 0) pStock->m_strWebURL = s.c_str();
+    if (s.size() > 0) pStock->SetWebURL(s.c_str());
     s = pt.get<string>(_T("ipo"));
-    if (s.size() > 0) pStock->m_strIPODate = s.c_str();
+    if (s.size() > 0) pStock->SetIPODate(s.c_str());
   }
   catch (ptree_error&) {
     return false; // 出现错误则返回任务失败
@@ -244,7 +244,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
       pt3 = it->second;
       tTemp = pt3.get_value<time_t>();
       pDayLine = make_shared<CDayLine>();
-      pDayLine->SetMarketString(pStock->m_strListedExchange);
+      pDayLine->SetMarketString(pStock->GetListedExchange());
       pDayLine->SetStockCode(pStock->GetSymbol());
       pDayLine->SetStockName(pStock->GetTicker());
       pDayLine->SetTime(tTemp);
@@ -564,7 +564,7 @@ bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   string sError;
 
   if (pWebData->GetBufferLength() <= 3) {
-    pStock->m_strPeer = _T(" "); // 清空
+    pStock->SetPeer(_T(" ")); // 清空
     return true; // 没有有效的同业竞争对手
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
@@ -579,7 +579,7 @@ bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   else {
     buffer[pWebData->GetBufferLength()] = 0x000;
   }
-  pStock->m_strPeer = buffer;
+  pStock->SetPeer(buffer);
 
   return true;
 }

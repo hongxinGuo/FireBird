@@ -69,33 +69,6 @@ public:
   long GetOffset(void) noexcept { return m_lOffsetInContainer; }
   void SetOffset(long lValue) noexcept { m_lOffsetInContainer = lValue; }
 
-  // 基本实时数据，需要更新
-  time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
-  void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
-  long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) noexcept { return m_lNew; }
-  void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-  long GetUpDown(void) noexcept { return m_lUpDown; }
-  void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
-  double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
-  void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
-  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
-  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
-  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
   long GetHighLimit(void) noexcept { return m_lHighLimit; }
   void SetHighLimit(long lValue) noexcept { m_lHighLimit = lValue; }
   long GetLowLimit(void) noexcept { return m_lLowLimit; }
@@ -453,24 +426,10 @@ protected:
   long m_lOffsetInContainer;	// 在容器中的偏移量
   short	m_nHand;	// 每手股数
 
-  // 实时数据,需要不断更新
-  time_t m_TransactionTime; // 实时数据交易时间
-  long m_lLastClose; // 以0.001元计的收盘价
-  long m_lOpen; // 以0.001元计的开盘价
-  long m_lHigh; // 以0.001元计的最高价
-  long m_lLow; // 以0.001元计的最低价
-  long m_lNew; // 以0.001元计的最新价
   long m_lHighLimit; // 涨停价。（此数据目前只有腾讯实时数据能够提供）
   long m_lLowLimit; // 跌停价。（此数据目前只有腾讯实时数据能够提供）
   long m_lHighLimit2; // 涨停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
   long m_lLowLimit2; // 跌停价。（当股票出现涨跌停板时，此数据由系统计算出来，否则为零）
-  long m_lUpDown; // 涨跌值
-  double m_dUpDownRate; // 涨跌率
-  INT64 m_llVolume;	// 以1股计的成交量
-  INT64 m_llAmount; // 以元计的成交金额
-  double m_dChangeHandRate; // 换手率
-  INT64 m_llTotalValue;	// 总市值。单位：万元
-  INT64 m_llCurrentValue;	// 流通市值。单位：万元
   array<long, 5> m_lPBuy;	// 买盘价。单位：0.001元
   array<long, 5> m_lVBuy;	// 买盘量。单位：股
   array<long, 5> m_lPSell; // 卖盘价。单位：0.001元

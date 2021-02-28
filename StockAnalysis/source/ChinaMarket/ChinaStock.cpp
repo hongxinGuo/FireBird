@@ -36,17 +36,8 @@ void CChinaStock::Reset(void) {
   m_lDayLineEndDate = __CHINA_MARKET_BEGIN_DATE__; //
   m_nHand = 100;
 
-  m_TransactionTime = 0;
-  m_lLastClose = m_lOpen = 0;
-  m_lHigh = m_lLow = m_lNew = 0;
   m_lHighLimit = m_lLowLimit = 0;
   m_lHighLimit2 = m_lLowLimit2 = 0;
-  m_llVolume = 0;
-  m_llAmount = 0;
-  m_lUpDown = 0;
-  m_dUpDownRate = 0;
-  m_dChangeHandRate = 0;
-  m_llTotalValue = m_llCurrentValue = 0;
   for (int i = 0; i < 5; i++) {
     m_lPBuy.at(i) = m_lPSell.at(i) = 0;
     m_lVBuy.at(i) = m_lVSell.at(i) = 0;
@@ -157,7 +148,6 @@ bool CChinaStock::HaveNewDayLineData(void) {
   if (m_DayLine.GetData(m_DayLine.GetDataSize() - 1)->GetFormatedMarketDate() > GetDayLineEndDate()) return true;
   else return false;
 }
-
 
 bool CChinaStock::TransferNeteaseDayLineWebDataToBuffer(CNeteaseDayLineWebInquiry* pNeteaseWebDayLineData) {
   // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
@@ -1521,7 +1511,7 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
     SetDayLineEndDate(setStockCode.m_DayLineEndDate);
   }
-  if(!IsDelisted()) {
+  if (!IsDelisted()) {
     if (IsEarlyThen(GetDayLineEndDate(), GetFormatedDate(), 30)) {
       SetIPOStatus(__STAKE_DELISTED__);
       SetUpdateStockProfileDB(true);
@@ -1537,7 +1527,7 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
   if (gl_pChinaStockMarket->GetLastTradeDate() <= GetDayLineEndDate()) { // 最新日线数据为今日或者上一个交易日的数据。
     SetDayLineNeedUpdate(false); // 日线数据不需要更新
   }
-  else if(IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
+  else if (IsDelisted()) { // 退市股票如果已下载过日线数据，则每星期一复查日线数据
     if ((gl_pChinaStockMarket->GetDayOfWeek() != 1) && (GetDayLineEndDate() != __CHINA_MARKET_BEGIN_DATE__)) {
       SetDayLineNeedUpdate(false);
     }

@@ -31,12 +31,6 @@ public:
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);
 
-  long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
-  void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
-  long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
-  void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
-  long GetLastEPSSurpriseUpdateDate(void) noexcept { return m_lLastEPSSurpriseUpdateDate; }
-  void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
   void UpdateDayLineStartEndDate(void);
   long GetDayLineSize(void) noexcept { return m_vDayLine.size(); }
   CDayLinePtr GetDayLine(long lIndex) { return m_vDayLine.at(lIndex); }
@@ -53,61 +47,125 @@ public:
 
   bool CheckPeerStatus(long lCurrentDate);
 
-  CString GetDescription(void) noexcept { return m_strDescription; }
-  void SetDescription(CString strDescription) noexcept { m_strDescription = strDescription; }
-  CString GetDisplaySymbol(void) noexcept { return m_strDisplaySymbol; }
-  void SetDisplaySymbol(CString strDisplaySymbol) noexcept { m_strDisplaySymbol = strDisplaySymbol; }
-  CString GetSymbol(void) noexcept { return m_strSymbol; }
-  void SetSymbol(CString strSymbol) noexcept { m_strSymbol = strSymbol; }
-  CString GetExchangeCode(void) noexcept { return m_strExchangeCode; }
-  void SetExchangeCode(CString strExchangeCode) noexcept { m_strExchangeCode = strExchangeCode; }
-  CString GetType(void) noexcept { return m_strType; }
-  void SetType(CString strType) noexcept { m_strType = strType; }
-  CString GetMic(void) noexcept { return m_strMic; }
-  void SetMic(CString strMic) noexcept { m_strMic = strMic; }
-  CString GetFigi(void) noexcept { return m_strFigi; }
-  void SetFigi(CString strFigi) noexcept { m_strFigi = strFigi; }
-  CString GetCurrency(void) noexcept { return m_strCurrency; }
-  void SetCurrency(CString strCurrency) noexcept { m_strCurrency = strCurrency; }
+  CString GetDescription(void) { return m_strDescription; }
+  void SetDescription(CString strDescription) { m_strDescription = strDescription; }
+  CString GetDisplaySymbol(void) { return m_strDisplaySymbol; }
+  void SetDisplaySymbol(CString strDisplaySymbol) { m_strDisplaySymbol = strDisplaySymbol; }
+  CString GetSymbol(void) { return m_strSymbol; }
+  void SetSymbol(CString strSymbol) { m_strSymbol = strSymbol; }
+  CString GetExchangeCode(void) { return m_strExchangeCode; }
+  void SetExchangeCode(CString strExchangeCode) { m_strExchangeCode = strExchangeCode; }
+  CString GetType(void) { return m_strType; }
+  void SetType(CString strType) { m_strType = strType; }
+  CString GetMic(void) { return m_strMic; }
+  void SetMic(CString strMic) { m_strMic = strMic; }
+  CString GetFigi(void) { return m_strFigi; }
+  void SetFigi(CString strFigi) { m_strFigi = strFigi; }
+  CString GetCurrency(void) { return m_strCurrency; }
+  void SetCurrency(CString strCurrency) { m_strCurrency = strCurrency; }
 
-  CString GetTicker(void) noexcept { return m_strTicker; }
-  void SetTicker(CString strTicker) noexcept { m_strTicker = strTicker; }
+  CString GetAddress(void) { return m_strAddress; }
+  void SetAddress(CString strAddress) { m_strAddress = strAddress; }
+  CString GetCity(void) { return m_strCity; }
+  void SetCity(CString strCity) { m_strCity = strCity; }
+  CString GetCountry(void) { return m_strCountry; }
+  void SetCountry(CString strCountry) { m_strCountry = strCountry; }
+  CString GetCusip(void) { return m_strCusip; }
+  void SetCusip(CString strCusip) { m_strCusip = strCusip; }
+  CString GetSedol(void) { return m_strSedol; }
+  void SetSedol(CString strSedol) { m_strSedol = strSedol; }
+  long GetEmployeeTotal(void) noexcept { return m_lEmployeeTotal; }
+  void SetEmployeeTotal(long lEmployeeTotal) noexcept { m_lEmployeeTotal = lEmployeeTotal; }
+  CString GetListedExchange(void) { return m_strListedExchange; }
+  void SetListedExchange(CString strListedExchange) { m_strListedExchange = strListedExchange; }
+  CString GetGgroup(void) { return m_strGgroup; }
+  void SetGgroup(CString strGgroup) { m_strGgroup = strGgroup; }
+  CString GetGind(void) { return m_strGind; }
+  void SetGind(CString strGind) { m_strGind = strGind; }
+  CString GetGsector(void) { return m_strGsector; }
+  void SetGsector(CString strGsector) { m_strGsector = strGsector; }
+  CString GetGsubind(void) { return m_strGsubind; }
+  void SetGsubind(CString strGsubind) { m_strGsubind = strGsubind; }
+  CString GetIPODate(void) { return m_strIPODate; }
+  void SetIPODate(CString strIPODate) { m_strIPODate = strIPODate; }
+  CString GetIsin(void) { return m_strIsin; }
+  void SetIsin(CString strIsin) { m_strIsin = strIsin; }
+  double GetMarketCapitalization(void) { return m_dMarketCapitalization; }
+  void SetMarketCapitalization(double dMarketCapitalization) { m_dMarketCapitalization = dMarketCapitalization; }
+  CString GetNaics(void) { return m_strNaics; }
+  void SetNaics(CString strNaics) { m_strNaics = strNaics; }
+  CString GetNaicsNationalIndustry(void) { return m_strNaicsNationalIndustry; }
+  void SetNaicsNationalIndustry(CString strNaicsNationalIndustry) { m_strNaicsNationalIndustry = strNaicsNationalIndustry; }
+  CString GetNaicsSector(void) { return m_strNaicsSector; }
+  void SetNaicsSector(CString strNaicsSector) { m_strNaicsSector = strNaicsSector; }
+  CString GetNaicsSubsector(void) { return m_strNaicsSubsector; }
+  void SetNaicsSubsector(CString strNaicsSubsector) { m_strNaicsSubsector = strNaicsSubsector; }
+  CString GetName(void) { return m_strName; }
+  void SetName(CString strName) { m_strName = strName; }
+  CString GetPhone(void) { return m_strPhone; }
+  void SetPhone(CString strPhone) { m_strPhone = strPhone; }
+  double GetShareOutstanding(void) noexcept { return m_dShareOutstanding; }
+  void SetShareOutstanding(double dShareOutstanding) noexcept { m_dShareOutstanding = dShareOutstanding; }
+  CString GetState(void) { return m_strState; }
+  void SetState(CString strState) { m_strState = strState; }
+  CString GetTicker(void) { return m_strTicker; }
+  void SetTicker(CString strTicker) { m_strTicker = strTicker; }
+  CString GetWebURL(void) { return m_strWebURL; }
+  void SetWebURL(CString strWebURL) { m_strWebURL = strWebURL; }
+  CString GetLogo(void) { return m_strLogo; }
+  void SetLogo(CString strLogo) { m_strLogo = strLogo; }
+  CString GetFinnhubIndustry(void) { return m_strFinnhubIndustry; }
+  void SetFinnhubIndustry(CString strFinnhubIndustry) { m_strFinnhubIndustry = strFinnhubIndustry; }
+  CString GetPeer(void) { return m_strPeer; }
+  void SetPeer(CString strPeer) { m_strPeer = strPeer; }
+  long GetProfileUpdateDate(void) noexcept { return m_lProfileUpdateDate; }
+  void SetProfileUpdateDate(long lProfileUpdateDate) noexcept { m_lProfileUpdateDate = lProfileUpdateDate; }
+  long GetLastRTDataUpdateDate(void) noexcept { return m_lLastRTDataUpdateDate; }
+  void SetLastRTDataUpdateDate(long lDate) noexcept { m_lLastRTDataUpdateDate = lDate; }
+  long GetPeerUpdateDate(void) noexcept { return m_lPeerUpdateDate; }
+  void SetPeerUpdateDate(long lDate) noexcept { m_lPeerUpdateDate = lDate; }
+  long GetLastEPSSurpriseUpdateDate(void) noexcept { return m_lLastEPSSurpriseUpdateDate; }
+  void SetLastEPSSurpriseUpdateDate(long lDate) noexcept { m_lLastEPSSurpriseUpdateDate = lDate; }
 
   CString GetFinnhubDayLineInquiryString(time_t tCurrentTime);
   CString GetTiingoDayLineInquiryString(long lCurrentDate);
 
-  // 实时数据区
-  time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
-  void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
-  long GetLastClose(void) noexcept { return m_lLastClose; }
-  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
-  long GetOpen(void) noexcept { return m_lOpen; }
-  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
-  long GetHigh(void) noexcept { return m_lHigh; }
-  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
-  long GetLow(void) noexcept { return m_lLow; }
-  void SetLow(long lValue) noexcept { m_lLow = lValue; }
-  long GetNew(void) noexcept { return m_lNew; }
-  void SetNew(long lValue) noexcept { m_lNew = lValue; }
-  INT64 GetAmount(void) noexcept { return m_llAmount; }
-  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
-  INT64 GetVolume(void) noexcept { return m_llVolume; }
-  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
-  long GetUpDown(void) noexcept { return m_lUpDown; }
-  void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
-  double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
-  void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
-  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
-  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
-  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
-  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
-  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
-  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
-
   bool IsUSMarket(void);
 
 public:
+  // Tiingo Symbol信息
+  CString m_strTiingoPermaTicker; // Tiingo永久代码标识
+  bool m_fIsActive; //
+  bool m_fIsADR;
+  INT32 m_iSICCode;
+  CString m_strSICIndustry;
+  CString m_strSICSector;
+  CString m_strTiingoIndustry;
+  CString m_strTiingoSector;
+  CString m_strCompanyWebSite;
+  CString m_strSECFilingWebSite;
+  long m_lStatementUpdateDate;
+  long m_lDailyDataUpdateDate;
+
+  // 系统生成信息
+  vector<CDayLinePtr> m_vDayLine;
+  vector<CEPSSurprisePtr> m_vEPSSurprise;
+  bool m_fEPSSurpriseNeedUpdate;
+  atomic_bool m_fEPSSurpriseNeedSave;
+  // 无需存储数据区
+  bool m_fInquiryStockProfile; // 要求更新公司简介
+  bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
+
+protected:
   // Finnhub symbol信息
+  CString m_strDescription;
+  CString m_strDisplaySymbol;
+  CString m_strSymbol;
+  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
+  CString m_strType;
+  CString m_strMic;
+  CString m_strFigi;
+  CString m_strCurrency;
 
   // Finnhub profile信息
   CString m_strAddress;
@@ -141,56 +199,6 @@ public:
   long m_lLastRTDataUpdateDate; // 最新实时数据更新日期
   long m_lPeerUpdateDate; // 最新实时数据更新日期
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
-
-  // Tiingo Symbol信息
-  CString m_strTiingoPermaTicker; // Tiingo永久代码标识
-  bool m_fIsActive; //
-  bool m_fIsADR;
-  INT32 m_iSICCode;
-  CString m_strSICIndustry;
-  CString m_strSICSector;
-  CString m_strTiingoIndustry;
-  CString m_strTiingoSector;
-  CString m_strCompanyWebSite;
-  CString m_strSECFilingWebSite;
-  long m_lStatementUpdateDate;
-  long m_lDailyDataUpdateDate;
-
-  // 系统生成信息
-
-  // 实时数据区
-  time_t m_TransactionTime; // 实时数据交易时间
-  long m_lLastClose; // 以0.001元计的收盘价
-  long m_lOpen; // 以0.001元计的开盘价
-  long m_lHigh; // 以0.001元计的最高价
-  long m_lLow; // 以0.001元计的最低价
-  long m_lNew; // 以0.001元计的最新价
-  long m_lUpDown; // 涨跌值
-  double m_dUpDownRate; // 涨跌率
-  INT64 m_llVolume;	// 以1股计的成交量
-  INT64 m_llAmount; // 以元计的成交金额
-  double m_dChangeHandRate; // 换手率
-  INT64 m_llTotalValue;	// 总市值。单位：万元
-  INT64 m_llCurrentValue;	// 流通市值。单位：万元
-
-  vector<CDayLinePtr> m_vDayLine;
-  vector<CEPSSurprisePtr> m_vEPSSurprise;
-  bool m_fEPSSurpriseNeedUpdate;
-  atomic_bool m_fEPSSurpriseNeedSave;
-  // 无需存储数据区
-  bool m_fInquiryStockProfile; // 要求更新公司简介
-  bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
-
-protected:
-  // Finnhub symbol信息
-  CString m_strDescription;
-  CString m_strDisplaySymbol;
-  CString m_strSymbol;
-  CString m_strExchangeCode; // 股票所属交易所代码，美国为“US”
-  CString m_strType;
-  CString m_strMic;
-  CString m_strFigi;
-  CString m_strCurrency;
 
   // 无需存储数据区
 };

@@ -11,10 +11,39 @@ using namespace std;
 class CVirtualStock : public CObject {
 public:
   CVirtualStock();
-  ~CVirtualStock();
+  virtual ~CVirtualStock();
   virtual void Reset(void);
 
 public:
+  // 基本实时数据，需要更新
+  time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
+  void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
+  long GetLastClose(void) noexcept { return m_lLastClose; }
+  void SetLastClose(long lValue) noexcept { m_lLastClose = lValue; }
+  long GetOpen(void) noexcept { return m_lOpen; }
+  void SetOpen(long lValue) noexcept { m_lOpen = lValue; }
+  long GetHigh(void) noexcept { return m_lHigh; }
+  void SetHigh(long lValue) noexcept { m_lHigh = lValue; }
+  long GetLow(void) noexcept { return m_lLow; }
+  void SetLow(long lValue) noexcept { m_lLow = lValue; }
+  long GetNew(void) noexcept { return m_lNew; }
+  void SetNew(long lValue) noexcept { m_lNew = lValue; }
+  INT64 GetAmount(void) noexcept { return m_llAmount; }
+  void SetAmount(INT64 llValue) noexcept { m_llAmount = llValue; }
+  INT64 GetVolume(void) noexcept { return m_llVolume; }
+  void SetVolume(INT64 llValue) noexcept { m_llVolume = llValue; }
+  long GetUpDown(void) noexcept { return m_lUpDown; }
+  void SetUpDown(long lValue) noexcept { m_lUpDown = lValue; }
+  double GetUpDownRate(void) noexcept { return m_dUpDownRate; }
+  void SetUpDownRate(double dValue) noexcept { m_dUpDownRate = dValue; }
+  double GetChangeHandRate(void) noexcept { return m_dChangeHandRate; }
+  void SetChangeHandRate(double dValue) noexcept { m_dChangeHandRate = dValue; }
+  void SetTotalValue(INT64 llValue) noexcept { m_llTotalValue = llValue; }
+  INT64 GetTotalValue(void) noexcept { return m_llTotalValue; }
+  void SetCurrentValue(INT64 llValue) noexcept { m_llCurrentValue = llValue; }
+  INT64 GetCurrentValue(void) noexcept { return m_llCurrentValue; }
+
+  //
   bool IsTodayNewStock(void) noexcept { return m_fTodayNewStock; }
   void SetTodayNewStock(bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
   bool IsUpdateStockProfileDB(void) noexcept { return m_fUpdateStockProfileDB; }
@@ -22,7 +51,7 @@ public:
   void SetUpdateStockProfileDB(bool fFlag) noexcept { m_fUpdateStockProfileDB = fFlag; }
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
-  
+
   long GetDayLineStartDate(void) noexcept { return m_lDayLineStartDate; }
   void SetDayLineStartDate(long lDate) noexcept { m_lDayLineStartDate = lDate; }
   long GetDayLineEndDate(void) noexcept { return m_lDayLineEndDate; }
@@ -44,10 +73,24 @@ public:
   void SetDayLineNeedSaving(bool fFlag) noexcept { m_fDayLineNeedSaving = fFlag; }
   bool IsDayLineNeedSavingAndClearFlag(void) noexcept { const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false); return fNeedSaving; }
 
-
 protected:
+  // 实时数据区
+  time_t m_TransactionTime; // 实时数据交易时间
+  long m_lLastClose; // 以0.001元计的收盘价
+  long m_lOpen; // 以0.001元计的开盘价
+  long m_lHigh; // 以0.001元计的最高价
+  long m_lLow; // 以0.001元计的最低价
+  long m_lNew; // 以0.001元计的最新价
+  long m_lUpDown; // 涨跌值
+  double m_dUpDownRate; // 涨跌率
+  INT64 m_llVolume;	// 以1股计的成交量
+  INT64 m_llAmount; // 以元计的成交金额
+  double m_dChangeHandRate; // 换手率
+  INT64 m_llTotalValue;	// 总市值。单位：万元
+  INT64 m_llCurrentValue;	// 流通市值。单位：万元
+
   bool m_fTodayNewStock; // 本日新发现的股票
-  atomic_bool m_fUpdateStockProfileDB; 
+  atomic_bool m_fUpdateStockProfileDB;
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
   long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，
@@ -57,8 +100,6 @@ protected:
   atomic_bool m_fDayLineNeedUpdate; // 日线需要更新。默认为真
   atomic_bool m_fDayLineNeedProcess; // 已从网络上读取了日线历史数据，等待处理
   atomic_bool m_fDayLineNeedSaving; // 日线历史数据已处理，等待存储。
-
-
 };
 
 typedef shared_ptr<CVirtualStock> CVirtualStockPtr;

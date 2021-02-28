@@ -23,6 +23,97 @@ namespace StockAnalysisTest {
     }
   };
 
+  TEST_F(CVirtualStockTest, TestGetTransactionTime) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetTransactionTime(), 0);
+    stock.SetTransactionTime(1010101010);
+    EXPECT_EQ(stock.GetTransactionTime(), 1010101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetLastClose) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetLastClose(), 0);
+    stock.SetLastClose(10101010);
+    EXPECT_EQ(stock.GetLastClose(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetOpen) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetOpen(), 0);
+    stock.SetOpen(10101);
+    EXPECT_EQ(stock.GetOpen(), 10101);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetHigh) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetHigh(), 0);
+    stock.SetHigh(19980101);
+    EXPECT_EQ(stock.GetHigh(), 19980101);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetLow) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetLow(), 0);
+    stock.SetLow(19980101);
+    EXPECT_EQ(stock.GetLow(), 19980101);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetNew) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetNew(), 0);
+    stock.SetNew(10101010);
+    EXPECT_EQ(stock.GetNew(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetUpDown) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetUpDown(), 0);
+    stock.SetUpDown(10101010);
+    EXPECT_EQ(stock.GetUpDown(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetAmount) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetAmount(), 0);
+    stock.SetAmount(1010101010101010);
+    EXPECT_EQ(stock.GetAmount(), 1010101010101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetVolume) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetVolume(), 0);
+    stock.SetVolume(10101010);
+    EXPECT_EQ(stock.GetVolume(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetTotalValue) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetTotalValue(), 0);
+    stock.SetTotalValue(10101010);
+    EXPECT_EQ(stock.GetTotalValue(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetCurrentValue) {
+    CVirtualStock stock;
+    EXPECT_EQ(stock.GetCurrentValue(), 0);
+    stock.SetCurrentValue(10101010);
+    EXPECT_EQ(stock.GetCurrentValue(), 10101010);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetChangeHandRate) {
+    CVirtualStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 0.0);
+    stock.SetChangeHandRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
+  }
+
+  TEST_F(CVirtualStockTest, TestGetUpDownRate) {
+    CVirtualStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0.0);
+    stock.SetUpDownRate(1.1);
+    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
+  }
+
   TEST_F(CVirtualStockTest, TestIsTodayNewStock) {
     CVirtualStock stock;
 
@@ -100,7 +191,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CVirtualStockTest, TestIsNotChecked) {
-    CChinaStock stock;
+    CVirtualStock stock;
     stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
     EXPECT_TRUE(stock.IsNotChecked());
     stock.SetIPOStatus(__STAKE_DELISTED__);
@@ -144,6 +235,4 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsDayLineNeedSavingAndClearFlag());
     EXPECT_FALSE(stock.IsDayLineNeedSaving());
   }
-
-
 }

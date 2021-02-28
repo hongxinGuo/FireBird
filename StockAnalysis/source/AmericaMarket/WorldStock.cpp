@@ -76,20 +76,6 @@ void CWorldStock::Reset(void) {
   m_fEPSSurpriseNeedSave = false;
   m_fFinnhubPeerUpdated = false;
 
-  m_TransactionTime = 0;
-  m_lHigh = 0;
-  m_lLow = 0;
-  m_lLastClose = 0;
-  m_lNew = 0;
-  m_lOpen = 0;
-  m_llTotalValue = 0;
-  m_llCurrentValue = 0;
-  m_llAmount = 0;
-  m_lUpDown = 0;
-  m_llVolume = 0;
-  m_dUpDownRate = 0;
-  m_dChangeHandRate = 0;
-
   m_vDayLine.resize(0);
 }
 

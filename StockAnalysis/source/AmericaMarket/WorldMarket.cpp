@@ -379,7 +379,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __COMPANY_PROFILE_CONCISE__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
-        pStock->m_lProfileUpdateDate = gl_pWorldMarket->GetFormatedMarketDate();
+        pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
         pStock->SetUpdateStockProfileDB(true);
       }
       break;
@@ -429,7 +429,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
           pStock->UpdateEPSSurprise(vEPSSurprise);
         }
         else {
-          pStock->m_lLastEPSSurpriseUpdateDate = 19700101; // 将日期设置为更早。
+          pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
           pStock->SetUpdateStockProfileDB(true);
         }
         pStock->m_fEPSSurpriseNeedUpdate = false;
@@ -910,7 +910,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfile2(void) {
   ASSERT(IsSystemReady());
   if (!m_fWorldStockUpdated && !m_fFinnhubInquiring) {
     for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < lStockSetSize; m_lCurrentProfilePos++) {
-      if (IsEarlyThen(m_vWorldStock.at(m_lCurrentProfilePos)->m_lProfileUpdateDate, GetFormatedMarketDate(), 365)) {
+      if (IsEarlyThen(m_vWorldStock.at(m_lCurrentProfilePos)->GetProfileUpdateDate(), GetFormatedMarketDate(), 365)) {
         fFound = true;
         break;
       }
@@ -1617,7 +1617,7 @@ bool CWorldMarket::UpdateEconomicCalendarDB(void) {
 
 bool CWorldMarket::RebuildEPSSurprise(void) {
   for (auto& p : m_vWorldStock) {
-    p->m_lLastEPSSurpriseUpdateDate = 19800101;
+    p->SetLastEPSSurpriseUpdateDate(19800101);
     p->m_fEPSSurpriseNeedUpdate = true;
   }
   m_fFinnhubEPSSurpriseUpdated = false;
