@@ -64,7 +64,7 @@ void CSetRealTimeData::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Text(pFX, _T("[Time]"), m_Time);
-  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
+  RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);
   RFX_Text(pFX, _T("[High]"), m_High);

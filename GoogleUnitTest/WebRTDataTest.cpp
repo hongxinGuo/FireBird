@@ -1693,7 +1693,7 @@ namespace StockAnalysisTest {
     setRTData.m_pDatabase->CommitTrans();
     setRTData.Close();
 
-    setRTData.m_strFilter = _T("[StockCode] = '600000.SS'");
+    setRTData.m_strFilter = _T("[Symbol] = '600000.SS'");
     setRTData.Open();
     EXPECT_EQ(atoll(setRTData.m_Time), pRTData->GetTransactionTime());
     EXPECT_STREQ(setRTData.m_Symbol, pRTData->GetSymbol());
@@ -1712,7 +1712,7 @@ namespace StockAnalysisTest {
 
     setRTData.Close();
 
-    setRTData.m_strFilter = _T("[StockCode] = '600000.SS'");
+    setRTData.m_strFilter = _T("[Symbol] = '600000.SS'");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
     while (!setRTData.IsEOF()) {
@@ -1753,7 +1753,7 @@ namespace StockAnalysisTest {
     setRTData.m_pDatabase->CommitTrans();
     setRTData.Close();
 
-    setRTData.m_strFilter = _T("[StockCode] = '600000.SS'");
+    setRTData.m_strFilter = _T("[Symbol] = '600000.SS'");
     setRTData.Open();
     id.LoadData(setRTData);
     EXPECT_EQ(id.GetTransactionTime(), pRTData->GetTransactionTime());
@@ -1775,7 +1775,7 @@ namespace StockAnalysisTest {
 
     setRTData.Close();
 
-    setRTData.m_strFilter = _T("[StockCode] = '600000.SS'");
+    setRTData.m_strFilter = _T("[Symbol] = '600000.SS'");
     setRTData.Open();
     setRTData.m_pDatabase->BeginTrans();
     while (!setRTData.IsEOF()) {

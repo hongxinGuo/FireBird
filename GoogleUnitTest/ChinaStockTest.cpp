@@ -722,7 +722,7 @@ namespace StockAnalysisTest {
     stock.AppendStockCodeDB(setStockCode);
     setStockCode.Close();
 
-    setStockCode.m_strFilter = _T("[StockCode] = '400000.SS'");
+    setStockCode.m_strFilter = _T("[Symbol] = '400000.SS'");
     setStockCode.Open();
     EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_IPOED__);
     EXPECT_EQ(setStockCode.m_Symbol, _T("400000.SS"));
@@ -1756,7 +1756,7 @@ namespace StockAnalysisTest {
     setDayLineExtendInfo.Close();
 
     CDayLine dayLine;
-    setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '600601.SS'");
+    setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '600601.SS'");
     setDayLineExtendInfo.Open();
     dayLine.LoadChinaMarketExtendData(&setDayLineExtendInfo);
     setDayLineExtendInfo.Close();

@@ -1510,7 +1510,7 @@ namespace StockAnalysisTest {
 
     sprintf_s(pch, _T("%08d"), lDate);
     strDate = pch;
-    setDayLineBasicInfo.m_strSort = _T("[StockCode]");
+    setDayLineBasicInfo.m_strSort = _T("[Symbol]");
     setDayLineBasicInfo.m_strFilter = _T("[Date] =");
     setDayLineBasicInfo.m_strFilter += strDate;
     setDayLineBasicInfo.Open();

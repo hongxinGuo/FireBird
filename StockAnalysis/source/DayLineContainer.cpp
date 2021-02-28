@@ -38,7 +38,7 @@ bool CDayLineContainer::SaveDayLineBasicInfo(CString strStockCode) {
   ASSERT(GetDataSize() > 0);
 
   lSize = GetDataSize();
-  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
   setDayLineBasicInfo.m_strFilter += strStockCode + _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Date]");
 
@@ -83,7 +83,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   ASSERT(!m_fLoadDataFirst);
 
   // 装入DayLine数据
-  setDayLineBasicInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '");
   setDayLineBasicInfo.m_strFilter += strStockCode;
   setDayLineBasicInfo.m_strFilter += _T("'");
   setDayLineBasicInfo.m_strSort = _T("[Date]");
@@ -92,7 +92,7 @@ bool CDayLineContainer::LoadDayLine(CString strStockCode) {
   setDayLineBasicInfo.Close();
 
   // 装入DayLineInfo数据
-  setDayLineExtendInfo.m_strFilter = _T("[StockCode] = '");
+  setDayLineExtendInfo.m_strFilter = _T("[Symbol] = '");
   setDayLineExtendInfo.m_strFilter += strStockCode;
   setDayLineExtendInfo.m_strFilter += _T("'");
   setDayLineExtendInfo.m_strSort = _T("[Date]");

@@ -7,9 +7,9 @@
 
 namespace StockAnalysisTest {
   struct NeteaseData {
-    NeteaseData(int count, CString StockCode, int iType, bool fActive, time_t tt) {
+    NeteaseData(int count, CString Symbol, int iType, bool fActive, time_t tt) {
       m_iCount = count;
-      m_strSymbol = StockCode;
+      m_strSymbol = Symbol;
       m_iSourceType = iType;
       m_fActive = fActive;
       m_tt = tt;

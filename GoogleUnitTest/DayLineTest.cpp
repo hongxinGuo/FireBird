@@ -735,7 +735,7 @@ namespace StockAnalysisTest {
     setDayLineBasicInfo.Update();
     setDayLineBasicInfo.Close();
 
-    setDayLineBasicInfo.m_strFilter = _T("StockCode = '600000.SS'");
+    setDayLineBasicInfo.m_strFilter = _T("[Symbol] = '600000.SS'");
     setDayLineBasicInfo.Open();
     id2.LoadChinaMarketBasicData(&setDayLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());

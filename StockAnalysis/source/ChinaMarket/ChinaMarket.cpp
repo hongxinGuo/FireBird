@@ -1900,12 +1900,12 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   strDate = buffer;
   setWeekLineBasicInfo.m_strFilter = _T("[Date] = ");
   setWeekLineBasicInfo.m_strFilter += strDate;
-  setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
+  setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
   setWeekLineBasicInfo.Open();
 
   setWeekLineExtendInfo.m_strFilter = _T("[Date] = ");
   setWeekLineExtendInfo.m_strFilter += strDate;
-  setWeekLineExtendInfo.m_strSort = _T("[StockCode]");
+  setWeekLineExtendInfo.m_strSort = _T("[Symbol]");
   setWeekLineExtendInfo.Open();
 
   while (!setWeekLineBasicInfo.IsEOF()) {
@@ -1955,7 +1955,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
 
   sprintf_s(pch, _T("%08d"), lDate);
   strDate = pch;
-  setDayLineBasicInfo.m_strSort = _T("[StockCode]");
+  setDayLineBasicInfo.m_strSort = _T("[Symbol]");
   setDayLineBasicInfo.m_strFilter = _T("[Date] =");
   setDayLineBasicInfo.m_strFilter += strDate;
   setDayLineBasicInfo.Open();
@@ -1966,7 +1966,7 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
     gl_systemMessage.PushDayLineInfoMessage(str);    // 采用同步机制报告信息
     return false;
   }
-  setDayLineExtendInfo.m_strSort = _T("[StockCode]");
+  setDayLineExtendInfo.m_strSort = _T("[Symbol]");
   setDayLineExtendInfo.m_strFilter = _T("[Date] =");
   setDayLineExtendInfo.m_strFilter += strDate;
   setDayLineExtendInfo.Open();
@@ -2001,7 +2001,7 @@ bool CChinaMarket::LoadWeekLineBasicInfo(CWeekLineContainer& weekLineContainer, 
 
   sprintf_s(pch, _T("%08d"), lMondayOfWeek);
   strDate = pch;
-  setWeekLineBasicInfo.m_strSort = _T("[StockCode]");
+  setWeekLineBasicInfo.m_strSort = _T("[Symbol]");
   setWeekLineBasicInfo.m_strFilter = _T("[Date] =");
   setWeekLineBasicInfo.m_strFilter += strDate;
   setWeekLineBasicInfo.Open();
@@ -3112,7 +3112,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     for (auto& pStock2 : m_vChinaMarketStock) {
       if (pStock2->IsUpdateStockProfileDB()) iUpdatedStock++;
     }
-    setStockCode.m_strSort = _T("[StockCode]");
+    setStockCode.m_strSort = _T("[Symbol]");
     setStockCode.Open();
     setStockCode.m_pDatabase->BeginTrans();
     while (iCount < iUpdatedStock) {
@@ -3165,7 +3165,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
   char buffer[30]{ 0, 0, 0 };
   CString str;
 
-  setStockCode.m_strSort = _T("[StockCode]");
+  setStockCode.m_strSort = _T("[Symbol]");
   setStockCode.Open();
   // 装入股票代码数据库
   while (!setStockCode.IsEOF()) {

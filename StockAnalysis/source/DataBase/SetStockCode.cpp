@@ -26,7 +26,7 @@ CString CSetStockCode::GetDefaultConnect() {
 }
 
 CString CSetStockCode::GetDefaultSQL() {
-  return _T("[StockCode]");
+  return _T("[stockcode]");
 }
 
 void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
@@ -35,7 +35,7 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
+  RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);

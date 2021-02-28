@@ -24,7 +24,7 @@ void CSetRSStrong2Stock::DoFieldExchange(CFieldExchange* pFX) {
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
-  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
+  RFX_Text(pFX, _T("[Symbol]"), m_Symbol);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetRSStrong2Stock 诊断

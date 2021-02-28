@@ -10,9 +10,9 @@ using namespace std;
 
 namespace StockAnalysisTest {
   struct NeteaseDayLineData {
-    NeteaseDayLineData(int count, CString StockCode, CString Data) {
+    NeteaseDayLineData(int count, CString Symbol, CString Data) {
       m_iCount = count;
-      m_strSymbol = StockCode;
+      m_strSymbol = Symbol;
       m_strData = Data;
     }
   public:
