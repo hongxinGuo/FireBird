@@ -51,7 +51,7 @@ public:
 #endif
 public:
   // 定时更新，完成具体调度任务。由主线程CMainFrame的OnTimer函数调用。其后跟随各被调度函数
-  virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
+  virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
   bool SchedulingTaskPerSecond(long lSecondNumber, long lCurrentTime); // 每秒调度一次
   bool SchedulingTaskPer10Seconds(long lCurrentTime); // 每十秒调度一次
   bool SchedulingTaskPerMinute(long lCurrentTime); // 每一分钟调度一次

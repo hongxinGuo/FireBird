@@ -109,11 +109,11 @@ class CWorldMarket : public CVirtualMarket {
   friend class CFinnhub;
 public:
   CWorldMarket();
+  virtual ~CWorldMarket();
   void InitialFinnhubInquiryStr(void);
   void InitialTiingoInquiryStr(void);
-  virtual ~CWorldMarket();
 
-  virtual bool SchedulingTask(void) override; // 由程序的定时器调度，大约每100毫秒一次
+  virtual bool SchedulingTask(void) override final; // 由程序的定时器调度，大约每100毫秒一次
   bool ProcessFinnhubInquiringMessage(void);
   bool ProcessFinnhubWebDataReceived(void);
   bool ProcessTiingoInquiringMessage(void);

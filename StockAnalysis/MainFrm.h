@@ -16,6 +16,7 @@ class CMainFrame : public CMDIFrameWndEx
   DECLARE_DYNAMIC(CMainFrame)
 public:
   CMainFrame();
+  virtual ~CMainFrame();
 
   void Reset(void);
 
@@ -59,7 +60,6 @@ public:
 
   // 实现
 public:
-  virtual ~CMainFrame();
 #ifdef _DEBUG
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;
@@ -136,5 +136,5 @@ public:
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();
   afx_msg void OnUpdateWorldStockDaylineStartEnd();
-//  afx_msg void OnChangeDaylineextendinfo();
+  //  afx_msg void OnChangeDaylineextendinfo();
 };
