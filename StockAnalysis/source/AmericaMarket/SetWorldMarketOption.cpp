@@ -27,7 +27,7 @@ CString CSetWorldMarketOption::GetDefaultConnect() {
 }
 
 CString CSetWorldMarketOption::GetDefaultSQL() {
-  return _T("[america_market_option]");
+  return _T("[world_market_option]");
 }
 
 void CSetWorldMarketOption::DoFieldExchange(CFieldExchange* pFX) {
