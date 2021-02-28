@@ -24,7 +24,7 @@ public:
   long m_ID;
   CString m_Time;	//成交时间，以秒计算，
   CStringW m_StockName;	//四位股票简称
-  CString	m_StockCode;	//六位股票代码
+  CString	m_Symbol;	//六位股票代码
   CString	m_LastClose;	//昨天收盘价
   CString	m_Open;	//今天开盘价
   CString	m_High;	//今天最高价

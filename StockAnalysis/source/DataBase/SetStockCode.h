@@ -1,4 +1,4 @@
-// SetStockCode.h : CSetStockCode 的声明
+// SetSymbol.h : CSetStockCode 的声明
 
 #pragma once
 #include"afxdb.h"
@@ -22,7 +22,7 @@ public:
   // 以同时支持 Unicode 和这些转换)。
 
   long m_ID;
-  CString	m_StockCode;
+  CString	m_Symbol;
   CStringW m_StockName;
   long m_DayLineStartDate;     // 从网易历史日线服务器上得到的初始交易日
   long m_DayLineEndDate;     // 从网易历史日线服务器上得到的最新日

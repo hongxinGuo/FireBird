@@ -7,7 +7,7 @@
 IMPLEMENT_DYNAMIC(CSetRSStrong1Stock, CRecordset)
 
 CSetRSStrong1Stock::CSetRSStrong1Stock(CDatabase* pdb) : CRecordset(pdb) {
-  m_StockCode = _T("");
+  m_Symbol = _T("");
   m_nFields = 1;
 }
 
@@ -24,7 +24,7 @@ void CSetRSStrong1Stock::DoFieldExchange(CFieldExchange* pFX) {
   // RFX_Text() 和 RFX_Int() 这类宏依赖的是
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
-  RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
+  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
 }
 /////////////////////////////////////////////////////////////////////////////
 // CSetRSStrong1Stock 诊断

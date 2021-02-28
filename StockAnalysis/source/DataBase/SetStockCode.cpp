@@ -1,4 +1,4 @@
-// SetStockCode.cpp : CSetStockCode 类的实现
+// SetSymbol.cpp : CSetStockCode 类的实现
 
 // CSetStockCode 实现
 
@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CSetStockCode, CRecordset)
 
 CSetStockCode::CSetStockCode(CDatabase* pdb)
   : CRecordset(pdb) {
-  m_StockCode = _T("");
+  m_Symbol = _T("");
   m_StockName = _T("");
   m_DayLineStartDate = __CHINA_MARKET_BEGIN_DATE__;
   m_DayLineEndDate = __CHINA_MARKET_BEGIN_DATE__;
@@ -35,7 +35,7 @@ void CSetStockCode::DoFieldExchange(CFieldExchange* pFX) {
   // 成员变量的类型，而不是数据库字段的类型。
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
-  RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
+  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Long(pFX, _T("[DayLineStartDate]"), m_DayLineStartDate);
   RFX_Long(pFX, _T("[DayLineEndDate]"), m_DayLineEndDate);

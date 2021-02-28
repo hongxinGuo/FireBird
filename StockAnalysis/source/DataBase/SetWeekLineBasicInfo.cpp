@@ -16,7 +16,7 @@ CSetWeekLineBasicInfo::CSetWeekLineBasicInfo(CDatabase* pdb)
   : CRecordset(pdb) {
   m_ID = 0;
   m_Date = 0;
-  m_StockCode = _T("");
+  m_Symbol = _T("");
   m_StockName = _T("");
   m_LastClose = _T("0");
   m_Open = _T("0");
@@ -50,7 +50,7 @@ void CSetWeekLineBasicInfo::DoFieldExchange(CFieldExchange* pFX) {
   // ODBC 尝试自动将列值转换为所请求的类型
   RFX_Long(pFX, _T("[ID]"), m_ID);
   RFX_Long(pFX, _T("[Date]"), m_Date);
-  RFX_Text(pFX, _T("[StockCode]"), m_StockCode);
+  RFX_Text(pFX, _T("[StockCode]"), m_Symbol);
   RFX_Text(pFX, _T("[StockName]"), m_StockName);
   RFX_Text(pFX, _T("[LastClose]"), m_LastClose);
   RFX_Text(pFX, _T("[Open]"), m_Open);

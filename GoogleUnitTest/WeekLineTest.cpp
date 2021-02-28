@@ -10,11 +10,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
 
     static void TearDownTestSuite() {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
 
     virtual void SetUp(void) override {
@@ -43,9 +43,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CWeekLineTest, TestGetStockCode) {
     CWeekLine dl;
-    EXPECT_STREQ(dl.GetStockCode(), _T(""));
-    dl.SetStockCode(_T("600000.SS"));
-    EXPECT_STREQ(dl.GetStockCode(), _T("600000.SS"));
+    EXPECT_STREQ(dl.GetSymbol(), _T(""));
+    dl.SetSymbol(_T("600000.SS"));
+    EXPECT_STREQ(dl.GetSymbol(), _T("600000.SS"));
   }
 
   TEST_F(CWeekLineTest, TestGetStockName) {
@@ -562,7 +562,7 @@ namespace StockAnalysisTest {
     CWeekLine id, id2;
 
     id.SetDate(21101101);
-    id.SetStockCode(_T("600008.SS"));
+    id.SetSymbol(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
@@ -665,7 +665,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.Open();
     id2.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(setWeekLineBasicInfo.m_Date, id.GetFormatedMarketDate());
-    EXPECT_STREQ(setWeekLineBasicInfo.m_StockCode, id.GetStockCode());
+    EXPECT_STREQ(setWeekLineBasicInfo.m_Symbol, id.GetSymbol());
     //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_LastClose) * 1000, id.GetLastClose());
     EXPECT_DOUBLE_EQ(atof(setWeekLineBasicInfo.m_Open) * 1000, id.GetOpen());
@@ -685,7 +685,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.Close();
 
     EXPECT_EQ(id2.GetFormatedMarketDate(), id.GetFormatedMarketDate());
-    EXPECT_STREQ(id2.GetStockCode(), id.GetStockCode());
+    EXPECT_STREQ(id2.GetSymbol(), id.GetSymbol());
     //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_DOUBLE_EQ(id2.GetLastClose(), id.GetLastClose());
     EXPECT_DOUBLE_EQ(id2.GetOpen(), id.GetOpen());
@@ -797,7 +797,7 @@ namespace StockAnalysisTest {
     CWeekLine id, idLoaded;
 
     id.SetDate(21101101);
-    id.SetStockCode(_T("600008.SS"));
+    id.SetSymbol(_T("600008.SS"));
     id.SetStockName(_T("首创股份"));
     id.SetLastClose(34235345);
     id.SetOpen(343452435);
@@ -827,7 +827,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.Open();
     idLoaded.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(idLoaded.GetFormatedMarketDate(), id.GetFormatedMarketDate());
-    EXPECT_STREQ(idLoaded.GetStockCode(), id.GetStockCode());
+    EXPECT_STREQ(idLoaded.GetSymbol(), id.GetSymbol());
     //EXPECT_STREQ(setWeekLineBasicInfo.m_StockName, id.GetStockName());
     EXPECT_EQ(idLoaded.GetLastClose(), id.GetLastClose());
     EXPECT_EQ(idLoaded.GetOpen(), id.GetOpen());
@@ -860,7 +860,7 @@ namespace StockAnalysisTest {
     CWeekLine id, id2;
     CSetWeekLineBasicInfo setWeekLineBasicInfo;
     id.SetDate(__CHINA_MARKET_BEGIN_DATE__);
-    id.SetStockCode(_T("600000.SS"));
+    id.SetSymbol(_T("600000.SS"));
     id.SetStockName(_T("浦发银行"));
     id.SetLastClose(1010);
     id.SetOpen(1100);
@@ -880,7 +880,7 @@ namespace StockAnalysisTest {
     setWeekLineBasicInfo.Open();
     id2.LoadBasicData(&setWeekLineBasicInfo);
     EXPECT_EQ(id.GetFormatedMarketDate(), id2.GetFormatedMarketDate());
-    EXPECT_STREQ(id.GetStockCode(), id2.GetStockCode());
+    EXPECT_STREQ(id.GetSymbol(), id2.GetSymbol());
     EXPECT_EQ(id.GetOpen(), id2.GetOpen());
 
     setWeekLineBasicInfo.Delete();
@@ -892,7 +892,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetTime(100100100100);
     pDayLine->SetDate(20200202);
-    pDayLine->SetStockCode(_T("600000.SS"));
+    pDayLine->SetSymbol(_T("600000.SS"));
     pDayLine->SetStockName(_T("浦发银行"));
 
     pDayLine->SetOpen(1010);
@@ -978,7 +978,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(weekLine.GetFormatedMarketDate(), GetCurrentMonday(pDayLine->GetFormatedMarketDate())) << "周线日期总是当周的星期一";
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine->GetFormatedMarketTime());
-    EXPECT_STREQ(weekLine.GetStockCode(), pDayLine->GetStockCode());
+    EXPECT_STREQ(weekLine.GetSymbol(), pDayLine->GetSymbol());
     EXPECT_STREQ(weekLine.GetStockName(), pDayLine->GetStockName());
 
     EXPECT_EQ(weekLine.GetOpen(), pDayLine->GetOpen());
@@ -1052,7 +1052,7 @@ namespace StockAnalysisTest {
     CDayLinePtr pDayLine1 = make_shared<CDayLine>(), pDayLine2 = make_shared<CDayLine>();
     pDayLine1->SetTime(100100100100);
     pDayLine1->SetDate(20200727);
-    pDayLine1->SetStockCode(_T("600000.SS"));
+    pDayLine1->SetSymbol(_T("600000.SS"));
     pDayLine1->SetStockName(_T("浦发银行"));
 
     pDayLine1->SetOpen(1010);
@@ -1144,7 +1144,7 @@ namespace StockAnalysisTest {
 
     pDayLine2->SetTime(100100100100);
     pDayLine2->SetDate(20200728); // 与pDayLine1处于同一个星期中
-    pDayLine2->SetStockCode(_T("600000.SS"));
+    pDayLine2->SetSymbol(_T("600000.SS"));
     pDayLine2->SetStockName(_T("浦发银行"));
 
     pDayLine2->SetOpen(1010);
@@ -1239,7 +1239,7 @@ namespace StockAnalysisTest {
 
     EXPECT_EQ(weekLine.GetFormatedMarketDate(), pDayLine1->GetFormatedMarketDate());
     EXPECT_EQ(weekLine.GetFormatedMarketTime(), pDayLine1->GetFormatedMarketTime());
-    EXPECT_STREQ(weekLine.GetStockCode(), pDayLine1->GetStockCode());
+    EXPECT_STREQ(weekLine.GetSymbol(), pDayLine1->GetSymbol());
     EXPECT_STREQ(weekLine.GetStockName(), pDayLine1->GetStockName());
 
     EXPECT_EQ(weekLine.GetOpen(), pDayLine1->GetOpen());

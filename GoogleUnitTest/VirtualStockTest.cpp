@@ -111,7 +111,7 @@ namespace StockAnalysisTest {
     CVirtualStock stock;
     EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 0.0);
     stock.SetUpDownRate(1.1);
-    EXPECT_DOUBLE_EQ(stock.GetChangeHandRate(), 1.1);
+    EXPECT_DOUBLE_EQ(stock.GetUpDownRate(), 1.1);
   }
 
   TEST_F(CVirtualStockTest, TestIsTodayNewStock) {

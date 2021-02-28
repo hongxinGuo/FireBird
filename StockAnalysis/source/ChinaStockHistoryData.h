@@ -33,8 +33,8 @@ public:
   void SetTime(time_t t) noexcept { m_time = t; }
   CString GetMarketString(void) { return m_strMarket; }
   void SetMarketString(CString strMarket) { m_strMarket = strMarket; }
-  CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) { m_strStockCode = str; }
+  CString GetSymbol(void) { return m_strSymbol; }
+  void SetSymbol(CString str) { m_strSymbol = str; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
@@ -230,7 +230,7 @@ protected:
   long m_lDate; // 类型(YYYYMMDD)
   time_t m_time;
   CString m_strMarket;
-  CString m_strStockCode;
+  CString m_strSymbol;
   CString m_strStockName;
 
   // 以下几个价格，是放大了一千倍

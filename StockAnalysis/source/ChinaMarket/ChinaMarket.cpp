@@ -43,7 +43,7 @@ Semaphore gl_SemaphoreBackGroundTaskThreads(cMaxBackGroundTaskThreads); // ºóÌ¨¹
 CWebRTDataContainer gl_WebRTDataContainer;
 CWebInquirer gl_WebInquirer;
 
-bool CompareChinaMarketStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetStockCode().Compare(p2->GetStockCode()) < 0); }
+bool CompareChinaMarketStock(CChinaStockPtr p1, CChinaStockPtr p2) { return (p1->GetSymbol().Compare(p2->GetSymbol()) < 0); }
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -380,7 +380,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock = make_shared<CChinaStock>();
   pStock->SetActive(false);
   pStock->SetTodayNewStock(true);
-  pStock->SetStockCode(strStockCode);
+  pStock->SetSymbol(strStockCode);
   pStock->SetStockName(strStockName);
   pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
   pStock->SetOffset(GetTotalStock());
@@ -388,10 +388,10 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetDayLineStartDate(19900101);
   pStock->SetUpdateStockProfileDB(true);
   pStock->SetNeedProcessRTData(fProcessRTData);
-  m_mapChinaMarketStock[pStock->GetStockCode()] = m_vChinaMarketStock.size(); // Ê¹ÓÃÏÂ±êÉú³ÉĞÂµÄÓ³Éä
+  m_mapChinaMarketStock[pStock->GetSymbol()] = m_vChinaMarketStock.size(); // Ê¹ÓÃÏÂ±êÉú³ÉĞÂµÄÓ³Éä
   m_vChinaMarketStock.push_back(pStock);
   ASSERT(pStock->IsDayLineNeedUpdate());
-  str = _T("china MarketÉú³ÉĞÂ´úÂë") + pStock->GetStockCode();
+  str = _T("china MarketÉú³ÉĞÂ´úÂë") + pStock->GetSymbol();
   gl_systemMessage.PushInnerSystemInformationMessage(str);
   return true;
 }
@@ -438,12 +438,12 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
   while (!fFound && (iCount++ < GetTotalStock())) {
     CChinaStockPtr pStock = m_vChinaMarketStock.at(m_lNeteaseDayLineDataInquiringIndex);
     if (!pStock->IsDayLineNeedUpdate()) { // ÈÕÏßÊı¾İ²»ĞèÒª¸üĞÂ¡£ÔÚÏµÍ³³õÊ¼Ê±£¬ÉèÖÃ´Ëm_fDayLineNeedUpdate±êÊ¶
-      // TRACE("%S ÈÕÏßÊı¾İÎŞĞè¸üĞÂ\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
+      // TRACE("%S ÈÕÏßÊı¾İÎŞĞè¸üĞÂ\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
     }
     else if (pStock->GetDayLineEndDate() >= GetLastTradeDate()) { //ÉÏÒ»½»Ò×ÈÕµÄÈÕÏßÊı¾İÒÑ¾­´æ´¢£¿´ËÊ±ÒÑ¾­´¦Àí¹ıÒ»´ÎÈÕÏßÊı¾İÁË£¬ÎŞĞèÔÙ´Î´¦Àí¡£
       pStock->SetDayLineNeedUpdate(false); // ´Ë¹ÉÆ±ÈÕÏß×ÊÁÏ²»ĞèÒª¸üĞÂÁË¡£
-      // TRACE("%S ÈÕÏßÊı¾İ±¾ÈÕÒÑ¸üĞÂ\n", static_cast<LPCWSTR>(pStock->m_strStockCode));
+      // TRACE("%S ÈÕÏßÊı¾İ±¾ÈÕÒÑ¸üĞÂ\n", static_cast<LPCWSTR>(pStock->m_strSymbol));
       IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
     }
     else if (pStock->IsDayLineNeedProcess()) { // ÈÕÏßÊı¾İÒÑÏÂÔØµ«ÉĞÎ´´¦Àí£¨Ò»°ã´ËÇé¿ö²»»á³öÏÖ£©
@@ -465,7 +465,7 @@ bool CChinaMarket::CreateNeteaseDayLineInquiringStr(CString& strReturn, long lEn
   ASSERT(!pStock->IsDayLineNeedProcess());
   ASSERT(pStock->IsDayLineNeedUpdate());
   pStock->SetDayLineNeedUpdate(false);
-  strReturn += XferStandredToNetease(pStock->GetStockCode());
+  strReturn += XferStandredToNetease(pStock->GetSymbol());
   IncreaseStockInquiringIndex(m_lNeteaseDayLineDataInquiringIndex, lEndPosition);
   return true;
 }
@@ -515,7 +515,7 @@ long CChinaMarket::GetMinLineOffset(time_t Time) {
 bool CChinaMarket::IsAStock(CChinaStockPtr pStock) {
   ASSERT(pStock != nullptr);
 
-  return(IsAStock(pStock->GetStockCode()));
+  return(IsAStock(pStock->GetSymbol()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -652,16 +652,16 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
       if (IsCheckActiveStock()) {
-        if (!IsStock(pRTData->GetStockCode())) {
-          CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true);
+        if (!IsStock(pRTData->GetSymbol())) {
+          CreateNewStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
         }
       }
-      pStock = GetStock(pRTData->GetStockCode());
+      pStock = GetStock(pRTData->GetSymbol());
       ASSERT(pStock != nullptr);
       if (!pStock->IsActive()) { // ÕâÀïÔÚ·¢ĞĞ°æÔËĞĞÊ±³öÏÖ´íÎó£¬Ô­Òò´ı²é¡£
         if (pRTData->IsValidTime(14)) {
-          pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
           pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
@@ -711,16 +711,16 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
         m_ttNewestTransactionTime = pRTData->GetTransactionTime();
       }
       if (IsCheckActiveStock()) {
-        if (!IsStock(pRTData->GetStockCode())) {
-          CreateNewStock(pRTData->GetStockCode(), pRTData->GetStockName(), true);
+        if (!IsStock(pRTData->GetSymbol())) {
+          CreateNewStock(pRTData->GetSymbol(), pRTData->GetStockName(), true);
           fFoundNewStock = true;
         }
       }
-      pStock = GetStock(pRTData->GetStockCode());
+      pStock = GetStock(pRTData->GetSymbol());
       ASSERT(pStock != nullptr);
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
-          pStock->SetTodayActive(pRTData->GetStockCode(), pRTData->GetStockName());
+          pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
           pStock->SetIPOStatus(__STAKE_IPOED__);
         }
       }
@@ -780,13 +780,13 @@ CString CChinaMarket::GetNextNeteaseStockInquiringStr(long lTotalNumber, long lE
   CString strStockCode, strRight6, strLeft2, strPrefix;
 
   m_strNeteaseRTDataInquiringStr = _T("");
-  m_strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode());
+  m_strNeteaseRTDataInquiringStr = XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
   IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
   int iCount = 1; // ´Ó1¿ªÊ¼¼ÆÊı£¬ÒòÎªµÚÒ»¸öÊı¾İÇ°²»ĞèÒªÌí¼Ópostfix¡£
   while ((m_lNeteaseRTDataInquiringIndex < lEndPosition) && (iCount < lTotalNumber)) { // Ã¿´Î×î´ó²éÑ¯Á¿ÎªlTotalNumber¸ö¹ÉÆ±
     iCount++;
     m_strNeteaseRTDataInquiringStr += _T(",");
-    m_strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetStockCode());
+    m_strNeteaseRTDataInquiringStr += XferStandredToNetease(m_vChinaMarketStock.at(m_lNeteaseRTDataInquiringIndex)->GetSymbol());
     if (m_lNeteaseRTDataInquiringIndex == 0) break;
     IncreaseStockInquiringIndex(m_lNeteaseRTDataInquiringIndex, lEndPosition);
   }
@@ -816,13 +816,13 @@ CString CChinaMarket::GetNextStockInquiringMiddleStr(long& iStockIndex, CString 
   CString strStockCode, strStockExchange, strStockSymbol;
 
   if (0 == lEndPosition) return _T("sh600000"); // µ±Ã»ÓĞÖ¤È¯¿É²éÑ¯Ê±£¬·µ»ØÒ»¸öÓĞĞ§×Ö·û´®
-  strReturn = XferStandredToSina(m_vChinaMarketStock.at(iStockIndex)->GetStockCode());  // µÃµ½µÚÒ»¸ö¹ÉÆ±´úÂë
+  strReturn = XferStandredToSina(m_vChinaMarketStock.at(iStockIndex)->GetSymbol());  // µÃµ½µÚÒ»¸ö¹ÉÆ±´úÂë
   IncreaseStockInquiringIndex(iStockIndex, lEndPosition);
   int iCount = 1; // ´Ó1¿ªÊ¼¼ÆÊı£¬ÒòÎªµÚÒ»¸öÊı¾İÇ°²»ĞèÒªÌí¼Ópostfix¡£
   while ((iStockIndex < lEndPosition) && (iCount < lTotalNumber)) { // Ã¿´Î×î´ó²éÑ¯Á¿ÎªlTotalNumber¸ö¹ÉÆ±
     iCount++;
     strReturn += strPostfix;
-    strReturn += XferStandredToSina(m_vChinaMarketStock.at(iStockIndex)->GetStockCode());  // µÃµ½µÚÒ»¸ö¹ÉÆ±´úÂë
+    strReturn += XferStandredToSina(m_vChinaMarketStock.at(iStockIndex)->GetSymbol());  // µÃµ½µÚÒ»¸ö¹ÉÆ±´úÂë
       // Ã¿´Î²éµ½×îºóÊ±ÔİÍ£Ò»ÏÂ¡£Ä¿Ç°²»Ê¹ÓÃÖ®£¬ÒÑ¼Ó¿ì²éÑ¯ËÙ¶È
     // if (iStockIndex == lStartPosition) break;
     IncreaseStockInquiringIndex(iStockIndex, lEndPosition);
@@ -997,17 +997,17 @@ bool CChinaMarket::ValidateNeteaseRTData(CWebRTData& RTData) {
   ASSERT(RTData.GetDataSource() == __NETEASE_RT_WEB_DATA__);
   if (RTData.IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(RTData.GetSymbol())) != nullptr) {
       if (!pStock->IsActive()) {
-        str = pStock->GetStockCode();
+        str = pStock->GetSymbol();
         str += _T(" ÍøÒ×ÊµÊ±¼ì²âµ½²»´¦ÓÚ»îÔ¾×´Ì¬");
         //gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
     }
     else {
-      str = RTData.GetStockCode();
+      str = RTData.GetSymbol();
       str += _T(" ÎŞĞ§¹ÉÆ±´úÂë£¨ÍøÒ×ÊµÊ±Êı¾İ£©");
-      TRACE("\nÎŞĞ§¹ÉÆ±´úÂë%s\n", RTData.GetStockCode().GetBuffer());
+      TRACE("\nÎŞĞ§¹ÉÆ±´úÂë%s\n", RTData.GetSymbol().GetBuffer());
       TRACE("ÉêÇëµÄ¹ÉÆ±¼¯Îª£º %s\n\n", m_strNeteaseRTDataInquiringStr.GetBuffer());
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       return false;
@@ -1115,15 +1115,15 @@ void CChinaMarket::CheckTengxunRTData(CWebRTData& RTData) {
   ASSERT(RTData.GetDataSource() == __TENGXUN_RT_WEB_DATA__);
   if (RTData.IsActive()) {
     CChinaStockPtr pStock = nullptr;
-    if ((pStock = GetStock(RTData.GetStockCode())) != nullptr) {
+    if ((pStock = GetStock(RTData.GetSymbol())) != nullptr) {
       if (!pStock->IsActive()) {
-        str = pStock->GetStockCode();
+        str = pStock->GetSymbol();
         str += _T("ÌÚÑ¶ÊµÊ±¼ì²âµ½²»´¦ÓÚ»îÔ¾×´Ì¬");
         //gl_systemMessage.PushInnerSystemInformationMessage(str);
       }
     }
     else {
-      str = RTData.GetStockCode();
+      str = RTData.GetSymbol();
       str += _T("ÎŞĞ§¹ÉÆ±´úÂë£¨ÌÚÑ¶ÊµÊ±Êı¾İ£©");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
     }
@@ -1137,7 +1137,7 @@ bool CChinaMarket::TaskProcessTengxunRTData(void) {
   for (int i = 0; i < lTotalData; i++) {
     pRTData = gl_WebRTDataContainer.PopTengxunData();
     if (pRTData->IsActive()) {
-      auto pStock = GetStock(pRTData->GetStockCode());
+      auto pStock = GetStock(pRTData->GetSymbol());
       pStock->SetTotalValue(pRTData->GetTotalValue());
       pStock->SetCurrentValue(pRTData->GetCurrentValue());
       pStock->SetHighLimit(pRTData->GetHighLimit());
@@ -1653,7 +1653,7 @@ bool CChinaMarket::ChangeDayLineStockCodeToStandred(void) {
   setDayLineExtendInfo.m_pDatabase->BeginTrans();
   while (!setDayLineExtendInfo.IsEOF()) {
     setDayLineExtendInfo.Edit();
-    setDayLineExtendInfo.m_StockCode = XferSinaToStandred(setDayLineExtendInfo.m_StockCode);
+    setDayLineExtendInfo.m_Symbol = XferSinaToStandred(setDayLineExtendInfo.m_Symbol);
     setDayLineExtendInfo.Update();
     setDayLineExtendInfo.MoveNext();
   }
@@ -1785,7 +1785,7 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
         else pStock->UnloadDayLine(); // µ±ÎŞĞèÖ´ĞĞ´æ´¢º¯ÊıÊ±£¬ÕâÀï»¹Òªµ¥¶ÀĞ¶ÔØÈÕÏßÊı¾İ¡£Òò´æ´¢ÈÕÏßÊı¾İÏß³ÌÉÔºó²ÅÖ´ĞĞ£¬¹Ê¶ø²»ÄÜÔÚ´ËÍ³Ò»Ö´ĞĞÉ¾³ıº¯Êı¡£
       }
       else { // ´ËÖÖÇé¿öÎªÓĞ¹ÉÆ±´úÂë£¬µ«´Ë´úÂëÉĞÎ´ÉÏÊĞ
-        CString str1 = pStock->GetStockCode();
+        CString str1 = pStock->GetSymbol();
         str1 += _T(" ÎªÎ´ÉÏÊĞ¹ÉÆ±´úÂë");
         gl_systemMessage.PushDayLineInfoMessage(str1);
       }
@@ -1846,7 +1846,7 @@ bool CChinaMarket::BuildWeekLineOfCurrentWeek(void) {
 
   CWeekLinePtr pWeekLine;
   for (auto& pData : *pDayLineData) {
-    if (setWeekLineStockCode.find(pData->GetStockCode()) == setWeekLineStockCode.end()) { //ÖÜÏßÊı¾İÈİÆ÷ÖĞÎŞ´ËÈÕÏßÊı¾İ
+    if (setWeekLineStockCode.find(pData->GetSymbol()) == setWeekLineStockCode.end()) { //ÖÜÏßÊı¾İÈİÆ÷ÖĞÎŞ´ËÈÕÏßÊı¾İ
        // ´æ´¢´ËÈÕÏßÊı¾İÖÁÖÜÏßÊı¾İÈİÆ÷
       pWeekLine = make_shared<CWeekLine>();
       pWeekLine->UpdateWeekLine(dynamic_pointer_cast<CDayLine>(pData));
@@ -1877,7 +1877,7 @@ bool CChinaMarket::CreateStockCodeSet(set<CString>& setStockCode, not_null<vecto
   vector<CString> vectorStockCode;
 
   for (auto& pData : *pvData) {
-    strStockCode = pData->GetStockCode();
+    strStockCode = pData->GetSymbol();
     vectorStockCode.push_back(strStockCode);
   }
   setStockCode.insert(vectorStockCode.begin(), vectorStockCode.end());
@@ -1911,13 +1911,13 @@ bool CChinaMarket::BuildCurrentWeekWeekLineTable(void) {
   while (!setWeekLineBasicInfo.IsEOF()) {
     pWeekLine = make_shared<CWeekLine>();
     pWeekLine->LoadBasicData(&setWeekLineBasicInfo);
-    while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_StockCode > setWeekLineExtendInfo.m_StockCode)) {
+    while (!setWeekLineExtendInfo.IsEOF() && (setWeekLineBasicInfo.m_Symbol > setWeekLineExtendInfo.m_Symbol)) {
       setWeekLineExtendInfo.MoveNext();
     }
     if (setWeekLineExtendInfo.IsEOF()) {
       setWeekLineExtendInfo.MoveFirst();
     }
-    else if (setWeekLineBasicInfo.m_StockCode == setWeekLineExtendInfo.m_StockCode) { // ÓÉÓÚ´æÔÚÊÂºó²¹Êı¾İµÄÔµ¹Ê£¬´ËÁ½¸ö±íµÄ¹ÉÆ±¿ÉÄÜ²»ÊÇÒ»Ò»¶ÔÓ¦
+    else if (setWeekLineBasicInfo.m_Symbol == setWeekLineExtendInfo.m_Symbol) { // ÓÉÓÚ´æÔÚÊÂºó²¹Êı¾İµÄÔµ¹Ê£¬´ËÁ½¸ö±íµÄ¹ÉÆ±¿ÉÄÜ²»ÊÇÒ»Ò»¶ÔÓ¦
       pWeekLine->LoadExtendData(&setWeekLineExtendInfo);
       weekLineContainer.StoreData(pWeekLine);
       setWeekLineExtendInfo.MoveNext();
@@ -1939,8 +1939,8 @@ bool CChinaMarket::SortStockVector(void) {
   int j = 0;
   for (auto& pStock : m_vChinaMarketStock) {
     pStock->SetOffset(j);
-    ASSERT(!IsStock(pStock->GetStockCode()));
-    m_mapChinaMarketStock[pStock->GetStockCode()] = j++;
+    ASSERT(!IsStock(pStock->GetSymbol()));
+    m_mapChinaMarketStock[pStock->GetSymbol()] = j++;
   }
   return true;
 }
@@ -1975,10 +1975,10 @@ bool CChinaMarket::LoadDayLine(CDayLineContainer& dayLineContainer, long lDate) 
   while (!setDayLineBasicInfo.IsEOF()) {
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->LoadChinaMarketBasicData(&setDayLineBasicInfo);
-    while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) < 0)) {
+    while (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) < 0)) {
       setDayLineExtendInfo.MoveNext();
     }
-    if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_StockCode, setDayLineBasicInfo.m_StockCode) == 0)) {
+    if (!setDayLineExtendInfo.IsEOF() && (strcmp(setDayLineExtendInfo.m_Symbol, setDayLineBasicInfo.m_Symbol) == 0)) {
       pDayLine->LoadChinaMarketExtendData(&setDayLineExtendInfo);
     }
     dayLineContainer.StoreData(pDayLine);
@@ -2237,7 +2237,7 @@ bool CChinaMarket::Choice10RSStrong2StockSet(void) {
   setRSStrong2.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong2.AddNew();
-    setRSStrong2.m_StockCode = pStock->GetStockCode();
+    setRSStrong2.m_Symbol = pStock->GetSymbol();
     setRSStrong2.Update();
   }
   setRSStrong2.m_pDatabase->CommitTrans();
@@ -2269,7 +2269,7 @@ bool CChinaMarket::Choice10RSStrong1StockSet(void) {
   setRSStrong1.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong1.AddNew();
-    setRSStrong1.m_StockCode = pStock->GetStockCode();
+    setRSStrong1.m_Symbol = pStock->GetSymbol();
     setRSStrong1.Update();
   }
   setRSStrong1.m_pDatabase->CommitTrans();
@@ -2303,7 +2303,7 @@ bool CChinaMarket::Choice10RSStrongStockSet(CRSReference* pRef, int iIndex) {
   setRSStrong.m_pDatabase->BeginTrans();
   for (auto& pStock : v10RSStrongStock) {
     setRSStrong.AddNew();
-    setRSStrong.m_StockCode = pStock->GetStockCode();
+    setRSStrong.m_Symbol = pStock->GetSymbol();
     setRSStrong.Update();
   }
   setRSStrong.m_pDatabase->CommitTrans();
@@ -2687,7 +2687,7 @@ bool CChinaMarket::UpdateTodayTempDB(void) {
       continue;
     }
     if (pStock->IsNeedProcessRTData() && (!pStock->IsVolumeConsistence())) {
-      str = pStock->GetStockCode();
+      str = pStock->GetSymbol();
       str += _T(" ¹ÉÊı²»ÕıÈ·");
       gl_systemMessage.PushInnerSystemInformationMessage(str);
     }
@@ -2736,7 +2736,7 @@ bool CChinaMarket::LoadTodayTempDB(void) {
   if (!setDayLineToday.IsEOF()) {
     if (setDayLineToday.m_Date == GetFormatedMarketDate()) { // Èç¹ûÊÇµ±ÌìµÄĞĞÇé£¬ÔòÔØÈë£¬·ñÔò·ÅÆú
       while (!setDayLineToday.IsEOF()) {
-        if ((pStock = GetStock(setDayLineToday.m_StockCode)) != nullptr) {
+        if ((pStock = GetStock(setDayLineToday.m_Symbol)) != nullptr) {
           ASSERT(!pStock->HaveFirstRTData()); // È·±£Ã»ÓĞ¿ªÊ¼¼ÆËãÊµÊ±Êı¾İ
           pStock->LoadTempInfo(setDayLineToday);
         }
@@ -2756,7 +2756,7 @@ bool CChinaMarket::Load10DaysRSStrong1StockSet(void) {
   m_v10RSStrong1Stock.clear();
   setRSStrong1.Open();
   while (!setRSStrong1.IsEOF()) {
-    pStock = gl_pChinaStockMarket->GetStock(setRSStrong1.m_StockCode);
+    pStock = gl_pChinaStockMarket->GetStock(setRSStrong1.m_Symbol);
     if (pStock != nullptr) {
       m_v10RSStrong1Stock.push_back(pStock);
     }
@@ -2774,7 +2774,7 @@ bool CChinaMarket::Load10DaysRSStrong2StockSet(void) {
   m_v10RSStrong2Stock.clear();
   setRSStrong2.Open();
   while (!setRSStrong2.IsEOF()) {
-    pStock = gl_pChinaStockMarket->GetStock(setRSStrong2.m_StockCode);
+    pStock = gl_pChinaStockMarket->GetStock(setRSStrong2.m_Symbol);
     if (pStock != nullptr) {
       m_v10RSStrong2Stock.push_back(pStock);
     }
@@ -2859,7 +2859,7 @@ bool CChinaMarket::LoadOne10DaysRSStrongStockDB(long lIndex) {
 
   setRSStrongStock.Open();
   while (!setRSStrongStock.IsEOF()) {
-    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_StockCode);
+    CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(setRSStrongStock.m_Symbol);
     if (pStock != nullptr) m_avChoicedStock.at(m_lCurrentRSStrongIndex + c_10DaysRSStockSetStartPosition).push_back(pStock); // 10ÈÕRS¹ÉÆ±¼¯ÆğÊ¼Î»ÖÃÎªµÚ10¸ö¡£
     setRSStrongStock.MoveNext();
   }
@@ -2906,14 +2906,14 @@ bool CChinaMarket::BuildDayLineRSOfDate(long lDate) {
   setDayLineBasicInfo.m_pDatabase->BeginTrans();
   iStockNumber = 0;
   while (!setDayLineBasicInfo.IsEOF()) {
-    if (strcmp(setDayLineBasicInfo.m_StockCode, _T("sh000001")) == 0) { // ÉÏº£×ÛÖ¸
+    if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sh000001")) == 0) { // ÉÏº£×ÛÖ¸
       dShanghaiIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
     }
-    else if (strcmp(setDayLineBasicInfo.m_StockCode, _T("sz399001")) == 0) { // ÉîÛÚ³ÉÖ¸
+    else if (strcmp(setDayLineBasicInfo.m_Symbol, _T("sz399001")) == 0) { // ÉîÛÚ³ÉÖ¸
       dShenzhenIndexUpDownRate = GetUpDownRate(setDayLineBasicInfo.m_Close, setDayLineBasicInfo.m_LastClose);
     }
-    if (IsAStock(setDayLineBasicInfo.m_StockCode)) {
-      const long lIndex = m_mapChinaMarketStock.at(setDayLineBasicInfo.m_StockCode);
+    if (IsAStock(setDayLineBasicInfo.m_Symbol)) {
+      const long lIndex = m_mapChinaMarketStock.at(setDayLineBasicInfo.m_Symbol);
       vStock.push_back(m_vChinaMarketStock.at(lIndex));
       vIndex.push_back(iStockNumber); // ½«A¹ÉµÄË÷Òı¼ÇÂ¼ÔÚÈİÆ÷ÖĞ¡£
       iTotalAShare++;
@@ -3028,14 +3028,14 @@ bool CChinaMarket::BuildWeekLineRSOfDate(long lDate) {
   setWeekLineBasicInfo.m_pDatabase->BeginTrans();
   iStockNumber = 0;
   while (!setWeekLineBasicInfo.IsEOF()) {
-    if (strcmp(setWeekLineBasicInfo.m_StockCode, _T("sh000001")) == 0) { // ÉÏº£×ÛÖ¸
+    if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sh000001")) == 0) { // ÉÏº£×ÛÖ¸
       dShanghaiIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
     }
-    else if (strcmp(setWeekLineBasicInfo.m_StockCode, _T("sz399001")) == 0) { // ÉîÛÚ³ÉÖ¸
+    else if (strcmp(setWeekLineBasicInfo.m_Symbol, _T("sz399001")) == 0) { // ÉîÛÚ³ÉÖ¸
       dShenzhenIndexUpDownRate = GetUpDownRate(setWeekLineBasicInfo.m_Close, setWeekLineBasicInfo.m_LastClose);
     }
-    if (IsAStock(setWeekLineBasicInfo.m_StockCode)) {
-      const long lIndex = m_mapChinaMarketStock.at(setWeekLineBasicInfo.m_StockCode);
+    if (IsAStock(setWeekLineBasicInfo.m_Symbol)) {
+      const long lIndex = m_mapChinaMarketStock.at(setWeekLineBasicInfo.m_Symbol);
       vStock.push_back(m_vChinaMarketStock.at(lIndex));
       vIndex.push_back(iStockNumber); // ½«A¹ÉµÄË÷Òı¼ÇÂ¼ÔÚÈİÆ÷ÖĞ¡£
       iTotalAShare++;
@@ -3117,7 +3117,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     setStockCode.m_pDatabase->BeginTrans();
     while (iCount < iUpdatedStock) {
       if (setStockCode.IsEOF()) break;
-      pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_StockCode));
+      pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_Symbol));
       if (pStock->IsUpdateStockProfileDBAndClearFlag()) {
         //ASSERT(!pStock3->IsTodayNewStock());
         iCount++;
@@ -3170,13 +3170,13 @@ void CChinaMarket::LoadStockCodeDB(void) {
   // ×°Èë¹ÉÆ±´úÂëÊı¾İ¿â
   while (!setStockCode.IsEOF()) {
     CChinaStockPtr pStock = make_shared<CChinaStock>();
-    if (!IsStock(setStockCode.m_StockCode)) {
+    if (!IsStock(setStockCode.m_Symbol)) {
       pStock->LoadStockCodeDB(setStockCode);
       m_vChinaMarketStock.push_back(pStock);
     }
     else {
       str = _T("·¢ÏÖÖØ¸´´úÂë£º");
-      str += setStockCode.m_StockCode;
+      str += setStockCode.m_Symbol;
       gl_systemMessage.PushInnerSystemInformationMessage(str);
       setStockCode.Delete(); // É¾³ı´ËÖØ¸´´úÂë
     }
@@ -3333,7 +3333,7 @@ bool CChinaMarket::UpdateChoicedStockDB(void) {
   for (auto& pStock : m_avChoicedStock.at(0)) {
     ASSERT(pStock->IsChoiced());
     setChoicedStock.AddNew();
-    setChoicedStock.m_StockCode = pStock->GetStockCode();
+    setChoicedStock.m_Symbol = pStock->GetSymbol();
     setChoicedStock.Update();
     pStock->SetSaveToChoicedStockDB(true);
   }
@@ -3368,7 +3368,7 @@ void CChinaMarket::LoadChoicedStockDB(void) {
   setChoicedStock.Open();
   // ×°Èë¹ÉÆ±´úÂëÊı¾İ¿â
   while (!setChoicedStock.IsEOF()) {
-    CChinaStockPtr pStock = GetStock(setChoicedStock.m_StockCode);
+    CChinaStockPtr pStock = GetStock(setChoicedStock.m_Symbol);
     if (pStock != nullptr) {
       auto it = find(m_avChoicedStock.at(0).cbegin(), m_avChoicedStock.at(0).cend(), pStock);
       if (it == m_avChoicedStock.at(0).end()) {

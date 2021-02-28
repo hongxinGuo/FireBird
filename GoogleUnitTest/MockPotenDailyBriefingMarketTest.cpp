@@ -26,7 +26,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
     }
     static void TearDownTestSuite(void) {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
     virtual void SetUp(void) override {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();

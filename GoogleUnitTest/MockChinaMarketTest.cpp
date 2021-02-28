@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
     }
     static void TearDownTestSuite(void) {
       delete s_pchinaMarket;
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     virtual void SetUp(void) override {

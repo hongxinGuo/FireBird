@@ -10,11 +10,11 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) { // 本测试类的初始化函数
       ASSERT_FALSE(gl_fNormalMode);
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
 
     static void TearDownTestSuite() {
-      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetStockCode();
+      EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
 
     virtual void SetUp(void) override {
@@ -44,9 +44,9 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {
     CChinaStockHistoryData dl;
-    EXPECT_STREQ(dl.GetStockCode(), _T(""));
-    dl.SetStockCode(_T("600000.SS"));
-    EXPECT_STREQ(dl.GetStockCode(), _T("600000.SS"));
+    EXPECT_STREQ(dl.GetSymbol(), _T(""));
+    dl.SetSymbol(_T("600000.SS"));
+    EXPECT_STREQ(dl.GetSymbol(), _T("600000.SS"));
   }
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockName) {

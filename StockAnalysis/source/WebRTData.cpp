@@ -13,7 +13,7 @@ static char THIS_FILE[] = __FILE__;
 void CWebRTData::Reset(void) {
   m_lDataSource = __INVALID_RT_WEB_DATA__;
   m_time = 0;
-  m_strStockCode = _T("");
+  m_strSymbol = _T("");
   m_strStockName = _T("");
   m_lLastClose = 0;
   m_lOpen = 0;
@@ -196,7 +196,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
     default:
     throw exception();
     }
-    m_strStockCode = XferSinaToStandred(strSinaStockCode);
+    m_strSymbol = XferSinaToStandred(strSinaStockCode);
     lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
@@ -338,7 +338,7 @@ bool CWebRTData::ReadSinaData(CWebDataPtr pSinaWebRTData) {
   }
   catch (exception&) {
     TRACE(_T("ReadSinaData异常\n"));
-    CString str = m_strStockCode;
+    CString str = m_strSymbol;
     str += _T(" ReadSinaData异常\n");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     return false;
@@ -498,7 +498,7 @@ bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStock
     default:
     throw exception();
     }
-    m_strStockCode = XferSinaToStandred(strSinaStockCode);
+    m_strSymbol = XferSinaToStandred(strSinaStockCode);
     lStockCode = static_cast<long>(atof(buffer2));
     pSinaWebRTData->IncreaseCurrentPos(6);
 
@@ -647,7 +647,7 @@ bool CWebRTData::ReadSinaStockCode(CWebDataPtr pSinaWebRTData, bool& fValidStock
   }
   catch (exception&) {
     TRACE(_T("ReadSinaStockData异常\n"));
-    CString str = m_strStockCode;
+    CString str = m_strSymbol;
     str += _T(" ReadSinaStockData异常\n");
     gl_systemMessage.PushInnerSystemInformationMessage(str);
     fValidStock = false;
@@ -756,7 +756,7 @@ bool CWebRTData::ReadTengxunData(CWebDataPtr pTengxunWebRTData) {
     default:
     return false;
     }
-    m_strStockCode = XferTengxunToStandred(strTengxunStockCode);
+    m_strSymbol = XferTengxunToStandred(strTengxunStockCode);
     lStockCode = atoi(buffer2);
     pTengxunWebRTData->IncreaseCurrentPos(6);
 
@@ -1324,7 +1324,7 @@ bool CWebRTData::SetNeteaseRTValue(long lIndex, CString strValue) {
     str1 = _T("SS");
   }
   else str1 = _T("SZ");
-  m_strStockCode = CreateStockCode(str1, strValue.Right(6));
+  m_strSymbol = CreateStockCode(str1, strValue.Right(6));
   break;
   case 3: // name。网易的股票名称，采用的格式目前尚不清楚，暂时不用。
   //m_strStockName = buffer;
@@ -1460,7 +1460,7 @@ void CWebRTData::SaveData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
 
   setRTData.m_Time = ConvertValueToString(m_time);
-  setRTData.m_StockCode = GetStockCode();
+  setRTData.m_Symbol = GetSymbol();
   setRTData.m_StockName = GetStockName();
   setRTData.m_New = ConvertValueToString(GetNew(), 1000);
   setRTData.m_High = ConvertValueToString(GetHigh(), 1000);
@@ -1507,7 +1507,7 @@ void CWebRTData::LoadData(CSetRealTimeData& setRTData) {
   ASSERT(setRTData.IsOpen());
 
   m_time = atoll(setRTData.m_Time);
-  m_strStockCode = setRTData.m_StockCode;
+  m_strSymbol = setRTData.m_Symbol;
   m_strStockName = setRTData.m_StockName;
   m_lLastClose = static_cast<long>(atof(setRTData.m_LastClose) * 1000);
   m_lOpen = static_cast<long>(atof(setRTData.m_Open) * 1000);

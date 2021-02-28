@@ -175,8 +175,8 @@ public:
   long GetDataSource(void) noexcept { return m_lDataSource; }
   time_t GetTransactionTime(void) noexcept { return m_time; }
   void SetTransactionTime(time_t time) noexcept { m_time = time; }
-  CString GetStockCode(void) { return m_strStockCode; }
-  void SetStockCode(CString str) { m_strStockCode = str; }
+  CString GetSymbol(void) { return m_strSymbol; }
+  void SetSymbol(CString str) { m_strSymbol = str; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
   long GetLastClose(void) noexcept { return m_lLastClose; }
@@ -235,7 +235,7 @@ protected:
   long m_lDataSource; // 实时数据来源标识。0：非法数据；1：新浪网站；2：腾讯网站；3：网易网站；。。。
   // Serialized data
   time_t m_time;	// 交易发生时的时间
-  CString m_strStockCode;// 证券代码, sh600001，sz002389，
+  CString m_strSymbol;// 证券代码, 600001.SS，002389.SZ，
   CString m_strStockName; // 证券名称
   long m_lOpen;	// 今日开盘。单位：0.001元
   long m_lLastClose;// 昨日收盘。单位：0.001元

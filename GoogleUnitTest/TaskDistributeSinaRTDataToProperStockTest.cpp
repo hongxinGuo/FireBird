@@ -9,14 +9,14 @@ namespace StockAnalysisTest {
   struct SinaRTData {
     SinaRTData(int count, CString StockCode, int iType, bool fActive, time_t tt) {
       m_iCount = count;
-      m_strStockCode = StockCode;
+      m_strSymbol = StockCode;
       m_iSourceType = iType;
       m_fActive = fActive;
       m_tt = tt;
     }
   public:
     int m_iCount;
-    CString m_strStockCode;
+    CString m_strSymbol;
     int m_iSourceType;
     bool m_fActive;
     time_t m_tt;
@@ -58,15 +58,15 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       SinaRTData* pData = GetParam();
       m_iCount = pData->m_iCount;
-      if (gl_pChinaStockMarket->IsStock(pData->m_strStockCode)) {
-        pStock = gl_pChinaStockMarket->GetStock(pData->m_strStockCode);
+      if (gl_pChinaStockMarket->IsStock(pData->m_strSymbol)) {
+        pStock = gl_pChinaStockMarket->GetStock(pData->m_strSymbol);
         pStock->ClearRTDataDeque();
         pStock->SetTransactionTime(s_tCurrentMarketTime - 10);
       }
       gl_pChinaStockMarket->SetNewestTransactionTime(s_tCurrentMarketTime - 10);
       pRTData = make_shared<CWebRTData>();
       pRTData->SetDataSource(pData->m_iSourceType);
-      pRTData->SetStockCode(pData->m_strStockCode);
+      pRTData->SetSymbol(pData->m_strSymbol);
       pRTData->SetActive(pData->m_fActive);
       pRTData->SetTransactionTime(s_tCurrentMarketTime + pData->m_tt);
     }
@@ -129,7 +129,7 @@ namespace StockAnalysisTest {
     case 6:
     EXPECT_EQ(lTotalStock + 1, gl_pChinaStockMarket->GetTotalStock()) << "发现新的股票，股票总数增加了一个";
     EXPECT_EQ(pStock, nullptr) << "新股票代码，则不预置此指针";
-    pStock = gl_pChinaStockMarket->GetStock(pRTData->GetStockCode());
+    pStock = gl_pChinaStockMarket->GetStock(pRTData->GetSymbol());
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);

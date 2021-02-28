@@ -22,7 +22,7 @@ public:
 
   long m_ID;  // 索引用，自动生成。
   long m_Date;	//成交时间，以日期表示，如20090222即2009年2月22日
-  CString m_StockCode;	//八位股票代码
+  CString m_Symbol;	//八位股票代码
   CString m_TransactionNumber; // 本日的盘口变化数
   CString m_TransactionNumberBelow5000; // 本日的盘口变化数
   CString m_TransactionNumberBelow50000; // 本日的盘口变化数

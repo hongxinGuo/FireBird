@@ -3,7 +3,7 @@
 #include "SetStockSection.h"
 #include"accessory.h"
 
-// SetStockCode.h : CSetStockSection 类的实现
+// SetSymbol.h : CSetStockSection 类的实现
 
 // CSetStockSection 实现
 

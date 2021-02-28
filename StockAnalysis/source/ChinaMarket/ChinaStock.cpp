@@ -29,7 +29,7 @@ CChinaStock::~CChinaStock(void) {
 
 void CChinaStock::Reset(void) {
   CVirtualStock::Reset();
-  m_strStockCode = _T("");
+  m_strSymbol = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
   m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
@@ -187,17 +187,17 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   CString strTemp;
   while (lCurrentPos < m_lDayLineBufferLength) {
     pDayLine = make_shared<CDayLine>();
-    //if (!pDayLine->ProcessNeteaseData(GetStockCode(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
-    if (!pDayLine->ProcessNeteaseData2(GetStockCode(), m_vDayLineBuffer, lCurrentPos)) { // 处理一条日线数据
-      TRACE(_T("%s日线数据出错\n"), GetStockCode().GetBuffer());
+    //if (!pDayLine->ProcessNeteaseData(GetSymbol(), m_pCurrentPos, m_llCurrentPos)) { // 处理一条日线数据
+    if (!pDayLine->ProcessNeteaseData2(GetSymbol(), m_vDayLineBuffer, lCurrentPos)) { // 处理一条日线数据
+      TRACE(_T("%s日线数据出错\n"), GetSymbol().GetBuffer());
       // 清除已暂存的日线数据
       vTempDayLine.clear();
       return false; // 数据出错，放弃载入
     }
     if (!IsActive()) { // 新的股票代码？
       // 生成新股票
-      SetTodayActive(pDayLine->GetStockCode(), pDayLine->GetStockName());
-      TRACE("下载日线函数生成新的活跃股票%s\n", GetStockCode().GetBuffer());
+      SetTodayActive(pDayLine->GetSymbol(), pDayLine->GetStockName());
+      TRACE("下载日线函数生成新的活跃股票%s\n", GetSymbol().GetBuffer());
     }
     vTempDayLine.push_back(pDayLine); // 暂存于临时vector中，因为网易日线数据的时间顺序是颠倒的，最新的在最前面
   }
@@ -251,7 +251,7 @@ bool CChinaStock::SkipNeteaseDayLineInformationHeader(INT64& lCurrentPos) {
 void CChinaStock::SetTodayActive(CString strStockCode, CString strStockName) {
   SetActive(true);
   SetDayLineLoaded(false);
-  SetStockCode(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
+  SetSymbol(strStockCode); // 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
   if (strStockName != _T("")) SetStockName(strStockName);// 更新全局股票池信息（有时RTData不全，无法更新退市的股票信息）
 }
 
@@ -265,7 +265,7 @@ void CChinaStock::UpdateDayLine(vector<CDayLinePtr>& vTempDayLine) {
 }
 
 void CChinaStock::ReportDayLineDownLoaded(void) {
-  //CString strTemp = GetStockCode();
+  //CString strTemp = GetSymbol();
   //strTemp += _T("日线下载完成.");
   //gl_systemMessage.PushDayLineInfoMessage(strTemp);
 }
@@ -273,7 +273,7 @@ void CChinaStock::ReportDayLineDownLoaded(void) {
 void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo) {
   ASSERT(psetDayLineBasicInfo->IsOpen());
   psetDayLineBasicInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDayLineBasicInfo->m_StockCode = m_strStockCode;
+  psetDayLineBasicInfo->m_Symbol = m_strSymbol;
   psetDayLineBasicInfo->m_StockName = m_strStockName;
   psetDayLineBasicInfo->m_LastClose = ConvertValueToString(m_lLastClose, 1000);
   psetDayLineBasicInfo->m_Open = ConvertValueToString(m_lOpen, 1000);
@@ -293,7 +293,7 @@ void CChinaStock::SaveTodayBasicInfo(CSetDayLineBasicInfo* psetDayLineBasicInfo)
 void CChinaStock::SaveTempInfo(CSetDayLineToday& setDayLineToday) {
   ASSERT(setDayLineToday.IsOpen());
   setDayLineToday.m_Date = FormatToDate(m_TransactionTime);
-  setDayLineToday.m_StockCode = m_strStockCode;
+  setDayLineToday.m_Symbol = m_strSymbol;
   setDayLineToday.m_StockName = m_strStockName;
   setDayLineToday.m_LastClose = ConvertValueToString(m_lLastClose, 1000);
   setDayLineToday.m_Open = ConvertValueToString(m_lOpen, 1000);
@@ -404,7 +404,7 @@ void CChinaStock::UpdateStatus(CWebRTDataPtr pRTData) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaStock::SaveDayLineBasicInfo(void) {
-  return m_DayLine.SaveDayLineBasicInfo(GetStockCode());
+  return m_DayLine.SaveDayLineBasicInfo(GetSymbol());
 }
 
 void CChinaStock::UpdateDayLineStartEndDate(void) {
@@ -429,7 +429,7 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
 void CChinaStock::SaveTodayExtendInfo(CSetDayLineExtendInfo* psetDayLineExtendInfo) {
   ASSERT(psetDayLineExtendInfo->IsOpen());
   psetDayLineExtendInfo->m_Date = FormatToDate(m_TransactionTime);
-  psetDayLineExtendInfo->m_StockCode = m_strStockCode;
+  psetDayLineExtendInfo->m_Symbol = m_strSymbol;
   psetDayLineExtendInfo->m_TransactionNumber = ConvertValueToString(m_lTransactionNumber);
   psetDayLineExtendInfo->m_TransactionNumberBelow5000 = ConvertValueToString(m_lTransactionNumberBelow5000);
   psetDayLineExtendInfo->m_TransactionNumberBelow50000 = ConvertValueToString(m_lTransactionNumberBelow50000);
@@ -886,7 +886,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
         iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
-            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
+            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
           }
           d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
           if (d1 > iCompare) {
@@ -920,7 +920,7 @@ void CChinaStock::CalculateHighLowLimit(CWebRTDataPtr pRTData) {
         iCompare = (static_cast<double>(i2) * 100 + pRTData->GetLastClose() * 0.65) / pRTData->GetLastClose(); // 系数0.70是实测出来的，目前可通用。
         if (iCompare <= 21) {
           if ((iCompare % 5) != 0) { // 确保涨跌幅为5%的倍数
-            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strStockCode.GetBuffer(), iCompare);
+            TRACE("%s iCompare = %i, 不是5的倍数\n", m_strSymbol.GetBuffer(), iCompare);
           }
           d1 = static_cast<double>(i2) * 100 / pRTData->GetLastClose();
           if (d1 < iCompare) {
@@ -1379,7 +1379,7 @@ bool CChinaStock::CheckCurrentRTData() {
     if (GetAttackSellVolume() < 0) j += 8;
     if (GetStrongBuyVolume() < 0) j += 16;
     if (GetStrongSellVolume() < 0) j += 32;
-    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetFormatedMarketTime(), GetStockCode().GetBuffer(), j);
+    TRACE(_T("%06d %s Error in volume. Error  code = %d\n"), gl_pChinaStockMarket->GetFormatedMarketTime(), GetSymbol().GetBuffer(), j);
     return false;
   }
   return true;
@@ -1404,7 +1404,7 @@ void CChinaStock::ReportGuadanTransaction(void) {
   const CTime ctime(m_pLastRTData->GetTransactionTime());
   sprintf_s(buffer, _T("%02d:%02d:%02d"), ctime.GetHour(), ctime.GetMinute(), ctime.GetSecond());
   strTime = buffer;
-  sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), GetStockCode().GetBuffer(),
+  sprintf_s(buffer, _T(" %s %I64d股成交于%10.3f    "), GetSymbol().GetBuffer(),
             m_lCurrentGuadanTransactionVolume, m_dCurrentGuadanTransactionPrice);
   str = strTime;
   str += buffer;
@@ -1472,7 +1472,7 @@ void CChinaStock::ReportGuadan(void) {
 
 void CChinaStock::SaveStockCodeDB(CSetStockCode& setStockCode) {
   CString str;
-  setStockCode.m_StockCode = GetStockCode();
+  setStockCode.m_Symbol = GetSymbol();
   if (GetStockName() != _T("")) {   // 如果此股票ID有了新的名字，
     setStockCode.m_StockName = GetStockName(); // 则存储新的名字
   }
@@ -1494,18 +1494,18 @@ void CChinaStock::UpdateStockCodeDB(CSetStockCode& setStockCode) {
 }
 
 bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
-  SetStockCode(setStockCode.m_StockCode);
+  SetSymbol(setStockCode.m_Symbol);
   CString str = setStockCode.m_StockName; // 用str中间过渡一下，就可以读取UniCode制式的m_StockName了。
   SetStockName(str);
   SetIPOStatus(setStockCode.m_IPOStatus);
   m_lDayLineStartDate = setStockCode.m_DayLineStartDate;
   SetNeedProcessRTData(true);
-  if (IsShanghaiExchange(GetStockCode())) {
-    if (GetStockCode().Left(6) <= _T("000999")) { //沪市指数？
+  if (IsShanghaiExchange(GetSymbol())) {
+    if (GetSymbol().Left(6) <= _T("000999")) { //沪市指数？
       SetNeedProcessRTData(false);
     }
   }
-  else if ((GetStockCode().Left(6) >= _T("399000"))) { // 深市指数
+  else if ((GetSymbol().Left(6) >= _T("399000"))) { // 深市指数
     SetNeedProcessRTData(false);
   }
   if (GetDayLineEndDate() < setStockCode.m_DayLineEndDate) { // 有时一个股票会有多个记录，以最后的日期为准。
@@ -1536,7 +1536,7 @@ void CChinaStock::SetCheckingDayLineStatus(void) {
 bool CChinaStock::BuildWeekLine(long lStartDate) {
   if (IsNullStock()) return true;
   if (!IsDayLineLoaded()) {
-    LoadDayLine(GetStockCode());
+    LoadDayLine(GetSymbol());
   }
   if (GetDayLineSize() <= 0) return true;
 
@@ -1558,7 +1558,7 @@ bool CChinaStock::BuildWeekLine(long lStartDate) {
 }
 
 bool CChinaStock::SaveWeekLine() {
-  return m_WeekLine.SaveData(GetStockCode());
+  return m_WeekLine.SaveData(GetSymbol());
 }
 
 bool CChinaStock::SaveWeekLineBasicInfo() {
@@ -1579,7 +1579,7 @@ bool CChinaStock::SaveWeekLineExtendInfo() {
 }
 
 bool CChinaStock::LoadWeekLine() {
-  return m_WeekLine.LoadData(GetStockCode());
+  return m_WeekLine.LoadData(GetSymbol());
 }
 
 bool CChinaStock::LoadWeekLineBasicInfo(CSetWeekLineBasicInfo* psetWeekLineBasicInfo) {
@@ -1626,7 +1626,7 @@ INT64 CChinaStock::GetRTDataQueueSize(void) {
 
 bool CChinaStock::IsSameStock(CChinaStockPtr pStock) {
   if (pStock == nullptr) return false;
-  else if (m_strStockCode.Compare(pStock->GetStockCode()) == 0) {
+  else if (m_strSymbol.Compare(pStock->GetSymbol()) == 0) {
     ASSERT(m_lOffsetInContainer == pStock->GetOffset());
     return true;
   }
@@ -1717,7 +1717,7 @@ void CChinaStock::__TestSetDayLineBuffer(INT64 lBufferLength, char* pDayLineBuff
 bool CChinaStock::IsVolumeConsistence(void) noexcept {
   if ((m_lHighLimit2 > 0) && (m_lLowLimit2 > 0)) {
     if ((m_lHighLimit != m_lHighLimit2) || (m_lLowLimit != m_lLowLimit2)) {
-      TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetStockCode().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
+      TRACE(_T("%s涨跌停板价格不符：%d %d    %d  %d\n"), GetSymbol().GetBuffer(), m_lHighLimit, m_lHighLimit2, m_lLowLimit, m_lLowLimit2);
     }
     if ((m_lPBuy[0] > 0) && (m_lPSell[0] > 0)) { // 当涨跌停板打开时
       m_lHighLimit2 = m_lLowLimit2 = 0; // 重置此两变量
@@ -1725,7 +1725,7 @@ bool CChinaStock::IsVolumeConsistence(void) noexcept {
   }
   if (GetVolume() != GetOrdinaryBuyVolume() + GetOrdinarySellVolume() + GetAttackBuyVolume()
       + GetAttackSellVolume() + GetStrongBuyVolume() + GetStrongSellVolume() + GetUnknownVolume()) {
-    TRACE(_T("%14Id %s股数%d\n"), FormatToDateTime(m_TransactionTime), GetStockCode().GetBuffer(), GetVolume());
+    TRACE(_T("%14Id %s股数%d\n"), FormatToDateTime(m_TransactionTime), GetSymbol().GetBuffer(), GetVolume());
     TRACE(_T("%d %d %d %d %d %d %d\n"), GetOrdinaryBuyVolume(), GetOrdinarySellVolume(), GetAttackBuyVolume(),
           GetAttackSellVolume(), GetStrongBuyVolume(), GetStrongSellVolume(), GetUnknownVolume());
     return false;
