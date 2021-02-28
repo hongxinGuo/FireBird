@@ -61,8 +61,6 @@ public:
   void UpdateStatus(CWebRTDataPtr pRTData);
 
   // 本股票各变量状态
-  CString GetSymbol(void) { return m_strSymbol; }
-  void SetSymbol(CString str) { m_strSymbol = str; }
   CString GetStockName(void) { return m_strStockName; }
   void SetStockName(CString str) { m_strStockName = str; }
 
@@ -420,7 +418,6 @@ public:
 public:
 
 protected:
-  CString m_strSymbol; // 股票代码。十位以内，前六位为数字代码，后两位为市场前缀。如600601.SS，000001.SZ
   CString m_strStockName; // 股票名称
   CStringW m_strStockNameReadIn; // 读入的股票名称（UniCode制式，目前暂未使用）
   long m_lOffsetInContainer;	// 在容器中的偏移量

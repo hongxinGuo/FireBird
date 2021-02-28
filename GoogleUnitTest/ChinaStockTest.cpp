@@ -103,13 +103,6 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsNotChecked());
   }
 
-  TEST_F(CChinaStockTest, TestGetStockCode) {
-    CChinaStock stock;
-    EXPECT_STREQ(stock.GetSymbol(), _T(""));
-    stock.SetSymbol(_T("600000.SS"));
-    EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
-  }
-
   TEST_F(CChinaStockTest, TestGetStockName) {
     CChinaStock stock;
     EXPECT_STREQ(stock.GetStockName(), _T(""));

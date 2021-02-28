@@ -10,6 +10,8 @@ CVirtualStock::~CVirtualStock() {
 }
 
 void CVirtualStock::Reset(void) {
+  m_strSymbol = _T("");
+
   m_TransactionTime = 0;
   m_lLastClose = m_lOpen = 0;
   m_lHigh = m_lLow = m_lNew = 0;

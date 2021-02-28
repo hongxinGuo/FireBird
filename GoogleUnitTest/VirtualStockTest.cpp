@@ -23,6 +23,13 @@ namespace StockAnalysisTest {
     }
   };
 
+  TEST_F(CVirtualStockTest, TestGetSymbol) {
+    CVirtualStock stock;
+    EXPECT_STREQ(stock.GetSymbol(), _T(""));
+    stock.SetSymbol(_T("600000.SS"));
+    EXPECT_STREQ(stock.GetSymbol(), _T("600000.SS"));
+  }
+
   TEST_F(CVirtualStockTest, TestGetTransactionTime) {
     CVirtualStock stock;
     EXPECT_EQ(stock.GetTransactionTime(), 0);

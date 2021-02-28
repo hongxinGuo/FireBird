@@ -28,7 +28,6 @@ void CWorldStock::Reset(void) {
   m_strLogo = _T(" ");
   m_strName = _T(" ");
   m_strPhone = _T(" ");
-  m_strSymbol = _T(" ");
   m_strExchangeCode = _T("US");
   m_strTicker = _T(" ");
   m_strWebURL = _T(" ");

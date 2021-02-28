@@ -79,13 +79,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetDisplaySymbol(), _T("abcdef"));
   }
 
-  TEST_F(CWorldStockTest, TestGetSymbol) {
-    CWorldStock stock;
-    EXPECT_STREQ(stock.GetSymbol(), _T(" "));
-    stock.SetSymbol(_T("abcdef"));
-    EXPECT_STREQ(stock.GetSymbol(), _T("abcdef"));
-  }
-
   TEST_F(CWorldStockTest, TestGetExchangeCode) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetExchangeCode(), _T("US"));

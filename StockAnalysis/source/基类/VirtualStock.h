@@ -15,6 +15,9 @@ public:
   virtual void Reset(void);
 
 public:
+  CString GetSymbol(void) { return m_strSymbol; }
+  void SetSymbol(CString str) { m_strSymbol = str; }
+
   // 基本实时数据，需要更新
   time_t GetTransactionTime(void) noexcept { return m_TransactionTime; }
   void SetTransactionTime(time_t time) noexcept { m_TransactionTime = time; }
@@ -74,6 +77,8 @@ public:
   bool IsDayLineNeedSavingAndClearFlag(void) noexcept { const bool fNeedSaving = m_fDayLineNeedSaving.exchange(false); return fNeedSaving; }
 
 protected:
+  CString m_strSymbol; // 股票代码。十位以内，前六位为数字代码，后两位为市场前缀。如600601.SS，000001.SZ
+
   // 实时数据区
   time_t m_TransactionTime; // 实时数据交易时间
   long m_lLastClose; // 以0.001元计的收盘价

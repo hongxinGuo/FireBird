@@ -29,7 +29,6 @@ CChinaStock::~CChinaStock(void) {
 
 void CChinaStock::Reset(void) {
   CVirtualStock::Reset();
-  m_strSymbol = _T("");
   m_strStockName = _T("");
   m_lOffsetInContainer = -1;
   m_lDayLineStartDate = __CHINA_MARKET_BEGIN_DATE__; //
