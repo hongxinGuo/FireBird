@@ -179,6 +179,7 @@ public:
   // ¸÷ÖÖ×´Ì¬
   long GetCurrentPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
 
+  bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
   void SetFinnhubDataReceived(bool fFlag) noexcept { m_fFinnhubDataReceived = fFlag; }
   bool IsFinnhubDataReceived(void) noexcept { bool f = m_fFinnhubDataReceived; return f; }

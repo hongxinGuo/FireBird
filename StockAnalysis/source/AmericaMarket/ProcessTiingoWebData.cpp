@@ -63,10 +63,10 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSto
     vStock.push_back(pStock);
     iCount++;
   }
-  TRACE("今日Tiingo Company Symbol总数为%d\n", iCount);
+  TRACE("今日Tiingo Symbol总数为%d\n", iCount);
   sprintf_s(buffer, _T("%6d"), iCount);
   strNumber = buffer;
-  str = _T("今日Tiingo Company Symbol总数为") + strNumber;
+  str = _T("今日Tiingo Symbol总数为") + strNumber;
   gl_systemMessage.PushInnerSystemInformationMessage(str);
   return true;
 }

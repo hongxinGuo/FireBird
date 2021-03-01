@@ -336,20 +336,20 @@ bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   try {
     dTemp = pt.get<double>(_T("pc"));
     pStock->SetLastClose(dTemp * 1000);
+    dTemp = pt.get<double>(_T("o"));
+    pStock->SetOpen(dTemp * 1000);
+    dTemp = pt.get<double>(_T("h"));
+    pStock->SetHigh(dTemp * 1000);
+    dTemp = pt.get<double>(_T("l"));
+    pStock->SetLow(dTemp * 1000);
+    dTemp = pt.get<double>(_T("c"));
+    pStock->SetNew(dTemp * 1000);
+    tt = pt.get<time_t>(_T("t"));
+    pStock->SetTransactionTime(tt);
   }
   catch (ptree_error&) { // 数据格式不对，跳过。
     return false;
   }
-  dTemp = pt.get<double>(_T("o"));
-  pStock->SetOpen(dTemp * 1000);
-  dTemp = pt.get<double>(_T("h"));
-  pStock->SetHigh(dTemp * 1000);
-  dTemp = pt.get<double>(_T("l"));
-  pStock->SetLow(dTemp * 1000);
-  dTemp = pt.get<double>(_T("c"));
-  pStock->SetNew(dTemp * 1000);
-  tt = pt.get<time_t>(_T("t"));
-  pStock->SetTransactionTime(tt);
 
   return true;
 }
@@ -363,10 +363,16 @@ bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
   if (!ConvertToJSon(pt, pWebData)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    pt2 = it->second;
-    s = pt2.get_value<string>();
-    str = s.c_str();
-    vExchange.push_back(str);
+    try {
+      pt2 = it->second;
+      s = pt2.get_value<string>();
+      str = s.c_str();
+      vExchange.push_back(str);
+    }
+    catch (ptree_error&) {
+      TRACE("Finnhub Forex Exchange Error\n");
+      return false;
+    }
   }
 
   return true;
@@ -382,14 +388,20 @@ bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pSymbol = make_shared<CFinnhubForexSymbol>();
-    pt2 = it->second;
-    s = pt2.get<string>(_T("description"));
-    if (s.size() > 0) pSymbol->m_strDescription = s.c_str();
-    s = pt2.get<string>(_T("displaySymbol"));
-    pSymbol->m_strDisplaySymbol = s.c_str();
-    s = pt2.get<string>(_T("symbol"));
-    pSymbol->m_strSymbol = s.c_str();
-    vForexSymbol.push_back(pSymbol);
+    try {
+      pt2 = it->second;
+      s = pt2.get<string>(_T("description"));
+      if (s.size() > 0) pSymbol->m_strDescription = s.c_str();
+      s = pt2.get<string>(_T("displaySymbol"));
+      pSymbol->m_strDisplaySymbol = s.c_str();
+      s = pt2.get<string>(_T("symbol"));
+      pSymbol->m_strSymbol = s.c_str();
+      vForexSymbol.push_back(pSymbol);
+    }
+    catch (ptree_error&) {
+      TRACE("Finnhub Forex Symbol Error\n");
+      return false;
+    }
   }
 
   return true;
