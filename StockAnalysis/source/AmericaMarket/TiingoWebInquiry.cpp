@@ -10,6 +10,7 @@ using namespace std;
 
 //https://api.tiingo.com/api/
 //m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 密钥放在最后
+//m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 密钥放在最后
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
@@ -17,7 +18,7 @@ CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
 #ifdef DEBUG
     m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 调试版使用ymail账户
 #else
-    m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 发行版使用hotmail账户
+    m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 发行版使用hotmail账户
 #endif // DEBUG
   }
   m_strConnection = _T("Tiingo");

@@ -174,7 +174,7 @@ bool CWorldMarket::SchedulingTask(void) {
   CVirtualMarket::SchedulingTask();
 
   static time_t s_timeLast = 0;
-  static int s_iCountfinnhubLimit = 15; // Finnhub.io每1.5秒左右申请一次，以防止出现频率过高的情况。
+  static int s_iCountfinnhubLimit = 12; // Finnhub.io每1.5秒左右申请一次，以防止出现频率过高的情况。
   static int s_iCountTiingoLimit = 80; // 保证每80次执行一次（即8秒每次）.Tiingo免费账户速度限制为每小时500次， 每分钟9次，故每次8秒即可。
   const long lCurrentTime = GetFormatedMarketTime();
 
@@ -182,7 +182,9 @@ bool CWorldMarket::SchedulingTask(void) {
 
   if (--s_iCountfinnhubLimit < 0) {
     TaskInquiryFinnhub(lCurrentTime);
-    s_iCountfinnhubLimit = 15; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+    if (IsFinnhubInquiring()) {
+      s_iCountfinnhubLimit = 12; // 如果申请了网络数据，则重置计数器，以便申请下一次。
+    }
   }
 
   ProcessFinnhubWebDataReceived(); // 要先处理收到的Finnhub网络数据
@@ -874,7 +876,7 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 
 bool CWorldMarket::TaskUpdateForexSymbolDB(void) {
   RunningThreadUpdateForexSymbolDB();
-  return false;
+  return true;
 }
 
 bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
@@ -896,7 +898,7 @@ bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
 }
 
 bool CWorldMarket::TaskUpdateStockDB(void) {
-  RunningTaskThreadUpdateStockDB();
+  RunningThreadUpdateStockDB();
   return true;
 }
 
@@ -1240,7 +1242,7 @@ bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
 
 bool CWorldMarket::TaskUpdateCountryListDB(void) {
   RunningThreadUpdateCountryListDB();
-  return false;
+  return true;
 }
 
 bool CWorldMarket::TaskUpdateEPSSurpriseDB(void) {
@@ -1294,7 +1296,7 @@ bool CWorldMarket::TaskCheckSystemReady(void) {
 
 bool CWorldMarket::TaskUpdateDayLineStartEndDate(void) {
   RunningthreadUpdateDayLneStartEndDate(this);
-  return false;
+  return true;
 }
 
 bool CWorldMarket::RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket) {
@@ -1309,7 +1311,7 @@ bool CWorldMarket::RunningThreadUpdateDayLineDB() {
   return true;
 }
 
-bool CWorldMarket::RunningTaskThreadUpdateStockDB(void) {
+bool CWorldMarket::RunningThreadUpdateStockDB(void) {
   thread thread1(ThreadUpdateStockDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;

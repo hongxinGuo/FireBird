@@ -163,7 +163,7 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB();
-  virtual bool RunningTaskThreadUpdateStockDB(void);
+  virtual bool RunningThreadUpdateStockDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
@@ -202,7 +202,7 @@ public:
   bool LoadWorldStock(void);
   bool LoadWorldChoicedStock(void);
   bool UpdateCountryListDB(void);
-  bool UpdateStockDB(void);
+  virtual bool UpdateStockDB(void);
   bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
 

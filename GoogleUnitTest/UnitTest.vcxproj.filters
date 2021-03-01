@@ -97,6 +97,9 @@
     <Filter Include="Test源文件\China Market\基类">
       <UniqueIdentifier>{bf4f6ddd-218c-4a6c-a8b6-017abe56de23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\World Market\网络通信">
+      <UniqueIdentifier>{eeee34a2-14a9-4dba-9d68-ace77eebc1cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -671,6 +674,9 @@
     <ClCompile Include="WorldStockTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
+    <ClCompile Include="MockWorldMarketTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -859,9 +865,6 @@
     <ClInclude Include="..\StockAnalysis\source\DataBase\SetWeekLineInfo.h">
       <Filter>dependency</Filter>
     </ClInclude>
-    <ClInclude Include="MockFinnHubWebInquiry.h">
-      <Filter>Mock类\World Market</Filter>
-    </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\Country.h">
       <Filter>dependency</Filter>
     </ClInclude>
@@ -879,12 +882,6 @@
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\SetEPSSurprise.h">
       <Filter>dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="MockTiingoWebInquiry.h">
-      <Filter>Mock类\World Market</Filter>
-    </ClInclude>
-    <ClInclude Include="MockQuandlWebInquiry.h">
-      <Filter>Mock类\World Market</Filter>
     </ClInclude>
     <ClInclude Include="..\StockAnalysis\source\AmericaMarket\ProcessFinnhubWebData.h">
       <Filter>dependency</Filter>
@@ -996,6 +993,18 @@
     </ClInclude>
     <ClInclude Include="MockChinaStock.h">
       <Filter>Mock类\China Market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockFinnHubWebInquiry.h">
+      <Filter>Mock类\World Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="MockQuandlWebInquiry.h">
+      <Filter>Mock类\World Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="MockTiingoWebInquiry.h">
+      <Filter>Mock类\World Market\网络通信</Filter>
+    </ClInclude>
+    <ClInclude Include="MockWorldMarket.h">
+      <Filter>Mock类\World Market</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

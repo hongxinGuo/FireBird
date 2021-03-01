@@ -307,6 +307,7 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
+    <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
@@ -497,6 +498,7 @@
     <ClInclude Include="MockTiingoWebInquiry.h" />
     <ClInclude Include="MockVirtualWebInquiry.h" />
     <ClInclude Include="MockSystemMessage.h" />
+    <ClInclude Include="MockWorldMarket.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
