@@ -69,14 +69,15 @@ namespace StockAnalysisTest {
       gl_pQuandlWebInquiry = make_shared<CQuandlWebInquiry>();
 #endif
 
-      // 初始化活跃股票标识. 目前此测试股票代码总数为4826.
       ASSERT_TRUE(gl_fTestMode);
       ASSERT_FALSE(gl_fNormalMode);
 
-      gl_pChinaStockMarket->LoadStockCodeDB();
+      gl_pChinaStockMarket->LoadStockCodeDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为4833.
       EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
       gl_pChinaStockMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
+
+      gl_pWorldMarket->LoadStockDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为2462,皆为上海交易所股票.
     }
 
     virtual void TearDown(void) override {

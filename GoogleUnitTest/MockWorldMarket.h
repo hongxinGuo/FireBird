@@ -19,7 +19,10 @@ namespace testing {
     MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
 
+    MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, UpdateStockDB, (), (override));
+    MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
+    MOCK_METHOD(bool, UpdateDayLineStartEndDate, (), (override));
   };
   typedef shared_ptr<CMockWorldMarket> CMockWorldMarketPtr;
 }

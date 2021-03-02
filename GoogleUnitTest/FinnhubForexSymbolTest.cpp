@@ -176,9 +176,18 @@ namespace StockAnalysisTest {
 
   TEST_F(CFinnhubForexSymbolTest, TestAppend) {
     CSetFinnhubForexSymbol setFinnhubForexSymbol, setFinnhubForexSymbol2;
-    CFinnhubForexSymbol FinnhubForexSymbol;
+    CFinnhubForexSymbol FinnhubForexSymbol, FinnhubForexSymbol2;
 
+    FinnhubForexSymbol.m_strDescription = _T("abc");
+    FinnhubForexSymbol.m_strDisplaySymbol = _T("cba");
     FinnhubForexSymbol.m_strSymbol = _T("AAAAA");
+    FinnhubForexSymbol.m_strExchange = _T("US");
+    FinnhubForexSymbol.SetDayLineStartDate(20000101);
+    FinnhubForexSymbol.SetDayLineEndDate(10000101);
+    FinnhubForexSymbol.SetIPOStatus(__STAKE_DELISTED__);
+    FinnhubForexSymbol.SetDayLineNeedUpdate(false);
+    FinnhubForexSymbol.SetDayLineNeedSaving(true);
+    FinnhubForexSymbol.SetUpdateStockProfileDB(true);
 
     ASSERT(!gl_fNormalMode);
     setFinnhubForexSymbol.Open();
@@ -190,7 +199,23 @@ namespace StockAnalysisTest {
     setFinnhubForexSymbol2.m_strFilter = _T("[Symbol] = 'AAAAA'");
     setFinnhubForexSymbol2.Open();
     EXPECT_TRUE(!setFinnhubForexSymbol2.IsEOF()) << "此时已经存入了AA";
-    setFinnhubForexSymbol2.Delete();
+    FinnhubForexSymbol2.Load(setFinnhubForexSymbol2);
+    EXPECT_STREQ(FinnhubForexSymbol.m_strDescription, _T("abc"));
+    EXPECT_STREQ(FinnhubForexSymbol.m_strDisplaySymbol, _T("cba"));
+    EXPECT_STREQ(FinnhubForexSymbol.m_strSymbol, _T("AAAAA"));
+    EXPECT_STREQ(FinnhubForexSymbol.m_strExchange, _T("US"));
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineStartDate(), 20000101);
+    EXPECT_EQ(FinnhubForexSymbol.GetDayLineEndDate(), 10000101);
+    EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STAKE_DELISTED__);
+    EXPECT_FALSE(FinnhubForexSymbol.IsDayLineNeedUpdate());
+    EXPECT_TRUE(FinnhubForexSymbol.IsDayLineNeedSaving());
+    EXPECT_TRUE(FinnhubForexSymbol.IsUpdateStockProfileDB());
+    setFinnhubForexSymbol2.m_pDatabase->BeginTrans();
+    while (!setFinnhubForexSymbol2.IsEOF()) {
+      setFinnhubForexSymbol2.Delete();
+      setFinnhubForexSymbol2.MoveNext();
+    }
+    setFinnhubForexSymbol2.m_pDatabase->CommitTrans();
     setFinnhubForexSymbol2.Close();
   }
 }

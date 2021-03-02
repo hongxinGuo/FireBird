@@ -393,6 +393,7 @@ public:
 
   void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
   bool IsUpdateStockSection(void) noexcept { return m_fUpdateStockSection; }
+  bool DeleteStock(CChinaStockPtr pStock);
 
 protected:
   // ≥ı ºªØ

@@ -133,6 +133,8 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
+    gl_pChinaStockMarket->DeleteStock(pStock);
+    EXPECT_EQ(lTotalStock, gl_pChinaStockMarket->GetTotalStock()) << "删除了新增加的股票";
     break;
     default:
     break;

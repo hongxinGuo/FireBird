@@ -26,7 +26,7 @@ public:
   void Update(CSetWorldStock& setWorldStock);
   void Append(CSetWorldStock& setWorldStock);
   void SaveDayLine(void);
-  bool UpdateEPSSurpriseDB(void);
+  virtual bool UpdateEPSSurpriseDB(void);
 
   void UpdateDayLine(vector<CDayLinePtr>& vDayLine);
   void UpdateEPSSurprise(vector<CEPSSurprisePtr>& vEPSSurprise);

@@ -34,6 +34,7 @@ namespace StockAnalysisTest {
     }
     CMockTiingoWebInquiry m_TiingoWebInquiry; // 网易日线历史数据
   };
+
   TEST_F(CTiingoWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringPrefix(), _T(""));
     EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));

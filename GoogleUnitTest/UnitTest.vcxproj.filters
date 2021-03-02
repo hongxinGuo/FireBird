@@ -100,6 +100,12 @@
     <Filter Include="Mock类\World Market\网络通信">
       <UniqueIdentifier>{eeee34a2-14a9-4dba-9d68-ace77eebc1cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mock类\World Market\工作线程">
+      <UniqueIdentifier>{7e1f811e-3a3c-4ae6-8757-fb66a77a74f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test源文件\World Market\工作线程">
+      <UniqueIdentifier>{867e7456-6a16-47a3-8ebc-0fc5426c0067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -677,6 +683,18 @@
     <ClCompile Include="MockWorldMarketTest.cpp">
       <Filter>Test源文件\World Market</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadReadFinnhubDataTest.cpp">
+      <Filter>Test源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadQuandlReadDataTest.cpp">
+      <Filter>Test源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadTiingoReadDataTest.cpp">
+      <Filter>Test源文件\World Market\工作线程</Filter>
+    </ClCompile>
+    <ClCompile Include="MockWorldStockTest.cpp">
+      <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentSetUp.h">
@@ -1004,6 +1022,9 @@
       <Filter>Mock类\World Market\网络通信</Filter>
     </ClInclude>
     <ClInclude Include="MockWorldMarket.h">
+      <Filter>Mock类\World Market</Filter>
+    </ClInclude>
+    <ClInclude Include="MockWorldStock.h">
       <Filter>Mock类\World Market</Filter>
     </ClInclude>
   </ItemGroup>

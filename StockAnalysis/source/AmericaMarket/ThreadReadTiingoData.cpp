@@ -28,5 +28,5 @@ UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pFinnhubWebData) {
   pFinnhubWebData->SetReadingWebData(false);
   gl_pWorldMarket->SetTiingoDataReceived(true); // 接收完网络数据后，清除状态。
 
-  return 1;
+  return 8;
 }

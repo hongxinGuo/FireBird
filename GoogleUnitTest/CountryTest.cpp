@@ -54,4 +54,19 @@ namespace StockAnalysisTest {
     setCountry2.Delete();
     setCountry2.Close();
   }
+
+  TEST_F(CCountryTest, TestLoad) {
+    CSetCountry setCountry;
+    CCountry country;
+
+    setCountry.Open();
+    country.Load(setCountry); // 装入第一个国家的信息：AL, ALB, 8, Albania, Lek, All
+    EXPECT_STREQ(country.m_strCode2, _T("AL"));
+    EXPECT_STREQ(country.m_strCode3, _T("ALB"));
+    EXPECT_STREQ(country.m_strCodeNo, _T("8"));
+    EXPECT_STREQ(country.m_strCountry, _T("Albania"));
+    EXPECT_STREQ(country.m_strCurrency, _T("Lek"));
+    EXPECT_STREQ(country.m_strCurrencyCode, _T("ALL"));
+    setCountry.Close();
+  }
 }

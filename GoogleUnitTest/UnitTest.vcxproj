@@ -308,6 +308,10 @@
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
+    <ClCompile Include="MockWorldStockTest.cpp" />
+    <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
+    <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
+    <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
     <ClCompile Include="WorldMarketTest.cpp" />
     <ClCompile Include="WorldStockTest.cpp" />
     <ClCompile Include="AnalysisGuaDanTest.cpp" />
@@ -499,6 +503,7 @@
     <ClInclude Include="MockVirtualWebInquiry.h" />
     <ClInclude Include="MockSystemMessage.h" />
     <ClInclude Include="MockWorldMarket.h" />
+    <ClInclude Include="MockWorldStock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

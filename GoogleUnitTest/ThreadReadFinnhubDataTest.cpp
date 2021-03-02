@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CThreadReadSinaRTDataTest : public ::testing::Test
+  class CThreadReadFinnhubDataTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -22,27 +22,30 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
     }
-    CMockSinaRTWebInquiry SinaRTWebInquiry;
+    CMockFinnhubWebInquiry FinnhubWebInquiry;
   };
 
-  TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
+  TEST_F(CThreadReadFinnhubDataTest, TestThreadReadFinnhubData) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
+
+    gl_pWorldMarket->SetFinnhubDataReceived(false);
+    EXPECT_CALL(FinnhubWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
-    SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
+    FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
+    EXPECT_EQ(ThreadReadFinnhubData(&FinnhubWebInquiry), (UINT)7);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_WebInquirer.GetFinnhubDataSize(), 0);
 
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
+    gl_pWorldMarket->SetFinnhubDataReceived(false);
+    EXPECT_CALL(FinnhubWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(true));
-    SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
+    FinnhubWebInquiry.__TESTSetBuffer(_T("testData"));
+    EXPECT_EQ(ThreadReadFinnhubData(&FinnhubWebInquiry), (UINT)7);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);
-    CWebDataPtr pWebData = gl_WebInquirer.PopSinaRTData();
+    EXPECT_EQ(gl_WebInquirer.GetFinnhubDataSize(), 1);
+    CWebDataPtr pWebData = gl_WebInquirer.PopFinnhubData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);
     char buffer[30];
     int i = 0;

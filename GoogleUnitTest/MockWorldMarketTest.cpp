@@ -29,7 +29,7 @@ namespace StockAnalysisTest {
       ASSERT_FALSE(gl_fNormalMode);
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       s_pWorldMarket = new CMockWorldMarket;
-      s_pWorldMarket->LoadWorldStock();
+      s_pWorldMarket->LoadStockDB();
     }
     static void TearDownTestSuite(void) {
       delete s_pWorldMarket;
@@ -81,9 +81,27 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pWorldMarket->TaskUpdateCountryListDB());
   }
 
+  TEST_F(CMockWorldMarketTest, TestUpdateCountryListDB) {
+    EXPECT_CALL(*s_pWorldMarket, UpdateCountryListDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateCountryListDB(s_pWorldMarket), 40);
+  }
+
   TEST_F(CMockWorldMarketTest, TestUpdateStockDB) {
     EXPECT_CALL(*s_pWorldMarket, UpdateStockDB)
       .Times(1);
     EXPECT_EQ(ThreadUpdateStockDB(s_pWorldMarket), 37);
+  }
+
+  TEST_F(CMockWorldMarketTest, TestUpdateForexSymbolDB) {
+    EXPECT_CALL(*s_pWorldMarket, UpdateForexSymbolDB)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateForexSymbolDB(s_pWorldMarket), 39);
+  }
+
+  TEST_F(CMockWorldMarketTest, TestUpdateDayLineStartEndDate) {
+    EXPECT_CALL(*s_pWorldMarket, UpdateDayLineStartEndDate)
+      .Times(1);
+    EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pWorldMarket), 43);
   }
 }

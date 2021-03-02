@@ -8,7 +8,7 @@
 using namespace testing;
 
 namespace StockAnalysisTest {
-  class CThreadReadSinaRTDataTest : public ::testing::Test
+  class CThreadReadQuandlDataTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
@@ -22,27 +22,30 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
     }
-    CMockSinaRTWebInquiry SinaRTWebInquiry;
+    CMockQuandlWebInquiry QuandlWebInquiry;
   };
 
-  TEST_F(CThreadReadSinaRTDataTest, TestThreadReadSinaRTData) {
+  TEST_F(CThreadReadQuandlDataTest, TestThreadReadQuandlData) {
     int iRunningThread = gl_ThreadStatus.GetNumberOfWebInquiringThread();
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
+
+    gl_pWorldMarket->SetQuandlDataReceived(false);
+    EXPECT_CALL(QuandlWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(false));
-    SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
+    QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
+    EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 0);
+    EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 0);
 
-    EXPECT_CALL(SinaRTWebInquiry, ReadWebData())
+    gl_pWorldMarket->SetQuandlDataReceived(false);
+    EXPECT_CALL(QuandlWebInquiry, ReadWebData())
       .Times(1)
       .WillOnce(Return(true));
-    SinaRTWebInquiry.__TESTSetBuffer(_T("testData"));
-    EXPECT_EQ(ThreadReadSinaRTData(&SinaRTWebInquiry), (UINT)1);
+    QuandlWebInquiry.__TESTSetBuffer(_T("testData"));
+    EXPECT_EQ(ThreadReadQuandlData(&QuandlWebInquiry), (UINT)9);
     EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread);
-    EXPECT_EQ(gl_WebInquirer.GetSinaRTDataSize(), 1);
-    CWebDataPtr pWebData = gl_WebInquirer.PopSinaRTData();
+    EXPECT_EQ(gl_WebInquirer.GetQuandlDataSize(), 1);
+    CWebDataPtr pWebData = gl_WebInquirer.PopQuandlData();
     EXPECT_EQ(pWebData->GetBufferLength(), 8);
     char buffer[30];
     int i = 0;

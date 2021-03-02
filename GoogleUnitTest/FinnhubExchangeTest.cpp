@@ -49,9 +49,18 @@ namespace StockAnalysisTest {
 
   TEST_F(CFinnhubExchangeTest, TestAppend) {
     CSetFinnhubExchange setFinnhubExchange, setFinnhubExchange2;
-    CFinnhubExchange FinnhubExchange;
+    CFinnhubExchange FinnhubExchange, FinnhubExchange2;
 
     FinnhubExchange.m_strCode = _T("AA");
+    FinnhubExchange.m_strName = _T("aaa");
+    FinnhubExchange.m_strMic = _T("abdc");
+    FinnhubExchange.m_strTimeZone = _T("Beijing");
+    FinnhubExchange.m_strHour = _T("10101010");
+    FinnhubExchange.m_strCloseDate = _T("20202020");
+    FinnhubExchange.m_strCountry = _T("dfe");
+    FinnhubExchange.m_strSource = _T("abc");
+    FinnhubExchange.m_fIsActive = false;
+    FinnhubExchange.m_fUpdated = true;
 
     ASSERT(!gl_fNormalMode);
     setFinnhubExchange.Open();
@@ -63,6 +72,18 @@ namespace StockAnalysisTest {
     setFinnhubExchange2.m_strFilter = _T("[Code] = 'AA'");
     setFinnhubExchange2.Open();
     EXPECT_TRUE(!setFinnhubExchange2.IsEOF()) << "此时已经存入了AA";
+    FinnhubExchange2.Load(setFinnhubExchange2);
+    EXPECT_STREQ(FinnhubExchange.m_strCode, _T("AA"));
+    EXPECT_STREQ(FinnhubExchange.m_strName, _T("aaa"));
+    EXPECT_STREQ(FinnhubExchange.m_strMic, _T("abdc"));
+    EXPECT_STREQ(FinnhubExchange.m_strTimeZone, _T("Beijing"));
+    EXPECT_STREQ(FinnhubExchange.m_strHour, _T("10101010"));
+    EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T("20202020"));
+    EXPECT_STREQ(FinnhubExchange.m_strCountry, _T("dfe"));
+    EXPECT_STREQ(FinnhubExchange.m_strSource, _T("abc"));
+    EXPECT_FALSE(FinnhubExchange.m_fIsActive);
+    EXPECT_TRUE(FinnhubExchange.m_fUpdated);
+
     setFinnhubExchange2.Delete();
     setFinnhubExchange2.Close();
   }

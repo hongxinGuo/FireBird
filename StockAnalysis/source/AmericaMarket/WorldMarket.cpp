@@ -159,7 +159,7 @@ void CWorldMarket::ResetMarket(void) {
   LoadOption();
   LoadWorldExchangeDB(); // 装入世界交易所信息
   LoadCountryList();
-  LoadWorldStock();
+  LoadStockDB();
   LoadWorldChoicedStock();
   LoadForexExchange();
   LoadForexSymbol();
@@ -1431,7 +1431,7 @@ bool CWorldMarket::LoadWorldExchangeDB(void) {
   return true;
 }
 
-bool CWorldMarket::LoadWorldStock(void) {
+bool CWorldMarket::LoadStockDB(void) {
   CSetWorldStock setWorldStock;
   CWorldStockPtr pWorldStock = nullptr;
   CString str;

@@ -199,11 +199,11 @@ public:
   // 数据库操作
   bool LoadOption(void);
   bool LoadWorldExchangeDB(void); // 装入世界交易所信息
-  bool LoadWorldStock(void);
+  bool LoadStockDB(void);
   bool LoadWorldChoicedStock(void);
-  bool UpdateCountryListDB(void);
+  virtual bool UpdateCountryListDB(void);
   virtual bool UpdateStockDB(void);
-  bool UpdateForexSymbolDB(void);
+  virtual bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
 
   bool LoadForexExchange(void);
@@ -212,7 +212,7 @@ public:
   bool LoadEconomicCalendarDB(void);
 
   bool RebuildStockDayLineDB(void);
-  bool UpdateDayLineStartEndDate(void);
+  virtual bool UpdateDayLineStartEndDate(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
 

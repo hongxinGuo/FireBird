@@ -35,10 +35,12 @@ namespace StockAnalysisTest {
 
   TEST_F(CEPSSurpriseTest, TestAppend) {
     CSetEPSSurprise setEPSSurprise, setEPSSurprise2;
-    CEPSSurprise EPSSurprise;
+    CEPSSurprise EPSSurprise, EPSSurprise2;
 
     EPSSurprise.m_strSymbol = _T("AAAAA");
     EPSSurprise.m_dActual = 1.2;
+    EPSSurprise.m_dEstimate = 1.0;
+    EPSSurprise.m_lDate = 20202020;
 
     ASSERT(!gl_fNormalMode);
     setEPSSurprise.Open();
@@ -51,7 +53,17 @@ namespace StockAnalysisTest {
     setEPSSurprise2.Open();
     EXPECT_TRUE(!setEPSSurprise2.IsEOF()) << "此时已经存入了ABCDEF";
     EXPECT_DOUBLE_EQ(setEPSSurprise2.m_Actual, 1.2);
-    setEPSSurprise2.Delete();
+    EPSSurprise2.Load(setEPSSurprise2);
+    EXPECT_STREQ(EPSSurprise2.m_strSymbol, _T("AAAAA"));
+    EXPECT_DOUBLE_EQ(EPSSurprise2.m_dActual, 1.2);
+    EXPECT_DOUBLE_EQ(EPSSurprise2.m_dEstimate, 1.0);
+    EXPECT_EQ(EPSSurprise2.m_lDate, 20202020);
+    setEPSSurprise2.m_pDatabase->BeginTrans();
+    while (!setEPSSurprise2.IsEOF()) {
+      setEPSSurprise2.Delete();
+      setEPSSurprise2.MoveNext();
+    }
+    setEPSSurprise2.m_pDatabase->CommitTrans();
     setEPSSurprise2.Close();
   }
 }

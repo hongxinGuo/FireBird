@@ -396,6 +396,16 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   return true;
 }
 
+bool CChinaMarket::DeleteStock(CChinaStockPtr pStock) {
+  if (pStock == nullptr) return false;
+  if (!IsStock(pStock->GetSymbol())) return false;
+
+  auto it = find(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), pStock);
+  m_vChinaMarketStock.erase(it);
+
+  return true;
+}
+
 bool CChinaMarket::UpdateStockSection(CString strStockCode) {
   CString strCode = GetStockSymbol(strStockCode);
   int iCode = atoi(strCode.GetBuffer());
@@ -674,9 +684,6 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       }
     }
   }
-  if (fFoundNewStock) {
-    SortStockVector();
-  }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   ASSERT(gl_WebRTDataContainer.GetSinaDataSize() == 0); // 必须一次处理全体数据。
   gl_ProcessSinaRTDataQueue.Signal();
@@ -732,9 +739,6 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
         pStock->SetTransactionTime(pRTData->GetTransactionTime());   // 设置最新接受到实时数据的时间
       }
     }
-  }
-  if (fFoundNewStock) {
-    SortStockVector();
   }
   gl_ThreadStatus.SetRTDataNeedCalculate(true); // 设置接收到实时数据标识
   ASSERT(gl_WebRTDataContainer.GetNeteaseDataSize() == 0); // 必须一次处理全体数据。

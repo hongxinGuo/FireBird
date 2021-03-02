@@ -41,6 +41,12 @@ void CVirtualWebInquiry::Reset(void) noexcept {
   m_fWebError = false;
 }
 
+///////////////////////////////////////////////////////////////////////////
+//
+// 从网络读取数据。每次读1KB，直到读不到为止。
+//
+//
+///////////////////////////////////////////////////////////////////////////
 bool CVirtualWebInquiry::ReadWebData(void) {
   CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
   m_pFile = nullptr;
@@ -98,6 +104,13 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   ASSERT(gl_ThreadStatus.GetNumberOfWebInquiringThread() >= 0);
   return fStatus;
 }
+
+///////////////////////////////////////////////////////////////////////////
+//
+// 从网络读取数据。每次读1KB，读不到等待若干毫秒，共等待三次。
+//
+//
+///////////////////////////////////////////////////////////////////////////
 
 bool CVirtualWebInquiry::ReadWebData3(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime) {
   CInternetSession session(_T("如果此项为空，则测试时会出现断言错误。但不影响测试结果"));
