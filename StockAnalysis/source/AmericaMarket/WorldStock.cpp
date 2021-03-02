@@ -413,6 +413,9 @@ bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
   else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (m_lLastEPSSurpriseUpdateDate != 19800101)) { // 有早于225天的数据？
     m_fEPSSurpriseNeedUpdate = false;
   }
+  else {
+    m_fEPSSurpriseNeedUpdate = true;
+  }
   return m_fEPSSurpriseNeedUpdate;
 }
 

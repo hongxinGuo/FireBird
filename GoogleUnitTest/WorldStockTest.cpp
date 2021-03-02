@@ -28,6 +28,13 @@ namespace StockAnalysisTest {
     CWorldStockPtr pStock;
   };
 
+  TEST_F(CWorldStockTest, TestGetProfileUpdateDate) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetProfileUpdateDate(), 19800101);
+    stock.SetProfileUpdateDate(10101010);
+    EXPECT_EQ(stock.GetProfileUpdateDate(), 10101010);
+  }
+
   TEST_F(CWorldStockTest, TestGetLastRTDataUpdateDate) {
     CWorldStock stock;
     EXPECT_EQ(stock.GetLastRTDataUpdateDate(), 19800101);
@@ -149,6 +156,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetSedol(), _T("abcdef"));
   }
 
+  TEST_F(CWorldStockTest, TestGetEmployeeTotal) {
+    CWorldStock stock;
+    EXPECT_EQ(stock.GetEmployeeTotal(), 0);
+    stock.SetEmployeeTotal(1234567);
+    EXPECT_EQ(stock.GetEmployeeTotal(), 1234567);
+  }
+
   TEST_F(CWorldStockTest, TestGetListedExchange) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetListedExchange(), _T(" "));
@@ -198,6 +212,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetIsin(), _T("abcdef"));
   }
 
+  TEST_F(CWorldStockTest, TestGetMarketCapitalization) {
+    CWorldStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), 0.0);
+    stock.SetMarketCapitalization(10101.010);
+    EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), 10101.010);
+  }
+
   TEST_F(CWorldStockTest, TestGetNaics) {
     CWorldStock stock;
     EXPECT_STREQ(stock.GetNaics(), _T(" "));
@@ -238,6 +259,13 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(stock.GetPhone(), _T(" "));
     stock.SetPhone(_T("abcdef"));
     EXPECT_STREQ(stock.GetPhone(), _T("abcdef"));
+  }
+
+  TEST_F(CWorldStockTest, TestGetShareOutstanding) {
+    CWorldStock stock;
+    EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), 0.0);
+    stock.SetShareOutstanding(10101.010);
+    EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), 10101.010);
   }
 
   TEST_F(CWorldStockTest, TestGetState) {
@@ -367,6 +395,51 @@ namespace StockAnalysisTest {
     }
   }
 
+  TEST_F(CWorldStockTest, TestCheckEPSSurpriseStatus) {
+    CWorldStock stock;
+    long lCurrentDate = 20200101;
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_NULL__);
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetLastEPSSurpriseUpdateDate(19700101);
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetLastEPSSurpriseUpdateDate(20190819); // 不早于135天
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetLastEPSSurpriseUpdateDate(20190818); // 早于135天， 不早于225天
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetLastEPSSurpriseUpdateDate(20190521); // 早于135天， 不早于225天
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
+
+    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetLastEPSSurpriseUpdateDate(20190520); // 早于135天， 不早于225天
+    stock.CheckEPSSurpriseStatus(lCurrentDate);
+    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+  }
+
   TEST_F(CWorldStockTest, TestSaveDayLine) {
     CWorldStock stock;
     vector<CDayLinePtr> vDayLine;
@@ -416,5 +489,177 @@ namespace StockAnalysisTest {
     setDayLine.Delete();
     setDayLine.m_pDatabase->CommitTrans();
     setDayLine.Close();
+  }
+
+  TEST_F(CWorldStockTest, TestUpdateDayLine) {
+    CWorldStock stock;
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+    CSetWorldStockDayLine setDayLine;
+
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210101); // 这个需要添加进数据库
+    pDayLine->SetClose(10010);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210102); // 这个需要添加进数据库
+    pDayLine->SetClose(12345);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
+    pDayLine->SetClose(10020);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210123); // 这个需要添加进数据库
+    pDayLine->SetClose(10030);
+    vDayLine.push_back(pDayLine);
+
+    stock.SetSymbol(_T("A"));
+    stock.SetDayLineEndDate(20210107);
+    stock.UpdateDayLine(vDayLine);
+
+    EXPECT_EQ(stock.GetDayLineSize(), 4);
+
+    pDayLine = stock.GetDayLine(1);
+    EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210107);
+    stock.SetDayLineEndDate(20210108);
+    stock.UpdateDayLineStartEndDate();
+    EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+
+    stock.UnloadDayLine();
+    EXPECT_EQ(stock.GetDayLineSize(), 0);
+  }
+
+  TEST_F(CWorldStockTest, TestUpdateDayLineStartEndDate) {
+    CWorldStock stock;
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+    CSetWorldStockDayLine setDayLine;
+
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210101); // 这个需要添加进数据库
+    pDayLine->SetClose(10010);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210102); // 这个需要添加进数据库
+    pDayLine->SetClose(12345);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
+    pDayLine->SetClose(10020);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210123); // 这个需要添加进数据库
+    pDayLine->SetClose(10030);
+    vDayLine.push_back(pDayLine);
+
+    stock.SetSymbol(_T("A"));
+    stock.SetDayLineEndDate(20210107);
+    stock.UpdateDayLine(vDayLine);
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210107);
+    stock.SetDayLineEndDate(20210108);
+    stock.UpdateDayLineStartEndDate();
+    EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210101);
+    stock.SetDayLineEndDate(20210110);
+    stock.UpdateDayLineStartEndDate();
+    EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
+    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210102);
+    stock.SetDayLineEndDate(20210210);
+    stock.UpdateDayLineStartEndDate();
+    EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210101);
+    stock.SetDayLineEndDate(20210210);
+    stock.UpdateDayLineStartEndDate();
+    EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
+    EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
+    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+  }
+
+  TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
+    CWorldStock stock;
+    vector<CDayLinePtr> vDayLine;
+    CDayLinePtr pDayLine;
+    CSetWorldStockDayLine setDayLine;
+
+    EXPECT_EQ(stock.GetDayLineSize(), 0);
+    EXPECT_FALSE(stock.HaveNewDayLineData()) << "没有日线数据";
+
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210101); // 这个需要添加进数据库
+    pDayLine->SetClose(10010);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210102); // 这个需要添加进数据库
+    pDayLine->SetClose(12345);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210107); // 这个数据库中有，无需添加
+    pDayLine->SetClose(10020);
+    vDayLine.push_back(pDayLine);
+    pDayLine = make_shared<CDayLine>();
+    pDayLine->SetSymbol(_T("A"));
+    pDayLine->SetDate(20210123); // 这个需要添加进数据库
+    pDayLine->SetClose(10030);
+    vDayLine.push_back(pDayLine);
+
+    stock.SetSymbol(_T("A"));
+    stock.SetDayLineEndDate(20210107);
+    stock.UpdateDayLine(vDayLine);
+
+    EXPECT_EQ(stock.GetDayLineSize(), 4);
+
+    pDayLine = stock.GetDayLine(1);
+    EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210107);
+    stock.SetDayLineEndDate(20210108);
+    EXPECT_TRUE(stock.HaveNewDayLineData());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210101);
+    stock.SetDayLineEndDate(20210110);
+    EXPECT_TRUE(stock.HaveNewDayLineData());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210102);
+    stock.SetDayLineEndDate(20210210);
+    EXPECT_TRUE(stock.HaveNewDayLineData());
+
+    stock.SetUpdateStockProfileDB(false);
+    stock.SetDayLineStartDate(20210101);
+    stock.SetDayLineEndDate(20210210);
+    EXPECT_FALSE(stock.HaveNewDayLineData());
   }
 }
