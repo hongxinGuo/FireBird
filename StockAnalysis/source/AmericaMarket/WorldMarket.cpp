@@ -252,7 +252,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __PEERS__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
-      pStock->m_fFinnhubPeerUpdated = true;
+      pStock->SetPeerUpdated(true);
       break;
       case __BASIC_FINANCIALS__:
       break;
@@ -997,7 +997,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
   ASSERT(IsSystemReady());
   if (!m_fFinnhubPeerUpdated && !IsFinnhubInquiring()) {
     for (m_lCurrentUpdatePeerPos = 0; m_lCurrentUpdatePeerPos < lStockSetSize; m_lCurrentUpdatePeerPos++) {
-      if (!m_vWorldStock.at(m_lCurrentUpdatePeerPos)->m_fFinnhubPeerUpdated) {
+      if (!m_vWorldStock.at(m_lCurrentUpdatePeerPos)->IsPeerUpdated()) {
         pStock = m_vWorldStock.at(m_lCurrentUpdatePeerPos);
         fFound = true;
         break;
@@ -1634,7 +1634,7 @@ bool CWorldMarket::ReBuildPeer(void) {
   for (auto& pStock : m_vWorldStock) {
     if (pStock->GetPeerUpdateDate() != 19800101) {
       pStock->SetPeerUpdateDate(19800101);
-      pStock->m_fFinnhubPeerUpdated = false;
+      pStock->SetPeerUpdated(false);
       pStock->SetUpdateStockProfileDB(true);
     }
   }

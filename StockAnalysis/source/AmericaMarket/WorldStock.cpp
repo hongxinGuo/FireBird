@@ -428,8 +428,11 @@ bool CWorldStock::CheckPeerStatus(long lCurrentDate) {
   if (IsNullStock() || IsDelisted()) {
     m_fFinnhubPeerUpdated = true;
   }
-  else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, 90)) { // 有不早于45天的数据？
+  else if (!IsEarlyThen(m_lPeerUpdateDate, lCurrentDate, 90)) { // 有不早于90天的数据？
     m_fFinnhubPeerUpdated = true;
+  }
+  else {
+    m_fFinnhubPeerUpdated = false;
   }
   return m_fFinnhubPeerUpdated;
 }
@@ -470,7 +473,7 @@ CString CWorldStock::GetTiingoDayLineInquiryString(long lCurrentDate) {
 
   strMiddle += m_strSymbol;
   strMiddle += _T("/prices?&startDate=1950-1-1&endDate=");
-  sprintf_s(buffer, _T("%4d-%2d-%2d"), year, month, date);
+  sprintf_s(buffer, _T("%4d-%d-%d"), year, month, date);
   strTemp = buffer;
   strMiddle += strTemp;
 

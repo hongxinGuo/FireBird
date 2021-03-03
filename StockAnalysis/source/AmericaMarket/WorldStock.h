@@ -45,6 +45,8 @@ public:
   void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
   bool IsEPSSurpriseNeedSaveAndClearFlag(void);
 
+  bool IsPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
+  void SetPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
   bool CheckPeerStatus(long lCurrentDate);
 
   CString GetDescription(void) { return m_strDescription; }
@@ -152,7 +154,6 @@ public:
   atomic_bool m_fEPSSurpriseNeedSave;
   // 无需存储数据区
   bool m_fInquiryStockProfile; // 要求更新公司简介
-  bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 
 protected:
   // Finnhub symbol信息
@@ -198,6 +199,7 @@ protected:
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
 
   // 无需存储数据区
+  bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 };
 
 typedef shared_ptr<CWorldStock> CWorldStockPtr;

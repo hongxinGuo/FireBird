@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ADebug|x64 = ADebug|x64
+		ADebug|x86 = ADebug|x86
 		ASANRelease|x64 = ASANRelease|x64
 		ASANRelease|x86 = ASANRelease|x86
 		Debug|x64 = Debug|x64
@@ -19,6 +21,10 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ADebug|x64.ActiveCfg = ADebug|x64
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ADebug|x64.Build.0 = ADebug|x64
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ADebug|x86.ActiveCfg = ADebug|Win32
+		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ADebug|x86.Build.0 = ADebug|Win32
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ASANRelease|x64.ActiveCfg = ASANRelease|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ASANRelease|x64.Build.0 = ASANRelease|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.ASANRelease|x86.ActiveCfg = ASANRelease|Win32
@@ -31,6 +37,10 @@ Global
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x64.Build.0 = Release|x64
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x86.ActiveCfg = Release|Win32
 		{37404DD5-58A1-46DC-A0A9-23D4FF0E007D}.Release|x86.Build.0 = Release|Win32
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ADebug|x64.ActiveCfg = ADebug|x64
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ADebug|x64.Build.0 = ADebug|x64
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ADebug|x86.ActiveCfg = ADebug|Win32
+		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ADebug|x86.Build.0 = ADebug|Win32
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ASANRelease|x64.ActiveCfg = ASANRelease|x64
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ASANRelease|x64.Build.0 = ASANRelease|x64
 		{B59E4FFF-9041-490E-96BF-E492C1DD7C23}.ASANRelease|x86.ActiveCfg = ASANRelease|Win32

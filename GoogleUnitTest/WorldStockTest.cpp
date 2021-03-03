@@ -662,4 +662,176 @@ namespace StockAnalysisTest {
     stock.SetDayLineEndDate(20210210);
     EXPECT_FALSE(stock.HaveNewDayLineData());
   }
+
+  TEST_F(CWorldStockTest, TestCheckPeerStatus) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsPeerUpdated());
+
+    stock.SetPeerUpdated(true);
+    stock.SetPeerUpdateDate(20200101);
+    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.CheckPeerStatus(20200401); // 91天
+    EXPECT_FALSE(stock.IsPeerUpdated()) << "九十一天需更新";
+    stock.CheckPeerStatus(20200331); // 90天
+    EXPECT_TRUE(stock.IsPeerUpdated());
+
+    stock.SetPeerUpdated(false);
+    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.CheckPeerStatus(20200331); // 90天
+    EXPECT_TRUE(stock.IsPeerUpdated()) << "九十天内无需更新";
+    stock.CheckPeerStatus(20200401); // 91天
+    EXPECT_TRUE(stock.IsPeerUpdated()) << "摘牌股票无需更新Peer";
+  }
+
+  TEST_F(CWorldStockTest, TestGetFinnhubDayLineInquiryString) {
+    CWorldStock stock;
+    long lDate = 20200101;
+
+    time_t tt = FormatToTTime(lDate);
+    time_t ttOld = tt - (time_t)(365) * 24 * 3600;
+
+    char buffer[30];
+    sprintf_s(buffer, _T("%I64i"), tt);
+    CString strTime = buffer;
+    sprintf_s(buffer, _T("%I64i"), ttOld);
+    CString strTimeOld = buffer;
+    CString strMiddle;
+
+    stock.SetSymbol(_T("600601.SS"));
+    stock.SetDayLineEndDate(20180101); // 早于20190102
+    strMiddle = _T("600601.SS&resolution=D");
+    strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
+    EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "免费账户最多只能申请一年的日线数据";
+
+    stock.SetSymbol(_T("600601.SS"));
+    stock.SetDayLineEndDate(20190501); // 晚于20190102
+    ttOld = FormatToTTime(20190502); // 20190501的第二天
+    sprintf_s(buffer, _T("%I64i"), ttOld);
+    strTimeOld = buffer;
+    strMiddle = _T("600601.SS&resolution=D");
+    strMiddle += _T("&from=") + strTimeOld + _T("&to=") + strTime;
+    EXPECT_STREQ(stock.GetFinnhubDayLineInquiryString(tt), strMiddle) << "即使最后更新日期晚于一年前，也申请一年的日线数据";
+  }
+
+  TEST_F(CWorldStockTest, TestGetTiingoDayLineInquiryString) {
+    CWorldStock stock;
+    long lDate = 20200101;
+    CString strMiddle;
+
+    stock.SetSymbol(_T("600601.SS"));
+    stock.SetDayLineEndDate(20180101);
+    strMiddle = _T("600601.SS/prices?&startDate=1950-1-1&endDate=2020-1-1");
+
+    EXPECT_STREQ(stock.GetTiingoDayLineInquiryString(20200101), strMiddle);
+  }
+
+  TEST_F(CWorldStockTest, TestSave) {
+    CWorldStock stock, stock2;
+    CSetWorldStock setWorldStock;
+
+    stock.SetSymbol(_T("000001.US"));
+    stock.SetExchangeCode(_T("US"));
+    stock.SetDescription(_T("US Stock"));
+    stock.SetType(_T("Ordinary share"));
+    stock.SetMic(_T("abcdef"));
+    stock.SetFigi(_T("12345678"));
+    stock.SetCurrency(_T("US Dollar"));
+    stock.SetAddress(_T("Irvine CA US"));
+    stock.SetCity(_T("Irvine"));
+    stock.SetCountry(_T("US"));
+    stock.SetCusip(_T("abcd"));
+    stock.SetSedol(_T("a1b2"));
+    stock.SetListedExchange(_T("NY Market"));
+    stock.SetGgroup(_T("a2b3"));
+    stock.SetGind(_T("Steel"));
+    stock.SetGsector(_T("company"));
+    stock.SetGsubind(_T("C2B3"));
+    stock.SetIPODate(_T("20202020"));
+    stock.SetIsin(_T("B2C4"));
+    stock.SetNaics(_T("bcdefgh"));
+    stock.SetNaicsNationalIndustry(_T("USA"));
+    stock.SetNaicsSector(_T("Alumium"));
+    stock.SetNaicsSubsector(_T("abc"));
+    stock.SetName(_T("Unknown"));
+    stock.SetPhone(_T("001000000"));
+    stock.SetState(_T("CA"));
+    stock.SetTicker(_T("000001.US"));
+    stock.SetWebURL(_T("http://abc.com"));
+    stock.SetLogo(_T("abc.jpg"));
+    stock.SetFinnhubIndustry(_T("UK"));
+    stock.SetPeer(_T("abdef"));
+    stock.SetShareOutstanding(1.14);
+    stock.SetEmployeeTotal(101023);
+    stock.SetMarketCapitalization(34324.234);
+
+    stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
+    stock.m_strSICIndustry = _T("defg");
+    stock.m_strSICSector = _T("efg");
+    stock.m_strTiingoIndustry = _T("ghi");
+    stock.m_strCompanyWebSite = _T("ijk");
+    stock.m_strSECFilingWebSite = _T("https://def.com");
+
+    stock.m_lDailyDataUpdateDate = 20202020;
+    stock.m_lStatementUpdateDate = 10101010;
+
+    setWorldStock.Open();
+    stock.Append(setWorldStock);
+    setWorldStock.Close();
+
+    setWorldStock.m_strFilter = _T("[Symbol] = '000001.US'");
+    setWorldStock.Open();
+    stock2.Load(setWorldStock);
+    setWorldStock.Delete();
+    setWorldStock.Close();
+
+    EXPECT_STREQ(stock.GetSymbol(), stock2.GetSymbol());
+    EXPECT_STREQ(stock.GetDescription(), stock2.GetDescription());
+    EXPECT_STREQ(stock.GetExchangeCode(), stock2.GetExchangeCode());
+    EXPECT_STREQ(stock.GetDisplaySymbol(), stock2.GetDisplaySymbol());
+    EXPECT_STREQ(stock.GetType(), stock2.GetType());
+    EXPECT_STREQ(stock.GetMic(), stock2.GetMic());
+    EXPECT_STREQ(stock.GetFigi(), stock2.GetFigi());
+    EXPECT_STREQ(stock.GetCurrency(), stock2.GetCurrency());
+    EXPECT_STREQ(stock.GetAddress(), stock2.GetAddress());
+    EXPECT_STREQ(stock.GetCity(), stock2.GetCity());
+    EXPECT_STREQ(stock.GetCountry(), stock2.GetCountry());
+    EXPECT_STREQ(stock.GetCusip(), stock2.GetCusip());
+    EXPECT_STREQ(stock.GetSedol(), stock2.GetSedol());
+    EXPECT_EQ(stock.GetEmployeeTotal(), stock2.GetEmployeeTotal());
+    EXPECT_STREQ(stock.GetListedExchange(), stock2.GetListedExchange());
+    EXPECT_STREQ(stock.GetGgroup(), stock2.GetGgroup());
+    EXPECT_STREQ(stock.GetGsector(), stock2.GetGsector());
+    EXPECT_STREQ(stock.GetGsubind(), stock2.GetGsubind());
+    EXPECT_STREQ(stock.GetIPODate(), stock2.GetIPODate());
+    EXPECT_STREQ(stock.GetIsin(), stock2.GetIsin());
+    EXPECT_DOUBLE_EQ(stock.GetMarketCapitalization(), stock2.GetMarketCapitalization());
+    EXPECT_STREQ(stock.GetNaics(), stock2.GetNaics());
+    EXPECT_STREQ(stock.GetNaicsNationalIndustry(), stock2.GetNaicsNationalIndustry());
+    EXPECT_STREQ(stock.GetNaicsSector(), stock2.GetNaicsSector());
+    EXPECT_STREQ(stock.GetNaicsSubsector(), stock2.GetNaicsSubsector());
+    EXPECT_STREQ(stock.GetName(), stock2.GetName());
+    EXPECT_STREQ(stock.GetPhone(), stock2.GetPhone());
+    EXPECT_DOUBLE_EQ(stock.GetShareOutstanding(), stock2.GetShareOutstanding());
+    EXPECT_STREQ(stock.GetState(), stock2.GetState());
+    EXPECT_STREQ(stock.GetTicker(), stock2.GetTicker());
+    EXPECT_STREQ(stock.GetWebURL(), stock2.GetWebURL());
+    EXPECT_STREQ(stock.GetLogo(), stock2.GetLogo());
+    EXPECT_STREQ(stock.GetPeer(), stock2.GetPeer());
+    EXPECT_EQ(stock.GetProfileUpdateDate(), stock2.GetProfileUpdateDate());
+    EXPECT_EQ(stock.GetDayLineStartDate(), stock2.GetDayLineStartDate());
+    EXPECT_EQ(stock.GetDayLineEndDate(), stock2.GetDayLineEndDate());
+    EXPECT_EQ(stock.GetLastRTDataUpdateDate(), stock2.GetLastRTDataUpdateDate());
+    EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), stock2.GetLastEPSSurpriseUpdateDate());
+    EXPECT_EQ(stock.GetIPOStatus(), stock2.GetIPOStatus());
+    EXPECT_STREQ(stock.m_strTiingoPermaTicker, stock2.m_strTiingoPermaTicker);
+    EXPECT_TRUE(stock.m_fIsActive == stock2.m_fIsActive);
+    EXPECT_TRUE(stock.m_fIsADR == stock2.m_fIsADR);
+    EXPECT_EQ(stock.m_iSICCode, stock2.m_iSICCode);
+    EXPECT_STREQ(stock.m_strSICIndustry, stock2.m_strSICIndustry);
+    EXPECT_STREQ(stock.m_strSICSector, stock2.m_strSICSector);
+    EXPECT_STREQ(stock.m_strCompanyWebSite, stock2.m_strCompanyWebSite);
+    EXPECT_STREQ(stock.m_strSECFilingWebSite, stock2.m_strSECFilingWebSite);
+    EXPECT_EQ(stock.m_lDailyDataUpdateDate, stock2.m_lDailyDataUpdateDate);
+    EXPECT_EQ(stock.m_lStatementUpdateDate, stock2.m_lStatementUpdateDate);
+  }
 }
