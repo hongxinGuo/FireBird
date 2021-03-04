@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -40,7 +39,7 @@ namespace StockAnalysisTest {
   TEST_F(CNeteaseRTWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringPrefix(), _T("http://api.money.126.net/data/feed/"));
     EXPECT_STREQ(m_NeteaseRTWebInquiry.GetInquiringStringSuffix(), _T(""));
-    EXPECT_STREQ(m_NeteaseRTWebInquiry.GetConnection(), _T("NeteaseRT"));
+    EXPECT_STREQ(m_NeteaseRTWebInquiry.GetConnectionName(), _T("NeteaseRT"));
     EXPECT_EQ(m_NeteaseRTWebInquiry.GetInquiringNumber(), 700) << _T("ÍøÒ×Ä¬ÈÏÖµ");
   }
 

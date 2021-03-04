@@ -11,7 +11,7 @@ using namespace std;
 CTengxunRTWebInquiry::CTengxunRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://qt.gtimg.cn/q=");
   m_strWebDataInquireSuffix = _T("");
-  m_strConnection = _T("TengxunRT");
+  m_strConnectionName = _T("TengxunRT");
   m_lInquiringNumber = 900; // 腾讯实时数据查询默认值
 }
 

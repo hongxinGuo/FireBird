@@ -25,7 +25,7 @@ CQuandlWebInquiry::CQuandlWebInquiry() : CVirtualWebInquiry() {
     m_strWebDataInquireSuffix = _T("&api_key=zBMXMyoTyiy_N3pMb3ex"); // 发行版使用hotmail账户
 #endif // DEBUG
   }
-  m_strConnection = _T("Quandl");
+  m_strConnectionName = _T("Quandl");
   m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 

@@ -108,9 +108,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>Test源文件</Filter>
-    </ClCompile>
     <ClCompile Include="DayLineTest.cpp">
       <Filter>Test源文件\China Market\基础数据类</Filter>
     </ClCompile>
@@ -694,6 +691,9 @@
     </ClCompile>
     <ClCompile Include="MockWorldStockTest.cpp">
       <Filter>Test源文件\World Market</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Test源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

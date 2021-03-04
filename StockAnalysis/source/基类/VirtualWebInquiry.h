@@ -5,8 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma once
-
-#include"stdafx.h"
 #include"afxinet.h"
 
 #include"WebData.h"
@@ -63,7 +61,7 @@ public:
 
   bool IsReportStatus(void) noexcept { return m_fReportStatus; }
 
-  CString GetConnection(void) { return m_strConnection; }
+  CString GetConnectionName(void) { return m_strConnectionName; }
 
   long GetInquiringNumber(void) noexcept { return m_lInquiringNumber; }
   void SetInquiringNumber(long lValue) noexcept { m_lInquiringNumber = lValue; }
@@ -80,12 +78,12 @@ public:
   void __TESTSetBuffer(CString str);
 
 protected:
+  CString m_strConnectionName; // 此网络读取器的名称
   CHttpFile* m_pFile; // 网络文件指针
   DWORD m_dwWebErrorCode; //网络读取错误代码
   CString m_strInquire;// 查询所需的字符串
   char m_buffer[1024 * 1024 * 16]; // 接收到数据的缓冲区，最多16M
   long m_lByteRead; // 接收到的字符数
-  long m_lByteReadCurrent;
 
   CString m_strWebDataInquireMiddle; // 查询字符串中间字段
   CString m_strWebDataInquirePrefix; // 查询字符串前缀
@@ -100,8 +98,6 @@ protected:
   time_t m_tCurrentInquiryTime; // 当前接收数据所需时间（以毫秒计）
 
   static atomic_long m_lTotalByteReaded; // 当前网络读取字节数。所有的网络读取器都修改此变量，故而声明为静态。
-
-  CString m_strConnection;
 };
 
 typedef shared_ptr<CVirtualWebInquiry> CVirtualWebInquiryPtr;

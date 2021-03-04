@@ -29,7 +29,7 @@ using namespace std;
 CNeteaseRTWebInquiry::CNeteaseRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://api.money.126.net/data/feed/");
   m_strWebDataInquireSuffix = _T("");
-  m_strConnection = _T("NeteaseRT");
+  m_strConnectionName = _T("NeteaseRT");
   m_fReportStatus = false;
   m_lInquiringNumber = 700; // 网易实时数据查询默认值
 }

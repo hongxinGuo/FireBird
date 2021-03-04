@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -39,7 +38,7 @@ namespace StockAnalysisTest {
 #else
     EXPECT_STREQ(m_FinnhubWebInquiry.GetInquiringStringSuffix(), _T("&token=bv985d748v6ujthqfke0"));
 #endif //  DEBUG
-    EXPECT_STREQ(m_FinnhubWebInquiry.GetConnection(), _T("Finnhub"));
+    EXPECT_STREQ(m_FinnhubWebInquiry.GetConnectionName(), _T("Finnhub"));
   }
 
   TEST_F(CFinnhubWebInquiryTest, TestGetWebData) {

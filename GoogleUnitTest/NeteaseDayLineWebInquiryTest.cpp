@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -50,7 +49,7 @@ namespace StockAnalysisTest {
   TEST_F(CNeteaseDayLineWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetInquiringStringPrefix(), _T("http://quotes.money.163.com/service/chddata.html?code="));
     EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetInquiringStringSuffix(), _T("&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"));
-    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetConnection(), _T("NeteaseDayLine"));
+    EXPECT_STREQ(m_NeteaseDayLineWebInquiry.GetConnectionName(), _T("NeteaseDayLine"));
   }
 
   TEST_F(CNeteaseDayLineWebInquiryTest, TestGetWebData) {

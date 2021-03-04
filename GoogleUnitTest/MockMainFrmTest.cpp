@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -510,7 +509,6 @@ namespace StockAnalysisTest {
     s_pMainFrame->OnRecordRTData();
     EXPECT_FALSE(gl_pChinaStockMarket->IsRecordingRTData());
   }
-
 
   TEST_F(CMockMainFrameTest, TestOnUsingRealtimeDataServer) {
     EXPECT_TRUE(gl_pChinaStockMarket->IsUsingSinaRTDataServer());

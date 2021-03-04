@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -143,5 +142,4 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_ThreadStatus.GetNumberOfWebInquiringThread(), iRunningThread - 1);
     }
   }
-
 }

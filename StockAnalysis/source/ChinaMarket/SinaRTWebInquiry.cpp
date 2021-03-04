@@ -11,7 +11,7 @@ using namespace std;
 CSinaRTWebInquiry::CSinaRTWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://hq.sinajs.cn/list=");
   m_strWebDataInquireSuffix = _T("");
-  m_strConnection = _T("SinaRT");
+  m_strConnectionName = _T("SinaRT");
   m_lInquiringNumber = 850; // 新浪实时数据查询数量默认值
 }
 

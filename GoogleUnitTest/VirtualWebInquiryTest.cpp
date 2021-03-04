@@ -1,7 +1,6 @@
-#include"stdafx.h"
-#include"afxinet.h"
-
 #include"pch.h"
+
+#include"afxinet.h"
 
 #include"globedef.h"
 

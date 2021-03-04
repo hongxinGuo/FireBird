@@ -13,7 +13,7 @@ using namespace std;
 CPotenDailyBriefingWebInquiry::CPotenDailyBriefingWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://energy.poten.com/poten-daily-briefing-webpage-");
   m_strWebDataInquireSuffix = _T("");
-  m_strConnection = _T("PotenDailyBriefing");
+  m_strConnectionName = _T("PotenDailyBriefing");
 
   m_lInquiringDate = 20180411; //poten.com网站的最新格式从此日期之后开始，之前的格式暂时不去读取。
 }

@@ -1,5 +1,4 @@
-﻿#include"stdafx.h"
-#include"pch.h"
+﻿#include"pch.h"
 #include"globedef.h"
 
 #include"WeekLine.h"
@@ -40,7 +39,6 @@ namespace StockAnalysisTest {
     dl.SetTime(100100100);
     EXPECT_EQ(dl.GetFormatedMarketTime(), 100100100);
   }
-
 
   TEST_F(CChinaStockHistoryDataTest, TestGetStockCode) {
     CChinaStockHistoryData dl;

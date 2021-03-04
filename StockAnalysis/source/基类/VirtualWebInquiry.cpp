@@ -13,7 +13,6 @@ atomic_long CVirtualWebInquiry::m_lTotalByteReaded = 0;
 CVirtualWebInquiry::CVirtualWebInquiry() : CObject() {
   m_pFile = nullptr;
   m_lByteRead = 0;
-  m_lByteReadCurrent = 0;
   m_fWebError = false;
   m_dwWebErrorCode = 0;
   m_strInquire = _T("");
@@ -36,7 +35,6 @@ CVirtualWebInquiry::~CVirtualWebInquiry(void) {
 
 void CVirtualWebInquiry::Reset(void) noexcept {
   m_lByteRead = 0;
-  m_lByteReadCurrent = 0;
   m_dwWebErrorCode = 0;
   m_fWebError = false;
 }
@@ -54,6 +52,7 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   CString str1, strLeft;
   time_t tt = 0;
   char buffer[1024];
+  long lCurrentByteReaded = 0;
 
   ASSERT(IsReadingWebData());
   ASSERT(m_pFile == nullptr);
@@ -64,8 +63,8 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   try {    // 使用try语句后，出现exception（此时m_pFile == NULL）会转至catch语句中。
     m_pFile = dynamic_cast<CHttpFile*>(session.OpenURL((LPCTSTR)GetInquiringString()));
     do {
-      m_lByteReadCurrent = ReadWebFileOneTime(); // 每次读取1K数据。
-    } while (m_lByteReadCurrent > 0);
+      lCurrentByteReaded = ReadWebFileOneTime(); // 每次读取1K数据。
+    } while (lCurrentByteReaded > 0);
     ASSERT(m_lByteRead < 1024 * 1024 * 16);
     m_lTotalByteReaded += m_lByteRead;
     m_buffer[m_lByteRead] = 0x000; // 最后以0x000结尾

@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -243,7 +242,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(XferStandredToNetease(_T("60001.SS")), _T("060001."));
     EXPECT_STREQ(XferStandredToNetease(_T("00001.SZ")), _T("100001."));
   }
-
 }
 
 namespace StockAnalysisTest {
@@ -616,5 +614,4 @@ namespace StockAnalysisTest {
       EXPECT_EQ(s.at(0), 'E');
     }
   }
-
 }

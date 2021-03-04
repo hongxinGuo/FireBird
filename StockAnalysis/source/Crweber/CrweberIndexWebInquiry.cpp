@@ -13,7 +13,7 @@ using namespace std;
 CCrweberIndexWebInquiry::CCrweberIndexWebInquiry() : CVirtualWebInquiry() {
   m_strWebDataInquirePrefix = _T("http://www.crweber.com");
   m_strWebDataInquireSuffix = _T("");
-  m_strConnection = _T("CrweberIndex");
+  m_strConnectionName = _T("CrweberIndex");
 }
 
 CCrweberIndexWebInquiry::~CCrweberIndexWebInquiry() {

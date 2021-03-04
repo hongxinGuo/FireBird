@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -37,7 +36,7 @@ namespace StockAnalysisTest {
   TEST_F(CQuandlWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_QuandlWebInquiry.GetInquiringStringPrefix(), _T(""));
     EXPECT_STREQ(m_QuandlWebInquiry.GetInquiringStringSuffix(), _T("&api_key=zBMXMyoTyiy_N3pMb3ex"));
-    EXPECT_STREQ(m_QuandlWebInquiry.GetConnection(), _T("Quandl"));
+    EXPECT_STREQ(m_QuandlWebInquiry.GetConnectionName(), _T("Quandl"));
   }
 
   TEST_F(CQuandlWebInquiryTest, TestGetWebData) {

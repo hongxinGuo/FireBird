@@ -341,6 +341,7 @@
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
@@ -378,7 +379,6 @@
     <ClCompile Include="NeteaseWebRTDataTest.cpp" />
     <ClCompile Include="NeteaseRTWebInquiryTest.cpp" />
     <ClCompile Include="OneDealTest.cpp" />
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="MockPotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingMarketTest.cpp" />
     <ClCompile Include="PotenDailyBriefingTest.cpp" />
@@ -713,7 +713,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ADebug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>

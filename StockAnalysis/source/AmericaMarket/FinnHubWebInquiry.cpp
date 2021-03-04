@@ -30,7 +30,7 @@ CFinnhubWebInquiry::CFinnhubWebInquiry() : CVirtualWebInquiry() {
   //m_strWebDataInquireSuffix = _T("&token=sandbox_bv985d748v6ujthqfkeg"); // sandbox的密钥.sandbox只能用于测试，其数据为伪数据。
 #endif // DEBUG
   }
-  m_strConnection = _T("Finnhub");
+  m_strConnectionName = _T("Finnhub");
   m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
 }
 

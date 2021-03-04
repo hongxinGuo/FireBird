@@ -89,7 +89,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
   ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
-//    ON_COMMAND(ID_Change_DayLineExtendInfo, &CMainFrame::OnChangeDaylineextendinfo)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =

@@ -1,4 +1,3 @@
-#include"stdafx.h"
 #include"pch.h"
 
 #include"globedef.h"
@@ -38,7 +37,7 @@ namespace StockAnalysisTest {
   TEST_F(CTiingoWebInquiryTest, TestInitialize) {
     EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringPrefix(), _T(""));
     EXPECT_STREQ(m_TiingoWebInquiry.GetInquiringStringSuffix(), _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"));
-    EXPECT_STREQ(m_TiingoWebInquiry.GetConnection(), _T("Tiingo"));
+    EXPECT_STREQ(m_TiingoWebInquiry.GetConnectionName(), _T("Tiingo"));
   }
 
   TEST_F(CTiingoWebInquiryTest, TestGetWebData) {

@@ -1,15 +1,7 @@
 ﻿// MainFrm.h: CMainFrame 类的接口
 //
-
 #pragma once
-#include"afxinet.h"
-
 #include "OutputWnd.h"
-
-#include"SetDayLineBasicInfo.h"
-#include"SetRealTimeData.h"
-#include"SetChoicedStock.h"
-#include"SetOption.h"
 
 class CMainFrame : public CMDIFrameWndEx
 {
@@ -136,5 +128,4 @@ public:
   afx_msg void OnRebuildPeer();
   afx_msg void OnRebuildDayline();
   afx_msg void OnUpdateWorldStockDaylineStartEnd();
-  //  afx_msg void OnChangeDaylineextendinfo();
 };
