@@ -1,7 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
-
 #include"SetFinnhubExchange.h"
 
 using namespace std;

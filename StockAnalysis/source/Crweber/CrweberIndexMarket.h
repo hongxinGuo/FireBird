@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"CrweberIndex.h"
 #include"VirtualMarket.h"
 

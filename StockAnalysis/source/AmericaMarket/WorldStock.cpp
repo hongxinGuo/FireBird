@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"globedef.h"
 #include"accessory.h"
 #include "WorldStock.h"

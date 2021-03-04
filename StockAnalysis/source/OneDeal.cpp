@@ -1,4 +1,4 @@
-#include"stdafx.h"
+#include"pch.h"
 
 #include "OneDeal.h"
 
@@ -9,6 +9,5 @@ COneDeal::COneDeal() {
   m_lPrice = 0;
 }
 
-COneDeal::~COneDeal()
-{
+COneDeal::~COneDeal() {
 }

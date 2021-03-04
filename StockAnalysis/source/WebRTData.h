@@ -111,7 +111,6 @@ enum {
   __NETEASE_RT_WEB_DATA__ = 3,
 };
 
-#include"stdafx.h"
 #include"afxinet.h"
 
 #include"NeteaseRTWebInquiry.h"

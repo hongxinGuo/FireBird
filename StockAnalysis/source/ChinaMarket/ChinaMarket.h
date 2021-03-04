@@ -1,6 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
 #include"globedef.h"
 #include"Accessory.h"
 #include"Semaphore.h"

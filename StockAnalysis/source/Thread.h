@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"SinaRTWebInquiry.h"
 #include"TengxunRTWebInquiry.h"
 #include"NeteaseDayLineWebInquiry.h"

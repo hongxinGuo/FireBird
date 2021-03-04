@@ -1,7 +1,7 @@
 ﻿// StockAnalysis.cpp: 定义应用程序的类行为。
 //
 
-#include "stdafx.h"
+#include"pch.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
 

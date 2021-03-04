@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include"pch.h"
 #include"accessory.h"
 
 #include "SetOptionChinaStockMarket.h"

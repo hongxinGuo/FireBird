@@ -1,7 +1,7 @@
 ﻿// StockAnalysisView.cpp: CStockAnalysisView 类的实现
 //
 
-#include "stdafx.h"
+#include"pch.h"
 
 #include"globedef.h"
 

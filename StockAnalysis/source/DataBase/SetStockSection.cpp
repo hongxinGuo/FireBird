@@ -1,4 +1,4 @@
-#include"stdafx.h"
+#include"pch.h"
 
 #include "SetStockSection.h"
 #include"accessory.h"
@@ -8,8 +8,6 @@
 // CSetStockSection 实现
 
 // 代码生成在 2019年5月26日, 8:14
-
-#include "stdafx.h"
 
 IMPLEMENT_DYNAMIC(CSetStockSection, CRecordset)
 

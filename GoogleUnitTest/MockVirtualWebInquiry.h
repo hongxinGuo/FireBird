@@ -1,6 +1,4 @@
 #pragma once
-#include"pch.h"
-
 #include"VirtualWebInquiry.h"
 
 namespace testing {

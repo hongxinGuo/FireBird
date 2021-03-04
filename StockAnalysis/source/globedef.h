@@ -18,8 +18,6 @@ enum {
   __SHENZHEN_CHUANGYE__ = 12, // …Ó€⁄¥¥“µ∞Â
 };
 
-#include"stdafx.h"
-
 #include"VirtualMarket.h"
 #include"PotenDailyBriefingMarket.h"
 #include"CrweberIndexMarket.h"

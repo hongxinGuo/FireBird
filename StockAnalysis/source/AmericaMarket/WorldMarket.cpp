@@ -1,3 +1,4 @@
+#include"pch.h"
 #include "WorldMarket.h"
 #include"thread.h"
 

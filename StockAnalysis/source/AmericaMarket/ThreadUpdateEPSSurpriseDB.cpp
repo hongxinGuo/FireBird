@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"globedef.h"
 
 UINT ThreadUpdateEPSSurpriseDB(not_null<CWorldStock*> pStock) {

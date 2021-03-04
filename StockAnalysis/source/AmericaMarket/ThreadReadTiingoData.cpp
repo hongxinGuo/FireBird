@@ -9,6 +9,7 @@
 // 使用800毫秒，配合每0.5秒调用一次GetFinnhubDataFromWeb，保证在申请一秒后能够接收到数据，这样每次轮回为1.5秒。
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include"pch.h"
 #include"WebInquirer.h"
 
 UINT ThreadReadTiingoData(not_null<CTiingoWebInquiry*> pFinnhubWebData) {

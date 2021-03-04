@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"WebData.h"
 
 bool CWebData::GetData(char* buffer, long lDataLength, long lStartPosition) {

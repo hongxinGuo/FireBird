@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"Accessory.h"
 
 #include "EconomicCalendar.h"

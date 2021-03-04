@@ -1,3 +1,4 @@
+#include"pch.h"
 #include "StockSection.h"
 
 CStockSection::CStockSection() : CObject() {

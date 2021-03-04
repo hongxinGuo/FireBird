@@ -1,5 +1,4 @@
 #pragma once
-#include"stdafx.h"
 
 #include"DayLine.h"
 #include"WeekLine.h"

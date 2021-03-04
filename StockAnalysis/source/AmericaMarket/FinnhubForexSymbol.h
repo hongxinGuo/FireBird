@@ -1,6 +1,4 @@
 #pragma once
-#include"stdafx.h"
-
 #include"VirtualStock.h"
 
 #include"SetFinnhubForexSymbol.h"
@@ -50,7 +48,6 @@ public:
   CString m_strSymbol;
 
   vector<CDayLinePtr> m_vDayLine;
-
 };
 
 typedef shared_ptr<CFinnhubForexSymbol> CForexSymbolPtr;

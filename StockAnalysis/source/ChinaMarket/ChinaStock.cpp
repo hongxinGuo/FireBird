@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include"pch.h"
 
 #include "globedef.h"
 //#include "timer.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"VirtualMarket.h"
 
 #include"PotenDailyBriefing.h"

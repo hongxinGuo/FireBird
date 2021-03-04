@@ -1,7 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
-
 #include"SetEconomicCalendar.h"
 
 using namespace std;

@@ -1,14 +1,13 @@
 ﻿// MainFrm.cpp: CMainFrame 类的实现
 //
 
-#include "stdafx.h"
+#include"pch.h"
+#include"globedef.h"
 #include "StockAnalysis.h"
 
 #include "MainFrm.h"
 #include"StockAnalysisDoc.h"
 #include"StockAnalysisView.h"
-
-#include"globedef.h"
 
 #include"WebRTData.h"
 #include"DayLine.h"

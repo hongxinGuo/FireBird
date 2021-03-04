@@ -4,7 +4,7 @@
 
 // 代码生成在 2019年6月2日, 5:10
 
-#include "stdafx.h"
+#include"pch.h"
 #include"globedef.h"
 #include"Accessory.h"
 

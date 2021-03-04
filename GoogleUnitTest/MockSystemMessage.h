@@ -1,6 +1,4 @@
 #pragma once
-#include"pch.h"
-
 #include"SystemMessage.h"
 
 namespace testing {

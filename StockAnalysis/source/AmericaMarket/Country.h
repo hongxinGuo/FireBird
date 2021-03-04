@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"SetCountry.h"
 
 using namespace std;

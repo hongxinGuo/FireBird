@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"SetCrweberIndex.h"
 #include"WebData.h"
 

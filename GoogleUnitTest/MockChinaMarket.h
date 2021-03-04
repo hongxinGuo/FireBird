@@ -1,8 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
-#include"pch.h"
-
 #include"ChinaStock.h"
 #include"ChinaMarket.h"
 

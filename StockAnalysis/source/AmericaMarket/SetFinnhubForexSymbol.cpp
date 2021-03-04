@@ -2,7 +2,7 @@
 
 // 代码生成在 2019年5月26日, 8:14
 
-#include "stdafx.h"
+#include"pch.h"
 #include"globedef.h"
 #include"accessory.h"
 

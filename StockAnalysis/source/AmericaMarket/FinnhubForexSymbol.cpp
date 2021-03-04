@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"globedef.h"
 
 #include "FinnhubForexSymbol.h"
@@ -14,7 +15,6 @@ void CFinnhubForexSymbol::Reset(void) {
   m_strSymbol = _T(" ");
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19800101;
-
 }
 
 void CFinnhubForexSymbol::Load(CSetFinnhubForexSymbol& setForexSymbol) {

@@ -1,4 +1,4 @@
-#include"stdafx.h"
+#include"pch.h"
 
 #include"globedef.h"
 
@@ -21,7 +21,6 @@ CThreadStatus::CThreadStatus() {
   m_CalculatingRTData = false;
   m_SavingTempData = false;
   m_CreatingWeekLine = false;
-
 }
 
 CThreadStatus::~CThreadStatus() {

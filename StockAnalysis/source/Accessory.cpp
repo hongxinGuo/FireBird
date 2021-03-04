@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"globedef.h"
 #include "Accessory.h"
 
@@ -11,8 +12,6 @@ long GetFormatedDate(void) {
 
   return lLocalDate;
 }
-
-
 
 time_t ConvertBufferToTime(CString strFormat, const char* buffer) {
   time_t tt{ 0 };
@@ -227,7 +226,6 @@ long GetCurrentMonday(long lDate) {
   return lCurrentMonday;
 }
 
-
 bool IsShanghaiExchange(CString strStockCode) {
   CString str = GetStockExchange(strStockCode);
   if (str.Compare(_T("SS")) == 0) return true;
@@ -287,8 +285,8 @@ CString XferSinaToStandred(CString strSina) {
 
 CString XferSinaToNetease(CString strSina) {
   CString strSymbol = strSina.Right(6);
-    if (strSina.Left(2).Compare(_T("sh")) == 0) {
-      return _T("0") + strSymbol;
+  if (strSina.Left(2).Compare(_T("sh")) == 0) {
+    return _T("0") + strSymbol;
   }
   else {
     ASSERT(strSina.GetAt(1) == 'z');
@@ -319,7 +317,7 @@ CString XferNeteaseToSina(CString strNetease) {
 }
 
 CString XferTengxunToStandred(CString strTengxun) {
-    return XferSinaToStandred(strTengxun);
+  return XferSinaToStandred(strTengxun);
 }
 
 CString XferStandredToSina(CString strStandred) {
@@ -328,7 +326,7 @@ CString XferStandredToSina(CString strStandred) {
     return _T("sh") + strSymbol;
   }
   else {
-    ASSERT(strStandred.GetAt(strStandred.GetLength()-1) == 'Z');
+    ASSERT(strStandred.GetAt(strStandred.GetLength() - 1) == 'Z');
     return _T("sz") + strSymbol;
   }
 }
@@ -339,7 +337,7 @@ CString XferStandredToNetease(CString strStandred) {
     return _T("0") + strSymbol;
   }
   else {
-    ASSERT(strStandred.GetAt(strStandred.GetLength()-1) == 'Z');
+    ASSERT(strStandred.GetAt(strStandred.GetLength() - 1) == 'Z');
     return _T("1") + strSymbol;
   }
 }

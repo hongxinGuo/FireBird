@@ -1,3 +1,4 @@
+#include"pch.h"
 #include"globedef.h"
 
 UINT ThreadUpdateForexSymbolDB(not_null<CWorldMarket*> pMarket) {

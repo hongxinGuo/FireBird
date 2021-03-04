@@ -1,7 +1,7 @@
 ﻿// ChildFrm.cpp: CChildFrame 类的实现
 //
 
-#include "stdafx.h"
+#include"pch.h"
 #include "StockAnalysis.h"
 
 #include "ChildFrm.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include"stdafx.h"
-
 #include"SetPotenDailyBriefing.h"
 #include"WebData.h"
 

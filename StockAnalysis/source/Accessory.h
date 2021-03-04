@@ -1,7 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
-
 #include"WebData.h"
 
 using namespace std;

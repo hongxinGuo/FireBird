@@ -1,6 +1,4 @@
 #pragma once
-
-#include"stdafx.h"
 #include"Semaphore.h"
 
 #include"VirtualMarket.h"
