@@ -145,7 +145,7 @@ ExcludeFromCodeCoverage(CCrweberIndex2, L"CCrweberIndex::RunningMaintainDB");
 
 ExcludeFromCodeCoverage(CVirtualWebInquiry1, L"CVirtualWebInquiry::GetNextInquiringMiddleStr");
 ExcludeFromCodeCoverage(CVirtualWebInquiry2, L"CVirtualWebInquiry::PrepareNextInquiringStr");
-ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFile");
+ExcludeFromCodeCoverage(CVirtualWebInquiry3, L"CVirtualWebInquiry::ReadWebFileOneTime");
 ExcludeFromCodeCoverage(CVirtualWebInquiry4, L"CVirtualWebInquiry::StartReadingThread");
 
 ExcludeFromCodeCoverage(CRTData1, L"CWebRTData::AssertValid");

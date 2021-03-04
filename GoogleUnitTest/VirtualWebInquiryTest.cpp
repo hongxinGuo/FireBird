@@ -50,8 +50,42 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
   }
 
-  TEST_F(CVirtualWebInquiryTest, TestReadWebData3) {
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
+  TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringPrefix) {
+    m_VirtualWebInquiry.SetInquiryingStringPrefix(_T("abcdefghigh"));
+    EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringPrefix(), _T("abcdefghigh"));
+    m_VirtualWebInquiry.SetInquiryingStringPrefix(_T(""));
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringMiddle) {
+    m_VirtualWebInquiry.SetInquiryingStringMiddle(_T("bcdefghigh"));
+    EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringMiddle(), _T("bcdefghigh"));
+    m_VirtualWebInquiry.SetInquiryingStringMiddle(_T(""));
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestGetInquiringStringSuffix) {
+    m_VirtualWebInquiry.SetInquiryingStringSuffix(_T("cdefghigh"));
+    EXPECT_STREQ(m_VirtualWebInquiry.GetInquiringStringSuffix(), _T("cdefghigh"));
+    m_VirtualWebInquiry.SetInquiryingStringSuffix(_T(""));
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestReadWebData) {
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
+      .Times(6)
+      .WillOnce(Return(1024)) //第一次返回值为0
+      .WillOnce(Return(1024))
+      .WillOnce(Return(1024)) //第三次返回值为非零
+      .WillOnce(Return(1024))
+      .WillOnce(Return(10))
+      .WillOnce(Return(0)); // 随后为零，函数顺利返回
+    m_VirtualWebInquiry.SetReadingWebData(true);
+    m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData());
+    EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
+    EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
+  }
+
+  TEST_F(CVirtualWebInquiryTest, TestReadWebDataTimeLimit) {
+    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFileOneTime())
       .Times(8)
       .WillOnce(Return(0)) //第一次返回值为0
       .WillOnce(Return(0))
@@ -62,31 +96,9 @@ namespace StockAnalysisTest {
     m_VirtualWebInquiry.SetReadingWebData(true);
     m_VirtualWebInquiry.SetInquiringString(_T("http://hq.sinajs.cn/list=sh600000"));
     //m_VirtualWebInquiry.SetInquiringString(_T("http://quotes.money.163.com/service/chddata.html?code=1600000&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE"));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebData3(100, 30, 20));
+    EXPECT_TRUE(m_VirtualWebInquiry.ReadWebDataTimeLimit(100, 30, 20));
     EXPECT_FALSE(m_VirtualWebInquiry.IsWebError());
     EXPECT_TRUE(m_VirtualWebInquiry.IsReadingWebData()) << "直到工作线程退出时方重置此标识";
-  }
-
-  TEST_F(CVirtualWebInquiryTest, TestReadDataFromWebOnce) {
-    long lCurrentByteReaded = 0;
-    m_VirtualWebInquiry.SetByteReaded(0);
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
-      .Times(1)
-      .WillOnce(Return(0));
-    EXPECT_FALSE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
-    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 0);
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
-      .Times(1)
-      .WillOnce(Return(1024));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
-    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024);
-    EXPECT_CALL(m_VirtualWebInquiry, ReadWebFile())
-      .Times(2)
-      .WillOnce(Return(1024))
-      .WillOnce(Return(128));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
-    EXPECT_TRUE(m_VirtualWebInquiry.ReadDataFromWebOnce(lCurrentByteReaded));
-    EXPECT_EQ(m_VirtualWebInquiry.GetByteReaded(), 1024 + 1024 + 128);
   }
 
   TEST_F(CVirtualWebInquiryTest, TestGetWebData) {

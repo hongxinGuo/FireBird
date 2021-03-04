@@ -225,7 +225,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
     if (IsFinnhubDataReceived()) { //已经发出了数据申请且Finnhub数据已经接收到了？
       m_CurrentFinnhubInquiry = m_qFinnhubWebInquiry.top();
       m_qFinnhubWebInquiry.pop();
-      gl_pFinnhubWebInquiry->SetInquiryingStrPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
+      gl_pFinnhubWebInquiry->SetInquiryingStringPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
@@ -532,7 +532,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
     if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
       m_CurrentTiingoInquiry = m_qTiingoWebInquiry.top();
       m_qTiingoWebInquiry.pop();
-      gl_pTiingoWebInquiry->SetInquiryingStrPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); // 设置前缀
+      gl_pTiingoWebInquiry->SetInquiryingStringPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentTiingoInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
       break;
@@ -1573,8 +1573,8 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
     m_lLastTotalForexSymbol = lTotalForexSymbol;
   }
 
-  for (auto& pSymbol : m_vForexSymbol) {
-    if (pSymbol->IsUpdateStockProfileDB()) {
+  for (auto& pSymbol2 : m_vForexSymbol) {
+    if (pSymbol2->IsUpdateStockProfileDB()) {
       fUpdateSymbol = true;
       break;
     }

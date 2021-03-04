@@ -20,9 +20,8 @@ public:
   virtual ~CVirtualWebInquiry(void);
 
   virtual bool ReadWebData(void); // 网络实际读取函数
-  virtual bool ReadWebData3(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);// 这种采用多次等待方式
-  bool ReadDataFromWebOnce(long& lCurrentByteReaded);
-  virtual UINT ReadWebFile(void); // 无法测试，故而虚拟化后使用Mock类。
+  virtual bool ReadWebDataTimeLimit(long lFirstDelayTime, long lSecondDelayTime, long lThirdDelayTime = 0);// 这种采用多次等待方式
+  virtual UINT ReadWebFileOneTime(void); // 无法测试，故而虚拟化后使用Mock类。
   CWebDataPtr TransferWebDataToQueueData(void);
 
   // 唯一的公共接口函数
@@ -50,7 +49,7 @@ public:
   void AddByteReaded(long lValue)noexcept { m_lByteRead += lValue; }
 
   CString GetInquiringStringPrefix(void) { return m_strWebDataInquirePrefix; }
-  void SetInquiryingStrPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
+  void SetInquiryingStringPrefix(CString strPrefix) { m_strWebDataInquirePrefix = strPrefix; }
   CString GetInquiringStringSuffix(void) { return m_strWebDataInquireSuffix; }
   void SetInquiryingStringSuffix(CString strSuffix) { m_strWebDataInquireSuffix = strSuffix; }
   CString GetInquiringStringMiddle(void) { return m_strWebDataInquireMiddle; }

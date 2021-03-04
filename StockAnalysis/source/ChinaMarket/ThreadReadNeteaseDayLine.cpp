@@ -25,7 +25,7 @@ UINT ThreadReadNeteaseDayLine(not_null<CNeteaseDayLineWebInquiry*> pNeteaseDayLi
   ASSERT(pNeteaseDayLineWebData->IsReadingWebData());
   // 网易的日线数据服务器似乎无法使用一次读完的功能，只能用这种等待定时方式，原因未知。
   //if (pNeteaseDayLineWebData->ReadWebData()) { // 这种是采用一次读完的方式，但网易日线数据服务器可能不支持。
-  if (pNeteaseDayLineWebData->ReadWebData3(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
+  if (pNeteaseDayLineWebData->ReadWebDataTimeLimit(/*siDelayTime*/ 200, 30, 30)) { // 这种是采用等待时间的方式，目前可行。
     // 将读取的日线数据放入相关股票的日线数据缓冲区中，并设置相关标识。
     pStock = gl_pChinaStockMarket->GetStock(pNeteaseDayLineWebData->GetDownLoadingStockCode());
     ASSERT(pStock != nullptr);

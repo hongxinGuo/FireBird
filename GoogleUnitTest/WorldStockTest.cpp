@@ -732,6 +732,7 @@ namespace StockAnalysisTest {
     stock.SetSymbol(_T("000001.US"));
     stock.SetExchangeCode(_T("US"));
     stock.SetDescription(_T("US Stock"));
+    stock.SetDisplaySymbol(_T("DisplaySymbol"));
     stock.SetType(_T("Ordinary share"));
     stock.SetMic(_T("abcdef"));
     stock.SetFigi(_T("12345678"));
@@ -765,9 +766,13 @@ namespace StockAnalysisTest {
     stock.SetMarketCapitalization(34324.234);
 
     stock.m_strTiingoPermaTicker = _T("aasdfasdfj");
+    stock.m_fIsActive = true;
+    stock.m_fIsADR = true;
+    stock.m_iSICCode = 1234;
     stock.m_strSICIndustry = _T("defg");
     stock.m_strSICSector = _T("efg");
     stock.m_strTiingoIndustry = _T("ghi");
+    stock.m_strTiingoSector = _T("defghijk");
     stock.m_strCompanyWebSite = _T("ijk");
     stock.m_strSECFilingWebSite = _T("https://def.com");
 
