@@ -231,9 +231,6 @@
     <ClCompile Include="..\StockAnalysis\OutputWnd.cpp">
       <Filter>dependency</Filter>
     </ClCompile>
-    <ClCompile Include="..\StockAnalysis\stdafx.cpp">
-      <Filter>dependency</Filter>
-    </ClCompile>
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp">
       <Filter>dependency</Filter>
     </ClCompile>

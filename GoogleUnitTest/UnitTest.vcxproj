@@ -341,14 +341,15 @@
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualMarket.cpp" />
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualStock.cpp" />
     <ClCompile Include="..\StockAnalysis\source\基类\VirtualWebInquiry.cpp" />
-    <ClCompile Include="..\StockAnalysis\stdafx.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysis.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisDoc.cpp" />
     <ClCompile Include="..\StockAnalysis\StockAnalysisView.cpp" />
     <ClCompile Include="AccessoryTest.cpp" />
     <ClCompile Include="MockWorldMarketTest.cpp" />
     <ClCompile Include="MockWorldStockTest.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
@@ -669,7 +670,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>__GOOGLEMOCK__;X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
