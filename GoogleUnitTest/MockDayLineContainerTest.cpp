@@ -4,7 +4,6 @@
 #include"MockDayLineContainer.h"
 
 using namespace testing;
-using namespace testing;
 
 namespace StockAnalysisTest {
   class CMockDayLineContainerTest : public ::testing::Test
