@@ -167,11 +167,6 @@ public:
   virtual bool RunningThreadUpdateCountryListDB(void);
   virtual bool RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock);
 
-  bool IsWorldStock(CString strProfile);
-  bool IsWorldStockUpdated(void);
-  CWorldStockPtr GetWorldStock(CString strTicker);
-  void CreateNewStock(CWorldStockPtr pStock2);
-
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
   // 各种状态
@@ -190,9 +185,26 @@ public:
 
   long GetFinnInquiry(void);
 
-  long GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
+  bool IsStockUpdated(void);
+  void CreateNewStock(CWorldStockPtr pStock);
+  bool DeleteStock(CWorldStockPtr pStock);
+  size_t GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
+  bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
+  bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
   CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
   CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
+
+  bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
+  void AddForexExchange(CString strForexExchange);
+
+  bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
+  bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->m_strSymbol); }
+  void AddForexSymbol(CForexSymbolPtr pForexSymbol);
+
+  size_t GetTotalCountry(void) noexcept { return m_vCountry.size(); }
+  bool IsCountry(CString strCountry);
+  bool IsCountry(CCountryPtr pCountry);
+  void AddCountry(CCountryPtr pCountry);
 
   // 数据库操作
   bool LoadOption(void);

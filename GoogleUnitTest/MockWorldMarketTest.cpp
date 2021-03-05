@@ -80,6 +80,32 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pWorldMarket->TaskUpdateCountryListDB());
   }
 
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateEPSSurpriseDB) {
+    CWorldStockPtr pStock = nullptr;
+    for (long l = 0; l < s_pWorldMarket->GetTotalStock(); l++) {
+      pStock = s_pWorldMarket->GetStock(l);
+      pStock->SetEPSSurpriseNeedSave(false); // 清除所有需更新标识
+    }
+    s_pWorldMarket->GetStock(0)->SetEPSSurpriseNeedSave(true);
+    s_pWorldMarket->GetStock(1)->SetEPSSurpriseNeedSave(true);
+    EXPECT_CALL(*s_pWorldMarket, RunningThreadUpdateEPSSurpriseDB(_))
+      .Times(2);
+    EXPECT_TRUE(s_pWorldMarket->TaskUpdateEPSSurpriseDB());
+
+    gl_fExitingSystem = true;
+    pStock = s_pWorldMarket->GetStock(_T("000001.SS"));
+    pStock->SetEPSSurpriseNeedSave(true);
+    pStock = s_pWorldMarket->GetStock(1);
+    pStock->SetEPSSurpriseNeedSave(true);
+    EXPECT_CALL(*s_pWorldMarket, RunningThreadUpdateEPSSurpriseDB(_))
+      .Times(1);
+    EXPECT_TRUE(s_pWorldMarket->TaskUpdateEPSSurpriseDB()) << "由于gl_fExitingSystem设置为真，导致只执行了一次即退出";
+    EXPECT_TRUE(s_pWorldMarket->GetStock(1)->IsEPSSurpriseNeedSave());
+
+    gl_fExitingSystem = false;
+    s_pWorldMarket->GetStock(1)->SetEPSSurpriseNeedSave(false);
+  }
+
   TEST_F(CMockWorldMarketTest, TestUpdateCountryListDB) {
     EXPECT_CALL(*s_pWorldMarket, UpdateCountryListDB)
       .Times(1);

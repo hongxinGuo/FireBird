@@ -387,7 +387,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case  __COMPANY_SYMBOLS__:
       if (ProcessFinnhubStockSymbol(pWebData, vStock)) {
         //TRACE("今日%s Finnhub Symbol总数为%d\n", m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode, vStock.size());
-        sprintf_s(buffer, _T("%6d"), vStock.size());
+        sprintf_s(buffer, _T("%6d"), (int)vStock.size());
         strNumber = buffer;
         str = _T("今日") + m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode + _T(" Finnhub Symbol总数为") + strNumber;
         gl_systemMessage.PushInnerSystemInformationMessage(str);
@@ -396,14 +396,14 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
           pStock3->SetExchangeCode(m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode);
         }
         for (auto& pStock2 : vStock) {
-          if (!IsWorldStock(pStock2->GetSymbol())) {
+          if (!IsStock(pStock2->GetSymbol())) {
             CreateNewStock(pStock2);
             fFoundNewStock = true;
             TRACE("发现新代码：%s\n", pStock2->GetSymbol().GetBuffer());
           }
         }
         if (fFoundNewStock) {
-          SortStockVector();
+          SortStockVector(); // 这个行为很危险。目前WorldMarket的并行线程不多，尚可以使用。今后还是去除为佳。
           gl_systemMessage.PushInnerSystemInformationMessage("Finnhub发现新代码，更新代码集");
         }
       }
@@ -468,10 +468,8 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __FOREX_EXCHANGE__:
       if (ProcessFinnhubForexExchange(pWebData, vExchange)) {
         for (int i = 0; i < vExchange.size(); i++) {
-          if (m_mapForexExchange.find(vExchange.at(i)) == m_mapForexExchange.end()) {
-            lTemp = m_vForexExchange.size();
-            m_vForexExchange.push_back(vExchange.at(i));
-            m_mapForexExchange[vExchange.at(i)] = lTemp;
+          if (!IsForexExchange(vExchange.at(i))) {
+            AddForexExchange(vExchange.at(i));
           }
         }
         m_fFinnhubForexExhangeUpdated = true;
@@ -482,9 +480,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         for (auto& pSymbol : vForexSymbol) {
           if (m_mapForexSymbol.find(pSymbol->m_strSymbol) == m_mapForexSymbol.end()) {
             pSymbol->m_strExchange = m_vForexExchange.at(m_CurrentFinnhubInquiry.m_lStockIndex);
-            lTemp = m_mapForexSymbol.size();
-            m_mapForexSymbol[pSymbol->m_strSymbol] = lTemp;
-            m_vForexSymbol.push_back(pSymbol);
+            AddForexSymbol(pSymbol);
           }
         }
       }
@@ -498,9 +494,8 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __ECONOMIC_COUNTRY_LIST__:
       ProcessFinnhubCountryList(pWebData, vCountry);
       for (auto& pCountry : vCountry) {
-        if (m_mapCountry.find(pCountry->m_strCountry) == m_mapCountry.end()) {
-          m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
-          m_vCountry.push_back(pCountry);
+        if (!IsCountry(pCountry)) {
+          AddCountry(pCountry);
         }
       }
       m_fCountryListUpdated = true;
@@ -656,7 +651,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       case  __COMPANY_SYMBOLS__:
       if (ProcessTiingoStockSymbol(pWebData, vStock)) {
         for (auto& pStock2 : vStock) {
-          if (pStock2->m_fIsActive && (IsWorldStock(pStock2->GetSymbol()))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
+          if (pStock2->m_fIsActive && (IsStock(pStock2->GetSymbol()))) { // Tiingo的Symbol信息只是用于Finnhub的一个补充。
             lTemp++;
             pStock = m_vWorldStock.at(m_mapWorldStock.at(pStock2->GetSymbol()));
             pStock->m_strTiingoPermaTicker = pStock2->m_strTiingoPermaTicker;
@@ -770,7 +765,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  if (m_fFinnhubSymbolUpdated && IsWorldStockUpdated()) {
+  if (m_fFinnhubSymbolUpdated && IsStockUpdated()) {
     TaskUpdateStockDB();
   }
 
@@ -1342,14 +1337,7 @@ bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
   return true;
 }
 
-bool CWorldMarket::IsWorldStock(CString strSymbol) {
-  if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) { // 新代码？
-    return false;
-  }
-  else return true;
-}
-
-bool CWorldMarket::IsWorldStockUpdated(void) {
+bool CWorldMarket::IsStockUpdated(void) {
   const int iTotal = m_vWorldStock.size();
   for (int i = 0; i < iTotal; i++) {
     if (m_vWorldStock.at(i)->IsUpdateStockProfileDB()) return true;
@@ -1357,18 +1345,21 @@ bool CWorldMarket::IsWorldStockUpdated(void) {
   return false;
 }
 
-CWorldStockPtr CWorldMarket::GetWorldStock(CString strTicker) {
-  if (IsWorldStock(strTicker)) {
-    return m_vWorldStock.at(m_mapWorldStock.at(strTicker));
-  }
-  else return nullptr;
-}
-
 void CWorldMarket::CreateNewStock(CWorldStockPtr pStock) {
   m_mapWorldStock[pStock->GetSymbol()] = m_vWorldStock.size();
   m_vWorldStock.push_back(pStock);
   pStock->SetTodayNewStock(true);
   pStock->SetUpdateStockProfileDB(true);
+}
+
+bool CWorldMarket::DeleteStock(CWorldStockPtr pStock) {
+  if (pStock == nullptr) return false;
+  if (!IsStock(pStock->GetSymbol())) return false;
+
+  auto it = find(m_vWorldStock.begin(), m_vWorldStock.end(), pStock);
+  m_vWorldStock.erase(it);
+
+  return true;
 }
 
 bool CWorldMarket::UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar) {
@@ -1392,6 +1383,32 @@ long CWorldMarket::GetFinnInquiry(void) {
     return inquiry.m_lInquiryIndex;
   }
   return -1;
+}
+
+void CWorldMarket::AddForexExchange(CString strForexExchange) {
+  m_mapForexExchange[strForexExchange] = m_vForexExchange.size();
+  m_vForexExchange.push_back(strForexExchange);
+}
+
+void CWorldMarket::AddForexSymbol(CForexSymbolPtr pForexSymbol) {
+  m_mapForexSymbol[pForexSymbol->m_strSymbol] = m_mapForexSymbol.size();
+  m_vForexSymbol.push_back(pForexSymbol);
+}
+
+bool CWorldMarket::IsCountry(CString strCountry) {
+  if (m_mapCountry.find(strCountry) == m_mapCountry.end()) {
+    return false;
+  }
+  else return true;
+}
+
+bool CWorldMarket::IsCountry(CCountryPtr pCountry) {
+  return IsCountry(pCountry->m_strCountry);
+}
+
+void CWorldMarket::AddCountry(CCountryPtr pCountry) {
+  m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
+  m_vCountry.push_back(pCountry);
 }
 
 bool CWorldMarket::LoadOption(void) {
@@ -1443,7 +1460,7 @@ bool CWorldMarket::LoadStockDB(void) {
   while (!setWorldStock.IsEOF()) {
     pWorldStock = make_shared<CWorldStock>();
     pWorldStock->Load(setWorldStock);
-    if (!IsWorldStock(pWorldStock->GetSymbol())) {
+    if (!IsStock(pWorldStock->GetSymbol())) {
       pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
       pWorldStock->CheckPeerStatus(GetFormatedMarketDate());
@@ -1473,7 +1490,7 @@ bool CWorldMarket::LoadWorldChoicedStock(void) {
   setWorldChoicedStock.Open();
   setWorldChoicedStock.m_pDatabase->BeginTrans();
   while (!setWorldChoicedStock.IsEOF()) {
-    if (IsWorldStock(setWorldChoicedStock.m_Symbol)) {
+    if (IsStock(setWorldChoicedStock.m_Symbol)) {
       pStock = GetStock(setWorldChoicedStock.m_Symbol);
       m_mapWorldChoicedStock[setWorldChoicedStock.m_Symbol] = m_mapWorldChoicedStock.size();
       m_vWorldChoicedStock.push_back(pStock);
@@ -1489,6 +1506,11 @@ bool CWorldMarket::LoadWorldChoicedStock(void) {
   return true;
 }
 
+///////////////////////////////////////////////////////////////////////////
+//
+// 此种更新方法，是默认新的国家代码附加在最后。
+//
+//////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::UpdateCountryListDB(void) {
   CCountryPtr pCountry = nullptr;
   CSetCountry setCountry;
@@ -1519,7 +1541,7 @@ bool CWorldMarket::UpdateStockDB(void) {
   int iCount = 0;
 
   //更新原有的代码集状态
-  if (IsWorldStockUpdated()) {
+  if (IsStockUpdated()) {
     for (auto& pStock2 : m_vWorldStock) {
       if (pStock2->IsUpdateStockProfileDB()) iUpdatedStock++;
     }

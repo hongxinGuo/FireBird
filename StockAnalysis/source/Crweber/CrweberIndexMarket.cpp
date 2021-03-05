@@ -111,7 +111,7 @@ bool CCrweberIndexMarket::TaskResetMarket(long lCurrentTime) {
 
 bool CCrweberIndexMarket::TaskProcessWebRTDataGetFromCrweberdotcom(void) {
   CWebDataPtr pWebData = nullptr;
-  const long lTotalData = gl_WebInquirer.GetCrweberDataSize();
+  const size_t lTotalData = gl_WebInquirer.GetCrweberDataSize();
   for (int i = 0; i < lTotalData; i++) {
     pWebData = gl_WebInquirer.PopCrweberData();
     pWebData->ResetCurrentPos();

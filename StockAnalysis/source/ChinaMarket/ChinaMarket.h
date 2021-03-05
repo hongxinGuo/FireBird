@@ -327,7 +327,7 @@ public:
   int GetCountDownTengxunNumber(void) noexcept { return m_iCountDownTengxunNumber; }
   void SetCountDownTengxunNumber(int iValue) noexcept { m_iCountDownTengxunNumber = iValue; }
 
-  long GetTotalStock(void) noexcept { return m_vChinaMarketStock.size(); }
+  long GetTotalStock(void) noexcept { return (long)m_vChinaMarketStock.size(); }
   long GetTotalLoadedStock(void) noexcept { return m_lLoadedStock; }
   void SetNewestTransactionTime(time_t tt) noexcept { m_ttNewestTransactionTime = tt; }
   time_t GetNewestTransactionTime(void) noexcept { return m_ttNewestTransactionTime; }

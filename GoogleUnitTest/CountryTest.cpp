@@ -49,8 +49,13 @@ namespace StockAnalysisTest {
 
     setCountry2.m_strFilter = _T("[Code2] = 'AA'");
     setCountry2.Open();
-    EXPECT_TRUE(!setCountry2.IsEOF()) << "此时已经存入了AA";
-    setCountry2.Delete();
+    setCountry2.m_pDatabase->BeginTrans();
+    while (!setCountry2.IsEOF()) {
+      EXPECT_TRUE(!setCountry2.IsEOF()) << "此时已经存入了AA";
+      setCountry2.Delete();
+      setCountry2.MoveNext();
+    }
+    setCountry2.m_pDatabase->CommitTrans();
     setCountry2.Close();
   }
 
