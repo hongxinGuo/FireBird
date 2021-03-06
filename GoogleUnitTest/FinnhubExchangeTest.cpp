@@ -68,6 +68,7 @@ namespace StockAnalysisTest {
 
     setFinnhubExchange2.m_strFilter = _T("[Code] = 'AA'");
     setFinnhubExchange2.Open();
+    setFinnhubExchange2.m_pDatabase->BeginTrans();
     EXPECT_TRUE(!setFinnhubExchange2.IsEOF()) << "此时已经存入了AA";
     FinnhubExchange2.Load(setFinnhubExchange2);
     EXPECT_STREQ(FinnhubExchange.m_strCode, _T("AA"));
@@ -79,8 +80,8 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubExchange.m_strCountry, _T("dfe"));
     EXPECT_STREQ(FinnhubExchange.m_strSource, _T("abc"));
     EXPECT_TRUE(FinnhubExchange.m_fUpdated);
-
     setFinnhubExchange2.Delete();
+    setFinnhubExchange2.m_pDatabase->CommitTrans();
     setFinnhubExchange2.Close();
   }
 }

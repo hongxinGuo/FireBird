@@ -183,6 +183,9 @@ public:
   void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
   bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
 
+  CFinnhubExchangePtr GetExchange(long lIndex) { return m_vFinnhubExchange.at(lIndex); }
+  size_t GetExchangeSize(void) noexcept { return m_mapFinnhubExchange.size(); }
+
   bool IsStockUpdated(void);
   void CreateNewStock(CWorldStockPtr pStock);
   bool DeleteStock(CWorldStockPtr pStock);
@@ -228,6 +231,11 @@ public:
   void SetFinnhubEconomicCalendarUpdated(bool fFlag) noexcept { m_fFinnhubEconomicCalendarUpdated = fFlag; }
   bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
   void SetFinnhubEPSSurpriseUpdated(bool fFlag) noexcept { m_fFinnhubEPSSurpriseUpdated = fFlag; }
+
+  bool IsTiingoSymbolUpdated(void) noexcept { return m_fTiingoSymbolUpdated; }
+  void SetTiingoSymbolUpdated(bool fFlag) noexcept { m_fTiingoSymbolUpdated = fFlag; }
+  bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
+  void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
 
   // Êý¾Ý¿â²Ù×÷
   bool LoadOption(void);
