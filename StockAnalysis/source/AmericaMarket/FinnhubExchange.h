@@ -24,7 +24,6 @@ public:
   CString m_strCloseDate;
   CString m_strCountry;
   CString m_strSource;
-  bool m_fIsActive;
 
   bool m_fUpdated;
 };

@@ -31,7 +31,6 @@ public:
   CString m_CloseDate;
   CString m_Country;
   CString m_Source;
-  BOOL m_IsActive;
 
   // 重写
     // 向导生成的虚函数重写

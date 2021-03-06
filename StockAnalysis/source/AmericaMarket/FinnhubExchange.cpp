@@ -10,7 +10,6 @@ CFinnhubExchange::CFinnhubExchange() : CObject() {
   m_strCloseDate = _T(" ");
   m_strCountry = _T("");
   m_strSource = _T("");
-  m_fIsActive = false;
 
   m_fUpdated = false;
 }
@@ -25,7 +24,6 @@ void CFinnhubExchange::Append(CSetFinnhubExchange& setFinnhubExchange) {
   setFinnhubExchange.m_CloseDate = m_strCloseDate;
   setFinnhubExchange.m_Country = m_strCountry;
   setFinnhubExchange.m_Source = m_strSource;
-  setFinnhubExchange.m_IsActive = m_fIsActive;
   setFinnhubExchange.Update();
 }
 
@@ -38,5 +36,4 @@ void CFinnhubExchange::Load(CSetFinnhubExchange& setFinnhubExchange) {
   m_strCloseDate = setFinnhubExchange.m_CloseDate;
   m_strCountry = setFinnhubExchange.m_Country;
   m_strSource = setFinnhubExchange.m_Source;
-  m_fIsActive = setFinnhubExchange.m_IsActive;
 }

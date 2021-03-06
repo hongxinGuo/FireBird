@@ -34,7 +34,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T(" "));
     EXPECT_STREQ(FinnhubExchange.m_strCountry, _T(""));
     EXPECT_STREQ(FinnhubExchange.m_strSource, _T(""));
-    EXPECT_FALSE(FinnhubExchange.m_fIsActive);
     EXPECT_FALSE(FinnhubExchange.m_fUpdated);
   }
 
@@ -58,7 +57,6 @@ namespace StockAnalysisTest {
     FinnhubExchange.m_strCloseDate = _T("20202020");
     FinnhubExchange.m_strCountry = _T("dfe");
     FinnhubExchange.m_strSource = _T("abc");
-    FinnhubExchange.m_fIsActive = false;
     FinnhubExchange.m_fUpdated = true;
 
     ASSERT(!gl_fNormalMode);
@@ -80,7 +78,6 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(FinnhubExchange.m_strCloseDate, _T("20202020"));
     EXPECT_STREQ(FinnhubExchange.m_strCountry, _T("dfe"));
     EXPECT_STREQ(FinnhubExchange.m_strSource, _T("abc"));
-    EXPECT_FALSE(FinnhubExchange.m_fIsActive);
     EXPECT_TRUE(FinnhubExchange.m_fUpdated);
 
     setFinnhubExchange2.Delete();

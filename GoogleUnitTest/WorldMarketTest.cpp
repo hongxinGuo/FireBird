@@ -19,11 +19,34 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
-      // clearu
+      // clearup
+      gl_pWorldMarket->SetFinnhubInquiring(false);
     }
 
   protected:
   };
+
+  TEST_F(CWorldMarketTest, TestTaskResetMarket) {
+    gl_pWorldMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetPermitResetMarket(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(101010)) << "不允许重置系统时，永远返回假";
+
+    gl_pWorldMarket->SetPermitResetMarket(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170000));
+    gl_pWorldMarket->SetPermitResetMarket(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskResetMarket(170101));
+    gl_pWorldMarket->SetPermitResetMarket(true);
+    EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170001));
+    gl_pWorldMarket->SetPermitResetMarket(true);
+    EXPECT_TRUE(gl_pWorldMarket->TaskResetMarket(170100));
+    EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+    EXPECT_FALSE(gl_pWorldMarket->IsPermitResetMarket());
+    EXPECT_TRUE(gl_pWorldMarket->IsResetMarket());
+
+    gl_pWorldMarket->SetPermitResetMarket(true);
+    gl_pWorldMarket->SetSystemReady(true);
+    gl_pWorldMarket->SetResetMarket(false);
+  }
 
   TEST_F(CWorldMarketTest, TestIsFinnhubInquiring) {
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInquiring());
@@ -163,5 +186,108 @@ namespace StockAnalysisTest {
 
     pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
     gl_pWorldMarket->DeleteStock(pStock); // 恢复原状
+  }
+
+  TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {
+    WebInquiry inquiry, inquiry2;
+
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+    inquiry.m_lInquiryIndex = 0;
+    inquiry.m_iPriority = 10;
+    inquiry.m_lStockIndex = 0;
+    gl_pWorldMarket->PushFinnhubInquiry(inquiry);
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
+    inquiry2 = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
+    EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+  }
+
+  TEST_F(CWorldMarketTest, TestIsCountryListUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsCountryListUpdated());
+    gl_pWorldMarket->SetCountryListUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsCountryListUpdated());
+    gl_pWorldMarket->SetCountryListUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsCountryListUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubSymbolUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubSymbolUpdated());
+    gl_pWorldMarket->SetFinnhubSymbolUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubSymbolUpdated());
+    gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubSymbolUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsWorldStockUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsWorldStockUpdated());
+    gl_pWorldMarket->SetWorldStockUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsWorldStockUpdated());
+    gl_pWorldMarket->SetWorldStockUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsWorldStockUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubDayLineUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+    gl_pWorldMarket->SetFinnhubDayLineUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+    gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubDayLineUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubForexExhangeUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
+    gl_pWorldMarket->SetFinnhubForexExchangeUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
+    gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexExchangeUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubForexSymbolUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+    gl_pWorldMarket->SetFinnhubForexSymbolUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+    gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubForexSymbolUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubEconomicCalendarUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+    gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+    gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEconomicCalendarUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestIsFinnhubEPSSurpriseUpdated) {
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEPSSurpriseUpdated());
+    gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubEPSSurpriseUpdated());
+    gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->IsFinnhubEPSSurpriseUpdated());
+  }
+
+  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCountryList) {
+    EXPECT_FALSE(gl_pWorldMarket->IsCountryListUpdated());
+    gl_pWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+    gl_pWorldMarket->SetCountryListUpdated(true);
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+    gl_pWorldMarket->SetCountryListUpdated(false);
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubCountryList());
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
+    WebInquiry inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, 10);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __ECONOMIC_COUNTRY_LIST__);
+    EXPECT_EQ(inquiry.m_lStockIndex, 0);
+    EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
   }
 }

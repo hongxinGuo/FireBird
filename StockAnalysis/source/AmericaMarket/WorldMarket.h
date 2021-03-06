@@ -183,8 +183,6 @@ public:
   void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
   bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
 
-  long GetFinnInquiry(void);
-
   bool IsStockUpdated(void);
   void CreateNewStock(CWorldStockPtr pStock);
   bool DeleteStock(CWorldStockPtr pStock);
@@ -205,6 +203,31 @@ public:
   bool IsCountry(CString strCountry);
   bool IsCountry(CCountryPtr pCountry);
   void AddCountry(CCountryPtr pCountry);
+
+  size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubWebInquiry.size(); }
+  void PushFinnhubInquiry(WebInquiry inquiry) noexcept { m_qFinnhubWebInquiry.push(inquiry); }
+  WebInquiry GetFinnhubInquiry(void);
+
+  bool IsCountryListUpdated(void) noexcept { return m_fCountryListUpdated; }
+  void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
+  bool IsFinnhubSymbolUpdated(void) noexcept { return m_fFinnhubSymbolUpdated; }
+  void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
+  bool IsWorldStockUpdated(void) noexcept { return m_fWorldStockUpdated; }
+  void SetWorldStockUpdated(bool fFlag) noexcept { m_fWorldStockUpdated = fFlag; }
+  bool IsFinnhubDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
+  void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
+  bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
+  void SetFinnhubForexExchangeUpdated(bool fFlag) noexcept { m_fFinnhubForexExchangeUpdated = fFlag; }
+  bool IsFinnhubForexSymbolUpdated(void) noexcept { return m_fFinnhubForexSymbolUpdated; }
+  void SetFinnhubForexSymbolUpdated(bool fFlag) noexcept { m_fFinnhubForexSymbolUpdated = fFlag; }
+  bool IsFinnhubForexDayLineUpdated(void) noexcept { return m_fFinnhubForexDayLineUpdated; }
+  void SetFinnhubForexDayLineUpdated(bool fFlag) noexcept { m_fFinnhubForexDayLineUpdated = fFlag; }
+  bool IsFinnhubPeerUpdated(void) noexcept { return m_fFinnhubPeerUpdated; }
+  void SetFinnhubPeerUpdated(bool fFlag) noexcept { m_fFinnhubPeerUpdated = fFlag; }
+  bool IsFinnhubEconomicCalendarUpdated(void) noexcept { return m_fFinnhubEconomicCalendarUpdated; }
+  void SetFinnhubEconomicCalendarUpdated(bool fFlag) noexcept { m_fFinnhubEconomicCalendarUpdated = fFlag; }
+  bool IsFinnhubEPSSurpriseUpdated(void) noexcept { return m_fFinnhubEPSSurpriseUpdated; }
+  void SetFinnhubEPSSurpriseUpdated(bool fFlag) noexcept { m_fFinnhubEPSSurpriseUpdated = fFlag; }
 
   // 数据库操作
   bool LoadOption(void);
@@ -286,9 +309,9 @@ protected:
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
   bool m_fWorldStockUpdated; // 每日更新公司简介
   bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
-  bool m_fFinnhubForexExhangeUpdated; // 每日更新Forex交易所
+  bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
   bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码
-  bool m_fForexDayLineUpdated; // 每日更新Forex日线数据
+  bool m_fFinnhubForexDayLineUpdated; // 每日更新Forex日线数据
   bool m_fFinnhubPeerUpdated; // 每月更新Peers数据
   bool m_fFinnhubEconomicCalendarUpdated; // 每日更新经济日历数据
   bool m_fFinnhubEPSSurpriseUpdated;
