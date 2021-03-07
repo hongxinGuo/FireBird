@@ -51,6 +51,7 @@ namespace StockAnalysisTest {
         if (pStock->IsDayLineNeedSaving()) pStock->SetDayLineNeedSaving(false);
         pStock = nullptr;
       }
+      EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 4833);
     }
 
   protected:

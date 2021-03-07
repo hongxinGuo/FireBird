@@ -608,6 +608,79 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(stock.IsUpdateProfileDB());
   }
 
+  TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB1) {
+    CWorldStock stock;
+    vector<CEPSSurprisePtr> vEPS;
+    CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+
+    EXPECT_TRUE(stock.UpdateEPSSurpriseDB()) << "没有数据，返回";
+  }
+
+  TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB2) {
+    CWorldStock stock;
+    vector<CEPSSurprisePtr> vEPS;
+    CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+
+    pEPS->m_strSymbol = _T("600601.SS");
+    pEPS->m_lDate = 20200101;
+    pEPS->m_dActual = 1.0;
+    pEPS->m_dEstimate = 1.1;
+    vEPS.push_back(pEPS);
+    pEPS = make_shared<CEPSSurprise>();
+    pEPS->m_strSymbol = _T("600601.SS");
+    pEPS->m_lDate = 20200401;
+    pEPS->m_dActual = 2.0;
+    pEPS->m_dEstimate = 2.1;
+    vEPS.push_back(pEPS);
+    stock.UpdateEPSSurprise(vEPS);
+
+    stock.SetLastEPSSurpriseUpdateDate(20210101);
+    EXPECT_FALSE(stock.UpdateEPSSurpriseDB()) << "没有新数据，返回假";
+  }
+
+  TEST_F(CWorldStockTest, TestUpdateEPSSurpriseDB3) {
+    CWorldStock stock;
+    vector<CEPSSurprisePtr> vEPS;
+    CEPSSurprisePtr pEPS = make_shared<CEPSSurprise>();
+
+    pEPS->m_strSymbol = _T("600601.US");
+    pEPS->m_lDate = 20200101;
+    pEPS->m_dActual = 1.0;
+    pEPS->m_dEstimate = 1.1;
+    vEPS.push_back(pEPS);
+    pEPS = make_shared<CEPSSurprise>();
+    pEPS->m_strSymbol = _T("600601.US");
+    pEPS->m_lDate = 20200401;
+    pEPS->m_dActual = 2.0;
+    pEPS->m_dEstimate = 2.1;
+    vEPS.push_back(pEPS);
+    stock.UpdateEPSSurprise(vEPS);
+
+    stock.SetLastEPSSurpriseUpdateDate(20200101);
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    EXPECT_TRUE(stock.UpdateEPSSurpriseDB()) << "将新数据存入数据库(存储了一个新的)";
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
+    EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 20200401);
+
+    CSetEPSSurprise setEPSSurprise;
+    int i = 0;
+    setEPSSurprise.m_strFilter = _T("[Symbol] = '600601.US'");
+    setEPSSurprise.Open();
+    setEPSSurprise.m_pDatabase->BeginTrans();
+    while (!setEPSSurprise.IsEOF()) {
+      EXPECT_DOUBLE_EQ(setEPSSurprise.m_Actual, 2.0);
+      EXPECT_DOUBLE_EQ(setEPSSurprise.m_Estimate, 2.1);
+      EXPECT_EQ(setEPSSurprise.m_Date, 20200401);
+      EXPECT_STREQ(setEPSSurprise.m_Symbol, _T("600601.US"));
+      setEPSSurprise.Delete();
+      setEPSSurprise.MoveNext();
+      i++;
+    }
+    setEPSSurprise.m_pDatabase->CommitTrans();
+    setEPSSurprise.Close();
+    EXPECT_EQ(i, 1);
+  }
+
   TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
     CWorldStock stock;
     vector<CDayLinePtr> vDayLine;

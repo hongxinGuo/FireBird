@@ -72,6 +72,7 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
+      EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 4833);
     }
 
     virtual void TearDown(void) override {
@@ -106,6 +107,8 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
+
+      EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 4833);
     }
   };
 

@@ -958,7 +958,7 @@
     <ClCompile Include="source\AmericaMarket\ThreadUpdateEPSSurpriseDB.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexDayLine.cpp" />
     <ClCompile Include="source\AmericaMarket\ThreadUpdateForexSymbolDB.cpp" />
-    <ClCompile Include="source\AmericaMarket\ThreadUpdateStockDB.cpp" />
+    <ClCompile Include="source\AmericaMarket\ThreadUpdateStockProfileDB.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoStockFundanmental.cpp" />
     <ClCompile Include="source\AmericaMarket\TiingoWebInquiry.cpp" />
     <ClCompile Include="source\ChinaMarket\ChinaMarket.cpp" />

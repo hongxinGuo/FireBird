@@ -12,6 +12,11 @@ namespace StockAnalysisTest {
   {
   protected:
     static void SetUpTestSuite(void) {
+      gl_pWorldMarket->SetFinnhubInquiring(false);
+      gl_pWorldMarket->SetCountryListUpdated(false);
+      gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
+      gl_pWorldMarket->SetFinnhubStockProfileUpdated(false);
+      gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
     }
     static void TearDownTestSuite(void) {
     }
@@ -24,6 +29,10 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetCountryListUpdated(false);
       gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
       gl_pWorldMarket->SetFinnhubStockProfileUpdated(false);
+      gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
   protected:
