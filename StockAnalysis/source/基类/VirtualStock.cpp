@@ -25,7 +25,7 @@ void CVirtualStock::Reset(void) {
   m_llTotalValue = m_llCurrentValue = 0;
 
   m_fTodayNewStock = false;
-  m_fUpdateStockProfileDB = false;
+  m_fUpdateProfileDB = false;
   m_fActive = false;
   m_lDayLineStartDate = 29900101;
   m_lDayLineEndDate = 19000101;

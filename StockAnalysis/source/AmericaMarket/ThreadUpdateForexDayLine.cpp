@@ -22,7 +22,7 @@ UINT ThreadUpdateForexDayLineDB(not_null<CFinnhubForexSymbol*> pSymbol) {
   if (!gl_fExitingSystem) {
     pSymbol->SaveDayLine();
     pSymbol->UpdateDayLineStartEndDate();
-    pSymbol->SetUpdateStockProfileDB(true);
+    pSymbol->SetUpdateProfileDB(true);
     pSymbol->UnloadDayLine();
     str = pSymbol->GetSymbol() + _T("日线资料存储完成");
     gl_systemMessage.PushDayLineInfoMessage(str);

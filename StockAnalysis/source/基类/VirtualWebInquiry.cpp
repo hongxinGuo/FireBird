@@ -51,7 +51,6 @@ bool CVirtualWebInquiry::ReadWebData(void) {
   bool fStatus = true;
   CString str1, strLeft;
   time_t tt = 0;
-  char buffer[1024];
   long lCurrentByteReaded = 0;
 
   ASSERT(IsReadingWebData());

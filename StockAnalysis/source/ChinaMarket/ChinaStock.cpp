@@ -421,7 +421,7 @@ void CChinaStock::UpdateDayLineStartEndDate(void) {
     }
   }
   if (fUpdated) {
-    SetUpdateStockProfileDB(true);
+    SetUpdateProfileDB(true);
   }
 }
 
@@ -1513,7 +1513,7 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   if (!IsDelisted()) {
     if (IsEarlyThen(GetDayLineEndDate(), GetFormatedDate(), 30)) {
       SetIPOStatus(__STAKE_DELISTED__);
-      SetUpdateStockProfileDB(true);
+      SetUpdateProfileDB(true);
     }
   }
   SetCheckingDayLineStatus();

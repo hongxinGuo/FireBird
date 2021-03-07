@@ -132,7 +132,7 @@ public:
   bool TaskInquiryFinnhub(long lCurrentTime); // 这个函数做为总括，所有的查询Finnhub任务皆位于此。
   bool TaskInquiryFinnhubCountryList(void);
   bool TaskInquiryFinnhubCompanySymbol(void);
-  bool TaskInquiryFinnhubCompanyProfile2(void);
+  bool TaskInquiryFinnhubCompanyProfileConcise(void);
   bool TaskInquiryFinnhubDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
   bool TaskInquiryFinnhubPeer(void);
@@ -215,8 +215,8 @@ public:
   void SetCountryListUpdated(bool fFlag) noexcept { m_fCountryListUpdated = fFlag; }
   bool IsFinnhubSymbolUpdated(void) noexcept { return m_fFinnhubSymbolUpdated; }
   void SetFinnhubSymbolUpdated(bool fFlag) noexcept { m_fFinnhubSymbolUpdated = fFlag; }
-  bool IsWorldStockUpdated(void) noexcept { return m_fWorldStockUpdated; }
-  void SetWorldStockUpdated(bool fFlag) noexcept { m_fWorldStockUpdated = fFlag; }
+  bool IsFinnhubStockProfileUpdated(void) noexcept { return m_fFinnhubStockProfileUpdated; }
+  void SetFinnhubStockProfileUpdated(bool fFlag) noexcept { m_fFinnhubStockProfileUpdated = fFlag; }
   bool IsFinnhubDayLineUpdated(void) noexcept { return m_fFinnhubDayLineUpdated; }
   void SetFinnhubDayLineUpdated(bool fFlag) noexcept { m_fFinnhubDayLineUpdated = fFlag; }
   bool IsFinnhubForexExchangeUpdated(void) noexcept { return m_fFinnhubForexExchangeUpdated; }
@@ -315,7 +315,7 @@ protected:
   long m_lLastTotalEconomicCalendar;
 
   bool m_fFinnhubSymbolUpdated; // 每日更新公司代码库
-  bool m_fWorldStockUpdated; // 每日更新公司简介
+  bool m_fFinnhubStockProfileUpdated; // 每日更新公司简介
   bool m_fFinnhubDayLineUpdated; // 每日更新公司日线数据
   bool m_fFinnhubForexExchangeUpdated; // 每日更新Forex交易所
   bool m_fFinnhubForexSymbolUpdated; // 每日更新Forex交易所代码

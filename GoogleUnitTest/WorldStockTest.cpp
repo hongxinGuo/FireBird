@@ -54,6 +54,13 @@ namespace StockAnalysisTest {
     EXPECT_EQ(stock.GetLastEPSSurpriseUpdateDate(), 10101010);
   }
 
+  TEST_F(CWorldStockTest, TestIsProfileUpdated) {
+    CWorldStock stock;
+    EXPECT_FALSE(stock.IsProfileUpdated());
+    stock.SetProfileUpdated(true);
+    EXPECT_TRUE(stock.IsProfileUpdated());
+  }
+
   TEST_F(CWorldStockTest, TestIsEPSSurpriseNeedUpdate) {
     CWorldStock stock;
     EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
@@ -525,13 +532,13 @@ namespace StockAnalysisTest {
     pDayLine = stock.GetDayLine(1);
     EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210107);
     stock.SetDayLineEndDate(20210108);
     stock.UpdateDayLineStartEndDate();
     EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
     EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
 
     stock.UnloadDayLine();
     EXPECT_EQ(stock.GetDayLineSize(), 0);
@@ -568,37 +575,37 @@ namespace StockAnalysisTest {
     stock.SetDayLineEndDate(20210107);
     stock.UpdateDayLine(vDayLine);
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210107);
     stock.SetDayLineEndDate(20210108);
     stock.UpdateDayLineStartEndDate();
     EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
     EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210101);
     stock.SetDayLineEndDate(20210110);
     stock.UpdateDayLineStartEndDate();
     EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
     EXPECT_EQ(stock.GetDayLineEndDate(), 20210123);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210102);
     stock.SetDayLineEndDate(20210210);
     stock.UpdateDayLineStartEndDate();
     EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
     EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210101);
     stock.SetDayLineEndDate(20210210);
     stock.UpdateDayLineStartEndDate();
     EXPECT_EQ(stock.GetDayLineStartDate(), 20210101);
     EXPECT_EQ(stock.GetDayLineEndDate(), 20210210);
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
   }
 
   TEST_F(CWorldStockTest, TestHaveNewDayLineData) {
@@ -640,22 +647,22 @@ namespace StockAnalysisTest {
     pDayLine = stock.GetDayLine(1);
     EXPECT_EQ(pDayLine->GetFormatedMarketDate(), 20210102);
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210107);
     stock.SetDayLineEndDate(20210108);
     EXPECT_TRUE(stock.HaveNewDayLineData());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210101);
     stock.SetDayLineEndDate(20210110);
     EXPECT_TRUE(stock.HaveNewDayLineData());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210102);
     stock.SetDayLineEndDate(20210210);
     EXPECT_TRUE(stock.HaveNewDayLineData());
 
-    stock.SetUpdateStockProfileDB(false);
+    stock.SetUpdateProfileDB(false);
     stock.SetDayLineStartDate(20210101);
     stock.SetDayLineEndDate(20210210);
     EXPECT_FALSE(stock.HaveNewDayLineData());

@@ -384,7 +384,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetOffset(GetTotalStock());
   pStock->SetDayLineEndDate(19900101);
   pStock->SetDayLineStartDate(19900101);
-  pStock->SetUpdateStockProfileDB(true);
+  pStock->SetUpdateProfileDB(true);
   pStock->SetNeedProcessRTData(fProcessRTData);
   m_mapChinaMarketStock[pStock->GetSymbol()] = m_vChinaMarketStock.size(); // 使用下标生成新的映射
   m_vChinaMarketStock.push_back(pStock);
@@ -1375,7 +1375,7 @@ void CChinaMarket::ClearDayLineNeedUpdaeStatus(void) {
 
 bool CChinaMarket::IsUpdateStockCodeDB(void) {
   for (auto& pStock : m_vChinaMarketStock) {
-    if (pStock->IsUpdateStockProfileDB()) return true;
+    if (pStock->IsUpdateProfileDB()) return true;
   }
   return false;
 }
@@ -2581,7 +2581,7 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
     iCount++;
     pStock->SetDayLineEndDate(lCurrentTradeDay);
     pStock->SetIPOStatus(__STAKE_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
-    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetUpdateProfileDB(true);
     setDayLineBasicInfo.AddNew();
     pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);
     setDayLineBasicInfo.Update();
@@ -3112,7 +3112,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
   //更新原有的代码集状态
   if (IsUpdateStockCodeDB()) {
     for (auto& pStock2 : m_vChinaMarketStock) {
-      if (pStock2->IsUpdateStockProfileDB()) iUpdatedStock++;
+      if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
     }
     setStockCode.m_strSort = _T("[Symbol]");
     setStockCode.Open();
@@ -3120,7 +3120,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     while (iCount < iUpdatedStock) {
       if (setStockCode.IsEOF()) break;
       pStock = m_vChinaMarketStock.at(m_mapChinaMarketStock.at(setStockCode.m_Symbol));
-      if (pStock->IsUpdateStockProfileDBAndClearFlag()) {
+      if (pStock->IsUpdateProfileDBAndClearFlag()) {
         //ASSERT(!pStock3->IsTodayNewStock());
         iCount++;
         pStock->UpdateStockCodeDB(setStockCode);
@@ -3129,7 +3129,7 @@ bool CChinaMarket::UpdateStockCodeDB(void) {
     }
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vChinaMarketStock) {
-        if (pStock3->IsUpdateStockProfileDBAndClearFlag()) {
+        if (pStock3->IsUpdateProfileDBAndClearFlag()) {
           ASSERT(pStock3->IsTodayNewStock());
           iCount++;
           pStock3->AppendStockCodeDB(setStockCode);

@@ -36,7 +36,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STAKE_NOT_CHECKED__);
     EXPECT_TRUE(FinnhubForexSymbol.IsDayLineNeedUpdate());
     EXPECT_FALSE(FinnhubForexSymbol.IsDayLineNeedSaving());
-    EXPECT_FALSE(FinnhubForexSymbol.IsUpdateStockProfileDB());
+    EXPECT_FALSE(FinnhubForexSymbol.IsUpdateProfileDB());
   }
 
   TEST_F(CFinnhubForexSymbolTest, TestGetDescription) {
@@ -145,11 +145,11 @@ namespace StockAnalysisTest {
     symbol.UpdateDayLine(vDayLine);
     EXPECT_EQ(symbol.GetDayLineSize(), 2);
 
-    EXPECT_FALSE(symbol.IsUpdateStockProfileDB());
+    EXPECT_FALSE(symbol.IsUpdateProfileDB());
     symbol.UpdateDayLineStartEndDate();
     EXPECT_EQ(symbol.GetDayLineStartDate(), 20200102);
     EXPECT_EQ(symbol.GetDayLineEndDate(), 20200105);
-    EXPECT_TRUE(symbol.IsUpdateStockProfileDB());
+    EXPECT_TRUE(symbol.IsUpdateProfileDB());
 
     symbol.UnloadDayLine();
     EXPECT_EQ(symbol.GetDayLineSize(), 0);
@@ -186,7 +186,7 @@ namespace StockAnalysisTest {
     FinnhubForexSymbol.SetIPOStatus(__STAKE_DELISTED__);
     FinnhubForexSymbol.SetDayLineNeedUpdate(false);
     FinnhubForexSymbol.SetDayLineNeedSaving(true);
-    FinnhubForexSymbol.SetUpdateStockProfileDB(true);
+    FinnhubForexSymbol.SetUpdateProfileDB(true);
 
     ASSERT(!gl_fNormalMode);
     setFinnhubForexSymbol.Open();
@@ -208,7 +208,7 @@ namespace StockAnalysisTest {
     EXPECT_EQ(FinnhubForexSymbol.GetIPOStatus(), __STAKE_DELISTED__);
     EXPECT_FALSE(FinnhubForexSymbol.IsDayLineNeedUpdate());
     EXPECT_TRUE(FinnhubForexSymbol.IsDayLineNeedSaving());
-    EXPECT_TRUE(FinnhubForexSymbol.IsUpdateStockProfileDB());
+    EXPECT_TRUE(FinnhubForexSymbol.IsUpdateProfileDB());
     setFinnhubForexSymbol2.m_pDatabase->BeginTrans();
     while (!setFinnhubForexSymbol2.IsEOF()) {
       setFinnhubForexSymbol2.Delete();

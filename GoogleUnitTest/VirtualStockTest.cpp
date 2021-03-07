@@ -134,21 +134,21 @@ namespace StockAnalysisTest {
   TEST_F(CVirtualStockTest, TestIsUpdateStockProfileDB) {
     CVirtualStock stock;
 
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
-    stock.SetUpdateStockProfileDB(true);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDB());
-    stock.SetUpdateStockProfileDB(false);
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDB());
+    stock.SetUpdateProfileDB(false);
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
   }
 
-  TEST_F(CVirtualStockTest, TestIsUpdateStockProfileDBAndClearFlag) {
+  TEST_F(CVirtualStockTest, TestIsUpdateProfileDBAndClearFlag) {
     CVirtualStock stock;
 
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
-    EXPECT_FALSE(stock.IsUpdateStockProfileDBAndClearFlag());
-    stock.SetUpdateStockProfileDB(true);
-    EXPECT_TRUE(stock.IsUpdateStockProfileDBAndClearFlag());
-    EXPECT_FALSE(stock.IsUpdateStockProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
+    EXPECT_FALSE(stock.IsUpdateProfileDBAndClearFlag());
+    stock.SetUpdateProfileDB(true);
+    EXPECT_TRUE(stock.IsUpdateProfileDBAndClearFlag());
+    EXPECT_FALSE(stock.IsUpdateProfileDB());
   }
 
   TEST_F(CVirtualStockTest, TestIsActive) {

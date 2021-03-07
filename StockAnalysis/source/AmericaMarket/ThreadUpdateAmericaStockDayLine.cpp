@@ -27,7 +27,7 @@ UINT ThreadUpdateWorldStockDayLineDB(not_null<CWorldMarket*> pMarket) {
         if (pStock->HaveNewDayLineData()) {
           pStock->SaveDayLine();
           pStock->UpdateDayLineStartEndDate();
-          pStock->SetUpdateStockProfileDB(true);
+          pStock->SetUpdateProfileDB(true);
           str = pStock->GetSymbol() + _T("日线资料存储完成");
           gl_systemMessage.PushDayLineInfoMessage(str);
           TRACE("更新%s日线数据\n", pStock->GetSymbol().GetBuffer());

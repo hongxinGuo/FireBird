@@ -19,6 +19,7 @@ public:
   virtual void Reset(void);
 public:
   void Load(CSetWorldStock& setWorldStock);
+  bool CheckProfileUpdateStatus(long lTodayDate);
   bool CheckDayLineUpdateStatus(long lTodayDate, long lLastTradeDate, long lTime, long lDayOfWeek);
   void Save(CSetWorldStock& setWorldStock);
   void Update(CSetWorldStock& setWorldStock);
@@ -35,6 +36,9 @@ public:
   void UnloadDayLine(void) { m_vDayLine.resize(0); }
 
   bool HaveNewDayLineData(void);
+
+  bool IsProfileUpdated(void) noexcept { return m_fProfileUpdated; }
+  void SetProfileUpdated(bool fFlag) noexcept { m_fProfileUpdated = fFlag; }
 
   bool IsEPSSurpriseNeedUpdate(void) noexcept { return m_fEPSSurpriseNeedUpdate; }
   void SetEPSSurpriseNeedUpdate(bool fFlag) noexcept { m_fEPSSurpriseNeedUpdate = fFlag; }
@@ -150,8 +154,6 @@ public:
   vector<CEPSSurprisePtr> m_vEPSSurprise;
   bool m_fEPSSurpriseNeedUpdate;
   atomic_bool m_fEPSSurpriseNeedSave;
-  // 无需存储数据区
-  bool m_fInquiryStockProfile; // 要求更新公司简介
 
 protected:
   // Finnhub symbol信息
@@ -197,6 +199,7 @@ protected:
   long m_lLastEPSSurpriseUpdateDate; // 最新EPS Surprise更新日期
 
   // 无需存储数据区
+  bool m_fProfileUpdated; // 公司简介已更新
   bool m_fFinnhubPeerUpdated; // 同业公司数据已更新
 };
 

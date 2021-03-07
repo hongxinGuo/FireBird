@@ -48,9 +48,9 @@ public:
   //
   bool IsTodayNewStock(void) noexcept { return m_fTodayNewStock; }
   void SetTodayNewStock(bool fFlag) noexcept { m_fTodayNewStock = fFlag; }
-  bool IsUpdateStockProfileDB(void) noexcept { return m_fUpdateStockProfileDB; }
-  bool IsUpdateStockProfileDBAndClearFlag(void) noexcept { const bool fNeedSaving = m_fUpdateStockProfileDB.exchange(false); return fNeedSaving; }
-  void SetUpdateStockProfileDB(bool fFlag) noexcept { m_fUpdateStockProfileDB = fFlag; }
+  bool IsUpdateProfileDB(void) noexcept { return m_fUpdateProfileDB; }
+  bool IsUpdateProfileDBAndClearFlag(void) noexcept { const bool fNeedSaving = m_fUpdateProfileDB.exchange(false); return fNeedSaving; }
+  void SetUpdateProfileDB(bool fFlag) noexcept { m_fUpdateProfileDB = fFlag; }
   bool IsActive(void) noexcept { return m_fActive; }
   void SetActive(bool fFlag) noexcept { m_fActive = fFlag; }
 
@@ -94,7 +94,7 @@ protected:
   INT64 m_llCurrentValue;	// 流通市值。单位：万元
 
   bool m_fTodayNewStock; // 本日新发现的股票
-  atomic_bool m_fUpdateStockProfileDB;
+  atomic_bool m_fUpdateProfileDB;
   bool m_fActive;	// 是否本日内有数据读入。由新浪实时行情处理函数和网易日线历史数据处理函数来设置。
   long m_lDayLineStartDate;	// 日线数据起始日。这个是处理日线历史数据时得到的起始交易日，
   long m_lDayLineEndDate;	// 日线数据更新日。这个是处理日线历史数据时得到的最新日，

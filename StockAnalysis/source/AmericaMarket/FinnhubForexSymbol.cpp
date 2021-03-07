@@ -153,11 +153,11 @@ void CFinnhubForexSymbol::UpdateDayLineStartEndDate(void) {
   else {
     if (m_vDayLine.at(0)->GetFormatedMarketDate() < GetDayLineStartDate()) {
       SetDayLineStartDate(m_vDayLine.at(0)->GetFormatedMarketDate());
-      m_fUpdateStockProfileDB = true;
+      m_fUpdateProfileDB = true;
     }
     if (m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate() > m_lDayLineEndDate) {
       SetDayLineEndDate(m_vDayLine.at(m_vDayLine.size() - 1)->GetFormatedMarketDate());
-      m_fUpdateStockProfileDB = true;
+      m_fUpdateProfileDB = true;
     }
   }
 }

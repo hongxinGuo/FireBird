@@ -124,6 +124,6 @@ bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   pStock->UpdateDayLine(vDayLine);
   pStock->SetDayLineNeedUpdate(false);
   pStock->SetDayLineNeedSaving(true);
-  pStock->SetUpdateStockProfileDB(true);
+  pStock->SetUpdateProfileDB(true);
   return true;
 }

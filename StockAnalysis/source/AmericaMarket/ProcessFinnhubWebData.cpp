@@ -27,7 +27,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 
   if (pWebData->GetBufferLength() < 20) {
     pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetUpdateProfileDB(true);
     return false; // 没有公司简介
   }
   if (!ConvertToJSon(pt, pWebData)) return false;
@@ -37,7 +37,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   }
   catch (ptree_error&) {
     pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetUpdateProfileDB(true);
     return false; // 没有公司简介
   }
   s = pt.get<string>(_T("city"));
@@ -96,7 +96,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   s = pt.get<string>(_T("finnhubIndustry"));
   if (s.size() > 0) pStock->SetFinnhubIndustry(s.c_str());
   pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-  pStock->SetUpdateStockProfileDB(true);
+  pStock->SetUpdateProfileDB(true);
   return true;
 }
 
@@ -221,7 +221,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pStock->SetUpdateStockProfileDB(true);
+      pStock->SetUpdateProfileDB(true);
       return true;
     }
     if (s.compare(_T("ok")) != 0) {
@@ -235,7 +235,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
     }
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetUpdateProfileDB(true);
     return false;
   }
   try {
@@ -320,7 +320,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   pStock->UpdateDayLine(vDayLine);
   pStock->SetDayLineNeedUpdate(false);
   pStock->SetDayLineNeedSaving(true);
-  pStock->SetUpdateStockProfileDB(true);
+  pStock->SetUpdateProfileDB(true);
   return true;
 }
 
@@ -433,7 +433,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
       pForexSymbol->SetIPOStatus(__STAKE_NULL__);
-      pForexSymbol->SetUpdateStockProfileDB(true);
+      pForexSymbol->SetUpdateProfileDB(true);
       return true;
     }
     if (s.compare(_T("ok")) != 0) {
@@ -448,7 +448,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
     pForexSymbol->SetIPOStatus(__STAKE_NULL__);
-    pForexSymbol->SetUpdateStockProfileDB(true);
+    pForexSymbol->SetUpdateProfileDB(true);
     return true;
   }
   try {
@@ -534,7 +534,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
   pForexSymbol->UpdateDayLine(vDayLine);
   pForexSymbol->SetDayLineNeedUpdate(false);
   pForexSymbol->SetDayLineNeedSaving(true);
-  pForexSymbol->SetUpdateStockProfileDB(true);
+  pForexSymbol->SetUpdateProfileDB(true);
   return true;
 }
 

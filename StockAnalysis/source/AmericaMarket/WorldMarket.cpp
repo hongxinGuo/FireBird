@@ -101,7 +101,7 @@ void CWorldMarket::ResetFinnhub(void) {
 
   // Finnhub各申请网络数据标识，每日需要重置。
   m_fFinnhubSymbolUpdated = false; // 每日需要更新代码
-  m_fWorldStockUpdated = false;
+  m_fFinnhubStockProfileUpdated = false;
   m_fFinnhubDayLineUpdated = false;
   m_vWorldStock.resize(0);
   m_mapWorldStock.clear();
@@ -230,11 +230,11 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
-      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
+      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->SetProfileUpdated(true);
       break;
       case __COMPANY_PROFILE_CONCISE__:
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->GetSymbol());
-      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->m_fInquiryStockProfile = false;
+      m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex)->SetProfileUpdated(true);
       break;
       case  __COMPANY_SYMBOLS__:
       strMiddle = m_vFinnhubExchange.at(m_lCurrentExchangePos)->m_strCode;
@@ -375,13 +375,18 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       pWebData = gl_WebInquirer.PopFinnhubData();
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
-      ProcessFinnhubStockProfile(pWebData, m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex));
+      if (ProcessFinnhubStockProfile(pWebData, m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+        pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
+        pStock->SetProfileUpdated(true);
+        pStock->SetUpdateProfileDB(true);
+      }
       break;
       case __COMPANY_PROFILE_CONCISE__:
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
         pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
-        pStock->SetUpdateStockProfileDB(true);
+        pStock->SetProfileUpdated(true);
+        pStock->SetUpdateProfileDB(true);
       }
       break;
       case  __COMPANY_SYMBOLS__:
@@ -418,7 +423,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
       if (ProcessFinnhubStockPeer(pWebData, pStock)) {
         pStock->SetPeerUpdateDate(GetFormatedMarketDate());
-        pStock->SetUpdateStockProfileDB(true);
+        pStock->SetUpdateProfileDB(true);
       }
       break;
       case __BASIC_FINANCIALS__:
@@ -431,7 +436,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         }
         else {
           pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
-          pStock->SetUpdateStockProfileDB(true);
+          pStock->SetUpdateProfileDB(true);
         }
         pStock->m_fEPSSurpriseNeedUpdate = false;
         pStock->m_fEPSSurpriseNeedSave = true;
@@ -444,7 +449,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         pStock->SetActive(true);
         if (!pStock->IsIPOed()) {
           pStock->SetIPOStatus(__STAKE_IPOED__);
-          pStock->SetUpdateStockProfileDB(true);
+          pStock->SetUpdateProfileDB(true);
         }
       }
       break;
@@ -666,7 +671,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
             pStock->m_strSECFilingWebSite = pStock2->m_strSECFilingWebSite;
             pStock->m_lDailyDataUpdateDate = pStock2->m_lDailyDataUpdateDate;
             pStock->m_lStatementUpdateDate = pStock2->m_lStatementUpdateDate;
-            pStock->SetUpdateStockProfileDB(true);
+            pStock->SetUpdateProfileDB(true);
           }
         }
       }
@@ -810,7 +815,7 @@ bool CWorldMarket::TaskInquiryFinnhub(long lCurrentTime) {
 
     // 申请Finnhub网络信息的任务，皆要放置在这里，以保证在市场时间凌晨十分钟后执行。这样能够保证在重启市场时没有执行查询任务
     if (IsSystemReady()) {
-      TaskInquiryFinnhubCompanyProfile2();
+      TaskInquiryFinnhubCompanyProfileConcise();
       TaskInquiryFinnhubPeer();
       //TaskInquiryFinnhubEPSSurprise(); // 这个现在没什么用，暂时停止更新。
       TaskInquiryFinnhubForexDayLine();
@@ -902,16 +907,17 @@ bool CWorldMarket::TaskUpdateStockDB(void) {
   return true;
 }
 
-bool CWorldMarket::TaskInquiryFinnhubCompanyProfile2(void) {
+bool CWorldMarket::TaskInquiryFinnhubCompanyProfileConcise(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
   long lStockSetSize = m_vWorldStock.size();
   CString str = _T("");
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
-  if (!IsWorldStockUpdated() && !IsFinnhubInquiring()) {
+  if (!IsFinnhubStockProfileUpdated() && !IsFinnhubInquiring()) {
     for (m_lCurrentProfilePos = 0; m_lCurrentProfilePos < lStockSetSize; m_lCurrentProfilePos++) {
-      if (IsEarlyThen(m_vWorldStock.at(m_lCurrentProfilePos)->GetProfileUpdateDate(), GetFormatedMarketDate(), 365)) {
+      if (!m_vWorldStock.at(m_lCurrentProfilePos)->IsProfileUpdated()) {
         fFound = true;
         break;
       }
@@ -923,15 +929,17 @@ bool CWorldMarket::TaskInquiryFinnhubCompanyProfile2(void) {
       m_qFinnhubWebInquiry.push(inquiry);
       //TRACE("更新%s简介\n", m_vWorldStock.at(m_lCurrentProfilePos)->m_strSymbol.GetBuffer());
       SetFinnhubInquiring(true);
+      fHaveInquiry = true;
     }
     else {
-      SetWorldStockUpdated(true);
+      SetFinnhubStockProfileUpdated(true);
       TRACE("Finnhub股票简介更新完毕\n");
       str = _T("Finnhub股票简介更新完毕");
       gl_systemMessage.PushInformationMessage(str);
+      fHaveInquiry = false;
     }
   }
-  return false;
+  return fHaveInquiry;
 }
 
 bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
@@ -1344,7 +1352,7 @@ bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
 bool CWorldMarket::IsStockUpdated(void) {
   const int iTotal = m_vWorldStock.size();
   for (int i = 0; i < iTotal; i++) {
-    if (m_vWorldStock.at(i)->IsUpdateStockProfileDB()) return true;
+    if (m_vWorldStock.at(i)->IsUpdateProfileDB()) return true;
   }
   return false;
 }
@@ -1353,7 +1361,7 @@ void CWorldMarket::CreateNewStock(CWorldStockPtr pStock) {
   m_mapWorldStock[pStock->GetSymbol()] = m_vWorldStock.size();
   m_vWorldStock.push_back(pStock);
   pStock->SetTodayNewStock(true);
-  pStock->SetUpdateStockProfileDB(true);
+  pStock->SetUpdateProfileDB(true);
 }
 
 bool CWorldMarket::DeleteStock(CWorldStockPtr pStock) {
@@ -1464,6 +1472,7 @@ bool CWorldMarket::LoadStockDB(void) {
     pWorldStock = make_shared<CWorldStock>();
     pWorldStock->Load(setWorldStock);
     if (!IsStock(pWorldStock->GetSymbol())) {
+      pWorldStock->CheckProfileUpdateStatus(GetFormatedMarketDate());
       pWorldStock->CheckDayLineUpdateStatus(GetFormatedMarketDate(), GetLastTradeDate(), GetFormatedMarketTime(), GetDayOfWeek());
       pWorldStock->CheckEPSSurpriseStatus(GetFormatedMarketDate());
       pWorldStock->CheckPeerStatus(GetFormatedMarketDate());
@@ -1546,7 +1555,7 @@ bool CWorldMarket::UpdateStockDB(void) {
   //更新原有的代码集状态
   if (IsStockUpdated()) {
     for (auto& pStock2 : m_vWorldStock) {
-      if (pStock2->IsUpdateStockProfileDB()) iUpdatedStock++;
+      if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
     }
     setWorldStock.m_strSort = _T("[Symbol]");
     setWorldStock.Open();
@@ -1554,16 +1563,16 @@ bool CWorldMarket::UpdateStockDB(void) {
     while (iCount < iUpdatedStock) {
       if (setWorldStock.IsEOF()) break;
       pStock = m_vWorldStock.at(m_mapWorldStock.at(setWorldStock.m_Symbol));
-      if (pStock->IsUpdateStockProfileDB()) {
+      if (pStock->IsUpdateProfileDB()) {
         iCount++;
         pStock->Update(setWorldStock);
-        pStock->SetUpdateStockProfileDB(false);
+        pStock->SetUpdateProfileDB(false);
       }
       setWorldStock.MoveNext();
     }
     if (iCount < iUpdatedStock) {
       for (auto& pStock3 : m_vWorldStock) {
-        if (pStock3->IsUpdateStockProfileDB()) {
+        if (pStock3->IsUpdateProfileDB()) {
           //ASSERT(pStock3->IsTodayNewStock()); // 所有的新股票，都是今天新生成的
           iCount++;
           pStock3->Append(setWorldStock);
@@ -1600,7 +1609,7 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
   }
 
   for (auto& pSymbol2 : m_vForexSymbol) {
-    if (pSymbol2->IsUpdateStockProfileDB()) {
+    if (pSymbol2->IsUpdateProfileDB()) {
       fUpdateSymbol = true;
       break;
     }
@@ -1611,9 +1620,9 @@ bool CWorldMarket::UpdateForexSymbolDB(void) {
     while (!setForexSymbol.IsEOF()) {
       if (m_mapForexSymbol.find(setForexSymbol.m_Symbol) != m_mapForexSymbol.end()) {
         pSymbol = m_vForexSymbol.at(m_mapForexSymbol.at(setForexSymbol.m_Symbol));
-        if (pSymbol->IsUpdateStockProfileDB()) {
+        if (pSymbol->IsUpdateProfileDB()) {
           pSymbol->Update(setForexSymbol);
-          pSymbol->SetUpdateStockProfileDB(false);
+          pSymbol->SetUpdateProfileDB(false);
         }
       }
       setForexSymbol.MoveNext();
@@ -1661,7 +1670,7 @@ bool CWorldMarket::ReBuildPeer(void) {
     if (pStock->GetPeerUpdateDate() != 19800101) {
       pStock->SetPeerUpdateDate(19800101);
       pStock->SetPeerUpdated(false);
-      pStock->SetUpdateStockProfileDB(true);
+      pStock->SetUpdateProfileDB(true);
     }
   }
   SetFinnhubPeerUpdated(false);
@@ -1762,9 +1771,9 @@ bool CWorldMarket::RebuildStockDayLineDB(void) {
     pStock->SetDayLineStartDate(29900101);
     pStock->SetDayLineEndDate(19800101);
     pStock->SetDayLineNeedUpdate(true);
-    pStock->SetUpdateStockProfileDB(true);
+    pStock->SetUpdateProfileDB(true);
   }
-  SetWorldStockUpdated(false);
+  SetFinnhubStockProfileUpdated(false);
 
   return true;
 }
@@ -1782,12 +1791,12 @@ bool CWorldMarket::UpdateDayLineStartEndDate(void) {
     if (!setWorldStockDayLine.IsEOF()) {
       if (setWorldStockDayLine.m_Date < pStock->GetDayLineStartDate()) {
         pStock->SetDayLineStartDate(setWorldStockDayLine.m_Date);
-        pStock->SetUpdateStockProfileDB(true);
+        pStock->SetUpdateProfileDB(true);
       }
       setWorldStockDayLine.MoveLast();
       if (setWorldStockDayLine.m_Date > pStock->GetDayLineEndDate()) {
         pStock->SetDayLineEndDate(setWorldStockDayLine.m_Date);
-        pStock->SetUpdateStockProfileDB(true);
+        pStock->SetUpdateProfileDB(true);
       }
     }
     setWorldStockDayLine.Close();
