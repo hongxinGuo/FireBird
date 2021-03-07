@@ -146,7 +146,7 @@ public:
   bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
 
-  bool TaskUpdateStockDB(void);
+  bool TaskUpdateStockProfileDB(void);
   bool TaskUpdateDayLineDB(void);
   bool TaskUpdateForexExchangeDB(void);
   bool TaskUpdateForexSymbolDB(void);
@@ -161,7 +161,7 @@ public:
   // 各工作线程调用包裹函数
   virtual bool RunningthreadUpdateDayLneStartEndDate(CWorldMarket* pMarket);
   virtual bool RunningThreadUpdateDayLineDB();
-  virtual bool RunningThreadUpdateStockDB(void);
+  virtual bool RunningThreadUpdateStockProfileDB(void);
   virtual bool RunningThreadUpdateForexDayLineDB(CFinnhubForexSymbol* pSymbol);
   virtual bool RunningThreadUpdateForexSymbolDB(void);
   virtual bool RunningThreadUpdateCountryListDB(void);
@@ -186,8 +186,8 @@ public:
   CFinnhubExchangePtr GetExchange(long lIndex) { return m_vFinnhubExchange.at(lIndex); }
   size_t GetExchangeSize(void) noexcept { return m_mapFinnhubExchange.size(); }
 
-  bool IsStockUpdated(void);
-  void CreateNewStock(CWorldStockPtr pStock);
+  bool IsStockProfileNeedUpdate(void);
+  void AddStock(CWorldStockPtr pStock);
   bool DeleteStock(CWorldStockPtr pStock);
   size_t GetTotalStock(void) noexcept { return m_vWorldStock.size(); }
   bool IsStock(CString strSymbol) { if (m_mapWorldStock.find(strSymbol) == m_mapWorldStock.end()) return false; else return true; }
@@ -243,7 +243,7 @@ public:
   bool LoadStockDB(void);
   bool LoadWorldChoicedStock(void);
   virtual bool UpdateCountryListDB(void);
-  virtual bool UpdateStockDB(void);
+  virtual bool UpdateStockProfileDB(void);
   virtual bool UpdateForexSymbolDB(void);
   bool UpdateEconomicCalendarDB(void);
 

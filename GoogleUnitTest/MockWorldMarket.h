@@ -9,14 +9,14 @@ namespace testing {
   public:
     MOCK_METHOD(bool, RunningthreadUpdateDayLneStartEndDate, (CWorldMarket* pMarket), (override));
     MOCK_METHOD(bool, RunningThreadUpdateDayLineDB, (), (override));
-    MOCK_METHOD(bool, RunningThreadUpdateStockDB, (), (override));
+    MOCK_METHOD(bool, RunningThreadUpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexDayLineDB, (CFinnhubForexSymbol* pSymbol), (override));
     MOCK_METHOD(bool, RunningThreadUpdateForexSymbolDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, RunningThreadUpdateEPSSurpriseDB, (CWorldStock* pStock), (override));
 
     MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
-    MOCK_METHOD(bool, UpdateStockDB, (), (override));
+    MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
     MOCK_METHOD(bool, UpdateDayLineStartEndDate, (), (override));
   };

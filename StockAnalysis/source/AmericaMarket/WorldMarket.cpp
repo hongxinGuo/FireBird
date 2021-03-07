@@ -402,7 +402,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
         }
         for (auto& pStock2 : vStock) {
           if (!IsStock(pStock2->GetSymbol())) {
-            CreateNewStock(pStock2);
+            AddStock(pStock2);
             fFoundNewStock = true;
             TRACE("发现新代码：%s\n", pStock2->GetSymbol().GetBuffer());
           }
@@ -770,8 +770,8 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
 }
 
 bool CWorldMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
-  if (IsFinnhubSymbolUpdated() && IsStockUpdated()) {
-    TaskUpdateStockDB();
+  if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
+    TaskUpdateStockProfileDB();
   }
 
   return true;
@@ -902,8 +902,8 @@ bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
   return true;
 }
 
-bool CWorldMarket::TaskUpdateStockDB(void) {
-  RunningThreadUpdateStockDB();
+bool CWorldMarket::TaskUpdateStockProfileDB(void) {
+  RunningThreadUpdateStockProfileDB();
   return true;
 }
 
@@ -948,6 +948,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
   CWorldStockPtr pStock;
   CString str = _T("");
   long lStockSetSize = m_vWorldStock.size();
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
   if (!IsFinnhubDayLineUpdated() && !IsFinnhubInquiring()) {
@@ -959,6 +960,7 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
       }
     }
     if (fFound) {
+      fHaveInquiry = true;
       inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
       inquiry.m_lStockIndex = m_lCurrentUpdateDayLinePos;
       inquiry.m_iPriority = 10;
@@ -968,14 +970,15 @@ bool CWorldMarket::TaskInquiryFinnhubDayLine(void) {
       TRACE("申请%s日线数据\n", pStock->GetSymbol().GetBuffer());
     }
     else {
+      fHaveInquiry = false;
       SetFinnhubDayLineUpdated(true);
       m_lCurrentUpdateDayLinePos = 0; // 重置此索引。所有的日线数据更新一次所需时间要超过24小时，故保持更新即可。
       TRACE("Finnhub日线更新完毕，从新开始更新\n");
-      str = _T("美国市场日线历史数据更新完毕，从新开始更新");
+      str = _T("US Market日线历史数据更新完毕");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return true;
+  return fHaveInquiry;
 }
 
 bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
@@ -1319,8 +1322,8 @@ bool CWorldMarket::RunningThreadUpdateDayLineDB() {
   return true;
 }
 
-bool CWorldMarket::RunningThreadUpdateStockDB(void) {
-  thread thread1(ThreadUpdateStockDB, this);
+bool CWorldMarket::RunningThreadUpdateStockProfileDB(void) {
+  thread thread1(ThreadUpdateStockProfileDB, this);
   thread1.detach();// 必须分离之，以实现并行操作，并保证由系统回收资源。
   return true;
 }
@@ -1349,7 +1352,7 @@ bool CWorldMarket::RunningThreadUpdateEPSSurpriseDB(CWorldStock* pStock) {
   return true;
 }
 
-bool CWorldMarket::IsStockUpdated(void) {
+bool CWorldMarket::IsStockProfileNeedUpdate(void) {
   const int iTotal = m_vWorldStock.size();
   for (int i = 0; i < iTotal; i++) {
     if (m_vWorldStock.at(i)->IsUpdateProfileDB()) return true;
@@ -1357,7 +1360,7 @@ bool CWorldMarket::IsStockUpdated(void) {
   return false;
 }
 
-void CWorldMarket::CreateNewStock(CWorldStockPtr pStock) {
+void CWorldMarket::AddStock(CWorldStockPtr pStock) {
   m_mapWorldStock[pStock->GetSymbol()] = m_vWorldStock.size();
   m_vWorldStock.push_back(pStock);
   pStock->SetTodayNewStock(true);
@@ -1546,14 +1549,14 @@ bool CWorldMarket::UpdateCountryListDB(void) {
 /// </summary>
 /// <param name=""></param>
 /// <returns></returns>
-bool CWorldMarket::UpdateStockDB(void) {
+bool CWorldMarket::UpdateStockProfileDB(void) {
   CWorldStockPtr pStock = nullptr;
   CSetWorldStock setWorldStock;
   int iUpdatedStock = 0;
   int iCount = 0;
 
   //更新原有的代码集状态
-  if (IsStockUpdated()) {
+  if (IsStockProfileNeedUpdate()) {
     for (auto& pStock2 : m_vWorldStock) {
       if (pStock2->IsUpdateProfileDB()) iUpdatedStock++;
     }

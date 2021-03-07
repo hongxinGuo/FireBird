@@ -60,7 +60,7 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CWorldMarketTest, TestGetTotalStock) {
-    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 2462) << "默认状态下数据库总数为2462";
+    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 28876) << "默认状态下数据库总数为28876";
   }
 
   TEST_F(CWorldMarketTest, TestIsStock) {
@@ -87,6 +87,14 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(_T("ABC")));
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("OANDA:XAU_SGD")));
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(_T("FXCM:EUR/CHF")));
+
+    CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+    pForexSymbol->m_strSymbol = _T("ABC");
+    EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+    pForexSymbol->m_strSymbol = _T("OANDA:XAU_SGD");
+    EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+    pForexSymbol->m_strSymbol = _T("FXCM:EUR/CHF");
+    EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
   }
 
   TEST_F(CWorldMarketTest, TestIsCountry) {
@@ -158,12 +166,12 @@ namespace StockAnalysisTest {
     CWorldStockPtr pStock = make_shared<CWorldStock>();
     pStock->SetSymbol(_T("SS.SS.US"));
     EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock)); // 确保是一个新股票代码
-    gl_pWorldMarket->CreateNewStock(pStock);
+    gl_pWorldMarket->AddStock(pStock);
     pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
     EXPECT_STREQ(pStock->GetCurrency(), _T(""));
     pStock->SetUpdateProfileDB(true);
     pStock->SetCurrency(_T("No Currency"));
-    gl_pWorldMarket->UpdateStockDB();
+    gl_pWorldMarket->UpdateStockProfileDB();
 
     CSetWorldStock setWorldStock;
     setWorldStock.m_strFilter = _T("[Symbol] = '000001.SS'");
@@ -360,6 +368,8 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->SetFinnhubInquiring(false);
     EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanySymbol()) << "第三次查询时没有找到待查询的交易所";
     EXPECT_TRUE(gl_pWorldMarket->IsFinnhubSymbolUpdated()) << "交易所都查询完了";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("交易所代码数据查询完毕"));
   }
 
   TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubCompanyProfileConcise) {
@@ -400,7 +410,52 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->GetStock(10)->SetProfileUpdated(true);
 
     gl_pWorldMarket->SetFinnhubInquiring(false);
-    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise()) << "第三次查询时没有找到待查询的骨牌哦";
-    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockProfileUpdated()) << "交易所都查询完了";
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubCompanyProfileConcise()) << "第三次查询时没有找到待查询的股票";
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubStockProfileUpdated()) << "股票都查询完了";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("Finnhub股票简介更新完毕"));
   }
+
+  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubDayLine) {
+    CWorldStockPtr pStock;
+    WebInquiry inquiry;
+
+    gl_pWorldMarket->SetSystemReady(true);
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetDayLineNeedUpdate(false);
+    }
+    gl_pWorldMarket->GetStock(10001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+    gl_pWorldMarket->GetStock(10010)->SetDayLineNeedUpdate(true);
+    gl_pWorldMarket->SetFinnhubDayLineUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "DayLine Updated";
+
+    gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+    gl_pWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "其他FinnhubInquiry正在进行";
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
+    inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
+    EXPECT_EQ(inquiry.m_lStockIndex, 10001) << "第一个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(10001)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_pWorldMarket->GetStock(10010)->IsDayLineNeedUpdate());
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
+    inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
+    EXPECT_EQ(inquiry.m_lStockIndex, 10010) << "第二个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate());
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsDayLineNeedUpdate());
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "第三次查询时没有找到待查询的股票";
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated()) << "股票都查询完了";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
+  }
+
 }

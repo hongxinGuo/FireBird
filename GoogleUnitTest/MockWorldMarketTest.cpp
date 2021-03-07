@@ -62,10 +62,10 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(s_pWorldMarket->TaskUpdateDayLineDB());
   }
 
-  TEST_F(CMockWorldMarketTest, TestTaskUpdateStockDB) {
-    EXPECT_CALL(*s_pWorldMarket, RunningThreadUpdateStockDB)
+  TEST_F(CMockWorldMarketTest, TestTaskUpdateStockProfileDB) {
+    EXPECT_CALL(*s_pWorldMarket, RunningThreadUpdateStockProfileDB)
       .Times(1);
-    EXPECT_TRUE(s_pWorldMarket->TaskUpdateStockDB());
+    EXPECT_TRUE(s_pWorldMarket->TaskUpdateStockProfileDB());
   }
 
   TEST_F(CMockWorldMarketTest, TestTaskUpdateForexSymbolDB) {
@@ -112,10 +112,10 @@ namespace StockAnalysisTest {
     EXPECT_EQ(ThreadUpdateCountryListDB(s_pWorldMarket), 40);
   }
 
-  TEST_F(CMockWorldMarketTest, TestUpdateStockDB) {
-    EXPECT_CALL(*s_pWorldMarket, UpdateStockDB)
+  TEST_F(CMockWorldMarketTest, TestUpdateStockProfileDB) {
+    EXPECT_CALL(*s_pWorldMarket, UpdateStockProfileDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateStockDB(s_pWorldMarket), 37);
+    EXPECT_EQ(ThreadUpdateStockProfileDB(s_pWorldMarket), 37);
   }
 
   TEST_F(CMockWorldMarketTest, TestUpdateForexSymbolDB) {
