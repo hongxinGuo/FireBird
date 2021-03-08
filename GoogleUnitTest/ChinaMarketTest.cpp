@@ -628,7 +628,6 @@ namespace StockAnalysisTest {
     tm_.tm_wday = 1; // 星期一
     gl_pChinaStockMarket->__TEST_SetMarketTM(tm_);
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->SetStockDayLineNeedUpdate(1001);
     EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     EXPECT_TRUE(gl_pChinaStockMarket->IsPermitResetMarket());
     EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
@@ -644,7 +643,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pChinaStockMarket->IsSystemReady());
 
     // 恢复系统原态
-    gl_pChinaStockMarket->SetStockDayLineNeedUpdate(0);
+    gl_pChinaStockMarket->SetStockDayLineNeedUpdate(gl_pChinaStockMarket->GetTotalStock());
   }
 
   TEST_F(CChinaMarketTest, TestTaskResetMarketAgain) {
@@ -1369,13 +1368,16 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CChinaMarketTest, TestSetStockDayLineNeedUpdate) {
-    EXPECT_FALSE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
+    EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     gl_pChinaStockMarket->SetStockDayLineNeedUpdate(1000);
     EXPECT_FALSE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     gl_pChinaStockMarket->SetStockDayLineNeedUpdate(1001);
     EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
     gl_pChinaStockMarket->SetStockDayLineNeedUpdate(0);
     EXPECT_FALSE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
+
+    // 恢复原状
+    gl_pChinaStockMarket->SetStockDayLineNeedUpdate(gl_pChinaStockMarket->GetTotalStock());
   }
 
   TEST_F(CChinaMarketTest, TestDeleteDayLineBasicInfo) {

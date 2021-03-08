@@ -467,6 +467,12 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsFinnhubDayLineUpdated()) << "股票都查询完了";
     CString str = gl_systemMessage.PopInformationMessage();
     EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
+
+    // 恢复原状
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetDayLineNeedUpdate(true);
+    }
   }
 
   TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubRTQuote) {

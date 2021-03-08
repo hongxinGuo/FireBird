@@ -73,7 +73,7 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->LoadStockCodeDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为4833.
       EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
       EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
-      gl_pChinaStockMarket->SetStockDayLineNeedUpdate(0);
+      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       gl_pChinaStockMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
 
