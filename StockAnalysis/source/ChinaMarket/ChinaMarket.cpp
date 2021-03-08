@@ -111,7 +111,7 @@ void CChinaMarket::Reset(void) {
   m_lLoadedStock = 0;
 
   m_llRTDataReceived = 0;
-  m_lStockNeedUpdated = 0;
+  m_lStockDayLineNeedUpdate = 0;
 
   m_fLoadedSelectedStock = false;
   SetSystemReady(false); // 市场初始状态为未设置好。
@@ -375,6 +375,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   CChinaStockPtr pStock;
   CString str;
 
+  ASSERT(m_vChinaMarketStock.size() == m_mapChinaMarketStock.size());
   pStock = make_shared<CChinaStock>();
   pStock->SetActive(false);
   pStock->SetTodayNewStock(true);
@@ -391,12 +392,15 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   ASSERT(pStock->IsDayLineNeedUpdate());
   str = _T("china Market生成新代码") + pStock->GetSymbol();
   gl_systemMessage.PushInnerSystemInformationMessage(str);
+  ASSERT(m_vChinaMarketStock.size() == m_mapChinaMarketStock.size());
   return true;
 }
 
 bool CChinaMarket::DeleteStock(CChinaStockPtr pStock) {
   if (pStock == nullptr) return false;
   if (!IsStock(pStock->GetSymbol())) return false;
+
+  m_mapChinaMarketStock.erase(pStock->GetSymbol());
 
   auto it = find(m_vChinaMarketStock.begin(), m_vChinaMarketStock.end(), pStock);
   m_vChinaMarketStock.erase(it);
@@ -1511,7 +1515,7 @@ bool CChinaMarket::TaskResetMarket(long lCurrentTime) {
 // 必须在此时间段内重启，如果更早的话容易出现数据不全的问题。
   if (IsPermitResetMarket()) { // 如果允许重置系统
     if ((lCurrentTime >= 91300) && (lCurrentTime < 91400) && IsWorkingDay()) { // 交易日九点十五分重启系统
-      if (!TooManyStocksNeedUpdated()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
+      if (!TooManyStockDayLineNeedUpdate()) { // 当有工作日作为休假日后，所有的日线数据都需要检查一遍，此时不在0915时重置系统以避免更新日线函数尚在执行。
         SetResetMarket(true);// 只是设置重启标识，实际重启工作由CMainFrame的OnTimer函数完成。
         SetSystemReady(false);
       }
@@ -1944,6 +1948,7 @@ bool CChinaMarket::SortStockVector(void) {
     ASSERT(!IsStock(pStock->GetSymbol()));
     m_mapChinaMarketStock[pStock->GetSymbol()] = j++;
   }
+  ASSERT(m_vChinaMarketStock.size() == m_mapChinaMarketStock.size());
   return true;
 }
 
@@ -3186,7 +3191,7 @@ void CChinaMarket::LoadStockCodeDB(void) {
   }
   if (IsDayLineNeedUpdate()) {
     const int i = GetDayLineNeedUpdateNumber();
-    m_lStockNeedUpdated = i;
+    m_lStockDayLineNeedUpdate = i;
     if (GetDayOfWeek() == 1) gl_systemMessage.PushInformationMessage(_T("每星期一复查退市股票日线"));
     TRACE("尚余%d个股票需要检查日线数据\n", i);
     _itoa_s(i, buffer, 10);

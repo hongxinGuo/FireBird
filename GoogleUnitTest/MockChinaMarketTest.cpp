@@ -32,6 +32,10 @@ namespace StockAnalysisTest {
       s_pchinaMarket = new CMockChinaMarket;
       s_pchinaMarket->LoadStockCodeDB();
       s_pchinaMarket->SetTodayStockProcessed(false);
+
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
     static void TearDownTestSuite(void) {
       delete s_pchinaMarket;

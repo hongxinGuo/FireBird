@@ -72,6 +72,8 @@ namespace StockAnalysisTest {
 
       gl_pChinaStockMarket->LoadStockCodeDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为4833.
       EXPECT_GT(gl_pChinaStockMarket->GetTotalStock(), 4800);
+      EXPECT_TRUE(gl_pChinaStockMarket->TooManyStockDayLineNeedUpdate());
+      gl_pChinaStockMarket->SetStockDayLineNeedUpdate(0);
       gl_pChinaStockMarket->SetSystemReady(true);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
 
@@ -80,6 +82,10 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->LoadWorldExchangeDB();
       gl_pWorldMarket->LoadForexExchange();
       gl_pWorldMarket->LoadForexSymbol();
+
+      while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
+      while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
+      while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
 
     virtual void TearDown(void) override {

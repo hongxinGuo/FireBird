@@ -17,6 +17,7 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
       gl_pWorldMarket->SetFinnhubStockProfileUpdated(false);
       gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+      gl_pWorldMarket->SetFinnhubPeerUpdated(false);
     }
     static void TearDownTestSuite(void) {
     }
@@ -30,6 +31,7 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
       gl_pWorldMarket->SetFinnhubStockProfileUpdated(false);
       gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+      gl_pWorldMarket->SetFinnhubPeerUpdated(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -467,4 +469,64 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("US Market日线历史数据更新完毕"));
   }
 
+  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubRTQuote) {
+    WebInquiry inquiry;
+
+    gl_pWorldMarket->SetSystemReady(true);
+
+    gl_pWorldMarket->SetFinnhubDayLineUpdated(false);
+    gl_pWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubRTQuote()) << "其他FinnhubInquiry正在进行";
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubRTQuote());
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
+    inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_QUOTE__);
+    EXPECT_EQ(inquiry.m_iPriority, 10);
+  }
+
+  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubPeer) {
+    CWorldStockPtr pStock;
+    WebInquiry inquiry;
+
+    gl_pWorldMarket->SetSystemReady(true);
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetPeerUpdated(true);
+    }
+    gl_pWorldMarket->GetStock(1)->SetPeerUpdated(false); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+    gl_pWorldMarket->GetStock(10)->SetPeerUpdated(false);
+    gl_pWorldMarket->SetFinnhubPeerUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubPeer()) << "Peers Updated";
+
+    gl_pWorldMarket->SetFinnhubPeerUpdated(false);
+    gl_pWorldMarket->SetFinnhubInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubPeer()) << "其他FinnhubInquiry正在进行";
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubPeer());
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
+    inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __PEERS__);
+    EXPECT_EQ(inquiry.m_lStockIndex, 1) << "第一个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated());
+    gl_pWorldMarket->GetStock(1)->SetPeerUpdated(true);
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubPeer());
+    inquiry = gl_pWorldMarket->GetFinnhubInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __PEERS__);
+    EXPECT_EQ(inquiry.m_lStockIndex, 10) << "第二个待查询股票位置";
+    EXPECT_TRUE(gl_pWorldMarket->GetStock(1)->IsPeerUpdated());
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsPeerUpdated()) << "此更新标识需要等待处理完数据后才设置";
+    gl_pWorldMarket->GetStock(10)->SetPeerUpdated(true);
+
+    gl_pWorldMarket->SetFinnhubInquiring(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubPeer()) << "第三次查询时没有找到待查询的股票";
+    EXPECT_TRUE(gl_pWorldMarket->IsFinnhubPeerUpdated()) << "股票都查询完了";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
+  }
 }

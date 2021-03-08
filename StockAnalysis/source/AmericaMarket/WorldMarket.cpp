@@ -994,8 +994,9 @@ bool CWorldMarket::TaskInquiryFinnhubRTQuote(void) {
     m_qFinnhubWebInquiry.push(inquiry);
     SetFinnhubInquiring(true);
     TRACE("申请%s实时数据\n", m_vWorldStock.at(m_lCurrentRTDataQuotePos)->GetSymbol().GetBuffer());
+    return true;
   }
-  return true;
+  return false;
 }
 
 bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
@@ -1004,6 +1005,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
   CWorldStockPtr pStock;
   CString str = _T("");
   long lStockSetSize = m_vWorldStock.size();
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
   if (!IsFinnhubPeerUpdated() && !IsFinnhubInquiring()) {
@@ -1015,6 +1017,7 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
       }
     }
     if (fFound) {
+      fHaveInquiry = true;
       inquiry.m_lInquiryIndex = __PEERS__;
       inquiry.m_lStockIndex = m_lCurrentUpdatePeerPos;
       inquiry.m_iPriority = 10;
@@ -1023,13 +1026,14 @@ bool CWorldMarket::TaskInquiryFinnhubPeer(void) {
       //TRACE("申请%s Peer数据\n", m_vWorldStock.at(m_lCurrentUpdatePeerPos)->GetSymbol().GetBuffer());
     }
     else {
+      fHaveInquiry = false;
       SetFinnhubPeerUpdated(true);
       TRACE("Finnhub Peers更新完毕\n");
-      str = _T("美国市场同业公司数据更新完毕");
+      str = _T("Finnhub Peer Updated");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return true;
+  return fHaveInquiry;
 }
 
 bool CWorldMarket::TaskInquiryFinnhubEconomicCalender(void) {

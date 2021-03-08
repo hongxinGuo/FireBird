@@ -282,7 +282,7 @@ public:
   INT64 GetTotalAttackBuyAmount(void);
   INT64 GetTotalAttackSellAmount(void);
 
-  size_t GetTotalStockMapIndexSize(void) noexcept { return m_mapChinaMarketStock.size(); }
+  size_t GetTotalStockMapSize(void) noexcept { return m_mapChinaMarketStock.size(); }
   long GetStockOffset(CString str) { return m_mapChinaMarketStock.at(str); }
 
   void SetStockCodeForInquiringRTData(CString strStockCode) { m_strStockCodeForInquiringRTData = strStockCode; }
@@ -386,8 +386,8 @@ public:
   bool IsTotalStockSetSelected(void) noexcept { if (m_lCurrentSelectedStockSet == -1) return true; else return false; }
   size_t GetCurrentStockSetSize(void);
 
-  void SetStockNeedUpdated(long lValue) noexcept { m_lStockNeedUpdated = lValue; }
-  bool TooManyStocksNeedUpdated(void) noexcept { if (m_lStockNeedUpdated > 1000) return true; else return false; }
+  void SetStockDayLineNeedUpdate(long lValue) noexcept { m_lStockDayLineNeedUpdate = lValue; }
+  bool TooManyStockDayLineNeedUpdate(void) noexcept { if (m_lStockDayLineNeedUpdate > 1000) return true; else return false; }
 
   void SetUpdateStockSection(bool fFlag) noexcept { m_fUpdateStockSection = fFlag; }
   bool IsUpdateStockSection(void) noexcept { return m_fUpdateStockSection; }
@@ -436,7 +436,7 @@ protected:
 
   INT64 m_llRTDataReceived; // 接收到的实时数据数量
 
-  long m_lStockNeedUpdated; // 股票历史日线今日需要更新数
+  long m_lStockDayLineNeedUpdate; // 股票历史日线今日需要更新数
 
   queue<CWebRTDataPtr> m_qRTData;
   bool m_fSaveRTData;

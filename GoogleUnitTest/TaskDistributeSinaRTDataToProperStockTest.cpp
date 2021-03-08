@@ -91,6 +91,7 @@ namespace StockAnalysisTest {
   TEST_P(TaskDistributeSinaRTDataToProperStockTest, TestCheck) {
     CString strMessage, strRight;
     long lTotalStock = gl_pChinaStockMarket->GetTotalStock();
+    CString strSymbol;
 
     gl_WebRTDataContainer.PushSinaData(pRTData);
     EXPECT_EQ(gl_WebRTDataContainer.GetSinaDataSize(), 1);
@@ -133,8 +134,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(pStock->IsActive());
     EXPECT_EQ(pStock->GetTransactionTime() - s_tCurrentMarketTime, 0);
     EXPECT_EQ(pStock->GetRTDataQueueSize(), 1);
+    strSymbol = pStock->GetSymbol();
     gl_pChinaStockMarket->DeleteStock(pStock);
     EXPECT_EQ(lTotalStock, gl_pChinaStockMarket->GetTotalStock()) << "删除了新增加的股票";
+    EXPECT_EQ(lTotalStock, gl_pChinaStockMarket->GetTotalStockMapSize()) << "也同时删除了map索引";
+    EXPECT_FALSE(gl_pChinaStockMarket->IsStock(strSymbol)) << "刚刚删除了此股票代码";
     break;
     default:
     break;
