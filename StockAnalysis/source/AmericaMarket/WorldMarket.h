@@ -195,6 +195,9 @@ public:
   bool IsStock(CWorldStockPtr pStock) { return IsStock(pStock->GetSymbol()); }
   CWorldStockPtr GetStock(long lIndex) { return m_vWorldStock.at(lIndex); }
   CWorldStockPtr GetStock(CString strSymbol) { return m_vWorldStock.at(m_mapWorldStock.at(strSymbol)); }
+  long GetStockIndex(CString strSymbol) { return m_mapWorldStock.at(strSymbol); }
+
+  CWorldStockPtr GetChoicedStock(long lIndex) { return m_vWorldChoicedStock.at(lIndex); }
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);
@@ -240,6 +243,10 @@ public:
   void SetTiingoSymbolUpdated(bool fFlag) noexcept { m_fTiingoSymbolUpdated = fFlag; }
   bool IsTiingoDayLineUpdated(void) noexcept { return m_fTiingoDayLineUpdated; }
   void SetTiingoDayLineUpdated(bool fFlag) noexcept { m_fTiingoDayLineUpdated = fFlag; }
+
+  size_t GetTiingoInquiryQueueSize(void) noexcept { return m_qTiingoWebInquiry.size(); }
+  void PushTiingoInquiry(WebInquiry inquiry) noexcept { m_qTiingoWebInquiry.push(inquiry); }
+  WebInquiry GetTiingoInquiry(void);
 
   // Êý¾Ý¿â²Ù×÷
   bool LoadOption(void);

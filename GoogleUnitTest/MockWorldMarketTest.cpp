@@ -29,6 +29,11 @@ namespace StockAnalysisTest {
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       s_pWorldMarket = new CMockWorldMarket;
       s_pWorldMarket->LoadStockDB();
+      s_pWorldMarket->LoadCountryList();
+      s_pWorldMarket->LoadWorldExchangeDB();
+      s_pWorldMarket->LoadForexExchange();
+      s_pWorldMarket->LoadForexSymbol();
+      s_pWorldMarket->LoadWorldChoicedStock();
     }
     static void TearDownTestSuite(void) {
       EXPECT_FALSE(gl_fExitingSystem);

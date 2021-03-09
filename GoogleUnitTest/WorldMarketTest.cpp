@@ -40,6 +40,10 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
       gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
       gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
+
+      gl_pWorldMarket->SetTiingoInquiring(false);
+      gl_pWorldMarket->SetTiingoDayLineUpdated(false);
+
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
@@ -240,6 +244,22 @@ namespace StockAnalysisTest {
     EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
     EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
     EXPECT_EQ(gl_pWorldMarket->GetFinnhubInquiryQueueSize(), 0);
+  }
+
+  TEST_F(CWorldMarketTest, TestGetTiingoInquiry) {
+    WebInquiry inquiry, inquiry2;
+
+    EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
+    inquiry.m_lInquiryIndex = 0;
+    inquiry.m_iPriority = 10;
+    inquiry.m_lStockIndex = 0;
+    gl_pWorldMarket->PushTiingoInquiry(inquiry);
+    EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 1);
+    inquiry2 = gl_pWorldMarket->GetTiingoInquiry();
+    EXPECT_EQ(inquiry.m_iPriority, inquiry2.m_iPriority);
+    EXPECT_EQ(inquiry.m_lInquiryIndex, inquiry2.m_lInquiryIndex);
+    EXPECT_EQ(inquiry.m_lStockIndex, inquiry2.m_lStockIndex);
+    EXPECT_EQ(gl_pWorldMarket->GetTiingoInquiryQueueSize(), 0);
   }
 
   TEST_F(CWorldMarketTest, TestIsCountryListUpdated) {
@@ -708,6 +728,78 @@ namespace StockAnalysisTest {
 
     for (int i = 0; i < gl_pWorldMarket->GetForexSymbolSize(); i++) {
       pStock = gl_pWorldMarket->GetForexSymbol(i);
+      pStock->SetDayLineNeedUpdate(true);
+    }
+  }
+
+  TEST_F(CWorldMarketTest, TestTaskInquiryTiingoCompanySymbol) {
+    WebInquiry inquiry;
+
+    gl_pWorldMarket->SetTiingoSymbolUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "TiingoCompanySymbol Updated";
+
+    gl_pWorldMarket->SetTiingoSymbolUpdated(false);
+    gl_pWorldMarket->SetTiingoInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol()) << "其他TiingoInquiry正在进行";
+
+    gl_pWorldMarket->SetTiingoInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoCompanySymbol());
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
+    inquiry = gl_pWorldMarket->GetTiingoInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __COMPANY_SYMBOLS__);
+    EXPECT_EQ(inquiry.m_iPriority, 10);
+    EXPECT_FALSE(gl_pWorldMarket->IsTiingoSymbolUpdated()) << "此标识需要等处理完数据后方设置";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("Inquiry Tiingo Symbol"));
+  }
+
+  TEST_F(CWorldMarketTest, TestTaskInquiryTiingoDayLine) {
+    CWorldStockPtr pStock;
+    WebInquiry inquiry;
+    long lStockIndex = 0;
+
+    gl_pWorldMarket->SetSystemReady(true);
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
+      pStock->SetDayLineNeedUpdate(false);
+    }
+    gl_pWorldMarket->GetChoicedStock(1)->SetDayLineNeedUpdate(true);
+    gl_pWorldMarket->GetChoicedStock(3)->SetDayLineNeedUpdate(true);
+    gl_pWorldMarket->SetTiingoDayLineUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoDayLine()) << "DayLine Updated";
+
+    gl_pWorldMarket->SetTiingoDayLineUpdated(false);
+    gl_pWorldMarket->SetTiingoInquiring(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoDayLine()) << "其他TiingoInquiry正在进行";
+
+    gl_pWorldMarket->SetTiingoInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoInquiring());
+    lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(1)->GetSymbol());
+    inquiry = gl_pWorldMarket->GetTiingoInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
+    EXPECT_EQ(inquiry.m_lStockIndex, lStockIndex) << "第一个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
+
+    gl_pWorldMarket->SetTiingoInquiring(false);
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryTiingoDayLine());
+    lStockIndex = gl_pWorldMarket->GetStockIndex(gl_pWorldMarket->GetChoicedStock(3)->GetSymbol());
+    inquiry = gl_pWorldMarket->GetTiingoInquiry();
+    EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
+    EXPECT_EQ(inquiry.m_lStockIndex, lStockIndex) << "第二个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(1)->IsDayLineNeedUpdate());
+    EXPECT_FALSE(gl_pWorldMarket->GetChoicedStock(3)->IsDayLineNeedUpdate());
+
+    gl_pWorldMarket->SetTiingoInquiring(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryTiingoDayLine()) << "第三次查询时没有找到待查询的股票";
+    EXPECT_TRUE(gl_pWorldMarket->IsTiingoDayLineUpdated()) << "股票都查询完了";
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("美国市场自选股票日线历史数据更新完毕"));
+
+    // 恢复原状
+    for (int i = 0; i < gl_pWorldMarket->GetTotalStock(); i++) {
+      pStock = gl_pWorldMarket->GetStock(i);
       pStock->SetDayLineNeedUpdate(true);
     }
   }

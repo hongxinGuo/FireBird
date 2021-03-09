@@ -531,8 +531,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
   if (m_qTiingoWebInquiry.size() > 0) { // 有申请等待？
     ASSERT(IsTiingoInquiring());
     if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
-      m_CurrentTiingoInquiry = m_qTiingoWebInquiry.top();
-      m_qTiingoWebInquiry.pop();
+      m_CurrentTiingoInquiry = GetTiingoInquiry();
       gl_pTiingoWebInquiry->SetInquiryingStringPrefix(m_vTiingoInquiringStr.at(m_CurrentTiingoInquiry.m_lInquiryIndex)); // 设置前缀
       switch (m_CurrentTiingoInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但是错误的，只能用于测试。
@@ -1169,9 +1168,9 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
   if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
     inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
     inquiry.m_iPriority = 10;
-    m_qTiingoWebInquiry.push(inquiry);
+    PushTiingoInquiry(inquiry);
     SetTiingoInquiring(true);
-    str = _T("查询Tiingo Symbol");
+    str = _T("Inquiry Tiingo Symbol");
     gl_systemMessage.PushInformationMessage(str);
 
     return true;
@@ -1182,7 +1181,7 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 // Tiingo的下载日线数据与Finnhub的日线下载函数，只允许同时运行其中之一。
-//
+// 目前此功能只用于下载自选股票的日线数据。
 //
 //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -1192,6 +1191,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
   CWorldStockPtr pStock;
   CString str = _T("");
   long lStockSetSize = m_vWorldChoicedStock.size();
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
   if (!IsTiingoDayLineUpdated() && !IsTiingoInquiring()) {
@@ -1203,13 +1203,14 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
       }
     }
     if (fFound) {
+      fHaveInquiry = true;
       inquiry.m_lInquiryIndex = __STOCK_CANDLES__;
       inquiry.m_lStockIndex = m_mapWorldStock.at(pStock->GetSymbol());
       inquiry.m_iPriority = 10;
-      m_qTiingoWebInquiry.push(inquiry);
+      PushTiingoInquiry(inquiry);
       SetTiingoInquiring(true);
-      m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
-      TRACE("申请Tiingo %s日线数据\n", m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->GetSymbol().GetBuffer());
+      pStock->SetDayLineNeedUpdate(false);
+      TRACE("申请Tiingo %s日线数据\n", pStock->GetSymbol().GetBuffer());
     }
     else {
       SetTiingoDayLineUpdated(true);
@@ -1218,7 +1219,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return true;
+  return fHaveInquiry;
 }
 
 bool CWorldMarket::TaskUpdateDayLineDB(void) {
@@ -1235,6 +1236,8 @@ bool CWorldMarket::TaskUpdateDayLineDB(void) {
 // 无论是否执行了存储函数，都需要将下载的日线历史数据删除，这样能够节省内存的占用。由于实际存储功能使用线程模式实现，
 // 故而其执行时间可能晚于主线程，导致主线程删除日线数据时出现同步问题。解决的方法是让工作线程独立删除存储后的日线数据，
 // 主线程的删除函数只在不调用工作线程（无需存储日线数据）的情况下方才执行。
+//
+//
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CWorldMarket::TaskUpdateForexDayLineDB(void) {
   CString str;
@@ -1432,6 +1435,15 @@ WebInquiry CWorldMarket::GetFinnhubInquiry(void) {
 
   WebInquiry inquiry = m_qFinnhubWebInquiry.top();
   m_qFinnhubWebInquiry.pop();
+
+  return inquiry;
+}
+
+WebInquiry CWorldMarket::GetTiingoInquiry(void) {
+  ASSERT(m_qTiingoWebInquiry.size() > 0);
+
+  WebInquiry inquiry = m_qTiingoWebInquiry.top();
+  m_qTiingoWebInquiry.pop();
 
   return inquiry;
 }

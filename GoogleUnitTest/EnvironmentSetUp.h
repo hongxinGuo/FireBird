@@ -86,6 +86,7 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->LoadWorldExchangeDB();
       gl_pWorldMarket->LoadForexExchange();
       gl_pWorldMarket->LoadForexSymbol();
+      gl_pWorldMarket->LoadWorldChoicedStock();
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
