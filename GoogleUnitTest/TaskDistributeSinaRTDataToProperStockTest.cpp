@@ -47,10 +47,12 @@ namespace StockAnalysisTest {
       pStock->SetIPOStatus(__STAKE_NULL__); // 故意将此股票状态设置为未上市。
       s_tCurrentMarketTime = gl_pChinaStockMarket->GetMarketTime();
     }
+
     static void TearDownTestSuite(void) {
       CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(_T("600008.SS"));
       pStock->SetActive(true);
     }
+
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);

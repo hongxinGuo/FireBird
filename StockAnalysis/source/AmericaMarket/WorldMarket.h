@@ -179,6 +179,7 @@ public:
   void SetQuandlInquiring(bool fFlag) noexcept { m_fQuandlInquiring = fFlag; }
   void SetQuandlDataReceived(bool fFlag) noexcept { m_fQuandlDataReceived = fFlag; }
   bool IsQuandlDataReceived(void) noexcept { bool f = m_fQuandlDataReceived; return f; }
+  bool IsTiingoInquiring(void) noexcept { return m_fTiingoInquiring; }
   void SetTiingoInquiring(bool fFlag) noexcept { m_fTiingoInquiring = fFlag; }
   void SetTiingoDataReceived(bool fFlag) noexcept { m_fTiingoDataReceived = fFlag; }
   bool IsTiingoDataReceived(void) noexcept { bool f = m_fTiingoDataReceived; return f; }
@@ -197,10 +198,13 @@ public:
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);
+  size_t GetForexExchangeSize(void) noexcept { return m_vForexExchange.size(); }
 
   bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
   bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->m_strSymbol); }
   void AddForexSymbol(CForexSymbolPtr pForexSymbol);
+  CForexSymbolPtr GetForexSymbol(long lIndex) { return m_vForexSymbol.at(lIndex); }
+  size_t GetForexSymbolSize(void) noexcept { return m_vForexSymbol.size(); }
 
   size_t GetTotalCountry(void) noexcept { return m_vCountry.size(); }
   bool IsCountry(CString strCountry);

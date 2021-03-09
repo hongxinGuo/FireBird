@@ -61,11 +61,11 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(stock.IsProfileUpdated());
   }
 
-  TEST_F(CWorldStockTest, TestIsEPSSurpriseNeedUpdate) {
+  TEST_F(CWorldStockTest, TestIsEPSSurpriseUpdated) {
     CWorldStock stock;
-    EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
-    stock.SetEPSSurpriseNeedUpdate(false);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
+    stock.SetEPSSurpriseUpdated(true);
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
   }
 
   TEST_F(CWorldStockTest, TestIsEPSSurpriseNeedSave) {
@@ -404,45 +404,45 @@ namespace StockAnalysisTest {
     CWorldStock stock;
     long lCurrentDate = 20200101;
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_NULL__);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_DELISTED__);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(19700101);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190819); // 不早于135天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190818); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190521); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_TRUE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
-    stock.SetEPSSurpriseNeedUpdate(true);
+    stock.SetEPSSurpriseUpdated(false);
     stock.SetIPOStatus(__STAKE_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190520); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
-    EXPECT_FALSE(stock.IsEPSSurpriseNeedUpdate());
+    EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
   }
 
   TEST_F(CWorldStockTest, TestSaveDayLine) {

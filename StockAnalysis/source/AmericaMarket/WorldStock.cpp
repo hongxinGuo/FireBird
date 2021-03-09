@@ -72,7 +72,7 @@ void CWorldStock::Reset(void) {
   m_dShareOutstanding = 0;
 
   m_fProfileUpdated = false;
-  m_fEPSSurpriseNeedUpdate = true;
+  m_fEPSSurpriseUpdated = false;
   m_fEPSSurpriseNeedSave = false;
   m_fFinnhubPeerUpdated = false;
 
@@ -413,21 +413,21 @@ bool CWorldStock::HaveNewDayLineData(void) {
 
 bool CWorldStock::CheckEPSSurpriseStatus(long lCurrentDate) {
   if (IsNullStock() || IsDelisted()) {
-    m_fEPSSurpriseNeedUpdate = false;
+    m_fEPSSurpriseUpdated = true;
   }
   else if (m_lLastEPSSurpriseUpdateDate == 19700101) { // 没有数据？
-    m_fEPSSurpriseNeedUpdate = false;
+    m_fEPSSurpriseUpdated = true;
   }
   else if (!IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 135)) { // 有不早于135天的数据？
-    m_fEPSSurpriseNeedUpdate = false;
+    m_fEPSSurpriseUpdated = true;
   }
   else if (IsEarlyThen(m_lLastEPSSurpriseUpdateDate, lCurrentDate, 225) && (m_lLastEPSSurpriseUpdateDate != 19800101)) { // 有早于225天的数据？
-    m_fEPSSurpriseNeedUpdate = false;
+    m_fEPSSurpriseUpdated = true;
   }
   else {
-    m_fEPSSurpriseNeedUpdate = true;
+    m_fEPSSurpriseUpdated = false;
   }
-  return m_fEPSSurpriseNeedUpdate;
+  return m_fEPSSurpriseUpdated;
 }
 
 bool CWorldStock::IsEPSSurpriseNeedSaveAndClearFlag(void) {

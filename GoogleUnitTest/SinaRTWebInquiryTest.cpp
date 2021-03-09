@@ -23,7 +23,6 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
     }
 
     virtual void TearDown(void) override {

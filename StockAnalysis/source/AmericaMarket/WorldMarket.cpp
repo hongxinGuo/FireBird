@@ -438,7 +438,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
           pStock->SetLastEPSSurpriseUpdateDate(19700101); // 将日期设置为更早。
           pStock->SetUpdateProfileDB(true);
         }
-        pStock->m_fEPSSurpriseNeedUpdate = false;
+        pStock->m_fEPSSurpriseUpdated = true;
         pStock->m_fEPSSurpriseNeedSave = true;
       }
       break;
@@ -529,7 +529,7 @@ bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
   CForexSymbolPtr pSymbol = nullptr;
 
   if (m_qTiingoWebInquiry.size() > 0) { // 有申请等待？
-    ASSERT(m_fTiingoInquiring);
+    ASSERT(IsTiingoInquiring());
     if (IsTiingoDataReceived()) { //已经发出了数据申请且Tiingo数据已经接收到了？
       m_CurrentTiingoInquiry = m_qTiingoWebInquiry.top();
       m_qTiingoWebInquiry.pop();
@@ -646,7 +646,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
   ASSERT(gl_WebInquirer.GetTiingoDataSize() <= 1);
   if (IsTiingoDataReceived()) { // 如果网络数据接收完成
     if (gl_WebInquirer.GetTiingoDataSize() > 0) {  // 处理当前网络数据
-      ASSERT(m_fTiingoInquiring);
+      ASSERT(IsTiingoInquiring());
       pWebData = gl_WebInquirer.PopTiingoData();
       switch (m_CurrentTiingoInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
@@ -711,7 +711,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       break;
       }
       gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
-      m_fTiingoInquiring = false;
+      SetTiingoInquiring(false);
     }
   }
 
@@ -1055,33 +1055,35 @@ bool CWorldMarket::TaskInquiryFinnhubEPSSurprise(void) {
   CWorldStockPtr pStock;
   CString str = _T("");
   long lStockSetSize = m_vWorldStock.size();
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
   if (!IsFinnhubEPSSurpriseUpdated() && !IsFinnhubInquiring()) {
     for (m_lCurrentUpdateEPSSurprisePos = 0; m_lCurrentUpdateEPSSurprisePos < lStockSetSize; m_lCurrentUpdateEPSSurprisePos++) {
-      if (m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->IsEPSSurpriseNeedUpdate()) {
+      if (!m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->IsEPSSurpriseUpdated()) {
         pStock = m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos);
         fFound = true;
         break;
       }
     }
     if (fFound) {
+      fHaveInquiry = true;
       inquiry.m_lInquiryIndex = __STOCK_EPS_SURPRISE__;
       inquiry.m_lStockIndex = m_lCurrentUpdateEPSSurprisePos;
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       SetFinnhubInquiring(true);
-      m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseNeedUpdate(false);
+      m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->SetEPSSurpriseUpdated(true);
       TRACE("申请%s EPS Surprise数据\n", m_vWorldStock.at(m_lCurrentUpdateEPSSurprisePos)->GetSymbol().GetBuffer());
     }
     else {
       SetFinnhubEPSSurpriseUpdated(true);
       TRACE("Finnhub EPS Surprise更新完毕\n");
-      str = _T("Finnhub EPS Surprise更新完毕");
+      str = _T("Finnhub EPS Surprise Updated");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return true;
+  return fHaveInquiry;
 }
 
 bool CWorldMarket::TaskInquiryFinnhubForexExchange(void) {
@@ -1106,7 +1108,10 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
     inquiry.m_iPriority = 10;
     m_qFinnhubWebInquiry.push(inquiry);
     SetFinnhubInquiring(true);
-    if (m_lCurrentForexExchangePos >= m_vForexExchange.size()) SetFinnhubForexSymbolUpdated(true);
+    if (m_lCurrentForexExchangePos >= m_vForexExchange.size()) {
+      SetFinnhubForexSymbolUpdated(true);
+      m_lCurrentForexExchangePos = 0;
+    }
     return true;
   }
   return false;
@@ -1115,40 +1120,42 @@ bool CWorldMarket::TaskInquiryFinnhubForexSymbol(void) {
 bool CWorldMarket::TaskInquiryFinnhubForexDayLine(void) {
   bool fFound = false;
   WebInquiry inquiry{ 0, 0, 0 };
-  CForexSymbolPtr pStock;
+  CForexSymbolPtr pForexSymbol;
   CString str = _T("");
   const long lStockSetSize = m_vForexSymbol.size();
+  bool fHaveInquiry = false;
 
   ASSERT(IsSystemReady());
   if (!IsFinnhubForexDayLineUpdated() && !IsFinnhubInquiring()) {
     for (m_lCurrentUpdateForexDayLinePos = 0; m_lCurrentUpdateForexDayLinePos < lStockSetSize; m_lCurrentUpdateForexDayLinePos++) {
-      if (m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
-        pStock = m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos);
+      if (GetForexSymbol(m_lCurrentUpdateForexDayLinePos)->IsDayLineNeedUpdate()) {
+        pForexSymbol = GetForexSymbol(m_lCurrentUpdateForexDayLinePos);
         fFound = true;
         break;
       }
     }
     if (fFound) {
+      fHaveInquiry = true;
       inquiry.m_lInquiryIndex = __FOREX_CANDLES__;
       inquiry.m_lStockIndex = m_lCurrentUpdateForexDayLinePos;
       inquiry.m_iPriority = 10;
       m_qFinnhubWebInquiry.push(inquiry);
       SetFinnhubInquiring(true);
-      m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->SetDayLineNeedUpdate(false);
-      TRACE("申请Forex%s日线数据\n", m_vForexSymbol.at(m_lCurrentUpdateForexDayLinePos)->m_strSymbol.GetBuffer());
+      pForexSymbol->SetDayLineNeedUpdate(false);
+      TRACE("申请Forex%s日线数据\n", pForexSymbol->m_strSymbol.GetBuffer());
     }
     else {
       SetFinnhubForexDayLineUpdated(true);
       TRACE("Finnhub Forex日线更新完毕\n");
-      str = _T("美国市场Forex日线历史数据更新完毕");
+      str = _T("Forex DayLine Updated");
       gl_systemMessage.PushInformationMessage(str);
     }
   }
-  return true;
+  return fHaveInquiry;
 }
 
 void CWorldMarket::TaskInquiryTiingo(void) {
-  if (IsSystemReady() && !m_fTiingoInquiring) {
+  if (IsSystemReady() && !IsTiingoInquiring()) {
     TaskInquiryTiingoCompanySymbol();
     // 由于Tiingo规定每月只能查询500个代码，故测试成功后即暂时不使用。
     TaskInquiryTiingoDayLine(); // 初步测试完毕。
@@ -1159,11 +1166,11 @@ bool CWorldMarket::TaskInquiryTiingoCompanySymbol(void) {
   WebInquiry inquiry{ 0, 0, 0 };
   CString str;
 
-  if (!IsTiingoSymbolUpdated() && !m_fTiingoInquiring) {
+  if (!IsTiingoSymbolUpdated() && !IsTiingoInquiring()) {
     inquiry.m_lInquiryIndex = __COMPANY_SYMBOLS__;
     inquiry.m_iPriority = 10;
     m_qTiingoWebInquiry.push(inquiry);
-    m_fTiingoInquiring = true;
+    SetTiingoInquiring(true);
     str = _T("查询Tiingo Symbol");
     gl_systemMessage.PushInformationMessage(str);
 
@@ -1187,7 +1194,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
   long lStockSetSize = m_vWorldChoicedStock.size();
 
   ASSERT(IsSystemReady());
-  if (!IsTiingoDayLineUpdated() && !m_fTiingoInquiring) {
+  if (!IsTiingoDayLineUpdated() && !IsTiingoInquiring()) {
     for (m_lCurrentUpdateDayLinePos = 0; m_lCurrentUpdateDayLinePos < lStockSetSize; m_lCurrentUpdateDayLinePos++) {
       if (m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->IsDayLineNeedUpdate()) {
         pStock = m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos);
@@ -1200,7 +1207,7 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
       inquiry.m_lStockIndex = m_mapWorldStock.at(pStock->GetSymbol());
       inquiry.m_iPriority = 10;
       m_qTiingoWebInquiry.push(inquiry);
-      m_fTiingoInquiring = true;
+      SetTiingoInquiring(true);
       m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->SetDayLineNeedUpdate(false);
       TRACE("申请Tiingo %s日线数据\n", m_vWorldChoicedStock.at(m_lCurrentUpdateDayLinePos)->GetSymbol().GetBuffer());
     }
@@ -1664,7 +1671,7 @@ bool CWorldMarket::UpdateEconomicCalendarDB(void) {
 bool CWorldMarket::RebuildEPSSurprise(void) {
   for (auto& p : m_vWorldStock) {
     p->SetLastEPSSurpriseUpdateDate(19800101);
-    p->m_fEPSSurpriseNeedUpdate = true;
+    p->m_fEPSSurpriseUpdated = false;
   }
   SetFinnhubEPSSurpriseUpdated(false);
   m_lCurrentUpdateEPSSurprisePos = 0;

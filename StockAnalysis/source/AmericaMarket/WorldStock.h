@@ -40,8 +40,8 @@ public:
   bool IsProfileUpdated(void) noexcept { return m_fProfileUpdated; }
   void SetProfileUpdated(bool fFlag) noexcept { m_fProfileUpdated = fFlag; }
 
-  bool IsEPSSurpriseNeedUpdate(void) noexcept { return m_fEPSSurpriseNeedUpdate; }
-  void SetEPSSurpriseNeedUpdate(bool fFlag) noexcept { m_fEPSSurpriseNeedUpdate = fFlag; }
+  bool IsEPSSurpriseUpdated(void) noexcept { return m_fEPSSurpriseUpdated; }
+  void SetEPSSurpriseUpdated(bool fFlag) noexcept { m_fEPSSurpriseUpdated = fFlag; }
   bool CheckEPSSurpriseStatus(long lCurrentDate);
   bool IsEPSSurpriseNeedSave(void) noexcept { return m_fEPSSurpriseNeedSave; }
   void SetEPSSurpriseNeedSave(bool fFlag) noexcept { m_fEPSSurpriseNeedSave = fFlag; }
@@ -152,7 +152,7 @@ public:
   // 系统生成信息
   vector<CDayLinePtr> m_vDayLine;
   vector<CEPSSurprisePtr> m_vEPSSurprise;
-  bool m_fEPSSurpriseNeedUpdate;
+  bool m_fEPSSurpriseUpdated;
   atomic_bool m_fEPSSurpriseNeedSave;
 
 protected:
