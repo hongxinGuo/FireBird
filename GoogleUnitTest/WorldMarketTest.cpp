@@ -5,6 +5,8 @@
 #include"WorldStock.h"
 #include"WorldMarket.h"
 
+#include"SetFinnhubForexExchange.h"
+
 using namespace testing;
 
 namespace StockAnalysisTest {
@@ -22,6 +24,7 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
       gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
       gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
+      gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
     }
     static void TearDownTestSuite(void) {
     }
@@ -40,6 +43,7 @@ namespace StockAnalysisTest {
       gl_pWorldMarket->SetFinnhubEPSSurpriseUpdated(true);
       gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
       gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
+      gl_pWorldMarket->SetFinnhubForexDayLineUpdated(false);
 
       gl_pWorldMarket->SetTiingoInquiring(false);
       gl_pWorldMarket->SetTiingoDayLineUpdated(false);
@@ -98,6 +102,8 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000000.SS")));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("000001.SS")));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("600601.SS")));
+    EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("RIG")));
+    EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
     CWorldStockPtr pStock = make_shared<CWorldStock>();
     pStock->SetSymbol(_T("000000.SS"));
@@ -106,12 +112,67 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
     pStock->SetSymbol(_T("600601.SS"));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+    pStock->SetSymbol(_T("RIG"));
+    EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+    pStock->SetSymbol(_T("000001.SZ"));
+    EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
+  }
+
+  TEST_F(CWorldMarketTest, TestAddStock) {
+    CWorldStockPtr pStock = make_shared<CWorldStock>();
+    long lTotalStock = gl_pWorldMarket->GetTotalStock();
+    pStock->SetSymbol(_T("000001.SZ"));
+
+    EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
+    gl_pWorldMarket->AddStock(pStock);
+    EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), lTotalStock + 1);
+    gl_pWorldMarket->DeleteStock(pStock);
+    EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), lTotalStock);
+  }
+
+  TEST_F(CWorldMarketTest, TestDeleteStock) {
+    // do nothing. 已经在TestAddStock中测试了DeleteStock函数
+    CWorldStockPtr pStock = nullptr;
+
+    EXPECT_FALSE(gl_pWorldMarket->DeleteStock(pStock)) << "空指针";
+
+    pStock = make_shared<CWorldStock>();
+    pStock->SetSymbol(_T("000001.SZ"));
+    EXPECT_FALSE(gl_pWorldMarket->DeleteStock(pStock)) << "此股票代码不存在于代码集中";
+  }
+
+  TEST_F(CWorldMarketTest, TestGetStock) {
+    CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0); // 000001.SS
+    EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS")) << "第一个股票代码为000001.SS";
+    pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
+    EXPECT_FALSE(pStock == nullptr);
+    EXPECT_STREQ(pStock->GetDescription(), _T("SSE Composite Index"));
   }
 
   TEST_F(CWorldMarketTest, TestIsForexExchange) {
     EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(_T("ABC")));
     EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(_T("forex.com")));
     EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(_T("ic markets")));
+  }
+
+  TEST_F(CWorldMarketTest, TestAddForexExchange) {
+    long lTotalForexExchange = gl_pWorldMarket->GetForexExchangeSize();
+    CString strForexExchange = _T("000001.SZ");
+
+    EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strForexExchange));
+    gl_pWorldMarket->AddForexExchange(strForexExchange);
+    EXPECT_TRUE(gl_pWorldMarket->IsForexExchange(strForexExchange));
+    EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), lTotalForexExchange + 1);
+    gl_pWorldMarket->DeleteForexExchange(strForexExchange);
+    EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strForexExchange));
+    EXPECT_EQ(gl_pWorldMarket->GetForexExchangeSize(), lTotalForexExchange);
+  }
+
+  TEST_F(CWorldMarketTest, TestDeleteForexExchange) {
+    // do nothing. 已经在TestAddForexExchange中测试了DeleteForexExchange函数
+    EXPECT_FALSE(gl_pWorldMarket->DeleteForexExchange(_T("US.US.US"))) << "此符号在符号集中不存在";
   }
 
   TEST_F(CWorldMarketTest, TestIsForexSymbol) {
@@ -128,6 +189,31 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
   }
 
+  TEST_F(CWorldMarketTest, TestAddForexSymbol) {
+    CForexSymbolPtr pForexSymbol = make_shared<CFinnhubForexSymbol>();
+    long lTotalForexSymbol = gl_pWorldMarket->GetForexSymbolSize();
+    pForexSymbol->SetSymbol(_T("000001.SZ"));
+
+    EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+    gl_pWorldMarket->AddForexSymbol(pForexSymbol);
+    EXPECT_TRUE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+    EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol + 1);
+    EXPECT_TRUE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol));
+    EXPECT_FALSE(gl_pWorldMarket->IsForexSymbol(pForexSymbol));
+    EXPECT_EQ(gl_pWorldMarket->GetForexSymbolSize(), lTotalForexSymbol);
+  }
+
+  TEST_F(CWorldMarketTest, TestDeleteForexSymbol) {
+    // do nothing. 已经在TestAddForexSymbol中测试了DeleteForexSymbol函数
+    CForexSymbolPtr pForexSymbol = nullptr;
+
+    EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "空指针";
+
+    pForexSymbol = make_shared<CFinnhubForexSymbol>();
+    pForexSymbol->SetSymbol(_T("000001.SZ"));
+    EXPECT_FALSE(gl_pWorldMarket->DeleteForexSymbol(pForexSymbol)) << "此符号在符号集中不存在";
+  }
+
   TEST_F(CWorldMarketTest, TestIsCountry) {
     CCountryPtr pCountry = make_shared<CCountry>();
 
@@ -140,12 +226,30 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsCountry(pCountry));
   }
 
-  TEST_F(CWorldMarketTest, TestGetStock) {
-    CWorldStockPtr pStock = gl_pWorldMarket->GetStock(0); // 000001.SS
-    EXPECT_STREQ(pStock->GetSymbol(), _T("000001.SS")) << "第一个股票代码为000001.SS";
-    pStock = gl_pWorldMarket->GetStock(_T("000001.SS"));
-    EXPECT_FALSE(pStock == nullptr);
-    EXPECT_STREQ(pStock->GetDescription(), _T("SSE Composite Index"));
+  TEST_F(CWorldMarketTest, TestAddCountry) {
+    CCountryPtr pCountry = make_shared<CCountry>();
+    long lTotalCountry = gl_pWorldMarket->GetTotalCountry();
+    pCountry->m_strCountry = _T("SZ");
+
+    EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
+    gl_pWorldMarket->AddCountry(pCountry);
+    EXPECT_TRUE(gl_pWorldMarket->IsCountry(pCountry));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), lTotalCountry + 1);
+    gl_pWorldMarket->DeleteCountry(pCountry);
+    EXPECT_FALSE(gl_pWorldMarket->IsCountry(pCountry));
+    EXPECT_EQ(gl_pWorldMarket->GetTotalCountry(), lTotalCountry);
+  }
+
+  TEST_F(CWorldMarketTest, TestDeleteCountry) {
+    // do nothing. 已经在TestAddCountry中测试了DeleteCountry函数
+
+    CCountryPtr pCountry = nullptr;
+
+    EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "空指针";
+
+    pCountry = make_shared<CCountry>();
+    pCountry->m_strCountry = _T("SZ");
+    EXPECT_FALSE(gl_pWorldMarket->DeleteCountry(pCountry)) << "此股票代码不存在于代码集中";
   }
 
   TEST_F(CWorldMarketTest, TestLoadOption) {
@@ -228,6 +332,28 @@ namespace StockAnalysisTest {
 
     pStock = gl_pWorldMarket->GetStock(_T("SS.SS.US"));
     gl_pWorldMarket->DeleteStock(pStock); // 恢复原状
+  }
+
+  TEST_F(CWorldMarketTest, TaskUpdateForexExchangeDB) {
+    CString strSymbol = _T("US.US.US");
+
+    EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strSymbol)); // 确保是一个新股票代码
+    gl_pWorldMarket->AddForexExchange(strSymbol);
+    EXPECT_TRUE(gl_pWorldMarket->TaskUpdateForexExchangeDB());
+
+    CSetFinnhubForexExchange setForexExchange;
+    setForexExchange.m_strFilter = _T("[Exchange] = 'US.US.US'");
+    setForexExchange.Open();
+    EXPECT_FALSE(setForexExchange.IsEOF());
+    setForexExchange.m_pDatabase->BeginTrans();
+    while (!setForexExchange.IsEOF()) {
+      setForexExchange.Delete();
+      setForexExchange.MoveNext();
+    }
+    setForexExchange.m_pDatabase->CommitTrans();
+    setForexExchange.Close();
+
+    gl_pWorldMarket->DeleteForexExchange(strSymbol); // 恢复原状
   }
 
   TEST_F(CWorldMarketTest, TestGetFinnhubInquiry) {

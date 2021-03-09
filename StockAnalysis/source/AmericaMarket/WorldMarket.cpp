@@ -719,21 +719,21 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
 
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {
   static int s_iCount1Hour = 3599;
-  static int s_iCount10Minute = 599;
+  static int s_iCount5Minute = 299;
   static int s_iCount1Minute = 59;
   static int s_iCount10Second = 9;
 
   s_iCount10Second -= lSecond;
   s_iCount1Minute -= lSecond;
-  s_iCount10Minute -= lSecond;
+  s_iCount5Minute -= lSecond;
   s_iCount1Hour -= lSecond;
   if (s_iCount1Hour < 0) {
     s_iCount1Hour = 3599;
     SchedulingTaskPerHour(lCurrentTime);
   }
-  if (s_iCount10Minute < 0) {
-    s_iCount10Minute = 599;
-    SchedulingTaskPer10Minute(lCurrentTime);
+  if (s_iCount5Minute < 0) {
+    s_iCount5Minute = 299;
+    SchedulingTaskPer5Minute(lCurrentTime);
   }
   if (s_iCount1Minute < 0) {
     s_iCount1Minute = 59;
@@ -768,7 +768,7 @@ bool CWorldMarket::SchedulingTaskPerMinute(long lCurrentTime) {
   return true;
 }
 
-bool CWorldMarket::SchedulingTaskPer10Minute(long lCurrentTime) {
+bool CWorldMarket::SchedulingTaskPer5Minute(long lCurrentTime) {
   if (IsFinnhubSymbolUpdated() && IsStockProfileNeedUpdate()) {
     TaskUpdateStockProfileDB();
   }
@@ -880,29 +880,6 @@ bool CWorldMarket::TaskInquiryFinnhubCompanySymbol(void) {
 
 bool CWorldMarket::TaskUpdateForexSymbolDB(void) {
   RunningThreadUpdateForexSymbolDB();
-  return true;
-}
-
-bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
-  CSetFinnhubForexExchange setForexExchange;
-
-  if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
-    setForexExchange.Open();
-    setForexExchange.m_pDatabase->BeginTrans();
-    for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
-      setForexExchange.AddNew();
-      setForexExchange.m_Exchange = m_vForexExchange.at(l);
-      setForexExchange.Update();
-    }
-    setForexExchange.m_pDatabase->CommitTrans();
-    setForexExchange.Close();
-    m_lLastTotalForexExchange = m_vForexExchange.size();
-  }
-  return true;
-}
-
-bool CWorldMarket::TaskUpdateStockProfileDB(void) {
-  RunningThreadUpdateStockProfileDB();
   return true;
 }
 
@@ -1222,6 +1199,30 @@ bool CWorldMarket::TaskInquiryTiingoDayLine(void) {
   return fHaveInquiry;
 }
 
+bool CWorldMarket::TaskUpdateForexExchangeDB(void) {
+  CSetFinnhubForexExchange setForexExchange;
+
+  if (m_lLastTotalForexExchange < m_vForexExchange.size()) {
+    setForexExchange.Open();
+    setForexExchange.m_pDatabase->BeginTrans();
+    for (long l = m_lLastTotalForexExchange; l < m_vForexExchange.size(); l++) {
+      setForexExchange.AddNew();
+      setForexExchange.m_Exchange = m_vForexExchange.at(l);
+      setForexExchange.Update();
+    }
+    setForexExchange.m_pDatabase->CommitTrans();
+    setForexExchange.Close();
+    m_lLastTotalForexExchange = m_vForexExchange.size();
+    return true;
+  }
+  return false;
+}
+
+bool CWorldMarket::TaskUpdateStockProfileDB(void) {
+  RunningThreadUpdateStockProfileDB();
+  return true;
+}
+
 bool CWorldMarket::TaskUpdateDayLineDB(void) {
   RunningThreadUpdateDayLineDB();
 
@@ -1385,6 +1386,7 @@ bool CWorldMarket::DeleteStock(CWorldStockPtr pStock) {
   if (pStock == nullptr) return false;
   if (!IsStock(pStock->GetSymbol())) return false;
 
+  m_mapWorldStock.erase(pStock->GetSymbol());
   auto it = find(m_vWorldStock.begin(), m_vWorldStock.end(), pStock);
   m_vWorldStock.erase(it);
 
@@ -1409,9 +1411,30 @@ void CWorldMarket::AddForexExchange(CString strForexExchange) {
   m_vForexExchange.push_back(strForexExchange);
 }
 
+bool CWorldMarket::DeleteForexExchange(CString strForexExchange) {
+  if (!IsForexExchange(strForexExchange)) return false;
+
+  auto it = find(m_vForexExchange.begin(), m_vForexExchange.end(), strForexExchange);
+  m_vForexExchange.erase(it);
+  m_mapForexExchange.erase(strForexExchange);
+
+  return true;
+}
+
 void CWorldMarket::AddForexSymbol(CForexSymbolPtr pForexSymbol) {
   m_mapForexSymbol[pForexSymbol->m_strSymbol] = m_mapForexSymbol.size();
   m_vForexSymbol.push_back(pForexSymbol);
+}
+
+bool CWorldMarket::DeleteForexSymbol(CForexSymbolPtr pForexSymbol) {
+  if (pForexSymbol == nullptr) return false;
+  if (!IsForexSymbol(pForexSymbol->GetSymbol())) return false;
+
+  m_mapForexSymbol.erase(pForexSymbol->GetSymbol());
+  auto it = find(m_vForexSymbol.begin(), m_vForexSymbol.end(), pForexSymbol);
+  m_vForexSymbol.erase(it);
+
+  return true;
 }
 
 bool CWorldMarket::IsCountry(CString strCountry) {
@@ -1428,6 +1451,17 @@ bool CWorldMarket::IsCountry(CCountryPtr pCountry) {
 void CWorldMarket::AddCountry(CCountryPtr pCountry) {
   m_mapCountry[pCountry->m_strCountry] = m_vCountry.size();
   m_vCountry.push_back(pCountry);
+}
+
+bool CWorldMarket::DeleteCountry(CCountryPtr pCountry) {
+  if (pCountry == nullptr) return false;
+  if (!IsCountry(pCountry->m_strCountry)) return false;
+
+  m_mapCountry.erase(pCountry->m_strCountry);
+  auto it = find(m_vCountry.begin(), m_vCountry.end(), pCountry);
+  m_vCountry.erase(it);
+
+  return true;
 }
 
 WebInquiry CWorldMarket::GetFinnhubInquiry(void) {

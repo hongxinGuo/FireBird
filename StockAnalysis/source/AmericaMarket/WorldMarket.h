@@ -125,7 +125,7 @@ public:
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Seconds(long lCurrentTime);
   bool SchedulingTaskPerMinute(long lCurrentTime);
-  bool SchedulingTaskPer10Minute(long lCurrentTime);
+  bool SchedulingTaskPer5Minute(long lCurrentTime);
   bool SchedulingTaskPerHour(long lCurrentTime);
   bool TaskResetMarket(long lCurrentTime);
 
@@ -201,11 +201,13 @@ public:
 
   bool IsForexExchange(CString strExchange) { if (m_mapForexExchange.find(strExchange) == m_mapForexExchange.end()) return false; else return true; }
   void AddForexExchange(CString strForexExchange);
+  bool DeleteForexExchange(CString strForexExchange);
   size_t GetForexExchangeSize(void) noexcept { return m_vForexExchange.size(); }
 
   bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
   bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->m_strSymbol); }
   void AddForexSymbol(CForexSymbolPtr pForexSymbol);
+  bool DeleteForexSymbol(CForexSymbolPtr pForexSysbol);
   CForexSymbolPtr GetForexSymbol(long lIndex) { return m_vForexSymbol.at(lIndex); }
   size_t GetForexSymbolSize(void) noexcept { return m_vForexSymbol.size(); }
 
@@ -213,6 +215,7 @@ public:
   bool IsCountry(CString strCountry);
   bool IsCountry(CCountryPtr pCountry);
   void AddCountry(CCountryPtr pCountry);
+  bool DeleteCountry(CCountryPtr pCountry);
 
   size_t GetFinnhubInquiryQueueSize(void) noexcept { return m_qFinnhubWebInquiry.size(); }
   void PushFinnhubInquiry(WebInquiry inquiry) noexcept { m_qFinnhubWebInquiry.push(inquiry); }
