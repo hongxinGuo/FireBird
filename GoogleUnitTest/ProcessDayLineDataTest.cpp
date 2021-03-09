@@ -50,7 +50,10 @@ namespace StockAnalysisTest {
       m_pStock = gl_pChinaStockMarket->GetStock(pData->m_strSymbol);
       m_pStock->SetDayLineLoaded(false);
       if (!m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(true);
-      if (!m_pStock->IsNullStock()) m_pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+      if (!m_pStock->IsNullStock()) {
+        lDate = m_pStock->GetDayLineEndDate();
+        m_pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+      }
       m_iCount = pData->m_iCount;
       long lLength = pData->m_strData.GetLength();
       m_pStock->__TestSetDayLineBuffer(lLength, pData->m_strData.GetBuffer());
@@ -58,6 +61,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      if (!m_pStock->IsNullStock()) { m_pStock->SetDayLineEndDate(lDate); }
       if (m_pStock->IsDayLineNeedProcess()) m_pStock->SetDayLineNeedProcess(false);
       if (m_pStock->IsDayLineNeedSaving()) m_pStock->SetDayLineNeedSaving(false);
       if (m_pStock->IsDayLineNeedUpdate()) m_pStock->SetDayLineDBUpdated(false);
@@ -68,6 +72,7 @@ namespace StockAnalysisTest {
   public:
     int m_iCount;
     CChinaStockPtr m_pStock;
+    long lDate;
   };
 
   INSTANTIATE_TEST_SUITE_P(TestNetEaseDayLineData, NeteaseDayLineTest,

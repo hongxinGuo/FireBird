@@ -31,6 +31,7 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_fExitingSystem = false;
       gl_pChinaStockMarket->CalculateTime();
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();

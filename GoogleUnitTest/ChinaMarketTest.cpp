@@ -60,10 +60,10 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
-      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
-      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetTengxunRTDataInquiringIndex(0);
       gl_pChinaStockMarket->SetSystemReady(true); // 测试市场时，默认系统已经准备好
       gl_pChinaStockMarket->SetPermitResetMarket(true);
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
@@ -83,10 +83,10 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
       gl_pChinaStockMarket->ClearChoicedRTDataQueue();
       gl_pChinaStockMarket->SetResetMarket(true);
-      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
-      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
-      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
+      gl_pChinaStockMarket->SetTengxunRTDataInquiringIndex(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pChinaStockMarket->SetPermitResetMarket(true);
       gl_pChinaStockMarket->SetUpdateOptionDB(false);
@@ -107,7 +107,6 @@ namespace StockAnalysisTest {
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentSelectedStockSet(), -1);
-
       EXPECT_EQ(gl_pChinaStockMarket->GetTotalStock(), 4833);
     }
   };
@@ -212,7 +211,7 @@ namespace StockAnalysisTest {
     CString str2;
 
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
+    gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
     CString str = gl_pChinaStockMarket->GetSinaStockInquiringStr(900, false);
     str2 = str.Left(2);
     EXPECT_STREQ(str2, _T("sh"));
@@ -227,7 +226,7 @@ namespace StockAnalysisTest {
   TEST_F(CChinaMarketTest, TestGetNeteaseInquiringStockStr) {
     CChinaStockPtr pStock = nullptr;
     gl_pChinaStockMarket->SetSystemReady(true);
-    gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
+    gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
     CString str = gl_pChinaStockMarket->GetNextNeteaseStockInquiringStr(900, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_EQ(gl_pChinaStockMarket->GetNeteaseRTDataInquiringIndex(), 899);
     str = gl_pChinaStockMarket->GetNextNeteaseStockInquiringStr(900, gl_pChinaStockMarket->GetTotalStock());
@@ -261,8 +260,8 @@ namespace StockAnalysisTest {
     strCompare = pStock->GetSymbol();
     str2 = XferNeteaseToStandred(str.Left(7));
     EXPECT_STREQ(str2, strCompare);
-    gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
-    gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
+    gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
+    gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
   }
 
   TEST_F(CChinaMarketTest, TestGetNeteaseDayLineInquiringStr) {
@@ -270,44 +269,30 @@ namespace StockAnalysisTest {
     bool fStatus = false;
     CChinaStockPtr pStock = gl_pChinaStockMarket->GetStock(0);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("测试时使用teststock数据库，此数据库比较旧，最后更新时间不是昨日，故而活跃股票也需要更新日线");
-    long lDate = pStock->GetDayLineEndDate();
-    pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
+    long lDate;
+
+    EXPECT_EQ(gl_pChinaStockMarket->GetNeteaseDayLineDataInquiringIndex(), 0);
     pStock->SetDayLineNeedUpdate(false);
-    pStock->SetDayLineEndDate(lDate); // 恢复原状
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+    EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaStockMarket->GetLastTradeDate()) << pStock->GetDayLineEndDate();
     pStock = gl_pChinaStockMarket->GetStock(2);
     EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
+    EXPECT_LT(pStock->GetDayLineEndDate(), gl_pChinaStockMarket->GetLastTradeDate());
+    lDate = pStock->GetDayLineEndDate();
+    pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("1000001"));
     pStock = gl_pChinaStockMarket->GetStock(1);
     EXPECT_FALSE(pStock->IsDayLineNeedUpdate());
-    pStock = gl_pChinaStockMarket->GetStock(2);
-    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-    long lIPOStatus = pStock->GetIPOStatus();
-    pStock->SetIPOStatus(__STAKE_NULL__);
-    fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
-    EXPECT_TRUE(fStatus);
-    EXPECT_STREQ(str, _T("0000002"));
-    pStock->SetIPOStatus(lIPOStatus); // 恢复原状
-    pStock = gl_pChinaStockMarket->GetStock(3);
-    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
-    pStock = gl_pChinaStockMarket->GetStock(4);
-    lDate = pStock->GetDayLineEndDate();
-    pStock->SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
-    EXPECT_TRUE(pStock->IsDayLineNeedUpdate()) << _T("标识尚未更新");
     fStatus = gl_pChinaStockMarket->CreateNeteaseDayLineInquiringStr(str, gl_pChinaStockMarket->GetTotalStock());
     EXPECT_TRUE(fStatus);
     EXPECT_STREQ(str, _T("1000002"));
-    pStock->SetDayLineEndDate(lDate); // 恢复原状。
-    pStock = gl_pChinaStockMarket->GetStock(5);
-    EXPECT_TRUE(pStock->IsDayLineNeedUpdate());
 
+    gl_pChinaStockMarket->GetStock(2)->SetDayLineEndDate(lDate); // 恢复原状。
     // 恢复原状
-    pStock = gl_pChinaStockMarket->GetStock(0);
-    pStock->SetDayLineEndDate(lDate);
-    for (int i = 0; i < gl_pChinaStockMarket->GetTotalStock(); i++) {
+    for (int i = 0; i < 5; i++) {
       pStock = gl_pChinaStockMarket->GetStock(i);
       if (!pStock->IsDayLineNeedUpdate()) pStock->SetDayLineNeedUpdate(true);
     }

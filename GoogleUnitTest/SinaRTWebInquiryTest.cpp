@@ -13,7 +13,7 @@ namespace StockAnalysisTest {
   class CSinaRTWebInquiryTest : public ::testing::Test {
   protected:
     static void SetUpTestSuite(void) {
-      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
     }
 
     static void TearDownTestSuite(void) {
@@ -23,12 +23,12 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
     }
 
     virtual void TearDown(void) override {
       // clearup
-      gl_pChinaStockMarket->ResetSinaStockRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetSinaStockRTDataInquiringIndex(0);
     }
   public:
     CMockSinaRTWebInquiry m_SinaRTWebInquiry; // 新浪实时数据采集

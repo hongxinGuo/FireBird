@@ -22,7 +22,7 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
 
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
     }
@@ -30,7 +30,7 @@ namespace StockAnalysisTest {
     virtual void TearDown(void) override {
       // clearup
       gl_pChinaStockMarket->SetSystemReady(false);
-      gl_pChinaStockMarket->ResetNeteaseRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseRTDataInquiringIndex(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
     }
     CMockNeteaseRTWebInquiry m_NeteaseRTWebInquiry; // 新浪实时数据采集

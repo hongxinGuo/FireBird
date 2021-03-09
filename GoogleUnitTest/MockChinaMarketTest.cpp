@@ -27,23 +27,28 @@ namespace StockAnalysisTest {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
-      //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       s_pchinaMarket = new CMockChinaMarket;
       s_pchinaMarket->LoadStockCodeDB();
       s_pchinaMarket->SetTodayStockProcessed(false);
+      EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
+      EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
+      EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
       delete s_pchinaMarket;
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     virtual void SetUp(void) override {
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
+      EXPECT_FALSE(gl_fExitingSystem);
 
       s_pchinaMarket->SetTodayStockProcessed(false);
       s_pchinaMarket->SetRSEndDate(19900101);
@@ -54,6 +59,16 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
+      CChinaStockPtr pStock;
+      if (s_pchinaMarket->GetDayLineNeedSaveNumber() > 0) {
+        for (int i = 0; i < s_pchinaMarket->GetTotalStock(); i++) {
+          pStock = s_pchinaMarket->GetStock(i);
+          if (pStock->IsDayLineNeedSaving()) {
+            EXPECT_STREQ(pStock->GetSymbol(), _T(""));
+          }
+        }
+      }
       s_pchinaMarket->SetTodayStockProcessed(false);
       s_pchinaMarket->SetRSEndDate(19900101);
       s_pchinaMarket->SetUpdateOptionDB(false);
@@ -66,28 +81,34 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData1) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600666.SS"));
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    s_pchinaMarket->TaskSaveDayLineData();
+    EXPECT_FALSE(s_pchinaMarket->TaskSaveDayLineData());
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData2) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600668.SS"));
 
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
     pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
-    s_pchinaMarket->TaskSaveDayLineData();
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_FALSE(s_pchinaMarket->TaskSaveDayLineData());
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
+    pStock = s_pchinaMarket->GetStock(_T("600668.SS"));
+    EXPECT_FALSE(pStock->IsDayLineNeedSaving()) << "无论执行与否皆清除此标识";
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData3) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600282.SS"));
+    long lDate = pStock->GetDayLineEndDate();
 
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
     EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
@@ -96,30 +117,42 @@ namespace StockAnalysisTest {
     pStock->StoreDayLine(pDayLine);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(0);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
-    s_pchinaMarket->TaskSaveDayLineData();
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 1);
+    EXPECT_FALSE(s_pchinaMarket->TaskSaveDayLineData());
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
 
+    pStock = s_pchinaMarket->GetStock(_T("600282.SS"));
+    EXPECT_FALSE(pStock->IsDayLineNeedSaving()) << "无论执行与否皆清除此标识";
+
+    pStock->SetDayLineEndDate(lDate);
     pStock->UnloadDayLine();
   }
 
   TEST_F(CMockChinaMarketTest, TestTaskSaveDayLineData4) {
-    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600000.SS"));
+    CChinaStockPtr pStock = s_pchinaMarket->GetStock(_T("600608.SS"));
+    long lDate = pStock->GetDayLineEndDate();
 
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
+    EXPECT_FALSE(pStock->IsDayLineNeedSaving());
     pStock->SetDayLineNeedSaving(true);
     CDayLinePtr pDayLine = make_shared<CDayLine>();
     pDayLine->SetDate(19900101);
     pStock->SetDayLineEndDate(20000101);
     pStock->StoreDayLine(pDayLine);
     pDayLine = make_shared<CDayLine>();
-    pDayLine->SetDate(s_pchinaMarket->GetFormatedMarketDate());
+    pDayLine->SetDate(20210101);
     pStock->StoreDayLine(pDayLine);
-    //pStock->SetDayLineNeedSaving(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadSaveDayLineBasicInfoOfStock(_))
       .Times(1);
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 1);
     EXPECT_TRUE(s_pchinaMarket->TaskSaveDayLineData());
-    EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedSaveNumber(), 0);
+    EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
+
+    pStock = s_pchinaMarket->GetStock(_T("600608.SS"));
+    EXPECT_FALSE(pStock->IsDayLineNeedSaving()) << "无论执行与否皆清除此标识";
+
+    pStock->SetDayLineEndDate(lDate);
     pStock->UnloadDayLine();
   }
 

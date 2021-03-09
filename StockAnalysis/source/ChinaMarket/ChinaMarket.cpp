@@ -1781,12 +1781,14 @@ void CChinaMarket::ResetCurrentStock(void) {
 //////////////////////////////////////////////////////////////////////////////////////////
 bool CChinaMarket::TaskSaveDayLineData(void) {
   CString str;
+  bool fSave = false;
 
   for (auto& pStock : m_vChinaMarketStock) {
     if (pStock->IsDayLineNeedSavingAndClearFlag()) { // 清除标识需要与检测标识处于同一原子过程中，防止同步问题出现
       if (pStock->GetDayLineSize() > 0) {
         if (pStock->HaveNewDayLineData()) {
           RunningThreadSaveDayLineBasicInfoOfStock(pStock.get());
+          fSave = true;
         }
         else pStock->UnloadDayLine(); // 当无需执行存储函数时，这里还要单独卸载日线数据。因存储日线数据线程稍后才执行，故而不能在此统一执行删除函数。
       }
@@ -1801,7 +1803,7 @@ bool CChinaMarket::TaskSaveDayLineData(void) {
     }
   }
 
-  return(true);
+  return fSave;
 }
 
 bool CChinaMarket::UnloadDayLine(void) noexcept {

@@ -21,6 +21,7 @@ namespace StockAnalysisTest {
     }
 
     virtual void TearDown(void) override {
+      gl_fExitingSystem = false;
     }
     CMockChinaMarket market;
   };

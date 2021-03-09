@@ -19,13 +19,13 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       ASSERT_TRUE(gl_fTestMode);
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetTengxunRTDataInquiringIndex(0);
     }
 
     virtual void TearDown(void) override {
       // clearup
       gl_pChinaStockMarket->SetSystemReady(false);
-      gl_pChinaStockMarket->ResetTengxunRTDataInquiringIndex();
+      gl_pChinaStockMarket->SetTengxunRTDataInquiringIndex(0);
     }
   public:
     CMockTengxunRTWebInquiry m_TengxunRTWebInquiry; // 腾讯实时数据采集

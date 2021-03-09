@@ -22,17 +22,16 @@ namespace StockAnalysisTest {
     virtual void SetUp(void) override {
       ASSERT_FALSE(gl_fNormalMode);
       gl_pChinaStockMarket->CalculateTime();
-      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
       m_NeteaseDayLineWebInquiry.ResetDownLoadingStockCode();
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
-      EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
     }
 
     virtual void TearDown(void) override {
       // clearup
       EXPECT_TRUE(gl_pChinaStockMarket->IsResetMarket());
       gl_pChinaStockMarket->SetResetMarket(true);
-      gl_pChinaStockMarket->ResetNeteaseDayLineDataInquiringIndex();
+      gl_pChinaStockMarket->SetNeteaseDayLineDataInquiringIndex(0);
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       gl_pChinaStockMarket->SetSystemReady(false);
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
