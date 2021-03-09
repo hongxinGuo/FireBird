@@ -16,13 +16,14 @@ namespace StockAnalysisTest {
       s_pMainFrame = new CMockMainFrame;
       EXPECT_TRUE(CMFCVisualManager::GetInstance() != NULL);//
 
-      EXPECT_FALSE(gl_fNormalMode);
-      EXPECT_TRUE(gl_fTestMode);
+      ASSERT_FALSE(gl_fNormalMode);
+      ASSERT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 4);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedProcessNumber(), 0);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
@@ -33,13 +34,15 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket->SetCurrentStockChanged(false);
       gl_pChinaStockMarket->SetCurrentEditStockChanged(false);
       gl_pChinaStockMarket->SetUpdateOptionDB(false); // 这里使用了实际的数据库，故而不允许更新
-      EXPECT_FALSE(gl_fNormalMode);
-      EXPECT_TRUE(gl_fTestMode);
+      ASSERT_FALSE(gl_fNormalMode);
+      ASSERT_TRUE(gl_fTestMode);
       EXPECT_EQ(gl_vMarketPtr.size(), 4);
       if (CMFCVisualManager::GetInstance() != NULL) {
         delete CMFCVisualManager::GetInstance(); // 在生成MainFrame时，会生成一个视觉管理器。故而在此删除之。
       }
       delete s_pMainFrame;
+      EXPECT_TRUE(gl_fExitingSystem) << "MainFrame析构时设置此标识";
+      gl_fExitingSystem = false;
     }
     virtual void SetUp(void) override {
       gl_fExitingSystem = false;

@@ -39,6 +39,7 @@ namespace StockAnalysisTest {
       while (gl_systemMessage.GetInnerSystemInformationDequeSize() > 0) gl_systemMessage.PopInnerSystemInformationMessage();
     }
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
       delete s_pchinaMarket;

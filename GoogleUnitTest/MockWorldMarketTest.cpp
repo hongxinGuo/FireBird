@@ -31,6 +31,7 @@ namespace StockAnalysisTest {
       s_pWorldMarket->LoadStockDB();
     }
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fExitingSystem);
       delete s_pWorldMarket;
     }
     virtual void SetUp(void) override {

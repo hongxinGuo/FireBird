@@ -15,6 +15,7 @@ namespace StockAnalysisTest {
     }
 
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fExitingSystem);
     }
 
     virtual void SetUp(void) override {

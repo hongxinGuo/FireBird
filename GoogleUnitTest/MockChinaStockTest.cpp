@@ -17,7 +17,10 @@ namespace StockAnalysisTest {
   class CMockChinaStockTest : public ::testing::Test
   {
   protected:
+    static void SetUpTestSuite(void) {
+    }
     static void TearDownTestSuite(void) {
+      EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
     }
     virtual void SetUp(void) override {
