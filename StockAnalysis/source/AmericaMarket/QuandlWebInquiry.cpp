@@ -55,10 +55,10 @@ bool CQuandlWebInquiry::PrepareNextInquiringStr(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CQuandlWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str;
+  CString str = _T("");
   static int s_iCount = 5;
 
-  switch (gl_pWorldMarket->GetCurrentPrefixIndex()) {
+  switch (gl_pWorldMarket->GetCurrentQuandlPrefixIndex()) {
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;

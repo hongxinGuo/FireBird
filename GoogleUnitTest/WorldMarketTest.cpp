@@ -78,6 +78,14 @@ namespace StockAnalysisTest {
     gl_pWorldMarket->SetResetMarket(false);
   }
 
+  TEST_F(CWorldMarketTest, TestGetCurrentFinnhubPrefixIndex) {
+    WebInquiry inquiry;
+    inquiry.m_iPriority = 10;
+    inquiry.m_lInquiryIndex = 20;
+    inquiry.m_lStockIndex = 30;
+    // 待完成
+  }
+
   TEST_F(CWorldMarketTest, TestIsFinnhubInquiring) {
     EXPECT_FALSE(gl_pWorldMarket->IsFinnhubInquiring());
     gl_pWorldMarket->SetFinnhubInquiring(true);
@@ -336,6 +344,8 @@ namespace StockAnalysisTest {
 
   TEST_F(CWorldMarketTest, TaskUpdateForexExchangeDB) {
     CString strSymbol = _T("US.US.US");
+
+    EXPECT_FALSE(gl_pWorldMarket->TaskUpdateForexExchangeDB()) << "没有新Forex Exchange";
 
     EXPECT_FALSE(gl_pWorldMarket->IsForexExchange(strSymbol)); // 确保是一个新股票代码
     gl_pWorldMarket->AddForexExchange(strSymbol);
@@ -698,18 +708,18 @@ namespace StockAnalysisTest {
     EXPECT_STREQ(str, _T("Finnhub Peer Updated"));
   }
 
-  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubEconomicCalender) {
+  TEST_F(CWorldMarketTest, TestTaskInquiryFinnhubEconomicCalendar) {
     WebInquiry inquiry;
 
     gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(true);
-    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalender()) << "EconomicCalendar Updated";
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalendar()) << "EconomicCalendar Updated";
 
     gl_pWorldMarket->SetFinnhubEconomicCalendarUpdated(false);
     gl_pWorldMarket->SetFinnhubInquiring(true);
-    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalender()) << "其他FinnhubInquiry正在进行";
+    EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalendar()) << "其他FinnhubInquiry正在进行";
 
     gl_pWorldMarket->SetFinnhubInquiring(false);
-    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalender());
+    EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubEconomicCalendar());
     EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
     inquiry = gl_pWorldMarket->GetFinnhubInquiry();
     EXPECT_EQ(inquiry.m_lInquiryIndex, __ECONOMIC_CALENDAR__);
@@ -928,5 +938,31 @@ namespace StockAnalysisTest {
       pStock = gl_pWorldMarket->GetStock(i);
       pStock->SetDayLineNeedUpdate(true);
     }
+  }
+
+  TEST_F(CWorldMarketTest, TestTaskCheckSystemReady) {
+    gl_pWorldMarket->SetSystemReady(true);
+    EXPECT_TRUE(gl_pWorldMarket->TaskCheckSystemReady());
+
+    gl_pWorldMarket->SetSystemReady(false);
+    gl_pWorldMarket->SetFinnhubSymbolUpdated(false);
+    gl_pWorldMarket->SetFinnhubForexExchangeUpdated(false);
+    gl_pWorldMarket->SetFinnhubForexSymbolUpdated(false);
+    EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+    EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+
+    gl_pWorldMarket->SetFinnhubSymbolUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+    EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+
+    gl_pWorldMarket->SetFinnhubForexExchangeUpdated(true);
+    EXPECT_FALSE(gl_pWorldMarket->TaskCheckSystemReady());
+    EXPECT_FALSE(gl_pWorldMarket->IsSystemReady());
+
+    gl_pWorldMarket->SetFinnhubForexSymbolUpdated(true);
+    EXPECT_TRUE(gl_pWorldMarket->TaskCheckSystemReady());
+    EXPECT_TRUE(gl_pWorldMarket->IsSystemReady());
+    CString str = gl_systemMessage.PopInformationMessage();
+    EXPECT_STREQ(str, _T("世界市场初始化完毕"));
   }
 }

@@ -14,8 +14,6 @@
 
 using namespace MyLib;
 
-class CFinnhub;
-
 // Finnhub申请类别和代码，免费账户无法申请Premium类的信息
 enum {
   __WEBSOCKET__TRADES__ = 1,
@@ -39,7 +37,7 @@ enum {
   __INTERNATIONAL_FILINGS__ = 115, //Premium
   __SEC_SENTIMENT_ANALYSIS__ = 116, //Premium
   __SIMILARITY_INDEX__ = 117, //Premium
-  __IPO_CALENDER__ = 118,
+  __IPO_CALENDAR__ = 118,
   __DIVIDENDS__ = 119, //Premium
 
   __STOCK_RECOMMENDATION_TRENDS__ = 200,
@@ -48,7 +46,7 @@ enum {
   __STOCK_REVENUE_EXTIMATES__ = 203, // Premium
   __STOCK_EPS_EXTIMATES__ = 204, // Primium
   __STOCK_EPS_SURPRISE__ = 205,
-  __STOCK_EARNING_CALENDER__ = 206,
+  __STOCK_EARNING_CALENDAR__ = 206,
 
   __STOCK_QUOTE__ = 300, // 实时数据优先级最低
   __STOCK_CANDLES__ = 301, // 历史数据优先级低
@@ -104,7 +102,6 @@ using namespace std;
 #include<atomic>
 
 class CWorldMarket : public CVirtualMarket {
-  friend class CFinnhub;
 public:
   CWorldMarket();
   virtual ~CWorldMarket();
@@ -136,7 +133,7 @@ public:
   bool TaskInquiryFinnhubDayLine(void);
   bool TaskInquiryFinnhubRTQuote(void);
   bool TaskInquiryFinnhubPeer(void);
-  bool TaskInquiryFinnhubEconomicCalender(void);
+  bool TaskInquiryFinnhubEconomicCalendar(void);
   bool TaskInquiryFinnhubEPSSurprise(void);
   bool TaskInquiryFinnhubForexExchange(void);
   bool TaskInquiryFinnhubForexSymbol(void);
@@ -153,7 +150,7 @@ public:
   bool TaskUpdateForexDayLineDB(void);
   bool TaskUpdateCountryListDB(void);
   bool TaskUpdateEPSSurpriseDB(void);
-  bool TaskUpdateEconomicCalendar(void);
+  bool TaskUpdateEconomicCalendarDB(void);
   bool TaskCheckSystemReady(void);
 
   bool TaskUpdateDayLineStartEndDate(void);
@@ -170,7 +167,8 @@ public:
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
   // 各种状态
-  long GetCurrentPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
+  long GetCurrentFinnhubPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
+  long GetCurrentQuandlPrefixIndex(void) noexcept { return m_CurrentQuandlInquiry.m_lInquiryIndex; }
 
   bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }
@@ -263,7 +261,7 @@ public:
 
   bool LoadForexExchange(void);
   bool LoadForexSymbol(void);
-  bool LoadCountryList(void);
+  bool LoadCountryDB(void);
   bool LoadEconomicCalendarDB(void);
 
   bool RebuildStockDayLineDB(void);

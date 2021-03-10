@@ -60,10 +60,10 @@ bool CFinnhubWebInquiry::PrepareNextInquiringStr(void) {
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fSkipUnactiveStock) {
-  CString str;
+  CString str = _T("");
   static int s_iCount = 5;
 
-  switch (gl_pWorldMarket->GetCurrentPrefixIndex()) {
+  switch (gl_pWorldMarket->GetCurrentFinnhubPrefixIndex()) {
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;

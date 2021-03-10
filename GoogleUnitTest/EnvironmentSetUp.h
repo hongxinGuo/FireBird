@@ -82,7 +82,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
 
       gl_pWorldMarket->LoadStockDB(); // 初始化活跃股票标识. 目前此测试股票代码总数为2462,皆为上海交易所股票.
-      gl_pWorldMarket->LoadCountryList();
+      gl_pWorldMarket->LoadCountryDB();
       gl_pWorldMarket->LoadWorldExchangeDB();
       gl_pWorldMarket->LoadForexExchange();
       gl_pWorldMarket->LoadForexSymbol();
