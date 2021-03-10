@@ -6,6 +6,9 @@
 #include"ChinaMarket.h"
 #include"ChinaStock.h"
 
+#include"MockWorldMarket.h"
+#include"MockChinaMarket.h"
+
 #include"MockSinaRTWebInquiry.h"
 #include"MockTengxunRTWebInquiry.h"
 #include"MockNeteaseRTWebInquiry.h"
@@ -23,6 +26,8 @@ using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
+  CMockWorldMarketPtr s_pWorldMarket;
+  CMockChinaMarketPtr s_pchinaMarket;
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
@@ -97,6 +102,7 @@ namespace StockAnalysisTest {
       // 这里要故意将这几个Mock变量设置为nullptr，这样就能够在测试输出窗口（不是Test Expxplorer窗口）中得到测试结果。
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
+      // 重置以下指针，以测试是否存在没有配对的Mock。
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
       gl_pNeteaseRTWebInquiry = nullptr;
@@ -121,6 +127,9 @@ namespace StockAnalysisTest {
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
       gl_pWorldMarket = nullptr;
+
+      s_pchinaMarket = nullptr;
+      s_pWorldMarket = nullptr;
     }
   };
 }

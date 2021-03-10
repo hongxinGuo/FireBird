@@ -20,30 +20,28 @@ using namespace testing;
 #include<memory>
 
 namespace StockAnalysisTest {
-  CMockWorldMarket* s_pWorldMarket;
+  extern CMockWorldMarketPtr s_pWorldMarket;
   class CMockWorldMarketTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
-      s_pWorldMarket = new CMockWorldMarket;
-      s_pWorldMarket->LoadStockDB();
-      s_pWorldMarket->LoadCountryDB();
-      s_pWorldMarket->LoadWorldExchangeDB();
-      s_pWorldMarket->LoadForexExchange();
-      s_pWorldMarket->LoadForexSymbol();
-      s_pWorldMarket->LoadWorldChoicedStock();
-
+      s_pWorldMarket = make_shared<CMockWorldMarket>(); // 在此生成，在EnvironmentSetUp.h中的全局TearDown才赋值nullptr.这样容易看到错误信息
+      s_pWorldMarket->ResetMarket();
       EXPECT_FALSE(gl_fExitingSystem);
     }
+
     static void TearDownTestSuite(void) {
       EXPECT_FALSE(gl_fExitingSystem);
-      delete s_pWorldMarket;
     }
+
     virtual void SetUp(void) override {
       //EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       gl_fExitingSystem = false;
+      gl_pFinnhubWebInquiry->SetReadingWebData(false);
+      gl_pTiingoWebInquiry->SetReadingWebData(false);
+      gl_pQuandlWebInquiry->SetReadingWebData(false);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -52,6 +50,9 @@ namespace StockAnalysisTest {
 
     virtual void TearDown(void) override {
       // clearup
+      gl_pFinnhubWebInquiry->SetReadingWebData(false);
+      gl_pTiingoWebInquiry->SetReadingWebData(false);
+      gl_pQuandlWebInquiry->SetReadingWebData(false);
 
       while (gl_systemMessage.GetInformationDequeSize() > 0) gl_systemMessage.PopInformationMessage();
       while (gl_systemMessage.GetDayLineInfoDequeSize() > 0) gl_systemMessage.PopDayLineInfoMessage();
@@ -60,7 +61,7 @@ namespace StockAnalysisTest {
   };
 
   TEST_F(CMockWorldMarketTest, TestTaskUpdateDayLineStartEndDate) {
-    EXPECT_CALL(*s_pWorldMarket, RunningthreadUpdateDayLneStartEndDate(s_pWorldMarket))
+    EXPECT_CALL(*s_pWorldMarket, RunningthreadUpdateDayLneStartEndDate(s_pWorldMarket.get()))
       .Times(1);
     EXPECT_TRUE(s_pWorldMarket->TaskUpdateDayLineStartEndDate());
   }
@@ -118,25 +119,25 @@ namespace StockAnalysisTest {
   TEST_F(CMockWorldMarketTest, TestUpdateCountryListDB) {
     EXPECT_CALL(*s_pWorldMarket, UpdateCountryListDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateCountryListDB(s_pWorldMarket), 40);
+    EXPECT_EQ(ThreadUpdateCountryListDB(s_pWorldMarket.get()), 40);
   }
 
   TEST_F(CMockWorldMarketTest, TestUpdateStockProfileDB) {
     EXPECT_CALL(*s_pWorldMarket, UpdateStockProfileDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateStockProfileDB(s_pWorldMarket), 37);
+    EXPECT_EQ(ThreadUpdateStockProfileDB(s_pWorldMarket.get()), 37);
   }
 
   TEST_F(CMockWorldMarketTest, TestUpdateForexSymbolDB) {
     EXPECT_CALL(*s_pWorldMarket, UpdateForexSymbolDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateForexSymbolDB(s_pWorldMarket), 39);
+    EXPECT_EQ(ThreadUpdateForexSymbolDB(s_pWorldMarket.get()), 39);
   }
 
   TEST_F(CMockWorldMarketTest, TestUpdateDayLineStartEndDate) {
     EXPECT_CALL(*s_pWorldMarket, UpdateDayLineStartEndDate)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pWorldMarket), 43);
+    EXPECT_EQ(ThreadUpdateWorldStockDayLineStartEndDate(s_pWorldMarket.get()), 43);
   }
 
   TEST_F(CMockWorldMarketTest, TestTaskUpdateForexDayLineDB1) {
@@ -225,10 +226,12 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(false);
+    s_pWorldMarket->SetFinnhubInquiring(true);
     EXPECT_FALSE(s_pWorldMarket->ProcessFinnhubInquiringMessage()) << "Finnhub web data尚未接受到";
 
     // 恢复原状
     s_pWorldMarket->GetFinnhubInquiry();
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE__) {
@@ -240,6 +243,7 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(true);
+    s_pWorldMarket->SetFinnhubInquiring(true);
 
     EXPECT_CALL(*gl_pFinnhubWebInquiry, StartReadingThread())
       .Times(1);
@@ -250,9 +254,11 @@ namespace StockAnalysisTest {
     // 顺便测试一下
     EXPECT_EQ(s_pWorldMarket->GetCurrentFinnhubPrefixIndex(), __COMPANY_PROFILE__);
     EXPECT_FALSE(s_pWorldMarket->IsFinnhubDataReceived());
+    EXPECT_TRUE(gl_pFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
     // 恢复原状
     s_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_PROFILE_CONCISE__) {
@@ -264,6 +270,7 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(true);
+    s_pWorldMarket->SetFinnhubInquiring(true);
 
     EXPECT_CALL(*gl_pFinnhubWebInquiry, StartReadingThread())
       .Times(1);
@@ -274,9 +281,11 @@ namespace StockAnalysisTest {
     // 顺便测试一下
     EXPECT_EQ(s_pWorldMarket->GetCurrentFinnhubPrefixIndex(), __COMPANY_PROFILE_CONCISE__);
     EXPECT_FALSE(s_pWorldMarket->IsFinnhubDataReceived());
+    EXPECT_TRUE(gl_pFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
     // 恢复原状
     s_pWorldMarket->GetStock(0)->SetProfileUpdated(false);
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__COMPANY_SYMBOLS__) {
@@ -288,6 +297,8 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(true);
+    s_pWorldMarket->SetFinnhubInquiring(true);
+    gl_pFinnhubWebInquiry->SetReadingWebData(false);
 
     EXPECT_CALL(*gl_pFinnhubWebInquiry, StartReadingThread())
       .Times(1);
@@ -297,8 +308,10 @@ namespace StockAnalysisTest {
     // 顺便测试一下
     EXPECT_EQ(s_pWorldMarket->GetCurrentFinnhubPrefixIndex(), __COMPANY_SYMBOLS__);
     EXPECT_FALSE(s_pWorldMarket->IsFinnhubDataReceived());
+    EXPECT_TRUE(gl_pFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
     // 恢复原状
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__PEERS__) {
@@ -310,6 +323,7 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(true);
+    s_pWorldMarket->SetFinnhubInquiring(true);
 
     EXPECT_CALL(*gl_pFinnhubWebInquiry, StartReadingThread())
       .Times(1);
@@ -320,9 +334,11 @@ namespace StockAnalysisTest {
     // 顺便测试一下
     EXPECT_EQ(s_pWorldMarket->GetCurrentFinnhubPrefixIndex(), __PEERS__);
     EXPECT_FALSE(s_pWorldMarket->IsFinnhubDataReceived());
+    EXPECT_TRUE(gl_pFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
     // 恢复原状
     s_pWorldMarket->GetStock(0)->SetPeerUpdated(false);
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 
   TEST_F(CMockWorldMarketTest, TestProcessFinnhubInquiringMessage__STOCK_CANDLES__) {
@@ -334,6 +350,7 @@ namespace StockAnalysisTest {
     s_pWorldMarket->PushFinnhubInquiry(inquiry);
     EXPECT_EQ(s_pWorldMarket->GetFinnhubInquiryQueueSize(), 1);
     s_pWorldMarket->SetFinnhubDataReceived(true);
+    s_pWorldMarket->SetFinnhubInquiring(true);
 
     EXPECT_CALL(*gl_pFinnhubWebInquiry, StartReadingThread())
       .Times(1);
@@ -344,8 +361,10 @@ namespace StockAnalysisTest {
     // 顺便测试一下
     EXPECT_EQ(s_pWorldMarket->GetCurrentFinnhubPrefixIndex(), __STOCK_CANDLES__);
     EXPECT_FALSE(s_pWorldMarket->IsFinnhubDataReceived());
+    EXPECT_TRUE(gl_pFinnhubWebInquiry->IsReadingWebData()) << "由于使用了Mock方式，结果此标识没有重置。需要在TearDown中手工重置之";
 
     // 恢复原状
     s_pWorldMarket->GetStock(0)->SetDayLineNeedUpdate(true);
+    s_pWorldMarket->SetFinnhubInquiring(false);
   }
 }

@@ -21,15 +21,16 @@ using namespace testing;
 #include<memory>
 
 namespace StockAnalysisTest {
-  CMockChinaMarket* s_pchinaMarket;
+  extern CMockChinaMarketPtr s_pchinaMarket;
   class CMockChinaMarketTest : public ::testing::Test
   {
   protected:
     static void SetUpTestSuite(void) {
       ASSERT_FALSE(gl_fNormalMode);
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
-      s_pchinaMarket = new CMockChinaMarket;
-      s_pchinaMarket->LoadStockCodeDB();
+      s_pchinaMarket = make_shared<CMockChinaMarket>();
+      s_pchinaMarket->ResetMarket();
+
       s_pchinaMarket->SetTodayStockProcessed(false);
       EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
@@ -42,7 +43,7 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_fExitingSystem);
       EXPECT_FALSE(s_pchinaMarket->IsDayLineNeedSaving());
       EXPECT_EQ(s_pchinaMarket->GetDayLineNeedSaveNumber(), 0);
-      delete s_pchinaMarket;
+
       EXPECT_EQ(gl_pChinaStockMarket->GetCurrentStock(), nullptr) << gl_pChinaStockMarket->GetCurrentStock()->GetSymbol();
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
     }
@@ -398,7 +399,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
-    EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
+    EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket.get()), (UINT)14);
     // 市场时间小于150400时
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), 19900101) << "没有执行修改最新相对强度日的动作";
     EXPECT_FALSE(s_pchinaMarket->IsUpdateStockCodeDB());
@@ -418,7 +419,7 @@ namespace StockAnalysisTest {
       .Times(1)
       .WillOnce(Return(true));
     s_pchinaMarket->SetSystemReady(true);
-    EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket), (UINT)14);
+    EXPECT_EQ(ThreadProcessTodayStock(s_pchinaMarket.get()), (UINT)14);
     // 市场时间大于150400时
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), lDate);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
@@ -438,7 +439,7 @@ namespace StockAnalysisTest {
     EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDate(_))
       .Times(5)
       .WillRepeatedly(Return(true));
-    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDate), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket.get(), lStartDate), (UINT)11);
     EXPECT_FALSE(s_pchinaMarket->IsUpdateOptionDB()) << _T("被打断后不设置此标识");
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), 0);
     EXPECT_FALSE(gl_fExitingCalculatingRS);
@@ -451,7 +452,7 @@ namespace StockAnalysisTest {
     gl_ThreadStatus.SetCalculatingDayLineRS(true);
     EXPECT_CALL(*s_pchinaMarket, RunningThreadBuildDayLineRSOfDate(_))
       .Times(5);
-    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket, lStartDate), (UINT)11);
+    EXPECT_EQ(ThreadBuildDayLineRS(s_pchinaMarket.get(), lStartDate), (UINT)11);
     EXPECT_TRUE(s_pchinaMarket->IsUpdateOptionDB());
     EXPECT_EQ(s_pchinaMarket->GetRSEndDate(), s_pchinaMarket->GetFormatedMarketDate());
     EXPECT_FALSE(gl_ThreadStatus.IsCalculatingDayLineRS());
@@ -460,7 +461,7 @@ namespace StockAnalysisTest {
   TEST_F(CMockChinaMarketTest, TestThreadUpdateOptionDB) {
     EXPECT_CALL(*s_pchinaMarket, UpdateOptionDB)
       .Times(1);
-    EXPECT_EQ(ThreadUpdateOptionDB(s_pchinaMarket), (UINT)20);
+    EXPECT_EQ(ThreadUpdateOptionDB(s_pchinaMarket.get()), (UINT)20);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateStockCodeDB) {
@@ -468,28 +469,28 @@ namespace StockAnalysisTest {
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
     gl_ThreadStatus.SetCalculatingRTData(false);
-    EXPECT_EQ(ThreadUpdateStockCodeDB(s_pchinaMarket), (UINT)18);
+    EXPECT_EQ(ThreadUpdateStockCodeDB(s_pchinaMarket.get()), (UINT)18);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadUpdateChoicedStockDB) {
     EXPECT_CALL(*s_pchinaMarket, AppendChoicedStockDB)
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
-    EXPECT_EQ(ThreadAppendChoicedStockDB(s_pchinaMarket), (UINT)22);
+    EXPECT_EQ(ThreadAppendChoicedStockDB(s_pchinaMarket.get()), (UINT)22);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadSaveTempRTData) {
     EXPECT_CALL(*s_pchinaMarket, UpdateTodayTempDB)
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
-    EXPECT_EQ(ThreadSaveTempRTData(s_pchinaMarket), (UINT)13);
+    EXPECT_EQ(ThreadSaveTempRTData(s_pchinaMarket.get()), (UINT)13);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadSaveRTData) {
     EXPECT_CALL(*s_pchinaMarket, SaveRTData)
       .Times(1);
     s_pchinaMarket->SetSystemReady(true);
-    EXPECT_EQ(ThreadSaveRTData(s_pchinaMarket), (UINT)19);
+    EXPECT_EQ(ThreadSaveRTData(s_pchinaMarket.get()), (UINT)19);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadMaintainDayLineDatabase) {
@@ -499,18 +500,18 @@ namespace StockAnalysisTest {
   TEST_F(CMockChinaMarketTest, TestThreadBuildWeekLineOfCurrentWeek) {
     EXPECT_CALL(*s_pchinaMarket, BuildWeekLineOfCurrentWeek)
       .Times(1);
-    EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pchinaMarket), (UINT)32);
+    EXPECT_EQ(ThreadBuildWeekLineOfCurrentWeek(s_pchinaMarket.get()), (UINT)32);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadBuildCurrentWeekWeekLineTable) {
     EXPECT_CALL(*s_pchinaMarket, BuildCurrentWeekWeekLineTable)
       .Times(1);
-    EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pchinaMarket), (UINT)33);
+    EXPECT_EQ(ThreadBuildCurrentWeekWeekLineTable(s_pchinaMarket.get()), (UINT)33);
   }
 
   TEST_F(CMockChinaMarketTest, TestThreadSaveStockSection) {
     EXPECT_CALL(*s_pchinaMarket, SaveStockSection)
       .Times(1);
-    EXPECT_EQ(ThreadSaveStockSection(s_pchinaMarket), (UINT)35);
+    EXPECT_EQ(ThreadSaveStockSection(s_pchinaMarket.get()), (UINT)35);
   }
 }

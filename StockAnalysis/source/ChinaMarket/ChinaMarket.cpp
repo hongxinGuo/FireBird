@@ -94,7 +94,7 @@ void CChinaMarket::ResetMarket(void) {
   }
   Reset();
 
-  ASSERT(m_mapChinaMarketStock.size() == gl_pChinaStockMarket->GetTotalStock()); // 读入数据库前，要保证已经装载了预先设置的股票代码
+  ASSERT(m_mapChinaMarketStock.size() == GetTotalStock()); // 读入数据库前，要保证已经装载了预先设置的股票代码
   LoadStockSection(); // 装入各段证券代码空间是否已被使用的标识（六位代码，以1000为单位增加，沪深各有1000000个可用代码）
   LoadStockCodeDB();
   LoadOptionDB();

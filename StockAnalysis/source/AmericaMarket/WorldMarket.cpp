@@ -226,7 +226,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       m_CurrentFinnhubInquiry = GetFinnhubInquiry();
       gl_pFinnhubWebInquiry->SetInquiryingStringPrefix(m_vFinnhubInquiringStr.at(m_CurrentFinnhubInquiry.m_lInquiryIndex)); // 设置前缀
 
-      switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
+      switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 设置股票指针
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
       case __COMPANY_PROFILE_CONCISE__:
       case __PEERS__:
@@ -240,10 +240,12 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       }
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
       case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
+      ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
       pStock->SetProfileUpdated(true);
       break;
       case __COMPANY_PROFILE_CONCISE__:
+      ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
       pStock->SetProfileUpdated(true);
       break;
@@ -262,6 +264,7 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __NEWS_SENTIMENT__:
       break;
       case __PEERS__:
+      ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
       pStock->SetPeerUpdated(true);
       break;
@@ -298,15 +301,18 @@ bool CWorldMarket::ProcessFinnhubInquiringMessage(void) {
       case __STOCK_EPS_EXTIMATES__:// Premium
       break;
       case __STOCK_EPS_SURPRISE__:
+      ASSERT(pStock != nullptr);
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(pStock->GetSymbol());
       break;
       case __STOCK_EARNING_CALENDAR__:
       break;
       case __STOCK_QUOTE__:
+      ASSERT(pStock != nullptr);
       strMiddle = pStock->GetSymbol();
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       break;
       case __STOCK_CANDLES__:
+      ASSERT(pStock != nullptr);
       strMiddle = pStock->GetFinnhubDayLineInquiryString(GetMarketTime());
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(strMiddle);
       pStock->SetDayLineNeedUpdate(false);
@@ -372,7 +378,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
   vector<CWorldStockPtr> vStock;
   vector<CDayLinePtr> vDayLine;
   vector<CCountryPtr> vCountry;
-  long lTemp = 0;
   bool fFoundNewStock = false;
   char buffer[30];
   CString strNumber;
@@ -382,16 +387,31 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
     if (gl_WebInquirer.GetFinnhubDataSize() > 0) {  // 处理当前网络数据
       ASSERT(IsFinnhubInquiring());
       pWebData = gl_WebInquirer.PopFinnhubData();
+
+      switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) { // 根据不同的要求设置中缀字符串
+      case __COMPANY_PROFILE__: // Premium 免费账户无法读取此信息，sandbox模式能读取，但数据是错误的，只能用于测试。
+      case __COMPANY_PROFILE_CONCISE__:
+      case __PEERS__:
+      case __STOCK_EPS_SURPRISE__:
+      case __STOCK_QUOTE__:
+      case __STOCK_CANDLES__:
+      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      break;
+      default:
+      break;
+      }
+
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
-      if (ProcessFinnhubStockProfile(pWebData, m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex))) {
+      ASSERT(pStock != nullptr);
+      if (ProcessFinnhubStockProfile(pWebData, pStock)) {
         pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
         pStock->SetProfileUpdated(true);
         pStock->SetUpdateProfileDB(true);
       }
       break;
       case __COMPANY_PROFILE_CONCISE__:
-      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ASSERT(pStock != nullptr);
       if (ProcessFinnhubStockProfileConcise(pWebData, pStock)) {
         pStock->SetProfileUpdateDate(gl_pWorldMarket->GetFormatedMarketDate());
         pStock->SetProfileUpdated(true);
@@ -429,7 +449,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __NEWS_SENTIMENT__:
       break;
       case __PEERS__:
-      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ASSERT(pStock != nullptr);
       if (ProcessFinnhubStockPeer(pWebData, pStock)) {
         pStock->SetPeerUpdateDate(GetFormatedMarketDate());
         pStock->SetUpdateProfileDB(true);
@@ -438,7 +458,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       case __BASIC_FINANCIALS__:
       break;
       case __STOCK_EPS_SURPRISE__:
-      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ASSERT(pStock != nullptr);
       if (ProcessFinnhubEPSSurprise(pWebData, vEPSSurprise)) {
         if (vEPSSurprise.size() > 0) {
           pStock->UpdateEPSSurprise(vEPSSurprise);
@@ -452,7 +472,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case __STOCK_QUOTE__:
-      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ASSERT(pStock != nullptr);
       ProcessFinnhubStockQuote(pWebData, pStock);
       if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
         pStock->SetActive(true);
@@ -463,7 +483,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       break;
       case __STOCK_CANDLES__:
-      pStock = m_vWorldStock.at(m_CurrentFinnhubInquiry.m_lStockIndex);
+      ASSERT(pStock != nullptr);
       if (ProcessFinnhubStockCandle(pWebData, pStock)) {
         if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
           if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
