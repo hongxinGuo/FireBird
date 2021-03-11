@@ -258,9 +258,6 @@
     <ClInclude Include="source\AmericaMarket\SetEPSSurprise.h">
       <Filter>头文件\World Market\类型和数据库</Filter>
     </ClInclude>
-    <ClInclude Include="source\AmericaMarket\ProcessTiingoWebData.h">
-      <Filter>头文件\World Market\实现</Filter>
-    </ClInclude>
     <ClInclude Include="source\AmericaMarket\QuandlWebInquiry.h">
       <Filter>头文件\World Market\网络通信</Filter>
     </ClInclude>

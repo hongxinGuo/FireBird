@@ -3,7 +3,6 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
-#include"ProcessTiingoWebData.h"
 #include"EPSSurprise.h"
 
 #include"SetWorldMarketOption.h"
@@ -672,6 +671,7 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
   vector<CWorldStockPtr> vStock;
   long lTemp = 0;
   const bool fFoundNewStock = false;
+  bool fDone = false;
 
   ASSERT(gl_WebInquirer.GetTiingoDataSize() <= 1);
   if (IsTiingoDataReceived()) { // 如果网络数据接收完成
@@ -742,10 +742,11 @@ bool CWorldMarket::ProcessTiingoWebDataReceived(void) {
       }
       gl_pTiingoWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
       SetTiingoInquiring(false);
+      fDone = true;
     }
   }
 
-  return true;
+  return fDone;
 }
 
 bool CWorldMarket::SchedulingTaskPerSecond(long lSecond, long lCurrentTime) {

@@ -2,7 +2,7 @@
 #include"globedef.h"
 #include"accessory.h"
 
-#include"ProcessTiingoWebData.h"
+#include"WorldMarket.h"
 
 using namespace std;
 #include<algorithm>
@@ -13,7 +13,7 @@ using namespace boost::property_tree;
 
 bool CompareDayLineDate(CDayLinePtr& p1, CDayLinePtr& p2);
 
-bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
+bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s;
@@ -71,7 +71,7 @@ bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSto
   return true;
 }
 
-bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2;
   string s;

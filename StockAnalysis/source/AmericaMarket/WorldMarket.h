@@ -144,6 +144,7 @@ public:
   bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
 
+  // Finnhub数据处理函数
   virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
   virtual bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
   virtual bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
@@ -156,6 +157,10 @@ public:
   virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
   virtual bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
   virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
+
+  // Tiingo数据处理函数
+  virtual bool ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
+  virtual bool ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock);
 
   bool TaskUpdateStockProfileDB(void);
   bool TaskUpdateDayLineDB(void);
@@ -183,8 +188,10 @@ public:
   // 各种状态
   long GetCurrentFinnhubPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
   void SetCurrentFinnhubInquiry(WebInquiry inquiry) { m_CurrentFinnhubInquiry = inquiry; }
-
+  long GetCurrentTiingoPrefixIndex(void) noexcept { return m_CurrentTiingoInquiry.m_lInquiryIndex; }
+  void SetCurrentTiingoInquiry(WebInquiry inquiry) { m_CurrentTiingoInquiry = inquiry; }
   long GetCurrentQuandlPrefixIndex(void) noexcept { return m_CurrentQuandlInquiry.m_lInquiryIndex; }
+  void SetCurrentQuandlInquiry(WebInquiry inquiry) { m_CurrentQuandlInquiry = inquiry; }
 
   bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
   void SetFinnhubInquiring(bool fFlag) noexcept { m_fFinnhubInquiring = fFlag; }

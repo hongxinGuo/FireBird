@@ -28,6 +28,9 @@ namespace testing {
     MOCK_METHOD(bool, ProcessFinnhubEconomicCalendar, (CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar), (override));
     MOCK_METHOD(bool, ProcessFinnhubEPSSurprise, (CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise), (override));
 
+    MOCK_METHOD(bool, ProcessTiingoStockSymbol, (CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock), (override));
+    MOCK_METHOD(bool, ProcessTiingoStockDayLine, (CWebDataPtr pWebData, CWorldStockPtr& pStock), (override));
+
     MOCK_METHOD(bool, UpdateCountryListDB, (), (override));
     MOCK_METHOD(bool, UpdateStockProfileDB, (), (override));
     MOCK_METHOD(bool, UpdateForexSymbolDB, (), (override));
