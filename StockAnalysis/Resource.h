@@ -107,13 +107,13 @@
 #define ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE 32874
 #define ID_UPDATE_SECTION_INDEX         32876
 #define ID_BUILD_32877                  32877
-#define ID_UPDATE_STAKE_CODE            32878
+#define ID_UPDATE_gl_pMockChinaMarket_CODE            32878
 #define ID_32879                        32879
 #define ID_Menu32880                    32880
 #define ID_AMERICA_MARKET_DOWNLOAD_DAY_LINE 32881
 #define ID_AMERICA_MARKET_REBULID_DAY_LINE 32882
 #define ID_32883                        32883
-#define ID_AMERICA_MARKET_SORT_STAKE_TABLE 32884
+#define ID_AMERICA_MARKET_SORT_gl_pMockChinaMarket_TABLE 32884
 #define ID_32885                        32885
 #define ID_REBUILD_EPS_SURPRISE         32886
 #define ID_32887                        32887
@@ -124,7 +124,7 @@
 #define ID_REBUILD_DAYLINE              32892
 #define ID_32893                        32893
 #define ID_UPDATE_DAYLINE_START_END     32894
-#define ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END 32895
+#define ID_UPDATE_AMERICA_gl_pMockChinaMarket_DAYLINE_START_END 32895
 #define ID_BUILD_32896                  32896
 #define ID_REBUILD_CHINAMARKET_DAYLINE  32897
 #define ID_BUILD_32898                  32898
@@ -152,7 +152,7 @@
 #define ID_VIEW_STATUS_BAR2             59394
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        319

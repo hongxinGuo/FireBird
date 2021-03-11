@@ -26,7 +26,7 @@ using namespace std;
 #include<string>
 #include<thread>
 
-constexpr int __STAKE_ANALYSIS_TIMER__ = 1;
+constexpr int __STOCK_ANALYSIS_TIMER__ = 1;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,11 +83,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
   ON_COMMAND(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnBuildRebuildCurrentWeekWeeklineTable)
   ON_UPDATE_COMMAND_UI(ID_BUILD_REBUILD_CURRENT_WEEK_WEEKLINE_TABLE, &CMainFrame::OnUpdateBuildRebuildCurrentWeekWeeklineTable)
   ON_COMMAND(ID_UPDATE_SECTION_INDEX, &CMainFrame::OnUpdateStockSection)
-  ON_COMMAND(ID_UPDATE_STAKE_CODE, &CMainFrame::OnUpdateStockCode)
+  ON_COMMAND(ID_UPDATE_gl_pMockChinaMarket_CODE, &CMainFrame::OnUpdateStockCode)
   ON_COMMAND(ID_REBUILD_EPS_SURPRISE, &CMainFrame::OnRebuildEpsSurprise)
   ON_COMMAND(ID_REBUILD_PEER, &CMainFrame::OnRebuildPeer)
   ON_COMMAND(ID_REBUILD_DAYLINE, &CMainFrame::OnRebuildDayline)
-  ON_COMMAND(ID_UPDATE_AMERICA_STAKE_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
+  ON_COMMAND(ID_UPDATE_AMERICA_gl_pMockChinaMarket_DAYLINE_START_END, &CMainFrame::OnUpdateWorldStockDaylineStartEnd)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -320,7 +320,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   ModifyStyle(0, FWS_PREFIXTITLE);
 
   // 设置100毫秒每次的软调度，用于接受处理实时网络数据。目前新浪股票接口的实时数据更新频率为每三秒一次，故而400毫秒（200X2）读取900个股票就足够了。
-  m_uIdTimer = SetTimer(__STAKE_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
+  m_uIdTimer = SetTimer(__STOCK_ANALYSIS_TIMER__, 100, nullptr);     // 100毫秒每次调度，用于调度各类定时处理任务。
   if (m_uIdTimer == 0) {
     TRACE(_T("生成100ms时钟时失败\n"));
   }
@@ -471,7 +471,7 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // TODO: 在此添加消息处理程序代码和/或调用默认值
-  ASSERT(nIDEvent == __STAKE_ANALYSIS_TIMER__);
+  ASSERT(nIDEvent == __STOCK_ANALYSIS_TIMER__);
   // 重启系统在此处执行，容易调用各重置函数
   if (IsNeedResetMarket()) {
     ResetMarket();

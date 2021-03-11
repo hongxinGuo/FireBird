@@ -338,7 +338,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
 
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_NULL__);
+    stock.SetIPOStatus(__STOCK_NULL__);
     EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, 0)) << "无效股票不检查日线\n";
   }
 
@@ -346,7 +346,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
 
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     for (int i = 0; i < 6; i++) {
       EXPECT_FALSE(stock.CheckDayLineUpdateStatus(0, 0, 0, i)) << "摘牌股票只在星期六检查日线\n";
       stock.SetDayLineNeedUpdate(true);
@@ -358,7 +358,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
 
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
     stock.SetDayLineEndDate(gl_pWorldMarket->GetPrevDay(gl_pWorldMarket->GetFormatedMarketDate(), 100));
     EXPECT_TRUE(stock.CheckDayLineUpdateStatus(gl_pWorldMarket->GetFormatedMarketDate(), 20210108, 0, 1));
@@ -370,7 +370,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
 
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
     stock.SetDayLineEndDate(20210108); // 本日交易日日线已接收
     for (int i = 1; i < 6; i++) {
@@ -387,7 +387,7 @@ namespace StockAnalysisTest {
     CWorldStock stock;
 
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.m_fIsActive = true;
     stock.SetDayLineEndDate(20210107); // 上一交易日日线数据已接收
     for (int i = 1; i < 6; i++) {
@@ -405,41 +405,41 @@ namespace StockAnalysisTest {
     long lCurrentDate = 20200101;
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_NULL__);
+    stock.SetIPOStatus(__STOCK_NULL__);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(19700101);
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190819); // 不早于135天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190818); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190521); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_FALSE(stock.IsEPSSurpriseUpdated());
 
     stock.SetEPSSurpriseUpdated(false);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetLastEPSSurpriseUpdateDate(20190520); // 早于135天， 不早于225天
     stock.CheckEPSSurpriseStatus(lCurrentDate);
     EXPECT_TRUE(stock.IsEPSSurpriseUpdated());
@@ -747,14 +747,14 @@ namespace StockAnalysisTest {
 
     stock.SetPeerUpdated(true);
     stock.SetPeerUpdateDate(20200101);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.CheckPeerStatus(20200401); // 91天
     EXPECT_FALSE(stock.IsPeerUpdated()) << "九十一天需更新";
     stock.CheckPeerStatus(20200331); // 90天
     EXPECT_TRUE(stock.IsPeerUpdated());
 
     stock.SetPeerUpdated(false);
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.CheckPeerStatus(20200331); // 90天
     EXPECT_TRUE(stock.IsPeerUpdated()) << "九十天内无需更新";
     stock.CheckPeerStatus(20200401); // 91天

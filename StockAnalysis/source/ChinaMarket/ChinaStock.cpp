@@ -202,10 +202,10 @@ bool CChinaStock::ProcessNeteaseDayLineData(void) {
   }
   ReportDayLineDownLoaded();
   if (gl_pChinaStockMarket->IsEarlyThen(vTempDayLine.at(0)->GetFormatedMarketDate(), gl_pChinaStockMarket->GetFormatedMarketDate(), 30)) { // 提取到的股票日线数据其最新日早于上个月的这个交易日（退市了或相似情况，给一个月的时间观察）。
-    SetIPOStatus(__STAKE_DELISTED__); // 已退市或暂停交易。
+    SetIPOStatus(__STOCK_DELISTED__); // 已退市或暂停交易。
   }
   else {
-    SetIPOStatus(__STAKE_IPOED__); // 正常交易股票
+    SetIPOStatus(__STOCK_IPOED__); // 正常交易股票
   }
 
   m_DayLine.Unload(); // 清除已载入的日线数据（如果有的话）
@@ -1512,7 +1512,7 @@ bool CChinaStock::LoadStockCodeDB(const CSetStockCode& setStockCode) {
   }
   if (!IsDelisted()) {
     if (IsEarlyThen(GetDayLineEndDate(), GetFormatedDate(), 30)) {
-      SetIPOStatus(__STAKE_DELISTED__);
+      SetIPOStatus(__STOCK_DELISTED__);
       SetUpdateProfileDB(true);
     }
   }

@@ -381,7 +381,7 @@ bool CChinaMarket::CreateNewStock(CString strStockCode, CString strStockName, bo
   pStock->SetTodayNewStock(true);
   pStock->SetSymbol(strStockCode);
   pStock->SetStockName(strStockName);
-  pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
+  pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
   pStock->SetOffset(GetTotalStock());
   pStock->SetDayLineEndDate(19900101);
   pStock->SetDayLineStartDate(19900101);
@@ -674,7 +674,7 @@ bool CChinaMarket::TaskDistributeSinaRTDataToProperStock(void) {
       if (!pStock->IsActive()) { // 这里在发行版运行时出现错误，原因待查。
         if (pRTData->IsValidTime(14)) {
           pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
-          pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->SetIPOStatus(__STOCK_IPOED__);
         }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -730,7 +730,7 @@ bool CChinaMarket::TaskDistributeNeteaseRTDataToProperStock(void) {
       if (!pStock->IsActive()) {
         if (pRTData->IsValidTime(14)) {
           pStock->SetTodayActive(pRTData->GetSymbol(), pRTData->GetStockName());
-          pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->SetIPOStatus(__STOCK_IPOED__);
         }
       }
       if (pRTData->GetTransactionTime() > pStock->GetTransactionTime()) { // 新的数据？
@@ -2587,7 +2587,7 @@ long CChinaMarket::BuildDayLineOfDate(long lCurrentTradeDay) {
     }
     iCount++;
     pStock->SetDayLineEndDate(lCurrentTradeDay);
-    pStock->SetIPOStatus(__STAKE_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
+    pStock->SetIPOStatus(__STOCK_IPOED__); // 再设置一次。防止新股股票代码由于没有历史数据而被误判为不存在。
     pStock->SetUpdateProfileDB(true);
     setDayLineBasicInfo.AddNew();
     pStock->SaveTodayBasicInfo(&setDayLineBasicInfo);

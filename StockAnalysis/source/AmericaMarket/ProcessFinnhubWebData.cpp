@@ -433,7 +433,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
   try {
     s = pt.get<string>(_T("s"));
     if (s.compare(_T("no_data")) == 0) { // 没有日线数据，无需检查此股票的日线和实时数据
-      pForexSymbol->SetIPOStatus(__STAKE_NULL__);
+      pForexSymbol->SetIPOStatus(__STOCK_NULL__);
       pForexSymbol->SetUpdateProfileDB(true);
       return true;
     }
@@ -448,7 +448,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
     }
   }
   catch (ptree_error&) { // 这种请况是此代码出现问题。如服务器返回"error":"you don't have access this resource."
-    pForexSymbol->SetIPOStatus(__STAKE_NULL__);
+    pForexSymbol->SetIPOStatus(__STOCK_NULL__);
     pForexSymbol->SetUpdateProfileDB(true);
     return true;
   }
@@ -530,7 +530,7 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
   catch (ptree_error&) {
     // 有些外汇交易不提供成交量，忽略就可以了
   }
-  pForexSymbol->SetIPOStatus(__STAKE_IPOED__);
+  pForexSymbol->SetIPOStatus(__STOCK_IPOED__);
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate);
   pForexSymbol->UpdateDayLine(vDayLine);
   pForexSymbol->SetDayLineNeedUpdate(false);

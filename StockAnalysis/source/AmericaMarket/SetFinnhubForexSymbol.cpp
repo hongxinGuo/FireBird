@@ -18,7 +18,7 @@ CSetFinnhubForexSymbol::CSetFinnhubForexSymbol(CDatabase* pdb)
   m_Symbol = _T(" ");
   m_DayLineStartDate = 29900101;
   m_DayLineEndDate = 19800101;
-  m_IPOStatus = __STAKE_NOT_CHECKED__;
+  m_IPOStatus = __STOCK_NOT_CHECKED__;
 
   m_nFields = 8;
 }

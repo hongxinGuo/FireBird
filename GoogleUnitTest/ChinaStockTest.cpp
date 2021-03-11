@@ -138,33 +138,33 @@ namespace StockAnalysisTest {
 
   TEST_F(CChinaStockTest, TestIsNullStock) {
     CChinaStock stock;
-    stock.SetIPOStatus(__STAKE_NULL__);
+    stock.SetIPOStatus(__STOCK_NULL__);
     EXPECT_TRUE(stock.IsNullStock());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsNullStock());
   }
 
   TEST_F(CChinaStockTest, TestIsIPOed) {
     CChinaStock stock;
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     EXPECT_TRUE(stock.IsIPOed());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsIPOed());
   }
 
   TEST_F(CChinaStockTest, TestIsNotChecked) {
     CChinaStock stock;
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_TRUE(stock.IsNotChecked());
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     EXPECT_FALSE(stock.IsNotChecked());
   }
 
   TEST_F(CChinaStockTest, TestIsDelisted) {
     CChinaStock stock;
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     EXPECT_TRUE(stock.IsDelisted());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsDelisted());
   }
 
@@ -713,7 +713,7 @@ namespace StockAnalysisTest {
     stock.SetSymbol(_T("400000.SS")); // 这个必须用未曾使用过的股票代码，已利于随后删除
     stock.SetOffset(13000);
     stock.SetStockName(_T("未使用过"));
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetDayLineEndDate(gl_pChinaStockMarket->GetFormatedMarketDate());
     stock.SetDayLineStartDate(19900101);
     setStockCode.m_strFilter = _T("[ID] = 1");
@@ -723,7 +723,7 @@ namespace StockAnalysisTest {
 
     setStockCode.m_strFilter = _T("[Symbol] = '400000.SS'");
     setStockCode.Open();
-    EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_IPOED__);
+    EXPECT_EQ(setStockCode.m_IPOStatus, __STOCK_IPOED__);
     EXPECT_EQ(setStockCode.m_Symbol, _T("400000.SS"));
     setStockCode.Delete();
     setStockCode.Close();
@@ -736,15 +736,15 @@ namespace StockAnalysisTest {
     setStockCode.Open();
     stock.LoadStockCodeDB(setStockCode);
     EXPECT_STREQ(stock.GetSymbol(), _T("000001.SS"));
-    EXPECT_EQ(stock.GetIPOStatus(), __STAKE_IPOED__);
-    stock.SetIPOStatus(__STAKE_NULL__);
+    EXPECT_EQ(stock.GetIPOStatus(), __STOCK_IPOED__);
+    stock.SetIPOStatus(__STOCK_NULL__);
     stock.UpdateStockCodeDB(setStockCode);
     setStockCode.Close();
 
     setStockCode.Open();
-    EXPECT_EQ(setStockCode.m_IPOStatus, __STAKE_NULL__) << "此时状态已变为NULL";
+    EXPECT_EQ(setStockCode.m_IPOStatus, __STOCK_NULL__) << "此时状态已变为NULL";
     setStockCode.Edit();
-    setStockCode.m_IPOStatus = __STAKE_IPOED__;
+    setStockCode.m_IPOStatus = __STOCK_IPOED__;
     setStockCode.Update();
     setStockCode.Close();
   }
@@ -791,11 +791,11 @@ namespace StockAnalysisTest {
     stock.SetCheckingDayLineStatus();
     EXPECT_FALSE(stock.IsDayLineNeedUpdate());
     stock.SetDayLineNeedUpdate(true);
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__);
     stock.SetCheckingDayLineStatus();
     EXPECT_TRUE(stock.IsDayLineNeedUpdate());
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     stock.SetDayLineEndDate(__CHINA_MARKET_BEGIN_DATE__ + 1);
     stock.SetCheckingDayLineStatus();
     if (gl_pChinaStockMarket->GetDayOfWeek() == 1) EXPECT_TRUE(stock.IsDayLineNeedUpdate());

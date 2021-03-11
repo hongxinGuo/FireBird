@@ -476,7 +476,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       if ((pStock->GetTransactionTime() + 3600 * 12 - GetMarketTime()) > 0) { // 交易时间不早于12小时，则设置此股票为活跃股票
         pStock->SetActive(true);
         if (!pStock->IsIPOed()) {
-          pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->SetIPOStatus(__STOCK_IPOED__);
           pStock->SetUpdateProfileDB(true);
         }
       }
@@ -486,14 +486,14 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       if (ProcessFinnhubStockCandle(pWebData, pStock)) {
         if (pStock->GetDayLineSize() == 0) { // 没有日线数据？
           if (pStock->IsNotChecked()) { // 尚未确定代码有效性？
-            pStock->SetIPOStatus(__STAKE_NULL__);
+            pStock->SetIPOStatus(__STOCK_NULL__);
           }
         }
         else if (IsEarlyThen(pStock->GetDayLine(pStock->GetDayLineSize() - 1)->GetFormatedMarketDate(), GetFormatedMarketDate(), 100)) {
-          pStock->SetIPOStatus(__STAKE_DELISTED__);
+          pStock->SetIPOStatus(__STOCK_DELISTED__);
         }
         else {
-          pStock->SetIPOStatus(__STAKE_IPOED__);
+          pStock->SetIPOStatus(__STOCK_IPOED__);
         }
         TRACE("处理%s日线数据\n", pStock->GetSymbol().GetBuffer());
       }
@@ -1860,7 +1860,7 @@ bool CWorldMarket::LoadEconomicCalendarDB(void) {
 
 bool CWorldMarket::RebuildStockDayLineDB(void) {
   for (auto& pStock : m_vWorldStock) {
-    pStock->SetIPOStatus(__STAKE_NOT_CHECKED__);
+    pStock->SetIPOStatus(__STOCK_NOT_CHECKED__);
     pStock->SetDayLineStartDate(29900101);
     pStock->SetDayLineEndDate(19800101);
     pStock->SetDayLineNeedUpdate(true);

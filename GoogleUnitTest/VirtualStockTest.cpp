@@ -183,33 +183,33 @@ namespace StockAnalysisTest {
 
   TEST_F(CVirtualStockTest, TestIsNullStock) {
     CVirtualStock stock;
-    stock.SetIPOStatus(__STAKE_NULL__);
+    stock.SetIPOStatus(__STOCK_NULL__);
     EXPECT_TRUE(stock.IsNullStock());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsNullStock());
   }
 
   TEST_F(CVirtualStockTest, TestIsIPOed) {
     CVirtualStock stock;
-    stock.SetIPOStatus(__STAKE_IPOED__);
+    stock.SetIPOStatus(__STOCK_IPOED__);
     EXPECT_TRUE(stock.IsIPOed());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsIPOed());
   }
 
   TEST_F(CVirtualStockTest, TestIsNotChecked) {
     CVirtualStock stock;
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_TRUE(stock.IsNotChecked());
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     EXPECT_FALSE(stock.IsNotChecked());
   }
 
   TEST_F(CVirtualStockTest, TestIsDelisted) {
     CVirtualStock stock;
-    stock.SetIPOStatus(__STAKE_DELISTED__);
+    stock.SetIPOStatus(__STOCK_DELISTED__);
     EXPECT_TRUE(stock.IsDelisted());
-    stock.SetIPOStatus(__STAKE_NOT_CHECKED__);
+    stock.SetIPOStatus(__STOCK_NOT_CHECKED__);
     EXPECT_FALSE(stock.IsDelisted());
   }
 
