@@ -26,8 +26,10 @@ using namespace std;
 #include<memory>
 
 namespace StockAnalysisTest {
-  CMockWorldMarketPtr s_pWorldMarket;
-  CMockChinaMarketPtr s_pchinaMarket;
+  // 构造析构时开销大的Mock类声明为全局变量，在测试系统退出时才析构。
+  CMockWorldMarketPtr gl_pMockWorldMarket;
+  CMockChinaMarketPtr gl_pMockChinaMarket;
+
   class TestEnvironment : public::testing::Environment {  // 全局初始化，由main()函数调用。
   public:
     TestEnvironment(void) {
@@ -103,6 +105,9 @@ namespace StockAnalysisTest {
       EXPECT_FALSE(gl_pChinaStockMarket->IsCurrentStockChanged());
       EXPECT_EQ(gl_pChinaStockMarket->GetDayLineNeedUpdateNumber(), gl_pChinaStockMarket->GetTotalStock());
       // 重置以下指针，以测试是否存在没有配对的Mock。
+      gl_pMockChinaMarket = nullptr;
+      gl_pMockWorldMarket = nullptr;
+
       gl_pSinaRTWebInquiry = nullptr;
       gl_pTengxunRTWebInquiry = nullptr;
       gl_pNeteaseRTWebInquiry = nullptr;
@@ -126,10 +131,6 @@ namespace StockAnalysisTest {
       gl_pChinaStockMarket = nullptr;
       gl_pCrweberIndexMarket = nullptr;
       gl_pPotenDailyBriefingMarket = nullptr;
-      gl_pWorldMarket = nullptr;
-
-      s_pchinaMarket = nullptr;
-      s_pWorldMarket = nullptr;
     }
   };
 }

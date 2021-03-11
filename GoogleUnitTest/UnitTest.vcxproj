@@ -434,12 +434,6 @@
     <ClCompile Include="WeekLineTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StockAnalysis\StockAnalysis.vcxproj">
-      <Project>{37404dd5-58a1-46dc-a0a9-23d4ff0e007d}</Project>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\StockAnalysis\ChildFrm.h" />
     <ClInclude Include="..\StockAnalysis\MainFrm.h" />
     <ClInclude Include="..\StockAnalysis\OutputWnd.h" />

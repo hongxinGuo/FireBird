@@ -4,7 +4,8 @@
 
 #include"WebData.h"
 #include"EconomicCalendar.h"
-#include"ProcessFinnhubWebData.h"
+
+#include"WorldMarket.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -21,7 +22,7 @@ bool CompareCountryList(CCountryPtr& p1, CCountryPtr& p2) { return p1->m_strCoun
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   ptree pt;
   string s;
 
@@ -119,7 +120,7 @@ bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
 /// <param name="pWebData"></param>
 /// <param name="pStock"></param>
 /// <returns></returns>
-bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   ptree pt;
   string s;
   string sError;
@@ -161,7 +162,7 @@ bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pSt
   return true;
 }
 
-bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
+bool CWorldMarket::ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock) {
   CWorldStockPtr pStock = make_shared<CWorldStock>();
   ptree pt, pt2;
   string s, sError;
@@ -196,7 +197,7 @@ bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vSt
   return true;
 }
 
-bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2, pt3;
   string s;
@@ -324,7 +325,7 @@ bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   return true;
 }
 
-bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   string s;
   ptree pt;
   double dTemp = 0;
@@ -354,7 +355,7 @@ bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   return true;
 }
 
-bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
+bool CWorldMarket::ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange) {
   ptree pt, pt2;
   string s;
   CString str = _T("");
@@ -378,7 +379,7 @@ bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchang
   return true;
 }
 
-bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
+bool CWorldMarket::ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol) {
   CForexSymbolPtr pSymbol = make_shared<CFinnhubForexSymbol>();
   ptree pt, pt2;
   string s;
@@ -407,7 +408,7 @@ bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vF
   return true;
 }
 
-bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
+bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol) {
   vector<CDayLinePtr> vDayLine;
   ptree pt, pt2, pt3;
   string s;
@@ -538,7 +539,7 @@ bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymb
   return true;
 }
 
-bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
+bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry) {
   CCountryPtr pCountry = nullptr;
   ptree pt, pt2;
   string s;
@@ -569,7 +570,7 @@ bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCount
   return true;
 }
 
-bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
+bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   char buffer[1000]{};
   int i = 0;
   ptree pt;
@@ -596,7 +597,7 @@ bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
   return true;
 }
 
-bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
+bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
   CEconomicCalendarPtr pEconomicCalendar = nullptr;
   ptree pt, pt2;
   string s;
@@ -627,7 +628,7 @@ bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalend
   return true;
 }
 
-bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
+bool CWorldMarket::ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise) {
   ptree pt, pt2;
   string s;
   CTime time;

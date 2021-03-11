@@ -105,6 +105,12 @@ class CWorldMarket : public CVirtualMarket {
 public:
   CWorldMarket();
   virtual ~CWorldMarket();
+  virtual void ResetMarket(void) override;
+  void Reset(void);
+  void ResetFinnhub(void);
+  void ResetQuandl(void);
+  void ResetTiingo(void);
+
   void InitialFinnhubInquiryStr(void);
   void InitialTiingoInquiryStr(void);
 
@@ -113,11 +119,6 @@ public:
   bool ProcessFinnhubWebDataReceived(void);
   bool ProcessTiingoInquiringMessage(void);
   bool ProcessTiingoWebDataReceived(void);
-  virtual void ResetMarket(void) override;
-  void Reset(void);
-  void ResetFinnhub(void);
-  void ResetQuandl(void);
-  void ResetTiingo(void);
 
   bool SchedulingTaskPerSecond(long lSecond, long lCurrentTime);
   bool SchedulingTaskPer10Seconds(long lCurrentTime);
@@ -142,6 +143,19 @@ public:
   void TaskInquiryTiingo(void);
   bool TaskInquiryTiingoCompanySymbol(void);
   bool TaskInquiryTiingoDayLine(void);
+
+  virtual bool ProcessFinnhubStockProfile(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubStockProfileConcise(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubStockSymbol(CWebDataPtr pWebData, vector<CWorldStockPtr>& vStock);
+  virtual bool ProcessFinnhubStockCandle(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CString>& vExchange);
+  virtual bool ProcessFinnhubForexSymbol(CWebDataPtr pWebData, vector<CForexSymbolPtr>& vForexSymbol);
+  virtual bool ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolPtr& pForexSymbol);
+  virtual bool ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCountryPtr>& vCountry);
+  virtual bool ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr& pStock);
+  virtual bool ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& m_vEconomicCalendar);
+  virtual bool ProcessFinnhubEPSSurprise(CWebDataPtr pWebData, vector<CEPSSurprisePtr>& vEPSSurprise);
 
   bool TaskUpdateStockProfileDB(void);
   bool TaskUpdateDayLineDB(void);
@@ -168,6 +182,8 @@ public:
 
   // ¸÷ÖÖ×´Ì¬
   long GetCurrentFinnhubPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
+  void SetCurrentFinnhubInquiry(WebInquiry inquiry) { m_CurrentFinnhubInquiry = inquiry; }
+
   long GetCurrentQuandlPrefixIndex(void) noexcept { return m_CurrentQuandlInquiry.m_lInquiryIndex; }
 
   bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
@@ -201,6 +217,7 @@ public:
   void AddForexExchange(CString strForexExchange);
   bool DeleteForexExchange(CString strForexExchange);
   size_t GetForexExchangeSize(void) noexcept { return m_vForexExchange.size(); }
+  CString GetForexExchange(long lIndex) { return m_vForexExchange.at(lIndex); }
 
   bool IsForexSymbol(CString strSymbol) { if (m_mapForexSymbol.find(strSymbol) == m_mapForexSymbol.end()) return false; else return true; }
   bool IsForexSymbol(CForexSymbolPtr pForexSymbol) { return IsForexSymbol(pForexSymbol->m_strSymbol); }

@@ -3,7 +3,6 @@
 #include"thread.h"
 
 #include"WebInquirer.h"
-#include"ProcessFinnhubWebData.h"
 #include"ProcessTiingoWebData.h"
 #include"EPSSurprise.h"
 
@@ -381,6 +380,7 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
   bool fFoundNewStock = false;
   char buffer[30];
   CString strNumber;
+  bool fDone = false;
 
   ASSERT(gl_WebInquirer.GetFinnhubDataSize() <= 1);
   if (IsFinnhubDataReceived()) { // 如果网络数据接收完成
@@ -400,7 +400,6 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       default:
       break;
       }
-
       switch (m_CurrentFinnhubInquiry.m_lInquiryIndex) {
       case __COMPANY_PROFILE__: // 目前免费账户无法使用此功能。
       ASSERT(pStock != nullptr);
@@ -545,10 +544,11 @@ bool CWorldMarket::ProcessFinnhubWebDataReceived(void) {
       }
       gl_pFinnhubWebInquiry->SetInquiryingStringMiddle(_T("")); // 有些网络申请没有用到中间字符段，如果不清除之前的中间字符段（如果有的话），会造成申请字符串的错误。
       SetFinnhubInquiring(false);
+      fDone = true;
     }
   }
 
-  return true;
+  return fDone;
 }
 
 bool CWorldMarket::ProcessTiingoInquiringMessage(void) {
