@@ -186,11 +186,11 @@ public:
   bool UpdateEconomicCalendar(vector<CEconomicCalendarPtr> vEconomicCalendar);
 
   // ¸÷ÖÖ×´Ì¬
-  long GetCurrentFinnhubPrefixIndex(void) noexcept { return m_CurrentFinnhubInquiry.m_lInquiryIndex; }
+  WebInquiry GetCurrentFinnhubInquiry(void) noexcept { return m_CurrentFinnhubInquiry; }
   void SetCurrentFinnhubInquiry(WebInquiry inquiry) { m_CurrentFinnhubInquiry = inquiry; }
-  long GetCurrentTiingoPrefixIndex(void) noexcept { return m_CurrentTiingoInquiry.m_lInquiryIndex; }
+  WebInquiry GetCurrentTiingoInquiry(void) noexcept { return m_CurrentTiingoInquiry; }
   void SetCurrentTiingoInquiry(WebInquiry inquiry) { m_CurrentTiingoInquiry = inquiry; }
-  long GetCurrentQuandlPrefixIndex(void) noexcept { return m_CurrentQuandlInquiry.m_lInquiryIndex; }
+  WebInquiry GetCurrentQuandlInquiry(void) noexcept { return m_CurrentQuandlInquiry; }
   void SetCurrentQuandlInquiry(WebInquiry inquiry) { m_CurrentQuandlInquiry = inquiry; }
 
   bool IsFinnhubInquiring(void) noexcept { return m_fFinnhubInquiring; }
@@ -289,7 +289,7 @@ public:
   bool LoadEconomicCalendarDB(void);
 
   bool RebuildStockDayLineDB(void);
-  virtual bool UpdateDayLineStartEndDate(void);
+  virtual bool UpdateStockDayLineStartEndDate(void);
   bool RebuildEPSSurprise(void);
   bool ReBuildPeer(void);
 

@@ -63,7 +63,7 @@ CString CFinnhubWebInquiry::GetNextInquiringMiddleStr(long lTotalNumber, bool fS
   CString str = _T("");
   static int s_iCount = 5;
 
-  switch (gl_pWorldMarket->GetCurrentFinnhubPrefixIndex()) {
+  switch (gl_pWorldMarket->GetCurrentFinnhubInquiry().m_lInquiryIndex) {
   case __COMPANY_SYMBOLS__:
   // 无需中间串
   break;

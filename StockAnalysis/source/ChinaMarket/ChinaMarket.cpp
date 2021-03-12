@@ -81,6 +81,7 @@ CChinaMarket::CChinaMarket(void) : CVirtualMarket() {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CChinaMarket::~CChinaMarket() {
+  m_vChinaMarketStock.resize(0);
 }
 
 void CChinaMarket::ResetMarket(void) {

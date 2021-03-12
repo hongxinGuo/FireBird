@@ -106,6 +106,9 @@
     <Filter Include="Test源文件\World Market\工作线程">
       <UniqueIdentifier>{867e7456-6a16-47a3-8ebc-0fc5426c0067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test源文件\World Market\实现">
+      <UniqueIdentifier>{2c240f4e-9ce9-485d-b026-1df75266f212}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DayLineTest.cpp">
@@ -688,6 +691,9 @@
     </ClCompile>
     <ClCompile Include="..\StockAnalysis\source\AmericaMarket\ThreadUpdateStockProfileDB.cpp">
       <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessFinnhubWebDataTest.cpp">
+      <Filter>Test源文件\World Market\实现</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

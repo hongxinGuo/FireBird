@@ -103,14 +103,14 @@ namespace StockAnalysisTest {
   }
 
   TEST_F(CWorldMarketTest, TestGetTotalStock) {
-    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 28876) << "默认状态下数据库总数为28876";
+    EXPECT_EQ(gl_pWorldMarket->GetTotalStock(), 5059) << "默认状态下数据库总数为5059(全部上海股票和小部分美国股票)";
   }
 
   TEST_F(CWorldMarketTest, TestIsStock) {
     EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000000.SS")));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("000001.SS")));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("600601.SS")));
-    EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("RIG")));
+    EXPECT_TRUE(gl_pWorldMarket->IsStock(_T("A")));
     EXPECT_FALSE(gl_pWorldMarket->IsStock(_T("000001.SZ"))) << "目前测试数据库中只有上海和美国股票集";
 
     CWorldStockPtr pStock = make_shared<CWorldStock>();
@@ -120,7 +120,7 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
     pStock->SetSymbol(_T("600601.SS"));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
-    pStock->SetSymbol(_T("RIG"));
+    pStock->SetSymbol(_T("A"));
     EXPECT_TRUE(gl_pWorldMarket->IsStock(pStock));
     pStock->SetSymbol(_T("000001.SZ"));
     EXPECT_FALSE(gl_pWorldMarket->IsStock(pStock));
@@ -608,8 +608,8 @@ namespace StockAnalysisTest {
       pStock = gl_pWorldMarket->GetStock(i);
       pStock->SetDayLineNeedUpdate(false);
     }
-    gl_pWorldMarket->GetStock(10001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
-    gl_pWorldMarket->GetStock(10010)->SetDayLineNeedUpdate(true);
+    gl_pWorldMarket->GetStock(3001)->SetDayLineNeedUpdate(true); // 测试数据库中，上海市场的股票排在前面（共2462个），美国市场的股票排在后面
+    gl_pWorldMarket->GetStock(3010)->SetDayLineNeedUpdate(true);
     gl_pWorldMarket->SetFinnhubDayLineUpdated(true);
     EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "DayLine Updated";
 
@@ -622,17 +622,17 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(gl_pWorldMarket->IsFinnhubInquiring());
     inquiry = gl_pWorldMarket->GetFinnhubInquiry();
     EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
-    EXPECT_EQ(inquiry.m_lStockIndex, 10001) << "第一个待查询股票位置";
-    EXPECT_FALSE(gl_pWorldMarket->GetStock(10001)->IsDayLineNeedUpdate());
-    EXPECT_TRUE(gl_pWorldMarket->GetStock(10010)->IsDayLineNeedUpdate());
+    EXPECT_EQ(inquiry.m_lStockIndex, 3001) << "第一个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
+    EXPECT_TRUE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
     gl_pWorldMarket->SetFinnhubInquiring(false);
     EXPECT_TRUE(gl_pWorldMarket->TaskInquiryFinnhubDayLine());
     inquiry = gl_pWorldMarket->GetFinnhubInquiry();
     EXPECT_EQ(inquiry.m_lInquiryIndex, __STOCK_CANDLES__);
-    EXPECT_EQ(inquiry.m_lStockIndex, 10010) << "第二个待查询股票位置";
-    EXPECT_FALSE(gl_pWorldMarket->GetStock(1)->IsDayLineNeedUpdate());
-    EXPECT_FALSE(gl_pWorldMarket->GetStock(10)->IsDayLineNeedUpdate());
+    EXPECT_EQ(inquiry.m_lStockIndex, 3010) << "第二个待查询股票位置";
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(3001)->IsDayLineNeedUpdate());
+    EXPECT_FALSE(gl_pWorldMarket->GetStock(3010)->IsDayLineNeedUpdate());
 
     gl_pWorldMarket->SetFinnhubInquiring(false);
     EXPECT_FALSE(gl_pWorldMarket->TaskInquiryFinnhubDayLine()) << "第三次查询时没有找到待查询的股票";

@@ -5,7 +5,7 @@
 
 UINT ThreadUpdateWorldStockDayLineStartEndDate(CWorldMarket* pMarket) {
   gl_ThreadStatus.IncreaseSavingThread();
-  pMarket->UpdateDayLineStartEndDate();
+  pMarket->UpdateStockDayLineStartEndDate();
   gl_ThreadStatus.DecreaseSavingThread();
 
   return 43;

@@ -75,6 +75,13 @@ void CWorldMarket::InitialTiingoInquiryStr(void) {
 }
 
 CWorldMarket::~CWorldMarket() {
+  m_vCountry.resize(0);
+  m_vEconomicCalendar.resize(0);
+  m_vFinnhubExchange.resize(0);
+  m_vForexExchange.resize(0);
+  m_vForexSymbol.resize(0);
+  m_vWorldStock.resize(0);
+  m_vWorldChoicedStock.resize(0);
 }
 
 void CWorldMarket::Reset(void) {
@@ -1872,7 +1879,7 @@ bool CWorldMarket::RebuildStockDayLineDB(void) {
   return true;
 }
 
-bool CWorldMarket::UpdateDayLineStartEndDate(void) {
+bool CWorldMarket::UpdateStockDayLineStartEndDate(void) {
   CString strFilterPrefix = _T("[Symbol] = '");
   CString strFilter, str;
   CSetWorldStockDayLine setWorldStockDayLine;
