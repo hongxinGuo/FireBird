@@ -482,18 +482,6 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
   catch (ptree_error&) {
   }
   try {
-    pt2 = pt.get_child(_T("o"));
-    i = 0;
-    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
-      pt3 = it->second;
-      dTemp = pt3.get_value<double>();
-      pDayLine = vDayLine.at(i++);
-      pDayLine->SetOpen(dTemp * 1000);
-    }
-  }
-  catch (ptree_error&) {
-  }
-  try {
     pt2 = pt.get_child(_T("h"));
     i = 0;
     for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
@@ -513,6 +501,18 @@ bool CWorldMarket::ProcessFinnhubForexCandle(CWebDataPtr pWebData, CForexSymbolP
       dTemp = pt3.get_value<double>();
       pDayLine = vDayLine.at(i++);
       pDayLine->SetLow(dTemp * 1000);
+    }
+  }
+  catch (ptree_error&) {
+  }
+  try {
+    pt2 = pt.get_child(_T("o"));
+    i = 0;
+    for (ptree::iterator it = pt2.begin(); it != pt2.end(); ++it) {
+      pt3 = it->second;
+      dTemp = pt3.get_value<double>();
+      pDayLine = vDayLine.at(i++);
+      pDayLine->SetOpen(dTemp * 1000);
     }
   }
   catch (ptree_error&) {

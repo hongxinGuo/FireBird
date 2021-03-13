@@ -231,7 +231,7 @@ public:
   void AddForexSymbol(CForexSymbolPtr pForexSymbol);
   bool DeleteForexSymbol(CForexSymbolPtr pForexSysbol);
   CForexSymbolPtr GetForexSymbol(long lIndex) { return m_vForexSymbol.at(lIndex); }
-  CForexSymbolPtr GetForexSymbol(CString strSymbol) { return m_vForexSymbol.at(m_mapForexSymbol.at(strSymbol)); }
+  CForexSymbolPtr GetForexSymbol(CString strSymbol) { return GetForexSymbol(m_mapForexSymbol.at(strSymbol)); }
   size_t GetForexSymbolSize(void) noexcept { return m_vForexSymbol.size(); }
 
   size_t GetTotalCountry(void) noexcept { return m_vCountry.size(); }
