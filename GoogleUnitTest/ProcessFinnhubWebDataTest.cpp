@@ -209,6 +209,8 @@ namespace StockAnalysisTest {
 
   // 格式不对(缺开始的‘{’），无法顺利Parser
   FinnhubWebData finnhubWebData31(1, _T("AAPL"), _T("\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
+  // 没有s项
+  FinnhubWebData finnhubWebData32_1(11, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"a\":\"ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
   // s项报告非ok
   FinnhubWebData finnhubWebData32(2, _T("AAPL"), _T("{\"c\":[118.7,119.11,119.04],\"h\":[118.89,119.18,119.16],\"l\":[118.7,118.69,118.98],\"o\":[118.86,118.69,119.15],\"s\":\"not ok\",\"t\":[1615300020,1615300080,1615300140],\"v\":[36665,105291,68286]}"));
   // s项报告no data
@@ -265,7 +267,7 @@ namespace StockAnalysisTest {
 
   INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockCandle1,
                            ProcessFinnhubStockCandleTest,
-                           testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData33, &finnhubWebData35, &finnhubWebData35,
+                           testing::Values(&finnhubWebData31, &finnhubWebData32, &finnhubWebData32_1, &finnhubWebData33, &finnhubWebData34, &finnhubWebData35,
                                            &finnhubWebData36, &finnhubWebData37, &finnhubWebData38, &finnhubWebData39, &finnhubWebData40));
 
   TEST_P(ProcessFinnhubStockCandleTest, TestProcessFinnhubStockCandle0) {
@@ -332,6 +334,10 @@ namespace StockAnalysisTest {
     EXPECT_TRUE(fSucceed);
     EXPECT_FALSE(m_pStock->IsDayLineNeedUpdate());
     EXPECT_TRUE(m_pStock->IsDayLineNeedSaving());
+    EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
+    break;
+    case 11: // 没有s项
+    EXPECT_FALSE(fSucceed);
     EXPECT_TRUE(m_pStock->IsUpdateProfileDB());
     break;
     default:
@@ -471,6 +477,8 @@ namespace StockAnalysisTest {
 
   // 格式不对(缺开始的‘{’），无法顺利Parser
   FinnhubWebData finnhubWebData61(1, _T("OANDA:EUR_ZAR"), _T("\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
+  // 没有s项
+  FinnhubWebData finnhubWebData62_1(11, _T("OANDA:XAU_SGD"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"a\":\"ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
   // s项报告非ok
   FinnhubWebData finnhubWebData62(2, _T("OANDA:EUR_ZAR"), _T("{\"c\":[1.10159,1.10784],\"h\":[1.10278,1.10889],\"l\":[1.09806,1.10023],\"o\":[1.10051,1.10228],\"s\":\"not ok\",\"t\":[1574978400,1575237600],\"v\":[36521,47505]}"));
   // s项报告no data
@@ -530,7 +538,7 @@ namespace StockAnalysisTest {
 
   INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexCandle1,
                            ProcessFinnhubForexCandleTest,
-                           testing::Values(&finnhubWebData61, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
+                           testing::Values(&finnhubWebData61, &finnhubWebData62_1, &finnhubWebData62, &finnhubWebData63, &finnhubWebData64, &finnhubWebData65,
                                            &finnhubWebData66, &finnhubWebData67, &finnhubWebData68, &finnhubWebData69, &finnhubWebData70));
 
   TEST_P(ProcessFinnhubForexCandleTest, TestProcessFinnhubForexCandle0) {
@@ -598,6 +606,126 @@ namespace StockAnalysisTest {
     EXPECT_FALSE(m_pForexSymbol->IsDayLineNeedUpdate());
     EXPECT_TRUE(m_pForexSymbol->IsDayLineNeedSaving());
     EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+    break;
+    case 11: // 没有s项
+    EXPECT_TRUE(fSucceed);
+    EXPECT_TRUE(m_pForexSymbol->IsUpdateProfileDB());
+    EXPECT_TRUE(m_pForexSymbol->IsNullStock());
+    break;
+    default:
+    break;
+    }
+  }
+
+  // 格式不对(缺开始的‘[’），无法顺利Parser
+  FinnhubWebData finnhubWebData72(2, _T(""), _T("\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+  // 格式不对
+  FinnhubWebData finnhubWebData73(3, _T(""), _T("[\"oanda\",fxcm,\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData80(10, _T(""), _T("[\"oanda\",\"fxcm\",\"forex.com\",\"pepperstone\",\"fxpro\",\"icmtrader\",\"ic markets\",\"octafx\",\"fxpig\"]"));
+
+  class ProcessFinnhubForexExchangeTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pWebData = pData->m_pData;
+      m_vExchange.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+    vector<CString> m_vExchange;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexExchange1, ProcessFinnhubForexExchangeTest, testing::Values(&finnhubWebData72, &finnhubWebData73,
+                                                                                                              &finnhubWebData80));
+
+  TEST_P(ProcessFinnhubForexExchangeTest, TestProcessFinnhubForexExchange0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubForexExchange(m_pWebData, m_vExchange);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 3: // 缺乏字符串
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 10:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_vExchange.at(0), _T("oanda"));
+    EXPECT_STREQ(m_vExchange.at(1), _T("fxcm"));
+    EXPECT_EQ(m_vExchange.size(), 9);
+    break;
+    default:
+    break;
+    }
+  }
+
+  // 格式不对(缺开始的‘[’），无法顺利Parser
+  FinnhubWebData finnhubWebData82(2, _T(""), _T("[\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+  // 数据缺乏description
+  FinnhubWebData finnhubWebData83(3, _T(""), _T("[{\"a\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+  // 数据缺乏displaySymbol
+  FinnhubWebData finnhubWebData84(4, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"a\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+  // 数据缺乏symbol
+  FinnhubWebData finnhubWebData85(5, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"a\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData90(10, _T(""), _T("[{\"description\":\"Oanda Singapore 30\",\"displaySymbol\":\"SG30/SGD\",\"symbol\":\"OANDA:SG30_SGD\"},{\"description\":\"Oanda Bund\",\"displaySymbol\":\"DE10YB/EUR\",\"symbol\":\"OANDA:DE10YB_EUR\"}]"));
+
+  class ProcessFinnhubForexSymbolTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pWebData = pData->m_pData;
+      m_vForexSymbol.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+    vector<CForexSymbolPtr> m_vForexSymbol;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubForexSymbol1, ProcessFinnhubForexSymbolTest,
+                           testing::Values(&finnhubWebData82, &finnhubWebData83, &finnhubWebData84,
+                                           &finnhubWebData85, &finnhubWebData90));
+
+  TEST_P(ProcessFinnhubForexSymbolTest, TestProcessFinnhubForexSymbol0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubForexSymbol(m_pWebData, m_vForexSymbol);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 3: // 缺乏字符串
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 4: // 缺乏字符串
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 5: // 缺乏字符串
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 10:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_vForexSymbol.at(0)->m_strSymbol, _T("OANDA:SG30_SGD"));
+    EXPECT_STREQ(m_vForexSymbol.at(1)->m_strSymbol, _T("OANDA:DE10YB_EUR"));
+    EXPECT_EQ(m_vForexSymbol.size(), 2);
     break;
     default:
     break;

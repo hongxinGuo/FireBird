@@ -364,16 +364,10 @@ bool CWorldMarket::ProcessFinnhubForexExchange(CWebDataPtr pWebData, vector<CStr
   if (!ConvertToJSon(pt, pWebData)) return false;
 
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
-    try {
-      pt2 = it->second;
-      s = pt2.get_value<string>();
-      str = s.c_str();
-      vExchange.push_back(str);
-    }
-    catch (ptree_error&) {
-      TRACE("Finnhub Forex Exchange Error\n");
-      return false;
-    }
+    pt2 = it->second;
+    s = pt2.get_value<string>();
+    str = s.c_str();
+    vExchange.push_back(str);
   }
 
   return true;
