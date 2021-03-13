@@ -335,16 +335,16 @@ bool CWorldMarket::ProcessFinnhubStockQuote(CWebDataPtr pWebData, CWorldStockPtr
     return false;
   }
   try {
-    dTemp = pt.get<double>(_T("pc"));
-    pStock->SetLastClose(dTemp * 1000);
-    dTemp = pt.get<double>(_T("o"));
-    pStock->SetOpen(dTemp * 1000);
+    dTemp = pt.get<double>(_T("c"));
+    pStock->SetNew(dTemp * 1000);
     dTemp = pt.get<double>(_T("h"));
     pStock->SetHigh(dTemp * 1000);
     dTemp = pt.get<double>(_T("l"));
     pStock->SetLow(dTemp * 1000);
-    dTemp = pt.get<double>(_T("c"));
-    pStock->SetNew(dTemp * 1000);
+    dTemp = pt.get<double>(_T("o"));
+    pStock->SetOpen(dTemp * 1000);
+    dTemp = pt.get<double>(_T("pc"));
+    pStock->SetLastClose(dTemp * 1000);
     tt = pt.get<time_t>(_T("t"));
     pStock->SetTransactionTime(tt);
   }
