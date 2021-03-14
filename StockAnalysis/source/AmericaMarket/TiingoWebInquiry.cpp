@@ -12,7 +12,7 @@ using namespace std;
 //m_strWebDataInquireSuffix = _T("&token=859bd66ca24b2a81a2b5f4de6616e2c408b2a769"); // 密钥放在最后
 //m_strWebDataInquireSuffix = _T("&token=c897a00b7cfc2adffc630d23befd5316a4683156"); // 密钥放在最后
 CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
-  m_strWebDataInquirePrefix = _T(""); // finnhub有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
+  m_strWebDataInquirePrefix = _T(""); // Tiingo有各种数据，故其前缀由数据申请函数每次设置，不同的前缀申请不同的数据。
 
   if (m_strWebDataInquireSuffix.GetLength() < 5) {
 #ifdef DEBUG
@@ -22,7 +22,7 @@ CTiingoWebInquiry::CTiingoWebInquiry() : CVirtualWebInquiry() {
 #endif // DEBUG
   }
   m_strConnectionName = _T("Tiingo");
-  m_lInquiringNumber = 1; // Finnhub实时数据查询数量默认值
+  m_lInquiringNumber = 1; // Tiingo实时数据查询数量默认值
 }
 
 CTiingoWebInquiry::~CTiingoWebInquiry() {
@@ -34,7 +34,7 @@ bool CTiingoWebInquiry::PrepareNextInquiringStr(void) {
   CString strMiddle = _T("");
 
   // 申请下一批次股票实时数据。 此网络数据提取器使用FinnhubMarket
-  // 由于Finnhub提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
+  // 由于Tiingo提供各种数据，而每个数据分别设计提取器会导致出现太多的提取器，故而在此分类。
 
   // 1 准备前缀字符串
   // 2. 准备中间字符串

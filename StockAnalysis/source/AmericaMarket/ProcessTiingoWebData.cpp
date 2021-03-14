@@ -21,44 +21,51 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
   CString str, strNumber;
   char buffer[30];
   long year, month, day;
+  bool fSucceed = true;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pStock = make_shared<CWorldStock>();
-    pt2 = it->second;
-    s = pt2.get<string>(_T("permaTicker"));
-    if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
-    s = pt2.get<string>(_T("ticker"));
-    transform(s.begin(), s.end(), s.begin(), toupper);
-    pStock->SetSymbol(s.c_str());
-    pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
-    pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
-    s = pt2.get<string>(_T("industry"));
-    if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
-    s = pt2.get<string>(_T("sector"));
-    if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
-    s = pt2.get<string>(_T("sicCode"));
-    if (s.at(0) == 'F') {
+    try {
+      pt2 = it->second;
+      s = pt2.get<string>(_T("permaTicker"));
+      if (s.size() > 0) pStock->m_strTiingoPermaTicker = s.c_str();
+      s = pt2.get<string>(_T("ticker"));
+      transform(s.begin(), s.end(), s.begin(), toupper);
+      pStock->SetSymbol(s.c_str());
+      pStock->m_fIsActive = pt2.get<bool>(_T("isActive"));
+      pStock->m_fIsADR = pt2.get<bool>(_T("isADR"));
+      s = pt2.get<string>(_T("industry"));
+      if (s.size() > 0) pStock->m_strTiingoIndustry = s.c_str();
+      s = pt2.get<string>(_T("sector"));
+      if (s.size() > 0) pStock->m_strTiingoSector = s.c_str();
+      s = pt2.get<string>(_T("sicCode"));
+      if (s.at(0) == 'F') {
+      }
+      else {
+        pStock->m_iSICCode = atoi(s.c_str());
+      }
+      s = pt2.get<string>(_T("sicIndustry"));
+      if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
+      s = pt2.get<string>(_T("sicSector"));
+      if (s.size() > 0) pStock->m_strSICSector = s.c_str();
+      s = pt2.get<string>(_T("companyWebsite"));
+      if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
+      s = pt2.get<string>(_T("secFilingWebsite"));
+      if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
+      s = pt2.get<string>(_T("statementLastUpdated"));
+      if (s.size() > 0) str = s.c_str();
+      sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+      pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
+      s = pt2.get<string>(_T("dailyLastUpdated"));
+      if (s.size() > 0) str = s.c_str();
+      sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
+      pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
     }
-    else {
-      pStock->m_iSICCode = atoi(s.c_str());
+    catch (ptree_error&) {
+      fSucceed = false;
+      break;
     }
-    s = pt2.get<string>(_T("sicIndustry"));
-    if (s.size() > 0) pStock->m_strSICIndustry = s.c_str();
-    s = pt2.get<string>(_T("sicSector"));
-    if (s.size() > 0) pStock->m_strSICSector = s.c_str();
-    s = pt2.get<string>(_T("companyWebsite"));
-    if (s.size() > 0) pStock->m_strCompanyWebSite = s.c_str();
-    s = pt2.get<string>(_T("secFilingWebsite"));
-    if (s.size() > 0) pStock->m_strSECFilingWebSite = s.c_str();
-    s = pt2.get<string>(_T("statementLastUpdated"));
-    if (s.size() > 0) str = s.c_str();
-    sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-    pStock->m_lStatementUpdateDate = year * 10000 + month * 100 + day;
-    s = pt2.get<string>(_T("dailyLastUpdated"));
-    if (s.size() > 0) str = s.c_str();
-    sscanf_s(str.GetBuffer(), _T("%04d-%02d-%02d"), &year, &month, &day);
-    pStock->m_lDailyDataUpdateDate = year * 10000 + month * 100 + day;
     vStock.push_back(pStock);
     iCount++;
   }
@@ -67,7 +74,8 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
   strNumber = buffer;
   str = _T("今日Tiingo Symbol总数为") + strNumber;
   gl_systemMessage.PushInnerSystemInformationMessage(str);
-  return true;
+
+  return fSucceed;
 }
 
 bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPtr& pStock) {
@@ -100,12 +108,12 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
       pDayLine->SetDate(lTemp);
       dTemp = pt2.get<double>(_T("close"));
       pDayLine->SetClose(dTemp * 1000);
-      dTemp = pt2.get<double>(_T("open"));
-      pDayLine->SetOpen(dTemp * 1000);
       dTemp = pt2.get<double>(_T("high"));
       pDayLine->SetHigh(dTemp * 1000);
       dTemp = pt2.get<double>(_T("low"));
       pDayLine->SetLow(dTemp * 1000);
+      dTemp = pt2.get<double>(_T("open"));
+      pDayLine->SetOpen(dTemp * 1000);
       lTemp = pt2.get<long>(_T("volume"));
       pDayLine->SetVolume(lTemp);
       vDayLine.push_back(pDayLine);
