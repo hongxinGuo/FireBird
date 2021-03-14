@@ -21,7 +21,6 @@ bool CWorldMarket::ProcessTiingoStockSymbol(CWebDataPtr pWebData, vector<CWorldS
   CString str, strNumber;
   char buffer[30];
   long year, month, day;
-  int i = 0;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
@@ -116,10 +115,10 @@ bool CWorldMarket::ProcessTiingoStockDayLine(CWebDataPtr pWebData, CWorldStockPt
     return false; // 数据解析出错的话，则放弃。
   }
   sort(vDayLine.begin(), vDayLine.end(), CompareDayLineDate); // 以日期早晚顺序排列。
-  for (auto& pDayLine : vDayLine) {
-    pDayLine->SetMarketString(pStock->GetListedExchange());
-    pDayLine->SetSymbol(pStock->GetSymbol());
-    pDayLine->SetStockName(pStock->GetTicker());
+  for (auto& pDayLine2 : vDayLine) {
+    pDayLine2->SetMarketString(pStock->GetListedExchange());
+    pDayLine2->SetSymbol(pStock->GetSymbol());
+    pDayLine2->SetStockName(pStock->GetTicker());
   }
   pStock->UpdateDayLine(vDayLine);
   pStock->SetDayLineNeedUpdate(false);

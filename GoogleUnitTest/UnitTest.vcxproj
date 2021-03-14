@@ -113,6 +113,7 @@
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <UseOfMfc>Dynamic</UseOfMfc>
     <EnableASAN>false</EnableASAN>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -357,6 +358,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ProcessFinnhubWebDataTest.cpp" />
+    <ClCompile Include="ProcessTiingoWebDataTest.cpp" />
     <ClCompile Include="ThreadQuandlReadDataTest.cpp" />
     <ClCompile Include="ThreadReadFinnhubDataTest.cpp" />
     <ClCompile Include="ThreadTiingoReadDataTest.cpp" />
@@ -737,7 +739,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -750,6 +752,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -789,7 +792,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -802,6 +805,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -841,7 +845,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -854,6 +858,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -893,7 +898,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -906,6 +911,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -945,7 +951,7 @@
       <EnablePREfast>false</EnablePREfast>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
       <SDLCheck>true</SDLCheck>
@@ -958,6 +964,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
@@ -1006,10 +1013,11 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4003</DisableSpecificWarnings>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
