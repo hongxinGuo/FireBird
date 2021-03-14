@@ -539,6 +539,7 @@ bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCount
   string s;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
+
   for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
     pCountry = make_shared<CCountry>();
     pt2 = it->second;
@@ -557,6 +558,7 @@ bool CWorldMarket::ProcessFinnhubCountryList(CWebDataPtr pWebData, vector<CCount
       pCountry->m_strCurrencyCode = s.c_str();
     }
     catch (ptree_error&) {
+      return false;
     }
     vCountry.push_back(pCountry);
   }
@@ -593,11 +595,18 @@ bool CWorldMarket::ProcessFinnhubStockPeer(CWebDataPtr pWebData, CWorldStockPtr&
 
 bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<CEconomicCalendarPtr>& vEconomicCalendar) {
   CEconomicCalendarPtr pEconomicCalendar = nullptr;
-  ptree pt, pt2;
+  ptree pt, pt1, pt2;
   string s;
 
   if (!ConvertToJSon(pt, pWebData)) return false;
-  for (ptree::iterator it = pt.begin(); it != pt.end(); ++it) {
+
+  try {
+    pt1 = pt.get_child(_T("economicCalendar"));
+  }
+  catch (ptree_error&) {
+    return false;
+  }
+  for (ptree::iterator it = pt1.begin(); it != pt1.end(); ++it) {
     pEconomicCalendar = make_shared<CEconomicCalendar>();
     pt2 = it->second;
     try {
@@ -608,7 +617,7 @@ bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<C
       s = pt2.get<string>(_T("impact"));
       pEconomicCalendar->m_strImpact = s.c_str();
       pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("estimate"));
-      pEconomicCalendar->m_dEstimate = pt2.get<double>(_T("actual"));
+      pEconomicCalendar->m_dActual = pt2.get<double>(_T("actual"));
       pEconomicCalendar->m_dPrev = pt2.get<double>(_T("prev"));
       s = pt2.get<string>(_T("time"));
       pEconomicCalendar->m_strTime = s.c_str();
@@ -616,6 +625,7 @@ bool CWorldMarket::ProcessFinnhubEconomicCalendar(CWebDataPtr pWebData, vector<C
       pEconomicCalendar->m_strUnit = s.c_str();
     }
     catch (ptree_error&) {
+      return false;
     }
     vEconomicCalendar.push_back(pEconomicCalendar);
   }

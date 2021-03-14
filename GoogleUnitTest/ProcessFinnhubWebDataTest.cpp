@@ -731,4 +731,289 @@ namespace StockAnalysisTest {
     break;
     }
   }
+
+  // 格式不对(缺开始的‘[’），无法顺利Parser
+  FinnhubWebData finnhubWebData92(2, _T(""), _T("{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+  // 第一个数据缺乏CodeNo
+  FinnhubWebData finnhubWebData93(3, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"Missing\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+  // 第二个数据缺乏Code2
+  FinnhubWebData finnhubWebData94(4, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"Missing\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+  // 数据缺乏symbol
+  FinnhubWebData finnhubWebData95(5, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"Missing\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData100(10, _T(""), _T("[{\"code2\":\"NR\",\"code3\":\"NRU\",\"codeNo\":\"520\",\"country\":\"Nauru\",\"currency\":\"Australian Dollars\",\"currencyCode\":\"AUD\"}, {\"code2\":\"MF\",\"code3\":\"MAF\",\"codeNo\":\"663\",\"country\":\"Saint Martin (French part)\",\"currency\":\"Netherlands Antillean guilder\",\"currencyCode\":\"ANG\"}]"));
+
+  class ProcessFinnhubCountryListTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pWebData = pData->m_pData;
+      m_vCountry.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+    vector<CCountryPtr> m_vCountry;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubCountryList1, ProcessFinnhubCountryListTest,
+                           testing::Values(&finnhubWebData92, &finnhubWebData93, &finnhubWebData94,
+                                           &finnhubWebData95, &finnhubWebData100));
+
+  TEST_P(ProcessFinnhubCountryListTest, TestProcessFinnhubCountryList0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubCountryList(m_pWebData, m_vCountry);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 3: // 缺乏CodeNo
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vCountry.size(), 0);
+    break;
+    case 4: // 第二个数据缺Code2
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vCountry.size(), 1);
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
+    break;
+    case 5: // 第二个数据缺CodeNo
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vCountry.size(), 1);
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
+    break;
+    case 10:
+    EXPECT_EQ(m_vCountry.size(), 2);
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCode2, _T("NR"));
+    EXPECT_STREQ(m_vCountry.at(0)->m_strCurrencyCode, _T("AUD"));
+    EXPECT_STREQ(m_vCountry.at(1)->m_strCode2, _T("MF"));
+    EXPECT_STREQ(m_vCountry.at(1)->m_strCurrencyCode, _T("ANG"));
+    break;
+    default:
+    break;
+    }
+  }
+
+  // 不足三个字符
+  FinnhubWebData finnhubWebData102(2, _T("AAPL"), _T("[]"));
+  // 格式不对(缺开始的‘[’），无法顺利Parser
+  FinnhubWebData finnhubWebData103(3, _T("AAPL"), _T("\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+  // 格式不对
+  FinnhubWebData finnhubWebData104(4, _T("AAPL"), _T("[\"AAPL,\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData110(10, _T("AAPL"), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+
+  class ProcessFinnhubStockPeerTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pWebData = pData->m_pData;
+      m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+      EXPECT_TRUE(m_pStock != nullptr);
+      m_pStock->SetPeer(_T(""));
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubStockPeer1, ProcessFinnhubStockPeerTest,
+                           testing::Values(&finnhubWebData102, &finnhubWebData103, &finnhubWebData104,
+                                           &finnhubWebData110));
+
+  TEST_P(ProcessFinnhubStockPeerTest, TestProcessFinnhubStockPeer0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubStockPeer(m_pWebData, m_pStock);
+    switch (m_lIndex) {
+    case 2: // 不足三个字符
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_pStock->GetPeer(), _T(" "));
+    break;
+    case 3: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    EXPECT_STREQ(m_pStock->GetPeer(), _T("")) << "没有改变";
+    break;
+    case 4: // 第二个数据缺Code2
+    EXPECT_FALSE(fSucceed);
+    EXPECT_STREQ(m_pStock->GetPeer(), _T("")) << "没有改变";
+    break;
+    case 10:
+    EXPECT_TRUE(fSucceed);
+    EXPECT_STREQ(m_pStock->GetPeer(), _T("[\"AAPL\",\"DELL\",\"HPQ\",\"WDC\",\"HPE\",\"1337.HK\",\"NTAP\",\"PSTG\",\"XRX\",\"NCR\"]"));
+    break;
+    default:
+    break;
+    }
+  }
+
+  // 格式不对(缺开始的‘{’），无法顺利Parser
+  FinnhubWebData finnhubWebData112(2, _T(""), _T("\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+  // 缺乏economicCalendar
+  FinnhubWebData finnhubWebData113(3, _T(""), _T("{\"Missing\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+  // 第一个数据缺乏actual
+  FinnhubWebData finnhubWebData114(4, _T(""), _T("{\"economicCalendar\":[{\"Missing\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+  // 第二个数据缺乏actual
+  FinnhubWebData finnhubWebData115(5, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"Missing\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData120(10, _T(""), _T("{\"economicCalendar\":[{\"actual\":0.6,\"country\":\"CN\",\"estimate\":0.6,\"event\":\"CPI MM\",\"impact\":\"medium\",\"prev\":1,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"},{\"actual\":-0.2,\"country\":\"CN\",\"estimate\":-0.4,\"event\":\"CPI YY\",\"impact\":\"medium\",\"prev\":-0.3,\"time\":\"2021-03-10 01:30:00\",\"unit\":\"%\"}]}"));
+
+  class ProcessFinnhubEconomicCalendarTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pWebData = pData->m_pData;
+      m_vEconomicCalendar.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWebDataPtr m_pWebData;
+    vector<CEconomicCalendarPtr> m_vEconomicCalendar;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEconomicCalendar1, ProcessFinnhubEconomicCalendarTest,
+                           testing::Values(&finnhubWebData112, &finnhubWebData113, &finnhubWebData114,
+                                           &finnhubWebData115, &finnhubWebData120));
+
+  TEST_P(ProcessFinnhubEconomicCalendarTest, TestProcessFinnhubEconomicCalendar10) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubEconomicCalendar(m_pWebData, m_vEconomicCalendar);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 3: // 缺乏economicCalendar
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEconomicCalendar.size(), 0);
+    break;
+    case 4: // 第一个数据缺actual
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEconomicCalendar.size(), 0);
+    break;
+    case 5: // 第二个数据缺actual
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEconomicCalendar.size(), 1);
+    EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dActual, 0.6);
+    EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strUnit, _T("%"));
+    break;
+    case 10:
+    EXPECT_EQ(m_vEconomicCalendar.size(), 2);
+    EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dActual, 0.6);
+    EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strUnit, _T("%"));
+    EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(1)->m_dActual, -0.2);
+    EXPECT_STREQ(m_vEconomicCalendar.at(1)->m_strUnit, _T("%"));
+    EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dEstimate, 0.6);
+    EXPECT_DOUBLE_EQ(m_vEconomicCalendar.at(0)->m_dPrev, 1);
+    EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strCountry, _T("CN"));
+    EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strEvent, _T("CPI MM"));
+    EXPECT_STREQ(m_vEconomicCalendar.at(0)->m_strTime, _T("2021-03-10 01:30:00"));
+    break;
+    default:
+    break;
+    }
+  }
+
+  // 格式不对(缺开始的‘[’），无法顺利Parser
+  FinnhubWebData finnhubWebData122(2, _T("AAPL"), _T("{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+  // 第一个数据缺乏actual
+  FinnhubWebData finnhubWebData123(3, _T("AAPL"), _T("[{\"Missing\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+  // 第二个数据缺乏actual
+  FinnhubWebData finnhubWebData124(4, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"Missing\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+  // 第三个数据缺乏actual
+  FinnhubWebData finnhubWebData125(5, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"Missing\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+  // 正确的数据
+  FinnhubWebData finnhubWebData130(10, _T("AAPL"), _T("[{\"actual\":1.68,\"estimate\":1.555857,\"period\":\"2020-12-31\",\"symbol\":\"AAPL\"},{\"actual\":0.73,\"estimate\":0.7142244,\"period\":\"2020-09-30\",\"symbol\":\"AAPL\"},{\"actual\":0.645,\"estimate\":0.5211078,\"period\":\"2020-06-30\",\"symbol\":\"AAPL\"},{\"actual\":0.6375,\"estimate\":0.5765856,\"period\":\"2020-03-31\",\"symbol\":\"AAPL\"}]"));
+
+  class ProcessFinnhubEPSSurpriseTest : public::testing::TestWithParam<FinnhubWebData*>
+  {
+  protected:
+    virtual void SetUp(void) override {
+      ASSERT_FALSE(gl_fNormalMode);
+      FinnhubWebData* pData = GetParam();
+      m_lIndex = pData->m_lIndex;
+      m_pStock = gl_pWorldMarket->GetStock(pData->m_strSymbol);
+      EXPECT_TRUE(m_pStock != nullptr);
+      m_pWebData = pData->m_pData;
+      m_vEPSSurprise.resize(0);
+    }
+    virtual void TearDown(void) override {
+      // clearup
+    }
+
+  public:
+    long m_lIndex;
+    CWorldStockPtr m_pStock;
+    CWebDataPtr m_pWebData;
+    vector<CEPSSurprisePtr> m_vEPSSurprise;
+  };
+
+  INSTANTIATE_TEST_SUITE_P(TestProcessFinnhubEPSSurprise1, ProcessFinnhubEPSSurpriseTest,
+                           testing::Values(&finnhubWebData122, &finnhubWebData123, &finnhubWebData124,
+                                           &finnhubWebData125, &finnhubWebData130));
+
+  TEST_P(ProcessFinnhubEPSSurpriseTest, TestProcessFinnhubEPSSurprise0) {
+    bool fSucceed = false;
+    fSucceed = gl_pWorldMarket->ProcessFinnhubEPSSurprise(m_pWebData, m_vEPSSurprise);
+    switch (m_lIndex) {
+    case 2: // 格式不对
+    EXPECT_FALSE(fSucceed);
+    break;
+    case 3: //
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEPSSurprise.size(), 0);
+    break;
+    case 4: // 第二个数据缺缺actual
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEPSSurprise.size(), 1);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 1.68);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 1.555857);
+    EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20201231);
+    EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
+    break;
+    case 5: // 第三个数据缺CodeNo
+    EXPECT_FALSE(fSucceed);
+    EXPECT_EQ(m_vEPSSurprise.size(), 2);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 1.68);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 1.555857);
+    EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20201231);
+    EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
+    break;
+    case 10:
+    EXPECT_EQ(m_vEPSSurprise.size(), 4);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dActual, 0.6375);
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(0)->m_dEstimate, 0.5765856);
+    EXPECT_EQ(m_vEPSSurprise.at(0)->m_lDate, 20200331);
+    EXPECT_STREQ(m_vEPSSurprise.at(0)->m_strSymbol, _T("AAPL"));
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(3)->m_dActual, 1.68) << "成功处理后，自动按日期排列，导致其被放置于最后";
+    EXPECT_DOUBLE_EQ(m_vEPSSurprise.at(3)->m_dEstimate, 1.555857);
+    EXPECT_EQ(m_vEPSSurprise.at(3)->m_lDate, 20201231);
+    EXPECT_STREQ(m_vEPSSurprise.at(3)->m_strSymbol, _T("AAPL"));
+    break;
+    default:
+    break;
+    }
+  }
 }
